@@ -1,40 +1,13 @@
-{% extends 'layout_application.html' %}
+{% extends 'alldata/alldata_layout.html' %}
 {% load i18n %}
 {% load user_tags %}
-
-{% block page_title %}{% trans page_heading %}{% endblock %}
-s
-{% block section_title %}{% trans page_heading %}
-    <span class="title_links">
-        <a href="/allfailedsubmissions"
-           class="{{ hide_link_class }} {{ disable_link_class }} float_right">{% trans "View all failed submissions" %}</a>
-    </span>
-{% endblock %}
-
 {% load dw_tabs %}
-
-
-{% block page_scss %}
-    {{ block.super }}
-    <link href="/media/css/scss/section_alldata.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block page_css %}
-    <link href="/media/css/scss/data_submission.css" rel="stylesheet"/>
-{% endblock %}
 
 {% block body %}
     {% activetab "tab_nav" "projects" %}
     {{ block.super }}
 {% endblock %}
 
-{% block navigation %}
-    {% if is_crs_user %}
-        {% include 'alldata/tab_navigation.html' %}
-    {% endif %}
-{% endblock %}
-
-{% load i18n %}
 {% block content %}
     {% block device_navigation %}
         {% if user|is_datasender %}

@@ -1,14 +1,30 @@
 {% load i18n %}
 {% load dw_tabs %}
+
 <div class="grid_24 tab_navigation">
     <ul>
         <li class="{% ifactivetab 'tab_nav' 'projects' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="overview_tab" href="{{ project_links.projects_link }}" class="{{ disable_link_class }}">{% trans "Projects" %}</a>
+            <a id="projects_tab" href="{{ project_links.projects_link }}"
+               class="{{ disable_link_class }}">{% trans "Data per Project" %}</a>
         </li>
+        {% if is_crs_user %}
+
         <li class="{% ifactivetab 'tab_nav' 'reports' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="questionnaire_tab" href="{{ project_links.reports_link }}"
+            <a id="reports_tab" href="{{ project_links.reports_link }}"
                class="{{ disable_link_class }}">{% trans "Reports" %}</a>
         </li>
+        {% endif %}
 
+        <li class="{% ifactivetab 'tab_nav' 'failed_submissions' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="failed_submissions_tab" href="{{ project_links.failed_submissions_link }}"
+               class="{{ disable_link_class }}">{% trans "Failed Submissions" %}</a>
+        </li>
+
+        <li class="{% ifactivetab 'tab_nav' 'data_export' %}active{% else %}inactive{% endifactivetab %}">
+            <a id="data_export_tab" href="{{ project_links.data_export_link}}"
+               class="{{ disable_link_class }}">
+                {% trans "Data Export" %}
+            </a>
+        </li>
     </ul>
 </div>

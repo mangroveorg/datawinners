@@ -1,29 +1,12 @@
-{% extends 'layout_application.html' %}
+{% extends 'alldata/alldata_layout.html' %}
 {% load i18n %}
-{% block page_title %}{% trans page_heading %}{% endblock %}
-
-
+{% load user_tags %}
 {% load dw_tabs %}
-
-
-{% block page_scss %}
-    {{ block.super }}
-    <link href="/media/css/scss/section_alldata.css" rel="stylesheet"/>
-{% endblock %}
 
 {% block body %}
     {% activetab "tab_nav" "reports" %}
     {{ block.super }}
 {% endblock %}
-
-
-
-{% block navigation %}
-{% include 'alldata/tab_navigation.html' %}
-{% endblock %}
-
-
-
 
 {% block content %}
     <div>

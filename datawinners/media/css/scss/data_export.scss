@@ -1,0 +1,22 @@
+.data_export_panel {
+  width: 450px;
+  margin-top: 20px;
+
+  .project_selection, .date_range_selection {
+    div {
+      display: inline-block;
+      margin-top: 20px;
+      width: 20%
+    }
+
+    input, select {
+      width: 70%;
+      vertical-align: text-bottom;
+    }
+  }
+
+  .export_btn {
+    float: right;
+    margin-right: 8%
+  }
+}

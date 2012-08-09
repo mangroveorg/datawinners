@@ -15,10 +15,12 @@ from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
 from datawinners.accountmanagement.views import is_not_expired
 
-def get_crs_project_links():
+def get_alldata_project_links():
     project_links = {'projects_link': reverse(index),
                      'reports_link': reverse(reports),
-                     }
+                     'data_export_link': reverse(data_export),
+                     'failed_submissions_link': reverse(failed_submissions)
+    }
     return project_links
 
 
@@ -27,8 +29,8 @@ def get_project_analysis_and_log_link(project, project_id, questionnaire_code):
     disabled = "disable_link"
     if project.state != ProjectState.INACTIVE:
         disabled = ""
-        analysis = reverse(project_data, args = [project_id, questionnaire_code])
-        log = reverse(project_results, args = [project_id, questionnaire_code])
+        analysis = reverse(project_data, args=[project_id, questionnaire_code])
+        log = reverse(project_results, args=[project_id, questionnaire_code])
     return analysis, disabled, log
 
 
@@ -40,7 +42,7 @@ def get_project_info(manager, raw_project, user):
 
     analysis, disabled, log = get_project_analysis_and_log_link(project, project_id, questionnaire_code)
 
-    web_submission_link = reverse("web_questionnaire", args = [project_id])
+    web_submission_link = reverse("web_questionnaire", args=[project_id])
 
     web_submission_link_disabled = 'disable_link'
     if 'web' in raw_project['value']['devices']:
@@ -48,74 +50,101 @@ def get_project_info(manager, raw_project, user):
 
     create_subjects_link = ''
     if 'no' in raw_project['value']['activity_report']:
-        create_subjects_link = reverse(create_subject, args = [project.entity_type])
+        create_subjects_link = reverse(create_subject, args=[project.entity_type])
 
-    project_info = dict(name = raw_project['value']['name'],
-                        created = raw_project['value']['created'],
-                        type = raw_project['value']['project_type'],
-                        link = (reverse(project_overview, args = [project_id])),
-                        log = log, analysis = analysis, disabled = disabled,
-                        web_submission_link = web_submission_link,
-                        web_submission_link_disabled = web_submission_link_disabled,
-                        create_subjects_link = create_subjects_link,
-                        entity_type = project.entity_type)
+    project_info = dict(name=raw_project['value']['name'],
+        qid=questionnaire_code,
+    created=raw_project['value']['created'],
+        type=raw_project['value']['project_type'],
+        link=(reverse(project_overview, args=[project_id])),
+        log=log, analysis=analysis, disabled=disabled,
+        web_submission_link=web_submission_link,
+        web_submission_link_disabled=web_submission_link_disabled,
+        create_subjects_link=create_subjects_link,
+        entity_type=project.entity_type)
     return project_info
+
+
+def get_project_list(request):
+    projects = get_all_project_for_user(request.user)
+    manager = get_database_manager(request.user)
+    return [get_project_info(manager, project, request.user) for project in projects]
 
 
 def projects_index(request):
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     page_heading = get_page_heading(request.user)
 
-    project_list = []
-    manager = get_database_manager(request.user)
-    rows = get_all_project_for_user(request.user)
-    for row in rows:
-        project_list.append(get_project_info(manager, row, request.user))
-    return disable_link_class, hide_link_class, page_heading, project_list
+    return disable_link_class, hide_link_class, page_heading
 
 
-@login_required(login_url = '/login')
+@login_required(login_url='/login')
+@is_new_user
+@is_not_expired
+def data_export(request):
+    disable_link_class, hide_link_class, page_heading= projects_index(request)
+    project_list = get_project_list(request)
+    return render_to_response('alldata/data_export.html',
+            {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
+             'hide_link_class': hide_link_class, 'is_crs_user': is_crs_user(request), 'project_links': get_alldata_project_links()},
+        context_instance=RequestContext(request))
+
+
+def is_crs_user(request):
+    return get_organization(request).org_id == CRS_ORG_ID and not request.user.get_profile().reporter
+
+
+@login_required(login_url='/login')
 @is_new_user
 @is_not_expired
 def index(request):
-    disable_link_class, hide_link_class, page_heading, project_list = projects_index(request)
-    organization_id = get_organization(request).org_id
+    disable_link_class, hide_link_class, page_heading = projects_index(request)
+    project_list = get_project_list(request)
+
     smart_phone_instruction_link = reverse("smart_phone_instruction")
 
-    if organization_id == CRS_ORG_ID and not request.user.get_profile().reporter:
+    if is_crs_user(request):
         return render_to_response('alldata/index.html',
                 {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
-                 'hide_link_class': hide_link_class, 'is_crs_user': True, 'project_links': get_crs_project_links()},
-                                  context_instance = RequestContext(request))
+                 'hide_link_class': hide_link_class, 'is_crs_user': True, 'project_links': get_alldata_project_links()},
+            context_instance=RequestContext(request))
     else:
         return render_to_response('alldata/index.html',
                 {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
-                 'hide_link_class': hide_link_class, 'is_crs_user': False, "smart_phone_instruction_link": smart_phone_instruction_link},
-                                  context_instance = RequestContext(request))
+                 'hide_link_class': hide_link_class, 'is_crs_user': False,
+                 "smart_phone_instruction_link": smart_phone_instruction_link,
+                 'project_links': get_alldata_project_links()},
+            context_instance=RequestContext(request))
 
 
-@login_required(login_url = '/login')
+@login_required(login_url='/login')
 @is_not_expired
 def failed_submissions(request):
+    disable_link_class, hide_link_class, page_heading = projects_index(request)
     logs = DatawinnerLog.objects.all()
     organization = get_organization(request)
     org_logs = [log for log in logs if log.organization == organization]
-    return render_to_response('alldata/failed_submissions.html', {'logs': org_logs},
-                              context_instance = RequestContext(request))
+    return render_to_response('alldata/failed_submissions.html',
+            {'logs': org_logs, 'page_heading': page_heading,
+             'disable_link_class': disable_link_class,
+             'hide_link_class': hide_link_class, 'is_crs_user': is_crs_user(request),
+             'project_links': get_alldata_project_links()},
+        context_instance=RequestContext(request))
 
 
-@login_required(login_url = '/login')
+@login_required(login_url='/login')
 @is_not_expired
 @is_allowed_to_view_reports
 def reports(request):
-    report_list = get_reports_list(get_organization(request).org_id,request.session.get('django_language','en'))
+    report_list = get_reports_list(get_organization(request).org_id, request.session.get('django_language', 'en'))
     response = render_to_response('alldata/reports_page.html',
-            {'reports': report_list, 'page_heading': "All Data", 'project_links': get_crs_project_links()},
-                                  context_instance = RequestContext(request))
+            {'reports': report_list, 'page_heading': "All Data", 'project_links': get_alldata_project_links()},
+        context_instance=RequestContext(request))
     response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
     return response
 
-@login_required(login_url = '/login')
+
+@login_required(login_url='/login')
 @is_not_expired
 def smart_phone_instruction(request):
     language_code = request.LANGUAGE_CODE
@@ -124,9 +153,9 @@ def smart_phone_instruction(request):
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
 
     context = {'back_to_project_link': reverse("alldata_index"),
-             "instruction_template": instruction_template,
-             "disable_link_class": disable_link_class,
-             "hide_link_class": hide_link_class}
+               "instruction_template": instruction_template,
+               "disable_link_class": disable_link_class,
+               "hide_link_class": hide_link_class}
 
     return render_to_response("alldata/smart_phone_instruction.html", context,
-                              context_instance = RequestContext(request))
+        context_instance=RequestContext(request))

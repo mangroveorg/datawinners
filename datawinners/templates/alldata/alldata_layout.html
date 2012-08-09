@@ -1,0 +1,28 @@
+{% extends 'layout_application.html' %}
+{% load i18n %}
+{% load user_tags %}
+{% load dw_tabs %}
+
+{% block page_title %}{% trans page_heading %} {% endblock %}
+{% block section_title %}{% trans page_heading %} {% endblock %}
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_alldata.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_css %}
+    <link href="/media/css/scss/data_submission.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block navigation %}
+    {% include "alldata/tab_navigation.html" %}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "all_data" %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block content %}{% endblock %}
+

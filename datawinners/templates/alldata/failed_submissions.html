@@ -1,25 +1,13 @@
-{% extends 'layout_application.html' %}
+{% extends 'alldata/alldata_layout.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "All Data" %}{% endblock %}
-
-{% block section_title %}{% trans "Failed Submissions" %}
-<span class="title_links">
-    <a href="/alldata/" class="float_right">{% trans "View All Data" %}</a>
-</span>
-{% endblock %}
-
+{% load user_tags %}
 {% load dw_tabs %}
+
 {% block body %}
-    {% activetab "main_nav" "all_data" %}
+    {% activetab "tab_nav" "failed_submissions" %}
     {{ block.super }}
 {% endblock %}
 
-{% block page_scss %}
-    {{ block.super }}
-    <link href="/media/css/scss/section_alldata.css" rel="stylesheet" />
-{% endblock %}
-
-{% load i18n %}
 {% block content %}
 <div>
    <table class="styled_table">
