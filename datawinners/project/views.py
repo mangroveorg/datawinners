@@ -218,6 +218,7 @@ def project_overview(request, project_id=None):
     questionnaire_code = questionnaire.form_code
     project_links = make_project_links(project, questionnaire_code)
     map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
+    logging.getLogger("django").info(request.META['HTTP_HOST'])
     number_data_sender = len(project.get_data_senders(manager))
     number_records = submission_count(manager, form_model.form_code, None, None)
     number_reminders = Reminder.objects.filter(project_id=project.id).count()
