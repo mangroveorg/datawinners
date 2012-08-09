@@ -420,11 +420,12 @@ def export_log(request):
     header_list.extend([field.label.get(field.language) for field in questionnaire.fields])
     raw_data_list = [header_list]
     if count:
-        raw_data_list.extend(
-            [[submission.destination, submission.source, submission.created, ugettext(str(submission.status)),
-              ugettext(str(submission.data_record.is_void() if submission.data_record is not None else True)),
-              submission.errors] + [helper.get_according_value(submission.values, q) for q in questionnaire.fields] for submission
-             in submissions])
+        for submission in submissions:
+            case_insensitive_dict = {key.lower(): value for key, value in submission.values.items()}
+            raw_data_list.append(
+                [submission.destination, submission.source, submission.created, ugettext(str(submission.status)),
+                ugettext(str(submission.data_record.is_void() if submission.data_record is not None else True)),
+                submission.errors] + [helper.get_according_value(case_insensitive_dict, q) for q in questionnaire.fields])
 
     file_name = request.GET.get(u"project_name") + '_log'
     return _create_excel_response(raw_data_list, file_name)

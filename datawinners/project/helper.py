@@ -110,16 +110,16 @@ def adapt_submissions_for_template(questions, submissions):
         assert type(s) is Submission and s._doc is not None
     formatted_list = []
     for each in submissions:
+        case_insensitive_dict = {key.lower(): value for key, value in each.values.items()}
         formatted_list.append(
             [each.uuid, each.destination, each.source, each.created, each.errors, "Success" if each.status else "Error"] +
             ["Yes" if is_submission_deleted(each.data_record) else "No"] + [
-            get_according_value(each.values, q) for q in questions])
+            get_according_value(case_insensitive_dict, q) for q in questions])
 
     return [tuple(each) for each in formatted_list]
 
 def get_according_value(value_dict, question):
-    case_insensitive_dict = {key.lower(): value for key, value in value_dict.items()}
-    value = case_insensitive_dict.get(question.code.lower(), '--')
+    value = value_dict.get(question.code.lower(), '--')
     if value != '--' and question.type in ['select1', 'select']:
         value_list = []
         for response in value:
