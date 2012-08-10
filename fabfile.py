@@ -1,6 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from _curses import echo
 
-from fabric.api import run, env
+from fabric.api import run, env,sudo
+from fabric.api import local as lc
 from fabric.context_managers import cd, settings
 import os
 from datetime import date
@@ -11,12 +13,14 @@ ENVIRONMENT_CONFIGURATIONS = {
     "test": "test_local_settings.py",
     "master": "showcase_local_settings.py",
     "beta": "local_settings.py",
-    "production": "prod_local_settings.py"
+    "production": "prod_local_settings.py",
+    "qa": "local_settings_qa.py"
 }
 
 ENVIRONMENT_VES = {
     "showcase": "/home/mangrover/ve",
-    "production": "/home/mangrover/ve"
+    "production": "/home/mangrover/ve",
+    "qa": "/home/twer/virtual_env/datawinner"
 }
 
 ENVIRONMENT_TOMCAT = {
@@ -161,6 +165,12 @@ def showcase():
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
+def qa():
+    env.user = "twer"
+    env.hosts = ["10.18.2.237"]
+    env.key_filename = ["/home/dw/.ssh/id_rsa"]
+    env.warn_only = True
+
 def local():
     env.user = "mangrover"
     env.hosts = ["127.0.0.1"]
@@ -239,16 +249,18 @@ def check_out_latest_custom_reports_code_for_production(code_dir):
 def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, environment = 'showcase',
                       couch_migration_file=None):
     stop_servers()
-
+    print 'server stopped...'
     if run('cd %s' % code_dir).failed:
         run('mkdir %s' % code_dir)
-
+    print 'cd %s' % code_dir
     virtual_env = ENVIRONMENT_VES[environment]
     checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env)
     check_out_datawinners_code_for_production(code_dir, datawinner_build_number, virtual_env)
 
     datawinners_dir = code_dir + '/datawinners/datawinners'
+    print 'datawinner directory:', datawinners_dir
     with cd(datawinners_dir):
+        print 'goto datawinner dir'
         run("cp %s local_settings.py" % ENVIRONMENT_CONFIGURATIONS[environment])
         activate_and_run(virtual_env, "python manage.py migrate")
         activate_and_run(virtual_env, "python manage.py compilemessages")
@@ -267,6 +279,7 @@ def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, 
     run('ln -s %s/datawinners/ datawinners' % code_dir)
 
     start_servers()
+    print 'server started..'
 
 def custom_reports_deploy(code_dir, environment = 'showcase'):
     check_out_latest_custom_reports_code_for_production(code_dir)
@@ -281,3 +294,14 @@ def custom_reports_deploy(code_dir, environment = 'showcase'):
 
     with cd('%s/bin/' % ENVIRONMENT_TOMCAT[environment]):
         run('./catalina.sh start')
+
+
+def testRunFab():
+    print "hello"
+
+def deploy_to_qa():
+    print 'start ...........'
+    production_deploy(mangrove_build_number="lastSuccessfulBuild",
+        datawinner_build_number="lastSuccessfulBuild",
+        code_dir="/home/twer/workspace",
+        environment="qa")
