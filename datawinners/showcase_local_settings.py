@@ -46,7 +46,7 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'log-file': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'class': 'logging.handlers.WatchedFileHandler',
             'filename': os.path.join( LOG_FOLDER, LOG_FILE_NAME),
             'mode': 'a', #append+create
