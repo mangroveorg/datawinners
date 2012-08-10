@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from unittest.case import SkipTest
 from nose.plugins.attrib import attr
 from framework.base_test import BaseTest
 from framework.utils.data_fetcher import from_, fetch_
@@ -7,6 +8,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
 
+@SkipTest
 @attr('suit_1')
 class TestDataAnalysis(BaseTest):
     def prerequisites_of_data_analysis(self):
@@ -32,6 +34,7 @@ class TestDataAnalysis(BaseTest):
         Function to test the data records shown in the data analysis table
         """
         data_analysis_page = self.prerequisites_of_data_analysis()
+        data_analysis_page.select_page_size()
         self.assertEquals(fetch_(DATA_RECORDS, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)),
                           data_analysis_page.get_all_data_records())
 

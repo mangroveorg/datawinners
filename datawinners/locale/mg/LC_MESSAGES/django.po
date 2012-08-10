@@ -1032,13 +1032,21 @@ msgstr "imprimer"
 msgid "e-mail"
 msgstr "email"
 
-#: templates/project/data_analysis.html:76 templates/project/results.html:70
+#: templates/project/results.html:70
 msgid "Show data for:"
 msgstr "Afficher les données pour :"
+
+#: templates/project/data_analysis.html:82
+msgid "Reporting Period"
+msgstr ""
 
 #: templates/project/data_analysis.html:77 templates/project/results.html:71
 msgid "Click to select a date range"
 msgstr "Cliquer pour sélectionner une période"
+
+#: templates/project/data_analysis.html:85
+msgid "All Periods"
+msgstr ""
 
 #: templates/project/data_analysis.html:78 templates/project/results.html:72
 msgid "Filter"

@@ -15,7 +15,6 @@ table{
     li{
         float:left;
         a{
-            border-right:1px solid #ccc;
             padding-right:5px;
             padding-left:5px;
         }
@@ -28,6 +27,12 @@ table{
     border-bottom:1px solid #CCCCCC;
     padding-bottom:5px;
     margin-top:30px;
+    > div{
+      width: 20%;
+      input[type='text']{
+        width: 200px;
+      }
+    }
     .date_range_box{
         float:left;
         label, select{
@@ -38,6 +43,16 @@ table{
             float:left;
         }
     }
+    .filter_label {
+      label{
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+    }
+    #dateRangePicker{
+      padding: 0px;
+      margin-left: 0px;
+    }
     label{
         float:left;
         margin-right:10px;
@@ -46,9 +61,8 @@ table{
 }
 
 .view_data_block{
-    border-bottom:1px solid #CCCCCC;
     padding-bottom:5px;
-    margin:30px 0 30px 0;
+    margin:30px 0 10px 0;
     .show_data_block{
         label, select{
             float:left;
@@ -70,6 +84,7 @@ table{
             border:1px solid #e6f2fc;
             -moz-border-radius:10px;
             -webkit-border-radius:10px;
+            margin-top: -3px;
             li{
                 float:left;
                 background:url(/media/images/list_chart_map.png) no-repeat top left;
@@ -94,11 +109,6 @@ table{
             }
             li.chart{
                 background-position:10px -27px;
-                border-right:1px solid #CCC;
-            }
-            li.map{
-                background-position:10px -67px;
-
             }
         }
     }
@@ -109,7 +119,6 @@ table{
     overflow:auto;
     width:100%;
     #data_analysis{
-        margin-top: -50px;
         th{
                 height:40px;
                 color:#FFFFFF;
@@ -215,10 +224,15 @@ table{
 #pagination{
     margin-top:10px;
 }
-.dataTables_info{
-    float:right;
-    width:15%;
-    margin-top:20px;
+#dataTables_info{
+    span {
+      font-weight: bold;
+    }
+}
+.dataTables_length{
+  width: 180px;
+  float: right;
+  margin-top: 20px;
 }
 .dataTables_paginate{
     min-width:200px;

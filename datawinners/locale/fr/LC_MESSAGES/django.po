@@ -822,6 +822,10 @@ msgstr "Résumé"
 msgid "Analysis"
 msgstr "Analyse"
 
+#: templates/project/data_analysis.html:92
+msgid "Search for Keyword"
+msgstr ""
+
 #: templates/alldata/index.html:39 templates/project/tab_navigation.html:86
 msgid "All Data Records"
 msgstr "Tous les enregistrements"
@@ -1058,8 +1062,8 @@ msgid "Click Here to Activate"
 msgstr "Cliquez ici pour activer"
 
 #: templates/project/data_analysis.html:58 templates/project/results.html:60
-msgid "export"
-msgstr "exporter"
+msgid "Export"
+msgstr "Exporter"
 
 #: templates/project/data_analysis.html:59 templates/project/results.html:61
 msgid "print"
@@ -1069,13 +1073,21 @@ msgstr "imprimer"
 msgid "e-mail"
 msgstr "email"
 
-#: templates/project/data_analysis.html:76 templates/project/results.html:70
+#: templates/project/results.html:70
 msgid "Show data for:"
 msgstr "Afficher les données pour :"
+
+#: templates/project/data_analysis.html:82
+msgid "Reporting Period"
+msgstr ""
 
 #: templates/project/data_analysis.html:77 templates/project/results.html:71
 msgid "Click to select a date range"
 msgstr "Cliquer pour sélectionner une période"
+
+#: templates/project/data_analysis.html:85
+msgid "All Periods"
+msgstr ""
 
 #: templates/project/data_analysis.html:78 templates/project/results.html:72
 msgid "Filter"

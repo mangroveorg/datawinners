@@ -150,3 +150,6 @@ class DataAnalysisPage(Page):
     def navigate_to_web_submission_tab(self):
         self.driver.find(by_css('.secondary_tab>li:nth-child(4) a')).click()
         return WebSubmissionPage(self.driver)
+
+    def select_page_size(self, size_str="10"):
+        self.driver.find_drop_down(PAGE_SIZE_SELECT).set_selected(size_str)

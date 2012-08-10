@@ -203,9 +203,7 @@ class TestApplicationEndToEnd(BaseTest):
 
     @attr('functional_test', 'smoke', "intregation")
     def test_end_to_end(self):
-        """
-
-        """
+        """todo: failed randomly when run ft"""
         self.email = None
         self.do_org_registartion()
 

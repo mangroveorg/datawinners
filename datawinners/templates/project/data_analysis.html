@@ -30,7 +30,6 @@
     <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
-
 {% endblock %}
 
 {% block page_js %}
@@ -49,10 +48,9 @@
 {% endblock %}
 
 {% block content %}
-
     {% block secondary_navigation_data %}
-    {% activetab "secondary_tab_nav" "analysis" %}
-    {{ block.super }}
+        {% activetab "secondary_tab_nav" "analysis" %}
+        {{ block.super }}
     {% endblock %}
     <div class="grid_23">
         {% if  project.state  == "Test"  %}
@@ -61,9 +59,7 @@
         </div>
         {% endif %}
         <ul class="links">
-            <li><a href="#" id="export_link">{% trans "export" %}</a> </li>
-            <li><a href="#" class="disable_link">{% trans "print" %}</a> </li>
-            <li><a href="#" class="null_border disable_link">{% trans "e-mail" %}</a> </li>
+            <li><a href="#" id="export_link">{% trans "Export" %}</a> </li>
         </ul>
     </div>
     <div class="heading_block grid_23 alpha data_ana">
@@ -78,60 +74,44 @@
         <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
     <div class="heading_block grid_23 alpha data_ana">
-        <div class="date_range_box">
-            <label>{% trans "Show data for:" %}</label>
-            <input type="text" id="dateRangePicker" value="{% trans 'Click to select a date range' %}"/>
-            <input type="button" class="button_blue" id="time_submit" value="{% trans 'Filter' %}"/>
-            <span id="dateErrorDiv" class="error_arrow"></span>
+        <div class="float_left">
+            <div class="filter_label">
+                <label>{% trans "Reporting Period" %}</label>
+            </div>
+            <div>
+                <input type="text" id="dateRangePicker" value="{% trans "All Periods" %}"/>
+                <input type="button" class="button_blue" id="time_submit" value="{% trans 'Filter' %}"/>
+                <span id="dateErrorDiv" class="error_arrow"></span>
+            </div>
+        </div>
+        <div class="float_right">
+            <div class="filter_label">
+                <label>{% trans "Search for Keyword" %}</label>
+            </div>
+            <div id="dataTable_search">
+            </div>
         </div>
     </div>
     <div class="view_data_block grid_23 alpha">
-        <div class="grid_12 show_data_block alpha">
-            <label>{% trans "View Data By:" %} <span class="bold">{{ entity_type }}</span></label>
+        <div class="grid_12 show_data_block alpha"  id="dataTables_info">
         </div>
         <div class="view_style_block">
-            <label>{% trans "View Style:" %}</label>
+            <label>{% trans "View:" %}</label>
             <ul>
                 <li class="active list"><a href="#">{% trans "List" %}</a></li>
                 <li class="chart"><a href="#">{% trans "Chart" %}</a></li>
-                <li class="map"><a href="#">{% trans "Map" %}</a></li>
             </ul>
         </div>
     </div>
     <div class="grid_23 alpha omega data_block">
-        <table id="data_analysis" class="tablesorter">
+        <table id="data_analysis" class="styled_table">
             <thead>
-            <tr class="aggregation_block">
-                <td>
-                    <span class="first_span">&nbsp;</span>
-                    <span class="customStyleSelectBox second_span"><span class="customStyleSelectBoxInner">&nbsp;</span></span>
-                </td>
-                {% for each in type_list %}
-                <td>
-                    <select class="aggregation_type">
-                        {% for choice in each %}
-                            <option value="{{ choice }}">{% trans choice %}</option>
-                        {% endfor %}
-                    </select>
-                </td>
-                {% endfor %}
-            </tr>
-            <tr class="data_header" >
+            <tr >
                 {% for each in header_list %}
-                <th style="background-color: #525252;">{{ each }}
-                </th>
+                <th>{{ each }} </th>
                 {% endfor %}
             </tr>
             </thead>
-            <tfoot>
-            <tr>
-                {% for each in grand_totals %}
-                <th class="table_footer">
-                       {{ each }}
-                </th>
-                {% endfor %}
-            </tr>
-            </tfoot>
         </table>
     </div>
     <div id="demo"></div>
