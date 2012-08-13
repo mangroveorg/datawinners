@@ -1,13 +1,13 @@
-.data_export_panel {
-  width: 450px;
-  margin-top: 20px; }
-  .data_export_panel .project_selection div, .data_export_panel .date_range_selection div {
+.data_export_panel, .data_export_panel_for_entity, .data_export_panel_for_register_subject {
+  margin-top: 30px;
+  margin-bottem: 10px; }
+  .data_export_panel .project_selection div, .data_export_panel .date_range_selection div, .data_export_panel_for_entity .project_selection div, .data_export_panel_for_entity .date_range_selection div, .data_export_panel_for_register_subject .project_selection div, .data_export_panel_for_register_subject .date_range_selection div {
     display: inline-block;
     margin-top: 20px;
-    width: 20%; }
-  .data_export_panel .project_selection input, .data_export_panel .project_selection select, .data_export_panel .date_range_selection input, .data_export_panel .date_range_selection select {
-    width: 70%;
+    width: 15%; }
+  .data_export_panel .project_selection input, .data_export_panel .project_selection select, .data_export_panel .date_range_selection input, .data_export_panel .date_range_selection select, .data_export_panel_for_entity .project_selection input, .data_export_panel_for_entity .project_selection select, .data_export_panel_for_entity .date_range_selection input, .data_export_panel_for_entity .date_range_selection select, .data_export_panel_for_register_subject .project_selection input, .data_export_panel_for_register_subject .project_selection select, .data_export_panel_for_register_subject .date_range_selection input, .data_export_panel_for_register_subject .date_range_selection select {
+    width: 30%;
     vertical-align: text-bottom; }
-  .data_export_panel .export_btn {
+  .data_export_panel .export_btn, .data_export_panel_for_entity .export_btn, .data_export_panel_for_register_subject .export_btn {
     float: right;
-    margin-right: 8%; }
+    margin-right: 53.7%; }

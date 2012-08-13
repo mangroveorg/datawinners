@@ -28,7 +28,7 @@
 
 {% block content %}
     <p class="help_accordion">Use DataWinners' API to export your data in JSON format.</p>
-        <div class="data_export_panel">
+    <div class="data_export_panel">
         <div>
             <h2>Project</h2>
         </div>
@@ -39,7 +39,7 @@
             <div >
                 <label for='project_select'>Project:</label>
             </div>
-            <select id='project_select' >
+            <select id='project_select'  >
                 {% for project in projects %}
                     <option value="{{ project.qid }}">{{ project.name }}</option>
                 {% endfor %}
@@ -47,7 +47,7 @@
         </div>
         <div class="date_range_selection">
             <div >
-                <label for='dateRangePicker'>Data Range:</label>
+                <label for='dateRangePicker'>Date Range:</label>
                 <label class="help_accordion">Optional</label>
             </div>
             <input  type="text" id="dateRangePicker" value="{% trans 'Click to select a date range' %}"/>
@@ -60,4 +60,77 @@
 
     </div>
 
+    <div class="data_export_panel_for_entity">
+        <div>
+            <h2>Single Subject</h2>
+        </div>
+
+        <p class="help_accordion">Export all successful submissions for a single Subject.</p>
+
+        <div class='project_selection'>
+            <div >
+                <label for='project_select'>Subject Type:</label>
+            </div>
+            <select id='subject_type_select' >
+                {% for each in subject_types %}
+                    <option value="{{ each}}">{{ each }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class='project_selection'>
+            <div >
+                <label for='subject_select'>Individual Subject:</label>
+            </div>
+            <select id='subject_select' >
+                {% for each in subjects %}
+                    <option value="{{ each.id }}">{{ each.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="date_range_selection">
+            <div >
+                <label for='dateRangePicker'>Date Range:</label>
+                <label class="help_accordion">Optional</label>
+            </div>
+            <input  type="text" id="dateRangePickerForEntity" value="{% trans 'Click to select a date range' %}"/>
+
+        </div>
+        <div class="export_btn" >
+            <input type="button" class="button_blue" id='exportEntityBtn' value="Export">
+
+        </div>
+
+    </div>
+    <div class="data_export_panel_for_register_subject">
+        <div>
+            <h2>Registered Subjects</h2>
+        </div>
+
+        <p class="help_accordion">Export all registration submissions for a Subject Type(example:All Clinics).</p>
+
+        <div class='project_selection'>
+            <div >
+                <label for='register_subject_select'>Subject Type:</label>
+            </div>
+            <select id='register_subject_select' >
+                {% for each in registered_subject_types %}
+                    <option value="{{ each}}">{{ each }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="date_range_selection">
+            <div >
+                <label for='dateRangePickerForRegisterSubject'>Date Range:</label>
+                <label class="help_accordion">Optional</label>
+            </div>
+            <input  type="text" id="dateRangePickerForRegisterSubject" value="{% trans 'Click to select a date range' %}"/>
+
+        </div>
+        <div class="export_btn" >
+            <input type="button" class="button_blue" id='exportRegisterSubjectBtn' value="Export">
+
+        </div>
+
+    </div>
 {% endblock %}

@@ -3,17 +3,23 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
+from dataextraction.helper import convert_to_json_response
+from dataextraction.views import get_for_form
 from datawinners.accountmanagement.views import is_new_user, is_allowed_to_view_reports
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
 from datawinners.settings import CRS_ORG_ID
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import ProjectState, Project
 from datawinners.project.views import project_overview, project_data, project_results
-from mangrove.form_model.form_model import FormModel
+from mangrove.datastore.entity import get_all_entities
+from mangrove.datastore.entity_type import get_all_entity_types
+from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type
 from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
 from datawinners.accountmanagement.views import is_not_expired
+
+REPORTER_ENTITY_TYPE = u'reporter'
 
 def get_alldata_project_links():
     project_links = {'projects_link': reverse(index),
@@ -54,7 +60,7 @@ def get_project_info(manager, raw_project, user):
 
     project_info = dict(name=raw_project['value']['name'],
         qid=questionnaire_code,
-    created=raw_project['value']['created'],
+        created=raw_project['value']['created'],
         type=raw_project['value']['project_type'],
         link=(reverse(project_overview, args=[project_id])),
         log=log, analysis=analysis, disabled=disabled,
@@ -78,15 +84,26 @@ def projects_index(request):
     return disable_link_class, hide_link_class, page_heading
 
 
+def get_subject_type_list(request):
+    manager = get_database_manager(request.user)
+    types = get_all_entity_types(manager)
+    result = []
+    for each in types:
+        result.extend(each)
+    return result
+
 @login_required(login_url='/login')
-@is_new_user
 @is_not_expired
 def data_export(request):
-    disable_link_class, hide_link_class, page_heading= projects_index(request)
+    disable_link_class, hide_link_class, page_heading = projects_index(request)
     project_list = get_project_list(request)
+    subject_types = get_subject_type_list(request)
+    registered_subject_types = [each for each in subject_types if each != REPORTER_ENTITY_TYPE];
     return render_to_response('alldata/data_export.html',
-            {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
-             'hide_link_class': hide_link_class, 'is_crs_user': is_crs_user(request), 'project_links': get_alldata_project_links()},
+            {'subject_types': subject_types,'registered_subject_types': registered_subject_types,
+             'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
+             'hide_link_class': hide_link_class, 'is_crs_user': is_crs_user(request),
+             'project_links': get_alldata_project_links()},
         context_instance=RequestContext(request))
 
 
@@ -159,3 +176,22 @@ def smart_phone_instruction(request):
 
     return render_to_response("alldata/smart_phone_instruction.html", context,
         context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_not_expired
+def get_entity_list_by_type(request, entity_type):
+    entity_type_list = [entity_type];
+    if entity_type is None:
+        return []
+    manager = get_database_manager(request.user)
+    entities = get_all_entities(manager, entity_type_list)
+    return convert_to_json_response([entity.short_code for entity in entities])
+
+
+@login_required(login_url='/login')
+@is_not_expired
+def get_registered_data(request, subject_type, start_date=None, end_date=None):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_entity_type(manager,[subject_type])
+    response = get_for_form(request, form_model.form_code, start_date, end_date)
+    return response

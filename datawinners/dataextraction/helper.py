@@ -10,12 +10,12 @@ from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from dataextraction.models import DataExtractionResult
 
-def get_data_for_subject(dbm, subject_type, subject_id, start_date=None, end_date=None):
+def get_data_for_subject(dbm, subject_type, subject_short_code, start_date=None, end_date=None):
     start = convert_date_string_to_UTC(start_date)
     end = convert_date_string_to_UTC(end_date)
 
-    start_key = [[subject_type], subject_id, start] if start is not None else [[subject_type], subject_id]
-    end_key = [[subject_type], subject_id, end] if end is not None else [[subject_type], subject_id, {}]
+    start_key = [[subject_type], subject_short_code, start] if start is not None else [[subject_type], subject_short_code]
+    end_key = [[subject_type], subject_short_code, end] if end is not None else [[subject_type], subject_short_code, {}]
 
     rows = dbm.load_all_rows_in_view('by_entity_type_and_entity_id', startkey=start_key, endkey=end_key)
 
@@ -39,11 +39,11 @@ def generate_filename(main, start_date=None, end_date=None):
         return '%s_%s' % (main, start_date)
     return '%s_%s_%s' % (main, start_date, end_date)
 
-def encapsulate_data_for_subject(dbm, subject_type, subject_id, start_date=None, end_date=None):
-    result = validate_for_subject(dbm, subject_type, subject_id, start_date, end_date)
+def encapsulate_data_for_subject(dbm, subject_type, subject_short_code, start_date=None, end_date=None):
+    result = validate_for_subject(dbm, subject_type, subject_short_code, start_date, end_date)
     if not result.success:
         return result
-    result.submissions = get_data_for_subject(dbm, subject_type, subject_id, start_date, end_date)
+    result.submissions = get_data_for_subject(dbm, subject_type, subject_short_code, start_date, end_date)
     if not result.submissions:
         result.message = _("No submission under this subject during this period.")
     return result
@@ -68,15 +68,15 @@ def validate_for_form(dbm, form_code, start_date=None, end_date=None):
         return result
     return result
 
-def validate_for_subject(dbm, subject_type, subject_id, start_date=None, end_date=None):
+def validate_for_subject(dbm, subject_type, subject_short_code, start_date=None, end_date=None):
     result = DataExtractionResult()
     if not entity_type_already_defined(dbm, [subject_type]):
         result.success = False
         result.message = _("Subject type [%s] is not defined.") % subject_type
         return result
-    if not check_if_subject_exists(dbm, subject_id, [subject_type]):
+    if not check_if_subject_exists(dbm, subject_short_code, [subject_type]):
         result.success = False
-        result.message = _("Subject [%s] is not registered.") % subject_id
+        result.message = _("Subject [%s] is not registered.") % subject_short_code
         return result
     result = validate_date(result, start_date, end_date)
     if not result.success:
@@ -113,9 +113,9 @@ def check_date_format(date):
         return False
     return True
 
-def check_if_subject_exists(dbm, subject_id, subject_type):
+def check_if_subject_exists(dbm, subject_short_code, subject_type):
     try:
-        get_by_short_code_include_voided(dbm, subject_id, subject_type)
+        get_by_short_code_include_voided(dbm, subject_short_code, subject_type)
         return True
     except DataObjectNotFound:
         return False
