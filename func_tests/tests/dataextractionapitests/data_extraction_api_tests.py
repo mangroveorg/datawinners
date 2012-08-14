@@ -1,6 +1,7 @@
 import json
 from urllib2 import urlopen
 from nose.plugins.attrib import attr
+from unittest import SkipTest
 from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.utils.common_utils import generateId
 from framework.utils.data_fetcher import fetch_, from_
@@ -95,6 +96,7 @@ class DataExtractionAPITestCase(BaseTest):
 
         return json.loads(http_response.read())
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id(self):
         result = self.get_data_by_uri(
@@ -106,6 +108,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_without_data_return(self):
         result = self.get_data_by_uri(
@@ -117,6 +120,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(len(submissions), 0)
         self.assertEqual(result["message"], NO_DATA_SUCCESS_MESSAGE_FOR_SUBJECT)
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_same_date(self):
         result = self.get_data_by_uri(
@@ -129,6 +133,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_different_date(self):
         result = self.get_data_by_uri(
@@ -141,6 +146,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_start_date(self):
         result = self.get_data_by_uri(
@@ -153,6 +159,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_subject_with_not_exist_subject_type(self):
         not_exist_subject_type = "not_exist"
@@ -160,6 +167,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertFalse(result['success'])
         self.assertEqual(result['message'], NOT_EXIST_SUBJECT_TYPE_ERROR_MESSAGE_PATTERN % not_exist_subject_type)
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_not_exist_subject_id(self):
         not_exist_subject_id = "not_exist"
@@ -167,6 +175,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertFalse(result['success'])
         self.assertEqual(result['message'], NOT_EXIST_SUBJECT_ID_ERROR_MESSAGE_PATTERN % not_exist_subject_id)
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_wrong_date_format(self):
         result = self.get_data_by_uri(
@@ -175,6 +184,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertFalse(result['success'])
         self.assertEqual(result['message'], DATA_FORMAT_ERROR_MESSAGE)
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_wrong_date(self):
         result = self.get_data_by_uri(
@@ -183,6 +193,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertFalse(result['success'])
         self.assertEqual(result['message'], DATE_WRONG_ORDER_ERROR_MESSAGE)
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_form_with_form_code(self):
         result = self.get_data_by_uri(
@@ -194,6 +205,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_same_date(self):
         result = self.get_data_by_uri(
@@ -205,6 +217,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_only_start_date(self):
         result = self.get_data_by_uri(
@@ -216,6 +229,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_pass_not_exist_form_code(self):
         unknow_form_code = "unknow_form_code"
@@ -227,6 +241,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(len(submissions), 0)
         self.assertEqual(result["message"], DOES_NOT_EXISTED_FORM_ERROR_MESSAGE_PATTERN % unknow_form_code)
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_pass_wrong_date_format(self):
         result = self.get_data_by_uri(
@@ -237,6 +252,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(len(submissions), 0)
         self.assertEqual(result["message"], DATA_FORMAT_ERROR_MESSAGE)
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_end_date_before_start_date(self):
         result = self.get_data_by_uri(
@@ -247,6 +263,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(len(submissions), 0)
         self.assertEqual(result["message"], DATE_WRONG_ORDER_ERROR_MESSAGE)
 
+    @SkipTest
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_without_data_return(self):
         result = self.get_data_by_uri(
