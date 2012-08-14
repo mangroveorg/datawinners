@@ -245,7 +245,8 @@ def new_user(request):
 def users(request):
     if request.method == 'GET':
         org_id = request.user.get_profile().org_id
-        users = NGOUserProfile.objects.filter(org_id=org_id)
+        not_datasenders = User.objects.exclude(groups__name='Data Senders').values_list('id', flat=True)
+        users = NGOUserProfile.objects.filter(org_id=org_id, user__in=not_datasenders)
         return render_to_response("accountmanagement/account/users_list.html", {'users': users},
             context_instance=RequestContext(request))
 
