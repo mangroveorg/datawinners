@@ -4,6 +4,7 @@ from django.test import Client
 class TestDataExtraction(TestCase):
     def setUp(self):
         self.client = Client()
+        self.client.login(username='tester150411@gmail.com', password='tester150411')
 
     def test_should_get_subject_data_by_subject_type_and_id(self):
         response = self.client.get('/api/get_for_subject/clinic/cid001/')

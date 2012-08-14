@@ -13,10 +13,20 @@
       width: 30%;
       vertical-align: text-bottom;
     }
+
+    input:disabled, select:disabled {
+      color: gray
+    }
   }
 
   .export_btn {
     float: right;
     margin-right: 53.7%
+  }
+  #exportEntityBtn:disabled {
+    background: #d3d3d3;
+    border-color: #d3d3d3;
+    color: gray;
+    cursor: default
   }
 }

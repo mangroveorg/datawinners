@@ -747,6 +747,31 @@ msgstr "Administration de DataWinners"
 msgid "Failed Submissions"
 msgstr "Erreurs d'envoi"
 
+#: templates/alldata/data_export.html
+msgid "Data per Project"
+msgstr "Data per Project(fr)"
+
+msgid "Use DataWinners' API to export your data in JSON format."
+msgstr "Use DataWinners' API to export your data in JSON format.(fr)"
+
+msgid "Export all successful submissions for a single project"
+msgstr "Export all successful submissions for a single project(fr)"
+
+msgid "Export all successful submissions for a single Subject."
+msgstr "Export all successful submissions for a single Subject.(fr)"
+
+msgid "Export all registration submissions for a Subject Type(example:All Clinics)."
+msgstr "Export all registration submissions for a Subject Type(example:All Clinics).(fr)"
+
+msgid "Data Export"
+msgstr "Données exportées"
+
+msgid "Single Subject"
+msgstr "Single Subject(fr)"
+
+msgid "Individual Subject"
+msgstr "Individual Subject(fr)"
+
 #: templates/alldata/failed_submissions.html:7
 msgid "View All Data"
 msgstr "Voir toutes les données"

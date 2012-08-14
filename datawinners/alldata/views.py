@@ -90,14 +90,14 @@ def get_subject_type_list(request):
     result = []
     for each in types:
         result.extend(each)
-    return result
+    return sorted(result)
 
 @login_required(login_url='/login')
 @is_not_expired
 def data_export(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
-    project_list = get_project_list(request)
-    subject_types = get_subject_type_list(request)
+    project_list = sorted(get_project_list(request), key=lambda x:x['name'])
+    subject_types = sorted(get_subject_type_list(request))
     registered_subject_types = [each for each in subject_types if each != REPORTER_ENTITY_TYPE];
     return render_to_response('alldata/data_export.html',
             {'subject_types': subject_types,'registered_subject_types': registered_subject_types,

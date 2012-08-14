@@ -27,17 +27,17 @@
 {% endblock %}
 
 {% block content %}
-    <p class="help_accordion">Use DataWinners' API to export your data in JSON format.</p>
+    <p class="help_accordion">{% trans "Use DataWinners' API to export your data in JSON format."%}</p>
     <div class="data_export_panel">
         <div>
-            <h2>Project</h2>
+            <h2>{% trans Project %}</h2>
         </div>
 
-        <p class="help_accordion">Export all successful submissions for a single project</p>
+        <p class="help_accordion">{% trans "Export all successful submissions for a single project" %}</p>
 
         <div class='project_selection'>
             <div >
-                <label for='project_select'>Project:</label>
+                <label for='project_select'>{% trans "Project" %}:</label>
             </div>
             <select id='project_select'  >
                 {% for project in projects %}
@@ -47,14 +47,14 @@
         </div>
         <div class="date_range_selection">
             <div >
-                <label for='dateRangePicker'>Date Range:</label>
-                <label class="help_accordion">Optional</label>
+                <label for='dateRangePicker'>{% trans "Date Range" %}:</label>
+                <label class="help_accordion">{% trans "Optional" %}</label>
             </div>
-            <input  type="text" id="dateRangePicker" value="{% trans 'Click to select a date range' %}"/>
+            <input  type="text" id="dateRangePicker" readonly="true" value="{% trans 'Click to select a date range' %}"/>
 
         </div>
         <div class="export_btn" >
-            <input type="button" class="button_blue" id='exportProjectBtn' value="Export">
+            <input type="button" class="button_blue" id='exportProjectBtn' value={% trans "export" %}>
 
         </div>
 
@@ -62,16 +62,16 @@
 
     <div class="data_export_panel_for_entity">
         <div>
-            <h2>Single Subject</h2>
+            <h2>{% trans "Single Subject" %}</h2>
         </div>
 
-        <p class="help_accordion">Export all successful submissions for a single Subject.</p>
+        <p class="help_accordion">{% trans "Export all successful submissions for a single Subject." %}</p>
 
         <div class='project_selection'>
             <div >
-                <label for='project_select'>Subject Type:</label>
+                <label for='project_select'>{% trans "Subject Type"%}:</label>
             </div>
-            <select id='subject_type_select' >
+            <select id='subject_type_select'>
                 {% for each in subject_types %}
                     <option value="{{ each}}">{{ each }}</option>
                 {% endfor %}
@@ -79,7 +79,7 @@
         </div>
         <div class='project_selection'>
             <div >
-                <label for='subject_select'>Individual Subject:</label>
+                <label for='subject_select'>{% trans "Individual Subject" %}:</label>
             </div>
             <select id='subject_select' >
                 {% for each in subjects %}
@@ -90,28 +90,28 @@
 
         <div class="date_range_selection">
             <div >
-                <label for='dateRangePicker'>Date Range:</label>
-                <label class="help_accordion">Optional</label>
+                <label for='dateRangePicker'>{% trans "Date Range" %}:</label>
+                <label class="help_accordion">{% trans "Optional" %}</label>
             </div>
-            <input  type="text" id="dateRangePickerForEntity" value="{% trans 'Click to select a date range' %}"/>
+            <input  type="text" id="dateRangePickerForEntity" readonly="true" value="{% trans 'Click to select a date range' %}"/>
 
         </div>
         <div class="export_btn" >
-            <input type="button" class="button_blue" id='exportEntityBtn' value="Export">
+            <input type="button" class="button_blue" id='exportEntityBtn' value={% trans "export" %}>
 
         </div>
 
     </div>
     <div class="data_export_panel_for_register_subject">
         <div>
-            <h2>Registered Subjects</h2>
+            <h2>{% trans "Registered Subjects" %}</h2>
         </div>
 
-        <p class="help_accordion">Export all registration submissions for a Subject Type(example:All Clinics).</p>
+        <p class="help_accordion">{% trans "Export all registration submissions for a Subject Type(example:All Clinics)." %}</p>
 
         <div class='project_selection'>
             <div >
-                <label for='register_subject_select'>Subject Type:</label>
+                <label for='register_subject_select'>{% trans "Subject Type:" %}</label>
             </div>
             <select id='register_subject_select' >
                 {% for each in registered_subject_types %}
@@ -121,14 +121,14 @@
         </div>
         <div class="date_range_selection">
             <div >
-                <label for='dateRangePickerForRegisterSubject'>Date Range:</label>
-                <label class="help_accordion">Optional</label>
+                <label for='dateRangePickerForRegisterSubject'>{% trans "Date Range" %}:</label>
+                <label class="help_accordion">{% trans "Optional" %}</label>
             </div>
-            <input  type="text" id="dateRangePickerForRegisterSubject" value="{% trans 'Click to select a date range' %}"/>
+            <input  type="text" id="dateRangePickerForRegisterSubject" readonly="true" value="{% trans 'Click to select a date range' %}"/>
 
         </div>
         <div class="export_btn" >
-            <input type="button" class="button_blue" id='exportRegisterSubjectBtn' value="Export">
+            <input type="button" class="button_blue" id='exportRegisterSubjectBtn' value={% trans "export" %}>
 
         </div>
 

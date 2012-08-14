@@ -4,7 +4,7 @@ $(document).ready(function(){
     buildDateRangePicker($("#dateRangePickerForEntity"));
     buildDateRangePicker($("#dateRangePickerForRegisterSubject"));
 
-    setSubjectOptions();
+    setSubjectSelectionOptions();
     bindEntityTypeChange();
 
     $('#exportProjectBtn').click(function() {
@@ -70,12 +70,13 @@ $(document).ready(function(){
         });
     };
 
-    function setSubjectOptions(){
+    function appendSubjectSelectionOptions(){
         var subject_type = $("#subject_type_select").val();
 
         $.ajax({
             type: 'GET',
             url: "/alldata/entities/" + subject_type,
+            async:false,
             success:function(response) {
                 var subject_type_list = $("#subject_select");
                 subject_type_list.children().remove();
@@ -88,7 +89,27 @@ $(document).ready(function(){
     }
 
     function bindEntityTypeChange() {
-        $('#subject_type_select').change(setSubjectOptions);
+        $('#subject_type_select').change(setSubjectSelectionOptions);
+    }
+
+    function setSubjectSelectionOptions() {
+        appendSubjectSelectionOptions();
+        toggleOnSelectionChange();
+    }
+
+    function toggleOnSelectionChange() {
+        var should_grey_out = $("#subject_select").children().length == 0;
+        if(should_grey_out){
+            $("#exportEntityBtn").attr('disabled', true);
+            $("#subject_select").attr('disabled', true);
+            $("#dateRangePickerForEntity").attr('disabled', true);
+        }else{
+            $("#exportEntityBtn").removeAttr("disabled");
+            $("#subject_select").removeAttr("disabled");
+            $("#dateRangePickerForEntity").removeAttr("disabled");
+        }
+
+        console.log(should_grey_out)
     }
 
 });
