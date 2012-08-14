@@ -50,7 +50,6 @@ class ProjectDataSenders(BaseTest):
         project_datasenders_page = project_overview_page.navigate_to_datasenders_page()
 
         self.assertEqual("--", project_datasenders_page.get_data_sender_email_by_mobile_number(data_sender_mobile_number))
-
         project_datasenders_page.select_a_data_sender_by_mobile_number(data_sender_mobile_number)
         unique_email = "mickey" + generateId() + "@duck.com"
 
@@ -62,7 +61,7 @@ class ProjectDataSenders(BaseTest):
 
         account_page = project_datasenders_page.navigate_to_account_page()
         account_page.select_user_tab()
-        self.assertFalse(account_page.is_user_present(unique_email))
+        self.assertTrue(account_page.is_user_present(unique_email))
 
 
     @attr('functional_test', 'smoke')
