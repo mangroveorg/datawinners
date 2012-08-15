@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block page_js %}
-    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.withoutdrilldown.js"></script>
     <script type="text/javascript" src="/media/javascript/dateRangePicker/js/jquery-ui-1.8.12.custom.min.js"></script>
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/alldata/data_export.js"/>
@@ -30,10 +30,10 @@
     <p class="help_accordion">{% trans "Use DataWinners' API to export your data in JSON format."%}</p>
     <div class="data_export_panel">
         <div>
-            <h2>{% trans Project %}</h2>
+            <h2>{% trans "Project" %}</h2>
         </div>
 
-        <p class="help_accordion">{% trans "Export all successful submissions for a single project" %}</p>
+        <p class="help_accordion">{% trans "Export all successful submissions for a single project." %}</p>
 
         <div class='project_selection'>
             <div >
@@ -107,11 +107,11 @@
             <h2>{% trans "Registered Subjects" %}</h2>
         </div>
 
-        <p class="help_accordion">{% trans "Export all registration submissions for a Subject Type(example:All Clinics)." %}</p>
+        <p class="help_accordion">{% trans "Export all registration submissions for a Subject Type (example:All Clinics)." %}</p>
 
         <div class='project_selection'>
             <div >
-                <label for='register_subject_select'>{% trans "Subject Type:" %}</label>
+                <label for='register_subject_select'>{% trans "Subject Type" %}:</label>
             </div>
             <select id='register_subject_select' >
                 {% for each in registered_subject_types %}
