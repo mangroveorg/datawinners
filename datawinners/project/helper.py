@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
+from babel.dates import format_date
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from datawinners.entity.import_data import\
@@ -171,8 +172,8 @@ def _to_str(value, form_field=None):
     if is_sequence(value):
         return sequence_to_str(value)
     if isinstance(value, datetime):
-        date_format = DateField.DATE_DICTIONARY.get(form_field.date_format) if form_field else '%d.%m.%Y'
-        return datetime.strftime(value, date_format)
+        date_format = DateField.FORMAT_DATE_DICTIONARY.get(form_field.date_format) if form_field else 'd.M.YYYY'
+        return format_date(value, date_format)
     return value
 
 def _to_value_list_headers(first_element, header_list, value_dict):

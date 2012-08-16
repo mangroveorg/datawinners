@@ -30,3 +30,4 @@ python-digest
 decorator
 django-digest
 django-countries
+babel

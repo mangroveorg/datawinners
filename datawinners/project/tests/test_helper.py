@@ -187,7 +187,7 @@ class TestHelper(unittest.TestCase):
                                  'What is associated entity?': 'cid002'},
                            '2': {'What is age of father?': 35, 'What is your name?': 'asif',
                                  "What colour do you choose?": ["red"], "what is your loc?": [21.1],
-                                 "what is reporting date?": datetime.strptime('25.12.2011', '%d.%m.%Y'),
+                                 "what is reporting date?": datetime.strptime('25.12.1011', '%d.%m.%Y'),
                                  'What is associated entity?': 'cid001'}}
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.entity_type = ['Clinic']
@@ -204,7 +204,7 @@ class TestHelper(unittest.TestCase):
         form_model_mock.entity_question = mock
         field_values, grand_totals = helper.get_all_values(data_dictionary, form_model_mock)
         expected_list = [["cid002", 'shweta', 55, "red,blue", "21.1,23.3", "25.12.2011"],
-            ["cid001", 'asif', 35, "red", "21.1", "25.12.2011"]]
+            ["cid001", 'asif', 35, "red", "21.1", "25.12.1011"]]
         self.assertListEqual(expected_list, field_values)
 
 
