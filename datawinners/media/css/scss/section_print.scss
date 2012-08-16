@@ -88,9 +88,6 @@ p {
 }
 
 body {
-  > div {
-    display: none;
-  }
   .ui-dialog {
     display: block;
     left: 0px !important;
@@ -122,5 +119,8 @@ body {
 @-moz-document url-prefix() { .questionnaire_preview ol li { float:none !important; } }
 .ui-widget-content {
   border: 0 !important;
+}
+.none_for_print{
+    display: none;
 }
 

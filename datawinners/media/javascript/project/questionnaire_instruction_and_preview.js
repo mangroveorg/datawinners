@@ -65,6 +65,7 @@ DW.sms_instruction_and_preview.prototype.post_callback = function () {
     questionnaire.addClass("sms-questionnaire");
     questionnaire.hide();
     questionnaire.appendTo($("body"));
+    $("body > div").addClass("none_for_print");
 };
 
 DW.smart_phone_instruction_and_preview = function () {};
@@ -78,7 +79,8 @@ DW.instruction_and_preview.bind_cancel_button = function() {
         $("#questionnaire_content").html("");
         $("#questionnaire_preview_instruction").hide();
         $(".shadow-background").removeClass("shadow-background");
-        DW.instruction_and_preview.remove_sms_questionnaire_print()
+        DW.instruction_and_preview.remove_sms_questionnaire_print();
+        $("body > div").removeClass("none_for_print");
     });
 };
 

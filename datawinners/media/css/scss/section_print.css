@@ -56,8 +56,6 @@ p {
       margin-left: 10px;
       font-style: italic; }
 
-body > div {
-  display: none; }
 body .ui-dialog {
   display: block;
   left: 0px !important;
@@ -87,3 +85,7 @@ body .sms-questionnaire {
 
 .ui-widget-content {
   border: 0 !important; }
+
+.none_for_print{
+    display: none;
+}

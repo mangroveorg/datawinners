@@ -30,7 +30,11 @@ DW.questionnaire_preview = {
                 zIndex: 1300,
                 open: function() {
                     // Here I load the content. This is the content of your link.
+                    $("body > div").addClass("none_for_print");
                     questionnaire_preview.load(questionnaire_preview_link, function() {});
+                },
+                close: function(){
+                    $("body > div").removeClass("none_for_print");
                 }
             }
         );
