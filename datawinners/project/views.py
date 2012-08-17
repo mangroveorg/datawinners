@@ -17,6 +17,7 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from datawinners.project.view_models import ReporterEntity
+from datawinners.questionnaire.helper import get_report_period_question_name_and_datetime_format
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -63,6 +64,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
+from project.filters import ReportPeriodFilter
 
 logger = logging.getLogger("django")
 
@@ -244,45 +246,87 @@ def project_overview(request, project_id=None):
         'questionnaire_code' : questionnaire_code
     }))
 
-@login_required(login_url='/login')
-@is_datasender
-@is_not_expired
-def project_results(request, project_id=None, questionnaire_code=None):
+
+def prepare_query_project_results(project_id, questionnaire_code, request):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     project_links = make_project_links(project, questionnaire_code)
     questionnaire = get_form_model_by_code(manager, questionnaire_code)
+    return manager, project, project_links, questionnaire
+
+
+def project_result_for_post(manager, request, project, questionnaire, questionnaire_code):
+    submission_ids = json.loads(request.POST.get('id_list'))
+    received_times = []
+    for submission_id in submission_ids:
+        submission = Submission.get(manager, submission_id)
+        received_times.append(datetime.datetime.strftime(submission.created, "%d/%m/%Y %X"))
+        submission.void()
+        ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
+    if len(received_times):
+        UserActivityLog().log(request, action="Deleted Data Submission", project=project.name,
+            detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
+    count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
+    submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
+    return render_to_response('project/log_table.html',
+            {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
+             'submissions': submission_display, 'pages': count,
+             'success_message': _("The selected records have been deleted")},
+        context_instance=RequestContext(request))
+
+
+def get_template_values_for_result_page(manager, request, project, project_links, questionnaire, questionnaire_code, filters=[]):
+    count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
+    filters = [] if filters is None else filters
+    for filter in filters:
+        submissions = filter.filter(submissions)
+    submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
+    in_trial_mode = _in_trial_mode(request)
+    template_value_dict = {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
+                           'submissions': submission_display, 'pages': count, 'error_message': error_message,
+                           'project_links': project_links, 'project': project, 'in_trial_mode': in_trial_mode}
+    return template_value_dict
+
+
+def project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code, filters=None):
+    template_value_dict = get_template_values_for_result_page(manager, request, project, project_links, questionnaire,
+        questionnaire_code, filters)
+    return render_to_response('project/results.html',
+        template_value_dict,
+        context_instance=RequestContext(request)
+    )
+
+
+def build_filters(questionnaire, report_period):
+    if report_period is None:
+        return[]
+    question_name , datetime_format = get_report_period_question_name_and_datetime_format(questionnaire)
+    return [ReportPeriodFilter(question_name, report_period, datetime_format)]
+
+
+
+
+
+@login_required(login_url='/login')
+@is_datasender
+@is_not_expired
+
+def project_results(request, project_id=None, questionnaire_code=None, report_period=None):
+    manager, project, project_links, questionnaire = prepare_query_project_results(project_id, questionnaire_code,
+        request)
 
     if request.method == 'GET':
-        count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
-        submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
-        in_trial_mode = _in_trial_mode(request)
-        return render_to_response('project/results.html',
-                {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
-                 'submissions': submission_display, 'pages': count,
-                 'error_message': error_message, 'project_links': project_links, 'project': project,
-                 'in_trial_mode': in_trial_mode},
-            context_instance=RequestContext(request)
-        )
+        filters = build_filters(questionnaire, get_report_period_dict(report_period))
+        return project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code, filters)
     if request.method == "POST":
-        submission_ids = json.loads(request.POST.get('id_list'))
-        received_times = []
-        for submission_id in submission_ids:
-            submission = Submission.get(manager, submission_id)
-            received_times.append( datetime.datetime.strftime(submission.created, "%d/%m/%Y %X"))
-            submission.void()
-            ReportRouter().delete(get_organization(request).org_id,submission.form_code,submission.data_record.id)
-        if len(received_times):
-            UserActivityLog().log(request, action="Deleted Data Submission", project=project.name,
-                                  detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
-        count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
-        submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
-        return render_to_response('project/log_table.html',
-                {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
-                 'submissions': submission_display, 'pages': count,
-                 'success_message': _("The selected records have been deleted")},
-            context_instance=RequestContext(request))
+        return project_result_for_post(manager, request, project, questionnaire, questionnaire_code)
 
+def get_report_period_dict(report_period):
+    if report_period is None:
+        return None
+    report_period_start, report_period_end = report_period.split('-')
+    report_period_dict = {'start':report_period_start, 'end':report_period_end}
+    return report_period_dict
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET

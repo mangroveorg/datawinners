@@ -1,12 +1,24 @@
 import unittest
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import HierarchyField, TextField
-from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME,GEO_CODE
+from mangrove.form_model.field import HierarchyField, TextField, DateField
+from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, GEO_CODE
 from mock import Mock
-from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_field_question_code
+from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_field_question_code, get_report_period_question_name_and_datetime_format
 
 class QuestionnaireHelper(unittest.TestCase):
+    def setUp(self):
+        self.report_period_question_name = 'q1'
+        self.datetime_format = 'dd.mm.yyyy'
+
+
+    def test_should_return_report_period_question_name_and_datetime_format(self):
+        form_model = self._get_form_model()
+        form_model.add_field(self.get_report_period_field())
+        question_name, datetime_format = get_report_period_question_name_and_datetime_format(form_model)
+        self.assertEquals(question_name, self.report_period_question_name)
+        self.assertEquals(datetime_format, self.datetime_format)
+
     def test_should_give_location_code(self):
         form_model = self._get_form_model()
         form_model.add_field(self._get_location_field())
@@ -16,6 +28,18 @@ class QuestionnaireHelper(unittest.TestCase):
         form_model = self._get_form_model()
         form_model.add_field(self._get_text_field())
         self.assertEqual(None, get_location_field_code(form_model))
+
+
+    def test_should_give_geo_code(self):
+        form_model = self._get_form_model()
+        form_model.add_field(self._get_geo_code_field())
+        self.assertEqual(GEO_CODE, get_geo_code_field_question_code(form_model))
+
+
+    def test_should_return_None_if_geo_code_field_is_not_present(self):
+        form_model = self._get_form_model()
+        form_model.add_field(self._get_text_field())
+        self.assertEqual(None, get_geo_code_field_question_code(form_model))
 
 
     def _get_form_model(self, is_registration_form=False):
@@ -47,13 +71,12 @@ class QuestionnaireHelper(unittest.TestCase):
             instruction=anything)
         return text_field
 
-    def test_should_give_geo_code(self):
-        form_model = self._get_form_model()
-        form_model.add_field(self._get_geo_code_field())
-        self.assertEqual(GEO_CODE, get_geo_code_field_question_code(form_model))
-
-    def test_should_return_None_if_geo_code_field_is_not_present(self):
-        form_model = self._get_form_model()
-        form_model.add_field(self._get_text_field())
-        self.assertEqual(None, get_geo_code_field_question_code(form_model))
+    def get_report_period_field(self):
+        reporting_period_dict_type = DataDictType(self.dbm, name="rpd", slug="reporting_period", primitive_type="date",
+            description="activity reporting period")
+        reporting_period_question = DateField(name=self.report_period_question_name,
+            code=self.report_period_question_name,
+            label=self.report_period_question_name, ddtype=reporting_period_dict_type,
+            date_format=self.datetime_format, event_time_field_flag=True)
+        return reporting_period_question
 

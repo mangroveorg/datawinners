@@ -28,6 +28,7 @@ GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest"]
 TEST_FLAG = 'TEST'
 logger = logging.getLogger("datawinners.reminders")
+SUBMISSION_LOG_DISPLAY_QUESTION_MIN_INDEX = 7
 
 def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
     try:
@@ -103,6 +104,8 @@ def hide_entity_question(fields):
 def is_submission_deleted(submission):
     return submission.is_void() if submission is not None else True
 
+def get_question_answers(submission_log_display):
+    return submission_log_display[SUBMISSION_LOG_DISPLAY_QUESTION_MIN_INDEX:]
 
 def adapt_submissions_for_template(questions, submissions):
     assert is_sequence(questions)
