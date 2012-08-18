@@ -19,6 +19,18 @@
 
 #questionnaire_preview {
   margin-left: 10px;
+  .answer{
+    .multiple_select {
+      li {
+        list-style-type: none !important;
+        span.bullet{
+          display: inline-table;
+          width: 30px;
+          text-transform: lowercase;
+        }
+      }
+    }
+  }
   .questionnaire_preview {
     > li {
       margin-bottom: 15px;
@@ -28,10 +40,7 @@
     .answer {
       margin-bottom: 5px;
       .multiple_select {
-        li {
-          list-style-type: upper-alpha;
-        }
-        margin-left: 20px;
+        margin-left: 10px;
       }
     }
     label {

@@ -73,7 +73,7 @@
     </li>
     <li data-bind="visible: questionnaireViewModel.showAddChoice()">
         <div class="margin_top_20">
-            <ol class="alpha_list que_list"
+            <ol class="alpha_list que_list" id="options_list"
                 data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
 
             </ol>
