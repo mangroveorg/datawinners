@@ -58,6 +58,7 @@
 {% block content %}
     <script type="text/html" id="choice-template">
         <li>
+            <span data-bind="text: val+'.'" class="bullet"></span>
             <input id="choice_text" name="choice_text" class="required" type="text"
                    data-bind="value: text, uniqueName:true"/>
             <a href="questionnaire.html#" class='delete delete_link'
