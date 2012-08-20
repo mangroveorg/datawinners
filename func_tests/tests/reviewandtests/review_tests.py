@@ -101,4 +101,4 @@ class TestReviewProject(BaseTest):
     def test_number_of_data_senders_should_show_in_current_project(self):
         review_page = self.prepare_data_senders( )
         review_page.open_data_sender_accordion()
-        self.assertEqual(1, review_page.get_data_sender_count())
+        self.assertEqual('1', review_page.get_data_sender_count())
