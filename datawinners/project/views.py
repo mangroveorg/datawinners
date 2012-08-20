@@ -636,7 +636,7 @@ def review_and_test(request, project_id=None):
     form_model = FormModel.get(manager, project.qid)
     if request.method == 'GET':
         number_of_registered_subjects = get_non_voided_entity_count_for_type(manager, project.entity_type)
-        number_of_registered_datasenders = get_non_voided_entity_count_for_type(manager, 'reporter')
+        number_of_registered_datasenders = len(project.data_senders)
         fields = form_model.fields
         if form_model.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(form_model.fields)

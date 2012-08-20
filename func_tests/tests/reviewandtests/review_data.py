@@ -33,3 +33,32 @@ VALID_DATA = {PROJECT_PROFILE: {PROJECT_NAME: "clinic5 test project",
                               u"What is the GPS codé for clinic"],
               REMINDERS: "disabled"
 }
+
+
+VALID_PROJECT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
+                      PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                      PROJECT_TYPE: SURVEY,
+                      SUBJECT: "",
+                      REPORT_TYPE: OTHER_SUBJECT,
+                      DEVICES: "sms",
+                      PAGE_TITLE: "Projects - Overview"}
+
+CODE = "code"
+TYPE = "type"
+MIN = "min"
+MAX = "max"
+NUMBER = "number"
+QUESTION_NAME = "question"
+
+QUESTION = {QUESTION_NAME: "How many grades did you get last year?", CODE: "GRADES", TYPE: NUMBER, MIN: "1", MAX: "100"}
+
+NAME = "name"
+MOBILE_NUMBER = "mobile_number"
+COMMUNE = "commune"
+GPS = "gps"
+WEB_CHANNEL = False
+
+VALID_DATA_FOR_ADDING_DATASENDER = {NAME: "Mickey",
+                                    MOBILE_NUMBER: "98865431111",
+                                    COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                                    GPS: "-21.7622088847 48.0690991394"}

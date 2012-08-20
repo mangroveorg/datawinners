@@ -32,7 +32,7 @@ EDIT_SUBJECT_LINK = by_css("div[class~='ui-accordion-content-active']>a#subjects
 QUESTIONS_LABELS = by_css("div[class~='ui-accordion-content-active'] p#question")
 EDIT_QUESTIONNAIRE_LINK = by_css("div[class~='ui-accordion-content-active']>a#questionnaire_edit_link")
 
-DATA_SENDERS_COUNT_LABEL = by_css("div[class~='ui-accordion-content-active'] p#no_of_datasenders")
+DATA_SENDERS_COUNT_LABEL = by_css("#no_of_datasenders")
 EDIT_DATA_SENDER_LINK = by_css("div[class~='ui-accordion-content-active']>a#datasenders_edit_link")
 
 EDIT_REMINDER_LINK = by_css("div[class~='ui-accordion-content-active']>a#remider_edit_link")
