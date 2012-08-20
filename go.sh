@@ -39,7 +39,7 @@ function function_test {
 	cp "$DWROOT_DIR/datawinners/local_settings_example.py" "$DWROOT_DIR/func_tests/resources/local_settings.py"
 	restore_postgresql_database && \
 	recreate_couch_db && \
-	(cd "$DWROOT_DIR/func_tests" && nosetests)
+	(cd "$DWROOT_DIR/func_tests" && nosetests -v -a functional_test)
 }
 
 function restore_postgresql_database {
