@@ -1155,6 +1155,14 @@ def edit_subject_questionaire(request, project_id=None):
         context_instance=RequestContext(request))
 
 
+def append_success_to_context(context, form):
+    success = False
+    if not len( form.errors ):
+        success = True
+    context.update({'success':success})
+    return context
+
+
 @login_required(login_url='/login')
 @is_datasender_allowed
 @project_has_web_device
@@ -1185,8 +1193,10 @@ def create_data_sender_and_web_user(request, project_id=None):
                 detail=json.dumps(dict({"Unique ID": reporter_id})), project=project.name)
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
+        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode}
+        append_success_to_context(context, form)
         return render_to_response('datasender_form.html',
-                {'form': form, 'message': message, 'in_trial_mode': in_trial_mode},
+                                  context,
             context_instance=RequestContext(request))
 
 

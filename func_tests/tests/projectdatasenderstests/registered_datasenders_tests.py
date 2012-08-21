@@ -46,6 +46,7 @@ class ProjectDataSenders(BaseTest):
         add_data_sender_page = project_datasenders_page.navigate_to_add_a_data_sender_page()
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_ADDING_DATASENDER)
         self.driver.wait_until_modal_dismissed()
+        self.assertTrue( add_data_sender_page.get_success_message() is not None )
 
         project_datasenders_page = project_overview_page.navigate_to_datasenders_page()
 
