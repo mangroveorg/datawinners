@@ -2,6 +2,8 @@ import json
 from unittest.case import SkipTest
 from django.test import TestCase
 from django.test import Client
+from mangrove.datastore.database import get_db_manager
+from tests.test_data_utils import load_manager_for_default_test_account
 
 
 class TestProject(TestCase):
@@ -70,10 +72,10 @@ class TestProject(TestCase):
                                                                            'project_state': "Active"})
         self.assertEqual(response.status_code, 200)
 
-    @SkipTest
-    def test_should_render_project_result_page_if_logged_in(self):
+    def test_should_render_data_analysis_page_if_logged_in(self):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
-        project_id = 'fe84831af56111e0aa085c260a236744'
-        questionnaire_code = 'q01'
-        response = self.client.post('/project/'+project_id+'/results/'+questionnaire_code+'/28.06.2011-28.06.2011/')
-        self.assertEquals(response.status_code, 200)
+        rows = load_manager_for_default_test_account().load_all_rows_in_view('project_names', key="clinic test project")
+        project_id = rows[0].id
+        subject_id = 'cli001'
+        response = self.client.get('/project/'+project_id+'/data/'+subject_id+'/08.12.2012-08.31.2012/')
+        self.assertEqual(response.status_code, 200)

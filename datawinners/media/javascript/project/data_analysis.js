@@ -7,13 +7,13 @@ $(document).ready(function() {
         aggregation_selectBox_Array.each(function() {
             aggregationArray.push($(this).val());
         });
-        var time_range = $("#dateRangePicker").val().split("/");
+        var time_range = $("#dateRangePicker").val().split("-");
         if (time_range[0] == "" || time_range[0] == "Click to select a date range") {
             time_range[0] = '01-01-1996';
             time_range[1] = '31-12-6000';
             return {'time_range':time_range, 'aggregationArray': aggregationArray};
         }
-        if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
+        if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {
             $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>');
             $("#dateErrorDiv").show();
             time_range[0] = "";
@@ -36,6 +36,7 @@ $(document).ready(function() {
             index = index + 1;
         });
     };
+
     $("#dateRangePicker").daterangepicker({
         presetRanges: [
             {text: gettext('Current month'), dateStart: function() {
@@ -56,8 +57,8 @@ $(document).ready(function() {
         presets: {dateRange: gettext('Date Range')},
         earliestDate:'1/1/2011',
         latestDate:'21/12/2012',
-        dateFormat:'dd-mm-yy',
-        rangeSplitter:'/'
+        dateFormat: getDateFormat(date_format),
+        rangeSplitter:'-'
 
     });
     DW.dataBinding = function(data, destroy, retrive) {
@@ -117,10 +118,13 @@ $(document).ready(function() {
         var data = DW.submit_data();
         var aggregationArray = data['aggregationArray'];
         var time_list = data['time_range'];
+        var report_period = $("#dateRangePicker").val()
+        report_period = report_period.replace(/ /g,'')
+
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
         $.ajax({
             type: 'POST',
-            url: window.location.pathname,
+            url: window.location.pathname + report_period + '/',
             data: {'aggregation-types':JSON.stringify(aggregationArray), 'start_time':time_list[0], 'end_time': time_list[1]},
             success:function(response) {
                 var response_data = JSON.parse(response);
@@ -130,4 +134,8 @@ $(document).ready(function() {
 
             }});
     });
+
+    function getDateFormat(date_format) {
+        return date_format.replace('yyyy', 'yy');
+    };
 });

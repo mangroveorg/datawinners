@@ -278,11 +278,10 @@ def project_result_for_post(manager, request, project, questionnaire, questionna
              'success_message': _("The selected records have been deleted")},
         context_instance=RequestContext(request))
 
-def get_template_values_for_result_page(manager, request, project, project_links, questionnaire, questionnaire_code, filters=[]):
+
+def get_template_values_for_result_page(manager, request, project, project_links, questionnaire, questionnaire_code):
     count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
-    filters = [] if filters is None else filters
-    for filter in filters:
-        submissions = filter.filter(submissions)
+
     submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
     in_trial_mode = _in_trial_mode(request)
     template_value_dict = {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
@@ -290,30 +289,33 @@ def get_template_values_for_result_page(manager, request, project, project_links
                            'project_links': project_links, 'project': project, 'in_trial_mode': in_trial_mode}
     return template_value_dict
 
-def project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code, filters=None):
+
+def project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code):
     template_value_dict = get_template_values_for_result_page(manager, request, project, project_links, questionnaire,
-        questionnaire_code, filters)
+        questionnaire_code)
     return render_to_response('project/results.html',
         template_value_dict,
         context_instance=RequestContext(request)
     )
 
-def build_filters(questionnaire, report_period):
-    if report_period is None:
+def build_filters(questionnaire, report_period_str):
+    if report_period_str is None:
         return[]
+    report_period_start, report_period_end = report_period_str.split("-")
+    report_period = {'start': report_period_start, 'end': report_period_end}
     question_name , datetime_format = get_report_period_question_name_and_datetime_format(questionnaire)
     return [ReportPeriodFilter(question_name, report_period, datetime_format)]
 
 @login_required(login_url='/login')
 @is_datasender
 @is_not_expired
-def project_results(request, project_id=None, questionnaire_code=None, report_period=None):
+
+def project_results(request, project_id=None, questionnaire_code=None):
     manager, project, project_links, questionnaire = prepare_query_project_results(project_id, questionnaire_code,
         request)
 
     if request.method == 'GET':
-        filters = build_filters(questionnaire, get_report_period_dict(report_period))
-        return project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code, filters)
+        return project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code)
     if request.method == "POST":
         return project_result_for_post(manager, request, project, questionnaire, questionnaire_code)
 
@@ -384,15 +386,9 @@ def _load_data(form_model, manager, questionnaire_code, aggregation_types=None, 
         endtime=end_time, include_grand_totals=True)
     return data_dictionary
 
-def _get_analysis_data(form_model, manager, request):
-    if request.method == "GET":
-        start_time = request.GET.get("start_time")
-        end_time = request.GET.get("end_time")
-    else:
-        start_time = request.POST.get("start_time")
-        end_time = request.POST.get("end_time")
+def _get_analysis_data(form_model, manager, request, filters):
     header = helper.get_headers(form_model)
-    result = helper.get_field_values(request, manager, form_model, None, None)
+    result = helper.get_field_values(request, manager, form_model, filters)
     return header, formatted_data(result)
 
 
@@ -411,17 +407,19 @@ def formatted_data(field_values):
 @login_required(login_url='/login')
 @is_datasender
 @is_not_expired
-def project_data(request, project_id=None, questionnaire_code=None):
+def project_data(request, project_id=None, questionnaire_code=None, report_period=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    header_list, field_values = _get_analysis_data(form_model, manager, request)
+    filters = build_filters(form_model, report_period)
+    header_list, field_values = _get_analysis_data(form_model, manager, request, filters)
 
     if request.method == "GET":
         in_trial_mode = _in_trial_mode(request)
         has_rp = form_model.event_time_question is not None
         return render_to_response('project/data_analysis.html',
-                {"entity_type": form_model.entity_type[0],
+                {"date_format" : "dd.mm.yyyy",
+                 "entity_type": form_model.entity_type[0],
                  "data_list": repr(encode_json(formatted_data(field_values))),
                  "header_list": header_list,
                  'project_links': (make_project_links(project, questionnaire_code)),

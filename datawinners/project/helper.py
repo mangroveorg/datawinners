@@ -271,8 +271,7 @@ def get_all_values(data_dictionary, form_model):
 
 
 def replace_options_with_real_answer(form_model, answer):
-    case_insensitive_dict = {key.lower(): value for key, value in answer.items()}
-    return {field.code: get_according_value(case_insensitive_dict, field) for field in form_model.fields}
+    return {field.code: get_according_value(answer, field) for field in form_model.fields}
 
 
 def format_answer_for_presentation(form_model, submissions):
@@ -286,10 +285,19 @@ def format_answer_for_presentation(form_model, submissions):
     return field_values
 
 
-def get_field_values(request, manager, form_model, start_time, end_time):
+def to_lowercase_submission_keys(submissions):
+    for submission in submissions:
+        values = submission.values
+        submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
+
+
+def get_field_values(request, manager, form_model, filters=[]):
     assert isinstance(form_model, FormModel)
 
-    submissions = get_submissions(manager, form_model.form_code, start_time, end_time,view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+    submissions = get_submissions(manager, form_model.form_code, None, None,view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+    to_lowercase_submission_keys(submissions)
+    for filter in filters:
+        submissions = filter.filter(submissions)
 
     field_values = format_answer_for_presentation(form_model, submissions)
 
