@@ -244,6 +244,24 @@ class TestHelper(unittest.TestCase):
         expected_val = "01-01-2011 00:00:00"
         self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))
 
+    def test_should_return_according_value_for_select_field(self):
+        ddtype = Mock(spec=DataDictType)
+        single_select = SelectField(label="multiple_choice_question", code="q",
+                                options=[("red", "a"), ("yellow", "b"), ('green', "c")], name="What is your favourite colour",
+                                ddtype=ddtype)
+        multiple_answer = SelectField(label="multiple_choice_question", code="q1", single_select_flag=False,
+                                options=[("a", "a"), ("b", "b"), ('c', "c"), ("d", "d"), ("e", "e"), ('f', "f"), ("g", "g"), ("h", "h"),
+                                    ('i', "i"), ("j", "j"), ("k", "k"), ('l', "l"), ("m", "m"), ("n", "n"), ('o', "o"),
+                                    ("p", "p"), ("q", "q"), ('r', "r"), ("s", "s"), ("t", "t"), ('u', "u"), ("v", "v"), ("w", "w"),
+                                    ('x', "x"), ("y", "y"), ("z", "z"), ('1a', "1a"), ("1b", "1b"), ("1c", "1c"), ('1d', "1d")],
+                                name="What is your favourite colour",
+                                ddtype=ddtype)
+        values = dict({"q":"b", "q1":"b1a1c"})
+        single_value = helper.get_according_value(values, single_select)
+        multiple_value = helper.get_according_value(values, multiple_answer)
+        self.assertEqual(single_value, "yellow")
+        self.assertEqual(multiple_value, "b, 1a, 1c")
+
 
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):

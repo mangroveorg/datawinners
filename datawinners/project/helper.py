@@ -19,6 +19,7 @@ from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
 from mangrove.transport import Request, TransportInfo
+import re
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
@@ -122,7 +123,8 @@ def get_according_value(value_dict, question):
     value = case_insensitive_dict.get(question.code.lower(), '--')
     if value != '--' and question.type in ['select1', 'select']:
         value_list = []
-        for response in value:
+        responses = re.findall(r'[1-9]?[a-z]', value)
+        for response in responses:
             value_list.extend([opt['text'][question.language] for opt in question.options if opt['val'] == response])
         return ", ".join(value_list)
     return value
