@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datetime import date
 
 import unittest
 from django.contrib.auth.models import User
@@ -6,13 +7,14 @@ from django.core.urlresolvers import reverse
 from django.forms.forms import Form
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
+from mangrove.transport.submissions import Submission
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject_questionaire, create_data_sender_and_web_user, registered_datasenders, make_data_sender_links, add_link, all_datasenders
 from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
-from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire
+from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, delete_submissions_by_ids
 from project.wizard_view import get_preview_and_instruction_links
 
 class TestProjectViews(unittest.TestCase):
@@ -224,3 +226,17 @@ class TestProjectViews(unittest.TestCase):
             self.assertEqual(links["sms_preview"], "/project/questionnaire_sms_preview")
             self.assertEqual(links["web_preview"], "/project/questionnaire_web_preview")
             self.assertEqual(links["smart_phone_preview"], "/project/smart_phone_preview")
+
+
+    def test_should_delete_submission_with_error_status(self):
+        dbm = Mock()
+        request = Mock()
+        submission = Mock(spec=Submission)
+        submission.created = date(2012, 8, 20)
+        submission.data_record = None
+        with patch("project.views.Submission.get") as get_submission:
+            get_submission.return_value = submission
+            with patch("project.views.get_organization") as get_organization:
+                get_organization.return_value = Mock()
+                received_times = delete_submissions_by_ids( dbm, request, ['1'] )
+                self.assertEqual(['20/08/2012 00:00:00'], received_times)

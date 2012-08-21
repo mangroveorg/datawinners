@@ -206,7 +206,6 @@ def undelete_project(request, project_id):
     helper.delete_project(manager, project, False)
     return HttpResponseRedirect(reverse(index))
 
-
 @login_required(login_url='/login')
 @is_datasender
 @is_not_expired
@@ -246,7 +245,6 @@ def project_overview(request, project_id=None):
         'questionnaire_code' : questionnaire_code
     }))
 
-
 def prepare_query_project_results(project_id, questionnaire_code, request):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -254,15 +252,19 @@ def prepare_query_project_results(project_id, questionnaire_code, request):
     questionnaire = get_form_model_by_code(manager, questionnaire_code)
     return manager, project, project_links, questionnaire
 
+def delete_submissions_by_ids(manager, request, submission_ids):
+    received_times = []
+    for submission_id in submission_ids:
+        submission = Submission.get( manager, submission_id )
+        received_times.append( datetime.datetime.strftime( submission.created, "%d/%m/%Y %X" ) )
+        submission.void()
+        if submission.data_record:
+            ReportRouter( ).delete( get_organization( request ).org_id, submission.form_code, submission.data_record.id )
+    return received_times
 
 def project_result_for_post(manager, request, project, questionnaire, questionnaire_code):
     submission_ids = json.loads(request.POST.get('id_list'))
-    received_times = []
-    for submission_id in submission_ids:
-        submission = Submission.get(manager, submission_id)
-        received_times.append(datetime.datetime.strftime(submission.created, "%d/%m/%Y %X"))
-        submission.void()
-        ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
+    received_times = delete_submissions_by_ids( manager, request, submission_ids )
     if len(received_times):
         UserActivityLog().log(request, action="Deleted Data Submission", project=project.name,
             detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
@@ -273,7 +275,6 @@ def project_result_for_post(manager, request, project, questionnaire, questionna
              'submissions': submission_display, 'pages': count,
              'success_message': _("The selected records have been deleted")},
         context_instance=RequestContext(request))
-
 
 def get_template_values_for_result_page(manager, request, project, project_links, questionnaire, questionnaire_code, filters=[]):
     count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
@@ -287,7 +288,6 @@ def get_template_values_for_result_page(manager, request, project, project_links
                            'project_links': project_links, 'project': project, 'in_trial_mode': in_trial_mode}
     return template_value_dict
 
-
 def project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code, filters=None):
     template_value_dict = get_template_values_for_result_page(manager, request, project, project_links, questionnaire,
         questionnaire_code, filters)
@@ -296,21 +296,15 @@ def project_results_for_get(manager, request, project, project_links, questionna
         context_instance=RequestContext(request)
     )
 
-
 def build_filters(questionnaire, report_period):
     if report_period is None:
         return[]
     question_name , datetime_format = get_report_period_question_name_and_datetime_format(questionnaire)
     return [ReportPeriodFilter(question_name, report_period, datetime_format)]
 
-
-
-
-
 @login_required(login_url='/login')
 @is_datasender
 @is_not_expired
-
 def project_results(request, project_id=None, questionnaire_code=None, report_period=None):
     manager, project, project_links, questionnaire = prepare_query_project_results(project_id, questionnaire_code,
         request)
