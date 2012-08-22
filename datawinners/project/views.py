@@ -300,16 +300,15 @@ def project_results_for_get(manager, request, project, project_links, questionna
 
 def build_filters(questionnaire, report_period_str):
     if report_period_str is None:
-        return[]
-    report_period_start, report_period_end = report_period_str.split("-")
-    report_period = {'start': report_period_start, 'end': report_period_end}
+        return []
+    time_str = report_period_str.split("-")
+    report_period = {'start': time_str[0], 'end': time_str[-1]}
     question_name , datetime_format = get_report_period_question_name_and_datetime_format(questionnaire)
     return [ReportPeriodFilter(question_name, report_period, datetime_format)]
 
 @login_required(login_url='/login')
 @is_datasender
 @is_not_expired
-
 def project_results(request, project_id=None, questionnaire_code=None):
     manager, project, project_links, questionnaire = prepare_query_project_results(project_id, questionnaire_code,
         request)
@@ -418,7 +417,7 @@ def project_data(request, project_id=None, questionnaire_code=None, report_perio
         in_trial_mode = _in_trial_mode(request)
         has_rp = form_model.event_time_question is not None
         return render_to_response('project/data_analysis.html',
-                {"date_format" : "dd.mm.yyyy",
+                {"date_format" : form_model.event_time_question.date_format if has_rp else "dd.mm.yyyy",
                  "entity_type": form_model.entity_type[0],
                  "data_list": repr(encode_json(formatted_data(field_values))),
                  "header_list": header_list,

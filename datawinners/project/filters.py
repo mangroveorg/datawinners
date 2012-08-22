@@ -3,10 +3,11 @@ from mangrove.form_model.field import DateField
 
 
 class ReportPeriodFilter(object):
-    def __init__(self, question_name=None, period=None, question_format=None):
+    def __init__(self, question_name=None, period=None, question_format="dd.mm.yyyy"):
         self.question_name = question_name
         self.period = period
-        self.question_format = "dd.mm.yyyy" if question_format is None else question_format
+        self.question_format = question_format
+
 
     def filter(self, submission_logs):
         assert self.question_name
