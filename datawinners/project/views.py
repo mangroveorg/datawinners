@@ -122,10 +122,10 @@ def make_subject_links(project):
     return subject_links
 
 
-def make_data_sender_links(project,reporter_id=None):
+def make_data_sender_links(project, reporter_id=None):
     project_id = project.id
     datasender_links = {'datasenders_link': reverse(all_datasenders),
-                        'edit_datasender_link' : reverse(edit_data_sender,args=[project_id,reporter_id]),
+                        'edit_datasender_link': reverse(edit_data_sender, args=[project_id, reporter_id]),
                         'register_datasenders_link': reverse(create_data_sender_and_web_user, args=[project_id]),
                         'registered_datasenders_link': reverse(registered_datasenders, args=[project_id])}
     return datasender_links
@@ -222,7 +222,8 @@ def project_overview(request, project_id=None):
     number_data_sender = len(project.get_data_senders(manager))
     number_records = submission_count(manager, form_model.form_code, None, None)
     number_reminders = Reminder.objects.filter(project_id=project.id).count()
-    links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id]), 'web_questionnaire_list' : reverse(web_questionnaire, args=[project_id])}
+    links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id]),
+             'web_questionnaire_list': reverse(web_questionnaire, args=[project_id])}
     add_data_senders_to_see_on_map_msg = _(
         "Register Data Senders to see them on this map") if number_data_sender == 0 else ""
     add_subjects_to_see_on_map_msg = _(
@@ -242,8 +243,9 @@ def project_overview(request, project_id=None):
         'add_data_senders_to_see_on_map_msg': add_data_senders_to_see_on_map_msg,
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
-        'questionnaire_code' : questionnaire_code
+        'questionnaire_code': questionnaire_code
     }))
+
 
 def prepare_query_project_results(project_id, questionnaire_code, request):
     manager = get_database_manager(request.user)
@@ -360,7 +362,8 @@ def submissions(request):
 
 def _format_data_for_presentation(entity_values_dict, form_model):
     headers = helper.get_headers(form_model)
-    type_list = helper.get_aggregation_options_for_all_fields(form_model.fields[1:])
+
+    type_list = helper.ggregation_options_for_all_fields(form_model.fields[1:])
     field_values, grand_totals = helper.get_all_values(entity_values_dict, form_model)
     return field_values, headers, type_list, grand_totals
 
@@ -381,21 +384,29 @@ def _load_data(form_model, manager, questionnaire_code, aggregation_types=None, 
         endtime=end_time, include_grand_totals=True)
     return data_dictionary
 
-
-def _get_aggregated_data(form_model, manager, questionnaire_code, request):
+def _get_analysis_data(form_model, manager, request):
     if request.method == "GET":
-        aggregation_types = request.GET.get("aggregation-types")
         start_time = request.GET.get("start_time")
         end_time = request.GET.get("end_time")
     else:
-        aggregation_types = request.POST.get("aggregation-types")
         start_time = request.POST.get("start_time")
         end_time = request.POST.get("end_time")
+    header = helper.get_headers(form_model)
+    result = helper.get_field_values(request, manager, form_model, None, None)
+    return header, formatted_data(result)
 
-    entity_values_dict = _load_data(form_model, manager, questionnaire_code, aggregation_types,
-        start_time, end_time)
-    return _format_data_for_presentation(entity_values_dict, form_model)
 
+def _to_name_id_string(tuple):
+    if tuple[1] is None: return tuple[0]
+    return "%s</br>(%s)" % tuple
+
+
+def formatted_data(field_values):
+    for index, each in enumerate(field_values):
+        for idx, answer in enumerate(each):
+            if isinstance(answer, tuple):
+                each[idx] = _to_name_id_string(answer)
+    return field_values
 
 @login_required(login_url='/login')
 @is_datasender
@@ -404,19 +415,23 @@ def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    field_values, header_list, type_list, grand_totals = _get_aggregated_data(form_model, manager, questionnaire_code,
-        request)
+    header_list, field_values = _get_analysis_data(form_model, manager, request)
 
     if request.method == "GET":
         in_trial_mode = _in_trial_mode(request)
+        has_rp = form_model.event_time_question is not None
         return render_to_response('project/data_analysis.html',
-                {"entity_type": form_model.entity_type[0], "data_list": repr(encode_json(field_values)),
-                 "header_list": header_list, "type_list": type_list, 'grand_totals': grand_totals, 'project_links': (
-                make_project_links(project, questionnaire_code)), 'project': project, 'in_trial_mode': in_trial_mode}
-            ,
+                {"entity_type": form_model.entity_type[0],
+                 "data_list": repr(encode_json(formatted_data(field_values))),
+                 "header_list": header_list,
+                 'project_links': (make_project_links(project, questionnaire_code)),
+                 'project': project,
+                 'in_trial_mode': in_trial_mode,
+                 'reporting_period_question_text': form_model.event_time_question.label[form_model.activeLanguages[0]] if has_rp else None,
+                 'has_reporting_period': has_rp},
             context_instance=RequestContext(request))
     if request.method == "POST":
-        return HttpResponse(encode_json({'data': field_values, 'footer': grand_totals}))
+        return HttpResponse(encode_json({'data': field_values}))
 
 
 @login_required(login_url='/login')
@@ -437,6 +452,7 @@ def export_data(request):
 def _create_excel_response(raw_data_list, file_name):
     response = HttpResponse(mimetype="application/vnd.ms-excel")
     from django.template.defaultfilters import slugify
+
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
     wb = utils.get_excel_sheet(raw_data_list, 'data_log')
     wb.save(response)
@@ -461,8 +477,9 @@ def export_log(request):
             case_insensitive_dict = {key.lower(): value for key, value in submission.values.items()}
             raw_data_list.append(
                 [submission.destination, submission.source, submission.created, ugettext(str(submission.status)),
-                ugettext(str(submission.data_record.is_void() if submission.data_record is not None else True)),
-                submission.errors] + [helper.get_according_value(case_insensitive_dict, q) for q in questionnaire.fields])
+                 ugettext(str(submission.data_record.is_void() if submission.data_record is not None else True)),
+                 submission.errors] + [helper.get_according_value(case_insensitive_dict, q) for q in
+                                       questionnaire.fields])
 
     file_name = request.GET.get(u"project_name") + '_log'
     return _create_excel_response(raw_data_list, file_name)
@@ -681,13 +698,15 @@ def review_and_test(request, project_id=None):
         is_reminder = "enabled" if project['reminder_and_deadline']['has_deadline'] else "disabled"
 
         project_devices = project.devices
-        devices = ", ".join(project_devices).replace('sms', 'SMS').replace('web', 'Web').replace('smartPhone', 'Smartphone')
+        devices = ", ".join(project_devices).replace('sms', 'SMS').replace('web', 'Web').replace('smartPhone',
+            'Smartphone')
 
         in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': make_project_links(project,
                                                                        form_model.form_code),
-                                                                   'number_of_datasenders': number_of_registered_datasenders,
+                                                                   'number_of_datasenders': number_of_registered_datasenders
+            ,
                                                                    'number_of_subjects': number_of_registered_subjects,
                                                                    "is_reminder": is_reminder,
                                                                    "in_trial_mode": in_trial_mode,
@@ -733,8 +752,9 @@ def registered_subjects(request, project_id=None):
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/registered_subjects.html',
             {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels,
-             "subject": subject, 'in_trial_mode': in_trial_mode,'edit_url' : '/project/subject/edit/%s/' % project_id},
+             "subject": subject, 'in_trial_mode': in_trial_mode, 'edit_url': '/project/subject/edit/%s/' % project_id},
         context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 @csrf_exempt
@@ -786,7 +806,8 @@ def registered_datasenders(request, project_id=None):
 
         if len(imported_entities.keys()):
             UserActivityLog().log(request, action="Imported Data Senders",
-                detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_entities.keys())})), project=project.name)
+                detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_entities.keys())})),
+                project=project.name)
         mobile_number_index = fields.index('mobile_number')
         add_imported_data_sender_to_trial_organization(request, imported_entities,
             all_data_senders=all_data_senders, index=mobile_number_index)
@@ -809,7 +830,7 @@ def disassociate_datasenders(request):
     ids = request.POST["ids"].split(";")
     if len(ids):
         UserActivityLog().log(request, action="Removed Data Sender from Project", project=project.name,
-                          detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(ids)})))
+            detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(ids)})))
     return HttpResponse(reverse(registered_datasenders, args=(project.id,)))
 
 
@@ -842,10 +863,12 @@ def datasenders(request, project_id=None):
              'current_language': translation.get_language()},
         context_instance=RequestContext(request))
 
+
 def get_preview_and_instruction_links_for_questionnaire():
     return {'sms_preview': reverse("questionnaire_sms_preview"),
             'web_preview': reverse("questionnaire_web_preview"),
-            'smart_phone_preview': reverse("smart_phone_preview"),}
+            'smart_phone_preview': reverse("smart_phone_preview"), }
+
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -894,7 +917,7 @@ def _make_form_context(questionnaire_form, project, form_code, hide_link_class, 
 
 
 def _get_subject_info(manager, project):
-    subject = get_entity_type_infos(project.entity_type, manager = manager)
+    subject = get_entity_type_infos(project.entity_type, manager=manager)
     subject_info = {'subject': subject,
                     'add_link': add_link(project),
                     "entity_type": project.entity_type}
@@ -902,7 +925,6 @@ def _get_subject_info(manager, project):
 
 
 def _get_form_context(form_code, project, questionnaire_form, manager, hide_link_class, disable_link_class):
-
     form_context = _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class)
     form_context.update(_get_subject_info(manager, project))
 
@@ -937,7 +959,7 @@ def web_questionnaire(request, project_id=None, subject=False):
     form_model, template = get_form_model_and_template(manager, project, is_data_sender, subject)
 
     QuestionnaireForm = WebQuestionnaireFormCreator(SubjectQuestionFieldCreator(manager, project),
-                                                    form_model = form_model).create()
+        form_model=form_model).create()
 
     form_code_for_project_links = _get_form_code(manager, project) if subject else form_model.form_code
 
@@ -946,17 +968,17 @@ def web_questionnaire(request, project_id=None, subject=False):
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
         form_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
-                                         manager, hide_link_class, disable_link_class)
+            manager, hide_link_class, disable_link_class)
         return render_to_response(template, form_context,
-                                  context_instance = RequestContext(request))
+            context_instance=RequestContext(request))
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(country=utils.get_organization_country(request), data=request.POST)
         if not questionnaire_form.is_valid():
             form_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
-                                             manager, hide_link_class, disable_link_class)
+                manager, hide_link_class, disable_link_class)
             return render_to_response(template, form_context,
-                                      context_instance = RequestContext(request))
+                context_instance=RequestContext(request))
 
         success_message = None
         error_message = None
@@ -969,9 +991,10 @@ def web_questionnaire(request, project_id=None, subject=False):
                 if subject:
                     success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
                         response.short_code,)
-                    detail_dict = dict({"Subject Type":project.entity_type.capitalize(), "Unique ID": response.short_code})
+                    detail_dict = dict(
+                            {"Subject Type": project.entity_type.capitalize(), "Unique ID": response.short_code})
                     UserActivityLog().log(request, action='Registered Subject', project=project.name,
-                                          detail=json.dumps(detail_dict))
+                        detail=json.dumps(detail_dict))
                 else:
                     success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()
@@ -979,9 +1002,9 @@ def web_questionnaire(request, project_id=None, subject=False):
                 questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
 
                 form_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
-                                                 manager, hide_link_class, disable_link_class)
+                    manager, hide_link_class, disable_link_class)
                 return render_to_response(template, form_context,
-                                          context_instance = RequestContext(request))
+                    context_instance=RequestContext(request))
 
         except DataObjectNotFound as exception:
             logger.exception(exception)
@@ -992,12 +1015,12 @@ def web_questionnaire(request, project_id=None, subject=False):
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         _project_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
-                                             manager, hide_link_class, disable_link_class)
+            manager, hide_link_class, disable_link_class)
 
         _project_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(template, _project_context,
-                                  context_instance = RequestContext(request))
+            context_instance=RequestContext(request))
 
 
 def get_example_sms(fields):
@@ -1009,7 +1032,7 @@ def get_example_sms(fields):
 
 @login_required(login_url='/login')
 @is_not_expired
-def questionnaire_preview(request, project_id=None, sms_preview = False):
+def questionnaire_preview(request, project_id=None, sms_preview=False):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         project = Project.load(manager.database, project_id)
@@ -1028,10 +1051,10 @@ def questionnaire_preview(request, project_id=None, sms_preview = False):
 
     template = 'project/questionnaire_preview.html' if sms_preview else 'project/questionnaire_preview_list.html'
     return render_to_response(template,
-                    {"questions": questions, 'questionnaire_code': form_model.form_code,
-                 'project': project, 'project_links': project_links,
-                 'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
-            context_instance=RequestContext(request))
+            {"questions": questions, 'questionnaire_code': form_model.form_code,
+             'project': project, 'project_links': project_links,
+             'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
+        context_instance=RequestContext(request))
 
 
 def _get_preview_for_field_in_registration_questionnaire(field, language):
@@ -1151,19 +1174,21 @@ def create_data_sender_and_web_user(request, project_id=None):
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
         form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
-        reporter_id,message = process_create_data_sender_form(manager, form, org_id)
+        reporter_id, message = process_create_data_sender_form(manager, form, org_id)
         if not len(form.errors):
             project.associate_data_sender_to_project(manager, reporter_id)
-            if form.requires_web_access() :
+            if form.requires_web_access():
                 email_id = request.POST['email']
-                create_single_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
+                create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
+                    language_code=request.LANGUAGE_CODE)
             UserActivityLog().log(request, action="Registered Data Sender",
-                                      detail=json.dumps(dict({"Unique ID": reporter_id})), project=project.name)
+                detail=json.dumps(dict({"Unique ID": reporter_id})), project=project.name)
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
                 {'form': form, 'message': message, 'in_trial_mode': in_trial_mode},
             context_instance=RequestContext(request))
+
 
 def edit_data_sender(request, project_id, reporter_id):
     manager = get_database_manager(request.user)
@@ -1173,9 +1198,12 @@ def edit_data_sender(request, project_id, reporter_id):
     if request.method == 'GET':
         location = reporter_entity.location
         geo_code = reporter_entity.geo_code
-        form = ReporterRegistrationForm(initial={'project_id': project_id,'name' : reporter_entity.name,
-                                                 'telephone_number' : reporter_entity.mobile_number,'location' : location,'geo_code' : geo_code})
-        return render_to_response('project/edit_datasender.html',{'project' : project,'reporter_id' : reporter_id,'form' : form, 'project_links': links,'in_trial_mode' : _in_trial_mode(request)},context_instance = RequestContext(request))
+        form = ReporterRegistrationForm(initial={'project_id': project_id, 'name': reporter_entity.name,
+                                                 'telephone_number': reporter_entity.mobile_number, 'location': location
+            , 'geo_code': geo_code})
+        return render_to_response('project/edit_datasender.html',
+                {'project': project, 'reporter_id': reporter_id, 'form': form, 'project_links': links,
+                 'in_trial_mode': _in_trial_mode(request)}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
@@ -1186,12 +1214,16 @@ def edit_data_sender(request, project_id, reporter_id):
             try:
                 organization = Organization.objects.get(org_id=org_id)
                 current_telephone_number = reporter_entity.mobile_number
-                web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
-                response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
-                    transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
+                web_player = WebPlayer(manager,
+                    LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+                response = web_player.accept(
+                    Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
+                        transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
+                        is_update=True))
                 if response.success:
                     if organization.in_trial_mode:
-                        update_data_sender_from_trial_organization(current_telephone_number,form.cleaned_data["telephone_number"], org_id)
+                        update_data_sender_from_trial_organization(current_telephone_number,
+                            form.cleaned_data["telephone_number"], org_id)
                     message = _("Your changes have been saved.")
 
                     detail_dict = {"Unique ID": reporter_id}
@@ -1203,15 +1235,20 @@ def edit_data_sender(request, project_id, reporter_id):
                             label = u"%s" % form.fields[field_mapping.get(field, field)].label
                             detail_dict.update({label: form.cleaned_data.get(field_mapping.get(field, field))})
                     activate(current_lang)
-                    if len(detail_dict) > 1 :
+                    if len(detail_dict) > 1:
                         detail_as_string = json.dumps(detail_dict)
-                        UserActivityLog().log(request, action='Edited Data Sender', detail=detail_as_string, project=project.name)
-                else :
+                        UserActivityLog().log(request, action='Edited Data Sender', detail=detail_as_string,
+                            project=project.name)
+                else:
                     form.update_errors(response.errors)
             except MangroveException as exception:
                 message = exception.message
 
-        return render_to_response('edit_datasender_form.html',{'project' : project,'form':form,'reporter_id' : reporter_id,'message':message,'project_links': links, 'in_trial_mode' : _in_trial_mode(request)},context_instance=RequestContext(request))
+        return render_to_response('edit_datasender_form.html',
+                {'project': project, 'form': form, 'reporter_id': reporter_id, 'message': message,
+                 'project_links': links, 'in_trial_mode': _in_trial_mode(request)},
+            context_instance=RequestContext(request))
+
 
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode

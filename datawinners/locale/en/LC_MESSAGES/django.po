@@ -765,6 +765,22 @@ msgstr ""
 msgid "Analysis"
 msgstr ""
 
+
+#: templates/project/data_analysis.html:92
+msgid "r_tooltip_report_period"
+msgstr ""
+"View your Submissions by one of these Reporting Periods. Click on the dropdown and a choose a specific Reporting Period."
+
+msgid "q_tooltip_report_period_h"
+msgstr ""
+"In your Questionnaire you added “"
+
+msgid "q_tooltip_report_period_t"
+msgstr ""
+"”. This is your Reporting Period Question."
+""
+"The Reporting Period is often different than the Date Stamp. Example: Your Data Sender sends his report for May 2012 (Reporting Period) on 10 June 2012 (Date Stamp)."
+
 #: templates/project/data_analysis.html:92
 msgid "Search for Keyword"
 msgstr ""

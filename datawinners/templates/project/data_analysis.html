@@ -20,6 +20,7 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_data.css" rel="stylesheet" />
+    <link href="/media/css/scss/util.css" rel="stylesheet" />
     <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet" />
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
 {% endblock %}
@@ -74,13 +75,25 @@
         <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
     <div class="heading_block grid_23 alpha data_ana">
-        <div class="float_left">
+
+        <div class="{% if not has_reporting_period %} none {% endif %} float_left">
             <div class="filter_label">
                 <label>{% trans "Reporting Period" %}</label>
+                <img src="/media/images/help_icon.png" class="help_icon" >
+                <div class="tooltip"><p>
+                    <strong>{% trans "What is this?" %}</strong><br />
+                    {% trans "q_tooltip_report_period_h" %}
+                    {{ reporting_period_question_text }}
+                    {% trans "q_tooltip_report_period_t" %}
+                    <br /><br />
+                    <strong>{% trans "What do I need to do?" %}</strong><br />
+                    {% trans "r_tooltip_report_period" %}
+                </p></div>
             </div>
             <div>
                 <input type="text" id="dateRangePicker" value="{% trans "All Periods" %}"/>
                 <input type="button" class="button_blue" id="time_submit" value="{% trans 'Filter' %}"/>
+
                 <span id="dateErrorDiv" class="error_arrow"></span>
             </div>
         </div>

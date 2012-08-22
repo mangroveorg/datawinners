@@ -823,6 +823,21 @@ msgid "Analysis"
 msgstr "Analyse"
 
 #: templates/project/data_analysis.html:92
+msgid "r_tooltip_report_period"
+msgstr ""
+"Voir un à un vos soumissions parmi ces rapports périodiques. Cliquez sur la liste déroulante et choisissez une période spécifique."
+
+msgid "q_tooltip_report_period_h"
+msgstr ""
+"Dans le questionnaire que vous avez ajouté \""
+
+msgid "q_tooltip_report_period_t"
+msgstr ""
+"\". Ceci est  la question concernant votre rapport périodique."
+""
+"Le rapport périodique est souvent différent  de celle de la date de soumission de données. Exemple: Votre expéditeur de données envoie son rapport de mai 2012 (rapport périodique) que le 10 Juin 2012 (Date de soumission de données)."
+
+#: templates/project/data_analysis.html:92
 msgid "Search for Keyword"
 msgstr ""
 

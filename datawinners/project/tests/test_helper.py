@@ -7,14 +7,18 @@ from datawinners.project.models import Project
 from datawinners.project.views import _get_imports_subjects_post_url
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.datadict import DataDictType
+from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field, field_attributes
+from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.datastore import data
 from copy import copy
 from mangrove.datastore.aggregrate import Sum, Latest
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from datetime import datetime
+from project.fixtures.submission_log_data import SUBMISSIONS, submission1, submission2
+from project.helper import get_field_values, to_value_list_based_on_field_order
+
 
 class TestHelper(unittest.TestCase):
     def setUp(self):
@@ -35,9 +39,9 @@ class TestHelper(unittest.TestCase):
     def test_should_return_code_title_tuple_list(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
-                              language="en", entity_question_flag=True, ddtype=ddtype)
+            language="en", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
-                              defaultValue="some default value", language="eng", ddtype=ddtype)
+            defaultValue="some default value", language="eng", ddtype=ddtype)
         code_and_title = [(each_field.code, each_field.name)for each_field in [question1, question2]]
         self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], code_and_title)
 
@@ -61,18 +65,18 @@ class TestHelper(unittest.TestCase):
             form_model = helper.create_questionnaire(post, dbm)
 
         self.create_ddtype_mock.assert_called_twice_with(dbm=dbm, name=NAME, slug=SLUG,
-                                                         primitive_type=TYPE, description=LABEL)
+            primitive_type=TYPE, description=LABEL)
         self.assertEqual(expected_data_dict, form_model.fields[0].ddtype)
 
         self.assertEqual(2, len(form_model.fields))
 
         self.assertTrue(form_model.fields[0].is_entity_field)
         self.assertTrue(form_model.fields[0].is_required())
-        self.assertEqual('q1',form_model.fields[0].code)
+        self.assertEqual('q1', form_model.fields[0].code)
 
         activity_period_question = form_model.fields[1]
         self.assertTrue(activity_period_question.is_required())
-        self.assertEqual('q2',activity_period_question.code)
+        self.assertEqual('q2', activity_period_question.code)
 
         self.assertEqual(["Water Point"], form_model.entity_type)
         self.assertFalse(form_model.is_active())
@@ -98,7 +102,7 @@ class TestHelper(unittest.TestCase):
             form_model = helper.create_questionnaire(post, dbm)
 
         self.create_ddtype_mock.assert_called_twice_with(dbm=dbm, name=NAME, slug=SLUG,
-                                                         primitive_type=TYPE, description=LABEL)
+            primitive_type=TYPE, description=LABEL)
 
         self.assertEqual(2, len(form_model.fields))
 
@@ -110,7 +114,7 @@ class TestHelper(unittest.TestCase):
 
         activity_period_question = form_model.fields[1]
         self.assertTrue(activity_period_question.is_required())
-        self.assertEqual('q1',activity_period_question.code)
+        self.assertEqual('q1', activity_period_question.code)
 
         self.assertFalse(form_model.is_active())
         patcher.stop()
@@ -143,7 +147,6 @@ class TestHelper(unittest.TestCase):
 
         dbm = Mock(spec=DatabaseManager)
 
-        myproject = Mock(spec=Project)
         models_mock.count_projects.return_value = 1
 
         def expected_side_effect(*args, **kwargs):
@@ -164,9 +167,9 @@ class TestHelper(unittest.TestCase):
     def test_should_create_header_list(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="What is associated entity", code="ID", name="What is associated entity",
-                              language="en", entity_question_flag=True, ddtype=ddtype)
+            language="en", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="What is your name", code="Q1", name="What is your name",
-                              defaultValue="some default value", language="en", ddtype=ddtype)
+            defaultValue="some default value", language="en", ddtype=ddtype)
 
         form_model = Mock()
         form_model.fields = [question1, question2]
@@ -174,10 +177,8 @@ class TestHelper(unittest.TestCase):
         form_model.activeLanguages = ['en']
 
         actual_list = helper.get_headers(form_model)
-        self.assertListEqual(["Clinic Code", "What is your name"], actual_list)
-
-    def text_field_with(self, name, entity_question_flag=False):
-        return TextField(name, "code", name, Mock(spec=DataDictType),entity_question_flag=entity_question_flag)
+        expected_header = ["Clinic", "Reporting Period", "Submission Date", "Data Sender", "What is your name"]
+        self.assertListEqual(expected_header, actual_list)
 
     def test_should_create_value_list(self):
         data_dictionary = {'1': {'What is age of father?': 55, 'What is your name?': 'shweta',
@@ -192,13 +193,14 @@ class TestHelper(unittest.TestCase):
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.entity_type = ['Clinic']
         form_model_mock.activeLanguages = ['en']
-        q1 = self.text_field_with("Clinic code?")
-        q2 = self.text_field_with("What is your name?")
-        q3 = self.text_field_with("What is age of father?")
-        q4 = self.text_field_with("What colour do you choose?")
-        q5 = self.text_field_with("what is your loc?")
-        q6 = DateField("what is reporting date?","code","what is reporting date?","dd.mm.yyyy",Mock(spec=DataDictType))
-        form_model_mock.fields= [q1,q2,q3,q4,q5,q6]
+        q1 = self._get_text_field("Clinic code?")
+        q2 = self._get_text_field("What is your name?")
+        q3 = self._get_text_field("What is age of father?")
+        q4 = self._get_text_field("What colour do you choose?")
+        q5 = self._get_text_field("what is your loc?")
+        q6 = DateField("what is reporting date?", "code", "what is reporting date?", "dd.mm.yyyy",
+            Mock(spec=DataDictType))
+        form_model_mock.fields = [q1, q2, q3, q4, q5, q6]
         mock = Mock()
         mock.name = 'What is associated entity?'
         form_model_mock.entity_question = mock
@@ -207,21 +209,94 @@ class TestHelper(unittest.TestCase):
             ["cid001", 'asif', 35, "red", "21.1", "25.12.1011"]]
         self.assertListEqual(expected_list, field_values)
 
+    def test_should_return_submission_for_analysis_page(self):
+        dbm = Mock(spec=DatabaseManager)
+        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
+            with patch("project.helper.get_data_sender") as get_data_sender:
+                with patch("project.helper.get_by_short_code") as get_by_short_code:
+                    load_all_rows_in_view.return_value = SUBMISSIONS
+                    get_data_sender.side_effect = [("Sender1", "rep1"), ("Sender2", "rep2")]
+                    entity = Mock(spec=Entity)
+                    get_by_short_code.return_value = entity
+                    entity.data = {"name": {"value": "realname"}}
+                    entity.short_code = "cli13"
+                    form_model = Mock(spec=FormModel)
+                    form_model.fields = self._get_form_fields()
+                    form_model.form_code = FORM_CODE
+                    form_model.entity_type = ["clinic"]
+                    rd_field = Mock(spec=DateField)
+                    rd_field.code = "rd"
+                    rd_field.event_time_field_flag = True
+                    form_model.event_time_question = rd_field
+                    values_dict = get_field_values(Mock(), dbm, form_model, Mock(), Mock())
+                    expected = [('realname', 'cli13'),
+                        '27.7.2012', u'27.7.2012', ('Sender1', 'rep1'),
+                        'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
+                    self.assertEqual(len(SUBMISSIONS), len(values_dict))
+                    self.assertEqual(expected, values_dict[0])
+
+
+    def _get_form_fields(self):
+        eid_field = Mock(spec=TextField)
+        eid_field.code = "eid"
+        eid_field.entity_question_flag = True
+        eid_field.is_event_time_field = False
+
+        na_field = Mock(spec=Field)
+        na_field.code = "na"
+        na_field.is_event_time_field = False
+
+        fa_field = Mock(spec=Field)
+        fa_field.code = "fa"
+        fa_field.is_event_time_field = False
+
+        rd_field = Mock(spec=DateField)
+        rd_field.code = "rd"
+        rd_field.is_event_time_field = True
+
+        bg_field = Mock(spec=Field)
+        bg_field.code = "bg"
+        bg_field.is_event_time_field = False
+
+        sy_field = Mock(spec=Field)
+        sy_field.code = "sy"
+        sy_field.is_event_time_field = False
+
+        gps_field = Mock(spec=Field)
+        gps_field.code = "gps"
+        gps_field.is_event_time_field = False
+
+        rm_field = Mock(spec=Field)
+        rm_field.code = "rm"
+        rm_field.is_event_time_field = False
+
+        fields = [eid_field, na_field, fa_field, rd_field, bg_field, sy_field, gps_field, rm_field]
+        return fields
+
+
+    def test_should_get_value_list_from_in_field_order(self):
+        fields = self._get_form_fields()
+
+        values_list = to_value_list_based_on_field_order(fields, submission1['value']['values'])
+
+        self.assertIsInstance(values_list, list)
+        self.assertEqual(["cli13", "Dmanda", "69", "27.7.2012", "c", "ce", "40.2 69.3123", "a"], values_list)
 
     def test_should_create_type_list(self):
         ddtype = Mock(spec=DataDictType)
         question1 = IntegerField(label="number_question", code="ID", name="How many beds",
-                                 language="eng", ddtype=ddtype)
+            language="eng", ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
-                              defaultValue="some default value", language="eng", ddtype=ddtype)
+            defaultValue="some default value", language="eng", ddtype=ddtype)
         question3 = SelectField(label="multiple_choice_question", code="Q2",
-                                options=[("red", 1), ("yellow", 2), ('green', 3)], name="What is your favourite colour",
-                                ddtype=ddtype)
+            options=[("red", 1), ("yellow", 2), ('green', 3)], name="What is your favourite colour",
+            ddtype=ddtype)
         question4 = DateField("What is date", "Q4", "date_question", "mm.yyyy", ddtype)
         actual_list = helper.get_aggregation_options_for_all_fields([question1, question2, question3, question4])
         choice_type = copy(helper.MULTI_CHOICE_TYPE_OPTIONS)
         expected_list = [helper.NUMBER_TYPE_OPTIONS, helper.TEXT_TYPE_OPTIONS, choice_type, helper.DATE_TYPE_OPTIONS]
         self.assertListEqual(expected_list, actual_list)
+
 
     def test_should_return_aggregates_dictionary(self):
         header_list = ["field1", "field2"]
@@ -229,6 +304,7 @@ class TestHelper(unittest.TestCase):
         expected_dictionary = {"field1": data.reduce_functions.LATEST, "field2": data.reduce_functions.SUM}
         actual_dict = helper.get_aggregate_dictionary(header_list, post_data)
         self.assertEquals(expected_dictionary, actual_dict)
+
 
     def test_should_return_aggregates_list(self):
         field_mock = Mock()
@@ -240,16 +316,21 @@ class TestHelper(unittest.TestCase):
         self.assertIsInstance(actual_list[0], Latest)
         self.assertIsInstance(actual_list[1], Sum)
 
+
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"
         self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))
+
+
+    def _get_text_field(self, name, entity_question_flag=False):
+        return TextField(name, "code", name, Mock(spec=DataDictType), entity_question_flag=entity_question_flag)
 
 
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type,
-                          instruction="please write more tests")
+            instruction="please write more tests")
         preview = helper.get_preview_for_field(field)
         self.assertEquals("What's in a name?", preview["description"])
         self.assertEquals("nam", preview["code"])
@@ -316,7 +397,7 @@ class TestPreviewCreator(unittest.TestCase):
     def test_should_return_choices(self):
         type = DataDictType(Mock(DatabaseManager), name="color type")
         field = SelectField(name="What's the color?", code="nam", label="naam", ddtype=type,
-                            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
+            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select1", preview["type"])
         self.assertEqual(["Red", "Green", "Blue"], preview["constraints"])
@@ -324,7 +405,7 @@ class TestPreviewCreator(unittest.TestCase):
     def test_should_return_choices_type_as_select(self):
         type = DataDictType(Mock(DatabaseManager), name="color type")
         field = SelectField(name="What's the color?", code="nam", label="naam", ddtype=type,
-                            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")], single_select_flag=False)
+            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")], single_select_flag=False)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select", preview["type"])
 

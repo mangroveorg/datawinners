@@ -1,13 +1,14 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
 from babel.dates import format_date
-from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
+from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
-from datawinners.entity.import_data import\
-    load_all_subjects_of_type
+from accountmanagement.models import NGOUserProfile
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
+from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code, REPORTER
@@ -27,6 +28,8 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest"]
 TEST_FLAG = 'TEST'
+SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
+
 logger = logging.getLogger("datawinners.reminders")
 SUBMISSION_LOG_DISPLAY_QUESTION_MIN_INDEX = 7
 
@@ -116,11 +119,13 @@ def adapt_submissions_for_template(questions, submissions):
     for each in submissions:
         case_insensitive_dict = {key.lower(): value for key, value in each.values.items()}
         formatted_list.append(
-            [each.uuid, each.destination, each.source, each.created, each.errors, "Success" if each.status else "Error"] +
+            [each.uuid, each.destination, each.source, each.created, each.errors,
+             "Success" if each.status else "Error"] +
             ["Yes" if is_submission_deleted(each.data_record) else "No"] + [
             get_according_value(case_insensitive_dict, q) for q in questions])
 
     return [tuple(each) for each in formatted_list]
+
 
 def get_according_value(value_dict, question):
     value = value_dict.get(question.code.lower(), '--')
@@ -130,6 +135,8 @@ def get_according_value(value_dict, question):
             value_list.extend([opt['text'][question.language] for opt in question.options if opt['val'] == response])
         return ", ".join(value_list)
     return value
+
+
 
 def generate_questionnaire_code(dbm):
     all_projects_count = models.count_projects(dbm)
@@ -165,9 +172,61 @@ def get_aggregation_options_for_all_fields(fields):
 
 
 def get_headers(form_model):
-    return [_("%(entity_type)s Code") % {'entity_type': form_model.entity_type[0]}] + [
-    field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:]]
+    if form_model.event_time_question:
+        prefix = [_(form_model.entity_type[0]), _("Reporting Period"), _("Submission Date"), _("Data Sender")]
+    else:
+        prefix = [_(form_model.entity_type[0]), _("Submission Date"), _("Data Sender")]
 
+    return prefix + [field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:] if not field.is_event_time_field]
+
+
+def get_data_sender(dbm, channel, source, user, submission):
+    if submission.test:
+        return source, None
+
+    datasender = ()
+    org_id = NGOUserProfile.objects.get(user = user).org_id
+    if channel == 'sms':
+        datasender = tuple(dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[source], endkey=[source,{}])[0].key[1:])
+    elif channel == 'web':
+            data_sender = User.objects.get(email=source)
+            user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
+            datasender = (data_sender.get_full_name(), user_profile.reporter_id)
+
+    return datasender if datasender[0] != "TEST" else ("TEST",None)
+
+
+def case_insensitive_lookup(search_key, dictionary):
+    assert isinstance(dictionary, dict)
+    for key, value in dictionary.items():
+        if key.lower() == search_key.lower():
+            return value
+    return None
+
+
+def get_leading_part(dbm, form_model, submissions, user):
+    result = []
+
+    rp_field = form_model.event_time_question
+    for submission in submissions:
+        entity = get_by_short_code(dbm, case_insensitive_lookup(form_model.entity_question.code, submission.values), [form_model.entity_type[0]])
+
+        reporting_period = case_insensitive_lookup(rp_field.code, submission.values) if rp_field else None
+
+        datasender = get_data_sender(dbm, submission.channel, submission.source, user, submission)
+
+        submission_date = _to_str(submission.created)
+        reporting_period = _to_str(reporting_period, rp_field)
+        subject = (entity.data['name']['value'], entity.short_code)
+
+        if rp_field:
+            row = [subject, reporting_period, submission_date, datasender]
+        else:
+            row = [subject, submission_date, datasender]
+
+        result.append(row)
+
+    return result
 
 def _to_str(value, form_field=None):
     if value is None:
@@ -179,13 +238,20 @@ def _to_str(value, form_field=None):
         return format_date(value, date_format)
     return value
 
+
 def _to_value_list_headers(first_element, header_list, value_dict):
     return [first_element] + [_to_str(value_dict.get(header)) for header in header_list[1:]]
+
 
 def _to_value_list(first_element, form_model, value_dict):
     form_fields = form_model.fields
 
-    return [first_element] + [_to_str(value_dict.get(field.label[form_model.activeLanguages[0]]), field) for field in form_fields[1:]]
+    return [first_element] + [_to_str(value_dict.get(field.label[form_model.activeLanguages[0]]), field) for field in
+                              form_fields[1:]]
+
+def to_value_list_based_on_field_order(fields, value_dict):
+    return [_to_str(value_dict.get(field.code, field)) for field in fields]
+
 
 
 def get_all_values(data_dictionary, form_model):
@@ -201,6 +267,33 @@ def get_all_values(data_dictionary, form_model):
     return [_to_value_list(value_dict.get(entity_question_description), form_model, value_dict) for value_dict in
             data_dictionary.values()], grand_totals
 
+
+def replace_options_with_real_answer(form_model, answer):
+    case_insensitive_dict = {key.lower(): value for key, value in answer.items()}
+    return {field.code: get_according_value(case_insensitive_dict, field) for field in form_model.fields}
+
+
+def format_answer_for_presentation(form_model, submissions):
+    values = [submission.values for submission in submissions]
+    field_without_rp = [field for field in form_model.fields if not field.is_event_time_field]
+    field_values = []
+    for idx, value in enumerate(values):
+        values[idx] = replace_options_with_real_answer(form_model, value)
+        ordered_answers = to_value_list_based_on_field_order(field_without_rp, values[idx])
+        field_values.append(ordered_answers)
+    return field_values
+
+
+def get_field_values(request, manager, form_model, start_time, end_time):
+    assert isinstance(form_model, FormModel)
+
+    submissions = get_submissions(manager, form_model.form_code, start_time, end_time,view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+
+    field_values = format_answer_for_presentation(form_model, submissions)
+
+    leading_part_answer = get_leading_part(manager, form_model, submissions, request.user)
+
+    return [leading + remaining[1:] for leading, remaining in zip(leading_part_answer, field_values)]
 
 def get_aggregate_dictionary(header_list, post_data):
     aggregates = {}
@@ -228,7 +321,7 @@ def get_formatted_time_string(time_val):
 def get_excel_sheet(raw_data, sheet_name):
     wb = xlwt.Workbook()
     ws = wb.add_sheet(sheet_name)
-    for row_number, row  in enumerate(raw_data):
+    for row_number, row in enumerate(raw_data):
         for col_number, val in enumerate(row):
             ws.write(row_number, col_number, val)
     return wb
@@ -252,6 +345,7 @@ def get_preview_for_field(field):
 def _add_to_dict(dict, post_dict, key):
     if post_dict.get(key):
         dict[key] = post_dict.get(key)
+
 
 def delete_project(manager, project, void=True):
     project_id, qid = project.id, project.qid
@@ -305,13 +399,14 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
 
     return sms_sent
 
-def create_request(questionnaire_form, username,is_update=None):
+
+def create_request(questionnaire_form, username, is_update=None):
     return Request(message=questionnaire_form.cleaned_data,
         transportInfo=
         TransportInfo(transport="web",
             source=username,
             destination=""
-        ),is_update=is_update)
+        ), is_update=is_update)
 
 
 def _translate_messages(error_dict, fields):
