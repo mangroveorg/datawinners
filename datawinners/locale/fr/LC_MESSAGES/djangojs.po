@@ -131,7 +131,7 @@ msgstr "Veuillez patienter"
 
 #: media/javascript/project/data_analysis.js
 msgid "All Periods"
-msgstr ""
+msgstr "Toutes les Périodes"
 
 #: media/javascript/file_uploader/fileuploader.js:480
 msgid "Drop files here to upload"

@@ -218,12 +218,9 @@ class TestHelper(unittest.TestCase):
                     form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, False)
                     filters = build_filters(form_model, None)
                     values_dict = get_field_values(Mock(), dbm, form_model, filters)
-                    expected = [('realname', 'cli13'),
-                        '--', u'27.07.2012', ('Sender1', 'rep1'),
-                        'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
+                    expected = [('realname', 'cli13'),'--', u'27.07.2012', ('Sender1', 'rep1'),'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
                     self.assertEqual(len(SUBMISSIONS), len(values_dict))
                     self.assertEqual(expected, values_dict[0])
-
 
     def test_should_return_submission_for_analysis_page_filtered_by_report_period_if_there_is_a_report_period_question(self):
         dbm = Mock(spec=DatabaseManager)
@@ -347,7 +344,7 @@ class TestHelper(unittest.TestCase):
 
     def _prepare_submission_data(self, load_all_rows_in_view, get_data_sender, get_by_short_code, has_report_period_question):
         load_all_rows_in_view.return_value = SUBMISSIONS
-        get_data_sender.side_effect = [("Sender1", "rep1"), ("Sender2", "rep2")]
+        get_data_sender.return_value = ("Sender1", "rep1")
         entity = Mock(spec=Entity)
         get_by_short_code.return_value = entity
         entity.data = {"name": {"value": "realname"}}
