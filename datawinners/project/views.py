@@ -363,16 +363,16 @@ def submissions(request):
 def _format_data_for_presentation(entity_values_dict, form_model):
     headers = helper.get_headers(form_model)
 
-    type_list = helper.ggregation_options_for_all_fields(form_model.fields[1:])
+    type_list = helper.get_aggregation_options_for_all_fields(form_model.fields[1:])
     field_values, grand_totals = helper.get_all_values(entity_values_dict, form_model)
     return field_values, headers, type_list, grand_totals
 
 
 def _load_data(form_model, manager, questionnaire_code, aggregation_types=None, start_time=None, end_time=None):
-    if aggregation_types is not None:
-        aggregation_type_list = json.loads(aggregation_types)
-    else:
-        aggregation_type_list = ['latest' for field in form_model.fields[1:]]
+    aggregation_type_list = json.loads(aggregation_types)
+    if not aggregation_type_list:
+        aggregation_type_list = ['latest']* len(form_model.fields[1:])
+
     start_time = helper.get_formatted_time_string(start_time.strip() + START_OF_DAY) if start_time is not None else None
     end_time = helper.get_formatted_time_string(end_time.strip() + END_OF_DAY) if end_time is not None else None
     aggregates = helper.get_aggregate_list(form_model.fields[1:], aggregation_type_list)

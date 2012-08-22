@@ -100,24 +100,6 @@ $(document).ready(function() {
     $('#data_analysis select').customStyle();
     $(document).ajaxStop($.unblockUI);
 
-    $(".aggregation_type").live("change", function() {
-        var data = DW.submit_data();
-        var aggregationArray = data['aggregationArray'];
-        var time_list = data['time_range'];
-        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
-        $.ajax({
-            type: 'POST',
-            url: window.location.pathname,
-            data: {'aggregation-types':JSON.stringify(aggregationArray), 'start_time':time_list[0], 'end_time': time_list[1]},
-            success:function(response) {
-                var response_data = JSON.parse(response);
-                DW.dataBinding(response_data.data, true, false);
-                DW.update_footer(response_data.footer);
-                DW.wrap_table();
-            }});
-    });
-
-
     $('#export_link').click(function() {
         var data = DW.submit_data();
         var aggregationArray = data['aggregationArray'];

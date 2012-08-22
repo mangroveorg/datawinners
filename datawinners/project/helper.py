@@ -187,7 +187,9 @@ def get_data_sender(dbm, user, submission):
     datasender = ()
     org_id = NGOUserProfile.objects.get(user = user).org_id
     if submission.channel == 'sms':
-        datasender = tuple(dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[submission.source], endkey=[submission.source,{}])[0].key[1:])
+        datasender = tuple(dbm.load_all_rows_in_view("datasender_by_mobile",
+                                                        startkey=[submission.source],
+                                                        endkey=[submission.source,{}])[0].key[1:])
     elif submission.channel == 'web':
             data_sender = User.objects.get(email=submission.source)
             user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
@@ -340,12 +342,6 @@ def remove_reporter(entity_type_list):
 def get_preview_for_field(field):
     return {"description": field.name, "code": field.code, "type": field.type,
             "constraints": field.get_constraint_text(), "instruction": field.instruction}
-
-
-def _add_to_dict(dict, post_dict, key):
-    if post_dict.get(key):
-        dict[key] = post_dict.get(key)
-
 
 def delete_project(manager, project, void=True):
     project_id, qid = project.id, project.qid
