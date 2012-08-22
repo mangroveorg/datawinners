@@ -180,16 +180,16 @@ def get_headers(form_model):
     return prefix + [field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:] if not field.is_event_time_field]
 
 
-def get_data_sender(dbm, channel, source, user, submission):
+def get_data_sender(dbm, user, submission):
     if submission.test:
-        return source, None
+        return submission.source, None
 
     datasender = ()
     org_id = NGOUserProfile.objects.get(user = user).org_id
-    if channel == 'sms':
-        datasender = tuple(dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[source], endkey=[source,{}])[0].key[1:])
-    elif channel == 'web':
-            data_sender = User.objects.get(email=source)
+    if submission.channel == 'sms':
+        datasender = tuple(dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[submission.source], endkey=[submission.source,{}])[0].key[1:])
+    elif submission.channel == 'web':
+            data_sender = User.objects.get(email=submission.source)
             user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
             datasender = (data_sender.get_full_name(), user_profile.reporter_id)
 
@@ -213,7 +213,7 @@ def get_leading_part(dbm, form_model, submissions, user):
 
         reporting_period = case_insensitive_lookup(rp_field.code, submission.values) if rp_field else None
 
-        datasender = get_data_sender(dbm, submission.channel, submission.source, user, submission)
+        datasender = get_data_sender(dbm, user, submission)
 
         submission_date = _to_str(submission.created)
         reporting_period = _to_str(reporting_period, rp_field)

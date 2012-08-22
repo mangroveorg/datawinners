@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from unittest.case import SkipTest
+import unittest
 from nose.plugins.attrib import attr
 from framework.base_test import BaseTest
 from framework.utils.data_fetcher import from_, fetch_
@@ -8,7 +8,6 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
 
-@SkipTest
 @attr('suit_1')
 class TestDataAnalysis(BaseTest):
     def prerequisites_of_data_analysis(self):
@@ -25,7 +24,7 @@ class TestDataAnalysis(BaseTest):
         Function to test the questions shown in the data analysis table
         """
         data_analysis_page = self.prerequisites_of_data_analysis()
-        questions = fetch_(QUESTIONS, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))
+        questions = fetch_(HEADERS, from_(DEFAULT_DATA_FOR_ANALYSIS))
         self.assertEquals(questions, data_analysis_page.get_all_questions())
 
     @attr('functional_test', 'smoke')
@@ -35,9 +34,12 @@ class TestDataAnalysis(BaseTest):
         """
         data_analysis_page = self.prerequisites_of_data_analysis()
         data_analysis_page.select_page_size()
-        self.assertEquals(fetch_(DATA_RECORDS, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)),
-                          data_analysis_page.get_all_data_records())
+        records = data_analysis_page.get_all_data_records()
+        print records
+        self.assertEquals(fetch_(DATA_RECORDS, from_(DEFAULT_DATA_FOR_ANALYSIS)),
+            records)
 
+    @unittest.skip("JiaFeng will fix it on #1364")
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_current_month(self):
         """
@@ -49,6 +51,7 @@ class TestDataAnalysis(BaseTest):
         self.assertEquals(fetch_(DATA_RECORDS, from_(FILTER_BY_CURRENT_MONTH)),
                           data_analysis_page.get_all_data_records())
 
+    @unittest.skip("JiaFeng will fix it on #1364")
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_last_month(self):
         """
@@ -60,6 +63,7 @@ class TestDataAnalysis(BaseTest):
         self.assertEquals(fetch_(DATA_RECORDS, from_(FILTER_BY_LAST_MONTH)),
                           data_analysis_page.get_all_data_records())
 
+    @unittest.skip("JiaFeng will fix it on #1364")
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_year_to_date(self):
         """

@@ -107,11 +107,7 @@ class DataAnalysisPage(Page):
 
         Return list of web element
         """
-        question_labels = self.get_all_question_labels()
-        questions = []
-        for question_label in question_labels[1:]:
-            questions.append(unicode(question_label.text))
-        return questions
+        return [unicode(each.text) for each in (self.get_all_question_labels())]
 
     def select_current_month(self):
         """

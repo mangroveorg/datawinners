@@ -215,7 +215,7 @@ class TestHelper(unittest.TestCase):
             with patch("project.helper.get_data_sender") as get_data_sender:
                 with patch("project.helper.get_by_short_code") as get_by_short_code:
                     load_all_rows_in_view.return_value = SUBMISSIONS
-                    get_data_sender.side_effect = [("Sender1", "rep1"), ("Sender2", "rep2")]
+                    get_data_sender.return_value = ("Sender1", "rep1")
                     entity = Mock(spec=Entity)
                     get_by_short_code.return_value = entity
                     entity.data = {"name": {"value": "realname"}}
