@@ -16,8 +16,8 @@ from copy import copy
 from mangrove.datastore.aggregrate import Sum, Latest
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from datetime import datetime
-from project.fixtures.submission_log_data import SUBMISSIONS, submission1, submission2
 from project.helper import get_field_values, to_value_list_based_on_field_order
+from project.tests.submission_log_data import submission1, SUBMISSIONS
 
 
 class TestHelper(unittest.TestCase):
