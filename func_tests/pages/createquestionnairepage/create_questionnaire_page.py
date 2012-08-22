@@ -389,3 +389,11 @@ class CreateQuestionnairePage(CreateProjectPage):
 
     def go_back(self):
         self.driver.find(BACK_LINK).click()
+
+    def get_option_by_index_for_multiple_choice_question(self, index):
+        code = self.driver.find(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_S_XPATH_LOCATOR)).text
+        text = self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR)).get_attribute("value")
+        return {'code': code, 'text': text}
+
+    def delete_option_for_multiple_choice_question(self, index):
+        self.driver.find(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_DL_XPATH_LOCATOR)).click()

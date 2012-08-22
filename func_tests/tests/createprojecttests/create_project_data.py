@@ -35,6 +35,14 @@ VALID_DATA2 = {PROJECT_NAME: "Water Point2 Morondava ", GEN_RANDOM: True,
                DEVICES: "sms",
                PAGE_TITLE: "Projects - Overview"}
 
+MC_VALID_DATA = {PROJECT_NAME: "Cars and WP", GEN_RANDOM: False,
+               PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+               PROJECT_TYPE: "survey",
+               SUBJECT: "waterpoint",
+               REPORT_TYPE: "other subject",
+               DEVICES: "sms",
+               PAGE_TITLE: "Projects - Overview"}
+
 BLANK_FIELDS = {PROJECT_NAME: "",
                 PROJECT_BACKGROUND: "",
                 PROJECT_TYPE: "",
