@@ -116,6 +116,9 @@ class DataAnalysisPage(Page):
         self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
         self.driver.find(CURRENT_MONTH_LABEL).click()
 
+    def get_reporting_period(self):
+        return self.driver.find_text_box(DATE_RANGE_PICKER_TB).text
+
     def select_last_month(self):
         """
         Function to select the date range from the drop down
