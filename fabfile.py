@@ -224,11 +224,12 @@ def check_out_datawinners_code_for_production(code_dir, datawinner_build_number,
     with cd(datawinners_dir):
         datawinner_branch = str(date.today()).replace('-', '')
         run("git reset --hard HEAD")
+        run("git checkout develop")
+        run("git pull origin develop")
+        if not run("git branch -a|grep %s" % datawinner_branch).failed:
+            run("git branch -D %s" % datawinner_branch)
+
         if branch == 'develop':
-            run("git checkout develop")
-            run("git pull origin develop")
-            if not run("git branch -a|grep %s" % datawinner_branch).failed:
-                run("git branch -D %s" % datawinner_branch)
             run("git checkout -b %s %s" % (datawinner_branch, datawinner_commit_sha))
             run("git checkout .")
         else:
