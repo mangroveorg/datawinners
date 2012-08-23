@@ -41,3 +41,6 @@ VALID_DATA = {PROJECT_NAME: u"clinic test project",
 }
 
 ERROR_MSG_FOR_GIVING_WEB_ACCESS_WITHOUT_SELECTING_DATA_SENDER = "Please select atleast 1 data sender"
+
+IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN = "DataWinners_ImportDataSenders.xls"
+IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR = "DataWinners_ImporterLesEnvoyeursDeDonnees.xls"

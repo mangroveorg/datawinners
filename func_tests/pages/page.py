@@ -7,3 +7,9 @@ class Page(object):
         self.driver = driver
         self.url = self.driver.current_url
         self.driver.implicitly_wait(WAIT)
+
+    def switch_language(self, language):
+        from framework.utils.common_utils import by_css
+        locator = by_css("a[href='/switch/%s/']" % language)
+        self.driver.find(locator).click()
+

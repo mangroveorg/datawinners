@@ -134,3 +134,9 @@ class AllDataSendersPage(Page):
 
     def check_smart_phone_device_by_id(self, data_sender_id):
         return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 11)))
+
+    def open_import_lightbox(self):
+        from pages.adddatasenderspage.add_data_senders_locator import OPEN_IMPORT_DIALOG_LINK
+        from pages.lightbox.import_datasender_light_box_page import ImportDatasenderLightBox
+        self.driver.find(OPEN_IMPORT_DIALOG_LINK).click()
+        return ImportDatasenderLightBox(self.driver)

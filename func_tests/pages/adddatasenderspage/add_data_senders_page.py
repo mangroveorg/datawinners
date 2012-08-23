@@ -61,3 +61,15 @@ class AddDataSenderPage(Page):
         error_message = ""
         locator = self.driver.wait_for_element(20, FLASH_MESSAGE_LABEL, want_visible=True)
         return locator.text
+
+    def open_import_lightbox(self):
+        if not self.is_in_project_level():
+            return False
+
+        self.driver.find(OPEN_IMPORT_DIALOG_LINK).click()
+        from pages.lightbox.import_datasender_light_box_page import ImportDatasenderLightBox
+        return ImportDatasenderLightBox(self.driver)
+            
+
+    def is_in_project_level(self):
+        return self.driver.get_title() in [u"Projet - Expéditeurs", u"Projects - Data Senders"]

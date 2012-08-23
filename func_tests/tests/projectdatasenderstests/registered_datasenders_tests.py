@@ -96,3 +96,37 @@ class ProjectDataSenders(BaseTest):
         self.assertTrue(project_datasenders_page.check_sms_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
         self.assertFalse(project_datasenders_page.check_web_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
         self.assertFalse(project_datasenders_page.check_smart_phone_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
+
+    def navigate_to_project_datasender_page(self):
+        all_project_page = self.all_projects_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page(
+            fetch_(PROJECT_NAME, from_(VALID_DATA)))
+        return project_overview_page.navigate_to_datasenders_page()
+
+    def check_import_template_filename(self, page):
+        import_lightbox = page.open_import_lightbox()
+        self.assertEqual(IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, import_lightbox.get_template_filename())
+        import_lightbox.close_light_box()
+        page.switch_language("fr")
+        import_lightbox = page.open_import_lightbox()
+        self.assertEqual(IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR, import_lightbox.get_template_filename())
+        
+
+    @attr('functional_test', 'smoke')
+    def test_the_datasender_template_file_downloaded_on_registered_datasenders_page(self):
+        """
+        Function to test template file is in correct language
+        """
+        project_datasenders_page = self.navigate_to_project_datasender_page()
+        self.check_import_template_filename(project_datasenders_page)
+        
+
+    @attr('functional_test', 'smoke')
+    def test_the_datasender_template_file_downloaded_on_add_datasender_page(self):
+        """
+        Function to test template file is in correct language
+        """
+        project_datasenders_page = self.navigate_to_project_datasender_page()
+        add_data_sender_page = project_datasenders_page.navigate_to_add_a_data_sender_page()
+        self.check_import_template_filename(add_data_sender_page)
+

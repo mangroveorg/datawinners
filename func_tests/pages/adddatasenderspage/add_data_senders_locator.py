@@ -24,6 +24,7 @@ MOBILE_NUMBER_TB = by_css("input#id_telephone_number")
 EMAIL_TB = by_css("input#id_email")
 COMMUNE_TB = by_css("input#id_location")
 GPS_TB = by_css("input#id_geo_code")
+OPEN_IMPORT_DIALOG_LINK = by_css("#import-datasenders")
 
 REGISTER_BTN = by_css("input#id_register_button")
 ERROR_MESSAGE_LABEL = by_xpath("//ul[@class='errorlist']/.. | //div[@id='error_messages']")

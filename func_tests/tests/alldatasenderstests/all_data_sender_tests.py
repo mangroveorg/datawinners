@@ -11,7 +11,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.alldatasenderstests.all_data_sender_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
-
+from tests.projectdatasenderstests.registered_datasenders_data import IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR
 
 @attr('suit_1')
 class TestAllDataSender(unittest.TestCase):
@@ -169,3 +169,14 @@ class TestAllDataSender(unittest.TestCase):
         self.assertTrue(all_data_senders_page.check_sms_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
         self.assertFalse(all_data_senders_page.check_web_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
         self.assertFalse(all_data_senders_page.check_smart_phone_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
+
+    @attr('functional_test')
+    def test_the_datasender_template_file_downloaded(self):
+        all_data_sender_page = self.page
+        import_lightbox = all_data_sender_page.open_import_lightbox()
+        self.assertEqual(IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, import_lightbox.get_template_filename())
+        import_lightbox.close_light_box()
+        all_data_sender_page.switch_language("fr")
+        all_data_sender_page.open_import_lightbox()
+        self.assertEqual(IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR, import_lightbox.get_template_filename())
+        
