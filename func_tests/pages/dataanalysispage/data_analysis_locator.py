@@ -31,5 +31,5 @@ CURRENT_MONTH_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and 
 LAST_MONTH_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Last Month']")
 YEAR_TO_DATE_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Year to date']")
 FILTER_BUTTON = by_css("input#time_submit")
-NEXT_BUTTON = by_css("span#data_analysis_next[class='next paginate_button']")
-NEXT_BUTTON_DISABLED = by_css("span#data_analysis_next[class='next paginate_button paginate_button_disabled']")
+NEXT_BUTTON = by_id("data_analysis_next")
+NEXT_BUTTON_DISABLED = by_css("#data_analysis_next[class='next paginate_button paginate_button_disabled']")
