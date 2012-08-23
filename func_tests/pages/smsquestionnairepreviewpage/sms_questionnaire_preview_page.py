@@ -1,6 +1,7 @@
 from pages.page import Page
-from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_locator import QUESTIONNAIRE_PREVIEW, PROJECT_NAME, INSTRUCTION, PREVIEW_STEPS, CLOSE_PREVIEW
-
+from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_locator import QUESTIONNAIRE_PREVIEW, PROJECT_NAME, \
+    INSTRUCTION, PREVIEW_STEPS, CLOSE_PREVIEW, QUESTION_BY_CSS_LOCATOR
+from framework.utils.common_utils import by_css
 
 class SmsQuestionnairePreviewPage(Page):
     def __init__(self, driver):
@@ -23,3 +24,7 @@ class SmsQuestionnairePreviewPage(Page):
 
     def has_preview_steps(self):
         return self.driver.is_element_present(PREVIEW_STEPS)
+
+    def get_question_content(self, index):
+        locator = by_css(QUESTION_BY_CSS_LOCATOR % str(index))
+        return self.driver.find(locator).text

@@ -115,7 +115,6 @@
           border-top: 1px solid #ccc;
         }
         .alpha_list {
-          margin-left: 30px;
           input {
             float: none;
           }
@@ -354,4 +353,18 @@
 }
 #green_message{
   display: none;
+}
+
+#question-detail-panel{
+  #options_list.alpha_list{
+    margin-left: 10px;
+    li{
+      list-style-type: none !important;
+      span.bullet{
+        text-transform: uppercase;
+        display: inline-table;
+        width: 25px;
+      }
+    }
+  }
 }

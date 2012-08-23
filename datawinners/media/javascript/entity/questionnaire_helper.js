@@ -216,3 +216,18 @@ DW.isRegistrationQuestionnaire = function() {
 DW.next_question_name_generator = function(){
     return 'Question '+ ($('div.question_list ol li').length + 1);
 };
+
+DW.next_option_value = function(lastChoice){
+    var nextOption = "a";
+    if (lastChoice.charCodeAt(lastChoice.length-1) == 122) {
+        if (lastChoice.length == 2) {
+            nextOption = String.fromCharCode(lastChoice.charCodeAt(0) +1 ) + "a";
+        } else {
+            nextOption = "1a";
+        }
+    } else {
+        nextOption = (lastChoice.length == 2) ? lastChoice[0] : "";
+        nextOption += String.fromCharCode(lastChoice.charCodeAt(lastChoice.length-1) + 1);
+    }
+    return nextOption;
+}

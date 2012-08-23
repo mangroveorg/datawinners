@@ -21,6 +21,7 @@ from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
 from mangrove.transport import Request, TransportInfo
+import re
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
@@ -131,7 +132,8 @@ def get_according_value(value_dict, question):
     value = value_dict.get(question.code.lower(), '--')
     if value != '--' and question.type in ['select1', 'select']:
         value_list = []
-        for response in value:
+        responses = re.findall(r'[1-9]?[a-z]', value)
+        for response in responses:
             value_list.extend([opt['text'][question.language] for opt in question.options if opt['val'] == response])
         return ", ".join(value_list)
     return value
@@ -348,8 +350,11 @@ def remove_reporter(entity_type_list):
 
 
 def get_preview_for_field(field):
-    return {"description": field.name, "code": field.code, "type": field.type,
-            "constraints": field.get_constraint_text(), "instruction": field.instruction}
+    preview =  {"description": field.name, "code": field.code, "type": field.type, "instruction": field.instruction}
+    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
+        [(option["text"][field.language], option["val"]) for option in field.options]
+    preview.update({"constraints": constraints})
+    return preview
 
 def delete_project(manager, project, void=True):
     project_id, qid = project.id, project.qid

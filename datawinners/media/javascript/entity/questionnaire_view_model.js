@@ -75,7 +75,7 @@ var questionnaireViewModel =
         var selectedQuestionCode = "a";
         if (questionnaireViewModel.selectedQuestion().choices().length > 0) {
             var lastChoice = questionnaireViewModel.selectedQuestion().choices()[questionnaireViewModel.selectedQuestion().choices().length - 1];
-            selectedQuestionCode = String.fromCharCode(lastChoice.val.charCodeAt(0) + 1);
+            selectedQuestionCode = DW.next_option_value(lastChoice.val);
         }
         questionnaireViewModel.selectedQuestion().choices.push({text:"", val:selectedQuestionCode});
         questionnaireViewModel.selectedQuestion().choices.valueHasMutated();
@@ -85,13 +85,15 @@ var questionnaireViewModel =
     removeOptionFromQuestion:function(choice) {
         var choices = questionnaireViewModel.selectedQuestion().choices();
         var indexOfChoice = $.inArray(choice, choices);
-        var lastChoiceValue = choice['val'].charCodeAt(0);
+        var lastChoiceValue = choice['val'];//.charCodeAt(0);
         var i = indexOfChoice + 1;
         for(i; i < choices.length; i=i+1){
-            choices[i]['val'] = String.fromCharCode(lastChoiceValue);
-            lastChoiceValue = lastChoiceValue + 1;
+            choices[i]['val'] = lastChoiceValue;
+            $("span.bullet", $("#options_list li").eq(i)).html(lastChoiceValue + ".");
+            lastChoiceValue = DW.next_option_value(lastChoiceValue);//lastChoiceValue + 1;
         }
         questionnaireViewModel.selectedQuestion().choices.remove(choice);
+        questionnaireViewModel.selectedQuestion().choices.valueHasMutated();
         questionnaireViewModel.selectedQuestion.valueHasMutated();
     },
     selectedQuestion: ko.observable({}),

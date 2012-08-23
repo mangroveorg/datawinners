@@ -11,26 +11,30 @@
 .questionnaire_preview1 {
   border: solid 1px #ccc; }
 
-#questionnaire_preview {
+#sms_preview, #questionnaire_preview {
   margin-left: 10px; }
-  #questionnaire_preview .questionnaire_preview > li {
+  #sms_preview .answer .multiple_select li, #questionnaire_preview .answer .multiple_select li {
+    list-style-type: none !important; }
+    #sms_preview .answer .multiple_select li span.bullet, #questionnaire_preview .answer .multiple_select li span.bullet {
+      display: inline-table;
+      width: 30px;
+      text-transform: lowercase; }
+  #sms_preview .questionnaire_preview > li, #questionnaire_preview .questionnaire_preview > li {
     margin-bottom: 15px;
     width: 100%;
     float: left; }
-  #questionnaire_preview .questionnaire_preview .answer {
+  #sms_preview .questionnaire_preview .answer, #questionnaire_preview .questionnaire_preview .answer {
     margin-bottom: 5px; }
-    #questionnaire_preview .questionnaire_preview .answer .multiple_select {
-      margin-left: 20px; }
-      #questionnaire_preview .questionnaire_preview .answer .multiple_select li {
-        list-style-type: upper-alpha; }
-  #questionnaire_preview .questionnaire_preview label {
+    #sms_preview .questionnaire_preview .answer .multiple_select, #questionnaire_preview .questionnaire_preview .answer .multiple_select {
+      margin-left: 10px; }
+  #sms_preview .questionnaire_preview label, #questionnaire_preview .questionnaire_preview label {
     font-weight: normal; }
-  #questionnaire_preview .questionnaire_preview input[type=radio], #questionnaire_preview .questionnaire_preview input[type=checkbox] {
+  #sms_preview .questionnaire_preview input[type=radio], #sms_preview .questionnaire_preview input[type=checkbox], #questionnaire_preview .questionnaire_preview input[type=radio], #questionnaire_preview .questionnaire_preview input[type=checkbox] {
     float: left !important; }
-  #questionnaire_preview .questionnaire_preview div {
+  #sms_preview .questionnaire_preview div, #questionnaire_preview .questionnaire_preview div {
     width: 100%;
     float: left; }
-  #questionnaire_preview .inactive_link {
+  #sms_preview .inactive_link, #questionnaire_preview .inactive_link {
     pointer-events: none; }
 
 #questionnaire_content #questionnaire_preview {

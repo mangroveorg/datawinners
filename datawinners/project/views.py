@@ -1055,8 +1055,13 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
 
 
 def _get_preview_for_field_in_registration_questionnaire(field, language):
-    return {"description": field.label.get(language), "code": field.code, "type": field.type,
-            "constraints": field.get_constraint_text(), "instruction": field.instruction}
+    preview = {"description": field.label.get(language), "code": field.code, "type": field.type,
+               "instruction": field.instruction}
+    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
+        [(option["text"][field.language], option["val"]) for option in field.options]
+    preview.update({"constraints": constraints})
+    return preview
+    
 
 
 def _get_registration_form(manager, project, type_of_subject='reporter'):
