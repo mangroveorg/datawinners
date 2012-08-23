@@ -209,7 +209,7 @@ def checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env
         activate_and_run(virtual_env, "pip install -r requirements.pip")
         activate_and_run(virtual_env, "python setup.py develop")
 
-def check_out_datawinners_code_for_production(code_dir, datawinner_build_number, virtual_env):
+def check_out_datawinners_code_for_production(code_dir, datawinner_build_number, virtual_env, branch):
     if datawinner_build_number == 'lastSuccessfulBuild':
         datawinner_build_number = run(
             "curl http://178.79.163.33:8080/job/Datawinners/lastSuccessfulBuild/buildNumber")
@@ -222,14 +222,18 @@ def check_out_datawinners_code_for_production(code_dir, datawinner_build_number,
         run('cd %s && git clone git://github.com/mangroveorg/datawinners.git' % code_dir)
     datawinners_dir = code_dir + '/datawinners'
     with cd(datawinners_dir):
-        run("git reset --hard HEAD")
-        run("git checkout develop")
-        run("git pull origin develop")
         datawinner_branch = str(date.today()).replace('-', '')
-        if not run("git branch -a|grep %s" % datawinner_branch).failed:
-            run("git branch -D %s" % datawinner_branch)
-        run("git checkout -b %s %s" % (datawinner_branch, datawinner_commit_sha))
-        run("git checkout .")
+        run("git reset --hard HEAD")
+        if branch == 'develop':
+            run("git checkout develop")
+            run("git pull origin develop")
+            if not run("git branch -a|grep %s" % datawinner_branch).failed:
+                run("git branch -D %s" % datawinner_branch)
+            run("git checkout -b %s %s" % (datawinner_branch, datawinner_commit_sha))
+            run("git checkout .")
+        else:
+            run("git checkout -b %s %s" % (datawinner_branch, branch))
+
         activate_and_run(virtual_env, "pip install -r requirements.pip")
 
 def check_out_latest_custom_reports_code_for_production(code_dir):
@@ -246,7 +250,7 @@ def check_out_latest_custom_reports_code_for_production(code_dir):
         run("git checkout -b %s HEAD" % custom_reports_branch)
         run("git checkout .")
 
-def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, environment = 'showcase',
+def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, environment = 'showcase', datawinner_branch='develop',
                       couch_migration_file=None):
     stop_servers()
     print 'server stopped...'
@@ -255,7 +259,7 @@ def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, 
     print 'cd %s' % code_dir
     virtual_env = ENVIRONMENT_VES[environment]
     checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env)
-    check_out_datawinners_code_for_production(code_dir, datawinner_build_number, virtual_env)
+    check_out_datawinners_code_for_production(code_dir, datawinner_build_number, virtual_env, datawinner_branch)
 
     datawinners_dir = code_dir + '/datawinners/datawinners'
     print 'datawinner directory:', datawinners_dir
