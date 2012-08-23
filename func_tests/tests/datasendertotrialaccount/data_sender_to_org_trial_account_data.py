@@ -1,8 +1,7 @@
 from datetime import datetime
 
-today = datetime.today()
+today = datetime.utcnow()
 current_date = today.strftime("%d.%m.%Y") #str(today.day) + "." + str(today.month) + "." + str(today.year)
-
 
 SENDER = "from"
 RECEIVER = "to"
@@ -19,7 +18,7 @@ TRIAL_SMS_DATA = u"Test\n(cid003) %s Shweta\n(rep1) Mr. Tessy 38 17.01.2012 O- R
 VALID_PAID_DATA = {SENDER: "1234567890",
               RECEIVER: '919880734937',
               SMS: "cli001 .EID cid003 .NA Mr. Tessy .FA 77 .RD %s .BG b .SY ade .GPS 27.178057  -78.007789 .RM a" % current_date,
-              SUCCESS_MESSAGE: "Thank you Shweta. We received : EID: cid003 NA: Mr. Tessy FA: 77.0 RD: 23.08.2010 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789"}
+              SUCCESS_MESSAGE: "Thank you Shweta. We received : EID: cid003 NA: Mr. Tessy FA: 77.0 RD: %s BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789" % current_date}
 
 PAID_SMS_DATA = u"Test\n(cid003) %s %s Shweta\n(rep1) Mr. Tessy 77 O- Rapid weight loss, Memory loss, Neurological disorders 27.178057 -78.007789 Hivid" % (current_date,current_date)
 
