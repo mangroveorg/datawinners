@@ -839,7 +839,7 @@ msgstr ""
 
 #: templates/project/data_analysis.html:92
 msgid "Search for Keyword"
-msgstr ""
+msgstr "Recherche par Mot clé"
 
 #: templates/alldata/index.html:39 templates/project/tab_navigation.html:86
 msgid "All Data Records"
@@ -1094,7 +1094,13 @@ msgstr "Afficher les données pour :"
 
 #: templates/project/data_analysis.html:82
 msgid "Reporting Period"
-msgstr ""
+msgstr "Période de Rapport"
+
+msgid "Submission Date"
+msgstr "Date d’Envoi"
+
+msgid "Data Sender"
+msgstr "Expéditeurs de Données"
 
 #: templates/project/data_analysis.html:77 templates/project/results.html:71
 msgid "Click to select a date range"
@@ -1111,6 +1117,10 @@ msgstr "Filtrer"
 #: templates/project/data_analysis.html:84
 msgid "View Data By:"
 msgstr "Trier par :"
+
+#: templates/project/data_analysis.html
+msgid "View:"
+msgstr "Voir"
 
 #: templates/project/data_analysis.html:87
 msgid "View Style:"

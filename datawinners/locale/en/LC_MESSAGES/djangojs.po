@@ -488,6 +488,9 @@ msgstr ""
 msgid "0 Data Records"
 msgstr ""
 
+msgid "Showing 0 to 0 of 0 Data records"
+msgstr ""
+
 msgid "(filtered from _MAX_ total Data records)"
 msgstr ""
 
