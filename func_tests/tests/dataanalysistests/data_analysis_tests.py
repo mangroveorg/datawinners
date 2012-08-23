@@ -61,7 +61,7 @@ class TestDataAnalysis(BaseTest):
         time.sleep(1)
         data_analysis_page.filter_data()
         data_records = data_analysis_page.get_all_data_records()
-        report_period = [datetime.strptime(record.split()[1], '%d.%m.%Y') for record in data_records]
+        report_period = [datetime.strptime(record.split(' ')[1], '%d.%m.%Y') for record in data_records]
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
         report_period_start, report_period_end = current_month_period[0], current_month_period[-1]
         self.assertTrue(report_period_start <= each <= report_period_end for each in report_period)
