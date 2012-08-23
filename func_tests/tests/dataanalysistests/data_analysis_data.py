@@ -55,6 +55,7 @@ DEFAULT_DATA_FOR_ANALYSIS = {PROJECT_NAME: "clinic test project",
                                        u'What is the GPS code for clinic?',
                                        u'What are the required medicines?'],
                              DATA_RECORDS: [
+                                 u'Test\n(cid001) 25.12.2011 23.8.2012 Tester Pune Bob 89.0 O- Rapid weight loss, Pneumonia -18.1324 27.6547 Vid\xe9x EC',
                                  u'Test\n(cid003) 22.08.2012 22.08.2012 Shweta\n(rep1) Mr. Tessy 77 O- Rapid weight loss, Memory loss, Neurological disorders 27.178057 -78.007789 Hivid',
                                  u'Test\n(cid003) 22.08.2012 22.08.2012 Shweta\n(rep1) Mr. Tessy 77 O- Rapid weight loss, Memory loss, Neurological disorders 27.178057 -78.007789 Hivid',
                                  u'Andapa\n(cli9) 22.8.2012 22.08.2012 Shweta\n(rep1) Tinnita 27 B+ Rapid weight loss, Pneumonia, Neurological disorders -78.233 -28.3324 --',
@@ -63,8 +64,7 @@ DEFAULT_DATA_FOR_ANALYSIS = {PROJECT_NAME: "clinic test project",
                                  u'Andapa\n(cli9) 22.8.2012 22.08.2012 Shweta\n(rep1) Tinnita 37 B+ Rapid weight loss, Pneumonia, Neurological disorders -78.233 -28.3324 --',
                                  u'Mahajanga\n(cli18) 22.8.2012 22.08.2012 Shweta\n(rep1) \xe0ntra 28 O+ Rapid weight loss, Memory loss, Dry cough -45.234 169.32345 --',
                                  u'Sainte-Marie\n(cli17) 22.8.2012 22.08.2012 Shweta\n(rep1) Catty 78 O- Memory loss, Pneumonia, Neurological disorders 33.23452 -68.3456 --',
-                                 u'Fianarantsoa-I\n(cli16) 01.8.2012 02.08.2012 Shweta\n(rep1) K!llo 28 O- Rapid weight loss, Neurological disorders 19.672 92.33456 --',
-                                 u'Farafangana\n(cli15) 01.8.2012 02.08.2012 Shweta\n(rep1) M!lo 45 AB Pneumonia, Rapid weight loss 19.672 92.33456 --']
+                                 u'Fianarantsoa-I\n(cli16) 01.8.2012 02.08.2012 Shweta\n(rep1) K!llo 28 O- Rapid weight loss, Neurological disorders 19.672 92.33456 --']
                              }
 
 

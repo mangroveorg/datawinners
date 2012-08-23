@@ -236,7 +236,7 @@ def _to_str(value, form_field=None):
     if is_sequence(value):
         return sequence_to_str(value)
     if isinstance(value, datetime):
-        date_format = DateField.FORMAT_DATE_DICTIONARY.get(form_field.date_format) if form_field else 'd.M.YYYY'
+        date_format = DateField.FORMAT_DATE_DICTIONARY.get(form_field.date_format) if form_field else 'dd.MM.YYYY'
         return format_date(value, date_format)
     return value
 
