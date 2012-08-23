@@ -230,7 +230,7 @@ class TestHelper(unittest.TestCase):
                     form_model.event_time_question = rd_field
                     values_dict = get_field_values(Mock(), dbm, form_model, Mock(), Mock())
                     expected = [('realname', 'cli13'),
-                        '27.7.2012', u'27.7.2012', ('Sender1', 'rep1'),
+                        '27.7.2012', u'27.07.2012', ('Sender1', 'rep1'),
                         'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
                     self.assertEqual(len(SUBMISSIONS), len(values_dict))
                     self.assertEqual(expected, values_dict[0])
