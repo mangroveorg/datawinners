@@ -18,6 +18,7 @@ function main {
 		rd) restore_postgresql_database;;
 		us) update_source;;
 		cm) compile_messages;;
+		rsdb) restore_couchdb_and_postgres;;
 		*) show_help && exit 1;;
 	esac	
 }

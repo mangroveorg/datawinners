@@ -125,6 +125,7 @@ jQuery.fn.daterangepicker = function(settings){
 			jQuery('<li class="ui-daterangepicker-'+ this.text.replace(/ /g, '') +' ui-corner-all"><a href="#">'+ this.text +'</a></li>')
 			.data('dateStart', this.dateStart)
 			.data('dateEnd', this.dateEnd)
+			.data('is_for_all_period', this.is_for_all_period != undefined)
 			.appendTo(ul);
 		});
 		var x=0;
@@ -237,10 +238,15 @@ jQuery.fn.daterangepicker = function(settings){
 				rp.find('.range-start, .range-end').hide(400, function(){
 					rpPickers.hide();
 				});
-				var dateStart = (typeof jQuery(this).data('dateStart') == 'string') ? Date.parse(jQuery(this).data('dateStart')) : jQuery(this).data('dateStart')();
-				var dateEnd = (typeof jQuery(this).data('dateEnd') == 'string') ? Date.parse(jQuery(this).data('dateEnd')) : jQuery(this).data('dateEnd')();
-				rp.find('.range-start').datepicker('setDate', dateStart).find('.ui-datepicker-current-day').trigger('click');
-				rp.find('.range-end').datepicker('setDate', dateEnd).find('.ui-datepicker-current-day').trigger('click');
+                if(jQuery(this).data('is_for_all_period') ){
+                    rangeInput.val(jQuery(this).text())
+                    hideRP()
+                }else{
+                    var dateStart = (typeof jQuery(this).data('dateStart') == 'string') ? Date.parse(jQuery(this).data('dateStart')) : jQuery(this).data('dateStart')();
+                    var dateEnd = (typeof jQuery(this).data('dateEnd') == 'string') ? Date.parse(jQuery(this).data('dateEnd')) : jQuery(this).data('dateEnd')();
+                    rp.find('.range-start').datepicker('setDate', dateStart).find('.ui-datepicker-current-day').trigger('click');
+                    rp.find('.range-end').datepicker('setDate', dateEnd).find('.ui-datepicker-current-day').trigger('click');
+                }
 		}
 		
 		return false;

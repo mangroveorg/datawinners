@@ -8,7 +8,8 @@ $(document).ready(function() {
             aggregationArray.push($(this).val());
         });
         var time_range = $("#dateRangePicker").val().split("-");
-        if (time_range[0] == "" || time_range[0] == "Click to select a date range") {
+
+        if (time_range[0] == "" || time_range[0] == "All Periods") {
             time_range[0] = '01-01-1996';
             time_range[1] = '31-12-6000';
             return {'time_range':time_range, 'aggregationArray': aggregationArray};
@@ -39,6 +40,9 @@ $(document).ready(function() {
 
     $("#dateRangePicker").daterangepicker({
         presetRanges: [
+            {text: gettext('All Periods'), dateStart: function() {
+                return Date.parse('1900.01.01')
+            }, dateEnd: 'today', is_for_all_period: true },
             {text: gettext('Current month'), dateStart: function() {
                 return Date.parse('today').moveToFirstDayOfMonth();
             }, dateEnd: 'today' },
@@ -115,17 +119,13 @@ $(document).ready(function() {
     });
 
     $('#time_submit').click(function() {
-        var data = DW.submit_data();
-        var aggregationArray = data['aggregationArray'];
-        var time_list = data['time_range'];
         var report_period = $("#dateRangePicker").val()
+        var for_all_period = (report_period == gettext("All Periods"))
         report_period = report_period.replace(/ /g,'')
-
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
         $.ajax({
             type: 'POST',
-            url: window.location.pathname + report_period + '/',
-            data: {'aggregation-types':JSON.stringify(aggregationArray), 'start_time':time_list[0], 'end_time': time_list[1]},
+            url: window.location.pathname + (for_all_period ? "" : (report_period + '/')),
             success:function(response) {
                 var response_data = JSON.parse(response);
                 DW.dataBinding(response_data.data, true, false);

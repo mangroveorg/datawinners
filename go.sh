@@ -24,9 +24,15 @@ function prepare_env {
   	update_source && prepare_mangrove_env && prepare_datawinner_env 
 }
 
+function restore_couchdb_and_postgres {
+  	restore_postgresql_database && \
+	recreate_couch_db
+}
+
 function unit_test {
 	echo "running unit test"
 	recreate_couch_db && \
+	compile_messages && \
 	(cd "$DWROOT_DIR/datawinners" && python manage.py test --verbosity=2)
 }
 
@@ -39,6 +45,7 @@ function function_test {
 	cp "$DWROOT_DIR/datawinners/local_settings_example.py" "$DWROOT_DIR/func_tests/resources/local_settings.py"
 	restore_postgresql_database && \
 	recreate_couch_db && \
+	compile_messages && \
 	(cd "$DWROOT_DIR/func_tests" && nosetests --rednose -v -a functional_test)
 }
 

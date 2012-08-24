@@ -1102,7 +1102,7 @@ msgstr "Cliquer pour sélectionner une période"
 
 #: templates/project/data_analysis.html:85
 msgid "All Periods"
-msgstr ""
+msgstr "Toutes les Périodes"
 
 #: templates/project/data_analysis.html:78 templates/project/results.html:72
 msgid "Filter"
