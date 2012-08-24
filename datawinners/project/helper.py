@@ -296,7 +296,7 @@ def to_lowercase_submission_keys(submissions):
 def get_field_values(request, manager, form_model, filters=[]):
     assert isinstance(form_model, FormModel)
 
-    submissions = get_submissions(manager, form_model.form_code, None, None,view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+    submissions = get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
     to_lowercase_submission_keys(submissions)
     for filter in filters:
         submissions = filter.filter(submissions)
