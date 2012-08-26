@@ -57,3 +57,6 @@ class ProjectOverviewPage(Page):
     def navigate_to_questionnaire_tab(self):
         self.driver.find(QUESTIONNAIRE_TAB).click()
         return QuestionnaireTabPage(self.driver)
+
+    def get_project_title(self):
+        return self.driver.find(PROJECT_TITLE_LOCATOR).text.lower()
