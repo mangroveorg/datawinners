@@ -224,13 +224,17 @@ jQuery.fn.daterangepicker = function(settings){
 			setTimeout(function(){doneBtn.fadeIn();}, 400);
 		}
 		else if(jQuery(this).is('.ui-daterangepicker-dateRange')){
-			doneBtn.hide();
-			rpPickers.show();
-			rp.find('.title-start').text(options.rangeStartTitle);
-			rp.find('.title-end').text(options.rangeEndTitle);
-			rp.find('.range-start').restoreDateFromData().show(400);
-			rp.find('.range-end').restoreDateFromData().show(400);
-			setTimeout(function(){doneBtn.fadeIn();}, 400);
+            if(options.dateFormat.indexOf('dd') >= 0){
+                doneBtn.hide();
+                rpPickers.show();
+                rp.find('.title-start').text(options.rangeStartTitle);
+                rp.find('.title-end').text(options.rangeEndTitle);
+                rp.find('.range-start').restoreDateFromData().show(400);
+                rp.find('.range-end').restoreDateFromData().show(400);
+                setTimeout(function(){doneBtn.fadeIn();}, 400);
+            }else{
+                showMP(rangeInput);
+            }
 		}
 		else {
 			//custom date range
@@ -279,6 +283,9 @@ jQuery.fn.daterangepicker = function(settings){
 	//inputs toggle rangepicker visibility
 	jQuery(this).click(function(){
 		toggleRP();
+        if(rp.find('.ui-daterangepicker-dateRange').is('.ui-state-active')){
+            showMP(rangeInput);
+        }
 		return false;
 	});
 	//hide em all

@@ -1,0 +1,32 @@
+#month_date_picker_div {
+  height: 215px;
+  width: 530px;
+  border: 2px;
+  background-color: #3D3D3D;
+  display: inline-block;
+  border-radius: 11px; }
+  #month_date_picker_div div {
+    width: 100%; }
+    #month_date_picker_div div #start_border, #month_date_picker_div div #end_border {
+      width: 49%;
+      float: left; }
+      #month_date_picker_div div #start_border #month_picker_title_start, #month_date_picker_div div #start_border #month_picker_title_end, #month_date_picker_div div #end_border #month_picker_title_start, #month_date_picker_div div #end_border #month_picker_title_end {
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        width: 100%;
+        padding-top: 5px;
+        text-align: center;
+        color: white;
+        font-weight: bold; }
+      #month_date_picker_div div #start_border #monthpicker_start, #month_date_picker_div div #start_border #monthpicker_end, #month_date_picker_div div #end_border #monthpicker_start, #month_date_picker_div div #end_border #monthpicker_end {
+        top: 0px;
+        left: 0px;
+        position: relative; }
+    #month_date_picker_div div #start_border {
+      padding-left: 7px; }
+    #month_date_picker_div div button {
+      display: block;
+      float: right;
+      margin: 4px 10px 0 0;
+      border-radius: 4px; }
