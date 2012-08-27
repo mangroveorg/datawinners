@@ -36,7 +36,7 @@ def create_questionnaire(post, manager, entity_type, name, language):
     return form_model
 
 
-def update_questionnaire(questionnaire, post, entity_type, name, manager, language):
+def update_questionnaire(questionnaire, post, entity_type, name, manager, language, max_code = 1):
     questionnaire.name = name
     questionnaire.activeLanguages = [language]
     questionnaire.entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -114,6 +114,11 @@ def create_project(request):
 
             return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
+
+def get_max_code(old_questionnaire):
+    return max([int(q.code[1:]) for q in old_questionnaire])
+
+
 @login_required(login_url='/login')
 @is_datasender
 @csrf_exempt
@@ -152,6 +157,7 @@ def edit_project(request, project_id=None):
             project.update(form.cleaned_data)
             try:
                 old_questionnaire = questionnaire.fields
+                max_code = get_max_code(old_questionnaire)
                 questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'])
                 changed_questions = get_changed_questions(old_questionnaire, questionnaire.fields, subject=False)
                 detail.update(changed_questions)
