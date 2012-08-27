@@ -32,11 +32,11 @@ class TestQuestionnaireBuilder(unittest.TestCase):
 
 
     def test_should_update_questionnaire_when_entity_type_is_reporter(self):
-        post = [{"title": "q1", "type": "text", "choices": [], "is_entity_question": False,
+        post = [{"title": "q1", "type": "text", "choices": [], "is_entity_question": False,"code": "q1",
                  "min_length": 1, "max_length": ""},
-                {"title": "q2", "type": "integer", "choices": [], "is_entity_question": False,
+                {"title": "q2", "type": "integer", "choices": [], "is_entity_question": False,"code": "code",
                  "range_min": 0, "range_max": 100},
-                {"title": "q3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
+                {"title": "q3", "type": "select","code": "code", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
         form_model = FormModel(self.dbm, "act_rep", "act_rep", "test", [], ["reporter"], "test")
@@ -52,11 +52,11 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         self.assertEqual("Choose Data Sender from this list.", entity_id_question.instruction)
 
     def test_should_save_questionnaire_from_post(self):
-        post = [{"title": "q1", "type": "text", "choices": [], "is_entity_question": True,
+        post = [{"title": "q1", "type": "text", "choices": [], "is_entity_question": True, "code": "code",
                  "min_length": 1, "max_length": ""},
-                {"title": "q2", "type": "integer", "choices": [], "is_entity_question": False,
+                {"title": "q2", "type": "integer", "choices": [], "is_entity_question": False, "code": "code",
                  "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
+                {"title": "q3", "code": "qc3", "type": "select",  "code": "code","choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
         form_model = FormModel(self.dbm, "test", "test", "test", [Mock(spec=TextField)], ["test"], "test", enforce_unique_labels=False)
@@ -69,6 +69,22 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         self.assertEqual('q1',generator.next())
         self.assertEqual('q2',generator.next())
         self.assertEqual('q3',generator.next())
+
+    def test_should_update_questionnaire_when_add_new_questions(self):
+        post = [{"title": "q1", "type": "text", "choices": [], "is_entity_question": False, "code": "q1",
+                 "min_length": 1, "max_length": ""},
+                {"title": "q2", "type": "integer", "choices": [], "is_entity_question": False,"code": "q2",
+                 "range_min": 0, "range_max": 100},
+                {"title": "q3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],"code": "code",
+                 "is_entity_question": False}
+        ]
+        form_model = FormModel(self.dbm, "act_rep", "act_rep", "test", [], ["reporter"], "test")
+        QuestionnaireBuilder(form_model,self.dbm).update_questionnaire_with_questions(post, max_code=4)
+        self.assertEqual(4, len(form_model.fields))
+        self.assertEqual('eid', form_model.fields[0].code)
+        self.assertEqual('q1', form_model.fields[1].code)
+        self.assertEqual('q2', form_model.fields[2].code)
+        self.assertEqual('q5', form_model.fields[3].code)
 
 class TestQuestionBuilder(unittest.TestCase):
 

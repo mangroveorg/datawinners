@@ -55,6 +55,7 @@ from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
+from project.wizard_view import get_max_code
 
 
 COUNTRY = ',MADAGASCAR'
@@ -720,7 +721,7 @@ def save_questionnaire(request):
         question_set = json.loads(json_string)
         try:
             saved_fields = form_model.fields
-            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
+            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set, get_max_code(saved_fields))
             form_model.save()
             changed = get_changed_questions(saved_fields, form_model.fields, form_model.activeLanguages[0])
             changed.update(dict(entity_type=form_model.entity_type[0].capitalize()))

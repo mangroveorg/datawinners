@@ -32,7 +32,7 @@ def create_questionnaire(post, manager, entity_type, name, language):
     question_set = json.loads(json_string)
     form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey',
                            state=post['project_state'], fields=[], form_code=questionnaire_code, language=language)
-    QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
+    QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set, get_max_code_in_questionnaire_set(question_set))
     return form_model
 
 
@@ -43,7 +43,7 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
     questionnaire.form_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
+    QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set, max_code)
     questionnaire.deactivate() if post['project_state'] == ProjectState.INACTIVE else questionnaire.set_test_mode()
     return questionnaire
 
@@ -115,8 +115,14 @@ def create_project(request):
             return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
 
+def get_max_code_in_questionnaire_set(questionnaire_set):
+    codes = [int( q['code'][1:] ) for q in questionnaire_set if q['code'].startswith( 'q' )]
+    if codes is not None and len(codes) > 0:
+        return max( codes )
+    return 1
+
 def get_max_code(old_questionnaire):
-    return max([int(q.code[1:]) for q in old_questionnaire])
+    return max([int(q.code[1:]) for q in old_questionnaire if q.code.startswith('q') ])
 
 
 @login_required(login_url='/login')
@@ -158,7 +164,7 @@ def edit_project(request, project_id=None):
             try:
                 old_questionnaire = questionnaire.fields
                 max_code = get_max_code(old_questionnaire)
-                questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'])
+                questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'], max_code)
                 changed_questions = get_changed_questions(old_questionnaire, questionnaire.fields, subject=False)
                 detail.update(changed_questions)
                 project.state = request.POST['project_state']
