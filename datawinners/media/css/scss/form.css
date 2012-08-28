@@ -57,7 +57,7 @@ form ul li {
     display: inline;
     max-width: 360px;
     background: url(/media/images/arrow_error.png) no-repeat left 10px;
-    margin-top: -5px;
+    margin-top: -3px;
     padding: 3px 10px 3px 10px;
     border: 1px solid #00000;
     -moz-border-radius: 5px;
