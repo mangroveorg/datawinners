@@ -63,5 +63,4 @@ urlpatterns = patterns('',
         url(r'^project/smart_phone_preview$', smart_phone_preview, name="smart_phone_preview"),
         url(r'^project/questionnaire_sms_preview$', questionnaire_sms_preview, name="questionnaire_sms_preview"),
         url(r'^project/questionnaire_web_preview$', questionnaire_web_preview, name="questionnaire_web_preview"),
-        url(r'^project/test_month_picker$', show_month_picker),
 )

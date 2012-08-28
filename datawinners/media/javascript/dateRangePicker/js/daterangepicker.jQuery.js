@@ -1,3 +1,4 @@
+
 /**
  * --------------------------------------------------------------------
  * jQuery-Plugin "daterangepicker.jQuery.js"
@@ -19,7 +20,7 @@
  */
 jQuery.fn.daterangepicker = function(settings){
 	var rangeInput = jQuery(this);
-	
+
 	//defaults
 	var options = jQuery.extend({
 		presetRanges: [
@@ -27,20 +28,12 @@ jQuery.fn.daterangepicker = function(settings){
 			{text: 'Last 7 days', dateStart: 'today-7days', dateEnd: 'today' },
 			{text: 'Month to date', dateStart: function(){ return Date.parse('today').moveToFirstDayOfMonth();  }, dateEnd: 'today' },
 			{text: 'Year to date', dateStart: function(){ var x= Date.parse('today'); x.setMonth(0); x.setDate(1); return x; }, dateEnd: 'today' },
-			//extras:
 			{text: 'The previous Month', dateStart: function(){ return Date.parse('1 month ago').moveToFirstDayOfMonth();  }, dateEnd: function(){ return Date.parse('1 month ago').moveToLastDayOfMonth();  } }
-			//{text: 'Tomorrow', dateStart: 'Tomorrow', dateEnd: 'Tomorrow' },
-			//{text: 'Ad Campaign', dateStart: '03/07/08', dateEnd: 'Today' },
-			//{text: 'Last 30 Days', dateStart: 'Today-30', dateEnd: 'Today' },
-			//{text: 'Next 30 Days', dateStart: 'Today', dateEnd: 'Today+30' },
-			//{text: 'Our Ad Campaign', dateStart: '03/07/08', dateEnd: '07/08/08' }
-		], 
-		//presetRanges: array of objects for each menu preset. 
-		//Each obj must have text, dateStart, dateEnd. dateStart, dateEnd accept date.js string or a function which returns a date object
+		],
 		presets: {
-			specificDate: 'Specific Date', 
-			allDatesBefore: 'All Dates Before', 
-			allDatesAfter: 'All Dates After', 
+			specificDate: 'Specific Date',
+			allDatesBefore: 'All Dates Before',
+			allDatesAfter: 'All Dates After',
 			dateRange: 'Date Range'
 		},
 		rangeStartTitle: gettext('Start date'),
@@ -48,8 +41,8 @@ jQuery.fn.daterangepicker = function(settings){
 		nextLinkText: 'Next',
 		prevLinkText: 'Prev',
 		doneButtonText: gettext('Done'),
-		earliestDate: Date.parse('-15years'), //earliest date allowed 
-		latestDate: Date.parse('+15years'), //latest date allowed 
+		earliestDate: Date.parse('-15years'), //earliest date allowed
+		latestDate: Date.parse('+15years'), //latest date allowed
 		rangeSplitter: '-', //string to use between dates in single input
 		dateFormat: 'm/d/yy', // date formatting. Available formats: http://docs.jquery.com/UI/Datepicker/%24.datepicker.formatDate
 		closeOnSelect: true, //if a complete selection is made, close the menu
@@ -62,17 +55,17 @@ jQuery.fn.daterangepicker = function(settings){
 		onChange: function(){},
 		datepickerOptions: null //object containing native UI datepicker API options
 	}, settings);
-	
+
 
 	//custom datepicker options, extended by options
 	var datepickerOptions = {
-		onSelect: function() { 
+		onSelect: function() {
 				if(rp.find('.ui-daterangepicker-specificDate').is('.ui-state-active')){
-					rp.find('.range-end').datepicker('setDate', rp.find('.range-start').datepicker('getDate') ); 
+					rp.find('.range-end').datepicker('setDate', rp.find('.range-start').datepicker('getDate') );
 				}
 				var rangeA = fDate( rp.find('.range-start').datepicker('getDate') );
 				var rangeB = fDate( rp.find('.range-end').datepicker('getDate') );
-				
+
 				//send back to input or inputs
 				if(rangeInput.length == 2){
 					rangeInput.eq(0).val(rangeA);
@@ -86,27 +79,27 @@ jQuery.fn.daterangepicker = function(settings){
 					if(!rp.find('li.ui-state-active').is('.ui-daterangepicker-dateRange') && !rp.is(':animated') ){
 						hideRP();
 					}
-				}	
-				options.onChange();			
+				}
+				options.onChange();
 			},
 			defaultDate: +0
 	};
-	
+
 	//change event fires both when a calendar is updated or a change event on the input is triggered
 	rangeInput.change(options.onChange);
-	
-	
+
+
 	//datepicker options from options
 	options.datepickerOptions = (settings) ? jQuery.extend(datepickerOptions, settings.datepickerOptions) : datepickerOptions;
-	
+
 	//Capture Dates from input(s)
 	var inputDateA, inputDateB = Date.parse('today');
 	var inputDateAtemp, inputDateBtemp;
 	if(rangeInput.size() == 2){
 		inputDateAtemp = Date.parse( rangeInput.eq(0).val() );
 		inputDateBtemp = Date.parse( rangeInput.eq(1).val() );
-		if(inputDateAtemp == null){inputDateAtemp = inputDateBtemp;} 
-		if(inputDateBtemp == null){inputDateBtemp = inputDateAtemp;} 
+		if(inputDateAtemp == null){inputDateAtemp = inputDateBtemp;}
+		if(inputDateBtemp == null){inputDateBtemp = inputDateAtemp;}
 	}
 	else {
 		inputDateAtemp = Date.parse( rangeInput.val().split(options.rangeSplitter)[0] );
@@ -116,9 +109,9 @@ jQuery.fn.daterangepicker = function(settings){
 	if(inputDateAtemp != null){inputDateA = inputDateAtemp;}
 	if(inputDateBtemp != null){inputDateB = inputDateBtemp;}
 
-		
-	//build picker and 
-	var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all"></div>');
+
+	//build picker and
+	var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all clearfix"></div>');
 	var rpPresets = (function(){
 		var ul = jQuery('<ul class="ui-widget-content"></ul>').appendTo(rp);
 		jQuery.each(options.presetRanges,function(){
@@ -134,7 +127,7 @@ jQuery.fn.daterangepicker = function(settings){
 			.appendTo(ul);
 			x++;
 		});
-		
+
 		ul.find('li').hover(
 				function(){
 					jQuery(this).addClass('ui-state-hover');
@@ -149,8 +142,8 @@ jQuery.fn.daterangepicker = function(settings){
 			});
 		return ul;
 	})();
-				
-	//function to format a date string        
+
+	//function to format a date string
 	function fDate(date){
 	   if(!date.getDate()){return '';}
 	   var day = date.getDate();
@@ -158,13 +151,13 @@ jQuery.fn.daterangepicker = function(settings){
 	   var year = date.getFullYear();
 	   month++; // adjust javascript month
 	   var dateFormat = options.dateFormat;
-	   return jQuery.datepicker.formatDate( dateFormat, date ); 
+	   return jQuery.datepicker.formatDate( dateFormat, date );
 	}
-	
-	
+
+
 	jQuery.fn.restoreDateFromData = function(){
 		if(jQuery(this).data('saveDate')){
-			jQuery(this).datepicker('setDate', jQuery(this).data('saveDate')).removeData('saveDate'); 
+			jQuery(this).datepicker('setDate', jQuery(this).data('saveDate')).removeData('saveDate');
 		}
 		return this;
 	}
@@ -174,20 +167,20 @@ jQuery.fn.daterangepicker = function(settings){
 		}
 		return this;
 	}
-	
+
 	//show, hide, or toggle rangepicker
 	function showRP(){
-		if(rp.data('state') == 'closed'){ 
+		if(rp.data('state') == 'closed'){
 			rp.data('state', 'open');
 			rp.fadeIn(300);
-			options.onOpen(); 
+			options.onOpen();
 		}
 	}
 	function hideRP(){
-		if(rp.data('state') == 'open'){ 
+		if(rp.data('state') == 'open'){
 			rp.data('state', 'closed');
 			rp.fadeOut(300);
-			options.onClose(); 
+			options.onClose();
 		}
 	}
 	function toggleRP(){
@@ -195,10 +188,10 @@ jQuery.fn.daterangepicker = function(settings){
 		else { showRP(); }
 	}
 	rp.data('state', 'closed');
-					
-	//preset menu click events	
+
+	//preset menu click events
 	jQuery.fn.clickActions = function(rp, rpPickers, doneBtn){
-		
+
 		if(jQuery(this).is('.ui-daterangepicker-specificDate')){
 			doneBtn.hide();
 			rpPickers.show();
@@ -224,15 +217,15 @@ jQuery.fn.daterangepicker = function(settings){
 			setTimeout(function(){doneBtn.fadeIn();}, 400);
 		}
 		else if(jQuery(this).is('.ui-daterangepicker-dateRange')){
-            if(options.dateFormat.indexOf('dd') >= 0){
-                doneBtn.hide();
-                rpPickers.show();
-                rp.find('.title-start').text(options.rangeStartTitle);
-                rp.find('.title-end').text(options.rangeEndTitle);
-                rp.find('.range-start').restoreDateFromData().show(400);
-                rp.find('.range-end').restoreDateFromData().show(400);
-                setTimeout(function(){doneBtn.fadeIn();}, 400);
-            }else{
+            doneBtn.hide();
+            rpPickers.show();
+            rp.find('.title-start').text(options.rangeStartTitle);
+            rp.find('.title-end').text(options.rangeEndTitle);
+            setTimeout(function(){doneBtn.fadeIn();}, 400);
+            rp.find('.range-start').restoreDateFromData().show(400);
+            rp.find('.range-end').restoreDateFromData().show(400);
+            if(options.dateFormat.indexOf('dd') < 0){
+                rp.find('.ui-datepicker-inline').hide();
                 showMP(rangeInput);
             }
 		}
@@ -252,48 +245,27 @@ jQuery.fn.daterangepicker = function(settings){
                     rp.find('.range-end').datepicker('setDate', dateEnd).find('.ui-datepicker-current-day').trigger('click');
                 }
 		}
-		
+
 		return false;
-	}	
-	
+	}
+
 
 	//picker divs
-	var rpPickers = jQuery('<div class="ranges ui-widget-header ui-corner-all ui-helper-clearfix"><div class="range-start"><span class="title-start">Start Date</span></div><div class="range-end"><span class="title-end">End Date</span></div></div>').appendTo(rp);
-	rpPickers.find('.range-start, .range-end').datepicker(options.datepickerOptions);
-	rpPickers.find('.range-start').datepicker('setDate', inputDateA);
-	rpPickers.find('.range-end').datepicker('setDate', inputDateB);
-	var doneBtn = jQuery('<button class="btnDone ui-state-default ui-corner-all">'+ options.doneButtonText +'</button>')
-	.click(function(){
-		rp.find('.ui-datepicker-current-day').trigger('click');
-		hideRP();
-	})
-	.hover(
-			function(){
-				jQuery(this).addClass('ui-state-hover');
-			},
-			function(){
-				jQuery(this).removeClass('ui-state-hover');
-			}
-	)
-	.appendTo(rpPickers);
-	
-	
-	
-	
+    var rpPickers = buildRPicker(options, inputDateA, inputDateB);
+    var doneBtn = buildDoneButton(options, rp, rpPickers, hideRP);
+    rpPickers.appendTo(rp);
+
 	//inputs toggle rangepicker visibility
 	jQuery(this).click(function(){
 		toggleRP();
-        if(rp.find('.ui-daterangepicker-dateRange').is('.ui-state-active')){
-            showMP(rangeInput);
-        }
 		return false;
 	});
 	//hide em all
 	rpPickers.css('display', 'none').find('.range-start, .range-end, .btnDone').css('display', 'none');
-	
+
 	//inject rp
 	jQuery(options.appendTo).append(rp);
-	
+
 	//wrap and position
 	rp.wrap('<div class="ui-daterangepickercontain"></div>');
 	if(options.posX){
@@ -317,13 +289,13 @@ jQuery.fn.daterangepicker = function(settings){
 			var dateB = rpPickers.find('.range-end').datepicker('getDate');
 			var diff = Math.abs( new TimeSpan(dateA - dateB).getTotalMilliseconds() ) + 86400000; //difference plus one day
 			if(jQuery(this).is('.ui-daterangepicker-prev')){ diff = -diff; }
-			
+
 			rpPickers.find('.range-start, .range-end ').each(function(){
 					var thisDate = jQuery(this).datepicker( "getDate");
 					if(thisDate == null){return false;}
 					jQuery(this).datepicker( "setDate", thisDate.add({milliseconds: diff}) ).find('.ui-datepicker-current-day').trigger('click');
 			});
-			
+
 			return false;
 		})
 		.hover(
@@ -335,13 +307,12 @@ jQuery.fn.daterangepicker = function(settings){
 			})
 		;
 	}
-	
-	
+
 	jQuery(document).click(function(){
 		if (rp.is(':visible')) {
 			hideRP();
 		}
-	}); 
+	});
 
 	rp.click(function(){return false;}).hide();
 	return this;
@@ -726,3 +697,41 @@ var TimePeriod = function (years, months, days, hours, minutes, seconds, millise
     }
     return this;
 };
+
+function buildRPicker(options, inputDateA, inputDateB) {
+    var rpPickers = jQuery('<div class="ranges ui-widget-header ui-corner-all ui-helper-clearfix">' +
+        '<div class="range-start"><span class="title-start">Start Date</span></div><div class="range-end">' +
+        '<span class="title-end">End Date</span></div></div>');
+    rpPickers.find('.range-start, .range-end').datepicker(options.datepickerOptions);
+    rpPickers.find('.range-start').datepicker('setDate', inputDateA);
+    rpPickers.find('.range-end').datepicker('setDate', inputDateB);
+
+    if(options.dateFormat.indexOf("dd") >= 0){
+//        rpPickers.find('.range-start, .range-end').datepicker(options.datepickerOptions);
+//        rpPickers.find('.range-start').datepicker('setDate', inputDateA);
+//        rpPickers.find('.range-end').datepicker('setDate', inputDateB);
+    }else{
+        var mps = $('#dateRangePicker').monthpicker();
+        var rst = rpPickers.find(".range-start");
+        jQuery(mps[0]).appendTo(rst);
+        mps[1].appendTo(rpPickers.find(".range-end"));
+    }
+    console.log(rpPickers)
+    return rpPickers;
+}
+
+function buildDoneButton(options, rp, rpPickers, hideFunction) {
+    return jQuery('<button class="btnDone ui-state-default ui-corner-all">' + options.doneButtonText + '</button>')
+        .click(function () {
+            rp.find('.ui-datepicker-current-day').trigger('click');
+            hideFunction();
+        })
+        .hover(
+        function () {
+            jQuery(this).addClass('ui-state-hover');
+        },
+        function () {
+            jQuery(this).removeClass('ui-state-hover');
+        }
+    ) .appendTo(rpPickers);
+}
