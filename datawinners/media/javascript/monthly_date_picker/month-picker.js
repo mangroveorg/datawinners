@@ -85,7 +85,8 @@
                     $this.monthpicker('mountWidget', settings, settings_end);
                     $this.monthpicker('mountMP');
 
-                    $this.bind('monthpicker-click-month', function (e) {
+                    $this.bind('monthpicker-click-month', function (e, element) {
+                        selectedChanged(element);
                         $this.monthpicker('setValue', settings, settings_start, settings_end);
                     });
 
@@ -103,14 +104,18 @@
         },
 
         show:function (n) {
-            var widget = $('#' + this.data('monthpicker').settings_start.id);
+            var start_settings = this.data('monthpicker').settings_start;
+            var end_settings = this.data('monthpicker').settings_end;
+            var widget = $('#' + start_settings.id);
             var monthpicker = $('#' + this.data('monthpicker').target.attr("id") + ':eq(0)');
+            widget.find(".ui-mtz-picker-year-label").text(start_settings.year);
+            selectedChanged(jQuery(widget.find('td[data-month=' + start_settings.month + ']'))[0]);
             widget.show();
-            widget.find('select').focus();
 
-            var widget2 = $('#' + this.data('monthpicker').settings_end.id);
+            var widget2 = $('#' + end_settings.id);
+            widget2.find(".ui-mtz-picker-year-label").text(end_settings.year);
+            selectedChanged(jQuery(widget2.find('td[data-month=' + end_settings.month + ']'))[0]);
             widget2.show();
-            widget2.find('select').focus();
 
             $("#month_date_picker_div").show();
         },
@@ -183,7 +188,7 @@
                 var m = parseInt($(this).data('month'));
                 settings.month = $(this).data('month');
                 settings.monthName = $(this).text();
-                monthpicker.trigger("monthpicker-click-month");
+                monthpicker.trigger("monthpicker-click-month", $(this));
             });
 
             container.find('.mtz-monthpicker-year').bind('change', function () {
@@ -214,8 +219,41 @@
         }
     };
 
-})(jQuery);
+    function format_month(global_settings, settings) {
+        var month = settings.month;
+        if (global_settings.pattern.indexOf('mmm') >= 0) {
+            month = settings.monthName;
+        } else if (global_settings.pattern.indexOf('mm') >= 0 && settings.month < 10) {
+            month = '0' + settings.month;
+        }
+        return month;
+    }
 
+    function format_year(global_settings, settings) {
+        var year;
+        if (global_settings.pattern.indexOf('yyyy') < 0) {
+            year = settings.year.toString().substr(2, 2);
+        } else {
+            year = settings.year;
+        }
+        return year;
+    }
+
+    function format_date(global_settings, month_start, year_start, month_end, year_end) {
+        var date_start, date_end;
+
+        if (global_settings.pattern.indexOf('y') > global_settings.pattern.indexOf(global_settings.dateSeparator)) {
+            date_start = month_start + global_settings.dateSeparator + year_start;
+            date_end = month_end + global_settings.dateSeparator + year_end;
+        } else {
+            date_start = year_start + global_settings.dateSeparator + month_start;
+            date_end = year_end + global_settings.dateSeparator + month_end;
+        }
+        if(date_start == date_end) return date_start;
+        return date_start + " - " + date_end;
+    }
+
+})(jQuery);
 
 function showMP(monthPicker) {
     var mp = $("#month_date_picker_div");
@@ -224,49 +262,30 @@ function showMP(monthPicker) {
     }
 }
 
-function format_month(global_settings, settings) {
-    var month = settings.month;
-    if (global_settings.pattern.indexOf('mmm') >= 0) {
-        month = settings.monthName;
-    } else if (global_settings.pattern.indexOf('mm') >= 0 && settings.month < 10) {
-        month = '0' + settings.month;
-    }
-    return month;
-}
-function format_year(global_settings, settings) {
-    var year;
-    if (global_settings.pattern.indexOf('yyyy') < 0) {
-        year = settings.year.toString().substr(2, 2);
-    } else {
-        year = settings.year;
-    }
-    return year;
-}
-function format_date(global_settings, month_start, year_start, month_end, year_end) {
-    var date_start, date_end;
-    if (global_settings.pattern.indexOf('y') > global_settings.pattern.indexOf(global_settings.dateSeparator)) {
-        date_start = month_start + global_settings.dateSeparator + year_start;
-        date_end = month_end + global_settings.dateSeparator + year_end;
-
-    } else {
-        date_start = year_start + global_settings.dateSeparator + month_start;
-        date_end = year_end + global_settings.dateSeparator + month_end;
-    }
-    return date_start + " - " + date_end;
+function setMPDates(monthpicker, start_year, start_month, end_year, end_month){
+    var data = monthpicker.data('monthpicker');
+    data.settings_start.year = start_year;
+    data.settings_start.month = start_month;
+    data.settings_end.year = end_year;
+    data.settings_end.month = end_month;
 }
 
-function onYearChanged(combo_label, incredValue, cur_settings, rangeInput) {
+function setMPText(monthpicker) {
+    var global_settings = monthpicker.data('monthpicker').settings,
+        settings_start = monthpicker.data('monthpicker').settings_start,
+        settings_end = monthpicker.data('monthpicker').settings_end;
+
+    monthpicker.monthpicker('setValue', global_settings, settings_start, settings_end);
+}
+function onYearChanged(combo_label, incredValue, cur_settings, monthpicker) {
     year = parseInt(combo_label.text()) - incredValue
     cur_settings.year = year + '';
     combo_label.text(cur_settings.year);
 
-    var global_settings = rangeInput.data('monthpicker').settings,
-        settings_start = rangeInput.data('monthpicker').settings_start,
-        settings_end = rangeInput.data('monthpicker').settings_end;
-    rangeInput.monthpicker('setValue', global_settings, settings_start, settings_end);
+    setMPText(monthpicker);
 }
 
-function buildYearWidget(settings, rangeInput) {
+function buildYearWidget(settings, monthpicker) {
     var
         combo = $('<div class="mtz-monthpicker mtz-monthpicker-year" /div>'),
         combo_pre = $('<a class="ui-datepicker-prev ui-corner-all " title="Prev"></a>'),
@@ -282,11 +301,16 @@ function buildYearWidget(settings, rangeInput) {
     combo.append(combo_label);
 
     combo.find('.prev_year').bind('click', function(e){
-        onYearChanged(combo_label, 1, settings, rangeInput);
+        onYearChanged(combo_label, 1, settings, monthpicker);
     });
     combo.find('.next_year').bind('click', function (e) {
-        onYearChanged(combo_label, -1, settings, rangeInput);
+        onYearChanged(combo_label, -1, settings, monthpicker);
     });
 
     return combo;
+}
+
+function selectedChanged(element) {
+    jQuery(element.parentNode.parentNode).find('.month-selected').removeClass('month-selected');
+    jQuery(element).addClass('month-selected');
 }

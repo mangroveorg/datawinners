@@ -1,3 +1,8 @@
+.mtz-monthpicker-month:hover, .month-selected {
+  border: 1px solid #666!important;
+  background: #CCC!important;
+  color: #EB8F00!important; }
+
 #month_date_picker_div div {
   width: 100%; }
   #month_date_picker_div div #start_border, #month_date_picker_div div #end_border {
