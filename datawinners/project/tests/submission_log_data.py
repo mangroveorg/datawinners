@@ -16,6 +16,6 @@ submission2 = {
               "values": {"eid": "cli14", "na": "Vamand", "fa": "36", "rd": "27.7.2012", "bg": "a", "sy": "ace",
                          "gps": "58.3452 115.3345", "rm": "b"}, "test": False,
               "data_record_id": "37bb54d8e5e411e1b398782bcb949d5e", "submitted_on": "2012-07-27T12:45:58+00:00",
-              "void": False, "channel": "sms"}}
+              "void": False, "channel": "web"}}
 
 SUBMISSIONS = [submission1, submission2]

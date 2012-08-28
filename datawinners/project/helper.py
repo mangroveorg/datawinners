@@ -208,26 +208,33 @@ def case_insensitive_lookup(search_key, dictionary):
     return None
 
 
+def get_first_element_of_leading_part(dbm, form_model, submission, data_sender):
+    first_element = None
+    if submission.channel == 'sms':
+        first_element = data_sender
+    elif submission.channel == 'web':
+        entity = get_by_short_code(dbm, case_insensitive_lookup(form_model.entity_question.code, submission.values),
+            [form_model.entity_type[0]])
+        first_element = (entity.data['name']['value'], entity.short_code)
+    return first_element
+
 def get_leading_part(dbm, form_model, submissions, user):
     result = []
 
     rp_field = form_model.event_time_question
     for submission in submissions:
-        entity = get_by_short_code(dbm, case_insensitive_lookup(form_model.entity_question.code, submission.values), [form_model.entity_type[0]])
-
-        reporting_period = case_insensitive_lookup(rp_field.code, submission.values) if rp_field else None
-
-        datasender = get_data_sender(dbm, user, submission)
+        data_sender = get_data_sender(dbm, user, submission)
 
         submission_date = _to_str(submission.created)
-        reporting_period = _to_str(reporting_period, rp_field)
-        subject = (entity.data['name']['value'], entity.short_code)
+
+        first_element = get_first_element_of_leading_part(dbm, form_model, submission, data_sender)
 
         if rp_field:
-            row = [subject, reporting_period, submission_date, datasender]
+            reporting_period = case_insensitive_lookup(rp_field.code, submission.values) if rp_field else None
+            reporting_period = _to_str(reporting_period, rp_field)
+            row = [first_element, reporting_period, submission_date, data_sender]
         else:
-            row = [subject, submission_date, datasender]
-
+            row = [first_element, submission_date, data_sender]
         result.append(row)
 
     return result

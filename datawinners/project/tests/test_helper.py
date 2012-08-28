@@ -218,9 +218,11 @@ class TestHelper(unittest.TestCase):
                     form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, False)
                     filters = build_filters({}, form_model)
                     values_dict = get_field_values(Mock(), dbm, form_model, filters)
-                    expected = [('realname', 'cli13'),'--', u'27.07.2012', ('Sender1', 'rep1'),'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
+                    expected = [("Sender1", "rep1"), '--', u'27.07.2012', ('Sender1', 'rep1'),'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
+                    expected2 = [('realname', 'cli13'), u'--', u'27.07.2012', ('Sender1', 'rep1'), 'Vamand', '36', 'a', 'ace', '58.3452 115.3345', 'b']
                     self.assertEqual(len(SUBMISSIONS), len(values_dict))
                     self.assertEqual(expected, values_dict[0])
+                    self.assertEqual(expected2, values_dict[1])
 
     def test_should_return_submission_for_analysis_page_filtered_by_report_period_if_there_is_a_report_period_question(self):
         dbm = Mock(spec=DatabaseManager)
@@ -230,11 +232,11 @@ class TestHelper(unittest.TestCase):
                     form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, True)
                     filters = build_filters({'startTime':'25.7.2012', 'endTime':'26.7.2012'}, form_model)
                     values_dict = get_field_values(Mock(), dbm, form_model, filters)
-                    expected = [('realname', 'cli13'),
-                        '27.7.2012', u'27.07.2012', ('Sender1', 'rep1'),
-                        'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
+                    expected = [("Sender1", "rep1"), u'27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
+                    expected2 = [('realname', 'cli13'), '27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Vamand', '36', 'a', 'ace', '58.3452 115.3345', 'b']
                     self.assertEqual(len(SUBMISSIONS), len(values_dict))
                     self.assertEqual(expected, values_dict[0])
+                    self.assertEqual(expected2, values_dict[1])
 
     def test_should_return_submission_for_analysis_page_filtered_out_data_not_in_report_period_if_there_is_a_report_period_question(self):
         dbm = Mock(spec=DatabaseManager)
@@ -477,3 +479,4 @@ class TestPreviewCreator(unittest.TestCase):
     def test_should_make_the_post_url_for_import_subject_project_wizard(self):
         url = _get_imports_subjects_post_url()
         self.assertEqual("/entity/subject/import/", url)
+
