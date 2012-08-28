@@ -69,6 +69,7 @@ class UserActivityLog(models.Model):
     def translated_detail(self):
         try:
             detail_dict = json.loads(self.detail)
+            assert isinstance(detail_dict, dict)
         except Exception:
             return self.detail
         
