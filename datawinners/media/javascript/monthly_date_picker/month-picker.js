@@ -103,19 +103,19 @@
             });
         },
 
-        show:function (n) {
-            var start_settings = this.data('monthpicker').settings_start;
-            var end_settings = this.data('monthpicker').settings_end;
-            var widget = $('#' + start_settings.id);
-            var monthpicker = $('#' + this.data('monthpicker').target.attr("id") + ':eq(0)');
-            widget.find(".ui-mtz-picker-year-label").text(start_settings.year);
-            selectedChanged(jQuery(widget.find('td[data-month=' + start_settings.month + ']'))[0]);
-            widget.show();
 
-            var widget2 = $('#' + end_settings.id);
-            widget2.find(".ui-mtz-picker-year-label").text(end_settings.year);
-            selectedChanged(jQuery(widget2.find('td[data-month=' + end_settings.month + ']'))[0]);
-            widget2.show();
+
+        show:function (n) {
+             function showMPWidget(start_settings) {
+                var widget = $('#' + start_settings.id);
+                widget.find(".ui-mtz-picker-year-label").text(start_settings.year);
+                selectedChanged(jQuery(widget.find('td[data-month=' + start_settings.month + ']'))[0]);
+                widget.show();
+            };
+
+            var mp_data = this.data('monthpicker');
+            showMPWidget(mp_data.settings_start);
+            showMPWidget(mp_data.settings_end);
 
             $("#month_date_picker_div").show();
         },
@@ -136,12 +136,12 @@
         },
 
         mountMP:function () {
-            var widget = $('#' + this.data('monthpicker').settings_start.id);
-            var widget2 = $('#' + this.data('monthpicker').settings_end.id);
+            var start_widget = $('#' + this.data('monthpicker').settings_start.id);
+            var end_widget = $('#' + this.data('monthpicker').settings_end.id);
             var borderStart = jQuery('<div id="start_border" ></div>');
             var borderEnd = jQuery('<div id="end_border" ></div>');
-            borderStart.append(widget);
-            borderEnd.append(widget2);
+            borderStart.append(start_widget);
+            borderEnd.append(end_widget);
 
             $("#month_date_picker_div").append(borderStart);
             $("#month_date_picker_div").append(borderEnd);
@@ -227,7 +227,7 @@
             month = '0' + settings.month;
         }
         return month;
-    }
+    };
 
     function format_year(global_settings, settings) {
         var year;
@@ -237,7 +237,7 @@
             year = settings.year;
         }
         return year;
-    }
+    };
 
     function format_date(global_settings, month_start, year_start, month_end, year_end) {
         var date_start, date_end;
@@ -251,7 +251,46 @@
         }
         if(date_start == date_end) return date_start;
         return date_start + " - " + date_end;
-    }
+    };
+
+    function onYearChanged(combo_label, incredValue, cur_settings, monthpicker) {
+        year = parseInt(combo_label.text()) - incredValue
+        cur_settings.year = year + '';
+        combo_label.text(cur_settings.year);
+
+        setMPText(monthpicker);
+    };
+
+    function buildYearWidget(settings, monthpicker) {
+        var
+            combo = $('<div class="mtz-monthpicker mtz-monthpicker-year" /div>'),
+            combo_pre = $('<a class="ui-datepicker-prev ui-corner-all " title="Prev"></a>'),
+            combo_pre_span = $('<span class="ui-icon ui-icon-circle-triangle-w prev_year">Prev</span>'),
+            combo_next = $('<a class="ui-datepicker-next ui-corner-all" title="Next"></a>'),
+            combo_next_span = $('<span class="ui-icon ui-icon-circle-triangle-e next_year">Next</span>'),
+            combo_label = $('<label class="ui-mtz-picker-year-label">' + settings.year + '</label>');
+
+        combo_next.append(combo_next_span);
+        combo_pre.append(combo_pre_span);
+        combo.append(combo_next);
+        combo.append(combo_pre);
+        combo.append(combo_label);
+
+        combo.find('.prev_year').bind('click', function(e){
+            onYearChanged(combo_label, 1, settings, monthpicker);
+        });
+        combo.find('.next_year').bind('click', function (e) {
+            onYearChanged(combo_label, -1, settings, monthpicker);
+        });
+
+        return combo;
+    };
+
+
+    function selectedChanged(element) {
+        jQuery(element.parentNode.parentNode).find('.month-selected').removeClass('month-selected');
+        jQuery(element).addClass('month-selected');
+    };
 
 })(jQuery);
 
@@ -277,40 +316,4 @@ function setMPText(monthpicker) {
 
     monthpicker.monthpicker('setValue', global_settings, settings_start, settings_end);
 }
-function onYearChanged(combo_label, incredValue, cur_settings, monthpicker) {
-    year = parseInt(combo_label.text()) - incredValue
-    cur_settings.year = year + '';
-    combo_label.text(cur_settings.year);
 
-    setMPText(monthpicker);
-}
-
-function buildYearWidget(settings, monthpicker) {
-    var
-        combo = $('<div class="mtz-monthpicker mtz-monthpicker-year" /div>'),
-        combo_pre = $('<a class="ui-datepicker-prev ui-corner-all " title="Prev"></a>'),
-        combo_pre_span = $('<span class="ui-icon ui-icon-circle-triangle-w prev_year">Prev</span>'),
-        combo_next = $('<a class="ui-datepicker-next ui-corner-all" title="Next"></a>'),
-        combo_next_span = $('<span class="ui-icon ui-icon-circle-triangle-e next_year">Next</span>'),
-        combo_label = $('<label class="ui-mtz-picker-year-label">' + settings.year + '</label>');
-
-    combo_next.append(combo_next_span);
-    combo_pre.append(combo_pre_span);
-    combo.append(combo_next);
-    combo.append(combo_pre);
-    combo.append(combo_label);
-
-    combo.find('.prev_year').bind('click', function(e){
-        onYearChanged(combo_label, 1, settings, monthpicker);
-    });
-    combo.find('.next_year').bind('click', function (e) {
-        onYearChanged(combo_label, -1, settings, monthpicker);
-    });
-
-    return combo;
-}
-
-function selectedChanged(element) {
-    jQuery(element.parentNode.parentNode).find('.month-selected').removeClass('month-selected');
-    jQuery(element).addClass('month-selected');
-}

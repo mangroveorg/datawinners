@@ -27,7 +27,6 @@ $(document).ready(function(){
             (time_range[1] == null ? '': '/'+time_range[1]);
 
         window.location.href = download_link;
-        console.log("export entity");
     });
 
     $('#exportRegisterSubjectBtn').click(function() {
@@ -39,7 +38,6 @@ $(document).ready(function(){
             (time_range[1] == null ? '': '/'+time_range[1]);
 
         window.location.href = download_link;
-        console.log("export register subjects");
     });
 
     function getDateRange(dateRangePicker) {
@@ -49,8 +47,6 @@ $(document).ready(function(){
         if(time_range.length == 2){
          var start_date = Date.parse(time_range[0]);
          var end_date = Date.parse(time_range[1]);
-            console.log(start_date);
-            console.log(end_date);
 
             if(start_date == null) return results;
             results[0] =time_range[0].trim();
@@ -108,8 +104,6 @@ $(document).ready(function(){
             $("#subject_select").removeAttr("disabled");
             $("#dateRangePickerForEntity").removeAttr("disabled");
         }
-
-        console.log(should_grey_out)
     }
 
 });
