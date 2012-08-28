@@ -122,9 +122,11 @@ class UserActivityLog(models.Model):
             pass
 
         try:
+            response_type = {"select1": "List of Choices", "select": "List of Choices", "text": "Word or Phrase", "integer":"Number",
+                             "geocode": "GPS Coordinates", "date": "date", "telephone_number": "Telephone Number"}
             for type_changed in detail_dict["changed_type"]:
-                detail_dict.append(ugettext('Answer type changed to %(answer_type)s for \"%(question_label)s\"' %
-                                            (type_changed.type, type_changed.label)))
+                detail_list.append(ugettext('Answer type changed to %(answer_type)s for \"%(question_label)s\"') %
+                                            {"answer_type":ugettext(response_type.get(type_changed["type"], "")), "question_label":type_changed["label"]})
         except KeyError:
             pass
         return "<br/>".join(detail_list)

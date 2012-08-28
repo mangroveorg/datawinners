@@ -44,3 +44,6 @@ ERROR_MSG_FOR_GIVING_WEB_ACCESS_WITHOUT_SELECTING_DATA_SENDER = "Please select a
 
 IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN = "DataWinners_ImportDataSenders.xls"
 IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR = "DataWinners_ImporterLesEnvoyeursDeDonnees.xls"
+
+SUCCESS_MSG_ADDED_DS = u"Registration successful. ID is: abcd93843."
+UNIQUE_ID = "abcd93843"

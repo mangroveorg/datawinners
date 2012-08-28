@@ -9,6 +9,6 @@ function(doc) {
             data[k] = value;
         }
         key = [form_code,date];
-        emit(key, {'submission_time' : doc.event_time, 'submission_data' : data});
+        emit(key, {'submission_time' : doc.created, 'submission_data' : data});
     }
 }

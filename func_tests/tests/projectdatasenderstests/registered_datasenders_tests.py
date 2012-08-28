@@ -44,9 +44,10 @@ class ProjectDataSenders(BaseTest):
         project_datasenders_page = project_overview_page.navigate_to_datasenders_page()
 
         add_data_sender_page = project_datasenders_page.navigate_to_add_a_data_sender_page()
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_ADDING_DATASENDER)
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_ADDING_DATASENDER, UNIQUE_ID)
         self.driver.wait_until_modal_dismissed()
-        self.assertTrue( add_data_sender_page.get_success_message() is not None )
+        success_message = add_data_sender_page.get_success_message()
+        self.assertEqual(success_message, SUCCESS_MSG_ADDED_DS)
 
         project_datasenders_page = project_overview_page.navigate_to_datasenders_page()
 
@@ -56,7 +57,7 @@ class ProjectDataSenders(BaseTest):
         unique_email = "mickey" + generateId() + "@duck.com"
 
         project_datasenders_page.give_web_access(unique_email)
-        self.driver.wait_until_modal_dismissed(10)
+        self.driver.wait_until_modal_dismissed(15)
 
         assigned_email = project_datasenders_page.get_data_sender_email_by_mobile_number(data_sender_mobile_number)
         self.assertEqual(unique_email, assigned_email)

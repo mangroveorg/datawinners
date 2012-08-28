@@ -25,6 +25,8 @@ EMAIL_TB = by_css("input#id_email")
 COMMUNE_TB = by_css("input#id_location")
 GPS_TB = by_css("input#id_geo_code")
 OPEN_IMPORT_DIALOG_LINK = by_css("#import-datasenders")
+UNIQUE_ID_TB_LOCATOR = by_css("#id_short_code")
+CB_LET_US_GENERATE_ID_FOR_U = by_css("#generate_id")
 
 REGISTER_BTN = by_css("input#id_register_button")
 ERROR_MESSAGE_LABEL = by_xpath("//ul[@class='errorlist']/.. | //div[@id='error_messages']")
