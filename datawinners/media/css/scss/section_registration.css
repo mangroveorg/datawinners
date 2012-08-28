@@ -130,5 +130,5 @@ form.registration_form ul li ul li label {
 form.registration_form #id_organization_country {
   width: 206px;
   float: left; }
-form.registration_form .payment_details {
-  width: 644px; }
+form.registration_form ul.payment_details {
+  width: 675px; }
