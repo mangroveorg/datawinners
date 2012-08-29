@@ -28,7 +28,7 @@ from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
-from datawinners.project.models import *
+from datawinners.project.models import get_all_projects, Project
 from datawinners.submission.location import LocationBridge
 
 FIRSTNAME_FIELD = "firstname"
