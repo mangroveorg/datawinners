@@ -152,3 +152,15 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 .questionnaire-preview.sms-questionnaire .sms-answer {
     width: 600px;
 }
+
+#container_content .content{
+    overflow: visible;
+}
+
+table.styled_table thead th{
+    background-color:#525252;
+}
+
+.container_24 .content .data_block .data_table table {
+    border:1px solid #CCC;
+}
