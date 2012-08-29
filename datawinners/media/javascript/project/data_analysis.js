@@ -44,33 +44,46 @@ $(document).ready(function() {
         });
     };
 
-    $("#dateRangePicker").daterangepicker({
-        presetRanges: [
-            {text: gettext('All Periods'), dateStart: function() {
-                return Date.parse('1900.01.01')
-            }, dateEnd: 'today', is_for_all_period: true },
-            {text: gettext('Current month'), dateStart: function() {
-                return Date.parse('today').moveToFirstDayOfMonth();
-            }, dateEnd: 'today' },
-            {text: gettext('Last Month'), dateStart: function() {
-                return Date.parse('last month').moveToFirstDayOfMonth();
-            }, dateEnd: function() {
-                return Date.parse('last month').moveToLastDayOfMonth();
-            } },
-            {text: gettext('Year to date'), dateStart: function() {
-                var x = Date.parse('today');
-                x.setMonth(0);
-                x.setDate(1);
-                return x;
-            }, dateEnd: 'today' }
-        ],
-        presets: {dateRange: gettext('Date Range')},
-        earliestDate:'1/1/2011',
-        latestDate:'21/12/2012',
-        dateFormat: getDateFormat(date_format),
-        rangeSplitter:'-'
 
-    });
+
+    function configureSettings(){
+        var year_to_date_setting = {text: gettext('Year to date'), dateStart: function() {
+            var x = Date.parse('today');
+            x.setMonth(0);
+            x.setDate(1);
+            return x;
+        }, dateEnd: 'today' };
+
+        var settings = {
+            presetRanges: [
+                {text: gettext('All Periods'), dateStart: function() {
+                    return Date.parse('1900.01.01')
+                }, dateEnd: 'today', is_for_all_period: true },
+                {text: gettext('Current month'), dateStart: function() {
+                    return Date.parse('today').moveToFirstDayOfMonth();
+                }, dateEnd: 'today' },
+                {text: gettext('Last Month'), dateStart: function() {
+                    return Date.parse('last month').moveToFirstDayOfMonth();
+                }, dateEnd: function() {
+                    return Date.parse('last month').moveToLastDayOfMonth();
+                } }
+            ],
+            presets: {dateRange: gettext('Choose Date(s)')},
+            earliestDate:'1/1/2011',
+            latestDate:'21/12/2012',
+            dateFormat: getDateFormat(date_format),
+            rangeSplitter:'-'
+
+        };
+        if(date_format.indexOf('dd') >= 0){
+            settings.presetRanges = settings.presetRanges.concat(year_to_date_setting);
+        }else{
+            settings.presets = {dateRange:gettext('Choose Month(s)')}
+        }
+        return settings;
+    }
+    $("#dateRangePicker").daterangepicker(configureSettings());
+
     DW.dataBinding = function(data, destroy, retrive) {
         $('#data_analysis').dataTable({
             "bDestroy":destroy,

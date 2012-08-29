@@ -164,7 +164,7 @@
 
             container.css({
                 whiteSpace:'nowrap',
-                width:'250px',
+                width:'210px',
                 overflow:'hidden',
                 textAlign:'center',
                 display:'none'

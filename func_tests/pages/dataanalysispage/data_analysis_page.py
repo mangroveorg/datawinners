@@ -4,15 +4,17 @@ from pages.dataanalysispage.data_analysis_locator import *
 from pages.page import Page
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from tests.dataanalysistests.data_analysis_data import CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE
-
+from tests.dataanalysistests.data_analysis_data import CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE, DAILY_DATE_RANGE, MONTHLY_DATE_RANGE
+import datetime
 
 class DataAnalysisPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
         self.date_range_dict = {CURRENT_MONTH: self.select_current_month,
                            LAST_MONTH: self.select_last_month,
-                           YEAR_TO_DATE: self.select_year_to_date}
+                           YEAR_TO_DATE: self.select_year_to_date,
+                           DAILY_DATE_RANGE: self.select_daily_date_range,
+                           MONTHLY_DATE_RANGE: self.select_monthly_date_range}
 
     def navigate_to_all_data_record_page(self):
         """
@@ -152,3 +154,36 @@ class DataAnalysisPage(Page):
 
     def select_page_size(self, size_str="10"):
         self.driver.find_drop_down(PAGE_SIZE_SELECT).set_selected(size_str)
+
+    def select_daily_date_range(self):
+        self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
+        self.driver.find(DAILY_DATE_RANGE_LABEL).click()
+
+    def select_monthly_date_range(self):
+        self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
+        self.driver.find(MONTHLY_DATE_RANGE_LABEL).click()
+
+    def select_month_range(self, start_year, start_month, end_year, end_month):
+        curr_year = datetime.datetime.today().year
+        for i in range(curr_year-start_year):
+            self.driver.wait_for_element(20, by_xpath('//span[contains(@class,"prev_year") and position()=1]'), want_visible=True).click()
+        for i in range(curr_year-end_year):
+            self.driver.wait_for_element(20, by_xpath('//span[contains(@class,"next_year") and position()=2]'), want_visible=True).click()
+
+        self.driver.wait_for_element(20, by_xpath('//div[@id="monthpicker_start"]//td[@data-month="%d"]' % start_month), want_visible=True).click()
+        self.driver.find(by_xpath('//div[@id="monthpicker_end"]//td[@data-month="%d"]' % end_month)).click()
+
+        self.driver.wait_for_element(20, by_css(".btnDone"), want_visible=True).click()
+
+    def select_date_range(self,start_year, start_month, start_day, end_year, end_month, end_day):
+        curr_year = datetime.datetime.today().year
+        curr_month = datetime.datetime.today().month
+        for i in range((curr_year-start_year)*12 + (curr_month-start_month)):
+            self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-start")]//a[contains(@class,"ui-datepicker-prev")]'), want_visible=True).click()
+        for i in range((curr_year-end_year)*12 + (curr_month-end_month)):
+            self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-end")]//a[contains(@class,"ui-datepicker-prev")]'), want_visible=True).click()
+
+        self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-start")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % start_day), want_visible=True).click()
+        self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-end")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % end_day), want_visible=True).click()
+
+        self.driver.wait_for_element(20, by_css(".btnDone"), want_visible=True).click()

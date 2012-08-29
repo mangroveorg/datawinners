@@ -50,7 +50,7 @@
 	padding: 0;
 }
 .ui-daterangepicker li.preset_0 {
-	margin-top: 1.5em !important;
+	margin-bottom: 1.5em !important;
 }
 .ui-daterangepicker .ui-widget-content a {
 	text-decoration: none !important;

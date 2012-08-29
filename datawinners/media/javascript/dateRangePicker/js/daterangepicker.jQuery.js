@@ -35,11 +35,11 @@ jQuery.fn.daterangepicker = function(settings){
 			allDatesAfter: 'All Dates After',
 			dateRange: 'Date Range'
 		},
-		rangeStartTitle: gettext('Start date'),
-		rangeEndTitle: gettext('End date'),
+		rangeStartTitle: gettext('From'),
+		rangeEndTitle: gettext('To'),
 		nextLinkText: 'Next',
 		prevLinkText: 'Prev',
-		doneButtonText: gettext('Done'),
+		doneButtonText: gettext('OK'),
 		earliestDate: Date.parse('-15years'), //earliest date allowed
 		latestDate: Date.parse('+15years'), //latest date allowed
 		rangeSplitter: '-', //string to use between dates in single input
@@ -50,7 +50,11 @@ jQuery.fn.daterangepicker = function(settings){
 		posY: rangeInput.offset().top + rangeInput.outerHeight(), // y position
 		appendTo: 'body',
 		onClose: function(){},
-		onOpen: function(){},
+		onOpen: function(){
+            if(isDateRangeActive()){
+                rp.find('li.ui-state-active').trigger('click')
+            }
+        },
 		onChange: function(){},
 		datepickerOptions: null //object containing native UI datepicker API options
 	}, settings);
@@ -112,20 +116,22 @@ jQuery.fn.daterangepicker = function(settings){
 	//build picker and
 	var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all clearfix"></div>');
 	var rpPresets = (function(){
-		var ul = jQuery('<ul class="ui-widget-content"></ul>').appendTo(rp);
-		jQuery.each(options.presetRanges,function(){
+
+        var ul = jQuery('<ul class="ui-widget-content"></ul>').appendTo(rp);
+        var x=0;
+        jQuery.each(options.presets, function(key, value) {
+            jQuery('<li class="ui-state-active ui-daterangepicker-'+ key +' preset_'+ x +' ui-helper-clearfix ui-corner-all"><span class="ui-icon ui-icon-triangle-1-e"></span><a href="#">'+ value +'</a></li>')
+                .appendTo(ul);
+            x++;
+        });
+        jQuery.each(options.presetRanges,function(){
 			jQuery('<li class="ui-daterangepicker-'+ this.text.replace(/ /g, '') +' ui-corner-all"><a href="#">'+ this.text +'</a></li>')
 			.data('dateStart', this.dateStart)
 			.data('dateEnd', this.dateEnd)
 			.data('is_for_all_period', this.is_for_all_period != undefined)
 			.appendTo(ul);
 		});
-		var x=0;
-		jQuery.each(options.presets, function(key, value) {
-			jQuery('<li class="ui-daterangepicker-'+ key +' preset_'+ x +' ui-helper-clearfix ui-corner-all"><span class="ui-icon ui-icon-triangle-1-e"></span><a href="#">'+ value +'</a></li>')
-			.appendTo(ul);
-			x++;
-		});
+
 
 		ul.find('li').hover(
 				function(){
@@ -253,16 +259,16 @@ jQuery.fn.daterangepicker = function(settings){
 		}
 		else if(range_list_item.is('.ui-daterangepicker-dateRange')){
             doneBtn.hide();
+            if(isMonthFormat()){
+                rp.find('.ui-datepicker-inline').hide();
+                showMP(rangeInput);
+            }
             rpPickers.show();
             rp.find('.title-start').text(options.rangeStartTitle);
             rp.find('.title-end').text(options.rangeEndTitle);
             setTimeout(function(){doneBtn.fadeIn();}, 400);
             rp.find('.range-start').restoreDateFromData().show(400);
             rp.find('.range-end').restoreDateFromData().show(400);
-            if(isMonthFormat()){
-                rp.find('.ui-datepicker-inline').hide();
-                showMP(rangeInput);
-            }
 		}
 		else {
 			//custom date range

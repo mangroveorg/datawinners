@@ -5,7 +5,8 @@ PROJECT_NAME = "project_name"
 QUESTIONS = "questions"
 HEADERS = "headers"
 DATA_RECORDS = "data_records"
-DATE_RANGE = "date_range"
+DAILY_DATE_RANGE = "daily_date_range"
+MONTHLY_DATE_RANGE = "month_date_range"
 CURRENT_MONTH = "current_month"
 LAST_MONTH = "last_month"
 YEAR_TO_DATE = "year_to_date"
@@ -89,7 +90,7 @@ DEFAULT_DATA_FOR_QUESTIONNAIRE = {PROJECT_NAME: "clinic test project",
                                       u'cli13 Dmanda 89 %s AB Pneumonia,Neurological disorders 40.2,69.3123 --' % current_month_date]}
 
 FILTER_BY_CURRENT_MONTH = {PROJECT_NAME: "clinic test project",
-                           DATE_RANGE: CURRENT_MONTH,
+                           DAILY_DATE_RANGE: CURRENT_MONTH,
                            DATA_RECORDS: [
                                u'cli13 Dmanda 89 %s AB Pneumonia,Neurological disorders 40.2,69.3123 --' % current_month_date,
                                u'cli14 Vamand 56 %s O+ Rapid weight loss,Pneumonia,Neurological disorders 58.3452,115.3345 --' % current_month_date,
@@ -99,7 +100,7 @@ FILTER_BY_CURRENT_MONTH = {PROJECT_NAME: "clinic test project",
                                u'cli18 àntra 58 %s O+ Rapid weight loss,Memory loss,Dry cough -45.234,169.32345 --' % today_date,
                                u'cli9 Tinnita 27 %s B+ Rapid weight loss,Pneumonia,Neurological disorders -78.233,-28.3324 --' % today_date]}
 FILTER_BY_LAST_MONTH = {PROJECT_NAME: "clinic test project",
-                        DATE_RANGE: LAST_MONTH,
+                        DAILY_DATE_RANGE: LAST_MONTH,
                         DATA_RECORDS: [
                             u'cli10 Zorro 43 %s O- Pneumonia,Memory loss 23.23452,-28.3456 --' % last_month_date,
                             u'cli11 Aàntra 91 %s O+ Dry cough,Neurological disorders -45.234,89.32345 --' % last_month_date,
@@ -107,6 +108,7 @@ FILTER_BY_LAST_MONTH = {PROJECT_NAME: "clinic test project",
                             u'cli9 Demelo 32 %s AB Dry cough,Rapid weight loss 19.672,92.33456 --' % last_month_date]}
 
 FILTER_BY_YEAR_TO_DATE = {PROJECT_NAME: "clinic test project",
-                          DATE_RANGE: YEAR_TO_DATE,
+                          DAILY_DATE_RANGE: YEAR_TO_DATE,
                           DATA_RECORDS: get_year_to_date_data()}
+
 
