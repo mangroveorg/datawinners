@@ -299,7 +299,7 @@ def project_results_for_get(manager, request, project, project_links, questionna
     )
 
 def _build_report_period_filter(form_model, start_time, end_time):
-    if start_time is None or end_time is None:
+    if not start_time or not end_time:
         return None
     report_period = {'start': start_time, 'end': end_time}
     question_name, datetime_format = get_report_period_question_name_and_datetime_format(form_model)
@@ -316,7 +316,7 @@ def build_filters(params, form_model):
     if not params:
         return []
 
-    return filter(lambda x: x is not None, [_build_report_period_filter(form_model, params.get('start_time').strip(), params.get('end_time').strip()),
+    return filter(lambda x: x is not None, [_build_report_period_filter(form_model, params.get('start_time', "").strip(), params.get('end_time', "").strip()),
                                             _build_subject_filter(form_model.entity_question.code, params.get('subject_ids', "").strip())])
 
 @login_required(login_url='/login')

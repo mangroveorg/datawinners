@@ -71,11 +71,3 @@ class TestProject(TestCase):
                                                                            'project_id': 'fe84831af56111e0aa085c260a236744',
                                                                            'project_state': "Active"})
         self.assertEqual(response.status_code, 200)
-
-    def test_should_render_data_analysis_page_if_logged_in(self):
-        self.client.login(username='tester150411@gmail.com', password='tester150411')
-        rows = load_manager_for_default_test_account().load_all_rows_in_view('project_names', key="clinic test project")
-        project_id = rows[0].id
-        subject_id = 'cli001'
-        response = self.client.get('/project/'+project_id+'/data/'+subject_id+'/08.12.2012-08.31.2012/')
-        self.assertEqual(response.status_code, 200)

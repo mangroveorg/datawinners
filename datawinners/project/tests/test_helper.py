@@ -216,7 +216,7 @@ class TestHelper(unittest.TestCase):
             with patch("project.helper.get_data_sender") as get_data_sender:
                 with patch("project.helper.get_by_short_code") as get_by_short_code:
                     form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, False)
-                    filters = build_filters({}, form_model, None)
+                    filters = build_filters({}, form_model)
                     values_dict = get_field_values(Mock(), dbm, form_model, filters)
                     expected = [('realname', 'cli13'),'--', u'27.07.2012', ('Sender1', 'rep1'),'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
                     self.assertEqual(len(SUBMISSIONS), len(values_dict))
@@ -228,7 +228,7 @@ class TestHelper(unittest.TestCase):
             with patch("project.helper.get_data_sender") as get_data_sender:
                 with patch("project.helper.get_by_short_code") as get_by_short_code:
                     form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, True)
-                    filters = build_filters({'startTime':'25.7.2012', 'endTime':'26.7.2012'}, form_model, '25.7.2012-28.7.2012')
+                    filters = build_filters({'startTime':'25.7.2012', 'endTime':'26.7.2012'}, form_model)
                     values_dict = get_field_values(Mock(), dbm, form_model, filters)
                     expected = [('realname', 'cli13'),
                         '27.7.2012', u'27.07.2012', ('Sender1', 'rep1'),
@@ -242,7 +242,7 @@ class TestHelper(unittest.TestCase):
             with patch("project.helper.get_data_sender") as get_data_sender:
                 with patch("project.helper.get_by_short_code") as get_by_short_code:
                     form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code,True)
-                    filters = build_filters({'start_time':'25.7.2012', 'end_time':'26.7.2012'}, form_model, '-')
+                    filters = build_filters({'start_time':'25.7.2012', 'end_time':'26.7.2012'}, form_model)
                     values_dict = get_field_values(Mock(), dbm, form_model, filters)
                     self.assertEqual(0, len(values_dict))
 

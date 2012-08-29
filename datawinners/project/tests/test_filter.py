@@ -30,7 +30,7 @@ class TestSubmissionFilters(unittest.TestCase):
         submission_logs = [submission_in_report_period, submission_not_in_report_period]
 
         filtered_submission_logs = ReportPeriodFilter(question_name='q2',
-            period={'start': '01.06.2012 ', 'end': '30.07.2012'}).filter(submission_logs)
+            period={'start': '01.06.2012', 'end': '30.07.2012'}).filter(submission_logs)
 
         self.assertEquals([submission_in_report_period], filtered_submission_logs)
 
@@ -53,7 +53,7 @@ class TestSubmissionFilters(unittest.TestCase):
     def test_should_build_filter_by_subject(self):
         form_model = Mock()
         form_model.entity_question.code = '123'
-        filters = build_filters({'subject_ids': 'subject'}, form_model, None)
+        filters = build_filters({'subject_ids': 'subject'}, form_model)
         self.assertEqual(1, len(filters))
         self.assertIsInstance(filters[0], SubjectFilter)
 
