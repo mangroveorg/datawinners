@@ -269,3 +269,12 @@ class TestProjectViews( unittest.TestCase ):
                          TextField( name="f3", code="q4", label="f4", ddtype=ddtype ),
                          TextField( name="f5", code="q5", label="f5", ddtype=ddtype )]
         self.assertEqual( 5, get_max_code( questionnaire ) )
+
+    def test_should_return_one_in_questionnaire_without_start_with_q(self):
+        ddtype = Mock( spec=DataDictType )
+        questionnaire = [TextField( name="f1", code="c1", label="f1", ddtype=ddtype ),
+                         TextField( name="f2", code="c2", label="f2", ddtype=ddtype ),
+                         TextField( name="f3", code="c3", label="f3", ddtype=ddtype ),
+                         TextField( name="f3", code="c4", label="f4", ddtype=ddtype ),
+                         TextField( name="f5", code="c5", label="f5", ddtype=ddtype )]
+        self.assertEqual( 1, get_max_code( questionnaire ) )

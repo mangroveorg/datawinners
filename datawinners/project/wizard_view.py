@@ -122,7 +122,10 @@ def get_max_code_in_questionnaire_set(questionnaire_set):
     return 1
 
 def get_max_code(old_questionnaire):
-    return max([int(q.code[1:]) for q in old_questionnaire if q.code.startswith('q') ])
+    codes = [int( q.code[1:] ) for q in old_questionnaire if q.code.startswith( 'q' )]
+    if codes is not None and len(codes) > 0:
+        return max( codes )
+    return 1
 
 
 @login_required(login_url='/login')
