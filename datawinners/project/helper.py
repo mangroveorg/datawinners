@@ -226,18 +226,17 @@ def get_leading_part(dbm, form_model, submissions, user):
 
         submission_date = _to_str(submission.created)
 
+        row = [submission_date, data_sender]
         if rp_field:
             reporting_period = case_insensitive_lookup(rp_field.code, submission.values) if rp_field else None
             reporting_period = _to_str(reporting_period, rp_field)
-            row = [reporting_period, submission_date, data_sender]
-        else:
-            row = [submission_date, data_sender]
+            row = [reporting_period] + row
 
         if is_first_element_needed:
             first_element = get_first_element_of_leading_part(dbm, form_model, submission, data_sender)
-            result.append([first_element] + row)
-        else:
-            result.append(row)
+            row = [first_element] + row
+
+        result.append(row)
 
     return result
 

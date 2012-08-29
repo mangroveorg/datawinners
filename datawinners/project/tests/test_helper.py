@@ -164,7 +164,6 @@ class TestHelper(unittest.TestCase):
         patcher.stop()
         patcher1.stop()
 
-
     def test_should_create_header_list_with_reporter_if_the_project_is_not_a_summary_project(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="What is associated entity", code="ID", name="What is associated entity",
