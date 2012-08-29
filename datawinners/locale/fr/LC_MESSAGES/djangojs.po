@@ -491,6 +491,9 @@ msgstr "Aucun enregistrement trouvé"
 msgid "No data available in table"
 msgstr "Aucune donnée disponible dans le tableau"
 
+msgid "No data available"
+msgstr "Aucune donnée disponible dans le tableau"
+
 msgid "Loading..."
 msgstr "Chargement..."
 

@@ -79,7 +79,7 @@ $(document).ready(function() {
                 "sProcessing": gettext("Processing..."),
                     "sLengthMenu": gettext("Show _MENU_ Data records"),
                     "sZeroRecords": gettext("No matching records found"),
-                    "sEmptyTable": gettext("No data available in table"),
+                    "sEmptyTable": gettext("No data available"),
                     "sLoadingRecords": gettext("Loading..."),
                     "sInfo": gettext("<span>_START_ - _END_</span> of _TOTAL_ Data Records"),
                     "sInfoEmpty": gettext("0 Data Records"),

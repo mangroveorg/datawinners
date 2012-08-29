@@ -479,6 +479,9 @@ msgstr ""
 msgid "No data available in table"
 msgstr ""
 
+msgid "No data available"
+msgstr ""
+
 msgid "Loading..."
 msgstr ""
 
