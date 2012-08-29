@@ -102,7 +102,6 @@ def is_not_expired(f):
 
     return wrapper
 
-
 def is_allowed_to_view_reports(f, redirect_to = '/alldata'):
     def wrapper(*args, **kw):
         request = args[0]

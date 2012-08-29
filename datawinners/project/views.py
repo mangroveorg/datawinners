@@ -65,6 +65,7 @@ from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
 from project.filters import ReportPeriodFilter
+from project.tests.test_filter import SubjectFilter
 
 logger = logging.getLogger("django")
 
@@ -209,7 +210,6 @@ def undelete_project(request, project_id):
 @login_required(login_url='/login')
 @is_datasender
 @is_not_expired
-@is_not_expired
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -257,16 +257,16 @@ def prepare_query_project_results(project_id, questionnaire_code, request):
 def delete_submissions_by_ids(manager, request, submission_ids):
     received_times = []
     for submission_id in submission_ids:
-        submission = Submission.get( manager, submission_id )
-        received_times.append( datetime.datetime.strftime( submission.created, "%d/%m/%Y %X" ) )
+        submission = Submission.get(manager, submission_id)
+        received_times.append(datetime.datetime.strftime(submission.created, "%d/%m/%Y %X"))
         submission.void()
         if submission.data_record:
-            ReportRouter( ).delete( get_organization( request ).org_id, submission.form_code, submission.data_record.id )
+            ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
     return received_times
 
 def project_result_for_post(manager, request, project, questionnaire, questionnaire_code):
     submission_ids = json.loads(request.POST.get('id_list'))
-    received_times = delete_submissions_by_ids( manager, request, submission_ids )
+    received_times = delete_submissions_by_ids(manager, request, submission_ids)
     if len(received_times):
         UserActivityLog().log(request, action="Deleted Data Submission", project=project.name,
             detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
@@ -298,13 +298,26 @@ def project_results_for_get(manager, request, project, project_links, questionna
         context_instance=RequestContext(request)
     )
 
-def build_filters(questionnaire, report_period_str):
-    if report_period_str is None:
+def _build_report_period_filter(form_model, start_time, end_time):
+    if start_time is None or end_time is None:
+        return None
+    report_period = {'start': start_time, 'end': end_time}
+    question_name, datetime_format = get_report_period_question_name_and_datetime_format(form_model)
+    period_filter = ReportPeriodFilter(question_name, report_period, datetime_format)
+
+    return period_filter
+
+def _build_subject_filter(entity_question_code, subject_ids):
+    if not subject_ids.strip():
+        return None
+    return SubjectFilter(entity_question_code.lower(), subject_ids)
+
+def build_filters(params, form_model):
+    if not params:
         return []
-    time_str = report_period_str.split("-")
-    report_period = {'start': time_str[0], 'end': time_str[-1]}
-    question_name , datetime_format = get_report_period_question_name_and_datetime_format(questionnaire)
-    return [ReportPeriodFilter(question_name, report_period, datetime_format)]
+
+    return filter(lambda x: x is not None, [_build_report_period_filter(form_model, params.get('start_time').strip(), params.get('end_time').strip()),
+                                            _build_subject_filter(form_model.entity_question.code, params.get('subject_ids', "").strip())])
 
 @login_required(login_url='/login')
 @is_datasender
@@ -317,13 +330,6 @@ def project_results(request, project_id=None, questionnaire_code=None):
         return project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code)
     if request.method == "POST":
         return project_result_for_post(manager, request, project, questionnaire, questionnaire_code)
-
-def get_report_period_dict(report_period):
-    if report_period is None:
-        return None
-    report_period_start, report_period_end = report_period.split('-')
-    report_period_dict = {'start':report_period_start, 'end':report_period_end}
-    return report_period_dict
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET
@@ -372,7 +378,7 @@ def _format_data_for_presentation(entity_values_dict, form_model):
 def _load_data(form_model, manager, questionnaire_code, aggregation_types=None, start_time=None, end_time=None):
     aggregation_type_list = json.loads(aggregation_types)
     if not aggregation_type_list:
-        aggregation_type_list = ['latest']* len(form_model.fields[1:])
+        aggregation_type_list = ['latest'] * len(form_model.fields[1:])
 
     start_time = helper.get_formatted_time_string(start_time.strip() + START_OF_DAY) if start_time is not None else None
     end_time = helper.get_formatted_time_string(end_time.strip() + END_OF_DAY) if end_time is not None else None
@@ -390,7 +396,6 @@ def _get_analysis_data(form_model, manager, request, filters):
     result = helper.get_field_values(request, manager, form_model, filters)
     return header, formatted_data(result)
 
-
 def _to_name_id_string(tuple):
     if tuple[1] is None: return tuple[0]
     return "%s</br>(%s)" % tuple
@@ -406,25 +411,28 @@ def formatted_data(field_values):
 @login_required(login_url='/login')
 @is_datasender
 @is_not_expired
-def project_data(request, project_id=None, questionnaire_code=None, report_period=None):
+def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    filters = build_filters(form_model, report_period)
-    header_list, field_values = _get_analysis_data(form_model, manager, request, filters)
+    rp_field = form_model.event_time_question
+    filters = build_filters(request.POST, form_model)
+
+    header_list = helper.get_headers(form_model)
+    field_values = formatted_data(helper.get_field_values(request, manager, form_model, filters))
 
     if request.method == "GET":
         in_trial_mode = _in_trial_mode(request)
-        has_rp = form_model.event_time_question is not None
+        has_rp = rp_field is not None
         return render_to_response('project/data_analysis.html',
-                {"date_format" : form_model.event_time_question.date_format if has_rp else "dd.mm.yyyy",
+                {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
                  "entity_type": form_model.entity_type[0],
-                 "data_list": repr(encode_json(formatted_data(field_values))),
+                 "data_list": repr(encode_json(field_values)),
                  "header_list": header_list,
                  'project_links': (make_project_links(project, questionnaire_code)),
                  'project': project,
                  'in_trial_mode': in_trial_mode,
-                 'reporting_period_question_text': form_model.event_time_question.label[form_model.activeLanguages[0]] if has_rp else None,
+                 'reporting_period_question_text': rp_field.label[form_model.activeLanguages[0]] if has_rp else None,
                  'has_reporting_period': has_rp},
             context_instance=RequestContext(request))
     if request.method == "POST":
@@ -1159,9 +1167,9 @@ def edit_subject_questionaire(request, project_id=None):
 
 def append_success_to_context(context, form):
     success = False
-    if not len( form.errors ):
+    if not len(form.errors):
         success = True
-    context.update({'success':success})
+    context.update({'success': success})
     return context
 
 
@@ -1198,7 +1206,7 @@ def create_data_sender_and_web_user(request, project_id=None):
         context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode}
         append_success_to_context(context, form)
         return render_to_response('datasender_form.html',
-                                  context,
+            context,
             context_instance=RequestContext(request))
 
 
