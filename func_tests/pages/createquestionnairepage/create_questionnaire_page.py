@@ -400,3 +400,13 @@ class CreateQuestionnairePage(CreateProjectPage):
 
     def delete_option_for_multiple_choice_question(self, index):
         self.driver.find(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_DL_XPATH_LOCATOR)).click()
+
+
+    def change_date_type_question(self, date_format):
+        if (date_format == MM_YYYY):
+            self.driver.find_radio_button(MONTH_YEAR_RB).click()
+        elif (date_format == DD_MM_YYYY):
+            self.driver.find_radio_button(DATE_MONTH_YEAR_RB).click()
+        elif (date_format == MM_DD_YYYY):
+            self.driver.find_radio_button(MONTH_DATE_YEAR_RB).click()
+        return self

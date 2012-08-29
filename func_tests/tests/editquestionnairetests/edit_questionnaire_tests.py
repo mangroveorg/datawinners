@@ -82,3 +82,11 @@ class TestEditQuestionnaire(BaseTest):
         smart_phone_preview_page = preview_navigation_page.smart_phone_preview()
 
         self.assertIsNotNone(smart_phone_preview_page.get_smart_phone_instruction())
+
+    @attr('functional_test')
+    def test_change_date_format_of_report_period_should_show_warning_message(self):
+        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
+        create_questionnaire_page.select_question_link(4)
+        create_questionnaire_page.change_date_type_question(MM_YYYY)
+        self.assertEquals(light_box.get_title_of_light_box(), fetch_(TITLE, from_(LIGHT_BOX_DATA)))
+        self.assertEquals(light_box.get_message_from_light_box(), fetch_(MESSAGE, from_(LIGHT_BOX_DATA)))

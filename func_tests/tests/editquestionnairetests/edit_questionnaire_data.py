@@ -49,3 +49,9 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: u"cli005",
                                ALLOWED_CHOICE: MULTIPLE_ANSWERS},
                               {QUESTION: u"What is the GPS codé for clinic", CODE: u"GPS", TYPE: GEO}],
                       CHARACTER_REMAINING: u"84 / 160 characters used"}
+
+TITLE = "title"
+MESSAGE = "message"
+
+LIGHT_BOX_DATA = {TITLE: "Warning !!",
+                  MESSAGE: "Warning: Changing the date format of report period will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?"}
