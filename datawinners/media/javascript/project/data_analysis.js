@@ -12,8 +12,8 @@ $(document).ready(function() {
         var time_range = $("#dateRangePicker").val().split("-");
 
         if (time_range[0] == "" || time_range[0] == "All Periods") {
-            time_range[0] = '01-01-1996';
-            time_range[1] = '31-12-6000';
+            time_range[0] = '01.01.1996';
+            time_range[1] = '31.12.6000';
             return {'time_range':time_range, 'aggregationArray': aggregationArray};
         }
         if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {
@@ -121,13 +121,14 @@ $(document).ready(function() {
     });
 
     $('#time_submit').click(function() {
-        var report_period = $("#dateRangePicker").val()
-        var for_all_period = (report_period == gettext("All Periods"))
-        report_period = report_period.replace(/ /g,'')
+        var data = DW.submit_data();
+        var time_list = data['time_range'];
+
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
         $.ajax({
             type: 'POST',
-            url: window.location.pathname + (for_all_period ? "" : (report_period + '/')),
+            url: window.location.pathname,
+            data: {'start_time':time_list[0], 'end_time': time_list[1]},
             success:function(response) {
                 var response_data = JSON.parse(response);
                 DW.dataBinding(response_data.data, true, false);
