@@ -67,7 +67,7 @@ function compile_messages {
     cd "$DWROOT_DIR/datawinners" && python manage.py compilemessages
 }
 
-function run_server{
+function run_server {
     cd "$DWROOT_DIR/datawinners" && python manage.py runserver
 }
 
