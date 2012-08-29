@@ -25,6 +25,9 @@ table {
   .heading_block .ui-dropdownchecklist label {
     float: none;
     display: inline-block; }
+  .heading_block .ui-dropdownchecklist .small_grey {
+    color: #888;
+    font-size: small; }
   .heading_block .ui-dropdownchecklist .ui-dropdownchecklist-dropcontainer .ui-state-default, .heading_block .ui-dropdownchecklist .ui-widget-content .ui-state-default, .heading_block .ui-dropdownchecklist .ui-widget-header .ui-state-default {
     border: none;
     background: none; }
