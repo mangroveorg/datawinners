@@ -17,7 +17,6 @@ from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
 from datawinners.accountmanagement.views import is_not_expired
-from main.views import convert_to_json_response
 
 REPORTER_ENTITY_TYPE = u'reporter'
 

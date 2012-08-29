@@ -25,7 +25,6 @@ from datawinners.entity.helper import process_create_data_sender_form, add_impor
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
-from entity.helper import get_all_subject_data
 
 import helper
 
@@ -65,7 +64,6 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
-from main.views import convert_to_json_response
 from project.filters import ReportPeriodFilter
 from project.tests.test_filter import SubjectFilter
 
@@ -729,12 +727,6 @@ def _get_project_and_project_link(manager, project_id, reporter_id=None):
     questionnaire = FormModel.get(manager, project.qid)
     project_links = make_project_links(project, questionnaire.form_code, reporter_id)
     return project, project_links
-
-@login_required(login_url='/login')
-@is_not_expired
-def subject_list(request):
-    manager = get_database_manager(request.user)
-    return convert_to_json_response(get_all_subject_data(manager))
 
 @login_required(login_url='/login')
 @is_not_expired

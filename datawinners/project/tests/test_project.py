@@ -71,8 +71,3 @@ class TestProject(TestCase):
                                                                            'project_id': 'fe84831af56111e0aa085c260a236744',
                                                                            'project_state': "Active"})
         self.assertEqual(response.status_code, 200)
-
-    def test_should_return_subject_list_for_organization(self):
-        self.client.login(username='tester150411@gmail.com', password='tester150411')
-        response = self.client.get('/ajax/project/subjects/')
-        self.assertEqual(response.status_code, 200)

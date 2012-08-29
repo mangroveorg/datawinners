@@ -1,7 +1,11 @@
 $(document).ready(function() {
     $('#dateRangePicker').monthpicker();
     var $subjectSelect = $('#subjectSelect');
+    $(subjects_data).each(function(index, subject) {
+        $('<option>' + subject[0] + '</option>').val(subject[0]).attr('code', subject[1]).appendTo($subjectSelect);
+    });
     $subjectSelect.dropdownchecklist({explicitClose: 'ok', width: $subjectSelect.width(), maxDropHeight: 200});
+
     var screen_width = $(window).width() - 50;
     DW.submit_data = function() {
         $("#dateErrorDiv").hide();
@@ -11,22 +15,23 @@ $(document).ready(function() {
             aggregationArray.push($(this).val());
         });
         var time_range = $("#dateRangePicker").val().split("-");
+        var subject_ids = $subjectSelect.attr('ids');
 
         if (time_range[0] == "" || time_range[0] == "All Periods") {
-            return {'time_range':['', ''], 'aggregationArray': aggregationArray};
+            return {'time_range':['', ''], 'aggregationArray': aggregationArray, 'subject_ids': subject_ids};
         }
         if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {
             $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>');
             $("#dateErrorDiv").show();
             time_range[0] = "";
             time_range[1] = "";
-            return {'time_range':time_range, 'aggregationArray': aggregationArray};
+            return {'time_range':time_range, 'aggregationArray': aggregationArray, 'subject_ids': subject_ids};
         }
         if (time_range.length == 1){
             time_range[1] = time_range[0];
-            return {'time_range':time_range, 'aggregationArray': aggregationArray};
+            return {'time_range':time_range, 'aggregationArray': aggregationArray, 'subject_ids': subject_ids};
         }
-        return {'time_range':time_range, 'aggregationArray': aggregationArray};
+        return {'time_range':time_range, 'aggregationArray': aggregationArray, 'subject_ids': subject_ids};
     };
     DW.wrap_table = function() {
         $("#data_analysis").wrap("<div class='data_table' style='width:" + screen_width + "px'/>");
@@ -127,7 +132,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'POST',
             url: window.location.pathname,
-            data: {'start_time':time_list[0], 'end_time': time_list[1]},
+            data: {'start_time':time_list[0], 'end_time': time_list[1], 'subject_ids': data['subject_ids']},
             success:function(response) {
                 var response_data = JSON.parse(response);
                 DW.dataBinding(response_data.data, true, false);

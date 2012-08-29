@@ -3,7 +3,7 @@ from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 
 from mangrove.datastore.datadict import get_datadict_type_by_slug,\
     create_datadict_type
-from mangrove.datastore.entity import get_by_short_code_include_voided, get_all_entities
+from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
@@ -30,7 +30,6 @@ from datawinners.messageprovider.message_handler import\
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project.models import *
 from datawinners.submission.location import LocationBridge
-from main.utils import exclude_of_type
 
 FIRSTNAME_FIELD = "firstname"
 FIRSTNAME_FIELD_CODE = "f"
@@ -228,9 +227,3 @@ def add_imported_data_sender_to_trial_organization(request, imported_datasenders
         for ds in all_data_senders:
             if ds['short_code'] in imported_datasenders:
                 add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
-
-
-def get_all_subject_data(manager, filter_entities=exclude_of_type,
-                         type=REPORTER):
-    entities = get_all_entities(dbm=manager)
-    return [entity for entity in entities if filter_entities(entity, type)]
