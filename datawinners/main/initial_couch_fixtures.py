@@ -143,9 +143,7 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
         pass
 
 
-def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
-    organization = Organization.objects.get(pk='SLX364903')
-    Reminder.objects.filter(organization = organization).delete()
+def create_questions(manager):
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
     # Entity id is a default type in the system.
     entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
@@ -154,58 +152,55 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-                          language="en", entity_question_flag=True, ddtype=entity_id_type,
-                          constraints=[TextLengthConstraint(min=1, max=12)],
-                          instruction="Answer must be a word or phrase 12 characters maximum")
+        language="en", entity_question_flag=True, ddtype=entity_id_type,
+        constraints=[TextLengthConstraint(min=1, max=12)],
+        instruction="Answer must be a word or phrase 12 characters maximum")
     question2 = TextField(label="What is your namé?", code="NA", name="What is your namé?",
-                          constraints=[TextLengthConstraint(min=1, max=10)],
-                          defaultValue="some default value", language="en", ddtype=name_type,
-                          instruction="Answer must be a word or phrase 10 characters maximum")
+        constraints=[TextLengthConstraint(min=1, max=10)],
+        defaultValue="some default value", language="en", ddtype=name_type,
+        instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="What is age öf father?", code="FA", name="What is age öf father?",
-                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
-                             instruction="Answer must be a number between 18-100.")
+        constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
+        instruction="Answer must be a number between 18-100.")
     question4 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
-                          date_format="dd.mm.yyyy", ddtype=date_type,
-                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011", event_time_field_flag=True)
+        date_format="dd.mm.yyyy", ddtype=date_type,
+        instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
+        event_time_field_flag=True)
     question5 = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
-                            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
-                            ddtype=select_type, instruction="Choose 1 answer from the list.")
+        options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
+        ddtype=select_type, instruction="Choose 1 answer from the list.")
     question6 = SelectField(label="What aré symptoms?", code="SY", name="What aré symptoms?",
-                            options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
-                                    ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
-                            ddtype=select_type,
-                            instruction="Choose 1 or more answers from the list.")
+        options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
+            ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
+        ddtype=select_type,
+        instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS code for clinic?", code="GPS",
-                             label="What is the GPS code for clinic?",
-                             language="en", ddtype=geo_code_type,
-                             instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
-    question8 = SelectField(label="What are the required medicines?", code="RM", name="What are the required medicines?",
-                            options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
-                            single_select_flag=False,
-                            ddtype=select_type,
-                            instruction="Choose 1 or more answers from the list.", required=False)
+        label="What is the GPS code for clinic?",
+        language="en", ddtype=geo_code_type,
+        instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
+    question8 = SelectField(label="What are the required medicines?", code="RM", name="What are the required medicines?"
+        ,
+        options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
+        single_select_flag=False,
+        ddtype=select_type,
+        instruction="Choose 1 or more answers from the list.", required=False)
+    return [question1, question2, question3, question4, question5, question6, question7, question8]
+
+
+def create_project1(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline):
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
-                               form_code="cli001", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7,
-                                   question8],
-                           entity_type=CLINIC_ENTITY_TYPE
+        form_code="cli001", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE
     )
-
-    weekly_reminder_and_deadline = {
-            "deadline_week": "5",
-            "deadline_type": "Same",
-            "has_deadline": True,
-            "frequency_period": "week",
-            "should_send_reminder_to_all_ds": True
-        }
-
     try:
         qid = form_model.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
     project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
     project1.reminder_and_deadline = weekly_reminder_and_deadline
@@ -213,37 +208,37 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         project1.save(manager)
     except Exception:
         pass
-
-
-    reminder = Reminder(project_id = project1.id,day=2,reminder_mode=ReminderMode.BEFORE_DEADLINE,organization_id = 'SLX364903',
-             message = "2 day(s) are remainning to deadline. Please send your data for Clinic Test Project.")
+    reminder = Reminder(project_id=project1.id, day=2, reminder_mode=ReminderMode.BEFORE_DEADLINE,
+        organization_id='SLX364903',
+        message="2 day(s) are remainning to deadline. Please send your data for Clinic Test Project.")
     reminder.save()
-
     # Create reminders for project1
-    reminder = Reminder(project_id = project1.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,organization_id = 'SLX364903',
-             message = "Today is the deadline. Please send your data for Clinic Test Project.")
+    reminder = Reminder(project_id=project1.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
+        organization_id='SLX364903',
+        message="Today is the deadline. Please send your data for Clinic Test Project.")
     reminder.save()
-    
-    reminder = Reminder(project_id = project1.id,day=2,reminder_mode=ReminderMode.AFTER_DEADLINE, organization_id = 'SLX364903',
-             message = "2 days are overdue the deadline. Please send your data for Clinic Test Project.")
+    reminder = Reminder(project_id=project1.id, day=2, reminder_mode=ReminderMode.AFTER_DEADLINE,
+        organization_id='SLX364903',
+        message="2 days are overdue the deadline. Please send your data for Clinic Test Project.")
     reminder.save()
-
     # Associate datasenders/reporters with project 1
     project1.data_senders.extend(["rep5", "rep6", "rep1", "rep8", "rep9", "rep3"])
     project1.save(manager)
 
+
+def create_project2(CLINIC_ENTITY_TYPE, manager,questions):
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
-                            form_code="cli002", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7,
-                                    question8],
-                            entity_type=CLINIC_ENTITY_TYPE)
+        form_code="cli002", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid2 = form_model2.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli002").delete()
         qid2 = form_model2.save()
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project2.qid = qid2
     project2.state = ProjectState.ACTIVE
     try:
@@ -251,17 +246,20 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     except Exception:
         pass
 
+
+def create_project3(CLINIC_ENTITY_TYPE, manager, questions):
     form_model3 = FormModel(manager, name="AIDS", label="Aids form_model",
-                            form_code="cli003", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+        form_code="cli003", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid3 = form_model3.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli003").delete()
         qid3 = form_model3.save()
     project3 = Project(name="Clinic3 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project3.qid = qid3
     project3.state = ProjectState.TEST
     try:
@@ -269,17 +267,20 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     except Exception:
         pass
 
+
+def create_project4(CLINIC_ENTITY_TYPE, manager, questions):
     form_model4 = FormModel(manager, name="AIDS", label="Aids form_model",
-                            form_code="cli004", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+        form_code="cli004", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid4 = form_model4.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli004").delete()
         qid4 = form_model4.save()
     project4 = Project(name="Clinic4 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project4.qid = qid4
     project4.state = ProjectState.TEST
     try:
@@ -287,17 +288,20 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     except Exception:
         pass
 
+
+def create_project5(CLINIC_ENTITY_TYPE, manager, questions):
     form_model5 = FormModel(manager, name="AIDS", label="Aids form_model",
-                            form_code="cli005", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+        form_code="cli005", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid5 = form_model5.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli005").delete()
         qid5 = form_model5.save()
     project5 = Project(name="Clinic5 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project5.qid = qid5
     project5.state = ProjectState.TEST
     try:
@@ -305,17 +309,20 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     except Exception:
         pass
 
+
+def create_project6(CLINIC_ENTITY_TYPE, manager, questions):
     form_model6 = FormModel(manager, name="AIDS", label="Aids form_model",
-                            form_code="cli006", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+        form_code="cli006", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid6 = form_model6.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli006").delete()
         qid6 = form_model6.save()
     project6 = Project(name="Clinic6 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project6.qid = qid6
     project6.state = ProjectState.TEST
     try:
@@ -323,17 +330,20 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     except Exception:
         pass
 
+
+def create_project7(CLINIC_ENTITY_TYPE, manager, questions):
     form_model7 = FormModel(manager, name="AIDS", label="Aids form_model",
-                            form_code="cli007", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+        form_code="cli007", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid7 = form_model7.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli007").delete()
         qid7 = form_model7.save()
     project7 = Project(name="Clinic7 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project7.qid = qid7
     project7.state = ProjectState.TEST
     try:
@@ -341,46 +351,114 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     except Exception:
         pass
 
-    form_model8 = FormModel(manager, name="AIDS", label="Aids form_model",
-                            form_code="cli008", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
+
+def create_project11(CLINIC_ENTITY_TYPE, manager, questions):
+    form_model11 = FormModel(manager, name="AIDS", label="Aids form_model",
+        form_code="cli011", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE
+    )
+    weekly_reminder_and_deadline = {
+        "deadline_week": "5",
+        "deadline_type": "Following",
+        "has_deadline": True,
+        "frequency_period": "week",
+        "should_send_reminder_to_all_ds": True
+    }
     try:
-        qid8 = form_model8.save()
+        qid11 = form_model11.save()
     except DataObjectAlreadyExists as e:
-        get_form_model_by_code(manager, "cli008").delete()
-        qid8 = form_model8.save()
-    project8 = Project(name="Clinic8 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
-    project8.qid = qid8
-    project8.state = ProjectState.INACTIVE
+        get_form_model_by_code(manager, "cli011").delete()
+        qid11 = form_model11.save()
+    project11 = Project(name="Clinic All DS (Following)", goals="This project is for automation", project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
+    project11.qid = qid11
+    project11.state = ProjectState.ACTIVE
+    project11.reminder_and_deadline = weekly_reminder_and_deadline
     try:
-        project8.save(manager)
+        project11.save(manager)
     except Exception:
         pass
+    reminder = Reminder(project_id=project11.id, day=3, reminder_mode=ReminderMode.BEFORE_DEADLINE,
+        organization_id='SLX364903',
+        message="3 day(s) are remainning to deadline. Please send your data for Clinic All DS (Following).")
+    reminder.save()
+    # Create reminders for project11
+    reminder = Reminder(project_id=project11.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
+        organization_id='SLX364903',
+        message="Today is the deadline. Please send your data for Clinic All DS (Following).")
+    reminder.save()
+    reminder = Reminder(project_id=project11.id, day=3, reminder_mode=ReminderMode.AFTER_DEADLINE,
+        organization_id='SLX364903',
+        message="3 days are overdue the deadline. Please send your data for Clinic All DS (Following).")
+    reminder.save()
+    # Associate datasenders/reporters with project 1
+    project11.data_senders.extend(["rep5", "rep6", "rep7"])
+    project11.save(manager)
 
-    # Creating a project to test reminders with following deadline.
-    weekly_reminder_and_following_deadline = {
-            "deadline_week": "6",
-            "deadline_type": "Following",
-            "frequency_enabled": True,
-            "has_deadline": True,
-            "frequency_period": "week",
-            "should_send_reminder_to_all_ds": True
-        }
 
-    form_model10 = FormModel(manager, name="AIDS Clinici", label="Aids form_model",
-                            form_code="cli009", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7,
-                                    question8],
-                            entity_type=CLINIC_ENTITY_TYPE)
+def create_project10(CLINIC_ENTITY_TYPE, manager, questions):
+    form_model10 = FormModel(manager, name="AIDS", label="Aids form_model",
+        form_code="cli010", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE
+    )
+    weekly_reminder_and_deadline = {
+        "deadline_week": "5",
+        "deadline_type": "Following",
+        "has_deadline": True,
+        "frequency_period": "week",
+        "should_send_reminder_to_all_ds": False
+    }
     try:
-        qid = form_model10.save()
+        qid10 = form_model10.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli010").delete()
+        qid10 = form_model10.save()
+    project10 = Project(name="Clinic DS W/O Submission (Following)", goals="This project is for automation",
+        project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
+    project10.qid = qid10
+    project10.state = ProjectState.ACTIVE
+    project10.reminder_and_deadline = weekly_reminder_and_deadline
+    try:
+        project10.save(manager)
+    except Exception:
+        pass
+    reminder = Reminder(project_id=project10.id, day=1, reminder_mode=ReminderMode.BEFORE_DEADLINE,
+        organization_id='SLX364903',
+        message="1 day is remainning to deadline. Please send your data for Clinic DS W/O Submission (Following).")
+    reminder.save()
+    # Create reminders for project10
+    reminder = Reminder(project_id=project10.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
+        organization_id='SLX364903',
+        message="Today is the deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+    reminder = Reminder(project_id=project10.id, day=1, reminder_mode=ReminderMode.AFTER_DEADLINE,
+        organization_id='SLX364903',
+        message="1 day is overdue the deadline. Please send your data for Clinic DS W/O Submission (Following).")
+    reminder.save()
+    # Associate datasenders/reporters with project 1
+    project10.data_senders.extend(["rep5", "rep6", "rep7"])
+    project10.save(manager)
+
+
+def create_project9(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline):
+    form_model9 = FormModel(manager, name="AIDS Clinici", label="Aids form_model",
+        form_code="cli009", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE)
+    try:
+        qid = form_model9.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli009").delete()
-        qid = form_model10.save()
-    project9 = Project(name="Clinic9 Reminder Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+        qid = form_model9.save()
+    project9 = Project(name="Clinic9 Reminder Test Project", goals="This project is for automation",
+        project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project9.qid = qid
     project9.state = ProjectState.ACTIVE
     project9.reminder_and_deadline = weekly_reminder_and_deadline
@@ -390,127 +468,57 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         pass
 
     # Create reminders for project2 and project 9
-    reminder = Reminder(project_id = project9.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE, organization_id = 'SLX364903',
-             message = "Reminder test")
+    reminder = Reminder(project_id=project9.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
+        organization_id='SLX364903',
+        message="Reminder test")
     reminder.save()
-
     # Associate datasenders/reporters with project 9
-    project9.data_senders.extend(["rep3","rep4"])
+    project9.data_senders.extend(["rep3", "rep4"])
     project9.save(manager)
 
-    form_model10 = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="cli010", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
-                           entity_type=CLINIC_ENTITY_TYPE
-    )
 
-    weekly_reminder_and_deadline = {
-            "deadline_week": "5",
-            "deadline_type": "Following",
-            "has_deadline": True,
-            "frequency_period": "week",
-            "should_send_reminder_to_all_ds": False
-        }
-
+def create_project8(CLINIC_ENTITY_TYPE, manager, questions):
+    form_model8 = FormModel(manager, name="AIDS", label="Aids form_model",
+        form_code="cli008", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
     try:
-        qid10 = form_model10.save()
+        qid8 = form_model8.save()
     except DataObjectAlreadyExists as e:
-        get_form_model_by_code(manager, "cli010").delete()
-        qid10 = form_model10.save()
-    project10 = Project(name="Clinic DS W/O Submission (Following)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
-    project10.qid = qid10
-    project10.state = ProjectState.ACTIVE
-    project10.reminder_and_deadline = weekly_reminder_and_deadline
+        get_form_model_by_code(manager, "cli008").delete()
+        qid8 = form_model8.save()
+    project8 = Project(name="Clinic8 Test Project", goals="This project is for automation", project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
+    project8.qid = qid8
+    project8.state = ProjectState.INACTIVE
     try:
-        project10.save(manager)
+        project8.save(manager)
     except Exception:
         pass
 
-    reminder = Reminder(project_id = project10.id,day=1,reminder_mode=ReminderMode.BEFORE_DEADLINE,organization_id = 'SLX364903',
-             message = "1 day is remainning to deadline. Please send your data for Clinic DS W/O Submission (Following).")
-    reminder.save()
 
-    # Create reminders for project10
-    reminder = Reminder(project_id = project10.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,organization_id = 'SLX364903',
-             message = "Today is the deadline. Please send your data for Clinic10 Test Project.")
-    reminder.save()
-
-    reminder = Reminder(project_id = project10.id,day=1,reminder_mode=ReminderMode.AFTER_DEADLINE,organization_id = 'SLX364903',
-             message = "1 day is overdue the deadline. Please send your data for Clinic DS W/O Submission (Following).")
-    reminder.save()
-
-    # Associate datasenders/reporters with project 1
-    project10.data_senders.extend(["rep5","rep6","rep7"])
-    project10.save(manager)
-
-    form_model11 = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="cli011", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
-                           entity_type=CLINIC_ENTITY_TYPE
-    )
-
-    weekly_reminder_and_deadline = {
-            "deadline_week": "5",
-            "deadline_type": "Following",
-            "has_deadline": True,
-            "frequency_period": "week",
-            "should_send_reminder_to_all_ds": True
-        }
-
-    try:
-        qid11 = form_model11.save()
-    except DataObjectAlreadyExists as e:
-        get_form_model_by_code(manager, "cli011").delete()
-        qid11 = form_model11.save()
-    project11 = Project(name="Clinic All DS (Following)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
-    project11.qid = qid11
-    project11.state = ProjectState.ACTIVE
-    project11.reminder_and_deadline = weekly_reminder_and_deadline
-    try:
-        project11.save(manager)
-    except Exception:
-        pass
-
-    reminder = Reminder(project_id = project11.id,day=3,reminder_mode=ReminderMode.BEFORE_DEADLINE,organization_id = 'SLX364903',
-             message = "3 day(s) are remainning to deadline. Please send your data for Clinic All DS (Following).")
-    reminder.save()
-
-    # Create reminders for project11
-    reminder = Reminder(project_id = project11.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,organization_id = 'SLX364903',
-             message = "Today is the deadline. Please send your data for Clinic All DS (Following).")
-    reminder.save()
-
-    reminder = Reminder(project_id = project11.id,day=3,reminder_mode=ReminderMode.AFTER_DEADLINE,organization_id = 'SLX364903',
-             message = "3 days are overdue the deadline. Please send your data for Clinic All DS (Following).")
-    reminder.save()
-
-    # Associate datasenders/reporters with project 1
-    project11.data_senders.extend(["rep5","rep6","rep7"])
-    project11.save(manager)
-
+def create_project12(CLINIC_ENTITY_TYPE, manager, questions):
     form_model12 = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="cli012", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
-                           entity_type=CLINIC_ENTITY_TYPE
+        form_code="cli012", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE
     )
-
     weekly_reminder_and_deadline = {
-            "deadline_week": "5",
-            "deadline_type": "Same",
-            "has_deadline": True,
-            "frequency_period": "week",
-            "should_send_reminder_to_all_ds": False
-        }
-
+        "deadline_week": "5",
+        "deadline_type": "Same",
+        "has_deadline": True,
+        "frequency_period": "week",
+        "should_send_reminder_to_all_ds": False
+    }
     try:
         qid12 = form_model12.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli012").delete()
         qid12 = form_model12.save()
-    project12 = Project(name="Clinic DS W/O Submission (That)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+    project12 = Project(name="Clinic DS W/O Submission (That)", goals="This project is for automation",
+        project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project12.qid = qid12
     project12.state = ProjectState.ACTIVE
     project12.reminder_and_deadline = weekly_reminder_and_deadline
@@ -520,29 +528,30 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         pass
 
     # Create reminders for project12
-    reminder = Reminder(project_id = project12.id,day=4,reminder_mode=ReminderMode.BEFORE_DEADLINE,organization_id = 'SLX364903',
-             message = "4 day(s) are remainning to deadline. Please send your data for Clinic DS W/O Submission (That).")
+    reminder = Reminder(project_id=project12.id, day=4, reminder_mode=ReminderMode.BEFORE_DEADLINE,
+        organization_id='SLX364903',
+        message="4 day(s) are remainning to deadline. Please send your data for Clinic DS W/O Submission (That).")
     reminder.save()
-
-    reminder = Reminder(project_id = project12.id,day=4,reminder_mode=ReminderMode.AFTER_DEADLINE,organization_id = 'SLX364903',
-             message = "4 day(s) are overdue the deadline. Please send your data for Clinic DS W/O Submission (That).")
+    reminder = Reminder(project_id=project12.id, day=4, reminder_mode=ReminderMode.AFTER_DEADLINE,
+        organization_id='SLX364903',
+        message="4 day(s) are overdue the deadline. Please send your data for Clinic DS W/O Submission (That).")
     reminder.save()
-
     # Create reminders for project12
-    reminder = Reminder(project_id = project12.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,organization_id = 'SLX364903',
-             message = "Today is the deadline. Please send your data for Clinic DS W/O Submission (That).")
+    reminder = Reminder(project_id=project12.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
+        organization_id='SLX364903',
+        message="Today is the deadline. Please send your data for Clinic DS W/O Submission (That).")
     reminder.save()
-
     # Associate datasenders/reporters with project 1
-    project12.data_senders.extend(["rep5","rep6","rep7"])
+    project12.data_senders.extend(["rep5", "rep6", "rep7"])
     project12.save(manager)
 
-    form_model13 = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="cli013", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
-                           entity_type=CLINIC_ENTITY_TYPE
-    )
 
+def create_project13(CLINIC_ENTITY_TYPE, manager, questions):
+    form_model13 = FormModel(manager, name="AIDS", label="Aids form_model",
+        form_code="cli013", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE
+    )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
         "deadline_type": "Same",
@@ -550,14 +559,15 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         "frequency_period": "month",
         "should_send_reminder_to_all_ds": False
     }
-
     try:
         qid13 = form_model13.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli013").delete()
         qid13 = form_model13.save()
-    project13 = Project(name="Clinic DS W/O Monthly Submission (Same)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+    project13 = Project(name="Clinic DS W/O Monthly Submission (Same)", goals="This project is for automation",
+        project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project13.qid = qid13
     project13.state = ProjectState.ACTIVE
     project13.reminder_and_deadline = monthly_reminder_and_deadline
@@ -567,29 +577,30 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         pass
 
     # Create reminders for project13
-    reminder = Reminder(project_id = project13.id,day=15,reminder_mode=ReminderMode.BEFORE_DEADLINE, organization_id = 'SLX364903',
-         message = "15 days are remainning to deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
+    reminder = Reminder(project_id=project13.id, day=15, reminder_mode=ReminderMode.BEFORE_DEADLINE,
+        organization_id='SLX364903',
+        message="15 days are remainning to deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
     reminder.save()
-
-    reminder = Reminder(project_id = project13.id,day=15,reminder_mode=ReminderMode.AFTER_DEADLINE,organization_id = 'SLX364903',
-         message = "15 days are overdue the deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
+    reminder = Reminder(project_id=project13.id, day=15, reminder_mode=ReminderMode.AFTER_DEADLINE,
+        organization_id='SLX364903',
+        message="15 days are overdue the deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
     reminder.save()
-
     # Create reminders for project13
-    reminder = Reminder(project_id = project13.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,organization_id = 'SLX364903',
-             message = "Today is the deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
+    reminder = Reminder(project_id=project13.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
+        organization_id='SLX364903',
+        message="Today is the deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
     reminder.save()
-
     # Associate datasenders/reporters with project 1
-    project13.data_senders.extend(["rep5","rep6","rep7"])
+    project13.data_senders.extend(["rep5", "rep6", "rep7"])
     project13.save(manager)
 
-    form_model14 = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="cli014", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
-                           entity_type=CLINIC_ENTITY_TYPE
-    )
 
+def create_project14(CLINIC_ENTITY_TYPE, manager, questions):
+    form_model14 = FormModel(manager, name="AIDS", label="Aids form_model",
+        form_code="cli014", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE
+    )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
         "deadline_type": "Following",
@@ -597,14 +608,15 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         "frequency_period": "month",
         "should_send_reminder_to_all_ds": False
     }
-
     try:
         qid14 = form_model14.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli014").delete()
         qid14 = form_model14.save()
-    project14 = Project(name="Clinic DS W/O Monthly Submission (following)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+    project14 = Project(name="Clinic DS W/O Monthly Submission (following)", goals="This project is for automation",
+        project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project14.qid = qid14
     project14.state = ProjectState.ACTIVE
     project14.reminder_and_deadline = monthly_reminder_and_deadline
@@ -614,28 +626,30 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         pass
 
     # Create reminders for project14
-    reminder = Reminder(project_id = project14.id,day=10,reminder_mode=ReminderMode.BEFORE_DEADLINE, organization_id = 'SLX364903',
-         message = "10 days are remainning to deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
+    reminder = Reminder(project_id=project14.id, day=10, reminder_mode=ReminderMode.BEFORE_DEADLINE,
+        organization_id='SLX364903',
+        message="10 days are remainning to deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
     reminder.save()
-    reminder = Reminder(project_id = project14.id,day=10,reminder_mode=ReminderMode.AFTER_DEADLINE,organization_id = 'SLX364903',
-         message = "10 days are overdue the deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
+    reminder = Reminder(project_id=project14.id, day=10, reminder_mode=ReminderMode.AFTER_DEADLINE,
+        organization_id='SLX364903',
+        message="10 days are overdue the deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
     reminder.save()
-
     # Create reminders for project14
-    reminder = Reminder(project_id = project14.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,organization_id = 'SLX364903',
-             message = "Today is the deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
+    reminder = Reminder(project_id=project14.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
+        organization_id='SLX364903',
+        message="Today is the deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
     reminder.save()
-
     # Associate datasenders/reporters with project 1
-    project14.data_senders.extend(["rep5","rep6","rep7"])
+    project14.data_senders.extend(["rep5", "rep6", "rep7"])
     project14.save(manager)
 
-    form_model15 = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="cli015", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
-                           entity_type=CLINIC_ENTITY_TYPE
-    )
 
+def create_project15(CLINIC_ENTITY_TYPE, manager, questions):
+    form_model15 = FormModel(manager, name="AIDS", label="Aids form_model",
+        form_code="cli015", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE
+    )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
         "deadline_type": "Following",
@@ -643,14 +657,15 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         "frequency_period": "month",
         "should_send_reminder_to_all_ds": True
     }
-
     try:
         qid15 = form_model15.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli015").delete()
         qid15 = form_model15.save()
-    project15 = Project(name="Clinic All DS Monthly Submission (following)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+    project15 = Project(name="Clinic All DS Monthly Submission (following)", goals="This project is for automation",
+        project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project15.qid = qid15
     project15.state = ProjectState.ACTIVE
     project15.reminder_and_deadline = monthly_reminder_and_deadline
@@ -660,28 +675,30 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         pass
 
     # Create reminders for project15
-    reminder = Reminder(project_id = project15.id,day=5,reminder_mode=ReminderMode.BEFORE_DEADLINE, organization_id = 'SLX364903',
-         message = "5 days are remainning to deadline. Please send your data for Clinic All DS Monthly Submission (following).")
+    reminder = Reminder(project_id=project15.id, day=5, reminder_mode=ReminderMode.BEFORE_DEADLINE,
+        organization_id='SLX364903',
+        message="5 days are remainning to deadline. Please send your data for Clinic All DS Monthly Submission (following).")
     reminder.save()
-    reminder = Reminder(project_id = project15.id,day=5,reminder_mode=ReminderMode.AFTER_DEADLINE,organization_id = 'SLX364903',
-         message = "5 days are overdue the deadline. Please send your data for Clinic All DS Monthly Submission (following).")
+    reminder = Reminder(project_id=project15.id, day=5, reminder_mode=ReminderMode.AFTER_DEADLINE,
+        organization_id='SLX364903',
+        message="5 days are overdue the deadline. Please send your data for Clinic All DS Monthly Submission (following).")
     reminder.save()
-
     # Create reminders for project15
-    reminder = Reminder(project_id = project15.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,organization_id = 'SLX364903',
-             message = "Today is the deadline. Please send your data for Clinic All DS Monthly Submission (following).")
+    reminder = Reminder(project_id=project15.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
+        organization_id='SLX364903',
+        message="Today is the deadline. Please send your data for Clinic All DS Monthly Submission (following).")
     reminder.save()
-
     # Associate datasenders/reporters with project 1
-    project15.data_senders.extend(["rep5","rep6","rep7"])
+    project15.data_senders.extend(["rep5", "rep6", "rep7"])
     project15.save(manager)
 
-    form_model16 = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="cli016", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
-                           entity_type=CLINIC_ENTITY_TYPE
-    )
 
+def create_project16(CLINIC_ENTITY_TYPE, manager, questions):
+    form_model16 = FormModel(manager, name="AIDS", label="Aids form_model",
+        form_code="cli016", type='survey',
+        fields=questions,
+        entity_type=CLINIC_ENTITY_TYPE
+    )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
         "deadline_type": "Same",
@@ -689,14 +706,15 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         "frequency_period": "month",
         "should_send_reminder_to_all_ds": "True"
     }
-
     try:
         qid16 = form_model16.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli016").delete()
         qid16 = form_model16.save()
-    project16 = Project(name="Clinic All DS Monthly Submission (that)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+    project16 = Project(name="Clinic All DS Monthly Submission (that)", goals="This project is for automation",
+        project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
     project16.qid = qid16
     project16.state = ProjectState.ACTIVE
     project16.reminder_and_deadline = monthly_reminder_and_deadline
@@ -706,40 +724,112 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         pass
 
     # Create reminders for project16
-
-    reminder = Reminder(project_id = project16.id,day=2,reminder_mode=ReminderMode.BEFORE_DEADLINE, organization_id = 'SLX364903',
-         message = "2 days are remainning to deadline. Please send your data for Clinic All DS Monthly Submission (that).")
+    reminder = Reminder(project_id=project16.id, day=2, reminder_mode=ReminderMode.BEFORE_DEADLINE,
+        organization_id='SLX364903',
+        message="2 days are remainning to deadline. Please send your data for Clinic All DS Monthly Submission (that).")
     reminder.save()
-    reminder = Reminder(project_id = project16.id,day=2,reminder_mode=ReminderMode.AFTER_DEADLINE,organization_id = 'SLX364903',
-         message = "2 days are overdue the deadline. Please send your data for Clinic All DS Monthly Submission (that).")
+    reminder = Reminder(project_id=project16.id, day=2, reminder_mode=ReminderMode.AFTER_DEADLINE,
+        organization_id='SLX364903',
+        message="2 days are overdue the deadline. Please send your data for Clinic All DS Monthly Submission (that).")
     reminder.save()
-
     # Create reminders for project16
-    reminder = Reminder(project_id = project16.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,organization_id = 'SLX364903',
-             message = "Today is the deadline. Please send your data for Clinic All DS Monthly Submission (that).")
+    reminder = Reminder(project_id=project16.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
+        organization_id='SLX364903',
+        message="Today is the deadline. Please send your data for Clinic All DS Monthly Submission (that).")
     reminder.save()
-
     # Associate datasenders/reporters with project 1
-    project16.data_senders.extend(["rep5","rep6","rep7"])
+    project16.data_senders.extend(["rep5", "rep6", "rep7"])
     project16.save(manager)
 
+
+def create_project17(CLINIC_ENTITY_TYPE, manager, questions_):
     form_model17 = FormModel(manager, name="AIDS", label="Aids form_model",
-                            form_code="cli017", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6],
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
+        form_code="cli017", type='survey',
+        fields=questions_,
+        entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
     try:
         qid17 = form_model17.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli017").delete()
         qid17 = form_model17.save()
     project17 = Project(name="Clinic13 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes', sender_group="close")
+        entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes', sender_group="close")
     project17.qid = qid17
     project17.state = ProjectState.TEST
     try:
         project17.save(manager)
     except Exception:
         pass
+
+
+def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager):
+    clinic_code = "cli00_mp"
+    project_name = "Clinic Test Project With Monthly Reporting Period"
+    entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
+    date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
+
+    question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
+        language="en", entity_question_flag=True, ddtype=entity_id_type,
+        constraints=[TextLengthConstraint(min=1, max=12)],
+        instruction="Answer must be a word or phrase 12 characters maximum")
+    question2 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
+        date_format="mm.yyyy", ddtype=date_type,
+        instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
+        event_time_field_flag=True)
+
+    form_model = FormModel(manager, name="AIDS", label="Aids form_model",
+        form_code=clinic_code, type='survey',
+        fields=[question1, question2],
+        entity_type=CLINIC_ENTITY_TYPE
+    )
+    try:
+        qid = form_model.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, clinic_code).delete()
+        qid = form_model.save()
+    project = Project(name=project_name, goals="This project is for automation", project_type="survey",
+        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        sender_group="close")
+    project.qid = qid
+    project.state = ProjectState.TEST
+    try:
+        project.save(manager)
+    except Exception:
+        pass
+
+
+
+def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
+    organization = Organization.objects.get(pk='SLX364903')
+    Reminder.objects.filter(organization = organization).delete()
+    questions = create_questions(manager)
+
+    weekly_reminder_and_deadline = {
+        "deadline_week": "5",
+        "deadline_type": "Same",
+        "has_deadline": True,
+        "frequency_period": "week",
+        "should_send_reminder_to_all_ds": True
+    }
+
+    create_project1(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline)
+    create_project2(CLINIC_ENTITY_TYPE, manager,questions)
+    create_project3(CLINIC_ENTITY_TYPE, manager, questions[:7])
+    create_project4(CLINIC_ENTITY_TYPE, manager, questions[:7])
+    create_project5(CLINIC_ENTITY_TYPE, manager, questions[:7])
+    create_project6(CLINIC_ENTITY_TYPE, manager, questions[:7])
+    create_project7(CLINIC_ENTITY_TYPE, manager, questions[:7])
+    create_project8(CLINIC_ENTITY_TYPE, manager, questions[:7])
+    create_project9(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline)
+    create_project10(CLINIC_ENTITY_TYPE, manager, questions)
+    create_project11(CLINIC_ENTITY_TYPE, manager, questions)
+    create_project12(CLINIC_ENTITY_TYPE, manager, questions)
+    create_project13(CLINIC_ENTITY_TYPE, manager, questions)
+    create_project14(CLINIC_ENTITY_TYPE, manager,questions)
+    create_project15(CLINIC_ENTITY_TYPE, manager, questions)
+    create_project16(CLINIC_ENTITY_TYPE, manager, questions)
+    create_project17(CLINIC_ENTITY_TYPE, manager, questions[:6])
+    create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager)
 
     
 
@@ -1175,6 +1265,19 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
 
     return project1
 
+def send_data_to_project_cli00_mp(manager):
+    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
+    FROM_NUMBER = '1234567890'
+    TO_NUMBER = '919880734937'
+    transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
+
+    month = datetime.today().month ;
+    year = datetime.today().year;
+    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month,year), transport))
+    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month,year-1), transport))
+    sms_player.accept(Request("cli00_mp cid001 01.%s" % year, transport))
+    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month -1,year), transport))
+
 def load_data():
     manager = load_manager_for_default_test_account()
     initializer.run(manager)
@@ -1223,6 +1326,7 @@ def load_data():
         short_code="rep8", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
     load_sms_data_for_cli001(manager)
+    send_data_to_project_cli00_mp(manager);
 
     create_trial_test_organization('chinatwu@gmail.com','COJ00000', False)
     create_trial_test_organization('chinatwu2@gmail.com','COJ00001', True, [phone_number_type, first_name_type])

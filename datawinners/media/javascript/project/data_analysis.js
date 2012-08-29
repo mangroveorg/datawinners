@@ -12,9 +12,7 @@ $(document).ready(function() {
         var time_range = $("#dateRangePicker").val().split("-");
 
         if (time_range[0] == "" || time_range[0] == "All Periods") {
-            time_range[0] = '01.01.1996';
-            time_range[1] = '31.12.6000';
-            return {'time_range':time_range, 'aggregationArray': aggregationArray};
+            return {'time_range':['', ''], 'aggregationArray': aggregationArray};
         }
         if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {
             $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>');
