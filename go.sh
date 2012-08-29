@@ -67,6 +67,10 @@ function compile_messages {
     cd "$DWROOT_DIR/datawinners" && python manage.py compilemessages
 }
 
+function run_server{
+    cd "$DWROOT_DIR/datawinners" && python manage.py runserver
+}
+
 function show_help {
 	echo "Usage: build.sh [COMMAND]"
 	echo "COMMAND"
@@ -77,4 +81,5 @@ function show_help {
 	echo "us: \tupdate source codes of mangrove and datawinners"
 	echo "cm: \tcimpile the django.po"
 	echo "init: \t initialize environment for the first time"
+	echo "rs: \t run server on the 127.0.0.1:8000"
 }

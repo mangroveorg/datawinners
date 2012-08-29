@@ -19,6 +19,7 @@ function main {
 		us) update_source;;
 		cm) compile_messages;;
 		rsdb) restore_couchdb_and_postgres;;
+		rs) run_server;;
 		*) show_help && exit 1;;
 	esac	
 }
