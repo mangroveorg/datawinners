@@ -221,8 +221,16 @@
             });
             return wrapper;
         },
+        _set_ids_of_checked: function() {
+            var sourceSelect = this.sourceSelect, dropWrapper = this.dropWrapper;
+            ids =  $.map(dropWrapper.find(':checkbox:checked'), function(checkbox){
+                return $(checkbox).attr('id');
+            });
+
+            return sourceSelect.attr('ids', ids);
+        },
         // Creates a drop item that coresponds to an option element in the source select
-        _createDropItem: function(index, tabIndex, value, text, optCss, checked, disabled, indent) {
+        _createDropItem: function(index, tabIndex, value, code, text, optCss, checked, disabled, indent) {
             var self = this, options = this.options, sourceSelect = this.sourceSelect, controlWrapper = this.controlWrapper;
             // the item contains a div that contains a checkbox input and a lable for the text
             // the div
@@ -243,15 +251,17 @@
             } else { // the radiobutton
                 checkBox = $('<input disabled type="radio" id="' + id + '" name="' + idBase + '"' + checkedString + classString + ' tabindex="' + tabIndex + '" />');
             }
-            checkBox = checkBox.attr("index", index).val(value);
+            checkBox = checkBox.attr("index", index).val(value).attr('id', code);
             item.append(checkBox);
 
             // the text
-            var label = $("<label for=" + id + "/>");
+            var label = $("<label for=" + code + "/>");
+            var $hit = $("<span></span>");
             label.addClass("ui-dropdownchecklist-text");
             if ( optCss != null ) label.attr('style',optCss);
             label.css({ cursor: "default" });
             label.html(text);
+            $hit.addClass('small_grey').html(code);
             if (indent) {
                 item.addClass("ui-dropdownchecklist-indent");
             }
@@ -260,7 +270,7 @@
                 item.addClass("ui-state-disabled");
             }
             label.click(function(e) {e.stopImmediatePropagation();});
-            item.append(label);
+            item.append(label).append($hit);
 
             // active items display themselves with hover
             item.hover(
@@ -288,6 +298,7 @@
                         self._syncSelected(aCheckBox);
                         return;
                     }
+                    self._set_ids_of_checked();
                     self._syncSelected(aCheckBox);
                     self.sourceSelect.trigger("change", 'ddcl_internal');
                     if (!self.isMultiple && options.closeRadioOnClick) {
@@ -336,6 +347,7 @@
                         self._syncSelected(aCheckBox);
                         return;
                     }
+                    self._set_ids_of_checked();
                     self._syncSelected(aCheckBox);
                     self.sourceSelect.trigger("change", 'ddcl_internal');
                     if (!checked && !self.isMultiple && options.closeRadioOnClick) {
@@ -459,10 +471,11 @@
                 var value = option.val();
                 var optCss = option.attr('style');
                 var selected = option.attr("selected");
+                var code = option.attr('code');
                 var disabled = (forceDisabled || option.attr("disabled"));
                 // Use the same tab index as the selector replacement
                 var tabIndex = self.controlSelector.attr("tabindex");
-                var item = self._createDropItem(index, tabIndex, value, text, optCss, selected, disabled, indent);
+                var item = self._createDropItem(index, tabIndex, value, code, text, optCss, selected, disabled, indent);
                 container.append(item);
             }
         },
