@@ -165,7 +165,7 @@ class TestHelper(unittest.TestCase):
         patcher1.stop()
 
 
-    def test_should_create_header_list(self):
+    def test_should_create_header_list_with_reporter_if_the_project_is_not_a_summary_project(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="What is associated entity", code="ID", name="What is associated entity",
             language="en", entity_question_flag=True, ddtype=ddtype)
@@ -179,6 +179,22 @@ class TestHelper(unittest.TestCase):
 
         actual_list = helper.get_headers(form_model)
         expected_header = ["Clinic", "Reporting Period", "Submission Date", "Data Sender", "What is your name"]
+        self.assertListEqual(expected_header, actual_list)
+
+    def test_should_create_header_list_without_reporter_column_if_the_project_is_a_summary_project(self):
+        ddtype = Mock(spec=DataDictType)
+        question1 = TextField(label="What is associated entity", code="ID", name="What is associated entity",
+            language="en", entity_question_flag=True, ddtype=ddtype)
+        question2 = TextField(label="What is your name", code="Q1", name="What is your name",
+            defaultValue="some default value", language="en", ddtype=ddtype)
+
+        form_model = Mock()
+        form_model.fields = [question1, question2]
+        form_model.entity_type = ['reporter']
+        form_model.activeLanguages = ['en']
+
+        actual_list = helper.get_headers(form_model)
+        expected_header = ["Reporting Period", "Submission Date", "Data Sender", "What is your name"]
         self.assertListEqual(expected_header, actual_list)
 
     def test_should_create_value_list(self):
@@ -218,7 +234,7 @@ class TestHelper(unittest.TestCase):
                     form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, False)
                     filters = build_filters({}, form_model)
                     values_dict = get_field_values(Mock(), dbm, form_model, filters)
-                    expected = [("Sender1", "rep1"), '--', u'27.07.2012', ('Sender1', 'rep1'),'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
+                    expected = [('realname', 'cli13'), '--', u'27.07.2012', ('Sender1', 'rep1'),'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
                     expected2 = [('realname', 'cli13'), u'--', u'27.07.2012', ('Sender1', 'rep1'), 'Vamand', '36', 'a', 'ace', '58.3452 115.3345', 'b']
                     self.assertEqual(len(SUBMISSIONS), len(values_dict))
                     self.assertEqual(expected, values_dict[0])
@@ -232,8 +248,22 @@ class TestHelper(unittest.TestCase):
                     form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, True)
                     filters = build_filters({'startTime':'25.7.2012', 'endTime':'26.7.2012'}, form_model)
                     values_dict = get_field_values(Mock(), dbm, form_model, filters)
-                    expected = [("Sender1", "rep1"), u'27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
+                    expected = [('realname', 'cli13'), u'27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
                     expected2 = [('realname', 'cli13'), '27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Vamand', '36', 'a', 'ace', '58.3452 115.3345', 'b']
+                    self.assertEqual(len(SUBMISSIONS), len(values_dict))
+                    self.assertEqual(expected, values_dict[0])
+                    self.assertEqual(expected2, values_dict[1])
+
+    def test_should_return_submission_for_analysis_page_without_reporter_for_reporter_project(self):
+        dbm = Mock(spec=DatabaseManager)
+        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
+            with patch("project.helper.get_data_sender") as get_data_sender:
+                with patch("project.helper.get_by_short_code") as get_by_short_code:
+                    form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, True)
+                    form_model.entity_type = ['reporter']
+                    values_dict = get_field_values(Mock(), dbm, form_model)
+                    expected = [u'27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
+                    expected2 = [u'27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Vamand', '36', 'a', 'ace', '58.3452 115.3345', 'b']
                     self.assertEqual(len(SUBMISSIONS), len(values_dict))
                     self.assertEqual(expected, values_dict[0])
                     self.assertEqual(expected2, values_dict[1])
