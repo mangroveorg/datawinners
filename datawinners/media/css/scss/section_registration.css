@@ -127,3 +127,8 @@ form.registration_form ul li ul li label {
   width: auto;
   padding-top: 1px;
   text-align: left; }
+form.registration_form #id_organization_country {
+  width: 206px;
+  float: left; }
+form.registration_form ul.payment_details {
+  width: 675px; }
