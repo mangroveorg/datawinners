@@ -575,6 +575,8 @@
             var text = self._formatText(selectOptions, options.firstItemChecksAll, firstOption);
             var controlLabel = controlWrapper.find(".ui-dropdownchecklist-text");
             controlLabel.html(text);
+            // the attribute needs naked text, not html
+            controlLabel.attr("title", controlLabel.text());
         },
         // Formats the text that is shown in the control
         _formatText: function(selectOptions, firstItemChecksAll, firstOption) {

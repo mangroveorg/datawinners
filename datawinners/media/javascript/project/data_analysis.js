@@ -4,7 +4,7 @@ $(document).ready(function() {
     $(subjects_data).each(function(index, subject) {
         $('<option>' + subject[0] + '</option>').val(subject[0]).attr('code', subject[1]).appendTo($subjectSelect);
     });
-    $subjectSelect.dropdownchecklist({explicitClose: gettext("OK"), width: $subjectSelect.width(), maxDropHeight: 200});
+    $subjectSelect.dropdownchecklist({ width: $subjectSelect.width(), maxDropHeight: 200});
 
     var screen_width = $(window).width() - 50;
     DW.submit_data = function() {
