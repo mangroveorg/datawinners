@@ -420,7 +420,8 @@ def project_data(request, project_id=None, questionnaire_code=None):
 
     header_list = helper.get_headers(form_model)
     values = helper.get_field_values(request, manager, form_model, filters)
-    subject_list = [value[0] for value in values]
+    subject_list = sorted(list(set([value[0] for value in values])))
+
     field_values = formatted_data(values)
     if request.method == "GET":
         in_trial_mode = _in_trial_mode(request)
