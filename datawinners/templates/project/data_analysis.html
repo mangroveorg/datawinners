@@ -32,6 +32,7 @@
     <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
@@ -40,11 +41,13 @@
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/custom_select_box.js"></script>
     <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
-    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/jquery-ui-1.8.12.custom.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/dropdown_check_list/dropdownchecklist.js"></script>
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
         var initial_data = JSON.parse({{data_list|safe}});
+        var subjects_data = JSON.parse({{ subject_list|safe }})
         var date_format = '{{ date_format }}'
     </script>
     <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
@@ -78,7 +81,31 @@
         <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
     <div class="heading_block grid_23 alpha data_ana">
-
+        <div class="float_left">
+            <div class="filter_label">
+                <label class="full_width">{{ entity_type }}</label>
+            </div>
+            <div class="float_left ">
+                <select multiple="multiple" id="subjectSelect">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                    <option>High</option>
+                </select>
+            </div>
+        </div>
         <div class="{% if not has_reporting_period %} none {% endif %} float_left">
             <div class="filter_label">
                 <label>{% trans "Reporting Period" %}</label>

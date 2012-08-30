@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $('#dateRangePicker').monthpicker();
-//    $('#dateRangePicker').monthpicker("show");
+    var $subjectSelect = $('#subjectSelect');
+    $subjectSelect.dropdownchecklist({explicitClose: 'ok', width: $subjectSelect.width(), maxDropHeight: 200});
     var screen_width = $(window).width() - 50;
     DW.submit_data = function() {
         $("#dateErrorDiv").hide();

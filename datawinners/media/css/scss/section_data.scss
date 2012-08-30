@@ -27,10 +27,23 @@ table{
     border-bottom:1px solid #CCCCCC;
     padding-bottom:5px;
     margin-top:30px;
+    .ui-dropdownchecklist {
+      label {
+        float: none;
+        display: inline-block;
+      }
+      .ui-dropdownchecklist-dropcontainer .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+        border: none;
+        background: none;
+      }
+    }
     > div{
       width: 20%;
-      input[type='text']{
-        width: 200px;
+      input[type='text'], select{
+        width: 80%
+      }
+      > div {
+        width: 100%;
       }
     }
     .date_range_box{

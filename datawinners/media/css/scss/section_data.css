@@ -22,10 +22,18 @@ table {
   border-bottom: 1px solid #CCCCCC;
   padding-bottom: 5px;
   margin-top: 30px; }
+  .heading_block .ui-dropdownchecklist label {
+    float: none;
+    display: inline-block; }
+  .heading_block .ui-dropdownchecklist .ui-dropdownchecklist-dropcontainer .ui-state-default, .heading_block .ui-dropdownchecklist .ui-widget-content .ui-state-default, .heading_block .ui-dropdownchecklist .ui-widget-header .ui-state-default {
+    border: none;
+    background: none; }
   .heading_block > div {
     width: 20%; }
-    .heading_block > div input[type='text'] {
-      width: 200px; }
+    .heading_block > div input[type='text'], .heading_block > div select {
+      width: 80%; }
+    .heading_block > div > div {
+      width: 100%; }
   .heading_block .date_range_box {
     float: left; }
     .heading_block .date_range_box label, .heading_block .date_range_box select {

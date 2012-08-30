@@ -127,9 +127,6 @@ def check_if_form_exists(dbm, form_code):
     except FormModelDoesNotExistsException:
         return False
 
-def convert_to_json_response(result):
-    return HttpResponse(jsonpickle.encode(result, unpicklable=False), content_type='application/json; charset=utf-8')
-
 def convert_to_json_file_download_response(result, file_name):
     json_str = jsonpickle.encode(result, unpicklable=False)
     json_file = cStringIO.StringIO()

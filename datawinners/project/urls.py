@@ -11,6 +11,7 @@ from datawinners.project.views import  save_questionnaire, index, project_overvi
     edit_subject_questionaire, create_data_sender_and_web_user, edit_data_sender
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
+from project.views import subject_list
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -36,6 +37,7 @@ urlpatterns = patterns('',
         (r'^project/(?P<project_id>.+?)/results/(?P<questionnaire_code>.+?)/$', project_results),
         url(r'^project/(?P<project_id>.+?)/data/(?P<questionnaire_code>[^\\/]+?)/$', project_data),
         (r'^project/subjects/(?P<project_id>.+?)/$', subjects),
+        (r'^ajax/project/subjects/$', subject_list),
         (r'^project/registered_subjects/(?P<project_id>.+?)/$', registered_subjects),
         (r'^project/subject/edit/(?P<project_id>.+?)/(?P<entity_type>.+?)/(?P<entity_id>.+?)/$', edit_subject),
         (r'^project/datasenders/(?P<project_id>.+?)/$', create_data_sender_and_web_user),

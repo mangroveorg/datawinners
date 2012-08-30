@@ -25,6 +25,7 @@ from datawinners.entity.helper import process_create_data_sender_form, add_impor
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
+from entity.helper import get_all_subject_data
 
 import helper
 
@@ -64,6 +65,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
+from main.views import convert_to_json_response
 from project.filters import ReportPeriodFilter
 from project.tests.test_filter import SubjectFilter
 
@@ -419,15 +421,18 @@ def project_data(request, project_id=None, questionnaire_code=None):
     filters = build_filters(request.POST, form_model)
 
     header_list = helper.get_headers(form_model)
-    field_values = formatted_data(helper.get_field_values(request, manager, form_model, filters))
+    values = helper.get_field_values(request, manager, form_model, filters)
+    subject_list = [value[0] for value in values]
+    field_values = formatted_data(values)
 
     if request.method == "GET":
         in_trial_mode = _in_trial_mode(request)
         has_rp = rp_field is not None
         return render_to_response('project/data_analysis.html',
                 {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
-                 "entity_type": form_model.entity_type[0],
+                 "entity_type": form_model.entity_type[0].capitalize(),
                  "data_list": repr(encode_json(field_values)),
+                 "subject_list": repr(encode_json(subject_list)),
                  "header_list": header_list,
                  'project_links': (make_project_links(project, questionnaire_code)),
                  'project': project,
@@ -725,6 +730,11 @@ def _get_project_and_project_link(manager, project_id, reporter_id=None):
     project_links = make_project_links(project, questionnaire.form_code, reporter_id)
     return project, project_links
 
+@login_required(login_url='/login')
+@is_not_expired
+def subject_list(request):
+    manager = get_database_manager(request.user)
+    return convert_to_json_response(get_all_subject_data(manager))
 
 @login_required(login_url='/login')
 @is_not_expired

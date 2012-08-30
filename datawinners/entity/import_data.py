@@ -33,6 +33,7 @@ from django.contrib.auth.models import User, Group
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.utils import send_reset_password_email
 from django.core.validators import email_re
+from entity.helper import get_all_subject_data
 
 class FilePlayer(Player):
     def __init__(self, dbm, parser, channel_name, location_tree=None):
@@ -180,7 +181,6 @@ def _get_entity_type_from_row(row):
     type = row['doc']['aggregation_paths']['_type']
     return type
 
-
 def load_subject_registration_data(manager,
                                    filter_entities=exclude_of_type,
                                    type=REPORTER, tabulate_function=_tabulate_data):
@@ -190,11 +190,9 @@ def load_subject_registration_data(manager,
         form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(type))
 
     fields, labels, codes = get_entity_type_fields(manager, type)
-    entities = get_all_entities(dbm=manager)
-    data = []
-    for entity in entities:
-        if filter_entities(entity, type):
-            data.append(tabulate_function(entity, form_model, codes))
+    entities = get_all_subject_data(manager, filter_entities, type)
+    data = [tabulate_function(entity, form_model, codes) for entity in entities]
+
     return data, fields, labels
 
 
