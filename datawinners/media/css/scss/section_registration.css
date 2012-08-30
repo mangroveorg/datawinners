@@ -132,3 +132,8 @@ form.registration_form #id_organization_country {
   float: left; }
 form.registration_form ul.payment_details {
   width: 675px; }
+form.registration_form ul.administrative {
+  width: 756px; }
+.clear_both{
+    clear:both;
+}

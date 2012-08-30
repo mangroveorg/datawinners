@@ -188,7 +188,13 @@ form.registration_form{
         width: 206px;
         float: left;
     }
-    .payment_details{
+    ul.payment_details{
         width: 675px;
     }
+    ul.administrative{
+        width: 756px;
+    }
+}
+.clear_both{
+    clear:both;
 }
