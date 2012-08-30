@@ -74,10 +74,11 @@
     </div>
     <form id = "export_form" action="/project/export/data" method='POST'>
         {% csrf_token %}
-        <input id = "aggregation-types"  name='aggregation-types' type="hidden" />
         <input id = "questionnaire_code" name='questionnaire_code' type="hidden" />
         <input id='start_time' name='start_time' type="hidden"/>
         <input id='end_time' name='end_time'  type="hidden" />
+        <input id='subject_ids' name='subject_ids'  type="hidden" />
+
         <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
     <div class="heading_block grid_23 alpha data_ana">
@@ -135,11 +136,11 @@
     <div class="grid_23 alpha omega data_block">
         <table id="data_analysis" class="styled_table">
             <thead>
-            <tr >
-                {% for each in header_list %}
-                <th>{{ each }} </th>
-                {% endfor %}
-            </tr>
+                <tr >
+                    {% for each in header_list %}
+                    <th>{{ each }} </th>
+                    {% endfor %}
+                </tr>
             </thead>
         </table>
     </div>

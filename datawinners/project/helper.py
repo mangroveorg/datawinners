@@ -265,7 +265,6 @@ def to_value_list_based_on_field_order(fields, value_dict):
     return [_to_str(value_dict.get(field.code, field)) for field in fields]
 
 
-
 def get_all_values(data_dictionary, form_model):
     """
        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', 'What is associated entity?': 'cid002'}, 'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', 'What is associated entity?': 'cid001'}}

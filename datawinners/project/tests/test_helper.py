@@ -196,35 +196,6 @@ class TestHelper(unittest.TestCase):
         expected_header = ["Reporting Period", "Submission Date", "Data Sender", "What is your name"]
         self.assertListEqual(expected_header, actual_list)
 
-    def test_should_create_value_list(self):
-        data_dictionary = {'1': {'What is age of father?': 55, 'What is your name?': 'shweta',
-                                 "What colour do you choose?": ["red", "blue"],
-                                 "what is your loc?": [21.1, 23.3],
-                                 "what is reporting date?": datetime.strptime('25.12.2011', '%d.%m.%Y'),
-                                 'What is associated entity?': 'cid002'},
-                           '2': {'What is age of father?': 35, 'What is your name?': 'asif',
-                                 "What colour do you choose?": ["red"], "what is your loc?": [21.1],
-                                 "what is reporting date?": datetime.strptime('25.12.1011', '%d.%m.%Y'),
-                                 'What is associated entity?': 'cid001'}}
-        form_model_mock = Mock(spec=FormModel)
-        form_model_mock.entity_type = ['Clinic']
-        form_model_mock.activeLanguages = ['en']
-        q1 = self._get_text_field("Clinic code?")
-        q2 = self._get_text_field("What is your name?")
-        q3 = self._get_text_field("What is age of father?")
-        q4 = self._get_text_field("What colour do you choose?")
-        q5 = self._get_text_field("what is your loc?")
-        q6 = DateField("what is reporting date?", "code", "what is reporting date?", "dd.mm.yyyy",
-            Mock(spec=DataDictType))
-        form_model_mock.fields = [q1, q2, q3, q4, q5, q6]
-        mock = Mock()
-        mock.name = 'What is associated entity?'
-        form_model_mock.entity_question = mock
-        field_values, grand_totals = helper.get_all_values(data_dictionary, form_model_mock)
-        expected_list = [["cid002", 'shweta', 55, "red,blue", "21.1,23.3", "25.12.2011"],
-            ["cid001", 'asif', 35, "red", "21.1", "25.12.1011"]]
-        self.assertListEqual(expected_list, field_values)
-
     def test_should_return_all_submission_for_analysis_page_if_there_is_no_report_period_question(self):
         dbm = Mock(spec=DatabaseManager)
         with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:

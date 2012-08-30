@@ -372,15 +372,6 @@ def submissions(request):
                  'error_message': error_message,
                  'success_message': ""}, context_instance=RequestContext(request))
 
-
-def _format_data_for_presentation(entity_values_dict, form_model):
-    headers = helper.get_headers(form_model)
-
-    type_list = helper.get_aggregation_options_for_all_fields(form_model.fields[1:])
-    field_values, grand_totals = helper.get_all_values(entity_values_dict, form_model)
-    return field_values, headers, type_list, grand_totals
-
-
 def _load_data(form_model, manager, questionnaire_code, aggregation_types=None, start_time=None, end_time=None):
     aggregation_type_list = json.loads(aggregation_types)
     if not aggregation_type_list:
@@ -402,16 +393,16 @@ def _get_analysis_data(form_model, manager, request, filters):
     result = helper.get_field_values(request, manager, form_model, filters)
     return header, formatted_data(result)
 
-def _to_name_id_string(tuple):
+def _to_name_id_string(tuple, delimiter='</br>'):
     if tuple[1] is None: return tuple[0]
-    return "%s</br>(%s)" % tuple
+    return "%s%s(%s)" % (tuple[0], delimiter, tuple[-1])
 
 
-def formatted_data(field_values):
+def formatted_data(field_values, delimiter='</br>'):
     for index, each in enumerate(field_values):
         for idx, answer in enumerate(each):
             if isinstance(answer, tuple):
-                each[idx] = _to_name_id_string(answer)
+                each[idx] = _to_name_id_string(answer, delimiter)
     return field_values
 
 @login_required(login_url='/login')
@@ -419,18 +410,18 @@ def formatted_data(field_values):
 @is_not_expired
 def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
-    project = Project.load(manager.database, project_id)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    rp_field = form_model.event_time_question
     filters = build_filters(request.POST, form_model)
-
     header_list = helper.get_headers(form_model)
     values = helper.get_field_values(request, manager, form_model, filters)
-    subject_list = sorted(list(set([value[0] for value in values])))
 
-    field_values = formatted_data(values)
+    field_values = formatted_data(values, '</br>')
+    subject_list = sorted(list(set([value[0] for value in values])))
+    rp_field = form_model.event_time_question
+
     if request.method == "GET":
         in_trial_mode = _in_trial_mode(request)
+        project = Project.load(manager.database, project_id)
         has_rp = rp_field is not None
         is_monthly_reporting = rp_field.date_format.find('dd')<0 if has_rp else False
 
@@ -456,14 +447,16 @@ def project_data(request, project_id=None, questionnaire_code=None):
 @is_not_expired
 def export_data(request):
     questionnaire_code = request.POST.get("questionnaire_code")
+
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    data_dictionary = _load_data(form_model, manager, questionnaire_code, request.POST.get("aggregation-types"),
-        request.POST.get("start_time"), request.POST.get("end_time"))
-    raw_data_list, header_list, type_list, grand_totals = _format_data_for_presentation(data_dictionary, form_model)
-    raw_data_list.insert(0, header_list)
+    filters = build_filters(request.POST, form_model)
+    header_list = helper.get_headers(form_model)
+    values = helper.get_field_values(request, manager, form_model, filters)
+
     file_name = request.POST.get(u"project_name") + '_analysis'
-    return _create_excel_response(raw_data_list, file_name)
+
+    return _create_excel_response([header_list] + formatted_data(values, ' '), file_name)
 
 
 def _create_excel_response(raw_data_list, file_name):
@@ -473,6 +466,7 @@ def _create_excel_response(raw_data_list, file_name):
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
     wb = utils.get_excel_sheet(raw_data_list, 'data_log')
     wb.save(response)
+
     return response
 
 

@@ -27,7 +27,7 @@ $(document).ready(function() {
             time_range[1] = "";
             return {'time_range':time_range, 'aggregationArray': aggregationArray, 'subject_ids': subject_ids};
         }
-        if (time_range.length == 1){
+        if (time_range.length == 1) {
             time_range[1] = time_range[0];
             return {'time_range':time_range, 'aggregationArray': aggregationArray, 'subject_ids': subject_ids};
         }
@@ -43,8 +43,6 @@ $(document).ready(function() {
             index = index + 1;
         });
     };
-
-
 
     function configureSettings(){
         var year_to_date_setting = {text: gettext('Year to date'), dateStart: function() {
@@ -126,15 +124,17 @@ $(document).ready(function() {
 
     $('#export_link').click(function() {
         var data = DW.submit_data();
-        var aggregationArray = data['aggregationArray'];
         var time_list = data['time_range'];
         var path = window.location.pathname;
         var element_list = path.split("/");
-        $("#aggregation-types").attr("value", JSON.stringify(aggregationArray));
         $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
         $("#start_time").attr("value", time_list[0]);
         $("#end_time").attr("value", time_list[1]);
+        $("#subject_ids").attr("value", data['subject_ids']);
+
         $('#export_form').submit();
+
+
     });
 
     $('#time_submit').click(function() {
