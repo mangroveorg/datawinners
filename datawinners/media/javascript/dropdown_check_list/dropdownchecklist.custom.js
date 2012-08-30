@@ -400,6 +400,7 @@
         _createCloseItem: function(text) {
             var self = this;
             var closeItem = $("<div />");
+            var delimiter = $("<hr/>")
             closeItem.addClass("ui-state-default ui-dropdownchecklist-close ui-dropdownchecklist-item");
             closeItem.css({'white-space': 'nowrap', 'text-align': 'center'});
 
@@ -407,6 +408,7 @@
             label.addClass("ui-dropdownchecklist-text");
             label.css( { cursor: "default" });
             label.html(text);
+            closeItem.append(delimiter)
             closeItem.append(label);
 
             // close the control on click
@@ -573,8 +575,6 @@
             var text = self._formatText(selectOptions, options.firstItemChecksAll, firstOption);
             var controlLabel = controlWrapper.find(".ui-dropdownchecklist-text");
             controlLabel.html(text);
-            // the attribute needs naked text, not html
-            controlLabel.attr("title", controlLabel.text());
         },
         // Formats the text that is shown in the control
         _formatText: function(selectOptions, firstItemChecksAll, firstOption) {
