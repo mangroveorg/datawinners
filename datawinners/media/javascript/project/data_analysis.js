@@ -145,7 +145,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'POST',
             url: window.location.pathname,
-            data: {'start_time':time_list[0], 'end_time': time_list[1], 'subject_ids': data['subject_ids']},
+            data: {'start_time':time_list[0].trim(), 'end_time': time_list[1].trim(), 'subject_ids': data['subject_ids']},
             success:function(response) {
                 var response_data = JSON.parse(response);
                 DW.dataBinding(response_data.data, true, false);

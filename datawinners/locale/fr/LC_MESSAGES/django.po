@@ -823,6 +823,12 @@ msgid "Analysis"
 msgstr "Analyse"
 
 #: templates/project/data_analysis.html:92
+msgid "Monthly Reporting Period"
+msgstr "Période de Rapport Mensuel"
+
+msgid "Daily Reporting Period"
+msgstr "Période de Rapport Journalier"
+
 msgid "r_tooltip_report_period"
 msgstr ""
 "Voir un à un vos soumissions parmi ces rapports périodiques. Cliquez sur la liste déroulante et choisissez une période spécifique."
@@ -1098,9 +1104,6 @@ msgstr "Période de Rapport"
 
 msgid "Submission Date"
 msgstr "Date d’Envoi"
-
-msgid "Data Sender"
-msgstr "Expéditeurs de Données"
 
 #: templates/project/data_analysis.html:77 templates/project/results.html:71
 msgid "Click to select a date range"

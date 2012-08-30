@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datetime import timedelta
 import unittest
 from nose.plugins.attrib import attr
 import time
@@ -52,7 +53,6 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_current_month(self):
-
         self.verify_reporting_period_filter(FILTER_BY_CURRENT_MONTH, self.go_to_analysis_page())
 
     @attr('functional_test', 'smoke')
@@ -87,7 +87,7 @@ class TestDataAnalysis(BaseTest):
         start_year = datetime.today().year - 1
         day = datetime.today().day
         month = datetime.today().month
-        end_date = datetime.date.today() + datetime.timedelta(days=5)
+        end_date = datetime.today() + timedelta(days=5)
         data_analysis_page.select_date_range(start_year, month, day, end_date.year, end_date.month, end_date.day)
         time.sleep(1)
         data_analysis_page.filter_data()

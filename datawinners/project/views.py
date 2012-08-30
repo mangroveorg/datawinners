@@ -422,12 +422,14 @@ def project_data(request, project_id=None, questionnaire_code=None):
     values = helper.get_field_values(request, manager, form_model, filters)
     subject_list = [value[0] for value in values]
     field_values = formatted_data(values)
-
     if request.method == "GET":
         in_trial_mode = _in_trial_mode(request)
         has_rp = rp_field is not None
+        is_monthly_reporting = rp_field.date_format.find('dd')<0 if has_rp else False
+
         return render_to_response('project/data_analysis.html',
                 {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
+                 "is_monthly_reporting": is_monthly_reporting,
                  "entity_type": form_model.entity_type[0].capitalize(),
                  "data_list": repr(encode_json(field_values)),
                  "subject_list": repr(encode_json(subject_list)),

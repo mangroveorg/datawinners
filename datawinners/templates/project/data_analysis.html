@@ -32,16 +32,16 @@
     <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
-    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+{#    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />#}
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" language="javascript" src="/media/javascript/monthly_date_picker/month-picker.js"/>
+    <script type="text/javascript" src="/media/javascript/monthly_date_picker/month-picker.js"/>
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/custom_select_box.js"></script>
     <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
-    <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>#}
     <script type="text/javascript" src="/media/javascript/dropdown_check_list/dropdownchecklist.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
@@ -91,7 +91,9 @@
         </div>
         <div class="{% if not has_reporting_period %} none {% endif %} float_left">
             <div class="filter_label">
-                <label>{% trans "Reporting Period" %}</label>
+                {% if is_monthly_reporting %} <label>{% trans "Monthly Reporting Period" %}</label>
+                {% else %}<label>{% trans "Daily Reporting Period" %}</label>
+                {% endif %}
                 <img src="/media/images/help_icon.png" class="help_icon" >
                 <div class="tooltip"><p>
                     <strong>{% trans "What is this?" %}</strong><br />

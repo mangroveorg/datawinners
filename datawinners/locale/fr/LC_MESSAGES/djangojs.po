@@ -129,6 +129,12 @@ msgstr ""
 msgid "Just a moment"
 msgstr "Veuillez patienter"
 
+msgid "Choose Date(s)"
+msgstr "Choisir la/les Date(s)"
+
+msgid "Choose Month(s)"
+msgstr "Choisir le(s) Mois"
+
 #: media/javascript/project/data_analysis.js
 msgid "All Periods"
 msgstr "Toutes les Périodes"
@@ -657,3 +663,45 @@ msgstr "au"
 
 msgid "This question is a duplicate"
 msgstr "Cette question est un doublon"
+
+msgid "Jan"
+msgstr "Jan"
+
+msgid "Feb"
+msgstr "Fév"
+
+msgid "Mar"
+msgstr "Mar"
+
+msgid "Apr"
+msgstr "Avr"
+
+msgid "May"
+msgstr "Mai"
+
+msgid "Jun"
+msgstr "Jun"
+
+msgid "Jul"
+msgstr "Jul"
+
+msgid "Aug"
+msgstr "Aoû"
+
+msgid "Sep"
+msgstr "Sep"
+
+msgid "Oct"
+msgstr "Oct"
+
+msgid "Nov"
+msgstr "Nov"
+
+msgid "Dec"
+msgstr "Déc"
+
+msgid "From"
+msgstr "De"
+
+msgid "To"
+msgstr "A"

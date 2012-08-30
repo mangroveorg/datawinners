@@ -1067,9 +1067,6 @@ msgstr ""
 msgid "Submission Date"
 msgstr ""
 
-msgid "Data Sender"
-msgstr ""
-
 #:templates/project/results.html:71
 msgid "Click to select a date range"
 msgstr ""

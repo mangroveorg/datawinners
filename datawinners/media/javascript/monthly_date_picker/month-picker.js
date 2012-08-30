@@ -53,7 +53,7 @@
                         pattern:'mm.yyyy',
                         startYear:year - 10,
                         finalYear:year + 10,
-                        monthNames:['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                        monthNames:[gettext('Jan'), gettext('Feb'), gettext('Mar'), gettext('Apr'), gettext('May'), gettext('Jun'), gettext('Jul'), gettext('Aug'), gettext('Sep'), gettext('Oct'), gettext('Nov'), gettext('Dec')]
                     }, options),
                     settings_start = $.extend({
                             year:year,
