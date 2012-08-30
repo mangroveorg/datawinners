@@ -56,6 +56,9 @@ from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
 from project.wizard_view import get_max_code
+from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, IMPORTED_SUBJECTS, \
+    DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
+    ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM
 
 
 COUNTRY = ',MADAGASCAR'
@@ -130,7 +133,7 @@ def create_data_sender(request):
             else:
                 project = ""
             if not len(form.errors):
-                UserActivityLog().log(request, action="Registered Data Sender",
+                UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
@@ -191,7 +194,7 @@ def edit_data_sender(request, reporter_id):
                     activate(current_lang)
                     if len(detail_dict) > 1 :
                         detail_as_string = json.dumps(detail_dict)
-                        UserActivityLog().log(request, action='Edited Data Sender', detail=detail_as_string)
+                        UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string)
 
             except MangroveException as exception:
                 message = exception.message
@@ -215,7 +218,7 @@ def create_type(request):
             create_registration_form(manager, entity_name)
             message = _("Entity definition successful")
             success = True
-            UserActivityLog().log(request, action='Added Subject Type', detail=entity_name[0].capitalize())
+            UserActivityLog().log(request, action=ADDED_SUBJECT_TYPE, detail=entity_name[0].capitalize())
         except EntityTypeAlreadyDefined:
             if request.POST["referer"] == 'project':
                 message = _("%s already registered as a subject type. Please select %s from the drop down menu.") % (
@@ -248,7 +251,7 @@ def all_subjects(request):
                     detail_dict.update({entity_type: [short_code]})
             for key,detail in detail_dict.items():
                 detail_dict.update({key: "[%s]" % ", ".join(detail)})
-            UserActivityLog().log(request, action='Imported Subjects', detail=json.dumps(detail_dict))
+            UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
         subjects_data = import_module.load_all_subjects(manager)
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
@@ -294,9 +297,9 @@ def delete_entity(request):
             delete_datasender_users_if_any(all_ids, organization)
             if organization.in_trial_mode:
                 delete_datasender_for_trial_mode(manager, all_ids, entity_type)
-            action = "Deleted Data Senders"
+            action = DELETED_DATA_SENDERS
         else:
-            action = "Deleted Subjects"
+            action = DELETED_SUBJECTS
         UserActivityLog().log(request, action=action, detail="%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)),
                               project=project.capitalize())
         messages.success(request, get_success_message(entity_type))
@@ -395,7 +398,7 @@ def all_datasenders(request):
         error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
             manager, default_parser=XlsDatasenderParser)
         if len(imported_datasenders.keys()):
-            UserActivityLog().log(request, action="Imported Data Senders",
+            UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
                 detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         mobile_number_index = fields.index('mobile_number')
@@ -430,7 +433,7 @@ def disassociate_datasenders(request):
         projects_name.append(project.name.capitalize())
     ids = request.POST["ids"].split(";")
     if len(ids):
-        UserActivityLog().log(request, action="Removed Data Sender from Project",
+        UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
             detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids), "Projects": "[%s]" % ", ".join(projects_name)}))
     return HttpResponse(reverse(all_datasenders))
 
@@ -460,7 +463,7 @@ def associate_datasenders(request):
         project.save(manager)
     ids = request.POST["ids"].split(';')
     if len(ids):
-        UserActivityLog().log(request, action="Added Data Senders to Projects",
+        UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
             detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids), "Projects": "[%s]" % ", ".join(projects_name)}))
     return HttpResponse(reverse(all_datasenders))
 
@@ -623,7 +626,7 @@ def create_subject(request, entity_type=None):
                 success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
                     response.short_code,)
                 detail_dict = dict({"Subject Type":entity_type.capitalize(), "Unique ID": response.short_code})
-                UserActivityLog().log(request, action='Registered Subject', detail=json.dumps(detail_dict))
+                UserActivityLog().log(request, action=REGISTERED_SUBJECT, detail=json.dumps(detail_dict))
                 questionnaire_form = QuestionnaireForm()
             else:
                 from datawinners.project.helper import errors_to_list
@@ -729,7 +732,7 @@ def save_questionnaire(request):
             kwargs = dict()
             if request.POST.get("project-name") is not None:
                 kwargs.update(dict(project=request.POST.get("project-name").capitalize()))
-            UserActivityLog().log(request, action='Edited Registration Form', detail=json.dumps(detail_dict), **kwargs)
+            UserActivityLog().log(request, action=EDITED_REGISTRATION_FORM, detail=json.dumps(detail_dict), **kwargs)
             return HttpResponse(json.dumps({'success': True, 'form_code': form_model.form_code}))
         except QuestionCodeAlreadyExistsException as e:
             return HttpResponse(json.dumps({'success': False, 'error_message': _(e.message)}))

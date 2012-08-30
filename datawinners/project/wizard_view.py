@@ -24,6 +24,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions
+from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, SET_DEADLINE
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -106,7 +107,7 @@ def create_project(request):
 
             try:
                 project.save(manager)
-                UserActivityLog().log(request, action='Created project', project=project.name, detail=project.name)
+                UserActivityLog().log(request, action=CREATED_PROJECT, project=project.name, detail=project.name)
             except DataObjectAlreadyExists as ex:
                 questionnaire.delete()
                 message  = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
@@ -172,7 +173,7 @@ def edit_project(request, project_id=None):
                 detail.update(changed_questions)
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()
-                UserActivityLog().log(request, project=project.name, action="Edited Project", detail=json.dumps(detail))
+                UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
             except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
                 return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': _(ex.message)}))
             except DataObjectAlreadyExists:
@@ -241,7 +242,7 @@ def reminder_settings(request, project_id):
             if action is not None:
                 UserActivityLog().log(request, action=action, project=project.name)
             if set_deadline:
-                UserActivityLog().log(request, action="Set Deadline", project=project.name)
+                UserActivityLog().log(request, action=SET_DEADLINE, project=project.name)
             messages.success(request, _("Reminder settings saved successfully."))
             return HttpResponseRedirect('')
         else:
@@ -342,10 +343,10 @@ def _get_activity_log_action(reminder_list, new_value):
     if reminder_list.count() == 0 and (new_value['should_send_reminders_after_deadline'] or
                                        new_value['should_send_reminders_on_deadline'] or
                                        new_value['should_send_reminders_before_deadline']) :
-        action = "Activated Reminders"
+        action = ACTIVATED_REMINDERS
     if reminder_list.count() > 0 and not (new_value['should_send_reminders_after_deadline'] or
                                        new_value['should_send_reminders_on_deadline'] or
                                        new_value['should_send_reminders_before_deadline']):
-        action = "De-Activated Reminders"
+        action = DEACTIVATED_REMINDERS
     return action
     

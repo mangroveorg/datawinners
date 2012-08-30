@@ -4,4 +4,4 @@
 ##Variables
 PAGE_TITLE = "Activity Log"
 TESTER_NAME = "Tester Pune"
-CREATED_PROJECT_ACTION = "Created project"
+CREATED_PROJECT_ACTION = "Created Project"

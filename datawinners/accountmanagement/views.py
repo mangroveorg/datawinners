@@ -24,6 +24,7 @@ from datawinners.project.models import Project
 from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
 from datawinners.activitylog.models import UserActivityLog
 import json
+from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER
 
 
 def is_admin(f):
@@ -175,7 +176,7 @@ def settings(request):
                     detail_dict.update({label: organization_form.cleaned_data.get(changed)})
                 activate(current_lang)
                 detail_as_string = json.dumps(detail_dict)
-                UserActivityLog().log(request, action='Changed Account Information', detail=detail_as_string)
+                UserActivityLog().log(request, action=CHANGED_ACCOUNT_INFO, detail=detail_as_string)
 
             
         return render_to_response("accountmanagement/account/org_settings.html",
@@ -231,7 +232,7 @@ def new_user(request):
                 form = UserProfileForm()
                 add_user_success = True
                 detail_dict = dict({"First name": first_name, "Last name": last_name})
-                UserActivityLog().log(request, action='Added User', detail=json.dumps(detail_dict))
+                UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
 
         return render_to_response("accountmanagement/account/add_user.html",
                 {'profile_form': form, 'add_user_success': add_user_success},

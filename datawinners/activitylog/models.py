@@ -4,47 +4,48 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.utils.translation import ugettext_lazy as _, ugettext
 import json
+from datawinners.common.constant import *
 
 action_list = (
     ('',_("All Actions")),
         
     (_('Account Administration'), (
-        ('Added User', _('Added User')),
-        ('Changed Account Information', _('Changed Account Information'))
+        (ADDED_USER, _(ADDED_USER)),
+        (CHANGED_ACCOUNT_INFO, _(CHANGED_ACCOUNT_INFO))
     )),
 
     (_('Project'),(
-        ('Created Project', _('Created Project')),
-        ('Activated Project', _('Activated Project')),
-        ('Edited Project', _('Edited Project')),
-        ('Deleted Project', _('Deleted Project'))
+        (CREATED_PROJECT, _(CREATED_PROJECT)),
+        (ACTIVATED_PROJECT, _(ACTIVATED_PROJECT)),
+        (EDITED_PROJECT, _(EDITED_PROJECT)),
+        (DELETED_PROJECT, _(DELETED_PROJECT))
     )),
 
     (_("Subjects"),(
-        ("Added Subject Type", _("Added Subject Type")),
-        ("Edited Registration Form", _("Edited Registration Form")),
-        ("Registered Subject", _("Registered Subject")),
-        ("Imported Subjects", _("Imported Subjects")),
-        ("Deleted Subjects", _("Deleted Subjects")),
+        (ADDED_SUBJECT_TYPE, _(ADDED_SUBJECT_TYPE)),
+        (EDITED_REGISTRATION_FORM, _(EDITED_REGISTRATION_FORM)),
+        (REGISTERED_SUBJECT, _(REGISTERED_SUBJECT)),
+        (IMPORTED_SUBJECTS, _(IMPORTED_SUBJECTS)),
+        (DELETED_SUBJECTS, _(DELETED_SUBJECTS)),
     )),
 
     (_("Data Senders"),(
-        ("Registered Data Sender", _("Registered Data Sender")),
-        ("Imported Data Senders", _("Imported Data Senders")),
-        ("Edited Data Sender", _("Edited Data Sender")),
-        ("Deleted Data Senders", _("Deleted Data Senders")),
-        ("Added Data Senders to Projects", _("Added Data Senders to Projects")),
-        ("Removed Data Sender from Project", _("Removed Data Sender from Project")),
+        (REGISTERED_DATA_SENDER, _(REGISTERED_DATA_SENDER)),
+        (IMPORTED_DATA_SENDERS, _(IMPORTED_DATA_SENDERS)),
+        (EDITED_DATA_SENDER, _(EDITED_DATA_SENDER)),
+        (DELETED_DATA_SENDERS, _(DELETED_DATA_SENDERS)),
+        (ADDED_DATA_SENDERS_TO_PROJECTS, _(ADDED_DATA_SENDERS_TO_PROJECTS)),
+        (REMOVED_DATA_SENDER_TO_PROJECTS, _(REMOVED_DATA_SENDER_TO_PROJECTS)),
     )),
 
     (_("Data Submissions"),(
-        ("Deleted Data Submission", _("Deleted Data Submission")),
+        (DELETED_DATA_SUBMISSION, _(DELETED_DATA_SUBMISSION)),
     )),
 
     (_("Reminders"),(
-        ("Activated Reminders", _("Activated Reminders")),
-        ("De-Activated Reminders", _("De-Activated Reminders")),
-        ("Set Deadline", _("Set Deadline")),
+        (ACTIVATED_REMINDERS, _(ACTIVATED_REMINDERS)),
+        (DEACTIVATED_REMINDERS, _(DEACTIVATED_REMINDERS)),
+        (SET_DEADLINE, _(SET_DEADLINE)),
     ))
 )
 
@@ -64,7 +65,7 @@ class UserActivityLog(models.Model):
         entry.save()
 
     def translated_action(self):
-        return "%s" % ugettext(self.action)
+        return ugettext(self.action)
 
     def translated_detail(self):
         try:
@@ -75,15 +76,11 @@ class UserActivityLog(models.Model):
         
         if self.action == "Edited Registration Form":
             detail_list = []
-            try:
+            if "entity_type" in detail_dict:
                 detail_list.append( "%s: %s" % (ugettext("Subject Type"), detail_dict["entity_type"]))
-            except KeyError:
-                pass
 
-            try:
+            if "form_code" in detail_dict:
                 detail_list.append( "%s: %s" % (ugettext("Questionnaire Code"), detail_dict["form_code"]))
-            except KeyError:
-                pass
 
             detail_list.append(self._get_questionnaire_detail(detail_dict))
 
@@ -103,33 +100,28 @@ class UserActivityLog(models.Model):
     def _get_questionnaire_detail(self, detail_dict):
         detail_list = []
         for type in ["added", "deleted"]:
-            try:
+            if type in detail_dict:
                 str = '<ul class="bulleted">'
                 for item in detail_dict[type]:
                     str += "<li>%s</li>" % item
                 str += "</ul>"
                 detail_list.append( "%s: %s" % (ugettext("%s Questions" % type.capitalize()), str))
-            except KeyError:
-                pass
 
-        try:
+        if "changed" in detail_dict:
             str = '<ul class="bulleted">'
             for changed in detail_dict["changed"]:
                 if changed is not None:
                     str += "<li>%s</li>" % changed
             str += "</ul>"
             detail_list.append("%s: %s" % (ugettext("Question Labels Changed"), str))
-        except KeyError:
-            pass
 
-        try:
+        if "changed_type" in detail_dict:
             response_type = {"select1": "List of Choices", "select": "List of Choices", "text": "Word or Phrase", "integer":"Number",
                              "geocode": "GPS Coordinates", "date": "date", "telephone_number": "Telephone Number"}
             for type_changed in detail_dict["changed_type"]:
                 detail_list.append(ugettext('Answer type changed to %(answer_type)s for \"%(question_label)s\"') %
                                             {"answer_type":ugettext(response_type.get(type_changed["type"], "")), "question_label":type_changed["label"]})
-        except KeyError:
-            pass
+                
         return "<br/>".join(detail_list)
 
     def _get_detail(self, detail_dict):
