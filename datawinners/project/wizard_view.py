@@ -1,4 +1,6 @@
 import json
+from time import mktime
+import datetime
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -6,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext, ugettext_lazy
 from django.views.decorators.csrf import csrf_exempt
+from mangrove.transport.submissions import get_submissions
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
@@ -128,6 +131,32 @@ def get_max_code(old_questionnaire):
         return max( codes )
     return 1
 
+def get_reporting_period_field(questionnaire):
+    for question in questionnaire:
+        if question.is_event_time_field:
+            return question
+    return None
+
+def check_change_date_format_for_reporting_period(old_questionnaire, questionnaire):
+    old_reporting_period_question = get_reporting_period_field(old_questionnaire)
+    new_reporting_period_question = get_reporting_period_field(questionnaire)
+    if old_reporting_period_question and new_reporting_period_question:
+        if old_reporting_period_question.date_format is not new_reporting_period_question.date_format:
+            return True
+    return False
+
+def void_submissions(manager, form_model):
+    oneDay = datetime.timedelta( days=1 )
+    tomorrow = datetime.datetime.now( ) + oneDay
+    submissions = get_submissions( manager, form_model.form_code, from_time=0,
+                                   to_time=int( mktime( tomorrow.timetuple( ) ) ) * 1000, page_size=None )
+    for submission in submissions:
+        submission.void( )
+
+
+def clear_submissions_if_change_date_format_for_rp(form_model, manager, old_questionnaire, questionnaire):
+    if check_change_date_format_for_reporting_period(old_questionnaire, questionnaire):
+        void_submissions(manager, form_model)
 
 @login_required(login_url='/login')
 @is_datasender
@@ -170,6 +199,7 @@ def edit_project(request, project_id=None):
                 max_code = get_max_code(old_questionnaire)
                 questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'], max_code)
                 changed_questions = get_changed_questions(old_questionnaire, questionnaire.fields, subject=False)
+                clear_submissions_if_change_date_format_for_rp(questionnaire, manager, old_questionnaire, questionnaire.fields)
                 detail.update(changed_questions)
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()

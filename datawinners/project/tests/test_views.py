@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.forms.forms import Form
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField
+from mangrove.form_model.field import TextField, DateField
 from entity.forms import ReporterRegistrationForm
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
@@ -18,7 +18,7 @@ from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
 from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, delete_submissions_by_ids, append_success_to_context
-from project.wizard_view import get_preview_and_instruction_links, get_max_code
+from project.wizard_view import get_preview_and_instruction_links, get_max_code, check_change_date_format_for_reporting_period, get_reporting_period_field
 
 class TestProjectViews( unittest.TestCase ):
     def test_should_return_reminders_in_the_required_format(self):
@@ -278,3 +278,48 @@ class TestProjectViews( unittest.TestCase ):
                          TextField( name="f3", code="c4", label="f4", ddtype=ddtype ),
                          TextField( name="f5", code="c5", label="f5", ddtype=ddtype )]
         self.assertEqual( 1, get_max_code( questionnaire ) )
+
+    def test_should_return_true_when_change_date_format_for_rp(self):
+        ddtype = Mock( spec=DataDictType )
+        old_questionnaire = [
+            TextField( name="f1", code="c1", label="f1", ddtype=ddtype ),
+            DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format="mm.yyyy" )]
+        questionnaire = [
+            TextField( name="f1", code="c1", label="f1", ddtype=ddtype),
+            DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format="dd.mm.yyyy" )]
+        self.assertTrue(check_change_date_format_for_reporting_period(old_questionnaire, questionnaire))
+
+    def test_should_return_false_when_dose_not_change_date_format_for_rp(self):
+        ddtype = Mock( spec=DataDictType )
+        old_questionnaire = [
+            TextField( name="f1", code="c1", label="f1", ddtype=ddtype ),
+            DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format="mm.yyyy" )]
+        questionnaire = [
+            TextField( name="f1", code="c1", label="f1", ddtype=ddtype),
+            DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format="mm.yyyy" )]
+        self.assertFalse(check_change_date_format_for_reporting_period(old_questionnaire, questionnaire))
+
+    def test_should_return_false_when_delete_rp(self):
+        ddtype = Mock( spec=DataDictType )
+        old_questionnaire = [
+            TextField( name="f1", code="c1", label="f1", ddtype=ddtype ),
+            DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format="mm.yyyy" )]
+        questionnaire = [
+            TextField( name="f1", code="c1", label="f1", ddtype=ddtype)]
+        self.assertFalse(check_change_date_format_for_reporting_period(old_questionnaire, questionnaire))
+
+    def test_should_return_reporting_period_field_if_questionnaire_contains(self):
+        ddtype = Mock( spec=DataDictType )
+        dateField = DateField( name="f2", code="c2", label="f2",date_format="dd.mm.yyyy", ddtype=ddtype, event_time_field_flag=True)
+        questionnaire = [
+            TextField( name="f1", code="c1", label="f1", ddtype=ddtype ),
+            dateField]
+        self.assertEqual(questionnaire[1], get_reporting_period_field(questionnaire))
+
+    def test_should_return_none_if_questionnaire_dose_not_contains(self):
+        ddtype = Mock( spec=DataDictType )
+        dateField = DateField( name="f2", code="c2", label="f2",date_format="dd.mm.yyyy", ddtype=ddtype, event_time_field_flag=False)
+        questionnaire = [
+            TextField( name="f1", code="c1", label="f1", ddtype=ddtype ),
+            dateField]
+        self.assertEqual(None, get_reporting_period_field(questionnaire))
