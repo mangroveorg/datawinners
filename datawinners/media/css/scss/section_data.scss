@@ -44,7 +44,9 @@ table{
     > div{
       width: 20%;
       input[type='text'], select{
-        width: 80%
+        width: 80%;
+        margin-right: 10px;
+        margin-left: 10px;
       }
       > div {
         width: 100%;
@@ -217,7 +219,7 @@ table{
     }
 }
 #dateRangePicker{
-    width:220px;
+    width:80%;
     margin:0 10px 0 5px;
     padding-left:5px;
 }

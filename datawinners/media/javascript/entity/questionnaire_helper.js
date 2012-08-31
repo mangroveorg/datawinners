@@ -245,7 +245,7 @@ DW.report_period_date_format_change_warning = {
             title:gettext("Warning !!"),
             modal:true,
             autoOpen:false,
-            height:150,
+            height:200,
             width:400,
             closeText:'hide'
         });

@@ -34,7 +34,9 @@ table {
   .heading_block > div {
     width: 20%; }
     .heading_block > div input[type='text'], .heading_block > div select {
-      width: 80%; }
+      width: 80%;
+      margin-right: 10px;
+      margin-left: 10px; }
     .heading_block > div > div {
       width: 100%; }
   .heading_block .date_range_box {
@@ -166,7 +168,7 @@ table {
   background: url(/media/images/sort_arrow_active_top.png) no-repeat right 10px; }
 
 #dateRangePicker {
-  width: 220px;
+  width: 80%;
   margin: 0 10px 0 5px;
   padding-left: 5px; }
 
