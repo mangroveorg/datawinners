@@ -93,7 +93,7 @@ $(document).ready(function() {
             "bRetrieve": retrive,
             "sPaginationType": "full_numbers",
             "aaData": data,
-            "bSort": false,
+            "bSort": true,
             "oLanguage":{
                 "sProcessing": gettext("Processing..."),
                     "sLengthMenu": gettext("Show _MENU_ Submissions"),

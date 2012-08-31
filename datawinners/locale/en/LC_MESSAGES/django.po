@@ -1081,6 +1081,9 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
+msgid "Go"
+msgstr ""
+
 #: templates/project/data_analysis.html:84
 msgid "View Data By:"
 msgstr ""
