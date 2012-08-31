@@ -86,7 +86,16 @@ class TestEditQuestionnaire(BaseTest):
 
     @attr('functional_test')
     def test_change_date_format_of_report_period_should_show_warning_message_and_clear_submissions(self):
-        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+
+        # going on all project page
+        all_project_page = global_navigation.navigate_to_view_all_project_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page("clinic6 test project")
+        edit_project_page = project_overview_page.navigate_to_edit_project_page()
+        edit_project_page.continue_create_project()
+        create_questionnaire_page = CreateQuestionnairePage(self.driver)
         create_questionnaire_page.select_question_link(4)
         create_questionnaire_page.change_date_type_question(MM_YYYY)
         light_box = LightBox(self.driver)

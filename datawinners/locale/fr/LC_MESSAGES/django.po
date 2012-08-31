@@ -2535,6 +2535,9 @@ msgid "Warning: Changing the subject type will remove all questions from your qu
 msgstr "Attention: La modification du Type de Sujet va supprimer toutes les questions contenues dans votre Questionnaire ainsi que toutes les données que vous avez "
 "collectées. Etes-vous sûr de vouloir continuer ?"
 
+msgid "Warning: Changing the Date Format will remove all your collected data. Are you sure you want to continue?"
+msgstr " Attention : Changer le Format de la Date supprimera toutes vos données collectées. Etes-vous sûr de vouloir?"
+
 msgid "Access to Web Submission has been given to your DataSenders"
 msgstr "Un accès à la page d'envoi web a été donné à vos expéditeurs de données"
 
