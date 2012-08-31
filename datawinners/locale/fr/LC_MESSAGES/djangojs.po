@@ -705,3 +705,6 @@ msgstr "De"
 
 msgid "To"
 msgstr "A"
+
+msgid "All"
+msgstr "Tout(es) les"

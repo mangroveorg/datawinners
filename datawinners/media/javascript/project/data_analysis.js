@@ -4,7 +4,12 @@ $(document).ready(function() {
     $(subjects_data).each(function(index, subject) {
         $('<option>' + subject[0] + '</option>').val(subject[0]).attr('code', subject[1]).appendTo($subjectSelect);
     });
-    $subjectSelect.dropdownchecklist({ width: $subjectSelect.width(), maxDropHeight: 200});
+    var emptyText = gettext("All") + ' ' + entity_type;
+    $subjectSelect.dropdownchecklist({emptyText: emptyText ,
+                                        firstItemChecksAll: false,
+                                        explicitClose:gettext("OK"),
+                                        width: $subjectSelect.width(),
+                                        maxDropHeight: 200});
 
     var screen_width = $(window).width() - 50;
     DW.submit_data = function() {
@@ -17,7 +22,7 @@ $(document).ready(function() {
         var time_range = $("#dateRangePicker").val().split("-");
         var subject_ids = $subjectSelect.attr('ids');
 
-        if (time_range[0] == "" || time_range[0] == "All Periods") {
+        if (time_range[0] == "" || time_range[0] == gettext("All Periods")) {
             return {'time_range':['', ''], 'aggregationArray': aggregationArray, 'subject_ids': subject_ids};
         }
         if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {

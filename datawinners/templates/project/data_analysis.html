@@ -32,7 +32,6 @@
     <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
-{#    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />#}
 {% endblock %}
 
 {% block page_js %}
@@ -41,7 +40,6 @@
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/custom_select_box.js"></script>
     <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
-{#    <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>#}
     <script type="text/javascript" src="/media/javascript/dropdown_check_list/dropdownchecklist.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
@@ -49,6 +47,7 @@
         var initial_data = JSON.parse({{data_list|safe}});
         var subjects_data = JSON.parse({{ subject_list|safe }});
         var date_format = '{{ date_format }}'
+        var entity_type = '{{ entity_type }}'
     </script>
     <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
     <script src="/media/javascript/project/data_help_img.js" type="text/javascript"></script>
@@ -62,7 +61,8 @@
     <div class="grid_23">
         {% if  project.state  == "Test"  %}
         <div class="warning-message-box">
-           <p> {% trans "This Project is not yet active. Data displayed is test data." %} <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Click Here to Activate" %}</a></p>
+           <p> {% trans "This Project is not yet active. Data displayed is test data." %}
+               <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Click Here to Activate" %}</a></p>
         </div>
         {% endif %}
         <ul class="links">
@@ -82,7 +82,7 @@
         <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
     <div class="heading_block grid_23 alpha data_ana">
-        <div class="float_left">
+        <div class="{% if is_summary_report %} none {% endif %} float_left" id="subject_filter">
             <div class="filter_label" for="subjectSelect">
                 <label class="full_width">{{ entity_type }}</label>
             </div>

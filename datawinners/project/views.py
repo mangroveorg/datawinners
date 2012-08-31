@@ -414,9 +414,9 @@ def project_data(request, project_id=None, questionnaire_code=None):
     filters = build_filters(request.POST, form_model)
     header_list = helper.get_headers(form_model)
     values = helper.get_field_values(request, manager, form_model, filters)
-
+    is_summary_report = form_model.entity_defaults_to_reporter()
     field_values = formatted_data(values, '</br>')
-    subject_list = sorted(list(set([value[0] for value in values])))
+    subject_list = sorted(list(set([value[0] for value in values])))  if not is_summary_report else []
     rp_field = form_model.event_time_question
 
     if request.method == "GET":
@@ -436,7 +436,8 @@ def project_data(request, project_id=None, questionnaire_code=None):
                  'project': project,
                  'in_trial_mode': in_trial_mode,
                  'reporting_period_question_text': rp_field.label[form_model.activeLanguages[0]] if has_rp else None,
-                 'has_reporting_period': has_rp},
+                 'has_reporting_period': has_rp,
+                 'is_summary_report':is_summary_report},
             context_instance=RequestContext(request))
     if request.method == "POST":
         return HttpResponse(encode_json({'data': field_values}))

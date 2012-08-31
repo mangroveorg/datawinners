@@ -9,8 +9,11 @@
   height: 100%; }
 
 .ui-dropdownchecklist-selector {
-  height: 28px;
+  height: 25px;
   background: none!important; }
+
+#subject_filter {
+  width: 240px; }
 
 #month_date_picker_div div {
   width: 100%; }

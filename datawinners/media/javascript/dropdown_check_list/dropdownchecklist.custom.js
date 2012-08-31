@@ -16,6 +16,7 @@
         },
         // Creates the drop container that keeps the items and appends it to the document
         _appendDropContainer: function( controlItem ) {
+            var self = this, config = this.options;
             var wrapper = $("<div/>");
             // the container is wrapped in a div
             wrapper.addClass("ui-dropdownchecklist ui-dropdownchecklist-dropcontainer-wrapper");
@@ -30,6 +31,10 @@
             container.addClass("ui-dropdownchecklist-dropcontainer ui-widget-content");
             container.css("overflow-y", "auto");
             wrapper.append(container);
+            if ( config.explicitClose != null ) {
+                var closeItem = self._createCloseItem(config.explicitClose);
+                wrapper.append(closeItem);
+            }
 
             // insert the dropdown after the master control to try to keep the tab order intact
             // if you just add it to the end, tabbing out of the drop down takes focus off the page
@@ -107,14 +112,14 @@
             if (forDropdown && !self.dropWrapper.isOpen) {
                 // if the focus changes when the control is NOT open, mark it to show where the focus is/is not
                 e.stopImmediatePropagation();
-                if (focusIn) {
-                    self.controlSelector.addClass("ui-state-hover");
-                    if ($.ui.dropdownchecklist.gLastOpened != null) {
-                        $.ui.dropdownchecklist.gLastOpened._toggleDropContainer( false );
-                    }
-                } else {
-                    self.controlSelector.removeClass("ui-state-hover");
-                }
+//                if (focusIn) {
+//                    self.controlSelector.addClass("ui-state-hover");
+//                    if ($.ui.dropdownchecklist.gLastOpened != null) {
+//                        $.ui.dropdownchecklist.gLastOpened._toggleDropContainer( false );
+//                    }
+//                } else {
+//                    self.controlSelector.removeClass("ui-state-hover");
+//                }
             } else if (!forDropdown && !focusIn) {
                 // The dropdown is open, and an item (NOT the dropdown) has just lost the focus.
                 // we really need a reliable method to see who has the focus as we process the blur,
@@ -157,7 +162,7 @@
             // inline-block needed to enable 'width' but has interesting problems cross browser
             var control = $("<span/>");
             control.addClass("ui-dropdownchecklist-selector ui-state-default");
-            control.css( { display: "inline-block", overflow: "hidden", 'white-space': 'nowrap'} );
+            control.css( { display: "inline-block", overflow: "hidden", 'white-space': 'nowrap',border:'2px inset #CCC'} );
             // Setting a tab index means we are interested in the tab sequence
             var tabIndex = sourceSelect.attr("tabIndex");
             if ( tabIndex == null ) {
@@ -187,7 +192,7 @@
             // inline-block needed to prevent long text from wrapping to next line when icon is active
             var textContainer = $("<span/>");
             textContainer.addClass("ui-dropdownchecklist-text");
-            textContainer.css( {  display: "inline-block", 'white-space': "nowrap", overflow: "hidden" } );
+            textContainer.css( {  display: "inline-block", 'white-space': "nowrap", overflow: "hidden",textOverflow:"ellipsis" } );
             control.append(textContainer);
 
             // add the hover styles to the control
@@ -259,7 +264,7 @@
             var $hit = $("<span></span>");
             label.addClass("ui-dropdownchecklist-text");
             if ( optCss != null ) label.attr('style',optCss);
-            label.css({ cursor: "default" });
+            label.css({ cursor: "default" ,height:'auto'});
             label.html(text);
             $hit.addClass('small_grey').html(code);
             if (indent) {
@@ -399,35 +404,42 @@
         },
         _createCloseItem: function(text) {
             var self = this;
+//            var delimiter = $("<hr/>")
             var closeItem = $("<div />");
-            var delimiter = $("<hr/>")
             closeItem.addClass("ui-state-default ui-dropdownchecklist-close ui-dropdownchecklist-item");
-            closeItem.css({'white-space': 'nowrap', 'text-align': 'center'});
+            closeItem.css({'white-space': 'nowrap', 'text-align': 'right', marginRight:'5px'});
+            var doneBtn = jQuery('<button class="btnDone ui-state-default ui-corner-all">' + text + '</button>').hover(
+                function () {
+                    jQuery(this).addClass('ui-state-hover');
+                },
+                function () {
+                    jQuery(this).removeClass('ui-state-hover');
+                }).css({'marginRight':'5px'})
+//            var label = $("<span/>");
+//            label.addClass("ui-dropdownchecklist-text");
+//            label.css( { cursor: "default" });
+//            label.html(text);
+//            closeItem.append(delimiter)
+//            closeItem.append(label);
+            closeItem.append(doneBtn);
 
-            var label = $("<span/>");
-            label.addClass("ui-dropdownchecklist-text");
-            label.css( { cursor: "default" });
-            label.html(text);
-            closeItem.append(delimiter)
-            closeItem.append(label);
-
-            // close the control on click
+//            // close the control on click
             closeItem.click(function(e) {
-                var aGroup= $(this);
-                e.stopImmediatePropagation();
-                // retain the focus even if no action is taken
-                aGroup.focus();
-                self._toggleDropContainer( false );
+//                var aGroup= $(this);
+//                e.stopImmediatePropagation();
+//                // retain the focus even if no action is taken
+//                aGroup.focus();
+//                self._toggleDropContainer( false );
             });
-            closeItem.hover(
-                function(e) { $(this).addClass("ui-state-hover"); }
-                , 	function(e) { $(this).removeClass("ui-state-hover"); }
-            );
+//            closeItem.hover(
+//                function(e) { $(this).addClass("ui-state-hover"); }
+//                , 	function(e) { $(this).removeClass("ui-state-hover"); }
+//            );
             // do not let the focus wander around
-            closeItem.focus(function(e) {
-                var aGroup = $(this);
-                e.stopImmediatePropagation();
-            });
+//            closeItem.focus(function(e) {
+//                var aGroup = $(this);
+//                e.stopImmediatePropagation();
+//            });
             return closeItem;
         },
         // Creates the drop items and appends them to the drop container
@@ -449,13 +461,10 @@
                     self._appendOptions(opt, dropContainerDiv, index, true, disabled);
                 }
             });
-            if ( config.explicitClose != null ) {
-                var closeItem = self._createCloseItem(config.explicitClose);
-                dropContainerDiv.append(closeItem);
-            }
+
             var divWidth = dropContainerDiv.outerWidth();
             var divHeight = dropContainerDiv.outerHeight();
-            return { width: divWidth, height: divHeight };
+            return { width: divWidth + 18, height: divHeight };
         },
         _appendOptions: function(parent, container, parentIndex, indent, forceDisabled) {
             var self = this;
@@ -744,7 +753,7 @@
                 }
             }
             var control = this.controlSelector;
-            control.css({ width: controlWidth + "px" });
+            control.css({ width: controlWidth +"px" });
 
             // if we size the text, then Firefox places icons to the right properly
             // and we do not wrap on long lines
