@@ -88,6 +88,7 @@ class TestDataAnalysis(BaseTest):
         day = datetime.today().day
         month = datetime.today().month
         end_date = datetime.today() + timedelta(days=5)
+        time.sleep(1)
         data_analysis_page.select_date_range(start_year, month, day, end_date.year, end_date.month, end_date.day)
         time.sleep(1)
         data_analysis_page.filter_data()
