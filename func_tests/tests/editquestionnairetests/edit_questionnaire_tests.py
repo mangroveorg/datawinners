@@ -3,6 +3,7 @@ from nose.plugins.attrib import attr
 from framework.base_test import BaseTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.lightbox.light_box_page import LightBox
 from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
@@ -84,9 +85,15 @@ class TestEditQuestionnaire(BaseTest):
         self.assertIsNotNone(smart_phone_preview_page.get_smart_phone_instruction())
 
     @attr('functional_test')
-    def test_change_date_format_of_report_period_should_show_warning_message(self):
+    def test_change_date_format_of_report_period_should_show_warning_message_and_clear_submissions(self):
         create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
         create_questionnaire_page.select_question_link(4)
         create_questionnaire_page.change_date_type_question(MM_YYYY)
+        light_box = LightBox(self.driver)
         self.assertEquals(light_box.get_title_of_light_box(), fetch_(TITLE, from_(LIGHT_BOX_DATA)))
         self.assertEquals(light_box.get_message_from_light_box(), fetch_(MESSAGE, from_(LIGHT_BOX_DATA)))
+        light_box.continue_change_date_format()
+        project_overview_page = create_questionnaire_page.save_and_create_project_successfully( )
+        data_analysis_page = project_overview_page.navigate_to_data_page( )
+        self.assertEqual(1, len(data_analysis_page.get_all_data_records()))
+

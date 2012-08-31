@@ -54,4 +54,4 @@ TITLE = "title"
 MESSAGE = "message"
 
 LIGHT_BOX_DATA = {TITLE: "Warning !!",
-                  MESSAGE: "Warning: Changing the date format of report period will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?"}
+                  MESSAGE: "Warning: Changing the date format of report period will remove all your collected data. Are you sure you want to continue?"}

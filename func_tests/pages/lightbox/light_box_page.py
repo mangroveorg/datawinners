@@ -62,3 +62,14 @@ class LightBox(Page):
         Return title text
          """
         return self.driver.find(TITLE_LABEL).text
+
+    def continue_change_date_format(self):
+        """
+        Function to continue the subject change
+
+        Return CreateProjectPage
+         """
+        self.driver.find(CHANGE_DATE_FORMAT_CONTINUE_BTN).click()
+        from pages.createprojectpage.create_project_page import CreateProjectPage
+
+        return CreateProjectPage(self.driver)
