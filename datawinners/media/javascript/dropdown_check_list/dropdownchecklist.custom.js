@@ -407,7 +407,7 @@
 //            var delimiter = $("<hr/>")
             var closeItem = $("<div />");
             closeItem.addClass("ui-state-default ui-dropdownchecklist-close ui-dropdownchecklist-item");
-            closeItem.css({'white-space': 'nowrap', 'text-align': 'right', marginRight:'5px'});
+            closeItem.css({'white-space': 'nowrap', 'text-align': 'right'});
             var doneBtn = jQuery('<button class="btnDone ui-state-default ui-corner-all">' + text + '</button>').hover(
                 function () {
                     jQuery(this).addClass('ui-state-hover');
