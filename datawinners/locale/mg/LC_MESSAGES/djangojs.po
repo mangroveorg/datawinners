@@ -470,8 +470,8 @@ msgstr "Préc."
 msgid "Processing..."
 msgstr "Traitement en cours..."
 
-msgid "Show _MENU_ Data records"
-msgstr "Afficher _MENU_ enregistrements"
+msgid "Show _MENU_ Submissions"
+msgstr "Afficher _MENU_ Soumissions"
 
 msgid "No matching records found"
 msgstr "Aucun enregistrement trouvé"
@@ -482,8 +482,8 @@ msgstr "Aucune données disponible dans la table"
 msgid "Loading..."
 msgstr "Chargement..."
 
-msgid "<span>_START_ - _END_</span> of _TOTAL_ Data Records"
-msgstr "Affiche _START_ à _END_ de _TOTAL_ enregistrements"
+msgid "<span>_START_ - _END_</span> of _TOTAL_ Submissions"
+msgstr "Affiche _START_ à _END_ de _TOTAL_ Soumissions"
 
 msgid "0 Data Records"
 msgstr "Affiche 0 à 0 de 0 enregistrements"

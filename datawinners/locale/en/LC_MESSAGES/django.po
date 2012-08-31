@@ -765,6 +765,8 @@ msgstr ""
 msgid "Analysis"
 msgstr ""
 
+msgid "Analyze your successful submissions"
+msgstr "Analyze your successful submissions."
 
 #: templates/project/data_analysis.html:92
 msgid "r_tooltip_report_period"

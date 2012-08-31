@@ -174,13 +174,12 @@ def get_aggregation_options_for_all_fields(fields):
 
 
 def get_headers(form_model):
-
     prefix = [ _("Submission Date"), _("Data Sender") ]
     if form_model.event_time_question:
         prefix = [_("Reporting Period")] + prefix
 
     if form_model.entity_type != ['reporter']:
-        prefix = [_(form_model.entity_type[0])] + prefix
+        prefix = [_(form_model.entity_type[0]).capitalize()] + prefix
 
     return prefix + [field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:] if not field.is_event_time_field]
 

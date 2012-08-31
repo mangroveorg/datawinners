@@ -822,6 +822,9 @@ msgstr "Résumé"
 msgid "Analysis"
 msgstr "Analyse"
 
+msgid "Analyze your successful submissions"
+msgstr "Analysez vos soumissions réussies."
+
 #: templates/project/data_analysis.html:92
 msgid "Monthly Reporting Period"
 msgstr "Période de Rapport Mensuel"

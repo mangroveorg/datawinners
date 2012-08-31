@@ -60,18 +60,22 @@
     {% endblock %}
     <div class="grid_23">
         {% if  project.state  == "Test"  %}
-        <div class="warning-message-box">
-           <p> {% trans "This Project is not yet active. Data displayed is test data." %}
-               <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Click Here to Activate" %}</a></p>
-        </div>
+            <div class="warning-message-box">
+               <p> {% trans "This Project is not yet active. Data displayed is test data." %}
+                   <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Click Here to Activate" %}</a></p>
+            </div>
         {% endif %}
         <ul class="links">
             <li><a href="#" id="export_link">{% trans "Export" %}</a> </li>
         </ul>
     </div>
     <div class="heading_block grid_23 alpha data_ana">
-        <h3 class="grid_10">{% trans "Analysis" %}</h3>
+        <h3>{% trans "Analysis" %}</h3>
+        <div class="help_accordion">
+            {% trans 'Analyze your successful submissions' %}
+        </div>
     </div>
+
     <form id = "export_form" action="/project/export/data" method='POST'>
         {% csrf_token %}
         <input id = "questionnaire_code" name='questionnaire_code' type="hidden" />
@@ -117,7 +121,7 @@
                 <label>&nbsp;</label>
             </div>
             <div class="float_left ">
-                <input type="button" class="button_blue" id="time_submit" value="{% trans 'Filter' %}"/>
+                <input type="button" class="button_blue" id="time_submit" value="{% trans 'Go' %}"/>
             </div>
         </div>
         <div class="float_right">

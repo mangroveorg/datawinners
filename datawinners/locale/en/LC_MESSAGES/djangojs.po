@@ -470,7 +470,7 @@ msgstr ""
 msgid "Processing..."
 msgstr ""
 
-msgid "Show _MENU_ Data records"
+msgid "Show _MENU_ Submissions"
 msgstr ""
 
 msgid "No matching records found"
@@ -485,7 +485,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-msgid "<span>_START_ - _END_</span> of _TOTAL_ Data Records"
+msgid "<span>_START_ - _END_</span> of _TOTAL_ Submissions"
 msgstr ""
 
 msgid "0 Data Records"

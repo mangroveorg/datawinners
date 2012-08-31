@@ -21,7 +21,7 @@ table {
 .heading_block {
   border-bottom: 1px solid #CCCCCC;
   padding-bottom: 5px;
-  margin-top: 30px; }
+  margin-top: 15px; }
   .heading_block .ui-dropdownchecklist label {
     float: none;
     display: inline-block; }
@@ -50,7 +50,7 @@ table {
     margin-bottom: 5px;
     font-weight: bold; }
   .heading_block #dateRangePicker {
-    padding: 0px;
+    padding: 0px 0px 0px 5px;
     margin-left: 0px; }
   .heading_block label {
     float: left;

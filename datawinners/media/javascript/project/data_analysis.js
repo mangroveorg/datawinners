@@ -78,9 +78,9 @@ $(document).ready(function() {
             rangeSplitter:'-'
 
         };
-        if(date_format.indexOf('dd') >= 0){
+        if(date_format.indexOf('dd') >= 0) {
             settings.presetRanges = settings.presetRanges.concat(year_to_date_setting);
-        }else{
+        } else {
             settings.presets = {dateRange:gettext('Choose Month(s)')}
         }
         return settings;
@@ -96,11 +96,11 @@ $(document).ready(function() {
             "bSort": false,
             "oLanguage":{
                 "sProcessing": gettext("Processing..."),
-                    "sLengthMenu": gettext("Show _MENU_ Data records"),
+                    "sLengthMenu": gettext("Show _MENU_ Submissions"),
                     "sZeroRecords": gettext("No matching records found"),
                     "sEmptyTable": gettext("No data available"),
                     "sLoadingRecords": gettext("Loading..."),
-                    "sInfo": gettext("<span>_START_ - _END_</span> of _TOTAL_ Data Records"),
+                    "sInfo": gettext("<span>_START_ - _END_</span> of _TOTAL_ Submissions"),
                     "sInfoEmpty": gettext("0 Submissions"),
                     "sInfoFiltered": gettext("(filtered from _MAX_ total Data records)"),
                     "sInfoPostFix": "",

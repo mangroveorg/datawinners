@@ -172,7 +172,7 @@ class TestHelper(unittest.TestCase):
 
         form_model = Mock()
         form_model.fields = [question1, question2]
-        form_model.entity_type = ["Clinic"]
+        form_model.entity_type = ["clinic"]
         form_model.activeLanguages = ['en']
 
         actual_list = helper.get_headers(form_model)
