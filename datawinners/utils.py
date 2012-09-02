@@ -135,3 +135,6 @@ def generate_project_name(projects_name):
         current_project = u"%s - %d" % (default_name, i)
         i += 1
     return current_project
+
+def _get_email_template_name_for_created_user(language):
+    return 'registration/created_user_email_' + unicode(language) + '.html'

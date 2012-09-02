@@ -4597,3 +4597,6 @@ msgstr "Qu'est ce que vous voulez faire?"
 
 msgid "Edited Project"
 msgstr "A edité un projet"
+
+msgid "Your account is created on %s"
+msgstr "Votre compte est créé sur  %s"

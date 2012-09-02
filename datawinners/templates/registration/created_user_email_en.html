@@ -1,0 +1,36 @@
+<html>
+
+<body>
+
+<p>Hello {{ user.first_name.capitalize }},</p>
+
+<p>{{ creator_user.first_name }} has created a <a href="https://www.datawinners.com/">DataWinners</a> account for you.<br/>
+<a href="{{ protocol }}://{{ domain }}{% url auth_password_reset_confirm uidb36=uid, token=token %}">Reset</a>
+ your password to get started. Use your email to <a href="{{ protocol }}://{{ domain }}{% url auth_login %}">log in</a>
+ once your password reset.
+</p>
+
+
+<p>
+<b>How to Create Project</b><br/>
+On the Dashboard page, click on &laquo;Create a new Project&raquo; to create your Questionnaire. Once you have created your project,
+you can register all the people who send you data (we call them Data Senders).
+</p>
+
+<p>
+<b>How to Collect Data</b><br/>
+<a href="https://www.datawinners.com/">DataWinners</a> allows you to collect your data in 3 diffrent ways, Choose the
+channel most convenient for you and your Data Senders.
+    <ol>
+        <li><b>Web:</b> Collect an unlimited amount of data using the online Questionnaire.</li>
+        <li><b>Android Smartphone:</b> Download the Questionnaires directly onto your Android Smartphone.</li>
+        <li><b>SMS:</b> Use any simple mobile phone to send in data using a signle SMS.
+            <a href="https://www.datawinners.com/">Datawinners</a> will send automatic confirmation and error messages
+            back in response to your SMS.</li>
+    </ol>
+</p>
+
+{% include "registration/activation_email_footer_en.html" %}
+
+</body>
+</html>

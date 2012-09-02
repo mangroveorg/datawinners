@@ -4538,3 +4538,6 @@ msgstr ""
 #: dataextraction/helper.py:93
 msgid "Start date must before end date."
 msgstr ""
+
+msgid "Your account is created on %s"
+msgstr ""

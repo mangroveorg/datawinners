@@ -2,7 +2,7 @@
 
 from django.conf import settings as django_settings
 from django.contrib import messages
-from django.contrib.auth.forms import PasswordResetForm
+from accountmanagement.forms import CreatedUserPasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
@@ -21,7 +21,7 @@ from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _, get_language, activate
 from datawinners.project.models import Project
-from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
+from datawinners.utils import get_organization, _get_email_template_name_for_reset_password, _get_email_template_name_for_created_user
 from datawinners.activitylog.models import UserActivityLog
 import json
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER
@@ -224,9 +224,10 @@ def new_user(request):
                     current_user_name=user.get_full_name(), mobile_number=mobile_number)
                 ngo_user_profile.save()
                 _associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
-                reset_form = PasswordResetForm({"email": username})
+                reset_form = CreatedUserPasswordResetForm({"email": username})
                 reset_form.is_valid()
-                reset_form.save(email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE))
+                reset_form.save(email_template_name=_get_email_template_name_for_created_user(request.LANGUAGE_CODE),
+                                request=request)
                 first_name = form.cleaned_data.get("first_name")
                 last_name = form.cleaned_data.get("last_name")
                 form = UserProfileForm()
