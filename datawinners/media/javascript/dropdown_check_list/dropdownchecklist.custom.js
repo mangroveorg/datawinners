@@ -192,7 +192,8 @@
             // inline-block needed to prevent long text from wrapping to next line when icon is active
             var textContainer = $("<span/>");
             textContainer.addClass("ui-dropdownchecklist-text");
-            textContainer.css( {  display: "inline-block", 'white-space': "nowrap", overflow: "hidden",textOverflow:"ellipsis" } );
+            textContainer.css( {  display: "inline-block", 'white-space': "nowrap", overflow: "hidden",textOverflow:"ellipsis",
+        padding:"5px 0 0 5px"} );
             control.append(textContainer);
 
             // add the hover styles to the control
