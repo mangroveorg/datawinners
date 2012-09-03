@@ -92,9 +92,6 @@ $(document).ready(function() {
             "bDestroy":destroy,
             "bRetrieve": retrive,
             "sPaginationType": "full_numbers",
-//        "sScrollX": "100%",
-//        "sScrollXInner": "100%",
-//        "bScrollCollapse": true,
             "aaData": data,
             "bSort": false,
             "oLanguage":{

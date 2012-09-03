@@ -393,17 +393,14 @@ def _get_analysis_data(form_model, manager, request, filters):
     result = helper.get_field_values(request, manager, form_model, filters)
     return header, formatted_data(result)
 
-def _to_name_id_string(tuple, delimiter='</br>'):
-    if tuple[1] is None: return tuple[0]
-    return "%s%s(%s)" % (tuple[0], delimiter, tuple[-1])
+def _to_name_id_string(value, delimiter='</br>'):
+    if not isinstance(value, tuple): return value;
+    if value[1] is None: return value[0]
 
+    return "%s%s(%s)" % (value[0], delimiter, value[-1])
 
 def formatted_data(field_values, delimiter='</br>'):
-    for index, each in enumerate(field_values):
-        for idx, answer in enumerate(each):
-            if isinstance(answer, tuple):
-                each[idx] = _to_name_id_string(answer, delimiter)
-    return field_values
+    return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
 
 @login_required(login_url='/login')
 @is_datasender
@@ -415,9 +412,9 @@ def project_data(request, project_id=None, questionnaire_code=None):
     header_list = helper.get_headers(form_model)
     values = helper.get_field_values(request, manager, form_model, filters)
     is_summary_report = form_model.entity_defaults_to_reporter()
-    field_values = formatted_data(values, '</br>')
     subject_list = sorted(list(set([value[0] for value in values])))  if not is_summary_report else []
     rp_field = form_model.event_time_question
+    field_values = formatted_data(values, '</br>')
 
     if request.method == "GET":
         in_trial_mode = _in_trial_mode(request)

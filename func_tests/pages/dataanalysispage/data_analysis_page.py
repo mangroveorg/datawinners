@@ -173,7 +173,7 @@ class DataAnalysisPage(Page):
             self.driver.wait_for_element(20, by_xpath('//span[contains(@class,"next_year") and position()=2]'), want_visible=True).click()
 
         self.driver.wait_for_element(20, by_xpath('//div[@id="monthpicker_start"]//td[@data-month="%d"]' % start_month), want_visible=True).click()
-        self.driver.find(by_xpath('//div[@id="monthpicker_end"]//td[@data-month="%d"]' % end_month)).click()
+        self.driver.wait_for_element(20, by_xpath('//div[@id="monthpicker_end"]//td[@data-month="%d"]' % end_month)).click()
 
         self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
 
@@ -185,8 +185,15 @@ class DataAnalysisPage(Page):
             time.sleep(0.01)
         for i in range((curr_year-end_year)*12 + (curr_month-end_month)):
             self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-end")]//a[contains(@class,"ui-datepicker-prev")]'), want_visible=True).click()
+            time.sleep(0.01)
 
         self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-start")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % start_day), want_visible=True).click()
         self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-end")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % end_day), want_visible=True).click()
 
         self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
+
+    def select_for_subject_type(self, subject_name):
+        self.driver.wait_for_element(20, by_xpath('//span[contains(@class, "ui-dropdownchecklist-selector")]')).click()
+        self.driver.wait_for_element(20, by_xpath('//input[@value="%s"]' % subject_name)).click()
+        self.driver.wait_for_element(20, by_xpath('//div[contains(@class, "ui-dropdownchecklist-close")]//button[contains(@class, "btnDone")]')).click()
+        pass

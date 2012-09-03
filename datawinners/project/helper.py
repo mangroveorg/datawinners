@@ -223,9 +223,7 @@ def get_leading_part(dbm, form_model, submissions, user):
     is_first_element_needed = form_model.entity_type != ['reporter']
     for submission in submissions:
         data_sender = get_data_sender(dbm, user, submission)
-
         submission_date = _to_str(submission.created)
-
         row = [submission_date, data_sender]
         if rp_field:
             reporting_period = case_insensitive_lookup(rp_field.code, submission.values) if rp_field else None

@@ -87,7 +87,7 @@ class TestDataAnalysis(BaseTest):
         start_year = datetime.today().year - 1
         day = datetime.today().day
         month = datetime.today().month
-        end_date = datetime.today() + timedelta(days=5)
+        end_date = datetime.today()
         time.sleep(1)
         data_analysis_page.select_date_range(start_year, month, day, end_date.year, end_date.month, end_date.day)
         time.sleep(1)
@@ -107,3 +107,16 @@ class TestDataAnalysis(BaseTest):
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
         report_period_start, report_period_end = current_month_period[0], current_month_period[-1]
         self.assertTrue(report_period_start <= each <= report_period_end for each in report_period)
+
+    @attr('functional_test', 'smoke')
+    def test_filter_data_records_by_subject_filter(self):
+        data_analysis_page = self.go_to_analysis_page()
+        subject_name = 'ANALAMANGA'
+        data_analysis_page.select_for_subject_type(subject_name)
+        data_analysis_page.filter_data()
+        data_records = data_analysis_page.get_all_data_records()
+        subject_names = [record.split('\n')[0] for record in data_records]
+        subject_sets = set(subject_names)
+        self.assertEqual(1, len(subject_sets))
+        self.assertEqual(subject_name, subject_names[0])
+
