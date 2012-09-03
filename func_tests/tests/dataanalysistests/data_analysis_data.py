@@ -48,7 +48,7 @@ def get_year_to_date_data():
 
 
 DEFAULT_DATA_FOR_ANALYSIS = {PROJECT_NAME: "clinic test project",
-                             HEADERS: [u'clinic', u'Reporting Period', u'Submission Date', u'Data Sender',
+                             HEADERS: [u'Clinic', u'Reporting Period', u'Submission Date', u'Data Sender',
                                        u'What is your namé?',
                                        u'What is age öf father?',
                                        u'What is your blood group?',
