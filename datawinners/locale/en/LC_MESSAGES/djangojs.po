@@ -491,6 +491,9 @@ msgstr ""
 msgid "0 Data Records"
 msgstr ""
 
+msgid "0 Submissions"
+msgstr ""
+
 msgid "Showing 0 to 0 of 0 Data records"
 msgstr ""
 

@@ -507,7 +507,10 @@ msgid "<span>_START_ - _END_</span> of _TOTAL_ Data Records"
 msgstr "<span>_START_ - _END_</span> of _TOTAL_ Enregistrements de Données"
 
 msgid "0 Data Records"
-msgstr "Affiche 0 à 0 de 0 enregistrements"
+msgstr "0 enregistrements"
+
+msgid "0 Submissions"
+msgstr "0 Soumissions"
 
 msgid "Showing 0 to 0 of 0 Data records"
 msgstr "Afficher 0 à 0 de 0 Enregistrements"

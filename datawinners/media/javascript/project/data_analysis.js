@@ -104,7 +104,7 @@ $(document).ready(function() {
                     "sEmptyTable": gettext("No data available"),
                     "sLoadingRecords": gettext("Loading..."),
                     "sInfo": gettext("<span>_START_ - _END_</span> of _TOTAL_ Data Records"),
-                    "sInfoEmpty": gettext("0 Data Records"),
+                    "sInfoEmpty": gettext("0 Submissions"),
                     "sInfoFiltered": gettext("(filtered from _MAX_ total Data records)"),
                     "sInfoPostFix": "",
                     "sSearch": gettext("Search:"),
@@ -138,8 +138,6 @@ $(document).ready(function() {
         $("#subject_ids").attr("value", data['subject_ids']);
 
         $('#export_form').submit();
-
-
     });
 
     $('#time_submit').click(function() {
@@ -156,7 +154,6 @@ $(document).ready(function() {
                 DW.dataBinding(response_data.data, true, false);
                 DW.update_footer(response_data.footer);
                 DW.wrap_table();
-
             }});
     });
 
