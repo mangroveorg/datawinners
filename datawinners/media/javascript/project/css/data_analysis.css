@@ -12,9 +12,6 @@
   height: 25px;
   background: none!important; }
 
-#subject_filter {
-  width: 240px; }
-
 #month_date_picker_div div {
   width: 100%; }
   #month_date_picker_div div #start_border, #month_date_picker_div div #end_border {

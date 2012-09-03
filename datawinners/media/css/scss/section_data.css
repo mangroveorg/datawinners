@@ -32,11 +32,10 @@ table {
     border: none;
     background: none; }
   .heading_block > div {
-    width: 30%; }
+    width: 20%; }
     .heading_block > div input[type='text'], .heading_block > div select {
       width: 80%;
-      margin-right: 10px;
-      margin-left: 10px; }
+      margin-right: 10px; }
     .heading_block > div > div {
       width: 100%; }
   .heading_block .date_range_box {
@@ -228,4 +227,6 @@ table {
   background-color: #525252 !important; }
 
 #time_submit {
-  margin-top: 0px; }
+  margin-top: 0px;
+  width: 70px;
+  height: 29px; }

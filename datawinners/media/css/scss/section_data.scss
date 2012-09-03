@@ -42,11 +42,10 @@ table{
       }
     }
     > div{
-      width: 30%;
+      width: 20%;
       input[type='text'], select{
         width: 80%;
         margin-right: 10px;
-        margin-left: 10px;
       }
       > div {
         width: 100%;
@@ -294,6 +293,8 @@ table{
 
 #time_submit{
     margin-top: 0px;
+    width: 70px;
+    height: 29px;
 }
 
 
