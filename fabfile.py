@@ -224,6 +224,7 @@ def check_out_datawinners_code_for_production(code_dir, datawinner_build_number,
     with cd(datawinners_dir):
         datawinner_branch = str(date.today()).replace('-', '')
         run("git reset --hard HEAD")
+        run("git fetch")
         run("git checkout develop")
         run("git pull origin develop")
         if not run("git branch -a|grep %s" % datawinner_branch).failed:
