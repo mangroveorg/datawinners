@@ -2,10 +2,6 @@
 from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import  get_current_site
-from django.core.mail.message import EmailMessage
-from django.template.loader import render_to_string
 from django.utils import translation
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
@@ -13,7 +9,6 @@ from django.http import HttpResponse, HttpResponseRedirect,\
     HttpResponseServerError, QueryDict
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.utils.http import int_to_base36
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language
@@ -52,7 +47,6 @@ from datawinners.entity.helper import get_country_appended_location, add_importe
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
 from django.contrib import messages
-from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
@@ -60,6 +54,7 @@ from project.wizard_view import get_max_code
 from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, IMPORTED_SUBJECTS, \
     DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
     ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM
+from datawinners.entity.helper import send_email_to_data_sender
 
 
 COUNTRY = ',MADAGASCAR'
@@ -337,7 +332,7 @@ def __create_web_users(org_id, reporter_details, language_code):
                 reporter_id=reporter['reporter_id'])
             profile.save()
 
-            send_activation_email_for_data_sender(user, language_code)
+            send_email_to_data_sender(user, language_code)
 
         content = json.dumps({'success': True, 'message': "Users has been created"})
     return content
@@ -349,21 +344,6 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
         __create_web_users(org_id, [{'email': email_address, 'reporter_id': reporter_id}], language_code))
 
 
-def send_activation_email_for_data_sender(user, language_code, request=None):
-    site = get_current_site(request)
-    ctx_dict = {
-        'domain': site.domain,
-        'uid': int_to_base36(user.id),
-        'user': user,
-        'token': default_token_generator.make_token(user),
-        'protocol': 'http',
-        }
-    subject = render_to_string('activatedatasenderemail/activation_email_subject_for_data_sender_account_' + language_code + '.txt')
-    subject = ''.join(subject.splitlines())
-    message = render_to_string('activatedatasenderemail/activation_email_for_data_sender_account_' + language_code + '.html', ctx_dict)
-    email = EmailMessage(subject, message, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
-    email.content_subtype = "html"
-    email.send()
 
 
 @login_required(login_url='/login')

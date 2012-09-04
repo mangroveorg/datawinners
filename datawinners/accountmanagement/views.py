@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
-from accountmanagement.forms import CreatedUserPasswordResetForm
+from django.contrib.auth.forms import PasswordResetForm
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER, CRS_ORG_ID
 
@@ -26,6 +26,7 @@ from datawinners.utils import get_organization, _get_email_template_name_for_res
 from datawinners.activitylog.models import UserActivityLog
 import json
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER
+from datawinners.entity.helper import send_email_to_data_sender
 
 
 def is_admin(f):
@@ -237,16 +238,16 @@ def new_user(request):
                     current_user_name=user.get_full_name(), mobile_number=mobile_number)
                 ngo_user_profile.save()
                 _associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
-                reset_form = CreatedUserPasswordResetForm({"email": username})
-                reset_form.is_valid()
-                reset_form.save(email_template_name=_get_email_template_name_for_created_user(request.LANGUAGE_CODE),
-                    request=request)
-                first_name = form.cleaned_data.get("first_name")
-                last_name = form.cleaned_data.get("last_name")
-                form = UserProfileForm()
-                add_user_success = True
-                detail_dict = dict({"First name": first_name, "Last name": last_name})
-                UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
+                reset_form = PasswordResetForm({"email": username})
+                if reset_form.is_valid():
+                    send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
+                                              type="created_user")
+                    first_name = form.cleaned_data.get("first_name")
+                    last_name = form.cleaned_data.get("last_name")
+                    form = UserProfileForm()
+                    add_user_success = True
+                    detail_dict = dict({"First name": first_name, "Last name": last_name})
+                    UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
 
         return render_to_response("accountmanagement/account/add_user.html",
                 {'profile_form': form, 'add_user_success': add_user_success},
