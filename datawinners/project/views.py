@@ -68,6 +68,7 @@ from project.filters import ReportPeriodFilter
 from project.tests.test_filter import SubjectFilter
 from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
+from project.wizard_view import get_max_code
 from utils import get_changed_questions
 
 logger = logging.getLogger("django")
@@ -148,7 +149,8 @@ def save_questionnaire(request):
         form_model = FormModel.get(manager, project.qid)
         old_questionnaire = form_model.fields
         try:
-            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
+            max_code = get_max_code(old_questionnaire)
+            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set, max_code)
         except QuestionCodeAlreadyExistsException as e:
             return HttpResponseServerError(e)
         except QuestionAlreadyExistsException as e:
