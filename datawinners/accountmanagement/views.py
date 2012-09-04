@@ -1,12 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
+from django.contrib.auth.decorators import login_required as django_login_required, login_required
 from django.conf import settings as django_settings
 from django.contrib import messages
-from accountmanagement.forms import CreatedUserPasswordResetForm
+from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.models import User, Group
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
@@ -92,6 +92,19 @@ def is_new_user(f):
 
     return wrapper
 
+def session_not_expired(f):
+    def wrapper(*args, **kw):
+        request = args[0]
+        user = request.user
+        try:
+            user.get_profile()
+        except Organization.DoesNotExist:
+            return HttpResponseRedirect(django_settings.INDEX_PAGE)
+        return f(*args, **kw)
+
+    return wrapper
+
+
 def is_not_expired(f):
     def wrapper(*args, **kw):
         request = args[0]
@@ -103,7 +116,7 @@ def is_not_expired(f):
 
     return wrapper
 
-def is_allowed_to_view_reports(f, redirect_to = '/alldata'):
+def is_allowed_to_view_reports(f, redirect_to='/alldata'):
     def wrapper(*args, **kw):
         request = args[0]
         user = request.user
@@ -113,8 +126,6 @@ def is_allowed_to_view_reports(f, redirect_to = '/alldata'):
         return f(*args, **kw)
 
     return wrapper
-
-
 
 def is_trial(f):
     def wrapper(*args, **kw):
@@ -149,6 +160,7 @@ def custom_reset_password(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_admin
 @is_not_expired
 def settings(request):
@@ -178,7 +190,6 @@ def settings(request):
                 detail_as_string = json.dumps(detail_dict)
                 UserActivityLog().log(request, action=CHANGED_ACCOUNT_INFO, detail=detail_as_string)
 
-            
         return render_to_response("accountmanagement/account/org_settings.html",
                 {'organization_form': organization_form, 'message': message}, context_instance=RequestContext(request))
 
@@ -193,6 +204,7 @@ def _associate_user_with_existing_project(manager, reporter_id):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_admin
 @is_not_expired
 def new_user(request):
@@ -205,7 +217,7 @@ def new_user(request):
     if request.method == 'POST':
         manager = get_database_manager(request.user)
         org = get_organization(request)
-        form = UserProfileForm(organization=org,data=request.POST)
+        form = UserProfileForm(organization=org, data=request.POST)
 
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -227,7 +239,7 @@ def new_user(request):
                 reset_form = CreatedUserPasswordResetForm({"email": username})
                 reset_form.is_valid()
                 reset_form.save(email_template_name=_get_email_template_name_for_created_user(request.LANGUAGE_CODE),
-                                request=request)
+                    request=request)
                 first_name = form.cleaned_data.get("first_name")
                 last_name = form.cleaned_data.get("last_name")
                 form = UserProfileForm()
@@ -241,6 +253,7 @@ def new_user(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_admin
 @is_not_expired
 def users(request):
@@ -253,6 +266,7 @@ def users(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def edit_user(request):
     if request.method == 'GET':

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
+from accountmanagement.views import session_not_expired
 from dataextraction.helper import convert_to_json_response
 from dataextraction.views import get_for_form
 from datawinners.accountmanagement.views import is_new_user, is_allowed_to_view_reports
@@ -24,7 +25,6 @@ REPORTER_ENTITY_TYPE = u'reporter'
 def get_alldata_project_links():
     project_links = {'projects_link': reverse(index),
                      'reports_link': reverse(reports),
-                     'data_export_link': reverse(data_export),
                      'failed_submissions_link': reverse(failed_submissions)
     }
     return project_links
@@ -93,6 +93,7 @@ def get_subject_type_list(request):
     return sorted(result)
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def data_export(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
@@ -112,6 +113,7 @@ def is_crs_user(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_new_user
 @is_not_expired
 def index(request):
@@ -135,6 +137,7 @@ def index(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def failed_submissions(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
@@ -150,6 +153,7 @@ def failed_submissions(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 @is_allowed_to_view_reports
 def reports(request):
@@ -162,6 +166,7 @@ def reports(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def smart_phone_instruction(request):
     language_code = request.LANGUAGE_CODE
@@ -178,9 +183,10 @@ def smart_phone_instruction(request):
         context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def get_entity_list_by_type(request, entity_type):
-    entity_type_list = [entity_type];
+    entity_type_list = [entity_type]
     if entity_type is None:
         return []
     manager = get_database_manager(request.user)
@@ -189,6 +195,7 @@ def get_entity_list_by_type(request, entity_type):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def get_registered_data(request, subject_type, start_date=None, end_date=None):
     manager = get_database_manager(request.user)

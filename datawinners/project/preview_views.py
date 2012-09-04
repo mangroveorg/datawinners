@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from mangrove.form_model.form_model import REPORTER
+from accountmanagement.views import  session_not_expired
 from datawinners.accountmanagement.views import is_not_expired
 from datawinners.main.utils import get_database_manager
 from datawinners.project.helper import  get_preview_for_field, hide_entity_question
@@ -40,6 +41,7 @@ def get_sms_preview_context(manager, post, project_info):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def sms_preview(request):
     manager = get_database_manager(request.user)
@@ -76,6 +78,7 @@ def get_web_preview_context(manager, post, project_info):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def web_preview(request):
     project_info = json.loads(request.POST['profile_form'])
@@ -87,6 +90,7 @@ def web_preview(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def smart_phone_preview(request):
     language_code = request.LANGUAGE_CODE
@@ -98,6 +102,7 @@ def smart_phone_preview(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def questionnaire_sms_preview(request):
     manager = get_database_manager(request.user)
@@ -110,6 +115,7 @@ def questionnaire_sms_preview(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def questionnaire_web_preview(request):
     manager = get_database_manager(request.user)

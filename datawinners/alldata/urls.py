@@ -11,6 +11,5 @@ urlpatterns = patterns('',
     (r'^alldata/registereddata/(?P<subject_type>\w+?)/((?P<start_date>\d{2}-\d{2}-\d{4})/)?((?P<end_date>\d{2}-\d{2}-\d{4})/)?$', get_registered_data),
     (r'^alldata/reports/$', reports),
     (r'^allfailedsubmissions$', failed_submissions),
-    (r'^dataexport/$', data_export),
     url(r'^smartphoneinstruction$', smart_phone_instruction, name = "smart_phone_instruction"),
 )

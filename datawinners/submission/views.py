@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 
 from mangrove.transport.player.player import SMSPlayer
+from accountmanagement.views import session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 
 from datawinners.location.LocationTree import get_location_tree
@@ -39,6 +40,7 @@ def sms(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])

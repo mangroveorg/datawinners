@@ -10,6 +10,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.queries import get_entities_by_type
+from accountmanagement.views import session_not_expired
 from datawinners import settings
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.accountmanagement.views import is_datasender, is_not_expired
@@ -39,6 +40,7 @@ def _make_message(row):
     return message
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_exempt
 @is_not_expired
 def get_submission_breakup(request, project_id):
@@ -74,8 +76,8 @@ def get_submissions_about_project(request, project_id):
 def is_project_inactive(row):
     return row['value']['state'] == ProjectState.INACTIVE
 
-
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def dashboard(request):
@@ -96,6 +98,7 @@ def dashboard(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def start(request):
     text_dict = {'project': _('Projects'), 'datasenders': _('Data Senders'),

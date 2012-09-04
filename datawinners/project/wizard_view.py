@@ -1,14 +1,13 @@
 import json
-from time import mktime
-import datetime
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.utils.translation import ugettext, ugettext_lazy
+from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
 from mangrove.transport.submissions import get_submissions
+from accountmanagement.views import  session_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
@@ -61,6 +60,7 @@ def get_preview_and_instruction_links():
     return links
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_exempt
 @is_not_expired
 def create_project(request):
@@ -159,6 +159,7 @@ def clear_submissions_if_change_date_format_for_rp(form_model, manager, old_ques
         void_submissions(manager, form_model)
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @csrf_exempt
 @is_not_expired
@@ -221,6 +222,7 @@ def edit_project(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def reminders(request, project_id):
@@ -243,6 +245,7 @@ def reminders(request, project_id):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def reminder_settings(request, project_id):

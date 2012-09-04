@@ -139,6 +139,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'datawinners.accountmanagement.context_processors.add_feature_flags',
     )
 
+INDEX_PAGE = '/home'
 HOME_PAGE = '/dashboard'
 DATASENDER_DASHBOARD = '/alldata/'
 LOGIN_REDIRECT_URL = (HOME_PAGE)

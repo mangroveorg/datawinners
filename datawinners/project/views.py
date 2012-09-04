@@ -4,7 +4,6 @@ import json
 import datetime
 import logging
 from time import mktime
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
@@ -16,6 +15,7 @@ from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from accountmanagement.views import  session_not_expired
 from datawinners.project.view_models import ReporterEntity
 from datawinners.questionnaire.helper import get_report_period_question_name_and_datetime_format
 from mangrove.datastore.entity import get_by_short_code
@@ -136,6 +136,7 @@ def make_data_sender_links(project, reporter_id=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def save_questionnaire(request):
     manager = get_database_manager(request.user)
@@ -171,6 +172,7 @@ def save_questionnaire(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_new_user
 @is_datasender
 @is_not_expired
@@ -193,6 +195,7 @@ def index(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_new_user
 @is_datasender
 @is_not_expired
@@ -214,6 +217,7 @@ def undelete_project(request, project_id):
     return HttpResponseRedirect(reverse(index))
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def project_overview(request, project_id=None):
@@ -326,6 +330,7 @@ def build_filters(params, form_model):
                                             _build_subject_filter(form_model.entity_question.code, params.get('subject_ids', "").strip())])
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def project_results(request, project_id=None, questionnaire_code=None):
@@ -355,6 +360,7 @@ def _get_submissions(manager, questionnaire_code, request, paginate=True):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def submissions(request):
     """
@@ -403,6 +409,7 @@ def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def project_data(request, project_id=None, questionnaire_code=None):
@@ -441,6 +448,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def export_data(request):
@@ -469,6 +477,7 @@ def _create_excel_response(raw_data_list, file_name):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def export_log(request):
@@ -547,6 +556,7 @@ def _format_reminders(reminders, project_id):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_exempt
 @is_not_expired
 def create_reminder(request, project_id):
@@ -567,6 +577,7 @@ def create_reminder(request, project_id):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_exempt
 @is_not_expired
 def get_reminder(request, project_id):
@@ -576,6 +587,7 @@ def get_reminder(request, project_id):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_exempt
 @is_not_expired
 def delete_reminder(request, project_id, reminder_id):
@@ -585,6 +597,7 @@ def delete_reminder(request, project_id, reminder_id):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_exempt
 @is_not_expired
 def manage_reminders(request, project_id):
@@ -603,6 +616,7 @@ def manage_reminders(request, project_id):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def sent_reminders(request, project_id):
@@ -630,6 +644,7 @@ def _get_data_senders(dbm, form, project):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def broadcast_message(request, project_id):
@@ -675,6 +690,7 @@ def _get_all_data_senders(dbm):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def activate_project(request, project_id=None):
@@ -693,6 +709,7 @@ def activate_project(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def review_and_test(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -730,6 +747,7 @@ def _get_project_and_project_link(manager, project_id, reporter_id=None):
     return project, project_links
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def subjects(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -751,6 +769,7 @@ def subjects(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -765,6 +784,7 @@ def registered_subjects(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_exempt
 @is_not_expired
 def registered_datasenders(request, project_id=None):
@@ -828,6 +848,7 @@ def registered_datasenders(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_exempt
 @is_not_expired
 def disassociate_datasenders(request):
@@ -853,6 +874,7 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender
 @is_not_expired
 def datasenders(request, project_id=None):
@@ -879,6 +901,7 @@ def get_preview_and_instruction_links_for_questionnaire():
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -955,6 +978,7 @@ def _get_form_code(manager, project):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
@@ -1039,6 +1063,7 @@ def get_example_sms(fields):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def questionnaire_preview(request, project_id=None, sms_preview=False):
     manager = get_database_manager(request.user)
@@ -1099,6 +1124,7 @@ def get_example_sms_message(fields, registration_questionnaire):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -1115,6 +1141,7 @@ def subject_registration_form_preview(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def sender_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -1145,6 +1172,7 @@ def _get_subject_form_model(manager, entity_type):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def edit_subject_questionaire(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -1177,6 +1205,7 @@ def append_success_to_context(context, form):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired

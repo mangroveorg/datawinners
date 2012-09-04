@@ -1,7 +1,7 @@
-from datawinners.accountmanagement.views import is_not_expired
 from django.contrib.auth.decorators import login_required
+from accountmanagement.views import  session_not_expired
+from datawinners.accountmanagement.views import is_not_expired
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, HttpResponseRedirect
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response
 from datawinners.activitylog.forms import LogFilterForm
@@ -13,6 +13,7 @@ from django.utils.translation import ugettext
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_exempt
 @is_not_expired
 def show_log(request):

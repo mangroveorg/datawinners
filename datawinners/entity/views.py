@@ -17,6 +17,7 @@ from django.utils.http import int_to_base36
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language
+from accountmanagement.views import session_not_expired
 from datawinners import utils
 from datawinners.project.view_models import ReporterEntity
 from mangrove.form_model.field import field_to_json
@@ -68,6 +69,7 @@ COUNTRY = ',MADAGASCAR'
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def submit(request):
     dbm = get_database_manager(request.user)
@@ -100,6 +102,7 @@ def submit(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def create_data_sender(request):
     create_data_sender = True
@@ -142,6 +145,7 @@ def create_data_sender(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def edit_data_sender(request, reporter_id):
     create_data_sender = False
@@ -205,6 +209,7 @@ def edit_data_sender(request, reporter_id):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def create_type(request):
     success = False
@@ -233,6 +238,7 @@ def create_type(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
+@session_not_expired
 @is_new_user
 @is_datasender
 @is_not_expired
@@ -277,6 +283,7 @@ def _get_full_name(user):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
+@session_not_expired
 @is_new_user
 @is_datasender
 def delete_entity(request):
@@ -363,6 +370,7 @@ def send_activation_email_for_data_sender(user, language_code, request=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @csrf_view_exempt
 @is_not_expired
 def create_multiple_web_users(request):
@@ -377,6 +385,7 @@ def create_multiple_web_users(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
+@session_not_expired
 @is_new_user
 @is_datasender
 @is_not_expired
@@ -421,6 +430,7 @@ def all_datasenders(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
+@session_not_expired
 @is_new_user
 @is_not_expired
 def disassociate_datasenders(request):
@@ -451,6 +461,7 @@ def _get_projects(manager, request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
+@session_not_expired
 @is_new_user
 @is_not_expired
 def associate_datasenders(request):
@@ -478,6 +489,7 @@ def _associate_data_senders_to_project(imported_entities, manager, project_id):
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def import_subjects_from_project_wizard(request):
     manager = get_database_manager(request.user)
@@ -509,6 +521,7 @@ def get_template(user):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def edit_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
@@ -588,6 +601,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
@@ -678,6 +692,7 @@ def _get_all_datasenders(manager, projects, user):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def edit_subject_questionnaire(request, entity_type=None):
     manager = get_database_manager(request.user)
@@ -700,6 +715,7 @@ def edit_subject_questionnaire(request, entity_type=None):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def save_questionnaire(request):
     manager = get_database_manager(request.user)
@@ -743,6 +759,7 @@ def save_questionnaire(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def export_subject(request):
     entity_type = request.POST["entity_type"]
@@ -767,6 +784,7 @@ def export_subject(request):
 
 
 @login_required(login_url='/login')
+@session_not_expired
 @is_not_expired
 def export_template(request, entity_type=None):
     manager = get_database_manager(request.user)
