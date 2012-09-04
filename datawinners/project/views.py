@@ -136,7 +136,6 @@ def make_data_sender_links(project, reporter_id=None):
 
 
 @login_required(login_url='/login')
-@session_not_expired
 @is_not_expired
 def save_questionnaire(request):
     manager = get_database_manager(request.user)
@@ -597,7 +596,6 @@ def delete_reminder(request, project_id, reminder_id):
 
 
 @login_required(login_url='/login')
-@session_not_expired
 @csrf_exempt
 @is_not_expired
 def manage_reminders(request, project_id):
@@ -848,7 +846,6 @@ def registered_datasenders(request, project_id=None):
 
 
 @login_required(login_url='/login')
-@session_not_expired
 @csrf_exempt
 @is_not_expired
 def disassociate_datasenders(request):

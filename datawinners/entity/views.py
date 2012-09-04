@@ -69,7 +69,6 @@ COUNTRY = ',MADAGASCAR'
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
-@session_not_expired
 @is_not_expired
 def submit(request):
     dbm = get_database_manager(request.user)
@@ -209,7 +208,6 @@ def edit_data_sender(request, reporter_id):
 
 
 @login_required(login_url='/login')
-@session_not_expired
 @is_not_expired
 def create_type(request):
     success = False
@@ -283,7 +281,6 @@ def _get_full_name(user):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
-@session_not_expired
 @is_new_user
 @is_datasender
 def delete_entity(request):
@@ -370,7 +367,6 @@ def send_activation_email_for_data_sender(user, language_code, request=None):
 
 
 @login_required(login_url='/login')
-@session_not_expired
 @csrf_view_exempt
 @is_not_expired
 def create_multiple_web_users(request):

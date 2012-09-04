@@ -8,8 +8,8 @@ from framework.utils.data_fetcher import fetch_, from_
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.smstesterlightboxtests.sms_tester_light_box_data import *
 from nose.plugins.skip import SkipTest
+from tests.smstesterlightboxtests.sms_tester_light_box_data import PROJECT_DATA, VALID_DATA2, EXCEED_NAME_LENGTH, RESPONSE_MESSAGE, SMS_WITH_UNICODE, PROJECT_DATA_WITH_ACTIVITY_REPORT, VALID_ORDERED_SMS_DATA, VALID_ORDERED_SMS_DATA_WITH_ACTIVITY_REPORT, VALID_DATA, PROJECT_NAME
 
 
 class BasePrepare(BaseTest):

@@ -40,7 +40,6 @@ def sms(request):
 
 
 @login_required(login_url='/login')
-@session_not_expired
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])

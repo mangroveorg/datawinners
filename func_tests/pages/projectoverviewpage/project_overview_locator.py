@@ -17,7 +17,7 @@ from framework.utils.common_utils import *
 LOCATOR = "locator"
 BY = "by"
 
-DATA_TAB = by_css("a#data_tab")
+DATA_TAB = by_id("data_tab")
 DATASENDERS_TAB = by_css("a#data_senders_tab")
 MESSAGES_AND_REMINDERS_TAB = by_css("a#reminders_tab")
 ACTIVATE_PROJECT_LINK = by_css("a.activate_project")
