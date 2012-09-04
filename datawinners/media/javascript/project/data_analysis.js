@@ -190,7 +190,7 @@ function buildSubjectFilter() {
     var $subjectSelect = $('#subjectSelect');
     $(subjects_data).each(function (index, subject) {
         $('<option>' + subject[0] + '</option>').val(subject[0]).attr('code', subject[1]).appendTo($subjectSelect);
-        
+
     });
     var emptyText = gettext("All") + ' ' + entity_type;
     $subjectSelect.dropdownchecklist({emptyText:emptyText,
