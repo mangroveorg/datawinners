@@ -199,17 +199,6 @@ $(document).ready(function () {
             $("#chart_view").addClass("active-right");
             DW.toggle_view();
             DW.chart_view_shown = true;
-
-//            var data = DW.submit_data();
-//            var time_list = data['time_range'];
-//
-//            $.ajax({
-//                type:'GET',
-//                url:window.location.pathname+"summary",
-//                data:{'start_time':$.trim(time_list[0]), 'end_time':$.trim(time_list[1]), 'subject_ids':data['subject_ids']},
-//                success:function (response) {
-//                    drawReport(JSON.parse(response))
-//                }});
         }
     };
 
@@ -220,16 +209,6 @@ $(document).ready(function () {
             DW.toggle_view();
             DW.chart_view_shown = true;
 
-//            var data = DW.submit_data();
-//            var time_list = data['time_range'];
-//
-//            $.ajax({
-//                type:'GET',
-//                url:window.location.pathname+"summary",
-//                data:{'start_time':$.trim(time_list[0]), 'end_time':$.trim(time_list[1]), 'subject_ids':data['subject_ids']},
-//                success:function (response) {
-//                    drawReport(JSON.parse(response))
-//                }});
         }
     };
     if (initial_data.length == 0) {
