@@ -229,41 +229,6 @@ class LoginForm(AuthenticationForm):
 class ResetPasswordForm(PasswordResetForm):
     required_css_class = 'required'
 
-class CreatedUserPasswordResetForm(PasswordResetForm):
-    def save(self, domain_override=None, email_template_name='registration/password_reset_email.html',
-             use_https=False, token_generator=default_token_generator, from_email=None, request=None):
-        """
-        Customise the implementation of save() method for the PasswordResetForm
-        """
-        if request is not None:
-            current_user = request.user
-        from django.core.mail.message import EmailMessage
-        for user in self.users_cache:
-            if not domain_override:
-                current_site = get_current_site(request)
-                site_name = current_site.name
-                domain = current_site.domain
-            else:
-                site_name = domain = domain_override
-            c = {
-                'email': user.email,
-                'domain': domain,
-                'site_name': site_name,
-                'uid': int_to_base36(user.id),
-                'user': user,
-                'token': token_generator.make_token(user),
-                'protocol': use_https and 'https' or 'http',
-            }
-            if request is not None:
-                c.update({"creator_user": current_user})
-            message = loader.render_to_string(email_template_name,c)
-            mail = EmailMessage(_("Your account is created on %s") % site_name, message, from_email, [user.email])
-            mail.content_subtype = "html"
-            return mail.send()
-
-        
-
-
 class PasswordSetForm(SetPasswordForm):
     new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput, min_length=6)
     required_css_class = 'required'
