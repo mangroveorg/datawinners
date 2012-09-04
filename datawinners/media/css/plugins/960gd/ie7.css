@@ -164,3 +164,18 @@ table.styled_table thead th{
 .container_24 .content .data_block .data_table table {
     border:1px solid #CCC;
 }
+
+#data_analysis_wrapper TABLE THEAD .sorting_asc {
+    background-color: #525252;
+}
+
+#data_analysis_wrapper TABLE THEAD .sorting {
+    background-color: #525252;
+}
+
+#time_submit{
+    min-width: 0;
+}
+.heading_block > DIV {
+    margin: 0 10px 0 10px;
+}
