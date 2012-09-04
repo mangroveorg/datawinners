@@ -131,7 +131,6 @@ class TestHelper(unittest.TestCase):
         models_mock.count_projects.return_value = 0
         self.assertEqual(helper.generate_questionnaire_code(dbm), "001")
 
-        myproject = Mock(spec=Project)
         models_mock.count_projects.return_value = 1
         self.assertEqual(helper.generate_questionnaire_code(dbm), "002")
 

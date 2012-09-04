@@ -49,10 +49,8 @@ class TestProjectViews( unittest.TestCase ):
         self.assertEqual( 'All Datasenders', formated_reminders[1]['to'] )
 
     def test_should_return_subject_project_links(self):
-        project = Mock( spec=Project )
         project_id = "1"
-        project.id = project_id
-        subject_links = make_subject_links( project )
+        subject_links = make_subject_links(project_id)
         self.assertEqual( reverse( subjects, args=[project_id] ), subject_links['subjects_link'] )
         self.assertEqual( reverse( edit_subject_questionaire, args=[project_id] ), subject_links['subjects_edit_link'] )
         self.assertEqual( reverse( subject_registration_form_preview, args=[project_id] ),
@@ -62,10 +60,8 @@ class TestProjectViews( unittest.TestCase ):
                           subject_links['register_subjects_link'] )
 
     def test_should_return_datasender_project_links(self):
-        project = Mock( spec=Project )
         project_id = "1"
-        project.id = project_id
-        datasender_links = make_data_sender_links( project )
+        datasender_links = make_data_sender_links( project_id )
         self.assertEqual( reverse( all_datasenders ), datasender_links['datasenders_link'] )
         self.assertEqual( reverse( create_data_sender_and_web_user, args=[project_id] ),
                           datasender_links['register_datasenders_link'] )

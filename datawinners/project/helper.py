@@ -160,15 +160,6 @@ def get_aggregation_options_for_all_fields(fields):
     type_list = []
     for field in fields:
         field_type = field.__class__.__name__
-        #TODO- Future functionality. Removing for beta-release. Uncomment this when aggregations for multiple choice field are added.
-        #        if field_type == "SelectField":
-        #            choice_type = copy(MULTI_CHOICE_TYPE_OPTIONS)
-        #            choice_type.extend(["sum(" + choice.get("text").get(field.language) + ")"for choice in
-        #                                field.options])
-        #            choice_type.extend(["percent(" + choice.get("text").get(field.language) + ")" for choice in
-        #                                field.options])
-        #            type_list.append(choice_type)
-        #        else:
         type_list.append(type_dictionary.get(field_type))
     return type_list
 

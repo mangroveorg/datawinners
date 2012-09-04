@@ -63,9 +63,9 @@ class TestUtils(unittest.TestCase):
         self.assertEquals(result, "2012-07-06")
 
     def test_project_name_generator(self):
-        projects_name = [ "test project", "untitled project"]
+        projects_name = [ "test project", "untitled project", "untitled project - 1"]
         generated = utils.generate_project_name(projects_name)
-        self.assertEqual("Untitled Project - 1", unicode(generated))
+        self.assertEqual("Untitled Project - 2", unicode(generated))
 
     def test_should_find_changed_questions(self):
         old_questionnaire = [dict({'label': dict({'en': 'question1'}), 'language': 'en', 'name': 'quest1', 'type': 'text'}),

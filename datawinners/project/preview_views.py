@@ -18,12 +18,8 @@ def get_questions(form_model):
     fields = form_model.fields
     if form_model.entity_defaults_to_reporter():
         fields = hide_entity_question(form_model.fields)
-    questions = []
-    for field in fields:
-        question = get_preview_for_field(field)
-        questions.append(question)
 
-    return questions
+    return [get_preview_for_field(field) for field in fields]
 
 
 def get_questionnaire_form_model(manager, project_info, post):

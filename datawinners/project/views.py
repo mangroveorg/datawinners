@@ -99,8 +99,8 @@ def make_project_links(project, questionnaire_code, reporter_id=None):
         project_links['finish_link'] = reverse(review_and_test, args=[project_id])
         project_links['reminders_link'] = reverse(reminder_settings, args=[project_id])
 
-        project_links.update(make_subject_links(project))
-        project_links.update(make_data_sender_links(project, reporter_id))
+        project_links.update(make_subject_links(project_id))
+        project_links.update(make_data_sender_links(project_id, reporter_id))
 
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
         project_links['sent_reminders_link'] = reverse(sent_reminders, args=[project_id])
@@ -116,8 +116,7 @@ def make_project_links(project, questionnaire_code, reporter_id=None):
     return project_links
 
 
-def make_subject_links(project):
-    project_id = project.id
+def make_subject_links(project_id):
     subject_links = {'subjects_link': reverse(subjects, args=[project_id]),
                      'subjects_edit_link': reverse(edit_subject_questionaire, args=[project_id]),
                      'register_subjects_link': reverse('subject_questionnaire', args=[project_id]),
@@ -127,8 +126,7 @@ def make_subject_links(project):
     return subject_links
 
 
-def make_data_sender_links(project, reporter_id=None):
-    project_id = project.id
+def make_data_sender_links(project_id, reporter_id=None):
     datasender_links = {'datasenders_link': reverse(all_datasenders),
                         'edit_datasender_link': reverse(edit_data_sender, args=[project_id, reporter_id]),
                         'register_datasenders_link': reverse(create_data_sender_and_web_user, args=[project_id]),
@@ -1308,9 +1306,9 @@ def add_link(project):
     add_link_named_tuple = namedtuple("Add_Link", ['url', 'text'])
     if project.entity_type == REPORTER:
         text = _("Add a datasender")
-        url = make_data_sender_links(project)['register_datasenders_link']
+        url = make_data_sender_links(project.id)['register_datasenders_link']
         return add_link_named_tuple(url=url, text=text)
     else:
         text = _("Register a %(subject)s") % {'subject': project.entity_type}
-        url = make_subject_links(project)['register_subjects_link']
+        url = make_subject_links(project.id)['register_subjects_link']
         return add_link_named_tuple(url=url, text=text)

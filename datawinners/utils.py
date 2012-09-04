@@ -123,17 +123,17 @@ def get_changed_questions(olds, news, language=None, new_language=None, subject=
     all_type_dict = dict(changed=changed, changed_type=changed_type, added=added, deleted=deleted)
     return_dict = dict()
     for type, value in all_type_dict.items():
-        if len(value) != 0:
+        if len(value):
             return_dict.update({type: value})
     return return_dict
 
-def generate_project_name(projects_name):
-    default_name = _("Untitled Project")
-    current_project = unicode(default_name)
+def generate_project_name(project_names):
+    current_project = _("Untitled Project")
     i = 1
-    while current_project.lower() in projects_name:
-        current_project = u"%s - %d" % (default_name, i)
+    while current_project.lower() in project_names:
+        current_project = u"%s - %d" % (current_project, i)
         i += 1
+
     return current_project
 
 def _get_email_template_name_for_created_user(language):
