@@ -242,6 +242,7 @@ def send_email_to_data_sender(user, language_code, request=None, type="activatio
         'user': user,
         'token': default_token_generator.make_token(user),
         'protocol': 'http',
+        'site': site,
         }
     types = dict({"activation":
                 dict({"subject":'activatedatasenderemail/activation_email_subject_for_data_sender_account_',
