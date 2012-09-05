@@ -149,6 +149,7 @@ class TestView(TestCase):
                 'token': "token",
                 'protocol': 'http',
                 'creator_user': request.user.first_name,
+                'site':site,
                 }
             self.assertEqual(render_to_string('registration/created_user_email_subject_fr.txt') % site.domain, sent_email.subject)
             self.assertEqual(render_to_string('registration/created_user_email_fr.html', ctx_dict), sent_email.body)
@@ -183,6 +184,7 @@ class TestView(TestCase):
                 'token': "token",
                 'protocol': 'http',
                 'creator_user': request.user.first_name,
+                'site':site,
                 }
             self.assertEqual(render_to_string('registration/created_user_email_subject_en.txt') % site.domain, sent_email.subject)
             self.assertEqual(render_to_string('registration/created_user_email_en.html', ctx_dict), sent_email.body)
