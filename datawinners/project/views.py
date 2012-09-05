@@ -784,7 +784,6 @@ def registered_subjects(request, project_id=None):
 
 
 @login_required(login_url='/login')
-@session_not_expired
 @csrf_exempt
 @is_not_expired
 def registered_datasenders(request, project_id=None):
