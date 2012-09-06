@@ -34,3 +34,6 @@ class OrganizationFinder(object):
     def _find_organization_settings(self, number):
         return OrganizationSetting.objects.filter(sms_tel_number__contains=number)
 
+    def find_organization_setting_includes_trial_account(self, to_tel):
+        orgs = filter(lambda x: to_tel in x.get_organisation_sms_number(), OrganizationSetting.objects.all());
+        return orgs[0] if len(orgs) else None

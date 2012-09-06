@@ -175,6 +175,10 @@ def get_headers(form_model):
     return prefix + [field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:] if not field.is_event_time_field]
 
 
+def get_datasender_by_mobile(dbm, mobile):
+    rows = dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
+    return rows[0].key[1:] if len(rows) > 0 else None
+
 def get_data_sender(dbm, user, submission):
     if submission.test:
         return submission.source, None
@@ -182,9 +186,7 @@ def get_data_sender(dbm, user, submission):
     datasender = ()
     org_id = NGOUserProfile.objects.get(user = user).org_id
     if submission.channel == 'sms':
-        datasender = tuple(dbm.load_all_rows_in_view("datasender_by_mobile",
-                                                        startkey=[submission.source],
-                                                        endkey=[submission.source,{}])[0].key[1:])
+        datasender = tuple(get_datasender_by_mobile(dbm, submission.source))
     elif submission.channel == 'web':
             data_sender = User.objects.get(email=submission.source)
             user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]

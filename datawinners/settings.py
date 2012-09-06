@@ -21,7 +21,6 @@ if not DEBUG:
 MANAGERS = ADMINS
 
 COUCH_DB_SERVER = "http://localhost:5984"
-VUMI_API_URL = "http://178.79.161.90:7000"
 VUMI_USER = "vumi"
 VUMI_PASSWORD = "vumi"
 REFRESH_RATE = None

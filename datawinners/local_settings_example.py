@@ -24,9 +24,9 @@ EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
 
 HNI_BLOG_FEED = 'http://datawinners.wordpress.com/feed/'
+VUMI_API_URL = "http://localhost:7000"
 
 CRS_ORG_ID = 'TVZ184210'
-
 
 INSTALLED_APPS = (
     'django.contrib.auth',
