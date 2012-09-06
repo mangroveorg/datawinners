@@ -26,3 +26,69 @@ EMAIL_PORT = 587
 HNI_BLOG_FEED = 'http://datawinners.wordpress.com/feed/'
 
 CRS_ORG_ID = 'TVZ184210'
+
+
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'datawinners.accountmanagement',
+    'datawinners.activitylog',
+    'registration',
+    'django.contrib.admin',
+    'compressor',
+    'datawinners',
+    'datawinners.main',
+    'datawinners.project',
+    'datawinners.dashboard',
+    'datawinners.location',
+    'datawinners.entity',
+    'datawinners.submission',
+    'datawinners.xforms',
+    'datawinners.dataextraction',
+    'django_extensions',
+    'django.contrib.flatpages',
+    'south',
+    'datawinners.home',
+    'datawinners.countrytotrialnumbermapping',
+    'django_nose',
+    'django_digest',
+    'datawinners.custom_reports.crs',
+    'debug_toolbar',
+    )
+
+DEBUG_TOOLBAR_PANELS = (
+    'debug_toolbar.panels.version.VersionDebugPanel',
+    'debug_toolbar.panels.timer.TimerDebugPanel',
+    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+    'debug_toolbar.panels.headers.HeaderDebugPanel',
+    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+    'debug_toolbar.panels.template.TemplateDebugPanel',
+    'debug_toolbar.panels.sql.SQLDebugPanel',
+    'debug_toolbar.panels.signals.SignalDebugPanel',
+    'debug_toolbar.panels.logger.LoggingPanel',
+    )
+
+
+MIDDLEWARE_CLASSES = (
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    )
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+    'SHOW_TOOLBAR_CALLBACK': lambda x: True,
+    'HIDE_DJANGO_SQL': False,
+    'TAG': 'div',
+    'ENABLE_STACKTRACES' : True,
+    }

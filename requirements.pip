@@ -32,3 +32,4 @@ django-digest
 django-countries
 babel
 rednose
+django-debug-toolbar-django13
