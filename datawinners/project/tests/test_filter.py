@@ -13,7 +13,7 @@ class TestSubmissionFilters(unittest.TestCase):
 
     def test_should_return_empty_list_when_filtering_empty_submissions(self):
         submission_logs = []
-        filtered_submission_logs = ReportPeriodFilter(question_name='q2').filter(submission_logs)
+        filtered_submission_logs = ReportPeriodFilter(question_name='q2', period={'start': '01.06.2012', 'end': '30.06.2012'}).filter(submission_logs)
         self.assertEqual([], filtered_submission_logs)
 
     def test_should_raise_value_error_when_filtering_with_no_question_name(self):

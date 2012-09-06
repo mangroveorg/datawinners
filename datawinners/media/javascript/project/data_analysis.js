@@ -156,5 +156,5 @@ $(document).ready(function() {
 
     function getDateFormat(date_format) {
         return date_format.replace('yyyy', 'yy');
-    };
+    }
 });
