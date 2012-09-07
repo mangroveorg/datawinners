@@ -103,8 +103,6 @@ def session_not_expired(f):
             user.get_profile()
         except User.DoesNotExist:
             logger.exception("The session is expired")
-        except Exception as e:
-            logger.exception("Caught exception when get user profile: " + e.message)
             return HttpResponseRedirect(django_settings.INDEX_PAGE)
         return f(*args, **kw)
 
