@@ -61,6 +61,17 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION = {ORGANIZATION_NAME: u"ÑG�
                                                  REGISTRATION_PASSWORD: REGISTRATION_PASSWORD,
                                                  REGISTRATION_CONFIRM_PASSWORD: REGISTRATION_PASSWORD}
 
+REGISTRATION_DATA_FOR_UNSUCCESSFUL_TRIAL_REGISTRATION = {ORGANIZATION_NAME: u"ÑGÓ 001",
+                                                 ORGANIZATION_SECTOR: u"PublicHealth",
+                                                 ORGANIZATION_CITY: u"Pünë",
+                                                 ORGANIZATION_COUNTRY: u"IN",
+                                                 FIRST_NAME: u"Nö",
+                                                 LAST_NAME: u"Gö",
+                                                 EMAIL: u"ngo",
+                                                 ADMIN_MOBILE_NUMBER: "23-45-678-567",
+                                                 REGISTRATION_PASSWORD: REGISTRATION_PASSWORD,
+                                                 REGISTRATION_CONFIRM_PASSWORD: REGISTRATION_PASSWORD}
+
 
 EXISTING_EMAIL_ADDRESS = {ORGANIZATION_NAME: u"NGO 001",
                           ORGANIZATION_SECTOR: u"PublicHealth",
@@ -195,3 +206,4 @@ BEGIN_END_SPACED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
                       WIRE_TRANSFER: WIRE_TRANSFER}
 
 BEGIN_END_SPACED_PASSWORD_ERROR_MESSAGE = u"Password There should not be any space at the beginning and the end of the password. Example: Minimum of 6 characters in length"
+INVALID_EMAIL_ERROR_MESSAGE = u"Email address Enter a valid email address. Example:name@organization.com"

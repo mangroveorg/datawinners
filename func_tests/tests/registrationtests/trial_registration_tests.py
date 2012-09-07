@@ -4,7 +4,9 @@ from framework.utils.common_utils import by_css
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.registrationpage.registration_page import RegistrationPage
 from testdata.test_data import DATA_WINNER_REGISTER_TRIAL_PAGE, DATA_WINNER_HOMEPAGE, DATA_WINNER_EN_PRICING_PAGE, DATA_WINNER_TRIAL_ACCOUNT_EXPIRED_PAGE
-from tests.registrationtests.registration_data import REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION, REGISTRATION_SUCCESS_MESSAGE, ORGANIZATION_SECTOR_DROP_DOWN_LIST
+from tests.registrationtests.registration_data import REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION, EMAIL, \
+    REGISTRATION_SUCCESS_MESSAGE, ORGANIZATION_SECTOR_DROP_DOWN_LIST, INVALID_EMAIL_ERROR_MESSAGE, \
+    REGISTRATION_DATA_FOR_UNSUCCESSFUL_TRIAL_REGISTRATION
 
 def register_and_get_email_for_trial(driver):
     driver.go_to(DATA_WINNER_REGISTER_TRIAL_PAGE)
@@ -51,3 +53,11 @@ class TestTrialRegistrationPage(BaseTest):
         self.assertEqual('About DataWinners', about_datawinners_box[0].text)
         self.assertEqual('Subscription Details', about_datawinners_box[1].text)
 
+    @attr('functional_test')
+    def test_user_focus_must_be_on_email_field(self):
+        self.driver.go_to(DATA_WINNER_REGISTER_TRIAL_PAGE)
+        registration_page = RegistrationPage(self.driver)
+        registration_page.register_with(REGISTRATION_DATA_FOR_UNSUCCESSFUL_TRIAL_REGISTRATION)
+        self.assertEqual(registration_page.get_error_message(), INVALID_EMAIL_ERROR_MESSAGE)
+        a = self.driver.switch_to_active_element()
+        self.assertEqual(a.get_attribute("id"), u"id_email")

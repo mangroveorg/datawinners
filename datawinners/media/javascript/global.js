@@ -35,4 +35,15 @@ $(document).ready(function() {
     }).dynamic({ bottom: { direction: 'down', bounce: true } });
 
     DW.flash_message();
+
+    function move_focus_to_first_error_field(){
+        var first_error_field = $(".errorlist:has(li)").eq(0).prev();
+        if (first_error_field.is("ul, span")){
+            first_error_field = $("input, select", first_error_field).eq(0);
+        }
+        first_error_field.focus();
+    }
+
+    $("body").ajaxComplete(move_focus_to_first_error_field);
+    move_focus_to_first_error_field();
 })

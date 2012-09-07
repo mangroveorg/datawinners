@@ -48,6 +48,8 @@ class TestRegistrationPage(unittest.TestCase):
         registration_page = RegistrationPage(self.driver)
         registration_page.register_with(EXISTING_EMAIL_ADDRESS)
         self.assertEquals(registration_page.get_error_message(), EXISTING_EMAIL_ADDRESS_ERROR_MESSAGE)
+        a = self.driver.switch_to_active_element()
+        self.assertEqual(a.get_attribute("value"), EXISTING_EMAIL_ADDRESS.get(ORGANIZATION_OFFICE_PHONE))
 
     @attr('functional_test')
     def test_register_ngo_with_unmatched_passwords(self):

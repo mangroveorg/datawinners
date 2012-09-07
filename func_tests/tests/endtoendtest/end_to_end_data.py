@@ -225,3 +225,9 @@ NEW_VALID_DATA_FOR_SMS = {SENDER: "1234567890",
 NEW_SMS_DATA_LOG = {
     SMS_SUBMISSION: "Error Yes wat1 12.10.2011 98 12.04.2011 04.2011 04.12.2011 DARK YELLOW Mr.Jessy Aquificae, Bacteroids 27.178057,-78.007789 Water_Point_1",
     UNIQUE_VALUE: "Mr.Jessy"}
+
+INVALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
+                              MOBILE_NUMBER: "",
+                              COMMUNE: "urbaine",
+                              GPS: "48.955267  1.816013",
+                              SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}

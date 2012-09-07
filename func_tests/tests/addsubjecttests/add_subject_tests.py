@@ -67,6 +67,8 @@ class TestAddSubject(BaseTest):
         add_subject_page.submit_subject()
         message = fetch_(ERROR_MSG, from_(WITHOUT_LOCATION_NAME))
         self.assertRegexpMatches(add_subject_page.get_error_message(), message)
+        a = self.driver.switch_to_active_element()
+        self.assertEqual(a.get_attribute("id"), "id_q3")
 
     @attr('functional_test')
     def test_addition_of_subject_without_gps(self):
