@@ -70,7 +70,6 @@ from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
 from project.wizard_view import get_max_code
 from utils import get_changed_questions
-import numpy
 logger = logging.getLogger("django")
 
 END_OF_DAY = " 23:59:59"
@@ -418,7 +417,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
     header_list = helper.get_headers(form_model)
     values = helper.get_field_values(request, manager, form_model, filters)
     is_summary_report = form_model.entity_defaults_to_reporter()
-    subject_list = numpy.unique([value[0] for value in values]).tolist() if not is_summary_report else []
+    subject_list = sorted(list(set([value[0] for value in values])))  if not is_summary_report else []
     rp_field = form_model.event_time_question
     field_values = formatted_data(values, '</br>')
 
