@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import logging
 
 from django.contrib.auth.decorators import login_required as django_login_required, login_required
 from django.conf import settings as django_settings
@@ -28,7 +29,7 @@ import json
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER
 from datawinners.entity.helper import send_email_to_data_sender
 
-
+logger = logging.getLogger("django")
 def is_admin(f):
     def wrapper(*args, **kw):
         user = args[0].user
@@ -100,7 +101,8 @@ def session_not_expired(f):
         user = request.user
         try:
             user.get_profile()
-        except Organization.DoesNotExist:
+        except User.DoesNotExist:
+            logger.exception("The session is expired")
             return HttpResponseRedirect(django_settings.INDEX_PAGE)
         return f(*args, **kw)
 
