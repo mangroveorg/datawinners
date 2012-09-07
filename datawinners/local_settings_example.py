@@ -89,6 +89,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
     'SHOW_TOOLBAR_CALLBACK': lambda x: True,
     'HIDE_DJANGO_SQL': False,
-    'TAG': 'div',
+    'TAG': 'p',
     'ENABLE_STACKTRACES' : True,
     }

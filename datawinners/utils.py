@@ -128,12 +128,12 @@ def get_changed_questions(olds, news, language=None, new_language=None, subject=
     return return_dict
 
 def generate_project_name(project_names):
-    current_project = _("Untitled Project")
+    default_name = _("Untitled Project")
+    current_project = unicode(default_name)
     i = 1
     while current_project.lower() in project_names:
-        current_project = u"%s - %d" % (current_project, i)
+        current_project = u"%s - %d" % (default_name, i)
         i += 1
-
     return current_project
 
 def _get_email_template_name_for_created_user(language):

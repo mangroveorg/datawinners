@@ -1,7 +1,7 @@
 .mtz-monthpicker-month:hover, .month-selected {
-  border: 1px solid #666!important;
-  background: #CCC!important;
-  color: #EB8F00!important; }
+  border: 1px solid #666 !important;
+  background: #CCC !important;
+  color: #EB8F00 !important; }
 
 .ui-dropdownchecklist-text {
   font: -webkit-small-control;
@@ -9,9 +9,13 @@
   font-weight: normal;
   height: 100%; }
 
+.disabled {
+  background: #EBEBE4 !important;
+}
+
 .ui-dropdownchecklist-selector {
   height: 25px;
-  background: none!important; }
+  background: none !important; }
 
 #month_date_picker_div div {
   width: 100%; }

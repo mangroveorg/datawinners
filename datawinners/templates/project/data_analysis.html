@@ -1,11 +1,13 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-{% block page_title %}  {% trans "Data Analysis" %}{% endblock %}
+{% block page_title %}
+    {% trans "Data Analysis" %}
+{% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
-{% activetab "tab_nav" "data" %}
-{{ block.super }}
+    {% activetab "tab_nav" "data" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_meta %}
@@ -13,25 +15,25 @@
 {% endblock %}
 
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_data.css" rel="stylesheet" />
-    <link href="/media/css/scss/util.css" rel="stylesheet" />
-    <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_data.css" rel="stylesheet"/>
+    <link href="/media/css/scss/util.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_css %}
     {{ block.super }}
-    <link href="/media/javascript/data_tables/css/demo_page.css" rel="stylesheet" />
-    <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet" />
-    <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet" />
-    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
-    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+    <link href="/media/javascript/data_tables/css/demo_page.css" rel="stylesheet"/>
+    <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet"/>
+    <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet"/>
+    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet"/>
+    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -59,32 +61,39 @@
         {{ block.super }}
     {% endblock %}
     <div class="grid_23">
-        {% if  project.state  == "Test"  %}
+        {% if  project.state  == "Test" %}
             <div class="warning-message-box">
-               <p> {% trans "This Project is not yet active. Data displayed is test data." %} <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Click Here to Activate" %}</a></p>
+                <p> {% trans "This Project is not yet active. Data displayed is test data." %} <a
+                        href="{{ project_links.activate_project_link }}"
+                        class="activate_project">{% trans "Click Here to Activate" %}</a></p>
             </div>
         {% endif %}
         <ul class="links">
-            <li><a href="#" id="export_link">{% trans "Export" %}</a> </li>
+            <li><a href="#" id="export_link">{% trans "Export" %}</a></li>
         </ul>
     </div>
     <div class="heading_block grid_23 alpha data_ana">
         <h3>{% trans "Analysis" %}</h3>
+
         <p class="help_accordion">
             {% trans 'Analyze your successful submissions' %}
         </p>
     </div>
 
-    <form id = "export_form" action="/project/export/data" method='POST'>
+    <form id="export_form" action="/project/export/data" method='POST'>
         {% csrf_token %}
-        <input id = "questionnaire_code" name='questionnaire_code' type="hidden" />
+        <input id="questionnaire_code" name='questionnaire_code' type="hidden"/>
         <input id='start_time' name='start_time' type="hidden"/>
-        <input id='end_time' name='end_time'  type="hidden" />
-        <input id='subject_ids' name='subject_ids'  type="hidden" />
+        <input id='end_time' name='end_time' type="hidden"/>
+        <input id='subject_ids' name='subject_ids' type="hidden"/>
 
-        <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
+        <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
-    <div class="heading_block grid_23 alpha data_ana">
+    <div id="filter_section" class="heading_block grid_23 alpha data_ana">
+        <p id="no_filter_help" class="help_accordion ui-helper-hidden">
+            {% trans 'You don’t have any successful submissions to filter' %}
+        </p>
+
         <div class="{% if is_summary_report %} none {% endif %} float_left" id="subject_filter">
             <div class="filter_label" for="subjectSelect">
                 <label class="full_width">{{ entity_type }}</label>
@@ -96,23 +105,25 @@
         <div class="{% if not has_reporting_period %} none {% endif %} float_left">
             <div class="filter_label">
                 {% if is_monthly_reporting %} <label>{% trans "Monthly Reporting Period" %}</label>
-                {% else %}<label>{% trans "Daily Reporting Period" %}</label>
+                    {% else %}<label>{% trans "Daily Reporting Period" %}</label>
                 {% endif %}
-                <img src="/media/images/help_icon.png" class="help_icon" >
+                <img src="/media/images/help_icon.png" class="help_icon">
+
                 <div class="tooltip"><p>
-                    <strong>{% trans "What is this?" %}</strong><br />
+                    <strong>{% trans "What is this?" %}</strong><br/>
                     {% trans "q_tooltip_report_period_h" %}
                     {{ reporting_period_question_text }}
                     {% trans "q_tooltip_report_period_t" %}
-                    <br /><br />
-                    <strong>{% trans "What do I need to do?" %}</strong><br />
+                    <br/><br/>
+                    <strong>{% trans "What do I need to do?" %}</strong><br/>
                     {% trans "r_tooltip_report_period" %}
                 </p></div>
             </div>
             <div class="float_left ">
                 <input type="text" readonly="true" id="dateRangePicker" value="{% trans "All Periods" %}"/>
                 <span id="dateErrorDiv" class="error_arrow"></span>
-                <div id="month_date_picker_div"  ></div>
+
+                <div id="month_date_picker_div"></div>
             </div>
         </div>
         <div class="float_left">
@@ -132,7 +143,7 @@
         </div>
     </div>
     <div class="view_data_block grid_23 alpha">
-        <div class="grid_12 show_data_block alpha"  id="dataTables_info">
+        <div class="grid_12 show_data_block alpha" id="dataTables_info">
         </div>
         <div class="view_style_block">
             <label>{% trans "View:" %}</label>
@@ -145,11 +156,11 @@
     <div class="grid_23 alpha omega data_block">
         <table id="data_analysis" class="styled_table">
             <thead>
-                <tr >
-                    {% for each in header_list %}
+            <tr>
+                {% for each in header_list %}
                     <th>{{ each }} </th>
-                    {% endfor %}
-                </tr>
+                {% endfor %}
+            </tr>
             </thead>
         </table>
     </div>

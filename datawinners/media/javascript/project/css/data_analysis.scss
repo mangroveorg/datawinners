@@ -1,26 +1,30 @@
-.mtz-monthpicker-month:hover,.month-selected{
-  border: 1px solid #666!important;
-  background: #CCC!important;
-  color: #EB8F00!important;
+.mtz-monthpicker-month:hover, .month-selected {
+  border: 1px solid #666 !important;
+  background: #CCC !important;
+  color: #EB8F00 !important;
 }
 
-.ui-dropdownchecklist-text{
-  font:-webkit-small-control;
-  color:black;
+.ui-dropdownchecklist-text {
+  font: -webkit-small-control;
+  color: black;
   font-weight: normal;
-  height:100%
+  height: 100%
 }
 
-.ui-dropdownchecklist-selector{
+.disabled {
+  background: #EBEBE4 !important;
+}
+
+.ui-dropdownchecklist-selector, {
   height: 25px;
-  background: none!important;
+  background: none !important;
 }
 
 #month_date_picker_div {
   div {
     width: 100%;
 
-    #start_border,#end_border {
+    #start_border, #end_border {
       width: 49%;
       float: left;
 
@@ -43,7 +47,7 @@
       }
     }
 
-    #start_border{
+    #start_border {
       padding-left: 7px
     }
 
@@ -55,3 +59,4 @@
     }
   }
 }
+
