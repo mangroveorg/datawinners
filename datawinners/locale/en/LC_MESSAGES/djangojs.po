@@ -482,6 +482,10 @@ msgstr ""
 msgid "No data available"
 msgstr ""
 
+msgid "No submissions yet"
+msgstr ""
+"Once your Data Senders have sent in submissions successfully, they will appear here. <a href='#'>Learn more</a>"
+
 msgid "Loading..."
 msgstr ""
 
@@ -644,4 +648,7 @@ msgid "to"
 msgstr ""
 
 msgid "This question is a duplicate"
+msgstr ""
+
+msgid "No submissions available for this search. Try removing some of your filters."
 msgstr ""

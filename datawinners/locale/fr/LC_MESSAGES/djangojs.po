@@ -500,6 +500,9 @@ msgstr "Aucune donnée disponible dans le tableau"
 msgid "No data available"
 msgstr "Aucune donnée disponible"
 
+msgid "No submissions yet"
+msgstr "Une fois que vos Expéditeurs de Données ont soumis leurs données avec succès, ces données seront affichées ici. <a href='#'>En savoir plus</a>"
+
 msgid "Loading..."
 msgstr "Chargement..."
 
@@ -711,3 +714,6 @@ msgstr "A"
 
 msgid "All"
 msgstr "Tout(es) les"
+
+msgid "No submissions available for this search. Try removing some of your filters."
+msgstr "Aucune soumission disponible pour cette recherche. Essayez de retirer certains de vos filtres."

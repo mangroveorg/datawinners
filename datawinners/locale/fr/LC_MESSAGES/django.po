@@ -822,6 +822,14 @@ msgstr "Résumé"
 msgid "Analysis"
 msgstr "Analyse"
 
+msgid "no submission sub hint%(url)s"
+msgstr ""
+"Les envois supprimés et ceux contenant des erreurs ne seront pas affichés car ils ne seront pas pris en compte lors de l’analyse de vos données.<br/>"
+"Vous pouvez voir et gérer tous les envois sur la page <a href=\"%(url)s\">Registre des Envois</a>.<br/><br/>"
+
+msgid "SMS: Give your <a href=\"#\" class=\"sms_questionnaire sms-preview\"> SMS Questionnaire</a> to your Data Senders and have them send in data"
+msgstr "<b>SMS</b>: Remettez votre <a href=\"#\" class=\"sms_questionnaire sms-preview\">Questionnaire</a> à vos Expéditeurs de Données and demandez-leur d’envoyer les données"
+
 msgid "Analyze your successful submissions"
 msgstr "Analysez vos soumissions réussies."
 
@@ -4304,13 +4312,13 @@ msgid "To collect data"
 msgstr "Pour collecter des données"
 
 msgid "SMS: Give your <a href=\"%(url)s\">Questionnaire</a> to your Data Senders and have them send in data"
-msgstr "SMS: Donnez votre <a href=\"%(url)s\">questionnaire</a> à vos expéditeurs et demandez-leur de soumettre des données"
+msgstr "<b>SMS</b>: Donnez votre <a href=\"%(url)s\">questionnaire</a> à vos expéditeurs et demandez-leur de soumettre des données"
 
-msgid "Web: Grant your Data Senders Web submission access on the <a href=\"%(url)s\">all Data Senders</a> page"
-msgstr "Internet: Donnez un accès à l'envoi web dans la page de <a href=\"%(url)s\">Tous les Expéditeurs</a>"
+msgid "Web & Smartphone: Grant your Data Senders Web submission access on the <a href=\"%(url)s\">All Data Senders</a> page"
+msgstr "<b>Web</b> & <b>Smartphone</b>: Donnez un accès à l'envoi web dans la page de <a href=\"%(url)s\">Tous les Expéditeurs</a>"
 
-msgid "<a href=\"%(url)s\">Submit data</a> yourself"
-msgstr "<a href=\"%(url)s\">Envoyez des données</a> vous-même"
+msgid "<a href=\"%(url)s\">Submit Data</a> yourself"
+msgstr "<a href=\"%(url)s\">Envoyez des Données</a> vous-même"
 
 msgid "%dst"
 msgstr "%d"

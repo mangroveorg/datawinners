@@ -11,7 +11,16 @@
 
 .disabled {
   background: #EBEBE4 !important;
-}
+  color: #888; }
+
+.button_disabled {
+  border: 1px solid #888 !important;
+  color: #888;
+  margin: 5px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  font-weight: normal;
+  padding: 4px 15px 4px 15px; }
 
 .ui-dropdownchecklist-selector {
   height: 25px;

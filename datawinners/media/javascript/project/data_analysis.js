@@ -1,10 +1,11 @@
 $(document).ready(function () {
-
+    var help_no_submission = $('#help_no_submissions').html();
+    var message = gettext("No submissions available for this search. Try removing some of your filters.")
+    var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
 
     $('#time_submit').click(function () {
             var data = DW.submit_data();
             var time_list = data['time_range'];
-
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
             $.ajax({
                 type:'POST',
@@ -12,7 +13,7 @@ $(document).ready(function () {
                 data:{'start_time':$.trim(time_list[0]), 'end_time':$.trim(time_list[1]), 'subject_ids':data['subject_ids']},
                 success:function (response) {
                     var response_data = JSON.parse(response);
-                    DW.dataBinding(response_data.data, true, false);
+                    DW.dataBinding(response_data.data, true, false, help_all_data_are_filtered);
                     DW.update_footer(response_data.footer);
                     DW.wrap_table();
                 }});
@@ -72,8 +73,7 @@ $(document).ready(function () {
             index = index + 1;
         });
     };
-
-    DW.dataBinding = function (data, destroy, retrive) {
+    DW.dataBinding = function (data, destroy, retrive, emptyTableText) {
         $('#data_analysis').dataTable({
             "bDestroy":destroy,
             "bRetrieve":retrive,
@@ -84,7 +84,7 @@ $(document).ready(function () {
                 "sProcessing":gettext("Processing..."),
                 "sLengthMenu":gettext("Show _MENU_ Submissions"),
                 "sZeroRecords":gettext("No matching records found"),
-                "sEmptyTable":gettext("No data available"),
+                "sEmptyTable":emptyTableText,
                 "sLoadingRecords":gettext("Loading..."),
                 "sInfo":gettext("<span>_START_ - _END_</span> of _TOTAL_ Submissions"),
                 "sInfoEmpty":gettext("0 Submissions"),
@@ -152,8 +152,7 @@ $(document).ready(function () {
         $("#dateRangePicker").daterangepicker(configureSettings());
     }
 
-
-    DW.dataBinding(initial_data, false, true);
+    DW.dataBinding(initial_data, false, true, help_no_submission);
     DW.wrap_table();
     $('#data_analysis select').customStyle();
 
@@ -165,12 +164,17 @@ $(document).ready(function () {
 
     if (initial_data.length == 0) {
         function disableFilters() {
-            var filters = [$(".ui-dropdownchecklist"), $("#time_submit").attr('disabled', 'disabled'), $("#dateRangePicker"), $('#dataTable_search input')];
+            var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),
+                            $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
+                            $("#dateRangePicker"),
+                            $('#dataTable_search input')];
 
             $.each(filters, function (index, filter) {
                 filter.addClass('disabled').attr('disabled', 'disabled');
                 filter.unbind('click');
-
+            })
+            $.each($('.filter_label'), function(index, filter_label){
+                $(filter_label).css({color:"#888"});
             })
         }
 
