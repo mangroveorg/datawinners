@@ -39,9 +39,10 @@ class FilePlayer(Player):
         Player.__init__(self, dbm, location_tree)
         self.parser = parser
         self.channel_name = channel_name
+        self.form_code = None
 
     @classmethod
-    def build(cls, manager, extension, default_parser=None):
+    def build(cls, manager, extension, default_parser=None, form_code=None):
         channels = dict({".xls":Channel.XLS,".csv":Channel.CSV})
         try:
             channel = channels[extension]
@@ -55,7 +56,10 @@ class FilePlayer(Player):
             parser = XlsParser()
         else:
             raise InvalidFileFormatException()
-        return FilePlayer(manager, parser, channel, location_tree=LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+        player = FilePlayer( manager, parser, channel, location_tree=LocationBridge( get_location_tree( ),
+                                                                                     get_loc_hierarchy=get_location_hierarchy ) )
+        player.form_code = form_code
+        return player
 
     def _process(self,form_code, values):
         form_model = get_form_model_by_code(self.dbm, form_code)
@@ -66,6 +70,58 @@ class FilePlayer(Player):
             reporter_entity = entity.get_by_short_code(self.dbm, values.get(form_model.entity_question.code.lower()), form_model.entity_type)
             values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)
         return form_model, values
+
+    def appendFailedResponse(self, responses, message, values = None):
+        response = Response( reporters=[], submission_id=None )
+        response.success = False
+        response.errors = dict( error=ugettext( message ), row=values )
+        responses.append( response )
+
+    def import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
+                           values):
+        phone_number = TelephoneNumber( ).clean( case_insensitive_lookup( values, MOBILE_NUMBER_FIELD_CODE ) )
+        if phone_number in registered_phone_numbers:
+            raise DataObjectAlreadyExists( _( "Data Sender" ), _( "Mobile Number" ), phone_number )
+        email = case_insensitive_lookup( values, "email" )
+        if email:
+            if email in registered_emails:
+                raise DataObjectAlreadyExists( _( "User" ), _( "email address" ), email )
+
+            if not email_re.match( email ):
+                raise InvalidEmailException( message="Invalid email address." )
+
+            response = self.submit( form_model, values, submission, [] )
+            user = User.objects.create_user( email, email, 'password' )
+            group = Group.objects.filter( name="Data Senders" )[0]
+            user.groups.add( group )
+            user.first_name = case_insensitive_lookup( response.processed_data, NAME_FIELD_CODE )
+            user.save( )
+            profile = NGOUserProfile( user=user, org_id=organization.org_id, title="Mr",
+                                      reporter_id=case_insensitive_lookup( response.processed_data,
+                                                                           SHORT_CODE ) )
+            profile.save( )
+            send_reset_password_email( user, ugettext_lazy( "en" ) )
+        else:
+            response = self.submit( form_model, values, submission, [] )
+        return response
+
+    def import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, responses, values):
+        transport_info = TransportInfo( transport=self.channel_name, source=self.channel_name, destination="" )
+        submission = self._create_submission( transport_info, form_code, copy( values ) )
+        try:
+            form_model, values = self._process( form_code, values )
+            if case_insensitive_lookup( values, ENTITY_TYPE_FIELD_CODE ) == REPORTER:
+                response = self.import_data_sender( form_model, organization, registered_emails,
+                                                    registered_phone_numbers, submission, values )
+            else:
+                response = self.submit( form_model, values, submission, [] )
+            if not response.success:
+                response.errors = dict( error=response.errors, row=values )
+            responses.append( response )
+        except DataObjectAlreadyExists as e:
+            self.appendFailedResponse( responses, "%s with %s = %s already exists.", values=values )
+        except (InvalidEmailException, MangroveException) as e:
+            self.appendFailedResponse( responses, e.message, values=values )
 
     def accept(self, file_contents):
         responses = []
@@ -78,52 +134,14 @@ class FilePlayer(Player):
         else:
             registered_emails = []
         submissions = self.parser.parse(file_contents)
+        if len(submissions) > 0:
+            (form_code, values) = submissions[0]
+            if self.form_code is not None and form_code != self.form_code:
+                self.appendFailedResponse( responses, "The template dose not match with the form code." )
+                return responses
         for (form_code, values) in submissions:
-            transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
-            submission = self._create_submission(transport_info, form_code, copy(values))
-            try:
-                form_model, values = self._process(form_code, values)
-                if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
-                    phone_number = TelephoneNumber().clean(case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE))
-                    if phone_number in registered_phone_numbers:
-                        raise DataObjectAlreadyExists(_("Data Sender"), _("Mobile Number"), phone_number)
-
-                    email = case_insensitive_lookup(values, "email")
-                    if email:
-                        if email in registered_emails:
-                            raise DataObjectAlreadyExists(_("User"), _("email address"), email)
-
-                        if not email_re.match(email):
-                            raise InvalidEmailException(message="Invalid email address.")
-
-                        response = self.submit(form_model, values, submission, [])
-                        user = User.objects.create_user(email, email, 'password')
-                        group = Group.objects.filter(name="Data Senders")[0]
-                        user.groups.add(group)
-                        user.first_name = case_insensitive_lookup(response.processed_data, NAME_FIELD_CODE)
-                        user.save()
-                        profile = NGOUserProfile(user=user, org_id=organization.org_id, title="Mr",
-                            reporter_id=case_insensitive_lookup(response.processed_data, SHORT_CODE))
-                        profile.save()
-                        send_reset_password_email(user,ugettext_lazy("en"))
-                    else:
-                        response = self.submit(form_model, values, submission, [])
-                else:
-                    response = self.submit(form_model, values, submission, [])
-                if not response.success:
-                    response.errors = dict(error=response.errors, row=values)
-                responses.append(response)
-            except DataObjectAlreadyExists as e:
-                response = Response(reporters=[], submission_id=None)
-                response.success = False
-                message = ugettext("%s with %s = %s already exists.")
-                response.errors = dict(error=message % (e.data[2], e.data[0], e.data[1]), row=values)
-                responses.append(response)
-            except (InvalidEmailException, MangroveException) as e:
-                response = Response(reporters=[], submission_id=None)
-                response.success = False
-                response.errors = dict(error=ugettext(e.message), row=values)
-                responses.append(response)
+            self.import_submission( form_code, organization, registered_emails, registered_phone_numbers, responses,
+                                   values )
         return responses
 
 #TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
@@ -273,9 +291,9 @@ def load_all_subjects_of_type(manager, filter_entities=include_of_type, type=REP
     return load_subject_registration_data(manager, filter_entities, type)
 
 
-def _handle_uploaded_file(file_name, file, manager, default_parser=None):
+def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None):
     base_name, extension = os.path.splitext(file_name)
-    player = FilePlayer.build(manager, extension, default_parser=default_parser)
+    player = FilePlayer.build(manager, extension, default_parser=default_parser, form_code=form_code)
     response = player.accept(file)
     return response
 
@@ -301,7 +319,7 @@ def _get_success_status(successful_imports, total):
     return True if total == successful_imports else False
 
 
-def import_data(request, manager, default_parser=None):
+def import_data(request, manager, default_parser=None, form_code=None   ):
     response_message = ''
     error_message = None
     failure_imports = None
@@ -309,7 +327,7 @@ def import_data(request, manager, default_parser=None):
     try:
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
         file_name, file = _file_and_name(request) if 'qqfile' in request.GET else _file_and_name_for_ie(request)
-        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, default_parser=default_parser)
+        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, default_parser=default_parser, form_code=form_code)
         imported_entities = _get_imported_entities(responses)
         form_code = imported_entities.get("form_code")[0] if len(imported_entities.get("form_code")) == 1 else None
         if form_code is not None and \
