@@ -38,6 +38,13 @@ class TestImport(MangroveTestCase):
 "cli01","Reporter2 Maintirano ","Maintirano "
 "cli01","Reporter3 Mananjary ","Mananjary "
 """
+        self.csv_subjects_data_with_error_form_code = """
+"form_code","q1","q2"
+"cli1","Aàman Farafangana ","Farafangana "
+"cli1","Reporter1 Fianarantsoa ","mahajanga "
+"cli1","Reporter2 Maintirano ","Maintirano "
+"cli1","Reporter3 Mananjary ","Mananjary "
+"""
         initializer.run(self.manager)
 
     def tearDown(self):
@@ -145,7 +152,7 @@ class TestImport(MangroveTestCase):
         file_name = "reporters.csv"
         request = Mock()
         request.GET = {'qqfile': file_name}
-        request.raw_post_data = self.csv_subjects_data
+        request.raw_post_data = self.csv_subjects_data_with_error_form_code
         organization = Mock(spec=Organization)
         entity_type = "clinic"
         define_type(self.manager, [entity_type])
@@ -156,6 +163,6 @@ class TestImport(MangroveTestCase):
                 mock = Mock( return_value=organization )
                 mock.org_id = 'abc'
                 get_organization.return_value = mock
-                error_message, failure_imports, success_message, imported_entities = import_data(request=request, manager = self.manager, form_code='cli' )
+                error_message, failure_imports, success_message, imported_entities = import_data(request=request, manager = self.manager, form_code=FORM_CODE )
                 self.assertEqual(0, len(imported_entities))
-                self.assertEqual('The template dose not match with the form code.', error_message)
+                self.assertEqual('The file you are uploading is not a list of [clinic]. Please check and upload again.', error_message)
