@@ -194,7 +194,7 @@ def get_data_sender(dbm, user, submission):
         datasender = tuple(dbm.load_all_rows_in_view("datasender_by_mobile",
                                                         startkey=[submission.source],
                                                         endkey=[submission.source,{}])[0].key[1:])
-    elif submission.channel == 'web':
+    elif submission.channel == 'web' or submission.channel == 'smartPhone':
             data_sender = User.objects.get(email=submission.source)
             user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
             datasender = (data_sender.get_full_name(), user_profile.reporter_id)
