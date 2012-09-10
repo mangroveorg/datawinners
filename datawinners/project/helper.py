@@ -128,6 +128,7 @@ def get_datasender_by_mobile(dbm, mobile):
 def get_data_sender(dbm, user, submission):
     submission_source = submission.source
     datasender = ('N/A', None, submission_source)
+
     if submission.channel == 'sms':
         datasender = tuple(get_datasender_by_mobile( dbm, submission_source ) + [submission_source])
     elif submission.channel == 'web' or submission.channel == 'smartPhone':
