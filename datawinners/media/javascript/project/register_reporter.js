@@ -68,12 +68,14 @@ $(document).ready(function () {
                         $(".subject_field").removeAttr("disabled");
                     }
                 });
+                $(".application_register").attr("tabindex", -1).focus();
             },
             error:function (e) {
                 $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
                 sms_device.checked();
                 sms_device.disable();
                 email.setVisibility();
+                $(".application_register").attr("tabindex", -1).focus();
             }
         });
     });
