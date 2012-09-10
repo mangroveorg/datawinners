@@ -32,3 +32,4 @@ django-digest
 django-countries
 babel
 rednose
+requests==0.14.0

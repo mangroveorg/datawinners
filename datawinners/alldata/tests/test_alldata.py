@@ -32,23 +32,3 @@ class TestAllData(unittest.TestCase):
         response = self.client.get('/alldata/entities/clinic/')
         self.assertEquals(response.status_code, 302)
 
-    def test_should_render_get_registgered_data_response_if_logged_in(self):
-        self.client.login(username='tester150411@gmail.com', password='tester150411')
-        response = self.client.get('/alldata/registereddata/clinic/')
-        self.assertEquals(response.status_code, 200)
-
-        response = self.client.get('/alldata/registereddata/clinic/01-08-2012/')
-        self.assertEquals(response.status_code, 200)
-
-        response = self.client.get('/alldata/registereddata/clinic/01-08-2012/03-08-2012/')
-        self.assertEquals(response.status_code, 200)
-
-
-    def test_should_return_404_response_status_when_date_format_is_invalid(self):
-        self.client.login(username='tester150411@gmail.com', password='tester150411')
-
-        response = self.client.get('/alldata/registereddata/clinic/2/')
-        self.assertEquals(response.status_code, 404)
-
-        response = self.client.get('/alldata/registereddata/clinic/01-08-2012/03082012/')
-        self.assertEquals(response.status_code, 404)

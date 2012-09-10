@@ -3,8 +3,6 @@ from django.test import Client
 
 
 class TestFailedSubmissions(unittest.TestCase):
-
-
     def setUp(self):
         self.client = Client()
 
