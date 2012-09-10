@@ -187,11 +187,12 @@ def get_data_sender(dbm, user, submission):
     org_id = NGOUserProfile.objects.get(user = user).org_id
     if submission.channel == 'sms':
         datasender = tuple(get_datasender_by_mobile(dbm, submission.source))
-    elif submission.channel == 'web':
-            data_sender = User.objects.get(email=submission.source)
-            user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
-            datasender = (data_sender.get_full_name(), user_profile.reporter_id)
-
+    elif submission.channel == 'web' or submission.channel == 'smartPhone':
+        data_sender = User.objects.get(email=submission.source)
+        user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
+        datasender = (data_sender.get_full_name(), user_profile.reporter_id)
+    else:
+        raise Exception("No channel matches with [%s]" % submission.channel)
     return datasender if datasender[0] != "TEST" else ("TEST",None)
 
 
