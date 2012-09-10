@@ -68,7 +68,7 @@ function compile_messages {
 }
 
 function run_server {
-    cd "$DWROOT_DIR/datawinners" && python manage.py runserver
+    cd "$DWROOT_DIR/datawinners" && python manage.py runserver 0.0.0.0:8000
 }
 
 function show_help {

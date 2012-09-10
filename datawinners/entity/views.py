@@ -235,11 +235,11 @@ def create_type(request):
 @is_new_user
 @is_datasender
 @is_not_expired
-def all_subjects(request):
+def all_subjects(request, form_code=None):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
-            default_parser=XlsOrderedParser)
+            default_parser=XlsOrderedParser,form_code=form_code)
         if len(imported_entities) !=0 :
             detail_dict = dict()
             for short_code,entity_type in imported_entities.items():

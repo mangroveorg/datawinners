@@ -158,4 +158,4 @@ class TestImport(MangroveTestCase):
                 get_organization.return_value = mock
                 error_message, failure_imports, success_message, imported_entities = import_data(request=request, manager = self.manager, form_code='cli' )
                 self.assertEqual(0, len(imported_entities))
-                self.assertEqual('The template dose not match with the form code.', failure_imports[0]['error'])
+                self.assertEqual('The template dose not match with the form code.', error_message)

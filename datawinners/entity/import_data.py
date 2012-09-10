@@ -34,6 +34,14 @@ from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.utils import send_reset_password_email
 from django.core.validators import email_re
 
+class FormCodeDoesNotMatchException(Exception):
+    def __init__(self, message, form_code=None):
+        self.message = message
+        self.data = form_code
+
+    def __str__(self):
+        return self.message
+
 class FilePlayer(Player):
     def __init__(self, dbm, parser, channel_name, location_tree=None):
         Player.__init__(self, dbm, location_tree)
@@ -119,7 +127,7 @@ class FilePlayer(Player):
                 response.errors = dict( error=response.errors, row=values )
             responses.append( response )
         except DataObjectAlreadyExists as e:
-            self.appendFailedResponse( responses, "%s with %s = %s already exists.", values=values )
+            self.appendFailedResponse( responses, "%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]), values=values )
         except (InvalidEmailException, MangroveException) as e:
             self.appendFailedResponse( responses, e.message, values=values )
 
@@ -137,8 +145,7 @@ class FilePlayer(Player):
         if len(submissions) > 0:
             (form_code, values) = submissions[0]
             if self.form_code is not None and form_code != self.form_code:
-                self.appendFailedResponse( responses, "The template dose not match with the form code." )
-                return responses
+                raise FormCodeDoesNotMatchException("The template dose not match with the form code.", form_code=form_code)
         for (form_code, values) in submissions:
             self.import_submission( form_code, organization, registered_emails, registered_phone_numbers, responses,
                                    values )
@@ -347,6 +354,8 @@ def import_data(request, manager, default_parser=None, form_code=None   ):
         error_message = e.message
     except InvalidFileFormatException:
         error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use the import template file!")
+    except FormCodeDoesNotMatchException as e:
+        error_message = e.message
     except Exception:
         error_message = _(u"Some unexpected error happened. Please check the excel file and import again.")
         if settings.DEBUG:
