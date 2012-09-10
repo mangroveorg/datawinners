@@ -33,3 +33,4 @@ django-countries
 babel
 rednose
 django-debug-toolbar-django13
+requests==0.14.0

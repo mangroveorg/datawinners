@@ -5,7 +5,6 @@ from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from accountmanagement.views import session_not_expired
 from dataextraction.helper import convert_to_json_response
-from dataextraction.views import get_for_form
 from datawinners.accountmanagement.views import is_new_user, is_allowed_to_view_reports
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
 from datawinners.settings import CRS_ORG_ID
@@ -14,7 +13,7 @@ from datawinners.project.models import ProjectState, Project
 from datawinners.project.views import project_overview, project_data, project_results
 from mangrove.datastore.entity import get_all_entities
 from mangrove.datastore.entity_type import get_all_entity_types
-from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type
+from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
@@ -194,11 +193,3 @@ def get_entity_list_by_type(request, entity_type):
     return convert_to_json_response([entity.short_code for entity in entities])
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
-def get_registered_data(request, subject_type, start_date=None, end_date=None):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_entity_type(manager,[subject_type])
-    response = get_for_form(request, form_model.form_code, start_date, end_date)
-    return response
