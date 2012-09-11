@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
-from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
+from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy, LocationTree
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
@@ -16,7 +16,7 @@ from mangrove.errors.MangroveException import   DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
-from mangrove.transport.player.player import SMSPlayer
+from mangrove.transport.player.player import SMSPlayer, WebPlayer
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 from datawinners.submission.location import LocationBridge
@@ -831,7 +831,11 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     create_project17(CLINIC_ENTITY_TYPE, manager, questions[:6])
     create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager)
 
-    
+def load_web_data_for_cli001(manager):
+    web_player = WebPlayer(manager, location_tree=LocationTree())
+    text = {'form_code': 'cli001', 'EID':'cid001', 'NA':'Mr. Admin', 'FA':'58', 'RD':'28.02.2011', 'BG':'c', 'SY':'ade', 'GPS':'79.2 20.34567'}
+    web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
+    web_player.accept(Request(message=text, transportInfo=web_transport_info))
 
 def load_sms_data_for_cli001(manager):
     FEB = datetime(2011, 02, 28, hour=12, minute=00, second=00, tzinfo=UTC)
@@ -843,6 +847,7 @@ def load_sms_data_for_cli001(manager):
     THIS_MONTH = datetime(today.year, today.month, 2, 12, 45, 58)
     PREV_MONTH = THIS_MONTH - timedelta(days=6)
     sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
+
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
@@ -1329,7 +1334,8 @@ def load_data():
         short_code="rep8", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
     load_sms_data_for_cli001(manager)
-    send_data_to_project_cli00_mp(manager);
+    load_web_data_for_cli001(manager)
+    send_data_to_project_cli00_mp(manager)
 
     create_trial_test_organization('chinatwu@gmail.com','COJ00000', False)
     create_trial_test_organization('chinatwu2@gmail.com','COJ00001', True, [phone_number_type, first_name_type])

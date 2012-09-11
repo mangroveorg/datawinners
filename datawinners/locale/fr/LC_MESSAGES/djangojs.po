@@ -139,6 +139,9 @@ msgstr "Choisir le(s) Mois"
 msgid "All Periods"
 msgstr "Toutes les Périodes"
 
+msgid "All Data Senders"
+msgstr "Tous les Expéditeurs"
+
 #: media/javascript/file_uploader/fileuploader.js:480
 msgid "Drop files here to upload"
 msgstr "Glisser les fichiers à télécharger ici"
