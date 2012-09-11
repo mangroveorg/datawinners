@@ -201,12 +201,12 @@ def case_insensitive_lookup(search_key, dictionary):
     return None
 
 def get_first_element_of_leading_part(dbm, form_model, submission, data_sender):
+    sort_code = case_insensitive_lookup( form_model.entity_question.code, submission.values )
     try:
-        entity = get_by_short_code(dbm, case_insensitive_lookup(form_model.entity_question.code, submission.values), [form_model.entity_type[0]])
-
+        entity = get_by_short_code(dbm, sort_code, [form_model.entity_type[0]])
         return entity.data['name']['value'], entity.short_code
     except DataObjectNotFound:
-        return "N/A", "--"
+        return "N/A", sort_code
 
 def get_leading_part(dbm, form_model, submissions, user):
     result = []
