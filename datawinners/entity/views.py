@@ -118,7 +118,7 @@ def create_data_sender(request):
             success = True
         except DataObjectAlreadyExists as e:
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
-        if len(form.errors) == 0 and form.requires_web_access() and success:
+        if len(form.errors) == 0 and form.requires_web_access():
             email_id = request.POST['email']
             create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
                 language_code=request.LANGUAGE_CODE)
