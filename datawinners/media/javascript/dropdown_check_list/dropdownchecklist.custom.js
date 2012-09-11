@@ -588,6 +588,10 @@
             // the attribute needs naked text, not html
             controlLabel.attr("title", controlLabel.text());
         },
+        isAllSelected:function (selectOptions) {
+            var selectedOptions = selectOptions.filter(":selected");
+            return selectOptions.size() == selectedOptions.size();
+        },
         // Formats the text that is shown in the control
         _formatText: function(selectOptions, firstItemChecksAll, firstOption) {
             var text;
@@ -604,6 +608,8 @@
             } else {
                 // concatenate the text from the checked items
                 text = "";
+
+
                 selectOptions.each(function() {
                     if ($(this).attr("selected")) {
                         if ( text != "" ) { text += ", "; }
@@ -619,9 +625,11 @@
                         }
                     }
                 });
-                if ( text == "" ) {
+                var allSelected = this.isAllSelected(selectOptions);
+                if ( text == ""  || allSelected) {
                     text = (this.options.emptyText != null) ? this.options.emptyText : "&nbsp;";
                 }
+
             }
             return text;
         },
