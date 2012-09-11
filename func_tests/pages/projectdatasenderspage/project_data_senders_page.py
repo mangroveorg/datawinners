@@ -6,11 +6,11 @@ from pages.alldatasenderspage.all_data_senders_locator import DATA_SENDER_DEVICE
 from pages.page import Page
 from pages.projectdatasenderspage.project_data_senders_locator import *
 from tests.projectdatasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
+from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 
-
-class ProjectDataSendersPage(Page):
+class ProjectDataSendersPage(AllDataSendersPage):
     def __init__(self, driver):
-        Page.__init__(self, driver)
+        super(ProjectDataSendersPage, self).__init__(driver)
 
     def navigate_to_add_a_data_sender_page(self):
         """

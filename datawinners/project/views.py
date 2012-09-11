@@ -1232,8 +1232,14 @@ def create_data_sender_and_web_user(request, project_id=None):
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
         form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
-        reporter_id, message = process_create_data_sender_form(manager, form, org_id)
-        if not len(form.errors):
+        success = False
+        try:
+            reporter_id, message = process_create_data_sender_form(manager, form, org_id)
+            success = True
+        except DataObjectAlreadyExists as e:
+            message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
+            
+        if not len(form.errors) and success:
             project.associate_data_sender_to_project(manager, reporter_id)
             if form.requires_web_access():
                 email_id = request.POST['email']
@@ -1241,10 +1247,9 @@ def create_data_sender_and_web_user(request, project_id=None):
                     language_code=request.LANGUAGE_CODE)
             UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
                 detail=json.dumps(dict({"Unique ID": reporter_id})), project=project.name)
-        if message is not None:
+        if message is not None and success:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
-        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode}
-        append_success_to_context(context, form)
+        context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'success': success}
         return render_to_response('datasender_form.html',
             context,
             context_instance=RequestContext(request))

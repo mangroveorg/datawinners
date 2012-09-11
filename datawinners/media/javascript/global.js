@@ -8,6 +8,12 @@ $(document).ready(function() {
     DW.flash_message = function() {
         $('.success-message-box').delay(10000).fadeOut();
     };
+
+    DW.set_focus_on_flash_message = function(){
+        if ($(".errorlist:has(li)").length == 0){
+            $("#flash-message").attr("tabindex", -1).focus();
+        }
+    }
     var shoudlShowAjaxError = ($('#debug').val()=="True");
     if(shoudlShowAjaxError){
         $("#global_error").ajaxError(function(event, request, settings) {

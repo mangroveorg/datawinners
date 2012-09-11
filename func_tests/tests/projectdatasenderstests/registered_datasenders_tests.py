@@ -8,6 +8,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.alldatasenderstests.all_data_sender_data import DATA_SENDER_ID_WITH_WEB_ACCESS, DATA_SENDER_ID_WITHOUT_WEB_ACCESS
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projectdatasenderstests.registered_datasenders_data import *
+from pages.adddatasenderspage.add_data_senders_locator import REGISTERED_DATASENDERS_LOCATOR
 
 
 @attr('suit_2')
@@ -57,7 +58,7 @@ class ProjectDataSenders(BaseTest):
         unique_email = "mickey" + generateId() + "@duck.com"
 
         project_datasenders_page.give_web_access(unique_email)
-        self.driver.wait_until_modal_dismissed(15)
+        self.driver.wait_until_modal_dismissed(25)
 
         assigned_email = project_datasenders_page.get_data_sender_email_by_mobile_number(data_sender_mobile_number)
         self.assertEqual(unique_email, assigned_email)
@@ -130,4 +131,40 @@ class ProjectDataSenders(BaseTest):
         project_datasenders_page = self.navigate_to_project_datasender_page()
         add_data_sender_page = project_datasenders_page.navigate_to_add_a_data_sender_page()
         self.check_import_template_filename(add_data_sender_page)
+
+    @attr('functional_test')
+    def test_addition_and_editon(self):
+        """
+        Function to test the successful Addition of DataSender with given
+        details e.g. first name, last name, telephone number and commune
+        """
+        project_datasenders_page = self.navigate_to_project_datasender_page()
+        add_data_sender_page = project_datasenders_page.navigate_to_add_a_data_sender_page()
+
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATASENDER_DATA, "repx01")
+
+        self.assertRegexpMatches(add_data_sender_page.get_success_message(),
+                                 fetch_(SUCCESS_MSG, from_(VALID_DATASENDER_DATA)))
+        self.driver.wait_until_modal_dismissed(20)
+        self.driver.find(REGISTERED_DATASENDERS_LOCATOR).click()
+        project_datasenders_page.select_a_data_sender_by_mobile(VALID_DATASENDER_DATA[MOBILE_NUMBER_WITHOUT_HYPHENS])
+        project_datasenders_page.select_edit_action()
+        add_data_sender_page.enter_data_sender_details_from(VALID_EDIT_DATASENDER_DATA)
+        self.assertRegexpMatches(add_data_sender_page.get_success_message(),
+            fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATASENDER_DATA)))
+
+    @attr('functional_test')
+    def test_addition_with_existing_unique_ID(self):
+        """
+        Add DS with existing unique ID
+        """
+        project_datasenders_page = self.navigate_to_project_datasender_page()
+        add_data_sender_page = project_datasenders_page.navigate_to_add_a_data_sender_page()
+
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATASENDER_DATA_FOR_DUPLICATE_UNIQUE_ID, "repx01")
+        error_msg = add_data_sender_page.get_error_message()
+        self.assertRegexpMatches(error_msg,
+                                 fetch_(ERROR_MSG, from_(VALID_DATASENDER_DATA_FOR_DUPLICATE_UNIQUE_ID)))
+
+
 
