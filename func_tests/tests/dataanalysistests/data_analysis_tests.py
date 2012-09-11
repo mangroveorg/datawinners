@@ -120,3 +120,38 @@ class TestDataAnalysis(BaseTest):
         self.assertEqual(1, len(subject_sets))
         self.assertEqual(subject_name, subject_names[0])
 
+    @attr('functional_test', 'smoke')
+    def test_filter_data_records_by_admin(self):
+        data_analysis_page = self.go_to_analysis_page()
+        data_sender = ('Tester Pune', 'admin', 'tester150411@gmail.com')
+        data_analysis_page.select_for_data_sender(data_sender[-1])
+        data_analysis_page.filter_data()
+        data_records = data_analysis_page.get_all_data_records_by_column(3)
+        data_senders_set = set(data_records)
+        self.assertEqual(1, len(data_senders_set))
+        self.assertEqual(data_sender[0] + '\n(' + data_sender[1] +')' , data_records[0])
+
+    @attr('functional_test', 'smoke')
+    def test_filter_data_records_by_sms_or_web_data_sender(self):
+        data_analysis_page = self.go_to_analysis_page()
+        data_sender = ('Shweta', 'rep1', '1234567890')
+        data_analysis_page.select_for_data_sender(data_sender[-1])
+        data_analysis_page.filter_data()
+        data_records = data_analysis_page.get_all_data_records_by_column(3)
+        data_senders_set = set(data_records)
+        self.assertEqual(1, len(data_senders_set))
+        self.assertEqual(data_sender[0] + '\n(' + data_sender[1] +')' , data_records[0])
+
+    @attr('functional_test', 'smoke')
+    def test_filter_data_records_by_test_data_sender(self):
+        data_analysis_page = self.go_to_analysis_page('Clinic Test Project With Monthly Reporting Period'.lower())
+        data_sender = ('TEST', '', 'TEST')
+        data_analysis_page.select_for_data_sender(data_sender[-1])
+        data_analysis_page.filter_data()
+        data_records = data_analysis_page.get_all_data_records_by_column(3)
+        data_senders_set = set(data_records)
+        self.assertEqual(1, len(data_senders_set))
+        self.assertEqual(data_sender[0] , data_records[0])
+
+
+

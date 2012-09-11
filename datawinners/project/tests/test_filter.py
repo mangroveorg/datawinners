@@ -85,3 +85,21 @@ class TestSubmissionFilters(unittest.TestCase):
 
         filtered_submissions = DataSenderFilter('no_matching_datasender').filter(submission_logs)
         self.assertEqual(0, len(filtered_submissions))
+
+    def test_should_return_submissions_filter_by_test_datasender(self):
+        test_submission1 = Submission(self.dbm, transport_info=TransportInfo('web', '127359085', 'destination'),
+            form_code='test', values=self.values[1])
+        test_submission1._doc.test = True
+
+        test_submission2 = Submission(self.dbm, transport_info=TransportInfo('web', '0000000000', 'destination'),
+            form_code='test', values=self.values[2])
+        test_submission2._doc.test = False
+
+        submission_logs = [
+            Submission(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0]),
+            test_submission1,
+            test_submission2
+        ]
+
+        filtered_submissions = DataSenderFilter('TEST').filter(submission_logs)
+        self.assertEqual(2, len(filtered_submissions))

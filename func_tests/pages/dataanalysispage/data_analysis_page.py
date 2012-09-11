@@ -38,6 +38,9 @@ class DataAnalysisPage(Page):
         """
         return row_web_element.text
 
+    def get_column_data_from_row(self, row_web_element, index):
+        return row_web_element.find_elements_by_tag_name('td')[index].text
+
     def get_data_rows(self):
         """
         Function to fetch the number of data rows
@@ -70,6 +73,13 @@ class DataAnalysisPage(Page):
         data_record_list = []
         for row_web_element in rows:
             data_record_list.append(self.get_data_from_row(row_web_element))
+        return data_record_list
+
+    def get_all_data_records_by_column(self, column_index):
+        rows = self.get_data_rows()
+        data_record_list = []
+        for row_web_element in rows:
+            data_record_list.append(self.get_column_data_from_row(row_web_element, column_index))
         return data_record_list
 
     def get_all_data_records_from_multiple_pages(self):
@@ -193,7 +203,11 @@ class DataAnalysisPage(Page):
         self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
 
     def select_for_subject_type(self, subject_name):
-        self.driver.wait_for_element(20, by_xpath('//span[contains(@class, "ui-dropdownchecklist-selector")]')).click()
+        self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/../span')).click()
         self.driver.wait_for_element(20, by_xpath('//input[@value="%s"]' % subject_name)).click()
-        self.driver.wait_for_element(20, by_xpath('//div[contains(@class, "ui-dropdownchecklist-close")]//button[contains(@class, "btnDone")]')).click()
-        pass
+        self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/..//button')).click()
+
+    def select_for_data_sender(self, data_sender):
+        self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/../span')).click()
+        self.driver.wait_for_element(20, by_xpath('//input[@data="%s"]' % data_sender)).click()
+        self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/..//button')).click()

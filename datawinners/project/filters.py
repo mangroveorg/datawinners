@@ -1,4 +1,5 @@
 from datetime import datetime
+from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.form_model.field import DateField
 from mangrove.utils.types import is_sequence
 
@@ -48,7 +49,8 @@ class DataSenderFilter(object):
     def filter(self, submission_logs):
         return filter(lambda x: self._with_source(x), submission_logs)
 
-    def _with_source(self, values):
-        return values.source in self.submission_sources
+    def _with_source(self, submission):
+        source = 'TEST' if submission.test or submission.source == TEST_REPORTER_MOBILE_NUMBER else submission.source
+        return source in self.submission_sources
 
 

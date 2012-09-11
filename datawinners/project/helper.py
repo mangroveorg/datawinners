@@ -188,7 +188,7 @@ def get_data_sender(dbm, user, submission):
         datasender = tuple(get_datasender_by_mobile(dbm, submission.source) + [submission.source])
     elif submission.channel == 'web':
             data_sender = User.objects.get(email=submission.source)
-            reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or ""
+            reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
             datasender = (data_sender.get_full_name(), reporter_id, submission.source)
     else:
         raise Exception("No channel matches with [%s]" % submission.channel)

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from mock import patch
 from datawinners import initializer, settings
-from datawinners.accountmanagement.models import OrganizationSetting, Organization
+from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
@@ -1277,6 +1277,9 @@ def send_data_to_project_cli00_mp(manager):
     sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month,year-1), transport))
     sms_player.accept(Request("cli00_mp cid001 01.%s" % year, transport))
     sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month -1,year), transport))
+
+    tester_transport = TransportInfo(SMS, TEST_REPORTER_MOBILE_NUMBER, TO_NUMBER)
+    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month -1,year), tester_transport))
 
 def load_data():
     manager = load_manager_for_default_test_account()
