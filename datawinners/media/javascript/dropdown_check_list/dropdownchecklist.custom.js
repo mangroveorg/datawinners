@@ -229,15 +229,20 @@
         },
         _set_ids_of_checked: function() {
             var sourceSelect = this.sourceSelect, dropWrapper = this.dropWrapper;
-            ids =  $.map(dropWrapper.find(':checkbox:checked'), function(checkbox){
+            var ids =  $.map(dropWrapper.find(':checkbox:checked'), function(checkbox){
                 return $(checkbox).attr('id');
             });
+            var data = $.map(dropWrapper.find(':checkbox:checked'), function(checkbox){
+                return $(checkbox).attr('data');
+            });
 
-            return sourceSelect.attr('ids', ids);
+            sourceSelect.attr('ids', ids);
+            sourceSelect.attr('data', data);
         },
         // Creates a drop item that coresponds to an option element in the source select
-        _createDropItem: function(index, tabIndex, value, code, text, optCss, checked, disabled, indent) {
+        _createDropItem: function(index, tabIndex, value, code, data, text, optCss, checked, disabled, indent) {
             var self = this, options = this.options, sourceSelect = this.sourceSelect, controlWrapper = this.controlWrapper;
+            var data = data || "";
             // the item contains a div that contains a checkbox input and a lable for the text
             // the div
             var item = $("<div/>");
@@ -257,7 +262,7 @@
             } else { // the radiobutton
                 checkBox = $('<input disabled type="radio" id="' + id + '" name="' + idBase + '"' + checkedString + classString + ' tabindex="' + tabIndex + '" />');
             }
-            checkBox = checkBox.attr("index", index).val(value).attr('id', code);
+            checkBox = checkBox.attr("index", index).val(value).attr('id', code).attr('data', data);
             item.append(checkBox);
 
             // the text
@@ -484,10 +489,11 @@
                 var optCss = option.attr('style');
                 var selected = option.attr("selected");
                 var code = option.attr('code');
+                var data = option.attr('data');
                 var disabled = (forceDisabled || option.attr("disabled"));
                 // Use the same tab index as the selector replacement
                 var tabIndex = self.controlSelector.attr("tabindex");
-                var item = self._createDropItem(index, tabIndex, value, code, text, optCss, selected, disabled, indent);
+                var item = self._createDropItem(index, tabIndex, value, code, data, text, optCss, selected, disabled, indent);
                 container.append(item);
             }
         },

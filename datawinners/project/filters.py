@@ -41,5 +41,14 @@ class SubjectFilter(object):
         return values.get(self.entity_question_code) in self.subject_ids
 
 
+class DataSenderFilter(object):
+    def __init__(self, submission_sources):
+        self.submission_sources = submission_sources.split(',')
+
+    def filter(self, submission_logs):
+        return filter(lambda x: self._with_source(x), submission_logs)
+
+    def _with_source(self, values):
+        return values.source in self.submission_sources
 
 

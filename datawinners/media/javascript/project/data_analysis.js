@@ -5,12 +5,11 @@ $(document).ready(function () {
 
     $('#time_submit').click(function () {
             var data = DW.submit_data();
-            var time_list = data['time_range'];
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
             $.ajax({
                 type:'POST',
                 url:window.location.pathname,
-                data:{'start_time':$.trim(time_list[0]), 'end_time':$.trim(time_list[1]), 'subject_ids':data['subject_ids']},
+                data: data,
                 success:function (response) {
                     var response_data = JSON.parse(response);
                     DW.dataBinding(response_data.data, true, false, help_all_data_are_filtered);
@@ -27,8 +26,8 @@ $(document).ready(function () {
             var path = window.location.pathname;
             var element_list = path.split("/");
             $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
-            $("#start_time").attr("value", time_list[0]);
-            $("#end_time").attr("value", time_list[1]);
+            $("#start_time").attr("value", data['start_time']);
+            $("#end_time").attr("value", data['end_time']);
             $("#subject_ids").attr("value", data['subject_ids']);
 
             $('#export_form').submit();
@@ -37,29 +36,27 @@ $(document).ready(function () {
 
     DW.submit_data = function () {
         $("#dateErrorDiv").hide();
-        var aggregation_selectBox_Array = $(".aggregation_type");
-        var aggregationArray = [];
-        aggregation_selectBox_Array.each(function () {
-            aggregationArray.push($(this).val());
-        });
         var time_range = $("#dateRangePicker").val().split("-");
         var subject_ids = $('#subjectSelect').attr('ids');
+        var submission_sources = $('#dataSenderSelect').attr('data');
 
         if (time_range[0] == "" || time_range[0] == gettext("All Periods")) {
-            return {'time_range':['', ''], 'aggregationArray':aggregationArray, 'subject_ids':subject_ids};
+            time_range = ['', '']
         }
         if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {
             $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>');
             $("#dateErrorDiv").show();
-            time_range[0] = "";
-            time_range[1] = "";
-            return {'time_range':time_range, 'aggregationArray':aggregationArray, 'subject_ids':subject_ids};
+            time_range = ['', ''];
         }
         if (time_range.length == 1) {
             time_range[1] = time_range[0];
-            return {'time_range':time_range, 'aggregationArray':aggregationArray, 'subject_ids':subject_ids};
         }
-        return {'time_range':time_range, 'aggregationArray':aggregationArray, 'subject_ids':subject_ids};
+        return {
+                'start_time':$.trim(time_range[0]),
+                'end_time':$.trim(time_range[1]),
+                'subject_ids':subject_ids,
+                'submission_sources': submission_sources
+                };
     };
 
     DW.wrap_table = function () {
@@ -158,9 +155,8 @@ $(document).ready(function () {
 
     addOnClickListener();
 
-
     buildRangePicker();
-    buildSubjectFilter();
+    buildFilters();
 
     if (initial_data.length == 0) {
         function disableFilters() {
@@ -186,16 +182,16 @@ $(document).ready(function () {
 
 });
 
-function buildSubjectFilter() {
-    var $subjectSelect = $('#subjectSelect');
-    $(subjects_data).each(function (index, subject) {
-        $('<option>' + subject[0] + '</option>').val(subject[0]).attr('code', subject[1]).appendTo($subjectSelect);
+function buildFilters() {
+    var $filterSelects = $('#subjectSelect').add('#dataSenderSelect');
+    var subject_options = {emptyText:gettext("All") + ' ' + entity_type};
+    var data_sender_options = {emptyText:gettext("All Data Senders")};
+    var filter_options = [subject_options, data_sender_options];
 
+    $filterSelects.each(function(index, filter){
+        $(filter).dropdownchecklist($.extend({firstItemChecksAll:false,
+            explicitClose:gettext("OK"),
+            width:$(this).width(),
+            maxDropHeight:200}, filter_options[index]));
     });
-    var emptyText = gettext("All") + ' ' + entity_type;
-    $subjectSelect.dropdownchecklist({emptyText:emptyText,
-        firstItemChecksAll:false,
-        explicitClose:gettext("OK"),
-        width:$subjectSelect.width(),
-        maxDropHeight:200});
 }

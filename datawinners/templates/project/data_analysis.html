@@ -47,7 +47,6 @@
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
         var initial_data = JSON.parse({{data_list|safe}});
-        var subjects_data = JSON.parse({{ subject_list|safe }});
         var date_format = '{{ date_format }}'
         var entity_type = '{{ entity_type }}'
     </script>
@@ -99,7 +98,11 @@
                 <label class="full_width">{{ entity_type }}</label>
             </div>
             <div class="float_left ">
-                <select multiple="multiple" id="subjectSelect"></select>
+                <select multiple="multiple" id="subjectSelect">
+                    {%  for name, id in subject_list %}
+                        <option value="{{ name }}" code='{{ id }}'>{{ name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="{% if not has_reporting_period %} none {% endif %} float_left">
@@ -124,6 +127,18 @@
                 <span id="dateErrorDiv" class="error_arrow"></span>
 
                 <div id="month_date_picker_div"></div>
+            </div>
+        </div>
+        <div class="float_left" id="datasender_filter">
+            <div class="filter_label" for="dataSenderSelect">
+                <label class="full_width">{% trans "Data Sender" %}</label>
+            </div>
+            <div class="float_left ">
+                <select multiple="multiple" id="dataSenderSelect">
+                    {%  for name, id, source in datasender_list %}
+                        <option value="{{ name }}" code="{{ id }}" data="{{ source }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="float_left">

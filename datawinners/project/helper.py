@@ -181,19 +181,18 @@ def get_datasender_by_mobile(dbm, mobile):
 
 def get_data_sender(dbm, user, submission):
     if submission.test:
-        return submission.source, None
+        return "TEST", "", "TEST"
 
-    datasender = ()
     org_id = NGOUserProfile.objects.get(user = user).org_id
     if submission.channel == 'sms':
-        datasender = tuple(get_datasender_by_mobile(dbm, submission.source))
-    elif submission.channel == 'web' or submission.channel == 'smartPhone':
-        data_sender = User.objects.get(email=submission.source)
-        user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
-        datasender = (data_sender.get_full_name(), user_profile.reporter_id)
+        datasender = tuple(get_datasender_by_mobile(dbm, submission.source) + [submission.source])
+    elif submission.channel == 'web':
+            data_sender = User.objects.get(email=submission.source)
+            reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or ""
+            datasender = (data_sender.get_full_name(), reporter_id, submission.source)
     else:
         raise Exception("No channel matches with [%s]" % submission.channel)
-    return datasender if datasender[0] != "TEST" else ("TEST",None)
+    return datasender if datasender[0] != "TEST" else ("TEST", "", "TEST")
 
 
 def case_insensitive_lookup(search_key, dictionary):
@@ -291,18 +290,19 @@ def to_lowercase_submission_keys(submissions):
         submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
 
 
-def get_field_values(request, manager, form_model, filters=[]):
+def get_leading_and_field_values(filters, form_model, manager, request):
     assert isinstance(form_model, FormModel)
-
     submissions = get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
     to_lowercase_submission_keys(submissions)
     for filter in filters:
         submissions = filter.filter(submissions)
-
     field_values = format_answer_for_presentation(form_model, submissions)
-
     leading_part_answer = get_leading_part(manager, form_model, submissions, request.user)
+    return leading_part_answer, field_values
 
+
+def get_field_values(request, manager, form_model, filters=[]):
+    leading_part_answer, field_values = get_leading_and_field_values(filters, form_model, manager, request)
     return [leading + remaining[1:] for leading, remaining in zip(leading_part_answer, field_values)]
 
 def get_aggregate_dictionary(header_list, post_data):

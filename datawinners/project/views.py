@@ -64,7 +64,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
-from project.filters import ReportPeriodFilter
+from project.filters import ReportPeriodFilter, DataSenderFilter
 from project.tests.test_filter import SubjectFilter
 from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
@@ -320,12 +320,21 @@ def _build_subject_filter(entity_question_code, subject_ids):
         return None
     return SubjectFilter(entity_question_code.lower(), subject_ids)
 
+
+def _build_datasender_filter(submission_sources):
+    if not submission_sources.strip():
+        return None
+    return DataSenderFilter(submission_sources)
+
+
 def build_filters(params, form_model):
     if not params:
         return []
-
-    return filter(lambda x: x is not None, [_build_report_period_filter(form_model, params.get('start_time', "").strip(), params.get('end_time', "").strip()),
-                                            _build_subject_filter(form_model.entity_question.code, params.get('subject_ids', "").strip())])
+    return filter(lambda x: x is not None,
+        [_build_report_period_filter(form_model, params.get('start_time', "").strip(), params.get('end_time', "").strip()),
+         _build_subject_filter(form_model.entity_question.code, params.get('subject_ids', "").strip()),
+         _build_datasender_filter(params.get('submission_sources', "").strip()),
+         ])
 
 @login_required(login_url='/login')
 @session_not_expired
@@ -398,10 +407,11 @@ def _get_analysis_data(form_model, manager, request, filters):
     return header, formatted_data(result)
 
 def _to_name_id_string(value, delimiter='</br>'):
-    if not isinstance(value, tuple): return value;
-    if value[1] is None: return value[0]
+    if not isinstance(value, tuple):return value
+    assert len(value) >= 2
+    if not value[1]: return value[0]
 
-    return "%s%s(%s)" % (value[0], delimiter, value[-1])
+    return "%s%s(%s)" % (value[0], delimiter, value[1])
 
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
@@ -415,10 +425,12 @@ def project_data(request, project_id=None, questionnaire_code=None):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     filters = build_filters(request.POST, form_model)
     header_list = helper.get_headers(form_model)
-    values = helper.get_field_values(request, manager, form_model, filters)
+    leading_values, remaining_values = helper.get_leading_and_field_values(filters, form_model, manager, request)
     is_summary_report = form_model.entity_defaults_to_reporter()
-    subject_list = sorted(list(set([value[0] for value in values])))  if not is_summary_report else []
+    subject_list = sorted(list(set([value[0] for value in leading_values])))  if not is_summary_report else []
+    datasender_list = sorted(list(set([value[-1] for value in leading_values])))
     rp_field = form_model.event_time_question
+    values = [leading + remaining[1:] for leading, remaining in zip(leading_values, remaining_values)]
     field_values = formatted_data(values, '</br>')
 
     if request.method == "GET":
@@ -432,7 +444,8 @@ def project_data(request, project_id=None, questionnaire_code=None):
                  "is_monthly_reporting": is_monthly_reporting,
                  "entity_type": form_model.entity_type[0].capitalize(),
                  "data_list": repr(encode_json(field_values)),
-                 "subject_list": repr(encode_json(subject_list)),
+                 "subject_list": subject_list,
+                 "datasender_list": datasender_list,
                  "header_list": header_list,
                  'project_links': (make_project_links(project, questionnaire_code)),
                  'project': project,
