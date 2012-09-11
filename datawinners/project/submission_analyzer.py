@@ -25,7 +25,7 @@ class SubmissionAnalyzer(object):
 
     def get_subjects(self):
         if self.form_model.entity_defaults_to_reporter():  return []
-        subjects =  [row[0] for row in self._get_leading_part()]
+        subjects =  [row[0] for row in self.leading_part if row[0][1] != '--']
         return sorted(list(set(subjects)))
 
     def get_data_senders(self):
