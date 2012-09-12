@@ -22,14 +22,13 @@ $(document).ready(function () {
     function addOnClickListener() {
         $('#export_link').click(function () {
             var data = DW.submit_data();
-            var time_list = data['time_range'];
             var path = window.location.pathname;
             var element_list = path.split("/");
             $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
-            $("#start_time").attr("value", data['start_time']);
-            $("#end_time").attr("value", data['end_time']);
-            $("#subject_ids").attr("value", data['subject_ids']);
 
+            for (name in data) {
+                $('#' + name).val(data[name]);
+            }
             $('#export_form').submit();
         });
     }
@@ -41,14 +40,11 @@ $(document).ready(function () {
         var submission_sources = $('#dataSenderSelect').attr('data');
 
         if (time_range[0] == "" || time_range[0] == gettext("All Periods")) {
-            time_range = ['', '']
-        }
-        if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {
-            $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>');
-            $("#dateErrorDiv").show();
             time_range = ['', ''];
-        }
-        if (time_range.length == 1) {
+        }else if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {
+            $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>').show();
+            time_range = ['', ''];
+        }else if (time_range.length == 1) {
             time_range[1] = time_range[0];
         }
         return {
