@@ -33,6 +33,10 @@ table {
     background: none; }
   .heading_block > div {
     width: 20%; }
+  .heading_block > div.width24 {
+    width: 24% !important; }
+  .heading_block > div.width16 {
+    width: 16% !important; }
     .heading_block > div input[type='text'], .heading_block > div select {
       width: 80%;
       margin-right: 10px; }

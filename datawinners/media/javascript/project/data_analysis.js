@@ -129,7 +129,13 @@ $(document).ready(function () {
                 earliestDate:'1/1/2011',
                 latestDate:'21/12/2012',
                 dateFormat:getDateFormat(date_format),
-                rangeSplitter:'-'
+                rangeSplitter:'-',
+                onOpen: function(){
+                    var $filterSelects = $('#subjectSelect').add('#dataSenderSelect');
+                    $filterSelects.each(function(index, filter){
+                        $(filter).dropdownchecklist("close");
+                    })
+                }
 
             };
             if (date_format.indexOf('dd') >= 0) {
@@ -193,5 +199,10 @@ function buildFilters() {
             explicitClose:gettext("OK"),
             width:$(this).width(),
             maxDropHeight:200}, filter_options[index]));
+        $("#ddcl-"+$(filter).attr("id")+" > span").bind("click", function(){
+            if ($('.ui-daterangepicker:visible').length) {
+                $("#dateRangePicker").trigger('click');
+            }
+        });
     });
 }

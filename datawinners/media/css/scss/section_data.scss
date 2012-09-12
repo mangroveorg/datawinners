@@ -51,6 +51,12 @@ table{
         width: 100%;
       }
     }
+    > div.width24{
+      width: 24% !important;
+    }
+    > div.width16{
+      width: 16% !important;
+    }
     .date_range_box{
         float:left;
         label, select{
