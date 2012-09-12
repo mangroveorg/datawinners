@@ -102,4 +102,4 @@ class TestSubmissionFilters(unittest.TestCase):
         ]
 
         filtered_submissions = DataSenderFilter('TEST').filter(submission_logs)
-        self.assertEqual(2, len(filtered_submissions))
+        self.assertEqual(1, len(filtered_submissions))

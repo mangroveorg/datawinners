@@ -50,7 +50,7 @@ class DataSenderFilter(object):
         return filter(lambda x: self._with_source(x), submission_logs)
 
     def _with_source(self, submission):
-        source = 'TEST' if submission.test or submission.source == TEST_REPORTER_MOBILE_NUMBER else submission.source
+        source = 'TEST' if submission.source == TEST_REPORTER_MOBILE_NUMBER else submission.source
         return source in self.submission_sources
 
 
