@@ -15,6 +15,7 @@ $(document).ready(function () {
                     DW.dataBinding(response_data.data, true, false, help_all_data_are_filtered);
                     DW.update_footer(response_data.footer);
                     DW.wrap_table();
+                    DW.draw_chart(response_data.data, header_list);
                 }});
         }
     );
@@ -97,7 +98,9 @@ $(document).ready(function () {
             "iDisplayLength":25
         });
     };
+    DW.draw_chart = function (initial_data) {
 
+    };
     function buildRangePicker() {
         function configureSettings() {
             var year_to_date_setting = {text:gettext('Year to date'), dateStart:function () {
@@ -153,10 +156,37 @@ $(document).ready(function () {
 
     DW.dataBinding(initial_data, false, true, help_no_submission);
     DW.wrap_table();
+
+    DW.draw_chart(initial_data);
     $('#data_analysis select').customStyle();
 
-    addOnClickListener();
+    DW.chart_view_shown = false;
+    $('#data_analysis_chart').hide();
 
+    DW.show_data_view = function() {
+        if(DW.chart_view_shown){
+            $("#table_view").addClass("active");
+            $("#chart_view").removeClass("active-right");
+            DW.toggle_view();
+            DW.chart_view_shown = false;
+        }
+    };
+
+    DW.show_chart_view = function() {
+        if(!DW.chart_view_shown){
+            $("#table_view").removeClass("active");
+            $("#chart_view").addClass("active-right");
+            DW.toggle_view();
+            DW.chart_view_shown = true;
+        }
+    };
+
+    DW.toggle_view = function () {
+        $('#data_analysis_chart').toggle();
+        $('#data_analysis_wrapper').toggle();
+    };
+
+    addOnClickListener();
     buildRangePicker();
     buildFilters();
 
@@ -171,13 +201,11 @@ $(document).ready(function () {
                 filter.addClass('disabled').attr('disabled', 'disabled');
                 filter.unbind('click');
             })
-            $.each($('.filter_label'), function(index, filter_label){
-                $(filter_label).css({color:"#888"});
-            })
+            $('.filter_label').css({color:"#888"});
         }
 
         disableFilters();
-        $('#no_filter_help').show()
+        $('#no_filter_help').show();
     }
 
     $(document).ajaxStop($.unblockUI);
