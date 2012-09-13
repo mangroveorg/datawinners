@@ -188,18 +188,23 @@ def get_data_sender(dbm, user, submission):
     if submission.test:
         return submission.source, None
 
-    datasender = ()
+    datasender = ("N/A", None)
     org_id = NGOUserProfile.objects.get(user = user).org_id
-    if submission.channel == 'sms':
-        datasender = tuple(dbm.load_all_rows_in_view("datasender_by_mobile",
-                                                        startkey=[submission.source],
-                                                        endkey=[submission.source,{}])[0].key[1:])
-    elif submission.channel == 'web' or submission.channel == 'smartPhone':
-            data_sender = User.objects.get(email=submission.source)
-            user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
-            datasender = (data_sender.get_full_name(), user_profile.reporter_id)
+    try:
+        if submission.channel == 'sms':
+            all_rows_in_view = dbm.load_all_rows_in_view( "datasender_by_mobile", startkey=[submission.source],
+                                              endkey=[submission.source, {}] )
+            if len(all_rows_in_view) > 0:
+                datasender = tuple( all_rows_in_view[0].key[1:])
+        elif submission.channel == 'web' or submission.channel == 'smartPhone':
+                data_sender = User.objects.get(email=submission.source)
+                user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
+                datasender = (data_sender.get_full_name(), user_profile.reporter_id)
 
-    return datasender if datasender[0] != "TEST" else ("TEST",None)
+        return datasender if datasender[0] != "TEST" else ("TEST",None)
+    except User.DoesNotExist:
+        return datasender
+
 
 
 def case_insensitive_lookup(search_key, dictionary):
