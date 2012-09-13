@@ -142,7 +142,6 @@ def get_data_sender(dbm, user, submission):
 
     return datasender if datasender[0] != "TEST" else ("TEST","", "TEST")
 
-
 def case_insensitive_lookup(search_key, dictionary):
     assert isinstance(dictionary, dict)
     for key, value in dictionary.items():
