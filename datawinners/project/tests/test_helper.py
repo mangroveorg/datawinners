@@ -483,7 +483,6 @@ class TestPreviewCreator(unittest.TestCase):
         dbm = Mock(spec=DatabaseManager)
         user = Mock()
         submission = Mock()
-        submission.test = False
         submission.channel = 'sms'
         submission.source = '123321'
         with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
@@ -491,19 +490,18 @@ class TestPreviewCreator(unittest.TestCase):
             with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
                 load_all_rows_in_view.return_value = []
                 data_sender = get_data_sender( dbm, user, submission )
-                self.assertEqual(("N/A", None), data_sender)
+                self.assertEqual(("N/A", None, '123321'), data_sender)
 
     def test_should_return_n_a_when_the_data_sender_was_deleted_and_send_from_web(self):
         dbm = Mock(spec=DatabaseManager)
         user = Mock()
         submission = Mock()
-        submission.test = False
         submission.channel = 'web'
         submission.source = '123321'
         with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
             get_org_id_by_user.return_value = "123"
             data_sender = get_data_sender( dbm, user, submission )
-            self.assertEqual(("N/A", None), data_sender)
+            self.assertEqual(("N/A", None, '123321'), data_sender)
 
     def test_should_return_n_a_when_the_data_sender_was_deleted_and_send_from_smart_phone(self):
         dbm = Mock(spec=DatabaseManager)
@@ -515,4 +513,4 @@ class TestPreviewCreator(unittest.TestCase):
         with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
             get_org_id_by_user.return_value = "123"
             data_sender = get_data_sender( dbm, user, submission )
-            self.assertEqual(("N/A", None), data_sender)
+            self.assertEqual(("N/A", None, '123321'), data_sender)

@@ -23,6 +23,8 @@ from models import Reminder
 from mangrove.transport import Request, TransportInfo
 import re
 
+UNKNOW_DATASENDER_NAME = "N/A"
+
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
 DATE_TYPE_OPTIONS = ["Latest"]
@@ -189,25 +191,25 @@ def get_org_id_by_user(user):
     return org_id
 
 
-def get_data_sender(dbm, user, submission):
-    if submission.test:
-        return submission.source, None
+def get_datasender_by_mobile(dbm, mobile):
+    rows = dbm.load_all_rows_in_view( "datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}] )
+    return rows[0].key[1:] if len(rows) > 0 else [UNKNOW_DATASENDER_NAME, None]
 
-    datasender = ('N/A', None)
-    org_id = get_org_id_by_user( user )
+def get_data_sender(dbm, user, submission):
+    submission_source = submission.source
+    datasender = ('N/A', None, submission_source)
     if submission.channel == 'sms':
-        rows_in_view = dbm.load_all_rows_in_view( "datasender_by_mobile", startkey=[submission.source],
-                                          endkey=[submission.source, {}] )
-        if len(rows_in_view) >0 :
-            datasender = tuple( rows_in_view[0].key[1:])
+        datasender = tuple(get_datasender_by_mobile( dbm, submission_source ) + [submission_source])
     elif submission.channel == 'web' or submission.channel == 'smartPhone':
             try:
-                data_sender = User.objects.get(email=submission.source)
-                user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
-                datasender = (data_sender.get_full_name(), user_profile.reporter_id)
+                org_id = get_org_id_by_user( user )
+                data_sender = User.objects.get(email=submission_source )
+                reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
+                datasender = (data_sender.get_full_name(), reporter_id, submission_source)
             except:
                 pass
-    return datasender if datasender[0] != "TEST" else ("TEST",None)
+
+    return datasender if datasender[0] != "TEST" else ("TEST","", "TEST")
 
 
 def case_insensitive_lookup(search_key, dictionary):
@@ -309,18 +311,19 @@ def to_lowercase_submission_keys(submissions):
         submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
 
 
-def get_field_values(request, manager, form_model, filters=[]):
+def get_leading_and_field_values(filters, form_model, manager, request):
     assert isinstance(form_model, FormModel)
-
     submissions = get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
     to_lowercase_submission_keys(submissions)
     for filter in filters:
         submissions = filter.filter(submissions)
-
     field_values = format_answer_for_presentation(form_model, submissions)
-
     leading_part_answer = get_leading_part(manager, form_model, submissions, request.user)
+    return leading_part_answer, field_values
 
+
+def get_field_values(request, manager, form_model, filters=[]):
+    leading_part_answer, field_values = get_leading_and_field_values(filters, form_model, manager, request)
     return [leading + remaining[1:] for leading, remaining in zip(leading_part_answer, field_values)]
 
 def get_aggregate_dictionary(header_list, post_data):
