@@ -184,12 +184,15 @@ def get_headers(form_model):
     return prefix + [field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:] if not field.is_event_time_field]
 
 
+def get_org_id_by_user(user):
+    return NGOUserProfile.objects.get( user=user ).org_id
+
 def get_data_sender(dbm, user, submission):
     if submission.test:
         return submission.source, None
 
     datasender = ("N/A", None)
-    org_id = NGOUserProfile.objects.get(user = user).org_id
+    org_id = get_org_id_by_user( user )
     try:
         if submission.channel == 'sms':
             all_rows_in_view = dbm.load_all_rows_in_view( "datasender_by_mobile", startkey=[submission.source],

@@ -15,7 +15,7 @@ from mangrove.datastore import data
 from copy import copy
 from mangrove.datastore.aggregrate import Sum, Latest
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
-from project.helper import get_field_values, to_value_list_based_on_field_order
+from project.helper import get_field_values, to_value_list_based_on_field_order, get_data_sender
 from project.tests.submission_log_data import submission1, SUBMISSIONS
 from project.views import build_filters
 
@@ -479,3 +479,40 @@ class TestPreviewCreator(unittest.TestCase):
         url = _get_imports_subjects_post_url()
         self.assertEqual("/entity/subject/import/", url)
 
+    def test_should_return_n_a_when_the_data_sender_was_deleted_and_send_from_sms(self):
+        dbm = Mock(spec=DatabaseManager)
+        user = Mock()
+        submission = Mock()
+        submission.test = False
+        submission.channel = 'sms'
+        submission.source = '123321'
+        with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
+            get_org_id_by_user.return_value = "123"
+            with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
+                load_all_rows_in_view.return_value = []
+                data_sender = get_data_sender( dbm, user, submission )
+                self.assertEqual(("N/A", None), data_sender)
+
+    def test_should_return_n_a_when_the_data_sender_was_deleted_and_send_from_web(self):
+        dbm = Mock(spec=DatabaseManager)
+        user = Mock()
+        submission = Mock()
+        submission.test = False
+        submission.channel = 'web'
+        submission.source = '123321'
+        with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
+            get_org_id_by_user.return_value = "123"
+            data_sender = get_data_sender( dbm, user, submission )
+            self.assertEqual(("N/A", None), data_sender)
+
+    def test_should_return_n_a_when_the_data_sender_was_deleted_and_send_from_smart_phone(self):
+        dbm = Mock(spec=DatabaseManager)
+        user = Mock()
+        submission = Mock()
+        submission.test = False
+        submission.channel = 'smartPhone'
+        submission.source = '123321'
+        with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
+            get_org_id_by_user.return_value = "123"
+            data_sender = get_data_sender( dbm, user, submission )
+            self.assertEqual(("N/A", None), data_sender)
