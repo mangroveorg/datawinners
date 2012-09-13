@@ -9,25 +9,6 @@ from datawinners.accountmanagement.forms import FullRegistrationForm
 
 
 class TestFullRegistrationForm(unittest.TestCase):
-    def test_email_is_converted_to_lower_case(self):
-        uppercase_email_id = 'A@b.com'
-        base_form = {'first_name': 'a',
-                     'last_name': 'b',
-                     'email': uppercase_email_id,
-                     'mobile_phone':'+261 33 333 33',
-                     'password1': 'abcdef', 'password2': 'abcdef', 'organization_name': 'ad',
-                     'organization_address': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa',
-                     'organization_zipcode': 'asd', 'organization_sector': 'Other', 'invoice_period':'pay_monthly'
-        }
-
-        form = FullRegistrationForm(base_form)
-        with patch.object(FullRegistrationForm, 'clean_email') as get_clean_email:
-            with patch.object(FullRegistrationForm, 'clean_username') as get_clean_username:
-                get_clean_email.return_value = uppercase_email_id
-                get_clean_username.return_value = None
-                self.assertTrue(form.is_valid())
-                self.assertTrue(form.cleaned_data.get('email') == 'a@b.com')
-
     def test_error_when_password_and_confirm_password_do_not_match(self):
         base_form = {'first_name': 'a',
                      'last_name': 'b',

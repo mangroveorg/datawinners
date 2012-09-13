@@ -138,7 +138,6 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
         return self.cleaned_data.get('mobile_phone')
 
     def clean(self):
-        self.convert_email_to_lowercase()
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 msg = _("The two password fields didn't match.")
@@ -148,12 +147,6 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
                     msg = _("There should not be any space at the beginning and the end of the password.")
                     self._errors['password1'] = self.error_class([msg])
         return self.cleaned_data
-
-    def convert_email_to_lowercase(self):
-        email = self.cleaned_data.get('email')
-        if email is not None:
-            self.cleaned_data['email'] = email.lower()
-
 
 def payment_details_form():
     pay_monthly = ('pay_monthly', _(mark_safe(
@@ -200,7 +193,7 @@ class LoginForm(AuthenticationForm):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        self.cleaned_data['username'] = username.lower()
+        self.cleaned_data['username'] = username
         return self.cleaned_data['username']
 
     def clean(self):
