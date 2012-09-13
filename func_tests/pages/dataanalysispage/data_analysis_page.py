@@ -214,7 +214,7 @@ class DataAnalysisPage(Page):
         self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/..//button')).click()
 
     def open_subject_type_drop_down(self):
-        self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/../span')).click()
+        self.driver.wait_for_element(20, by_css("#ddcl-subjectSelect > span")).click()
 
     def open_date_range_drop_down(self):
         self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
@@ -224,5 +224,4 @@ class DataAnalysisPage(Page):
 
     def subject_drop_down_is_opened(self):
         style = self.driver.find(by_css("#ddcl-subjectSelect-ddw")).get_attribute("style")
-        #return style
         return False if re.search('left: \-', style) and re.search('top: \-', style) else True

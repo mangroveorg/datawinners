@@ -157,9 +157,10 @@ class TestDataAnalysis(BaseTest):
     def test_should_close_daterange_dropdown_when_opening_subject_dropdown(self):
         data_analysis_page = self.go_to_analysis_page('Clinic Test Project With Monthly Reporting Period'.lower())
         data_analysis_page.open_date_range_drop_down()
+        time.sleep(1)
         self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
         data_analysis_page.open_subject_type_drop_down()
-        time.sleep(4)
+        time.sleep(1)
         self.assertFalse(data_analysis_page.daterange_drop_down_is_opened())
 
     @attr('functional_test')
