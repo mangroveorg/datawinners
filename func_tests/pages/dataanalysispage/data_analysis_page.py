@@ -5,6 +5,7 @@ from pages.page import Page
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from tests.dataanalysistests.data_analysis_data import CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE, DAILY_DATE_RANGE, MONTHLY_DATE_RANGE
+import re
 import datetime
 
 BTN_DONE_ = '//div[contains(@class, "ui-daterangepickercontain")]//button[contains(@class, "btnDone")]'
@@ -187,7 +188,7 @@ class DataAnalysisPage(Page):
 
         self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
 
-    def select_date_range(self,start_year, start_month, start_day, end_year, end_month, end_day):
+    def select_date_range(self,start_year, start_month, start_day, end_year, end_month, end_day, click=True):
         curr_year = datetime.datetime.today().year
         curr_month = datetime.datetime.today().month
         for i in range((curr_year-start_year)*12 + (curr_month-start_month)):
@@ -199,8 +200,8 @@ class DataAnalysisPage(Page):
 
         self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-start")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % start_day), want_visible=True).click()
         self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-end")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % end_day), want_visible=True).click()
-
-        self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
+        if click:
+            self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
 
     def select_for_subject_type(self, subject_name):
         self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/../span')).click()
@@ -211,3 +212,17 @@ class DataAnalysisPage(Page):
         self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/../span')).click()
         self.driver.wait_for_element(20, by_xpath('//input[@data="%s"]' % data_sender)).click()
         self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/..//button')).click()
+
+    def open_subject_type_drop_down(self):
+        self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/../span')).click()
+
+    def open_date_range_drop_down(self):
+        self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
+
+    def daterange_drop_down_is_opened(self):
+        return self.driver.find(by_css(".ui-daterangepicker")).is_displayed()
+
+    def subject_drop_down_is_opened(self):
+        style = self.driver.find(by_css("#ddcl-subjectSelect-ddw")).get_attribute("style")
+        #return style
+        return False if re.search('left: \-', style) and re.search('top: \-', style) else True
