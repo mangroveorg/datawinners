@@ -159,7 +159,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.open_date_range_drop_down()
         self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
         data_analysis_page.open_subject_type_drop_down()
-        time.sleep(1)
+        time.sleep(4)
         self.assertFalse(data_analysis_page.daterange_drop_down_is_opened())
 
     @attr('functional_test')

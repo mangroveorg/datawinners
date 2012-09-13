@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load dw_tabs %}
+{% load user_tags %}
 
 <div class="grid_24 tab_navigation">
     <ul>
@@ -15,10 +16,12 @@
         </li>
         {% endif %}
 
+        {% if not user|is_datasender %}
         <li class="{% ifactivetab 'tab_nav' 'failed_submissions' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="failed_submissions_tab" href="{{ project_links.failed_submissions_link }}"
                class="{{ disable_link_class }}">{% trans "Failed Submissions" %}</a>
         </li>
+        {% endif %}
 
     </ul>
 </div>
