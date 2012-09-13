@@ -160,6 +160,15 @@ def get_aggregation_options_for_all_fields(fields):
     type_list = []
     for field in fields:
         field_type = field.__class__.__name__
+        #TODO- Future functionality. Removing for beta-release. Uncomment this when aggregations for multiple choice field are added.
+        #        if field_type == "SelectField":
+        #            choice_type = copy(MULTI_CHOICE_TYPE_OPTIONS)
+        #            choice_type.extend(["sum(" + choice.get("text").get(field.language) + ")"for choice in
+        #                                field.options])
+        #            choice_type.extend(["percent(" + choice.get("text").get(field.language) + ")" for choice in
+        #                                field.options])
+        #            type_list.append(choice_type)
+        #        else:
         type_list.append(type_dictionary.get(field_type))
     return type_list
 
@@ -175,22 +184,30 @@ def get_headers(form_model):
     return prefix + [field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:] if not field.is_event_time_field]
 
 
-def get_datasender_by_mobile(dbm, mobile):
-    rows = dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
-    return rows[0].key[1:] if len(rows) > 0 else None
+def get_org_id_by_user(user):
+    org_id = NGOUserProfile.objects.get( user=user ).org_id
+    return org_id
+
 
 def get_data_sender(dbm, user, submission):
-    org_id = NGOUserProfile.objects.get(user = user).org_id
-    if submission.channel == 'sms':
-        datasender = tuple(get_datasender_by_mobile(dbm, submission.source) + [submission.source])
-    elif submission.channel == 'web' or submission.channel == 'smartPhone':
-            data_sender = User.objects.get(email=submission.source)
-            reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
-            datasender = (data_sender.get_full_name(), reporter_id, submission.source)
-    else:
-        raise Exception("No channel matches with [%s]" % submission.channel)
+    if submission.test:
+        return submission.source, None
 
-    return datasender if datasender[0] != "TEST" else ("TEST", "", "TEST")
+    datasender = ('N/A', None)
+    org_id = get_org_id_by_user( user )
+    if submission.channel == 'sms':
+        rows_in_view = dbm.load_all_rows_in_view( "datasender_by_mobile", startkey=[submission.source],
+                                          endkey=[submission.source, {}] )
+        if len(rows_in_view) >0 :
+            datasender = tuple( rows_in_view[0].key[1:])
+    elif submission.channel == 'web' or submission.channel == 'smartPhone':
+            try:
+                data_sender = User.objects.get(email=submission.source)
+                user_profile = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0]
+                datasender = (data_sender.get_full_name(), user_profile.reporter_id)
+            except:
+                pass
+    return datasender if datasender[0] != "TEST" else ("TEST",None)
 
 
 def case_insensitive_lookup(search_key, dictionary):
@@ -204,6 +221,7 @@ def get_first_element_of_leading_part(dbm, form_model, submission, data_sender):
     sort_code = case_insensitive_lookup( form_model.entity_question.code, submission.values )
     try:
         entity = get_by_short_code(dbm, sort_code, [form_model.entity_type[0]])
+
         return entity.data['name']['value'], entity.short_code
     except DataObjectNotFound:
         return "N/A", sort_code
@@ -291,19 +309,18 @@ def to_lowercase_submission_keys(submissions):
         submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
 
 
-def get_leading_and_field_values(filters, form_model, manager, request):
+def get_field_values(request, manager, form_model, filters=[]):
     assert isinstance(form_model, FormModel)
+
     submissions = get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
     to_lowercase_submission_keys(submissions)
     for filter in filters:
         submissions = filter.filter(submissions)
+
     field_values = format_answer_for_presentation(form_model, submissions)
+
     leading_part_answer = get_leading_part(manager, form_model, submissions, request.user)
-    return leading_part_answer, field_values
 
-
-def get_field_values(request, manager, form_model, filters=[]):
-    leading_part_answer, field_values = get_leading_and_field_values(filters, form_model, manager, request)
     return [leading + remaining[1:] for leading, remaining in zip(leading_part_answer, field_values)]
 
 def get_aggregate_dictionary(header_list, post_data):
