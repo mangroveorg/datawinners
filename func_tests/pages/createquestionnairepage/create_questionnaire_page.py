@@ -410,3 +410,19 @@ class CreateQuestionnairePage(CreateProjectPage):
         elif (date_format == MM_DD_YYYY):
             self.driver.find_radio_button(MONTH_DATE_YEAR_RB).click()
         return self
+
+    def change_question_text(self, index, new_text):
+        """
+        Function change a text of one question
+
+        """
+        question_locator = QUESTION_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
+            index) + ")" + QUESTION_LINK_CSS_LOCATOR_PART2
+        self.driver.find(by_css(question_locator)).click()
+        return self.driver.find_text_box(QUESTION_TB).enter_text(new_text)
+
+    def period_question_tip_is_displayed(self):
+        return self.driver.find(by_css(PERIOD_QUESTION_TIP_CSS_LOCATOR)).is_displayed()
+
+    def click_add_question_link(self):
+        self.driver.find(ADD_A_QUESTION_LINK).click()

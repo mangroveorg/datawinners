@@ -67,3 +67,4 @@ SAVE_CHANGES_BTN = by_css("input#submit-button[value='Next Step: Data Senders']"
 
 SUCCESS_MESSAGE_LABEL = by_xpath(
     "//div[@id='message-label']/label[@class='success_message' and not(contains(@style,'none'))]")
+PERIOD_QUESTION_TIP_CSS_LOCATOR = "#periode_green_message"

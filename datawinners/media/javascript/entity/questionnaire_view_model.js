@@ -105,12 +105,7 @@ var questionnaireViewModel =
             DW.report_period_date_format_change_warning.old_date_format = question.date_format();
         }
         $(this).addClass("question_selected");
-        if($("#question_title").hasClass("blue_frame")){
-            $("#question_title").removeClass("blue_frame");
-        }
-        if($("#periode_green_message").length>0){
-            $("#periode_green_message").hide();
-        }
+        DW.close_the_tip_on_period_question();
     },
     clearChoices: function() {
         questionnaireViewModel.selectedQuestion().choices([]);

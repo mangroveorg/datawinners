@@ -295,3 +295,12 @@ DW.change_date_format_for_reporting_period = function (date_format_element) {
         DW.report_period_date_format_change_warning.show_warning();
     }
 }
+
+DW.close_the_tip_on_period_question = function(){
+    if($("#question_title").hasClass("blue_frame")){
+        $("#question_title").removeClass("blue_frame");
+    }
+    if($("#periode_green_message").length>0){
+        $("#periode_green_message").hide();
+    }
+}
