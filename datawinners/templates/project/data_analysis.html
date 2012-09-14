@@ -41,7 +41,7 @@
     <script type="text/javascript" src="/media/javascript/monthly_date_picker/month-picker.js"></script>
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/custom_select_box.js"></script>
-    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/dropdown_check_list/dropdownchecklist.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
@@ -106,7 +106,7 @@
                 </select>
             </div>
         </div>
-        <div class="{% if not has_reporting_period %} none {% endif %} float_left width24">
+        <div class="{% if not has_reporting_period %} none {% endif %} float_left">
             <div class="filter_label">
                 {% if is_monthly_reporting %} <label>{% trans "Monthly Reporting Period" %}</label>
                     {% else %}<label>{% trans "Daily Reporting Period" %}</label>
@@ -124,10 +124,29 @@
                 </p></div>
             </div>
             <div class="float_left ">
-                <input type="text" readonly="true" id="dateRangePicker" value="{% trans "All Periods" %}"/>
+                <input type="text" readonly="true" id="reportingPeriodPicker" class="reportingPeriodPicker" value="{% trans "All Periods" %}"/>
                 <span id="dateErrorDiv" class="error_arrow"></span>
 
                 <div id="month_date_picker_div"></div>
+            </div>
+        </div>
+        <div class="float_left">
+            <div class="filter_label">
+                <label>{% trans "Submission Date" %}</label>
+                <img src="/media/images/help_icon.png" class="help_icon">
+
+                <div class="tooltip"><p>
+                    <strong>{% trans "What is this?" %}</strong><br/>
+                    {% trans "q_tooltip_report_period_h" %}
+                    {{ reporting_period_question_text }}
+                    {% trans "q_tooltip_report_period_t" %}
+                    <br/><br/>
+                    <strong>{% trans "What do I need to do?" %}</strong><br/>
+                    {% trans "r_tooltip_report_period" %}
+                </p></div>
+            </div>
+            <div class="float_left ">
+                <input type="text" readonly="true" id="submissionDatePicker" value="{% trans "All Dates" %}"/>
             </div>
         </div>
         <div class="float_left" id="datasender_filter">

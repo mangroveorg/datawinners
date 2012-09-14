@@ -2,6 +2,20 @@ $(document).ready(function () {
     var help_no_submission = $('#help_no_submissions').html();
     var message = gettext("No submissions available for this search. Try removing some of your filters.")
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
+    var $filterSelects = $('#subjectSelect, #dataSenderSelect');
+    var $date_pickers = $('#reportingPeriodPicker, #submissionDatePicker');
+
+
+    addOnClickListener();
+    buildRangePicker();
+    buildFilters();
+    $(document).ajaxStop($.unblockUI);
+
+    function hide_date_pickers_when_filter_show() {
+        $('.ui-dropdownchecklist-selector').click(function () {
+            $('.ui-daterangepicker:visible').fadeOut(300);
+        });
+    }
 
     $('#time_submit').click(function () {
             var data = DW.submit_data();
@@ -18,7 +32,6 @@ $(document).ready(function () {
                 }});
         }
     );
-
     function addOnClickListener() {
         $('#export_link').click(function () {
             var data = DW.submit_data();
@@ -35,10 +48,10 @@ $(document).ready(function () {
 
     DW.submit_data = function () {
         $("#dateErrorDiv").hide();
-        var time_range = $("#dateRangePicker").val().split("-");
+        var time_range = $("#reportingPeriodPicker").val().split("-");
         var subject_ids = $('#subjectSelect').attr('ids');
-        var submission_sources = $('#dataSenderSelect').attr('data');
 
+        var submission_sources = $('#dataSenderSelect').attr('data');
         if (time_range[0] == "" || time_range[0] == gettext("All Periods")) {
             time_range = ['', ''];
         }else if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {
@@ -99,17 +112,18 @@ $(document).ready(function () {
     };
 
     function buildRangePicker() {
-        function configureSettings() {
+        function configureSettings(header) {
+            var header = header || gettext('All Periods');
+
             var year_to_date_setting = {text:gettext('Year to date'), dateStart:function () {
                 var x = Date.parse('today');
                 x.setMonth(0);
                 x.setDate(1);
                 return x;
             }, dateEnd:'today' };
-
             var settings = {
                 presetRanges:[
-                    {text:gettext('All Periods'), dateStart:function () {
+                    {text:header, dateStart:function () {
                         return Date.parse('1900.01.01')
                     }, dateEnd:'today', is_for_all_period:true },
                     {text:gettext('Current month'), dateStart:function () {
@@ -127,10 +141,7 @@ $(document).ready(function () {
                 dateFormat:getDateFormat(date_format),
                 rangeSplitter:'-',
                 onOpen: function(){
-                    var $filterSelects = $('#subjectSelect').add('#dataSenderSelect');
-                    $filterSelects.each(function(index, filter){
-                        $(filter).dropdownchecklist("close");
-                    })
+                    $filterSelects.dropdownchecklist("close");
                 }
 
             };
@@ -146,25 +157,23 @@ $(document).ready(function () {
             return date_format.replace('yyyy', 'yy');
         }
 
-        $('#dateRangePicker').monthpicker();
-
-        $("#dateRangePicker").daterangepicker(configureSettings());
+        var date_picker_headers = [gettext('All Periods'), gettext('All Dates')];
+        $date_pickers.each(function(index, picker){
+            var $picker = $(picker);
+            $picker.daterangepicker(configureSettings(date_picker_headers[index])).monthpicker();
+        });
     }
 
     DW.dataBinding(initial_data, false, true, help_no_submission);
     DW.wrap_table();
+
+
     $('#data_analysis select').customStyle();
-
-    addOnClickListener();
-
-    buildRangePicker();
-    buildFilters();
-
     if (initial_data.length == 0) {
         function disableFilters() {
             var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),
                             $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
-                            $("#dateRangePicker"),
+                            $("#reportingPeriodPicker"),
                             $('#dataTable_search input')];
 
             $.each(filters, function (index, filter) {
@@ -180,25 +189,18 @@ $(document).ready(function () {
         $('#no_filter_help').show()
     }
 
-    $(document).ajaxStop($.unblockUI);
+    function buildFilters() {
+        var subject_options = {emptyText:gettext("All") + ' ' + entity_type};
+        var data_sender_options = {emptyText:gettext("All Data Senders")};
+        var filter_options = [subject_options, data_sender_options];
 
-});
+        $filterSelects.each(function(index, filter){
+            $(filter).dropdownchecklist($.extend({firstItemChecksAll:false,
+                explicitClose:gettext("OK"),
+                width:$(this).width(),
+                maxDropHeight:200}, filter_options[index]));
 
-function buildFilters() {
-    var $filterSelects = $('#subjectSelect').add('#dataSenderSelect');
-    var subject_options = {emptyText:gettext("All") + ' ' + entity_type};
-    var data_sender_options = {emptyText:gettext("All Data Senders")};
-    var filter_options = [subject_options, data_sender_options];
-
-    $filterSelects.each(function(index, filter){
-        $(filter).dropdownchecklist($.extend({firstItemChecksAll:false,
-            explicitClose:gettext("OK"),
-            width:$(this).width(),
-            maxDropHeight:200}, filter_options[index]));
-        $("#ddcl-"+$(filter).attr("id")+" > span").bind("click", function(){
-            if ($('.ui-daterangepicker:visible').length) {
-                $("#dateRangePicker").trigger('click');
-            }
         });
-    });
-}
+        hide_date_pickers_when_filter_show();
+    }
+});

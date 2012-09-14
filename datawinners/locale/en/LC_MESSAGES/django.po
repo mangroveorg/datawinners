@@ -1083,6 +1083,9 @@ msgstr ""
 msgid "All Periods"
 msgstr ""
 
+msgid "All Dates"
+msgstr ""
+
 #: templates/project/data_analysis.html:78 templates/project/results.html:72
 msgid "Filter"
 msgstr ""
