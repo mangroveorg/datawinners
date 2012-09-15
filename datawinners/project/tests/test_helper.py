@@ -3,7 +3,6 @@
 import unittest
 from mock import Mock, patch
 from datawinners.project import helper
-from datawinners.project.models import Project
 from datawinners.project.views import _get_imports_subjects_post_url
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.datadict import DataDictType
@@ -11,9 +10,6 @@ from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
 from mangrove.form_model.form_model import FormModel, FORM_CODE
-from mangrove.datastore import data
-from copy import copy
-from mangrove.datastore.aggregrate import Sum, Latest
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from project.helper import get_field_values, to_value_list_based_on_field_order, get_data_sender
 from project.tests.submission_log_data import submission1, SUBMISSIONS
@@ -35,7 +31,6 @@ class TestHelper(unittest.TestCase):
         self.patcher1.stop()
         self.patcher2.stop()
 
-
     def test_should_return_code_title_tuple_list(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
@@ -44,81 +39,6 @@ class TestHelper(unittest.TestCase):
             defaultValue="some default value", language="eng", ddtype=ddtype)
         code_and_title = [(each_field.code, each_field.name)for each_field in [question1, question2]]
         self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], code_and_title)
-
-    def test_should_create_questionnaire_with_entity_question_for_subjects(self):
-        NAME = "eid"
-        LABEL = "Entity ID"
-        SLUG = "entity_id"
-        TYPE = "string"
-        post = {"entity_type": "Water Point", "name": "Test Project", "language": "en"}
-        dbm = Mock(spec=DatabaseManager)
-
-        patcher = patch("datawinners.project.helper.generate_questionnaire_code")
-        mock = patcher.start()
-        mock.return_value = '001'
-
-        expected_data_dict = DataDictType(dbm, NAME, SLUG, TYPE, LABEL)
-        self.create_ddtype_mock.return_value = expected_data_dict
-
-        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
-            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
-            form_model = helper.create_questionnaire(post, dbm)
-
-        self.create_ddtype_mock.assert_called_twice_with(dbm=dbm, name=NAME, slug=SLUG,
-            primitive_type=TYPE, description=LABEL)
-        self.assertEqual(expected_data_dict, form_model.fields[0].ddtype)
-
-        self.assertEqual(2, len(form_model.fields))
-
-        self.assertTrue(form_model.fields[0].is_entity_field)
-        self.assertTrue(form_model.fields[0].is_required())
-        self.assertEqual('q1', form_model.fields[0].code)
-
-        activity_period_question = form_model.fields[1]
-        self.assertTrue(activity_period_question.is_required())
-        self.assertEqual('q2', activity_period_question.code)
-
-        self.assertEqual(["Water Point"], form_model.entity_type)
-        self.assertFalse(form_model.is_active())
-        patcher.stop()
-
-    def test_should_create_questionnaire_with_entity_question_for_questionnaire_on_activity_report(self):
-        NAME = "eid"
-        LABEL = "Entity ID"
-        SLUG = "entity_id"
-        TYPE = "string"
-        post = {"entity_type": "reporter", "name": "Test Project", "language": "en"}
-        dbm = Mock(spec=DatabaseManager)
-
-        patcher = patch("datawinners.project.helper.generate_questionnaire_code")
-        mock = patcher.start()
-        mock.return_value = '001'
-
-        expected_data_dict = DataDictType(dbm, NAME, SLUG, TYPE, LABEL)
-        self.create_ddtype_mock.return_value = expected_data_dict
-
-        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
-            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
-            form_model = helper.create_questionnaire(post, dbm)
-
-        self.create_ddtype_mock.assert_called_twice_with(dbm=dbm, name=NAME, slug=SLUG,
-            primitive_type=TYPE, description=LABEL)
-
-        self.assertEqual(2, len(form_model.fields))
-
-        entity_id_field = form_model.fields[0]
-        self.assertEqual(expected_data_dict, entity_id_field.ddtype)
-        self.assertTrue(entity_id_field.is_entity_field)
-        self.assertTrue(entity_id_field.is_required())
-        self.assertEqual(NAME, entity_id_field.code)
-
-        activity_period_question = form_model.fields[1]
-        self.assertTrue(activity_period_question.is_required())
-        self.assertEqual('q1', activity_period_question.code)
-
-        self.assertFalse(form_model.is_active())
-        patcher.stop()
-
 
     def test_should_generate_unique_questionnaire_code(self):
         patcher = patch("datawinners.project.helper.models")
@@ -254,41 +174,6 @@ class TestHelper(unittest.TestCase):
 
         self.assertIsInstance(values_list, list)
         self.assertEqual(["cli13", "Dmanda", "69", "27.7.2012", "c", "ce", "40.2 69.3123", "a"], values_list)
-
-    def test_should_create_type_list(self):
-        ddtype = Mock(spec=DataDictType)
-        question1 = IntegerField(label="number_question", code="ID", name="How many beds",
-            language="eng", ddtype=ddtype)
-        question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
-            defaultValue="some default value", language="eng", ddtype=ddtype)
-        question3 = SelectField(label="multiple_choice_question", code="Q2",
-            options=[("red", 1), ("yellow", 2), ('green', 3)], name="What is your favourite colour",
-            ddtype=ddtype)
-        question4 = DateField("What is date", "Q4", "date_question", "mm.yyyy", ddtype)
-        actual_list = helper.get_aggregation_options_for_all_fields([question1, question2, question3, question4])
-        choice_type = copy(helper.MULTI_CHOICE_TYPE_OPTIONS)
-        expected_list = [helper.NUMBER_TYPE_OPTIONS, helper.TEXT_TYPE_OPTIONS, choice_type, helper.DATE_TYPE_OPTIONS]
-        self.assertListEqual(expected_list, actual_list)
-
-
-    def test_should_return_aggregates_dictionary(self):
-        header_list = ["field1", "field2"]
-        post_data = ["Latest", "Sum"]
-        expected_dictionary = {"field1": data.reduce_functions.LATEST, "field2": data.reduce_functions.SUM}
-        actual_dict = helper.get_aggregate_dictionary(header_list, post_data)
-        self.assertEquals(expected_dictionary, actual_dict)
-
-
-    def test_should_return_aggregates_list(self):
-        field_mock = Mock()
-        field_mock.name = "field1"
-        field_mock1 = Mock()
-        field_mock1.name = "field2"
-        post_data = ["Latest", "Sum"]
-        actual_list = helper.get_aggregate_list([field_mock, field_mock1], post_data)
-        self.assertIsInstance(actual_list[0], Latest)
-        self.assertIsInstance(actual_list[1], Sum)
-
 
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"

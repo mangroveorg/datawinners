@@ -34,7 +34,6 @@ TEST_FLAG = 'TEST'
 SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
 
 logger = logging.getLogger("datawinners.reminders")
-SUBMISSION_LOG_DISPLAY_QUESTION_MIN_INDEX = 7
 
 def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
     try:
@@ -58,60 +57,12 @@ def _create_entity_id_question(dbm, entity_id_question_code):
         instruction=(ugettext('Answer must be a word %d characters maximum') % 12))
     return entity_id_question
 
-
-def _create_questionnaire(dbm, post, entity_type, entity_id_question_code, activity_report_question_code):
-    entity_id_question = _create_entity_id_question(dbm, entity_id_question_code)
-
-    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
-        primitive_type="date",
-        description="activity reporting period")
-    name = ugettext("What is the reporting period for the activity?")
-    activity_report_question = DateField(name=name, code=activity_report_question_code,
-        label=name, ddtype=reporting_period_dict_type,
-        date_format="dd.mm.yyyy", event_time_field_flag=True)
-
-    fields = [entity_id_question, activity_report_question]
-    return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
-        form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE,
-        language=post['language'])
-
-
-def _create_activity_report_questionnaire(dbm, post, entity_type):
-    return _create_questionnaire(dbm, post, entity_type, 'eid', 'q1')
-
-
-def _create_subject_questionnaire(dbm, post, entity_type):
-    return _create_questionnaire(dbm, post, entity_type, 'q1', 'q2')
-
-
-def create_questionnaire(post, dbm):
-    entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
-    if entity_type == [REPORTER]:
-        return _create_activity_report_questionnaire(dbm, post, entity_type)
-    return _create_subject_questionnaire(dbm, post, entity_type)
-
-
-def _create_entity_id_question_for_activity_report(dbm):
-    entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
-        description="Entity ID")
-    name = ugettext("I am submitting this data on behalf of")
-    entity_id_question = TextField(name=name, code='eid',
-        label=name,
-        entity_question_flag=True, ddtype=entity_data_dict_type,
-        constraints=[TextLengthConstraint(min=1, max=12)],
-        instruction=ugettext("Choose Data Sender from this list."))
-    return entity_id_question
-
-
 def hide_entity_question(fields):
     return [each for each in fields if not each.is_entity_field]
 
 
 def is_submission_deleted(submission):
     return submission.is_void() if submission is not None else True
-
-def get_question_answers(submission_log_display):
-    return submission_log_display[SUBMISSION_LOG_DISPLAY_QUESTION_MIN_INDEX:]
 
 def adapt_submissions_for_template(questions, submissions):
     assert is_sequence(questions)
@@ -141,7 +92,6 @@ def get_according_value(value_dict, question):
     return value
 
 
-
 def generate_questionnaire_code(dbm):
     all_projects_count = models.count_projects(dbm)
     code = all_projects_count + 1
@@ -154,26 +104,6 @@ def generate_questionnaire_code(dbm):
         except FormModelDoesNotExistsException:
             break
     return code
-
-
-def get_aggregation_options_for_all_fields(fields):
-    type_dictionary = dict(IntegerField=NUMBER_TYPE_OPTIONS, TextField=TEXT_TYPE_OPTIONS, DateField=DATE_TYPE_OPTIONS,
-        GeoCodeField=GEO_TYPE_OPTIONS, SelectField=MULTI_CHOICE_TYPE_OPTIONS)
-    type_list = []
-    for field in fields:
-        field_type = field.__class__.__name__
-        #TODO- Future functionality. Removing for beta-release. Uncomment this when aggregations for multiple choice field are added.
-        #        if field_type == "SelectField":
-        #            choice_type = copy(MULTI_CHOICE_TYPE_OPTIONS)
-        #            choice_type.extend(["sum(" + choice.get("text").get(field.language) + ")"for choice in
-        #                                field.options])
-        #            choice_type.extend(["percent(" + choice.get("text").get(field.language) + ")" for choice in
-        #                                field.options])
-        #            type_list.append(choice_type)
-        #        else:
-        type_list.append(type_dictionary.get(field_type))
-    return type_list
-
 
 def get_headers(form_model):
     prefix = [ _("Submission Date"), _("Data Sender") ]
@@ -294,8 +224,7 @@ def replace_options_with_real_answer(form_model, answer):
     return {field.code: get_according_value(answer, field) for field in form_model.fields}
 
 
-def format_answer_for_presentation(form_model, submissions):
-    values = [submission.values for submission in submissions]
+def format_submission_values(form_model, values):
     field_without_rp = [field for field in form_model.fields if not field.is_event_time_field]
     field_values = []
     for idx, value in enumerate(values):
@@ -305,20 +234,35 @@ def format_answer_for_presentation(form_model, submissions):
     return field_values
 
 
+def format_answer_for_presentation(form_model, submissions):
+    values = [submission.values for submission in submissions]
+    return format_submission_values(form_model, values)
+
+
+
+
 def to_lowercase_submission_keys(submissions):
     for submission in submissions:
         values = submission.values
         submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
 
 
-def get_leading_and_field_values(filters, form_model, manager, request):
+def filter_submissions(filters, form_model, manager):
     assert isinstance(form_model, FormModel)
     submissions = get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
     to_lowercase_submission_keys(submissions)
     for filter in filters:
         submissions = filter.filter(submissions)
-    field_values = format_answer_for_presentation(form_model, submissions)
+    return submissions
+
+
+def get_leading_and_field_values(filters, form_model, manager, request):
+    submissions = filter_submissions(filters, form_model, manager)
+
     leading_part_answer = get_leading_part(manager, form_model, submissions, request.user)
+
+    values = [submission.values for submission in submissions]
+    field_values = format_submission_values(form_model, values)
     return leading_part_answer, field_values
 
 
@@ -326,36 +270,12 @@ def get_field_values(request, manager, form_model, filters=[]):
     leading_part_answer, field_values = get_leading_and_field_values(filters, form_model, manager, request)
     return [leading + remaining[1:] for leading, remaining in zip(leading_part_answer, field_values)]
 
-def get_aggregate_dictionary(header_list, post_data):
-    aggregates = {}
-    #    my_dictionary =
-    for index, key in enumerate(header_list):
-        aggregates[key] = post_data[index].strip().lower()
-    return aggregates
-
-
-def get_aggregate_list(fields, post_data):
-    aggregates = []
-    for index, field in enumerate(fields):
-        aggregates.append(aggregate_module.aggregation_factory(post_data[index].strip().lower(), field.name))
-    return aggregates
-
-
 def get_formatted_time_string(time_val):
     try:
         time_val = datetime.strptime(time_val, '%d-%m-%Y %H:%M:%S')
     except Exception:
         return None
     return time_val.strftime('%d-%m-%Y %H:%M:%S')
-
-
-def get_excel_sheet(raw_data, sheet_name):
-    wb = xlwt.Workbook()
-    ws = wb.add_sheet(sheet_name)
-    for row_number, row in enumerate(raw_data):
-        for col_number, val in enumerate(row):
-            ws.write(row_number, col_number, val)
-    return wb
 
 
 def remove_reporter(entity_type_list):

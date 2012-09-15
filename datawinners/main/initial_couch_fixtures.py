@@ -187,11 +187,11 @@ def create_questions(manager):
     return [question1, question2, question3, question4, question5, question6, question7, question8]
 
 
-def create_project1(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline):
+def create_project1(entity_type, manager, questions, weekly_reminder_and_deadline):
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
         form_code="cli001", type='survey',
         fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE
+        entity_type=entity_type
     )
     try:
         qid = form_model.save()
@@ -199,7 +199,7 @@ def create_project1(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
     project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+        entity_type=entity_type[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
         sender_group="close")
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
@@ -799,7 +799,7 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
 
 
 
-def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
+def create_clinic_projects(entity_type, manager):
     organization = Organization.objects.get(pk='SLX364903')
     Reminder.objects.filter(organization = organization).delete()
     questions = create_questions(manager)
@@ -812,24 +812,24 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         "should_send_reminder_to_all_ds": True
     }
 
-    create_project1(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline)
-    create_project2(CLINIC_ENTITY_TYPE, manager,questions)
-    create_project3(CLINIC_ENTITY_TYPE, manager, questions[:7])
-    create_project4(CLINIC_ENTITY_TYPE, manager, questions[:7])
-    create_project5(CLINIC_ENTITY_TYPE, manager, questions[:7])
-    create_project6(CLINIC_ENTITY_TYPE, manager, questions[:7])
-    create_project7(CLINIC_ENTITY_TYPE, manager, questions[:7])
-    create_project8(CLINIC_ENTITY_TYPE, manager, questions[:7])
-    create_project9(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline)
-    create_project10(CLINIC_ENTITY_TYPE, manager, questions)
-    create_project11(CLINIC_ENTITY_TYPE, manager, questions)
-    create_project12(CLINIC_ENTITY_TYPE, manager, questions)
-    create_project13(CLINIC_ENTITY_TYPE, manager, questions)
-    create_project14(CLINIC_ENTITY_TYPE, manager,questions)
-    create_project15(CLINIC_ENTITY_TYPE, manager, questions)
-    create_project16(CLINIC_ENTITY_TYPE, manager, questions)
-    create_project17(CLINIC_ENTITY_TYPE, manager, questions[:6])
-    create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager)
+    create_project1(entity_type, manager, questions, weekly_reminder_and_deadline)
+    create_project2(entity_type, manager,questions)
+    create_project3(entity_type, manager, questions[:7])
+    create_project4(entity_type, manager, questions[:7])
+    create_project5(entity_type, manager, questions[:7])
+    create_project6(entity_type, manager, questions[:7])
+    create_project7(entity_type, manager, questions[:7])
+    create_project8(entity_type, manager, questions[:7])
+    create_project9(entity_type, manager, questions, weekly_reminder_and_deadline)
+    create_project10(entity_type, manager, questions)
+    create_project11(entity_type, manager, questions)
+    create_project12(entity_type, manager, questions)
+    create_project13(entity_type, manager, questions)
+    create_project14(entity_type, manager,questions)
+    create_project15(entity_type, manager, questions)
+    create_project16(entity_type, manager, questions)
+    create_project17(entity_type, manager, questions[:6])
+    create_clinic_project_with_monthly_reporting_period(entity_type, manager)
 
 def load_web_data_for_cli001(manager):
     web_player = WebPlayer(manager, location_tree=LocationTree())

@@ -5,8 +5,9 @@ from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import field_attributes, Field
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.submissions import Submission
-from project.helper import get_question_answers
 from project.views import  get_template_values_for_result_page
+
+SUBMISSION_LOG_DISPLAY_QUESTION_MIN_INDEX = 7
 
 class TestProjectResults(unittest.TestCase):
     def setUp(self):
@@ -30,6 +31,7 @@ class TestProjectResults(unittest.TestCase):
             _in_trial_mode.return_value = ''
             results = get_template_values_for_result_page(self.dbm, request, None, None, questionnaire, None)
             submissions = results['submissions']
+            question_answer = submissions[0][SUBMISSION_LOG_DISPLAY_QUESTION_MIN_INDEX:]
             self.assertEquals(len(submissions), 1)
-            self.assertEquals(get_question_answers(submissions[0]), ('q1_value',))
+            self.assertEquals(question_answer, ('q1_value',))
 

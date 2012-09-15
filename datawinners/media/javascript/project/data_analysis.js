@@ -13,9 +13,8 @@ $(document).ready(function () {
                 success:function (response) {
                     var response_data = JSON.parse(response);
                     DW.dataBinding(response_data.data, true, false, help_all_data_are_filtered);
-                    DW.update_footer(response_data.footer);
                     DW.wrap_table();
-                    DW.draw_chart(response_data.data, header_list);
+//                    DW.draw_chart(response_data.data, header_list);
                 }});
         }
     );
@@ -27,7 +26,7 @@ $(document).ready(function () {
             var element_list = path.split("/");
             $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
 
-            for (name in data) {
+            for (var name in data) {
                 $('#' + name).val(data[name]);
             }
             $('#export_form').submit();
@@ -172,18 +171,29 @@ $(document).ready(function () {
         }
     };
 
+    DW.toggle_view = function () {
+        $('#data_analysis_chart').toggle();
+        $('#data_analysis_wrapper').toggle();
+    };
+
     DW.show_chart_view = function() {
         if(!DW.chart_view_shown){
             $("#table_view").removeClass("active");
             $("#chart_view").addClass("active-right");
             DW.toggle_view();
             DW.chart_view_shown = true;
-        }
-    };
 
-    DW.toggle_view = function () {
-        $('#data_analysis_chart').toggle();
-        $('#data_analysis_wrapper').toggle();
+//            var data = DW.submit_data();
+//            var time_list = data['time_range'];
+//
+//            $.ajax({
+//                type:'GET',
+//                url:window.location.pathname+"summary",
+//                data:{'start_time':$.trim(time_list[0]), 'end_time':$.trim(time_list[1]), 'subject_ids':data['subject_ids']},
+//                success:function (response) {
+//                    drawReport(JSON.parse(response))
+//                }});
+        }
     };
 
     addOnClickListener();
