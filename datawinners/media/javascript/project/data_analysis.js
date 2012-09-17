@@ -46,23 +46,30 @@ $(document).ready(function () {
         });
     }
 
-    DW.submit_data = function () {
-        $("#dateErrorDiv").hide();
-        var time_range = $("#reportingPeriodPicker").val().split("-");
-        var subject_ids = $('#subjectSelect').attr('ids');
-
-        var submission_sources = $('#dataSenderSelect').attr('data');
-        if (time_range[0] == "" || time_range[0] == gettext("All Periods")) {
-            time_range = ['', ''];
-        }else if (time_range[0] != gettext("All Periods") && Date.parse(time_range[0]) == null) {
-            $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>').show();
-            time_range = ['', ''];
-        }else if (time_range.length == 1) {
-            time_range[1] = time_range[0];
+    function get_date($datePicker, default_text) {
+        var reporting_period = $datePicker.val().split("-");
+        if (reporting_period[0] == "" || reporting_period[0] == default_text) {
+            reporting_period = ['', ''];
+        } else if (reporting_period[0] != default_text && Date.parse(reporting_period[0]) == null) {
+            $datePicker.next().html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>').show();
+            reporting_period = ['', ''];
+        } else if (reporting_period.length == 1) {
+            reporting_period[1] = reporting_period[0];
         }
+        return reporting_period;
+    }
+
+    DW.submit_data = function () {
+        $(".dateErrorDiv").hide();
+        var reporting_period = get_date($('#reportingPeriodPicker'), gettext("All Periods"));
+        var submission_date = get_date($('#submissionDatePicker'), gettext("All Dates"));
+        var subject_ids = $('#subjectSelect').attr('ids');
+        var submission_sources = $('#dataSenderSelect').attr('data');
         return {
-                'start_time':$.trim(time_range[0]),
-                'end_time':$.trim(time_range[1]),
+                'start_time':$.trim(reporting_period[0]),
+                'end_time':$.trim(reporting_period[1]),
+                'submission_date_start':$.trim(submission_date[0]),
+                'submission_date_end':$.trim(submission_date[1]),
                 'subject_ids':subject_ids,
                 'submission_sources': submission_sources
                 };
@@ -113,8 +120,6 @@ $(document).ready(function () {
 
     function buildRangePicker() {
         function configureSettings(header) {
-            var header = header || gettext('All Periods');
-
             var year_to_date_setting = {text:gettext('Year to date'), dateStart:function () {
                 var x = Date.parse('today');
                 x.setMonth(0);

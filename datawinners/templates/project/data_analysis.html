@@ -125,8 +125,7 @@
             </div>
             <div class="float_left ">
                 <input type="text" readonly="true" id="reportingPeriodPicker" class="reportingPeriodPicker" value="{% trans "All Periods" %}"/>
-                <span id="dateErrorDiv" class="error_arrow"></span>
-
+                <span class="dateErrorDiv" class="error_arrow"></span>
                 <div id="month_date_picker_div"></div>
             </div>
         </div>
@@ -137,16 +136,15 @@
 
                 <div class="tooltip"><p>
                     <strong>{% trans "What is this?" %}</strong><br/>
-                    {% trans "q_tooltip_report_period_h" %}
-                    {{ reporting_period_question_text }}
-                    {% trans "q_tooltip_report_period_t" %}
+                    {% trans "q_tooltip_submission_date" %}
                     <br/><br/>
                     <strong>{% trans "What do I need to do?" %}</strong><br/>
-                    {% trans "r_tooltip_report_period" %}
+                    {% trans "r_tooltip_submission_date" %}
                 </p></div>
             </div>
             <div class="float_left ">
                 <input type="text" readonly="true" id="submissionDatePicker" value="{% trans "All Dates" %}"/>
+                <span class="dateErrorDiv" class="error_arrow"></span>
             </div>
         </div>
         <div class="float_left" id="datasender_filter">
