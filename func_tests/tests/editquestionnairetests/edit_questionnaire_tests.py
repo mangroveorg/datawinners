@@ -9,6 +9,7 @@ from pages.previewnavigationpage.preview_navigation_page import PreviewNavigatio
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.editquestionnairetests.edit_questionnaire_data import *
+import time
 
 @attr('suit_2')
 class TestEditQuestionnaire(BaseTest):
@@ -106,3 +107,21 @@ class TestEditQuestionnaire(BaseTest):
         data_analysis_page = project_overview_page.navigate_to_data_page( )
         self.assertEqual(1, len(data_analysis_page.get_all_data_records()))
 
+    @attr('functional_test')
+    def test_should_hide_tip_for_period_question_when_adding_new_question(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+
+        # going on all project page
+        all_project_page = global_navigation.navigate_to_view_all_project_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page("clinic6 test project")
+        edit_project_page = project_overview_page.navigate_to_edit_project_page()
+        edit_project_page.continue_create_project()
+        create_questionnaire_page = CreateQuestionnairePage(self.driver)
+        self.assertFalse(create_questionnaire_page.period_question_tip_is_displayed())
+        create_questionnaire_page.change_question_text(4, "new question label")
+        time.sleep(1)
+        self.assertTrue(create_questionnaire_page.period_question_tip_is_displayed())
+        create_questionnaire_page.click_add_question_link()
+        self.assertFalse(create_questionnaire_page.period_question_tip_is_displayed())

@@ -28,7 +28,6 @@ from datawinners.utils import get_organization
 
 import helper
 
-from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException, MangroveException
 from mangrove.form_model import form_model
@@ -65,6 +64,7 @@ from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
 from project.filters import ReportPeriodFilter, DataSenderFilter
+from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list
 from project.tests.test_filter import SubjectFilter
 from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
@@ -385,27 +385,6 @@ def submissions(request):
                  'error_message': error_message,
                  'success_message': ""}, context_instance=RequestContext(request))
 
-def _load_data(form_model, manager, questionnaire_code, aggregation_types=None, start_time=None, end_time=None):
-    aggregation_type_list = json.loads(aggregation_types)
-    if not aggregation_type_list:
-        aggregation_type_list = ['latest'] * len(form_model.fields[1:])
-
-    start_time = helper.get_formatted_time_string(start_time.strip() + START_OF_DAY) if start_time is not None else None
-    end_time = helper.get_formatted_time_string(end_time.strip() + END_OF_DAY) if end_time is not None else None
-    aggregates = helper.get_aggregate_list(form_model.fields[1:], aggregation_type_list)
-    aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
-    data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
-        aggregates=aggregates,
-        aggregate_on=EntityAggregration(),
-        starttime=start_time,
-        endtime=end_time, include_grand_totals=True)
-    return data_dictionary
-
-def _get_analysis_data(form_model, manager, request, filters):
-    header = helper.get_headers(form_model)
-    result = helper.get_field_values(request, manager, form_model, filters)
-    return header, formatted_data(result)
-
 def _to_name_id_string(value, delimiter='</br>'):
     if not isinstance(value, tuple):return value
     assert len(value) >= 2
@@ -416,6 +395,7 @@ def _to_name_id_string(value, delimiter='</br>'):
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
 
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
@@ -423,17 +403,17 @@ def formatted_data(field_values, delimiter='</br>'):
 def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    filters = build_filters(request.POST, form_model)
-    header_list = helper.get_headers(form_model)
-    leading_values, remaining_values = helper.get_leading_and_field_values(filters, form_model, manager, request)
     is_summary_report = form_model.entity_defaults_to_reporter()
-    subject_list = sorted(list(set([value[0] for value in leading_values])))  if not is_summary_report else []
-    datasender_list = sorted(list(set([value[-1] for value in leading_values])))
-    rp_field = form_model.event_time_question
-    values = [leading + remaining[1:] for leading, remaining in zip(leading_values, remaining_values)]
-    field_values = formatted_data(values, '</br>')
+    filters = build_filters(request.POST, form_model)
+    analyzer = SubmissionAnalyzer(form_model, manager, request, filters)
+
+    field_values = get_formatted_values_for_list(analyzer.get_raw_field_values(),'<br/>')
+    header_list = analyzer.get_headers()
+    subject_list = analyzer.get_subjects()
+    datasender_list = analyzer.get_data_senders()
 
     if request.method == "GET":
+        rp_field = form_model.event_time_question
         in_trial_mode = _in_trial_mode(request)
         project = Project.load(manager.database, project_id)
         has_rp = rp_field is not None
@@ -457,6 +437,34 @@ def project_data(request, project_id=None, questionnaire_code=None):
     if request.method == "POST":
         return HttpResponse(encode_json({'data': field_values}))
 
+
+@login_required( login_url='/login' )
+@is_datasender
+@is_not_expired
+def project_summary(request, project_id=None, questionnaire_code=None):
+    manager = get_database_manager( request.user )
+    project = Project.load( manager.database, project_id )
+    form_model = get_form_model_by_code( manager, questionnaire_code )
+
+    start_time = request.GET.get( "start_time" )
+    end_time = request.GET.get( "end_time" )
+    start_time = helper.get_formatted_time_string(
+        start_time.strip( ) + START_OF_DAY ) if start_time is not None else None
+    end_time = helper.get_formatted_time_string( end_time.strip() + END_OF_DAY ) if end_time is not None else None
+
+    data_dictionary, count = aggregate_module.aggregate_on_question_by_form_code_python( manager, questionnaire_code,
+        starttime=start_time,
+        endtime=end_time )
+    question_type_list = dict( (field.name, field.type) for field in form_model.fields )
+
+    if request.method == "GET":
+        in_trial_mode = _in_trial_mode( request )
+        content = { 'project': project,
+                    'in_trial_mode': in_trial_mode, 'data': data_dictionary, 'total_count':count,  "data_list": repr(encode_json( data_dictionary )),
+                    'question_type_list':repr(encode_json(question_type_list))}
+        context = RequestContext( request, content )
+        return render_to_response( 'project/data_summary.html', context )
+#        return HttpResponse(encode_json({'data': data_dictionary,'question_type_list':question_type_list}))
 
 @login_required(login_url='/login')
 @session_not_expired

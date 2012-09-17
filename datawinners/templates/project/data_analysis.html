@@ -181,12 +181,17 @@
         <div class="view_style_block">
             <label>{% trans "View:" %}</label>
             <ul>
-                <li class="active list"><a href="#">{% trans "List" %}</a></li>
-                <li class="chart"><a href="#">{% trans "Chart" %}</a></li>
+                <li id="table_view" class="active list" ><a onclick="DW.show_data_view()">{% trans "List" %}</a></li>
+                <li id="chart_view" class="chart"><a onclick="DW.show_chart_view()">{% trans "Chart" %}</a></li>
             </ul>
         </div>
     </div>
-    <div class="grid_23 alpha omega data_block">
+    <div class="grid_23 alpha omega data_block" style="width: 100%">
+        <div id="data_analysis_chart" style="width: 100%">
+            {% block chart_block %}
+                {% include "project/analysis_chart_view.html" %}
+            {% endblock %}
+        </div>
         <table id="data_analysis" class="styled_table">
             <thead>
             <tr>
@@ -197,7 +202,8 @@
             </thead>
         </table>
     </div>
-    <div id="demo"></div>
+{#    <div id="demo"></div>#}
+
     {% block help_no_submissions %}
         {% include 'project/help_no_submission.html' %}
     {% endblock %}
