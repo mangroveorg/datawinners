@@ -66,13 +66,13 @@ $(document).ready(function () {
         var subject_ids = $('#subjectSelect').attr('ids');
         var submission_sources = $('#dataSenderSelect').attr('data');
         return {
-                'start_time':$.trim(reporting_period[0]),
-                'end_time':$.trim(reporting_period[1]),
-                'submission_date_start':$.trim(submission_date[0]),
-                'submission_date_end':$.trim(submission_date[1]),
-                'subject_ids':subject_ids,
-                'submission_sources': submission_sources
-                };
+            'start_time':$.trim(reporting_period[0]),
+            'end_time':$.trim(reporting_period[1]),
+            'submission_date_start':$.trim(submission_date[0]),
+            'submission_date_end':$.trim(submission_date[1]),
+            'subject_ids':subject_ids,
+            'submission_sources': submission_sources
+        };
     };
 
     DW.wrap_table = function () {
@@ -118,6 +118,9 @@ $(document).ready(function () {
         });
     };
 
+    DW.draw_chart = function (initial_data) {
+
+    };
     function buildRangePicker() {
         function configureSettings(header) {
             var year_to_date_setting = {text:gettext('Year to date'), dateStart:function () {
@@ -172,22 +175,57 @@ $(document).ready(function () {
     DW.dataBinding(initial_data, false, true, help_no_submission);
     DW.wrap_table();
 
-
+    DW.draw_chart(initial_data);
     $('#data_analysis select').customStyle();
+
+    DW.chart_view_shown = false;
+    $('#data_analysis_chart').hide();
+
+    DW.show_data_view = function() {
+        if(DW.chart_view_shown){
+            $("#table_view").addClass("active");
+            $("#chart_view").removeClass("active-right");
+            DW.toggle_view();
+            DW.chart_view_shown = false;
+        }
+    };
+
+    DW.toggle_view = function () {
+        $('#data_analysis_chart').toggle();
+        $('#data_analysis_wrapper').toggle();
+    };
+
+    DW.show_chart_view = function() {
+        if(!DW.chart_view_shown){
+            $("#table_view").removeClass("active");
+            $("#chart_view").addClass("active-right");
+            DW.toggle_view();
+            DW.chart_view_shown = true;
+
+//            var data = DW.submit_data();
+//            var time_list = data['time_range'];
+//
+//            $.ajax({
+//                type:'GET',
+//                url:window.location.pathname+"summary",
+//                data:{'start_time':$.trim(time_list[0]), 'end_time':$.trim(time_list[1]), 'subject_ids':data['subject_ids']},
+//                success:function (response) {
+//                    drawReport(JSON.parse(response))
+//                }});
+        }
+    };
     if (initial_data.length == 0) {
         function disableFilters() {
             var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),
-                            $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
-                            $("#reportingPeriodPicker"),
-                            $('#dataTable_search input')];
+                $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
+                $("#reportingPeriodPicker"),
+                $('#dataTable_search input')];
 
             $.each(filters, function (index, filter) {
                 filter.addClass('disabled').attr('disabled', 'disabled');
                 filter.unbind('click');
             })
-            $.each($('.filter_label'), function(index, filter_label){
-                $(filter_label).css({color:"#888"});
-            })
+            $('.filter_label').css({color:"#888"});
         }
 
         disableFilters();
