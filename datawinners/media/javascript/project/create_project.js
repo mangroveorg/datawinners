@@ -38,6 +38,9 @@ DW.basic_project_info.prototype = {
                 },
                 entity_type:{
                     required:true
+                },
+                goals:{
+                    maxlength: 130
                 }
             },
             wrapper:"div",
@@ -45,6 +48,12 @@ DW.basic_project_info.prototype = {
                 var offset = element.offset();
                 error.insertAfter(element);
                 error.addClass('error_arrow');  // add a class to the wrapper
+            },
+            invalidHandler: function(form, validator) {
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    validator.errorList[0].element.focus();
+                }
             }
         });
     },
@@ -152,7 +161,7 @@ $(document).ready(function () {
 
     $('#continue_project').click(function () {
         if (!basic_project_info.isValid()) {
-            $('html,body').animate({scrollTop:0}, 'slow');
+            $('html,body').animate({scrollTop:480}, 'slow');
             return false;
         }
         $("#project-message-label").addClass('none');

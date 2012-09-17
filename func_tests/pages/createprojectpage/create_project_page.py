@@ -188,3 +188,9 @@ class CreateProjectPage(Page):
 
     def get_warning_message(self):
         return self.driver.find(by_css("#periode_green_message")).text
+
+    def description_has_error(self):
+        comm_util = CommonUtilities(self.driver)
+        if comm_util.is_element_present(PROJECT_DESCRIPTION_MSG):
+            return True
+        return False

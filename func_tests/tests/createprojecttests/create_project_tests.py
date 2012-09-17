@@ -8,6 +8,7 @@ from pages.previewnavigationpage.preview_navigation_page import PreviewNavigatio
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.createprojecttests.create_project_data import *
+import time
 
 @attr('suit_1')
 class TestCreateProject(BaseTest):
@@ -82,3 +83,16 @@ class TestCreateProject(BaseTest):
         create_project_page.select_predefined_periodicity_question_text()
         warning_message = create_project_page.get_warning_message()
         self.assertEqual(warning_message, fetch_(WARNING_MESSAGE, from_(VALID_DATA)))
+
+    @attr('functional_test', 'smoke')
+    def test_should_not_create_project_if_description_longer_than_130_chars(self):
+        """
+        Function to test that a description longer than 130 should not be created
+        """
+        create_project_page = self.prerequisites_of_create_project()
+        self.assertFalse(create_project_page.description_has_error())
+        time.sleep(1)
+        create_project_page.create_project_with(LONG_DESCRIPTION_DATA)
+        create_project_page.continue_create_project()
+        self.assertTrue(create_project_page.description_has_error())
+    
