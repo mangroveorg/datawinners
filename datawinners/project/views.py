@@ -63,7 +63,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
-from project.filters import ReportPeriodFilter, DataSenderFilter
+from project.filters import ReportPeriodFilter, DataSenderFilter, SubmissionDateFilter
 from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list
 from project.tests.test_filter import SubjectFilter
 from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
@@ -309,11 +309,17 @@ def project_results_for_get(manager, request, project, project_links, questionna
 def _build_report_period_filter(form_model, start_time, end_time):
     if not start_time or not end_time:
         return None
-    report_period = {'start': start_time, 'end': end_time}
+    time_range = {'start': start_time, 'end': end_time}
     question_name, datetime_format = get_report_period_question_name_and_datetime_format(form_model)
-    period_filter = ReportPeriodFilter(question_name, report_period, datetime_format)
+    period_filter = ReportPeriodFilter(question_name, time_range, datetime_format)
 
     return period_filter
+
+def _build_submission_date_filter(start_time, end_time):
+    if not start_time or not end_time:
+        return None
+    time_range = {'start': start_time, 'end': end_time}
+    return SubmissionDateFilter(time_range)
 
 def _build_subject_filter(entity_question_code, subject_ids):
     if not subject_ids.strip():
@@ -326,12 +332,12 @@ def _build_datasender_filter(submission_sources):
         return None
     return DataSenderFilter(submission_sources)
 
-
 def build_filters(params, form_model):
     if not params:
         return []
     return filter(lambda x: x is not None,
-        [_build_report_period_filter(form_model, params.get('start_time', "").strip(), params.get('end_time', "").strip()),
+        [_build_report_period_filter(form_model, params.get('start_time', ""), params.get('end_time', "")),
+         _build_submission_date_filter(params.get('submission_date_start', ""), params.get('submission_date_end', "")),
          _build_subject_filter(form_model.entity_question.code, params.get('subject_ids', "").strip()),
          _build_datasender_filter(params.get('submission_sources', "").strip()),
          ])

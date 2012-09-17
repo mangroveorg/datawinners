@@ -1,14 +1,15 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from dateutil.parser import parse
 from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.form_model.field import DateField
 from mangrove.utils.types import is_sequence
 
 
 class ReportPeriodFilter(object):
-    def __init__(self, question_name=None, period=None, question_format="dd.mm.yyyy"):
+    def __init__(self, question_name=None, period=None, date_format="dd.mm.yyyy"):
         assert isinstance(period, dict)
         self.rp_question_name = question_name
-        self.question_format = question_format
+        self.date_format = date_format
         self.start_time = self._parseDate(period['start'])
         self.end_time = self._parseDate(period['end'])
 
@@ -25,7 +26,7 @@ class ReportPeriodFilter(object):
         return self.start_time <= report_time <= self.end_time
 
     def _parseDate(self, dateString):
-        return datetime.strptime(dateString.strip(), DateField.get_datetime_format(self.question_format))
+        return datetime.strptime(dateString.strip(), DateField.get_datetime_format(self.date_format))
 
 class SubjectFilter(object):
     def __init__(self, entity_question_code, subject_ids):
@@ -54,3 +55,18 @@ class DataSenderFilter(object):
         return source in self.submission_sources
 
 
+class SubmissionDateFilter(object):
+    def __init__(self, period, date_format="%d.%m.%Y %H:%M:%S %z"):
+        assert isinstance(period, dict)
+        self.date_format = date_format
+        self.start_time = self._parseDate(period['start'])
+        self.end_time = self._parseDate(period['end']) + timedelta(days=1)
+
+    def filter(self, submission_logs):
+        return filter(lambda x: self._in(x), submission_logs)
+
+    def _in(self, submission):
+        return self.start_time <= submission.created < self.end_time
+
+    def _parseDate(self, dateString):
+        return parse(dateString.strip() + " 00:00:00+0000", dayfirst=True)

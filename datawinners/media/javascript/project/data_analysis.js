@@ -211,6 +211,7 @@ $(document).ready(function () {
 
         }
     };
+
     if (initial_data.length == 0) {
         function disableFilters() {
             var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),

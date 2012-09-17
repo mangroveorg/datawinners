@@ -3,12 +3,14 @@ from mock import Mock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.submissions import Submission
-from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter
+from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SubmissionDateFilter
 from project.views import *
 
 class TestSubmissionFilters(unittest.TestCase):
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
+        self.mock_form_model = Mock(spec=FormModel)
+        self.mock_form_model.entity_question.code = '123'
         self.transport_info = TransportInfo('web', 'source', 'destination')
         self.values = [
             {'q1': 'q1', 'q2': '30.07.2012', 'entity_question_code': '001'},
@@ -53,16 +55,12 @@ class TestSubmissionFilters(unittest.TestCase):
         self.assertEqual(2, len(filtered_submissions))
 
     def test_should_build_filter_by_subject(self):
-        form_model = Mock()
-        form_model.entity_question.code = '123'
-        filters = build_filters({'subject_ids': 'subject'}, form_model)
+        filters = build_filters({'subject_ids': 'subject'}, self.mock_form_model)
         self.assertEqual(1, len(filters))
         self.assertIsInstance(filters[0], SubjectFilter)
 
     def test_should_build_filter_by_datasender(self):
-        form_model = Mock()
-        form_model.entity_question.code = '123'
-        filters = build_filters({'submission_sources': 'tester150411@gmail.com'}, form_model)
+        filters = build_filters({'submission_sources': 'tester150411@gmail.com'}, self.mock_form_model)
         self.assertEqual(1, len(filters))
         self.assertIsInstance(filters[0], DataSenderFilter)
 
@@ -103,3 +101,25 @@ class TestSubmissionFilters(unittest.TestCase):
 
         filtered_submissions = DataSenderFilter('TEST').filter(submission_logs)
         self.assertEqual(1, len(filtered_submissions))
+
+    def test_should_build_filter_by_submission_date(self):
+        filters = build_filters({'submission_date_start': '01.08.2012', 'submission_date_end': '31.08.2012'}, self.mock_form_model)
+        self.assertEqual(1, len(filters))
+        self.assertIsInstance(filters[0], SubmissionDateFilter)
+
+    def test_should_return_submissions_within_submission_date(self):
+        submission1 = self.submissions[0]
+        submission1._doc.created = datetime.date(2012, 8, 15)
+
+        submission2 = self.submissions[1]
+        submission2._doc.created = datetime.date(2012, 8, 27)
+
+        submission3 = self.submissions[2]
+        submission3._doc.created = datetime.date(2012, 8, 3)
+
+        submission_logs = [submission1, submission2, submission3]
+
+        filtered_submission_logs = SubmissionDateFilter(
+            period={'start': '10.08.2012', 'end': '31.08.2012'}).filter(submission_logs)
+
+        self.assertEquals(submission_logs[:2], filtered_submission_logs)
