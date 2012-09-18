@@ -216,8 +216,7 @@ $(document).ready(function () {
         function disableFilters() {
             var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),
                 $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
-                $("#reportingPeriodPicker"),
-                $('#dataTable_search input')];
+                $('#dataTable_search input')].concat($date_pickers);
 
             $.each(filters, function (index, filter) {
                 filter.addClass('disabled').attr('disabled', 'disabled');
