@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import timedelta
 import unittest
+from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 import time
 from framework.base_test import BaseTest, setup_driver, teardown_driver
@@ -64,8 +65,10 @@ class TestDataAnalysis(BaseTest):
         self.verify_reporting_period_filter(FILTER_BY_YEAR_TO_DATE, self.go_to_analysis_page())
 
     @attr('functional_test', 'smoke')
+    @SkipTest
     def test_filter_data_records_by_date_range_with_monthly_reporting_period(self):
         data_analysis_page = self.go_to_analysis_page("Clinic Test Project With Monthly Reporting Period".lower())
+        data_analysis_page.open_reporting_period_drop_down()
         data_analysis_page.date_range_dict[MONTHLY_DATE_RANGE]()
         start_year = datetime.today().year - 1
         start_month = datetime.today().month
@@ -83,6 +86,7 @@ class TestDataAnalysis(BaseTest):
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_daily_reporting_period(self):
         data_analysis_page = self.go_to_analysis_page()
+        data_analysis_page.open_reporting_period_drop_down()
         data_analysis_page.date_range_dict[DAILY_DATE_RANGE]()
         start_year = datetime.today().year - 1
         day = datetime.today().day
@@ -99,6 +103,7 @@ class TestDataAnalysis(BaseTest):
         self.assertTrue(report_period_start <= each <= report_period_end for each in report_period)
 
     def verify_reporting_period_filter(self, period, data_analysis_page):
+        data_analysis_page.open_reporting_period_drop_down()
         data_analysis_page.date_range_dict[fetch_(DAILY_DATE_RANGE, from_(period))]()
         time.sleep(1)
         data_analysis_page.filter_data()
@@ -156,7 +161,7 @@ class TestDataAnalysis(BaseTest):
     @attr('functional_test')
     def test_should_close_daterange_dropdown_when_opening_subject_dropdown(self):
         data_analysis_page = self.go_to_analysis_page('Clinic Test Project With Monthly Reporting Period'.lower())
-        data_analysis_page.open_date_range_drop_down()
+        data_analysis_page.open_reporting_period_drop_down()
         time.sleep(1)
         self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
         data_analysis_page.open_subject_type_drop_down()
@@ -169,7 +174,7 @@ class TestDataAnalysis(BaseTest):
         self.assertFalse(data_analysis_page.subject_drop_down_is_opened())
         data_analysis_page.open_subject_type_drop_down()
         self.assertTrue(data_analysis_page.subject_drop_down_is_opened())
-        data_analysis_page.open_date_range_drop_down()
+        data_analysis_page.open_reporting_period_drop_down()
         time.sleep(1)
         self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
         self.assertFalse(data_analysis_page.subject_drop_down_is_opened())

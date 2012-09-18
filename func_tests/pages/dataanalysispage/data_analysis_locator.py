@@ -26,7 +26,8 @@ QUESTION_LABEL_CSS = "table#data_analysis>thead>tr>th:nth-child(%s)"
 DATA_ROW_BY_ENTITY_ID_XPATH = "//table[@id='data_analysis']/tbody/tr/td[text()='%s']"
 DATA_ROWS = by_css("table#data_analysis>tbody>tr")
 QUESTION_LABELS = by_css("table#data_analysis>thead>tr>th")
-DATE_RANGE_PICKER_TB = by_id("reportingPeriodPicker")
+REPORTING_PERIOD_PICKER_TB = by_id("reportingPeriodPicker")
+SUBMISSION_DATE_PICKER_TB = by_id("submissionDatePicker")
 CURRENT_MONTH_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Current month']")
 LAST_MONTH_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Last Month']")
 YEAR_TO_DATE_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Year to date']")

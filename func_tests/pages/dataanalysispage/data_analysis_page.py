@@ -128,25 +128,23 @@ class DataAnalysisPage(Page):
         """
         Function to select the date range from the drop down
         """
-        self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
-        self.driver.find(CURRENT_MONTH_LABEL).click()
+        self.driver.find_visible_element_(CURRENT_MONTH_LABEL).click()
 
     def get_reporting_period(self):
-        return self.driver.find_text_box(DATE_RANGE_PICKER_TB).text
+        return self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).text
 
     def select_last_month(self):
         """
         Function to select the date range from the drop down
         """
-        self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
-        self.driver.find(LAST_MONTH_LABEL).click()
+        self.driver.find_visible_element_(LAST_MONTH_LABEL).click()
 
     def select_year_to_date(self):
         """
         Function to select the date range from the drop down
         """
-        self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
-        self.driver.find(YEAR_TO_DATE_LABEL).click()
+        self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).click()
+        self.driver.find_visible_element_(YEAR_TO_DATE_LABEL).click()
 
     def filter_data(self):
         """
@@ -169,12 +167,11 @@ class DataAnalysisPage(Page):
         self.driver.find_drop_down(PAGE_SIZE_SELECT).set_selected(size_str)
 
     def select_daily_date_range(self):
-        self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
-        self.driver.find(DAILY_DATE_RANGE_LABEL).click()
+        self.driver.find_visible_element_(DAILY_DATE_RANGE_LABEL).click()
 
     def select_monthly_date_range(self):
-        self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
-        self.driver.find(MONTHLY_DATE_RANGE_LABEL).click()
+        self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).click()
+        self.driver.find_visible_element_(MONTHLY_DATE_RANGE_LABEL).click()
 
     def select_month_range(self, start_year, start_month, end_year, end_month):
         curr_year = datetime.datetime.today().year
@@ -216,8 +213,8 @@ class DataAnalysisPage(Page):
     def open_subject_type_drop_down(self):
         self.driver.wait_for_element(20, by_css("#ddcl-subjectSelect > span")).click()
 
-    def open_date_range_drop_down(self):
-        self.driver.find_text_box(DATE_RANGE_PICKER_TB).click()
+    def open_reporting_period_drop_down(self):
+        self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).click()
 
     def daterange_drop_down_is_opened(self):
         return self.driver.find(by_css(".ui-daterangepicker")).is_displayed()

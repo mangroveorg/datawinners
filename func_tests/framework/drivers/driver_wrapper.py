@@ -111,6 +111,31 @@ class DriverWrapper(object):
         """
         return self._driver.find_elements(by=locator_dict[BY],
                                          value=locator_dict[LOCATOR])
+    def find_visible_element_(self, locator_dict):
+        """
+        Finds element which are visible on the web page using locator dictionary
+
+        Args:
+        locator_dict is the dictionary of the locator which contains key
+        values like {"locator":"input[name='email']","by":"By.CSS_SELECTOR"}
+
+        Return first element of visible webelements
+        """
+
+        return self.find_visible_elements_(locator_dict)[0]
+
+    def find_visible_elements_(self, locator_dict):
+        """
+        Finds elements which are visible on the web page using locator dictionary
+
+        Args:
+        locator_dict is the dictionary of the locator which contains key
+        values like {"locator":"input[name='email']","by":"By.CSS_SELECTOR"}
+
+        Return list of webelement
+        """
+        elements = self._driver.find_elements(by=locator_dict[BY], value=locator_dict[LOCATOR])
+        return [element for element in elements if element.is_displayed]
 
     def go_to(self, url):
         """Open URL using get command of webdriver api"""
