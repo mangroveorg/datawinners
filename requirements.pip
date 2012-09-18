@@ -21,7 +21,7 @@ django-extensions
 apscheduler
 south==0.7.3
 supervisor
-python-dateutil
+python-dateutil==1.5
 http://github.com/jbalogh/django-nose/tarball/master#egg=django-nose
 feedparser
 nose-exclude
