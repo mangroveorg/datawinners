@@ -13,8 +13,8 @@ def get_excel_sheet(raw_data, sheet_name):
     workbook_add_sheet(wb, raw_data, sheet_name)
     return wb
 
-
-
+def sorted_unique_list(value_list):
+    return sorted(list(set(value_list)))
 
 def get_database_manager_for_org(organization):
     from datawinners.accountmanagement.models import OrganizationSetting

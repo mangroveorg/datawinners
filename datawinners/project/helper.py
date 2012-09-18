@@ -130,13 +130,13 @@ def get_data_sender(dbm, user, submission):
     if submission.channel == 'sms':
         datasender = tuple(get_datasender_by_mobile( dbm, submission_source ) + [submission_source])
     elif submission.channel == 'web' or submission.channel == 'smartPhone':
-            try:
-                org_id = get_org_id_by_user( user )
-                data_sender = User.objects.get(email=submission_source )
-                reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
-                datasender = (data_sender.get_full_name(), reporter_id, submission_source)
-            except:
-                pass
+        try:
+            org_id = get_org_id_by_user( user )
+            data_sender = User.objects.get(email=submission_source )
+            reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
+            datasender = (data_sender.get_full_name(), reporter_id, submission_source)
+        except:
+            pass
 
     return datasender if datasender[0] != "TEST" else ("TEST","", "TEST")
 

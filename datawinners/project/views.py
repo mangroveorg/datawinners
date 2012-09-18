@@ -418,11 +418,13 @@ def project_data(request, project_id=None, questionnaire_code=None):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     is_summary_report = form_model.entity_defaults_to_reporter()
     filters = build_filters(request.POST, form_model)
-    analyzer = SubmissionAnalyzer(form_model, manager, request, filters)
 
+    analyzer = SubmissionAnalyzer(form_model, manager, request, filters)
     raw_field_values = analyzer.get_raw_field_values()
+
     filter_by_keyword(request.POST.get('keyword', ''), raw_field_values)
     field_values = get_formatted_values_for_list(raw_field_values,'<br/>')
+
     header_list = analyzer.get_headers()
     subject_list = analyzer.get_subjects()
     datasender_list = analyzer.get_data_senders()
