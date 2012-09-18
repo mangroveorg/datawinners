@@ -64,13 +64,12 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         form_model = self._prepare_form_model(self.manager)
         analyzer = self._prepare_analyzer(form_model, {"eid": "cli14", "RD":"01.01.2012", "SY": "a2bc", "BG": "d"})
 
-        with patch("project.submission_analyzer.SubmissionAnalyzer._get_leading_part") as _get_leading_part:
-            _get_leading_part.return_value = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
-                                              [('Clinic-1', 'cli15'),  '01.01.2011', today, ('name_2', 'id_2', 'from_2')],
-                                              [('Clinic-1', 'cli15'),  '01.10.2011', today, ('name_3', 'id_3', 'from_3')]]
-            subject_list = analyzer.get_subjects()
-            expected = [('Clinic-1', 'cli15'), ('Clinic-2', 'cli14') ]
-            self.assertEqual(expected, subject_list)
+        analyzer.leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
+                                          [('Clinic-1', 'cli15'),  '01.01.2011', today, ('name_2', 'id_2', 'from_2')],
+                                          [('Clinic-1', 'cli15'),  '01.10.2011', today, ('name_3', 'id_3', 'from_3')]]
+        subject_list = analyzer.get_subjects()
+        expected = [('Clinic-1', 'cli15'), ('Clinic-2', 'cli14') ]
+        self.assertEqual(expected, subject_list)
 
     def test_should_get_data_sender_list(self):
         form_model = self._prepare_form_model(self.manager)
