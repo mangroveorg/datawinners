@@ -133,6 +133,9 @@ class DataAnalysisPage(Page):
     def get_reporting_period(self):
         return self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).text
 
+    def get_submission_date(self):
+        return self.driver.find_text_box(SUBMISSION_DATE_PICKER_TB).text
+
     def select_last_month(self):
         """
         Function to select the date range from the drop down
@@ -143,7 +146,6 @@ class DataAnalysisPage(Page):
         """
         Function to select the date range from the drop down
         """
-        self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).click()
         self.driver.find_visible_element_(YEAR_TO_DATE_LABEL).click()
 
     def filter_data(self):
@@ -216,9 +218,15 @@ class DataAnalysisPage(Page):
     def open_reporting_period_drop_down(self):
         self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).click()
 
+    def open_submission_date_drop_down(self):
+        self.driver.find_text_box(SUBMISSION_DATE_PICKER_TB).click()
+
     def daterange_drop_down_is_opened(self):
         return self.driver.find(by_css(".ui-daterangepicker")).is_displayed()
 
     def subject_drop_down_is_opened(self):
         style = self.driver.find(by_css("#ddcl-subjectSelect-ddw")).get_attribute("style")
         return False if re.search('left: \-', style) and re.search('top: \-', style) else True
+
+    def get_total_count_of_records(self):
+        return self.driver.find(TOTAL_RECORD_LABEL).text

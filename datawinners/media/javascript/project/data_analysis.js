@@ -99,7 +99,7 @@ $(document).ready(function () {
                 "sZeroRecords":gettext("No matching records found"),
                 "sEmptyTable":emptyTableText,
                 "sLoadingRecords":gettext("Loading..."),
-                "sInfo":gettext("<span>_START_ - _END_</span> of _TOTAL_ Submissions"),
+                "sInfo":gettext("<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</span> Submissions"),
                 "sInfoEmpty":gettext("0 Submissions"),
                 "sInfoFiltered":gettext("(filtered from _MAX_ total Data records)"),
                 "sInfoPostFix":"",

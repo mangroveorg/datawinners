@@ -64,8 +64,10 @@ class TestDataAnalysis(BaseTest):
     def test_filter_data_records_by_year_to_date(self):
         self.verify_reporting_period_filter(FILTER_BY_YEAR_TO_DATE, self.go_to_analysis_page())
 
+    def assert_in_date_range(self, range, dates):
+        self.assertTrue(range[0] <= each <= range[-1] for each in dates)
+
     @attr('functional_test', 'smoke')
-    @SkipTest
     def test_filter_data_records_by_date_range_with_monthly_reporting_period(self):
         data_analysis_page = self.go_to_analysis_page("Clinic Test Project With Monthly Reporting Period".lower())
         data_analysis_page.open_reporting_period_drop_down()
@@ -80,8 +82,7 @@ class TestDataAnalysis(BaseTest):
         data_records = data_analysis_page.get_all_data_records()
         report_period = [datetime.strptime(record.split(' ')[1], '%m.%Y') for record in data_records]
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
-        report_period_start, report_period_end = current_month_period[0], current_month_period[-1]
-        self.assertTrue(report_period_start <= each <= report_period_end for each in report_period)
+        self.assert_in_date_range(current_month_period, report_period)
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_daily_reporting_period(self):
@@ -99,8 +100,7 @@ class TestDataAnalysis(BaseTest):
         data_records = data_analysis_page.get_all_data_records()
         report_period = [datetime.strptime(record.split(' ')[1], '%d.%m.%Y') for record in data_records]
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
-        report_period_start, report_period_end = current_month_period[0], current_month_period[-1]
-        self.assertTrue(report_period_start <= each <= report_period_end for each in report_period)
+        self.assert_in_date_range(current_month_period, report_period)
 
     def verify_reporting_period_filter(self, period, data_analysis_page):
         data_analysis_page.open_reporting_period_drop_down()
@@ -110,8 +110,16 @@ class TestDataAnalysis(BaseTest):
         data_records = data_analysis_page.get_all_data_records()
         report_period = [datetime.strptime(record.split(' ')[1], '%d.%m.%Y') for record in data_records]
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
-        report_period_start, report_period_end = current_month_period[0], current_month_period[-1]
-        self.assertTrue(report_period_start <= each <= report_period_end for each in report_period)
+        self.assert_in_date_range(current_month_period, report_period)
+
+    def verify_submission_date_filter(self, period, data_analysis_page):
+        data_analysis_page.open_submission_date_drop_down()
+        data_analysis_page.date_range_dict[period]()
+        time.sleep(1)
+        data_analysis_page.filter_data()
+        submission_date = data_analysis_page.get_all_data_records_by_column(2)
+        current_month_period = data_analysis_page.get_submission_date().split(' - ')
+        self.assert_in_date_range(current_month_period, submission_date)
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_subject_filter(self):
@@ -179,6 +187,17 @@ class TestDataAnalysis(BaseTest):
         self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
         self.assertFalse(data_analysis_page.subject_drop_down_is_opened())
 
+    @attr('functional_test', 'smoke')
+    def test_filter_data_records_by_submission_date_within_current_month(self):
+        self.verify_submission_date_filter(CURRENT_MONTH, self.go_to_analysis_page())
+
+    @attr('functional_test', 'smoke')
+    def test_filter_data_records_by_submission_date_within_last_month(self):
+        self.verify_submission_date_filter(LAST_MONTH, self.go_to_analysis_page())
+
+    @attr('functional_test', 'smoke')
+    def test_filter_data_records_by_submission_date_within_year_to_date(self):
+        self.verify_submission_date_filter(YEAR_TO_DATE, self.go_to_analysis_page())
 
 
 
