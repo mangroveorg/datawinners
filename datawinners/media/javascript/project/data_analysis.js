@@ -3,7 +3,7 @@ $(document).ready(function () {
     var message = gettext("No submissions available for this search. Try removing some of your filters.")
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
     var $filterSelects = $('#subjectSelect, #dataSenderSelect');
-    var $date_pickers = $('#reportingPeriodPicker, #submissionDatePicker');
+    var $datepicker_inputs = $('#reportingPeriodPicker, #submissionDatePicker');
 
 
     addOnClickListener();
@@ -13,7 +13,7 @@ $(document).ready(function () {
 
     function hide_date_pickers_when_filter_show() {
         $('.ui-dropdownchecklist-selector').click(function () {
-            $('.ui-daterangepicker:visible').fadeOut(300);
+            $('.ui-daterangepicker:visible').hide();
         });
     }
 
@@ -47,16 +47,16 @@ $(document).ready(function () {
     }
 
     function get_date($datePicker, default_text) {
-        var reporting_period = $datePicker.val().split("-");
-        if (reporting_period[0] == "" || reporting_period[0] == default_text) {
-            reporting_period = ['', ''];
-        } else if (reporting_period[0] != default_text && Date.parse(reporting_period[0]) == null) {
+        var data = $datePicker.val().split("-");
+        if (data[0] == "" || data[0] == default_text) {
+            data = ['', ''];
+        } else if (data[0] != default_text && Date.parse(data[0]) == null) {
             $datePicker.next().html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>').show();
-            reporting_period = ['', ''];
-        } else if (reporting_period.length == 1) {
-            reporting_period[1] = reporting_period[0];
+            data = ['', ''];
+        } else if (data.length == 1) {
+            data[1] = data[0];
         }
-        return reporting_period;
+        return data;
     }
 
     DW.submit_data = function () {
@@ -120,7 +120,7 @@ $(document).ready(function () {
     DW.draw_chart = function (initial_data) {
     };
     function buildRangePicker() {
-        function configureSettings(header) {
+        function configureSettings(header, ismonthly) {
             var year_to_date_setting = {text:gettext('Year to date'), dateStart:function () {
                 var x = Date.parse('today');
                 x.setMonth(0);
@@ -149,12 +149,12 @@ $(document).ready(function () {
                 onOpen: function(){
                     $filterSelects.dropdownchecklist("close");
                 }
-
             };
-            if (date_format.indexOf('dd') >= 0) {
-                settings.presetRanges = settings.presetRanges.concat(year_to_date_setting);
-            } else {
+            if (ismonthly) {
                 settings.presets = {dateRange:gettext('Choose Month(s)')}
+            } else {
+                settings.presetRanges = settings.presetRanges.concat(year_to_date_setting);
+                settings.dateFormat = 'dd.mm.yy';
             }
             return settings;
         }
@@ -164,9 +164,23 @@ $(document).ready(function () {
         }
 
         var date_picker_headers = [gettext('All Periods'), gettext('All Dates')];
-        $date_pickers.each(function(index, picker){
-            var $picker = $(picker);
-            $picker.daterangepicker(configureSettings(date_picker_headers[index])).monthpicker();
+        $datepicker_inputs.each(function(index, input){
+            var $input = $(input);
+            var $monthpicker = $('#monthpicker_start, #monthpicker_end');
+            $input.daterangepicker(configureSettings(date_picker_headers[index], $input.data('ismonthly'))).monthpicker();
+            $input.click(function() {
+                if ($input.data('ismonthly')) {
+                    $monthpicker.show();
+                } else {
+                    $monthpicker.hide();
+                }
+                var $visible_datepickers = $('.ui-daterangepicker:visible');
+                $visible_datepickers.each(function(index, picker) {
+                    if ($(picker).data('for') != $input.attr('id')) {
+                        $(picker).hide();
+                    }
+                });
+            });
         });
     }
 
@@ -216,7 +230,7 @@ $(document).ready(function () {
         function disableFilters() {
             var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),
                 $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
-                $('#dataTable_search input')].concat($date_pickers);
+                $('#dataTable_search input')].concat($datepicker_inputs);
 
             $.each(filters, function (index, filter) {
                 filter.addClass('disabled').attr('disabled', 'disabled');

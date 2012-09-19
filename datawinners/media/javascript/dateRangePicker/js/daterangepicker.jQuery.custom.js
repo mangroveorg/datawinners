@@ -114,7 +114,7 @@ jQuery.fn.daterangepicker = function(settings){
 
 
 	//build picker and
-	var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all clearfix"></div>').data("for", rangeInput.attr('id'));
+	var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all clearfix"></div>').data("for", rangeInput.attr('id')).data('ismonthly', rangeInput.data('ismonthly')||false);
 	var rpPresets = (function(){
 
         var ul = jQuery('<ul class="ui-widget-content"></ul>').appendTo(rp);
@@ -273,16 +273,24 @@ jQuery.fn.daterangepicker = function(settings){
 		}
 		else if(range_list_item.is('.ui-daterangepicker-dateRange')){
             doneBtn.hide();
-            if(isMonthFormat()){
-                rp.find('.ui-datepicker-inline').hide();
-                showMP(rangeInput);
-            }
             rpPickers.show();
+
             rp.find('.title-start').text(options.rangeStartTitle);
             rp.find('.title-end').text(options.rangeEndTitle);
             setTimeout(function(){doneBtn.fadeIn();}, 400);
-            rp.find('.range-start').restoreDateFromData().show(400);
-            rp.find('.range-end').restoreDateFromData().show(400);
+            rp.find('.range-start').restoreDateFromData().show();
+            rp.find('.range-end').restoreDateFromData().show();
+            if($('.btnDone').parents('.ui-daterangepicker:visible').data('ismonthly')){
+                rp.find('.ui-datepicker-inline').hide();
+                showMP($('#' + rp.data('for')));
+                if ($('#monthpicker_start').size() == 1 && $('#monthpicker_start').parent('.hasDatepicker:visible').size() == 0) {
+                    $('#monthpicker_start').appendTo($('.range-start'));
+                    $('#monthpicker_end').appendTo($('.range-end'));
+                }
+            } else {
+                rp.find('#monthpicker_start').hide();
+                rp.find('#monthpicker_end').hide();
+            }
 		}
 		else {
 			//custom date range
@@ -310,7 +318,7 @@ jQuery.fn.daterangepicker = function(settings){
         rpPickers.find('.range-start').datepicker('setDate', inputDateA);
         rpPickers.find('.range-end').datepicker('setDate', inputDateB);
 
-        if(isMonthFormat()){
+        if(rangeInput.data('ismonthly')){
             var mps = rangeInput.monthpicker();
             mps[0].appendTo(rpPickers.find(".range-start"));
             mps[1].appendTo(rpPickers.find(".range-end"));

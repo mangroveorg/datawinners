@@ -60,6 +60,9 @@ table {
     margin-right: 10px;
     font-weight: normal; }
 
+.datepicker {
+  padding-left: 5px; }
+
 .view_data_block {
   padding-bottom: 5px;
   margin: 30px 0 10px 0; }

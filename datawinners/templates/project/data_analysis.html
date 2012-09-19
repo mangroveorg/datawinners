@@ -123,8 +123,8 @@
                     {% trans "r_tooltip_report_period" %}
                 </p></div>
             </div>
-            <div class="float_left ">
-                <input type="text" readonly="true" id="reportingPeriodPicker" class="reportingPeriodPicker" value="{% trans "All Periods" %}"/>
+            <div class="float_left">
+                <input type="text" readonly="true" id="reportingPeriodPicker" class="datepicker" data-ismonthly="{% if is_monthly_reporting %}true{% endif %}" value="{% trans "All Periods" %}"/>
                 <span class="dateErrorDiv" class="error_arrow"></span>
                 <div id="month_date_picker_div"></div>
             </div>
@@ -142,8 +142,8 @@
                     {% trans "r_tooltip_submission_date" %}
                 </p></div>
             </div>
-            <div class="float_left ">
-                <input type="text" readonly="true" id="submissionDatePicker" value="{% trans "All Dates" %}"/>
+            <div class="float_left">
+                <input type="text" readonly="true" id="submissionDatePicker" class="datepicker" value="{% trans "All Dates" %}"/>
                 <span class="dateErrorDiv" class="error_arrow"></span>
             </div>
         </div>
