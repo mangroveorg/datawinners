@@ -179,4 +179,12 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.switch_language("fr")
         all_data_sender_page.open_import_lightbox()
         self.assertEqual(IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR, import_lightbox.get_template_filename())
+
+    @attr('functional_test')
+    def test_should_uncheck_reporter_id_checkbox_if_user_has_given_id(self):
+        self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
+        add_data_sender_page = AddDataSenderPage(self.driver)
+        add_data_sender_page.enter_data_sender_details_from(INVALID_MOBILE_NUMBER_DATA, "DS040")
+        self.assertFalse(add_data_sender_page.unique_id_check_box_is_checked())
+        self.assertTrue(add_data_sender_page.unique_id_field_is_enabled())
         

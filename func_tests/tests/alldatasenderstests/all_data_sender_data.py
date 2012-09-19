@@ -63,5 +63,10 @@ VALID_DATA = {NAME: "ReRegistered",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 
+INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
+              MOBILE_NUMBER: "abcdefgh",
+              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+              GPS: "-21.7622088847 48.0690991394"}
+
 DATA_SENDER_ID_WITH_WEB_ACCESS = "rep3"
 DATA_SENDER_ID_WITHOUT_WEB_ACCESS = "rep5"

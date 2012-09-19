@@ -85,7 +85,7 @@
           <li class="{{ form.short_code.css_classes }} form-row-10px">
               {{ form.short_code.label_tag }}
               {{ form.short_code }}
-              <input type="checkbox" id="generate_id" name="generate_id" value="" checked="checked" />
+              <input type="checkbox" id="generate_id" name="generate_id" value="" {% if not form.short_code.value %}checked="checked"{% endif %} />
               <span>{% trans "Let us generate an ID for you" %}</span>
 
               {{ form.short_code.errors }}

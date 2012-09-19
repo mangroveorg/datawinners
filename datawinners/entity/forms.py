@@ -155,6 +155,11 @@ class ReporterRegistrationForm(Form):
         validation_error = validation_errors.get(MOBILE_NUMBER_FIELD_CODE)
         self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]]= self.error_class([validation_error])
 
+    def clean_short_code(self):
+        short_code = self.cleaned_data.get('short_code')
+        if short_code:
+            self.fields.get("short_code").widget.attrs.pop("disabled")
+        return short_code
 
 class SubjectUploadForm(Form):
     error_css_class = 'error'
