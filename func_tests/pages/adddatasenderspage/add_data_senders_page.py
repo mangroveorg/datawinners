@@ -86,5 +86,5 @@ class AddDataSenderPage(Page):
         return True if self.driver.find(CB_LET_US_GENERATE_ID_FOR_U).get_attribute("checked") == "checked" else False
 
     def unique_id_field_is_enabled(self):
-        return False if self.driver.find_text_box(UNIQUE_ID_TB_LOCATOR).get_attribute("disabled") == "disabled" else True
+        return self.driver.find_text_box(UNIQUE_ID_TB_LOCATOR).is_enabled
 
