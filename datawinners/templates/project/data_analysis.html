@@ -94,7 +94,7 @@
             {% trans 'You don’t have any successful submissions to filter' %}
         </p>
 
-        <div class="{% if is_summary_report %} none {% endif %} float_left" id="subject_filter">
+        <div class="{% if is_summary_report %} none {% endif %} float_left">
             <div class="filter_label" for="subjectSelect">
                 <label class="full_width">{{ entity_type }}</label>
             </div>
@@ -106,7 +106,7 @@
                 </select>
             </div>
         </div>
-        <div class="{% if not has_reporting_period %} none {% endif %} float_left">
+        <div class="{% if not has_reporting_period %} none {% endif %} float_left width18">
             <div class="filter_label">
                 {% if is_monthly_reporting %} <label>{% trans "Monthly Reporting Period" %}</label>
                     {% else %}<label>{% trans "Daily Reporting Period" %}</label>
@@ -147,7 +147,7 @@
                 <span class="dateErrorDiv" class="error_arrow"></span>
             </div>
         </div>
-        <div class="float_left" id="datasender_filter">
+        <div class="float_left">
             <div class="filter_label" for="dataSenderSelect">
                 <label class="full_width">{% trans "Data Sender" %}</label>
             </div>
@@ -159,7 +159,7 @@
                 </select>
             </div>
         </div>
-        <div class="float_left width16">
+        <div class="float_left width14">
             <div class="filter_label">
                 <label>&nbsp;</label>
             </div>

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var help_no_submission = $('#help_no_submissions').html();
-    var message = gettext("No submissions available for this search. Try removing some of your filters.")
+    var message = gettext("No submissions available for this search. Try removing some of your filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
     var $filterSelects = $('#subjectSelect, #dataSenderSelect');
     var $datepicker_inputs = $('#reportingPeriodPicker, #submissionDatePicker');
@@ -166,9 +166,9 @@ $(document).ready(function () {
         var date_picker_headers = [gettext('All Periods'), gettext('All Dates')];
         $datepicker_inputs.each(function(index, input){
             var $input = $(input);
-            var $monthpicker = $('#monthpicker_start, #monthpicker_end');
             $input.daterangepicker(configureSettings(date_picker_headers[index], $input.data('ismonthly'))).monthpicker();
             $input.click(function() {
+                var $monthpicker = $('#monthpicker_start, #monthpicker_end', $('.ranges'));
                 if ($input.data('ismonthly')) {
                     $monthpicker.show();
                 } else {

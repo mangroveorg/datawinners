@@ -38,10 +38,10 @@ table {
       margin-right: 10px; }
     .heading_block > div > div {
       width: 100%; }
-  .heading_block > div.width24 {
-    width: 24% !important; }
-  .heading_block > div.width16 {
-    width: 16% !important; }
+  .heading_block > div.width18 {
+    width: 18%; }
+  .heading_block > div.width14 {
+    width: 14%; }
   .heading_block .date_range_box {
     float: left; }
     .heading_block .date_range_box label, .heading_block .date_range_box select {
