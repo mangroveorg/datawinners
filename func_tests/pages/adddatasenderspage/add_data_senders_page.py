@@ -71,7 +71,7 @@ class AddDataSenderPage(Page):
         self.driver.find(OPEN_IMPORT_DIALOG_LINK).click()
         from pages.lightbox.import_datasender_light_box_page import ImportDatasenderLightBox
         return ImportDatasenderLightBox(self.driver)
-            
+
 
     def is_in_project_level(self):
         return self.driver.get_title() in [u"Projet - Expéditeurs", u"Projects - Data Senders"]
@@ -83,7 +83,7 @@ class AddDataSenderPage(Page):
         self.driver.find_text_box(UNIQUE_ID_TB_LOCATOR).enter_text(unique_id)
 
     def unique_id_check_box_is_checked(self):
-        return True if self.driver.find(CB_LET_US_GENERATE_ID_FOR_U).get_attribute("checked") == "checked" else False
+        return self.driver.find(CB_LET_US_GENERATE_ID_FOR_U).get_attribute("checked") == u"true"
 
     def unique_id_field_is_enabled(self):
         return self.driver.find_text_box(UNIQUE_ID_TB_LOCATOR).is_enabled

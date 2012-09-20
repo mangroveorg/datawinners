@@ -12,6 +12,7 @@ from tests.alldatasenderstests.all_data_sender_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.projectdatasenderstests.registered_datasenders_data import IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR
+import time
 
 @attr('suit_1')
 class TestAllDataSender(unittest.TestCase):
@@ -180,11 +181,13 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.open_import_lightbox()
         self.assertEqual(IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR, import_lightbox.get_template_filename())
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_uncheck_reporter_id_checkbox_if_user_has_given_id(self):
         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
         add_data_sender_page = AddDataSenderPage(self.driver)
+        self.assertTrue(add_data_sender_page.unique_id_check_box_is_checked())
         add_data_sender_page.enter_data_sender_details_from(INVALID_MOBILE_NUMBER_DATA, "DS040")
+        time.sleep(1)
         self.assertFalse(add_data_sender_page.unique_id_check_box_is_checked())
         self.assertTrue(add_data_sender_page.unique_id_field_is_enabled())
-        
+
