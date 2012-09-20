@@ -87,7 +87,7 @@ $(document).ready(function () {
         });
     };
     DW.dataBinding = function (data, destroy, retrive, emptyTableText) {
-        $('#data_analysis').dataTable({
+        $dataTable = $('#data_analysis').dataTable({
             "bDestroy":destroy,
             "bRetrieve":retrive,
             "sPaginationType":"full_numbers",
@@ -113,9 +113,11 @@ $(document).ready(function () {
                 },
                 "fnInfoCallback":null
             },
-            "sDom":'<"@dataTables_info"i>rtpl<"@dataTable_search"f>',
+            "sDom":'<"@dataTables_info"i>rtpl<"@dataTable_search">',
             "iDisplayLength":25
         });
+
+        $dataTable.fnFilter($('#keyword').val())
     };
     DW.draw_chart = function (initial_data) {
     };
@@ -230,7 +232,7 @@ $(document).ready(function () {
         function disableFilters() {
             var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),
                 $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
-                $('#dataTable_search input')].concat($datepicker_inputs);
+                $('#keyword')].concat($datepicker_inputs);
 
             $.each(filters, function (index, filter) {
                 filter.addClass('disabled').attr('disabled', 'disabled');
@@ -257,4 +259,10 @@ $(document).ready(function () {
         });
         hide_date_pickers_when_filter_show();
     }
+
+    $('#keyword').keypress(function(e) {
+        if (e.which == 13) {
+            $('#time_submit').click();
+        }
+    });
 });

@@ -11,6 +11,14 @@
   height: 100%
 }
 
+.filter-input {
+  width:80%;
+  height: 24px;
+  margin: 0 10 0 5;
+  border-color: #CCC;
+  padding-left: 5px;
+}
+
 .disabled {
   background: #EBEBE4 !important;
   color: #888;

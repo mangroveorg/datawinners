@@ -159,7 +159,15 @@
                 </select>
             </div>
         </div>
-        <div class="float_left width14">
+        <div class="float_left">
+            <div class="filter_label">
+                <label>{% trans "Search for Keyword" %}</label>
+            </div>
+            <div class="float_left ">
+                <input id="keyword" class="filter-input" value="" />
+            </div>
+        </div>
+        <div class="float_left width16">
             <div class="filter_label">
                 <label>&nbsp;</label>
             </div>
@@ -167,13 +175,7 @@
                 <input type="button" class="button_blue" id="time_submit" value="{% trans 'Go' %}"/>
             </div>
         </div>
-        <div class="float_right">
-            <div class="filter_label">
-                <label>{% trans "Search for Keyword" %}</label>
-            </div>
-            <div id="dataTable_search">
-            </div>
-        </div>
+
     </div>
     <div class="view_data_block grid_23 alpha">
         <div class="grid_12 show_data_block alpha" id="dataTables_info">
