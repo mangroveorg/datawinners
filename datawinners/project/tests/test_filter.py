@@ -3,8 +3,9 @@ from mock import Mock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.submissions import Submission
-from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SubmissionDateFilter
+from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SubmissionDateFilter, KeywordFilter
 from project.views import *
+
 
 class TestSubmissionFilters(unittest.TestCase):
     def setUp(self):
@@ -123,3 +124,13 @@ class TestSubmissionFilters(unittest.TestCase):
             period={'start': '10.08.2012', 'end': '31.08.2012'}).filter(submission_logs)
 
         self.assertEquals(submission_logs[:2], filtered_submission_logs)
+
+    def test_should_build_filter_by_keyword(self):
+        raw_field_values = [('Test', u'cid001'), '25.12.2012', u'20.09.2012', ('N/A', None, u'261333745261'), 'sms', '40', ['O+'], ['Rapid weight loss', 'Dry cough'], '-18.1324,27.6547'],\
+                           [('Test', u'cid001'), '25.12.2012', u'20.09.2012', ('TEST', '', 'TEST'), 'test', '40', ['O+'], ['Rapid weight loss', 'Dry cough'], '-18.1324,27.6547'],\
+                           [('Test', u'cid001'), '25.12.2011', u'20.09.2012', (u'Tester Pune', 'admin', u'tester150411@gmail.com'), 'admin', '40.0', ['AB'], ['Rapid weight loss'], '18.1324,27.6547']
+
+        filtered_field_values = filter_by_keyword('sms'.strip(), raw_field_values)
+
+        self.assertEquals(len(filtered_field_values), 1)
+        self.assertEquals(filtered_field_values[0], raw_field_values[0])

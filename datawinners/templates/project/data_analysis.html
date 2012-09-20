@@ -81,11 +81,12 @@
 
     <form id="export_form" action="/project/export/data" method='POST'>
         {% csrf_token %}
-        <input id="questionnaire_code" name='questionnaire_code' type="hidden"/>
-        <input id='start_time' name='start_time' type="hidden"/>
-        <input id='end_time' name='end_time' type="hidden"/>
-        <input id='subject_ids' name='subject_ids' type="hidden"/>
-        <input id='submission_sources' name='submission_sources' type="hidden"/>
+        <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+        <input name='start_time' type="hidden"/>
+        <input name='end_time' type="hidden"/>
+        <input name='subject_ids' type="hidden"/>
+        <input name='submission_sources' type="hidden"/>
+        <input name='keyword' type="hidden"/>
 
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>

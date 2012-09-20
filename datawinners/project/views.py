@@ -63,7 +63,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
-from project.filters import ReportPeriodFilter, DataSenderFilter, SubmissionDateFilter
+from project.filters import ReportPeriodFilter, DataSenderFilter, SubmissionDateFilter, KeywordFilter
 from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list
 from project.tests.test_filter import SubjectFilter
 from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
@@ -332,6 +332,13 @@ def _build_datasender_filter(submission_sources):
         return None
     return DataSenderFilter(submission_sources)
 
+
+def filter_by_keyword(keyword, raw_field_values):
+    if not keyword.strip():
+        return raw_field_values
+    return KeywordFilter(keyword).filter(raw_field_values)
+
+
 def build_filters(params, form_model):
     if not params:
         return []
@@ -413,7 +420,9 @@ def project_data(request, project_id=None, questionnaire_code=None):
     filters = build_filters(request.POST, form_model)
     analyzer = SubmissionAnalyzer(form_model, manager, request, filters)
 
-    field_values = get_formatted_values_for_list(analyzer.get_raw_field_values(),'<br/>')
+    raw_field_values = analyzer.get_raw_field_values()
+    filter_by_keyword(request.POST.get('keyword', ''), raw_field_values)
+    field_values = get_formatted_values_for_list(raw_field_values,'<br/>')
     header_list = analyzer.get_headers()
     subject_list = analyzer.get_subjects()
     datasender_list = analyzer.get_data_senders()
@@ -435,6 +444,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
                  "header_list": header_list,
                  'project_links': (make_project_links(project, questionnaire_code)),
                  'project': project,
+                 'questionnaire_code': questionnaire_code,
                  'in_trial_mode': in_trial_mode,
                  'reporting_period_question_text': rp_field.label[form_model.activeLanguages[0]] if has_rp else None,
                  'has_reporting_period': has_rp,
@@ -484,10 +494,10 @@ def export_data(request):
     filters = build_filters(request.POST, form_model)
     header_list = helper.get_headers(form_model)
     values = helper.get_field_values(request, manager, form_model, filters)
-
+    filtered_values = filter_by_keyword(request.POST.get('keyword', ''), values)
     file_name = request.POST.get(u"project_name") + '_analysis'
 
-    return _create_excel_response([header_list] + formatted_data(values, ' '), file_name)
+    return _create_excel_response([header_list] + formatted_data(filtered_values, ' '), file_name)
 
 
 def _create_excel_response(raw_data_list, file_name):

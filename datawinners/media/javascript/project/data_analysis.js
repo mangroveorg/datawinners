@@ -35,12 +35,9 @@ $(document).ready(function () {
     function addOnClickListener() {
         $('#export_link').click(function () {
             var data = DW.submit_data();
-            var path = window.location.pathname;
-            var element_list = path.split("/");
-            $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
 
             for (var name in data) {
-                $('#' + name).val(data[name]);
+                $('input[name="' + name + '"]').val(data[name]);
             }
             $('#export_form').submit();
         });
@@ -65,13 +62,15 @@ $(document).ready(function () {
         var submission_date = get_date($('#submissionDatePicker'), gettext("All Dates"));
         var subject_ids = $('#subjectSelect').attr('ids');
         var submission_sources = $('#dataSenderSelect').attr('data');
+        var keyword = $('#keyword').val();
         return {
             'start_time':$.trim(reporting_period[0]),
             'end_time':$.trim(reporting_period[1]),
             'submission_date_start':$.trim(submission_date[0]),
             'submission_date_end':$.trim(submission_date[1]),
             'subject_ids':subject_ids,
-            'submission_sources': submission_sources
+            'submission_sources': submission_sources,
+            'keyword': keyword
         };
     };
 
@@ -148,7 +147,7 @@ $(document).ready(function () {
                 latestDate:'21/12/2012',
                 dateFormat:getDateFormat(date_format),
                 rangeSplitter:'-',
-                onOpen: function(){
+                onOpen: function() {
                     $filterSelects.dropdownchecklist("close");
                 }
             };

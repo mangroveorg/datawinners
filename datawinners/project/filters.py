@@ -70,3 +70,31 @@ class SubmissionDateFilter(object):
 
     def _parseDate(self, dateString):
         return parse(dateString.strip() + " 00:00:00+0000", dayfirst=True)
+
+class KeywordFilter(object):
+    def __init__(self, keyword):
+        self.keyword = keyword.lower()
+
+    def filter(self, rows):
+        return filter(lambda row: exists(self.contains, row), rows)
+
+    def contains(self, i):
+        return i is not None and self.keyword in i.lower()
+
+def exists(func, list):
+    assert callable(func)
+    assert is_sequence(list)
+
+    for i in flatten(list):
+        if func(i): return True
+    return False
+
+def flatten(less_than_two_layers_list):
+    """
+        Only two layers list is supported.
+    """
+    result = []
+    for i in less_than_two_layers_list:
+        if is_sequence(i): result.extend(i)
+        else: result.append(i)
+    return result
