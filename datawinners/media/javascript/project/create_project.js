@@ -40,7 +40,7 @@ DW.basic_project_info.prototype = {
                     required:true
                 },
                 goals:{
-                    maxlength: 130
+                    maxlength: 300
                 }
             },
             wrapper:"div",

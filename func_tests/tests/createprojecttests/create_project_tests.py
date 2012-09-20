@@ -87,7 +87,7 @@ class TestCreateProject(BaseTest):
     @attr('functional_test', 'smoke')
     def test_should_not_create_project_if_description_longer_than_130_chars(self):
         """
-        Function to test that a description longer than 130 should not be created
+        Function to test that a description longer than 300 should not be created
         """
         create_project_page = self.prerequisites_of_create_project()
         self.assertFalse(create_project_page.description_has_error())
