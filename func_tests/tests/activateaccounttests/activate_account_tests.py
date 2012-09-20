@@ -8,6 +8,9 @@ from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from framework.utils.database_manager_postgres import DatabaseManager
 from tests.registrationtests.registration_data import REGISTRATION_SUCCESS_MESSAGE
 from tests.registrationtests.registration_tests import register_and_get_email
+from pages.loginpage.login_page import LoginPage
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE
+from tests.logintests.login_data import USERNAME, PASSWORD
 
 @attr('suit_1')
 class TestActivateAccount(BaseTest):
@@ -19,13 +22,13 @@ class TestActivateAccount(BaseTest):
 
         self.account_activate_page = ActivateAccountPage(self.driver)
         self.dbmanager = DatabaseManager()
-        self.activation_code = self.dbmanager.get_activation_code(self.email)
+        self.activation_code = self.dbmanager.get_activation_code(self.email.lower())
         self.account_activate_page.activate_account(self.activation_code)
 
     def tearDown(self):
         if self.email is not None:
             dbmanager = DatabaseManager()
-            dbname = dbmanager.delete_organization_all_details(self.email)
+            dbname = dbmanager.delete_organization_all_details(self.email.lower())
             couchwrapper = CouchHttpWrapper("localhost")
             couchwrapper.deleteDb(dbname)
         super(TestActivateAccount, self).tearDown()
@@ -36,5 +39,11 @@ class TestActivateAccount(BaseTest):
         self.assertRegexpMatches(self.account_activate_page.get_message(),
                                  fetch_(SUCCESS_MESSAGE, from_(VALID_ACTIVATION_DETAILS)))
 
+    @attr('functional_test')
+    def test_successful_login_with_uppercased_email(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        dashboard_page = login_page.do_successful_login_with({USERNAME: self.email.upper(), PASSWORD:u"ngo001"})
+        self.assertEqual(dashboard_page.welcome_message(), u"Welcome Mickey!")
 
 

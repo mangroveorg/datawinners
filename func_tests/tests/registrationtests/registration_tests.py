@@ -40,7 +40,7 @@ class TestRegistrationPage(unittest.TestCase):
         registration_confirmation_page, email = register_and_get_email(self.driver)
         self.assertEquals(registration_confirmation_page.registration_success_message(), REGISTRATION_SUCCESS_MESSAGE)
         dbmanager = DatabaseManager()
-        dbmanager.delete_organization_all_details(email)
+        dbmanager.delete_organization_all_details(email.lower())
 
     @attr('functional_test')
     def test_register_ngo_with_existing_email_address(self):

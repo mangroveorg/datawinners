@@ -46,21 +46,21 @@ class TestApplicationEndToEnd(BaseTest):
             if self.email is not None:
                 email = self.email
                 dbmanager = DatabaseManager()
-                dbname = dbmanager.delete_organization_all_details(email)
+                dbname = dbmanager.delete_organization_all_details(email.lower())
                 couchwrapper = CouchHttpWrapper("localhost")
                 couchwrapper.deleteDb(dbname)
         except TypeError as e:
             pass
 
     def activate_account(self):
-        account_activate_page = activate_account(self.driver, self.email)
+        account_activate_page = activate_account(self.driver, self.email.lower())
         self.assertRegexpMatches(account_activate_page.get_message(),
                                  fetch_(SUCCESS_MESSAGE, from_(VALID_ACTIVATION_DETAILS)))
 
     def set_organization_number(self):
         dbmanager = DatabaseManager()
         organization_sms_tel_number = get_epoch_last_ten_digit()
-        dbmanager.set_sms_telephone_number(organization_sms_tel_number, self.email)
+        dbmanager.set_sms_telephone_number(organization_sms_tel_number, self.email.lower())
         return organization_sms_tel_number
 
     def do_org_registartion(self):

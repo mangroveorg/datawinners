@@ -172,7 +172,6 @@ class DataAnalysisPage(Page):
         self.driver.find_visible_element_(DAILY_DATE_RANGE_LABEL).click()
 
     def select_monthly_date_range(self):
-        self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).click()
         self.driver.find_visible_element_(MONTHLY_DATE_RANGE_LABEL).click()
 
     def select_month_range(self, start_year, start_month, end_year, end_month):
