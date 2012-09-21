@@ -313,7 +313,7 @@ def _get_project_association(projects):
     return project_association
 
 def __create_web_users(org_id, reporter_details, language_code):
-    duplicate_email_ids = User.objects.filter(email__in=[x['email'] for x in reporter_details]).values('email')
+    duplicate_email_ids = User.objects.filter(email__in=[x['email'].lower() for x in reporter_details]).values('email')
     errors = []
     dbm = get_database_manager_for_org(Organization.objects.get(org_id=org_id))
     if len(duplicate_email_ids) > 0:
@@ -323,7 +323,7 @@ def __create_web_users(org_id, reporter_details, language_code):
     else:
         for reporter in reporter_details:
             reporter_entity = get_by_short_code(dbm, reporter['reporter_id'], [REPORTER])
-            user = User.objects.create_user(reporter['email'], reporter['email'], 'test123')
+            user = User.objects.create_user(reporter['email'].lower(), reporter['email'].lower(), 'test123')
             group = Group.objects.filter(name="Data Senders")[0]
             user.groups.add(group)
             user.first_name = reporter_entity.value(NAME_FIELD)

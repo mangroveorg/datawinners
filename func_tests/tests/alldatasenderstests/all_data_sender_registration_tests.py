@@ -8,8 +8,9 @@ from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
-from tests.logintests.login_data import VALID_CREDENTIALS
+from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
+from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 
 @attr('suit_1')
 class TestAllDataSender(unittest.TestCase):
@@ -38,6 +39,22 @@ class TestAllDataSender(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
+
+    def login_with_created_datasenders_account(self):
+        """
+        Function to get the email of the newly created data senders and to login with this email
+        """
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        all_data_senders_page = AllDataSendersPage(self.driver)
+        email = all_data_senders_page.get_data_sender_email_by_mobile_number(VALID_DATA_WITH_EMAIL[MOBILE_NUMBER_WITHOUT_HYPHENS])
+        global_navigation = GlobalNavigationPage(self.driver)
+        global_navigation.sign_out()
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        data_sender_crendentials = {USERNAME: email, PASSWORD: "test123"}
+        login_page = LoginPage(self.driver)
+        login_page.login_with(data_sender_crendentials)
+        message = global_navigation.welcome_message()
+        return email, message
 
     @attr('functional_test', 'smoke')
     def test_successful_addition_editing_of_data_sender(self):
@@ -71,6 +88,10 @@ class TestAllDataSender(unittest.TestCase):
 
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL)))
+
+        email, message = self.login_with_created_datasenders_account()
+        self.assertEqual(email.lower(), email)
+        self.assertEqual(message, "Welcome Mickey Duck!")
 
     @attr('functional_test', 'smoke')
     def test_addition_of_data_sender_without_email_address(self):

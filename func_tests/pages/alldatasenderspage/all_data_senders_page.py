@@ -140,3 +140,6 @@ class AllDataSendersPage(Page):
         from pages.lightbox.import_datasender_light_box_page import ImportDatasenderLightBox
         self.driver.find(OPEN_IMPORT_DIALOG_LINK).click()
         return ImportDatasenderLightBox(self.driver)
+
+    def get_data_sender_email_by_mobile_number(self, data_sender_mobile):
+        return self.driver.find(by_xpath(DATA_SENDER_EMAIL_TD_BY_MOBILE_XPATH % data_sender_mobile)).text
