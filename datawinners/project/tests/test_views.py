@@ -18,7 +18,7 @@ from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
 from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, delete_submissions_by_ids, append_success_to_context, formatted_data
-from project.wizard_view import get_preview_and_instruction_links, get_max_code, check_change_date_format_for_reporting_period, get_reporting_period_field
+from project.wizard_view import get_preview_and_instruction_links, get_max_code, is_date_format_of_reporting_period_changed, get_reporting_period_field
 
 class TestProjectViews( unittest.TestCase ):
     def test_should_return_reminders_in_the_required_format(self):
@@ -283,17 +283,17 @@ class TestProjectViews( unittest.TestCase ):
         questionnaire = [
             TextField( name="f1", code="c1", label="f1", ddtype=ddtype),
             DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format="dd.mm.yyyy" )]
-        self.assertTrue(check_change_date_format_for_reporting_period(old_questionnaire, questionnaire))
+        self.assertTrue(is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire))
 
     def test_should_return_false_when_dose_not_change_date_format_for_rp(self):
         ddtype = Mock( spec=DataDictType )
         old_questionnaire = [
             TextField( name="f1", code="c1", label="f1", ddtype=ddtype ),
-            DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format="mm.yyyy" )]
+            DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format=u"mm.yyyy" )]
         questionnaire = [
             TextField( name="f1", code="c1", label="f1", ddtype=ddtype),
             DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format="mm.yyyy" )]
-        self.assertFalse(check_change_date_format_for_reporting_period(old_questionnaire, questionnaire))
+        self.assertFalse(is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire))
 
     def test_should_return_false_when_delete_rp(self):
         ddtype = Mock( spec=DataDictType )
@@ -302,7 +302,7 @@ class TestProjectViews( unittest.TestCase ):
             DateField( name="f2", code="c2", label="f2", ddtype=ddtype, event_time_field_flag = True, date_format="mm.yyyy" )]
         questionnaire = [
             TextField( name="f1", code="c1", label="f1", ddtype=ddtype)]
-        self.assertFalse(check_change_date_format_for_reporting_period(old_questionnaire, questionnaire))
+        self.assertFalse(is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire))
 
     def test_should_return_reporting_period_field_if_questionnaire_contains(self):
         ddtype = Mock( spec=DataDictType )

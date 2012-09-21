@@ -139,11 +139,11 @@ def get_reporting_period_field(questionnaire):
             return question
     return None
 
-def check_change_date_format_for_reporting_period(old_questionnaire, questionnaire):
+def is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire):
     old_reporting_period_question = get_reporting_period_field(old_questionnaire)
     new_reporting_period_question = get_reporting_period_field(questionnaire)
     if old_reporting_period_question and new_reporting_period_question:
-        if old_reporting_period_question.date_format is not new_reporting_period_question.date_format:
+        if old_reporting_period_question.date_format != new_reporting_period_question.date_format:
             return True
     return False
 
@@ -153,11 +153,11 @@ def void_submissions(manager, form_model):
     submissions = get_submissions( manager, form_model.form_code, from_time=0,
                                    to_time=int( mktime( tomorrow.timetuple( ) ) ) * 1000, page_size=None )
     for submission in submissions:
-        submission.void( )
+        submission.void()
 
 
 def clear_submissions_if_change_date_format_for_rp(form_model, manager, old_questionnaire, questionnaire):
-    if check_change_date_format_for_reporting_period(old_questionnaire, questionnaire):
+    if is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire):
         void_submissions(manager, form_model)
 
 @login_required(login_url='/login')
