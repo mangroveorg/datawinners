@@ -64,9 +64,11 @@ class TestDataAnalysis(BaseTest):
     def test_filter_data_records_by_year_to_date(self):
         self.verify_reporting_period_filter(FILTER_BY_YEAR_TO_DATE, self.go_to_analysis_page())
 
-    def test_assert_in_date_range(self):
-        self.assertTrue(all(range[0] <= each <= range[-1] for each in dates))
-        self.assertEquals()
+#    def assert_in_date_range(self, range, dates):
+#        self.assertTrue(all(range[0] <= each <= range[-1] for each in dates))
+
+    def assert_in_date_range(self, range, dates):
+        self.assertTrue(range[0] <= each <= range[-1] for each in dates)
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_monthly_reporting_period(self):
@@ -201,14 +203,13 @@ class TestDataAnalysis(BaseTest):
         self.verify_submission_date_filter(YEAR_TO_DATE, self.go_to_analysis_page())
 
     @attr('functional_test', 'smoke')
-    @SkipTest
     def test_filter_data_records_by_keyword(self):
         analysis_page = self.go_to_analysis_page()
         keyword = "Neurological "
         analysis_page.input_keyword(keyword)
         analysis_page.click_go_button()
         filtered_data = analysis_page.get_all_data_records_by_column(7)
-        self.assertEqual(len(filtered_data), 29)
+        self.assertEqual(len(filtered_data), 25)
         self.assertTrue(all([keyword in item for item in filtered_data]))
 
 
