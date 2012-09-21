@@ -72,6 +72,12 @@ class DriverWrapper(object):
         """
         return TextBox(self.find(locator_dict))
 
+    def get_input_value(self, locator_dict):
+        """
+        Get value of a input field
+        """
+        return self.find(locator_dict).get_attribute("value")
+
     def find_radio_button(self, locator_dict):
         """
         Create RadioButton class object with the given web element

@@ -131,10 +131,10 @@ class DataAnalysisPage(Page):
         self.driver.find_visible_element_(CURRENT_MONTH_LABEL).click()
 
     def get_reporting_period(self):
-        return self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).text
+        return self.driver.get_input_value(REPORTING_PERIOD_PICKER_TB)
 
     def get_submission_date(self):
-        return self.driver.find_text_box(SUBMISSION_DATE_PICKER_TB).text
+        return self.driver.get_input_value(SUBMISSION_DATE_PICKER_TB)
 
     def select_last_month(self):
         """

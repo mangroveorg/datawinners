@@ -11,6 +11,9 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
 
+SUBMISSION_DATE_FORMAT = '%d.%m.%Y'
+MONTHLY_REPORTING_PERIOD_FORMAT = "%m.%Y"
+
 @attr('suit_1')
 class TestDataAnalysis(BaseTest):
     @classmethod
@@ -64,11 +67,12 @@ class TestDataAnalysis(BaseTest):
     def test_filter_data_records_by_year_to_date(self):
         self.verify_reporting_period_filter(FILTER_BY_YEAR_TO_DATE, self.go_to_analysis_page())
 
-#    def assert_in_date_range(self, range, dates):
-#        self.assertTrue(all(range[0] <= each <= range[-1] for each in dates))
+    def _to_date_list(self, data_records, date_format):
+        return [datetime.strptime(record, date_format) for record in data_records]
 
-    def assert_in_date_range(self, range, dates):
-        self.assertTrue(range[0] <= each <= range[-1] for each in dates)
+    def assert_in_date_range(self, range, data_records, date_format=SUBMISSION_DATE_FORMAT):
+        range = self._to_date_list(range, date_format)
+        self.assertTrue(all([range[0] <= each <= range[-1] for each in self._to_date_list(data_records, date_format)]))
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_monthly_reporting_period(self):
@@ -83,9 +87,9 @@ class TestDataAnalysis(BaseTest):
         time.sleep(1)
         data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records()
-        report_period = [datetime.strptime(record.split(' ')[1], '%m.%Y') for record in data_records]
+        report_period = [record.split(' ')[1] for record in data_records]
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
-        self.assert_in_date_range(current_month_period, report_period)
+        self.assert_in_date_range(current_month_period, report_period, MONTHLY_REPORTING_PERIOD_FORMAT)
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_daily_reporting_period(self):
@@ -101,7 +105,7 @@ class TestDataAnalysis(BaseTest):
         time.sleep(1)
         data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records()
-        report_period = [datetime.strptime(record.split(' ')[1], '%d.%m.%Y') for record in data_records]
+        report_period = [record.split(' ')[1] for record in data_records]
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
         self.assert_in_date_range(current_month_period, report_period)
 
@@ -111,9 +115,9 @@ class TestDataAnalysis(BaseTest):
         time.sleep(1)
         data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records()
-        report_period = [datetime.strptime(record.split(' ')[1], '%d.%m.%Y') for record in data_records]
-        current_month_period = data_analysis_page.get_reporting_period().split(' - ')
-        self.assert_in_date_range(current_month_period, report_period)
+        report_period = [record.split(' ')[1] for record in data_records]
+        period = data_analysis_page.get_reporting_period().split(' - ')
+        self.assert_in_date_range(period, report_period)
 
     def verify_submission_date_filter(self, period, data_analysis_page):
         data_analysis_page.open_submission_date_drop_down()
@@ -121,8 +125,8 @@ class TestDataAnalysis(BaseTest):
         time.sleep(1)
         data_analysis_page.click_go_button()
         submission_date = data_analysis_page.get_all_data_records_by_column(2)
-        current_month_period = data_analysis_page.get_submission_date().split(' - ')
-        self.assert_in_date_range(current_month_period, submission_date)
+        period = data_analysis_page.get_submission_date().split(' - ')
+        self.assert_in_date_range(period, submission_date)
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_subject_filter(self):
