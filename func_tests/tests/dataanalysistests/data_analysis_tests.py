@@ -64,8 +64,9 @@ class TestDataAnalysis(BaseTest):
     def test_filter_data_records_by_year_to_date(self):
         self.verify_reporting_period_filter(FILTER_BY_YEAR_TO_DATE, self.go_to_analysis_page())
 
-    def assert_in_date_range(self, range, dates):
-        self.assertTrue(range[0] <= each <= range[-1] for each in dates)
+    def test_assert_in_date_range(self):
+        self.assertTrue(all(range[0] <= each <= range[-1] for each in dates))
+        self.assertEquals()
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_monthly_reporting_period(self):
@@ -78,7 +79,7 @@ class TestDataAnalysis(BaseTest):
         end_month = datetime.today().month
         data_analysis_page.select_month_range(start_year, start_month, end_year, end_month)
         time.sleep(1)
-        data_analysis_page.filter_data()
+        data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records()
         report_period = [datetime.strptime(record.split(' ')[1], '%m.%Y') for record in data_records]
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
@@ -96,7 +97,7 @@ class TestDataAnalysis(BaseTest):
         time.sleep(1)
         data_analysis_page.select_date_range(start_year, month, day, end_date.year, end_date.month, end_date.day)
         time.sleep(1)
-        data_analysis_page.filter_data()
+        data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records()
         report_period = [datetime.strptime(record.split(' ')[1], '%d.%m.%Y') for record in data_records]
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
@@ -106,7 +107,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.open_reporting_period_drop_down()
         data_analysis_page.date_range_dict[fetch_(DAILY_DATE_RANGE, from_(period))]()
         time.sleep(1)
-        data_analysis_page.filter_data()
+        data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records()
         report_period = [datetime.strptime(record.split(' ')[1], '%d.%m.%Y') for record in data_records]
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
@@ -116,7 +117,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.open_submission_date_drop_down()
         data_analysis_page.date_range_dict[period]()
         time.sleep(1)
-        data_analysis_page.filter_data()
+        data_analysis_page.click_go_button()
         submission_date = data_analysis_page.get_all_data_records_by_column(2)
         current_month_period = data_analysis_page.get_submission_date().split(' - ')
         self.assert_in_date_range(current_month_period, submission_date)
@@ -126,7 +127,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page = self.go_to_analysis_page()
         subject_name = 'ANALAMANGA'
         data_analysis_page.select_for_subject_type(subject_name)
-        data_analysis_page.filter_data()
+        data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records()
         subject_names = [record.split('\n')[0] for record in data_records]
         subject_sets = set(subject_names)
@@ -138,7 +139,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page = self.go_to_analysis_page()
         data_sender = ('Tester Pune', 'admin', 'tester150411@gmail.com')
         data_analysis_page.select_for_data_sender(data_sender[-1])
-        data_analysis_page.filter_data()
+        data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records_by_column(3)
         data_senders_set = set(data_records)
         self.assertEqual(1, len(data_senders_set))
@@ -149,7 +150,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page = self.go_to_analysis_page()
         data_sender = ('Shweta', 'rep1', '1234567890')
         data_analysis_page.select_for_data_sender(data_sender[-1])
-        data_analysis_page.filter_data()
+        data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records_by_column(3)
         data_senders_set = set(data_records)
         self.assertEqual(1, len(data_senders_set))
@@ -160,7 +161,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page = self.go_to_analysis_page('Clinic Test Project With Monthly Reporting Period'.lower())
         data_sender = ('TEST', '', 'TEST')
         data_analysis_page.select_for_data_sender(data_sender[-1])
-        data_analysis_page.filter_data()
+        data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records_by_column(3)
         data_senders_set = set(data_records)
         self.assertEqual(1, len(data_senders_set))
@@ -198,6 +199,18 @@ class TestDataAnalysis(BaseTest):
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_submission_date_within_year_to_date(self):
         self.verify_submission_date_filter(YEAR_TO_DATE, self.go_to_analysis_page())
+
+    @attr('functional_test', 'smoke')
+    @SkipTest
+    def test_filter_data_records_by_keyword(self):
+        analysis_page = self.go_to_analysis_page()
+        keyword = "Neurological "
+        analysis_page.input_keyword(keyword)
+        analysis_page.click_go_button()
+        filtered_data = analysis_page.get_all_data_records_by_column(7)
+        self.assertEqual(len(filtered_data), 29)
+        self.assertTrue(all([keyword in item for item in filtered_data]))
+
 
 
 

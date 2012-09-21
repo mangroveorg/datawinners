@@ -95,7 +95,7 @@ $(document).ready(function () {
             "oLanguage":{
                 "sProcessing":gettext("Processing..."),
                 "sLengthMenu":gettext("Show _MENU_ Submissions"),
-                "sZeroRecords":gettext("No matching records found"),
+                "sZeroRecords":emptyTableText,
                 "sEmptyTable":emptyTableText,
                 "sLoadingRecords":gettext("Loading..."),
                 "sInfo":gettext("<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</span> Submissions"),

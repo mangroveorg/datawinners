@@ -148,7 +148,7 @@ class DataAnalysisPage(Page):
         """
         self.driver.find_visible_element_(YEAR_TO_DATE_LABEL).click()
 
-    def filter_data(self):
+    def click_go_button(self):
         """
         Function to filter the data according to date range
         """
@@ -229,3 +229,6 @@ class DataAnalysisPage(Page):
 
     def get_total_count_of_records(self):
         return self.driver.find(TOTAL_RECORD_LABEL).text
+
+    def input_keyword(self, keyword):
+        self.driver.find(KEYWORD_TB).send_keys(keyword)

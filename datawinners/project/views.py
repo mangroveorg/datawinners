@@ -551,23 +551,6 @@ def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)
     return import_url if project_id is None else ("%s?project_id=%s" % (import_url, project_id))
 
-#todo Leaving this commented for reference
-#@login_required(login_url='/login')
-#def reminders_wizard(request, project_id=None):
-#    if request.method == 'GET':
-#        dbm = get_database_manager(request.user)
-#        project = Project.load(dbm.database, project_id)
-#        previous_link = reverse(datasenders_wizard, args=[project_id])
-#        profile = request.user.get_profile()
-#        organization = Organization.objects.get(org_id=profile.org_id)
-#        context = {"previous": previous_link,
-#                 'project': project,
-#                 'is_reminder': project.is_reminder_enabled(),
-#                 'in_trial_mode': organization.in_trial_mode,
-#        }
-#        return render_to_response('project/reminders_wizard.html', context, context_instance=RequestContext(request))
-#    if request.method == 'POST':
-#        return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
 def _format_string_for_reminder_table(value):
     return (' '.join(value.split('_'))).title()
