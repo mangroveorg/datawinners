@@ -1,9 +1,10 @@
 from mangrove.datastore.entity import get_by_short_code
+from mangrove.errors.MangroveException import DataObjectNotFound
 import re
 from mangrove.form_model.field import SelectField
 from mangrove.form_model.form_model import FormModel
 from project import helper
-from project.helper import filter_submissions, get_data_sender, _to_str, case_insensitive_lookup
+from project.helper import filter_submissions, get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
 from enhancer import form_model_enhancer, field_enhancer
 
 NULL = '--'
@@ -58,8 +59,13 @@ class SubmissionAnalyzer(object):
             result.append(row)
         return result
 
-    def _get_first_element_of_leading_part(self,submission):
-        entity = get_by_short_code(self.manager, case_insensitive_lookup(self.form_model.entity_question.code, submission.values), [self.form_model.entity_type[0]])
+    def _get_first_element_of_leading_part(self, submission):
+        short_code = case_insensitive_lookup(self.form_model.entity_question.code, submission.values)
+        try:
+            entity = get_by_short_code(self.manager, short_code, [self.form_model.entity_type[0]])
+        except DataObjectNotFound:
+            return NOT_AVAILABLE, short_code
+
         return entity.data['name']['value'], entity.short_code
 
     def get_field_values(self):

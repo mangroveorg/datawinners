@@ -23,7 +23,7 @@ from models import Reminder
 from mangrove.transport import Request, TransportInfo
 import re
 
-UNKNOW_DATASENDER_NAME = "N/A"
+NOT_AVAILABLE = "N/A"
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
@@ -121,11 +121,11 @@ def get_org_id_by_user(user):
 
 def get_datasender_by_mobile(dbm, mobile):
     rows = dbm.load_all_rows_in_view( "datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}] )
-    return rows[0].key[1:] if len(rows) > 0 else [UNKNOW_DATASENDER_NAME, None]
+    return rows[0].key[1:] if len(rows) > 0 else [NOT_AVAILABLE, None]
 
 def get_data_sender(dbm, user, submission):
     submission_source = submission.source
-    datasender = ('N/A', None, submission_source)
+    datasender = (NOT_AVAILABLE, None, submission_source)
 
     if submission.channel == 'sms':
         datasender = tuple(get_datasender_by_mobile( dbm, submission_source ) + [submission_source])
@@ -147,14 +147,14 @@ def case_insensitive_lookup(search_key, dictionary):
             return value
     return None
 
-def get_first_element_of_leading_part(dbm, form_model, submission, data_sender):
+def get_first_element_of_leading_part(dbm, form_model, submission):
     sort_code = case_insensitive_lookup( form_model.entity_question.code, submission.values )
     try:
         entity = get_by_short_code(dbm, sort_code, [form_model.entity_type[0]])
 
         return entity.data['name']['value'], entity.short_code
     except DataObjectNotFound:
-        return "N/A", sort_code
+        return NOT_AVAILABLE, sort_code
 
 def get_leading_part(dbm, form_model, submissions, user):
     result = []
@@ -172,7 +172,7 @@ def get_leading_part(dbm, form_model, submissions, user):
             row = [reporting_period] + row
 
         if is_first_element_needed:
-            first_element = get_first_element_of_leading_part(dbm, form_model, submission, data_sender)
+            first_element = get_first_element_of_leading_part(dbm, form_model, submission)
             row = [first_element] + row
 
         result.append(row)

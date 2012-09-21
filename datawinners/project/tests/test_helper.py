@@ -11,7 +11,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesN
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
 from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
-from project.helper import get_field_values, to_value_list_based_on_field_order, get_data_sender
+from project.helper import get_field_values, to_value_list_based_on_field_order, get_data_sender, get_first_element_of_leading_part, NOT_AVAILABLE
 from project.tests.submission_log_data import submission1, SUBMISSIONS
 from project.views import build_filters
 
@@ -363,7 +363,7 @@ class TestPreviewCreator(unittest.TestCase):
         url = _get_imports_subjects_post_url()
         self.assertEqual("/entity/subject/import/", url)
 
-    def test_should_return_n_a_when_the_data_sender_was_deleted_and_send_from_sms(self):
+    def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_sms(self):
         dbm = Mock(spec=DatabaseManager)
         user = Mock()
         submission = Mock()
@@ -374,9 +374,9 @@ class TestPreviewCreator(unittest.TestCase):
             with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
                 load_all_rows_in_view.return_value = []
                 data_sender = get_data_sender( dbm, user, submission )
-                self.assertEqual(("N/A", None, '123321'), data_sender)
+                self.assertEqual((NOT_AVAILABLE, None, '123321'), data_sender)
 
-    def test_should_return_n_a_when_the_data_sender_was_deleted_and_send_from_web(self):
+    def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_web(self):
         dbm = Mock(spec=DatabaseManager)
         user = Mock()
         submission = Mock()
@@ -385,9 +385,9 @@ class TestPreviewCreator(unittest.TestCase):
         with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
             get_org_id_by_user.return_value = "123"
             data_sender = get_data_sender( dbm, user, submission )
-            self.assertEqual(("N/A", None, '123321'), data_sender)
+            self.assertEqual((NOT_AVAILABLE, None, '123321'), data_sender)
 
-    def test_should_return_n_a_when_the_data_sender_was_deleted_and_send_from_smart_phone(self):
+    def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_smart_phone(self):
         dbm = Mock(spec=DatabaseManager)
         user = Mock()
         submission = Mock()
@@ -397,4 +397,16 @@ class TestPreviewCreator(unittest.TestCase):
         with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
             get_org_id_by_user.return_value = "123"
             data_sender = get_data_sender( dbm, user, submission )
-            self.assertEqual(("N/A", None, '123321'), data_sender)
+            self.assertEqual((NOT_AVAILABLE, None, '123321'), data_sender)
+
+    def test_should_return_N_A_when_the_subject_was_deleted(self):
+        form_model = Mock(spec=FormModel)
+        form_model.entity_type = ['whatever']
+        submissions = Mock(spec=dict)
+        submissions.values = {}
+        with patch("project.helper.get_by_short_code") as get_by_short_code:
+            with patch("project.helper.case_insensitive_lookup") as case_insensitive_lookup:
+                get_by_short_code.side_effect = DataObjectNotFound(None, None, None)
+                subject_info = get_first_element_of_leading_part(None, form_model, submissions)
+                self.assertEqual(NOT_AVAILABLE, subject_info[0])
+

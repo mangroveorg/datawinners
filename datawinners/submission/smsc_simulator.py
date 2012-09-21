@@ -3,7 +3,7 @@ from django.http import  HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from mangrove.datastore.database import get_db_manager
-from project.helper import get_datasender_by_mobile, UNKNOW_DATASENDER_NAME
+from project.helper import get_datasender_by_mobile, NOT_AVAILABLE
 import settings
 from submission.organization_finder import OrganizationFinder
 from submission.views import sms, _get_from_and_to_numbers
@@ -18,7 +18,7 @@ def is_data_sender(data_sender_number, org_settings):
     document_store = org_settings.document_store
     dbm = get_db_manager(settings.COUCH_DB_SERVER, document_store)
     data_sender = get_datasender_by_mobile(dbm, data_sender_number)
-    return data_sender[0] != UNKNOW_DATASENDER_NAME
+    return data_sender[0] != NOT_AVAILABLE
 
 @csrf_view_exempt
 @csrf_response_exempt
