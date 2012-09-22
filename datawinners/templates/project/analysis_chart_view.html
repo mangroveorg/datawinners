@@ -1,155 +1,20 @@
 {% load i18n %}
 {% load dw_tabs %}
 
-
-
 {% block page_js %}
+    <script type="text/javascript" src="/media/javascript/flot/excanvas.min.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/all_datasender_reload_tables.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
     <script language="javascript" type="text/javascript" src="/media/javascript/flot/jquery.flot.min.js"></script>
-    <script language="javascript" type="text/javascript"
-            src="/media/javascript/flot/jquery.flot.fillbetween.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/media/javascript/flot/jquery.flot.fillbetween.min.js"></script>
     <script language="javascript" type="text/javascript" src="/media/javascript/flot/jquery.flot.pie.min.js"></script>
-
+    <script language="javascript" type="text/javascript" src="/media/javascript/flot/jquery.flot.valuelabel.js"></script>
     <script type="text/javascript">
-
-{#        var data = JSON.parse({{data_list|safe}});#}
-{#        var question_type_list = JSON.parse({{ question_type_list|safe }});#}
-
-        function get_chart_type(question_type) {
-            switch (question_type) {
-                case 'select1':
-                    return 'pie';
-                default:
-                    return 'bar';
-            }
-        }
-
-        function drawReport(response) {
-            var data = response.data;
-            var question_type_list = response.question_type_list;
-
-            var j = 1;
-
-            for (var question_name in data) {
-
-                var answers = data[question_name];
-
-                var chart_type = get_chart_type(question_type_list[question_name]);
-                if (chart_type == 'bar') {
-                    drawBar(answers, ".chart-" + j++);
-                }
-                else if(chart_type == 'pie'){
-                    drawPie(answers, ".chart-" + j++)
-                }
-            }
-        }
-
-        function drawBar(answers, locator) {
-            var chart_data = [];
-            var axis_label = [];
-            var i = 1;
-            for (var answer in answers) {
-                chart_data.push([i, answers[answer]]);
-                axis_label.push([i, answer]);
-                i++;
-            }
-            $.plot(
-                    $(locator),
-                    [
-                        {
-                            data:chart_data,
-                            bars:{
-                                show:true,
-                                barWidth:.5,
-                                align:"center",
-                                fillColor: { colors: ["#090", "#080", "#050"] }
-                            },
-                            legend:{
-                                show:true
-                            }
-                        }
-                    ],
-                    {
-                        xaxis:{
-                            ticks:axis_label,
-                            tickLength:0
-                        },
-                        grid:{
-                            show:true
-                        }
-                    }
-            );
-
-
-        }
-
-        function drawPie(answers, locator) {
-            var data = [];
-            var color = ["#F3FEF1","#D1FCC9",'#A4FA94','#82F86C', '#60F744', '#4AF62A'];
-            var i = 0;
-            for (var answer in answers){
-                data.push({label:answer, data:answers[answer], color:color[i++]})
-            }
-
-            $.plot($(locator), data,
-                    {
-                        series:{
-                            pie:{
-                                show:true,
-                                radius:1,
-                                label:{
-                                    show:true,
-                                    radius:2 / 3,
-                                    formatter:function (label, series) {
-                                        return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
-                                    }
-                                }
-                            }
-
-                        },
-                        legend:{
-                            show:false
-                        }
-                    });
-        }
-
-        function drawChart(response) {
-            $('#web_user_table_body').html($.tmpl('webUserTemplate', data_sender_details));
-            var wrapper = $("<ol/>");
-            wrapper.css({marginTop:"30px",marginLeft:"20px"});
-            for(question_name in response.data){
-                var item = $("<li/>");
-                var header = $("<h6/>").text(question_name);
-                header.appendTo(item);
-
-            }
-            drawReport(response);
-        }
-
+        var statistics = JSON.parse({{statistics_result|safe}});
     </script>
-
 {% endblock %}
-{##}
-{##}
-{#<ol style="margin-top: 30px;margin-left: 20px;">#}
-{#    {% for question_name, value in data.iteritems %}#}
-{#        <li><h6>{{ question_name }}</h6>#}
-{##}
-{#            <div class="chart_and_table, clearfix" style="margin-top: 30px;">#}
-{#                <div class="chart-{{ forloop.counter }}"#}
-{#                     style="width:400px;height:300px;float: left;margin-left: 50px;"></div>#}
-{##}
-{#                <ul style="margin-left: 20px;float: right;margin-right: 40px;">#}
-{#                    {% for answer, count in value.items %}#}
-{#                        <li><span style="width: 200px;display: inline-block;">{{ answer }}</span>#}
-{#                            <span style="width: 100px;display: inline-block;">{{ count }}</span>#}
-{#                            <span style="display: inline-block;">({{ count|percentage:total_count }})</span></li>#}
-{#                    {% endfor %}#}
-{#                </ul>#}
-{#            </div>#}
-{#        </li>#}
-{#    {% endfor %}#}
-{#</ol>#}
+
+<ol id="chart_ol" style="margin-top: 10px;margin-left: 20px;float: left">
+</ol>

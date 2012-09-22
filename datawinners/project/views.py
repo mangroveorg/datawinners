@@ -428,6 +428,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
     header_list = analyzer.get_headers()
     subject_list = analyzer.get_subjects()
     datasender_list = analyzer.get_data_senders()
+    statistics_result = analyzer.get_analysis_statistics()
 
     if request.method == "GET":
         rp_field = form_model.event_time_question
@@ -450,39 +451,11 @@ def project_data(request, project_id=None, questionnaire_code=None):
                  'in_trial_mode': in_trial_mode,
                  'reporting_period_question_text': rp_field.label[form_model.activeLanguages[0]] if has_rp else None,
                  'has_reporting_period': has_rp,
-                 'is_summary_report':is_summary_report},
+                 'is_summary_report':is_summary_report,
+                 "statistics_result": repr(encode_json(statistics_result))},
             context_instance=RequestContext(request))
     if request.method == "POST":
-        return HttpResponse(encode_json({'data': field_values}))
-
-
-@login_required( login_url='/login' )
-@is_datasender
-@is_not_expired
-def project_summary(request, project_id=None, questionnaire_code=None):
-    manager = get_database_manager( request.user )
-    project = Project.load( manager.database, project_id )
-    form_model = get_form_model_by_code( manager, questionnaire_code )
-
-    start_time = request.GET.get( "start_time" )
-    end_time = request.GET.get( "end_time" )
-    start_time = helper.get_formatted_time_string(
-        start_time.strip( ) + START_OF_DAY ) if start_time is not None else None
-    end_time = helper.get_formatted_time_string( end_time.strip() + END_OF_DAY ) if end_time is not None else None
-
-    data_dictionary, count = aggregate_module.aggregate_on_question_by_form_code_python( manager, questionnaire_code,
-        starttime=start_time,
-        endtime=end_time )
-    question_type_list = dict( (field.name, field.type) for field in form_model.fields )
-
-    if request.method == "GET":
-        in_trial_mode = _in_trial_mode( request )
-        content = { 'project': project,
-                    'in_trial_mode': in_trial_mode, 'data': data_dictionary, 'total_count':count,  "data_list": repr(encode_json( data_dictionary )),
-                    'question_type_list':repr(encode_json(question_type_list))}
-        context = RequestContext( request, content )
-        return render_to_response( 'project/data_summary.html', context )
-#        return HttpResponse(encode_json({'data': data_dictionary,'question_type_list':question_type_list}))
+        return HttpResponse(encode_json({'data_list': field_values,"statistics_result": statistics_result}))
 
 @login_required(login_url='/login')
 @session_not_expired

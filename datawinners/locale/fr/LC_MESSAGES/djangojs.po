@@ -145,6 +145,9 @@ msgstr "Toutes les dates"
 msgid "All Data Senders"
 msgstr "Tous les Expéditeurs"
 
+msgid "Submissions"
+msgstr "Soumissions"
+
 #: media/javascript/file_uploader/fileuploader.js:480
 msgid "Drop files here to upload"
 msgstr "Glisser les fichiers à télécharger ici"
@@ -723,3 +726,24 @@ msgstr "Tout(es) les"
 
 msgid "No submissions available for this search. Try removing some of your filters."
 msgstr "Aucune soumission disponible pour cette recherche. Essayez de retirer certains de vos filtres."
+
+msgid "Pie Chart"
+msgstr "Graphique Circulaire"
+
+msgid "Bar Chart"
+msgstr "Histogramme"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Choice"
+msgstr "Choix"
+
+msgid "Percent"
+msgstr "Pourcentage"
+
+msgid "Amount"
+msgstr "Montant"
+
+msgid "Your Data Senders can choose more than 1 answer. That is why percentages may add up to more than 100%."
+msgstr "Vos Expéditeurs de Données peuvent choisir plus d'une réponse. C'est pour cela que la somme des pourcentages peut dépasser 100%."

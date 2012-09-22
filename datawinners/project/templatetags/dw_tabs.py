@@ -116,3 +116,7 @@ def percentage(fraction, population):
         return "%.2f%%" % ((float(fraction) / float(population)) * 100)
     except ValueError:
         return ''
+
+@register.filter(name='str_to_json')
+def str_to_json(repred_string):
+    return eval(eval(repred_string))

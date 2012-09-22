@@ -3,7 +3,7 @@ from datetime import datetime
 import unittest
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import TextField, SelectField, DateField
+from mangrove.form_model.field import TextField, SelectField, DateField, field_attributes
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.submissions import Submission
@@ -21,12 +21,12 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         row = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
         expected = {"eid": "cli14","RD": "01.01.2012", "SY": ['Rapid weight loss', 'Dry cough', 'Pneumonia'], "BG": ['B+']}
         form_model = self._prepare_form_model(self.manager)
-        self._prepare_analyzer(form_model, row)._replace_option_with_real_answer_value(row)
+        self._prepare_analyzer_with_one_submission(form_model, row)._replace_option_with_real_answer_value(row)
         self.assertEqual(expected, row)
 
     def test_should_get_leading_part_for_non_summary_project(self):
         form_model = self._prepare_form_model(self.manager)
-        analyzer = self._prepare_analyzer(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
         with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
             "project.submission_analyzer.get_by_short_code") as get_by_short_code:
@@ -38,7 +38,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def test_should_get_leading_part_for_summary_project(self):
         form_model = self._prepare_summary_form_model(self.manager)
-        analyzer = self._prepare_analyzer(form_model, {"eid": "rep01", "SY": "a2bc", "BG": "d"})
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "rep01", "SY": "a2bc", "BG": "d"})
 
         with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
             "project.submission_analyzer.get_by_short_code") as get_by_short_code:
@@ -50,7 +50,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def test_should_get_raw_field_values(self):
         form_model = self._prepare_form_model(self.manager)
-        analyzer = self._prepare_analyzer(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
         with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
             "project.submission_analyzer.get_by_short_code") as get_by_short_code:
@@ -62,7 +62,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def test_should_get_subject_list(self):
         form_model = self._prepare_form_model(self.manager)
-        analyzer = self._prepare_analyzer(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
         with patch("project.submission_analyzer.SubmissionAnalyzer.leading_part"):
             analyzer.leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
@@ -74,7 +74,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def test_should_get_data_sender_list(self):
         form_model = self._prepare_form_model(self.manager)
-        analyzer = self._prepare_analyzer(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
         with patch("project.submission_analyzer.SubmissionAnalyzer.leading_part") :
             analyzer.leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name_2', 'id_2', 'from_2')],
@@ -83,6 +83,31 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             data_sender_list = analyzer.get_data_senders()
             expected = [('name_1', 'id_1', 'from_1'), ('name_2', 'id_2', 'from_2')]
             self.assertEqual(expected, data_sender_list)
+
+    def test_should_get_statistic_result(self):
+        #question name ordered by field
+        #options ordered by count(asc),option(alphabetic)
+        #total = submission count of this question
+        form_model = self._prepare_form_model(self.manager)
+        d_ = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
+              {"eid": "cli14", "RD": "01.01.2012", "BG": "c"}
+             ]
+        analyzer = self._prepare_analyzer(form_model, d_)
+
+        with patch("project.submission_analyzer.SubmissionAnalyzer.leading_part"):
+            analyzer.leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')]]
+            statistics = analyzer.get_analysis_statistics()
+
+            q1 = ["Zhat are symptoms?", field_attributes.MULTISELECT_FIELD, 1,[
+                                                                                ["Dry cough", 1],
+                                                                                ["Pneumonia", 1],
+                                                                                ["Rapid weight loss", 1],
+                                                                                ["Memory loss", 0],
+                                                                                ["Neurological disorders ", 0]]
+                                                                               ]
+            q2 = ["What is your blood group?", field_attributes.SELECT_FIELD, 2,[["AB", 1],["B+", 1], ["O+", 0], ["O-", 0]]]
+            expected = [q1, q2]
+            self.assertEqual(expected, statistics)
 
     def test_should_format_field_values_to_list_presentation(self):
         raw_values = [[('Clinic-One', 'cli14'), '01.01.2012', today, ('name', 'id', 'from'), ['one', 'two', 'three'], ['B+'], None, ""]]
@@ -96,7 +121,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         rp_field = DateField(label="Report date", code="RD", name="What is réporting date?",
             date_format="dd.mm.yyyy", event_time_field_flag=True, ddtype=Mock(),
             instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
-        symptoms_field = SelectField(label="What are symptoms?", code="SY", name="What are symptoms?",
+        symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=Mock())
         blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
@@ -108,7 +133,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
     def _prepare_summary_form_model(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
             language="en", entity_question_flag=True, ddtype=Mock())
-        symptoms_field = SelectField(label="What are symptoms?", code="SY", name="What are symptoms?",
+        symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=Mock())
         blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
@@ -123,12 +148,25 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         entity._doc.data = {'name': {'value': 'Clinic-One'}}
         return entity
 
-    def _prepare_analyzer(self, form_model, values):
+    def _prepare_analyzer_with_one_submission(self, form_model, values):
         with patch("project.submission_analyzer.filter_submissions") as filter_submissions:
             submission = Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
                 form_code=form_model.form_code,
                 values=values)
             filter_submissions.return_value = [submission]
+
+            return SubmissionAnalyzer(form_model, self.manager, self.request, None)
+
+    def _prepare_analyzer(self, form_model, values_list):
+        with patch("project.submission_analyzer.filter_submissions") as filter_submissions:
+            return_value = []
+            for values in values_list:
+                submission = Submission(self.manager,
+                    transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
+                    form_code=form_model.form_code,
+                    values=values)
+                return_value.append(submission)
+            filter_submissions.return_value = return_value
 
             return SubmissionAnalyzer(form_model, self.manager, self.request, None)

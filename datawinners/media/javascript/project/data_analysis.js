@@ -5,7 +5,6 @@ $(document).ready(function () {
     var $filterSelects = $('#subjectSelect, #dataSenderSelect');
     var $datepicker_inputs = $('#reportingPeriodPicker, #submissionDatePicker');
 
-
     addOnClickListener();
     buildRangePicker();
     buildFilters();
@@ -26,9 +25,13 @@ $(document).ready(function () {
                 data: data,
                 success:function (response) {
                     var response_data = JSON.parse(response);
-                    DW.dataBinding(response_data.data, true, false, help_all_data_are_filtered);
+                    DW.dataBinding(response_data.data_list, true, false, help_all_data_are_filtered);
+                    drawChart(response_data.statistics_result, response_data.data_list.length);
                     DW.wrap_table();
-//                    DW.draw_chart(response_data.data, header_list);
+                    if(DW.chart_view_shown){
+                        $('#data_analysis_wrapper').hide();
+                    }
+
                 }});
         }
     );
@@ -118,8 +121,7 @@ $(document).ready(function () {
 
         $dataTable.fnFilter($('#keyword').val())
     };
-    DW.draw_chart = function (initial_data) {
-    };
+
     function buildRangePicker() {
         function configureSettings(header, ismonthly) {
             var year_to_date_setting = {text:gettext('Year to date'), dateStart:function () {
@@ -185,14 +187,32 @@ $(document).ready(function () {
         });
     }
 
-    DW.dataBinding(initial_data, false, true, help_no_submission);
-    DW.wrap_table();
+    function init_page() {
+        DW.dataBinding(initial_data, false, true, help_no_submission);
+        DW.wrap_table();
+        drawChart(statistics,initial_data.length);
+        $('#data_analysis select').customStyle();
+        DW.chart_view_shown = false;
+        $('#data_analysis_chart').hide();
+        $('#chart_info').hide();
 
-    DW.draw_chart(initial_data);
-    $('#data_analysis select').customStyle();
+        if (initial_data.length == 0) {
+            function disableFilters() {
+                var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),
+                    $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
+                    $('#dataTable_search input')].concat($datepicker_inputs);
 
-    DW.chart_view_shown = false;
-    $('#data_analysis_chart').hide();
+                $.each(filters, function (index, filter) {
+                    filter.addClass('disabled').attr('disabled', 'disabled');
+                    filter.unbind('click');
+                })
+                $('.filter_label').css({color:"#888"});
+            }
+
+            disableFilters();
+            $('#no_filter_help').show();
+        }
+    };
 
     DW.show_data_view = function() {
         if(DW.chart_view_shown){
@@ -204,6 +224,8 @@ $(document).ready(function () {
     };
 
     DW.toggle_view = function () {
+        $('#dataTables_info').toggle();
+        $('#chart_info').toggle();
         $('#data_analysis_chart').toggle();
         $('#data_analysis_wrapper').toggle();
     };
@@ -216,33 +238,6 @@ $(document).ready(function () {
             DW.chart_view_shown = true;
         }
     };
-
-    DW.show_chart_view = function() {
-        if(!DW.chart_view_shown){
-            $("#table_view").removeClass("active");
-            $("#chart_view").addClass("active-right");
-            DW.toggle_view();
-            DW.chart_view_shown = true;
-
-        }
-    };
-
-    if (initial_data.length == 0) {
-        function disableFilters() {
-            var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),
-                $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
-                $('#keyword')].concat($datepicker_inputs);
-
-            $.each(filters, function (index, filter) {
-                filter.addClass('disabled').attr('disabled', 'disabled');
-                filter.unbind('click');
-            })
-            $('.filter_label').css({color:"#888"});
-        }
-
-        disableFilters();
-        $('#no_filter_help').show();
-    }
 
     function buildFilters() {
         var subject_options = {emptyText:gettext("All") + ' ' + entity_type};
@@ -264,4 +259,7 @@ $(document).ready(function () {
             $('#time_submit').click();
         }
     });
+
+    init_page();
+
 });

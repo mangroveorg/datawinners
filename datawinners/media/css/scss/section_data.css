@@ -88,8 +88,7 @@ table {
         background: url(/media/images/list_chart_map.png) no-repeat top left;
         padding: 2px 10px 2px 23px; }
         .view_data_block .view_style_block ul li a {
-          padding: 10px;
-          color: #CCCCCC; }
+          padding: 10px; }
       .view_data_block .view_style_block ul li.active {
         background-color: #94d1ff;
         border: 1px solid #94d1ff;
@@ -97,6 +96,9 @@ table {
         -webkit-border-radius: 10px 0 0px 10px; }
         .view_data_block .view_style_block ul li.active a {
           color: #000000; }
+        .view_data_block .view_style_block ul li.active a:hover {
+          text-decoration: none;
+          cursor: default; }
       .view_data_block .view_style_block ul li.active-right {
         background-color: #94d1ff;
         border: 1px solid #94d1ff;
@@ -104,6 +106,9 @@ table {
         -webkit-border-radius: 0px 10px 10px 0px; }
         .view_data_block .view_style_block ul li.active-right a {
           color: #000000; }
+        .view_data_block .view_style_block ul li.active-right a:hover {
+          text-decoration: none;
+          cursor: default; }
       .view_data_block .view_style_block ul li.list {
         background-position: 6px 3px;
         border-right: 1px solid #CCC; }
