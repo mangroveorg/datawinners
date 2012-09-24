@@ -212,10 +212,8 @@ def edit_project(request, project_id=None):
             except DataObjectAlreadyExists:
                 return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': 'Questionnaire with this code already exists'}))
 
-
             try:
                 project.save(manager)
-
             except DataObjectAlreadyExists as ex:
                 message  = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
                 return HttpResponse(json.dumps({'success': False ,'error_message': message, 'error_in_project_section': True}))
@@ -284,6 +282,7 @@ def reminder_settings(request, project_id):
             return render_to_response(html,
                     {'project_links': project_links,'project': project,
                      'form':form},context_instance=RequestContext(request))
+
 
 def _reminder_info_about_project(project):
     data = {}

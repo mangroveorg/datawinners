@@ -8,6 +8,7 @@ from project import helper
 from project.helper import filter_submissions, get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
 from enhancer import form_model_enhancer, field_enhancer
 from utils import sorted_unique_list
+
 NULL = '--'
 field_enhancer.enhance()
 form_model_enhancer.enhance()
@@ -142,22 +143,19 @@ class SubmissionAnalyzer(object):
             list_result.append(row)
         return list_result
     ##
-def get_formatted_values_for_list(values, tuple_sep = "\n", list_sep = ","):
+def get_formatted_values_for_list(values):
     formatted_values = []
     for row in values:
-        result = _format_row(list_sep, row, tuple_sep)
+        result = _format_row(row)
         formatted_values.append(list(result))
     return formatted_values
 
-def _format_row(list_sep, row, tuple_sep):
+def _format_row(row):
     for each in row:
         if isinstance(each, tuple):
-            assert len(each) >= 2
-            new_val = "%s%s(%s)" % (each[0], tuple_sep, each[1]) if each[1] else each[0]
+            new_val = '%s%s(<span class="small_grey">%s</span>)' % (each[0], ' ', each[1]) if each[1] else each[0]
         elif isinstance(each, list):
-            new_val = list_sep.join(each)
+            new_val = ','.join(each)
         elif each:
             new_val = each
-        else:
-            new_val = NULL
         yield new_val

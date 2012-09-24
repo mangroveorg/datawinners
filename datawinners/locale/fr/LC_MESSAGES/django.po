@@ -824,7 +824,7 @@ msgstr "Analyse"
 
 msgid "no submission sub hint%(url)s"
 msgstr ""
-"Les envois supprimés et ceux contenant des erreurs ne seront pas affichés car ils ne seront pas pris en compte lors de l’analyse de vos données.<br/>"
+"Les soumissions supprimées et les soumissions contenant des erreurs ne seront pas affichées car ils ne seront pas pris en compte lors de l’analyse de vos données.<br/>"
 "Vous pouvez voir et gérer tous les envois sur la page <a href=\"%(url)s\">Registre des Envois</a>.<br/><br/>"
 
 msgid "SMS: Give your <a href=\"#\" class=\"sms_questionnaire sms-preview\"> SMS Questionnaire</a> to your Data Senders and have them send in data"
@@ -4317,8 +4317,8 @@ msgstr "Vous n’avez pas encore enregistré un(e) %(subject)s."
 msgid "Register a %(subject)s"
 msgstr "Enregistrez un(e) %(subject)s"
 
-msgid "Once your Data Senders have sent in data, their data records will appear here."
-msgstr "Une fois que vos expéditeurs ont envoyés des données, leur enregistrements de données apparaîtront ici."
+msgid "Your Data Senders’ successful submissions will appear here."
+msgstr "Les soumissions réussies de vos Expéditeurs de Données seront affichées ici."
 
 msgid "To collect data"
 msgstr "Pour collecter des données"

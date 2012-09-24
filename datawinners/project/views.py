@@ -423,7 +423,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
     raw_field_values = analyzer.get_raw_field_values()
 
     filter_by_keyword(request.POST.get('keyword', ''), raw_field_values)
-    field_values = get_formatted_values_for_list(raw_field_values,'<br/>')
+    field_values = get_formatted_values_for_list(raw_field_values)
 
     header_list = analyzer.get_headers()
     subject_list = analyzer.get_subjects()
@@ -435,7 +435,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
         in_trial_mode = _in_trial_mode(request)
         project = Project.load(manager.database, project_id)
         has_rp = rp_field is not None
-        is_monthly_reporting = rp_field.date_format.find('dd')<0 if has_rp else False
+        is_monthly_reporting = rp_field.date_format.find('dd') < 0 if has_rp else False
 
         return render_to_response('project/data_analysis.html',
                 {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
@@ -991,6 +991,7 @@ def web_questionnaire(request, project_id=None, subject=False):
         questionnaire_form = QuestionnaireForm()
         form_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
             manager, hide_link_class, disable_link_class)
+
         return render_to_response(template, form_context,
             context_instance=RequestContext(request))
 
@@ -999,6 +1000,7 @@ def web_questionnaire(request, project_id=None, subject=False):
         if not questionnaire_form.is_valid():
             form_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
                 manager, hide_link_class, disable_link_class)
+
             return render_to_response(template, form_context,
                 context_instance=RequestContext(request))
 

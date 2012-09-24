@@ -96,7 +96,7 @@
   text-align: center; }
 
 /* Text Styles */
-.bold {
+.bold, .small_grey {
   font-weight: bold; }
 
 .italic {
@@ -373,7 +373,7 @@ span.tooltip {
   clear: right; }
 
 .help_accordion {
-  font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
+  font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
   font-size: 14px;
   line-height: 18px;
   font-style: italic;
@@ -422,3 +422,7 @@ ul.bulleted li {
 
 .full_width {
   width: 100%; }
+
+.small_grey {
+  color: #888;
+  font-size: small; }
