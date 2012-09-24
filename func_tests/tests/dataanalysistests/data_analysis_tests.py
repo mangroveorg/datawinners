@@ -1,7 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datetime import timedelta
-import unittest
-from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 import time
 from framework.base_test import BaseTest, setup_driver, teardown_driver
@@ -86,8 +83,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.select_month_range(start_year, start_month, end_year, end_month)
         time.sleep(1)
         data_analysis_page.click_go_button()
-        data_records = data_analysis_page.get_all_data_records()
-        report_period = [record.split(' ')[1] for record in data_records]
+        report_period = data_analysis_page.get_all_data_records_by_column(1)
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
         self.assert_in_date_range(current_month_period, report_period, MONTHLY_REPORTING_PERIOD_FORMAT)
 
@@ -104,8 +100,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.select_date_range(start_year, month, day, end_date.year, end_date.month, end_date.day)
         time.sleep(1)
         data_analysis_page.click_go_button()
-        data_records = data_analysis_page.get_all_data_records()
-        report_period = [record.split(' ')[1] for record in data_records]
+        report_period = data_analysis_page.get_all_data_records_by_column(1)
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
         self.assert_in_date_range(current_month_period, report_period)
 
@@ -114,8 +109,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.date_range_dict[fetch_(DAILY_DATE_RANGE, from_(period))]()
         time.sleep(1)
         data_analysis_page.click_go_button()
-        data_records = data_analysis_page.get_all_data_records()
-        report_period = [record.split(' ')[1] for record in data_records]
+        report_period = data_analysis_page.get_all_data_records_by_column(1)
         period = data_analysis_page.get_reporting_period().split(' - ')
         self.assert_in_date_range(period, report_period)
 
@@ -135,7 +129,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.select_for_subject_type(subject_name)
         data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records()
-        subject_names = [record.split('\n')[0] for record in data_records]
+        subject_names = [record.split(' ')[0] for record in data_records]
         subject_sets = set(subject_names)
         self.assertEqual(1, len(subject_sets))
         self.assertEqual(subject_name, subject_names[0])
@@ -149,7 +143,7 @@ class TestDataAnalysis(BaseTest):
         data_records = data_analysis_page.get_all_data_records_by_column(3)
         data_senders_set = set(data_records)
         self.assertEqual(1, len(data_senders_set))
-        self.assertEqual(data_sender[0] + '\n(' + data_sender[1] +')' , data_records[0])
+        self.assertEqual(data_sender[0] + ' (' + data_sender[1] +')' , data_records[0])
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_sms_or_web_data_sender(self):
@@ -160,7 +154,7 @@ class TestDataAnalysis(BaseTest):
         data_records = data_analysis_page.get_all_data_records_by_column(3)
         data_senders_set = set(data_records)
         self.assertEqual(1, len(data_senders_set))
-        self.assertEqual(data_sender[0] + '\n(' + data_sender[1] +')' , data_records[0])
+        self.assertEqual(data_sender[0] + ' (' + data_sender[1] +')' , data_records[0])
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_test_data_sender(self):

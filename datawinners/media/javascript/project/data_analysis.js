@@ -26,12 +26,11 @@ $(document).ready(function () {
                 success:function (response) {
                     var response_data = JSON.parse(response);
                     DW.dataBinding(response_data.data_list, true, false, help_all_data_are_filtered);
-                    drawChart(response_data.statistics_result, response_data.data_list.length);
+//                    drawChart(response_data.statistics_result, response_data.data_list.length);
                     DW.wrap_table();
                     if(DW.chart_view_shown){
                         $('#data_analysis_wrapper').hide();
                     }
-
                 }});
         }
     );
@@ -118,8 +117,6 @@ $(document).ready(function () {
             "sDom":'<"@dataTables_info"i>rtpl<"@dataTable_search">',
             "iDisplayLength":25
         });
-
-        $dataTable.fnFilter($('#keyword').val())
     };
 
     function buildRangePicker() {

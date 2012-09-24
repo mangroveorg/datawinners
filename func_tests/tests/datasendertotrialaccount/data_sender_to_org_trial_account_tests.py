@@ -7,7 +7,6 @@ from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDE
 from nose.plugins.attrib import attr
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
 import json
-from nose.plugins.skip import SkipTest
 
 
 # add data sender to trial account
