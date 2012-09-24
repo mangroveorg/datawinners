@@ -180,13 +180,13 @@ class TestDataAnalysis(BaseTest):
     @attr('functional_test')
     def test_should_close_subject_dropdown_when_opening_daterange_dropdown(self):
         data_analysis_page = self.go_to_analysis_page('Clinic Test Project With Monthly Reporting Period'.lower())
-        self.assertFalse(data_analysis_page.subject_drop_down_is_opened())
+        self.assertFalse(data_analysis_page.dropdown_checklist_is_opened())
         data_analysis_page.open_subject_type_drop_down()
-        self.assertTrue(data_analysis_page.subject_drop_down_is_opened())
+        self.assertTrue(data_analysis_page.dropdown_checklist_is_opened())
         data_analysis_page.open_reporting_period_drop_down()
         time.sleep(1)
         self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
-        self.assertFalse(data_analysis_page.subject_drop_down_is_opened())
+        self.assertFalse(data_analysis_page.dropdown_checklist_is_opened())
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_submission_date_within_current_month(self):
@@ -209,6 +209,30 @@ class TestDataAnalysis(BaseTest):
         filtered_data = analysis_page.get_all_data_records_by_column(7)
         self.assertEqual(len(filtered_data), 25)
         self.assertTrue(all([keyword in item for item in filtered_data]))
+
+    @attr('functional_test', 'smoke')
+    def test_should_clear_checked_item_in_drodown_list_when_click_clear_link(self):
+        subject_names = ["ANALAMANGA", "Analalava"]
+        analysis_page = self.go_to_analysis_page()
+        default_text = analysis_page.get_dropdown_control_text()
+        [analysis_page.select_for_subject_type(name) for name in subject_names]
+        analysis_page.open_subject_type_drop_down()
+
+        self.assertEquals(', '.join(subject_names), analysis_page.get_dropdown_control_text())
+
+        analysis_page.clear_dropdown()
+
+        self.assertEquals(default_text, analysis_page.get_dropdown_control_text())
+
+
+    @attr('functional_test', 'smoke')
+    def test_should_keep_dropdown_list_opened_when_click_clear_link(self):
+        analysis_page = self.go_to_analysis_page()
+        analysis_page.open_subject_type_drop_down()
+        analysis_page.clear_dropdown()
+        
+        self.assertTrue(analysis_page.dropdown_checklist_is_opened())
+
 
 
 

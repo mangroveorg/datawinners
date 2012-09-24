@@ -16,7 +16,7 @@ $(document).ready(function () {
         });
     }
 
-    $('#time_submit').click(function () {
+    $('#go').click(function () {
             var data = DW.submit_data();
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
             $.ajax({
@@ -196,7 +196,7 @@ $(document).ready(function () {
         if (initial_data.length == 0) {
             function disableFilters() {
                 var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"), $(".ui-dropdownchecklist-text"),
-                    $("#time_submit").removeClass('button_blue').addClass('button_disabled'),
+                    $("#go").removeClass('button_blue').addClass('button_disabled'),
                     $('#keyword')].concat($datepicker_inputs);
 
                 $.each(filters, function (index, filter) {
@@ -254,7 +254,7 @@ $(document).ready(function () {
 
     $('#keyword').keypress(function(e) {
         if (e.which == 13) {
-            $('#time_submit').click();
+            $('#go').click();
         }
     });
 

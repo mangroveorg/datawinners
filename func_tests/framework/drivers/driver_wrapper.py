@@ -128,7 +128,7 @@ class DriverWrapper(object):
         Return first element of visible webelements
         """
 
-        return self.find_visible_elements_(locator_dict)[0]
+        return self.find_visible_elements_(locator_dict)[0] or None
 
     def find_visible_elements_(self, locator_dict):
         """

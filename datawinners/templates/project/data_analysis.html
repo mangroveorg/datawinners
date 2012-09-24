@@ -110,7 +110,7 @@
                 </select>
             </div>
         </div>
-        <div class="{% if not has_reporting_period %} none {% endif %} float_left width18">
+        <div class="{% if not has_reporting_period %} none {% endif %} float_left width18" style="min-width: 230px;">
             <div class="filter_label">
                 {% if is_monthly_reporting %} <label>{% trans "Monthly Reporting Period" %}</label>
                     {% else %}<label>{% trans "Daily Reporting Period" %}</label>
@@ -163,7 +163,7 @@
                 </select>
             </div>
         </div>
-        <div class="float_left">
+        <div class="float_left" style="min-width: 155px;">
             <div class="filter_label">
                 <label>{% trans "Search for Keyword" %}</label>
             </div>
@@ -176,7 +176,7 @@
                 <label>&nbsp;</label>
             </div>
             <div class="float_left ">
-                <input type="button" class="button_blue" id="time_submit" value="{% trans 'Go' %}"/>
+                <input type="button" class="button_blue" id="go" value="{% trans 'Go' %}"/>
             </div>
         </div>
 

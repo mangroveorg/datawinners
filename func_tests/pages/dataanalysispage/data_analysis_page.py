@@ -5,9 +5,9 @@ from pages.page import Page
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from tests.dataanalysistests.data_analysis_data import CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE, DAILY_DATE_RANGE, MONTHLY_DATE_RANGE
-import re
 import datetime
 
+MINUS = '-'
 BTN_DONE_ = '//div[contains(@class, "ui-daterangepickercontain")]//button[contains(@class, "btnDone")]'
 
 class DataAnalysisPage(Page):
@@ -202,17 +202,20 @@ class DataAnalysisPage(Page):
             self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
 
     def select_for_subject_type(self, subject_name):
-        self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/../span')).click()
+        self.open_subject_type_drop_down()
         self.driver.wait_for_element(20, by_xpath('//input[@value="%s"]' % subject_name)).click()
         self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/..//button')).click()
 
     def select_for_data_sender(self, data_sender):
-        self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/../span')).click()
+        self.open_data_sender_drop_down()
         self.driver.wait_for_element(20, by_xpath('//input[@data="%s"]' % data_sender)).click()
         self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/..//button')).click()
 
+    def open_data_sender_drop_down(self):
+        self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/../span')).click()
+
     def open_subject_type_drop_down(self):
-        self.driver.wait_for_element(20, by_css("#ddcl-subjectSelect > span")).click()
+        self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/../span')).click()
 
     def open_reporting_period_drop_down(self):
         self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).click()
@@ -221,14 +224,20 @@ class DataAnalysisPage(Page):
         self.driver.find_text_box(SUBMISSION_DATE_PICKER_TB).click()
 
     def daterange_drop_down_is_opened(self):
-        return self.driver.find(by_css(".ui-daterangepicker")).is_displayed()
+        return self.driver.find(DATE_PICKER_WRAPPER).is_displayed()
 
-    def subject_drop_down_is_opened(self):
-        style = self.driver.find(by_css("#ddcl-subjectSelect-ddw")).get_attribute("style")
-        return False if re.search('left: \-', style) and re.search('top: \-', style) else True
+    def dropdown_checklist_is_opened(self):
+        return MINUS not in self.driver.find(DROPDOWN_WRAPPER).value_of_css_property('left')
 
     def get_total_count_of_records(self):
         return self.driver.find(TOTAL_RECORD_LABEL).text
 
     def input_keyword(self, keyword):
         self.driver.find(KEYWORD_TB).send_keys(keyword)
+
+    def clear_dropdown(self):
+        self.driver.find_visible_element_(CLEAR_DROPDOWN_LINK).click()
+
+    def get_dropdown_control_text(self):
+        return self.driver.find_visible_element_(DROPDOWN_CONTROL).text
+
