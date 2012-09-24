@@ -32,7 +32,7 @@
             container.css("overflow-y", "auto");
             wrapper.append(container);
             if ( config.explicitClose != null ) {
-                var closeItem = self._createCloseItem(config.explicitClose);
+                var closeItem = self._createButtons();
                 wrapper.append(closeItem);
             }
 
@@ -408,27 +408,45 @@
             });
             return group;
         },
-        _createCloseItem: function(text) {
-            var self = this;
-//            var delimiter = $("<hr/>")
-            var closeItem = $("<div />");
-            closeItem.addClass("ui-state-default ui-dropdownchecklist-close ui-dropdownchecklist-item");
-            closeItem.css({'white-space': 'nowrap', 'text-align': 'right'});
-            var doneBtn = jQuery('<button class="btnDone ui-state-default ui-corner-all">' + text + '</button>').hover(
+        _createCloseButton: function(text) {
+
+            //            var label = $("<span/>");
+    //            label.addClass("ui-dropdownchecklist-text");
+    //            label.css( { cursor: "default" });
+    //            label.html(text);
+    //            closeItem.append(delimiter)
+    //            closeItem.append(label);
+            return jQuery('<button class="btnDone ui-state-default ui-corner-all">' + text + '</button>').hover(
                 function () {
                     jQuery(this).addClass('ui-state-hover');
                 },
                 function () {
                     jQuery(this).removeClass('ui-state-hover');
-                }).css({'marginRight':'5px'})
-//            var label = $("<span/>");
-//            label.addClass("ui-dropdownchecklist-text");
-//            label.css( { cursor: "default" });
-//            label.html(text);
-//            closeItem.append(delimiter)
-//            closeItem.append(label);
-            closeItem.append(doneBtn);
+                }).css({'marginRight':'5px'});
+        },
+        _createClearLink: function(text) {
+          var self = this;
+          return $('<a/>').text(text).css('margin-right', '5px').click(function(event) {
+              event.preventDefault();
+              event.stopPropagation();
+              $(this).parent('div').prev().find(':checkbox').attr('checked', false);
+              self._set_ids_of_checked();
+              self._updateText(self.options.emptyText);
+          });
+        },
+        _createButtons: function() {
+            var self = this, options = this.options;
+//            var delimiter = $("<hr/>")
+            var closeItem = $("<div />");
+            closeItem.addClass("ui-state-default ui-dropdownchecklist-close ui-dropdownchecklist-item");
+            closeItem.css({'white-space': 'nowrap', 'text-align': 'right'});
 
+            if (options.explicitClear != null) {
+                closeItem.append(self._createClearLink(options.explicitClear));
+            }
+            if (options.explicitClose != null) {
+                closeItem.append(self._createCloseButton(options.explicitClose));
+            }
 //            // close the control on click
             closeItem.click(function(e) {
 //                var aGroup= $(this);
@@ -583,16 +601,20 @@
             // update the text shown in the control
             self._updateControlText();
         },
-        // Updates the text shown in the control depending on the checked (selected) items
-        _updateControlText: function() {
-            var self = this, sourceSelect = this.sourceSelect, options = this.options, controlWrapper = this.controlWrapper;
-            var firstOption = sourceSelect.find("option:first");
-            var selectOptions = sourceSelect.find("option");
-            var text = self._formatText(selectOptions, options.firstItemChecksAll, firstOption);
+        _updateText:function (text) {
+            var controlWrapper = this.controlWrapper;
             var controlLabel = controlWrapper.find(".ui-dropdownchecklist-text");
             controlLabel.html(text);
             // the attribute needs naked text, not html
             controlLabel.attr("title", controlLabel.text());
+        },
+        // Updates the text shown in the control depending on the checked (selected) items
+        _updateControlText: function() {
+            var self = this, sourceSelect = this.sourceSelect, options = this.options;
+            var firstOption = sourceSelect.find("option:first");
+            var selectOptions = sourceSelect.find("option");
+            var text = self._formatText(selectOptions, options.firstItemChecksAll, firstOption);
+            self._updateText(text);
         },
         isAllSelected:function (selectOptions) {
             var selectedOptions = selectOptions.filter(":selected");

@@ -244,6 +244,7 @@ $(document).ready(function () {
         $filterSelects.each(function(index, filter){
             $(filter).dropdownchecklist($.extend({firstItemChecksAll:false,
                 explicitClose:gettext("OK"),
+                explicitClear:gettext("Clear"),
                 width:$(this).width(),
                 maxDropHeight:200}, filter_options[index]));
 
