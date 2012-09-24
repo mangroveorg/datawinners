@@ -198,9 +198,9 @@ $(document).ready(function () {
 
         if (initial_data.length == 0) {
             function disableFilters() {
-                var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"),$(".ui-dropdownchecklist-text"),
-                    $("#time_submit").attr('disabled', 'disabled').removeClass('button_blue').addClass('button_disabled'),
-                    $('#dataTable_search input')].concat($datepicker_inputs);
+                var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"), $(".ui-dropdownchecklist-text"),
+                    $("#time_submit").removeClass('button_blue').addClass('button_disabled'),
+                    $('#keyword')].concat($datepicker_inputs);
 
                 $.each(filters, function (index, filter) {
                     filter.addClass('disabled').attr('disabled', 'disabled');
