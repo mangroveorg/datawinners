@@ -18,7 +18,7 @@ LOCATOR = "locator"
 BY = "by"
 
 ANALYSIS_LINK = by_css("ul.secondary_tab>li>a:contains('Analysis')")
-ALL_DATA_RECORDS_LINK = by_xpath("//ul[@class='secondary_tab']/li/a[text()='All Data Records']")
+ALL_DATA_RECORDS_LINK = by_xpath("//ul[@class='secondary_tab']/li/a[text()='Submission Log']")
 LOADING_GIF = by_css("#h1 .loading")
 
 PAGE_SIZE_SELECT = by_name("data_analysis_length")

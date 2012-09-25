@@ -153,6 +153,7 @@ class TestApplicationEndToEnd(BaseTest):
             fetch_(PROJECT_NAME, VALID_DATA_FOR_PROJECT).lower())
         self.assertRegexpMatches(submission_log_page.get_submission_message(sms_log),
                                  fetch_(SMS_SUBMISSION, from_(sms_log)))
+        self.assertEqual(self.driver.get_title(), "Submission Log")
 
     def review_project_summary(self, review_page):
         self.assertEqual(fetch_(PROJECT_PROFILE, from_(VALID_DATA_REVIEW_AND_TEST)),

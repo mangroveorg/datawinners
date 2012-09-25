@@ -4564,3 +4564,6 @@ msgstr ""
 
 msgid "Your account is created on %s"
 msgstr ""
+
+msgid "Submission Log"
+msgstr ""

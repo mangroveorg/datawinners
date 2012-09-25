@@ -9,7 +9,7 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_public_support.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
@@ -153,9 +153,9 @@
                 <h3>Can a Data Sender self-register from the field using SMS?</h3>
                 <div style="color: #AAAAAA;">
                     <p>
-                    No.  DataWinners will not accept submissions from non-registered telephones. However, a registered Data Sender can register a new Data Sender in the system by sending in the following SMS (omit all <>):
+                    No.  DataWinners will not accept submissions from non-registered telephones. However, a registered Data Sender can register a new Data Sender in the system by sending in the following SMS (omit all &lt;&gt;):
                     </p>
-                    <p>Reg .t reporter .n <name of Data Sender> .m <mobile phone number> .l <location> .g <gps coordinates of data sender> (GPS Coordinates are optional)</p>
+                    <p>Reg .t reporter .n &lt;name of Data Sender&gtl .m &lt;mobile phone number&gt; .l &lt;location&gt; .g &lt;gps coordinates of data sender&gt; (GPS Coordinates are optional)</p>
                 </div>
 
                 <h3>Do I need to register my Data Sender for each new project that I create?</h3>
@@ -385,14 +385,14 @@
                 <div style="color: #AAAAAA;">
                     <p>
                         Add a record via the "Web Submission" link from the "Data" tab for any project.
-                        To delete a data record, click on the "All Data Records" page for the project,
+                        To delete a data record, click on the "Submission Log" page for the project,
                         select the data record you wish to delete by clicking on the
                         corresponding box in the left-most column, and select
                         "Delete" from the Actions drop down menu.
                     </p>
                 </div>
 
-                <h3>What does the 'Submission Status' column refer to on the "All Data Records" page?</h3>
+                <h3>What does the 'Submission Status' column refer to on the "Submission Log" page?</h3>
                 <div style="color: #AAAAAA;">
                     <p>The Submission Status column indicates whether an incoming SMS was error free and accepted
                         by the system, or contained one or more errors and was rejected by the system.
@@ -406,10 +406,10 @@
                     </p>
                 </div>
 
-                <h3>What does the "Deleted Record" column refer to on the "All Data Records" page?</h3>
+                <h3>What does the "Deleted Record" column refer to on the "Submission Log" page?</h3>
                 <div style="color: #AAAAAA;">
                     <p>
-                        The Deleted Record column indicates whether a data record was deleted by the user.  The deleted record still appears in the “All Data Records” page, but does not appear on the “Analysis” page.
+                        The Deleted Record column indicates whether a data record was deleted by the user.  The deleted record still appears in the “Submission Log” page, but does not appear on the “Analysis” page.
                     </p>
                     <p>
                         The term "False" indicates that the data record has not been deleted, and is therefore included in the calculations/aggregations on the analysis page.
