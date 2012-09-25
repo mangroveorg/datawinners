@@ -63,11 +63,11 @@ $(document).ready(function () {
         var submission_sources = $('#dataSenderSelect').attr('data');
         var keyword = $('#keyword').val();
         return {
-            'start_time':$.trim(reporting_period[0]),
-            'end_time':$.trim(reporting_period[1]),
-            'submission_date_start':$.trim(submission_date[0]),
-            'submission_date_end':$.trim(submission_date[1]),
-            'subject_ids':subject_ids,
+            'start_time': $.trim(reporting_period[0]),
+            'end_time': $.trim(reporting_period[1]),
+            'submission_date_start': $.trim(submission_date[0]),
+            'submission_date_end': $.trim(submission_date[1]),
+            'subject_ids': subject_ids,
             'submission_sources': submission_sources,
             'keyword': keyword
         };
