@@ -174,6 +174,7 @@ $(document).ready(function () {
             $input.daterangepicker(configureSettings(date_picker_headers[index], $input.data('ismonthly'))).monthpicker();
             $input.click(function() {
                 showDatePicker($input);
+                $filterSelects.dropdownchecklist("close");
             });
         });
     }
