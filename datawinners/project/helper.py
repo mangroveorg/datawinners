@@ -7,16 +7,13 @@ from django.utils.translation import ugettext
 from accountmanagement.models import NGOUserProfile
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
-from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, get_form_model_by_code, REPORTER
+from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
-from mangrove.utils.types import  is_sequence, is_string, sequence_to_str
-from mangrove.datastore import aggregrate as aggregate_module
+from mangrove.utils.types import  is_sequence, sequence_to_str
 import models
-import xlwt
 from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
@@ -106,12 +103,12 @@ def generate_questionnaire_code(dbm):
     return code
 
 def get_headers(form_model):
-    prefix = [ _("Submission Date"), _("Data Sender") ]
+    prefix = [ ugettext("Submission Date"), ugettext("Data Sender") ]
     if form_model.event_time_question:
-        prefix = [_("Reporting Period")] + prefix
+        prefix = [ugettext("Reporting Period")] + prefix
 
     if form_model.entity_type != ['reporter']:
-        prefix = [_(form_model.entity_type[0]).capitalize()] + prefix
+        prefix = [ugettext(form_model.entity_type[0]).capitalize()] + prefix
 
     return prefix + [field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:] if not field.is_event_time_field]
 
