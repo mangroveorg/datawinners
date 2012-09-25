@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from unittest.case import SkipTest
 from nose.plugins.attrib import attr
 import time
 from framework.base_test import BaseTest, setup_driver, teardown_driver
@@ -168,6 +169,7 @@ class TestDataAnalysis(BaseTest):
         self.assertEqual(data_sender[0] , data_records[0])
 
     @attr('functional_test')
+    @SkipTest
     def test_should_close_daterange_dropdown_when_opening_subject_dropdown(self):
         data_analysis_page = self.go_to_analysis_page('Clinic Test Project With Monthly Reporting Period'.lower())
         data_analysis_page.open_reporting_period_drop_down()
