@@ -1,0 +1,114 @@
+
+.chartOl{
+  margin-top: 10px;
+  margin-left: 20px;
+  float: left;
+  width:1835px;
+
+  div{
+    display:inline-block;
+    width: 100%;
+    //min-height:600px;
+    //margin-top: 30px;
+
+    .pieDiv{
+      width:500px;
+      height:450px;
+      float: left;
+      margin-left: 50px;
+
+      .pieLabel{
+        font-size:8pt;
+        width:100px;
+        text-align:center;
+        padding:2px;
+        color:black;
+        overflow:hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .barDiv{
+      margin-bottom:50px;
+      width:500px;
+      float: left;
+      margin-left: 50px;
+
+      .barLabel{
+        -moz-text-overflow: ellipsis;
+        font-size:8pt;
+        padding:2px;
+        color:black;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+      }
+    }
+
+    .tableDiv{
+      float:left;
+      margin-left:100px;
+      .legend_table{
+        width: 400px;
+        .lengendHeader{
+          font-weight: bold;
+        }
+        .percentHeader{
+          font-weight: bold;
+          white-space: nowrap;
+
+          img{
+            margin-top: -4px;
+            margin-left: 5px;
+          }
+
+          .tooltip{
+            white-space: normal !important;
+          }
+        }
+        .lengendFooter{
+          background:#EEE;
+          font-weight: bold;
+        }
+      }
+
+      .tableSummary{
+        margin-top: 5px
+      }
+
+      .mcExplaination{
+        margin-top: 5px;
+        font-style: italic;
+        font-size: 11px;
+      }
+    }
+  }
+
+  li{
+    margin-bottom:50px;
+
+    ul{
+      margin-bottom:10px;
+      li{
+        float:left;
+      }
+
+      label{
+        float:left;
+        padding:0 5px  0 5px;
+      }
+    }
+  }
+}
+
+.chartInfo2{
+  margin-top: 5px;
+  color: #545454;
+  font-style: italic;
+  width:100%;
+}
+
+
+
+

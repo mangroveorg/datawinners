@@ -1,76 +1,84 @@
 
-function drawReport(data) {
-    baseColors = ["#113F96" ,"#A307A8" ,"#A89E08", "#CC2512"]
-    $.each(data, function(index, row) {
-        var answers = row[3];
-        var type = row[1];
-        var total = row[2];
-        var colorScaleFactor = getColorScaleFactor(answers, total);
+function drawTable(answers, total, locator, type){
+    $(locator).empty();
+    $legendTable = $('<table class="legend_table"></table>');
+    drawTableHeader(type, answers, total, $legendTable);
+    drawTableRows(answers, total, $legendTable);
 
-        drawBar(answers,  total, "#bar-" + index, baseColors[index%4]);
-        drawPie(answers,  total, "#pie-" + index, baseColors[index%4], colorScaleFactor);
-        drawTable(answers,  total, "#table-" + index, type);
+    if(type == 'select1'){
+        drawTableFooter(total, $legendTable);
+    }
 
-        if(type == "select"){
-            showBar(index);
-        }else{
-            showPie(index);
+    $(locator).append($legendTable)
+
+    drawNotes(locator, type, total);
+}
+
+function drawTableHeader(type, answers, total, legendTable) {
+    $header = $('<tr ></tr>');
+    $choiceHdr = $('<td class="lengendHeader">' + gettext('Choice') + '</td>');
+    $amountHdr = $('<td class="lengendHeader">' + gettext('Frequency') + '</td>');
+    $header.append($choiceHdr).append($amountHdr);
+    if(total != 0){
+        $percentHdr = drawPercentHeader(type, answers, total);
+        $header.append($percentHdr);
+    }
+
+    legendTable.append($header);
+}
+
+function drawPercentHeader(type, answers, total) {
+    first_row = answers[0]
+    $percentHdr = $('<td class="percentHeader">' + gettext('Percent') + '</td>');
+    $tooltip_icon = $('<img src=" /media/images/help_icon.png" class="help_icon_1">');
+    $percentHdr.append($tooltip_icon);
+    $percent_tip = gettext('Percentage = Frequency / Total number of Submissions for this question.<br/>Example for ');
+    var percentage = (total == 0 ? 'N.A.' : Math.round(first_row[1] / total * 100) + '%');
+    $formula = first_row[0] + ': ' + first_row[1] + "/" + total + ' = ' + percentage;
+    $p = $('<p></p>').append($percent_tip + $formula);
+    $tooltip = $('<div class="tooltip" ></div>').append($p);
+    $percentHdr.append($tooltip);
+
+    return $percentHdr;
+}
+
+function drawTableFooter(total, legendTable) {
+    $footer = $('<tr ></tr>');
+    $choiceFooter = $('<td class="lengendFooter">' + gettext('Total') + '</td>');
+    $amountFooter = $('<td class="lengendFooter">' + total + '</td>');
+    $percentFooter = $('<td class="lengendFooter">' + Math.round(total_count / total * 100) + '%</td>');
+    $footer.append($choiceFooter).append($amountFooter).append($percentFooter);
+    legendTable.append($footer);
+}
+
+function drawTableRows(answers, total, legendTable) {
+    total_count = 0;
+
+    $.each(answers, function (index, answer) {
+        $row = $('<tr ></tr>');
+        $name = $('<td >' + answer[0] + '</td>');
+        $count = $('<td >' + answer[1] + '</td>');
+        $row.append($name).append($count);
+        if(total != 0){
+            var percentage = (total == 0 ? 'N.A.' : Math.round(answer[1] / total * 100)+'%');
+            $percentage = $('<td >' + percentage + '</td>');
+            $row.append($percentage);
         }
+        legendTable.append($row);
+        total_count += answer[1];
     });
 }
 
-function drawTable(answers, total, locator, type){
-    $(locator).empty();
-    $legendTable = $('<table style="width: 400px"></table>');
-    total_count = 0;
-    $header = $('<tr ></tr>');
-    $choiceHdr = $('<td style="font-weight: bold;">'+ gettext('Choice') +'</td>');
-    $amountHdr = $('<td style="font-weight: bold;">'+ gettext('Frequency') +'</td>');
-    if(type == 'select1'){
-        $percentHdr = $('<td style="font-weight: bold;">'+ gettext('Percent') + '</td>');
+function drawNotes(locator, type, total) {
+    $summary = $('<div class="tableSummary">'+gettext("Total number of Submissions for this question: ")+ '<b>'+total+'</b></div>');
 
-    }else{
-        first_row = answers[0]
-        $percentHdr = $('<td style="font-weight: bold;white-space: nowrap;">'+ gettext('Percent') +'</td>');
-        $tooltip_icon = $('<img style="margin-top: -4px;margin-left: 5px;"  src=" /media/images/help_icon.png" class="help_icon_1">');
-        $percentHdr.append($tooltip_icon);
-        $percent_tip = gettext('Percentage = Frequency / Total number of Submissions for this question.<br/>Example for ');
-        $formula = first_row[0]+': '+ first_row[1] + "/" + total + ' = ' + Math.round(first_row[1]/total * 100) +'%';
-        $p = $('<p></p>').append($percent_tip + $formula);
-        $tooltip = $('<div class="tooltip" style="white-space: normal !important;"></div>').append($p);
-        $percentHdr.append($tooltip);
-    }
-    $header.append($choiceHdr).append($amountHdr).append($percentHdr);
-    $legendTable.append($header);
+    $(locator).append($summary);
 
-    $.each(answers, function(index, answer){
-        $row = $('<tr ></tr>');
-        $name = $('<td >'+ answer[0] +'</td>');
-        $count = $('<td >'+answer[1]+'</td>');
-        $percentage = $('<td >'+ Math.round(answer[1]/total*100)+'%</td>');
-        $row.append($name).append($count).append($percentage);
-        $legendTable.append($row);
-        total_count += answer[1];
-    });
-
-    if(type == 'select1'){
-        $footer= $('<tr ></tr>');
-        $choiceFooter = $('<td style="background:#EEE;font-weight: bold;">'+ gettext('Total') +'</td>');
-        $amountFooter = $('<td style="background:#EEE;font-weight: bold;">'+ total +'</td>');
-        $percentFooter = $('<td style="background:#EEE;font-weight: bold;">'+ Math.round(total_count/total*100) +'%</td>');
-        $footer.append($choiceFooter).append($amountFooter).append($percentFooter);
-        $legendTable.append($footer);
-    }
-
-    $summary = $('<div style="margin-top: 5px">'+gettext("Total number of Submissions for this question: ")+ '<b>'+total+'</b></div>');
-
-    $(locator).append($legendTable).append($summary);
-    if(type == 'select'){
-        $multi_choice_explaination = $('<div style="margin-top: 5px;font-style: italic; font-size: 11px;">'+
-            gettext("Your Data Senders can choose more than 1 answer. That is why percentages may add up to more than 100%")+'</div>');
+    if (type == 'select' && total != 0) {
+        $multi_choice_explaination = $('<div class="mcExplaination">' +
+            gettext("Your Data Senders can choose more than 1 answer. That is why percentages may add up to more than 100%") + '</div>');
         $(locator).append($multi_choice_explaination);
     }
-
 }
 
 function drawBar(answers, total, locator, barColor) {
@@ -79,7 +87,7 @@ function drawBar(answers, total, locator, barColor) {
     $.each(answers, function(index, answer){
         var label = answer[0];
         label = label.replace(/'/g, '"')
-        label = "<div style='-moz-text-overflow: ellipsis;font-size:8pt;padding:2px;color:black;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;' title='"+label+"'>" + label + '</div>';
+        label = "<div class='barLabel' title='"+label+"'>" + label + '</div>';
         axis_label.push([index+1, label]);
         chart_data.push([answer[1],index+1]);
     });
@@ -92,7 +100,6 @@ function drawBar(answers, total, locator, barColor) {
                 bars:{
                     show:true,
                     barWidth:.4,
-//                    align:"center",
                     horizontal: true,
                     fillColor: { colors: [barColor, getColorOf(barColor,0.8) , getColorOf(barColor,0.6)] }
                 }
@@ -107,7 +114,8 @@ function drawBar(answers, total, locator, barColor) {
             },
             xaxis:{
                 tickDecimals:0,
-                autoscaleMargin:0.01
+                autoscaleMargin:0.01,
+                min: 0
             },
             grid:{show:true},
             valueLabels: { show: true }
@@ -119,7 +127,8 @@ function drawPie(answers, total, locator, baseColor, colorScaleFactor) {
     var data = [];
     var parse = JSON.parse('[1,2,3,4,5]');
     $.each(answers, function(index, answer){
-        data.push({label:answer[0], data:answer[1], color:getColorOf(baseColor, answer[1]/total * colorScaleFactor)})
+        var percentFade = (total == 0 ? 1 : answer[1]/total * colorScaleFactor);
+        data.push({label:answer[0], data:answer[1], color:getColorOf(baseColor, percentFade)})
     });
 
     $.plot($(locator), data,
@@ -132,7 +141,7 @@ function drawPie(answers, total, locator, baseColor, colorScaleFactor) {
                         show:true,
                         radius:5/6,
                         formatter:function (label, series) {
-                            return '<div style="font-size:8pt;width:100px;text-align:center;padding:2px;color:black;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;" title="'+label+'">' + label + '<br/>' + Math.round(series.data[0][1]/total*100) + '%</div>';
+                            return '<div class="pieLabel" title="'+label+'">' + label + '<br/>' + Math.round(series.data[0][1]/total*100) + '%</div>';
                         }
                     }
                 }
@@ -140,33 +149,80 @@ function drawPie(answers, total, locator, baseColor, colorScaleFactor) {
         });
 }
 
-function drawChart(data, submissionCount) {
-    $chart_ol = $('#chart_ol');
+function drawChartInfo(submissionCount, emptySubmissionText) {
     $('#chart_info').empty();
-    $('#chart_info').append("<b>"+submissionCount + "</b> " +gettext("Submissions"))
-    $intro_text = $('<div style="margin-top: 5px;color: #545454;font-style: italic;">'+gettext("View charts of your multiple choice questions.")+'</div>');
-    $('#chart_info').append($intro_text);
-    $chart_ol.empty();
-    $.each(data, function(index, item) {
-        $question_li = $('<li style="margin-bottom:50px"><h6>'+item[0]+'</h6>');
-        if(item[1]=='select1'){
-            $title = $('<ul style="margin-bottom:10px"></ul>');
-            $title_pie_li = $('<li id="pie-li-'+index+'" style="float:left" ><a onclick="showPie('+index+')">'+gettext("Pie Chart")+'</a></li>');
-            $title_sep_label = $('<label style="float:left;padding:0 5px  0 5px"> | </label>');
-            $title_bar_li = $('<li id="bar-li-'+index+'" style="float:left" ><a onclick="showBar('+index+')">'+gettext("Bar Chart")+'</a></li>');
-            $title.append($title_pie_li).append($title_sep_label).append($title_bar_li);
-            $question_li.append($title);
-        }
+    $('#chart_info_2').empty();
+    $('#chart_info').append("<b>" + submissionCount + "</b> " + gettext("Submissions"))
+    var info_text = (emptySubmissionText != '' ? emptySubmissionText : "View charts of your multiple choice questions.");
+    $intro_text = $('<div class="chartInfo2">' + gettext(info_text) + '</div>');
+    $('#chart_info_2').append($intro_text);
+}
 
-        $chart_div = $('<div id = "chart-'+index+'" style="display:inline-block;min-height:600px,margin-top: 30px;"/>');
-        $pie_div = $('<div id="pie-'+index+'" style="width:500px;height:450px;float: left;margin-left: 50px;"/>');
-        var barHeight = item[3].length*60;
-        $bar_div = $('<div id="bar-'+index+'" style="margin-bottom:50px;width:500px;height:'+barHeight+'px;float: left;margin-left: 50px;"/>');
-        $table_div = $('<div id="table-'+index+'" style="float:left;margin-left:100px"/>');
+function drawChartSelectLink(index, question_li) {
+    $title = $('<ul></ul>');
+    $title_pie_li = $('<li id="pie-li-' + index + '"><a onclick="showPie(' + index + ')">' + gettext("Pie Chart") + '</a></li>');
+    $title_sep_label = $('<label > | </label>');
+    $title_bar_li = $('<li id="bar-li-' + index + '"><a onclick="showBar(' + index + ')">' + gettext("Bar Chart") + '</a></li>');
+    $title.append($title_pie_li).append($title_sep_label).append($title_bar_li);
+    question_li.append($title);
+}
+
+function drawChartBlockForQuestions(data, chart_ol) {
+
+    drawChartDivs = function (index, item) {
+        $chart_div = $('<div id = "chart-' + index + '" />');
+        $pie_div = $('<div id="pie-' + index + '" class="pieDiv"/>');
+        var barHeight = item[3].length * 60;
+        $bar_div = $('<div class="barDiv" id="bar-' + index + '" style="height:' + barHeight + 'px;"/>');
+        $table_div = $('<div id="table-' + index + '" class="tableDiv"/>');
         $chart_div.append($pie_div).append($bar_div).append($table_div);
-        $chart_ol.append($question_li).append($chart_div);;
+        return $chart_div;
+    }
+
+    $.each(data, function (index, item) {
+        $question_li = $('<li><h6>' + item[0] + '</h6>');
+        if (item[1] == 'select1') {
+            drawChartSelectLink(index, $question_li);
+        }
+        $chart_div = drawChartDivs(index, item);
+        chart_ol.append($question_li).append($chart_div);
     });
-    drawReport(data);
+}
+
+function drawChartReport(data) {
+    baseColors = ["#446F27" ,"#39597C" ,"#4B2B71", "#76312F", "#398AA1"]
+    $.each(data, function(index, row) {
+        var answers = row[3];
+        var type = row[1];
+        var total = row[2];
+        var colorScaleFactor = (total == 0 ? 1: getColorScaleFactor(answers, total));
+
+        drawBar(answers,  total, "#bar-" + index, baseColors[index%5]);
+        drawPie(answers,  total, "#pie-" + index, baseColors[index%5], colorScaleFactor);
+        drawTable(answers,  total, "#table-" + index, type);
+
+        if(type == "select"){
+            showBar(index);
+        }else{
+            showPie(index);
+        }
+    });
+}
+
+function drawChart(data, submissionCount, emptySubmissionText) {
+    $chart_ol = $('#chart_ol');
+    $chart_ol.empty();
+
+    if(emptySubmissionText=='' && data.length == 0){
+        emptySubmissionText = gettext('You do not have any multiple choice questions(AnswerType:List of choices) to display here!');
+    }
+
+    drawChartInfo(submissionCount, emptySubmissionText);
+
+    drawChartBlockForQuestions(data, $chart_ol);
+
+    drawChartReport(data);
+    toolTip();
 }
 
 function showPie(index){
@@ -175,72 +231,13 @@ function showPie(index){
     $("#pie-li-"+index).addClass("title-selected");
     $("#bar-li-"+index).removeClass("title-selected");
 }
+
 function showBar(index){
     $("#bar-"+index).fadeIn(500);
     $("#pie-"+index).hide();
     $("#bar-li-"+index).addClass("title-selected");
     $("#pie-li-"+index).removeClass("title-selected");
 }
-
-function getColorOf(colorBase, percentFade){
-    var whiteColor = new RGBColor('#FFFFFF').getDecimalVals()
-    colorBase = new RGBColor(colorBase).getDecimalVals()
-    var diffRed = colorBase.red -whiteColor.red ;
-    var diffGreen = colorBase.green -whiteColor.red;
-    var diffBlue = colorBase.blue -whiteColor.red;
-
-    red = Math.round((diffRed * percentFade) + whiteColor.red);
-    green = Math.round((diffGreen * percentFade) + whiteColor.green);
-    blue = Math.round((diffBlue * percentFade) + whiteColor.blue);
-
-    return colorToHex("rgb("+red+", "+green+", "+blue+")");
-}
-
-function colorToHex(color) {
-    if (color.substr(0, 1) === '#') {
-        return color;
-    }
-    var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
-
-    var red = parseInt(digits[2]);
-    var green = parseInt(digits[3]);
-    var blue = parseInt(digits[4]);
-
-    return digits[1] + '#' + formatNumberStringToTwoDigit((red).toString(16)) +
-        formatNumberStringToTwoDigit((green).toString(16)) +
-        formatNumberStringToTwoDigit((blue).toString(16));
-};
-
-function formatNumberStringToTwoDigit(numberString){
-    return numberString.length >= 2 ? numberString: "0" + numberString;
-}
-
-function RGBColor (color) {
-    this.color = color;
-
-    this.getColor = function(){
-        return this.color;
-    };
-
-    this.getDecimalVals = function(){
-        var color = this.color;
-
-        var rgb;
-        var colorObj;
-
-        color = color.replace("0x", "");
-        color = color.replace("#", "");
-
-        rgb = parseInt(color, 16);
-
-        colorObj = new Object();
-        colorObj.red = (rgb & (255 << 16)) >> 16;
-        colorObj.green = (rgb & (255 << 8)) >> 8;
-        colorObj.blue = (rgb & 255);
-
-        return colorObj;
-    };
-};
 
 function getColorScaleFactor(answers, total) {
     max_percent = 0;
@@ -265,6 +262,3 @@ function toolTip(){
 
     }).dynamic({ bottom: { direction: 'down', bounce: true } });
 }
-$(document).ready(function () {
-    toolTip();
-});

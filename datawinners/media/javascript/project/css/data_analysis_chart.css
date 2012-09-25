@@ -1,0 +1,74 @@
+.chartOl {
+  margin-top: 10px;
+  margin-left: 20px;
+  float: left;
+  width: 1835px; }
+  .chartOl div {
+    display: inline-block;
+    width: 100%; }
+    .chartOl div .pieDiv {
+      width: 500px;
+      height: 450px;
+      float: left;
+      margin-left: 50px; }
+      .chartOl div .pieDiv .pieLabel {
+        font-size: 8pt;
+        width: 100px;
+        text-align: center;
+        padding: 2px;
+        color: black;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis; }
+    .chartOl div .barDiv {
+      margin-bottom: 50px;
+      width: 500px;
+      float: left;
+      margin-left: 50px; }
+      .chartOl div .barDiv .barLabel {
+        -moz-text-overflow: ellipsis;
+        font-size: 8pt;
+        padding: 2px;
+        color: black;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis; }
+    .chartOl div .tableDiv {
+      float: left;
+      margin-left: 100px; }
+      .chartOl div .tableDiv .legend_table {
+        width: 400px; }
+        .chartOl div .tableDiv .legend_table .lengendHeader {
+          font-weight: bold; }
+        .chartOl div .tableDiv .legend_table .percentHeader {
+          font-weight: bold;
+          white-space: nowrap; }
+          .chartOl div .tableDiv .legend_table .percentHeader img {
+            margin-top: -4px;
+            margin-left: 5px; }
+          .chartOl div .tableDiv .legend_table .percentHeader .tooltip {
+            white-space: normal !important; }
+        .chartOl div .tableDiv .legend_table .lengendFooter {
+          background: #EEE;
+          font-weight: bold; }
+      .chartOl div .tableDiv .tableSummary {
+        margin-top: 5px; }
+      .chartOl div .tableDiv .mcExplaination {
+        margin-top: 5px;
+        font-style: italic;
+        font-size: 11px; }
+  .chartOl li {
+    margin-bottom: 50px; }
+    .chartOl li ul {
+      margin-bottom: 10px; }
+      .chartOl li ul li {
+        float: left; }
+      .chartOl li ul label {
+        float: left;
+        padding: 0 5px  0 5px; }
+
+.chartInfo2 {
+  margin-top: 5px;
+  color: #545454;
+  font-style: italic;
+  width: 100%; }
