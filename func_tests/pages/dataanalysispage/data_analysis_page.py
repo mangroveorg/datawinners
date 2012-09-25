@@ -212,10 +212,12 @@ class DataAnalysisPage(Page):
         self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/..//button')).click()
 
     def open_data_sender_drop_down(self):
-        self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/../span')).click()
+        self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/../span/span')).click()
 
+    # Please do not try to simplify this xpath, the xpath should points to the extract element which is used in javascript file to bind the
+    # event, otherwise FT will fail on firefox 11.
     def open_subject_type_drop_down(self):
-        self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/../span')).click()
+        self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/../span/span')).click()
 
     def open_reporting_period_drop_down(self):
         self.driver.find_text_box(REPORTING_PERIOD_PICKER_TB).click()

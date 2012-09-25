@@ -135,43 +135,31 @@ class TestDataAnalysis(BaseTest):
         self.assertEqual(1, len(subject_sets))
         self.assertEqual(subject_name, subject_names[0])
 
-    @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_admin(self):
-        data_analysis_page = self.go_to_analysis_page()
-        data_sender = ('Tester Pune', 'admin', 'tester150411@gmail.com')
+    def verify_filter_by_data_sender(self, data_sender, project_name = fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
+        data_analysis_page = self.go_to_analysis_page(project_name)
         data_analysis_page.select_for_data_sender(data_sender[-1])
         data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records_by_column(3)
         data_senders_set = set(data_records)
         self.assertEqual(1, len(data_senders_set))
-        self.assertEqual(data_sender[0] + ' (' + data_sender[1] +')' , data_records[0])
+        str_data_sender = data_sender[0] + ' ' + data_sender[1]
+        self.assertEqual(str_data_sender.strip(), data_records[0])
+
+    @attr('functional_test', 'smoke')
+    def test_filter_data_records_by_admin(self):
+        self.verify_filter_by_data_sender(('Tester Pune', 'admin', 'tester150411@gmail.com'))
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_sms_or_web_data_sender(self):
-        data_analysis_page = self.go_to_analysis_page()
-        data_sender = ('Shweta', 'rep1', '1234567890')
-        data_analysis_page.select_for_data_sender(data_sender[-1])
-        data_analysis_page.click_go_button()
-        data_records = data_analysis_page.get_all_data_records_by_column(3)
-        data_senders_set = set(data_records)
-        self.assertEqual(1, len(data_senders_set))
-        self.assertEqual(data_sender[0] + ' (' + data_sender[1] +')' , data_records[0])
+        self.verify_filter_by_data_sender(('Shweta', 'rep1', '1234567890'))
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_test_data_sender(self):
-        data_analysis_page = self.go_to_analysis_page('Clinic Test Project With Monthly Reporting Period'.lower())
-        data_sender = ('TEST', '', 'TEST')
-        data_analysis_page.select_for_data_sender(data_sender[-1])
-        data_analysis_page.click_go_button()
-        data_records = data_analysis_page.get_all_data_records_by_column(3)
-        data_senders_set = set(data_records)
-        self.assertEqual(1, len(data_senders_set))
-        self.assertEqual(data_sender[0] , data_records[0])
+        self.verify_filter_by_data_sender(('TEST', '', 'TEST'), 'Clinic Test Project With Monthly Reporting Period'.lower())
 
     @attr('functional_test')
-    @SkipTest
     def test_should_close_daterange_dropdown_when_opening_subject_dropdown(self):
-        data_analysis_page = self.go_to_analysis_page('Clinic Test Project With Monthly Reporting Period'.lower())
+        data_analysis_page = self.go_to_analysis_page()
         data_analysis_page.open_reporting_period_drop_down()
         time.sleep(1)
         self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
