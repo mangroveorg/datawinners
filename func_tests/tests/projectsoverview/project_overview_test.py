@@ -5,7 +5,7 @@ from pages.loginpage.login_page import LoginPage
 from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_page import SmsQuestionnairePreviewPage
 from testdata.test_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.projectsoverview.project_overview_data import PROJECT_NAME, PREVIEW_TITLE, MC_PROJECT_NAME, MC_QUESTION_CONTENT
+from tests.projectsoverview.project_overview_data import PROJECT_NAME, PREVIEW_TITLE, MC_QUESTION_CONTENT
 
 
 @attr('suit_1')
@@ -22,7 +22,8 @@ class TestProjectOverview(BaseTest):
     @attr('functional_test', 'smoke')
     def test_project_overview_sms_questionnaire(self):
         """
-        Function to test the project overview web questionnaire
+        Function to test the project overview web questionnaire,
+        it tests the also the new code for multiple choice question
         """
         all_project_page = self.prerequisites_of_project_overview()
         project_overview_page = all_project_page.navigate_to_project_overview_page(PROJECT_NAME)
@@ -30,17 +31,4 @@ class TestProjectOverview(BaseTest):
         self.assertEqual(light_box.get_title_of_light_box(), PREVIEW_TITLE)
         sms_questionnaire_preview_page = SmsQuestionnairePreviewPage(self.driver)
         self.assertTrue(sms_questionnaire_preview_page.has_preview_steps())
-
-    @attr('functional_test', 'smoke')
-    def test_project_overview_sms_questionnaire(self):
-        """
-        Function to test the project overview web questionnaire,
-        it tests the also the new code for multiple choice question
-        """
-        all_project_page = self.prerequisites_of_project_overview()
-        project_overview_page = all_project_page.navigate_to_project_overview_page(MC_PROJECT_NAME)
-        light_box = project_overview_page.open_sms_questionnaire_preview()
-        self.assertEqual(light_box.get_title_of_light_box(), PREVIEW_TITLE)
-        sms_questionnaire_preview_page = SmsQuestionnairePreviewPage(self.driver)
-        self.assertTrue(sms_questionnaire_preview_page.has_preview_steps())
-        self.assertEqual(MC_QUESTION_CONTENT, sms_questionnaire_preview_page.get_question_content(3))
+        self.assertEqual(MC_QUESTION_CONTENT, sms_questionnaire_preview_page.get_question_content(5))

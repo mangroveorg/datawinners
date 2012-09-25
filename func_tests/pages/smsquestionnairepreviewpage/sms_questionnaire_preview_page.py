@@ -26,5 +26,4 @@ class SmsQuestionnairePreviewPage(Page):
         return self.driver.is_element_present(PREVIEW_STEPS)
 
     def get_question_content(self, index):
-        locator = by_css(QUESTION_BY_CSS_LOCATOR % str(index))
-        return self.driver.find(locator).text
+        return self.driver.find(by_css(QUESTION_BY_CSS_LOCATOR % str(index))).text

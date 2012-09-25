@@ -10,4 +10,4 @@ PREVIEW_STEPS = by_css(".preview-steps")
 
 CLOSE_PREVIEW = by_css(".close_preview")
 
-QUESTION_BY_CSS_LOCATOR = "#questionnaire_preview div.sms-questionnaire ol.preview-steps li.breakable ol.olpreview li:nth-child(%s)"
+QUESTION_BY_CSS_LOCATOR = ".preview-steps .olpreview>li:nth-child(%s)"

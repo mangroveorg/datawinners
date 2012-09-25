@@ -109,6 +109,21 @@ $(document).ready(function () {
         });
     };
 
+    function showDatePicker($input) {
+        var $monthpicker = $('#monthpicker_start, #monthpicker_end', $('.ranges'));
+        if ($input.data('ismonthly')) {
+            $monthpicker.show();
+        } else {
+            $monthpicker.hide();
+        }
+        var $visible_datepickers = $('.ui-daterangepicker:visible');
+        $visible_datepickers.each(function (index, picker) {
+            if ($(picker).data('for') != $input.attr('id')) {
+                $(picker).hide();
+            }
+        });
+    }
+
     function buildRangePicker() {
         function configureSettings(header, ismonthly) {
             var year_to_date_setting = {text:gettext('Year to date'), dateStart:function () {
@@ -158,18 +173,8 @@ $(document).ready(function () {
             var $input = $(input);
             $input.daterangepicker(configureSettings(date_picker_headers[index], $input.data('ismonthly'))).monthpicker();
             $input.click(function() {
-                var $monthpicker = $('#monthpicker_start, #monthpicker_end', $('.ranges'));
-                if ($input.data('ismonthly')) {
-                    $monthpicker.show();
-                } else {
-                    $monthpicker.hide();
-                }
-                var $visible_datepickers = $('.ui-daterangepicker:visible');
-                $visible_datepickers.each(function(index, picker) {
-                    if ($(picker).data('for') != $input.attr('id')) {
-                        $(picker).hide();
-                    }
-                });
+                showDatePicker($input);
+                $('.ui-dropdownchecklist-dropcontainer-wrapper').hide();
             });
         });
     }
