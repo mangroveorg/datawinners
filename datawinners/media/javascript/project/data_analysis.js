@@ -174,7 +174,6 @@ $(document).ready(function () {
             $input.daterangepicker(configureSettings(date_picker_headers[index], $input.data('ismonthly'))).monthpicker();
             $input.click(function() {
                 showDatePicker($input);
-                $('.ui-dropdownchecklist-dropcontainer-wrapper').hide();
             });
         });
     }
@@ -229,12 +228,6 @@ $(document).ready(function () {
             DW.toggle_view();
             DW.chart_view_shown = true;
         }
-    };
-
-    function hide_date_pickers_when_filter_show() {
-        $('.ui-dropdownchecklist-selector').click(function () {
-            $('.ui-daterangepicker:visible').hide();
-        });
     };
 
     function buildFilters() {
