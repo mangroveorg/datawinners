@@ -19,6 +19,43 @@ class DataAnalysisPage(Page):
                            DAILY_DATE_RANGE: self.select_daily_date_range,
                            MONTHLY_DATE_RANGE: self.select_monthly_date_range}
 
+    def go_to_chart_view(self):
+        """
+        Function to navigate on next data records page
+        """
+        self.driver.find(CHART_VIEW_LINK).click()
+        self.driver.wait_for_element(20, by_xpath('//div[@id="chart_info"]'), want_visible=True)
+
+    def get_chart_info_2_text(self):
+        self.driver.wait_for_element(20, by_xpath('//div[@class="chartInfo2"]'), want_visible=True)
+        return self.driver.find(by_css(".chartInfo2")).text
+
+    def get_pie_chart(self, select_question_index):
+        pie_chart_css = "#chart-" + str(select_question_index) + " #pie-" + str(select_question_index)
+        return self.driver.find(by_css(pie_chart_css))
+
+    def get_bar_chart(self, select_question_index):
+        bar_chart_css = "#chart-" + str(select_question_index) + " #bar-" + str(select_question_index)
+        return self.driver.find(by_css(bar_chart_css))
+
+    def get_table(self, select_question_index):
+        table_css = "#chart-" + str(select_question_index) + " #table-" + str(select_question_index)
+        return self.driver.find(by_css(table_css))
+
+    def get_multiple_choice_question_explanation(self, select_question_index):
+        explanationCss = "#chart-" + str(select_question_index) + " #table-" + str(select_question_index) + " .mcExplaination"
+        return self.driver.find(by_css(explanationCss))
+
+    def show_bar_chart(self, select_question_index):
+        self.driver.wait_for_element(20, by_css("#bar-li-"+str(select_question_index)+" a"), want_visible=True).click()
+        bar_chart_css = "#chart-" + str(select_question_index) + " #bar-" + str(select_question_index)
+        self.driver.wait_for_element(20, by_css(bar_chart_css), want_visible=True)
+
+    def show_pie_chart(self, select_question_index):
+        self.driver.wait_for_element(20, by_css("#pie-li-"+str(select_question_index)+" a"), want_visible=True).click()
+        pie_chart_css = "#chart-" + str(select_question_index) + " #pie-" + str(select_question_index)
+        self.driver.wait_for_element(20, by_css(pie_chart_css), want_visible=True)
+
     def navigate_to_all_data_record_page(self):
         """
         Function to navigate all data record page
