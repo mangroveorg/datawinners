@@ -5,11 +5,11 @@ $(document).ready(function () {
     var $filterSelects = $('#subjectSelect, #dataSenderSelect');
     var $datepicker_inputs = $('#reportingPeriodPicker, #submissionDatePicker');
 
-    addOnClickListener();
-    buildRangePicker();
     buildFilters();
+    buildRangePicker();
     $(document).ajaxStop($.unblockUI);
 
+    addOnClickListener();
     $('#go').click(function () {
             var data = DW.submit_data();
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
@@ -200,7 +200,6 @@ $(document).ready(function () {
                     filter.unbind('click');
                 })
                 $('.filter_label').css({color:"#888"});
-                $('#no_filter_help').show();
             }();
         }
     };
@@ -236,7 +235,7 @@ $(document).ready(function () {
         var data_sender_options = {emptyText:gettext("All Data Senders")};
         var filter_options = [subject_options, data_sender_options];
 
-        $filterSelects.each(function(index, filter){
+        $filterSelects.each(function(index, filter) {
             $(filter).dropdownchecklist($.extend({firstItemChecksAll:false,
                 explicitClose:gettext("OK"),
                 explicitClear:gettext("Clear"),
@@ -260,5 +259,4 @@ $(document).ready(function () {
     });
 
     init_page();
-
 });

@@ -1,0 +1,6 @@
+.ui-dropdownchecklist-close>a {
+    margin-right: 5px;
+    *position: absolute;
+    *top: 8px;
+    *right: 40px;
+}

@@ -35,6 +35,7 @@
     <link href="/media/javascript/project/css/data_analysis_chart.css" rel="stylesheet"/>
     <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet"/>
     <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet"/>
+    <link href="/media/css/plugins/jqueryUI/ie-hacks.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
 {% endblock %}
 
@@ -97,10 +98,6 @@
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
     <div id="filter_section" class="heading_block grid_23 alpha data_ana">
-        <p id="no_filter_help" class="help_accordion ui-helper-hidden">
-            {% trans 'You don’t have any successful submissions to filter' %}
-        </p>
-
         <div class="{% if is_summary_report %} none {% endif %} float_left">
             <div class="filter_label" for="subjectSelect">
                 <label class="full_width">{{ entity_type }}</label>

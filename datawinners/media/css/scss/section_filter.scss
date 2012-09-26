@@ -1,34 +1,33 @@
-#filter_section{
-  .datepicker{
+#filter_section {
+  .datepicker {
     background: url("/media/images/arrow.png") no-repeat scroll right 2px transparent;
-    font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
+    font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
     font-size: 11px !important;
     height: 23px !important;
   }
 
-  input[type="text"]{
+  input[type="text"] {
     height: 22px;
   }
 
-
-  #keyword{
+  #keyword {
     height: 22px !important;
   }
 
-  .ui-dropdownchecklist-selector-wrapper{
+  .ui-dropdownchecklist-selector-wrapper {
     background: url("/media/images/arrow.png") no-repeat scroll right 4px transparent;
-    font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
+    font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
     font-size: 11px !important;
   }
 
-  .ui-dropdownchecklist-text{
+  .ui-dropdownchecklist-text {
     font-size: 11px !important;
   }
 
-  .ui-dropdownchecklist-dropcontainer-wrapper > div{
+  .ui-dropdownchecklist-dropcontainer-wrapper > div {
     background: url('/media/javascript/dateRangePicker/css/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png') repeat-x;
   }
-  .btnDone{
+  .btnDone {
     background: #cce3ee;
     /* for non-css3 browsers */
     background: -webkit-gradient(linear, left top, left bottom, from(#dfedf4), to(#cce3ee));
@@ -38,8 +37,9 @@
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border: 1px solid #5087b4 !important;
-    margin:  4px auto;
+    margin: 4px auto;
   }
-  .margin_top0 .button_blue{
-    margin-top: 0px;}
+  .margin_top0 .button_blue {
+    margin-top: 0px;
+  }
 }

@@ -4627,8 +4627,5 @@ msgstr "A edité un projet"
 msgid "Your account is created on %s"
 msgstr "Votre compte est créé sur  %s"
 
-msgid "You don’t have any successful submissions to filter"
-msgstr "Vous n’avez aucune soumission réussie à filtrer"
-
 msgid "Submission Log"
 msgstr "Journal de soumission"

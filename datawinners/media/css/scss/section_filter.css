@@ -1,6 +1,6 @@
 #filter_section .datepicker {
   background: url("/media/images/arrow.png") no-repeat scroll right 2px transparent;
-  font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
+  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   font-size: 11px !important;
   height: 23px !important; }
 #filter_section input[type="text"] {
@@ -9,7 +9,7 @@
   height: 22px !important; }
 #filter_section .ui-dropdownchecklist-selector-wrapper {
   background: url("/media/images/arrow.png") no-repeat scroll right 4px transparent;
-  font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
+  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   font-size: 11px !important; }
 #filter_section .ui-dropdownchecklist-text {
   font-size: 11px !important; }
@@ -26,5 +26,5 @@
   -webkit-border-radius: 3px;
   border: 1px solid #5087b4 !important;
   margin: 4px auto; }
-#filter_section .margin_top0 .button_blue{
-  margin-top: 0px;}
+#filter_section .margin_top0 .button_blue {
+  margin-top: 0px; }

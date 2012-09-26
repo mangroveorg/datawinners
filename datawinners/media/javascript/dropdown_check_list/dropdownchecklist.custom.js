@@ -426,7 +426,7 @@
         },
         _createClearLink: function(text) {
           var self = this;
-          return $('<a/>').text(text).css('margin-right', '5px').click(function(event) {
+          return $('<a/>').text(text).click(function(event) {
               event.preventDefault();
               event.stopPropagation();
               $(this).parent('div').prev().find(':checkbox').attr('checked', false);
@@ -439,7 +439,7 @@
 //            var delimiter = $("<hr/>")
             var closeItem = $("<div />");
             closeItem.addClass("ui-state-default ui-dropdownchecklist-close ui-dropdownchecklist-item");
-            closeItem.css({'white-space': 'nowrap', 'text-align': 'right'});
+            closeItem.css({'white-space': 'nowrap', 'text-align': 'right', 'position': 'relative'});
 
             if (options.explicitClear != null) {
                 closeItem.append(self._createClearLink(options.explicitClear));
