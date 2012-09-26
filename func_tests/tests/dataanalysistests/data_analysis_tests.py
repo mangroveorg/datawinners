@@ -126,14 +126,13 @@ class TestDataAnalysis(BaseTest):
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_subject_filter(self):
         data_analysis_page = self.go_to_analysis_page()
-        subject_name = 'ANALAMANGA'
-        data_analysis_page.select_for_subject_type(subject_name)
+        subject = ('ANALAMANGA', 'cli11')
+        data_analysis_page.select_for_subject_type(subject[0])
         data_analysis_page.click_go_button()
-        data_records = data_analysis_page.get_all_data_records()
-        subject_names = [record.split(' ')[0] for record in data_records]
+        subject_names = data_analysis_page.get_all_data_records_by_column(0)
         subject_sets = set(subject_names)
         self.assertEqual(1, len(subject_sets))
-        self.assertEqual(subject_name, subject_names[0])
+        self.assertEqual(subject[0] + subject[1], subject_names[0])
 
     def verify_filter_by_data_sender(self, data_sender, project_name = fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
         data_analysis_page = self.go_to_analysis_page(project_name)
@@ -142,7 +141,7 @@ class TestDataAnalysis(BaseTest):
         data_records = data_analysis_page.get_all_data_records_by_column(3)
         data_senders_set = set(data_records)
         self.assertEqual(1, len(data_senders_set))
-        str_data_sender = data_sender[0] + ' ' + data_sender[1]
+        str_data_sender = data_sender[0] + data_sender[1]
         self.assertEqual(str_data_sender.strip(), data_records[0])
 
     @attr('functional_test', 'smoke')

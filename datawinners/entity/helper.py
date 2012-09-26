@@ -136,7 +136,6 @@ def get_country_appended_location(location_hierarchy, country):
     country_already_appended = (location_hierarchy_split[len(location_hierarchy_split)-1].strip() == country)
     return ','.join([x.strip() for x in location_hierarchy_split])  if location_hierarchy is None or country_already_appended else ','.join(location_hierarchy_split) + ',' + country
 
-
 def _get_data(form_data, country,reporter_id=None):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form model
     mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
