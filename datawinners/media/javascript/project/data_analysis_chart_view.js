@@ -52,7 +52,7 @@ function drawTableFooter(total, legendTable) {
 }
 
 function drawTableRows(answers, total, legendTable) {
-    total_count = 0;
+    var total_count = 0;
 
     $.each(answers, function (index, answer) {
         $row = $('<tr ></tr>');
