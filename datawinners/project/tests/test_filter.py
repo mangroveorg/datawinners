@@ -16,7 +16,7 @@ class TestSubmissionFilters(unittest.TestCase):
         self.values = [
             {'q1': 'q1', 'q2': '30.07.2012', 'entity_question_code': '001'},
             {'q1': 'q1', 'q2': '30.08.2012', 'entity_question_code': '005'},
-            {'q1': 'q1', 'q2': '30.08.2012', 'entity_question_code': '002'}
+            {'q1': 'q1', 'q2': '30.08.2012', 'entity_question_code': '002'},
         ]
         self.submissions = [
             Submission(self.dbm, self.transport_info, form_code='test', values=self.values[0]),
@@ -31,6 +31,16 @@ class TestSubmissionFilters(unittest.TestCase):
 
     def test_should_raise_value_error_when_filtering_with_no_question_name(self):
         self.assertRaises(AssertionError, ReportPeriodFilter(period={'start': '01.07.2012', 'end': '30.07.2012'}).filter, [self.submissions[0]])
+
+    def test_should_remove_submissions_whose_reporting_period_does_not_match_date_format(self):
+        submission_logs_with_wrong_date_format = [
+            Submission(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.25.2012', 'entity_question_code': '001'}),
+            Submission(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.2012', 'entity_question_code': '001'})
+        ]
+
+        self.submissions.extend(submission_logs_with_wrong_date_format)
+        filtered_submission_logs = ReportPeriodFilter(question_name='q2', period={'start': '01.05.2012', 'end': '30.09.2012'}).filter(self.submissions)
+        self.assertEqual(len(filtered_submission_logs), 3)
 
     def test_should_return_submissions_within_reporting_period(self):
         submission_in_report_period = self.submissions[0]

@@ -21,7 +21,10 @@ class ReportPeriodFilter(object):
         return filter(lambda x: self._withinReportPeriod(x.values), submission_logs)
 
     def _withinReportPeriod(self, values):
-        report_time = self._parseDate(values[self.rp_question_name])
+        try:
+            report_time = self._parseDate(values[self.rp_question_name])
+        except ValueError:
+            return False
 
         return self.start_time <= report_time <= self.end_time
 

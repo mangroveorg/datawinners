@@ -76,7 +76,7 @@ class SubmissionAnalyzer(object):
     def _update_leading_part_for_rp(self, row, submission):
         rp_field = self.form_model.event_time_question
         if rp_field:
-            reporting_period = case_insensitive_lookup(rp_field.code, submission.values) if rp_field else None
+            reporting_period = case_insensitive_lookup(rp_field.code, submission.values)
             reporting_period = _to_str(reporting_period, rp_field)
             return [reporting_period] + row
         else:
