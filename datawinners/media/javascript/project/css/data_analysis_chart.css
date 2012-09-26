@@ -3,15 +3,16 @@
   margin-left: 20px;
   float: left;
   width: 1835px; }
-  .chartOl div {
+  .chartOl .chartDiv {
     display: inline-block;
     width: 100%; }
-    .chartOl div .pieDiv {
+    .chartOl .chartDiv .pieDiv {
       width: 500px;
       height: 450px;
       float: left;
-      margin-left: 50px; }
-      .chartOl div .pieDiv .pieLabel {
+      margin-left: 50px;
+      margin-top: -20px; }
+      .chartOl .chartDiv .pieDiv .pieLabel {
         font-size: 8pt;
         width: 100px;
         text-align: center;
@@ -20,12 +21,12 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis; }
-    .chartOl div .barDiv {
+    .chartOl .chartDiv .barDiv {
       margin-bottom: 50px;
       width: 500px;
       float: left;
       margin-left: 50px; }
-      .chartOl div .barDiv .barLabel {
+      .chartOl .chartDiv .barDiv .barLabel {
         -moz-text-overflow: ellipsis;
         font-size: 8pt;
         padding: 2px;
@@ -33,27 +34,27 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis; }
-    .chartOl div .tableDiv {
+    .chartOl .chartDiv .tableDiv {
       float: left;
       margin-left: 100px; }
-      .chartOl div .tableDiv .legend_table {
+      .chartOl .chartDiv .tableDiv .legend_table {
         width: 400px; }
-        .chartOl div .tableDiv .legend_table .lengendHeader {
+        .chartOl .chartDiv .tableDiv .legend_table .lengendHeader {
           font-weight: bold; }
-        .chartOl div .tableDiv .legend_table .percentHeader {
+        .chartOl .chartDiv .tableDiv .legend_table .percentHeader {
           font-weight: bold;
           white-space: nowrap; }
-          .chartOl div .tableDiv .legend_table .percentHeader img {
+          .chartOl .chartDiv .tableDiv .legend_table .percentHeader img {
             margin-top: -4px;
             margin-left: 5px; }
-          .chartOl div .tableDiv .legend_table .percentHeader .tooltip {
+          .chartOl .chartDiv .tableDiv .legend_table .percentHeader .tooltip {
             white-space: normal !important; }
-        .chartOl div .tableDiv .legend_table .lengendFooter {
+        .chartOl .chartDiv .tableDiv .legend_table .lengendFooter {
           background: #EEE;
           font-weight: bold; }
-      .chartOl div .tableDiv .tableSummary {
+      .chartOl .chartDiv .tableDiv .tableSummary {
         margin-top: 5px; }
-      .chartOl div .tableDiv .mcExplaination {
+      .chartOl .chartDiv .tableDiv .mcExplaination {
         margin-top: 5px;
         font-style: italic;
         font-size: 11px; }

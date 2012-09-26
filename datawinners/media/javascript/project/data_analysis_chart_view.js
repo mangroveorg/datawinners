@@ -170,7 +170,7 @@ function drawChartSelectLink(index, question_li) {
 function drawChartBlockForQuestions(data, chart_ol) {
 
     drawChartDivs = function (index, item) {
-        $chart_div = $('<div id = "chart-' + index + '" />');
+        $chart_div = $('<div id = "chart-' + index + '" class="chartDiv" />');
         $pie_div = $('<div id="pie-' + index + '" class="pieDiv"/>');
         var barHeight = item[3].length * 60;
         $bar_div = $('<div class="barDiv" id="bar-' + index + '" style="height:' + barHeight + 'px;"/>');
