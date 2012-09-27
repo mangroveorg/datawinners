@@ -1,21 +1,58 @@
 
+.valueLabels {
+  font-size:80%;
+  color:black;
+}
+
+div.valueLabelLight {
+  opacity:0.5;
+  background-color: white;
+  border:none;
+  position:absolute;
+  margin-left: 5px;
+  margin-top: -5px;
+}
+
+div.valueLabel {
+  position:absolute;
+  border:none;
+  margin-left: 5px;
+  margin-top: -5px;
+}
+
+.title-selected a{
+  //text-decoration:underline;
+  color:black !important;
+  font-weight: bold;
+  cursor: default;
+}
+
+.title-selected a:hover{
+  text-decoration:none;
+}
+
 .chartOl{
   margin-top: 10px;
   margin-left: 20px;
   float: left;
+  width:1835px;
+  list-style: disc;
 
   .chartDiv{
     display:inline-block;
     width: 100%;
-    //min-height:600px;
-    //margin-top: 30px;
 
     .pieDiv{
       width:500px;
-      height:450px;
+      height:400px;
       float: left;
-      margin-left: 50px;
       margin-top: -20px;
+      margin-bottom: 30px;
+
+      canvas{
+        margin-left: 40px;
+        margin-top: -10px;
+      }
 
       .pieLabel{
         font-size:8pt;
@@ -26,6 +63,8 @@
         overflow:hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        margin-left: 20px;
+        margin-top: -7px;
       }
     }
 
@@ -33,7 +72,6 @@
       margin-bottom:50px;
       width:500px;
       float: left;
-      margin-left: 50px;
 
       .barLabel{
         -moz-text-overflow: ellipsis;
@@ -48,7 +86,7 @@
 
     .tableDiv{
       float:left;
-      margin-left:100px;
+      margin-left:20px;
       .legend_table{
         width: 400px;
         .lengendHeader{
@@ -74,7 +112,7 @@
       }
 
       .tableSummary{
-        margin-top: 5px
+        margin-top: 10px
       }
 
       .mcExplaination{

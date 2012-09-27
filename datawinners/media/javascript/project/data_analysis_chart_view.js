@@ -3,10 +3,10 @@ function drawTable(answers, total, locator, type){
     $(locator).empty();
     $legendTable = $('<table class="legend_table"></table>');
     drawTableHeader(type, answers, total, $legendTable);
-    drawTableRows(answers, total, $legendTable);
+    var total_count = drawTableRows(answers, total, $legendTable);
 
     if(type == 'select1'){
-        drawTableFooter(total, $legendTable);
+        drawTableFooter(total, total_count, $legendTable);
     }
 
     $(locator).append($legendTable)
@@ -42,7 +42,7 @@ function drawPercentHeader(type, answers, total) {
     return $percentHdr;
 }
 
-function drawTableFooter(total, legendTable) {
+function drawTableFooter(total, total_count, legendTable) {
     $footer = $('<tr ></tr>');
     $choiceFooter = $('<td class="lengendFooter">' + gettext('Total') + '</td>');
     $amountFooter = $('<td class="lengendFooter">' + total + '</td>');
@@ -67,6 +67,7 @@ function drawTableRows(answers, total, legendTable) {
         legendTable.append($row);
         total_count += answer[1];
     });
+    return total_count;
 }
 
 function drawNotes(locator, type, total) {
@@ -136,10 +137,10 @@ function drawPie(answers, total, locator, baseColor, colorScaleFactor) {
             series:{
                 pie:{
                     show:true,
-                    radius:.7,
+                    radius:.9,
                     label:{
                         show:true,
-                        radius:5/6,
+                        radius:1,
                         formatter:function (label, series) {
                             return '<div class="pieLabel" title="'+label+'">' + label + '<br/>' + Math.round(series.data[0][1]/total*100) + '%</div>';
                         }

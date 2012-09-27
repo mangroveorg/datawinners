@@ -4,42 +4,6 @@
   color: #EB8F00 !important;
 }
 
-.testEllipsis{
-  white-space: nowrap;
-  overflow: hidden;
-  -moz-binding: url('fire_fox_ellipsis.xml#ellipsis');
-}
-
-.valueLabels {
-  font-size:80%;
-  color:black;
-}
-div.valueLabelLight {
-  opacity:0.5;
-  background-color: white;
-  border:none;
-  position:absolute;
-  margin-left: 5px;
-  margin-top: -5px;
-}
-div.valueLabel {
-  position:absolute;
-  border:none;
-  margin-left: 5px;
-  margin-top: -5px;
-}
-
-.title-selected a{
-  //text-decoration:underline;
-  color:black !important;
-  font-weight: bold;
-  cursor: default;
-}
-
-.title-selected a:hover{
-  text-decoration:none;
-}
-
 .ui-dropdownchecklist-text {
   font: -webkit-small-control;
   color: black;

@@ -1,16 +1,47 @@
+.valueLabels {
+  font-size: 80%;
+  color: black; }
+
+div.valueLabelLight {
+  opacity: 0.5;
+  background-color: white;
+  border: none;
+  position: absolute;
+  margin-left: 5px;
+  margin-top: -5px; }
+
+div.valueLabel {
+  position: absolute;
+  border: none;
+  margin-left: 5px;
+  margin-top: -5px; }
+
+.title-selected a {
+  color: black !important;
+  font-weight: bold;
+  cursor: default; }
+
+.title-selected a:hover {
+  text-decoration: none; }
+
 .chartOl {
   margin-top: 10px;
   margin-left: 20px;
-  float: left;}
+  float: left;
+  width: 1835px;
+  list-style: disc; }
   .chartOl .chartDiv {
     display: inline-block;
     width: 100%; }
     .chartOl .chartDiv .pieDiv {
       width: 500px;
-      height: 450px;
+      height: 400px;
       float: left;
-      margin-left: 50px;
-      margin-top: -20px; }
+      margin-top: -20px;
+      margin-bottom: 30px; }
+      .chartOl .chartDiv .pieDiv canvas {
+        margin-left: 40px;
+        margin-top: -10px; }
       .chartOl .chartDiv .pieDiv .pieLabel {
         font-size: 8pt;
         width: 100px;
@@ -19,12 +50,13 @@
         color: black;
         overflow: hidden;
         white-space: nowrap;
-        text-overflow: ellipsis; }
+        text-overflow: ellipsis;
+        margin-left: 20px;
+        margin-top: -7px; }
     .chartOl .chartDiv .barDiv {
       margin-bottom: 50px;
       width: 500px;
-      float: left;
-      margin-left: 50px; }
+      float: left; }
       .chartOl .chartDiv .barDiv .barLabel {
         -moz-text-overflow: ellipsis;
         font-size: 8pt;
@@ -35,7 +67,7 @@
         text-overflow: ellipsis; }
     .chartOl .chartDiv .tableDiv {
       float: left;
-      margin-left: 100px; }
+      margin-left: 20px; }
       .chartOl .chartDiv .tableDiv .legend_table {
         width: 400px; }
         .chartOl .chartDiv .tableDiv .legend_table .lengendHeader {
@@ -52,7 +84,7 @@
           background: #EEE;
           font-weight: bold; }
       .chartOl .chartDiv .tableDiv .tableSummary {
-        margin-top: 5px; }
+        margin-top: 10px; }
       .chartOl .chartDiv .tableDiv .mcExplaination {
         margin-top: 5px;
         font-style: italic;
