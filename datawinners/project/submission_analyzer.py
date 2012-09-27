@@ -155,7 +155,7 @@ def _format_row(row):
         if isinstance(each, tuple):
             new_val = '%s<span class="small_grey">%s</span>' % (each[0], each[1]) if each[1] else each[0]
         elif isinstance(each, list):
-            new_val = ','.join(each)
+            new_val = ', '.join(each)
         elif each:
             new_val = each
         yield new_val

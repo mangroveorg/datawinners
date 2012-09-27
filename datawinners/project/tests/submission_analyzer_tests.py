@@ -112,7 +112,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
     def test_should_format_field_values_to_list_presentation(self):
         raw_values = [[('Clinic-One', 'cli14'), '01.01.2012', today, ('name', 'id', 'from'), ['one', 'two', 'three'], ['B+']]]
         formatted_field_value = get_formatted_values_for_list(raw_values)
-        expected = [['Clinic-One<span class="small_grey">cli14</span>',  '01.01.2012', today, 'name<span class="small_grey">id</span>', 'one,two,three', 'B+']]
+        expected = [['Clinic-One<span class="small_grey">cli14</span>',  '01.01.2012', today, 'name<span class="small_grey">id</span>', 'one, two, three', 'B+']]
         self.assertEqual(expected, formatted_field_value)
 
     def _prepare_form_model(self, manager):
