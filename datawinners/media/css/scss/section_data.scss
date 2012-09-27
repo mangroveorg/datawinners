@@ -25,6 +25,7 @@ table {
 }
 
 .heading_block {
+  display: block;
   border-bottom: 1px solid #CCCCCC;
   padding-bottom: 5px;
   margin-top: 15px;
@@ -38,21 +39,22 @@ table {
       background: none;
     }
   }
-  > div {
-    width: 16.66%;
-    input[type='text'], select {
-      width: 80%;
-      margin-right: 10px;
+  #filter_section {
+    >div {
+      width: 200px;
+      float: left;
+      input[type='text'], select {
+        width: 80%;
+      }
+      > div {
+        width: 100%;
+      }
+      padding-top: 5px;
     }
-    > div {
-      width: 100%;
+    >div.date_filter {
+      width: 240px;
     }
-  }
-  > div.width18 {
-    width: 18%;
-  }
-  > div.width12 {
-    width: 12%;
+
   }
   .date_range_box {
     float: left;

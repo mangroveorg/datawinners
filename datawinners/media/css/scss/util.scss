@@ -40,7 +40,7 @@
 }
 
 .margin_top_null {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .margin_bottom_null {
@@ -191,6 +191,11 @@ table.no_border {
 .inline {
   display: inline !important;
 }
+
+.inline_block {
+  display: inline-block;
+}
+
 
 .none {
   display: none !important;
