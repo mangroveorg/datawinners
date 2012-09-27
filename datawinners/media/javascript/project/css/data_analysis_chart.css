@@ -28,8 +28,8 @@ div.valueLabel {
   margin-top: 10px;
   margin-left: 20px;
   float: left;
-  width: 1835px;
-  list-style: disc; }
+  list-style: disc;
+  min-height: 274px; }
   .chartOl .chartDiv {
     display: inline-block;
     width: 100%; }

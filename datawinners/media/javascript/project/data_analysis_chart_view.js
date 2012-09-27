@@ -212,6 +212,7 @@ function drawChartReport(data) {
 
 function drawChart(data, submissionCount, emptySubmissionText) {
     $chart_ol = $('#chart_ol');
+    $chart_ol.attr('style', 'width:' + ($(window).width() - 85) + 'px')
     $chart_ol.empty();
 
     if(emptySubmissionText=='' && data.length == 0){

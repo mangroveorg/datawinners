@@ -74,7 +74,7 @@ $(document).ready(function () {
     };
 
     DW.wrap_table = function () {
-        $("#data_analysis").wrap("<div class='data_table' style='width:" + ($(window).width() - 50) + "px'/>");
+        $("#data_analysis").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
     };
 
     DW.dataBinding = function (data, destroy, retrive, emptyTableText) {
