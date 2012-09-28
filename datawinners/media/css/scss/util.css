@@ -237,8 +237,21 @@ div.tooltip {
 
 div.tooltip.bottom {
   background: url(/media/images/help_arrow_bottom.png) no-repeat 4px top;
-  padding-bottom: 0 !important;
-  padding-top: 5px !important; }
+  padding-top: 8px !important; }
+
+div.tooltip.left {
+  background: url(/media/images/help_arrow_left.png);
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  padding-right: 8px !important;
+  padding-bottom: 8px !important; }
+
+div.tooltip.bottom.left {
+  background: url(/media/images/help_arrow_bottom_left.png) no-repeat;
+  background-position: top right;
+  padding-bottom: 0px !important;
+  padding-top: 9px !important;
+  padding-right: 8px !important; }
 
 span.tooltip {
   background: url(/media/images/help_arrow.png) no-repeat left bottom;

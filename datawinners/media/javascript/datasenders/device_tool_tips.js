@@ -1,6 +1,6 @@
 $(function() {
     $(".device-help").tooltip({
-        position: "top left",
+        position: "top right",
         relative: true,
         opacity:0.8,
         events: {
