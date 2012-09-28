@@ -5,6 +5,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import SelectField
 from mangrove.form_model.form_model import FormModel
 from project import helper
+from project.filters import KeywordFilter
 from project.helper import filter_submissions, get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
 from enhancer import form_model_enhancer, field_enhancer
 from utils import sorted_unique_list
@@ -14,16 +15,18 @@ field_enhancer.enhance()
 form_model_enhancer.enhance()
 
 class SubmissionAnalyzer(object):
-    def __init__(self, form_model, manager, request, filters):
+    def __init__(self, form_model, manager, request, filters, keyword=None):
         assert isinstance(form_model, FormModel)
         self.form_model = form_model
         self.manager = manager
         self.request = request
         self.filtered_submissions = filter_submissions(filters, self.form_model, self.manager)
         self._leading_part = None
+        self._raw_values = None
         self._field_values = None
         self._data_senders = []
         self._subject_list = []
+        self.keyword_filter = KeywordFilter(keyword if keyword else '')
 
     def get_headers(self):
         return helper.get_headers(self.form_model)
@@ -53,6 +56,13 @@ class SubmissionAnalyzer(object):
             self._field_values.append(fields_)
         return self._field_values
 
+    @property
+    def filtered_raw_field_values(self):
+        if self._raw_values: return self._raw_values
+        raw_field_values = [leading + remaining[1:] for leading, remaining in zip(self.leading_part, self.field_values)]
+        self._raw_values = self._filter_by_keyword(raw_field_values)
+        return self._raw_values
+
     def get_subjects(self):
         if self.form_model.entity_defaults_to_reporter():  return []
         subjects =  [row[0] for row in self.leading_part if row[0][1] != '--']
@@ -70,8 +80,8 @@ class SubmissionAnalyzer(object):
             self._data_senders.append(data_sender)
             return data_sender
 
-    def get_raw_field_values(self):
-        return [leading + remaining[1:] for leading, remaining in zip(self.leading_part, self.field_values)]
+    def _filter_by_keyword(self, raw_field_values):
+        return self.keyword_filter.filter(raw_field_values)
 
     def _update_leading_part_for_rp(self, row, submission):
         rp_field = self.form_model.event_time_question
@@ -120,14 +130,14 @@ class SubmissionAnalyzer(object):
                     result[each.name]['choices'][option['text'][each.language]] = 0
         return result
 
-
     def get_analysis_statistics(self):
         if not self.leading_part: return []
 
-        field_header = self.get_headers()[len(self.leading_part[0]):]
+        lengthOfLeadingPart = len(self.leading_part[0])
+        field_header = self.get_headers()[lengthOfLeadingPart:]
         result = self._init_statistics_result()
-        for row in self.field_values:
-            for idx, question_values in enumerate(row[1:]):
+        for row in self.filtered_raw_field_values:
+            for idx, question_values in enumerate(row[lengthOfLeadingPart:]):
                 question_name = field_header[idx]
                 if isinstance(self.form_model.get_field_by_name(question_name), SelectField) and question_values:
                     result[question_name]['total'] += 1
@@ -142,6 +152,7 @@ class SubmissionAnalyzer(object):
                 row[-1].append([option,count])
             list_result.append(row)
         return list_result
+
     ##
 def get_formatted_values_for_list(values):
     formatted_values = []

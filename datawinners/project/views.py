@@ -334,8 +334,6 @@ def _build_datasender_filter(submission_sources):
 
 
 def filter_by_keyword(keyword, raw_field_values):
-    if not keyword.strip():
-        return raw_field_values
     return KeywordFilter(keyword).filter(raw_field_values)
 
 
@@ -419,11 +417,10 @@ def project_data(request, project_id=None, questionnaire_code=None):
     is_summary_report = form_model.entity_defaults_to_reporter()
     filters = build_filters(request.POST, form_model)
 
-    analyzer = SubmissionAnalyzer(form_model, manager, request, filters)
-    raw_field_values = analyzer.get_raw_field_values()
+    analyzer = SubmissionAnalyzer(form_model, manager, request, filters,request.POST.get('keyword', ''))
+    raw_field_values = analyzer.filtered_raw_field_values
 
-    filtered_field_values = filter_by_keyword(request.POST.get('keyword', ''), raw_field_values)
-    field_values = get_formatted_values_for_list(filtered_field_values)
+    field_values = get_formatted_values_for_list(raw_field_values)
 
     header_list = analyzer.get_headers()
     subject_list = analyzer.get_subjects()

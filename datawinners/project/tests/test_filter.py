@@ -3,7 +3,7 @@ from mock import Mock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.submissions import Submission
-from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SubmissionDateFilter, KeywordFilter
+from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SubmissionDateFilter
 from project.views import *
 
 

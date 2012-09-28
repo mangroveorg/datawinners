@@ -56,7 +56,28 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             "project.submission_analyzer.get_by_short_code") as get_by_short_code:
             get_data_sender.return_value = ('name', 'id', 'from')
             get_by_short_code.return_value = self._prepare_clinic_entity()
-            raw_field_values = analyzer.get_raw_field_values()
+            raw_field_values = analyzer.filtered_raw_field_values
+            expected = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+            self.assertEqual(expected, raw_field_values)
+
+    def test_should_get_raw_field_values_filtered_by_keyword(self):
+
+        form_model = self._prepare_form_model(self.manager)
+        data = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
+              {"eid": "cli15", "RD": "02.02.2012", "SY": "c", "BG": "d"}]
+        analyzer = self._prepare_analyzer(form_model, data, "Rapid")
+
+        with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
+            "project.submission_analyzer.get_by_short_code") as get_by_short_code, patch(
+             "project.submission_analyzer.SubmissionAnalyzer.leading_part") as leading_part , patch(
+            "project.submission_analyzer.SubmissionAnalyzer.field_values") as field_values:
+            get_data_sender.return_value = ('name', 'id', 'from')
+            get_by_short_code.return_value = self._prepare_clinic_entity()
+            analyzer.leading_part = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
+                                     [('Clinic-Two', 'cli15'),  '02.02.2012', today, ('name_2', 'id_2', 'from_2')]]
+            analyzer.field_values = [['cli14',['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']],
+                                    ['cli15',['Pneumonia'], ['B+']]]
+            raw_field_values = analyzer.filtered_raw_field_values
             expected = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
 
@@ -95,7 +116,8 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         analyzer = self._prepare_analyzer(form_model, d_)
 
         with patch("project.submission_analyzer.SubmissionAnalyzer.leading_part"):
-            analyzer.leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')]]
+            analyzer.leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
+                                     [('Clinic-3', 'cli15'),  '02.02.2012', today, ('name_2', 'id_2', 'from_3')]]
             statistics = analyzer.get_analysis_statistics()
 
             q1 = ["Zhat are symptoms?", field_attributes.MULTISELECT_FIELD, 1,[
@@ -148,7 +170,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         entity._doc.data = {'name': {'value': 'Clinic-One'}}
         return entity
 
-    def _prepare_analyzer_with_one_submission(self, form_model, values):
+    def _prepare_analyzer_with_one_submission(self, form_model, values, keywords=''):
         with patch("project.submission_analyzer.filter_submissions") as filter_submissions:
             submission = Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -158,7 +180,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
             return SubmissionAnalyzer(form_model, self.manager, self.request, None)
 
-    def _prepare_analyzer(self, form_model, values_list):
+    def _prepare_analyzer(self, form_model, values_list, keywords=None):
         with patch("project.submission_analyzer.filter_submissions") as filter_submissions:
             return_value = []
             for values in values_list:
@@ -169,4 +191,4 @@ class SubmissionAnalyzerTest(unittest.TestCase):
                 return_value.append(submission)
             filter_submissions.return_value = return_value
 
-            return SubmissionAnalyzer(form_model, self.manager, self.request, None)
+            return SubmissionAnalyzer(form_model, self.manager, self.request, None, keywords)

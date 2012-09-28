@@ -79,6 +79,8 @@ class KeywordFilter(object):
         self.keyword = keyword.lower()
 
     def filter(self, rows):
+        if not self.keyword.strip():
+            return rows
         return filter(lambda row: exists(self.contains, row), rows)
 
     def contains(self, i):
