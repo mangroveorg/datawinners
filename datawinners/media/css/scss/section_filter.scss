@@ -1,6 +1,6 @@
 #filter_section {
   .datepicker {
-    background: url("/media/images/arrow.png") no-repeat scroll right 2px transparent;
+    background: url("/media/images/arrow_dd.png") no-repeat scroll right 2px transparent;
     font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
     font-size: 11px !important;
     height: 23px !important;
@@ -18,15 +18,22 @@
     background: url("/media/images/arrow.png") no-repeat scroll right 4px transparent;
     font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
     font-size: 11px !important;
+    span span{
+      width: 133px !important;
+    }
   }
 
   .ui-dropdownchecklist-text {
     font-size: 11px !important;
   }
 
-  .ui-dropdownchecklist-dropcontainer-wrapper > div {
-    background: url('/media/javascript/dateRangePicker/css/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png') repeat-x;
+  .ui-dropdownchecklist-dropcontainer-wrapper{
+    margin-top: -5px;
+    > div {
+      background: url('/media/javascript/dateRangePicker/css/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png') repeat-x;
+    }
   }
+    
   .btnDone {
     background: #cce3ee;
     /* for non-css3 browsers */
@@ -41,5 +48,10 @@
   }
   .margin_top0 .button_blue {
     margin-top: 0px;
+  }
+
+  .ui-dropdownchecklist-close{
+    font-size: 11px;
+    font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   }
 }
