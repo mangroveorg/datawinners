@@ -27,11 +27,8 @@
     font-size: 11px !important;
   }
 
-  .ui-dropdownchecklist-dropcontainer-wrapper{
-    margin-top: -5px;
-    > div {
+  .ui-dropdownchecklist-dropcontainer-wrapper  > div {
       background: url('/media/javascript/dateRangePicker/css/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png') repeat-x;
-    }
   }
     
   .btnDone {
@@ -53,5 +50,10 @@
   .ui-dropdownchecklist-close{
     font-size: 11px;
     font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
+  }
+}
+@-moz-document url-prefix() {
+  #filter_section .ui-dropdownchecklist-dropcontainer-wrapper{
+    margin-top: -5px;
   }
 }

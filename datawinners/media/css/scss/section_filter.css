@@ -15,10 +15,8 @@
     width: 133px !important; }
 #filter_section .ui-dropdownchecklist-text {
   font-size: 11px !important; }
-#filter_section .ui-dropdownchecklist-dropcontainer-wrapper {
-  margin-top: -5px; }
-  #filter_section .ui-dropdownchecklist-dropcontainer-wrapper > div {
-    background: url("/media/javascript/dateRangePicker/css/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png") repeat-x; }
+#filter_section .ui-dropdownchecklist-dropcontainer-wrapper > div {
+  background: url("/media/javascript/dateRangePicker/css/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png") repeat-x; }
 #filter_section .btnDone {
   background: #cce3ee;
   /* for non-css3 browsers */
@@ -35,3 +33,7 @@
 #filter_section .ui-dropdownchecklist-close {
   font-size: 11px;
   font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
+
+@-moz-document url-prefix() {
+  #filter_section .ui-dropdownchecklist-dropcontainer-wrapper {
+    margin-top: -5px; } }
