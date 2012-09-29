@@ -5,16 +5,17 @@
 div.valueLabelLight {
   opacity: 0.5;
   background-color: white;
+  color: white;
   border: none;
   position: absolute;
   margin-left: 5px;
-  margin-top: -5px; }
+  margin-top: 5px; }
 
 div.valueLabel {
   position: absolute;
   border: none;
   margin-left: 5px;
-  margin-top: -5px; }
+  margin-top: 5px; }
 
 .title-selected a {
   color: black !important;
