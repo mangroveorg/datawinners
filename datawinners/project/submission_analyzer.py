@@ -165,4 +165,6 @@ def _format_row(row):
             new_val = ', '.join(each)
         elif each:
             new_val = each
+        else:
+            new_val = NULL
         yield new_val

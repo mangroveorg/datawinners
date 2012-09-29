@@ -8,7 +8,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.submissions import Submission
 from mock import Mock, patch
-from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list
+from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list, NULL
 
 today = datetime.utcnow().strftime("%d.%m.%Y")
 
@@ -136,6 +136,12 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         raw_values = [[('Clinic-One', 'cli14'), '01.01.2012', today, ('name', 'id', 'from'), ['one', 'two', 'three'], ['B+']]]
         formatted_field_value = get_formatted_values_for_list(raw_values)
         expected = [['Clinic-One<span class="small_grey">cli14</span>',  '01.01.2012', today, 'name<span class="small_grey">id</span>', 'one, two, three', 'B+']]
+        self.assertEqual(expected, formatted_field_value)
+
+    def test_should_show_NULL_string_as_values_for_newly_created_questions(self):
+        raw_values = [[('Clinic-One', 'cli14'), '01.01.2012', today, ('name', 'id', 'from'), ['one', 'two', 'three'], ['B+'], None, ""]]
+        formatted_field_value = get_formatted_values_for_list(raw_values)
+        expected = [['Clinic-One<span class="small_grey">cli14</span>',  '01.01.2012', today, 'name<span class="small_grey">id</span>', 'one, two, three', 'B+', NULL, NULL]]
         self.assertEqual(expected, formatted_field_value)
 
     def _prepare_form_model(self, manager):
