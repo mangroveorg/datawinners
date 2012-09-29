@@ -418,7 +418,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
     filters = build_filters(request.POST, form_model)
 
     analyzer = SubmissionAnalyzer(form_model, manager, request, filters,request.POST.get('keyword', ''))
-    raw_field_values = analyzer.filtered_raw_field_values
+    raw_field_values = analyzer.get_raw_values()
 
     field_values = get_formatted_values_for_list(raw_field_values)
 

@@ -32,7 +32,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             "project.submission_analyzer.get_by_short_code") as get_by_short_code:
             get_data_sender.return_value = ('name', 'id', 'from')
             get_by_short_code.return_value = self._prepare_clinic_entity()
-            leading_part = analyzer.leading_part
+            leading_part = analyzer._get_leading_part()
             expected = [[('Clinic-One', 'cli14'), '01.01.2012', today, ('name', 'id', 'from')]]
             self.assertEqual(expected, leading_part)
 
@@ -44,7 +44,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             "project.submission_analyzer.get_by_short_code") as get_by_short_code:
             get_data_sender.return_value = ('name', 'id', 'from')
             get_by_short_code.return_value = self._prepare_clinic_entity()
-            leading_part = analyzer.leading_part
+            leading_part = analyzer._get_leading_part()
             expected = [[today, ('name', 'id', 'from')]]
             self.assertEqual(expected, leading_part)
 
@@ -56,7 +56,8 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             "project.submission_analyzer.get_by_short_code") as get_by_short_code:
             get_data_sender.return_value = ('name', 'id', 'from')
             get_by_short_code.return_value = self._prepare_clinic_entity()
-            raw_field_values = analyzer.filtered_raw_field_values
+            analyzer._init_raw_values()
+            raw_field_values = analyzer.get_raw_values()
             expected = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
 
@@ -69,41 +70,40 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
         with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
             "project.submission_analyzer.get_by_short_code") as get_by_short_code, patch(
-             "project.submission_analyzer.SubmissionAnalyzer.leading_part") as leading_part , patch(
-            "project.submission_analyzer.SubmissionAnalyzer.field_values") as field_values:
+             "project.submission_analyzer.SubmissionAnalyzer._get_leading_part") as _get_leading_part , patch(
+            "project.submission_analyzer.SubmissionAnalyzer._get_field_values") as _get_field_values:
             get_data_sender.return_value = ('name', 'id', 'from')
             get_by_short_code.return_value = self._prepare_clinic_entity()
-            analyzer.leading_part = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
+            analyzer._get_leading_part.return_value = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
                                      [('Clinic-Two', 'cli15'),  '02.02.2012', today, ('name_2', 'id_2', 'from_2')]]
-            analyzer.field_values = [['cli14',['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']],
+            analyzer._get_field_values.return_value = [['cli14',['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']],
                                     ['cli15',['Pneumonia'], ['B+']]]
-            raw_field_values = analyzer.filtered_raw_field_values
+            analyzer._init_raw_values()
+            raw_field_values = analyzer.get_raw_values()
             expected = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_subject_list(self):
         form_model = self._prepare_form_model(self.manager)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
-
-        with patch("project.submission_analyzer.SubmissionAnalyzer.leading_part"):
-            analyzer.leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
+        analyzer.filtered_leading_part =  [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
                                               [('Clinic-1', 'cli15'),  '01.01.2011', today, ('name_2', 'id_2', 'from_2')],
                                               [('Clinic-1', 'cli15'),  '01.10.2011', today, ('name_3', 'id_3', 'from_3')]]
-            subject_list = analyzer.get_subjects()
-            expected = [('Clinic-1', 'cli15'), ('Clinic-2', 'cli14')]
-            self.assertEqual(expected, subject_list)
+        subject_list = analyzer.get_subjects()
+        expected = [('Clinic-1', 'cli15'), ('Clinic-2', 'cli14')]
+        self.assertEqual(expected, subject_list)
 
     def test_should_get_data_sender_list(self):
         form_model = self._prepare_form_model(self.manager)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
-        with patch("project.submission_analyzer.SubmissionAnalyzer.leading_part") :
-            analyzer.leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name_2', 'id_2', 'from_2')],
-                                              [('Clinic-1', 'cli15'),  '01.01.2011', today, ('name_1', 'id_1', 'from_1')],
-                                              [('Clinic-3', 'cli16'),  '01.10.2011', today, ('name_2', 'id_2', 'from_2')]]
-            data_sender_list = analyzer.get_data_senders()
-            expected = [('name_1', 'id_1', 'from_1'), ('name_2', 'id_2', 'from_2')]
-            self.assertEqual(expected, data_sender_list)
+        analyzer.filtered_leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name_2', 'id_2', 'from_2')],
+                                          [('Clinic-1', 'cli15'),  '01.01.2011', today, ('name_1', 'id_1', 'from_1')],
+                                          [('Clinic-3', 'cli16'),  '01.10.2011', today, ('name_2', 'id_2', 'from_2')]]
+
+        data_sender_list = analyzer.get_data_senders()
+        expected = [('name_1', 'id_1', 'from_1'), ('name_2', 'id_2', 'from_2')]
+        self.assertEqual(expected, data_sender_list)
 
     def test_should_get_statistic_result(self):
         #question name ordered by field
@@ -115,9 +115,10 @@ class SubmissionAnalyzerTest(unittest.TestCase):
              ]
         analyzer = self._prepare_analyzer(form_model, d_)
 
-        with patch("project.submission_analyzer.SubmissionAnalyzer.leading_part"):
-            analyzer.leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
+        with patch("project.submission_analyzer.SubmissionAnalyzer._get_leading_part") as _get_leading_part:
+            _get_leading_part.return_value = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
                                      [('Clinic-3', 'cli15'),  '02.02.2012', today, ('name_2', 'id_2', 'from_3')]]
+            analyzer._init_raw_values()
             statistics = analyzer.get_analysis_statistics()
 
             q1 = ["Zhat are symptoms?", field_attributes.MULTISELECT_FIELD, 1,[
@@ -171,17 +172,18 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         return entity
 
     def _prepare_analyzer_with_one_submission(self, form_model, values, keywords=''):
-        with patch("project.submission_analyzer.filter_submissions") as filter_submissions:
+        with patch("project.submission_analyzer.filter_submissions") as filter_submissions, patch(
+            "project.submission_analyzer.SubmissionAnalyzer._init_raw_values") as _init_raw_values:
             submission = Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
                 form_code=form_model.form_code,
                 values=values)
             filter_submissions.return_value = [submission]
-
             return SubmissionAnalyzer(form_model, self.manager, self.request, None)
 
     def _prepare_analyzer(self, form_model, values_list, keywords=None):
-        with patch("project.submission_analyzer.filter_submissions") as filter_submissions:
+        with patch("project.submission_analyzer.filter_submissions") as filter_submissions, patch(
+            "project.submission_analyzer.SubmissionAnalyzer._init_raw_values") as _init_raw_values:
             return_value = []
             for values in values_list:
                 submission = Submission(self.manager,
