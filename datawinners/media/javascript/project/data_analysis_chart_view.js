@@ -101,6 +101,7 @@ function drawBar(answers, total, locator, barColor) {
                 bars:{
                     show:true,
                     barWidth:.4,
+                    align:'center',
                     horizontal: true,
                     fillColor: { colors: [barColor, getColorOf(barColor,0.8) , getColorOf(barColor,0.6)] }
                 }
@@ -111,7 +112,8 @@ function drawBar(answers, total, locator, barColor) {
             yaxis:{
                 ticks:axis_label,
                 tickLength:0,
-                labelWidth: 100
+                labelWidth: 100,
+                autoscaleMargin:.05
             },
             xaxis:{
                 tickDecimals:0,
@@ -173,7 +175,7 @@ function drawChartBlockForQuestions(data, chart_ol) {
     drawChartDivs = function (index, item) {
         $chart_div = $('<div id = "chart-' + index + '" class="chartDiv" />');
         $pie_div = $('<div id="pie-' + index + '" class="pieDiv"/>');
-        var barHeight = item[3].length * 60;
+        var barHeight = item[3].length * 61 ;
         $bar_div = $('<div class="barDiv" id="bar-' + index + '" style="height:' + barHeight + 'px;"/>');
         $table_div = $('<div id="table-' + index + '" class="tableDiv"/>');
         $chart_div.append($pie_div).append($bar_div).append($table_div);
