@@ -194,7 +194,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
 
     def test_should_pre_populate_datasenders_for_subject_question(self):
-        form_model = self._get_form_model()
         subject_field = self._get_text_field(True, True)
         project = self._get_mock_project()
         display_subject_field = SubjectQuestionFieldCreator(self.dbm, project).create(subject_field)
@@ -209,17 +208,20 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         project_subject_loader_mock = Mock()
         fields = ['name', 'short_code']
         label = None
-        project_subject_loader_mock.return_value = [{'cols': ['clinic1', 'a']},
-                {'cols': ['clinic2', 'b']},
+        project_subject_loader_mock.return_value = [{'short_code': 'a', 'cols': ['clinic1', 'a']},
+                {'short_code': 'b', 'cols': ['clinic2', 'b']},
         ], fields, label
         project.entity_type.return_value = ["Clinic"]
         project.is_on_type.return_value = False
         expected_choices = [('a', 'clinic1  (a)'), ('b', 'clinic2  (b)')]
         display_subject_field = SubjectQuestionFieldCreator(self.dbm, project,
             project_subject_loader=project_subject_loader_mock).create(subject_field)
+
         self.assertEqual(expected_choices, display_subject_field.choices)
+
         subject_question_code_hidden_field_dict = SubjectQuestionFieldCreator(self.dbm, project,
             project_subject_loader=project_subject_loader_mock).create_code_hidden_field(subject_field)
+
         self.assertEqual(expected_code, subject_question_code_hidden_field_dict['entity_question_code'].label)
 
     def test_should_create_django_phone_number_field(self):

@@ -241,18 +241,27 @@ class SubjectQuestionFieldCreator(object):
         data_sender_choices = self._get_all_choices(data_senders)
         return self._get_choice_field(data_sender_choices, subject_field, help_text=subject_field.instruction)
 
+    def _build_subject_choice_data(self, subjects, key_list):
+        values = map(lambda x: x["cols"] + [x["short_code"]], subjects)
+        key_list.append('unique_id')
 
-    def _get_all_choices(self, all_subjects):
-        return [(data_sender['short_code'], data_sender['name'] + '  (' + data_sender['short_code'] + ')')for
-                                                                                                          data_sender in
-                                                                                                          all_subjects]
-
-    def _get_all_subject(self):
-        all_subjects, fields, label = self.project_subject_loader(self.dbm, type=self.project.entity_type)
-        return [dict(zip(fields, data["cols"])) for data in all_subjects]
+        return [dict(zip(key_list, value_list)) for value_list in values]
 
     def _subjects_choice_fields(self, subject_field):
-        all_subjects = self._get_all_subject()
-        all_subject_choices = self._get_all_choices(all_subjects)
+        subjects, fields, label = self.project_subject_loader(self.dbm, type=self.project.entity_type)
+        subject_data =  self._build_subject_choice_data(subjects, fields)
+        all_subject_choices = map(self._data_to_choice, subject_data)
         instruction_for_subject_field = ugettext("Choose Subject from this list.")
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
+
+    def get_key(self, subject):
+        return subject['unique_id']
+
+    def get_value(self, subject):
+        return subject['name'] + '  (' + subject['short_code'] + ')'
+
+    def _data_to_choice(self, subject):
+        return self.get_key(subject), self.get_value(subject)
+
+    def _get_all_choices(self, entities):
+        return [(entity['short_code'], entity['name'] + '  (' + entity['short_code'] + ')') for entity in entities]

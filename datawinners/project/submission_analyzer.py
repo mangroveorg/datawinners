@@ -128,7 +128,6 @@ class SubmissionAnalyzer(object):
             return row
 
     def _update_leading_part_for_project_type(self, row, submission):
-
         if  self.form_model.entity_defaults_to_reporter(): return row
         subject = self._get_subject(submission)
         return [subject] + row
