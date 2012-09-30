@@ -17,6 +17,22 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         self.manager = Mock(spec=DatabaseManager)
         self.request = Mock()
 
+    def test_should_get_option_values_for_questions_case_insensitively(self):
+        form_model = self._prepare_form_model(self.manager)
+        data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bC", "BG": "D"}
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, data)
+
+        with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
+            "project.submission_analyzer.get_by_short_code") as get_by_short_code, patch(
+            "project.submission_analyzer.SubmissionAnalyzer._get_leading_part") as _get_leading_part:
+            get_data_sender.return_value = ('name', 'id', 'from')
+            get_by_short_code.return_value = self._prepare_clinic_entity()
+            analyzer._get_leading_part.return_value = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')]]
+            analyzer._init_raw_values()
+            raw_field_values = analyzer.get_raw_values()
+            expected = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+            self.assertEqual(expected, raw_field_values)
+
     def test_should_get_real_answer_for_select_question(self):
         row = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
         expected = {"eid": "cli14","RD": "01.01.2012", "SY": ['Rapid weight loss', 'Dry cough', 'Pneumonia'], "BG": ['B+']}

@@ -13,12 +13,14 @@ from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCod
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
 from mangrove.utils.types import  is_sequence, sequence_to_str
+from enhancer import field_enhancer
 import models
 from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
 from mangrove.transport import Request, TransportInfo
 import re
+field_enhancer.enhance()
 
 NOT_AVAILABLE = "N/A"
 
@@ -77,17 +79,12 @@ def adapt_submissions_for_template(questions, submissions):
 
     return [tuple(each) for each in formatted_list]
 
-
 def get_according_value(value_dict, question):
     value = value_dict.get(question.code.lower(), '--')
     if value != '--' and question.type in ['select1', 'select']:
-        value_list = []
-        responses = re.findall(r'[1-9]?[a-z]', value)
-        for response in responses:
-            value_list.extend([opt['text'][question.language] for opt in question.options if opt['val'] == response])
+        value_list = question.get_option_value_list(value)
         return ", ".join(value_list)
     return value
-
 
 def generate_questionnaire_code(dbm):
     all_projects_count = models.count_projects(dbm)
