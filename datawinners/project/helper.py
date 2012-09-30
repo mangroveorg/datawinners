@@ -19,7 +19,7 @@ from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
 from mangrove.transport import Request, TransportInfo
-import re
+
 field_enhancer.enhance()
 
 NOT_AVAILABLE = "N/A"

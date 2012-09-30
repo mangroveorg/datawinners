@@ -145,7 +145,11 @@ class SubmissionAnalyzer(object):
             if isinstance(each, SelectField):
                 result.setdefault(each.name, {"choices":{},"type":each.type,'total':0})
                 for option in each.options:
-                    result[each.name]['choices'][option['text'][each.language]] = 0
+                    opt_text = option['text']
+                    if opt_text.has_key(each.language):
+                        result[each.name]['choices'][opt_text[each.language]] = 0
+                    else:
+                        result[each.name]['choices'][opt_text[opt_text.keys()[0]]] = 0
         return result
 
 

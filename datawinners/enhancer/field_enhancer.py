@@ -1,9 +1,19 @@
 from mangrove.form_model.field import SelectField
 import re
 
+NOT_AVAILABLE = "N/A"
+
 def enhance():
     def _get_value_by_option(self, option):
-        return [opt['text'][self.language] for opt in self.options if opt['val'].lower() == option.lower()][0]
+        for opt in self.options:
+            opt_text = opt['text']
+            opt_value = opt['val']
+            if opt_value.lower() == option.lower():
+                if opt_text.has_key(self.language) :
+                    return opt_text[self.language]
+                elif opt_value.lower() == option.lower():
+                    return opt_text[opt_text.keys()[0]]
+        return NOT_AVAILABLE
 
     SelectField.get_value_by_option = _get_value_by_option
 
