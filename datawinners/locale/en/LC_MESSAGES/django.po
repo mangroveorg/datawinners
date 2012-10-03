@@ -4566,3 +4566,9 @@ msgstr ""
 
 msgid "Submission Log"
 msgstr ""
+
+msgid "If you modify this questionnaire, any previously collected data will be lost."
+msgstr ""
+
+msgid "Do you want to modify this questionnaire?"
+msgstr ""
