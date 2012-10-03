@@ -2019,7 +2019,7 @@ msgid ""
 "maximize the use of information and communication technology in "
 "productive and sustainable ways."
 msgstr ""
-"HNI offre à ses partenaires l'occasion d’appréhender, de remodeler et de "
+"HNI offre à ses partenaires l'occasion d'appréhender, de remodeler et de "
 "maximiser l'utilisation de la technologie de l'information et de la "
 "communication de manière productive et durable."
 
@@ -2027,7 +2027,7 @@ msgid "Learn more about us"
 msgstr "Mieux nous connaître"
 
 msgid "What is DataWinners"
-msgstr "Qu’est-ce que DataWinners"
+msgstr "Qu'est-ce que DataWinners"
 
 msgid "Success Stories"
 msgstr "Nos succès"
@@ -2185,8 +2185,8 @@ msgid "Please send it to us today. Thank you."
 msgstr "Veuillez l'envoyer aujourd'hui. Merci"
 
 msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
-msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. "
-"Veuillez contacter le Service d’Assistance de DataWinners."
+msgstr "Jusqu'à ce jour, aucun numéro de téléphone n'a encore été attribué à votre organisation. "
+"Veuillez contacter le Service d'Assistance de DataWinners."
 
 msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
 msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. "
@@ -2414,16 +2414,16 @@ msgstr "Diso. Diso ny valiny hoan'i %s. Azafady avereno alefa manontolo ny SMS-n
 
 #, python-format
 msgid"Questionnaire ID %s doesnt exist."
-msgstr "Tsy misy ny kaodin’ny lisitry ny fanontaniana %s"
+msgstr "Tsy misy ny kaodin'ny lisitry ny fanontaniana %s"
 
 #, python-format
 msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend "
 "SMS starting with this questionnaire code."
-msgstr "Diso ny  kaodin’ny lisitry ny fanontaniana %s. Jereo eo amin’ny lisitry ny fanontaniana ilay izy ary "
-"alefaso indray ny SMS-nao  manomboka amin’io kaody io"
+msgstr "Diso ny  kaodin'ny lisitry ny fanontaniana %s. Jereo eo amin'ny lisitry ny fanontaniana ilay izy ary "
+"alefaso indray ny SMS-nao  manomboka amin'io kaody io"
 
 #, python-format
-msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
+msgid "This %s is not yet registered in the system. Please check the %s's unique ID number and resubmit."
 msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny kaody ID ho an'i %s ary avereno alefa ny SMS-nao"
 
 #, python-format
@@ -2432,11 +2432,11 @@ msgstr "Nia %s %s dia tsy tafiditra anaty solosaina. Ampidiro ny %s na antsoy ny
 
 #, python-format
 msgid "This telephone number is not registered in our system."
-msgstr "Tsy mbola tafiditra ao anatin’ny lisitra io nomerao telefaoninao io."
+msgstr "Tsy mbola tafiditra ao anatin'ny lisitra io nomerao telefaoninao io."
 
 #, python-format
 msgid "Your telephone number is not yet registered in our system. Please contact your supervisor."
-msgstr "Tsy mbola tafiditra ao anatin’ny lisitra io nomerao telefaoninao io. Antsoy ny tompon’andraikitra "
+msgstr "Tsy mbola tafiditra ao anatin'ny lisitra io nomerao telefaoninao io. Antsoy ny tompon'andraikitra "
 "momba izany azafady."
 
 #, python-format
@@ -2453,7 +2453,7 @@ msgstr "Diso. Tsy tafiditra ny SMS-nao. Jereo ny lisitry ny fanontaniana. Averen
 "sy ny valiny hoan'ny: %s"
 
 msgid "Error. Incorrect answer for t. Please resend entire message."
-msgstr "Diso ny valin’ny fanontaniana t. Avereno alefa manontolo indray ny toromarika sy soratra marina azafady"
+msgstr "Diso ny valin'ny fanontaniana t. Avereno alefa manontolo indray ny toromarika sy soratra marina azafady"
 
 msgid "Invalid message format."
 msgstr "Tsy manara-penitra ny firafitry ny SMS-nao."
@@ -2465,7 +2465,7 @@ msgid "The system is experiencing a problem right now. Please try again in a few
 msgstr "Mbola misy olana kely. Avereno indray azafady rehefa afaka minitra vitsy."
 
 msgid "The system is unable to accept your SMS right now. Please wait one hour and resend the same message."
-msgstr "Tsy mbola afaka raisina ny SMS-nao. Andramo averina alefa indray ilay izy rehefa afaka adin’iray azafady."
+msgstr "Tsy mbola afaka raisina ny SMS-nao. Andramo averina alefa indray ilay izy rehefa afaka adin'iray azafady."
 
 msgid "Error: Invalid Submission. No valid question found. Check the Question Code on the printed "
 "questionnaire and resend SMS with the right Question code."
@@ -2692,7 +2692,7 @@ msgstr ""
 msgid "Import a list of %(entity_type)s"
 msgstr ""
 
-msgid "Register and manage every %(entity_type)s you want to keep track of or collect data about. See them displayed on the map on your project’s overview page."
+msgid "Register and manage every %(entity_type)s you want to keep track of or collect data about. See them displayed on the map on your project's overview page."
 msgstr ""
 
 msgid "View each of your registered %(entity_type)s in detail."
