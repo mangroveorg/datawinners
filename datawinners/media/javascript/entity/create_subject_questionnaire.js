@@ -31,20 +31,40 @@ DW.post_subject_data = function(){
     });
 };
 
-$(document).ready(function() {
-    $("#delete_warning").dialog({
-        autoOpen: false,
-        modal: true,
-        title: gettext('Your Collected Data Will be Lost'),
-        zIndex:200,
-        width: 600
-    });
 
-    $("#submit-button").click(function() {
-        if(questionnnaire_code.processValidation() && questionnaire_form.processValidation()){
+DW.init_has_submission_delete_warning_for_entity = function(){
+    kwargs = {container: "#submission_exists",
+        continue_handler: function(){
+            question = questionnaireViewModel.selectedQuestion();
+            questionnaireViewModel.removeQuestion(question);
+        },
+        title: gettext('Warning: Your Collected Data Will be Lost.')
+    }
+    DW.has_submission_delete_warning_for_entity = new DW.warning_dialog(kwargs);
+}
+
+DW.init_has_new_submission_delete_warning_for_entity = function(){
+    kwargs = {container: "#new_submission_exists",
+        title: gettext('Warning: Your Collected Data Will be Lost.'),
+        continue_handler: function(){
             $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
             DW.post_subject_data();
             $.unblockUI();
+        }
+    }
+    DW.has_new_submission_delete_warning_for_entity = new DW.warning_dialog(kwargs);
+}
+
+$(document).ready(function() {
+    $("#submit-button").click(function() {
+        if(questionnnaire_code.processValidation() && questionnaire_form.processValidation()){
+            if (questionnaireViewModel.hasDeletedOldQuestion && !DW.has_submission_delete_warning_for_entity.is_continue && DW.questionnaire_has_submission()){
+                DW.has_new_submission_delete_warning_for_entity.show_warning();
+            } else {
+                $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
+                DW.post_subject_data();
+                $.unblockUI();
+            }
         }
     });
 
@@ -53,11 +73,14 @@ $(document).ready(function() {
         modal: true,
         autoOpen: true,
         width: 600,
-        height: 150,
+        height: 170,
         position: ['center', 120]
     });
 
     $("#edit_ok").click(function() {
         $("#edit_warning").dialog("close");
     });
+    
+    DW.init_has_new_submission_delete_warning_for_entity();
+    DW.init_has_submission_delete_warning_for_entity();
 });

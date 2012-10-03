@@ -32,6 +32,10 @@ MULTIPLE_ANSWERS = "multiple_answers"
 ERROR_MSG = "message"
 SUCCESS_MSG = "message"
 CHARACTER_REMAINING = "character_remaining"
+SENDER = "from"
+RECEIVER = "to"
+SMS = "sms"
+SUCCESS_MESSAGE = "success_message"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 
@@ -55,3 +59,17 @@ MESSAGE = "message"
 
 LIGHT_BOX_DATA = {TITLE: "Warning !!",
                   MESSAGE: "Warning: Changing the date format of report period will remove all your collected data. Are you sure you want to continue?"}
+
+VALID_SMS = {SENDER: "919049008976",
+                RECEIVER: '919880734937',
+                SMS: "cli005 cid001 mino 90 25.12.2010 a d -18.1324,27.6547",
+                SUCCESS_MESSAGE: u"Thank you ReRegistered. We received : EID: cid001 NA: mino FA: 90 RD: 25.12.2010 BG: O+ SY: Memory loss GPS: -18.1324, 27.6547"}
+#SUCCESS_MESSAGE: u"Thank you ReRegistered. We received : EID: cid001 NA: mino FA: 90 RD: 25.12.2010 BG: O+ SY: Memory loss GPS: -18.1324, 27.6547"}
+DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING = u'If you delete this question, any previously collected data will be lost.\nDo you want to delete this question?'
+SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING = u'During the time you changed the questionnaire.\nThere was a new data registered.\nThese Data will be lost if you continue\nDo you want to save the changes anyway?'
+
+VALID_SMS_SUBJECT_DATA = {SENDER: "919049008976",
+                RECEIVER: '919880734937',
+                SMS: "sub prenom anarana antanifotsy 12,19 033143333 reg001",
+                SUCCESS_MESSAGE: u"Registration successful. ID is: reg001. q1: prenom q2: anarana q3: antanifotsy q4: 12.0, 19.0 q5: 033143333 q6: reg001"}
+SUBJECT_TYPE = "subject type"

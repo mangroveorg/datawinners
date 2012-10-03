@@ -1310,3 +1310,14 @@ def add_link(project):
         text = _("Register a %(subject)s") % {'subject': project.entity_type}
         url = make_subject_links(project.id)['register_subjects_link']
         return add_link_named_tuple(url=url, text=text)
+
+@login_required(login_url='/login')
+@session_not_expired
+@is_datasender
+@is_not_expired
+def project_has_data(request, questionnaire_code=None):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    analyzer = SubmissionAnalyzer(form_model, manager, request, [])
+    raw_field_values = analyzer.get_raw_field_values()
+    return HttpResponse(encode_json({'has_data': len(raw_field_values) != 0}))

@@ -655,3 +655,9 @@ msgstr ""
 
 msgid "No submissions available for this search. Try removing some of your filters."
 msgstr ""
+
+msgid "Warning: Your Collected Data Will be Lost."
+msgstr ""
+
+msgid "Close"
+msgstr ""

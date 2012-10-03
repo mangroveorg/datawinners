@@ -1,3 +1,41 @@
+DW.init_has_submission_delete_warning = function(){
+    kwargs = {container: "#submission_exists",
+        is_continue: !is_edit,
+        title: gettext('Warning: Your Collected Data Will be Lost.'),
+        continue_handler: function(){
+            question = questionnaireViewModel.selectedQuestion();
+            questionnaireViewModel.removeQuestion(question);
+        }
+    }
+    DW.has_submission_delete_warning = new DW.warning_dialog(kwargs);
+}
+
+DW.init_has_new_submission_delete_warning = function(){
+    kwargs = {container: "#new_submission_exists",
+        is_continue: !is_edit,
+        title: gettext('Warning: Your Collected Data Will be Lost.'),
+        continue_handler: function(){
+            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+            DW.post_project_data('Test', function (response) {
+                return '/project/overview/' + response.project_id;
+            });
+        }
+    }
+    DW.has_new_submission_delete_warning = new DW.warning_dialog(kwargs);
+}
+
+DW.init_delete_periodicity_question_warning = function(){
+    kwargs = {container: "#delete_periodicity_question_warning",
+        title: gettext('Warning: Your Collected Data Will be Lost.'),
+        width: 700,
+        continue_handler: function(){
+            question = questionnaireViewModel.selectedQuestion();
+            questionnaireViewModel.removeQuestion(question);
+        }
+    }
+    DW.delete_periodicity_question_warning = new DW.warning_dialog(kwargs);
+}
+
 DW.devices = function (smsElement) {
     this.smsElement = smsElement;
 };
@@ -124,6 +162,11 @@ DW.questionnaire_form_validate = function(){
 $(document).ready(function () {
     DW.subject_warning_dialog_module.init();
     DW.report_period_date_format_change_warning.init();
+    DW.init_delete_periodicity_question_warning();
+    if (is_edit){
+        DW.init_has_submission_delete_warning();
+        DW.init_has_new_submission_delete_warning();
+    }
     var activity_report_question = $('#question_title').val();
 
     basic_project_info.hide_subject_link();
@@ -176,10 +219,14 @@ $(document).ready(function () {
 
     $('#save_and_create').click(function () {
         if (DW.questionnaire_form_validate()) {
-            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
-            DW.post_project_data('Test', function (response) {
-                return '/project/overview/' + response.project_id;
-            });
+            if( is_edit && questionnaireViewModel.hasDeletedOldQuestion  && !DW.has_submission_delete_warning.is_continue && DW.questionnaire_has_submission()){
+                DW.has_new_submission_delete_warning.show_warning();
+            } else {
+                $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+                DW.post_project_data('Test', function (response) {
+                    return '/project/overview/' + response.project_id;
+                });
+            }
         }
         return false;
     });
@@ -191,13 +238,6 @@ $(document).ready(function () {
             });
         }
         return false;
-    });
-
-    $("#learn_more").dialog({
-        title:gettext("Learn More"),
-        modal:true,
-        autoOpen:false,
-        width:800
     });
 
     $("#delete_question").dialog({
@@ -270,6 +310,16 @@ $(document).ready(function () {
     });
 
     $(".learn_more_link").bind("click", function () {
-        $("#learn_more").dialog("open");
+        var help_container = $("#delete_periodicity_question_warning > p.warning_message > span");
+        if (help_container.css("display") != "none") {
+            $(this).text(gettext("Learn More"));
+            help_container.fadeOut();
+            $(DW.delete_periodicity_question_warning.container).dialog("option", "height", 210);
+        } else {
+            $(this).text(gettext("Close"));
+            $(DW.delete_periodicity_question_warning.container).dialog("option", "height", 380);
+            help_container.fadeIn();
+        }
     });
+    $("#delete_periodicity_question_warning > p.warning_message > span").hide();
 });

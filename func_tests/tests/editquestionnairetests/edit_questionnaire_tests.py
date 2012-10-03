@@ -6,9 +6,11 @@ from pages.createquestionnairepage.create_questionnaire_page import CreateQuesti
 from pages.lightbox.light_box_page import LightBox
 from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.editquestionnairetests.edit_questionnaire_data import *
+from pages.smstesterpage.sms_tester_page import SMSTesterPage
+from pages.warningdialog.warning_dialog_page import WarningDialog
 import time
 
 @attr('suit_2')
@@ -54,6 +56,24 @@ class TestEditQuestionnaire(BaseTest):
         self.assertEqual(questions[3], create_questionnaire_page.get_list_of_choices_type_question())
         create_questionnaire_page.select_question_link(6)
         self.assertEqual(questions[4], create_questionnaire_page.get_list_of_choices_type_question())
+        first_tab = self.driver.current_window_handle
+        create_questionnaire_page.delete_question(7)
+        self.driver.execute_script("window.open('%s')" % DATA_WINNER_SMS_TESTER_PAGE)
+        new_tab = self.driver.window_handles[1]
+        self.driver.switch_to_window(new_tab)
+        sms_tester_page = SMSTesterPage(self.driver)
+        sms_tester_page.send_sms_with(VALID_SMS)
+        self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, VALID_SMS))
+        self.assertEqual(first_tab, self.driver.window_handles[0])
+        self.driver.switch_to_window(first_tab)
+        warning_dialog = WarningDialog(self.driver)
+        create_questionnaire_page.save_and_create_project()
+        time.sleep(2)
+        self.assertEqual(SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING, warning_dialog.get_message())
+        warning_dialog.cancel()
+        create_questionnaire_page.delete_question(5)
+        time.sleep(2)
+        self.assertEqual(DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING, warning_dialog.get_message())
 
     @attr('functional_test')
     def test_sms_preview_of_questionnaire_on_the_questionnaire_tab(self):
@@ -125,3 +145,33 @@ class TestEditQuestionnaire(BaseTest):
         self.assertTrue(create_questionnaire_page.period_question_tip_is_displayed())
         create_questionnaire_page.click_add_question_link()
         self.assertFalse(create_questionnaire_page.period_question_tip_is_displayed())
+
+    @attr('functional_test')
+    def test_should_show_warning_when_deleting_question_in_questionnaire_having_data(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+
+        # going on all subject page
+        all_subject_page = global_navigation.navigate_to_all_subject_page()
+        all_subject_page.add_new_subject_type(SUBJECT_TYPE)
+        time.sleep(2)
+        edit_registration_form = all_subject_page.navigate_to_edit_registration_form(SUBJECT_TYPE, True)
+        first_tab = self.driver.current_window_handle
+        edit_registration_form.delete_question(5)
+        self.driver.execute_script("window.open('%s')" % DATA_WINNER_SMS_TESTER_PAGE)
+        new_tab = self.driver.window_handles[1]
+        self.driver.switch_to_window(new_tab)
+        sms_tester_page = SMSTesterPage(self.driver)
+        sms_tester_page.send_sms_with(VALID_SMS_SUBJECT_DATA)
+        self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, VALID_SMS_SUBJECT_DATA))
+        self.assertEqual(first_tab, self.driver.window_handles[0])
+        self.driver.close()
+        self.driver.switch_to_window(first_tab)
+        warning_dialog = WarningDialog(self.driver)
+        edit_registration_form.save_questionnaire()
+        self.assertEqual(SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING, warning_dialog.get_message())
+        warning_dialog.cancel()
+        edit_registration_form.delete_question(4)
+        self.assertEqual(DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING, warning_dialog.get_message())
+        

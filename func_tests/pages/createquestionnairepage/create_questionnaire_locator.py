@@ -60,10 +60,10 @@ DEFAULT_QUESTION_LINK = by_xpath(
     "//div[@class='question_list']/ol/li[1]/a[1]")
 QUESTION_LINK_CSS_LOCATOR_PART1 = "div.question_list>ol>li"  # index number to identify question
 QUESTION_LINK_CSS_LOCATOR_PART2 = ">a"  # Add text to locate specific question
-QUESTION_DELETE_LINK_CSS_LOCATOR_PART1 = "div.question_list>ol>li>a"  # Add text or index number to identify question
-QUESTION_DELETE_LINK_CSS_LOCATOR_PART1 = "~div>span.delete>a"
+QUESTION_DELETE_LINK_CSS_LOCATOR_PART1 = "div.question_list>ol>li"  # Add text or index number to identify question
+QUESTION_DELETE_LINK_CSS_LOCATOR_PART2 = ">div.delete>a"
 ADD_A_QUESTION_LINK = by_css("div.add_question>a")
-SAVE_CHANGES_BTN = by_css("input#submit-button[value='Next Step: Data Senders']")
+SAVE_CHANGES_BTN = by_css("input#submit-button")
 
 SUCCESS_MESSAGE_LABEL = by_xpath(
     "//div[@id='message-label']/label[@class='success_message' and not(contains(@style,'none'))]")

@@ -8,7 +8,7 @@ from datawinners.project.views import  save_questionnaire, index, project_overvi
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, \
     manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
     delete_reminder, sent_reminders, broadcast_message, review_and_test, \
-    edit_subject_questionaire, create_data_sender_and_web_user, edit_data_sender
+    edit_subject_questionaire, create_data_sender_and_web_user, edit_data_sender, project_has_data
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
 
@@ -62,4 +62,5 @@ urlpatterns = patterns('',
         url(r'^project/smart_phone_preview$', smart_phone_preview, name="smart_phone_preview"),
         url(r'^project/questionnaire_sms_preview$', questionnaire_sms_preview, name="questionnaire_sms_preview"),
         url(r'^project/questionnaire_web_preview$', questionnaire_web_preview, name="questionnaire_web_preview"),
+        url(r'^project/has_submission/(?P<questionnaire_code>[^\\/]+?)/$', project_has_data),
 )

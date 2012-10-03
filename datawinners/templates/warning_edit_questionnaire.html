@@ -1,0 +1,25 @@
+{% load i18n %}
+<div class="none">
+    <div id="submission_exists">
+        <p class="warning_message">
+            {% trans "If you delete this question, any previously collected data will be lost." %}<br/>
+            {% trans "Do you want to delete this question?" %}
+        </p>
+        <br/>
+        <div class="text_align_right">
+            <a class="button_blue no_button">{% trans "No" %}</a>
+            <a class="button_blue yes_button">{% trans "Yes" %}</a>
+        </div>
+    </div>
+
+    <div id="new_submission_exists">
+        <p class="warning_message">
+            {% trans "During the time you changed the questionnaire.<br/>There was a new data registered.<br/>These Data will be lost if you continue" %}<br/>
+            {% trans "Do you want to save the changes anyway?" %}
+        </p><br/>
+        <div class="text_align_right">
+            <a class="button_blue no_button">{% trans "No" %}</a>
+            <a class="button_blue yes_button">{% trans "Yes" %}</a>
+        </div>
+    </div>
+</div>

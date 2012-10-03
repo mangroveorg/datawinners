@@ -2,6 +2,7 @@ var questionnaireViewModel =
 {
     questions : ko.observableArray([]),
     hasAddedNewQuestions : false,
+    hasDeletedOldQuestion : false,
     language:'en',
 
     addQuestion : function() {
@@ -37,6 +38,9 @@ var questionnaireViewModel =
     },
     removeQuestion: function(question) {
         var index = $.inArray(question, questionnaireViewModel.questions());
+        if (!question.newly_added_question()) {
+            questionnaireViewModel.hasDeletedOldQuestion = true;
+        }
         questionnaireViewModel.questions.remove(question);
         if(questionnaireViewModel.questions().length == 0){
             questionnaireViewModel.addQuestion();

@@ -426,3 +426,12 @@ class CreateQuestionnairePage(CreateProjectPage):
 
     def click_add_question_link(self):
         self.driver.find(ADD_A_QUESTION_LINK).click()
+
+    def delete_question(self, index):
+        """
+        Function change a text of one question
+
+        """
+        question_locator = QUESTION_DELETE_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
+            index) + ")" + QUESTION_DELETE_LINK_CSS_LOCATOR_PART2
+        self.driver.find(by_css(question_locator)).click()

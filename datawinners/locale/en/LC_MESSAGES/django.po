@@ -3280,8 +3280,7 @@ msgid "tooltip_questionnaire_form_subject_entity_question"
 msgstr "Select your subject from the drop down list.If your subject is not on the list, click on the My Subjects tab to register the subject first."
 
 msgid "warning_msg_for_activity_report_question_delete"
-msgstr "Warning: If you delete this question, you will not be able to view your data by your chosen Reporting Period (Example: January 2012)."
-        "<a class='learn_more_link'>Learn More</a> Do you want to delete this question?"
+msgstr "If you delete this question, any previously collected data will be lost.<br/>Further, you will not be able to view your data by your chosen Reporting Period (Example: January 2012)."
 
 msgid "learn_more_delete_question"
 msgstr "View your received data by a particular Reporting Period (Example: All reports sent in for January) instead of when the reports were actually received (Example: All reports sent in between January 1 – 31)."

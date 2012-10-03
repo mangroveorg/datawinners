@@ -7,7 +7,7 @@ from alldata.views import failed_submissions
 
 urlpatterns = patterns('',
     url(r'^alldata/$', index, name = "alldata_index"),
-    (r'^alldata/entities/(?P<entity_type>\w+?)/$', get_entity_list_by_type),
+    (r'^alldata/entities/(?P<entity_type>.+?)/$', get_entity_list_by_type),
     (r'^alldata/reports/$', reports),
     (r'^allfailedsubmissions$', failed_submissions),
     url(r'^smartphoneinstruction$', smart_phone_instruction, name = "smart_phone_instruction"),
