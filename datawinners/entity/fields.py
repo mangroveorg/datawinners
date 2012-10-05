@@ -4,6 +4,7 @@ from django.utils.encoding import smart_unicode
 import re
 from django.forms.fields import RegexField
 from django.utils.translation import ugettext as _
+from django.forms.fields import DateField
 
 EMPTY_VALUES = (None, '', [], (), {})
 
@@ -42,3 +43,8 @@ class PhoneNumberField(RegexField):
         value = self.simplify_value(value)
         super(PhoneNumberField, self).clean(value)
         return value
+
+class DjangoDateField(DateField):
+    def clean(self, value):
+        super(DjangoDateField, self).clean(value)
+        return value if value else None

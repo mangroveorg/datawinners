@@ -10,8 +10,8 @@ from datawinners.entity.helper import get_country_appended_location
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.validation import GeoCodeConstraint
 from datawinners.entity.import_data import load_all_subjects_of_type
-from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField
-from datawinners.entity.fields import PhoneNumberField
+from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField, DateField
+from datawinners.entity.fields import PhoneNumberField, DjangoDateField
 from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_field_question_code
 from mangrove.utils.types import is_empty
 
@@ -48,6 +48,22 @@ def get_text_field_constraint_text(field):
             constraint_text = _("Between %s -- %s characters") % (min, max)
             return constraint_text
     return ""
+
+def get_chars_constraints(field):
+    constraints = {}
+    if not is_empty(field.constraints):
+        constraint = field.constraints[0]
+        if constraint.max is not None: constraints["max_length"] = constraint.max
+        if constraint.min is not None: constraints["min_length"] = constraint.min
+    return constraints
+
+def get_integer_constraints(field):
+    constraints = {}
+    if not is_empty(field.constraints) :
+        constraint = field.constraints[0]
+        if constraint.max is not None: constraints["max_value"] = int(constraint.max)
+        if constraint.min is not None: constraints["min_value"] = int(constraint.min)
+    return constraints
 
 def get_integer_field_constraint_text(field):
     max = min = None
@@ -127,7 +143,8 @@ class WebQuestionnaireFormCreator(object):
         try:
             field_creation_map = {SelectField: self._create_select_field,
                                   TelephoneNumberField: self._create_phone_number_field,
-                                  IntegerField: self._create_integer_field}
+                                  IntegerField: self._create_integer_field,
+                                  DateField: self._create_date_field}
             return field_creation_map[type(field)](field, language)
         except KeyError:
             return self._create_char_field(field, language)
@@ -146,8 +163,9 @@ class WebQuestionnaireFormCreator(object):
         self._put_subject_field_class_attributes(char_field, field)
 
     def _create_char_field(self, field, language):
+        constraints = get_chars_constraints(field)
         char_field = forms.CharField(label=field.label[language], initial=field.value, required=field.is_required(),
-            help_text=field.instruction)
+            help_text=field.instruction, **constraints)
         watermark = "xx.xxxx,yy.yyyy" if type(field) == GeoCodeField else get_text_field_constraint_text(field)
         char_field.widget.attrs["watermark"] = watermark
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -202,9 +220,18 @@ class WebQuestionnaireFormCreator(object):
 
         return telephone_number_field
 
+    def _create_date_field(self, field, language):
+        format = field.DATE_DICTIONARY.get(field.date_format)
+        date_field = DjangoDateField(input_formats=(format,),label=field.label[language],initial=field.value,
+                                                 required=field.is_required(),help_text=field.instruction)
+        date_field.widget.attrs["watermark"] = get_text_field_constraint_text(field)
+        date_field.widget.attrs['style'] = 'padding-top: 7px;'
+        return date_field
+
     def _create_integer_field(self, field, language):
+        constraints = get_integer_constraints(field)
         integer_field = django.forms.fields.FloatField(label=field.label[language],initial=field.value, required=field.is_required(),
-            error_messages={'invalid': _('Enter a valid integer')})
+            error_messages={'invalid': _('Enter a valid integer')}, **constraints)
         integer_field.widget.attrs["watermark"] = get_integer_field_constraint_text(field)
         integer_field.widget.attrs['style'] = 'padding-top: 7px;'
         return integer_field

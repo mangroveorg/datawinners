@@ -67,6 +67,8 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         web_text_field = questionnaire_form_class().fields[self.text_field_code]
         self.assertEqual(CharField, type(web_text_field))
         self.assertEqual(self.field_name, web_text_field.label)
+        self.assertEqual(web_text_field.max_length, 20)
+        self.assertEqual(web_text_field.min_length, 1)
 
     def test_should_create_web_questionnaire_for_location_field(self):
         form_model = self._get_form_model()
@@ -239,6 +241,8 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         django_integer_field = questionnaire_form_class().fields['ag']
 
         self.assertEqual(django.forms.fields.FloatField, type(django_integer_field))
+        self.assertEqual(django_integer_field.max_value, 100)
+        self.assertEqual(django_integer_field.min_value, 18)
 
     def test_should_validate_gps_code_and_return_error_if_only_longitude_is_passed(self):
         mock = Mock()
