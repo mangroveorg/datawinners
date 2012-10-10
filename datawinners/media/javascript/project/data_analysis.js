@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var help_no_submission = $('#help_no_submissions').html();
-    var message = gettext("No submissions available for this search. Try removing some of your filters.");
+    var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
     var $filterSelects = $('#subjectSelect, #dataSenderSelect');
     var $datepicker_inputs = $('#reportingPeriodPicker, #submissionDatePicker');
@@ -20,7 +20,7 @@ $(document).ready(function () {
                 success:function (response) {
                     var response_data = JSON.parse(response);
                     DW.dataBinding(response_data.data_list, true, false, help_all_data_are_filtered);
-                    var emptyChartText = response_data.data_list.length ==0 ? gettext('No submissions available for this search. Try removing some of your filters.'):'';
+                    var emptyChartText = response_data.data_list.length ==0 ? gettext('No submissions available for this search. Try changing some of the filters.'):'';
                     drawChart(response_data.statistics_result,
                         response_data.data_list.length,
                         emptyChartText);

@@ -172,7 +172,7 @@ msgid "View charts of your multiple choice questions."
 msgstr "Visionnez un schéma de vos questions à choix multiples."
 
 msgid "Percentage = Frequency / Total number of Submissions for this question.<br/>Example for "
-msgstr "Fréquence/Nombre total de soumissions pour cette question = Pourcentage Exemple pour "
+msgstr "Fréquence/Nombre total de soumissions pour cette question = Pourcentage.<br/>Exemple pour "
 
 msgid "You do not have any multiple choice questions(AnswerType:List of choices) to display here!"
 msgstr "Vous n’avez aucune question à choix multiples (Type de Réponse : Liste de Choix) à afficher ici."
@@ -743,8 +743,8 @@ msgstr "A"
 msgid "All"
 msgstr "Tout(es) les"
 
-msgid "No submissions available for this search. Try removing some of your filters."
-msgstr "Aucune soumission disponible pour cette recherche. Essayez de retirer certains de vos filtres."
+msgid "No submissions available for this search. Try changing some of the filters."
+msgstr "Aucune soumission disponible pour cette recherche. Essayez de modifier certains de vos filtres."
 
 msgid "Pie Chart"
 msgstr "Graphique Circulaire"
@@ -769,3 +769,6 @@ msgstr "Attention: Les données que vous avez collecté seront perdues."
 
 msgid "Close"
 msgstr "Fermer"
+
+msgid "Frequency"
+msgstr "Fréquence"

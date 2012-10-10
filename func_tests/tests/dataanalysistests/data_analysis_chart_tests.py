@@ -61,7 +61,7 @@ class TestDataAnalysisChart(BaseTest):
         self.assertTrue(analysis_page.get_chart_info_2_text().find(expected)>=0)
 
     def test_should_return_chart_info_when_there_are_mc_questions_and_no_submissions_after_filtered(self):
-        expected = u"No submissions available for this search. Try removing some of your filters."
+        expected = u"No submissions available for this search. Try changing some of the filters."
         analysis_page = self._filter_data_of_today(end_date=datetime.today()-timedelta(1))
         self.assertEqual(analysis_page.get_chart_info_2_text(),expected)
 

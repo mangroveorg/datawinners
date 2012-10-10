@@ -825,7 +825,7 @@ msgstr "Analyse"
 msgid "no submission sub hint%(url)s"
 msgstr ""
 "Les soumissions supprimées et les soumissions contenant des erreurs ne seront pas affichées car ils ne seront pas pris en compte lors de l’analyse de vos données.<br/>"
-"Vous pouvez voir et gérer tous les envois sur la page <a href=\"%(url)s\">Registre des Envois</a>.<br/><br/>"
+"Vous pouvez voir et gérer tous les envois sur la page <a href=\"%(url)s\">Journal de soumission</a>.<br/><br/>"
 
 msgid "SMS: Give your <a href=\"#\" class=\"sms_questionnaire sms-preview\"> SMS Questionnaire</a> to your Data Senders and have them send in data"
 msgstr "<b>SMS</b>: Remettez votre <a href=\"#\" class=\"sms_questionnaire sms-preview\">Questionnaire</a> à vos Expéditeurs de Données and demandez-leur d’envoyer les données"

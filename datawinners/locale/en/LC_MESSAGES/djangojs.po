@@ -653,11 +653,14 @@ msgstr ""
 msgid "This question is a duplicate"
 msgstr ""
 
-msgid "No submissions available for this search. Try removing some of your filters."
+msgid "No submissions available for this search. Try changing some of the filters."
 msgstr ""
 
 msgid "Warning: Your Collected Data Will be Lost."
 msgstr ""
 
 msgid "Close"
+msgstr ""
+
+msgid "Frequency"
 msgstr ""

@@ -91,7 +91,8 @@ div.valueLabel {
         font-style: italic;
         font-size: 11px; }
   .chartOl li {
-    margin-bottom: 50px; }
+    margin-bottom: 50px;
+    list-style-type: none;}
     .chartOl li ul {
       margin-bottom: 10px; }
       .chartOl li ul li {
