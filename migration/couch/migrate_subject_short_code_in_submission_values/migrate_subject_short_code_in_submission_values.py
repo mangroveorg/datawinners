@@ -3,20 +3,16 @@ from glob import iglob
 from mangrove.transport.submissions import get_submissions
 import os
 from mangrove.datastore.database import get_db_manager, remove_db_manager
-import settings
 
-SERVER = settings.COUCH_DB_SERVER
+SERVER = "http://localhost:5984"
 
-def all_dbs():
+def get_all_dbs():
     import urllib2
 
     all_dbs = urllib2.urlopen(SERVER + "/_all_dbs").read()
     dbs = (eval(all_dbs))
     document_stores = filter(lambda x: x.startswith('hni_'), dbs)
-    print "Document stores will be migrated:"
-    print document_stores
     return document_stores
-
 
 def find_subject_short_code(dbm):
     rows = dbm.load_all_rows_in_view("inconsistent_subject_short_code")
@@ -26,14 +22,12 @@ def find_subject_short_code(dbm):
     else:
         return []
 
-
 def find_entity_question_code(dbm):
     rows = dbm.load_all_rows_in_view("form_code_entity_question_code_mapping")
     if rows:
         return [row.key for row in rows]
     else:
         return []
-
 
 def sync_views(dbm):
     for fn in iglob(os.path.join(os.path.dirname(__file__), 'views', '*.js')):
@@ -67,27 +61,41 @@ def correct_submissions(dbm, subject_short_codes_dict, entity_question_codes_dic
                 submission.values[entity_question_code_in_submission] = subject_short_codes_dict[short_code_in_submission]
                 submission.save()
 
-
-def migrate():
-    dbs = all_dbs()
+def migrate(dbs):
+    visited_dbs, success_dbs, failed_dbs = [], [], []
     for db in dbs:
         try:
             dbm = get_db_manager(server=SERVER, database=db)
+            visited_dbs.append(db)
             sync_views(dbm)
 
             subject_short_codes_dict = dict(find_subject_short_code(dbm))
             if not subject_short_codes_dict:
+                remove_db_manager(dbm)
                 continue
             entity_question_codes_dict = dict(find_entity_question_code(dbm))
-
-            print subject_short_codes_dict
-            print entity_question_codes_dict
-
             correct_submissions(dbm, subject_short_codes_dict, entity_question_codes_dict)
             remove_db_manager(dbm)
+            success_dbs.append(db)
         except Exception as e:
+            failed_dbs.append(db)
             print e
             pass
 
+    return visited_dbs, success_dbs, failed_dbs
 
-migrate()
+if __name__ == "__main__":
+    dbs = get_all_dbs()
+    visited_dbs, success_dbs, failed_dbs = migrate(dbs)
+    print '%s database(s) will be migrated:' % len(dbs)
+    print dbs
+    print "====================================================="
+    print '%s database(s) are visited:' % len(visited_dbs)
+    print visited_dbs
+    print "====================================================="
+    print '%s database(s) successfully migrated:' % len(success_dbs)
+    print success_dbs
+    print "====================================================="
+    print '%s database(s) failed to migrated:' % len(failed_dbs)
+    print failed_dbs
+    print "====================================================="

@@ -1,7 +1,7 @@
 function(doc) {
     var entity_field, field;
     if (doc.document_type === 'FormModel' && !doc["void"] && !doc.is_registration_model) {
-        entity_field = ((function () {
+        entity_field = ((function() {
             var _i, _len, _ref, _results;
             _ref = doc.json_fields;
             _results = [];
