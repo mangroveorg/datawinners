@@ -1,12 +1,13 @@
 #encoding=utf-8
 from collections import OrderedDict
+from django.utils.translation import ugettext
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.form_model.field import SelectField
+from mangrove.form_model.field import SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel
 from project import helper
 from project.filters import KeywordFilter
-from project.helper import filter_submissions, get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
+from project.helper import filter_submissions, get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE, DEFAULT_DATE_FORMAT
 from enhancer import form_model_enhancer, field_enhancer
 from utils import sorted_unique_list
 
@@ -32,11 +33,25 @@ class SubmissionAnalyzer(object):
         return self._raw_values
 
     def get_headers(self):
-        return helper.get_headers(self.form_model)
+        prefix = [ugettext("Submission Date"), ugettext("Data Sender")]
+        prefix_types = [DEFAULT_DATE_FORMAT.lower(), '']
+        if self.form_model.event_time_question:
+            prefix = [ugettext("Reporting Period")] + prefix
+            prefix_types = [self.form_model.event_time_question.date_format] + prefix_types
+
+        if self.form_model.entity_type != ['reporter']:
+            prefix = [ugettext(self.form_model.entity_type[0]).capitalize()] + prefix
+            prefix_types = [''] + prefix_types
+
+        field_ = [(field.label[self.form_model.activeLanguages[0]],
+                   field.date_format if isinstance(field, DateField) else (
+                   "gps" if isinstance(field, GeoCodeField)  else "")) for field in self.form_model.fields[1:] if
+                                                                       not field.is_event_time_field]
+        return prefix + [each[0] for each in field_], prefix_types + [each[1] for each in field_]
 
     def get_subjects(self):
         if self.form_model.entity_defaults_to_reporter():  return []
-        subjects =  [row[0] for row in self.filtered_leading_part if row[0][1] != NULL]
+        subjects = [row[0] for row in self.filtered_leading_part if row[0][1] != NULL]
         return sorted(list(set(subjects)))
 
     def get_data_senders(self):
@@ -45,7 +60,7 @@ class SubmissionAnalyzer(object):
     def get_analysis_statistics(self):
         if not self._raw_values: return []
 
-        field_header = self.get_headers()[self.leading_part_length:]
+        field_header = self.get_headers()[0][self.leading_part_length:]
         result = self._init_statistics_result()
         for row in self._raw_values:
             for idx, question_values in enumerate(row[self.leading_part_length:]):
@@ -56,11 +71,11 @@ class SubmissionAnalyzer(object):
                         result[question_name]['choices'][each] += 1
 
         list_result = []
-        for key,value in result.items():
+        for key, value in result.items():
             row = [key, value['type'], value['total'], []]
-            sorted_value = sorted(value['choices'].items(), key=lambda t:(t[1]*-1,t[0]))
+            sorted_value = sorted(value['choices'].items(), key=lambda t: (t[1] * -1, t[0]))
             for option, count in sorted_value:
-                row[-1].append([option,count])
+                row[-1].append([option, count])
             list_result.append(row)
         return list_result
 
@@ -71,7 +86,8 @@ class SubmissionAnalyzer(object):
         self._raw_values = self.keyword_filter.filter(raw_field_values)
         if leading_part:
             self.leading_part_length = len(leading_part[0])
-            self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in self._raw_values]
+            self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in
+                                          self._raw_values]
 
     def _get_leading_part(self):
         leading_part = []
@@ -113,7 +129,7 @@ class SubmissionAnalyzer(object):
                 entity = get_by_short_code(self.manager, subject_code, [self.form_model.entity_type[0]])
                 subject = entity.data['name']['value'], entity.short_code
             except DataObjectNotFound:
-                subject =  NOT_AVAILABLE, subject_code
+                subject = NOT_AVAILABLE, subject_code
 
             self._subject_list.append(subject)
             return subject
@@ -134,16 +150,16 @@ class SubmissionAnalyzer(object):
 
     def _replace_option_with_real_answer_value(self, row):
         assert isinstance(row, dict)
-        for question_code,question_value in row.iteritems():
+        for question_code, question_value in row.iteritems():
             field = self.form_model.get_field_by_code(question_code)
-            if isinstance(field,SelectField):
+            if isinstance(field, SelectField):
                 row[question_code] = field.get_option_value_list(question_value)
 
     def _init_statistics_result(self):
         result = OrderedDict()
         for each in self.form_model.fields:
             if isinstance(each, SelectField):
-                result.setdefault(each.name, {"choices":{},"type":each.type,'total':0})
+                result.setdefault(each.name, {"choices": {}, "type": each.type, 'total': 0})
                 for option in each.options:
                     opt_text = option['text']
                     if opt_text.has_key(each.language):
@@ -153,19 +169,20 @@ class SubmissionAnalyzer(object):
         return result
 
 
-def get_formatted_values_for_list(values):
+def get_formatted_values_for_list(values, tuple_format='%s<span class="small_grey">%s</span>', list_delimiter=', '):
     formatted_values = []
     for row in values:
-        result = _format_row(row)
+        result = _format_row(row, tuple_format, list_delimiter)
         formatted_values.append(list(result))
     return formatted_values
 
-def _format_row(row):
+
+def _format_row(row, tuple_format, list_delimiter):
     for each in row:
         if isinstance(each, tuple):
-            new_val = '%s<span class="small_grey">%s</span>' % (each[0], each[1]) if each[1] else each[0]
+            new_val = tuple_format % (each[0], each[1]) if each[1] else each[0]
         elif isinstance(each, list):
-            new_val = ', '.join(each)
+            new_val = list_delimiter.join(each)
         elif each:
             new_val = each
         else:

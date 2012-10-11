@@ -11,9 +11,8 @@ from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesN
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
 from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
-from project.helper import get_field_values, to_value_list_based_on_field_order, get_data_sender, get_first_element_of_leading_part, NOT_AVAILABLE
-from project.tests.submission_log_data import submission1, SUBMISSIONS
-from project.views import build_filters
+from project.helper import get_data_sender, NOT_AVAILABLE
+from project.tests.submission_log_data import  SUBMISSIONS
 
 
 class TestHelper(unittest.TestCase):
@@ -81,98 +80,6 @@ class TestHelper(unittest.TestCase):
 
         patcher.stop()
         patcher1.stop()
-
-    def test_should_create_header_list_with_reporter_if_the_project_is_not_a_summary_project(self):
-        ddtype = Mock(spec=DataDictType)
-        question1 = TextField(label="What is associated entity", code="ID", name="What is associated entity",
-            language="en", entity_question_flag=True, ddtype=ddtype)
-        question2 = TextField(label="What is your name", code="Q1", name="What is your name",
-            defaultValue="some default value", language="en", ddtype=ddtype)
-
-        form_model = Mock()
-        form_model.fields = [question1, question2]
-        form_model.entity_type = ["clinic"]
-        form_model.activeLanguages = ['en']
-
-        actual_list = helper.get_headers(form_model)
-        expected_header = ["Clinic", "Reporting Period", "Submission Date", "Data Sender", "What is your name"]
-        self.assertListEqual(expected_header, actual_list)
-
-    def test_should_create_header_list_without_reporter_column_if_the_project_is_a_summary_project(self):
-        ddtype = Mock(spec=DataDictType)
-        question1 = TextField(label="What is associated entity", code="ID", name="What is associated entity",
-            language="en", entity_question_flag=True, ddtype=ddtype)
-        question2 = TextField(label="What is your name", code="Q1", name="What is your name",
-            defaultValue="some default value", language="en", ddtype=ddtype)
-
-        form_model = Mock()
-        form_model.fields = [question1, question2]
-        form_model.entity_type = ['reporter']
-        form_model.activeLanguages = ['en']
-
-        actual_list = helper.get_headers(form_model)
-        expected_header = ["Reporting Period", "Submission Date", "Data Sender", "What is your name"]
-        self.assertListEqual(expected_header, actual_list)
-
-    def test_should_return_all_submission_for_analysis_page_if_there_is_no_report_period_question(self):
-        dbm = Mock(spec=DatabaseManager)
-        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-            with patch("project.helper.get_data_sender") as get_data_sender:
-                with patch("project.helper.get_by_short_code") as get_by_short_code:
-                    form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, False)
-                    filters = build_filters({}, form_model)
-                    values_dict = get_field_values(Mock(), dbm, form_model, filters)
-                    expected = [('realname', 'cli13'), '--', u'27.07.2012', ('Sender1', 'rep1'),'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
-                    expected2 = [('realname', 'cli13'), u'--', u'27.07.2012', ('Sender1', 'rep1'), 'Vamand', '36', 'a', 'ace', '58.3452 115.3345', 'b']
-                    self.assertEqual(len(SUBMISSIONS), len(values_dict))
-                    self.assertEqual(expected, values_dict[0])
-                    self.assertEqual(expected2, values_dict[1])
-
-    def test_should_return_submission_for_analysis_page_filtered_by_report_period_if_there_is_a_report_period_question(self):
-        dbm = Mock(spec=DatabaseManager)
-        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-            with patch("project.helper.get_data_sender") as get_data_sender:
-                with patch("project.helper.get_by_short_code") as get_by_short_code:
-                    form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, True)
-                    filters = build_filters({'startTime':'25.7.2012', 'endTime':'26.7.2012'}, form_model)
-                    values_dict = get_field_values(Mock(), dbm, form_model, filters)
-                    expected = [('realname', 'cli13'), u'27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
-                    expected2 = [('realname', 'cli13'), '27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Vamand', '36', 'a', 'ace', '58.3452 115.3345', 'b']
-                    self.assertEqual(len(SUBMISSIONS), len(values_dict))
-                    self.assertEqual(expected, values_dict[0])
-                    self.assertEqual(expected2, values_dict[1])
-
-    def test_should_return_submission_for_analysis_page_without_reporter_for_reporter_project(self):
-        dbm = Mock(spec=DatabaseManager)
-        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-            with patch("project.helper.get_data_sender") as get_data_sender:
-                with patch("project.helper.get_by_short_code") as get_by_short_code:
-                    form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code, True)
-                    form_model.entity_type = ['reporter']
-                    values_dict = get_field_values(Mock(), dbm, form_model)
-                    expected = [u'27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Dmanda', '69', 'c', 'ce', '40.2 69.3123', 'a']
-                    expected2 = [u'27.7.2012', u'27.07.2012', ('Sender1', 'rep1'), 'Vamand', '36', 'a', 'ace', '58.3452 115.3345', 'b']
-                    self.assertEqual(len(SUBMISSIONS), len(values_dict))
-                    self.assertEqual(expected, values_dict[0])
-                    self.assertEqual(expected2, values_dict[1])
-
-    def test_should_return_submission_for_analysis_page_filtered_out_data_not_in_report_period_if_there_is_a_report_period_question(self):
-        dbm = Mock(spec=DatabaseManager)
-        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-            with patch("project.helper.get_data_sender") as get_data_sender:
-                with patch("project.helper.get_by_short_code") as get_by_short_code:
-                    form_model = self._prepare_submission_data(load_all_rows_in_view, get_data_sender, get_by_short_code,True)
-                    filters = build_filters({'start_time':'25.7.2012', 'end_time':'26.7.2012'}, form_model)
-                    values_dict = get_field_values(Mock(), dbm, form_model, filters)
-                    self.assertEqual(0, len(values_dict))
-
-    def test_should_get_value_list_from_in_field_order(self):
-        fields = self._get_form_fields()
-
-        values_list = to_value_list_based_on_field_order(fields, submission1['value']['values'])
-
-        self.assertIsInstance(values_list, list)
-        self.assertEqual(["cli13", "Dmanda", "69", "27.7.2012", "c", "ce", "40.2 69.3123", "a"], values_list)
 
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"
@@ -416,15 +323,4 @@ class TestPreviewCreator(unittest.TestCase):
             get_org_id_by_user.return_value = "123"
             data_sender = get_data_sender( dbm, user, submission )
             self.assertEqual((NOT_AVAILABLE, None, '123321'), data_sender)
-
-    def test_should_return_N_A_when_the_subject_was_deleted(self):
-        form_model = Mock(spec=FormModel)
-        form_model.entity_type = ['whatever']
-        submissions = Mock(spec=dict)
-        submissions.values = {}
-        with patch("project.helper.get_by_short_code") as get_by_short_code:
-            with patch("project.helper.case_insensitive_lookup") as case_insensitive_lookup:
-                get_by_short_code.side_effect = DataObjectNotFound(None, None, None)
-                subject_info = get_first_element_of_leading_part(None, form_model, submissions)
-                self.assertEqual(NOT_AVAILABLE, subject_info[0])
 

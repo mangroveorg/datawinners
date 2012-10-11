@@ -7,7 +7,6 @@ from django.utils.translation import ugettext
 from accountmanagement.models import NGOUserProfile
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
-from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
@@ -19,6 +18,8 @@ from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
 from mangrove.transport import Request, TransportInfo
+
+DEFAULT_DATE_FORMAT = 'dd.MM.yyyy'
 
 field_enhancer.enhance()
 
@@ -99,17 +100,6 @@ def generate_questionnaire_code(dbm):
             break
     return code
 
-def get_headers(form_model):
-    prefix = [ ugettext("Submission Date"), ugettext("Data Sender") ]
-    if form_model.event_time_question:
-        prefix = [ugettext("Reporting Period")] + prefix
-
-    if form_model.entity_type != ['reporter']:
-        prefix = [ugettext(form_model.entity_type[0]).capitalize()] + prefix
-
-    return prefix + [field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:] if not field.is_event_time_field]
-
-
 def get_org_id_by_user(user):
     return NGOUserProfile.objects.get( user=user ).org_id
 
@@ -141,103 +131,20 @@ def case_insensitive_lookup(search_key, dictionary):
             return value
     return None
 
-def get_first_element_of_leading_part(dbm, form_model, submission):
-    sort_code = case_insensitive_lookup( form_model.entity_question.code, submission.values )
-    try:
-        entity = get_by_short_code(dbm, sort_code, [form_model.entity_type[0]])
-
-        return entity.data['name']['value'], entity.short_code
-    except DataObjectNotFound:
-        return NOT_AVAILABLE, sort_code
-
-def get_leading_part(dbm, form_model, submissions, user):
-    result = []
-
-    rp_field = form_model.event_time_question
-
-    is_first_element_needed = form_model.entity_type != ['reporter']
-    for submission in submissions:
-        data_sender = get_data_sender(dbm, user, submission)
-        submission_date = _to_str(submission.created)
-        row = [submission_date, data_sender]
-        if rp_field:
-            reporting_period = case_insensitive_lookup(rp_field.code, submission.values) if rp_field else None
-            reporting_period = _to_str(reporting_period, rp_field)
-            row = [reporting_period] + row
-
-        if is_first_element_needed:
-            first_element = get_first_element_of_leading_part(dbm, form_model, submission)
-            row = [first_element] + row
-
-        result.append(row)
-
-    return result
-
 def _to_str(value, form_field=None):
     if value is None:
         return u"--"
     if is_sequence(value):
         return sequence_to_str(value)
     if isinstance(value, datetime):
-        date_format = DateField.FORMAT_DATE_DICTIONARY.get(form_field.date_format) if form_field else 'dd.MM.yyyy'
+        date_format = DateField.FORMAT_DATE_DICTIONARY.get(form_field.date_format) if form_field else DEFAULT_DATE_FORMAT
         return format_date(value, date_format)
     return value
-
-
-def _to_value_list_headers(first_element, header_list, value_dict):
-    return [first_element] + [_to_str(value_dict.get(header)) for header in header_list[1:]]
-
-
-def _to_value_list(first_element, form_model, value_dict):
-    form_fields = form_model.fields
-
-    return [first_element] + [_to_str(value_dict.get(field.label[form_model.activeLanguages[0]]), field) for field in
-                              form_fields[1:]]
-
-def to_value_list_based_on_field_order(fields, value_dict):
-    return [_to_str(value_dict.get(field.code, field)) for field in fields]
-
-
-def get_all_values(data_dictionary, form_model):
-    """
-       data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', 'What is associated entity?': 'cid002'}, 'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', 'What is associated entity?': 'cid001'}}
-       header_list = ["What is associated entity", "What is your name", "What is age of father?"]
-       expected_list = [ ['cid002',''shweta', 55 ],['cid001','asif', 35]]
-    """
-    header_list = get_headers(form_model)
-    entity_question_description = form_model.entity_question.name
-    grand_totals_dict = data_dictionary.pop('GrandTotals') if 'GrandTotals' in data_dictionary else {}
-    grand_totals = _to_value_list_headers("Grand Total", header_list, grand_totals_dict)
-    return [_to_value_list(value_dict.get(entity_question_description), form_model, value_dict) for value_dict in
-            data_dictionary.values()], grand_totals
-
-
-def replace_options_with_real_answer(form_model, answer):
-    return {field.code: get_according_value(answer, field) for field in form_model.fields}
-
-
-def format_submission_values(form_model, values):
-    field_without_rp = [field for field in form_model.fields if not field.is_event_time_field]
-    field_values = []
-    for idx, value in enumerate(values):
-        values[idx] = replace_options_with_real_answer(form_model, value)
-        ordered_answers = to_value_list_based_on_field_order(field_without_rp, values[idx])
-        field_values.append(ordered_answers)
-    return field_values
-
-
-def format_answer_for_presentation(form_model, submissions):
-    values = [submission.values for submission in submissions]
-    return format_submission_values(form_model, values)
-
-
-
 
 def to_lowercase_submission_keys(submissions):
     for submission in submissions:
         values = submission.values
         submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
-
 
 def filter_submissions(filters, form_model, manager):
     assert isinstance(form_model, FormModel)
@@ -247,20 +154,6 @@ def filter_submissions(filters, form_model, manager):
         submissions = filter.filter(submissions)
     return submissions
 
-
-def get_leading_and_field_values(filters, form_model, manager, request):
-    submissions = filter_submissions(filters, form_model, manager)
-
-    leading_part_answer = get_leading_part(manager, form_model, submissions, request.user)
-
-    values = [submission.values for submission in submissions]
-    field_values = format_submission_values(form_model, values)
-    return leading_part_answer, field_values
-
-
-def get_field_values(request, manager, form_model, filters=[]):
-    leading_part_answer, field_values = get_leading_and_field_values(filters, form_model, manager, request)
-    return [leading + remaining[1:] for leading, remaining in zip(leading_part_answer, field_values)]
 
 def get_formatted_time_string(time_val):
     try:

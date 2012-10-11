@@ -51,11 +51,13 @@
     <script type="text/javascript" src="/media/javascript/dropdown_check_list/dropdownchecklist.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/datatable_sorting.js"></script>
     <script type="text/javascript">
     var initial_data = JSON.parse({{data_list|safe}});
     var date_format = '{{ date_format }}';
     var entity_type = '{{ entity_type }}';
     var statistics = JSON.parse({{ statistics_result|safe }});
+    var header_type_list = JSON.parse({{header_type_list|safe}});
     </script>
 {% endblock %}
 

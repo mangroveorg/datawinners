@@ -79,6 +79,7 @@ $(document).ready(function () {
 
     DW.dataBinding = function (data, destroy, retrive, emptyTableText) {
         $dataTable = $('#data_analysis').dataTable({
+            "aoColumns": buildColumnTypes(),
             "bDestroy":destroy,
             "bRetrieve":retrive,
             "sPaginationType":"full_numbers",
@@ -107,6 +108,15 @@ $(document).ready(function () {
             "sDom":'<"@dataTables_info"i>rtpl<"@dataTable_search">',
             "iDisplayLength":25
         });
+    };
+
+    function buildColumnTypes(){
+        var result = []
+        for( var index in header_type_list){
+            var value = header_type_list[index]
+            result[result.length] = (value ? { "sType":  value} : null)
+        }
+        return result
     };
 
     function showDatePicker($input) {

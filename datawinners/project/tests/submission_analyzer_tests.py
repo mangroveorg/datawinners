@@ -3,7 +3,7 @@ from datetime import datetime
 import unittest
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import TextField, SelectField, DateField, field_attributes
+from mangrove.form_model.field import TextField, SelectField, DateField, field_attributes, GeoCodeField
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.submissions import Submission
@@ -150,8 +150,14 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def test_should_format_field_values_to_list_presentation(self):
         raw_values = [[('Clinic-One', 'cli14'), '01.01.2012', today, ('name', 'id', 'from'), ['one', 'two', 'three'], ['B+']]]
-        formatted_field_value = get_formatted_values_for_list(raw_values)
+        formatted_field_value = get_formatted_values_for_list(raw_values, '%s<span class="small_grey">%s</span>')
         expected = [['Clinic-One<span class="small_grey">cli14</span>',  '01.01.2012', today, 'name<span class="small_grey">id</span>', 'one, two, three', 'B+']]
+        self.assertEqual(expected, formatted_field_value)
+
+    def test_should_format_field_values_to_list_exported(self):
+        raw_values = [[('Clinic-One', 'cli14'), '01.01.2012', today, ('name', 'id', 'from'), ['one', 'two', 'three'], ['B+']]]
+        formatted_field_value = get_formatted_values_for_list(raw_values, '%s(%s)')
+        expected = [['Clinic-One(cli14)',  '01.01.2012', today, 'name(id)', 'one, two, three', 'B+']]
         self.assertEqual(expected, formatted_field_value)
 
     def test_should_show_NULL_string_as_values_for_newly_created_questions(self):
@@ -159,6 +165,39 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         formatted_field_value = get_formatted_values_for_list(raw_values)
         expected = [['Clinic-One<span class="small_grey">cli14</span>',  '01.01.2012', today, 'name<span class="small_grey">id</span>', 'one, two, three', 'B+', NULL, NULL]]
         self.assertEqual(expected, formatted_field_value)
+
+
+    def test_should_create_header_list_with_data_sender_if_the_project_is_not_a_summary_project(self):
+
+        form_model = self._prepare_form_model(self.manager)
+        d_ = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
+                {"eid": "cli14", "RD": "01.01.2012", "BG": "c"}]
+        analyzer = self._prepare_analyzer(form_model, d_)
+
+        actual_header_list = analyzer.get_headers()
+
+        expected_header = (["Clinic", "Reporting Period", "Submission Date", "Data Sender", "Zhat are symptoms?", "What is your blood group?"],
+                           ["", 'dd.mm.yyyy', 'dd.mm.yyyy', "", "", ""])
+        self.assertEqual(expected_header, actual_header_list)
+
+    def test_should_create_header_list_without_reporter_column_if_the_project_is_a_summary_project(self):
+        form_model = self._prepare_summary_form_model(self.manager)
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "rep01", "SY": "a2bc", "BG": "d"})
+
+        actual_list = analyzer.get_headers()
+        expected_header = (["Submission Date", "Data Sender", "Zhat are symptoms?", "What is your blood group?"],
+                        ['dd.mm.yyyy', '', '', ''])
+        self.assertEqual(expected_header, actual_list)
+
+
+    def test_should_create_header_list_with_gps_type(self):
+        form_model = self._prepare_form_model_with_gps_question(self.manager)
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "gps": "2,3"})
+
+        actual_list = analyzer.get_headers()
+        expected_header = (["Clinic", "Submission Date", "Data Sender", "Where do you stay?"],
+                           ['','dd.mm.yyyy', "", "gps"])
+        self.assertEqual(expected_header, actual_list)
 
     def _prepare_form_model(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
@@ -173,6 +212,15 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=Mock())
         form_model = FormModel(manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
             fields=[eid_field, rp_field, symptoms_field, blood_type_field], entity_type=["clinic"])
+        return form_model
+
+    def _prepare_form_model_with_gps_question(self, manager):
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
+            language="en", entity_question_flag=True, ddtype=Mock())
+        gps_field = GeoCodeField(name="field1_Loc", code="gps", label="Where do you stay?", ddtype=Mock(),
+            language="en")
+        form_model = FormModel(manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
+            fields=[eid_field,gps_field], entity_type=["clinic"])
         return form_model
 
     def _prepare_summary_form_model(self, manager):

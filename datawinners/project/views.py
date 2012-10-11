@@ -422,7 +422,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
 
     field_values = get_formatted_values_for_list(raw_field_values)
 
-    header_list = analyzer.get_headers()
+    header_list, header_type_list = analyzer.get_headers()
     subject_list = analyzer.get_subjects()
     datasender_list = analyzer.get_data_senders()
     statistics_result = analyzer.get_analysis_statistics()
@@ -442,6 +442,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
                  "subject_list": subject_list,
                  "datasender_list": datasender_list,
                  "header_list": header_list,
+                 "header_type_list": repr(encode_json(header_type_list)),
                  'project_links': (make_project_links(project, questionnaire_code)),
                  'project': project,
                  'questionnaire_code': questionnaire_code,
@@ -464,12 +465,15 @@ def export_data(request):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
     filters = build_filters(request.POST, form_model)
-    header_list = helper.get_headers(form_model)
-    values = helper.get_field_values(request, manager, form_model, filters)
-    filtered_values = filter_by_keyword(request.POST.get('keyword', ''), values)
+
+    analyzer = SubmissionAnalyzer(form_model, manager, request, filters,request.POST.get('keyword', ''))
+    raw_field_values = analyzer.get_raw_values()
+    header_list= analyzer.get_headers()[0]
+
+    formatted_values = get_formatted_values_for_list(raw_field_values, tuple_format="%s (%s)")
     file_name = request.POST.get(u"project_name") + '_analysis'
 
-    return _create_excel_response([header_list] + formatted_data(filtered_values, ' '), file_name)
+    return _create_excel_response([header_list] + formatted_values, file_name)
 
 
 def _create_excel_response(raw_data_list, file_name):
