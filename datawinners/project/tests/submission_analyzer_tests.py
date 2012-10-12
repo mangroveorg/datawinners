@@ -17,6 +17,30 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         self.manager = Mock(spec=DatabaseManager)
         self.request = Mock()
 
+    def test_should_ignore_not_existed_option(self):
+        form_model = self._prepare_form_model(self.manager)
+        data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, data)
+
+        with patch("project.submission_analyzer.SubmissionAnalyzer._get_leading_part") as _get_leading_part:
+            _get_leading_part.return_value = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')]]
+            analyzer._init_raw_values()
+            try:
+                statistics = analyzer.get_analysis_statistics()
+            except Exception:
+                self.assertTrue(False)
+
+            q1 = ["Zhat are symptoms?", field_attributes.MULTISELECT_FIELD, 1,[
+                ["Dry cough", 1],
+                ["Pneumonia", 1],
+                ["Rapid weight loss", 1],
+                ["Memory loss", 0],
+                ["Neurological disorders ", 0]]
+            ]
+            q2 = ["What is your blood group?", field_attributes.SELECT_FIELD, 1,[["B+", 1], ["AB", 0], ["O+", 0], ["O-", 0]]]
+            expected = [q1, q2]
+            self.assertEqual(expected, statistics)
+
     def test_should_get_option_values_for_questions_case_insensitively(self):
         form_model = self._prepare_form_model(self.manager)
         data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bC", "BG": "D"}
