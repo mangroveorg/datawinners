@@ -70,6 +70,6 @@ SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING = u'If you modify this ques
 
 VALID_SMS_SUBJECT_DATA = {SENDER: "919049008976",
                 RECEIVER: '919880734937',
-                SMS: "sub prenom anarana antanifotsy 12,19 033143333 reg001",
-                SUCCESS_MESSAGE: u"Registration successful. ID is: reg001. q1: prenom q2: anarana q3: antanifotsy q4: 12.0, 19.0 q5: 033143333 q6: reg001"}
+                SMS: "sub prenom anarana harbin 12,19 033143333 reg001",
+                SUCCESS_MESSAGE: u"Registration successful. ID is: reg001. q1: prenom q2: anarana q3: harbin q4: 12.0, 19.0 q5: 033143333 q6: reg001"}
 SUBJECT_TYPE = "subject type"
