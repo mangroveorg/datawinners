@@ -852,16 +852,16 @@ msgid "q_tooltip_report_period_t"
 msgstr ""
 "\". Ceci est  la question concernant votre rapport périodique."
 "<br /><br />"
-"Le rapport périodique est souvent différent  de la date de soumission de données. Exemple: Votre expéditeur de données envoie son rapport de mai 2012 (rapport périodique) que le 10 Juin 2012 (Date de soumission de données)."
+"Le rapport périodique est souvent différent  de la date da la soumission de données. Exemple: Votre expéditeur de données envoie son rapport de mai 2012 (rapport périodique) que le 10 Juin 2012 (date da la soumission de données)."
 
 msgid "q_tooltip_submission_date"
 msgstr ""
 "La date de la soumission de données est la date à laquelle vous recevez la soumission de données venant de votre expéditeur de données."
 "</br></br>"
-"La date de soumission de données est souvent différent  de celle de la date de votre rapport périodique. Exemple: Votre expéditeur de données envoie son rapport de mai 2012 (rapport périodique) que le 10 Juin 2012 (Date de soumission de données)."
+"La date da la soumission de données est souvent différent  de celle de la date de votre rapport périodique. Exemple: Votre expéditeur de données envoie son rapport de mai 2012 (rapport périodique) que le 10 Juin 2012 (date da la soumission de données)."
 
 msgid "r_tooltip_submission_date"
-msgstr "Cliquez sur la liste déroulante de la date de soumission et choisissez une date spécifique ou un intervalle de date."
+msgstr "Cliquez sur la liste déroulante de la date da la soumission et choisissez une date spécifique ou un intervalle de date."
 
 #: templates/project/data_analysis.html:92
 msgid "Search for Keyword"

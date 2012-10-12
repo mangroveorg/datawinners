@@ -48,13 +48,10 @@ def get_entity_question_code_key(entity_question_code, submission):
 
 
 def correct_submissions(dbm, subject_short_codes_dict, entity_question_codes_dict):
-    for form_code, subject_short_code in entity_question_codes_dict.items():
+    for form_code, entity_question_code in entity_question_codes_dict.items():
         print 'Get submission by form_code: %s' % form_code
         submissions = get_submissions(dbm, form_code, None, None, view_name="success_submission_log")
         for submission in submissions:
-            entity_question_code = entity_question_codes_dict.get(form_code, None)
-            if entity_question_code is None:
-                continue
             entity_question_code_in_submission = get_entity_question_code_key(entity_question_code, submission)
             short_code_in_submission = submission.values.get(entity_question_code_in_submission)
             if short_code_in_submission in subject_short_codes_dict:
