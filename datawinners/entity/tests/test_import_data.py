@@ -188,7 +188,7 @@ class TestFilePlayer(MangroveTestCase):
         self.assertEquals(True, submission_log. status)
         self.assertEquals("csv", submission_log.channel)
         self.assertEquals("reg", submission_log.form_code)
-        self.assertEquals({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
+        self.assertDictContainsSubset({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
 
     def test_should_import_csv_string_if_it_contains_data_for_activity_reporters(self):
         organization = Mock(spec=Organization)
@@ -218,10 +218,10 @@ class TestFilePlayer(MangroveTestCase):
         self.assertFalse(responses[1].success)
         self.assertTrue(responses[2].success)
         submission_log = Submission.get(self.manager, responses[0].submission_id)
-        self.assertEquals({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
+        self.assertDictContainsSubset({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
         self.assertEquals({'error':{'m': u'Sorry, the telephone number 201 has already been registered'}, 'row':{'t':u'reporter', 'n':u'Dr. B','l':[u'arantany'],'d':u'Description','m':u'201','s':u'rep3'}}, responses[1].errors)
         submission_log = Submission.get(self.manager, responses[2].submission_id)
-        self.assertEquals({'t':'reporter', 'n':'Dr. C','l':'Pune','d':'Description','m':'202'}, submission_log.values)
+        self.assertDictContainsSubset({'t':'reporter', 'n':'Dr. C','l':'Pune','d':'Description','m':'202'}, submission_log.values)
 
     def test_should_not_import_data_for_missing_field(self):
         organization = Mock(spec=Organization)
