@@ -852,16 +852,16 @@ msgid "q_tooltip_report_period_t"
 msgstr ""
 "\". Ceci est  la question concernant votre rapport périodique."
 "<br /><br />"
-"Le rapport périodique est souvent différent  de la date da la soumission de données. Exemple: Votre expéditeur de données envoie son rapport de mai 2012 (rapport périodique) que le 10 Juin 2012 (date da la soumission de données)."
+"Le rapport périodique est souvent différent  de la date d'envoi de données. Exemple: Votre expéditeur de données envoie son rapport de mai 2012 (rapport périodique) que le 10 Juin 2012 (Date d'envoi de données)."
 
 msgid "q_tooltip_submission_date"
 msgstr ""
 "La date de la soumission de données est la date à laquelle vous recevez la soumission de données venant de votre expéditeur de données."
 "</br></br>"
-"La date da la soumission de données est souvent différent  de celle de la date de votre rapport périodique. Exemple: Votre expéditeur de données envoie son rapport de mai 2012 (rapport périodique) que le 10 Juin 2012 (date da la soumission de données)."
+"La date d'envoi de données est souvent différent  de celle de la date de votre rapport périodique. Exemple: Votre expéditeur de données envoie son rapport de mai 2012 (rapport périodique) que le 10 Juin 2012 (Date d'envoi de données)."
 
 msgid "r_tooltip_submission_date"
-msgstr "Cliquez sur la liste déroulante de la date da la soumission et choisissez une date spécifique ou un intervalle de date."
+msgstr "Cliquez sur la liste déroulante de la date d'envoi et choisissez une date spécifique ou un intervalle de date."
 
 #: templates/project/data_analysis.html:92
 msgid "Search for Keyword"
@@ -1123,7 +1123,7 @@ msgid "Reporting Period"
 msgstr "Période de Rapport"
 
 msgid "Submission Date"
-msgstr "Date de soumission"
+msgstr "Date d'envoi"
 
 #: templates/project/data_analysis.html:77 templates/project/results.html:71
 msgid "Click to select a date range"
@@ -3360,9 +3360,10 @@ msgid "warning_msg_for_activity_report_question_delete"
 msgstr "Si vous supprimez cette question, toutes les donnés collectées auparavant seront perdues.<br/> En plus, vous serez dans l’incapacité de visualiser vos données relatives  à la période du rapport (exemple : Janvier 2012)."
 
 msgid "learn_more_delete_question"
-msgstr "Affichez vos données qui ont été reçues pendant une période de rapport particulière  (Exemple : tous les rapports envoyés en Janvier) au lieu de la période durant laquelle les rapports  ont été effectivement reçus (Exemple : tous les rapports envoyés entre le 1er et le 31 Janvier)"
-       "Ceci est très utile si  vous donnez à vos expéditeurs de données un délai d’envoi de leur rapport de Janvier jusqu’au 5 Février. Datawinners séparera correctement les rapports  entre les périodes de  rapport y afférentes"
+msgstr "<br/>Affichez vos données qui ont été reçues pendant une période de rapport particulière  (Exemple : tous les rapports envoyés en Janvier) au lieu de la période durant laquelle les rapports  ont été effectivement reçus (Exemple : tous les rapports envoyés entre le 1er et le 31 Janvier).<br/>"
+       "Ceci est très utile si  vous donnez à vos expéditeurs de données un délai d’envoi de leur rapport de Janvier jusqu’au 5 Février.<br/>Datawinners séparera correctement les rapports  entre les périodes de  rapport y afférentes "
        "Vous pouvez traduire ou modifier cette question, mais essayez de garder le même sens (Exemple : « Pour quel mois et quelle année établissez-vous le rapport ?)"
+       "<br/><br/><a class='hide_link' href=\"javascript:void(0);\">Cacher l'aide</a>"
 
 #, python-format
 msgid "Upload an Excel file (.xls) with Your %(entity_type)s list"

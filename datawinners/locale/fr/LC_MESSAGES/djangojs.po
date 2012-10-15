@@ -764,8 +764,8 @@ msgstr "Pourcentage"
 msgid "Amount"
 msgstr "Montant"
 
-msgid "Warning: Your Collected Data Will be Lost."
-msgstr "Attention: Les données que vous avez collecté seront perdues."
+msgid "Warning: Your Collected Data Will be Lost"
+msgstr "Attention: Les données que vous avez collecté seront perdues"
 
 msgid "Close"
 msgstr "Fermer"

@@ -38,14 +38,14 @@ DW.init_has_submission_delete_warning_for_entity = function(){
             question = questionnaireViewModel.selectedQuestion();
             questionnaireViewModel.removeQuestion(question);
         },
-        title: gettext('Warning: Your Collected Data Will be Lost.')
+        title: gettext('Warning: Your Collected Data Will be Lost')
     }
     DW.has_submission_delete_warning_for_entity = new DW.warning_dialog(kwargs);
 }
 
 DW.init_has_new_submission_delete_warning_for_entity = function(){
     kwargs = {container: "#new_submission_exists",
-        title: gettext('Warning: Your Collected Data Will be Lost.'),
+        title: gettext('Warning: Your Collected Data Will be Lost'),
         continue_handler: function(){
             $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
             DW.post_subject_data();

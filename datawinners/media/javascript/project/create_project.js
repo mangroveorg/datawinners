@@ -1,7 +1,7 @@
 DW.init_has_submission_delete_warning = function(){
     kwargs = {container: "#submission_exists",
         is_continue: !is_edit,
-        title: gettext('Warning: Your Collected Data Will be Lost.'),
+        title: gettext('Warning: Your Collected Data Will be Lost'),
         continue_handler: function(){
             question = questionnaireViewModel.selectedQuestion();
             questionnaireViewModel.removeQuestion(question);
@@ -13,7 +13,7 @@ DW.init_has_submission_delete_warning = function(){
 DW.init_has_new_submission_delete_warning = function(){
     kwargs = {container: "#new_submission_exists",
         is_continue: !is_edit,
-        title: gettext('Warning: Your Collected Data Will be Lost.'),
+        title: gettext('Warning: Your Collected Data Will be Lost'),
         continue_handler: function(){
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
             DW.post_project_data('Test', function (response) {
@@ -26,7 +26,7 @@ DW.init_has_new_submission_delete_warning = function(){
 
 DW.init_delete_periodicity_question_warning = function(){
     kwargs = {container: "#delete_periodicity_question_warning",
-        title: gettext('Warning: Your Collected Data Will be Lost.'),
+        title: gettext('Warning: Your Collected Data Will be Lost'),
         width: 700,
         continue_handler: function(){
             question = questionnaireViewModel.selectedQuestion();
@@ -310,8 +310,18 @@ $(document).ready(function () {
         return false;
     });
 
-    $(".learn_more_link").bind("click", function () {
+    $("#delete_periodicity_question_warning .show_link").bind("click", function () {
         var help_container = $("#delete_periodicity_question_warning > p.warning_message > span");
+        help_container.fadeIn();
+        $(this).hide();
+    })
+
+    $("#delete_periodicity_question_warning .hide_link").bind("click", function () {
+        var help_container = $("#delete_periodicity_question_warning > p.warning_message > span");
+        help_container.fadeOut();
+        $("#delete_periodicity_question_warning .show_link").show();
+    })
+    /*
         if (help_container.css("display") != "none") {
             $(this).text(gettext("Learn More"));
             help_container.fadeOut();
@@ -321,6 +331,6 @@ $(document).ready(function () {
             $(DW.delete_periodicity_question_warning.container).dialog("option", "height", 380);
             help_container.fadeIn();
         }
-    });
+    });*/
     $("#delete_periodicity_question_warning > p.warning_message > span").hide();
 });

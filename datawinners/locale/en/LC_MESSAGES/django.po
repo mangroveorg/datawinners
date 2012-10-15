@@ -3283,9 +3283,10 @@ msgid "warning_msg_for_activity_report_question_delete"
 msgstr "If you delete this question, any previously collected data will be lost.<br/>Further, you will not be able to view your data by your chosen Reporting Period (Example: January 2012)."
 
 msgid "learn_more_delete_question"
-msgstr "View your received data by a particular Reporting Period (Example: All reports sent in for January) instead of when the reports were actually received (Example: All reports sent in between January 1 – 31)."
-       "This is very useful if you give your Data Senders until February 5th to submit their January report. DataWinners will correctly separate the reports into their correct reporting period."
+msgstr "<br/>View your received data by a particular Reporting Period (Example: All reports sent in for January) instead of when the reports were actually received (Example: All reports sent in between January 1 – 31).<br/>"
+       "This is very useful if you give your Data Senders until February 5<sup>th</sup> to submit their January report.<br/> DataWinners will correctly separate the reports into their correct reporting period. "
        "You can translate or edit this question, but try to keep the same meaning (Example: “What month and year are you reporting on?”)"
+       "<br/><br/><a class='hide_link' href=\"javascript:void(0);\">Hide Help</a>"
 
 #, python-format
 msgid "Upload an Excel file (.xls) with Your %(entity_type)s list"

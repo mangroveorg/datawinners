@@ -204,3 +204,7 @@ fieldset {
   overflow: visible; }
   #container_content .content {
     overflow: visible; }
+
+#delete_periodicity_question_warning .show_link, #delete_periodicity_question_warning .hide_link {
+  font-style: italic;
+  color: #0070AC; }

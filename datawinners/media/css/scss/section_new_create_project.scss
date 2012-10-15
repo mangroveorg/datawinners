@@ -273,3 +273,9 @@ padding-left: 20px;
         overflow: visible;
     }
 }
+#delete_periodicity_question_warning {
+  .show_link, .hide_link {
+    font-style: italic;
+    color: #0070AC;
+  }
+}
