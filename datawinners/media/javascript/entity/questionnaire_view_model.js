@@ -115,6 +115,10 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedQuestion().choices([]);
     },
     changeTextOfOption: function(choice) {
+        if(!is_edit){
+            return;
+        }
+
         var curText = choice.value;
         var choices = questionnaireViewModel.selectedQuestion().options.choices;
         var changePrompt = false;
@@ -128,13 +132,19 @@ var questionnaireViewModel =
         }
     },
     remove_option: function(choice){
-        var choices = questionnaireViewModel.selectedQuestion().options.choices;
-        if(choice.val == choices[choices.length-1].val){
-            DW.option_last_remove_warning.show_warning();
-        }else{
-            DW.option_remove_warning.show_warning();
+        if(!is_edit){
+            questionnaireViewModel.removeOptionFromQuestion(choice);
+            return;
         }
-        DW.option_remove_warning.continueEventHandler = function(){questionnaireViewModel.removeOptionFromQuestion(choice);};
+
+        var choices = questionnaireViewModel.selectedQuestion().options.choices;
+        if (choice.val == choices[choices.length - 1].val) {
+            DW.option_warning_dialog.show_warning(gettext("You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Are you sure you want to continue?"));
+        } else {
+            DW.option_warning_dialog.show_warning(gettext('You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Also, the position of your answer choices has changed (Example: You have deleted “A. Cat”, so “B. Dog” is now “A. Dog”).<br>If you have previously collected data it will be adjusted to the new choice in that position (Example: The choice “Cat”, it will be replaced with “Dog”).<br><br>Are you sure you want to continue?'));
+        }
+        DW.option_warning_dialog.continueEventHandler = function(){
+            questionnaireViewModel.removeOptionFromQuestion(choice);};
     },
     showLengthLimiter: function() {
         return questionnaireViewModel.selectedQuestion().length_limiter() == 'length_limited';

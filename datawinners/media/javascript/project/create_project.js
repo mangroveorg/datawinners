@@ -162,9 +162,7 @@ DW.questionnaire_form_validate = function(){
 $(document).ready(function () {
     DW.subject_warning_dialog_module.init();
     DW.report_period_date_format_change_warning.init();
-    DW.option_text_change_warning.init();
-    DW.option_remove_warning.init();
-    DW.option_last_remove_warning.init();
+    DW.option_warning_dialog.init();
     DW.init_delete_periodicity_question_warning();
     if (is_edit){
         DW.init_has_submission_delete_warning();

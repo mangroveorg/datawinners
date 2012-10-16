@@ -250,8 +250,6 @@ DW.report_period_date_format_change_warning = {
                 }
             }
         )
-        ;
-
     },
 
     bind_cancel_link:function () {
@@ -277,113 +275,54 @@ DW.report_period_date_format_change_warning = {
         $("#change_date_format_warning_message").dialog("open");
         DW.report_period_date_format_change_warning.is_continue = false;
     }
-
 };
-DW.option_text_change_warning = {
+
+DW.option_warning_dialog = {
     init:function () {
-        DW.option_text_change_warning.init_warning_dialog();
-        DW.option_text_change_warning.bind_cancel_link();
-        DW.option_text_change_warning.bind_continue();
+        DW.option_warning_dialog.continueEventHandler = function(){};
+        DW.option_warning_dialog.cancelEventHandler = function(){};
+        DW.option_warning_dialog.dialog_id = "#option_warning_message";
+        DW.option_warning_dialog.init_warning_dialog();
+        DW.option_warning_dialog.bind_cancel_link();
+        DW.option_warning_dialog.bind_continue();
     },
     init_warning_dialog:function () {
-        $("#change_option_text_message").dialog({
+        $(DW.option_warning_dialog.dialog_id).dialog({
             title:gettext("Warning !!"),
             modal:true,
             autoOpen:false,
-            height:200,
-            width:400,
+            height:'auto',
+            width:500,
             closeText:'hide'
         });
     },
     bind_cancel_link:function () {
-        $("#change_option_text_cancel").bind("click", function () {
-            $("#change_option_text_message").dialog("close");
-            DW.option_text_change_warning.cancelEventHandler();
+        $(DW.option_warning_dialog.dialog_id+"_cancel").bind("click", function () {
+            $(DW.option_warning_dialog.dialog_id).dialog("close");
+            DW.option_warning_dialog.cancelEventHandler();
         });
     },
     bind_continue:function () {
-        $("#change_option_text_continue").bind("click", function () {
-            $("#change_option_text_message").dialog("close");
+        $(DW.option_warning_dialog.dialog_id+"_continue").bind("click", function () {
+            $(DW.option_warning_dialog.dialog_id).dialog("close");
+            DW.option_warning_dialog.continueEventHandler();
         });
     },
 
-    show_warning:function () {
-        $("#change_option_text_message").dialog("open");
-    }
-};
-DW.option_remove_warning = {
-    init:function () {
-        DW.option_remove_warning.init_warning_dialog();
-        DW.option_remove_warning.bind_cancel_link();
-        DW.option_remove_warning.bind_continue();
-    },
-    init_warning_dialog:function () {
-        $("#remove_option_message").dialog({
-            title:gettext("Warning !!"),
-            modal:true,
-            autoOpen:false,
-            height:200,
-            width:400,
-            closeText:'hide'
-        });
-    },
-    bind_cancel_link:function () {
-        $("#remove_option_cancel").bind("click", function () {
-            $("#remove_option_message").dialog("close");
-        });
-    },
-    bind_continue:function () {
-        $("#remove_option_continue").bind("click", function () {
-            $("#remove_option_message").dialog("close");
-            DW.option_remove_warning.continueEventHandler();
-        });
-    },
-
-    show_warning:function () {
-        $("#remove_option_message").dialog("open");
-    }
-};
-DW.option_last_remove_warning = {
-    init:function () {
-        DW.option_last_remove_warning.init_warning_dialog();
-        DW.option_last_remove_warning.bind_cancel_link();
-        DW.option_last_remove_warning.bind_continue();
-    },
-    init_warning_dialog:function () {
-        $("#remove_last_option_message").dialog({
-            title:gettext("Warning !!"),
-            modal:true,
-            autoOpen:false,
-            height:200,
-            width:400,
-            closeText:'hide'
-        });
-    },
-    bind_cancel_link:function () {
-        $("#remove_last_option_cancel").bind("click", function () {
-            $("#remove_last_option_message").dialog("close");
-        });
-    },
-    bind_continue:function () {
-        $("#remove_last_option_continue").bind("click", function () {
-            $("#remove_last_option_message").dialog("close");
-            DW.option_remove_warning.continueEventHandler();
-        });
-    },
-
-    show_warning:function () {
-        $("#remove_last_option_message").dialog("open");
+    show_warning:function (message) {
+        $("#option_warning_text")[0].innerHTML=message;
+        $(DW.option_warning_dialog.dialog_id).dialog("open");
     }
 };
 DW.change_date_format_for_reporting_period = function (date_format_element) {
-    if (questionnaireViewModel.selectedQuestion().event_time_field_flag() && is_edit && DW.option_text_change_warning.has_not_warning) {
-        DW.option_text_change_warning.show_warning();
+    if (questionnaireViewModel.selectedQuestion().event_time_field_flag() && is_edit && DW.report_period_date_format_change_warning.has_not_warning) {
+        DW.report_period_date_format_change_warning.show_warning();
     }
 };
 
 DW.change_option_text = function (choice) {
-   DW.option_text_change_warning.show_warning();
-   DW.option_text_change_warning.cancelEventHandler = function(){choice.focus();}
+   DW.option_warning_dialog.show_warning(gettext("You have changed the text of your answer choice.<br>If you have previously collected data for this choice it will be replaced with the new text.<br><br>Are you sure you want to continue?"));
+   DW.option_warning_dialog.cancelEventHandler = function(){choice.focus();}
 }
 
 DW.close_the_tip_on_period_question = function(){
