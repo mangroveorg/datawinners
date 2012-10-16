@@ -129,14 +129,16 @@ var questionnaireViewModel =
         var choices = questionnaireViewModel.selectedQuestion().options.choices;
         var changePrompt = false;
         var oldText = null;
+        var opt_index = 0;
         $(choices).each(function(index, choiceInModel){
            if (choiceInModel.val == choice.option_val && choiceInModel.text.en != curText){
+               changePrompt = true;
                oldText =  choiceInModel.text.en;
-               changePrompt = oldText !== curText;
+               opt_index = index;
            }
         });
         if(changePrompt){
-            DW.change_option_text(choice,oldText);
+            DW.change_option_text(choice,oldText, opt_index);
         }
     },
     remove_option: function(choice){

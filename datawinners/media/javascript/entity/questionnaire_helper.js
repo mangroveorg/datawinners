@@ -340,10 +340,11 @@ DW.change_date_format_for_reporting_period = function (date_format_element) {
     }
 };
 
-DW.change_option_text = function (choice, oldText) {
+DW.change_option_text = function (choice, oldText,index) {
    DW.option_warning_dialog.show_warning(gettext("You have changed the text of your answer choice.<br>If you have previously collected data for this choice it will be replaced with the new text.<br><br>Are you sure you want to continue?"));
    DW.option_warning_dialog.cancelEventHandler = function(){
        choice.value = oldText;
+       questionnaireViewModel.selectedQuestion().choices()[index].text=oldText;
        choice.focus();
    }
 }
