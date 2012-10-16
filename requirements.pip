@@ -10,7 +10,7 @@ mock
 selenium==2.16
 iso8601
 pytz
-http://github.com/diptanu/django-registration/tarball/master#egg=django-registration0.8
+django-registration==0.8
 gdata
 BeautifulSoup
 networkx
