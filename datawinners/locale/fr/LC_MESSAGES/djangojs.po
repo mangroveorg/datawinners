@@ -772,3 +772,12 @@ msgstr "Fermer"
 
 msgid "Frequency"
 msgstr "Fréquence"
+
+msgid "You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Are you sure you want to continue?"
+msgstr "Vous avez supprimé un choix de réponse.<br>Si vous avez collecté des données pour ce choix auparavant, elles seront supprimées.<br><br>Etes-vous sûr de vouloir continuer?"
+
+msgid "You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Also, the position of your answer choices has changed (Example: You have deleted “A. Cat”, so “B. Dog” is now “A. Dog”).<br>If you have previously collected data it will be adjusted to the new choice in that position (Example: The choice “Cat”, it will be replaced with “Dog”).<br><br>Are you sure you want to continue?"
+msgstr "Vous avez supprimé un choix de réponse.<br>Si vous avez collecté des données pour ce choix auparavant, elles seront supprimées.<br><br> Vous avez également changé la position de vos choix de réponse. (Exemple : Vous avez supprimé «A. Chat», donc «B. Chien» est maintenant devenu «A. Chien»).<br>Si vous avez déjà collecté des données, elles seront ajustées au nouveau choix correspondant à cette position (Exemple : Le choix «Chat» sera remplacé par «Chien»<br><br>Etes-vous sûr de vouloir continuer?"
+
+msgid "You have changed the text of your answer choice.<br>If you have previously collected data for this choice it will be replaced with the new text.<br><br>Are you sure you want to continue?"
+msgstr "Vous avez changé le texte de votre choix de réponse.<br>Si vous avez collecté des données pour ce choix auparavant, elles seront remplacées par le nouveau texte.<br><br>Etes-vous sûr de vouloir continuer?"
