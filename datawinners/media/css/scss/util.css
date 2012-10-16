@@ -305,18 +305,30 @@ span.tooltip {
 #cancel_project_block, #activate_project_block, #questionnaire_code_change,
 #subject_warning_message, #delete_project_block, #all_project_block, #new_reminder,
 #web_user_block, #user_should_agree_terms_block, #delete_question, #edit_question,
-#delete_entity_block, #change_date_format_warning_message {
+#delete_entity_block,
+#change_date_format_warning_message,
+#change_option_text_message,
+#remove_option_message,
+#remove_last_option_message {
   padding: 20px;
   display: none; }
   #cancel_project_block .warning_message, #activate_project_block .warning_message, #questionnaire_code_change .warning_message,
   #subject_warning_message .warning_message, #delete_project_block .warning_message, #all_project_block .warning_message, #new_reminder .warning_message,
   #web_user_block .warning_message, #user_should_agree_terms_block .warning_message, #delete_question .warning_message, #edit_question .warning_message,
-  #delete_entity_block .warning_message, #change_date_format_warning_message .warning_message {
+  #delete_entity_block .warning_message,
+  #change_date_format_warning_message .warning_message,
+  #change_option_text_message .warning_message,
+  #remove_option_message .warning_message,
+  #remove_last_option_message .warning_message {
     margin-bottom: 30px; }
     #cancel_project_block .warning_message .learn_more_link, #activate_project_block .warning_message .learn_more_link, #questionnaire_code_change .warning_message .learn_more_link,
     #subject_warning_message .warning_message .learn_more_link, #delete_project_block .warning_message .learn_more_link, #all_project_block .warning_message .learn_more_link, #new_reminder .warning_message .learn_more_link,
     #web_user_block .warning_message .learn_more_link, #user_should_agree_terms_block .warning_message .learn_more_link, #delete_question .warning_message .learn_more_link, #edit_question .warning_message .learn_more_link,
-    #delete_entity_block .warning_message .learn_more_link, #change_date_format_warning_message .warning_message .learn_more_link {
+    #delete_entity_block .warning_message .learn_more_link,
+    #change_date_format_warning_message .warning_message .learn_more_link,
+    #change_option_text_message .warning_message .learn_more_link,
+    #remove_option_message .warning_message .learn_more_link,
+    #remove_last_option_message .warning_message .learn_more_link {
       color: #0070ac; }
   #cancel_project_block #confirm_delete, #cancel_project_block #confirm, #cancel_project_block #ok_button, #activate_project_block #confirm_delete, #activate_project_block #confirm, #activate_project_block #ok_button, #questionnaire_code_change #confirm_delete, #questionnaire_code_change #confirm, #questionnaire_code_change #ok_button,
   #subject_warning_message #confirm_delete,
@@ -327,7 +339,19 @@ span.tooltip {
   #web_user_block #ok_button, #user_should_agree_terms_block #confirm_delete, #user_should_agree_terms_block #confirm, #user_should_agree_terms_block #ok_button, #delete_question #confirm_delete, #delete_question #confirm, #delete_question #ok_button, #edit_question #confirm_delete, #edit_question #confirm, #edit_question #ok_button,
   #delete_entity_block #confirm_delete,
   #delete_entity_block #confirm,
-  #delete_entity_block #ok_button, #change_date_format_warning_message #confirm_delete, #change_date_format_warning_message #confirm, #change_date_format_warning_message #ok_button {
+  #delete_entity_block #ok_button,
+  #change_date_format_warning_message #confirm_delete,
+  #change_date_format_warning_message #confirm,
+  #change_date_format_warning_message #ok_button,
+  #change_option_text_message #confirm_delete,
+  #change_option_text_message #confirm,
+  #change_option_text_message #ok_button,
+  #remove_option_message #confirm_delete,
+  #remove_option_message #confirm,
+  #remove_option_message #ok_button,
+  #remove_last_option_message #confirm_delete,
+  #remove_last_option_message #confirm,
+  #remove_last_option_message #ok_button {
     color: #6F451D; }
   #cancel_project_block a.wizard_cancel_link, #cancel_project_block a.cancel_link, #activate_project_block a.wizard_cancel_link, #activate_project_block a.cancel_link, #questionnaire_code_change a.wizard_cancel_link, #questionnaire_code_change a.cancel_link,
   #subject_warning_message a.wizard_cancel_link,
@@ -335,7 +359,15 @@ span.tooltip {
   #web_user_block a.wizard_cancel_link,
   #web_user_block a.cancel_link, #user_should_agree_terms_block a.wizard_cancel_link, #user_should_agree_terms_block a.cancel_link, #delete_question a.wizard_cancel_link, #delete_question a.cancel_link, #edit_question a.wizard_cancel_link, #edit_question a.cancel_link,
   #delete_entity_block a.wizard_cancel_link,
-  #delete_entity_block a.cancel_link, #change_date_format_warning_message a.wizard_cancel_link, #change_date_format_warning_message a.cancel_link {
+  #delete_entity_block a.cancel_link,
+  #change_date_format_warning_message a.wizard_cancel_link,
+  #change_date_format_warning_message a.cancel_link,
+  #change_option_text_message a.wizard_cancel_link,
+  #change_option_text_message a.cancel_link,
+  #remove_option_message a.wizard_cancel_link,
+  #remove_option_message a.cancel_link,
+  #remove_last_option_message a.wizard_cancel_link,
+  #remove_last_option_message a.cancel_link {
     color: #0070ac;
     font-size: 12px; }
 

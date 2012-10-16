@@ -114,6 +114,28 @@ var questionnaireViewModel =
     clearChoices: function() {
         questionnaireViewModel.selectedQuestion().choices([]);
     },
+    changeTextOfOption: function(choice) {
+        var curText = choice.value;
+        var choices = questionnaireViewModel.selectedQuestion().options.choices;
+        var changePrompt = false;
+        choices.forEach(function(choiceInModel){
+           if (choiceInModel.val == choice.option_val && choiceInModel.text.en != curText){
+               changePrompt = true;
+           }
+        });
+        if(changePrompt){
+            DW.change_option_text(choice);
+        }
+    },
+    remove_option: function(choice){
+        var choices = questionnaireViewModel.selectedQuestion().options.choices;
+        if(choice.val == choices[choices.length-1].val){
+            DW.option_last_remove_warning.show_warning();
+        }else{
+            DW.option_remove_warning.show_warning();
+        }
+        DW.option_remove_warning.continueEventHandler = function(){questionnaireViewModel.removeOptionFromQuestion(choice);};
+    },
     showLengthLimiter: function() {
         return questionnaireViewModel.selectedQuestion().length_limiter() == 'length_limited';
     },

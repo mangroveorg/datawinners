@@ -66,6 +66,7 @@ DW.initChoices = function (choices, language) {
         var display_choice = {};
         display_choice['text'] = choice.text[language];
         display_choice['val'] = choice.val;
+        display_choice['id'] = choice.id;
         final_choices.push(display_choice);
     });
     return final_choices;
@@ -278,11 +279,111 @@ DW.report_period_date_format_change_warning = {
     }
 
 };
+DW.option_text_change_warning = {
+    init:function () {
+        DW.option_text_change_warning.init_warning_dialog();
+        DW.option_text_change_warning.bind_cancel_link();
+        DW.option_text_change_warning.bind_continue();
+    },
+    init_warning_dialog:function () {
+        $("#change_option_text_message").dialog({
+            title:gettext("Warning !!"),
+            modal:true,
+            autoOpen:false,
+            height:200,
+            width:400,
+            closeText:'hide'
+        });
+    },
+    bind_cancel_link:function () {
+        $("#change_option_text_cancel").bind("click", function () {
+            $("#change_option_text_message").dialog("close");
+            DW.option_text_change_warning.cancelEventHandler();
+        });
+    },
+    bind_continue:function () {
+        $("#change_option_text_continue").bind("click", function () {
+            $("#change_option_text_message").dialog("close");
+        });
+    },
 
-DW.change_date_format_for_reporting_period = function (date_format_element) {
-    if (questionnaireViewModel.selectedQuestion().event_time_field_flag() && is_edit && DW.report_period_date_format_change_warning.has_not_warning) {
-        DW.report_period_date_format_change_warning.show_warning();
+    show_warning:function () {
+        $("#change_option_text_message").dialog("open");
     }
+};
+DW.option_remove_warning = {
+    init:function () {
+        DW.option_remove_warning.init_warning_dialog();
+        DW.option_remove_warning.bind_cancel_link();
+        DW.option_remove_warning.bind_continue();
+    },
+    init_warning_dialog:function () {
+        $("#remove_option_message").dialog({
+            title:gettext("Warning !!"),
+            modal:true,
+            autoOpen:false,
+            height:200,
+            width:400,
+            closeText:'hide'
+        });
+    },
+    bind_cancel_link:function () {
+        $("#remove_option_cancel").bind("click", function () {
+            $("#remove_option_message").dialog("close");
+        });
+    },
+    bind_continue:function () {
+        $("#remove_option_continue").bind("click", function () {
+            $("#remove_option_message").dialog("close");
+            DW.option_remove_warning.continueEventHandler();
+        });
+    },
+
+    show_warning:function () {
+        $("#remove_option_message").dialog("open");
+    }
+};
+DW.option_last_remove_warning = {
+    init:function () {
+        DW.option_last_remove_warning.init_warning_dialog();
+        DW.option_last_remove_warning.bind_cancel_link();
+        DW.option_last_remove_warning.bind_continue();
+    },
+    init_warning_dialog:function () {
+        $("#remove_last_option_message").dialog({
+            title:gettext("Warning !!"),
+            modal:true,
+            autoOpen:false,
+            height:200,
+            width:400,
+            closeText:'hide'
+        });
+    },
+    bind_cancel_link:function () {
+        $("#remove_last_option_cancel").bind("click", function () {
+            $("#remove_last_option_message").dialog("close");
+        });
+    },
+    bind_continue:function () {
+        $("#remove_last_option_continue").bind("click", function () {
+            $("#remove_last_option_message").dialog("close");
+            DW.option_remove_warning.continueEventHandler();
+        });
+    },
+
+    show_warning:function () {
+        $("#remove_last_option_message").dialog("open");
+    }
+};
+DW.change_date_format_for_reporting_period = function (date_format_element) {
+    if (questionnaireViewModel.selectedQuestion().event_time_field_flag() && is_edit && DW.option_text_change_warning.has_not_warning) {
+        DW.option_text_change_warning.show_warning();
+    }
+};
+
+DW.change_option_text = function (choice) {
+   DW.option_text_change_warning.show_warning();
+   DW.option_text_change_warning.cancelEventHandler = function(){choice.focus();}
 }
 
 DW.close_the_tip_on_period_question = function(){

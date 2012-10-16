@@ -1528,6 +1528,13 @@ ko.bindingHandlers['uniqueName'] = {
         }
     }
 };
+
+ko.bindingHandlers['option_val'] = {
+    init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        element.option_val=viewModel.val;
+    }
+};
+
 ko.bindingHandlers['uniqueName'].currentIndex = 0;
 
 ko.bindingHandlers['checked'] = {
