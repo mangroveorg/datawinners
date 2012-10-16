@@ -426,7 +426,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
     subject_list = analyzer.get_subjects()
     datasender_list = analyzer.get_data_senders()
     statistics_result = analyzer.get_analysis_statistics()
-
+    default_sort_order = analyzer.get_default_sort_order()
     if request.method == "GET":
         rp_field = form_model.event_time_question
         in_trial_mode = _in_trial_mode(request)
@@ -442,6 +442,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
                  "subject_list": subject_list,
                  "datasender_list": datasender_list,
                  "header_list": header_list,
+                 "default_sort_order":repr(encode_json(default_sort_order)),
                  "header_type_list": repr(encode_json(header_type_list)),
                  'project_links': (make_project_links(project, questionnaire_code)),
                  'project': project,

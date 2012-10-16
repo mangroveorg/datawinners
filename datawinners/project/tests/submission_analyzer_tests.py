@@ -77,7 +77,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             self.assertEqual(expected, leading_part)
 
     def test_should_get_leading_part_for_summary_project(self):
-        form_model = self._prepare_summary_form_model(self.manager)
+        form_model = self._prepare_summary_form_model_without_rp(self.manager)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "rep01", "SY": "a2bc", "BG": "d"})
 
         with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
@@ -205,7 +205,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         self.assertEqual(expected_header, actual_header_list)
 
     def test_should_create_header_list_without_reporter_column_if_the_project_is_a_summary_project(self):
-        form_model = self._prepare_summary_form_model(self.manager)
+        form_model = self._prepare_summary_form_model_without_rp(self.manager)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "rep01", "SY": "a2bc", "BG": "d"})
 
         actual_list = analyzer.get_headers()
@@ -223,6 +223,31 @@ class SubmissionAnalyzerTest(unittest.TestCase):
                            ['','dd.mm.yyyy', "", "gps"])
         self.assertEqual(expected_header, actual_list)
 
+    def test_should_sort_by_rp_and_subject_for_subject_project_with_rp(self):
+        form_model = self._prepare_form_model(self.manager)
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
+        default_sort_order = analyzer.get_default_sort_order()
+        self.assertEqual([[1, 'asc'],[0,'asc']], default_sort_order)
+
+    def test_should_sort_by_submission_date_and_subject_for_subject_project_without_rp(self):
+        form_model = self._prepare_form_model_with_out_rp(self.manager)
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
+        default_sort_order = analyzer.get_default_sort_order()
+        self.assertEqual([[1, 'asc'],[0,'asc']], default_sort_order)
+
+    def test_should_sort_by_rp_and_ds_for_summary_project_with_rp(self):
+        form_model = self._prepare_summary_form_model_with_rp(self.manager)
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
+        default_sort_order = analyzer.get_default_sort_order()
+        self.assertEqual([[0, 'asc'],[2,'asc']], default_sort_order)
+
+    def test_should_sort_by_submission_date_and_ds_for_summary_project_without_rp(self):
+        form_model = self._prepare_summary_form_model_without_rp(self.manager)
+        analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
+        default_sort_order = analyzer.get_default_sort_order()
+        self.assertEqual([[0, 'asc'],[1,'asc']], default_sort_order)
+
+
     def _prepare_form_model(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
             language="en", entity_question_flag=True, ddtype=Mock())
@@ -238,6 +263,18 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             fields=[eid_field, rp_field, symptoms_field, blood_type_field], entity_type=["clinic"])
         return form_model
 
+    def _prepare_form_model_with_out_rp(self, manager):
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
+            language="en", entity_question_flag=True, ddtype=Mock())
+        symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
+            options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
+                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=Mock())
+        blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
+            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=Mock())
+        form_model = FormModel(manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
+            fields=[eid_field, symptoms_field, blood_type_field], entity_type=["clinic"])
+        return form_model
+
     def _prepare_form_model_with_gps_question(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
             language="en", entity_question_flag=True, ddtype=Mock())
@@ -247,9 +284,9 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             fields=[eid_field,gps_field], entity_type=["clinic"])
         return form_model
 
-    def _prepare_summary_form_model(self, manager):
+    def _prepare_summary_form_model_without_rp(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
-            language="en", entity_question_flag=True, ddtype=Mock())
+            language="en", entity_question_flag=False, ddtype=Mock())
         symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=Mock())
@@ -257,6 +294,21 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=Mock())
         form_model = FormModel(manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
             fields=[eid_field, symptoms_field, blood_type_field], entity_type=["reporter"])
+        return form_model
+
+    def _prepare_summary_form_model_with_rp(self, manager):
+        rp_field = DateField(label="Report date", code="RD", name="What is réporting date?",
+            date_format="dd.mm.yyyy", event_time_field_flag=True, ddtype=Mock(),
+            instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
+            language="en", entity_question_flag=False, ddtype=Mock())
+        symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
+            options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
+                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=Mock())
+        blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
+            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=Mock())
+        form_model = FormModel(manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
+            fields=[rp_field, eid_field, symptoms_field, blood_type_field], entity_type=["reporter"])
         return form_model
 
     def _prepare_clinic_entity(self):

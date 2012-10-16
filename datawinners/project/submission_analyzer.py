@@ -32,6 +32,12 @@ class SubmissionAnalyzer(object):
     def get_raw_values(self):
         return self._raw_values
 
+    def get_default_sort_order(self):
+        default_sort_order = [[0, 'asc'],[2, 'asc']] if self.form_model.event_time_question else [[0, 'asc'],[1, 'asc']]
+        if self.form_model.entity_type != ['reporter']:
+            default_sort_order = [[1, 'asc'],[0,'asc']]
+        return default_sort_order
+
     def get_headers(self):
         prefix = [ugettext("Submission Date"), ugettext("Data Sender")]
         prefix_types = [DEFAULT_DATE_FORMAT.lower(), '']

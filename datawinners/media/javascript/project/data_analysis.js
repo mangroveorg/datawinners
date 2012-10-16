@@ -79,6 +79,7 @@ $(document).ready(function () {
 
     DW.dataBinding = function (data, destroy, retrive, emptyTableText) {
         $dataTable = $('#data_analysis').dataTable({
+            "aaSorting":default_sort_order,
             "aoColumns": buildColumnTypes(),
             "bDestroy":destroy,
             "bRetrieve":retrive,
