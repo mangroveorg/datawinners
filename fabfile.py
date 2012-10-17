@@ -1,8 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from _curses import echo
+import getpass
 
-from fabric.api import run, env,sudo
-from fabric.api import local as lc
+from fabric.api import run, env
 from fabric.context_managers import cd, settings
 import os
 from datetime import date
@@ -183,6 +182,12 @@ def production():
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
+def local_test():
+    env.user = getpass.getuser()
+    env.hosts = ["localhost"]
+    env.key_filename = ["%s/.ssh/id_rsa" % os.getenv("HOME")]
+    env.warn_only = True
+
 def anonymous():
     run("uname -a")
 
@@ -312,3 +317,7 @@ def deploy_to_qa():
         datawinner_build_number="lastSuccessfulBuild",
         code_dir="/home/twer/workspace",
         environment="qa")
+
+def remove_cache():
+    with cd(os.path.join(PROJECT_DIR, 'datawinners/media/')):
+        run('rm -rf CACHE')
