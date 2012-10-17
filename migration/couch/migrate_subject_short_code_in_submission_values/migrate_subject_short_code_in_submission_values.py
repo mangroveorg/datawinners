@@ -6,6 +6,8 @@ from mangrove.datastore.database import get_db_manager, remove_db_manager
 
 SERVER = "http://localhost:5984"
 
+output = open('migration.log', 'w')
+
 def get_all_dbs():
     import urllib2
 
@@ -55,8 +57,12 @@ def correct_submissions(dbm, subject_short_codes_dict, entity_question_codes_dic
             entity_question_code_in_submission = get_entity_question_code_key(entity_question_code, submission)
             short_code_in_submission = submission.values.get(entity_question_code_in_submission)
             if short_code_in_submission in subject_short_codes_dict:
+                output.writelines("\nSubmission before migration:\n")
+                output.writelines(repr(submission.values))
                 submission.values[entity_question_code_in_submission] = subject_short_codes_dict[short_code_in_submission]
                 submission.save()
+                output.writelines("\nSubmission after migration:\n")
+                output.writelines(repr(submission.values))
 
 def migrate(dbs):
     visited_dbs, success_dbs, failed_dbs = [], [], []
@@ -71,6 +77,7 @@ def migrate(dbs):
                 remove_db_manager(dbm)
                 continue
             entity_question_codes_dict = dict(find_entity_question_code(dbm))
+            output.writelines("\nMigration database [%s]" % db)
             correct_submissions(dbm, subject_short_codes_dict, entity_question_codes_dict)
             remove_db_manager(dbm)
             success_dbs.append(db)
@@ -78,6 +85,8 @@ def migrate(dbs):
             failed_dbs.append(db)
             print e
             pass
+
+    output.close()
 
     return visited_dbs, success_dbs, failed_dbs
 
