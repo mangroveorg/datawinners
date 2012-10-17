@@ -8,6 +8,7 @@ DW.init_view_model = function (question_list) {
     }
 
     questionnaireViewModel.selectedQuestion(questionnaireViewModel.questions()[0]);
+    questionnaireViewModel.set_old_values(questionnaireViewModel.questions()[0])
     questionnaireViewModel.selectedQuestion.valueHasMutated();
     DW.current_code = questionnaireViewModel.questions().length + 1; //This variable holds the next question code to be generated.
     questionnaireViewModel.hasAddedNewQuestions = false;

@@ -105,11 +105,17 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedQuestion(question);
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
-        if(question.event_time_field_flag()){
-            DW.report_period_date_format_change_warning.old_date_format = question.date_format();
-        }
+        questionnaireViewModel.set_old_values(question);
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
+    },
+    set_old_values: function(question){
+        if(question){
+            if(question.event_time_field_flag()){
+                DW.report_period_date_format_change_warning.old_date_format = question.date_format();
+            }
+            DW.option_warning_dialog.old_question_type = question.type();
+        }
     },
     clearChoices: function() {
         questionnaireViewModel.selectedQuestion().choices([]);
@@ -145,6 +151,18 @@ var questionnaireViewModel =
         }
         DW.option_warning_dialog.continueEventHandler = function(){
             questionnaireViewModel.removeOptionFromQuestion(choice);};
+    },
+    changeQuestionType: function(type_selector){
+        var type_equal = type_selector.value == DW.option_warning_dialog.old_question_type
+            || (type_selector.value == 'choice' && (DW.option_warning_dialog.old_question_type.indexOf('select')>=0));
+        if(!is_edit || type_equal){
+            return;
+        }
+        var type = questionnaireViewModel.selectedQuestion().type();
+        DW.option_warning_dialog.show_warning(gettext("You have changed the Answer Type.<br>If you have previously collected data, it may be rendered incorrect.<br><br>Are you sure you want to continue?"));
+        DW.option_warning_dialog.cancelEventHandler = function(){
+            questionnaireViewModel.selectedQuestion().type(type);
+        };
     },
     showLengthLimiter: function() {
         return questionnaireViewModel.selectedQuestion().length_limiter() == 'length_limited';
