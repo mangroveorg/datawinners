@@ -138,12 +138,26 @@ var questionnaireViewModel =
         }
     },
     remove_option: function(choice){
+        function is_in(choice, choices){
+            for(var index in choices){
+                if(choices[index].val == choice.val){
+                    return true;
+                }
+            }
+            return false;
+        };
+
         if(!is_edit){
             questionnaireViewModel.removeOptionFromQuestion(choice);
             return;
         }
 
         var choices = questionnaireViewModel.selectedQuestion().options.choices;
+        if(!is_in(choice, choices)){
+            questionnaireViewModel.removeOptionFromQuestion(choice);
+            return;
+        }
+
         if (choice.val == choices[choices.length - 1].val) {
             DW.option_warning_dialog.show_warning(gettext("You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Are you sure you want to continue?"));
         } else {
