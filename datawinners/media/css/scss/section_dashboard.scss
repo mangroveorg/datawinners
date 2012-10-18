@@ -18,11 +18,11 @@ p{
     .ui-widget-content{
         border:1px solid #CCCCCC;
     }
-    >h3{
-      >span.ui-icon-triangle-1-s,.ui-icon-triangle-1-e{
-        display: none
-      }
-    }
+    //>h3{
+    //  >span.ui-icon-triangle-1-s,.ui-icon-triangle-1-e{
+    //    display: none
+    //  }
+    //}
     h3{
         background:#F5F5F5 !important;
         padding:10px;
@@ -57,9 +57,9 @@ p{
             color:#666666;
             float:right;
         }
-        >span.ui-icon-triangle-1-e{
-          display: none
-        }
+        //>span.ui-icon-triangle-1-e{
+        //  display: none
+        //}
     }
     .project_header.ui-state-active{
         background-color:#525252 !important;
