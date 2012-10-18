@@ -65,7 +65,7 @@
     <script type="text/html" id="choice-template">
         <li>
             <span data-bind="text: val+'.'" class="bullet"></span>
-            <input id="choice_text"  name="choice_text" class="required" type="text" onchange="questionnaireViewModel.changeTextOfOption(this)"
+            <input id="choice_text"  name="choice_text" class="required" type="text"  onblur="questionnaireViewModel.changeTextOfOption(this)"
                    data-bind="value: text, option_val: val, uniqueName:true"/>
             <a href="questionnaire_wizard.html#" class='delete delete_link'
                data-bind="visible: questionnaireViewModel.choiceCanBeDeleted(), click:function(){questionnaireViewModel.remove_option($data);}">{% trans "Delete" %}</a>

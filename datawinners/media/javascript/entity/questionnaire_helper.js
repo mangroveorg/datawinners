@@ -273,9 +273,18 @@ DW.report_period_date_format_change_warning = {
 
     show_warning:function () {
         $("#change_date_format_warning_message").dialog("open");
+        DW.show_dialog_overlay();
         DW.report_period_date_format_change_warning.is_continue = false;
     }
 };
+
+//For ie
+DW.hide_dialog_overlay = function() {
+    $('.ui-widget-overlay').hide();
+}
+DW.show_dialog_overlay = function() {
+    $('.ui-widget-overlay').show();
+}
 
 DW.option_warning_dialog = {
     init:function () {
@@ -285,6 +294,7 @@ DW.option_warning_dialog = {
         DW.option_warning_dialog.init_warning_dialog();
         DW.option_warning_dialog.bind_cancel_link();
         DW.option_warning_dialog.bind_continue();
+        DW.option_warning_dialog.bind_close();
     },
     init_warning_dialog:function () {
         $(DW.option_warning_dialog.dialog_id).dialog({
@@ -300,18 +310,28 @@ DW.option_warning_dialog = {
         $(DW.option_warning_dialog.dialog_id+"_cancel").bind("click", function () {
             $(DW.option_warning_dialog.dialog_id).dialog("close");
             DW.option_warning_dialog.cancelEventHandler();
+            DW.hide_dialog_overlay();
+        });
+    },
+    bind_close:function () {
+        $('.ui-icon-closethick').bind("click", function () {
+            $(DW.option_warning_dialog.dialog_id).dialog("close");
+            DW.option_warning_dialog.cancelEventHandler();
+            DW.hide_dialog_overlay();
         });
     },
     bind_continue:function () {
         $(DW.option_warning_dialog.dialog_id+"_continue").bind("click", function () {
             $(DW.option_warning_dialog.dialog_id).dialog("close");
             DW.option_warning_dialog.continueEventHandler();
+            DW.hide_dialog_overlay();
         });
     },
 
     show_warning:function (message) {
         $("#option_warning_text")[0].innerHTML=message;
         $(DW.option_warning_dialog.dialog_id).dialog("open");
+        DW.show_dialog_overlay();
     }
 };
 DW.change_date_format_for_reporting_period = function (date_format_element) {
@@ -417,6 +437,7 @@ DW.warning_dialog.prototype = {
         }
         this.show_warning = function () {
             $(this.container).dialog("open");
+            DW.show_dialog_overlay();
             this.is_continue = false;
         }
         this.close_dialog = function(){

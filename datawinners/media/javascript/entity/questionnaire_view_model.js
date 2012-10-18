@@ -129,10 +129,10 @@ var questionnaireViewModel =
         var choices = questionnaireViewModel.selectedQuestion().options.choices;
         var changePrompt = false;
         var oldText = null;
-        choices.forEach(function(choiceInModel){
+        $(choices).each(function(index, choiceInModel){
            if (choiceInModel.val == choice.option_val && choiceInModel.text.en != curText){
-               changePrompt = true;
                oldText =  choiceInModel.text.en;
+               changePrompt = oldText !== curText;
            }
         });
         if(changePrompt){
