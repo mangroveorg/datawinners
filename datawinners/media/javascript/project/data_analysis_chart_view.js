@@ -77,7 +77,7 @@ function drawNotes(locator, type, total) {
 
     if (type == 'select' && total != 0) {
         $multi_choice_explaination = $('<div class="mcExplaination">' +
-            gettext("Your Data Senders can choose more than 1 answer. That is why percentages may add up to more than 100%") + '</div>');
+            gettext("Your Data Senders can choose more than 1 answer.<br>That is why percentages may add up to more than 100%") + '</div>');
         $(locator).append($multi_choice_explaination);
     }
 }

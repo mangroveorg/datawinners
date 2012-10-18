@@ -180,8 +180,8 @@ msgstr "Vous n’avez aucune question à choix multiples (Type de Réponse : Lis
 msgid "Total number of Submissions for this question: "
 msgstr "Nombre total de Soumissions pour cette question: "
 
-msgid "Your Data Senders can choose more than 1 answer. That is why percentages may add up to more than 100%"
-msgstr "Vos Expéditeurs de Données peuvent choisir plus d'une réponse. C'est pour cela que la somme des pourcentages peut dépasser 100%"
+msgid "Your Data Senders can choose more than 1 answer.<br>That is why percentages may add up to more than 100%"
+msgstr "Vos Expéditeurs de Données peuvent choisir plus d'une réponse.<br>C'est pour cela que la somme des pourcentages peut dépasser 100%"
 
 #: media/javascript/project/data_analysis.js:17
 msgid "Enter a correct date. No filtering applied"
