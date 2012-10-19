@@ -78,7 +78,7 @@
       margin-left: 10px; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .question {
       width: auto;
-      height: 85px; }
+      height: auto; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .add_link {
       display: block; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .question_type {
