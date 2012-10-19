@@ -27,13 +27,13 @@ div.valueLabel {
 
 .chartOl {
   margin-top: 10px;
-  margin-left: 20px;
   float: left;
   list-style: disc;
   min-height: 274px; }
   .chartOl .chartDiv {
     display: inline-block;
-    width: 100%; }
+    width: 100%;
+    margin-left: 20px; }
     .chartOl .chartDiv .pieDiv {
       width: 500px;
       height: 400px;
@@ -92,9 +92,10 @@ div.valueLabel {
         font-size: 11px; }
   .chartOl li {
     margin-bottom: 50px;
-    list-style-type: none;}
+    list-style-type: none; }
     .chartOl li ul {
-      margin-bottom: 10px; }
+      margin-bottom: 10px;
+      margin-left: 20px; }
       .chartOl li ul li {
         float: left; }
       .chartOl li ul label {

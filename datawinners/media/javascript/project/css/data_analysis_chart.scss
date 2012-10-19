@@ -34,7 +34,6 @@ div.valueLabel {
 
 .chartOl{
   margin-top: 10px;
-  margin-left: 20px;
   float: left;
   list-style: disc;
   min-height: 274px;
@@ -42,6 +41,7 @@ div.valueLabel {
   .chartDiv{
     display:inline-block;
     width: 100%;
+    margin-left: 20px;
 
     .pieDiv{
       width:500px;
@@ -130,6 +130,7 @@ div.valueLabel {
 
     ul{
       margin-bottom:10px;
+      margin-left: 20px;
       li{
         float:left;
       }
