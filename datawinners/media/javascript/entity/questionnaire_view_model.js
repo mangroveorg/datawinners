@@ -128,13 +128,15 @@ var questionnaireViewModel =
         var curText = choice.value;
         var choices = questionnaireViewModel.selectedQuestion().options.choices;
         var changePrompt = false;
+        var oldText = null;
         choices.forEach(function(choiceInModel){
            if (choiceInModel.val == choice.option_val && choiceInModel.text.en != curText){
                changePrompt = true;
+               oldText =  choiceInModel.text.en;
            }
         });
         if(changePrompt){
-            DW.change_option_text(choice);
+            DW.change_option_text(choice,oldText);
         }
     },
     remove_option: function(choice){
