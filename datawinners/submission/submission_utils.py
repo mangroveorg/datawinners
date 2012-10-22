@@ -20,7 +20,9 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
         self.dbm = dbm
         self.request = request
 
-    def process(self, form_code, submission_values):
+    def process(self, form_code, submission_values, extra_data=[]):
+        if len(extra_data):
+            return self._get_wrong_number_of_question_response()
         form_model = get_form_model_by_code(self.dbm, form_code)
 
         processor_func = self._get_handlers(form_model)

@@ -80,3 +80,11 @@ class TestPostSMSProcessorNumberOfAnswersValidators(unittest.TestCase):
         form_model_mock.fields = fields
         form_model_mock.entity_question = entity_question
         return form_model_mock
+
+    def test_for_activity_report_question_should_send_error_for_data_submission_with_extra_answers(self):
+        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=False, fields=[1, 2, 3])
+
+        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
+        response = processor.process("form_code", {'q1': 'ans', 'q2': 'ans2'}, ["tsara", "bien", "cool"])
+        self.assertEqual(False, response.success)
+        self.assertEqual(get_wrong_number_of_answer_error_message(), response.errors)
