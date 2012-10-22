@@ -21,7 +21,8 @@ $(document).ready(function(){
     };
 
     DW.submit_data = function() {
-        var time_range = $("#dateRangePicker").val().split("/");
+        var time_range = $($("#dateRangePicker").val().split("/")).map(function(i, e) {return $.trim(e)});
+
         if(time_range[0] == ""){
             time_range[0]='01-01-1996';
             time_range[1]=Date.parse('today').toString('dd-MM-yyyy');
