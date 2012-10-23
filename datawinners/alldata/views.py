@@ -18,6 +18,7 @@ from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
 from datawinners.accountmanagement.views import is_not_expired
+from django.http import Http404
 
 REPORTER_ENTITY_TYPE = u'reporter'
 
@@ -157,11 +158,13 @@ def failed_submissions(request):
 @is_allowed_to_view_reports
 def reports(request):
     report_list = get_reports_list(get_organization(request).org_id, request.session.get('django_language', 'en'))
-    response = render_to_response('alldata/reports_page.html',
-            {'reports': report_list, 'page_heading': "All Data", 'project_links': get_alldata_project_links()},
-        context_instance=RequestContext(request))
-    response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
-    return response
+    if is_crs_user(request):
+        response = render_to_response('alldata/reports_page.html',
+                {'reports': report_list, 'page_heading': "All Data", 'project_links': get_alldata_project_links(), 'is_crs_user': True},
+            context_instance=RequestContext(request))
+        response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
+        return response
+    raise Http404
 
 
 @login_required(login_url='/login')
