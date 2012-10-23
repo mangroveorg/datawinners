@@ -9,3 +9,24 @@ register = template.Library()
 @register.filter(name='is_datasender')
 def is_datasender(user):
     return True if user.get_profile().reporter_id is not None else False
+
+@register.filter
+def in_group(user, group):
+	"""Returns True/False if the user is in the given group(s).
+	Usage::
+		{% if user|in_group:"Friends" %}
+		or
+		{% if user|in_group:"Friends,Enemies" %}
+		...
+		{% endif %}
+	You can specify a single group or comma-delimited list.
+	"""
+	import re
+	if re.search(',', group): group_list = group.split(',')
+	elif re.search(' ', group): group_list = group.split()
+	else: group_list = [group]
+	user_groups = []
+	for group in user.groups.all(): user_groups.append(str(group.name))
+	if filter(lambda x:x in user_groups, group_list): return True
+	else: return False
+in_group.is_safe = True

@@ -16,7 +16,7 @@
         </li>
         {% endif %}
 
-        {% if not user|is_datasender %}
+        {% if user|in_group:"NGO Admins,Project Managers,Read Only Users" %}
         <li class="{% ifactivetab 'tab_nav' 'failed_submissions' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="failed_submissions_tab" href="{{ project_links.failed_submissions_link }}"
                class="{{ disable_link_class }}">{% trans "Failed Submissions" %}</a>
