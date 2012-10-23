@@ -193,8 +193,12 @@ form.registration_form{
     }
     ul.administrative{
         width: 756px;
+        li.width_700{
+            width: 700px;
+        }
     }
 }
 .clear_both{
     clear:both;
 }
+

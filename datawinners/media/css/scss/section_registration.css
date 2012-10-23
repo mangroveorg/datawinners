@@ -134,6 +134,8 @@ form.registration_form ul.payment_details {
   width: 675px; }
 form.registration_form ul.administrative {
   width: 756px; }
-.clear_both{
-    clear:both;
-}
+  form.registration_form ul.administrative li.width_700 {
+    width: 700px; }
+
+.clear_both {
+  clear: both; }
