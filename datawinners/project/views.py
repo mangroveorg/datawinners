@@ -37,7 +37,6 @@ from mangrove.transport.facade import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport.submissions import Submission, get_submissions, submission_count
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
-from mangrove.datastore import aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
 from mangrove.transport import Channel
@@ -70,6 +69,7 @@ from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
 from project.wizard_view import get_max_code
 from utils import get_changed_questions
+
 logger = logging.getLogger("django")
 
 END_OF_DAY = " 23:59:59"
@@ -484,9 +484,7 @@ def _create_excel_response(raw_data_list, file_name):
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
     wb = utils.get_excel_sheet(raw_data_list, 'data_log')
     wb.save(response)
-
     return response
-
 
 @login_required(login_url='/login')
 @session_not_expired

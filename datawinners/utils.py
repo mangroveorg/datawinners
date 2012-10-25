@@ -60,13 +60,14 @@ def _clean(row):
 
 def workbook_add_sheet(wb, raw_data, sheet_name):
     ws = wb.add_sheet(sheet_name)
+    default_cell_style=xlwt.Style.default_style
+    dt_cell_style = xlwt.easyxf(num_format_str='dd-mm-yyyy hh:mm:ss')
     for row_number, row  in enumerate(raw_data):
+        if row_number > 0 and row_number % 500 == 0: ws.flush_row_data()
         row = _clean(row)
         for col_number, val in enumerate(row):
-            cell_style=xlwt.Style.default_style
-            if isinstance(val, datetime):
-                cell_style = xlwt.easyxf(num_format_str='dd-mm-yyyy hh:mm:ss')
-            ws.write(row_number, col_number, val, style=cell_style)
+            gangnam_style = dt_cell_style if isinstance(val, datetime) else default_cell_style;
+            ws.write(row_number, col_number, val, style=gangnam_style)
     return ws
 
 def get_organization_from_manager(manager):

@@ -23,7 +23,7 @@ $(document).ready(function(){
     DW.submit_data = function() {
         var time_range = $($("#dateRangePicker").val().split("/")).map(function(i, e) {return $.trim(e)});
 
-        if(time_range[0] == ""){
+        if(time_range[0] == "") {
             time_range[0]='01-01-1996';
             time_range[1]=Date.parse('today').toString('dd-MM-yyyy');
             return time_range;
@@ -38,7 +38,7 @@ $(document).ready(function(){
    };
 
 
-    DW.show_data = function(page_number){
+    DW.show_data = function(page_number) {
         this.page_number = page_number;
         this._init();
     };
@@ -139,10 +139,23 @@ $(document).ready(function(){
 
     $('#time_filter').click(function() {
         var time_range = DW.submit_data();
+
+        var start_time = time_range[0];
+        var end_time = time_range[1];
+
+//        if (start_time && end_time) {
+//            var start = new Date(start_time);
+//            var end = new Date(end_time);
+//            if (end < start) {
+//                alert("aaa");
+//                return;
+//            }
+//        }
+
         $.ajax({
             type: 'GET',
             url: '/project/datarecords/filter',
-            data: {'questionnaire_code': $('#questionnaire_id').val(), 'start_time':time_range[0], 'end_time': time_range[1]},
+            data: {'questionnaire_code': $('#questionnaire_id').val(), 'start_time':start_time, 'end_time': end_time},
             success:function(response) {
                 if (response) {
                     $('#submission_table').html(response);

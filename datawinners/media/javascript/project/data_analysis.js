@@ -10,27 +10,7 @@ $(document).ready(function () {
     $(document).ajaxStop($.unblockUI);
 
     addOnClickListener();
-    $('#go').click(function () {
-            var data = DW.submit_data();
-            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
-            $.ajax({
-                type:'POST',
-                url:window.location.pathname,
-                data: data,
-                success:function (response) {
-                    var response_data = JSON.parse(response);
-                    DW.dataBinding(response_data.data_list, true, false, help_all_data_are_filtered);
-                    var emptyChartText = response_data.data_list.length ==0 ? gettext('No submissions available for this search. Try changing some of the filters.'):'';
-                    drawChart(response_data.statistics_result,
-                        response_data.data_list.length,
-                        emptyChartText);
-                    DW.wrap_table();
-                    if(DW.chart_view_shown){
-                        $('#data_analysis_wrapper').hide();
-                    }
-                }});
-        }
-    );
+
     function addOnClickListener() {
         $('#export_link').click(function () {
             var data = DW.submit_data();
@@ -40,6 +20,28 @@ $(document).ready(function () {
             }
             $('#export_form').submit();
         });
+
+        $('#go').click(function () {
+                var data = DW.submit_data();
+                $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+                $.ajax({
+                    type:'POST',
+                    url:window.location.pathname,
+                    data: data,
+                    success:function (response) {
+                        var response_data = JSON.parse(response);
+                        DW.dataBinding(response_data.data_list, true, false, help_all_data_are_filtered);
+                        var emptyChartText = response_data.data_list.length ==0 ? gettext('No submissions available for this search. Try changing some of the filters.'):'';
+                        drawChart(response_data.statistics_result,
+                            response_data.data_list.length,
+                            emptyChartText);
+                        DW.wrap_table();
+                        if(DW.chart_view_shown){
+                            $('#data_analysis_wrapper').hide();
+                        }
+                    }});
+            }
+        );
     }
 
     function get_date($datePicker, default_text) {
@@ -52,25 +54,25 @@ $(document).ready(function () {
         } else if (data.length == 1) {
             data[1] = data[0];
         }
-        return data;
+        return {start_time: data[0], end_time: data[1]};
     }
 
     DW.submit_data = function () {
-        $(".dateErrorDiv").hide();
         var reporting_period = get_date($('#reportingPeriodPicker'), gettext("All Periods"));
         var submission_date = get_date($('#submissionDatePicker'), gettext("All Dates"));
         var subject_ids = $('#subjectSelect').attr('ids');
         var submission_sources = $('#dataSenderSelect').attr('data');
         var keyword = $('#keyword').val();
         return {
-            'start_time': $.trim(reporting_period[0]),
-            'end_time': $.trim(reporting_period[1]),
-            'submission_date_start': $.trim(submission_date[0]),
-            'submission_date_end': $.trim(submission_date[1]),
+            'start_time': $.trim(reporting_period.start_time),
+            'end_time': $.trim(reporting_period.end_time),
+            'submission_date_start': $.trim(submission_date.start_time),
+            'submission_date_end': $.trim(submission_date.end_time),
             'subject_ids': subject_ids,
             'submission_sources': submission_sources,
             'keyword': keyword
         };
+        $(".dateErrorDiv").hide();
     };
 
     DW.wrap_table = function () {
@@ -112,12 +114,12 @@ $(document).ready(function () {
     };
 
     function buildColumnTypes(){
-        var result = []
+        var result = [];
         for( var index in header_type_list){
-            var value = header_type_list[index]
-            result[result.length] = (value ? { "sType":  value} : null)
+            var value = header_type_list[index];
+            result[result.length] = (value ? { "sType":  value} : null);
         }
-        return result
+        return result;
     };
 
     function showDatePicker($input) {
