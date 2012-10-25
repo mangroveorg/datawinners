@@ -9,11 +9,7 @@
     <script src="/media/javascript/project/delete_project.js" type="text/javascript"></script>
     <script src="/media/javascript/project/sms_tester.js" type="text/javascript"></script>
     <script src="/media/javascript/project/questionnaire_preview.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        var sms_tester_title ="{% trans "Test SMS Questionnaire" %}";
-        var questionnaire_preview_link ="{{ project_links.questionnaire_preview_link }}";
-        var sms_questionnaire_preview_link = "{{ project_links.sms_questionnaire_preview_link }}";
-    </script>
+
 {% endblock %}
 
 {% block page_scss %}
@@ -21,6 +17,18 @@
     {% if project_links.current_language == 'fr' %}
         <link href="/media/css/scss/french.css" rel="stylesheet" />
     {% endif %}
+{% endblock %}
+
+{% block main_content %}
+    {{ block.super }}
+    {% load compress %}
+    {% compress js %}
+    <script type="text/javascript">
+        var sms_tester_title ="{% trans "Test SMS Questionnaire" %}";
+        var questionnaire_preview_link ="{{ project_links.questionnaire_preview_link }}";
+        var sms_questionnaire_preview_link = "{{ project_links.sms_questionnaire_preview_link }}";
+    </script>
+    {% endcompress %}
 {% endblock %}
 
 {% block section_title %}
