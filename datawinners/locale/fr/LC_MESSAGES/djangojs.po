@@ -204,11 +204,11 @@ msgstr "Intervalle de dates"
 
 #: media/javascript/project/datasender.js:7
 msgid "Add A Data Sender"
-msgstr "Ajouter un envoyeur"
+msgstr "Ajouter un expéditeur"
 
 #: media/javascript/project/datasenders_registration_questionnaire_preview.js:3
 msgid "Data Sender Registration Preview"
-msgstr "Aperçu de l'ajout d'envoyeur"
+msgstr "Aperçu de l'ajout d'expéditeur"
 
 #: media/javascript/project/import_section.js:7
 msgid "Import a List"
@@ -414,7 +414,7 @@ msgstr "Veuillez remplir au moins un champ de localité"
 
 #: media/javascript/project/registered_datasenders.js:19
 msgid "Data Senders dissociated Successfully"
-msgstr "Envoyeurs dissociés avec succès"
+msgstr "Expéditeurs dissociés avec succès"
 
 #: media/javascript/project/registered_datasenders.js:19
 msgid "Please Wait"
@@ -426,7 +426,7 @@ msgstr "Veuillez remplir au moins un champ de localité"
 
 #: media/javascript/project/registered_datasenders.js:26
 msgid "Please select only 1 data sender"
-msgstr "Veuillez choisir un seul envoyeur"
+msgstr "Veuillez choisir un seul expéditeur"
 
 #: media/javascript/project/reminders.js:49
 msgid "Can't be blank."
@@ -485,17 +485,17 @@ msgid "What is the mobile number associated with the subject?"
 msgstr "Quel est le numéro de téléphone portable associé au sujet?"
 
 msgid "What is the data sender's name?"
-msgstr "Quel est le nom de l'envoyeur données?"
+msgstr "Quel est le nom de l'expéditeur données?"
 
 msgid "What is the data sender's location?"
-msgstr "Quel est la localité de l'envoyeur de données ?"
+msgstr "Quel est la localité de l'expéditeur de données ?"
 
 msgid "What is the data sender's GPS co-ordinates?"
-msgstr "Quel sont les coordonnées GPS de l'envoyeur de données ?"
+msgstr "Quel sont les coordonnées GPS de l'expéditeur de données ?"
 
 msgid "What is the mobile number associated with the data sender?"
 msgstr ""
-"Quel est le numéro de téléphone portable associé à l'envoyeur de "
+"Quel est le numéro de téléphone portable associé à l'expéditeur de "
 "données ?"
 
 msgid "Please select atleast 1 data sender"
@@ -784,3 +784,6 @@ msgstr "Vous avez changé le texte de votre choix de réponse.<br>Si vous avez c
 
 msgid "You have changed the Answer Type.<br>If you have previously collected data, it may be rendered incorrect.<br><br>Are you sure you want to continue?"
 msgstr "Vous avez changé le Type de Réponse.<br>Si vous avez déjà collecté des données auparavant, celles-ci peuvent être considérées incorrectes.<br><br>Etes-vous sûr de vouloir continuer ?"
+
+msgid "Your User(s) will be deleted"
+msgstr "Votre(vos) utilisateur(s) sera/seront supprimé(s)"

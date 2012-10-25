@@ -11,7 +11,8 @@ action_list = (
         
     (_('Account Administration'), (
         (ADDED_USER, _(ADDED_USER)),
-        (CHANGED_ACCOUNT_INFO, _(CHANGED_ACCOUNT_INFO))
+        (CHANGED_ACCOUNT_INFO, _(CHANGED_ACCOUNT_INFO)),
+        (DELETED_USERS, _(DELETED_USERS)),
     )),
 
     (_('Project'),(

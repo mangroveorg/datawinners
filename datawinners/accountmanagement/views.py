@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.models import User, Group
 from django.core.mail import EmailMessage
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
@@ -17,7 +17,8 @@ from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER, CRS_ORG_
 
 from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm
-from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, DataSenderOnTrialAccount
+from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, \
+    DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for, get_data_senders_on_trial_account_with_mobile_number
 from django.contrib.auth.views import login, password_reset
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
@@ -26,8 +27,12 @@ from datawinners.project.models import Project
 from datawinners.utils import get_organization, _get_email_template_name_for_reset_password, _get_email_template_name_for_created_user
 from datawinners.activitylog.models import UserActivityLog
 import json
-from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER
-from datawinners.entity.helper import send_email_to_data_sender
+from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS
+from datawinners.entity.helper import send_email_to_data_sender, delete_datasender_for_trial_mode, \
+    delete_datasender_from_project, delete_datasender_users_if_any, delete_entity_instance
+from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
+from mangrove.form_model.form_model import REPORTER
+from mangrove.transport import Request, TransportInfo
 
 logger = logging.getLogger("django")
 def is_admin(f):
@@ -348,3 +353,32 @@ def _send_upgrade_email(user, language):
     email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
     email.send()
+
+@login_required(login_url='/login')
+@csrf_view_exempt
+@csrf_response_exempt
+@session_not_expired
+@is_not_expired
+def delete_users(request):
+    django_ids = request.POST.get("all_ids").split(";")
+    all_ids = NGOUserProfile.objects.filter(user__in=django_ids).values_list('reporter_id', flat=True)
+    manager = get_database_manager(request.user)
+    organization = get_organization(request)
+    transport_info = TransportInfo("web", request.user.username, "")
+    ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
+    if ngo_admin_user_profile.reporter_id in all_ids:
+        admin_full_name = ngo_admin_user_profile.user.first_name + ' ' + ngo_admin_user_profile.user.last_name
+        messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
+                                (admin_full_name), "error_message")
+    else:
+        delete_entity_instance(manager, all_ids, REPORTER, transport_info)
+        all_names = User.objects.filter(id__in=django_ids).extra(select={'full_name': "first_name||' '||last_name "} ).values_list('full_name', flat=True)
+        delete_datasender_from_project(manager, all_ids)
+        delete_datasender_users_if_any(all_ids, organization)
+        if organization.in_trial_mode:
+            delete_datasender_for_trial_mode(manager, all_ids, REPORTER)
+        names = ", ".join(all_names)
+        action = DELETED_USERS
+        UserActivityLog().log(request, action=action, detail="%s: [%s]" % (_("Users"), ", ".join(all_names)))
+        messages.success(request, _("User(s) successfully deleted."))
+    return HttpResponse(json.dumps({'success': True}))

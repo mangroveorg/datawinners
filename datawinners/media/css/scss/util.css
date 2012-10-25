@@ -458,3 +458,10 @@ ul.bulleted li {
 .small_grey {
   color: #888;
   font-size: 10px; }
+
+div.border_top_bottom {
+  border-top: 1px solid #CCCCCC;
+  border-bottom: 1px solid #CCCCCC; }
+
+.padding_top_10 {
+  padding-top: 10px; }

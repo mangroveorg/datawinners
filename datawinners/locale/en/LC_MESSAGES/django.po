@@ -4573,3 +4573,21 @@ msgstr ""
 
 msgid "Do you want to modify this questionnaire?"
 msgstr ""
+
+msgid "Add an User"
+msgstr ""
+
+msgid "Please select atleast 1 user"
+msgstr ""
+
+msgid "User(s) successfully deleted."
+msgstr ""
+
+msgid "Your User(s) will permanently be deleted. This action cannot be undone."
+msgstr ""
+
+msgid "Are you sure you want to delete?"
+msgstr ""
+
+msgid "Deleted Users"
+msgstr ""
