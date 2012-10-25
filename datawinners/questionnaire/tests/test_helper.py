@@ -51,15 +51,13 @@ class QuestionnaireHelper(unittest.TestCase):
 
     def _get_location_field(self):
         location_field = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
-            label="anything",
-            language="en", ddtype=Mock(spec=DataDictType))
+            label="anything",ddtype=Mock(spec=DataDictType))
 
         return location_field
 
     def _get_geo_code_field(self):
         geo_code_field = HierarchyField(name=GEO_CODE_FIELD_NAME, code=GEO_CODE,
-            label="anything",
-            language="en", ddtype=Mock(spec=DataDictType))
+            label="anything",ddtype=Mock(spec=DataDictType))
 
         return geo_code_field
 

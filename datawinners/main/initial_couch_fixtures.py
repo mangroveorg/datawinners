@@ -151,13 +151,12 @@ def create_questions(manager):
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
-    question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-        language="en", entity_question_flag=True, ddtype=entity_id_type,
+    question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",entity_question_flag=True, ddtype=entity_id_type,
         constraints=[TextLengthConstraint(min=1, max=12)],
         instruction="Answer must be a word or phrase 12 characters maximum")
     question2 = TextField(label="What is your namé?", code="NA", name="What is your namé?",
         constraints=[TextLengthConstraint(min=1, max=10)],
-        defaultValue="some default value", language="en", ddtype=name_type,
+        defaultValue="some default value", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="What is age öf father?", code="FA", name="What is age öf father?",
         constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
@@ -176,7 +175,7 @@ def create_questions(manager):
         instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS code for clinic?", code="GPS",
         label="What is the GPS code for clinic?",
-        language="en", ddtype=geo_code_type,
+        ddtype=geo_code_type,
         instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
     question8 = SelectField(label="What are the required medicines?", code="RM", name="What are the required medicines?"
         ,
@@ -769,7 +768,7 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
 
     question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-        language="en", entity_question_flag=True, ddtype=entity_id_type,
+        entity_question_flag=True, ddtype=entity_id_type,
         constraints=[TextLengthConstraint(min=1, max=12)],
         instruction="Answer must be a word or phrase 12 characters maximum")
     question2 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
@@ -1205,12 +1204,12 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="entity_question", code="EID", name="What is associatéd entity?",
-                          language="en", entity_question_flag=True, ddtype=entity_id_type,
+                          entity_question_flag=True, ddtype=entity_id_type,
                           constraints=[TextLengthConstraint(min=1, max=12)],
                           instruction="Answer must be a word or phrase 12 characters maximum")
     question2 = TextField(label="Name", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
-                          defaultValue="some default value", language="en", ddtype=name_type,
+                          defaultValue="some default value", ddtype=name_type,
                           instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="Father age", code="FA", name="What is age öf father?",
                              constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
@@ -1228,7 +1227,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
                             instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS",
                              label="What is the GPS code for clinic?",
-                             language="en", ddtype=geo_code_type,
+                             ddtype=geo_code_type,
                              instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
     question8 = SelectField(label="Required Medicines", code="RM", name="What are the required medicines?",
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],

@@ -49,7 +49,7 @@ class SubmissionAnalyzer(object):
             prefix = [ugettext(self.form_model.entity_type[0]).capitalize()] + prefix
             prefix_types = [''] + prefix_types
 
-        field_ = [(field.label[self.form_model.activeLanguages[0]],
+        field_ = [(field.label,
                    field.date_format if isinstance(field, DateField) else (
                    "gps" if isinstance(field, GeoCodeField)  else "")) for field in self.form_model.fields[1:] if
                                                                        not field.is_event_time_field]
@@ -168,8 +168,8 @@ class SubmissionAnalyzer(object):
                 result.setdefault(each.name, {"choices": {}, "type": each.type, 'total': 0})
                 for option in each.options:
                     opt_text = option['text']
-                    if opt_text.has_key(each.language):
-                        result[each.name]['choices'][opt_text[each.language]] = 0
+                    if opt_text.has_key('en'):
+                        result[each.name]['choices'][opt_text['en']] = 0
                     else:
                         result[each.name]['choices'][opt_text[opt_text.keys()[0]]] = 0
         return result

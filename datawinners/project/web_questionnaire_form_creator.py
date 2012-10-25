@@ -104,7 +104,6 @@ class WebQuestionnaireFormCreator(object):
 
     def create(self):
         properties = dict()
-        language = self.form_model.activeLanguages[0]
         properties.update({'__init__': question_form_init__})
         properties.update({'form_model': self.form_model})
         properties.update({'clean': questionnaire_form_clean})
@@ -116,8 +115,8 @@ class WebQuestionnaireFormCreator(object):
             properties.update(self._get_entity_type_hidden_field())
             properties.update(self._get_short_code_question_code())
             properties.update(
-                {field.code: self._get_django_field(field, language) for field in self.form_model.fields[:-1]})
-            properties.update(self._get_short_code_django_field(self.form_model.fields[-1], language))
+                {field.code: self._get_django_field(field) for field in self.form_model.fields[:-1]})
+            properties.update(self._get_short_code_django_field(self.form_model.fields[-1]))
         else:
             subject_question = self.form_model.entity_question
             if subject_question is not None:
@@ -126,7 +125,7 @@ class WebQuestionnaireFormCreator(object):
                 properties.update(self._get_short_code_question_code())
 
             properties.update(
-                {field.code: self._get_django_field(field, language) for field in self.form_model.fields if
+                {field.code: self._get_django_field(field) for field in self.form_model.fields if
                  not field.is_entity_field})
 
         properties.update(self._get_form_code_hidden_field())
@@ -139,15 +138,15 @@ class WebQuestionnaireFormCreator(object):
     def _get_form_code_hidden_field(self):
         return {'form_code': forms.CharField(widget=HiddenInput, initial=self.form_model.form_code)}
 
-    def _get_django_field(self, field, language):
+    def _get_django_field(self, field):
         try:
             field_creation_map = {SelectField: self._create_select_field,
                                   TelephoneNumberField: self._create_phone_number_field,
                                   IntegerField: self._create_integer_field,
                                   DateField: self._create_date_field}
-            return field_creation_map[type(field)](field, language)
+            return field_creation_map[type(field)](field)
         except KeyError:
-            return self._create_char_field(field, language)
+            return self._create_char_field(field)
 
 
     def _insert_location_field_class_attributes(self, char_field, field):
@@ -162,9 +161,9 @@ class WebQuestionnaireFormCreator(object):
         self._insert_location_field_class_attributes(char_field, field)
         self._put_subject_field_class_attributes(char_field, field)
 
-    def _create_char_field(self, field, language):
+    def _create_char_field(self, field):
         constraints = get_chars_constraints(field)
-        char_field = forms.CharField(label=field.label[language], initial=field.value, required=field.is_required(),
+        char_field = forms.CharField(label=field.label, initial=field.value, required=field.is_required(),
             help_text=field.instruction, **constraints)
         watermark = "xx.xxxx,yy.yyyy" if type(field) == GeoCodeField else get_text_field_constraint_text(field)
         char_field.widget.attrs["watermark"] = watermark
@@ -172,37 +171,37 @@ class WebQuestionnaireFormCreator(object):
         self._create_field_type_class(char_field, field)
         return char_field
 
-    def _get_short_code_django_field(self, field, language):
-        django_field = forms.RegexField("^[a-zA-Z0-9]+$", label=field.label[language], initial=field.value, required=field.is_required(),
+    def _get_short_code_django_field(self, field):
+        django_field = forms.RegexField("^[a-zA-Z0-9]+$", label=field.label, initial=field.value, required=field.is_required(),
             help_text=field.instruction, error_message=_("Only letters and numbers are valid"))
         self._create_field_type_class(django_field, field)
         return {field.code: django_field}
 
-    def _create_select_field(self, field, language):
+    def _create_select_field(self, field):
         if field.single_select_flag:
             for opt in field.options:
-                if opt['text'][language] == field.value:
+                if opt['text']['en'] == field.value:
                     field.value = opt['val']
 
-            return ChoiceField(choices=self._create_choices(field, language), required=field.is_required(),
-                label=field.label[language],
+            return ChoiceField(choices=self._create_choices(field), required=field.is_required(),
+                label=field.label,
                 initial=field.value, help_text=field.instruction)
         else:
             field_values = []
             if field.value is not None:
                 field_labels = field.value.split(',')
                 for opt in field.options:
-                    if opt['text'][language] in field_labels:
+                    if opt['text']['en'] in field_labels:
                         field_values.append(opt['val'])
 
 
-        return forms.MultipleChoiceField(label=field.label[language], widget=forms.CheckboxSelectMultiple,
-            choices=self._create_choices(field, language),
+        return forms.MultipleChoiceField(label=field.label, widget=forms.CheckboxSelectMultiple,
+            choices=self._create_choices(field),
             initial=field_values, required=field.is_required(), help_text=field.instruction)
 
-    def _create_choices(self, field, language):
+    def _create_choices(self, field):
         choice_list = [('', '--None--')] if field.single_select_flag else []
-        choice_list.extend([(option['val'], option['text'][language]) for option in field.options])
+        choice_list.extend([(option['val'], option['text']['en']) for option in field.options])
         choices = tuple(choice_list)
         return choices
 
@@ -210,8 +209,8 @@ class WebQuestionnaireFormCreator(object):
     def _get_entity_type_hidden_field(self):
         return {u't': forms.CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])}
 
-    def _create_phone_number_field(self, field, language):
-        telephone_number_field = PhoneNumberField(label=field.label[language],initial=field.value, required=field.is_required(),
+    def _create_phone_number_field(self, field):
+        telephone_number_field = PhoneNumberField(label=field.label,initial=field.value, required=field.is_required(),
             help_text=field.instruction)
         telephone_number_field.widget.attrs["watermark"] = get_text_field_constraint_text(field)
         telephone_number_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -220,17 +219,17 @@ class WebQuestionnaireFormCreator(object):
 
         return telephone_number_field
 
-    def _create_date_field(self, field, language):
+    def _create_date_field(self, field):
         format = field.DATE_DICTIONARY.get(field.date_format)
-        date_field = DjangoDateField(input_formats=(format,),label=field.label[language],initial=field.value,
+        date_field = DjangoDateField(input_formats=(format,),label=field.label,initial=field.value,
                                                  required=field.is_required(),help_text=field.instruction)
         date_field.widget.attrs["watermark"] = get_text_field_constraint_text(field)
         date_field.widget.attrs['style'] = 'padding-top: 7px;'
         return date_field
 
-    def _create_integer_field(self, field, language):
+    def _create_integer_field(self, field):
         constraints = get_integer_constraints(field)
-        integer_field = django.forms.fields.FloatField(label=field.label[language],initial=field.value, required=field.is_required(),
+        integer_field = django.forms.fields.FloatField(label=field.label,initial=field.value, required=field.is_required(),
             error_messages={'invalid': _('Enter a valid integer')}, **constraints)
         integer_field.widget.attrs["watermark"] = get_integer_field_constraint_text(field)
         integer_field.widget.attrs['style'] = 'padding-top: 7px;'

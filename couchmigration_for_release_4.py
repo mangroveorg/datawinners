@@ -39,7 +39,7 @@ def migrate_01(managers, map_fun_raw_form_model_docs):
                 else:
                     document['is_registration_model'] = False
                     for index, json_field in enumerate(document['json_fields']):
-                        json_field['label'][language] = json_field['name']
+                        json_field['label'] = json_field['name']
                         document['json_fields'][index] = json_field
                     document["validators"] = [{"cls": "mandatory"}]
                 manager.database.save(document)

@@ -718,7 +718,7 @@ def save_questionnaire(request):
             saved_fields = form_model.fields
             QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set, get_max_code(saved_fields))
             form_model.save()
-            changed = get_changed_questions(saved_fields, form_model.fields, form_model.activeLanguages[0])
+            changed = get_changed_questions(saved_fields, form_model.fields)
             changed.update(dict(entity_type=form_model.entity_type[0].capitalize()))
             detail_dict.update(changed)
             kwargs = dict()

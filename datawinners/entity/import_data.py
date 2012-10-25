@@ -239,14 +239,14 @@ def _get_registration_form_models(manager):
     return subjects
 
 
-def get_field_infos(fields,language='en'):
+def get_field_infos(fields):
     fields_names = []
     labels = []
     codes = []
     for field in fields:
         if field['name'] != 'entity_type':
             fields_names.append(field['name'])
-            labels.append(field['label'][language])
+            labels.append(field['label'])
             codes.append(field['code'])
     return fields_names, labels, codes
 
@@ -260,8 +260,7 @@ def get_entity_type_infos(entity, form_model = None, manager = None):
             form_code = form_model.form_code
         form_model = manager.load_all_rows_in_view("questionnaire", key = form_code)[0]
 
-    names, labels, codes = get_field_infos(form_model.value['json_fields'],
-                                           form_model.value['metadata'][attributes.ACTIVE_LANGUAGES][0])
+    names, labels, codes = get_field_infos(form_model.value['json_fields'])
     subject = dict(entity = entity,
                    code = form_model.value["form_code"],
                    names = names,
@@ -386,7 +385,7 @@ def get_entity_type_fields(manager, type=REPORTER):
     if form_model is not None:
         form_code = form_model.form_code
     form_model_rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
-    fields, labels, codes = get_field_infos(form_model_rows[0].value['json_fields'],form_model_rows[0].value['metadata'][attributes.ACTIVE_LANGUAGES][0])
+    fields, labels, codes = get_field_infos(form_model_rows[0].value['json_fields'])
     return fields, labels, codes
 
 

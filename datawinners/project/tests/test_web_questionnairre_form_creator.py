@@ -60,7 +60,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         form_model = self._get_form_model()
         is_required = True
         form_model.activeLanguages = [FRENCH_LANGUAGE]
-        form_model.add_field(self._get_text_field(is_required, False, language=FRENCH_LANGUAGE))
+        form_model.add_field(self._get_text_field(is_required, False))
 
         questionnaire_form_class = WebQuestionnaireFormCreator(None, form_model=form_model).create()
 
@@ -276,20 +276,19 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         return expected_choices, text_field
 
 
-    def _get_text_field(self, is_required, entity_question_flag, code=None, language=DEFAULT_LANGUAGE):
+    def _get_text_field(self, is_required, entity_question_flag, code=None):
         code = self.text_field_code if code is None else code
         field_name = self.field_name if not entity_question_flag else self.short_code_question_code
         text_field = TextField(name=field_name, code=code, label=field_name,
             ddtype=Mock(spec=DataDictType),
             instruction=self.instruction, required=is_required, constraints=[TextLengthConstraint(1, 20)],
-            entity_question_flag=entity_question_flag, language=language)
+            entity_question_flag=entity_question_flag)
         return text_field
 
 
     def _get_location_field(self):
         location_field = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
-            label=self.field_name,
-            language="en", ddtype=Mock(spec=DataDictType))
+            label=self.field_name,ddtype=Mock(spec=DataDictType))
 
         return location_field
 

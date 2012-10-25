@@ -117,9 +117,9 @@ class TestFilePlayer(MangroveTestCase):
             (NAME_FIELD, "Test_reporter", self.name_type)], submission=dict(submission_id="1"))
 
         question1 = TextField(name="entity_question", code="EID", label="What is associated entity",
-                              language="en", entity_question_flag=True, ddtype=self.entity_id_type)
+                              entity_question_flag=True, ddtype=self.entity_id_type)
         question2 = TextField(name="Name", code="NAME", label="Clinic Name",
-                              defaultValue="some default value", language="eng",
+                              defaultValue="some default value",
                               ddtype=self.name_type, required=False)
         self.form_model = FormModel(self.manager, entity_type=self.entity_type, name="Dengue", label="Dengue form_model",
                                     form_code="clinic", type='survey', fields=[question1,question2])

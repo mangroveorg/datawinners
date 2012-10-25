@@ -33,9 +33,9 @@ class TestHelper(unittest.TestCase):
     def test_should_return_code_title_tuple_list(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
-            language="en", entity_question_flag=True, ddtype=ddtype)
+            entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
-            defaultValue="some default value", language="eng", ddtype=ddtype)
+            defaultValue="some default value", ddtype=ddtype)
         code_and_title = [(each_field.code, each_field.name)for each_field in [question1, question2]]
         self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], code_and_title)
 

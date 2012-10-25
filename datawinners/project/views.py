@@ -448,7 +448,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
                  'project': project,
                  'questionnaire_code': questionnaire_code,
                  'in_trial_mode': in_trial_mode,
-                 'reporting_period_question_text': rp_field.label[form_model.activeLanguages[0]] if has_rp else None,
+                 'reporting_period_question_text': rp_field.label if has_rp else None,
                  'has_reporting_period': has_rp,
                  'is_summary_report':is_summary_report,
                  "statistics_result": repr(encode_json(statistics_result))},
@@ -498,7 +498,7 @@ def export_log(request):
 
     header_list = [ugettext("To"), ugettext("From"), ugettext("Date Received"), ugettext("Submission status"),
                    ugettext("Deleted Record"), ugettext("Errors")]
-    header_list.extend([field.label.get(field.language) for field in questionnaire.fields])
+    header_list.extend([field.label for field in questionnaire.fields])
     raw_data_list = [header_list]
     if count:
         for submission in submissions:
@@ -511,16 +511,6 @@ def export_log(request):
 
     file_name = request.GET.get(u"project_name") + '_log'
     return _create_excel_response(raw_data_list, file_name)
-
-
-def _format_field_description_for_data_senders(reg_form_fields):
-    for field in reg_form_fields:
-        if field.code == 't':
-            continue
-        temp = field.label.get("en")
-        temp = temp.replace("subject", "data sender")
-        field.label.update(en=temp)
-
 
 def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)
@@ -1083,7 +1073,7 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
 
 
 def _get_preview_for_field_in_registration_questionnaire(field, language):
-    preview = {"description": field.label.get(language), "code": field.code, "type": field.type,
+    preview = {"description": field.label, "code": field.code, "type": field.type,
                "instruction": field.instruction}
     constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
         [(option["text"][field.language], option["val"]) for option in field.options]

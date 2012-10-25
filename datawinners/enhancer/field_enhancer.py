@@ -9,8 +9,8 @@ def enhance():
             opt_text = opt['text']
             opt_value = opt['val']
             if opt_value.lower() == option.lower():
-                if opt_text.has_key(self.language) :
-                    return opt_text[self.language]
+                if opt_text.has_key('en') :
+                    return opt_text['en']
                 elif opt_value.lower() == option.lower():
                     return opt_text[opt_text.keys()[0]]
         return None

@@ -55,8 +55,6 @@ class TestEntityLoggedIn(TestCase):
         entity_type_regex = "client"
         response = self.client.post('/entity/type/create',{'entity_type_regex' : entity_type_regex})
         self.assertEquals(response.status_code,200)
-#        self.assertContains(response,'client already registered as a subject type. Please select clinic from the drop down menu.')
-#        self.assertRaises(EntityTypeAlreadyDefined,'client already registered as a subject type. Please select clinic from the drop down menu.',response)
 
         entity_type_regex = ""
         response = self.client.post('/entity/type/create',{'entity_type_regex' : entity_type_regex})

@@ -21,7 +21,7 @@ class TestProjectResults(unittest.TestCase):
 
         questionnaire = Mock()
         question1 = Field(type="", name="q1", code="q1", label='q1', ddtype=DataDictType(self.dbm), instruction='',
-            language=field_attributes.DEFAULT_LANGUAGE, constraints=None, required=True)
+            constraints=None, required=True)
         questionnaire.fields = [question1]
 
         submissions = [Submission(self.dbm, self.transport_info, None, values={'q1': 'q1_value'})]

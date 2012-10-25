@@ -66,14 +66,13 @@ class TestEditQuestionnaire(BaseTest):
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, VALID_SMS))
         self.assertEqual(first_tab, self.driver.window_handles[0])
         self.driver.switch_to_window(first_tab)
-        warning_dialog = WarningDialog(self.driver)
         create_questionnaire_page.save_and_create_project()
         time.sleep(2)
-        self.assertEqual(SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING, warning_dialog.get_message())
-        warning_dialog.cancel()
         create_questionnaire_page.delete_question(5)
+        warning_dialog = WarningDialog(self.driver)
         time.sleep(2)
         self.assertEqual(DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING, warning_dialog.get_message())
+        warning_dialog.cancel()
 
     @attr('functional_test')
     def test_sms_preview_of_questionnaire_on_the_questionnaire_tab(self):

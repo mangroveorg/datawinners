@@ -250,7 +250,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def _prepare_form_model(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
-            language="en", entity_question_flag=True, ddtype=Mock())
+            entity_question_flag=True, ddtype=Mock())
         rp_field = DateField(label="Report date", code="RD", name="What is réporting date?",
             date_format="dd.mm.yyyy", event_time_field_flag=True, ddtype=Mock(),
             instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
@@ -265,7 +265,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def _prepare_form_model_with_out_rp(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
-            language="en", entity_question_flag=True, ddtype=Mock())
+            entity_question_flag=True, ddtype=Mock())
         symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=Mock())
@@ -277,16 +277,15 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def _prepare_form_model_with_gps_question(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
-            language="en", entity_question_flag=True, ddtype=Mock())
-        gps_field = GeoCodeField(name="field1_Loc", code="gps", label="Where do you stay?", ddtype=Mock(),
-            language="en")
+            entity_question_flag=True, ddtype=Mock())
+        gps_field = GeoCodeField(name="field1_Loc", code="gps", label="Where do you stay?", ddtype=Mock())
         form_model = FormModel(manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
             fields=[eid_field,gps_field], entity_type=["clinic"])
         return form_model
 
     def _prepare_summary_form_model_without_rp(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
-            language="en", entity_question_flag=False, ddtype=Mock())
+            entity_question_flag=False, ddtype=Mock())
         symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=Mock())
@@ -301,7 +300,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             date_format="dd.mm.yyyy", event_time_field_flag=True, ddtype=Mock(),
             instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
-            language="en", entity_question_flag=False, ddtype=Mock())
+            entity_question_flag=False, ddtype=Mock())
         symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=Mock())

@@ -1,8 +1,6 @@
-from mangrove.datastore.database import get_db_manager
-
-def all_dbs():
+def all_dbs(server):
     import urllib2
-    all_dbs = urllib2.urlopen("http://localhost:5984/_all_dbs").read()
+    all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
     dbs_ = (eval(all_dbs))
     result = []
 

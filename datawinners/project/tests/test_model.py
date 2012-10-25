@@ -68,10 +68,9 @@ class TestProjectModel(MangroveTestCase):
     def _create_form_model_for_project(self, project):
         ddtype = DataDictType(self.manager, name='Default String Datadict Type', slug='string_default',
             primitive_type='string')
-        question1 = TextField(name="entity_question", code="ID", label="What is associated entity",
-            language="eng", entity_question_flag=True, ddtype=ddtype)
+        question1 = TextField(name="entity_question", code="ID", label="What is associated entity", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
-            defaultValue="some default value", language="eng",
+            defaultValue="some default value",
             constraints=[TextLengthConstraint(5, 10)],
             ddtype=ddtype)
         self.form_model = FormModel(self.manager, name=self.project1.name, form_code="abc",

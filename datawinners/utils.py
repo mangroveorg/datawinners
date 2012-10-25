@@ -88,38 +88,36 @@ def convert_dmy_to_ymd(str_date):
     date = datetime.strptime(str_date, "%d-%m-%Y")
     return datetime.strftime(date, "%Y-%m-%d")
 
-def get_changed_questions(olds, news, language=None, new_language=None, subject=True):
+def get_changed_questions(olds, news, subject=True):
     i_old = 0
     deleted = []
     added = []
     changed = []
     changed_type = []
-    if new_language is None: new_language = news[0].language
-    if language is None: language = olds[0].language
     if subject:
-        if olds[-1].label.get(language) != news[-1].label.get(new_language):
-            changed.append(news[-1].label.get(new_language))
+        if olds[-1].label!= news[-1].label:
+            changed.append(news[-1].label)
         olds = olds[:-1]
         news = news[:-1]
     for i_new, new in enumerate(news):
         while True:
             try:
                 if new.name == olds[i_old].name:
-                    if new.label.get(new_language) != olds[i_old].label.get(language):
-                        changed.append(new.label.get(new_language))
+                    if new.label!= olds[i_old].label:
+                        changed.append(new.label)
                     elif new.type != olds[i_old].type:
-                        changed_type.append(dict({"label": new.label.get(new_language), "type": new.type}))
+                        changed_type.append(dict({"label": new.label, "type": new.type}))
                     i_old += 1
                     break
-                deleted.append(olds[i_old].label.get(language))
+                deleted.append(olds[i_old].label)
                 i_old += 1
             except IndexError:
-                added.append(new.label.get(new_language))
+                added.append(new.label)
                 break
 
     if i_old < len(olds) :
         for key, old in enumerate(olds[i_old:]):
-            deleted.append(old.label.get(language))
+            deleted.append(old.label)
 
     all_type_dict = dict(changed=changed, changed_type=changed_type, added=added, deleted=deleted)
     return_dict = dict()
