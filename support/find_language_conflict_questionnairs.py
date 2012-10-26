@@ -1,10 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
-from find_all_db_managers import all_dbs
+from find_all_db_managers import all_db_names
 from mangrove.datastore.database import get_db_manager
 
 db_server = "http://localhost:5984"
-managers = all_dbs(db_server)
+managers = all_db_names(db_server)
 
 map_fun_project_docs = """
 function(doc) {
@@ -62,7 +62,7 @@ logger = logging.getLogger("django")
 def find_subject():
     result = {}
 
-    managers = all_dbs()
+    managers = all_db_names()
     for manager_name in managers:
         logger.info(manager_name)
 

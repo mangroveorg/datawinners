@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
-from find_all_db_managers import all_dbs
+from find_all_db_managers import all_db_names
 from mangrove.datastore.database import get_db_manager, remove_db_manager
 
 db_server = "http://10.18.2.237:5984"
@@ -19,7 +19,7 @@ logger = logging.getLogger("django")
 
 def find_organization():
 
-    managers = all_dbs(db_server)
+    managers = all_db_names(db_server)
     for manager_name in managers:
         logger.info(manager_name)
         print manager_name

@@ -1,4 +1,4 @@
-def all_dbs(server):
+def all_db_names(server):
     import urllib2
     all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
     dbs_ = (eval(all_dbs))
