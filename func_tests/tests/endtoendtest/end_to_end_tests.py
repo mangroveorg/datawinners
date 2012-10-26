@@ -218,10 +218,9 @@ class TestApplicationEndToEnd(BaseTest):
         self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE2[ENTITY_TYPE])
         self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE1[ENTITY_TYPE])
         create_questionnaire_page = self.create_project(create_project_page)
-        project_overview_page = self.create_questionnaire(create_questionnaire_page)
+        self.create_questionnaire(create_questionnaire_page)
 
-        all_subjects_page = global_navigation.navigate_to_all_subject_page()
-        #add_subject_page = all_subjects_page.navigate_to_add_a_subject_page()
+        global_navigation.navigate_to_all_subject_page()
         add_subject_page = AddSubjectPage(self.driver)
         self.driver.go_to("http://localhost:8000/entity/subject/create/waterpoint/")
         self.add_a_subject(add_subject_page)

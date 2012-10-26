@@ -9,10 +9,7 @@ def enhance():
             opt_text = opt['text']
             opt_value = opt['val']
             if opt_value.lower() == option.lower():
-                if opt_text.has_key('en') :
-                    return opt_text['en']
-                elif opt_value.lower() == option.lower():
-                    return opt_text[opt_text.keys()[0]]
+                return opt_text
         return None
 
     SelectField.get_value_by_option = _get_value_by_option

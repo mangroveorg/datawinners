@@ -68,15 +68,15 @@ class TestUtils(unittest.TestCase):
         self.assertEqual("Untitled Project - 2", unicode(generated))
 
     def test_should_find_changed_questions(self):
-        old_questionnaire = [dict({'label': 'question1', 'language': 'en', 'name': 'quest1', 'type': 'text'}),
-                             dict({'label': 'old question1', 'language': 'en', 'name': 'old1', 'type': 'int'}),
+        old_questionnaire = [dict({'label': 'question1',  'name': 'quest1', 'type': 'text'}),
+                             dict({'label': 'old question1',  'name': 'old1', 'type': 'int'}),
             ]
 
         self.old_questionnaire = [type('Field', (object, ), question) for question in old_questionnaire]
         
-        new_questionnaire = [dict({'label': 'new question1', 'language': 'en', 'name': 'quest1', 'type': 'text'}),
-                dict({'label': 'old question1', 'language': 'en', 'name': 'old1', 'type': 'int'}),
-                dict({'label': 'new question', 'language': 'en', 'name': 'quest2', 'type': 'text'})
+        new_questionnaire = [dict({'label': 'new question1',  'name': 'quest1', 'type': 'text'}),
+                dict({'label': 'old question1',  'name': 'old1', 'type': 'int'}),
+                dict({'label': 'new question',  'name': 'quest2', 'type': 'text'})
             ]
         self.new_questionnaire = [type('Field', (object, ), question) for question in new_questionnaire]
         changed_questionnaire = utils.get_changed_questions(self.old_questionnaire, self.new_questionnaire, subject=False)

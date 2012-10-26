@@ -176,7 +176,7 @@ def remove_reporter(entity_type_list):
 def get_preview_for_field(field):
     preview =  {"description": field.name, "code": field.code, "type": field.type, "instruction": field.instruction}
     constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
-        [(option["text"]['en'], option["val"]) for option in field.options]
+        [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
     return preview
 

@@ -168,10 +168,7 @@ class SubmissionAnalyzer(object):
                 result.setdefault(each.name, {"choices": {}, "type": each.type, 'total': 0})
                 for option in each.options:
                     opt_text = option['text']
-                    if opt_text.has_key('en'):
-                        result[each.name]['choices'][opt_text['en']] = 0
-                    else:
-                        result[each.name]['choices'][opt_text[opt_text.keys()[0]]] = 0
+                    result[each.name]['choices'][opt_text] = 0
         return result
 
 

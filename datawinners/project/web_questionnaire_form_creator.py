@@ -180,7 +180,7 @@ class WebQuestionnaireFormCreator(object):
     def _create_select_field(self, field):
         if field.single_select_flag:
             for opt in field.options:
-                if opt['text']['en'] == field.value:
+                if opt['text'] == field.value:
                     field.value = opt['val']
 
             return ChoiceField(choices=self._create_choices(field), required=field.is_required(),
@@ -191,7 +191,7 @@ class WebQuestionnaireFormCreator(object):
             if field.value is not None:
                 field_labels = field.value.split(',')
                 for opt in field.options:
-                    if opt['text']['en'] in field_labels:
+                    if opt['text'] in field_labels:
                         field_values.append(opt['val'])
 
 
@@ -201,7 +201,7 @@ class WebQuestionnaireFormCreator(object):
 
     def _create_choices(self, field):
         choice_list = [('', '--None--')] if field.single_select_flag else []
-        choice_list.extend([(option['val'], option['text']['en']) for option in field.options])
+        choice_list.extend([(option['val'], option['text']) for option in field.options])
         choices = tuple(choice_list)
         return choices
 
