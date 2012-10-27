@@ -30,6 +30,7 @@ $(document).ready(function(){
         continue_handler: function(){
             var allIds = updateIds();
             var post_data = {'all_ids':allIds.join(';')}
+            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
             $.post("/account/users/delete/", post_data,
                 function (json_response) {
                     var response = $.parseJSON(json_response);

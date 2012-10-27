@@ -377,8 +377,8 @@ def delete_users(request):
         delete_datasender_users_if_any(all_ids, organization)
         if organization.in_trial_mode:
             delete_datasender_for_trial_mode(manager, all_ids, REPORTER)
-        names = ", ".join(all_names)
         action = DELETED_USERS
-        UserActivityLog().log(request, action=action, detail="%s: [%s]" % (_("Users"), ", ".join(all_names)))
+        detail = {"Users": ", ".join(all_names)}
+        UserActivityLog().log(request, action=action, detail=json.dumps(detail))
         messages.success(request, _("User(s) successfully deleted."))
     return HttpResponse(json.dumps({'success': True}))

@@ -51,7 +51,7 @@ action_list = (
 )
 
 class UserActivityLog(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     organization = models.TextField(max_length=40)
     detail = models.TextField()
     action = models.TextField(choices=action_list)
@@ -132,5 +132,9 @@ class UserActivityLog(models.Model):
         return detail_list
 
     def to_render(self):
-        return ["%s %s" % (self.user.first_name.capitalize(), self.user.last_name.capitalize()), self.translated_action(),
+        if self.user:
+            name = "%s %s" % (self.user.first_name.capitalize() , self.user.last_name.capitalize())
+        else:
+            name = "N/A"
+        return [name, self.translated_action(),
                 self.project.capitalize(), self.translated_detail(), datetime.strftime(self.log_date,  "%d.%m.%Y %R")]

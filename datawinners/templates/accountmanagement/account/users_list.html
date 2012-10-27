@@ -61,6 +61,7 @@
         {% trans "Projects" %}
       </th>
     </thead>
+    <tbody>
       {% for user in users %}
       <tr>
         <td><input type="checkbox" value="{{ user.user.id }}" name="user_ids" class="user_entry"/></td>
@@ -78,12 +79,13 @@
         </td>
       </tr>
       {% endfor %}
+    </tbody>
     </table>
   </div>
 
     <div id="delete_user_warning_dialog">
         <p class="warning_message">
-            {% trans "Your User(s) will permanently be deleted. This action cannot be undone." %}<br/><br/>
+            {% trans "Your User(s) will be permanently deleted. This action cannot be undone." %}<br/><br/>
             {% trans "Are you sure you want to delete?" %}
         </p>
         <div class="text_align_right">

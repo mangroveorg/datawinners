@@ -60,3 +60,7 @@ class ProjectOverviewPage(Page):
 
     def get_project_title(self):
         return self.driver.find(PROJECT_TITLE_LOCATOR).text.lower()
+
+    def get_questionnaire_code(self):
+        url_data_tab = self.driver.find(DATA_TAB).get_attribute("href")
+        return url_data_tab.split("/")[6]

@@ -4583,7 +4583,7 @@ msgstr ""
 msgid "User(s) successfully deleted."
 msgstr ""
 
-msgid "Your User(s) will permanently be deleted. This action cannot be undone."
+msgid "Your User(s) will be permanently deleted. This action cannot be undone."
 msgstr ""
 
 msgid "Are you sure you want to delete?"

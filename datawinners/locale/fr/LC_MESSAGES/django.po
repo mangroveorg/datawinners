@@ -4645,7 +4645,7 @@ msgstr "Veuillez sélectionner au moins un utilisateur"
 msgid "User(s) successfully deleted."
 msgstr "Utilisateur(s) supprimé(s) avec succès"
 
-msgid "Your User(s) will permanently be deleted. This action cannot be undone."
+msgid "Your User(s) will be permanently deleted. This action cannot be undone."
 msgstr "Vos/votre expéditeur(s) de données seront/sera supprimé(s) définitivement. Cette action ne peut pas être annulée."
 
 msgid "Are you sure you want to delete?"
