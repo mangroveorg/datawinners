@@ -17,7 +17,7 @@
         <tbody id='all_data_senders' class="datasenders_list">
         {% for row in all_data %}
             <tr>
-                <td><input type="checkbox" id="{{ row.short_code }}" value="{{ row.short_code }}"/></td>
+                <td><input type="checkbox" id="{{ row.short_code }}" value="{{ row.short_code }}" {% if row.is_user %}class="is_user"{% endif %}/></td>
                 {% for col in row.cols %}
                     <td>{{ col }}</td>
                 {% endfor %}
@@ -44,5 +44,5 @@
     </table>
     </div>
 {% else %}
-    <strong>"No datasenders registered"</strong><br/>
+    <strong>{% trans "No datasenders registered" %}</strong><br/>
 {% endif %}

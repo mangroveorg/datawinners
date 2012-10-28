@@ -13,6 +13,7 @@ from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.projectdatasenderstests.registered_datasenders_data import IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR
 import time
+from pages.warningdialog.warning_dialog_page import WarningDialog
 
 @attr('suit_1')
 class TestAllDataSender(unittest.TestCase):
@@ -191,3 +192,33 @@ class TestAllDataSender(unittest.TestCase):
         self.assertFalse(add_data_sender_page.unique_id_check_box_is_checked())
         self.assertTrue(add_data_sender_page.unique_id_field_is_enabled())
 
+    @attr('functional_test')
+    def test_should_warn_and_not_delete_if_all_ds_selected_are_users(self):
+        all_data_sender_page = self.page
+        all_data_sender_page.select_all_datasender_user()
+        all_data_sender_page.delete_data_sender()
+        warning = WarningDialog(self.driver)
+        message = warning.get_message()
+        warning.cancel()
+        self.assertRegexpMatches(message, ALL_DS_TO_DELETE_ARE_USER_MSG)
+
+    @attr('functional_test')
+    def test_should_warn_that_ds_with_user_credentials_will_not_be_deleted(self):
+        all_data_sender_page = self.page
+        all_data_sender_page.select_all_datasender_user()
+        all_data_sender_page.select_a_data_sender_by_mobile(fetch_(MOBILE_NUMBER, VALID_DATA))
+        all_data_sender_page.delete_data_sender()
+        warning = WarningDialog(self.driver)
+        message = warning.get_message()
+        self.assertRegexpMatches(message, NOTE_FOR_DELETE_SOME_DS_USER)
+
+    @attr('functional_test')
+    def test_should_warn_delete_ds_without_note_if_ther_is_no_ds_user(self):
+        all_data_sender_page = self.page
+        #all_data_sender_page.select_all_datasender_user()
+        all_data_sender_page.select_a_data_sender_by_mobile(fetch_(MOBILE_NUMBER, VALID_DATA))
+        all_data_sender_page.delete_data_sender()
+        warning = WarningDialog(self.driver)
+        message = warning.get_message()
+        time.sleep(10)
+        self.assertNotRegexpMatches(message, NOTE_FOR_DELETE_SOME_DS_USER)

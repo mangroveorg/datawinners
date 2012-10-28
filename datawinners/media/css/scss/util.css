@@ -307,6 +307,7 @@ span.tooltip {
 #web_user_block, #user_should_agree_terms_block, #delete_question, #edit_question,
 #delete_entity_block,
 #change_date_format_warning_message,
+#delete_all_ds_are_users_warning_dialog,
 #option_warning_message {
   padding: 20px;
   display: none; }
@@ -315,6 +316,7 @@ span.tooltip {
   #web_user_block .warning_message, #user_should_agree_terms_block .warning_message, #delete_question .warning_message, #edit_question .warning_message,
   #delete_entity_block .warning_message,
   #change_date_format_warning_message .warning_message,
+  #delete_all_ds_are_users_warning_dialog .warning_message,
   #option_warning_message .warning_message {
     margin-bottom: 30px; }
     #cancel_project_block .warning_message .learn_more_link, #activate_project_block .warning_message .learn_more_link, #questionnaire_code_change .warning_message .learn_more_link,
@@ -322,6 +324,7 @@ span.tooltip {
     #web_user_block .warning_message .learn_more_link, #user_should_agree_terms_block .warning_message .learn_more_link, #delete_question .warning_message .learn_more_link, #edit_question .warning_message .learn_more_link,
     #delete_entity_block .warning_message .learn_more_link,
     #change_date_format_warning_message .warning_message .learn_more_link,
+    #delete_all_ds_are_users_warning_dialog .warning_message .learn_more_link,
     #option_warning_message .warning_message .learn_more_link {
       color: #0070ac; }
   #cancel_project_block #confirm_delete, #cancel_project_block #confirm, #cancel_project_block #ok_button, #activate_project_block #confirm_delete, #activate_project_block #confirm, #activate_project_block #ok_button, #questionnaire_code_change #confirm_delete, #questionnaire_code_change #confirm, #questionnaire_code_change #ok_button,
@@ -337,6 +340,9 @@ span.tooltip {
   #change_date_format_warning_message #confirm_delete,
   #change_date_format_warning_message #confirm,
   #change_date_format_warning_message #ok_button,
+  #delete_all_ds_are_users_warning_dialog #confirm_delete,
+  #delete_all_ds_are_users_warning_dialog #confirm,
+  #delete_all_ds_are_users_warning_dialog #ok_button,
   #option_warning_message #confirm_delete,
   #option_warning_message #confirm,
   #option_warning_message #ok_button {
@@ -350,6 +356,8 @@ span.tooltip {
   #delete_entity_block a.cancel_link,
   #change_date_format_warning_message a.wizard_cancel_link,
   #change_date_format_warning_message a.cancel_link,
+  #delete_all_ds_are_users_warning_dialog a.wizard_cancel_link,
+  #delete_all_ds_are_users_warning_dialog a.cancel_link,
   #option_warning_message a.wizard_cancel_link,
   #option_warning_message a.cancel_link {
     color: #0070ac;

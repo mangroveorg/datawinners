@@ -53,7 +53,7 @@ class AllDataSendersPage(Page):
          """
         self.driver.find(CONFIRM_BUTTON).click()
         if wait:
-            self.driver.wait_until_modal_dismissed(7)
+            self.driver.wait_until_modal_dismissed(20)
 
     def click_cancel(self):
         """
@@ -143,3 +143,6 @@ class AllDataSendersPage(Page):
 
     def get_data_sender_email_by_mobile_number(self, data_sender_mobile):
         return self.driver.find(by_xpath(DATA_SENDER_EMAIL_TD_BY_MOBILE_XPATH % data_sender_mobile)).text
+
+    def select_all_datasender_user(self):
+        self.driver.find(CHECK_ALL_DS_USER).click()

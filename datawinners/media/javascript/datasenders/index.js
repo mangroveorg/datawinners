@@ -1,5 +1,33 @@
+DW.get_is_user = function() {
+    var users = new Array();
+    users["ids"] = [];
+    users["names"] = [];
+    $('.datasenders_list .is_user:checked').each(function() {
+        users["ids"].push($(this).val());
+        users["names"].push($(this).parent().next().html());
+    });
+
+    return users;
+}
+
+DW.uncheck_all_users = function(){
+    $(".datasenders_list .is_user").attr("checked", false);
+}
+
 $(document).ready(function() {
-    
+    var kwargs = {container: "#delete_all_ds_are_users_warning_dialog",
+        title: gettext("Warning"),
+        cancel_handler: function(){
+            $("#action").val("");
+            $("input.is_user").attr("checked", false);
+        },
+        height: 150,
+        width: 550
+    }
+
+    var delete_all_ds_are_users = new DW.warning_dialog(kwargs);
+
+
     function updateIds() {
         var allIds = [];
         $('.datasenders_list :checked').each(function() {
@@ -8,6 +36,10 @@ $(document).ready(function() {
         return allIds;
     }
 
+    function updateIdsNotUsers() {
+        DW.uncheck_all_users();
+        return updateIds();
+    }
 
     $("#all_project_block").dialog({
         autoOpen: false,
@@ -97,7 +129,23 @@ $(document).ready(function() {
             populate_dialog_box_for_web_users();
             return false;
         }else if(action=="delete"){
-            warnThenDeleteDialogBox(allIds, "reporter", this)
+            $(this).val('');
+            $("#note_for_delete_users").hide();
+            var users = DW.get_is_user();
+            if (users["names"].length){
+                var users_list_for_html = "<li>"+users["names"].join("</li><li>")+"</li>";
+                if (users["names"].length == allIds.length) { //Each DS selected is also User
+                   $(delete_all_ds_are_users.container + " .users_list").html(users_list_for_html);
+                   delete_all_ds_are_users.show_warning();
+                } else { // A mix of Simple DS and DS having user credentials
+                    $("#note_for_delete_users .users_list").html(users_list_for_html);
+                    $("#note_for_delete_users").show();
+                    allIds = updateIdsNotUsers();
+                    warnThenDeleteDialogBox(allIds, "reporter", this);
+                }
+            } else {
+                warnThenDeleteDialogBox(allIds, "reporter", this);
+            }
         }
         else if(action=="edit"){
             if(allIds.length > 1){

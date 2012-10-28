@@ -4360,9 +4360,8 @@ msgid "Data Sender(s) successfully deleted."
 msgstr "Expéditeur(s) supprimé(s) avec succès."
 
 msgid "data sender delete error text"
-msgstr "Attention Si vous supprimez des Expéditeurs de Données, ils ne pourront plus envoyer des données."
-       "Par contre, vous pouvez toujours voir les données qu’ils ont soumis avant la suppression sur les pages Données."
-       "Etes-vous sûr de vouloir supprimer ?"
+msgstr "Si vous supprimez des Expéditeurs de Données, ils ne pourront plus envoyer des données.<br/>"
+       "Par contre, vous pouvez toujours voir les données qu’ils ont soumis avant la suppression sur les pages Données.<br/>"
 
 msgid "ID is:"
 msgstr "ID est:"
@@ -4653,3 +4652,9 @@ msgstr "Etes-vous sûr de vouloir supprimer?"
 
 msgid "Deleted Users"
 msgstr "A supprimé des utilisateurs"
+
+msgid "Note, the following Data Senders will not be deleted as they are DataWinners users:"
+msgstr "Remarque, les expéditeurs suivants ne seront pas supprimés car ils sont utilisateurs de DataWinners:"
+
+msgid "You cannot delete the following Data Senders as they are DataWinners users:"
+msgstr "Vous ne pouvez pas supprimer ces expéditeurs car ils sont des utilisateurs de DataWinners:"

@@ -3,8 +3,7 @@ $(document).ready(function () {
             title: gettext("Warning !!"),
             modal: true,
             autoOpen: false,
-            height: 230,
-            width: 450,
+            width: 500,
             closeText: 'hide'
         }
     );

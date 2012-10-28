@@ -4278,9 +4278,8 @@ msgid "Data Sender(s) successfully deleted."
 msgstr ""
 
 msgid "data sender delete error text"
-msgstr "If you delete Data Senders, they can no longer send in data.\n"
-       "However, you can still view their previous data submissions on the Data pages.\n\n"
-       "Are you sure you want to delete?"
+msgstr "If you delete Data Senders, they can no longer send in data.<br/>"
+       "However, you can still view their previous data submissions on the Data pages."
 
 
 msgid "ID is:"
@@ -4590,4 +4589,10 @@ msgid "Are you sure you want to delete?"
 msgstr ""
 
 msgid "Deleted Users"
+msgstr ""
+
+msgid "Note, the following Data Senders will not be deleted as they are DataWinners users:"
+msgstr ""
+
+msgid "You cannot delete the following Data Senders as they are DataWinners users:"
 msgstr ""

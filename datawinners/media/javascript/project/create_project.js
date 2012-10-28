@@ -321,16 +321,6 @@ $(document).ready(function () {
         help_container.fadeOut();
         $("#delete_periodicity_question_warning .show_link").show();
     })
-    /*
-        if (help_container.css("display") != "none") {
-            $(this).text(gettext("Learn More"));
-            help_container.fadeOut();
-            $(DW.delete_periodicity_question_warning.container).dialog("option", "height", 210);
-        } else {
-            $(this).text(gettext("Close"));
-            $(DW.delete_periodicity_question_warning.container).dialog("option", "height", 380);
-            help_container.fadeIn();
-        }
-    });*/
+
     $("#delete_periodicity_question_warning > p.warning_message > span").hide();
 });

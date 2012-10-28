@@ -23,6 +23,7 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
     <script type="text/javascript" src="/media/javascript/project/my_datasenders_reload_tables.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
@@ -96,7 +97,7 @@
             <tbody id="tbody" class="datasenders_list">
             {% for data in all_data %}
                 <tr>
-                    <td><input id="{{ data.short_code }}" type="checkbox" value="{{ data.short_code }}"/>
+                    <td><input id="{{ data.short_code }}" type="checkbox" value="{{ data.short_code }}" {% if data.is_user %}class="is_user"{% endif %}/>
                     <td>{{ data.name }}</td>
                     <td>{{ data.short_code }}</td>
                     <td>{{ data.location }}</td>
@@ -124,15 +125,10 @@
             </tbody>
         </table>
     </div>
-    <div id="delete_entity_block">
-        <p class="warning_message">{% trans "data sender delete error text" %}</p>
-        <a href="" class="button"
-           id="ok_button">{% trans "Yes, Delete" %}</a>
-        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
-    </div>
     <input type="text" value="{{ project.id }}" class="none" id="project_id"/>
     <input type="hidden" value="{{ project.name }}" id="project_name"/>
     <div id="popup-import">
         {% include "import-datasenders.html" %}
     </div>
+    {% include "entity/delete_datasenders_warning_dialog.html" %}
 {% endblock %}

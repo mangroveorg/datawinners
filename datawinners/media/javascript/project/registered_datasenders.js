@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     var allIds = [];
 
     function updateIds() {
@@ -40,7 +41,29 @@ $(document).ready(function() {
                 );
         }
         else if(action=='delete'){
-            warnThenDeleteDialogBox(allIds, "reporter", this)
+            $(this).val('');
+            $("#note_for_delete_users").hide();
+            var users = DW.get_is_user();
+            if (users["names"].length){
+                var users_list_for_html = "<li>"+users["names"].join("</li><li>")+"</li>";
+                
+                if (users["names"].length == allIds.length) { //Each DS selected is also User
+                    
+                   $(delete_all_ds_are_users.container + " .users_list").html(users_list_for_html);
+                   delete_all_ds_are_users.show_warning();
+
+                } else {                                      // A mix of Simple DS and DS having user credentials
+                    
+                    $("#note_for_delete_users .users_list").html(users_list_for_html);
+                    $("#note_for_delete_users").show();
+                    DW.uncheck_all_users();
+                    updateIds();
+                    warnThenDeleteDialogBox(allIds, "reporter", this);
+                    
+                }
+            } else {
+                warnThenDeleteDialogBox(allIds, "reporter", this);
+            }
         }
         else if(action=='edit'){
             if(allIds.length > 1){

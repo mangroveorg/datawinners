@@ -792,7 +792,12 @@ def registered_datasenders(request, project_id=None):
             org_id = NGOUserProfile.objects.get(user=request.user).org_id
             user_profile = NGOUserProfile.objects.filter(reporter_id=sender['short_code'], org_id=org_id)
 
+            sender["is_user"] = False
             if len(user_profile) > 0:
+                datasender_user_groups = list(user_profile[0].user.groups.values_list('name', flat=True))
+                if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
+                    or "Read Only Users" in datasender_user_groups:
+                    sender["is_user"] = True
                 sender['email'] = user_profile[0].user.email
                 sender['devices'] = "SMS,Web,Smartphone"
             else:
