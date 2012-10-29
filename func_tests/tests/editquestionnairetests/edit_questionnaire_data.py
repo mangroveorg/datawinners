@@ -63,7 +63,7 @@ LIGHT_BOX_DATA = {TITLE: "Warning !!",
 VALID_SMS = {SENDER: "919049008976",
                 RECEIVER: '919880734937',
                 SMS: "cli005 cid001 mino 90 25.12.2010 a d -18.1324,27.6547",
-                SUCCESS_MESSAGE: u"Thank you Ashwini. We received : EID: cid001 NA: mino FA: 90 RD: 25.12.2010 BG: O+ SY: Memory loss GPS: -18.1324, 27.6547"}
+                SUCCESS_MESSAGE: u"Thank you ReRegistered. We received : EID: cid001 NA: mino FA: 90 RD: 25.12.2010 BG: O+ SY: Memory loss GPS: -18.1324, 27.6547"}
 
 DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING = u'If you delete this question, any previously collected data will be lost.\nDo you want to delete this question?'
 SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING = u'If you modify this questionnaire, any previously collected data will be lost.\n\nDo you want to modify this questionnaire?'
