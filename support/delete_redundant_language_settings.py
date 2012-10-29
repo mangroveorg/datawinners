@@ -3,7 +3,7 @@ import datetime
 from mangrove.datastore.database import DatabaseManager, get_db_manager, remove_db_manager
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.documents import FormModelDocument
-from find_all_db_managers import all_db_names
+from support.find_all_db_managers import all_db_names
 
 logger = logging.getLogger("django")
 db_server = "http://localhost:5984"
@@ -66,8 +66,7 @@ def delete_language_setting_for_form_models(dbm):
             print "*************************************************"
 
 def delete_redundant_language_setting_from_form():
-#    dbs = all_db_names(db_server)
-    dbs = ['hni_tasc_qyh130001', 'hni_datawinners_lxp606151']
+    dbs = all_db_names(db_server)
 
     for db_name in dbs:
         try:
