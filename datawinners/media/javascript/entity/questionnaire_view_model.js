@@ -177,9 +177,11 @@ var questionnaireViewModel =
             return;
         }
         var type = questionnaireViewModel.selectedQuestion().type();
+        var choices = questionnaireViewModel.selectedQuestion().choices();
         DW.option_warning_dialog.show_warning(gettext("You have changed the Answer Type.<br>If you have previously collected data, it may be rendered incorrect.<br><br>Are you sure you want to continue?"));
         DW.option_warning_dialog.cancelEventHandler = function(){
             questionnaireViewModel.selectedQuestion().type(type);
+            questionnaireViewModel.selectedQuestion().choices(choices);
         };
     },
     showLengthLimiter: function() {
