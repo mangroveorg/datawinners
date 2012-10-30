@@ -380,3 +380,31 @@ DW.questionnaire_has_submission = function(){
 }
 
 
+DW.init_question_constraints = function() {
+    questionnaireViewModel.selectedQuestion().range_min("");
+    questionnaireViewModel.selectedQuestion().range_max("");
+    questionnaireViewModel.selectedQuestion().min_length(1);
+    questionnaireViewModel.selectedQuestion().max_length("");
+    questionnaireViewModel.selectedQuestion().length_limiter("length_unlimited");
+    questionnaireViewModel.selectedQuestion().choices([
+        {text:gettext("default"), val:'a'}
+    ]);
+    $('.error_arrow').remove();
+    $('input[type=text]').removeClass('error');
+}
+
+DW.change_question_type_for_selected_question = function(new_type) {
+    if (new_type == "choice") {
+        questionnaireViewModel.selectedQuestion().isAChoiceTypeQuestion("choice");
+    } else {
+        questionnaireViewModel.selectedQuestion().type(new_type);
+    }
+    questionnaireViewModel.selectedQuestion.valueHasMutated();
+    questionnaireViewModel.questions.valueHasMutated();
+}
+DW.check_question_type_according_radio_button = function(type) {
+    if (type.indexOf('select') >= 0){
+        type = "choice";
+    }
+    $("[name='type'][value='"+type+"']").attr('checked', true);
+}

@@ -194,18 +194,7 @@ $(document).ready(function() {
         submit_questionnaire();
     })
 
-    $('input[name=type]:radio').change(
-            function() {
-                questionnaireViewModel.selectedQuestion().range_min("");
-                questionnaireViewModel.selectedQuestion().range_max("");
-                questionnaireViewModel.selectedQuestion().min_length(1);
-                questionnaireViewModel.selectedQuestion().max_length("");
-                questionnaireViewModel.selectedQuestion().length_limiter("length_unlimited");
-                questionnaireViewModel.selectedQuestion().choices([
-                    {text:gettext("default"), val:'a'}
-                ]);
-            }
-    );
+    
     $('input[name=text_length]:radio').change(
             function() {
                 questionnaireViewModel.selectedQuestion().max_length("");
