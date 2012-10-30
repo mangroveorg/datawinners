@@ -3,7 +3,7 @@ import datetime
 from mangrove.datastore.database import DatabaseManager, get_db_manager, remove_db_manager
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.documents import FormModelDocument
-from support.find_all_db_managers import all_db_names
+from find_all_db_managers import all_db_names
 
 logger = logging.getLogger("django")
 db_server = "http://localhost:5984"

@@ -3,18 +3,11 @@ from glob import iglob
 from mangrove.transport.submissions import get_submissions
 import os
 from mangrove.datastore.database import get_db_manager, remove_db_manager
+from support.find_all_db_managers import all_db_names
 
 SERVER = "http://localhost:5984"
 
 output = open('migration.log', 'w')
-
-def get_all_dbs():
-    import urllib2
-
-    all_dbs = urllib2.urlopen(SERVER + "/_all_dbs").read()
-    dbs = (eval(all_dbs))
-    document_stores = filter(lambda x: x.startswith('hni_'), dbs)
-    return document_stores
 
 def find_subject_short_code(dbm):
     rows = dbm.load_all_rows_in_view("inconsistent_subject_short_code")
@@ -24,12 +17,14 @@ def find_subject_short_code(dbm):
     else:
         return []
 
+
 def find_entity_question_code(dbm):
     rows = dbm.load_all_rows_in_view("form_code_entity_question_code_mapping")
     if rows:
         return [row.key for row in rows]
     else:
         return []
+
 
 def sync_views(dbm):
     for fn in iglob(os.path.join(os.path.dirname(__file__), 'views', '*.js')):
@@ -59,10 +54,12 @@ def correct_submissions(dbm, subject_short_codes_dict, entity_question_codes_dic
             if short_code_in_submission in subject_short_codes_dict:
                 output.writelines("\nSubmission before migration:\n")
                 output.writelines(repr(submission.values))
-                submission.values[entity_question_code_in_submission] = subject_short_codes_dict[short_code_in_submission]
+                submission.values[entity_question_code_in_submission] = subject_short_codes_dict[
+                                                                        short_code_in_submission]
                 submission.save()
                 output.writelines("\nSubmission after migration:\n")
                 output.writelines(repr(submission.values))
+
 
 def migrate(dbs):
     visited_dbs, success_dbs, failed_dbs = [], [], []
@@ -91,7 +88,7 @@ def migrate(dbs):
     return visited_dbs, success_dbs, failed_dbs
 
 if __name__ == "__main__":
-    dbs = get_all_dbs()
+    dbs = all_db_names(SERVER)
     visited_dbs, success_dbs, failed_dbs = migrate(dbs)
     print '%s database(s) will be migrated:' % len(dbs)
     print dbs
