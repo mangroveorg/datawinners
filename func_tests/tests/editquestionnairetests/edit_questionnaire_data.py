@@ -73,3 +73,5 @@ VALID_SMS_SUBJECT_DATA = {SENDER: "919049008976",
                 SMS: "sub prenom anarana harbin 12,19 033143333 reg001",
                 SUCCESS_MESSAGE: u"Registration successful. ID is: reg001. q1: prenom q2: anarana q3: harbin q4: 12.0, 19.0 q5: 033143333 q6: reg001"}
 SUBJECT_TYPE = "subject type"
+
+CHANGE_QUESTION_TYPE_MSG = u'You have changed the Answer Type.\nIf you have previously collected data, it may be rendered incorrect.\n\nAre you sure you want to continue?'

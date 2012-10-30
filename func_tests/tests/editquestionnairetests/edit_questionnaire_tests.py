@@ -11,6 +11,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.editquestionnairetests.edit_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
+from framework.utils.common_utils import by_css
 import time
 
 @attr('suit_2')
@@ -58,6 +59,7 @@ class TestEditQuestionnaire(BaseTest):
         self.assertEqual(questions[4], create_questionnaire_page.get_list_of_choices_type_question())
         first_tab = self.driver.current_window_handle
         create_questionnaire_page.delete_question(7)
+        time.sleep(20)
         self.driver.execute_script("window.open('%s')" % DATA_WINNER_SMS_TESTER_PAGE)
         new_tab = self.driver.window_handles[1]
         self.driver.switch_to_window(new_tab)
@@ -68,8 +70,10 @@ class TestEditQuestionnaire(BaseTest):
         self.driver.switch_to_window(first_tab)
         create_questionnaire_page.save_and_create_project()
         time.sleep(2)
-        create_questionnaire_page.delete_question(5)
         warning_dialog = WarningDialog(self.driver)
+        self.assertEqual(SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING, warning_dialog.get_message())
+        warning_dialog.cancel()
+        create_questionnaire_page.delete_question(5)
         time.sleep(2)
         self.assertEqual(DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING, warning_dialog.get_message())
         warning_dialog.cancel()
@@ -83,7 +87,7 @@ class TestEditQuestionnaire(BaseTest):
         self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
         self.assertEqual(sms_questionnaire_preview_page.get_project_name(), "clinic test project")
         self.assertIsNotNone(sms_questionnaire_preview_page.get_sms_instruction())
-        
+
         sms_questionnaire_preview_page.close_preview()
         self.assertFalse(sms_questionnaire_preview_page.sms_questionnaire_exist())
 
@@ -93,7 +97,7 @@ class TestEditQuestionnaire(BaseTest):
         self.prerequisites_of_questionnaire_tab()
         preview_navigation_page = PreviewNavigationPage(self.driver)
         web_questionnaire_preview_page = preview_navigation_page.web_questionnaire_preview()
-        
+
         self.assertIsNotNone(web_questionnaire_preview_page.get_web_instruction())
 
     @attr('functional_test')
@@ -173,4 +177,32 @@ class TestEditQuestionnaire(BaseTest):
         warning_dialog.cancel()
         edit_registration_form.delete_question(4)
         self.assertEqual(DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING, warning_dialog.get_message())
-        
+
+
+    @attr("functional_test")
+    def test_should_warn_when_changing_delete_questionnaire(self):
+        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
+        create_questionnaire_page.change_question_type_to(2, "date")
+        warning_dialog = WarningDialog(self.driver)
+        message = warning_dialog.get_message()
+        self.assertEqual(message, CHANGE_QUESTION_TYPE_MSG)
+
+    @attr("functional_test")
+    def test_should_get_the_type_back_when_canceling_the_type_change(self):
+        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
+        create_questionnaire_page.change_question_type_to(2, "date")
+        cancel_locator = by_css("#option_warning_message_cancel")
+        warning_dialog = WarningDialog(self.driver, cancel_link=cancel_locator)
+        warning_dialog.cancel()
+        type = create_questionnaire_page.get_question_type(2)
+        self.assertEqual(type, "text")
+
+    @attr("functional_test")
+    def test_should_change_the_question_type_when_confirming_the_type_change(self):
+        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
+        create_questionnaire_page.change_question_type_to(2, "date")
+        confirm_locator = by_css("#option_warning_message_continue")
+        warning_dialog = WarningDialog(self.driver, confirm_link=confirm_locator)
+        warning_dialog.confirm()
+        type = create_questionnaire_page.get_question_type(2)
+        self.assertEqual(type, "date")

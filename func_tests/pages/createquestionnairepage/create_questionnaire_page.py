@@ -435,3 +435,15 @@ class CreateQuestionnairePage(CreateProjectPage):
         question_locator = QUESTION_DELETE_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
             index) + ")" + QUESTION_DELETE_LINK_CSS_LOCATOR_PART2
         self.driver.find(by_css(question_locator)).click()
+
+    def change_question_type_to(self, index, type="text"):
+        question_locator = QUESTION_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
+            index) + ")" + QUESTION_LINK_CSS_LOCATOR_PART2
+        self.driver.find(by_css(question_locator)).click()
+        self.driver.find(by_css(QUESTION_TYPE_CSS_LOCATOR % str(type))).click()
+
+    def get_question_type(self, index):
+        question_locator = QUESTION_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
+            index) + ")" + QUESTION_LINK_CSS_LOCATOR_PART2
+        self.driver.find(by_css(question_locator)).click()
+        return self.driver.find(CURRENT_QUESTION_TYPE_LOCATOR).get_attribute("value")

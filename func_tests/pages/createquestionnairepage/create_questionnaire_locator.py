@@ -68,3 +68,5 @@ SAVE_CHANGES_BTN = by_css("input#submit-button")
 SUCCESS_MESSAGE_LABEL = by_xpath(
     "//div[@id='message-label']/label[@class='success_message' and not(contains(@style,'none'))]")
 PERIOD_QUESTION_TIP_CSS_LOCATOR = "#periode_green_message"
+QUESTION_TYPE_CSS_LOCATOR = "[name=type][value='%s']"
+CURRENT_QUESTION_TYPE_LOCATOR = by_css("input[name='type']:checked")
