@@ -41,10 +41,7 @@ DW.question = function (question) {
             min:"",
             max:""
         },
-        label:{
-            en:"Question",
-            fr:"Question"
-        },
+        label:"Question",
         date_format:"mm.yyyy",
         instruction:gettext("Answer must be a text"),
         newly_added_question:false,

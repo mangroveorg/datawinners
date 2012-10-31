@@ -215,7 +215,6 @@ class TestAllDataSender(unittest.TestCase):
     @attr('functional_test')
     def test_should_warn_delete_ds_without_note_if_ther_is_no_ds_user(self):
         all_data_sender_page = self.page
-        #all_data_sender_page.select_all_datasender_user()
         all_data_sender_page.select_a_data_sender_by_mobile(fetch_(MOBILE_NUMBER, VALID_DATA))
         all_data_sender_page.delete_data_sender()
         warning = WarningDialog(self.driver)
