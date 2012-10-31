@@ -24,6 +24,7 @@ DEFAULT_DATE_FORMAT = 'dd.MM.yyyy'
 field_enhancer.enhance()
 
 NOT_AVAILABLE = "N/A"
+NOT_AVAILABLE_DS = "Deleted Data Sender"
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
@@ -105,11 +106,11 @@ def get_org_id_by_user(user):
 
 def get_datasender_by_mobile(dbm, mobile):
     rows = dbm.load_all_rows_in_view( "datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}] )
-    return rows[0].key[1:] if len(rows) > 0 else [NOT_AVAILABLE, None]
+    return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
 
 def get_data_sender(dbm, user, submission):
     submission_source = submission.source
-    datasender = (NOT_AVAILABLE, None, submission_source)
+    datasender = (ugettext(NOT_AVAILABLE_DS), None, submission_source)
 
     if submission.channel == 'sms':
         datasender = tuple(get_datasender_by_mobile( dbm, submission_source ) + [submission_source])

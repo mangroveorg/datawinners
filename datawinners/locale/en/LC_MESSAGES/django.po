@@ -4596,3 +4596,9 @@ msgstr ""
 
 msgid "You cannot delete the following Data Senders as they are DataWinners users:"
 msgstr ""
+
+msgid "Deleted User"
+msgstr ""
+
+msgid "Deleted Data Sender"
+msgstr ""

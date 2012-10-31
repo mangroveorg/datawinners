@@ -104,7 +104,7 @@ class TestAllUsers(unittest.TestCase):
         all_data_page = self.global_navigation.navigate_to_all_data_page()
         data_analysis_page = all_data_page.navigate_to_data_analysis_page(project_name)
         data_sender_name = data_analysis_page.get_all_data_records_by_column(2)
-        self.assertEqual(data_sender_name[0], N_A_TEXT)
+        self.assertEqual(data_sender_name[0], NA_DATASENDER_TEXT)
 
         #check the username for the action done by the new user
         self.driver.go_to(DATA_WINNER_USER_ACTIVITY_LOG_PAGE)
@@ -112,7 +112,7 @@ class TestAllUsers(unittest.TestCase):
         username = activity_log_page.get_data_on_cell(2, 1)
         project_name_on_log_page = activity_log_page.get_data_on_cell(2, 4)
         self.assertEqual(project_name_on_log_page, project_name)
-        self.assertEqual(username, N_A_TEXT)
+        self.assertEqual(username, NA_USER_TEXT)
         
 
 

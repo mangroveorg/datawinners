@@ -59,7 +59,7 @@ class TestEditQuestionnaire(BaseTest):
         self.assertEqual(questions[4], create_questionnaire_page.get_list_of_choices_type_question())
         first_tab = self.driver.current_window_handle
         create_questionnaire_page.delete_question(7)
-        time.sleep(20)
+        time.sleep(2)
         self.driver.execute_script("window.open('%s')" % DATA_WINNER_SMS_TESTER_PAGE)
         new_tab = self.driver.window_handles[1]
         self.driver.switch_to_window(new_tab)

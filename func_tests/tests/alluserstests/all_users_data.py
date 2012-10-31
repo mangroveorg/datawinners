@@ -10,3 +10,5 @@ ADMIN_CANT_BE_DELETED = u"Your organization's account Administrator Tester Pune 
 SMS_SUBMISSION_SUCCESS_MSG = u'Thank you Mino Rakoto. We received'
 SUCCESSFULLY_DELETED_USER_MSG = u"User(s) successfully deleted."
 N_A_TEXT = "N/A"
+NA_DATASENDER_TEXT = "Deleted Data Sender"
+NA_USER_TEXT = "Deleted User"

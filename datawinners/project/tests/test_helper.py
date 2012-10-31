@@ -11,7 +11,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesN
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
 from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
-from project.helper import get_data_sender, NOT_AVAILABLE
+from project.helper import get_data_sender, NOT_AVAILABLE_DS
 from project.tests.submission_log_data import  SUBMISSIONS
 
 
@@ -299,7 +299,7 @@ class TestPreviewCreator(unittest.TestCase):
             with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
                 load_all_rows_in_view.return_value = []
                 data_sender = get_data_sender( dbm, user, submission )
-                self.assertEqual((NOT_AVAILABLE, None, '123321'), data_sender)
+                self.assertEqual((NOT_AVAILABLE_DS, None, '123321'), data_sender)
 
     def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_web(self):
         dbm = Mock(spec=DatabaseManager)
@@ -310,7 +310,7 @@ class TestPreviewCreator(unittest.TestCase):
         with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
             get_org_id_by_user.return_value = "123"
             data_sender = get_data_sender( dbm, user, submission )
-            self.assertEqual((NOT_AVAILABLE, None, '123321'), data_sender)
+            self.assertEqual((NOT_AVAILABLE_DS, None, '123321'), data_sender)
 
     def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_smart_phone(self):
         dbm = Mock(spec=DatabaseManager)
@@ -322,5 +322,5 @@ class TestPreviewCreator(unittest.TestCase):
         with patch("project.helper.get_org_id_by_user") as get_org_id_by_user:
             get_org_id_by_user.return_value = "123"
             data_sender = get_data_sender( dbm, user, submission )
-            self.assertEqual((NOT_AVAILABLE, None, '123321'), data_sender)
+            self.assertEqual((NOT_AVAILABLE_DS, None, '123321'), data_sender)
 

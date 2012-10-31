@@ -4658,3 +4658,9 @@ msgstr "Remarque, les expéditeurs suivants ne seront pas supprimés car ils son
 
 msgid "You cannot delete the following Data Senders as they are DataWinners users:"
 msgstr "Vous ne pouvez pas supprimer ces expéditeurs car ils sont des utilisateurs de DataWinners:"
+
+msgid "Deleted User"
+msgstr "Utilisateur supprimé"
+
+msgid "Deleted Data Sender"
+msgstr "Expéditeur supprimé"

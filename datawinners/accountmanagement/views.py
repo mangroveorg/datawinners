@@ -33,6 +33,7 @@ from datawinners.entity.helper import send_email_to_data_sender, delete_datasend
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import Request, TransportInfo
+from django.http import Http404
 
 logger = logging.getLogger("django")
 def is_admin(f):
@@ -360,12 +361,16 @@ def _send_upgrade_email(user, language):
 @session_not_expired
 @is_not_expired
 def delete_users(request):
+    if request.method == 'GET':
+        raise Http404
+
     django_ids = request.POST.get("all_ids").split(";")
     all_ids = NGOUserProfile.objects.filter(user__in=django_ids).values_list('reporter_id', flat=True)
     manager = get_database_manager(request.user)
     organization = get_organization(request)
     transport_info = TransportInfo("web", request.user.username, "")
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
+    
     if ngo_admin_user_profile.reporter_id in all_ids:
         admin_full_name = ngo_admin_user_profile.user.first_name + ' ' + ngo_admin_user_profile.user.last_name
         messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
@@ -373,12 +378,14 @@ def delete_users(request):
     else:
         delete_entity_instance(manager, all_ids, REPORTER, transport_info)
         all_names = User.objects.filter(id__in=django_ids).extra(select={'full_name': "first_name||' '||last_name "} ).values_list('full_name', flat=True)
+        detail = {"Users": ", ".join(all_names)}
         delete_datasender_from_project(manager, all_ids)
         delete_datasender_users_if_any(all_ids, organization)
+
         if organization.in_trial_mode:
             delete_datasender_for_trial_mode(manager, all_ids, REPORTER)
         action = DELETED_USERS
-        detail = {"Users": ", ".join(all_names)}
         UserActivityLog().log(request, action=action, detail=json.dumps(detail))
         messages.success(request, _("User(s) successfully deleted."))
+        
     return HttpResponse(json.dumps({'success': True}))
