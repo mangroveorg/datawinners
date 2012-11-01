@@ -246,7 +246,7 @@ class TestApplicationEndToEnd(BaseTest):
 
         all_projects_page = global_navigation.navigate_to_view_all_project_page()
         project_name = fetch_(PROJECT_NAME, from_(VALID_DATA_FOR_PROJECT))
-        activate_project_light_box = all_projects_page.click_activate_project_link(project_name)
+        activate_project_light_box = all_projects_page.open_activate_project_light_box(project_name)
         self.assertEqual(activate_project_light_box.get_title_of_light_box(), "Activate this Project?")
         project_overview_page = activate_project_light_box.activate_project()
         self.assertEqual(project_overview_page.get_status_of_the_project(), "Active")
