@@ -36,6 +36,7 @@ LOG_FOLDER = '/home/mangrover/'
 LOG_FILE_NAME = "datawinners.log"
 REMINDER_LOG_FILE_NAME = "datawinners_reminders.log"
 XFORM_LOG_FILE_NAME = "datawinners_xform.log"
+PERFORMANCE_LOG_FILE_NAME = "datawinners-performance.log"
 
 LOGGING = {
     'version': 1,
@@ -63,11 +64,22 @@ LOGGING = {
             'filename': os.path.join( LOG_FOLDER, XFORM_LOG_FILE_NAME),
             'mode': 'a', #append+create
         },
+        'performance-log-file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': os.path.join( LOG_FOLDER, PERFORMANCE_LOG_FILE_NAME),
+            'mode': 'a', #append+create
+        },
     },
     'loggers': {
         'django': {
             'level':'DEBUG',
             'handlers':['log-file'],
+            'propagate': True,
+        },
+        'performance': {
+            'level':'INFO',
+            'handlers':['performance-log-file'],
             'propagate': True,
         },
         'datawinners.reminders': {

@@ -71,6 +71,7 @@ from project.wizard_view import get_max_code
 from utils import get_changed_questions
 
 logger = logging.getLogger("django")
+performance_logger = logging.getLogger("performance")
 
 END_OF_DAY = " 23:59:59"
 START_OF_DAY = " 00:00:00"
@@ -417,9 +418,10 @@ def project_data(request, project_id=None, questionnaire_code=None):
     is_summary_report = form_model.entity_defaults_to_reporter()
     filters = build_filters(request.POST, form_model)
 
+    starttime = datetime.datetime.now()
+
     analyzer = SubmissionAnalyzer(form_model, manager, request, filters,request.POST.get('keyword', ''))
     raw_field_values = analyzer.get_raw_values()
-
     field_values = get_formatted_values_for_list(raw_field_values)
 
     header_list, header_type_list = analyzer.get_headers()
@@ -427,6 +429,11 @@ def project_data(request, project_id=None, questionnaire_code=None):
     datasender_list = analyzer.get_data_senders()
     statistics_result = analyzer.get_analysis_statistics()
     default_sort_order = analyzer.get_default_sort_order()
+
+    endtime = datetime.datetime.now()
+    interval = (endtime - starttime).microseconds
+    performance_logger.info("PERFORMANCE LOGGING: get project data for user %s : data size %d, time used %d milliseconds." % (request.user, len(raw_field_values), interval/1000))
+
     if request.method == "GET":
         rp_field = form_model.event_time_question
         in_trial_mode = _in_trial_mode(request)
