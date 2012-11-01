@@ -4,8 +4,8 @@
 
 {% load dw_tabs %}
 {% block navigation %}
-{% activetab "tab_nav" "users" %}
-{{ block.super }}
+    {% activetab "tab_nav" "users" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_js %}
@@ -15,79 +15,75 @@
 {% endblock %}
 
 {% block content %}
-<div class="text_align_left margin_bottom_20">
-  <h3>{% trans "Users" %}</h3>
-</div>
-
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
-<div class="margin_bottom_20 border_top_bottom padding_top_10 padding_bottom_10">
-    <div class="float_left">
-        {% trans "Actions" %}:
-        <select id="action">
-            <option value="" selected="selected">---</option>
-            <option value="delete">{% trans "Delete" %}</option>
-        </select>
+    <div class="text_align_left margin_bottom_20">
+        <h3>{% trans "Users" %}</h3>
     </div>
-    <div class="float_right">
-      <a href= "/account/user/new/">{% trans "Add an User" %}</a>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="margin_bottom_20 border_top_bottom padding_top_10 padding_bottom_10">
+        {% include "action.html" %}
+        <div class="float_right">
+            <a href="/account/user/new/">{% trans "Add an User" %}</a>
+        </div>
+        <br/>
+
+        <div class="clear"></div>
+        <div style="clear: both;" id="error" class="message-box">{% trans "Please select atleast 1 user" %}</div>
     </div>
-    <br/>
-    <div class="clear"></div>
-    <div style="clear: both;" id="error" class="message-box">{% trans "Please select atleast 1 user" %}</div>
-</div>
 
-
-<div id="users_list">
-    <table  class="styled_table">
-    <thead>
-      <th><input type="checkbox" id="check_all_users"/></th>
-      <th>
-        {% trans "First Name" %}
-      </th>
-      <th>
-        {% trans "Last Name" %}
-      </th>
-      <th>
-        {% trans "Email" %}
-      </th>
-      <th>
-        {% trans "Projects" %}
-      </th>
-    </thead>
-    <tbody>
-      {% for user in users %}
-      <tr>
-        <td><input type="checkbox" value="{{ user.user.id }}" name="user_ids" class="user_entry"/></td>
-        <td>
-          {{ user.user.first_name }}
-        </td>
-        <td>
-          {{ user.user.last_name }}
-        </td>
-        <td class="email">
-          {{ user.user.username }}
-        </td>
-        <td>
-          All
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  </div>
+    <div id="users_list">
+        <table class="styled_table">
+            <thead>
+            <th><input type="checkbox" id="check_all_users"/></th>
+            <th>
+                {% trans "First Name" %}
+            </th>
+            <th>
+                {% trans "Last Name" %}
+            </th>
+            <th>
+                {% trans "Email" %}
+            </th>
+            <th>
+                {% trans "Projects" %}
+            </th>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><input type="checkbox" value="{{ user.user.id }}" name="user_ids" class="user_entry"/></td>
+                    <td>
+                        {{ user.user.first_name }}
+                    </td>
+                    <td>
+                        {{ user.user.last_name }}
+                    </td>
+                    <td class="email">
+                        {{ user.user.username }}
+                    </td>
+                    <td>
+                        All
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include "action.html" %}
 
     <div id="delete_user_warning_dialog">
         <p class="warning_message">
             {% trans "Your User(s) will be permanently deleted. This action cannot be undone." %}<br/><br/>
             {% trans "Are you sure you want to delete?" %}
         </p>
+
         <div class="text_align_right">
             <a class="button_blue no_button">{% trans "No" %}</a>
             <a class="button_blue yes_button">{% trans "Yes" %}</a>

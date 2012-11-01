@@ -4,18 +4,20 @@ $(document).ready(function(){
         $(".user_entry").attr("checked", $(this).attr("checked"));
     });
 
-    $("#action").bind("change", function(){
-        var ids = updateIds();
-        $("#error").css("display","none");
-        var action = $(this).val();
-        if (ids.length == 0) {
-            $("#error").css("display","block");
-            $(this).val("");
-            return;
-        }
-        if (action == "delete") {
-            $("#delete_user_warning_dialog").dialog("open");
-        }
+    $(".action").each(function(i, action) {
+        $(action).bind("change", function(){
+            var ids = updateIds();
+            $("#error").css("display","none");
+            var action = $(this).val();
+            if (ids.length == 0) {
+                $("#error").css("display","block");
+                $(this).val("");
+                return;
+            }
+            if (action == "delete") {
+                $("#delete_user_warning_dialog").dialog("open");
+            }
+        });
     });
 
     function updateIds() {
