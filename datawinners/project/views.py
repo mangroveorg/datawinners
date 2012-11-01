@@ -62,6 +62,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
+from project.analysis_result import AnalysisResult
 from project.filters import ReportPeriodFilter, DataSenderFilter, SubmissionDateFilter, KeywordFilter
 from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list
 from project.tests.test_filter import SubjectFilter
@@ -408,60 +409,77 @@ def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
 
 
+def composite_analysis_result(analysis_result):
+    analysis_result.analyze_meta_info()
+
+    return {"datasender_list": analysis_result.datasender_list,
+                       "default_sort_order": repr(encode_json(analysis_result.default_sort_order)),
+                       "header_list": analysis_result.header_list,
+                       "header_type_list": repr(encode_json(analysis_result.header_type_list)),
+                       "subject_list": analysis_result.subject_list,
+                       "data_list": repr(encode_json(analysis_result.field_values)),
+                       "statistics_result": repr(encode_json(analysis_result.statistics_result))}
+
+
+def build_analysis_result(request, manager, form_model, filters):
+    analyzer = SubmissionAnalyzer(form_model, manager, request, filters, request.POST.get('keyword', ''))
+    analysis_result = AnalysisResult(analyzer)
+    analysis_result.analyze_statistic_results()
+    return analysis_result
+
+def get_analysis_response(request, project_id, questionnaire_code):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    filters = build_filters(request.POST, form_model)
+
+    starttime = datetime.datetime.now()
+
+    analysis_result = build_analysis_result(request, manager, form_model, filters)
+
+    if request.method == 'GET':
+        project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
+        analysis_result_dict = composite_analysis_result(analysis_result)
+        analysis_result_dict.update(project_infos)
+
+        endtime = datetime.datetime.now()
+        interval = (endtime - starttime).microseconds
+        performance_logger.info("PERFORMANCE LOGGING: get project data for user %s : data size %d, time used %d milliseconds." % (request.user, len(analysis_result.field_values), interval/1000))
+
+        return analysis_result_dict
+
+    elif request.method == 'POST':
+        return encode_json({'data_list': analysis_result.field_values,"statistics_result": analysis_result.statistics_result})
+
+def project_info(request, manager, form_model, project_id, questionnaire_code):
+    project = Project.load(manager.database, project_id)
+    is_summary_report = form_model.entity_defaults_to_reporter()
+    rp_field = form_model.event_time_question
+    in_trial_mode = _in_trial_mode(request)
+    has_rp = rp_field is not None
+    is_monthly_reporting = rp_field.date_format.find('dd') < 0 if has_rp else False
+
+    return {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
+                    "is_monthly_reporting": is_monthly_reporting, "entity_type": form_model.entity_type[0].capitalize(),
+                    'project_links': (make_project_links(project, questionnaire_code)), 'project': project,
+                    'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
+                    'reporting_period_question_text': rp_field.label if has_rp else None,
+                    'has_reporting_period': has_rp,
+                    'is_summary_report': is_summary_report}
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
 @is_not_expired
 def project_data(request, project_id=None, questionnaire_code=None):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-    is_summary_report = form_model.entity_defaults_to_reporter()
-    filters = build_filters(request.POST, form_model)
-
-    starttime = datetime.datetime.now()
-
-    analyzer = SubmissionAnalyzer(form_model, manager, request, filters,request.POST.get('keyword', ''))
-    raw_field_values = analyzer.get_raw_values()
-    field_values = get_formatted_values_for_list(raw_field_values)
-
-    header_list, header_type_list = analyzer.get_headers()
-    subject_list = analyzer.get_subjects()
-    datasender_list = analyzer.get_data_senders()
-    statistics_result = analyzer.get_analysis_statistics()
-    default_sort_order = analyzer.get_default_sort_order()
-
-    endtime = datetime.datetime.now()
-    interval = (endtime - starttime).microseconds
-    performance_logger.info("PERFORMANCE LOGGING: get project data for user %s : data size %d, time used %d milliseconds." % (request.user, len(raw_field_values), interval/1000))
+    analysis_result = get_analysis_response(request, project_id, questionnaire_code)
 
     if request.method == "GET":
-        rp_field = form_model.event_time_question
-        in_trial_mode = _in_trial_mode(request)
-        project = Project.load(manager.database, project_id)
-        has_rp = rp_field is not None
-        is_monthly_reporting = rp_field.date_format.find('dd') < 0 if has_rp else False
-
         return render_to_response('project/data_analysis.html',
-                {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
-                 "is_monthly_reporting": is_monthly_reporting,
-                 "entity_type": form_model.entity_type[0].capitalize(),
-                 "data_list": repr(encode_json(field_values)),
-                 "subject_list": subject_list,
-                 "datasender_list": datasender_list,
-                 "header_list": header_list,
-                 "default_sort_order":repr(encode_json(default_sort_order)),
-                 "header_type_list": repr(encode_json(header_type_list)),
-                 'project_links': (make_project_links(project, questionnaire_code)),
-                 'project': project,
-                 'questionnaire_code': questionnaire_code,
-                 'in_trial_mode': in_trial_mode,
-                 'reporting_period_question_text': rp_field.label if has_rp else None,
-                 'has_reporting_period': has_rp,
-                 'is_summary_report':is_summary_report,
-                 "statistics_result": repr(encode_json(statistics_result))},
-            context_instance=RequestContext(request))
-    if request.method == "POST":
-        return HttpResponse(encode_json({'data_list': field_values,"statistics_result": statistics_result}))
+                analysis_result,
+                context_instance=RequestContext(request))
+
+    elif request.method == "POST":
+        return HttpResponse(analysis_result)
 
 @login_required(login_url='/login')
 @session_not_expired
