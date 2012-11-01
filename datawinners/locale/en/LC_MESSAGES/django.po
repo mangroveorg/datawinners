@@ -4576,7 +4576,7 @@ msgstr ""
 msgid "Add an User"
 msgstr ""
 
-msgid "Please select atleast 1 user"
+msgid "Please select at least 1 user"
 msgstr ""
 
 msgid "User(s) successfully deleted."
