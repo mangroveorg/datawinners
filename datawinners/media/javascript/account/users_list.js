@@ -1,16 +1,16 @@
-$(document).ready(function(){
-    $('#error').css("display","none");
-    $("#check_all_users").bind("click", function(){
+$(document).ready(function () {
+    $('#error').css("display", "none");
+    $("#check_all_users").bind("click", function () {
         $(".user_entry").attr("checked", $(this).attr("checked"));
     });
 
-    $(".action").each(function(i, action) {
-        $(action).bind("change", function(){
+    $(".action").each(function (i, action) {
+        $(action).bind("change", function () {
             var ids = updateIds();
-            $("#error").css("display","none");
+            $("#error").css("display", "none");
             var action = $(this).val();
             if (ids.length == 0) {
-                $("#error").css("display","block");
+                $("#error").css("display", "block");
                 $(this).val("");
                 return;
             }
@@ -22,14 +22,14 @@ $(document).ready(function(){
 
     function updateIds() {
         var allIds = [];
-        $('.user_entry:checked').each(function() {
+        $('.user_entry:checked').each(function () {
             allIds.push($(this).val());
         });
         return allIds;
     }
 
-    var kwargs = {container: "#delete_user_warning_dialog",
-        continue_handler: function(){
+    var kwargs = {container:"#delete_user_warning_dialog",
+        continue_handler:function () {
             var allIds = updateIds();
             var post_data = {'all_ids':allIds.join(';')}
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
@@ -43,12 +43,12 @@ $(document).ready(function(){
             );
             return false;
         },
-        title: gettext("Your User(s) will be deleted"),
-        cancel_handler: function(){
+        title:gettext("Your User(s) will be deleted"),
+        cancel_handler:function () {
             $("#action").val("");
         },
-        height: 150,
-        width: 550
+        height:150,
+        width:550
     }
 
     DW.delete_user_warning_dialog = new DW.warning_dialog(kwargs);

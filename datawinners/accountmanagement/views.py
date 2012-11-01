@@ -355,6 +355,10 @@ def _send_upgrade_email(user, language):
     email.content_subtype = "html"
     email.send()
 
+
+def user_activity_log_details(users_to_be_deleted):
+    return "<br><br>".join(("Name: " + user.get_full_name() + "<br>" + "Email: " + user.email) for user in users_to_be_deleted)
+
 @login_required(login_url='/login')
 @csrf_view_exempt
 @csrf_response_exempt
@@ -376,16 +380,15 @@ def delete_users(request):
         messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
                                 (admin_full_name), "error_message")
     else:
+        detail = user_activity_log_details(User.objects.filter(id__in=django_ids))
         delete_entity_instance(manager, all_ids, REPORTER, transport_info)
-        all_names = User.objects.filter(id__in=django_ids).extra(select={'full_name': "first_name||' '||last_name "} ).values_list('full_name', flat=True)
-        detail = {"Users": ", ".join(all_names)}
         delete_datasender_from_project(manager, all_ids)
         delete_datasender_users_if_any(all_ids, organization)
 
         if organization.in_trial_mode:
             delete_datasender_for_trial_mode(manager, all_ids, REPORTER)
         action = DELETED_USERS
-        UserActivityLog().log(request, action=action, detail=json.dumps(detail))
+        UserActivityLog().log(request, action=action, detail=detail)
         messages.success(request, _("User(s) successfully deleted."))
         
     return HttpResponse(json.dumps({'success': True}))
