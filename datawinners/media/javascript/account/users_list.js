@@ -27,7 +27,7 @@ $(document).ready(function(){
         });
         return allIds;
     }
-7
+
     var kwargs = {container: "#delete_user_warning_dialog",
         continue_handler: function(){
             var allIds = updateIds();
@@ -50,6 +50,6 @@ $(document).ready(function(){
         height: 150,
         width: 550
     }
-    
+
     DW.delete_user_warning_dialog = new DW.warning_dialog(kwargs);
 });
