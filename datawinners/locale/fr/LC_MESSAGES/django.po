@@ -4664,3 +4664,6 @@ msgstr "Utilisateur supprimé"
 
 msgid "Deleted Data Sender"
 msgstr "Expéditeur supprimé"
+
+msgid "All"
+msgstr "Tout(es) les"
