@@ -236,6 +236,8 @@ class CreateQuestionnairePage(CreateProjectPage):
             question_number) + ")" + QUESTION_LINK_CSS_LOCATOR_PART2
         return self.driver.find(by_css(question_locator)).text
 
+    def get_last_question_link_text(self):
+        return self.driver.find(LAST_QUESTION_LINK_LOCATOR).text
 
     def select_question_link(self, question_number):
         """

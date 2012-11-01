@@ -5,6 +5,7 @@ from pages.lightbox.light_box_page import LightBox
 from pages.projectdatasenderspage.project_data_senders_page import ProjectDataSendersPage
 from pages.projectoverviewpage.project_overview_locator import *
 from pages.page import Page
+from pages.projectsubjectspage.project_subjects_page import ProjectSubjectsPage
 from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.reminderpage.all_reminder_page import AllReminderPage
 from pages.smstesterlightbox.sms_tester_light_box_page import SMSTesterLightBoxPage
@@ -22,6 +23,10 @@ class ProjectOverviewPage(Page):
         self.driver.find(DATASENDERS_TAB).click()
         return ProjectDataSendersPage(self.driver)
 
+    def navigate_to_subjects_page(self):
+        self.driver.find(SUBJECTS_TAB).click()
+        return ProjectSubjectsPage(self.driver)
+
     def navigate_to_reminder_page(self):
         self.driver.find(MESSAGES_AND_REMINDERS_TAB).click()
         return AllReminderPage(self.driver)
@@ -35,9 +40,13 @@ class ProjectOverviewPage(Page):
         from pages.createprojectpage.create_project_page import CreateProjectPage
         return CreateProjectPage(self.driver)
 
-    def open_activate_project_light_box(self):
+    def click_activate_project_link(self):
         self.driver.find(ACTIVATE_PROJECT_LINK).click()
         return LightBox(self.driver)
+
+    def activate_project(self):
+        activate_project_light_box = self.click_activate_project_link()
+        activate_project_light_box.activate_project()
 
     def get_status_of_the_project(self):
         return self.driver.find(PROJECT_STATUS_LABEL).text

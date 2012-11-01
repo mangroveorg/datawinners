@@ -165,7 +165,7 @@ class DataAnalysisPage(Page):
         """
         Function to select the date range from the drop down
         """
-        self.driver.find_visible_element_(CURRENT_MONTH_LABEL).click()
+        self.driver.find_visible_element(CURRENT_MONTH_LABEL).click()
 
     def get_reporting_period(self):
         return self.driver.get_input_value(REPORTING_PERIOD_PICKER_TB)
@@ -177,13 +177,13 @@ class DataAnalysisPage(Page):
         """
         Function to select the date range from the drop down
         """
-        self.driver.find_visible_element_(LAST_MONTH_LABEL).click()
+        self.driver.find_visible_element(LAST_MONTH_LABEL).click()
 
     def select_year_to_date(self):
         """
         Function to select the date range from the drop down
         """
-        self.driver.find_visible_element_(YEAR_TO_DATE_LABEL).click()
+        self.driver.find_visible_element(YEAR_TO_DATE_LABEL).click()
 
     def click_go_button(self):
         """
@@ -206,10 +206,10 @@ class DataAnalysisPage(Page):
         self.driver.find_drop_down(PAGE_SIZE_SELECT).set_selected(size_str)
 
     def select_daily_date_range(self):
-        self.driver.find_visible_element_(DAILY_DATE_RANGE_LABEL).click()
+        self.driver.find_visible_element(DAILY_DATE_RANGE_LABEL).click()
 
     def select_monthly_date_range(self):
-        self.driver.find_visible_element_(MONTHLY_DATE_RANGE_LABEL).click()
+        self.driver.find_visible_element(MONTHLY_DATE_RANGE_LABEL).click()
 
     def select_month_range(self, start_year, start_month, end_year, end_month):
         curr_year = datetime.datetime.today().year
@@ -275,8 +275,8 @@ class DataAnalysisPage(Page):
         self.driver.find(KEYWORD_TB).send_keys(keyword)
 
     def clear_dropdown(self):
-        self.driver.find_visible_element_(CLEAR_DROPDOWN_LINK).click()
+        self.driver.find_visible_element(CLEAR_DROPDOWN_LINK).click()
 
     def get_dropdown_control_text(self):
-        return self.driver.find_visible_element_(DROPDOWN_CONTROL).text
+        return self.driver.find_visible_element(DROPDOWN_CONTROL).text
 

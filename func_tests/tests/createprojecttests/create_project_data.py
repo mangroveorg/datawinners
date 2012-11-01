@@ -17,6 +17,14 @@ DATA_SENDER_WORK = "data sender work"
 OTHER_SUBJECT = "other subject"
 WARNING_MESSAGE = "warning_message"
 
+CREATE_NEW_PROJECT_DATA = {PROJECT_NAME: "new project ", GEN_RANDOM: True,
+                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                           PROJECT_TYPE: "survey",
+                           SUBJECT: "waterpoint",
+                           REPORT_TYPE: "other subject",
+                           DEVICES: "sms",
+                           PAGE_TITLE: "Projects - Overview"}
+
 VALID_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
               PROJECT_BACKGROUND: "This project is created by functional automation suite.",
               PROJECT_TYPE: SURVEY,

@@ -60,6 +60,7 @@ DEFAULT_QUESTION_LINK = by_xpath(
     "//div[@class='question_list']/ol/li[1]/a[1]")
 QUESTION_LINK_CSS_LOCATOR_PART1 = "div.question_list>ol>li"  # index number to identify question
 QUESTION_LINK_CSS_LOCATOR_PART2 = ">a"  # Add text to locate specific question
+LAST_QUESTION_LINK_LOCATOR = by_css(".question_list li:last-child>a")
 QUESTION_DELETE_LINK_CSS_LOCATOR_PART1 = "div.question_list>ol>li"  # Add text or index number to identify question
 QUESTION_DELETE_LINK_CSS_LOCATOR_PART2 = ">div.delete>a"
 ADD_A_QUESTION_LINK = by_css("div.add_question>a")

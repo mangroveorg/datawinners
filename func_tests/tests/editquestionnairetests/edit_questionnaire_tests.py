@@ -7,23 +7,24 @@ from pages.lightbox.light_box_page import LightBox
 from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE
+from tests.createprojecttests.create_project_data import CREATE_NEW_PROJECT_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.editquestionnairetests.edit_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
-from framework.utils.common_utils import by_css
+from framework.utils.common_utils import  by_id
 import time
 
 @attr('suit_2')
 class TestEditQuestionnaire(BaseTest):
-    def prerequisites_of_edit_questionnaire(self):
-        # doing successful login with valid credentials
+    def setUp(self):
+        super(TestEditQuestionnaire, self).setUp()
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
-        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
 
-        # going on all project page
-        all_project_page = global_navigation.navigate_to_view_all_project_page()
+    def prerequisites_of_edit_questionnaire(self):
+        all_project_page = self.global_navigation.navigate_to_view_all_project_page()
         project_overview_page = all_project_page.navigate_to_project_overview_page(
             fetch_(PROJECT_NAME, from_(VALID_PROJECT_DATA)))
         edit_project_page = project_overview_page.navigate_to_edit_project_page()
@@ -31,14 +32,16 @@ class TestEditQuestionnaire(BaseTest):
         return CreateQuestionnairePage(self.driver)
 
     def prerequisites_of_questionnaire_tab(self):
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(self.driver)
-        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-
-        # going on all project page
-        all_project_page = global_navigation.navigate_to_view_all_project_page()
+        all_project_page = self.global_navigation.navigate_to_view_all_project_page()
         project_overview_page = all_project_page.navigate_to_project_overview_page("Clinic test project")
         return project_overview_page.navigate_to_questionnaire_tab()
+
+    def test_should_add_questions_to_new_questionnaire(self):
+        create_questionnaire_page, project_name = self.create_new_project()
+        question_name = self.add_question_to_project(create_questionnaire_page)
+        self.go_to_questionnaire_page(project_name)
+
+        self.assertEqual(question_name, create_questionnaire_page.get_last_question_link_text())
 
     @attr('functional_test', 'smoke')
     def test_successful_questionnaire_editing(self):
@@ -111,11 +114,9 @@ class TestEditQuestionnaire(BaseTest):
     @attr('functional_test')
     def test_change_date_format_of_report_period_should_show_warning_message_and_clear_submissions(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(self.driver)
-        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
 
         # going on all project page
-        all_project_page = global_navigation.navigate_to_view_all_project_page()
+        all_project_page = self.global_navigation.navigate_to_view_all_project_page()
         project_overview_page = all_project_page.navigate_to_project_overview_page("clinic6 test project")
         edit_project_page = project_overview_page.navigate_to_edit_project_page()
         edit_project_page.continue_create_project()
@@ -133,11 +134,9 @@ class TestEditQuestionnaire(BaseTest):
     @attr('functional_test')
     def test_should_hide_tip_for_period_question_when_adding_new_question(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(self.driver)
-        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
 
         # going on all project page
-        all_project_page = global_navigation.navigate_to_view_all_project_page()
+        all_project_page = self.global_navigation.navigate_to_view_all_project_page()
         project_overview_page = all_project_page.navigate_to_project_overview_page("clinic6 test project")
         edit_project_page = project_overview_page.navigate_to_edit_project_page()
         edit_project_page.continue_create_project()
@@ -152,11 +151,7 @@ class TestEditQuestionnaire(BaseTest):
     @attr('functional_test')
     def test_should_show_warning_when_deleting_question_in_questionnaire_having_data(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(self.driver)
-        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-
-        # going on all subject page
-        all_subject_page = global_navigation.navigate_to_all_subject_page()
+        all_subject_page = self.global_navigation.navigate_to_all_subject_page()
         all_subject_page.add_new_subject_type(SUBJECT_TYPE)
         time.sleep(2)
         edit_registration_form = all_subject_page.navigate_to_edit_registration_form(SUBJECT_TYPE, True)
@@ -191,7 +186,7 @@ class TestEditQuestionnaire(BaseTest):
     def test_should_get_the_type_back_when_canceling_the_type_change(self):
         create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
         create_questionnaire_page.change_question_type_to(2, "date")
-        cancel_locator = by_css("#option_warning_message_cancel")
+        cancel_locator = by_id("option_warning_message_cancel")
         warning_dialog = WarningDialog(self.driver, cancel_link=cancel_locator)
         warning_dialog.cancel()
         type = create_questionnaire_page.get_question_type(2)
@@ -201,8 +196,33 @@ class TestEditQuestionnaire(BaseTest):
     def test_should_change_the_question_type_when_confirming_the_type_change(self):
         create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
         create_questionnaire_page.change_question_type_to(2, "date")
-        confirm_locator = by_css("#option_warning_message_continue")
+        confirm_locator = by_id("option_warning_message_continue")
         warning_dialog = WarningDialog(self.driver, confirm_link=confirm_locator)
         warning_dialog.confirm()
         type = create_questionnaire_page.get_question_type(2)
         self.assertEqual(type, "date")
+
+    def create_new_project(self):
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        create_project_page = dashboard_page.navigate_to_create_project_page()
+        create_project_page.create_project_with(CREATE_NEW_PROJECT_DATA)
+        project_name = create_project_page.get_project_name()
+        create_project_page.continue_create_project()
+        create_questionnaire_page = CreateQuestionnairePage(self.driver)
+
+        return create_questionnaire_page, project_name
+
+    def add_question_to_project(self, create_questionnaire_page):
+        question_name = "how many grades did you get last year?"
+        new_question = {"question": question_name, "code": "grades", "type": "number",
+                        "min": "1", "max": "100"}
+        create_questionnaire_page.add_question(new_question)
+        create_questionnaire_page.save_and_create_project_successfully()
+
+        return question_name
+
+    def go_to_questionnaire_page(self, project_name):
+        all_project_page = self.global_navigation.navigate_to_view_all_project_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page(project_name)
+        edit_project_page = project_overview_page.navigate_to_edit_project_page()
+        edit_project_page.continue_create_project()

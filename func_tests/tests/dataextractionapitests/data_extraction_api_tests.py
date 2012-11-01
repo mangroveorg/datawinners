@@ -67,8 +67,7 @@ class DataExtractionAPITestCase(BaseTest):
     @classmethod
     def activate_project(cls):
         overview_page = ProjectOverviewPage(cls.driver)
-        activate_project_light_box = overview_page.open_activate_project_light_box()
-        activate_project_light_box.activate_project()
+        overview_page.activate_project()
 
     @classmethod
     def submit_data(cls):

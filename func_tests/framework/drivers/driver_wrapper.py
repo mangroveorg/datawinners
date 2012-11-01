@@ -117,7 +117,7 @@ class DriverWrapper(object):
         """
         return self._driver.find_elements(by=locator_dict[BY],
                                          value=locator_dict[LOCATOR])
-    def find_visible_element_(self, locator_dict):
+    def find_visible_element(self, locator_dict):
         """
         Finds element which are visible on the web page using locator dictionary
 

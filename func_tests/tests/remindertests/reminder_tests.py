@@ -40,8 +40,7 @@ class TestReminderSend(BaseTest):
         return reminder_settings
 
     def active_project_and_go_to_all_reminder_page(self, project_overview_page):
-        light_box = project_overview_page.open_activate_project_light_box()
-        project_overview_page = light_box.activate_project()
+        project_overview_page.activate_project()
         return project_overview_page.navigate_to_reminder_page()
 
     @attr("functional_test")
