@@ -131,7 +131,7 @@ var questionnaireViewModel =
         var oldText = null;
         var opt_index = 0;
         $(choices).each(function(index, choiceInModel){
-           if (choiceInModel.val == choice.option_val && choiceInModel.text.en != curText){
+           if (choiceInModel.val == choice.option_val && choiceInModel.text != curText){
                changePrompt = true;
                oldText =  choiceInModel.text;
                opt_index = index;
