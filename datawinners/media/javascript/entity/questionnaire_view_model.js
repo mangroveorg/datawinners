@@ -174,7 +174,6 @@ var questionnaireViewModel =
     changeQuestionType: function(type_selector) {
         var type = questionnaireViewModel.selectedQuestion().type();
         var choices = questionnaireViewModel.selectedQuestion().choices();
-        if (type.indexOf('select') != -1) type = 'choice'
         var type_equal = type_selector.value == type
             || (type_selector.value == 'choice' && (type.indexOf('select') >= 0));
         if(typeof(is_edit) == "undefined" || !is_edit) {
@@ -186,11 +185,12 @@ var questionnaireViewModel =
         }
         DW.option_warning_dialog.show_warning(gettext("You have changed the Answer Type.<br>If you have previously collected data, it may be rendered incorrect.<br><br>Are you sure you want to continue?"));
         DW.option_warning_dialog.cancelEventHandler = function(){
-            $("[name='type'][value='" + type + "']").attr('checked', true);
             try {
-                questionnaireViewModel.selectedQuestion().choices(type);
+                questionnaireViewModel.selectedQuestion().type(type);
                 questionnaireViewModel.selectedQuestion().choices(choices);
             } catch (e) {}
+            if (type.indexOf('select') != -1) type = 'choice';
+            $("[name='type'][value='" + type + "']").attr('checked', true);
             DW.option_warning_dialog.continueEventHandler = function(){};
         };
         DW.option_warning_dialog.continueEventHandler = function(){
