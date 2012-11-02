@@ -167,13 +167,15 @@ var questionnaireViewModel =
         } else {
             DW.option_warning_dialog.show_warning(gettext('You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Also, the position of your answer choices has changed (Example: You have deleted “A. Cat”, so “B. Dog” is now “A. Dog”).<br>If you have previously collected data it will be adjusted to the new choice in that position (Example: The choice “Cat”, it will be replaced with “Dog”).<br><br>Are you sure you want to continue?'));
         }
-        DW.option_warning_dialog.continueEventHandler = function(){
-            questionnaireViewModel.removeOptionFromQuestion(choice);};
+        DW.option_warning_dialog.continueEventHandler = function() {
+            questionnaireViewModel.removeOptionFromQuestion(choice);
+        };
     },
-    changeQuestionType: function(type_selector){
+    changeQuestionType: function(type_selector) {
         var type = questionnaireViewModel.selectedQuestion().type();
+        if (type.indexOf('select') != -1) type = 'choice'
         var type_equal = type_selector.value == type
-            || (type_selector.value == 'choice' && (type.indexOf('select')>=0));
+            || (type_selector.value == 'choice' && (type.indexOf('select') >= 0));
         if(typeof(is_edit) == "undefined" || !is_edit) {
             DW.init_question_constraints();
             DW.change_question_type_for_selected_question(type_selector.value);
@@ -183,7 +185,7 @@ var questionnaireViewModel =
         }
         DW.option_warning_dialog.show_warning(gettext("You have changed the Answer Type.<br>If you have previously collected data, it may be rendered incorrect.<br><br>Are you sure you want to continue?"));
         DW.option_warning_dialog.cancelEventHandler = function(){
-            $("[name='type'][value='"+type+"']").attr('checked', true);
+            $("[name='type'][value='" + type + "']").attr('checked', true);
         };
         DW.option_warning_dialog.continueEventHandler = function(){
             var new_type = $("input[name='type']:checked").val();

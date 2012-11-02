@@ -127,8 +127,8 @@ class TestEditQuestionnaire(BaseTest):
         self.assertEquals(light_box.get_title_of_light_box(), fetch_(TITLE, from_(LIGHT_BOX_DATA)))
         self.assertEquals(light_box.get_message_from_light_box(), fetch_(MESSAGE, from_(LIGHT_BOX_DATA)))
         light_box.continue_change_date_format()
-        project_overview_page = create_questionnaire_page.save_and_create_project_successfully( )
-        data_analysis_page = project_overview_page.navigate_to_data_page( )
+        project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
+        data_analysis_page = project_overview_page.navigate_to_data_page()
         self.assertEqual(1, len(data_analysis_page.get_all_data_records()))
 
     @attr('functional_test')
@@ -173,9 +173,8 @@ class TestEditQuestionnaire(BaseTest):
         edit_registration_form.delete_question(4)
         self.assertEqual(DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING, warning_dialog.get_message())
 
-
     @attr("functional_test")
-    def test_should_warn_when_changing_delete_questionnaire(self):
+    def test_should_warn_when_changing_answer_type(self):
         create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
         create_questionnaire_page.change_question_type_to(2, "date")
         warning_dialog = WarningDialog(self.driver)
@@ -186,11 +185,25 @@ class TestEditQuestionnaire(BaseTest):
     def test_should_get_the_type_back_when_canceling_the_type_change(self):
         create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
         create_questionnaire_page.change_question_type_to(2, "date")
-        cancel_locator = by_id("option_warning_message_cancel")
-        warning_dialog = WarningDialog(self.driver, cancel_link=cancel_locator)
-        warning_dialog.cancel()
+        self.cancle_warning_dialog()
         type = create_questionnaire_page.get_question_type(2)
         self.assertEqual(type, "text")
+
+    @attr("functional_test")
+    def test_should_get_the_type_back_when_canceling_the_change_of_single_choice_type(self):
+        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
+        create_questionnaire_page.change_question_type_to(5, "date")
+        self.cancle_warning_dialog()
+        type = create_questionnaire_page.get_question_type(5)
+        self.assertEqual(type, "choice")
+
+    @attr("functional_test")
+    def test_should_get_the_type_back_when_canceling_the_change_of_multiple_choice_type(self):
+        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
+        create_questionnaire_page.change_question_type_to(6, "date")
+        self.cancle_warning_dialog()
+        type = create_questionnaire_page.get_question_type(6)
+        self.assertEqual(type, "choice")
 
     @attr("functional_test")
     def test_should_change_the_question_type_when_confirming_the_type_change(self):
@@ -226,3 +239,8 @@ class TestEditQuestionnaire(BaseTest):
         project_overview_page = all_project_page.navigate_to_project_overview_page(project_name)
         edit_project_page = project_overview_page.navigate_to_edit_project_page()
         edit_project_page.continue_create_project()
+
+    def cancle_warning_dialog(self):
+        cancel_locator = by_id("option_warning_message_cancel")
+        warning_dialog = WarningDialog(self.driver, cancel_link=cancel_locator)
+        warning_dialog.cancel()
