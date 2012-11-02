@@ -45,7 +45,7 @@ $(document).ready(function () {
         },
         title:gettext("Your User(s) will be deleted"),
         cancel_handler:function () {
-            $("#action").val("");
+            $(".action").val("");
         },
         height:150,
         width:550
