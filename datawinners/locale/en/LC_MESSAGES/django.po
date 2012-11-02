@@ -4573,7 +4573,7 @@ msgstr ""
 msgid "Do you want to modify this questionnaire?"
 msgstr ""
 
-msgid "Add an User"
+msgid "Add a User"
 msgstr ""
 
 msgid "Please select at least 1 user"

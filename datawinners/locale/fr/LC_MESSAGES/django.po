@@ -4635,7 +4635,7 @@ msgstr "Si vous modifiez ce questionnaire, toutes les données recueillies ulté
 msgid "Do you want to modify this questionnaire?"
 msgstr "Voulez-vous modifier ce questionnaire?"
 
-msgid "Add an User"
+msgid "Add a User"
 msgstr "Ajouter un utilisateur"
 
 msgid "Please select at least 1 user"
