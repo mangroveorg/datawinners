@@ -205,15 +205,27 @@ class TestEditQuestionnaire(BaseTest):
         type = create_questionnaire_page.get_question_type(6)
         self.assertEqual(type, "choice")
 
+
     @attr("functional_test")
     def test_should_change_the_question_type_when_confirming_the_type_change(self):
         create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
         create_questionnaire_page.change_question_type_to(2, "date")
-        confirm_locator = by_id("option_warning_message_continue")
-        warning_dialog = WarningDialog(self.driver, confirm_link=confirm_locator)
-        warning_dialog.confirm()
+        self.confirm_warning_dialog()
         type = create_questionnaire_page.get_question_type(2)
         self.assertEqual(type, "date")
+
+    @attr("functional_test")
+    def test_should_get_the_option_label_back_when_canceling_the_change_of_option_label(self):
+        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
+        create_questionnaire_page.select_question_link(5)
+        # wait to render form model
+        time.sleep(2)
+        first_option = create_questionnaire_page.get_nth_option_of_choice(1)
+        old_label = first_option.text
+        first_option.send_keys('append value')
+        create_questionnaire_page.get_nth_option_of_choice(2).send_keys('focused')
+        self.cancle_warning_dialog()
+        self.assertEqual(old_label, first_option.text)
 
     def create_new_project(self):
         dashboard_page = self.global_navigation.navigate_to_dashboard_page()
@@ -244,3 +256,8 @@ class TestEditQuestionnaire(BaseTest):
         cancel_locator = by_id("option_warning_message_cancel")
         warning_dialog = WarningDialog(self.driver, cancel_link=cancel_locator)
         warning_dialog.cancel()
+
+    def confirm_warning_dialog(self):
+        confirm_locator = by_id("option_warning_message_continue")
+        warning_dialog = WarningDialog(self.driver, confirm_link=confirm_locator)
+        warning_dialog.confirm()

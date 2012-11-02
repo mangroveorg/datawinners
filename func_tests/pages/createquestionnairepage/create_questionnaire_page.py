@@ -449,3 +449,6 @@ class CreateQuestionnairePage(CreateProjectPage):
             index) + ")" + QUESTION_LINK_CSS_LOCATOR_PART2
         self.driver.find(by_css(question_locator)).click()
         return self.driver.find(CURRENT_QUESTION_TYPE_LOCATOR).get_attribute("value")
+
+    def get_nth_option_of_choice(self, index):
+        return self.driver.find(by_css('#options_list>li:nth-child(%d)>input' % index))
