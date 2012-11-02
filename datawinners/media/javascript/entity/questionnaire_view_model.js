@@ -133,12 +133,12 @@ var questionnaireViewModel =
         $(choices).each(function(index, choiceInModel){
            if (choiceInModel.val == choice.option_val && choiceInModel.text.en != curText){
                changePrompt = true;
-               oldText =  choiceInModel.text.en;
+               oldText =  choiceInModel.text;
                opt_index = index;
            }
         });
         if(changePrompt){
-            DW.change_option_text(choice,oldText, opt_index);
+            DW.change_option_text(choice, oldText, opt_index);
         }
     },
     remove_option: function(choice){
@@ -173,6 +173,7 @@ var questionnaireViewModel =
     },
     changeQuestionType: function(type_selector) {
         var type = questionnaireViewModel.selectedQuestion().type();
+        var choices = questionnaireViewModel.selectedQuestion().choices();
         if (type.indexOf('select') != -1) type = 'choice'
         var type_equal = type_selector.value == type
             || (type_selector.value == 'choice' && (type.indexOf('select') >= 0));
@@ -186,6 +187,8 @@ var questionnaireViewModel =
         DW.option_warning_dialog.show_warning(gettext("You have changed the Answer Type.<br>If you have previously collected data, it may be rendered incorrect.<br><br>Are you sure you want to continue?"));
         DW.option_warning_dialog.cancelEventHandler = function(){
             $("[name='type'][value='" + type + "']").attr('checked', true);
+            questionnaireViewModel.selectedQuestion().choices(type);
+            questionnaireViewModel.selectedQuestion().choices(choices);
         };
         DW.option_warning_dialog.continueEventHandler = function(){
             var new_type = $("input[name='type']:checked").val();
