@@ -1106,7 +1106,7 @@ def _get_preview_for_field_in_registration_questionnaire(field, language):
     preview = {"description": field.label, "code": field.code, "type": field.type,
                "instruction": field.instruction}
     constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
-        [(option["text"][field.language], option["val"]) for option in field.options]
+        [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
     return preview
     
