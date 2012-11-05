@@ -21,3 +21,4 @@ WITH_INVALID_GEO_CODE_FORMAT_LOG = {
     SMS_SUBMISSION: "Error Yes cid002 Mr. De`Melo 58 17.05.2011 O\+, O\- Rapid weight loss, Memory loss, Neurological disorders 127.178057 -78.007789 Hivid",
     UNIQUE_VALUE: "Mr. De`Melo",
     FAILURE_MSG: "Answer Mr. De`Melo for question NA is longer than allowed.,Answer ab for question BG contains more than one value.,The answer 127.178057 must be between -90 and 90"}
+PAGE_TITLE_IN_FRENCH = "Journal de Soumission"

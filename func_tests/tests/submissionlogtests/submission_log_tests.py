@@ -31,6 +31,9 @@ class TestSubmissionLog(unittest.TestCase):
         sms_tester_page = self.page
         sms_tester_page.send_sms_with(sms_data)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(MESSAGE, from_(sms_data)))
+        return self.navigate_to_submission_log_page()
+
+    def navigate_to_submission_log_page(self):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
         view_all_project_page = self.dashboard.navigate_to_view_all_project_page()
         project_overview_project = view_all_project_page.navigate_to_project_overview_page(PROJECT_NAME)
@@ -77,3 +80,13 @@ class TestSubmissionLog(unittest.TestCase):
                                  fetch_(SMS_SUBMISSION, from_(WITH_INVALID_GEO_CODE_FORMAT_LOG)))
         self.assertEqual(submission_log_page.get_failure_message(WITH_INVALID_GEO_CODE_FORMAT_LOG),
                          fetch_(FAILURE_MSG, from_(WITH_INVALID_GEO_CODE_FORMAT_LOG)))
+
+    @attr('functional_test')
+    def test_should_see_journal_de_soumisfsion_text_ucword_format(self):
+        submission_log_page = self.navigate_to_submission_log_page()
+        submission_log_page.switch_language("fr")
+        title = self.driver.get_title()
+        self.assertEqual(title, PAGE_TITLE_IN_FRENCH)
+        tab_text = submission_log_page.get_active_tab_text()
+        self.assertEqual(tab_text, PAGE_TITLE_IN_FRENCH)
+        submission_log_page.switch_language("en")
