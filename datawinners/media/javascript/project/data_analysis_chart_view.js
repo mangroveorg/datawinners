@@ -218,7 +218,7 @@ function drawChart(data, submissionCount, emptySubmissionText) {
     $chart_ol.empty();
 
     if(emptySubmissionText=='' && data.length == 0){
-        emptySubmissionText = gettext('You do not have any multiple choice questions(AnswerType:List of choices) to display here!');
+        emptySubmissionText = gettext('You do not have any multiple choice questions (Answer Type: List of choices) to display here.');
     }
 
     drawChartInfo(submissionCount, emptySubmissionText);

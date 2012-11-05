@@ -174,7 +174,7 @@ msgstr "Visionnez un schéma de vos questions à choix multiples."
 msgid "Percentage = Frequency / Total number of Submissions for this question.<br/>Example for "
 msgstr "Fréquence/Nombre total de soumissions pour cette question = Pourcentage.<br/>Exemple pour "
 
-msgid "You do not have any multiple choice questions(AnswerType:List of choices) to display here!"
+msgid "You do not have any multiple choice questions (Answer Type: List of choices) to display here."
 msgstr "Vous n’avez aucune question à choix multiples (Type de Réponse : Liste de Choix) à afficher ici."
 
 msgid "Total number of Submissions for this question: "

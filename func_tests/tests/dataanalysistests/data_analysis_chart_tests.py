@@ -66,7 +66,7 @@ class TestDataAnalysisChart(BaseTest):
         self.assertEqual(analysis_page.get_chart_info_2_text(),expected)
 
     def test_should_return_chart_info_when_there_no_mc_questions(self):
-        expected = u"You do not have any multiple choice questions(AnswerType:List of choices) to display here!"
+        expected = u"You do not have any multiple choice questions (Answer Type: List of choices) to display here."
         analysis_page = self._go_to_chart_view(project_name="clinic test project with monthly reporting period")
         self.assertEqual(analysis_page.get_chart_info_2_text(),expected)
 
