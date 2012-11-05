@@ -4602,3 +4602,6 @@ msgstr ""
 
 msgid "Deleted Data Sender"
 msgstr ""
+
+msgid "You have not registered a reporter yet."
+msgstr ""

@@ -98,8 +98,11 @@
                     </div>
                     <div id="add_link" class="clear-left padding_top_20" style="display:none">
                         <p class="instructions italic">
-                            {% blocktrans with subject.entity as subject %}You have not registered a {{ subject }}
-                                yet.{% endblocktrans %}
+                        {% if 'yes' in project.activity_report %}
+                            {% trans "You have not registered a reporter yet." %}
+                        {% else %}
+                            {% blocktrans with subject.entity as subject %}You have not registered a {{ subject }} yet.{% endblocktrans %}
+                        {% endif %}
                         </p>
                         <a id="datasenders_edit_link" href="{{add_link.url}}" {% if add_link.url == '#' %} class="inactive_link ui-state-disabled" {% endif %}>
                             {{ add_link.text }}

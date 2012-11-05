@@ -1326,7 +1326,7 @@ def _in_trial_mode(request):
 def add_link(project):
     add_link_named_tuple = namedtuple("Add_Link", ['url', 'text'])
     if project.entity_type == REPORTER:
-        text = _("Add a datasender")
+        text = _("Add a data sender")
         url = make_data_sender_links(project.id)['register_datasenders_link']
         return add_link_named_tuple(url=url, text=text)
     else:

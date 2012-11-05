@@ -4667,3 +4667,6 @@ msgstr "Expéditeur supprimé"
 
 msgid "All"
 msgstr "Tout(es) les"
+
+msgid "You have not registered a reporter yet."
+msgstr "Vous n’avez pas encore enregistré un expéditeur."

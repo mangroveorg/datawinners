@@ -83,7 +83,7 @@ class TestProjectViews( unittest.TestCase ):
         project.entity_type = "reporter"
         link = add_link( project )
         self.assertEqual( reverse( create_data_sender_and_web_user, args=[project.id] ), link.url )
-        self.assertEqual( 'Add a datasender', link.text )
+        self.assertEqual( 'Add a data sender', link.text )
 
     def test_should_get_correct_template_for_non_data_sender(self):
         request = Mock( )
