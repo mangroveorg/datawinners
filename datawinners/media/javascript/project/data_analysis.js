@@ -209,7 +209,14 @@ $(document).ready(function () {
                     $('#keyword')].concat($datepicker_inputs);
 
                 $.each(filters, function (index, filter) {
-                    filter.addClass('disabled').attr('disabled', 'disabled');
+                    filter.attr('disabled', 'disabled');
+
+                    if (filter.is("span")) {
+                        $("> span", filter).addClass('disabled');
+                    } else {
+                        filter.addClass('disabled');
+                    }
+                    
                     filter.unbind('click');
                 })
                 $('.filter_label').css({color:"#888"});

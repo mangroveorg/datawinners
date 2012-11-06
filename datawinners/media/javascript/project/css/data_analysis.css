@@ -17,7 +17,7 @@
   padding-left: 5px; }
 
 .disabled {
-  background: #EBEBE4 !important;
+  background-color: #EBEBE4 !important;
   color: #888; }
 
 .button_disabled {
