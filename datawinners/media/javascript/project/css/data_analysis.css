@@ -58,3 +58,7 @@
     float: right;
     margin: 4px 10px 0 0;
     border-radius: 4px; }
+
+.ui-daterangepickercontain > div {
+    font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
+    font-size: 11px !important;}
