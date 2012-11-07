@@ -47,7 +47,7 @@ import datawinners.utils as utils
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_infos
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_database_manager
+from datawinners.main.utils import get_database_manager, timebox
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
@@ -435,18 +435,14 @@ def get_analysis_response(request, project_id, questionnaire_code):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     filters = build_filters(request.POST, form_model)
 
-    starttime = datetime.datetime.now()
-
     analysis_result = build_analysis_result(request, manager, form_model, filters)
+
+    performance_logger.info("PERFORMANCE LOGGING: %d submissions." % len(analysis_result.field_values))
 
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
         analysis_result_dict = composite_analysis_result(analysis_result)
         analysis_result_dict.update(project_infos)
-
-        endtime = datetime.datetime.now()
-        interval = (endtime - starttime).microseconds
-        performance_logger.info("PERFORMANCE LOGGING: get project data for user %s : data size %d, time used %d milliseconds." % (request.user, len(analysis_result.field_values), interval/1000))
 
         return analysis_result_dict
 
@@ -473,6 +469,7 @@ def project_info(request, manager, form_model, project_id, questionnaire_code):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@timebox
 def project_data(request, project_id=None, questionnaire_code=None):
     analysis_result = get_analysis_response(request, project_id, questionnaire_code)
 
@@ -488,6 +485,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
 @session_not_expired
 @is_datasender
 @is_not_expired
+@timebox
 def export_data(request):
     questionnaire_code = request.POST.get("questionnaire_code")
 

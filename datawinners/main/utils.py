@@ -1,4 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import datetime
+import logging
 import os
 from glob import iglob
 import string
@@ -8,6 +10,8 @@ from django.conf import settings
 from mangrove.datastore.database import get_db_manager
 
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
+
+performance_logger = logging.getLogger("performance")
 
 def get_database_manager(user):
     profile = user.get_profile()
@@ -65,5 +69,20 @@ def find_views():
             # doesn't match pattern, or file could be read, just skip
             pass
     return views
+
+def timebox(view_func):
+    def _wrapped_view(*args, **kwargs):
+        start_time = datetime.datetime.now()
+
+        result = view_func(*args, **kwargs)
+
+        end_time = datetime.datetime.now()
+        time_elapsed = (end_time - start_time).total_seconds()
+        request = args[0]
+        performance_logger.info("PERFORMANCE LOGGING: [%s] method: %s, user: %s, time used %d seconds." % (request.method, view_func.func_name, request.user, time_elapsed))
+
+        return result
+    return _wrapped_view
+
 
 view_js = find_views()
