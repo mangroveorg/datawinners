@@ -43,13 +43,23 @@
     border: 1px solid #5087b4 !important;
     margin: 4px auto;
   }
-  .margin_top0 .button_blue {
-    margin-top: 0px;
+  .margin_top0 {
+    .button_blue, .button_disabled {
+      margin-top: 0px;
+    }
   }
 
   .ui-dropdownchecklist-close{
     font-size: 11px;
     font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
+  }
+
+  div#keyword_input_container {
+    width: 180px;
+  }
+
+  div#go_button_container {
+    width: 100px;
   }
 }
 @-moz-document url-prefix() {
