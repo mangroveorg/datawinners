@@ -19,7 +19,7 @@ TRIAL_SMS_DATA = u"Testcid003 %s Shwetarep1 Mr. Tessy 38 17.01.2012 O- Rapid wei
 VALID_PAID_DATA = {SENDER: "1234567890",
               RECEIVER: '919880734937',
               SMS: "cli001 .EID cid003 .NA Mr. Tessy .FA 77 .RD %s .BG b .SY ade .GPS 27.178057  -78.007789 .RM a" % current_date,
-              SUCCESS_MESSAGE: THANKS + " EID: cid003 NA: Mr. Tessy FA: 77.0 RD: %s BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789" % current_date}
+              SUCCESS_MESSAGE: THANKS }#+ " EID: cid003 NA: Mr. Tessy FA: 77.0 RD: %s BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789" % current_date}
 
 PAID_SMS_DATA = u"Testcid003 %s %s Shwetarep1 Mr. Tessy 77 O- Rapid weight loss, Memory loss, Neurological disorders 27.178057 -78.007789 Hivid" % (current_date,current_date)
 
