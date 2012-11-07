@@ -1,12 +1,3 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
-
-
-
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -23,379 +14,277 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: media/admin/js/SelectFilter2.js:77
 msgid "Clear all"
 msgstr ""
 
-#: media/admin/js/actions.js:18
 msgid "%(sel)s of %(cnt)s selected"
 msgid_plural "%(sel)s of %(cnt)s selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: media/admin/js/actions.js:109
 msgid ""
 "You have unsaved changes on individual editable fields. If you run an "
 "action, your unsaved changes will be lost."
 msgstr ""
 
-#: media/admin/js/actions.js:121 media/admin/js/actions.min.js:6
 msgid ""
 "You have selected an action, but you haven't saved your changes to "
 "individual fields yet. Please click OK to save. You'll need to re-run the "
 "action."
 msgstr ""
 
-#: media/admin/js/actions.js:123 media/admin/js/actions.min.js:6
 msgid ""
 "You have selected an action, and you haven't made any changes on individual "
 "fields. You're probably looking for the Go button rather than the Save "
 "button."
 msgstr ""
 
-#: media/admin/js/calendar.js:24 media/admin/js/dateparse.js:32
 msgid ""
 "January February March April May June July August September October November "
 "December"
 msgstr ""
 
-#: media/admin/js/calendar.js:25
 msgid "S M T W T F S"
 msgstr ""
 
-#: media/admin/js/collapse.js:9 media/admin/js/collapse.js.py:21
-#: media/admin/js/collapse.min.js:1
 msgid "Show"
 msgstr ""
 
-#: media/admin/js/collapse.js:16 media/admin/js/collapse.min.js:1
 msgid "Hide"
 msgstr ""
 
-#: media/admin/js/dateparse.js:33
 msgid "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:49
-#: media/admin/js/admin/DateTimeShortcuts.js:84
 msgid "Now"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:53
 msgid "Clock"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:80
 msgid "Choose a time"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:85
 msgid "Midnight"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:86
 msgid "6 a.m."
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:87
 msgid "Noon"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:91
-#: media/admin/js/admin/DateTimeShortcuts.js:188
-#: media/javascript/file_uploader/fileuploader.js:489
 msgid "Cancel"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:133
-#: media/admin/js/admin/DateTimeShortcuts.js:182
 msgid "Today"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:137
 msgid "Calendar"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:180
 msgid "Yesterday"
 msgstr ""
 
-#: media/admin/js/admin/DateTimeShortcuts.js:184
 msgid "Tomorrow"
 msgstr ""
 
-#: media/javascript/datasenders/index.js:103
-#: media/javascript/project/data_analysis.js:73
-#: media/javascript/project/data_analysis.js:100
-#: media/javascript/project/register_reporter.js:5
-#: media/javascript/project/sms_tester.js:23
 msgid "Just a moment"
 msgstr ""
 
-#: media/javascript/file_uploader/fileuploader.js:480
 msgid "Drop files here to upload"
 msgstr ""
 
-#: media/javascript/file_uploader/fileuploader.js:481
 msgid "Upload a file"
 msgstr ""
 
-#: media/javascript/file_uploader/fileuploader.js:490
 msgid "Failed"
 msgstr ""
 
-#: media/javascript/project/activate_project.js:3
 msgid "Activate this Project?"
 msgstr ""
 
-#: media/javascript/project/data_analysis.js:17
 msgid "Enter a correct date. No filtering applied"
 msgstr ""
 
-#: media/javascript/project/data_analysis.js:35
 msgid "Current month"
 msgstr ""
 
-#: media/javascript/project/data_analysis.js:38
 msgid "Last Month"
 msgstr ""
 
-#: media/javascript/project/data_analysis.js:43
 msgid "Year to date"
 msgstr ""
 
-#: media/javascript/project/datasender.js:7
 msgid "Add A Data Sender"
 msgstr ""
 
-#: media/javascript/project/datasenders_registration_questionnaire_preview.js:3
 msgid "Data Sender Registration Preview"
 msgstr ""
 
-#: media/javascript/project/delete_project.js:3
 msgid "Delete this Project?"
 msgstr ""
 
-#: media/javascript/project/import_section.js:7
 msgid "Import a List"
 msgstr ""
 
-#: media/javascript/project/project_profile.js:11
 msgid "%(day)s of the week following the reporting week"
 msgstr ""
 
-#: media/javascript/project/project_profile.js:13
 msgid "%(day)s of the reporting week"
 msgstr ""
 
-#: media/javascript/project/project_profile.js:21
 msgid "%(day)s of October for September report"
 msgstr ""
 
-#: media/javascript/project/project_profile.js:23
 msgid "%(day)s of October for October report"
 msgstr ""
 
-#: media/javascript/project/project_profile.js:60
 msgid "Warning !!"
 msgstr ""
 
-#: media/javascript/data_modified_warning.js:16
 msgid "Warning"
 msgstr ""
 
-#: media/javascript/project/questionnaire_charcount.js:52
 msgid "characters used"
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:5
 msgid "Answer must be a number."
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:6
-#, perl-format
 msgid "Answer must be a number. The minimum is %d."
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:7
-#, perl-format
 msgid "Answer must be a number. The maximum is %d."
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:8
-#, perl-format
 msgid "Answer must be a number between %d-%d."
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:9
 msgid "Answer must be a word or phrase"
 msgstr "Answer must be a word"
 
-#: media/javascript/project/questionnaire_helper.js:10
-#, perl-format
 msgid "Answer must be a word or phrase %d characters maximum"
 msgstr "Answer must be a word %d characters maximum"
 
-#: media/javascript/project/questionnaire_helper.js:11
-#, perl-format
 msgid "Answer must be a date in the following format: %s. Example: %s"
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:12
 msgid "Choose 1 answer from the list. Example: a"
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:13
 msgid "Choose 1 or more answers from the list. Example: a or ab "
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:14
 msgid ""
 "Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy "
 "Example: -18.1324 27.6547 "
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:21
 msgid "day.month.year"
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:22
 msgid "month.day.year"
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:23
 msgid "month.year"
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:46
 msgid "Answer must be a text"
 msgstr ""
 
-#: media/javascript/project/questionnaire_helper.js:67
 msgid ""
 "name));\n"
 "        this"
 msgstr ""
 
-#: media/javascript/project/questionnaire_preview.js:3
 msgid "Questionnaire Preview"
 msgstr ""
 
-#: media/javascript/project/questionnaire_wizard.js:23
 msgid "Space is not allowed in question code"
 msgstr ""
 
-#: media/javascript/project/questionnaire_wizard.js:29
-#: media/javascript/project/questionnaire_wizard.js:115
 msgid "Only letters and digits are valid"
 msgstr ""
 
-#: media/javascript/project/questionnaire_wizard.js:34
 msgid "Answer cannot be of length less than 1"
 msgstr ""
 
-#: media/javascript/project/questionnaire_wizard.js:39
 msgid "Please enter positive numbers only"
 msgstr ""
 
-#: media/javascript/project/questionnaire_wizard.js:99
 msgid "The Questionnaire code is required"
 msgstr ""
 
-#: media/javascript/project/questionnaire_wizard.js:105
 msgid "Space is not allowed in questionnaire code"
 msgstr ""
 
-#: media/javascript/project/questionnaire_wizard.js:122
 msgid "This questionnaire has an error"
 msgstr ""
 
-#: media/javascript/project/questionnaire_wizard.js:134
 msgid "The question has been saved."
 msgstr ""
 
-#: media/javascript/project/questionnaire_wizard.js:158
 msgid "default"
 msgstr ""
 
-#: media/javascript/project/register_entity_validation.js:17
 msgid "Please enter a valid phone number."
 msgstr ""
 
-#: media/javascript/project/register_entity_validation.js:31
 msgid ""
 "Incorrect GPS format. The GPS coordinates must be in the following format: "
 "xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
 msgstr ""
 
-#: media/javascript/project/register_entity_validation.js:36
-#: media/javascript/project/register_entity_validation.js:39
 msgid "Please fill out at least one location field"
 msgstr ""
 
-#: media/javascript/project/registered_datasenders.js:19
 msgid "Data Senders dissociated Successfully"
 msgstr ""
 
-#: media/javascript/project/registered_datasenders.js:19
 msgid "Please Wait"
 msgstr ""
 
-#: media/javascript/project/registered_datasenders.js:26
 msgid "Please select at least 1 data sender"
 msgstr ""
 
-#: media/javascript/project/registered_datasenders.js:26
 msgid "Please select only 1 data sender"
 msgstr ""
 
-#: media/javascript/project/reminders.js:14
 msgid "Hello. We have not received your data for "
 msgstr ""
 
-#: media/javascript/project/reminders.js:14
 msgid ".Please send it to us today. Thank you."
 msgstr ""
 
-#: media/javascript/project/reminders.js:22
 msgid " days before deadline"
 msgstr ""
 
-#: media/javascript/project/reminders.js:24
 msgid " days after deadline"
 msgstr ""
 
-#: media/javascript/project/reminders.js:26
 msgid "On the deadline"
 msgstr ""
 
-#: media/javascript/project/results.js:96
 msgid "Please select atleast one undeleted record"
 msgstr ""
 
-#: media/javascript/project/results.js:105
 msgid "This data has already been deleted"
 msgstr ""
 
-#: media/javascript/project/results.js:109
 msgid "Are you sure you want to delete the selected record/s?"
 msgstr ""
 
 
-#: media/javascript/project/subject.js:20
 msgid "Add A Subject"
 msgstr ""
 
-#: media/javascript/project/subjects_registration_questionnaire_preview.js:3
 msgid "Subject Registration Preview"
 msgstr ""
 
-#: media/javascript/project/reminders.js:49
 msgid "Can't be blank."
 msgstr ""
 
-#: media/javascript/project/reminders.js:56
-#: media/javascript/project/reminders.js:65
 msgid "Day Can't be blank."
 msgstr ""
 
@@ -441,20 +330,15 @@ msgstr ""
 msgid "What is the mobile number associated with the data sender?"
 msgstr ""
 
-#: media/javascript/project/sms_preview.js:9
 msgid "number"
 msgstr ""
 
-#: media/javascript/project/sms_preview.js:12
 msgid "text"
 msgstr ""
 
-#: media/javascript/project/sms_preview.js:20
-#: media/javascript/project/sms_preview.js:24
 msgid "list of choices"
 msgstr ""
 
-#: media/javascript/project/sms_preview.js:28
 msgid "geo code"
 msgstr ""
 
@@ -522,7 +406,6 @@ msgstr ""
 msgid "Cancel this Project?"
 msgstr ""
 
-#: media/javascript/project/reminders.js:78
 msgid "The reminders has been saved"
 msgstr ""
 

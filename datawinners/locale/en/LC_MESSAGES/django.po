@@ -1,9 +1,3 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -17,315 +11,224 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accountmanagement/forms.py:32,97
 msgid "Organization name"
 msgstr ""
 
 msgid "Organization Name"
 msgstr ""
 
-#: accountmanagement/forms.py:19
 msgid "Other"
 msgstr ""
 
-#: accountmanagement/forms.py:20 accountmanagement/forms.py:90
 msgid "Organization Sector"
 msgstr ""
 
-#: accountmanagement/forms.py:21 accountmanagement/forms.py:110
 msgid "Address"
 msgstr ""
 
-#: accountmanagement/forms.py:22 accountmanagement/forms.py:91
 msgid "City"
 msgstr ""
 
-#: accountmanagement/forms.py:23 accountmanagement/forms.py:111
 msgid "State / Province"
 msgstr ""
 
-#: accountmanagement/forms.py:24 accountmanagement/forms.py:92
 msgid "Country"
 msgstr ""
 
-#: accountmanagement/forms.py:25 accountmanagement/forms.py:114
 msgid "Postal / Zip Code"
 msgstr ""
 
-#: accountmanagement/forms.py:27 accountmanagement/forms.py:116
 msgid "Office Phone Number"
 msgstr ""
 
-#: accountmanagement/forms.py:28 accountmanagement/forms.py:51
-#: accountmanagement/forms.py:53 accountmanagement/forms.py:84
-#: accountmanagement/forms.py:86 accountmanagement/forms.py:117
 msgid "Please enter a valid phone number"
 msgstr ""
 
-#: accountmanagement/forms.py:29 accountmanagement/forms.py:118
 msgid "Website Url"
 msgstr ""
 
-#: accountmanagement/forms.py:46
 msgid "First name"
 msgstr ""
 
-#: accountmanagement/forms.py:47
 msgid "Last name"
 msgstr ""
 
-#: accountmanagement/forms.py:49 accountmanagement/forms.py:75
 msgid "Enter a valid email address. Example:name@organization.com"
 msgstr ""
 
-#: accountmanagement/forms.py:52 accountmanagement/forms.py:85
 msgid "Phone Number"
 msgstr ""
 
-#: accountmanagement/forms.py:60
 msgid ""
 "This email address is already in use. Please supply a different email address"
 msgstr ""
 
-#: accountmanagement/forms.py:74
 msgid "Email address"
 msgstr ""
 
-#: accountmanagement/forms.py:77
 msgid "Password"
 msgstr ""
 
-#: accountmanagement/forms.py:79
 msgid "Password (again)"
 msgstr ""
 
-#: accountmanagement/forms.py:99
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: accountmanagement/forms.py:113
 msgid "Please enter a valid Postal / Zip code"
 msgstr ""
 
-#: accountmanagement/forms.py:140
 msgid "Please enter a correct email and password."
 msgstr ""
 
-#: accountmanagement/forms.py:142
 msgid "This account is inactive."
 msgstr ""
 
-#: dashboard/views.py:89 templates/main_navigation.html:13
-#: templates/accountmanagement/account/users_list.html:28
-#: templates/entity/datasenders_table.html:11
 msgid "Projects"
 msgstr ""
 
-#: dashboard/views.py:89 templates/main_navigation.html:16
-#: templates/step_wizard.html:34 templates/entity/all_datasenders.html:3
-#: templates/entity/all_datasenders.html:6
-#: templates/project/datasenders_wizard.html:3
-#: templates/project/datasenders_wizard.html:44
-#: templates/project/finish_and_test.html:121
-#: templates/project/profile_datasenders.html:3
-#: templates/project/reminders_wizard.html:55
-#: templates/project/tab_navigation.html:58
 msgid "Data Senders"
 msgstr ""
 
-#: dashboard/views.py:90 templates/main_navigation.html:19
-#: templates/step_wizard.html:32 templates/entity/all_subjects.html:3
-#: templates/entity/all_subjects.html:5
-#: templates/project/finish_and_test.html:81
-#: templates/project/questionnaire_wizard.html:138
-#: templates/project/subjects.html:33 templates/project/subjects_wizard.html:3
-#: templates/project/subjects_wizard.html:43
-#: templates/project/tab_navigation.html:52
 msgid "Subjects"
 msgstr ""
 
-#: dashboard/views.py:90
 msgid "Data Records"
 msgstr ""
 
-#: entity/forms.py:20
 msgid ""
 "Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
 msgstr ""
 
-#: entity/forms.py:23
 msgid "Mobile Number"
 msgstr ""
 
-#: entity/forms.py:24
 msgid "Please enter a valid phone number."
 msgstr ""
 
-#: entity/forms.py:25
 msgid "GPS: Enter Lat Long"
 msgstr "GPS Coordinates"
 
-#: entity/forms.py:26
 msgid "Enter location"
 msgstr ""
 
-#: entity/forms.py:31
 msgid "Enter Data Sender's name"
 msgstr ""
 
-#: entity/forms.py:32
 msgid "Enter Data Sender's number"
 msgstr ""
 
-#: entity/forms.py:33
 msgid "Enter region, district or commune"
 msgstr ""
 
-#: entity/forms.py:34
 msgid "Enter lat and long eg: 19.3,42.37"
 msgstr ""
 
-#: entity/forms.py:67
 msgid "Please fill out at least one location field correctly."
 msgstr ""
 
-#: entity/views.py:98
 msgid "Please add subject type and then add a subject"
 msgstr ""
 
-# message_provider/message_handler.py:43
-#: messageprovider/message_handler.py:49
 msgid "Unique identification number(ID) is:"
 msgstr ""
 
-# message_provider/message_handler.py:48
-#: messageprovider/message_handler.py:52 messageprovider/messages.py:86
 msgid "We received : "
 msgstr ""
 
 msgid "Thank you. We received your message."
 msgstr ""
 
-# messageprovider/messages.py
-#: messageprovider/messages.py:89
 msgid "Registration successful."
 msgstr ""
 
-#: project/forms.py:38
 msgid "Survey project: I want to collect data from the field"
 msgstr ""
 
-#: project/forms.py:39
 msgid "Public information: I want to send information"
 msgstr ""
 
-#: project/forms.py:41
 msgid "Work performed by the data sender (eg. monthly activity report)"
 msgstr ""
 
-#: project/forms.py:41 project/forms.py:50
 msgid "Other Subject"
 msgstr ""
 
-#: project/forms.py:42
 msgid "Open Data Sender Group. Anyone can send in data without registering"
 msgstr ""
 
-#: project/forms.py:42
 msgid "Closed Data Sender Group. Only registered data sender will be able to send data"
 msgstr ""
 
-#: project/forms.py:43
 msgid "Whenever a data sender has data for us"
 msgstr ""
 
-#: project/forms.py:43
 msgid "Every"
 msgstr ""
 
-#: project/forms.py:46
 msgid "Name this Project"
 msgstr ""
 
-#: project/forms.py:47
 msgid "Project Description"
 msgstr ""
 
-#: project/forms.py:48
 msgid "Project Type"
 msgstr ""
 
-#: project/forms.py:49
 msgid "Open or Closed Group"
 msgstr ""
 
-#: project/forms.py:50
 msgid "What is this questionnaire about?"
 msgstr ""
 
-#: project/forms.py:51
 msgid "Other Subjects"
 msgstr ""
 
-#: project/forms.py:52
 msgid "Device"
 msgstr ""
 
-#: project/forms.py:54
 msgid "Choose your language for success and error messages to Data Senders"
 msgstr ""
 
-#: project/forms.py:56
 msgid "How often do you need the data?"
 msgstr ""
 
-#: project/forms.py:58
 msgid "Week"
 msgstr ""
 
-#: project/forms.py:58
 msgid "Month"
 msgstr ""
 
-#: project/forms.py:59
 msgid "Do you want to set a deadline?"
 msgstr ""
 
-#: project/forms.py:59 project/forms.py:63
 msgid "No"
 msgstr ""
 
-#: project/forms.py:59 project/forms.py:63
 msgid "Yes"
 msgstr ""
 
 
-#: project/forms.py:62
 msgid "Same month"
 msgstr ""
 
 msgid "Same week"
 msgstr ""
 
-#: project/forms.py:62
 msgid "Following month"
 msgstr ""
 
 msgid "Following week"
 msgstr ""
-#: project/forms.py:63
 msgid "Do you want to remind DataSenders to send in their data?"
 msgstr ""
 
-#: project/forms.py:70
 msgid "Enter a project name"
 msgstr ""
 
-#: project/forms.py:71
 msgid "Describe what your team hopes to achieve by collecting this data"
 msgstr ""
 
-#: project/forms.py:76
 msgid "This field is required"
 msgstr ""
 
@@ -340,92 +243,26 @@ msgstr ""
 
 msgid "Only send reminders to senders who have not already submitted data for the current deadline."
 msgstr ""
-#: project/views.py:824
 msgid "Successfully submitted"
 msgstr ""
 
-#: templates/datasender_form.html:51 templates/step_wizard.html:20
-#: templates/step_wizard.html.py:27 templates/subject_form.html:61
-#: templates/entity/all_datasenders.html:89
-#: templates/entity/all_datasenders.html:107 templates/project/index.html:55
-#: templates/project/index.html.py:60 templates/project/profile.html:50
-#: templates/project/reminders.html:71
-#: templates/project/tab_navigation.html:38
 msgid "Cancel"
 msgstr ""
 
-#: templates/datasender_form.html:52 templates/subject_form.html:62
-#: templates/entity/create_type.html:6
 msgid "Add"
 msgstr ""
 
-#: templates/entity_question_panel.html:7 templates/project/overview.html:54
-#: templates/project/questionnaire.html:97
-#: templates/project/questionnaire_wizard.html:93
 msgid "Questions"
 msgstr ""
 
-#: templates/entity_question_panel.html:10
-#: templates/entity_question_panel.html:19
-#: templates/entity/all_datasenders.html:14
-#: templates/entity/all_datasenders.html:62
-#: templates/entity/all_subjects.html:10 templates/entity/all_subjects.html:63
-#: templates/project/datasenders_wizard.html:46
-#: templates/project/datasenders_wizard.html:65
-#: templates/project/datasenders_wizard.html:78
-#: templates/project/finish_and_test.html:154
-#: templates/project/profile_background.html:12
-#: templates/project/profile_background.html:25
-#: templates/project/profile_datasenders.html:11
-#: templates/project/profile_languages.html:11
-#: templates/project/profile_subjects-questionnaire.html:11
-#: templates/project/profile_subjects-questionnaire.html:33
-#: templates/project/question_detail_panel.html:12
-#: templates/project/question_detail_panel.html:25
-#: templates/project/question_detail_panel.html:128
-#: templates/project/questionnaire.html:82
-#: templates/project/questionnaire.html:113
-#: templates/project/questionnaire_wizard.html:76
-#: templates/project/questionnaire_wizard.html:107
-#: templates/project/reminders_wizard.html:36
-#: templates/project/subjects_wizard.html:45
-#: templates/project/subjects_wizard.html:63
-#: templates/project/subjects_wizard.html:76
 msgid "What is this?"
 msgstr ""
 
-#: templates/entity_question_panel.html:11
 msgid "q_tooltip_question_panel_subject"
 msgstr "Decide what information you want to use to identify and register each "
 "subject of your questionnaire.  For example, Clinic Name, Location, Phone "
 "Number."
 
-#: templates/entity_question_panel.html:13
-#: templates/entity_question_panel.html:22
-#: templates/entity/all_datasenders.html:17
-#: templates/entity/all_datasenders.html:65
-#: templates/entity/all_subjects.html:12 templates/entity/all_subjects.html:66
-#: templates/project/datasenders_wizard.html:48
-#: templates/project/datasenders_wizard.html:68
-#: templates/project/datasenders_wizard.html:81
-#: templates/project/finish_and_test.html:157
-#: templates/project/profile_background.html:14
-#: templates/project/profile_background.html:28
-#: templates/project/profile_datasenders.html:14
-#: templates/project/profile_languages.html:14
-#: templates/project/profile_subjects-questionnaire.html:13
-#: templates/project/profile_subjects-questionnaire.html:36
-#: templates/project/question_detail_panel.html:14
-#: templates/project/question_detail_panel.html:28
-#: templates/project/question_detail_panel.html:130
-#: templates/project/questionnaire.html:85
-#: templates/project/questionnaire.html:116
-#: templates/project/questionnaire_wizard.html:79
-#: templates/project/questionnaire_wizard.html:110
-#: templates/project/reminders_wizard.html:39
-#: templates/project/subjects_wizard.html:48
-#: templates/project/subjects_wizard.html:66
-#: templates/project/subjects_wizard.html:79
 msgid "What do I need to do?"
 msgstr ""
 
@@ -435,63 +272,47 @@ msgstr ""
 msgid "Import Template"
 msgstr ""
 
-#: templates/entity_question_panel.html:14
 msgid "r_tooltip_question_panel_subject"
 msgstr "Review the questions by clicking on each question in order."
 
-#: templates/entity_question_panel.html:20
 msgid "q_tooltip_question_panel_data_sender"
 msgstr "Decide what information you need to collect about each Data Sender."
 
-#: templates/entity_question_panel.html:23
 msgid "r_tooltip_question_panel_data_sender"
 msgstr "Review the questions by clicking on each"
 
-#: templates/entity_question_panel.html:45
 msgid "Question:"
 msgstr ""
 
-#: templates/entity_question_panel.html:47
 msgid "Code:"
 msgstr ""
 
-#: templates/header.html:6
 msgid "Logout"
 msgstr ""
 
-#: templates/header_wizard.html:9
 msgid ""
 "You can view and edit your user profile and manage your organization's "
 "account (if you are authorized)."
 msgstr ""
 
-#: templates/header_wizard.html:11
 msgid "Welcome"
 msgstr ""
 
-#: templates/header_wizard.html:12
-#: templates/accountmanagement/profile/index.html:3
-#: templates/accountmanagement/profile/index.html:4
 msgid "Your Profile"
 msgstr ""
 
-#: templates/header_wizard.html:14
 msgid "wizard_account"
 msgstr "Account"
 
-#: templates/header_wizard.html:18 templates/registration/logout.html:3
 msgid "Sign out"
 msgstr ""
 
-#: templates/header_wizard.html:19
 msgid "Help"
 msgstr ""
 
-#: templates/layout_master.html:53
 msgid "Javascript is disabled in your browser, Please enable it."
 msgstr ""
 
-#: templates/layout_registration.html:31
 msgid "about_DW"
 msgstr ""
 "<h5>About DataWinners</h5><p>DataWinners is an online mobile data"
@@ -508,258 +329,168 @@ msgstr ""
 "<li>Our Consulting Service</li></ul></p>"
 "<p>See our <a href='/en/pricing/' target=\"_blank\">Pricing page</a></p>"
 
-#: templates/layout_application.html: 56
 msgid "Send in your data using:"
 msgstr ""
 
-#: templates/main_navigation.html:10 templates/dashboard/home.html:3
-#: templates/dashboard/home.html.py:4
 msgid "Dashboard"
 msgstr ""
 
-#: templates/main_navigation.html:22
-#: templates/alldata/failed_submissions.html:3 templates/alldata/index.html:3
-#: templates/alldata/index.html.py:5
 msgid "All Data"
 msgstr ""
 
-#: templates/main_navigation.html:25
 msgid "Guide"
 msgstr ""
 
-#: templates/step_wizard.html:19 templates/dashboard/home.html:30
-#: templates/project/index.html:28
 msgid "Create a new project"
 msgstr ""
 
-#: templates/step_wizard.html:25
 msgid "Are you sure you want to cancel this project?"
 msgstr ""
 
-#: templates/step_wizard.html:28 templates/entity/all_datasenders.html:90
-#: templates/project/reminders.html:72
 msgid "Confirm"
 msgstr ""
 
-#: templates/step_wizard.html:31 templates/project/profile.html:3
-#: templates/project/profile.html.py:25
-#: templates/project/subjects_wizard.html:102
 msgid "Define Project"
 msgstr ""
 
-#: templates/step_wizard.html:33 templates/project/datasenders_wizard.html:102
-#: templates/project/finish_and_test.html:104
-#: templates/project/questionnaire.html:67
-#: templates/project/questionnaire_wizard.html:3
-#: templates/project/questionnaire_wizard.html:61
-#: templates/project/tab_navigation.html:55
 msgid "Questionnaire"
 msgstr ""
 
-#: templates/step_wizard.html:35
 msgid "Reminder"
 msgstr ""
 
-#: templates/step_wizard.html:36 templates/project/finish_and_test.html:3
 msgid "Review & Test"
 msgstr ""
 
-#: templates/subject_form.html:10 templates/subject_table.html:6
-#: templates/alldata/index.html:29 templates/entity/datasenders_table.html:7
-#: templates/project/index.html:34
-#: templates/project/registered_datasenders.html:36
-#: templates/project/registered_subjects.html:30
 msgid "Type"
 msgstr ""
 
-#: templates/subject_form.html:22 templates/subject_table.html:5
-#: templates/alldata/index.html:27 templates/entity/datasenders_table.html:6
-#: templates/project/index.html:32
-#: templates/project/registered_datasenders.html:35
-#: templates/project/registered_subjects.html:29
 msgid "Name"
 msgstr ""
 
-#: templates/subject_form.html:23
 msgid "Enter a subject name"
 msgstr ""
 
-#: templates/subject_form.html:26
 msgid "Unique Identification Number (ID)"
 msgstr ""
 
-#: templates/subject_form.html:30
 msgid "Let us generate an ID for you"
 msgstr ""
 
-#: templates/subject_form.html:36 templates/subject_table.html:7
-#: templates/entity/datasenders_table.html:8
 msgid "Location"
 msgstr ""
 
-#: templates/subject_form.html:39
 msgid "Location Name:"
 msgstr ""
 
-#: templates/subject_form.html:40
 msgid "Enter a region, district or commune"
 msgstr ""
 
-#: templates/subject_form.html:43
 msgid "or"
 msgstr ""
 
-#: templates/subject_form.html:47
 msgid "Enter lat and long eg: 20.6 47.3"
 msgstr ""
 
-#: templates/subject_form.html:52 templates/subject_table.html:9
 msgid "Description"
 msgstr ""
 
-#: templates/subject_form.html:53
 msgid "Describe your subject in more details (optional)"
 msgstr ""
 
-#: templates/subject_form.html:57
 msgid "Enter the subject's Number"
 msgstr ""
 
-#: templates/subject_table.html:8 templates/entity/datasenders_table.html:9
 msgid "Geocode"
 msgstr ""
 
 msgid "Phone No."
 msgstr ""
 
-#: templates/subject_table.html:10 templates/entity/datasenders_table.html:10
-#: templates/project/registered_datasenders.html:37
-#: templates/project/registered_subjects.html:31
 msgid "Contact info"
 msgstr ""
 
-#: templates/accountmanagement/account/add_user.html:3
-#: templates/accountmanagement/account/org_settings.html:3
-#: templates/accountmanagement/account/users_list.html:3
 msgid "Account"
 msgstr ""
 
-#: templates/accountmanagement/account/add_user.html:16
 msgid "All Users"
 msgstr ""
 
-#: templates/accountmanagement/account/add_user.html:25
 msgid "Point of Contact"
 msgstr ""
 
-#: templates/accountmanagement/account/add_user.html:25
 msgid "Account Administrator"
 msgstr ""
 
-#: templates/accountmanagement/account/index.html:3
-#: templates/accountmanagement/account/index.html:4
 msgid "Account Settings"
 msgstr ""
 
-#: templates/accountmanagement/account/index.html:11
 msgid "Your Organization Account"
 msgstr ""
 
-#: templates/accountmanagement/account/index.html:14
 msgid "Users"
 msgstr ""
 
-#: templates/accountmanagement/account/org_settings.html:82
-#: templates/accountmanagement/profile/edit_profile.html:66
 msgid "Save Changes"
 msgstr ""
 
-#: templates/accountmanagement/account/users_list.html:13
 msgid "Add Users"
 msgstr ""
 
-#: templates/accountmanagement/account/users_list.html:19
 msgid "First Name"
 msgstr ""
 
-#: templates/accountmanagement/account/users_list.html:22
 msgid "Last Name"
 msgstr ""
 
-#: templates/accountmanagement/account/users_list.html:25
-#: templates/entity/datasenders_table.html:12
-#: accountmanagement/forms.py:48
 msgid "Email"
 msgstr ""
 
-#: templates/entity/datasenders_table.html: 14
-#: templates/project/registered_datasenders.html: 90
 msgid "Devices"
 msgstr ""
 
-#: templates/accountmanagement/profile/index.html:11
 msgid "Contact Info"
 msgstr ""
 
-#: templates/admin/base_site.html:4
 msgid "Datawinner site admin"
 msgstr ""
 
-#: templates/admin/base_site.html:7
 msgid "Datawinner administration"
 msgstr ""
 
-#: templates/alldata/failed_submissions.html:5
 msgid "Failed Submissions"
 msgstr ""
 
-#: templates/alldata/failed_submissions.html:7
 msgid "View All Data"
 msgstr ""
 
-#: templates/alldata/failed_submissions.html:27
 msgid "Questionnaire Code"
 msgstr ""
 
-#: templates/alldata/failed_submissions.html:28
-#: templates/project/log_table.html:17
 msgid "From"
 msgstr ""
 
-#: templates/alldata/failed_submissions.html:29
-#: templates/project/log_table.html:14
 msgid "To"
 msgstr ""
 
-#: templates/alldata/failed_submissions.html:30
 msgid "Message"
 msgstr ""
 
-#: templates/alldata/failed_submissions.html:31
-#: templates/entity/all_datasenders.html:75
-#: templates/entity/all_subjects.html:76
-#: templates/project/import_section_in_wizard.html:17
 msgid "Error"
 msgstr ""
 
-#: templates/alldata/index.html:7
 msgid "View all failed submissions"
 msgstr ""
 
-#: templates/alldata/index.html:28 templates/project/index.html:33
 msgid "Created On"
 msgstr ""
 
-#: templates/alldata/index.html:30
 msgid "View Report"
 msgstr ""
 
-#: templates/alldata/index.html:37 templates/project/tab_navigation.html:80
 msgid "Summary"
 msgstr ""
 
-#: templates/alldata/index.html:38 templates/project/data_analysis.html:64
-#: templates/project/tab_navigation.html:83
 msgid "Analysis"
 msgstr ""
 
@@ -772,7 +503,6 @@ msgstr "<b>SMS</b>: Give your <a href=\"#\" class=\"sms_questionnaire sms-previe
 msgid "Analyze your successful submissions"
 msgstr "Analyze your successful submissions."
 
-#: templates/project/data_analysis.html:92
 msgid "r_tooltip_report_period"
 msgstr ""
 "View your Submissions by one of these Reporting Periods. Click on the dropdown and a choose a specific Reporting Period."
@@ -796,125 +526,93 @@ msgstr ""
 msgid "r_tooltip_submission_date"
 msgstr "Click on the Submission Date dropdown and a choose a specific a date or date range."
 
-#: templates/project/data_analysis.html:92
 msgid "Search for Keyword"
 msgstr ""
 
-#: templates/alldata/index.html:39 templates/project/tab_navigation.html:86
 msgid "All Data Records"
 msgstr ""
 
-#: templates/alldata/index.html:40
 msgid "Web Submissions"
 msgstr ""
 
-#: templates/project/data_submission.html: 26
 msgid "Back to Project List"
 msgstr ""
 
-#: templates/project/data_submission.html: 29
 msgid "Fill out the following Questionnaire and click on Submit."
 msgstr ""
 
-#: templates/entity/register_subject.html: 14
 msgid "Fill out the following Registration Form and click on Register."
 msgstr ""
 
-#: templates/project/data_submission_questionnaire.html: 8
 msgid "All your entered data will be lost. Are you sure you want to cancel?"
 msgstr ""
 
-#: templates/dashboard/home.html:31
 msgid "help_project_creation"
 msgstr "Each project = one questionnaire. Don’t worry, you can create as many different projects as you like."
 
-#: templates/dashboard/home.html:40
 msgid "How to use Datawinners"
 msgstr ""
 
-#: templates/dashboard/home.html:41
 msgid "Click on the triangle to the left of 'How to use DataWinners' to expand or collapse the box."
 msgstr ""
 
-#: templates/dashboard/home.html:44
 msgid "help_how_to_use_dw"
 msgstr ""
 "DataWinners is the do-it-yourself Data Collection and Communication tool you "
 "need to make better decisions.<br />Click on the Create a New Project button "
 "to get started."
 
-#: templates/dashboard/home.html:49
 msgid "Your projects"
 msgstr ""
 
-#: templates/dashboard/home.html:54
 msgid "successful"
 msgstr ""
 
-#: templates/dashboard/home.html:55
 msgid "error"
 msgstr ""
 
-#: templates/dashboard/home.html:58
 msgid "go to this project"
 msgstr ""
 
-#: templates/dashboard/home.html:71
 msgid "No submissions present for this project"
 msgstr ""
 
-#: templates/dashboard/home.html:74
 msgid "This project is inactive"
 msgstr ""
 
-#: templates/dashboard/home.html:79
 msgid "view all projects"
 msgstr ""
 
-#: templates/dashboard/start.html:17
-#, python-format
 msgid ""
 " Once you have created projects, a list of your %(text)s will appear here."
 msgstr ""
 
-#: templates/dashboard/start.html:19
 msgid "To get started with DataWinners"
 msgstr ""
 
-#: templates/dashboard/start.html:19
 msgid "order_to_create_project"
 msgstr "create a new project"
 
-#: templates/entity/all_datasenders.html:9
 msgid "Add a data sender"
 msgstr ""
 
-#: templates/entity/all_datasenders.html:15
 msgid "q_all_datasenders_add_manually"
 msgstr "Add Data Sender one-by-one using the online registration form"
 
-#: templates/entity/all_datasenders.html:18
 msgid "r_all_datasenders_add_manually"
 msgstr "Click the blue \"Add a Data Sender\" link and follow the step-by-step instructions"
 
-#: templates/entity/all_datasenders.html:56
-#: templates/entity/all_subjects.html:56
-#: templates/project/import_section_in_wizard.html:5
 msgid "Please enable JavaScript to use file uploader."
 msgstr ""
 
-#: templates/entity/all_datasenders.html:59
-#: templates/entity/all_subjects.html:59
 msgid "Upload a CSV or a XL file"
 msgstr ""
 
-#: templates/entity/all_datasenders.html:63
 msgid "q_all_datasenders_import"
 msgstr ""
 "Add a list of Data Senders all at once by importing an Excel (.xls) or a "
 "comma separated value (.csv) file"
 
-#: templates/entity/all_datasenders.html:66
 msgid "r_all_datasenders_import"
 msgstr ""
 "Follow these five easy steps to import a list of Data Senders<br />1) Open a "
@@ -935,76 +633,55 @@ msgstr ""
 "the file as (.csv) or (.xls)<br />5. Click on \"Import List\" button and "
 "follow instructions"
 
-#: templates/entity/all_datasenders.html:73
-#: templates/entity/all_subjects.html:74
-#: templates/project/import_section_in_wizard.html:15
 msgid "Row Number"
 msgstr ""
 
-#: templates/entity/all_datasenders.html:74
-#: templates/entity/all_subjects.html:75
-#: templates/project/import_section_in_wizard.html:16
 msgid "Row"
 msgstr ""
 
-#: templates/entity/all_datasenders.html:108
 msgid "Give Access"
 msgstr ""
 
-#: templates/entity/all_datasenders.html:110
-#: templates/project/registered_datasenders.html:26
 msgid "Actions:"
 msgstr ""
 
-#: templates/entity/all_datasenders.html:113
 msgid "Add to project"
 msgstr ""
 
-#: templates/entity/all_datasenders.html:114
 msgid "Remove from project"
 msgstr ""
 
-#: templates/entity/all_datasenders.html:115
 msgid "Give Web Submission Access"
 msgstr "Give Web & Smartphone Access"
 
-#: templates/entity/all_datasenders.html:118
 msgid "All Data Senders"
 msgstr ""
 
-#: templates/alldata/device_icons.html: 8
 msgid "Data Senders use their mobile phone to send in data via SMS."
 msgstr ""
 
-#: templates/alldata/device_icons.html: 15
 msgid "Data Senders use any Computer to send in data via Web."
 msgstr ""
 
-#: templates/alldata/device_icons.html: 24
 msgid "Data Senders use their Android Smartphone to send in data."
 msgstr ""
 
-#: templates/entity/create_or_edit_datasender.html:118
 msgid "Back to Data Sender List"
 msgstr ""
 
-#: templates/entity/all_subjects.html:11
 msgid "Add subjects one-by-one using the online registration form"
 msgstr ""
 
-#: templates/entity/all_subjects.html:13
 msgid ""
 "Click the blue \"Add a subject\" link and follow the step-by-step "
 "instructions"
 msgstr ""
 
-#: templates/entity/all_subjects.html:64
 msgid "q_all_subjects"
 msgstr ""
 "Add a list of subjects all at once by importing an Excel (.xls) or a Comma "
 "Separated Value (.csv) file"
 
-#: templates/entity/all_subjects.html:67
 msgid "r_all_subjects"
 msgstr ""
 "Follow these five easy steps to import a list of Subjects:<br />1) Open a "
@@ -1025,127 +702,90 @@ msgstr ""
 "(.csv) or (.xls)<br />5. Click on \"Upload a file\" button and follow "
 "instructions"
 
-#: templates/entity/all_subjects.html:85
 msgid "All Subjects"
 msgstr ""
 
-#: templates/entity/create_datasender.html:3
-#: templates/entity/create_datasender.html:4
 msgid "Add A Data Sender"
 msgstr ""
 
-#: templates/entity/create_subject.html:3
-#: templates/entity/create_subject.html:4
 msgid "Add a Subject"
 msgstr ""
 
-#: templates/entity/create_type.html:3
 msgid "Add a new subject type"
 msgstr ""
 
-#: templates/entity/create_type.html:9
 msgid "New Subject(eg clinic, waterpoint etc)"
 msgstr ""
 
-#: templates/project/data_analysis.html:3
 msgid "Data Analysis"
 msgstr ""
 
-#: templates/project/data_analysis.html:54
 msgid "This Project is not yet active. Data displayed is test data."
 msgstr ""
 
-#: templates/project/data_analysis.html:54 templates/project/results.html:49
 msgid "Click Here to Activate"
 msgstr ""
 
-#: templates/project/data_analysis.html:58 templates/project/results.html:60
 msgid "Export"
 msgstr ""
 
-#: templates/project/data_analysis.html:59 templates/project/.html:61
 msgid "print"
 msgstr ""
 
-#: templates/project/data_analysis.html:60 templates/project/results.html:62
 msgid "e-mail"
 msgstr ""
 
-#: templates/project/results.html:70
 msgid "Show data for:"
 msgstr ""
 
-#: templates/project/data_analysis.html:82
 msgid "Reporting Period"
 msgstr ""
 
 msgid "Submission Date"
 msgstr ""
 
-#:templates/project/results.html:71
 msgid "Click to select a date range"
 msgstr ""
 
-#: templates/project/data_analysis.html:85
 msgid "All Periods"
 msgstr ""
 
 msgid "All Dates"
 msgstr ""
 
-#: templates/project/data_analysis.html:78 templates/project/results.html:72
 msgid "Filter"
 msgstr ""
 
 msgid "Go"
 msgstr ""
 
-#: templates/project/data_analysis.html:84
 msgid "View Data By:"
 msgstr ""
 
-#: templates/project/data_analysis.html:87
 msgid "View:"
 msgstr ""
 
-#: templates/project/datasenders.html:60
-#: templates/project/edit_datasender.html:63
-#: templates/project/register_datasender.html:63
-#: templates/project/register_subject.html:67
-#: templates/project/subject.html:79
 msgid "View Style:"
 msgstr ""
 
-#: templates/project/data_analysis.html:89
 msgid "List"
 msgstr ""
 
-#: templates/project/data_analysis.html:90
 msgid "Chart"
 msgstr ""
 
-#: templates/project/data_analysis.html:91
 msgid "Map"
 msgstr ""
 
-#: templates/project/datasenders.html:3
-#: templates/project/registered_datasenders.html:3
 msgid "Projects - Data Senders"
 msgstr ""
 
-#: templates/project/datasenders.html:34
 msgid "Preview Data sender's questionnaire"
 msgstr ""
 
-#: templates/project/datasenders.html:37
-#: templates/project/finish_and_test.html:179
-#: templates/project/finish_and_test.html:182
-#: templates/project/finish_and_test.html:185
-#: templates/project/questionnaire.html:134 templates/project/subjects.html:44
 msgid "Generating the questionnaire preview."
 msgstr ""
 
-#: templates/project/datasenders_wizard.html:47
 msgid "q_tooltip_datasenders_sender"
 msgstr ""
 "<strong>Data Senders</strong> are important because they are the people who "
@@ -1158,7 +798,6 @@ msgstr ""
 "each timethey respond to your questionnaire. DataWinners will recognize each "
 "Data Sender by his or her registeredtelephone number.<br /><br />"
 
-#: templates/project/datasenders_wizard.html:49
 msgid "r_tooltip_datasenders_sender"
 msgstr ""
 "Decide what information you want to collect for each Data Sender (first "
@@ -1169,35 +808,26 @@ msgstr ""
 "Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
 "Don’t worry, you can always edit this information later."
 
-#: templates/project/datasenders_wizard.html:51
 msgid ""
 "Register and manage approved Data Senders by editing the registration form "
 "below. You can also do this at a later time."
 msgstr ""
 
-#: templates/project/datasenders_wizard.html:59
 msgid "Add Data Senders now"
 msgstr ""
 
-#: templates/project/datasenders_wizard.html:60
-#: templates/project/subjects_wizard.html:58
 msgid "(Optional)"
 msgstr ""
 
-#: templates/project/datasenders_wizard.html:63
-#: templates/project/datasenders_wizard.html:73
 msgid "Add Data Senders Manually"
 msgstr ""
 
-#: templates/project/datasenders_wizard.html:72
 msgid "Enter your Data Senders individually"
 msgstr ""
 
-#: templates/project/datasenders_wizard.html:76
 msgid "Import a List of Data Senders"
 msgstr ""
 
-#: templates/project/datasenders.html:79
 msgid "tooltip_datasenders_import"
 msgstr ""
 "Add a list of subjects by following these instructions:"
@@ -1212,102 +842,68 @@ msgstr ""
 msgid "tooltip_datasenders_add_manually"
 msgstr "Click the blue \"Add Data Senders Manually\" button and register Data Senders individually by completing the web form."
 
-#: templates/project/datasenders_wizard.html:84
 msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
 msgstr ""
 
-#: templates/project/finish_and_test.html:41
 msgid ""
 "Congratulations! You have created your project. Review your project details "
 "and test if you can send in data."
 msgstr ""
 
-#: templates/project/finish_and_test.html:47
 msgid "Review"
 msgstr ""
 
-#: templates/project/finish_and_test.html:48
 msgid "Review and verify the summary of your project on this page."
 msgstr ""
 
-#: templates/project/finish_and_test.html:49
 msgid "Verify the specifications of your project"
 msgstr ""
 
-#: templates/project/finish_and_test.html:52
-#: templates/project/overview.html:39
 msgid "Project Profile"
 msgstr ""
 
-#: templates/project/finish_and_test.html:59
 msgid "Name:"
 msgstr ""
 
-#: templates/project/finish_and_test.html:63
 msgid "Project Type:"
 msgstr ""
 
-#: templates/project/finish_and_test.html:67
 msgid "Project Description:"
 msgstr ""
 
-#: templates/project/finish_and_test.html:71
 msgid "Devices:"
 msgstr ""
 
-#: templates/project/finish_and_test.html:75
-#: templates/project/finish_and_test.html:98
-#: templates/project/finish_and_test.html:115
-#: templates/project/finish_and_test.html:131
-#: templates/project/finish_and_test.html:145
 msgid "edit"
 msgstr ""
 
 msgid "Edit this project"
 msgstr ""
 
-#: templates/project/finish_and_test.html:76
-#: templates/project/finish_and_test.html:99
-#: templates/project/finish_and_test.html:116
-#: templates/project/finish_and_test.html:132
-#: templates/project/finish_and_test.html:147
 msgid "Click \"edit\" to make any required changes."
 msgstr ""
 
-#: templates/project/finish_and_test.html:87
 msgid "Type:"
 msgstr ""
 
-#: templates/project/finish_and_test.html:92
 msgid "Number of subjects:"
 msgstr ""
 
-#: templates/project/finish_and_test.html:107
 msgid "Questions:"
 msgstr ""
 
-#: templates/project/finish_and_test.html:126
 msgid "Number of data senders :"
 msgstr ""
 
-#: templates/project/finish_and_test.html:137
-#: templates/project/finish_and_test.html:199
-#: templates/project/reminders_wizard.html:3
-#: templates/project/reminders_wizard.html:34
-#: templates/project/tab_navigation.html:61
 msgid "Reminders"
 msgstr ""
 
-#: templates/project/finish_and_test.html:142
-#, python-format
 msgid "Reminders are <strong>%(is_reminder)s</strong> for this project"
 msgstr ""
 
-#: templates/project/finish_and_test.html:152
 msgid "Test This Questionnaire"
 msgstr ""
 
-#: templates/project/finish_and_test.html:155
 msgid "q_tooltip_finish_test"
 msgstr ""
 "The <strong>Test This Questionnaire</strong> feature allows you to simulate "
@@ -1316,141 +912,99 @@ msgstr ""
 "right hand corner of this page. Test This Questionnaire can provide you "
 "helpful information to editquestions and answer types."
 
-#: templates/project/finish_and_test.html:158
 msgid "r_tooltip_finish_test"
 msgstr ""
 "Choose either the Test Web Form or Test SMS and follow the on-screen "
 "instructions to complete the test."
 
-#: templates/project/finish_and_test.html:162
-#: templates/project/finish_and_test.html:164
-#: templates/project/finish_and_test.html:165
-#: templates/project/review_and_test.html:158
 msgid "SMS Questionnaire"
 msgstr ""
 
-#: templates/project/finish_and_test.html:163
 msgid "Test your Questionnaire by this SMS tester"
 msgstr ""
 
-#: templates/project/finish_and_test.html:167
-#: templates/project/questionnaire_and_DS.html:23
-#: templates/project/web_instruction_preview.html: 21
 msgid "Web Questionnaire"
 msgstr ""
 
-#: templates/project/questionnaire_and_DS.html:30
 msgid "SmartPhone"
 msgstr "Smartphone"
 
-#: templates/project/finish_and_test.html:169
 msgid "Preview and print your questionnaire"
 msgstr ""
 
-#: templates/project/finish_and_test.html:171
 msgid "Data Sender"
 msgstr ""
 
-#: templates/project/finish_and_test.html:172
 msgid "Subject"
 msgstr ""
 
-#: templates/project/finish_and_test.html:173
 msgid "Web"
 msgstr ""
 
-#: templates/project/finish_and_test.html:194
 msgid "Go to Project Overview"
 msgstr ""
 
-#: templates/project/import_section_in_wizard.html:8
 msgid "Upload a CSV or a XLS file"
 msgstr ""
 
-#: templates/project/index.html:3 templates/project/index.html.py:4
 msgid "All Projects"
 msgstr ""
 
-#: templates/project/index.html:35
 msgid "State"
 msgstr ""
 
-#: templates/project/index.html:36 templates/project/results.html:77
-#: templates/project/results.html.py:78
 msgid "Actions"
 msgstr ""
 
-#: templates/project/index.html:45
-#: templates/project/questionnaire_wizard.html:36
-#: templates/project/questionnaire_wizard.html:47
-#: templates/project/results.html:78
 msgid "Delete"
 msgstr ""
 
-#: templates/project/index.html:47 templates/project/index.html.py:56
-#: templates/project/tab_navigation.html:39
 msgid "Activate"
 msgstr ""
 
-#: templates/project/index.html:54 templates/project/tab_navigation.html:37
 msgid "Warning: Activating the project will remove all existing test data."
 msgstr ""
 
-#: templates/project/index.html:59
 msgid "Export all submissions prior to deleting your project."
 msgstr ""
 
-#: templates/project/index.html:61
 msgid "Delete Project Now"
 msgstr ""
 
-#: templates/project/log_table.html:20
 msgid "Date Received"
 msgstr ""
 
-#: templates/project/log_table.html:23
 msgid "Submission Status"
 msgstr ""
 
-#: templates/project/log_table.html:26
 msgid "Deleted Record"
 msgstr ""
 
-#: templates/project/overview.html:3
 msgid "Projects - Overview"
 msgstr ""
 
-#: templates/project/overview.html:41
 msgid ""
 "Review the basic information for your project. Click \"View\" to see the "
 "whole profile or \"Edit profile\" to make changes."
 msgstr ""
 
-#: templates/project/questionnaire_and_html:2
 msgid "Status: Complete"
 msgstr ""
 
-#: templates/project/overview.html:88
-#: templates/project/reminder_content.html:25
-#: templates/project/reminders.html:38
 msgid "When"
 msgstr ""
 
-#: templates/project/overview.html:94
 msgid "Deadline"
 msgstr ""
 
-#: templates/project/profile.html:49
 msgid ""
 "Warning: Updating the associated type of the project questionnaire will "
 "remove all existing data."
 msgstr ""
 
-#: templates/project/create_project.html:88
 msgid "Continue"
 msgstr ""
 
-#: templates/project/create_project.html:179
 msgid "Save & Create Project"
 msgstr ""
 
@@ -1460,37 +1014,27 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: templates/project/profile_deadline.html:3
 msgid "Deadlines and Reminders"
 msgstr ""
 
-#: templates/project/profile_deadline.html:23
 msgid "Deadline Example:"
 msgstr ""
 
-#: templates/project/profile_deadline_month_block.html:4
-#: templates/project/profile_deadline_week_block.html:4
 msgid "Always on"
 msgstr ""
 
-#: templates/project/profile_deadline_month_block.html:8
-#: templates/project/profile_deadline_week_block.html:8
 msgid "of-the-week"
 msgstr "of the"
 
 msgid "of-the-month"
 msgstr "of the"
 
-#: templates/project/profile_deadline_month_block.html:8
 msgid "month"
 msgstr ""
 
-#: templates/project/profile_deadline_week_block.html:8
 msgid "week"
 msgstr ""
 
-#: templates/project/profile_languages.html:12
-#: templates/project/profile_subjects-questionnaire.html:34
 msgid "q_tooltip_profile_devices"
 msgstr ""
 "Devices are important because you can choose the <strong>communication "
@@ -1502,14 +1046,11 @@ msgstr ""
 "system. If you have regional offices with goodinternet connectivity, you can "
 "also create your own online form."
 
-#: templates/project/profile_languages.html:15
-#: templates/project/profile_subjects-questionnaire.html:37
 msgid "r_tooltip_profile_devices"
 msgstr ""
 "Choose one, two or all three channels by clicking on the boxes. Don't worry, "
 "you can alwayschange your mind later."
 
-#: templates/project/profile_subjects-questionnaire.html:12
 msgid "q_tooltip_profile_subjects"
 msgstr ""
 "<strong>Subjects</strong> are very important. They are the topic of your "
@@ -1518,31 +1059,24 @@ msgstr ""
 "clinics, retail shops, water points). Subjects can also be peoplewho send "
 "you their monthly activity reports.<br/><br/>"
 
-#: templates/project/profile_subjects-questionnaire.html:14
 msgid "r_tooltip_profile_subjects"
 msgstr ""
 "Click one of the radio buttons to tell us the subject of your questionnaire. "
 "DataWinners willprovide you the step-by-step instructions for your choice. "
 "Don’t worry, you can always decideor change your mind later."
 
-#: templates/project/question_detail_panel.html:4
-#: templates/project/question_table.html:5
 msgid "Question"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:9
-#: templates/project/question_table.html:6
 msgid "Code"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:13
 msgid "q_tooltip_question_detail_code"
 msgstr ""
 "Each question in a questionnaire is identified by its own "
 "unique<strong>Question Code</strong>. This Question Code tells DataWinners "
 "whatquestion is answered by the Data Sender.<br/><br/>"
 
-#: templates/project/question_detail_panel.html:15
 msgid "r_tooltip_question_detail_code"
 msgstr ""
 "Enter a 1 or 2 character code (letters, numbers or both). Your Data "
@@ -1550,18 +1084,15 @@ msgstr ""
 "each question.This will tell DataWinners what question the Data Sender is "
 "answering."
 
-#: templates/project/question_detail_panel.html:22
 msgid "Answer Type"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:26
 msgid "q_tooltip_question_detail_type"
 msgstr ""
 "Questionnaires collect data in several formats: numbers, text, multiple "
 "choiceand dates. The <strong>Answer Type</strong> identifies which format "
 "the DataSender must use when answering the question."
 
-#: templates/project/question_detail_panel.html:29
 msgid "r_tooltip_question_detail_type"
 msgstr ""
 "Select the <strong>Answer Type</strong> that the Data Sender will use "
@@ -1570,398 +1101,291 @@ msgstr ""
 "Senders will typein the letter (A, B, C etc.) that corresponds to the "
 "correct answer NOT the textin the answer field."
 
-#: templates/project/question_detail_panel.html:31
 msgid "Select what kind of answer you want from your Data Senders."
 msgstr ""
 
-#: templates/project/question_detail_panel.html:34
 msgid "Word or Phrase"
 msgstr "Word"
 
-#: templates/project/question_detail_panel.html:37
 msgid "Number"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:40
 msgid "Date"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:44
 msgid "List of Choices"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:48
 msgid "GPS Coordinates"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:55
 msgid "Select Date Format"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:61
 msgid "month.year"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:64
 msgid "day.month.year"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:67
 msgid "month.day.year"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:79
 msgid "Add Answer Choice"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:84
 msgid "only one answer"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:87
 msgid "multiple answers are permitted"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:93
 msgid "Min:"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:99
 msgid "Max:"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:109
 msgid "No, answer has no character limit"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:115
 msgid "Yes, maximum number of characters should be"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:124
 msgid "Instructions"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:130
 msgid "tooltip_question_detail_instruction"
 msgstr "These instructions explain the answer criteria you set for each question. They are meant to help the Data Sender. "
 "When you print the Questionnaire and give it to your Data Senders, these instructions will appear below each question."
 
-#: templates/project/question_table.html:4
 msgid "Question Number"
 msgstr ""
 
-#: templates/project/questionnaire.html: 87
 msgid "View and edit your Questionnaire."
 msgstr ""
 
-#: templates/project/questionnaire.html:4
-#: templates/project/questionnaire_preview.html:3
 msgid "Project - Questionnaire"
 msgstr ""
 
-#: templates/project/sms_instruction_preview.html: 7
 msgid "Collect Data via SMS"
 msgstr ""
 
-#: templates/project/sms_instruction_preview.html: 9
 msgid "Your Data Senders can use their own mobile phone to send in data."
 msgstr ""
 
-#: templates/project/sms_instruction_preview.html: 12
 msgid "How it Works"
 msgstr ""
 
-#: templates/project/sms_instruction_preview.html: 13
 msgid "sms instruction"
 msgstr "Print out the SMS Questionnaire and give it to your registered Data Senders. Then they ﬁll in the answer"
 "for each question on the paper Questionnaire. Then your Data Senders follow the “Example SMS"
 " Answer” format on the Questionnaire to type their SMS into the phone and send it in a single SMS."
 
-#: templates/project/sms_questionnaire_preview.html: 11
 msgid "Answer the questions"
 msgstr ""
 
-#: templates/project/sms_questionnaire_preview.html: 13
 msgid "Fill in your answers:"
 msgstr ""
 
-#: templates/project/sms_questionnaire_preview.html: 52
 msgid "Prepare your SMS"
 msgstr ""
 
-#: templates/project/sms_questionnaire_preview.html: 54
 msgid "Enter all your answers. Use a space to separate them."
 msgstr ""
 
-#: templates/project/sms_questionnaire_preview.html: 60
 msgid "Send your answers using SMS"
 msgstr ""
 
-#: templates/project/sms_questionnaire_preview.html: 61
 msgid "Send your SMS to the telephone number:"
 msgstr ""
 
-#: templates/project/sms_questionnaire_preview.html: 64
 msgid "Wait for our reply SMS"
 msgstr ""
 
-#: templates/project/sms_questionnaire_preview.html: 65
 msgid "You will receive an SMS confirmation or specific error message."
 msgstr ""
 
-#: templates/project/web_instruction_preview.html: 7
 msgid "Collect Data via Web"
 msgstr ""
 
-#: templates/project/web_instruction_preview.html: 11
 msgid "Your Data Senders can use any computer to send in data online."
 msgstr ""
 
-#: templates/project/web_instruction_preview.html: 15
 msgid "Give your Data Senders Web access when you register them on the "
 msgstr ""
 
-#: templates/project/web_instruction_preview.html: 17
 msgid "page. Then your Data Senders can log in to fill out the Questionnaire online."
 msgstr ""
 
-#: templates/project/web_questionnaire_preview.html: 8
 msgid "Why canʼt I submit?"
 msgstr ""
 
-#: templates/project/web_questionnaire_preview.html: 11
 msgid "This is only a preview. To send in data, Go to the \"Data\" tab, then to \"Web Submission\"."
 msgstr ""
 
-#: templates/project/web_instruction_preview.html: 16
-#: templates/project/smart_phone_instruction_preview.html: 13
 msgid "My Data Senders page"
 msgstr "My Data Senders"
 
-#: templates/project/smart_phone_instruction_preview.html: 6
 msgid "Collect Data via Smartphone"
 msgstr ""
 
-#: templates/project/smart_phone_instruction_preview.html: 7
 msgid "Your Data Senders can use any Android Smartphone to send in data."
 msgstr ""
 
-#: templates/project/smart_phone_instruction_preview.html: 12
 msgid "Give your Data Senders Smartphone access when you register them on the "
 msgstr ""
 
-#: templates/project/smart_phone_instruction_preview.html: 14
 msgid "page. Then your Data Senders can log in and fill out the Questionnaire using their Android Smartphone."
 msgstr ""
 
-#: templates/alldata/smart_phone_instruction.html: 18
-#: templates/project/smart_phone_instruction_preview.html: 19
 msgid "Use your Android Smartphone to send in data. Follow the instructions or download our tutorial"
 msgstr ""
 
-#: templates/alldata/smart_phone_instruction.html: 19
 msgid "/media/files/DataWinners_InstallDataWinnersOnYourSmartphone.en.pdf"
 msgstr ""
 
-#: templates/alldata/smart_phone_instruction.html: 19
-#: templates/alldata/smart_phone_instruction.html: 24
-#: templates/project/smart_phone_instruction_preview.html: 20
 msgid "Install DataWinners on your Smartphone"
 msgstr ""
 
-#: templates/alldata/smart_phone_instruction.html: 23
 msgid "Tutorial"
 msgstr ""
 
-#: templates/alldata/smart_phone_instruction.html: 24
 msgid "(PDF, 3 pages, 0.6 MB)"
 msgstr ""
 
-#: templates/project/create_project.html: 198
 msgid "Close Window"
 msgstr ""
 
-#: templates/project/create_project.html: 129
 msgid "Preview"
 msgstr ""
 
-#: templates/project/questionnaire.html:68
 msgid "Review the question by clicking on each"
 msgstr ""
 
-#: templates/project/questionnaire.html:71
 msgid "Preview Questionnaire"
 msgstr ""
 
-#: templates/project/questionnaire.html:77
 msgid "Questionnaire Code :"
 msgstr ""
 
-#: templates/project/questionnaire.html:83
 msgid "q_tooltip_questionnaire_code"
 msgstr ""
 "All questionnaires have a Unique Questionnaire Code. DataWinners uses this "
 "unique code to correctly identify your questionnaire. Use the recommended "
 "code or change it if you like."
 
-#: templates/project/questionnaire.html:86
 msgid "r_tooltip_questionnaire_code"
 msgstr ""
 "Enter a 3 letter code (letters and numbers). This questionnaire code will "
 "appear on the printed versionof your questionnaire. Your Data Senders will "
 "type in this code first when sending in their data."
 
-#: templates/project/questionnaire.html:102
-#: templates/project/questionnaire_wizard.html:98
 msgid "Add another Question"
 msgstr ""
 
-#: templates/project/questionnaire.html:116
 msgid "Save"
 msgstr ""
 
-#: templates/project/create_project.html:114
 msgid "tooltip_question_sms"
 msgstr "Use this running count to determine the maximum number of characters a Data Sender will have to enter to "
 "respond to all questions in your questionnaire. To keep communication costs down, try to keep the number of characters "
 "required to 160 or less, the length of a single SMS. Don't worry, you can go beyond 160 characters. However, more than "
 "one SMS will be required to answer all the questions."
 
-#: templates/project/questionnaire_preview.html:8
 msgid "Print"
 msgstr ""
 
-#: templates/project/questionnaire_preview.html:11
 msgid "SMS your answers to"
 msgstr ""
 
-#: templates/project/questionnaire_preview.html:15
 msgid "Project Name:"
 msgstr ""
 
-#: templates/project/questionnaire_preview.html:19
 msgid "Questionnarie Code:"
 msgstr ""
 
-#: templates/project/questionnaire_preview.html:23
-#: templates/project/sms_questionnaire_preview.html:56
 msgid "Example:"
 msgstr ""
 
-#: templates/project/questionnaire_wizard.html:62
 msgid "Define the questions you want your Data Senders to answer."
 msgstr ""
 
-#: templates/project/questionnaire_wizard.html:70
-#: templates/project/questionnaire.html: 81
 msgid "SMS Questionnaire Code:"
 msgstr ""
 
-#: templates/project/create_project.html:118
 msgid "tooltip_question_code"
 msgstr "Enter a combination of 3-6 letters and/or numbers (or both). Your Data Senders will enter this code first when "
 "sending in their data using SMS. DataWinners uses this unique code to correctly identify your questionnaire. "
 "By using Questionnaire Codes, your organization can collect multiple data sets simultaneously using a single telephone number. "
 "Your questionnaire code will appear on the printed version of your questionnaire."
 
-#: templates/project/questionnaire_wizard.html:117
-#: templates/project/create_project.html:142
 msgid "SMS Preview"
 msgstr ""
 
-#: templates/project/questionnaire_wizard.html:128
 msgid ""
 "Warning: Changing the questionnaire code will remove all existing test data."
 msgstr ""
 
-#: templates/project/questionnaire_wizard.html:129
 msgid "OK"
 msgstr ""
 
-#: templates/project/registered_datasenders.html:29
 msgid "Dis-Associate"
 msgstr ""
 
-#: templates/project/registered_datasenders.html:33
 msgid "Select"
 msgstr ""
 
-#: templates/project/registered_datasenders.html:34
-#: templates/project/registered_subjects.html:28
 msgid "Unique ID"
 msgstr ""
 
-#: templates/project/registered_subjects.html:3
-#: templates/project/subjects.html:3
 msgid "Projects - Subjects"
 msgstr ""
 
-#: templates/project/reminder_content.html:11
 msgid "Add Reminder"
 msgstr ""
 
-#: templates/project/reminder_content.html:12
 msgid "Save the reminders"
 msgstr ""
 
-#: templates/project/reminder_content.html:16
 msgid ""
 "Reminders are not enabled for this project Please proceed to the next "
 "<a>step</a>"
 msgstr ""
 
-#: templates/project/reminder_content.html:30
-#: templates/project/reminders.html:44
 msgid "day(s) <strong>before</strong> the deadline"
 msgstr ""
 
-#: templates/project/reminder_content.html:32
-#: templates/project/reminders.html:48
 msgid "On the deadline"
 msgstr ""
 
-#: templates/project/reminder_content.html:35
-#: templates/project/reminders.html:54
 msgid "day(s) <strong>after</strong> the deadline"
 msgstr ""
 
-#: templates/project/reminder_content.html:42
-#: templates/project/reminders.html:57
 msgid "To Whom"
 msgstr ""
 
-#: templates/project/reminder_content.html:45
-#: templates/project/reminders.html:62
 msgid "Anyone who hasn't sent data"
 msgstr "Anyone who has not sent data"
 
-#: templates/project/reminder_content.html:54
-#: templates/project/reminders.html:68
 msgid "The message count is"
 msgstr ""
 
-#: templates/project/reminder_content.html:58
 msgid "Remove"
 msgstr ""
 
-#: templates/project/reminders.html:3 templates/project/sent_reminders.html:3
 msgid "Project - Reminders"
 msgstr ""
 
-#: templates/project/reminders.html:60
 msgid "Everyone"
 msgstr ""
 
-#: templates/project/reminders.html:109
 msgid "Reminders are not enabled for this project. Click on Settings tab to activate reminders for this project."
 msgstr ""
 
-#: templates/project/sent_reminders.html:52
 msgid "Reminders are not enabled for this project."
 msgstr ""
 
-#: templates/project/reminders_wizard.html:37
 msgid "q_tooltip_reminders"
 msgstr ""
 "<strong>Reminders</strong> are important because they are the people who "
@@ -1974,7 +1398,6 @@ msgstr ""
 "each timethey respond to your questionnaire. DataWinners will recognize each "
 "Data Sender by his or her registeredtelephone number."
 
-#: templates/project/reminders_wizard.html:40
 msgid "r_tooltip_reminders"
 msgstr ""
 "Decide what information you want to collect for each Data Sender (first "
@@ -1985,80 +1408,60 @@ msgstr ""
 "Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
 "Don’t worry, you can always edit this information later."
 
-#: templates/project/results.html:3
 msgid "All Data records"
 msgstr ""
 
-#: templates/project/results.html:49
 msgid "This Project is not yet active. Data displayed is test data"
 msgstr ""
 
-#: templates/project/results.html:66
 msgid "Results"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:11
 msgid "Send all your Answers in a single SMS"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:12
 msgid "Verify you can send in test answers"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:15
 msgid "Send in your test answers."
 msgstr ""
 
-#: templates/project/sms_tester_form.html:17
 msgid "Refer to the Web Questionnaire Preview for a sample SMS"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:28
 msgid "Send SMS"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:30
 msgid "Clear"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:35
 msgid "See the data you received"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:37
 msgid "See if DataWinners received your SMS. (Go to "
 msgstr ""
 
-#: templates/project/sms_tester_form.html:38
 msgid "All Data Records "
 msgstr ""
 
-#: templates/project/sms_tester_form.html:38
 msgid "page to view submission status)"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:6
 msgid "View the SMS Questionnaire"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:6
 msgid "Send your Answers"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:6
 msgid "Use the phone below or your own mobile phone to send in your test answers."
 msgstr ""
 
-#: templates/project/subjects.html:34
-#: templates/project/subjects_wizard.html:51
 msgid "Review the questions by clicking on each"
 msgstr ""
 
-#: templates/project/subjects.html:41
 msgid "Preview Subject's questionnaire"
 msgstr ""
 
-#: templates/project/subjects_wizard.html:46
 msgid "q_tooltip_subject_wizard_subject"
 msgstr ""
 "Your Data Senders collect data about <strong>Subjects</strong>, which are "
@@ -2072,7 +1475,6 @@ msgstr ""
 "space in the SMS because Data Senders will not have to type the name, "
 "location andother information about the subject each time they send data."
 
-#: templates/project/subjects_wizard.html:49
 msgid "r_tooltip_subject_wizard_subject"
 msgstr ""
 "Decide what information you want to use to identify and register each "
@@ -2084,28 +1486,21 @@ msgstr ""
 "<strong>Data</strong> <strong>Senders to register Subjects</strong> "
 "themselves. Don’t worry, youcan always edit this information later."
 
-#: templates/project/subjects_wizard.html:57
 msgid "Add Subjects now"
 msgstr ""
 
-#: templates/project/subjects_wizard.html:61
-#: templates/project/subjects_wizard.html:71
 msgid "Add Subjects Manually"
 msgstr ""
 
-#: templates/project/subjects.html:68
 msgid "tooltip_subject_wizard_add_manually"
 msgstr "Click the blue 'Add Subjects Manually' button and register subjects individually by completing the web form."
 
-#: templates/project/subjects_wizard.html:70
 msgid "Enter your Subjects individually"
 msgstr ""
 
-#: templates/project/subjects_wizard.html:74
 msgid "Import a List of Subjects"
 msgstr ""
 
-#: templates/project/subjects.html:79
 msgid "tooltip_subject_import"
 msgstr ""
 "Add a list of subjects by following these instructions:"
@@ -2117,44 +1512,33 @@ msgstr ""
 "<br />6) Select the completed template on your computer"
 "<br />7) Wait for the file to finish uploading"
 
-#: templates/project/subjects_wizard.html:83
 msgid "Upload an excel (.xls) or csv file (.csv) of your Subjects"
 msgstr ""
 
-#: templates/project/tab_navigation.html:16
 msgid "Project status:"
 msgstr ""
 
-#: templates/project/tab_navigation.html:23
 msgid ""
 "Your project status is Test. You need to click on 'Activate Project' to "
 "activate it."
 msgstr ""
 
-#: templates/project/tab_navigation.html:25
-#: templates/project/tab_navigation.html:32
 msgid "Activate Project"
 msgstr ""
 
-#: templates/project/tab_navigation.html:26
-#: templates/project/review_and_test.html:160
 msgid "Test SMS Questionnaire"
 msgstr ""
 
-#: templates/project/tab_navigation.html:30
 msgid ""
 "Your project is inactive. You need to complete the Profile to activate it."
 msgstr ""
 
-#: templates/project/tab_navigation.html:48
 msgid "Overview"
 msgstr ""
 
-#: templates/project/tab_navigation.html:66
 msgid "Data"
 msgstr ""
 
-#: templates/project/tab_navigation.html:78
 msgid "tooltip_tab_navigation"
 msgstr ""
 "View, analyze and export your collected Data. Create an alert to be aware "
@@ -2164,144 +1548,103 @@ msgstr ""
 "All Data Records</strong><br/>View the list of all Data Records you have "
 "received from your Data Senders. Filter and export your list toExcel."
 
-#: templates/project/tab_navigation.html:90
 msgid "Web Submission"
 msgstr ""
 
-#: templates/project/tab_navigation.html:99
 msgid "Registered Subjects"
 msgstr ""
 
-#: templates/project/tab_navigation.html:102
 msgid "Registration Subjects"
 msgstr ""
 
-#: templates/project/tab_navigation.html:110
 msgid "Registered Data Senders"
 msgstr ""
 
-#: templates/project/tab_navigation.html:113
 msgid "Registration Questionnaire"
 msgstr ""
 
-#: templates/project/tab_navigation.html:121
 msgid "Scheduled Reminders"
 msgstr ""
 
-#: templates/project/tab_navigation.html:124
 msgid "Sent Reminders"
 msgstr ""
 
-#: templates/registration/activate.html:3
-#: templates/registration/activate.html:4
 msgid "Activation Confirmation"
 msgstr ""
 
-#: templates/registration/activate.html:11
 msgid "Account successfully activated"
 msgstr ""
 
-#: templates/registration/activate.html:15
 msgid "Account activation failed"
 msgstr ""
 
-#: templates/registration/activation_complete.html:3
-#: templates/registration/activation_complete.html:4
 msgid "Activation Complete"
 msgstr ""
 
-#: templates/registration/activation_complete.html:9
 msgid "You have successfully activated your account"
 msgstr ""
 
-#: templates/registration/login.html:3
 msgid "Login"
 msgstr ""
 
-#: templates/registration/login.html:4
 msgid "Sign In to Your Account on DataWinners"
 msgstr ""
 
-#: templates/registration/login.html:46
-#: templates/registration/password_reset_form.html:27
 msgid "Not registered?"
 msgstr ""
 
-#: templates/registration/login.html:46
-#: templates/registration/password_reset_form.html:27
 msgid "Create an account"
 msgstr ""
 
-#: templates/registration/login.html:46
 msgid "Reset Password"
 msgstr ""
 
-#: templates/registration/logout.html:7
 msgid "You have successfully signed out. Thanks for your visit."
 msgstr ""
 
-#: templates/registration/logout.html:8
 msgid "Sign in again"
 msgstr ""
 
-#: templates/registration/password_reset_complete.html:3
-#: templates/registration/password_reset_complete.html:4
 msgid "Password Reset"
 msgstr ""
 
-#: templates/registration/password_reset_complete.html:9
 msgid "Password reset successfully"
 msgstr ""
 
-#: templates/registration/password_reset_confirm.html:3
-#: templates/registration/password_reset_confirm.html:4
 msgid "Password Reset Confirm"
 msgstr ""
 
-#: templates/registration/password_reset_confirm.html:22
 msgid "Submit"
 msgstr ""
 
-#: templates/registration/password_reset_done.html:3
-#: templates/registration/password_reset_done.html:4
 msgid "Password Reset Done"
 msgstr ""
 
-#: templates/registration/password_reset_done.html:8
 msgid "Email with password reset instructions has been sent"
 msgstr ""
 
-#: templates/registration/password_reset_form.html:3
 msgid "Password reset"
 msgstr ""
 
-#: templates/registration/password_reset_form.html:4
 msgid "Forgot Your Password?"
 msgstr ""
 
-#: templates/registration/password_reset_form.html:14
 msgid ""
 "Type the full email address you use to sign in to your DataWinners Account."
 msgstr ""
 
-#: templates/registration/password_reset_form.html:15
 msgid "We will email you a code to this Email."
 msgstr ""
 
-#: templates/registration/password_reset_form.html:26
 msgid "Get Password"
 msgstr ""
 
-#: templates/registration/registration_complete.html:3
-#: templates/registration/registration_complete.html:4
 msgid "Registration Confirmation"
 msgstr ""
 
-#: templates/registration/registration_complete.html:11
 msgid "You have successfully registered"
 msgstr ""
 
-#: templates/registration/registration_complete.html:12
 msgid ""
 "An activation email has been sent to your email address. Please activate "
 "before login."
@@ -2379,14 +1722,9 @@ msgstr ""
 msgid "Sign Up To Start Using DataWinners Now"
 msgstr ""
 
-#: templates/header_wizard.html:28 templates/registration/activate.html:11
-#: templates/registration/activation_complete.html:9
-#: templates/registration/login.html:45
-#: templates/registration/password_reset_complete.html:9
 msgid "Sign in"
 msgstr ""
 
-#: templates/header_wizard.html:29, public_header_wizard.html, register.html, register_for_trial.html
 
 msgid "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?"
 msgstr ""
@@ -2538,35 +1876,27 @@ msgid "learn-about-partners-clients"
 msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp; "
 "<a href=\"/en/about-us/clients\">clients</a> &raquo;"
 
-#, python-format
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
 msgstr ""
 
-#, python-format
 msgid "This %s %s is not registered in our system.Please register this %s or contact your supervisor."
 msgstr ""
 
-#, python-format
 msgid "This telephone number is not registered in our system."
 msgstr ""
 
-#, python-format
 msgid "Your telephone number is not yet registered in our system. Please contact your supervisor."
 msgstr ""
 
-#, python-format
 msgid "All questions must be unique"
 msgstr "All questions must be unique. Please delete duplicates"
 
-#, python-format
 msgid "Question Code Already Exists"
 msgstr ""
 
-#, python-format
 msgid "Question Code %s provided already exists"
 msgstr ""
 
-#, python-format
 msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
 msgstr ""
 
@@ -2604,7 +1934,6 @@ msgstr ""
 msgid "Delete this Project"
 msgstr ""
 
-#overview.html page
 msgid "Add data senders"
 msgstr ""
 
@@ -2626,7 +1955,6 @@ msgstr ""
 msgid "Register Data Senders to see them on this map"
 msgstr ""
 
-#create_project.html
 msgid "Create your project in a few easy steps."
 msgstr ""
 
@@ -2687,7 +2015,6 @@ msgstr "Give your project a short, descriptive name so you can identify it among
 msgid "tooltip_error_language"
 msgstr "Your Data Senders will receive automatic Confirmation and Error messages from DataWinners based on their submission. Choose the language of these messages."
 
-#: templates/dashboard/overview.html
 msgid "Your project"
 msgstr ""
 
@@ -2869,7 +2196,6 @@ msgstr ""
 msgid "Which subject are you reporting on?"
 msgstr ""
 
-#Create project Page:
 msgid "Basic Information"
 msgstr ""
 
@@ -2879,7 +2205,6 @@ msgstr ""
 msgid "Example: Collect data from 100 primary school in Antananarivo in an effort to increase teacher attendance from 50% to 80%"
 msgstr ""
 
-#overview page
 msgid "Data Senders associated"
 msgstr ""
 
@@ -2904,14 +2229,12 @@ msgstr ""
 msgid "Add Senders"
 msgstr ""
 
-#broadcast_message.html
 msgid "Your message has been sent successfully."
 msgstr ""
 
 msgid "Your message could not be sent."
 msgstr "You cannot send SMS because your DataWinners account hasn’t been configured to send SMS. Please contact our support team: support@datawinners.com"
 
-#accountmanagement/form.py
 msgid "Please Select..."
 msgstr ""
 
@@ -2939,11 +2262,9 @@ msgstr ""
 msgid "Water and Sanitation"
 msgstr ""
 
-#blue tab
 msgid "Review and Test"
 msgstr ""
 
-#datasender-tab
 msgid "Import List"
 msgstr ""
 
@@ -3011,7 +2332,6 @@ msgstr ""
 msgid "Privacy Policy"
 msgstr ""
 
-#Translations for tooltips on basic_info.html
 msgid "tooltip_questionnaire_about"
 msgstr "If you need the following question, “What subject are you reporting on?” in your questionnaire, choose the "
 "Individual Report option. For more information review the help bubble next to each choice."
@@ -3286,7 +2606,6 @@ msgstr "<br/>View your received data by a particular Reporting Period (Example: 
        "You can translate or edit this question, but try to keep the same meaning (Example: “What month and year are you reporting on?”)"
        "<br/><br/><a class='hide_link' href=\"javascript:void(0);\">Hide Help</a>"
 
-#, python-format
 msgid "Upload an Excel file (.xls) with Your %(entity_type)s list"
 msgstr ""
 
@@ -3489,7 +2808,6 @@ msgstr ""
 msgid "Send in data"
 msgstr ""
 
-#: templates/project/data_submission.html: 15, 18
 msgid "Data Submission"
 msgstr ""
 
@@ -4331,7 +3649,6 @@ msgstr ""
 msgid "to see the data you submitted"
 msgstr ""
 
-# CRS Reports
 msgid "Way Bill Sent vs Received Report"
 msgstr "Waybill Sent VS Waybill Received"
 
@@ -4535,27 +3852,21 @@ msgstr ""
 msgid "Edited Project"
 msgstr ""
 
-#: dataextraction/helper.py:48, 57
 msgid "No submission data under this subject during this period."
 msgstr ""
 
-#: dataextraction/helper.py:64
 msgid "From code [%s] does not existed."
 msgstr ""
 
-#: dataextraction/helper.py:75
 msgid "Entity type [%s] is not defined."
 msgstr ""
 
-#: dataextraction/helper.py:79
 msgid "Entity [%s] is not registered."
 msgstr ""
 
-#: dataextraction/helper.py:89
 msgid "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011"
 msgstr ""
 
-#: dataextraction/helper.py:93
 msgid "Start date must before end date."
 msgstr ""
 
