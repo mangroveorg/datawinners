@@ -1,5 +1,3 @@
-__author__ = 'twer'
-
 class ResponseBuilder(object):
     def __init__(self, form_model, processed_data):
         self.form_model = form_model

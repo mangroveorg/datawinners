@@ -1,15 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-import mock
-from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mock import Mock, patch
-from datawinners.messageprovider.messages import get_submission_success_message, get_registration_success_message
+from datawinners.messageprovider.messages import  get_registration_success_message
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException,\
     MangroveException, EntityQuestionCodeNotSubmitted
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
 from mangrove.transport.facade import  create_response_from_form_submission
-import messageprovider
 from messageprovider.message_builder import ResponseBuilder
 
 THANKS = "Thank you. We received your message."
