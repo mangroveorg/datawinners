@@ -5,7 +5,7 @@ import datetime
 import logging
 from time import mktime
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
@@ -223,6 +223,8 @@ def undelete_project(request, project_id):
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    if project is None:
+        raise Http404
     form_model = FormModel.get(manager, project.qid)
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)

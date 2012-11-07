@@ -2,6 +2,8 @@
 
 
 ##Variables
+from messageprovider.tests.test_message_handler import THANKS
+
 SENDER = "from"
 RECEIVER = "to"
 SMS = "sms"
@@ -14,12 +16,12 @@ SUCCESS_MESSAGE_TEXT = "Thank you Shweta for your data record. We successfully r
 VALID_DATA = {SENDER: "1234567890",
               RECEIVER: "919880734937",
               SMS: "cli009 .EID cid003 .NA Mr. Tessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM ac",
-              SUCCESS_MESSAGE: u"Thank you Shweta. We received : EID: cid003 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
+              SUCCESS_MESSAGE: THANKS + " EID: cid003 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
 
 VALID_DATA2 = {SENDER: "1234567890",
                RECEIVER: "919880734937",
                SMS: "cli002 .EID cid005 .NA Mr. Tessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM ac",
-               SUCCESS_MESSAGE: u"Thank you Shweta. We received : EID: cid005 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
+               SUCCESS_MESSAGE: THANKS + " EID: cid005 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
 
 EXCEED_NAME_LENGTH = {SENDER: "1234567890",
                       RECEIVER: "919880734937",
@@ -39,7 +41,7 @@ BLANK_FIELDS = {SENDER: "",
 EXTRA_PLUS_IN_BTW = {SENDER: "1234567890",
                      RECEIVER: "919880734937",
                      SMS: "cli002 .EID cid002 . .NA Mr. Dessy .FA 58 .. .RD 17.05.2011 .BG b .SY ade .  .GPS 27.178057  -78.007789 .RM ac",
-                     ERROR_MSG: u"Thank you Shweta. We received : EID: cid002 NA: Mr. Dessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
+                     ERROR_MSG: THANKS + " cid002 NA: Mr. Dessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
 
 PLUS_IN_THE_BEGINNING = {SENDER: "1234567890",
                          RECEIVER: "919880734937",
@@ -94,7 +96,7 @@ WRONG_NUMBER_OF_ARGS = {SENDER: "1234567890",
 VALID_DATA_FOR_ORDERED_SMS = {SENDER: "1234567890",
               RECEIVER: "919880734937",
               SMS: "cli011  cid003  Mr.Tessy  58  17.05.2011  b  ade  27.178057,-78.007789 b ac",
-              SUCCESS_MESSAGE: u"Thank you Shweta. We received : EID: cid003 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789 RM: Rétrovir"}
+              SUCCESS_MESSAGE: THANKS + " EID: cid003 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789 RM: Rétrovir"}
 
 EXCEED_NAME_LENGTH_FOR_ORDERED_SMS = {SENDER: "1234567890",
                       RECEIVER: "919880734937",

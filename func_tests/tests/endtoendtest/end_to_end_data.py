@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from messageprovider.tests.test_message_handler import THANKS
 
 WELCOME_MESSAGE = 'message'
 SUCCESS_MESSAGE = 'message'
@@ -93,7 +94,7 @@ MESSAGE = "message"
 
 RESPONSE_MESSAGE = "message"
 
-SUCCESS_MESSAGE_TEXT = "Thank you Donald Mouse. We received : q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057, -78.007789"
+SUCCESS_MESSAGE_TEXT = THANKS + " q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057, -78.007789"
 
 SMS_SUBMISSION = "sms"
 UNIQUE_VALUE = "unique_value"
@@ -207,7 +208,7 @@ VALID_DATA_REVIEW_AND_TEST = {PROJECT_PROFILE: {PROJECT_NAME: "waterpoint morond
 
 VALID_DATA_FOR_SMS_LIGHT_BOX = {
     SMS: "WPS01  wat1  11.10.2011  98  12.04.2011  04.2011  04.12.2011   c  Mr.Tessy  ab  27.178057,-78.007789",
-    RESPONSE_MESSAGE: "Thank you TEST. We received : q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"}
+    RESPONSE_MESSAGE: THANKS + " q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"}
 
 VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                       RECEIVER: "",

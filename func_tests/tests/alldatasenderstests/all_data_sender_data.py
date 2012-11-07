@@ -2,6 +2,8 @@
 
 
 ##Variables
+from messageprovider.tests.test_message_handler import THANKS
+
 NAME = "name"
 MOBILE_NUMBER = "mobile_number"
 LOCATION = "location"
@@ -52,7 +54,7 @@ DELETE_DS_WITHOUT_SELECTING_DS = {PROJECT_NAME: "clinic test project", ERROR_MSG
 VALID_SMS = {SENDER: "919049008976",
                 RECEIVER: '919880734937',
                 SMS: "cli001 .EID cid003 .NA Mr. Pitt .FA 77 .RD 12.03.2007 .BG b .SY ade .GPS 27.178057  -78.007789 .RM ac",
-                SUCCESS_MESSAGE: u"Thank you ReRegistered. We received : EID: cid003 NA: Mr. Pitt FA: 77 RD: 12.03.2007 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
+                SUCCESS_MESSAGE: THANKS+ u" EID: cid003 NA: Mr. Pitt FA: 77 RD: 12.03.2007 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
 
 
 

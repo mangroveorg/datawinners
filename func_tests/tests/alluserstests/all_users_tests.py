@@ -1,10 +1,11 @@
 import unittest
-from framework.utils.data_fetcher import fetch_, from_
+from framework.utils.data_fetcher import fetch_
 from framework.base_test import setup_driver, teardown_driver
 from nose.plugins.attrib import attr
+from messageprovider.tests.test_message_handler import THANKS
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE
-from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD, DATA_SENDER_CREDENTIALS
+from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.alluserstests.all_users_data import *
@@ -88,7 +89,7 @@ class TestAllUsers(unittest.TestCase):
             SMS: "%s 10.10.2010" % questionnaire_code}
         sms_tester_page.send_sms_with(valid_sms)
         response = sms_tester_page.get_response_message()
-        self.assertRegexpMatches(response, SMS_SUBMISSION_SUCCESS_MSG)
+        self.assertRegexpMatches(response, THANKS)
         self.driver.close()
         self.driver.switch_to_window(first_tab)
 
