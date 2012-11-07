@@ -227,8 +227,8 @@ msgstr "Voarainay ny : "
 
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
-msgid "Thank you"
-msgstr "Misaotra betsaka"
+msgid "Thank you. We received your message."
+msgstr "Misaotra betsaka. Voaranay ny hafatrao."
 
 # messageprovider/messages.py
 #: messageprovider/messages.py:89

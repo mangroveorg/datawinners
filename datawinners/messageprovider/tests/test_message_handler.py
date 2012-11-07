@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+import mock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mock import Mock, patch
@@ -8,6 +9,10 @@ from mangrove.errors.MangroveException import FormModelDoesNotExistsException, N
     MangroveException, EntityQuestionCodeNotSubmitted
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
 from mangrove.transport.facade import  create_response_from_form_submission
+import messageprovider
+from messageprovider.message_builder import ResponseBuilder
+
+THANKS = "Thank you. We received your message."
 
 
 class TestGetExceptionMessageHandler(unittest.TestCase):
@@ -60,18 +65,43 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         return form_submission_mock
 
     def test_should_format_success_message_for_submission_with_reporter_name(self):
-        expected_message = get_submission_success_message() % "rep1" + "age: 12 name: tester choice: red"
+        expected_message = THANKS + " age: 12 name: tester choice: red"
         form_submission_mock = self.create_form_submission_mock()
-        response = create_response_from_form_submission(reporters=[{"name": "rep1"}], submission_id=123, form_submission=form_submission_mock)
+        response = create_response_from_form_submission(reporters=[{"name": "rep1"}], submission_id=123,
+            form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'tester', 'age': '12', 'choice': 'red'}
         message = get_success_msg_for_submission_using(response, form_model_mock)
         self.assertEqual(expected_message, message)
 
+    def test_should_format_success_message_with_thanks_only_if_greater_than_160_characters(self):
+        expected_message = THANKS
+        response_text = "1"*125
+        self.assertEqual(161, len(expected_message + response_text))
+        with patch.object(ResponseBuilder, "get_expanded_response") as get_expanded_response:
+            get_expanded_response.return_value = response_text
+            message = get_success_msg_for_submission_using(Mock(), None)
+
+        self.assertEqual(expected_message, message)
+
+    def test_should_format_success_message_with_thanks_and_response_text_if_total_length_of_success_message_is_no_more_than_160_characters(self):
+        response_text = "choice: rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
+        expected_message = THANKS + " " + response_text
+
+        self.assertEqual(160, len(expected_message))
+
+        with patch.object(ResponseBuilder, "get_expanded_response") as get_expanded_response:
+            get_expanded_response.return_value = response_text
+            message = get_success_msg_for_submission_using(Mock(), None)
+
+        self.assertEqual(expected_message, message)
+        self.assertTrue(160, len(message))
+
     def test_should_format_success_message_for_submission_with_blank_if_no_reporter(self):
-        expected_message = get_submission_success_message() % "" + "name: tester"
+        expected_message = THANKS + " name: tester"
         form_submission_mock = self.create_form_submission_mock()
-        response = create_response_from_form_submission(reporters=[], submission_id=123, form_submission=form_submission_mock)
+        response = create_response_from_form_submission(reporters=[], submission_id=123,
+            form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'tester'}
         message = get_success_msg_for_submission_using(response, form_model_mock)
@@ -83,6 +113,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         form_submission_mock = Mock()
         form_submission_mock.cleaned_data = {'name': 'tester'}
         form_submission_mock.short_code = "REP1"
-        response = create_response_from_form_submission(reporters=[], submission_id=123, form_submission=form_submission_mock)
+        response = create_response_from_form_submission(reporters=[], submission_id=123,
+            form_submission=form_submission_mock)
         message = get_success_msg_for_registration_using(response, "web")
         self.assertEqual(expected_message, message)

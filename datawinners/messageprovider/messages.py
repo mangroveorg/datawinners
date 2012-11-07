@@ -92,7 +92,7 @@ def get_validation_failure_error_message():
     return _("Error. Incorrect answer for %s. Please resend entire message.")
 
 def get_submission_success_message():
-    return _("Thank you") + " %s. " + _("We received : ")
+    return _("Thank you. We received your message.")
 
 def get_registration_success_message():
     return _("Registration successful.") + " %s. "

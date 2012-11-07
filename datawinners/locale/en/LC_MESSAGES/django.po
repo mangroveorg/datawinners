@@ -203,9 +203,7 @@ msgstr ""
 msgid "We received : "
 msgstr ""
 
-# messageprovider/messages.py
-#: messageprovider/messages.py:86
-msgid "Thank you"
+msgid "Thank you. We received your message."
 msgstr ""
 
 # messageprovider/messages.py

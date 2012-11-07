@@ -235,8 +235,8 @@ msgstr "Erreur. Mauvaise réponse à la %s. Veuillez renvoyer la totalité du me
 
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
-msgid "Thank you"
-msgstr "Merci"
+msgid "Thank you. We received your message."
+msgstr "Merci. Nous avons reçu votre message."
 
 # messageprovider/messages.py
 #: messageprovider/messages.py:89

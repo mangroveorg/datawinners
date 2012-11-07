@@ -1,9 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.utils.translation import ugettext as _
 from mangrove.errors.MangroveException import MangroveException
-from mangrove.form_model.form_model import NAME_FIELD, get_form_model_by_code
+from mangrove.form_model.form_model import  get_form_model_by_code
 from mangrove.utils.types import is_empty, is_sequence, sequence_to_str
 from datawinners.messageprovider.messages import exception_messages, DEFAULT, get_submission_success_message, get_registration_success_message, get_validation_failure_error_message
+from messageprovider.message_builder import ResponseBuilder
 
 
 def default_formatter(exception, message):
@@ -37,16 +38,12 @@ def get_submission_error_message_for(errors):
     return error_message
 
 
-def __get_expanded_response(form_model, processed_data):
-    new_dict = form_model.stringify(processed_data)
-    return " ".join([": ".join(each) for each in new_dict.items()])
-
-
 def get_success_msg_for_submission_using(response, form_model):
-    reporters = response.reporters
     message = get_submission_success_message()
-    thanks = message % reporters[0].get(NAME_FIELD) if not is_empty(reporters) else message % ""
-    return thanks + __get_expanded_response(form_model=form_model, processed_data=response.processed_data)
+    response_text = ResponseBuilder(form_model=form_model, processed_data=response.processed_data).get_expanded_response()
+    message_with_response_text = message + " " + response_text
+
+    return message_with_response_text if len(message_with_response_text) <= 160 else message
 
 
 def get_success_msg_for_registration_using(response, source, form_model=None):
@@ -54,14 +51,8 @@ def get_success_msg_for_registration_using(response, source, form_model=None):
 
     thanks = get_registration_success_message() % resp_string
     if source == "sms":
-        return thanks + __get_expanded_response(form_model=form_model, processed_data=response.processed_data)
+        return thanks + ResponseBuilder(form_model=form_model, processed_data=response.processed_data).get_expanded_response()
     return thanks
-
-
-def _stringify(item):
-    if is_sequence(item):
-        return sequence_to_str(item)
-    return unicode(item)
 
 
 def _get_response_message(response, dbm):
