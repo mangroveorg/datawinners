@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from messageprovider.tests.test_message_handler import THANKS
+from datawinners.messageprovider.tests.test_message_handler import THANKS
 
 WELCOME_MESSAGE = 'message'
 SUCCESS_MESSAGE = 'message'

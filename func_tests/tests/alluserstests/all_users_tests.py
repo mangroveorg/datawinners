@@ -2,7 +2,7 @@ import unittest
 from framework.utils.data_fetcher import fetch_
 from framework.base_test import setup_driver, teardown_driver
 from nose.plugins.attrib import attr
-from messageprovider.tests.test_message_handler import THANKS
+from datawinners.messageprovider.tests.test_message_handler import THANKS
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD

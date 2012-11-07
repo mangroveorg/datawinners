@@ -1,10 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
 
-from django.contrib.auth.decorators import login_required as django_login_required, login_required
+from django.contrib.auth.decorators import  login_required
 from django.conf import settings as django_settings
 from django.contrib import messages
-from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.models import User, Group
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponse
@@ -18,13 +17,13 @@ from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER, CRS_ORG_
 from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, \
-    DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for, get_data_senders_on_trial_account_with_mobile_number
+    DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for
 from django.contrib.auth.views import login, password_reset
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _, get_language, activate
 from datawinners.project.models import Project
-from datawinners.utils import get_organization, _get_email_template_name_for_reset_password, _get_email_template_name_for_created_user
+from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
 from datawinners.activitylog.models import UserActivityLog
 import json
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS
@@ -32,7 +31,7 @@ from datawinners.entity.helper import send_email_to_data_sender, delete_datasend
     delete_datasender_from_project, delete_datasender_users_if_any, delete_entity_instance
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from mangrove.form_model.form_model import REPORTER
-from mangrove.transport import Request, TransportInfo
+from mangrove.transport import  TransportInfo
 from django.http import Http404
 
 logger = logging.getLogger("django")

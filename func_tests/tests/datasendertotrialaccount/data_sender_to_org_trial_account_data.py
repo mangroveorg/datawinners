@@ -1,5 +1,5 @@
 from datetime import datetime
-from messageprovider.tests.test_message_handler import THANKS
+from datawinners.messageprovider.tests.test_message_handler import THANKS
 
 today = datetime.utcnow()
 current_date = today.strftime("%d.%m.%Y") #str(today.day) + "." + str(today.month) + "." + str(today.year)

@@ -2,7 +2,7 @@
 
 
 ##Variables
-from messageprovider.tests.test_message_handler import THANKS
+from datawinners.messageprovider.tests.test_message_handler import THANKS
 
 SENDER = "from"
 RECEIVER = "to"

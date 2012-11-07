@@ -2,7 +2,7 @@
 
 
 ##Variables
-from messageprovider.tests.test_message_handler import THANKS
+from datawinners.messageprovider.tests.test_message_handler import THANKS
 
 NAME = "name"
 MOBILE_NUMBER = "mobile_number"

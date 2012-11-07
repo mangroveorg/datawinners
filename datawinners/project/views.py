@@ -25,6 +25,7 @@ from datawinners.entity.helper import process_create_data_sender_form, add_impor
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
+from django.conf import settings as django_settings
 
 import helper
 
@@ -224,7 +225,7 @@ def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     if project is None:
-        raise Http404
+        return HttpResponseRedirect(django_settings.HOME_PAGE)
     form_model = FormModel.get(manager, project.qid)
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
