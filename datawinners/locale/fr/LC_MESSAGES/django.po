@@ -3874,26 +3874,26 @@ msgstr "A edité le formulaire d'enregistrement"
 msgid "Registered Subject"
 msgstr "A enregistré un sujet"
 
-msgid "Imported Subjects"
-msgstr "A importé des sujets"
+msgid "Imported Subject(s)"
+msgstr "A importé un/des sujet(s)"
 
-msgid "Deleted Subjects"
-msgstr "A supprimé des sujets"
+msgid "Deleted Subject(s)"
+msgstr "A supprimé un/des sujet(s)"
 
 msgid "Registered Data Sender"
 msgstr "A enregistré un expéditeur"
 
-msgid "Imported Data Senders"
-msgstr "A importé des expéditeurs"
+msgid "Imported Data Sender(s)"
+msgstr "A importé un/des expéditeur(s)"
 
 msgid "Edited Data Sender"
 msgstr "A edité un expéditeur"
 
-msgid "Deleted Data Senders"
-msgstr "A supprimé des expéditeurs"
+msgid "Deleted Data Sender(s)"
+msgstr "A supprimé un/des expéditeur(s)"
 
-msgid "Added Data Senders to Projects"
-msgstr "A ajouté des expéditeurs à des projets"
+msgid "Added Data Sender(s) to Project(s)"
+msgstr "A ajouté un/des expéditeur(s) à un/des projet(s)"
 
 msgid "Removed Data Sender from Project"
 msgstr "A enlevé un expéditeur à un projet"
@@ -3901,8 +3901,8 @@ msgstr "A enlevé un expéditeur à un projet"
 msgid "Data Submissions"
 msgstr "Soumissions de données"
 
-msgid "Deleted Data Submission"
-msgstr "A supprimé une soumission de données"
+msgid "Deleted Data Submission(s)"
+msgstr "A supprimé une/des soumission(s) de données"
 
 msgid "Activated Reminders"
 msgstr "A activé les rappels"
@@ -3970,8 +3970,8 @@ msgstr "Vos/votre expéditeur(s) de données seront/sera supprimé(s) définitiv
 msgid "Are you sure you want to delete?"
 msgstr "Etes-vous sûr de vouloir supprimer?"
 
-msgid "Deleted Users"
-msgstr "A supprimé des utilisateurs"
+msgid "Deleted User(s)"
+msgstr "A supprimé un/des utilisateur(s)"
 
 msgid "Note, the following Data Senders will not be deleted as they are DataWinners users:"
 msgstr "Remarque, les expéditeurs suivants ne seront pas supprimés car ils sont utilisateurs de DataWinners:"
@@ -3990,3 +3990,6 @@ msgstr "Tout(es) les"
 
 msgid "You have not registered a reporter yet."
 msgstr "Vous n’avez pas encore enregistré un expéditeur."
+
+msgid "View and manage the users of your DataWinners account."
+msgstr "Voir et gerer les utilisateurs de votre compte DataWinners."

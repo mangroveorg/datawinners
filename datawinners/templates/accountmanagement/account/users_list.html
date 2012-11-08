@@ -15,8 +15,14 @@
 {% endblock %}
 
 {% block content %}
+    <div class="float_right">
+        <a href="/account/user/new/">{% trans "Add a User" %}</a>
+    </div>
+    <br/>
     <div class="text_align_left margin_bottom_20">
         <h3>{% trans "Users" %}</h3>
+        <div class="help_accordion">{% trans "View and manage the users of your DataWinners account." %}</div>
+        <div style="clear: both;" id="error" class="message-box">{% trans "Please select at least 1 user" %}</div>
     </div>
 
     {% if messages %}
@@ -27,17 +33,8 @@
         {% endfor %}
     {% endif %}
 
-    <div class="margin_bottom_20 border_top_bottom padding_top_10 padding_bottom_10">
-        {% include "action.html" %}
-        <div class="float_right">
-            <a href="/account/user/new/">{% trans "Add a User" %}</a>
-        </div>
-        <br/>
-
-        <div class="clear"></div>
-        <div style="clear: both;" id="error" class="message-box">{% trans "Please select at least 1 user" %}</div>
-    </div>
-
+    {% include "action.html" %}
+    <br/>
     <div id="users_list">
         <table class="styled_table">
             <thead>

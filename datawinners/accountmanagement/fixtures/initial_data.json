@@ -167,6 +167,28 @@
         }
     } ,
     {
+        "pk": 3,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep10",
+            "mobile_phone": "2619876",
+            "org_id": "SLX364903",
+            "user": 4,
+            "title": "Chauffeur"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep11",
+            "mobile_phone": "2619875",
+            "org_id": "SLX364903",
+            "user": 5,
+            "title": "Tester"
+        }
+    },
+    {
         "pk": -3,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
@@ -359,6 +381,46 @@
             "password": "sha1$a1ba4$cd5c092fdc9d03a12c7e5ec153f147df6efe5a2a",
             "email": "datawinner@gmail.com",
             "date_joined": "2011-04-17 04:54:47"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "auth.user",
+        "fields": {
+            "username": "rasitefa@mailinator.com",
+            "first_name": "stefan",
+            "last_name": "rasamoel",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-11-08 17:00:48",
+            "groups": [
+                2
+            ],
+            "user_permissions": [],
+            "password": "sha1$9f237$4380fa83adb58f7d0b0b944cf1d5be80dea66aab",
+            "email": "rasitefa@mailinator.com",
+            "date_joined": "2012-11-08 17:00:48"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "auth.user",
+        "fields": {
+            "username": "mamy@mailinator.com",
+            "first_name": "mamy",
+            "last_name": "rasamoel",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-11-08 17:00:48",
+            "groups": [
+                2
+            ],
+            "user_permissions": [],
+            "password": "sha1$9f237$4380fa83adb58f7d0b0b944cf1d5be80dea66aab",
+            "email": "mamy@mailinator.com",
+            "date_joined": "2012-11-08 17:00:48"
         }
     },
     {

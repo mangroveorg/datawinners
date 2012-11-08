@@ -1331,6 +1331,14 @@ def load_data():
         (NAME_FIELD, "Ashwini", first_name_type)],
         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
         short_code="rep8", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619876", phone_number_type),
+        (NAME_FIELD, "stefan", first_name_type)],
+        location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+        short_code="rep10", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619875", phone_number_type),
+        (NAME_FIELD, "mamy", first_name_type)],
+        location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+        short_code="rep11", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
     load_sms_data_for_cli001(manager)
     load_web_data_for_cli001(manager)

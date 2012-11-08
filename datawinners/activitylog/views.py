@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from accountmanagement.views import  session_not_expired
-from datawinners.accountmanagement.views import is_not_expired
+from datawinners.accountmanagement.views import is_not_expired, is_datasender
 from django.views.decorators.csrf import csrf_exempt
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response
@@ -16,6 +16,7 @@ from django.utils.translation import ugettext
 @session_not_expired
 @csrf_exempt
 @is_not_expired
+@is_datasender
 def show_log(request):
     org_id = get_organization(request).org_id
     args = dict(organization=org_id)

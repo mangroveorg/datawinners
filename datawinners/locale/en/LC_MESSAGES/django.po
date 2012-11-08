@@ -3783,25 +3783,25 @@ msgstr ""
 msgid "Registered Subject"
 msgstr ""
 
-msgid "Imported Subjects"
+msgid "Imported Subject(s)"
 msgstr ""
 
-msgid "Deleted Subjects"
+msgid "Deleted Subject(s)"
 msgstr ""
 
 msgid "Registered Data Sender"
 msgstr ""
 
-msgid "Imported Data Senders"
+msgid "Imported Data Sender(s)"
 msgstr ""
 
 msgid "Edited Data Sender"
 msgstr ""
 
-msgid "Deleted Data Senders"
+msgid "Deleted Data Sender(s)"
 msgstr ""
 
-msgid "Added Data Senders to Projects"
+msgid "Added Data Sender(s) to Project(s)"
 msgstr ""
 
 msgid "Removed Data Sender from Project"
@@ -3810,7 +3810,7 @@ msgstr ""
 msgid "Data Submissions"
 msgstr ""
 
-msgid "Deleted Data Submission"
+msgid "Deleted Data Submission(s)"
 msgstr ""
 
 msgid "Activated Reminders"
@@ -3897,7 +3897,7 @@ msgstr ""
 msgid "Are you sure you want to delete?"
 msgstr ""
 
-msgid "Deleted Users"
+msgid "Deleted User(s)"
 msgstr ""
 
 msgid "Note, the following Data Senders will not be deleted as they are DataWinners users:"
@@ -3913,4 +3913,7 @@ msgid "Deleted Data Sender"
 msgstr ""
 
 msgid "You have not registered a reporter yet."
+msgstr ""
+
+msgid "View and manage the users of your DataWinners account."
 msgstr ""
