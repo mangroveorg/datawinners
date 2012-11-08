@@ -316,9 +316,10 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         entity._doc.data = {'name': {'value': 'Clinic-One'}}
         return entity
 
-    def _prepare_analyzer_with_one_submission(self, form_model, values, keywords=''):
+    def _prepare_analyzer_with_one_submission(self, form_model, values):
         with patch("project.submission_analyzer.filter_submissions") as filter_submissions, patch(
-            "project.submission_analyzer.SubmissionAnalyzer._init_raw_values") as _init_raw_values:
+            "project.submission_analyzer.SubmissionAnalyzer._init_raw_values"), patch(
+            "project.submission_analyzer.get_submissions_with_timing"):
             submission = Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
                 form_code=form_model.form_code,
@@ -328,7 +329,8 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def _prepare_analyzer(self, form_model, values_list, keywords=None):
         with patch("project.submission_analyzer.filter_submissions") as filter_submissions, patch(
-            "project.submission_analyzer.SubmissionAnalyzer._init_raw_values") as _init_raw_values:
+            "project.submission_analyzer.SubmissionAnalyzer._init_raw_values"), patch(
+            "project.submission_analyzer.get_submissions_with_timing"):
             return_value = []
             for values in values_list:
                 submission = Submission(self.manager,

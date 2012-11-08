@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
 import logging
+from django.http import HttpRequest
 import os
 from glob import iglob
 import string
@@ -10,6 +11,7 @@ from django.conf import settings
 from mangrove.datastore.database import get_db_manager
 
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
+
 
 performance_logger = logging.getLogger("performance")
 
@@ -79,7 +81,11 @@ def timebox(view_func):
         end_time = datetime.datetime.now()
         time_elapsed = (end_time - start_time).total_seconds()
         request = args[0]
-        performance_logger.info("PERFORMANCE LOGGING: [%s] method: %s, user: %s, time used %d seconds." % (request.method, view_func.func_name, request.user, time_elapsed))
+
+        if isinstance(request, HttpRequest):
+            performance_logger.info("[%s] method: %s, user: %s, time used %f seconds." % (request.method, view_func.func_name, request.user, time_elapsed))
+        else:
+            performance_logger.info("method: %s, time used %f seconds." % (view_func.func_name, time_elapsed))
 
         return result
     return _wrapped_view

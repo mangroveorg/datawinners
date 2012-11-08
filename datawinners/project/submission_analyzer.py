@@ -1,19 +1,21 @@
 #encoding=utf-8
 from collections import OrderedDict
 from django.utils.translation import ugettext
+from main.utils import timebox
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel
-from project import helper
+from mangrove.transport.submissions import get_submissions
 from project.filters import KeywordFilter
-from project.helper import filter_submissions, get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE, DEFAULT_DATE_FORMAT
+from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE, DEFAULT_DATE_FORMAT
 from enhancer import form_model_enhancer, field_enhancer
 from utils import sorted_unique_list
 
 NULL = '--'
 field_enhancer.enhance()
 form_model_enhancer.enhance()
+SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
 
 class SubmissionAnalyzer(object):
     def __init__(self, form_model, manager, request, filters, keyword=None):
@@ -21,7 +23,8 @@ class SubmissionAnalyzer(object):
         self.form_model = form_model
         self.manager = manager
         self.request = request
-        self.filtered_submissions = filter_submissions(filters, self.form_model, self.manager)
+        submissions = get_submissions_with_timing(form_model, manager)
+        self.filtered_submissions = filter_submissions(submissions, filters)
         self._data_senders = []
         self._subject_list = []
         self.keyword_filter = KeywordFilter(keyword if keyword else '')
@@ -85,6 +88,7 @@ class SubmissionAnalyzer(object):
             list_result.append(row)
         return list_result
 
+    @timebox
     def _init_raw_values(self):
         field_values = self._get_field_values()
         leading_part = self._get_leading_part()
@@ -95,6 +99,7 @@ class SubmissionAnalyzer(object):
             self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in
                                           self._raw_values]
 
+    @timebox
     def _get_leading_part(self):
         leading_part = []
         for submission in self.filtered_submissions:
@@ -107,6 +112,7 @@ class SubmissionAnalyzer(object):
 
         return leading_part
 
+    @timebox
     def _get_field_values(self):
         submission_values = [submission.values for submission in self.filtered_submissions]
         field_values = []
@@ -191,3 +197,19 @@ def _format_row(row, tuple_format, list_delimiter):
         else:
             new_val = NULL
         yield new_val
+
+@timebox
+def filter_submissions(submissions, filters):
+    to_lowercase_submission_keys(submissions)
+    for filter in filters:
+        submissions = filter.filter(submissions)
+    return submissions
+
+def to_lowercase_submission_keys(submissions):
+    for submission in submissions:
+        values = submission.values
+        submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
+
+@timebox
+def get_submissions_with_timing(form_model, manager):
+    return get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)

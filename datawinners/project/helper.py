@@ -26,14 +26,6 @@ field_enhancer.enhance()
 NOT_AVAILABLE = "N/A"
 NOT_AVAILABLE_DS = "Deleted Data Sender"
 
-NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
-MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
-DATE_TYPE_OPTIONS = ["Latest"]
-GEO_TYPE_OPTIONS = ["Latest"]
-TEXT_TYPE_OPTIONS = ["Latest"]
-TEST_FLAG = 'TEST'
-SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
-
 logger = logging.getLogger("datawinners.reminders")
 
 def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
@@ -45,7 +37,6 @@ def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
         ddtype = create_datadict_type(dbm=dbm, name=name, slug=slug,
             primitive_type=primitive_type, description=description)
     return ddtype
-
 
 def _create_entity_id_question(dbm, entity_id_question_code):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
@@ -141,20 +132,6 @@ def _to_str(value, form_field=None):
         date_format = DateField.FORMAT_DATE_DICTIONARY.get(form_field.date_format) if form_field else DEFAULT_DATE_FORMAT
         return format_date(value, date_format)
     return value
-
-def to_lowercase_submission_keys(submissions):
-    for submission in submissions:
-        values = submission.values
-        submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
-
-def filter_submissions(filters, form_model, manager):
-    assert isinstance(form_model, FormModel)
-    submissions = get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
-    to_lowercase_submission_keys(submissions)
-    for filter in filters:
-        submissions = filter.filter(submissions)
-    return submissions
-
 
 def get_formatted_time_string(time_val):
     try:

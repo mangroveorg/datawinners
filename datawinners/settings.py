@@ -256,3 +256,6 @@ try:
     from local_settings import *
 except ImportError, e:
     raise Exception("You need to create a local_settings.py from local_settings_example.py")
+
+from logger_settings import *
+

@@ -423,13 +423,13 @@ def composite_analysis_result(analysis_result):
                        "data_list": repr(encode_json(analysis_result.field_values)),
                        "statistics_result": repr(encode_json(analysis_result.statistics_result))}
 
-
 def build_analysis_result(request, manager, form_model, filters):
     analyzer = SubmissionAnalyzer(form_model, manager, request, filters, request.POST.get('keyword', ''))
     analysis_result = AnalysisResult(analyzer)
     analysis_result.analyze_statistic_results()
     return analysis_result
 
+@timebox
 def get_analysis_response(request, project_id, questionnaire_code):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
@@ -437,7 +437,7 @@ def get_analysis_response(request, project_id, questionnaire_code):
 
     analysis_result = build_analysis_result(request, manager, form_model, filters)
 
-    performance_logger.info("PERFORMANCE LOGGING: %d submissions." % len(analysis_result.field_values))
+    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)

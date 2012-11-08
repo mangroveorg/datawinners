@@ -1,14 +1,17 @@
+from main.utils import timebox
 from project.submission_analyzer import get_formatted_values_for_list
 
 class AnalysisResult(object):
     def __init__(self, submission_analyzer):
         self.analyzer = submission_analyzer
 
+    @timebox
     def analyze_statistic_results(self):
         raw_field_values = self.analyzer.get_raw_values()
         self._field_values = get_formatted_values_for_list(raw_field_values)
         self._statistics_result = self.analyzer.get_analysis_statistics()
 
+    @timebox
     def analyze_meta_info(self):
         self._header_list, self._header_type_list = self.analyzer.get_headers()
         self._subject_list = self.analyzer.get_subjects()
