@@ -38,9 +38,6 @@ class DateTimeMocker(object):
         self.datetime_patcher.stop()
         self.submission_date_patcher.stop()
 
-
-
-
 #Data Dict Types
 def load_datadict_types(manager):
     meds_type = create_data_dict(dbm=manager, name='Medicines', slug='meds', primitive_type='number',

@@ -38,17 +38,19 @@ def create_data_dict(dbm, name, slug, primitive_type, description=None):
 
 def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None,
                            description=None, firstname=None):
-    e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
-        short_code=short_code, geometry=geometry)
     name_type = create_data_dict(manager, name='Name Type', slug='name', primitive_type='string')
     first_name_type = create_data_dict(manager, name='Name Type', slug='firstname', primitive_type='string')
     mobile_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
     description_type = create_data_dict(manager, name='Description', slug='description', primitive_type='string')
-    e.add_data(data=[(NAME_FIELD, name, name_type)])
-    e.add_data([(FIRST_NAME_FIELD, firstname, first_name_type)])
-    e.add_data([(MOBILE_NUMBER_FIELD, mobile_number, mobile_type)])
-    e.add_data([(DESCRIPTION_FIELD, description, description_type)])
-    return e
+    entity = EntityBuilder(manager, entity_type, short_code)\
+    .geometry(geometry)\
+    .location(location)\
+    .add_data(data=[(NAME_FIELD, name, name_type)])\
+    .add_data([(FIRST_NAME_FIELD, firstname, first_name_type)])\
+    .add_data([(MOBILE_NUMBER_FIELD, mobile_number, mobile_type)])\
+    .add_data([(DESCRIPTION_FIELD, description, description_type)]).build()
+
+    return entity
 
 def create_or_update_entity(manager, entity_type, location, aggregation_paths, short_code, geometry=None):
     try:
@@ -59,7 +61,35 @@ def create_or_update_entity(manager, entity_type, location, aggregation_paths, s
     return create_entity(manager, entity_type, short_code, location, aggregation_paths, geometry)
 
 def register(manager, entity_type, data, location, short_code, geometry=None):
-    e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
-        short_code=short_code, geometry=geometry)
-    e.add_data(data=data)
-    return e
+    return EntityBuilder(manager,entity_type,short_code,).geometry(geometry).location(location).add_data(data).build()
+
+class EntityBuilder(object):
+    def __init__(self, manager, entity_type, short_code):
+        self._manager = manager
+        self._entity_type = entity_type
+        self._short_code = short_code
+        self._geometry, self._aggregation_paths, self._location = [None]*3
+        self._data = []
+
+    def aggregation_paths(self, aggregation_paths):
+        self._aggregation_paths = aggregation_paths
+        return self
+
+    def geometry(self, geometry):
+        self._geometry = geometry
+        return self
+
+    def location(self, location):
+        self._location = location
+        return self
+
+    def add_data(self,data):
+        self._data.append(data)
+        return self
+
+    def build(self):
+        entity = create_or_update_entity(self._manager, entity_type=self._entity_type, short_code=self._short_code,
+            aggregation_paths=self._aggregation_paths, location=self._location, geometry=self._geometry)
+        for each in self._data: entity.add_data(each)
+        return entity
+

@@ -1,10 +1,10 @@
 import unittest
-from framework.utils.data_fetcher import fetch_, from_
+from framework.utils.data_fetcher import fetch_
 from framework.base_test import setup_driver, teardown_driver
 from nose.plugins.attrib import attr
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
-from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD, DATA_SENDER_CREDENTIALS
+from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.addusertests.add_user_data import *
