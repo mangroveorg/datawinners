@@ -64,6 +64,15 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         QuestionnaireBuilder(form_model,self.dbm).update_questionnaire_with_questions(post)
         self.assertEqual(3, len(form_model.fields))
 
+    def test_should_no_snapshot_when_questionnaire_first_created(self):
+        post = [{"title": "q1", "type": "text", "choices": [], "is_entity_question": True, "code": "code",
+                 "min_length": 1, "max_length": ""},
+        ]
+        form_model = FormModel(self.dbm, "test", "test", "test", [Mock(spec=TextField)], ["test"], "test", enforce_unique_labels=False)
+        form_model._enforce_unique_labels = False
+        QuestionnaireBuilder(form_model,self.dbm).update_questionnaire_with_questions(post)
+        self.assertEqual(0, len(form_model.snap_shots()))
+
     def test_should_build_question_code(self):
         generator=question_code_generator()
         self.assertEqual('q1',generator.next())

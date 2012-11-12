@@ -16,6 +16,7 @@ class QuestionnaireBuilder( object ):
         self.question_code_generator = question_code_generator( )
 
     def update_questionnaire_with_questions(self, question_set, max_code=1):
+        self.form_model.create_snapshot()
         self.form_model.delete_all_fields( )
 
         if self.form_model.entity_defaults_to_reporter( ):
