@@ -19,6 +19,7 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.valueHasMutated();
         DW.charCount();
         questionnaireViewModel.hasAddedNewQuestions = true;
+        DW.questionnaire_was_changed = true;
     },
     loadQuestion: function(question) {
         question.display = ko.dependentObservable(function() {
@@ -40,6 +41,7 @@ var questionnaireViewModel =
         var index = $.inArray(question, questionnaireViewModel.questions());
         if (!question.newly_added_question()) {
             questionnaireViewModel.hasDeletedOldQuestion = true;
+            DW.questionnaire_was_changed = true;
         }
         questionnaireViewModel.questions.remove(question);
         if(questionnaireViewModel.questions().length == 0){
@@ -169,6 +171,7 @@ var questionnaireViewModel =
         }
         DW.option_warning_dialog.continueEventHandler = function() {
             questionnaireViewModel.removeOptionFromQuestion(choice);
+            DW.questionnaire_was_changed = true;
         };
     },
     changeQuestionType: function(type_selector) {
@@ -176,7 +179,7 @@ var questionnaireViewModel =
         var choices = questionnaireViewModel.selectedQuestion().choices();
         var type_equal = type_selector.value == type
             || (type_selector.value == 'choice' && (type.indexOf('select') >= 0));
-        if(typeof(is_edit) == "undefined" || !is_edit) {
+        if (typeof(is_edit) == "undefined" || !is_edit || questionnaireViewModel.selectedQuestion().newly_added_question()) {
             DW.init_question_constraints();
             DW.change_question_type_for_selected_question(type_selector.value);
             return;
@@ -197,6 +200,7 @@ var questionnaireViewModel =
             var new_type = $("input[name='type']:checked").val();
             DW.init_question_constraints();
             DW.change_question_type_for_selected_question(new_type);
+            DW.questionnaire_was_changed = true;
         };
     },
     showLengthLimiter: function() {

@@ -3917,3 +3917,24 @@ msgstr ""
 
 msgid "View and manage the users of your DataWinners account."
 msgstr ""
+
+msgid "You have made changes to your Questionnaire."
+msgstr ""
+
+msgid "Please make sure your Data Senders have the latest version"
+msgstr ""
+
+msgid "Print and distribute the updated SMS Questionnaire"
+msgstr ""
+
+msgid "Currently, registering a new %(subject_type)s via Smartphone is not possible"
+msgstr ""
+
+msgid "Remind them to download the updated version of the Questionnaire"
+msgstr ""
+
+msgid "No action needed. We will display the updated version of the Registration Form automatically"
+msgstr ""
+
+msgid "OK, Got it"
+msgstr ""

@@ -77,3 +77,4 @@ VALID_SMS_SUBJECT_DATA = {SENDER: "919049008976",
 SUBJECT_TYPE = "subject type"
 
 CHANGE_QUESTION_TYPE_MSG = u'You have changed the Answer Type.\nIf you have previously collected data, it may be rendered incorrect.\n\nAre you sure you want to continue?'
+REDISTRIBUTE_QUESTIONNAIRE_MSG = u'You have made changes to your Questionnaire.\n\nPlease make sure your Data Senders have the latest version:\nSMS:Print and distribute the updated SMS Questionnaire\nSmartphone: Remind them to download the updated version of the Questionnaire\nWeb: No action needed. We will display the updated version of the Registration Form automatically'
