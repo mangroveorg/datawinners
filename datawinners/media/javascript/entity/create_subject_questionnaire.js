@@ -21,6 +21,10 @@ DW.post_subject_data = function(){
             questionnaireViewModel.set_all_questions_as_old_questions();
             questionnaireViewModel.selectedQuestion.valueHasMutated();
             questionnaireViewModel.questions.valueHasMutated();
+            if (DW.questionnaire_was_changed) {
+                DW.inform_datasender_about_changes.show_warning();
+                DW.questionnaire_was_changed = false;
+            }
             DW.hide_message();
         } else {
             $("#message-label").removeClass('none');
@@ -56,6 +60,8 @@ DW.init_has_new_submission_delete_warning_for_entity = function(){
 }
 
 $(document).ready(function() {
+    DW.questionnaire_was_changed = false;
+    DW.init_inform_datasender_about_changes();
     $("#submit-button").click(function() {
         if(questionnnaire_code.processValidation() && questionnaire_form.processValidation()){
             if (questionnaireViewModel.hasDeletedOldQuestion && !DW.has_submission_delete_warning_for_entity.is_continue && DW.questionnaire_has_submission()){

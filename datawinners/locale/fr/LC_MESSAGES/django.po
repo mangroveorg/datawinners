@@ -3993,3 +3993,24 @@ msgstr "Vous n’avez pas encore enregistré un expéditeur."
 
 msgid "View and manage the users of your DataWinners account."
 msgstr "Voir et gerer les utilisateurs de votre compte DataWinners."
+
+msgid "You have made changes to your Questionnaire."
+msgstr "Vous avez apporté des modifications à votre Questionnaire."
+
+msgid "Please make sure your Data Senders have the latest version"
+msgstr "Assurez-vous que vos Expéditeurs de Données ont la dernière version"
+
+msgid "Print and distribute the updated SMS Questionnaire"
+msgstr "Imprimez et distribuez le Questionnaire SMS mis à jour"
+
+msgid "Currently, registering a new %(subject_type)s via Smartphone is not possible"
+msgstr "Pour l’instant, enregistrer un(e) %(subject_type)s avec le Smartphone n’est pas possible"
+
+msgid "Remind them to download the updated version of the Questionnaire"
+msgstr "Rappelez-leur de télécharger la version mise du Questionnaire"
+
+msgid "No action needed. We will display the updated version of the Registration Form automatically"
+msgstr "Aucune action requise. Nous afficherons la version mise à jour du Questionnaire automatiquement"
+
+msgid "OK, Got it"
+msgstr "OK, Compris"
