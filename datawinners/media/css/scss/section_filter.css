@@ -3,6 +3,8 @@
   font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   font-size: 11px !important;
   height: 23px !important; }
+#filter_section .datepicker.disabled {
+  background-image: url("/media/images/arrow_dd_transparent.png") !important; }
 #filter_section input[type="text"] {
   height: 22px; }
 #filter_section #keyword {
@@ -13,6 +15,8 @@
   font-size: 11px !important; }
   #filter_section .ui-dropdownchecklist-selector-wrapper span span {
     width: 133px !important; }
+#filter_section .ui-dropdownchecklist-selector-wrapper[disabled] {
+  background: url("/media/images/arrow_with_bg.png") no-repeat scroll right 2px transparent !important; }
 #filter_section .ui-dropdownchecklist-text {
   font-size: 11px !important; }
 #filter_section .ui-dropdownchecklist-dropcontainer-wrapper > div {
@@ -34,7 +38,8 @@
   font-size: 11px;
   font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
 #filter_section div#keyword_input_container {
-  width: 180px; }
+  width: 180px;
+  height: 66px; }
 #filter_section div#go_button_container {
   width: 100px; }
 

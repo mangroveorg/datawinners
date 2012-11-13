@@ -6,6 +6,10 @@
     height: 23px !important;
   }
 
+  .datepicker.disabled{
+    background-image: url("/media/images/arrow_dd_transparent.png") !important;
+  }
+
   input[type="text"] {
     height: 22px;
   }
@@ -21,6 +25,10 @@
     span span{
       width: 133px !important;
     }
+  }
+
+  .ui-dropdownchecklist-selector-wrapper[disabled]{
+    background: url("/media/images/arrow_with_bg.png") no-repeat scroll right 2px transparent !important;
   }
 
   .ui-dropdownchecklist-text {
@@ -56,6 +64,7 @@
 
   div#keyword_input_container {
     width: 180px;
+    height: 66px;
   }
 
   div#go_button_container {
