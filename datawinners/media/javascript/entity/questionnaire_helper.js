@@ -1,17 +1,4 @@
 //DW is the global name space for DataWinner
-DW.init_inform_datasender_about_changes = function(){
-    kwargs = {container: "#inform_datasender_about_changes",
-        is_continue: true,
-        title: gettext('Inform Your Data Senders about the Changes'),
-        continue_handler: function(){
-            if (typeof(this.redirect_url) != "undefined") {
-                window.location.replace(this.redirect_url);
-            }
-        },
-        cancel_handler: this.continue_handler
-    }
-    DW.inform_datasender_about_changes = new DW.warning_dialog(kwargs);
-}
 
 DW.instruction_template = {
     "number":gettext("Answer must be a number."),
@@ -347,9 +334,6 @@ DW.change_option_text = function (choice, oldText,index) {
        questionnaireViewModel.selectedQuestion().choices()[index].text=oldText;
        choice.focus();
    }
-   DW.option_warning_dialog.continueEventHandler = function(){
-       DW.questionnaire_was_changed = true;
-   }
 }
 
 DW.close_the_tip_on_period_question = function(){
@@ -421,17 +405,3 @@ DW.check_question_type_according_radio_button = function(type) {
     }
     $("[name='type'][value='"+type+"']").attr('checked', true);
 }
-
-$(document).ready(function(){
-    $("#range_min, #range_max, #max_length, [name=text_length], [name=date_format] ").change(function(){
-        if (!questionnaireViewModel.selectedQuestion().newly_added_question()) {
-            DW.questionnaire_was_changed = true;
-        }
-    });
-
-    $("#questionnaire-code").change(function(){
-       if ($(this).val() != $("#saved-questionnaire-code").val()) {
-           DW.questionnaire_was_changed = true;
-       }
-    });
-})

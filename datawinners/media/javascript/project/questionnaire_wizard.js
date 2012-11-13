@@ -1,7 +1,5 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 $(document).ready(function() {
-    DW.questionnaire_was_changed = false;
-    DW.init_inform_datasender_about_changes();
     var index;
     for(index in question_list){
         var questions = new DW.question(question_list[index]);
@@ -147,17 +145,13 @@ $(document).ready(function() {
                     $("#message-label").removeClass("message-box");
                     $("#message-label").addClass("success-message-box");
                     $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
-                    questionnaireViewModel.set_all_questions_as_old_questions();
                     if($("#qtype").val() != undefined) {
                         var json_data = JSON.parse(response);
                         $("#saved-questionnaire-code").val(json_data.form_code);
+                        questionnaireViewModel.set_all_questions_as_old_questions();
                         questionnaireViewModel.selectedQuestion.valueHasMutated();
                         questionnaireViewModel.questions.valueHasMutated();
                     }
-                    if (DW.questionnaire_was_changed) {
-                        DW.inform_datasender_about_changes.show_warning();
-                        DW.questionnaire_was_changed = false;
-                    } 
                     hide_message();
                     redirect();
                 }).error(function(e) {

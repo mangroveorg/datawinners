@@ -63,17 +63,13 @@ class CreateProjectPage(Page):
             light_box.continue_change()
         return self
 
-    def save_and_create_project_successfully(self, click_ok=True):
+    def save_and_create_project_successfully(self):
         self.driver.find(SAVE_AND_CREATE_BTN).click()
         time.sleep(3)
-        if click_ok:
-            self.got_redistribute_questionnaire_message()
         return ProjectOverviewPage(self.driver)
 
-    def save_and_create_project(self, click_ok=True):
+    def save_and_create_project(self):
         self.driver.find(SAVE_AND_CREATE_BTN).click()
-        if click_ok:
-            self.got_redistribute_questionnaire_message()
         return self
 
     def continue_create_project(self):
@@ -198,9 +194,3 @@ class CreateProjectPage(Page):
         if comm_util.is_element_present(PROJECT_DESCRIPTION_MSG):
             return True
         return False
-
-    def got_redistribute_questionnaire_message(self):
-        comm_utils = CommonUtilities(self.driver)
-        locator = comm_utils.is_element_present(INFORM_DATASENDERS_OK_BUTTON_BY_CSS)
-        if locator and locator.is_displayed():
-            locator.click()

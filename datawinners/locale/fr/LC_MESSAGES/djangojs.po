@@ -669,6 +669,3 @@ msgstr "Vous avez changé le Type de Réponse.<br>Si vous avez déjà collecté 
 
 msgid "Your User(s) will be deleted"
 msgstr "Votre(vos) utilisateur(s) sera/seront supprimé(s)"
-
-msgid "Inform Your Data Senders about the Changes"
-msgstr "Informez Vos Expéditeurs de Données sur les Changements"

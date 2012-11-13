@@ -550,6 +550,3 @@ msgstr ""
 
 msgid "You do not have any multiple choice questions (Answer Type: List of choices) to display here."
 msgstr ""
-
-msgid "Inform Your Data Senders about the Changes"
-msgstr ""
