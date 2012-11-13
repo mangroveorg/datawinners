@@ -75,15 +75,11 @@ DW.warning_dialog.prototype = {
             })
         }
         this.bind_cancel = function () {
-            var cancel_sensors = new Array($(".ui-dialog-titlebar-close", $(this.container).parent()), $(this.cancel_button));
-            var dialog = this;
-            $.each(cancel_sensors, function( index, element){
-                element.unbind().bind("click", {self:dialog}, function (event) {
-                    var self = event.data.self;
-                    self.is_continue = false;
-                    self.cancel_handler();
-                    self.close_dialog();
-                })
+            $(this.cancel_button).unbind().bind("click", {self:this}, function (event) {
+                var self = event.data.self;
+                self.is_continue = false;
+                self.cancel_handler();
+                self.close_dialog();
             })
         }
         this.init = function () {

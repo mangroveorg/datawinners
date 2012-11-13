@@ -452,17 +452,3 @@ class CreateQuestionnairePage(CreateProjectPage):
 
     def get_nth_option_of_choice(self, index):
         return self.driver.find(by_css('#options_list>li:nth-child(%d)>input' % index))
-
-    def change_nth_option_of_choice(self, index, new_text):
-        self.driver.find_text_box(by_css('#options_list>li:nth-child(%d)>input' % index)).enter_text(new_text)
-
-    def change_number_question_limit(self, max_value, min_value=0):
-        self.driver.find_text_box(NUMBER_MIN_LENGTH_TB).enter_text(min_value)
-        self.driver.find_text_box(NUMBER_MAX_LENGTH_TB).enter_text(max_value)
-
-    def set_word_question_max_length(self, max_length):
-        self.driver.find_radio_button(CHARACTER_LIMIT_RB).click()
-        self.driver.find_text_box(WORD_OR_PHRASE_MAX_LENGTH_TB).enter_text(max_length)
-
-    def set_questionnaire_code(self, form_code):
-        self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).enter_text(form_code)

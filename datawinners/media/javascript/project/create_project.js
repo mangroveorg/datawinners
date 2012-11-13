@@ -139,16 +139,7 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
     $.post($('#post_url').val(), post_data, function (response) {
         var responseJson = $.parseJSON(response);
         if (responseJson.success) {
-            var redirect_url = function_to_construct_redirect_url_on_success(responseJson);
-
-            if (is_edit && DW.questionnaire_was_changed){
-                $.unblockUI();
-                DW.inform_datasender_about_changes.redirect_url = redirect_url;
-                DW.inform_datasender_about_changes.show_warning();
-            } else {
-                window.location.replace(redirect_url);
-            }
-            
+            window.location.replace(function_to_construct_redirect_url_on_success(responseJson));
         } else {
             $.unblockUI();
             if (responseJson.error_in_project_section) {
@@ -176,7 +167,6 @@ $(document).ready(function () {
     if (is_edit){
         DW.init_has_submission_delete_warning();
         DW.init_has_new_submission_delete_warning();
-        DW.init_inform_datasender_about_changes();
     }
     var activity_report_question = $('#question_title').val();
 
@@ -289,7 +279,6 @@ $(document).ready(function () {
 
     $("#ok_button").bind("click", function () {
         $("#questionnaire_code_change").dialog("close");
-        DW.questionnaire_was_changed = true;
         return false;
     });
 
