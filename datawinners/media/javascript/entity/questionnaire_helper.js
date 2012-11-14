@@ -423,7 +423,7 @@ DW.check_question_type_according_radio_button = function(type) {
 }
 
 $(document).ready(function(){
-    $("#range_min, #range_max, #max_length, [name=text_length], [name=date_format] ").change(function(){
+    $("#range_min, #range_max, #max_length, [name=text_length], [name=date_format], #question_title").change(function(){
         if (!questionnaireViewModel.selectedQuestion().newly_added_question()) {
             DW.questionnaire_was_changed = true;
         }

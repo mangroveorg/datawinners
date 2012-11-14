@@ -352,8 +352,13 @@ class TestEditQuestionnaire(BaseTest):
         create_questionnaire_page.set_questionnaire_code("nfc")
         #to get the focus out
         create_questionnaire_page.select_question_link(3)
-        time.sleep(10)
         self.confirm_warning_dialog(element_id="ok_button")
+        self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+
+    @attr('functional_test')
+    def test_should_show_redistribute_questionnaire_message_when_osi_change_question_title(self):
+        create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog()
+        create_questionnaire_page.change_question_text(3, "question number 3")
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
     
 
