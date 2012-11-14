@@ -46,8 +46,11 @@ function drawTableFooter(total, total_count, legendTable) {
     $footer = $('<tr ></tr>');
     $choiceFooter = $('<td class="lengendFooter">' + gettext('Total') + '</td>');
     $amountFooter = $('<td class="lengendFooter">' + total + '</td>');
-    $percentFooter = $('<td class="lengendFooter">' + Math.round(total_count / total * 100) + '%</td>');
-    $footer.append($choiceFooter).append($amountFooter).append($percentFooter);
+    $footer.append($choiceFooter).append($amountFooter);
+    if (total != 0) {
+        $percentFooter = $('<td class="lengendFooter">' + Math.round(total_count / total * 100) + '%</td>');
+        $footer.append($percentFooter);
+    }
     legendTable.append($footer);
 }
 
@@ -83,6 +86,9 @@ function drawNotes(locator, type, total) {
 }
 
 function drawBar(answers, total, locator, barColor) {
+    if (total == 0) {
+        return showNoSubmissionExplanation(locator);
+    }
     var chart_data = [];
     var axis_label = [];
     $.each(answers, function(index, answer){
@@ -127,6 +133,9 @@ function drawBar(answers, total, locator, barColor) {
 }
 
 function drawPie(answers, total, locator, baseColor, colorScaleFactor) {
+    if (total == 0) {
+        return showNoSubmissionExplanation(locator);
+    }
     var data = [];
     var parse = JSON.parse('[1,2,3,4,5]');
     $.each(answers, function(index, answer){
@@ -265,4 +274,14 @@ function toolTip(){
         }
 
     }).dynamic({ bottom: { direction: 'down', bounce: true } });
+}
+function showNoSubmissionExplanation(locator) {
+    var message = gettext("You don't have any submissions for this question yet");
+    var explanation_container = $('<div class="help_accordion text_align_right">' + message + '</div>');
+    var padding = "60px";
+    if ($(locator).attr("id").split("-")[0] =="bar"){
+        var padding = "40px";
+    }
+    $(locator).append(explanation_container).css("padding-top", padding);
+    return;
 }
