@@ -24,11 +24,12 @@ from mangrove.utils.types import is_string
 from django.utils.translation import ugettext as _
 from datawinners.utils import get_organization, generate_project_name
 from mangrove.form_model.form_model import  FormModel
-from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions
 from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, SET_DEADLINE
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
+from questionnaire.questionnaire_builder import get_max_code_in_question_set
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -37,18 +38,18 @@ def create_questionnaire(post, manager, entity_type, name, language):
     question_set = json.loads(json_string)
     form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey',
                            state=post['project_state'], fields=[], form_code=questionnaire_code, language=language)
-    QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set, get_max_code_in_questionnaire_set(question_set))
+    QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
     return form_model
 
 
-def update_questionnaire(questionnaire, post, entity_type, name, manager, language, max_code = 1):
+def update_questionnaire(questionnaire, post, entity_type, name, manager, language):
     questionnaire.name = name
     questionnaire.activeLanguages = [language]
     questionnaire.entity_type = [entity_type] if is_string(entity_type) else entity_type
     questionnaire.form_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set, max_code)
+    QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
     questionnaire.deactivate() if post['project_state'] == ProjectState.INACTIVE else questionnaire.set_test_mode()
     return questionnaire
 
@@ -121,17 +122,6 @@ def create_project(request):
             return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
 
-def get_max_code_in_questionnaire_set(questionnaire_set):
-    codes = [int( q['code'][1:] ) for q in questionnaire_set if q['code'].startswith( 'q' )]
-    if codes is not None and len(codes) > 0:
-        return max( codes )
-    return 1
-
-def get_max_code(old_questionnaire):
-    codes = [int( q.code[1:] ) for q in old_questionnaire if q.code.startswith( 'q' )]
-    if codes is not None and len(codes) > 0:
-        return max( codes )
-    return 1
 
 def get_reporting_period_field(questionnaire):
     for question in questionnaire:
@@ -198,11 +188,10 @@ def edit_project(request, project_id=None):
                     detail.update({changed.capitalize():form.cleaned_data.get(changed)})
             project.update(form.cleaned_data)
             try:
-                old_questionnaire = questionnaire.fields
-                max_code = get_max_code(old_questionnaire)
-                questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'], max_code)
-                changed_questions = get_changed_questions(old_questionnaire, questionnaire.fields, subject=False)
-                clear_submissions_if_change_date_format_for_rp(questionnaire, manager, old_questionnaire, questionnaire.fields)
+                old_fields = questionnaire.fields
+                questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'])
+                changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
+                clear_submissions_if_change_date_format_for_rp(questionnaire, manager, old_fields, questionnaire.fields)
                 detail.update(changed_questions)
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()
@@ -282,7 +271,6 @@ def reminder_settings(request, project_id):
             return render_to_response(html,
                     {'project_links': project_links,'project': project,
                      'form':form},context_instance=RequestContext(request))
-
 
 def _reminder_info_about_project(project):
     data = {}
@@ -383,4 +371,3 @@ def _get_activity_log_action(reminder_list, new_value):
                                        new_value['should_send_reminders_before_deadline']):
         action = DEACTIVATED_REMINDERS
     return action
-    

@@ -34,7 +34,7 @@ from datawinners.project.models import Project, get_all_projects
 from mangrove.datastore.entity_type import  define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, MOBILE_NUMBER_FIELD, SHORT_CODE_FIELD
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -42,7 +42,7 @@ from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country,\
-    get_database_manager_for_org, send_reset_password_email, get_changed_questions
+    get_database_manager_for_org, get_changed_questions
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
@@ -50,7 +50,6 @@ from django.contrib import messages
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
-from project.wizard_view import get_max_code
 from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, IMPORTED_SUBJECTS, \
     DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
     ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM
@@ -721,7 +720,7 @@ def save_questionnaire(request):
         question_set = json.loads(json_string)
         try:
             saved_fields = form_model.fields
-            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set, get_max_code(saved_fields))
+            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
             form_model.save()
             changed = get_changed_questions(saved_fields, form_model.fields)
             changed.update(dict(entity_type=form_model.entity_type[0].capitalize()))

@@ -5,7 +5,6 @@ from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, get_form_model_by_code
 from mock import Mock, patch
-from datawinners.entity.helper import question_code_generator
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder, QuestionBuilder
 from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint, NumericRangeConstraint
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
@@ -58,7 +57,7 @@ class TestQuestionnaireBuilder2(MangroveTestCase):
         form_model = self.manager.get(self.form_model__id, FormModel)
         self.assertEqual(0, len(form_model.snapshots))
 
-    def test_should_get_snapshots_when_questionnaires_field_modified(self):
+    def test_should_save_snapshots_when_questionnaires_field_modified(self):
         self._create_form_model()
         form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
         original_fields = form_model._doc.json_fields

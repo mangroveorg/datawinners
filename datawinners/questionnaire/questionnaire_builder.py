@@ -15,19 +15,29 @@ class QuestionnaireBuilder( object ):
         self.question_builder = question_builder
         self.question_code_generator = question_code_generator( )
 
-    def update_questionnaire_with_questions(self, question_set, max_code=1):
-        self.form_model.create_snapshot()
-        self.form_model.delete_all_fields( )
-
-        if self.form_model.entity_defaults_to_reporter( ):
-            self.form_model.add_field( self.question_builder.create_entity_id_question_for_activity_report() )
+    def generate_fields_by_question_set(self, max_code, question_set):
+        new_fields = []
+        if self.form_model.entity_defaults_to_reporter():
+            entity_field = self.question_builder.create_entity_id_question_for_activity_report()
+            new_fields.append(entity_field)
 
         for question in question_set:
             question_code = question['code']
             if question_code == 'code':
                 max_code += 1
                 question_code = 'q%s' % max_code
-            self.form_model.add_field( self.question_builder.create_question( question, question_code ) )
+            field = self.question_builder.create_question(question, question_code)
+            new_fields.append(field)
+        return new_fields
+
+    def update_questionnaire_with_questions(self, question_set):
+        original_fields = [f._to_json() for f in self.form_model.fields]
+        max_code = get_max_code_in_question_set(original_fields or question_set)
+        new_fields = self.generate_fields_by_question_set(max_code, question_set)
+
+        self.form_model.create_snapshot()
+        self.form_model.delete_all_fields( )
+        [self.form_model.add_field(each) for each in new_fields]
 
 
 class QuestionBuilder( object ):
@@ -159,3 +169,12 @@ class QuestionBuilder( object ):
         return ddtype
 
 
+def get_max_code(fields):
+    json_fields = [f._to_json() for f in fields]
+    return  get_max_code_in_question_set(json_fields)
+
+def get_max_code_in_question_set(question_set):
+    codes = [int( q['code'][1:] ) for q in question_set if q['code'].startswith( 'q' )]
+    if codes is not None and len(codes) > 0:
+        return max( codes )
+    return 1

@@ -5,7 +5,7 @@ import datetime
 import logging
 from time import mktime
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
@@ -59,7 +59,6 @@ from datawinners.project.wizard_view import edit_project, reminder_settings, rem
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
-from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
@@ -69,7 +68,6 @@ from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values
 from project.tests.test_filter import SubjectFilter
 from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
-from project.wizard_view import get_max_code
 from utils import get_changed_questions
 
 logger = logging.getLogger("django")
@@ -147,10 +145,9 @@ def save_questionnaire(request):
         pid = request.POST['pid']
         project = Project.load(manager.database, pid)
         form_model = FormModel.get(manager, project.qid)
-        old_questionnaire = form_model.fields
+        old_fields = form_model.fields
         try:
-            max_code = get_max_code(old_questionnaire)
-            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set, max_code)
+            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
         except QuestionCodeAlreadyExistsException as e:
             return HttpResponseServerError(e)
         except QuestionAlreadyExistsException as e:
@@ -166,7 +163,7 @@ def save_questionnaire(request):
                 return HttpResponseServerError(e.message)
             form_model.name = project.name
             form_model.entity_id = project.entity_type
-            detail = get_changed_questions(old_questionnaire, form_model.fields, subject=False)
+            detail = get_changed_questions(old_fields, form_model.fields, subject=False)
             form_model.save()
             UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
             return HttpResponse(json.dumps({"response": "ok"}))

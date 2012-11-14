@@ -95,7 +95,7 @@ def get_changed_questions(olds, news, subject=True):
     changed = []
     changed_type = []
     if subject:
-        if olds[-1].label!= news[-1].label:
+        if olds[-1].label != news[-1].label:
             changed.append(news[-1].label)
         olds = olds[:-1]
         news = news[:-1]
