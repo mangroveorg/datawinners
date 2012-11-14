@@ -226,14 +226,13 @@ def project_overview(request, project_id=None):
     project = Project.load(manager.database, project_id)
     if project is None:
         return HttpResponseRedirect(django_settings.HOME_PAGE)
-    form_model = FormModel.get(manager, project.qid)
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     questionnaire_code = questionnaire.form_code
     project_links = make_project_links(project, questionnaire_code)
     map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
     number_data_sender = len(project.get_data_senders(manager))
-    number_records = submission_count(manager, form_model.form_code, None, None)
+    number_records = submission_count(manager, questionnaire_code, None, None)
     number_reminders = Reminder.objects.filter(project_id=project.id).count()
     links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id]),
              'web_questionnaire_list': reverse(web_questionnaire, args=[project_id])}

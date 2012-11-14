@@ -1,9 +1,9 @@
 from unittest.case import TestCase
 from mock import Mock, patch
 from datawinners.entity.helper import delete_datasender_from_project, \
-    add_imported_data_sender_to_trial_organization,add_data_sender_to_trial_organization, get_country_appended_location
+    add_imported_data_sender_to_trial_organization, get_country_appended_location, question_code_generator
 from datawinners.project.models import Project
-from datawinners.accountmanagement.models import DataSenderOnTrialAccount, Organization
+from datawinners.accountmanagement.models import  Organization
 from django.contrib.auth.models import User
 
 
@@ -18,6 +18,12 @@ class TestHelper(TestCase):
         self.associated_project = {'value': {'_id': 'someId'}}
         self.associated_projects = [self.associated_project]
         self.mock_project = Mock(spec=Project)
+
+    def test_should_build_question_code(self):
+        generator = question_code_generator()
+        self.assertEqual('q1', generator.next())
+        self.assertEqual('q2', generator.next())
+        self.assertEqual('q3', generator.next())
 
     def test_should_delete_a_datasender_from_associated_projects(self):
         entity_ids = ['rep1', 'rep2']
