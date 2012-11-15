@@ -1,4 +1,5 @@
 import unittest
+from unittest.case import SkipTest
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity_type import define_type
@@ -75,18 +76,27 @@ class TestQuestionnaireBuilder2(MangroveTestCase):
         self.assertListEqual(expect, [(each['code'], each['label']) for each in form_model.snapshots[revision]])
 
 
+    @SkipTest# ddtype comparison not solved
+    def test_should_not_save_snapshots_when_questionnaires_field_not_changed(self):
+        self._create_form_model()
+        form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
+
+        post = [{"title": "What is associated entity", "options":{"ddtype":self.default_ddtype.to_json()}, "type": "text", "is_entity_question": True, "code": "ID", "name":"entity_question"},
+            {"title": "What is your name", "options":{"ddtype":self.default_ddtype.to_json()},  "type": "text", "is_entity_question": False, "code": "Q1", "range_min": 5,"range_max": 10}]
+        QuestionnaireBuilder(form_model, self.manager).update_questionnaire_with_questions(post)
+        form_model.save()
+        form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
+
+        self.assertEqual(0, len(form_model.snapshots))
+
     def _create_form_model(self):
         question1 = TextField(name="entity_question", code="ID", label="What is associated entity",
             entity_question_flag=True, ddtype=self.default_ddtype)
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
             defaultValue="some default value", constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")],
             ddtype=self.default_ddtype)
-        question3 = IntegerField(name="Father's age", code="Q2", label="What is your Father's Age",
-            constraints=[NumericRangeConstraint(min=15, max=120)], ddtype=self.default_ddtype)
-        question4 = SelectField(name="Color", code="Q3", label="What is your favourite color",
-            options=[("RED", 1), ("YELLOW", 2)], ddtype=self.default_ddtype)
         self.form_model = FormModel(self.manager, entity_type=self.entity_type, name="aids", label="Aids form_model",
-            form_code=FORM_CODE_1, type='survey', fields=[question1, question2, question3, question4])
+            form_code=FORM_CODE_1, type='survey', fields=[question1, question2])
         self.form_model__id = self.form_model.save()
 
     def _create_summary_form_model(self):

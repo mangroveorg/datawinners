@@ -7,6 +7,7 @@ from mangrove.form_model.validation import NumericRangeConstraint, TextLengthCon
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_not_empty, is_empty
 from datawinners.entity.helper import question_code_generator
+from project.filters import exists
 
 class QuestionnaireBuilder( object ):
     def __init__(self, form_model, dbm, question_builder=None):
@@ -31,8 +32,8 @@ class QuestionnaireBuilder( object ):
         return new_fields
 
     def update_questionnaire_with_questions(self, question_set):
-        original_fields = [f._to_json() for f in self.form_model.fields]
-        max_code = get_max_code_in_question_set(original_fields or question_set)
+        origin_json_fields = [f._to_json() for f in self.form_model.fields]
+        max_code = get_max_code_in_question_set(origin_json_fields or question_set)
         new_fields = self.generate_fields_by_question_set(max_code, question_set)
 
         self.form_model.create_snapshot()
@@ -175,6 +176,4 @@ def get_max_code(fields):
 
 def get_max_code_in_question_set(question_set):
     codes = [int( q['code'][1:] ) for q in question_set if q['code'].startswith( 'q' )]
-    if codes is not None and len(codes) > 0:
-        return max( codes )
-    return 1
+    return max( codes ) if codes else 1

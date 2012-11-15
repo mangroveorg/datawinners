@@ -81,16 +81,17 @@ class KeywordFilter(object):
     def filter(self, rows):
         if not self.keyword.strip():
             return rows
-        return filter(lambda row: exists(self.contains, row), rows)
+        return filter(lambda row: exists(self.contains, row, True), rows)
 
     def contains(self, i):
         return i is not None and self.keyword in i.lower()
 
-def exists(func, list):
+def exists(func, list, need_flatten=False):
     assert callable(func)
     assert is_sequence(list)
 
-    for i in flatten(list):
+    sequence = flatten(list) if need_flatten else list
+    for i in sequence:
         if func(i): return True
     return False
 
