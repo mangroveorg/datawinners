@@ -252,7 +252,8 @@ def project_overview(request, project_id=None):
         'add_data_senders_to_see_on_map_msg': add_data_senders_to_see_on_map_msg,
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
-        'questionnaire_code': questionnaire_code
+        'questionnaire_code': questionnaire_code,
+        'google_map_enabled': settings.ENABLE_GOOGLE_MAP
     }))
 
 

@@ -13,6 +13,8 @@ DATABASES = {
     }
 }
 
+ENABLE_GOOGLE_MAP = False
+
 TRIAL_REGISTRATION_ENABLED = True
 
 HNI_SUPPORT_EMAIL_ID = 'dummy@dummy.com'

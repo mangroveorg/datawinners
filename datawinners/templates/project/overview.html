@@ -43,21 +43,22 @@
     <div class="span-18 box">
         <!--Success Message div-->
         {% include 'project/success_message.html' %}
-            <div class="my_sub"><p><b>
-            {% if project.is_activity_report %}
-                <div>{% trans "Subjects"%}: {% trans "Data Senders"%}</div>
-                <div>{{ add_data_senders_to_see_on_map_msg }}</div>
-                <span style="display: none" id="marker_image">map_marker_red.png</span>
-            {% else %}
-                <div>{% trans "Subjects"%}: {{ project.entity_type }}</div>
-                <div>{{ add_subjects_to_see_on_map_msg }}</div>
-                <span style="display: none" id="marker_image">map_marker_blue.png</span>
-            {% endif %}
-            </b></p></div>
+        <div class="my_sub"><p><b>
+        {% if project.is_activity_report %}
+            <div>{% trans "Subjects"%}: {% trans "Data Senders"%}</div>
+            <div>{{ add_data_senders_to_see_on_map_msg }}</div>
+            <span style="display: none" id="marker_image">map_marker_red.png</span>
+        {% else %}
+            <div>{% trans "Subjects"%}: {{ project.entity_type }}</div>
+            <div>{{ add_subjects_to_see_on_map_msg }}</div>
+            <span style="display: none" id="marker_image">map_marker_blue.png</span>
+        {% endif %}
+        </b></p></div>
 
         <!--Map div-->
-
-        {% include 'maps/entity_map.html'  %}
+        {% if google_map_enabled %}
+            {% include 'maps/entity_map.html'  %}
+        {% endif %}
         <!--Questionnaire & DS div-->
         <div class="float_left" id="questionnaire_and_DS">
             {% include 'project/questionnaire_and_DS.html'%}

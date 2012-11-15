@@ -6,7 +6,7 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 PROJECT_DIR = os.path.dirname(__file__)
-
+ENABLE_GOOGLE_MAP = True
 EXPIRED_DAYS_FOR_TRIAL_ACCOUNT = 30
 
 ADMINS = (
