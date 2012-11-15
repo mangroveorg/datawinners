@@ -227,25 +227,25 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         form_model = self._prepare_form_model(self.manager)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
         default_sort_order = analyzer.get_default_sort_order()
-        self.assertEqual([[1, 'desc'],[0,'desc']], default_sort_order)
+        self.assertEqual([[1, 'desc'],[0,'asc']], default_sort_order)
 
     def test_should_sort_by_submission_date_and_subject_for_subject_project_without_rp(self):
         form_model = self._prepare_form_model_with_out_rp(self.manager)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
         default_sort_order = analyzer.get_default_sort_order()
-        self.assertEqual([[1, 'desc'],[0,'desc']], default_sort_order)
+        self.assertEqual([[1, 'desc'],[0,'asc']], default_sort_order)
 
     def test_should_sort_by_rp_and_ds_for_summary_project_with_rp(self):
         form_model = self._prepare_summary_form_model_with_rp(self.manager)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
         default_sort_order = analyzer.get_default_sort_order()
-        self.assertEqual([[0, 'desc'],[2,'desc']], default_sort_order)
+        self.assertEqual([[0, 'desc'],[2,'asc']], default_sort_order)
 
     def test_should_sort_by_submission_date_and_ds_for_summary_project_without_rp(self):
         form_model = self._prepare_summary_form_model_without_rp(self.manager)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
         default_sort_order = analyzer.get_default_sort_order()
-        self.assertEqual([[0, 'desc'],[1,'desc']], default_sort_order)
+        self.assertEqual([[0, 'desc'],[1,'asc']], default_sort_order)
 
 
     def _prepare_form_model(self, manager):

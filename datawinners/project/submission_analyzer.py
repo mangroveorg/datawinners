@@ -36,9 +36,9 @@ class SubmissionAnalyzer(object):
         return self._raw_values
 
     def get_default_sort_order(self):
-        default_sort_order = [[0, 'desc'],[2, 'desc']] if self.form_model.event_time_question else [[0, 'desc'],[1, 'desc']]
+        default_sort_order = [[0, 'desc'],[2, 'asc']] if self.form_model.event_time_question else [[0, 'desc'],[1, 'asc']]
         if self.form_model.entity_type != ['reporter']:
-            default_sort_order = [[1, 'desc'],[0,'desc']]
+            default_sort_order = [[1, 'desc'],[0,'asc']]
         return default_sort_order
 
     def get_headers(self):
