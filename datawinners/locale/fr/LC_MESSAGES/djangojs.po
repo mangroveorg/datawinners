@@ -672,3 +672,6 @@ msgstr "Votre(vos) utilisateur(s) sera/seront supprimé(s)"
 
 msgid "Inform Your Data Senders about the Changes"
 msgstr "Informez Vos Expéditeurs de Données sur les Changements"
+
+msgid "You don't have any submissions for this question yet"
+msgstr "Vous n'avez encore aucune soumission pour cette question"
