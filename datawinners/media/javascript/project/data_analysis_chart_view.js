@@ -278,6 +278,7 @@ function toolTip(){
 function showNoSubmissionExplanation(locator) {
     var message = gettext("You don't have any submissions for this question yet");
     var explanation_container = $('<div class="help_accordion text_align_right">' + message + '</div>');
+    explanation_container.css("padding-right", "20px");
     var padding = "60px";
     if ($(locator).attr("id").split("-")[0] =="bar"){
         var padding = "40px";
