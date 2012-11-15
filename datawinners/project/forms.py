@@ -22,7 +22,6 @@ class BroadcastMessageForm(forms.Form):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)
         self.fields['text'].widget.attrs['watermark'] = ugettext_lazy('Enter your SMS text')
         self.fields['text'].widget.attrs['id'] = 'sms_content'
-        self.fields['others'].widget.attrs['watermark'] = ugettext_lazy('Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers.')
 
     def clean_others(self):
         others = self.cleaned_data['others']

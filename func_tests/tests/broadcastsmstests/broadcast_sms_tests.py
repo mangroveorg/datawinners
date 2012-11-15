@@ -37,3 +37,8 @@ class TestBroadcastSMS(BaseTest):
         global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
         return global_navigation.navigate_to_view_all_project_page()
 
+    @attr('functional_test')
+    def test_should_show_help_text_when_other_people_is_choosen(self):
+        send_message_page = self._navigate_to_send_message_page()
+        send_message_page.choose_type_other_people("0333333333")
+        self.assertTrue(send_message_page.is_other_people_help_text_visible())
