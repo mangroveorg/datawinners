@@ -1,24 +1,29 @@
 # encoding=utf-8
 from datetime import datetime
-import unittest
+from mangrove.transport import Request
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import TextField, SelectField, DateField, field_attributes, GeoCodeField
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.field import TextField, SelectField, DateField, field_attributes, GeoCodeField, IntegerField
+from mangrove.form_model.form_model import FormModel, MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.facade import TransportInfo
+from mangrove.transport.player.player import WebPlayer
 from mangrove.transport.submissions import Submission
 from mock import Mock, patch
+from mangrove.utils.entity_builder import EntityBuilder
+from mangrove.utils.form_model_builder import FormModelBuilder, create_default_ddtype
+from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list, NULL
 
 today = datetime.utcnow().strftime("%d.%m.%Y")
 
-class SubmissionAnalyzerTest(unittest.TestCase):
+class SubmissionAnalyzerTest(MangroveTestCase):
     def setUp(self):
-        self.manager = Mock(spec=DatabaseManager)
+        super(SubmissionAnalyzerTest, self).setUp()
+        self.mocked_dbm = Mock(spec=DatabaseManager)
         self.request = Mock()
 
     def test_should_ignore_not_existed_option(self):
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
         analyzer = self._prepare_analyzer_with_one_submission(form_model, data)
 
@@ -42,7 +47,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             self.assertEqual(expected, statistics)
 
     def test_should_get_option_values_for_questions_case_insensitively(self):
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bC", "BG": "D"}
         analyzer = self._prepare_analyzer_with_one_submission(form_model, data)
 
@@ -58,14 +63,14 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_real_answer_for_select_question(self):
-        row = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
+        form_model = self._prepare_form_model(self.mocked_dbm)
+        row = (None, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
         expected = {"eid": "cli14","RD": "01.01.2012", "SY": ['Rapid weight loss', 'Dry cough', 'Pneumonia'], "BG": ['B+']}
-        form_model = self._prepare_form_model(self.manager)
         self._prepare_analyzer_with_one_submission(form_model, row)._replace_option_with_real_answer_value(row)
-        self.assertEqual(expected, row)
+        self.assertEqual(expected, row[-1])
 
     def test_should_get_leading_part_for_non_summary_project(self):
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
         with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
@@ -77,7 +82,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             self.assertEqual(expected, leading_part)
 
     def test_should_get_leading_part_for_summary_project(self):
-        form_model = self._prepare_summary_form_model_without_rp(self.manager)
+        form_model = self._prepare_summary_form_model_without_rp(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "rep01", "SY": "a2bc", "BG": "d"})
 
         with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
@@ -89,7 +94,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             self.assertEqual(expected, leading_part)
 
     def test_should_get_raw_field_values(self):
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
         with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
@@ -103,7 +108,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def test_should_get_raw_field_values_filtered_by_keyword(self):
 
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         data = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
               {"eid": "cli15", "RD": "02.02.2012", "SY": "c", "BG": "d"}]
         analyzer = self._prepare_analyzer(form_model, data, "Rapid")
@@ -124,7 +129,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_subject_list(self):
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
         analyzer.filtered_leading_part =  [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
                                               [('Clinic-1', 'cli15'),  '01.01.2011', today, ('name_2', 'id_2', 'from_2')],
@@ -134,7 +139,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         self.assertEqual(expected, subject_list)
 
     def test_should_get_data_sender_list(self):
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
         analyzer.filtered_leading_part = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name_2', 'id_2', 'from_2')],
@@ -149,7 +154,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         #question name ordered by field
         #options ordered by count(asc),option(alphabetic)
         #total = submission count of this question
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         d_ = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
               {"eid": "cli14", "RD": "01.01.2012", "BG": "c"}
              ]
@@ -193,7 +198,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
     def test_should_create_header_list_with_data_sender_if_the_project_is_not_a_summary_project(self):
 
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         d_ = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
                 {"eid": "cli14", "RD": "01.01.2012", "BG": "c"}]
         analyzer = self._prepare_analyzer(form_model, d_)
@@ -205,7 +210,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         self.assertEqual(expected_header, actual_header_list)
 
     def test_should_create_header_list_without_reporter_column_if_the_project_is_a_summary_project(self):
-        form_model = self._prepare_summary_form_model_without_rp(self.manager)
+        form_model = self._prepare_summary_form_model_without_rp(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "rep01", "SY": "a2bc", "BG": "d"})
 
         actual_list = analyzer.get_headers()
@@ -215,7 +220,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
 
 
     def test_should_create_header_list_with_gps_type(self):
-        form_model = self._prepare_form_model_with_gps_question(self.manager)
+        form_model = self._prepare_form_model_with_gps_question(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "gps": "2,3"})
 
         actual_list = analyzer.get_headers()
@@ -224,29 +229,58 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         self.assertEqual(expected_header, actual_list)
 
     def test_should_sort_by_rp_and_subject_for_subject_project_with_rp(self):
-        form_model = self._prepare_form_model(self.manager)
+        form_model = self._prepare_form_model(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
         default_sort_order = analyzer.get_default_sort_order()
         self.assertEqual([[1, 'desc'],[0,'asc']], default_sort_order)
 
     def test_should_sort_by_submission_date_and_subject_for_subject_project_without_rp(self):
-        form_model = self._prepare_form_model_with_out_rp(self.manager)
+        form_model = self._prepare_form_model_with_out_rp(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
         default_sort_order = analyzer.get_default_sort_order()
         self.assertEqual([[1, 'desc'],[0,'asc']], default_sort_order)
 
     def test_should_sort_by_rp_and_ds_for_summary_project_with_rp(self):
-        form_model = self._prepare_summary_form_model_with_rp(self.manager)
+        form_model = self._prepare_summary_form_model_with_rp(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
         default_sort_order = analyzer.get_default_sort_order()
         self.assertEqual([[0, 'desc'],[2,'asc']], default_sort_order)
 
     def test_should_sort_by_submission_date_and_ds_for_summary_project_without_rp(self):
-        form_model = self._prepare_summary_form_model_without_rp(self.manager)
+        form_model = self._prepare_summary_form_model_without_rp(self.mocked_dbm)
         analyzer = self._prepare_analyzer_with_one_submission(form_model, None)
         default_sort_order = analyzer.get_default_sort_order()
         self.assertEqual([[0, 'desc'],[1,'asc']], default_sort_order)
 
+    def test_should_get_old_answer_for_submissions_which_is_submitted_before_answer_type_changed(self):
+        ddtype = create_default_ddtype(self.manager)
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",entity_question_flag=True, ddtype=ddtype)
+        rp_field = DateField(label="Report date", code="RD", name="What is réporting date?",date_format="dd.mm.yyyy", event_time_field_flag=True, ddtype=ddtype)
+        symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
+            options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
+                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=ddtype)
+        blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
+            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=ddtype)
+
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
+            symptoms_field, blood_type_field).build()
+
+        EntityBuilder(self.manager, ['clinic'], 'cid001').add_data([(MOBILE_NUMBER_FIELD, "919970059125", ddtype), (NAME_FIELD, "Ritesh", ddtype)]).build()
+
+        transport = TransportInfo(transport="web", source="1234", destination="5678")
+        post_data = {'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'}
+        WebPlayer(self.manager).accept(Request(message=post_data, transportInfo=transport))
+
+        symptoms_field = IntegerField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=ddtype)
+        form_model.create_snapshot()
+        form_model.delete_all_fields( )
+        [form_model.add_field(each) for each in [eid_field, rp_field, symptoms_field, blood_type_field]]
+        form_model.save()
+
+        analyzer = SubmissionAnalyzer(form_model, self.manager, Mock())
+        values = analyzer.get_raw_values()
+
+        self.assertEqual([['Rapid weight loss','Dry cough'], ['O-']], values[0][4:])
 
     def _prepare_form_model(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
@@ -311,7 +345,7 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         return form_model
 
     def _prepare_clinic_entity(self):
-        entity = Entity(self.manager, entity_type="Clinic", location=["India", "MH", "Pune"], short_code="cli14",
+        entity = Entity(self.mocked_dbm, entity_type="Clinic", location=["India", "MH", "Pune"], short_code="cli14",
             geometry={'type': 'Point', 'coordinates': [1, 2]})
         entity._doc.data = {'name': {'value': 'Clinic-One'}}
         return entity
@@ -320,12 +354,12 @@ class SubmissionAnalyzerTest(unittest.TestCase):
         with patch("project.submission_analyzer.filter_submissions") as filter_submissions, patch(
             "project.submission_analyzer.SubmissionAnalyzer._init_raw_values"), patch(
             "project.submission_analyzer.get_submissions_with_timing"):
-            submission = Submission(self.manager,
+            submission = Submission(self.mocked_dbm,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
                 form_code=form_model.form_code,
                 values=values)
             filter_submissions.return_value = [submission]
-            return SubmissionAnalyzer(form_model, self.manager, self.request, None)
+            return SubmissionAnalyzer(form_model, self.mocked_dbm, self.request, None)
 
     def _prepare_analyzer(self, form_model, values_list, keywords=None):
         with patch("project.submission_analyzer.filter_submissions") as filter_submissions, patch(
@@ -333,11 +367,11 @@ class SubmissionAnalyzerTest(unittest.TestCase):
             "project.submission_analyzer.get_submissions_with_timing"):
             return_value = []
             for values in values_list:
-                submission = Submission(self.manager,
+                submission = Submission(self.mocked_dbm,
                     transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
                     form_code=form_model.form_code,
                     values=values)
                 return_value.append(submission)
             filter_submissions.return_value = return_value
 
-            return SubmissionAnalyzer(form_model, self.manager, self.request, None, keywords)
+            return SubmissionAnalyzer(form_model, self.mocked_dbm, self.request, None, keywords)

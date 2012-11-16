@@ -9,22 +9,21 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.submissions import get_submissions
 from project.filters import KeywordFilter
 from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE, DEFAULT_DATE_FORMAT
-from enhancer import form_model_enhancer, field_enhancer
+from enhancer import field_enhancer
 from utils import sorted_unique_list
 
 NULL = '--'
 field_enhancer.enhance()
-form_model_enhancer.enhance()
 SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
 
 class SubmissionAnalyzer(object):
-    def __init__(self, form_model, manager, request, filters, keyword=None):
+    def __init__(self, form_model, manager, request, filters=None, keyword=None):
         assert isinstance(form_model, FormModel)
         self.form_model = form_model
         self.manager = manager
         self.request = request
         submissions = get_submissions_with_timing(form_model, manager)
-        self.filtered_submissions = filter_submissions(submissions, filters)
+        self.filtered_submissions = filter_submissions(submissions, filters or [])
         self._data_senders = []
         self._subject_list = []
         self.keyword_filter = KeywordFilter(keyword if keyword else '')
@@ -114,11 +113,11 @@ class SubmissionAnalyzer(object):
 
     @timebox
     def _get_field_values(self):
-        submission_values = [submission.values for submission in self.filtered_submissions]
+        submission_values = [(submission.form_model_revision, submission.values) for submission in self.filtered_submissions]
         field_values = []
         for row in submission_values:
             self._replace_option_with_real_answer_value(row)
-            fields_ = [case_insensitive_lookup(field.code, row) for field in self.form_model.non_rp_fields()]
+            fields_ = [case_insensitive_lookup(field.code, row[-1]) for field in self.form_model.non_rp_fields_by(row[0])]
             field_values.append(fields_)
         return field_values
 
@@ -161,11 +160,11 @@ class SubmissionAnalyzer(object):
         return [subject] + row
 
     def _replace_option_with_real_answer_value(self, row):
-        assert isinstance(row, dict)
-        for question_code, question_value in row.iteritems():
-            field = self.form_model.get_field_by_code(question_code)
+        assert isinstance(row[-1], dict)
+        for question_code, question_value in row[-1].iteritems():
+            field = self.form_model.get_field_by_code_and_rev(question_code, row[0])
             if isinstance(field, SelectField):
-                row[question_code] = field.get_option_value_list(question_value)
+                row[-1][question_code] = field.get_option_value_list(question_value)
 
     def _init_statistics_result(self):
         result = OrderedDict()
