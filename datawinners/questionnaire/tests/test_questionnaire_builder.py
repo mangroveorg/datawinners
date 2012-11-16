@@ -14,7 +14,7 @@ FORM_CODE_2 = "2"
 
 FORM_CODE_1 = "1"
 
-class TestQuestionnaireBuilder2(MangroveTestCase):
+class TestQuestionnaireBuilder(MangroveTestCase):
     def setUp(self):
         MangroveTestCase.setUp(self)
         self._create_default_dd_type()
