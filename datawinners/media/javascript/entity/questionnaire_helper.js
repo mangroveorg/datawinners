@@ -422,12 +422,19 @@ DW.check_question_type_according_radio_button = function(type) {
     $("[name='type'][value='"+type+"']").attr('checked', true);
 }
 
+DW.set_questionnaire_was_change = function(){
+    if (!questionnaireViewModel.selectedQuestion().newly_added_question()) {
+        DW.questionnaire_was_changed = true;
+    }
+}
+
 $(document).ready(function(){
-    $("#range_min, #range_max, #max_length, [name=text_length], [name=date_format], #question_title").change(function(){
-        if (!questionnaireViewModel.selectedQuestion().newly_added_question()) {
-            DW.questionnaire_was_changed = true;
-        }
-    });
+    var change_selector = "#range_min, #range_max, #max_length, [name=text_length], [name=date_format], #question_title";
+    change_selector += ", [name=answers_possible]";
+    var click_selector = "#question-detail-panel .add_link";
+    
+    $(change_selector).change(DW.set_questionnaire_was_change);
+    $(click_selector).click(DW.set_questionnaire_was_change);
 
     $("#questionnaire-code").change(function(){
        if ($(this).val() != $("#saved-questionnaire-code").val()) {

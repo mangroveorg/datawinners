@@ -466,3 +466,16 @@ class CreateQuestionnairePage(CreateProjectPage):
 
     def set_questionnaire_code(self, form_code):
         self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).enter_text(form_code)
+
+    def add_option_to_a_multiple_choice_question(self, new_choice_text):
+        self.driver.find(ADD_CHOICE_LINK).click()
+        question = self.get_list_of_choices_type_question()
+        index = len(question[CHOICE])
+        self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR)).enter_text(new_choice_text)
+
+    def change_list_of_choice_answer_type(self, choice_type):
+        if ONLY_ONE_ANSWER == choice_type:
+            self.driver.find_radio_button(ONLY_ONE_ANSWER_RB).click()
+        elif MULTIPLE_ANSWERS == choice_type:
+            self.driver.find_radio_button(MULTIPLE_ANSWER_RB).click()
+    

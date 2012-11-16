@@ -360,7 +360,20 @@ class TestEditQuestionnaire(BaseTest):
         create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog()
         create_questionnaire_page.change_question_text(3, "question number 3")
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
-    
+
+    @attr('functional_test')
+    def test_should_show_redistribute_questionnaire_message_when_osi_change_an_mc_question_option(self):
+        create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog("choice")
+        create_questionnaire_page.select_question_link(3)
+        create_questionnaire_page.add_option_to_a_multiple_choice_question("new option")
+        self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+
+    @attr('functional_test')
+    def test_should_show_redistribute_questionnaire_message_when_osi_change_an_mc_question_option(self):
+        create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog("choice")
+        create_questionnaire_page.select_question_link(3)
+        create_questionnaire_page.change_list_of_choice_answer_type("multiple_answers")
+        self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
     def prerequisites_for_redistribute_questionnaire_dialog(self, question_type="word"):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
