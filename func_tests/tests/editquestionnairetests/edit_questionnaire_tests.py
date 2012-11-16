@@ -252,8 +252,8 @@ class TestEditQuestionnaire(BaseTest):
         edit_project_page = project_overview_page.navigate_to_edit_project_page()
         edit_project_page.continue_create_project()
 
-    def cancle_warning_dialog(self):
-        cancel_locator = by_id("option_warning_message_cancel")
+    def cancle_warning_dialog(self, element_id="option_warning_message_cancel"):
+        cancel_locator = by_id(element_id)
         warning_dialog = WarningDialog(self.driver, cancel_link=cancel_locator)
         warning_dialog.cancel()
 
@@ -374,6 +374,16 @@ class TestEditQuestionnaire(BaseTest):
         create_questionnaire_page.select_question_link(3)
         create_questionnaire_page.change_list_of_choice_answer_type("multiple_answers")
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+
+
+    @attr('functional_test')
+    def test_should_restore_default_reporting_periode_date_format_when_canceling_change(self):
+        create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog("choice")
+        create_questionnaire_page.select_question_link(2)
+        create_questionnaire_page.change_date_type_question("mm.yyyy")
+        self.cancle_warning_dialog(element_id="change_date_format_cancel")
+        question = create_questionnaire_page.get_date_type_question()
+        self.assertEqual(question["date_format"], "dd.mm.yyyy")
 
     def prerequisites_for_redistribute_questionnaire_dialog(self, question_type="word"):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)

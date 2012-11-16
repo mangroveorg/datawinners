@@ -25,6 +25,11 @@ var questionnaireViewModel =
         question.display = ko.dependentObservable(function() {
             return this.title();
         }, question);
+        
+        if (question.event_time_field_flag()) {
+            DW.report_period_date_format_change_warning.old_date_format = question.date_format();
+        }
+        
         DW.check_question_type_according_radio_button(question.type());
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.questions.valueHasMutated();
