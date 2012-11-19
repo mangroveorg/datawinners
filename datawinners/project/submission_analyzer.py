@@ -1,5 +1,5 @@
 #encoding=utf-8
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from django.utils.translation import ugettext
 from main.utils import timebox
 from mangrove.datastore.entity import get_by_short_code
@@ -7,6 +7,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.submissions import get_submissions
+from mangrove.utils.types import is_sequence
 from project.filters import KeywordFilter
 from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE, DEFAULT_DATE_FORMAT
 from enhancer import field_enhancer
@@ -65,6 +66,7 @@ class SubmissionAnalyzer(object):
     def get_data_senders(self):
         return sorted_unique_list(each[-1] for each in self.filtered_leading_part)
 
+    @timebox
     def get_analysis_statistics(self):
         if not self._raw_values: return []
 
@@ -75,8 +77,11 @@ class SubmissionAnalyzer(object):
                 question_name = field_header[idx]
                 if isinstance(self.form_model.get_field_by_name(question_name), SelectField) and question_values:
                     result[question_name]['total'] += 1
-                    for each in question_values:
-                        result[question_name]['choices'][each] += 1
+                    if is_sequence(question_values):
+                        for each in question_values:
+                            result[question_name]['choices'][each] += 1
+                    else:
+                        result[question_name]['choices'][question_values] += 1
 
         list_result = []
         for key, value in result.items():
@@ -170,10 +175,9 @@ class SubmissionAnalyzer(object):
         result = OrderedDict()
         for each in self.form_model.fields:
             if isinstance(each, SelectField):
-                result.setdefault(each.name, {"choices": {}, "type": each.type, 'total': 0})
+                result.setdefault(each.name, {"choices": defaultdict(int), "type": each.type, 'total': 0})
                 for option in each.options:
-                    opt_text = option['text']
-                    result[each.name]['choices'][opt_text] = 0
+                    result[each.name]['choices'][option['text']] = 0
         return result
 
 
