@@ -108,7 +108,6 @@ class SubmissionAnalyzerTest(MangroveTestCase):
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_raw_field_values_filtered_by_keyword(self):
-
         form_model = self._prepare_form_model(self.mocked_dbm)
         data = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
               {"eid": "cli15", "RD": "02.02.2012", "SY": "c", "BG": "d"}]
@@ -388,6 +387,32 @@ class SubmissionAnalyzerTest(MangroveTestCase):
 
         self.assertEqual(['100', '1,1', '01.10.2012'], values[0][4:])
         self.assertEqual(['Fever', 'NewYork', 'oct 1'], values[1][4:])
+
+    def test_should_should_get_fields_values_after_question_count_changed(self):
+        ddtype = create_default_ddtype(self.manager)
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
+            entity_question_flag=True, ddtype=ddtype)
+        rp_field = DateField(label="Report date", code="RD", name="What is réporting date?", date_format="dd.mm.yyyy",
+            event_time_field_flag=True, ddtype=ddtype)
+        symptoms_field = TextField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=ddtype)
+        gps = TextField(label="What is your blood group?", code="GPS", name="What is your gps?", ddtype=ddtype)
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
+            symptoms_field, gps).build()
+        EntityBuilder(self.manager, ['clinic'], 'cid001').add_data([(MOBILE_NUMBER_FIELD, "919970059125", ddtype), (NAME_FIELD, "Ritesh", ddtype)]).build()
+
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'GPS': 'NewYork'})
+
+        form_model.create_snapshot()
+        form_model.delete_field("SY")
+        form_model.save()
+
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'GPS': '1,1'})
+
+        analyzer = SubmissionAnalyzer(form_model, self.manager, Mock())
+        values = analyzer.get_raw_values()
+
+        self.assertEqual(['1,1'], values[0][4:])
+        self.assertEqual(['NewYork'], values[1][4:])
 
     def _prepare_form_model(self, manager):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",

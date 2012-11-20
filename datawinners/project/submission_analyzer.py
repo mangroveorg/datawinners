@@ -122,7 +122,7 @@ class SubmissionAnalyzer(object):
         field_values = []
         for row in submission_values:
             self._replace_option_with_real_answer_value(row)
-            fields_ = [case_insensitive_lookup(field.code, row[-1]) for field in self.form_model.non_rp_fields_by(row[0])]
+            fields_ = [case_insensitive_lookup(field.code, row[-1]) for field in self.form_model.non_rp_fields_by()]
             field_values.append(fields_)
         return field_values
 
