@@ -9,9 +9,9 @@ function drawTable(answers, total, locator, type){
         drawTableFooter(total, total_count, $legendTable);
     }
 
-    $(locator).append($legendTable)
+    $(locator).append($legendTable);
 
-    drawNotes(locator, type, total);
+    drawNotes(locator, type, total, total_count);
 }
 
 function drawTableHeader(type, answers, total, legendTable) {
@@ -73,12 +73,12 @@ function drawTableRows(answers, total, legendTable) {
     return total_count;
 }
 
-function drawNotes(locator, type, total) {
+function drawNotes(locator, type, total, total_count) {
     $summary = $('<div class="tableSummary">'+gettext("Total number of Submissions for this question: ")+ '<b>'+total+'</b></div>');
 
     $(locator).append($summary);
 
-    if (type == 'select' && total != 0) {
+    if (type == 'select' && total != 0 || total_count > total) {
         $multi_choice_explaination = $('<div class="mcExplaination">' +
             gettext("Your Data Senders can choose more than 1 answer.<br>That is why percentages may add up to more than 100%") + '</div>');
         $(locator).append($multi_choice_explaination);
