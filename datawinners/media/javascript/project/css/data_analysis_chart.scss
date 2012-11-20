@@ -41,19 +41,14 @@ div.valueLabel {
   .chartDiv{
     display:inline-block;
     width: 100%;
-    margin-left: 20px;
 
     .pieDiv{
       width:500px;
       height:400px;
       float: left;
       margin-top: -20px;
+      margin-left: 20px;
       margin-bottom: 30px;
-
-      canvas{
-        margin-left: 40px;
-        margin-top: -10px;
-      }
 
       .pieLabel{
         font-size:8pt;
@@ -64,8 +59,6 @@ div.valueLabel {
         overflow:hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        margin-left: 20px;
-        margin-top: -7px;
       }
     }
 

@@ -32,17 +32,14 @@ div.valueLabel {
   min-height: 274px; }
   .chartOl .chartDiv {
     display: inline-block;
-    width: 100%;
-    margin-left: 20px; }
+    width: 100%; }
     .chartOl .chartDiv .pieDiv {
       width: 500px;
       height: 400px;
       float: left;
       margin-top: -20px;
+      margin-left: 20px;
       margin-bottom: 30px; }
-      .chartOl .chartDiv .pieDiv canvas {
-        margin-left: 40px;
-        margin-top: -10px; }
       .chartOl .chartDiv .pieDiv .pieLabel {
         font-size: 8pt;
         width: 100px;
@@ -51,9 +48,7 @@ div.valueLabel {
         color: black;
         overflow: hidden;
         white-space: nowrap;
-        text-overflow: ellipsis;
-        margin-left: 20px;
-        margin-top: -7px; }
+        text-overflow: ellipsis; }
     .chartOl .chartDiv .barDiv {
       margin-bottom: 50px;
       width: 500px;
