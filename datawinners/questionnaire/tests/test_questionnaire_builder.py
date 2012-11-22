@@ -73,7 +73,7 @@ class TestQuestionnaireBuilder(MangroveTestCase):
         self.assertEqual(1, len(form_model.snapshots))
         self.assertEqual(revision, form_model.snapshots.keys()[-1])
         expect = [(each['code'], each['label']) for each in original_fields]
-        self.assertListEqual(expect, [(each['code'], each['label']) for each in form_model.snapshots[revision]])
+        self.assertListEqual(expect, [(each.code, each.label) for each in form_model.snapshots[revision]])
 
 
     @SkipTest# ddtype comparison not solved
