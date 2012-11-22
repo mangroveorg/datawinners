@@ -13,18 +13,21 @@ ENVIRONMENT_CONFIGURATIONS = {
     "master": "showcase_local_settings.py",
     "beta": "local_settings.py",
     "production": "prod_local_settings.py",
+    "ec2": "ec2_local_settings.py",
     "qa": "local_settings_qa.py"
 }
 
 ENVIRONMENT_VES = {
     "showcase": "/home/mangrover/ve",
     "production": "/home/mangrover/ve",
+    "ec2": "/home/mangrover/.virtualenvs",
     "qa": "/home/twer/virtual_env/datawinner"
 }
 
 ENVIRONMENT_TOMCAT = {
     "showcase": "/home/mangrover/tomcat",
-    "production": "/home/mangrover/tomcat7"
+    "production": "/home/mangrover/tomcat7",
+    "ec2": "/home/mangrover/tomcat7",
 }
 
 def git_clone_datawinners_if_not_present(code_dir):
