@@ -67,7 +67,9 @@ class ViewUpdater(object):
                             "weekly_aggregate_latest",
                             "weekly_aggregate_stats",
                             "yearly_aggregate_latest",
-                            "yearly_aggregate_stats"]
+                            "yearly_aggregate_stats",
+                            "form_data_by_form_code_time",
+                            "by_entity_type_and_entity_id"]
 
     def _init_seq_dict(self):
         if os.path.exists(self._status_file_path):
