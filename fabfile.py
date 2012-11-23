@@ -185,6 +185,12 @@ def production():
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
+def ec2():
+    env.user = "mangrover"
+    env.hosts = ["54.243.31.50"]
+    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.warn_only = True
+
 def local_test():
     env.user = getpass.getuser()
     env.hosts = ["localhost"]
