@@ -1,6 +1,7 @@
 from collections import defaultdict
 from functools import partial
 import cPickle
+import socket
 import os
 from time import sleep
 import urllib2
@@ -25,25 +26,38 @@ def surround_wrapper(func):
         return ret
     return _wrapper
 
+def get_response(url):
+    try:
+        request = urllib2.urlopen(url)
+        response = request.read()
+    except Exception, e:
+        logging.error(e)
+        response = None
+    finally:
+        if request:
+            request.close()
+        return response
+
 @surround_wrapper
 def all_view_names(server, db_name):
     query_string = '_all_docs?startkey="_design"&endkey="_design0"'
-    response = urllib2.urlopen('/'.join([server, db_name, query_string])).read()
+    response = get_response('/'.join([server, db_name, query_string]))
     return [each['id'].split('/')[-1] for each in eval(response)['rows']]
 
 @surround_wrapper
 def committed_update_seq(server, db_name):
-    response = urllib2.urlopen('/'.join([server, db_name])).read()
+    response = get_response('/'.join([server, db_name]))
     return jsonpickle.decode(response).get('committed_update_seq', 0)
 
 @surround_wrapper
 def visit_view(server, db_name, view_name):
     view_url = '/'.join([server, db_name, "_design", view_name, "_view", view_name + '?reduce=false&limit=0'])
-    urllib2.urlopen(view_url).read()
+    return get_response(view_url)
 
 
 class ViewUpdater(object):
     def __init__(self, db_server):
+        socket.setdefaulttimeout(30)
         self.db_server = db_server
         self._status_file_path = os.path.join(LOG_FOLDER, "view_updater.seq")
         self._init_seq_dict()
