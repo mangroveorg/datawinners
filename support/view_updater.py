@@ -13,19 +13,30 @@ THRESHOLD = 100
 INTERVAL = 60 * 60 * 1
 
 LOG_FOLDER = '/var/log/datawinners'
-logging.basicConfig(filename=os.path.join(LOG_FOLDER, 'view_updater.log'),
+LOG_FILE = os.path.join(LOG_FOLDER, 'view_updater.log')
+logging.basicConfig(filename=LOG_FILE,
                      level=logging.DEBUG, filemode='a', format='%(asctime)s - %(levelname)s: %(message)s')
 
+def surround_wrapper(func):
+    def _wrapper(*args, **kwargs):
+        logging.debug("%s%s" % (func.func_name, args))
+        ret = func(*args, **kwargs)
+        logging.debug("%s%s finished." % (func.func_name, args))
+        return ret
+    return _wrapper
+
+@surround_wrapper
 def all_view_names(server, db_name):
     query_string = '_all_docs?startkey="_design"&endkey="_design0"'
     response = urllib2.urlopen('/'.join([server, db_name, query_string])).read()
     return [each['id'].split('/')[-1] for each in eval(response)['rows']]
 
+@surround_wrapper
 def committed_update_seq(server, db_name):
     response = urllib2.urlopen('/'.join([server, db_name])).read()
-    logging.debug(response.strip())
     return jsonpickle.decode(response).get('committed_update_seq', 0)
 
+@surround_wrapper
 def visit_view(server, db_name, view_name):
     view_url = '/'.join([server, db_name, "_design", view_name, "_view", view_name + '?reduce=false&limit=0'])
     urllib2.urlopen(view_url).read()
@@ -151,7 +162,9 @@ if __name__ == '__main__':
         db_server = "http://%s:5984" % sys.argv[1]
     try:
         pid = os.fork()
-        if pid > 0: sys.exit(0)
+        if pid > 0:
+            print "See logs from: ", LOG_FILE
+            sys.exit(0)
     except OSError, e:
         print >>sys.stderr, "fork #1 failed: %d (%s)" % (e.errno, e.strerror)
         sys.exit(1)
