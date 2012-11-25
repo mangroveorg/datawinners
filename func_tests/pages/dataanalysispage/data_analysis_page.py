@@ -280,3 +280,5 @@ class DataAnalysisPage(Page):
     def get_dropdown_control_text(self):
         return self.driver.find_visible_element(DROPDOWN_CONTROL).text
 
+    def click_column_header_to_change_order(self, index):
+        return self.driver.find(by_css(QUESTION_LABEL_CSS % (index))).click()

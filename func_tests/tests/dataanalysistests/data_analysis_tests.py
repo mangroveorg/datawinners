@@ -222,6 +222,19 @@ class TestDataAnalysis(BaseTest):
         
         self.assertTrue(analysis_page.dropdown_checklist_is_opened())
 
+    @attr('functional_test')
+    def test_should_sort_data_in_alphanumerical_order(self):
+        analysis_page = self.go_to_analysis_page(project_name="test data sorting")
+        default = analysis_page.get_all_data_records_by_column(3)
+        expected_default = ["12.2012", "20, 34", "-12, 34", "12, 34", "cat, dog", "2012.01.14", "cat", "456", "123",
+                            "12.23.2011", "2011.12.12"]
+        self.assertEqual(default, expected_default)
+        analysis_page.click_column_header_to_change_order(4)
+        expected_ordered = ["-12, 34", "12, 34", "12.2012", "12.23.2011", "123", "20, 34", "2011.12.12", "2012.01.14",
+                            "456", "cat", "cat, dog"]
+        ordered = analysis_page.get_all_data_records_by_column(3)
+        self.assertEqual(ordered, expected_ordered)
+
 
 
 

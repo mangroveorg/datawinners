@@ -757,6 +757,25 @@ def create_project17(CLINIC_ENTITY_TYPE, manager, questions_):
     except Exception:
         pass
 
+def create_project18(CLINIC_ENTITY_TYPE, manager, questions_):
+    form_model18 = FormModel(manager, name="AIDS", label="Aids form_model",
+                             form_code="cli018", type='survey',
+                             fields=questions_,
+                             entity_type=CLINIC_ENTITY_TYPE)
+    try:
+        qid18 = form_model18.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli018").delete()
+        qid18 = form_model18.save()
+    project18 = Project(name="Test data sorting", goals="This project is for automation", project_type="survey",
+                        entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes', sender_group="close")
+    project18.qid = qid18
+    project18.state = ProjectState.TEST
+    try:
+        project18.save(manager)
+    except Exception:
+        pass
+
 
 def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager):
     clinic_code = "cli00_mp"
@@ -825,6 +844,7 @@ def create_clinic_projects(entity_type, manager):
     create_project15(entity_type, manager, questions)
     create_project16(entity_type, manager, questions)
     create_project17(entity_type, manager, questions[:6])
+    create_project18(entity_type, manager, questions[:2])
     create_clinic_project_with_monthly_reporting_period(entity_type, manager)
 
 def load_web_data_for_cli001(manager):
@@ -832,6 +852,60 @@ def load_web_data_for_cli001(manager):
     text = {'form_code': 'cli001', 'EID':'cid001', 'NA':'Mr. Admin', 'FA':'58', 'RD':'28.02.2011', 'BG':'c', 'SY':'ade', 'GPS':'79.2 20.34567'}
     web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
     web_player.accept(Request(message=text, transportInfo=web_transport_info))
+
+def load_web_data_for_cli018(manager):
+    web_player = WebPlayer(manager, location_tree=LocationTree())
+    web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
+    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'cat, dog'}
+    web_player.accept(Request(message=text, transportInfo=web_transport_info))
+    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'12, 34'}
+    web_player.accept(Request(message=text, transportInfo=web_transport_info))
+    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'-12, 34'}
+    web_player.accept(Request(message=text, transportInfo=web_transport_info))
+    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'20, 34'}
+    web_player.accept(Request(message=text, transportInfo=web_transport_info))
+
+def load_sms_data_for_cli018(manager):
+    JAN = datetime(2011, 01, 05, hour=12, minute=00, second=00, tzinfo=UTC)
+    FEB = datetime(2011, 02, 28, hour=12, minute=00, second=00, tzinfo=UTC)
+    MARCH = datetime(2011, 03, 11, tzinfo=UTC)
+    APR = datetime(2011, 04, 01, tzinfo=UTC)
+    DEC_2010 = datetime(2010, 12, 28, hour=00, minute=00, second=59, tzinfo=UTC)
+    NOV_2010 = datetime(2010, 11, 26, hour=23, minute=59, second=59, tzinfo=UTC)
+    today = datetime.today()
+    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
+
+    FROM_NUMBER = '1234567890'
+    TO_NUMBER = '919880734937'
+    transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
+
+    mangrove_request = Request("cli018 .EID cid001 .NA 12.2012", transport)
+    response = sms_player.accept(mangrove_request)
+
+    datetime_mocker = DateTimeMocker()
+    datetime_mocker.set_date_time_now(JAN)
+    mangrove_request = Request("cli018 .EID cid001 .NA 123", transport)
+    response = sms_player.accept(mangrove_request)
+
+    datetime_mocker.set_date_time_now(FEB)
+    mangrove_request = Request("cli018 .EID cid001 .NA 456", transport)
+    response = sms_player.accept(mangrove_request)
+
+    datetime_mocker.set_date_time_now(MARCH)
+    mangrove_request = Request("cli018 .EID cid003 .NA cat", transport)
+    response = sms_player.accept(mangrove_request)
+
+    datetime_mocker.set_date_time_now(APR)
+    mangrove_request = Request("cli018 .EID cid004 .NA 2012.01.14", transport)
+    response = sms_player.accept(mangrove_request)
+
+    datetime_mocker.set_date_time_now(NOV_2010)
+    mangrove_request = Request("cli018 .EID cid005 .NA 2011.12.12", transport)
+    response = sms_player.accept(mangrove_request)
+
+    datetime_mocker.set_date_time_now(DEC_2010)
+    mangrove_request = Request('cli018 .EID cid001 .NA 12.23.2011', transport)
+    response = sms_player.accept(mangrove_request)
 
 def load_sms_data_for_cli001(manager):
     FEB = datetime(2011, 02, 28, hour=12, minute=00, second=00, tzinfo=UTC)
@@ -1340,6 +1414,9 @@ def load_data():
     load_sms_data_for_cli001(manager)
     load_web_data_for_cli001(manager)
     send_data_to_project_cli00_mp(manager)
+
+    load_web_data_for_cli018(manager)
+    load_sms_data_for_cli018(manager)
 
     create_trial_test_organization('chinatwu@gmail.com','COJ00000', False)
     create_trial_test_organization('chinatwu2@gmail.com','COJ00001', True, [phone_number_type, first_name_type])
