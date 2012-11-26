@@ -316,7 +316,6 @@ DW.questionnaire_has_submission = function(){
     return return_value;
 }
 
-
 DW.init_question_constraints = function() {
     questionnaireViewModel.selectedQuestion().range_min("");
     questionnaireViewModel.selectedQuestion().range_max("");

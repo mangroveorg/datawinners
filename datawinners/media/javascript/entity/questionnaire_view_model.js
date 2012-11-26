@@ -112,11 +112,6 @@ var questionnaireViewModel =
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
     },
-    set_old_values: function(question){
-        if(question){
-            DW.option_warning_dialog.old_question_type = question.type();
-        }
-    },
     remove_option: function(choice){
         var choices = questionnaireViewModel.selectedQuestion().options.choices;
         var choice_values = $(choices).map(function(index, choice){
@@ -129,33 +124,8 @@ var questionnaireViewModel =
         questionnaireViewModel.removeOptionFromQuestion(choice);
     },
     changeQuestionType: function(type_selector) {
-        var type = questionnaireViewModel.selectedQuestion().type();
-        var choices = questionnaireViewModel.selectedQuestion().choices();
-        var type_equal = type_selector.value == type
-            || (type_selector.value == 'choice' && (type.indexOf('select') >= 0));
-        if (typeof(is_edit) == "undefined" || !is_edit || questionnaireViewModel.selectedQuestion().newly_added_question()) {
-            DW.init_question_constraints();
-            DW.change_question_type_for_selected_question(type_selector.value);
-            return;
-        } else if (type_equal){
-            return;
-        }
-        DW.option_warning_dialog.show_warning(gettext("You have changed the Answer Type.<br>If you have previously collected data, it may be rendered incorrect.<br><br>Are you sure you want to continue?"));
-        DW.option_warning_dialog.cancelEventHandler = function(){
-            try {
-                questionnaireViewModel.selectedQuestion().type(type);
-                questionnaireViewModel.selectedQuestion().choices(choices);
-            } catch (e) {}
-            if (type.indexOf('select') != -1) type = 'choice';
-            $("[name='type'][value='" + type + "']").attr('checked', true);
-            DW.option_warning_dialog.continueEventHandler = function(){};
-        };
-        DW.option_warning_dialog.continueEventHandler = function(){
-            var new_type = $("input[name='type']:checked").val();
-            DW.init_question_constraints();
-            DW.change_question_type_for_selected_question(new_type);
-            DW.questionnaire_was_changed = true;
-        };
+        DW.init_question_constraints();
+        DW.change_question_type_for_selected_question(type_selector.value);
     },
     showLengthLimiter: function() {
         return questionnaireViewModel.selectedQuestion().length_limiter() == 'length_limited';
@@ -169,7 +139,7 @@ var questionnaireViewModel =
         return questionnaireViewModel.selectedQuestion().choices().length > 1 && questionnaireViewModel.isEnabled();
     },
     isEnabled: function(){
-        if($("#not_wizard").length>0){
+        if($("#not_wizard").size() > 0){
             return questionnaireViewModel.selectedQuestion().isEnabled();
         }
         else{

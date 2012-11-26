@@ -1,14 +1,11 @@
 DW.init_view_model = function (question_list) {
     questionnaireViewModel.questions([]);
     questionnaireViewModel.questions.valueHasMutated();
-    var index = 0;
-    for (index in question_list) {
-        var questions = new DW.question(question_list[index]);
-        questionnaireViewModel.loadQuestion(questions);
-    }
+    $(question_list).each(function(index, question){
+        questionnaireViewModel.loadQuestion(new DW.question(question));
+    })
 
     questionnaireViewModel.selectedQuestion(questionnaireViewModel.questions()[0]);
-    questionnaireViewModel.set_old_values(questionnaireViewModel.questions()[0])
     questionnaireViewModel.selectedQuestion.valueHasMutated();
     DW.current_code = questionnaireViewModel.questions().length + 1; //This variable holds the next question code to be generated.
     questionnaireViewModel.hasAddedNewQuestions = false;
