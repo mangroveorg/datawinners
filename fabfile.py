@@ -229,7 +229,7 @@ def _project_dir(code_dir, project_name):
     if run("cd %s && ls | grep %s" % (code_dir, project_name)).failed:
         run('cd %s && git clone git://github.com/mangroveorg/%s.git' % (code_dir, project_name))
 
-    return '/'.join(code_dir, project_name)
+    return '/'.join([code_dir, project_name])
 
 
 def checkout_project(branch, commit_sha):
