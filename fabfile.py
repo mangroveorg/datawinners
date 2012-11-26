@@ -299,11 +299,11 @@ def make_sure_code_dir_exists(code_dir):
         print 'code dir %s exists.' % code_dir
 
 
-def go_to_django_dir_of_datawinners(code_dir):
+def django_dir_of_datawinners(code_dir):
     datawinners_dir = code_dir + '/datawinners/datawinners'
-    print 'Go to django directory of datawinner: %s' % datawinners_dir
+    print 'Django directory of datawinner: %s' % datawinners_dir
 
-    cd(datawinners_dir)
+    return datawinners_dir
 
 
 def replace_setting_file_for_environment(environment):
@@ -336,7 +336,7 @@ def update_mangrove(code_dir, datawinner_branch, mangrove_build_number, virtual_
 def update_datawinners(code_dir, couch_migration_file, datawinner_branch, datawinner_build_number, environment, virtual_env):
     checkout_project_to_production(code_dir, datawinner_build_number, virtual_env, 'datawinners', post_checkout_datawinners, datawinner_branch)
 
-    with go_to_django_dir_of_datawinners(code_dir):
+    with cd(django_dir_of_datawinners(code_dir)):
         replace_setting_file_for_environment(environment)
         activate_and_run(virtual_env, "python manage.py migrate")
         activate_and_run(virtual_env, "python manage.py compilemessages")
