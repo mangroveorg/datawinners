@@ -68,6 +68,7 @@ from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values
 from project.tests.test_filter import SubjectFilter
 from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
+from questionnaire.questionnaire_builder import QuestionnaireBuilder
 from utils import get_changed_questions
 
 logger = logging.getLogger("django")

@@ -137,19 +137,6 @@ def is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire)
             return True
     return False
 
-def void_submissions(manager, form_model):
-    oneDay = datetime.timedelta( days=1 )
-    tomorrow = datetime.datetime.now( ) + oneDay
-    submissions = get_submissions( manager, form_model.form_code, from_time=0,
-                                   to_time=int( mktime( tomorrow.timetuple( ) ) ) * 1000, page_size=None )
-    for submission in submissions:
-        submission.void()
-
-
-def clear_submissions_if_change_date_format_for_rp(form_model, manager, old_questionnaire, questionnaire):
-    if is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire):
-        void_submissions(manager, form_model)
-
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
@@ -191,7 +178,6 @@ def edit_project(request, project_id=None):
                 old_fields = questionnaire.fields
                 questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'])
                 changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
-                clear_submissions_if_change_date_format_for_rp(questionnaire, manager, old_fields, questionnaire.fields)
                 detail.update(changed_questions)
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()

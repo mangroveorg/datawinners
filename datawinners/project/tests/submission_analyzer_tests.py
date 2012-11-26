@@ -191,7 +191,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'unknown'})
 
         blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?", options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=False, ddtype=ddtype)
-        self._change_answer_type_of_fields(form_model, blood_type_field)
+        self._edit_fields(form_model, blood_type_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'ab'})
 
         analyzer = SubmissionAnalyzer(form_model, self.manager, self.request)
@@ -199,7 +199,6 @@ class SubmissionAnalyzerTest(MangroveTestCase):
 
         expected = [["What is your blood group?", field_attributes.MULTISELECT_FIELD, 2, [["O+", 1], ["O-", 1], ['unknown', 1], ["AB", 0], ["B+", 0]]]]
         self.assertEqual(expected, statistics)
-
 
     def test_should_get_statistic_result_after_option_value_changed(self):
         """
@@ -219,7 +218,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a'})
 
         blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?", options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=ddtype)
-        self._change_answer_type_of_fields(form_model, blood_type_field)
+        self._edit_fields(form_model, blood_type_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a'})
 
         analyzer = SubmissionAnalyzer(form_model, self.manager, self.request)
@@ -246,7 +245,6 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         expected = [['Clinic-One<span class="small_grey">cli14</span>',  '01.01.2012', today, 'name<span class="small_grey">id</span>', 'one, two, three', 'B+', NULL, NULL]]
         self.assertEqual(expected, formatted_field_value)
 
-
     def test_should_create_header_list_with_data_sender_if_the_project_is_not_a_summary_project(self):
 
         form_model = self._prepare_form_model(self.mocked_dbm)
@@ -268,7 +266,6 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         expected_header = (["Submission Date", "Data Sender", "Zhat are symptoms?", "What is your blood group?"],
                         ['dd.mm.yyyy', '', '', ''])
         self.assertEqual(expected_header, actual_list)
-
 
     def test_should_create_header_list_with_gps_type(self):
         form_model = self._prepare_form_model_with_gps_question(self.mocked_dbm)
@@ -323,7 +320,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         EntityBuilder(self.manager, ['clinic'], 'cid001').add_data([(MOBILE_NUMBER_FIELD, "919970059125", ddtype), (NAME_FIELD, "Ritesh", ddtype)]).build()
 
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
-        self._change_answer_type_of_fields(form_model, IntegerField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=ddtype))
+        self._edit_fields(form_model, IntegerField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=ddtype))
 
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock())
         values = analyzer.get_raw_values()
@@ -348,7 +345,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=ddtype)
-        self._change_answer_type_of_fields(form_model, symptoms_field)
+        self._edit_fields(form_model, symptoms_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
 
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock())
@@ -379,7 +376,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         symptoms_field = IntegerField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=ddtype)
         national_day_field = DateField(label="national day?", code="ND", name="national day", ddtype=ddtype, date_format="dd.mm.yyyy")
 
-        self._change_answer_type_of_fields(form_model, gps, national_day_field, symptoms_field)
+        self._edit_fields(form_model, gps, national_day_field, symptoms_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': '100', 'GPS': '1,1', "ND":"01.10.2012"})
 
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock())
@@ -387,6 +384,34 @@ class SubmissionAnalyzerTest(MangroveTestCase):
 
         self.assertEqual(['100', '1,1', '01.10.2012'], values[0][4:])
         self.assertEqual(['Fever', 'NewYork', 'oct 1'], values[1][4:])
+
+    def test_should_show_previous_submissions_in_old_format_after_change_date_format(self):
+        ddtype = create_default_ddtype(self.manager)
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
+            entity_question_flag=True, ddtype=ddtype)
+        rp_field = DateField(label="Report date", code="RD", name="What is réporting date?", date_format="dd.mm.yyyy",
+            event_time_field_flag=True, ddtype=ddtype)
+
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field).build()
+        EntityBuilder(self.manager, ['clinic'], 'cid001').add_data([(MOBILE_NUMBER_FIELD, "919970059125", ddtype), (NAME_FIELD, "Ritesh", ddtype)]).build()
+
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012'})
+
+        rp_field = DateField(label="Report date", code="RD", name="What is réporting date?", date_format="mm.yyyy",event_time_field_flag=True, ddtype=ddtype)
+        self._edit_fields(form_model, rp_field)
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '08.2012'})
+
+        rp_field = DateField(label="Report date", code="RD", name="What is réporting date?", date_format="mm.dd.yyyy",event_time_field_flag=True, ddtype=ddtype)
+        self._edit_fields(form_model, rp_field)
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.24.2012'})
+
+        analyzer = SubmissionAnalyzer(form_model, self.manager, Mock())
+        values = analyzer.get_raw_values()
+        reporting_periods = map(lambda value: value[1], values)
+
+        self.assertIn('08.2012', reporting_periods)
+        self.assertIn('12.12.2012', reporting_periods)
+        self.assertIn('12.24.2012', reporting_periods)
 
     def test_should_should_get_fields_values_after_question_count_changed(self):
         ddtype = create_default_ddtype(self.manager)
@@ -508,7 +533,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
 
             return SubmissionAnalyzer(form_model, self.mocked_dbm, self.request, None, keywords)
 
-    def _change_answer_type_of_fields(self, form_model, *updated_fields):
+    def _edit_fields(self, form_model, *updated_fields):
         fields = []
         for field in form_model.fields:
             need_update = False
