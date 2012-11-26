@@ -170,7 +170,6 @@ DW.questionnaire_form_validate = function(){
 
 $(document).ready(function () {
     DW.subject_warning_dialog_module.init();
-    DW.report_period_date_format_change_warning.init();
     DW.option_warning_dialog.init();
     DW.init_delete_periodicity_question_warning();
     if (is_edit){
@@ -200,7 +199,6 @@ $(document).ready(function () {
     });
 
     $('input[name="date_format"]').change(function () {
-        DW.change_date_format_for_reporting_period($(this));
         if ($('input[name="date_format"]:checked').val() == 'mm.yyyy')
             DW.change_question_title_for_reporting_period('period', 'month');
         else

@@ -16,7 +16,6 @@ DW.uncheck_all_users = function () {
 
 $(document).ready(function () {
     var kwargs = {container:"#delete_all_ds_are_users_warning_dialog",
-        title:gettext("Warning"),
         cancel_handler:function () {
             $("#action").val("");
             $("input.is_user").attr("checked", false);

@@ -9,7 +9,6 @@ DW.show_dialog_overlay = function () {
 
 DW.warning_dialog = function (kwargs) {
     var defaults = {
-        container:"#change_date_format_warning_message",
         width:650,
         height:200,
         is_continue:false,

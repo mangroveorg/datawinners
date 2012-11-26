@@ -112,26 +112,6 @@ class TestEditQuestionnaire(BaseTest):
         self.assertIsNotNone(smart_phone_preview_page.get_smart_phone_instruction())
 
     @attr('functional_test')
-    def test_change_date_format_of_report_period_should_show_warning_message_and_clear_submissions(self):
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-
-        # going on all project page
-        all_project_page = self.global_navigation.navigate_to_view_all_project_page()
-        project_overview_page = all_project_page.navigate_to_project_overview_page("clinic6 test project")
-        edit_project_page = project_overview_page.navigate_to_edit_project_page()
-        edit_project_page.continue_create_project()
-        create_questionnaire_page = CreateQuestionnairePage(self.driver)
-        create_questionnaire_page.select_question_link(4)
-        create_questionnaire_page.change_date_type_question(MM_YYYY)
-        light_box = LightBox(self.driver)
-        self.assertEquals(light_box.get_title_of_light_box(), fetch_(TITLE, from_(LIGHT_BOX_DATA)))
-        self.assertEquals(light_box.get_message_from_light_box(), fetch_(MESSAGE, from_(LIGHT_BOX_DATA)))
-        light_box.continue_change_date_format()
-        project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
-        data_analysis_page = project_overview_page.navigate_to_data_page()
-        self.assertEqual(1, len(data_analysis_page.get_all_data_records()))
-
-    @attr('functional_test')
     def test_should_hide_tip_for_period_question_when_adding_new_question(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
 
@@ -374,16 +354,6 @@ class TestEditQuestionnaire(BaseTest):
         create_questionnaire_page.select_question_link(3)
         create_questionnaire_page.change_list_of_choice_answer_type("multiple_answers")
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
-
-
-    @attr('functional_test')
-    def test_should_restore_default_reporting_periode_date_format_when_canceling_change(self):
-        create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog("choice")
-        create_questionnaire_page.select_question_link(2)
-        create_questionnaire_page.change_date_type_question("mm.yyyy")
-        self.cancle_warning_dialog(element_id="change_date_format_cancel")
-        question = create_questionnaire_page.get_date_type_question()
-        self.assertEqual(question["date_format"], "dd.mm.yyyy")
 
     def prerequisites_for_redistribute_questionnaire_dialog(self, question_type="word"):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)

@@ -227,65 +227,6 @@ DW.next_option_value = function (lastChoice) {
     return nextOption;
 }
 
-DW.report_period_date_format_change_warning = {
-    old_date_format:"",
-    is_continue:false,
-    has_not_warning:true,
-    init:function () {
-        DW.report_period_date_format_change_warning.init_warning_dialog();
-        DW.report_period_date_format_change_warning.bind_dialog_closed();
-        DW.report_period_date_format_change_warning.bind_cancel_link();
-        DW.report_period_date_format_change_warning.bind_continue();
-    },
-    init_warning_dialog:function () {
-        $("#change_date_format_warning_message").dialog({
-            title:gettext("Warning !!"),
-            modal:true,
-            autoOpen:false,
-            height:200,
-            width:400,
-            closeText:'hide'
-        });
-    },
-
-    bind_dialog_closed:function () {
-        $("#change_date_format_warning_message").bind("dialogclose", function (event, ui) {
-                if (!DW.report_period_date_format_change_warning.is_continue) {
-                    var date_format = questionnaireViewModel.selectedQuestion().date_format();
-                    $("input[value='" + date_format + "']").attr("checked", true);
-                    DW.report_period_date_format_change_warning.is_continue = false;
-                }
-            }
-        )
-    },
-
-    bind_cancel_link:function () {
-        $("#change_date_format_cancel").bind("click", function () {
-            var date_format = DW.report_period_date_format_change_warning.old_date_format;
-            questionnaireViewModel.selectedQuestion().date_format(date_format);
-            $("input[value='" + date_format + "']").attr("checked", true);
-            DW.report_period_date_format_change_warning.is_continue = false;
-            $("#change_date_format_warning_message").dialog("close");
-        });
-
-    },
-
-    bind_continue:function () {
-        $("#change_date_format_continue").bind("click", function () {
-            DW.report_period_date_format_change_warning.is_continue = true;
-            DW.report_period_date_format_change_warning.has_not_warning = false;
-            $("#change_date_format_warning_message").dialog("close");
-        });
-    },
-
-    show_warning:function () {
-        $("#change_date_format_warning_message").dialog("open");
-        DW.show_dialog_overlay();
-        DW.report_period_date_format_change_warning.is_continue = false;
-    }
-};
-
-
 DW.option_warning_dialog = {
     init:function () {
         DW.option_warning_dialog.continueEventHandler = function(){};
@@ -332,11 +273,6 @@ DW.option_warning_dialog = {
         $("#option_warning_text")[0].innerHTML=message;
         $(DW.option_warning_dialog.dialog_id).dialog("open");
         DW.show_dialog_overlay();
-    }
-};
-DW.change_date_format_for_reporting_period = function (date_format_element) {
-    if (questionnaireViewModel.selectedQuestion().event_time_field_flag() && is_edit && DW.report_period_date_format_change_warning.has_not_warning) {
-        DW.report_period_date_format_change_warning.show_warning();
     }
 };
 
