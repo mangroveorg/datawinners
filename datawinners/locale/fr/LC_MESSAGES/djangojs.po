@@ -138,6 +138,9 @@ msgstr "Nombre total de Soumissions pour cette question: "
 msgid "Your Data Senders can choose more than 1 answer.<br>That is why percentages may add up to more than 100%"
 msgstr "Vos Expéditeurs de Données peuvent choisir plus d'une réponse.<br>C'est pour cela que la somme des pourcentages peut dépasser 100%"
 
+msgid "Previously multiple answers were permitted.<br> That is why percentages may add up to more than 100%."
+msgstr "Les réponses multiples ont été permises précédemment.<br> C'est la raison pour laquelle le total des pourcentages peut dépasser 100%."
+
 msgid "Enter a correct date. No filtering applied"
 msgstr "Entrez la date exacte. Aucun filtre appliqué"
 

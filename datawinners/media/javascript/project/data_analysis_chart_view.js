@@ -1,45 +1,43 @@
 
-function drawTable(answers, total, locator, type){
-    $(locator).empty();
+function drawTable(answers, total, $locator, type){
     $legendTable = $('<table class="legend_table"></table>');
-    drawTableHeader(type, answers, total, $legendTable);
+    drawTableHeader(answers, total, $legendTable);
     var total_count = drawTableRows(answers, total, $legendTable);
 
     if(type == 'select1'){
         drawTableFooter(total, total_count, $legendTable);
     }
 
-    $(locator).append($legendTable);
+    $locator.empty().append($legendTable);
 
-    drawNotes(locator, type, total, total_count);
+    drawNotes($locator, type, total, total_count);
 }
 
-function drawTableHeader(type, answers, total, legendTable) {
+function drawTableHeader(answers, total, $legendTable) {
     $header = $('<tr ></tr>');
     $choiceHdr = $('<td class="lengendHeader">' + gettext('Choice') + '</td>');
     $amountHdr = $('<td class="lengendHeader">' + gettext('Frequency') + '</td>');
     $header.append($choiceHdr).append($amountHdr);
     if(total != 0){
-        $percentHdr = drawPercentHeader(type, answers, total);
+        $percentHdr = drawPercentHeader(answers, total);
         $header.append($percentHdr);
     }
 
-    legendTable.append($header);
+    $legendTable.append($header);
 }
 
-function drawPercentHeader(type, answers, total) {
-    first_row = answers[0]
+function drawPercentHeader(answers, total) {
+    first_row = answers[0];
     $percentHdr = $('<td class="percentHeader">' + gettext('Percent') + '</td>');
     $tooltip_icon = $('<img src=" /media/images/help_icon.png" class="help_icon_1">');
     $percentHdr.append($tooltip_icon);
-    $percent_tip = gettext('Percentage = Frequency / Total number of Submissions for this question.<br/>Example for ');
+    percent_tip = gettext('Percentage = Frequency / Total number of Submissions for this question.<br/>Example for ');
     var percentage = (total == 0 ? 'N.A.' : Math.round(first_row[1] / total * 100) + '%');
-    $formula = first_row[0] + ': ' + first_row[1] + "/" + total + ' = ' + percentage;
-    $p = $('<p></p>').append($percent_tip + $formula);
+    formula = first_row[0] + ': ' + first_row[1] + "/" + total + ' = ' + percentage;
+    $p = $('<p></p>').append(percent_tip + formula);
     $tooltip = $('<div class="tooltip" ></div>').append($p);
-    $percentHdr.append($tooltip);
 
-    return $percentHdr;
+    return $percentHdr.append($tooltip);
 }
 
 function drawTableFooter(total, total_count, legendTable) {
@@ -57,7 +55,7 @@ function drawTableFooter(total, total_count, legendTable) {
 function drawTableRows(answers, total, legendTable) {
     var total_count = 0;
 
-    $.each(answers, function (index, answer) {
+    $.each(answers, function(index, answer) {
         $row = $('<tr ></tr>');
         $name = $('<td >' + answer[0] + '</td>');
         $count = $('<td >' + answer[1] + '</td>');
@@ -73,21 +71,23 @@ function drawTableRows(answers, total, legendTable) {
     return total_count;
 }
 
-function drawNotes(locator, type, total, total_count) {
-    $summary = $('<div class="tableSummary">'+gettext("Total number of Submissions for this question: ")+ '<b>'+total+'</b></div>');
+function drawNotes($locator, type, total, total_count) {
+    var summary = gettext("Total number of Submissions for this question: ");
+    $total = $('<b></b>').text(total);
 
-    $(locator).append($summary);
-
-    if (type == 'select' && total != 0 || total_count > total) {
-        $multi_choice_explaination = $('<div class="mcExplaination">' +
-            gettext("Your Data Senders can choose more than 1 answer.<br>That is why percentages may add up to more than 100%") + '</div>');
-        $(locator).append($multi_choice_explaination);
+    var text = "";
+    if (type == 'select' && total != 0) {
+        text = gettext("Your Data Senders can choose more than 1 answer.<br>That is why percentages may add up to more than 100%");
+    } else if (type == 'select1' && total_count > total) {
+        text = gettext("Previously multiple answers were permitted.<br> That is why percentages may add up to more than 100%.");
     }
+    $('<div class="tableSummary"></div>').text(summary).append($total).appendTo($locator);
+    $('<div class="mcExplaination">' + text + '</div>').appendTo($locator);
 }
 
-function drawBar(answers, total, locator, barColor) {
+function drawBar(answers, total, $locator, barColor) {
     if (total == 0) {
-        return showNoSubmissionExplanation(locator);
+        return showNoSubmissionExplanation($locator);
     }
     var chart_data = [];
     var axis_label = [];
@@ -99,7 +99,7 @@ function drawBar(answers, total, locator, barColor) {
         chart_data.push([answer[1],index+1]);
     });
     $.plot(
-        $(locator),
+        $locator,
         [
             {
                 data:chart_data,
@@ -132,18 +132,17 @@ function drawBar(answers, total, locator, barColor) {
     );
 }
 
-function drawPie(answers, total, locator, baseColor, colorScaleFactor) {
+function drawPie(answers, total, $locator, baseColor, colorScaleFactor) {
     if (total == 0) {
-        return showNoSubmissionExplanation(locator);
+        return showNoSubmissionExplanation($locator);
     }
     var data = [];
-    var parse = JSON.parse('[1,2,3,4,5]');
     $.each(answers, function(index, answer){
         var percentFade = (total == 0 ? 1 : answer[1]/total * colorScaleFactor);
         data.push({label:answer[0], data:answer[1], color:getColorOf(baseColor, percentFade)})
     });
 
-    $.plot($(locator), data,
+    $.plot($locator, data,
         {
             series:{
                 pie:{
@@ -162,24 +161,22 @@ function drawPie(answers, total, locator, baseColor, colorScaleFactor) {
 }
 
 function drawChartInfo(submissionCount, emptySubmissionText) {
-    $('#chart_info').empty();
-    $('#chart_info_2').empty();
-    $('#chart_info').append("<b>" + submissionCount + "</b> " + gettext("Submissions"))
+    $('#chart_info').empty().append("<b>" + submissionCount + "</b> " + gettext("Submissions"))
     var info_text = (emptySubmissionText != '' ? emptySubmissionText : "View charts of your multiple choice questions.");
     $intro_text = $('<div class="chartInfo2">' + gettext(info_text) + '</div>');
-    $('#chart_info_2').append($intro_text);
+    $('#chart_info_2').empty().append($intro_text);
 }
 
-function drawChartSelectLink(index, question_li) {
+function drawChartSelectLink(index, $question_li) {
     $title = $('<ul></ul>');
     $title_pie_li = $('<li id="pie-li-' + index + '"><a onclick="showPie(' + index + ')">' + gettext("Pie Chart") + '</a></li>');
     $title_sep_label = $('<label > | </label>');
     $title_bar_li = $('<li id="bar-li-' + index + '"><a onclick="showBar(' + index + ')">' + gettext("Bar Chart") + '</a></li>');
     $title.append($title_pie_li).append($title_sep_label).append($title_bar_li);
-    question_li.append($title);
+    $question_li.append($title);
 }
 
-function drawChartBlockForQuestions(data, chart_ol) {
+function drawChartBlockForQuestions(data, $chart_ol) {
 
     drawChartDivs = function (index, item) {
         $chart_div = $('<div id = "chart-' + index + '" class="chartDiv" />');
@@ -191,27 +188,27 @@ function drawChartBlockForQuestions(data, chart_ol) {
         return $chart_div;
     }
 
-    $.each(data, function (index, item) {
+    $.each(data, function(index, item) {
         $question_li = $('<li><h6>' + item[0] + '</h6>');
         if (item[1] == 'select1') {
             drawChartSelectLink(index, $question_li);
         }
         $chart_div = drawChartDivs(index, item);
-        chart_ol.append($question_li).append($chart_div);
+        $chart_ol.append($question_li).append($chart_div);
     });
 }
 
 function drawChartReport(data) {
-    baseColors = ["#446F27" ,"#39597C" ,"#4B2B71", "#76312F", "#398AA1"]
+    baseColors = ["#446F27" ,"#39597C" ,"#4B2B71", "#76312F", "#398AA1"];
     $.each(data, function(index, row) {
         var answers = row[3];
         var type = row[1];
         var total = row[2];
         var colorScaleFactor = (total == 0 ? 1: getColorScaleFactor(answers, total));
 
-        drawBar(answers,  total, "#bar-" + index, baseColors[index%5]);
-        drawPie(answers,  total, "#pie-" + index, baseColors[index%5], colorScaleFactor);
-        drawTable(answers,  total, "#table-" + index, type);
+        drawBar(answers,  total, $("#bar-" + index), baseColors[index%5]);
+        drawPie(answers,  total, $("#pie-" + index), baseColors[index%5], colorScaleFactor);
+        drawTable(answers,  total, $("#table-" + index), type);
 
         if(type == "select"){
             showBar(index);
@@ -222,18 +219,14 @@ function drawChartReport(data) {
 }
 
 function drawChart(data, submissionCount, emptySubmissionText) {
-    $chart_ol = $('#chart_ol');
-    $chart_ol.attr('style', 'width:' + ($(window).width() - 85) + 'px')
-    $chart_ol.empty();
+    $chart_ol = $('#chart_ol').attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();
 
-    if(emptySubmissionText=='' && data.length == 0){
+    if(emptySubmissionText == '' && data.length == 0){
         emptySubmissionText = gettext('You do not have any multiple choice questions (Answer Type: List of choices) to display here.');
     }
 
     drawChartInfo(submissionCount, emptySubmissionText);
-
     drawChartBlockForQuestions(data, $chart_ol);
-
     drawChartReport(data);
     toolTip();
 }
@@ -275,14 +268,14 @@ function toolTip(){
 
     }).dynamic({ bottom: { direction: 'down', bounce: true } });
 }
-function showNoSubmissionExplanation(locator) {
+function showNoSubmissionExplanation($locator) {
     var message = gettext("You don't have any submissions for this question yet");
-    var explanation_container = $('<div class="help_accordion text_align_right">' + message + '</div>');
-    explanation_container.css("padding-right", "20px");
+    var $explanation_container = $('<div class="help_accordion text_align_right">' + message + '</div>');
+    $explanation_container.css("padding-right", "20px");
     var padding = "60px";
-    if ($(locator).attr("id").split("-")[0] =="bar"){
+    if ($locator.attr("id").split("-")[0] =="bar"){
         var padding = "40px";
     }
-    $(locator).append(explanation_container).css("padding-top", padding);
+    $locator.append($explanation_container).css("padding-top", padding);
     return;
 }
