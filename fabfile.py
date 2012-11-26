@@ -200,7 +200,7 @@ def local_test():
 def anonymous():
     run("uname -a")
 
-def checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env):
+def checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env, branch='develop'):
     mangrove_job_name = 'Mangrove-develop'
     if mangrove_build_number == 'lastSuccessfulBuild':
         mangrove_build_number = run(
@@ -219,8 +219,13 @@ def checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env
         mangrove_branch = str(date.today()).replace('-', '')
         if not run("git branch -a|grep %s" % mangrove_branch).failed:
             run("git branch -D %s" % mangrove_branch)
-        run("git checkout -b %s %s" % (mangrove_branch, mangrove_commit_sha))
-        run("git checkout .")
+
+        if branch == 'develop':
+            run("git checkout -b %s %s" % (mangrove_branch, mangrove_commit_sha))
+            run("git checkout .")
+        else:
+            run("git checkout -b %s %s" % (mangrove_branch, branch))
+
         activate_and_run(virtual_env, "pip install -r requirements.pip")
         activate_and_run(virtual_env, "python setup.py develop")
 
@@ -275,7 +280,7 @@ def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, 
         run('mkdir %s' % code_dir)
     print 'cd %s' % code_dir
     virtual_env = ENVIRONMENT_VES[environment]
-    checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env)
+    checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env, datawinner_branch)
     check_out_datawinners_code_for_production(code_dir, datawinner_build_number, virtual_env, datawinner_branch)
 
     datawinners_dir = code_dir + '/datawinners/datawinners'
