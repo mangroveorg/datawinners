@@ -117,60 +117,16 @@ var questionnaireViewModel =
             DW.option_warning_dialog.old_question_type = question.type();
         }
     },
-    clearChoices: function() {
-        questionnaireViewModel.selectedQuestion().choices([]);
-    },
-    changeTextOfOption: function(choice) {
-        if(!is_edit){
-            return;
-        }
-
-        var curText = choice.value;
-        var choices = questionnaireViewModel.selectedQuestion().options.choices;
-        var changePrompt = false;
-        var oldText = null;
-        var opt_index = 0;
-        $(choices).each(function(index, choiceInModel){
-           if (choiceInModel.val == choice.option_val && choiceInModel.text != curText){
-               changePrompt = true;
-               oldText =  choiceInModel.text;
-               opt_index = index;
-           }
-        });
-        if(changePrompt){
-            DW.change_option_text(choice, oldText, opt_index);
-        }
-    },
     remove_option: function(choice){
-        function is_in(choice, choices){
-            for(var index in choices){
-                if(choices[index].val == choice.val){
-                    return true;
-                }
-            }
-            return false;
-        };
-
-        if(!is_edit){
-            questionnaireViewModel.removeOptionFromQuestion(choice);
-            return;
-        }
-
         var choices = questionnaireViewModel.selectedQuestion().options.choices;
-        if(!is_in(choice, choices)){
-            questionnaireViewModel.removeOptionFromQuestion(choice);
-            return;
-        }
+        var choice_values = $(choices).map(function(index, choice){
+            return choice.val;
+        });
 
-        if (choice.val == choices[choices.length - 1].val) {
-            DW.option_warning_dialog.show_warning(gettext("You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Are you sure you want to continue?"));
-        } else {
-            DW.option_warning_dialog.show_warning(gettext('You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Also, the position of your answer choices has changed (Example: You have deleted “A. Cat”, so “B. Dog” is now “A. Dog”).<br>If you have previously collected data it will be adjusted to the new choice in that position (Example: The choice “Cat”, it will be replaced with “Dog”).<br><br>Are you sure you want to continue?'));
+        if(is_edit){
+            if($.inArray(choice.val, choice_values) != -1){ DW.questionnaire_was_changed = true; }
         }
-        DW.option_warning_dialog.continueEventHandler = function() {
-            questionnaireViewModel.removeOptionFromQuestion(choice);
-            DW.questionnaire_was_changed = true;
-        };
+        questionnaireViewModel.removeOptionFromQuestion(choice);
     },
     changeQuestionType: function(type_selector) {
         var type = questionnaireViewModel.selectedQuestion().type();

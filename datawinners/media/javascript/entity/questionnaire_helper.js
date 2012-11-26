@@ -276,18 +276,6 @@ DW.option_warning_dialog = {
     }
 };
 
-DW.change_option_text = function (choice, oldText,index) {
-   DW.option_warning_dialog.show_warning(gettext("You have changed the text of your answer choice.<br>If you have previously collected data for this choice it will be replaced with the new text.<br><br>Are you sure you want to continue?"));
-   DW.option_warning_dialog.cancelEventHandler = function(){
-       choice.value = oldText;
-       questionnaireViewModel.selectedQuestion().choices()[index].text=oldText;
-       choice.focus();
-   }
-   DW.option_warning_dialog.continueEventHandler = function(){
-       DW.questionnaire_was_changed = true;
-   }
-}
-
 DW.close_the_tip_on_period_question = function(){
     if($("#question_title").hasClass("blue_frame")){
         $("#question_title").removeClass("blue_frame");
