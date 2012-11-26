@@ -1366,7 +1366,7 @@ def create_trial_test_organization(email, org_id, register_a_data_sender, data_t
     return manager
 
 def load_test_managers():
-    test_emails = ['tester150411@gmail.com', 'chinatwu@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'chinatwu4@gmail.com']
+    test_emails = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com']
     return [get_database_manager(User.objects.get(username=email)) for email in test_emails]
 
 def load_all_managers():

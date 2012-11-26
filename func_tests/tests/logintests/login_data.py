@@ -11,19 +11,11 @@ VALID_CREDENTIALS = {USERNAME: "tester150411@gmail.com",
                      PASSWORD: "tester150411",
                      WELCOME_MESSAGE: "Welcome Tester!"}
 
-TRIAL_CREDENTIALS_EXPIRED = {USERNAME: "chinatwu@gmail.com",
-                     PASSWORD: "chinatwu",
-                     WELCOME_MESSAGE: "Welcome Trial Organisation Owner!"}
-
 TRIAL_CREDENTIALS_VALIDATES = {USERNAME: "chinatwu2@gmail.com",
                      PASSWORD: "chinatwu",
                      WELCOME_MESSAGE: "Welcome Trial Organisation Owner!"}
 
 TRIAL_CREDENTIALS_THREE = {USERNAME: "chinatwu3@gmail.com",
-                     PASSWORD: "chinatwu",
-                     WELCOME_MESSAGE: "Welcome Trial Organisation Owner!"}
-
-TRIAL_CREDENTIALS_FOUR = {USERNAME: "chinatwu4@gmail.com",
                      PASSWORD: "chinatwu",
                      WELCOME_MESSAGE: "Welcome Trial Organisation Owner!"}
 

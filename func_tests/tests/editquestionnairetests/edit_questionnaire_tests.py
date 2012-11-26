@@ -3,7 +3,6 @@ from nose.plugins.attrib import attr
 from framework.base_test import BaseTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
-from pages.lightbox.light_box_page import LightBox
 from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE
@@ -153,60 +152,6 @@ class TestEditQuestionnaire(BaseTest):
         edit_registration_form.delete_question(4)
         self.assertEqual(DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING, warning_dialog.get_message())
 
-    @attr("functional_test")
-    def test_should_warn_when_changing_answer_type(self):
-        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
-        create_questionnaire_page.change_question_type_to(2, "date")
-        warning_dialog = WarningDialog(self.driver)
-        message = warning_dialog.get_message()
-        self.assertEqual(message, CHANGE_QUESTION_TYPE_MSG)
-
-    @attr("functional_test")
-    def test_should_get_the_type_back_when_canceling_the_type_change(self):
-        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
-        create_questionnaire_page.change_question_type_to(2, "date")
-        self.cancle_warning_dialog()
-        type = create_questionnaire_page.get_question_type(2)
-        self.assertEqual(type, "text")
-
-    @attr("functional_test")
-    def test_should_get_the_type_back_when_canceling_the_change_of_single_choice_type(self):
-        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
-        create_questionnaire_page.change_question_type_to(5, "date")
-        self.cancle_warning_dialog()
-        type = create_questionnaire_page.get_question_type(5)
-        self.assertEqual(type, "choice")
-
-    @attr("functional_test")
-    def test_should_get_the_type_back_when_canceling_the_change_of_multiple_choice_type(self):
-        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
-        create_questionnaire_page.change_question_type_to(6, "date")
-        self.cancle_warning_dialog()
-        type = create_questionnaire_page.get_question_type(6)
-        self.assertEqual(type, "choice")
-
-
-    @attr("functional_test")
-    def test_should_change_the_question_type_when_confirming_the_type_change(self):
-        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
-        create_questionnaire_page.change_question_type_to(2, "date")
-        self.confirm_warning_dialog()
-        type = create_questionnaire_page.get_question_type(2)
-        self.assertEqual(type, "date")
-
-    @attr("functional_test")
-    def test_should_get_the_option_label_back_when_canceling_the_change_of_option_label(self):
-        create_questionnaire_page = self.prerequisites_of_edit_questionnaire()
-        create_questionnaire_page.select_question_link(5)
-        # wait to render form model
-        time.sleep(2)
-        first_option = create_questionnaire_page.get_nth_option_of_choice(1)
-        old_label = first_option.text
-        first_option.send_keys('append value')
-        create_questionnaire_page.get_nth_option_of_choice(2).send_keys('focused')
-        self.cancle_warning_dialog()
-        self.assertEqual(old_label, first_option.text)
-
     def create_new_project(self):
         dashboard_page = self.global_navigation.navigate_to_dashboard_page()
         create_project_page = dashboard_page.navigate_to_create_project_page()
@@ -237,7 +182,7 @@ class TestEditQuestionnaire(BaseTest):
         warning_dialog = WarningDialog(self.driver, cancel_link=cancel_locator)
         warning_dialog.cancel()
 
-    def confirm_warning_dialog(self, element_id="option_warning_message_continue"):
+    def confirm_warning_dialog(self, element_id):
         confirm_locator = by_id(element_id)
         warning_dialog = WarningDialog(self.driver, confirm_link=confirm_locator)
         warning_dialog.confirm()
@@ -263,20 +208,11 @@ class TestEditQuestionnaire(BaseTest):
 
         return create_questionnaire_page, project_name
 
-
-    @attr('functional_test')
-    def test_should_show_redistribute_questionnaire_message_when_osi_changed_answer_type(self):
-        create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog()
-        create_questionnaire_page.change_question_type_to(3, "integer")
-        self.confirm_warning_dialog()
-        self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
-
     @attr('functional_test')
     def test_should_show_redistribute_questionnaire_message_when_osi_delete_an_mc_question_option(self):
         create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog("choice")
         create_questionnaire_page.select_question_link(3)
         create_questionnaire_page.delete_option_for_multiple_choice_question(2)
-        self.confirm_warning_dialog()
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
 
@@ -287,7 +223,6 @@ class TestEditQuestionnaire(BaseTest):
         create_questionnaire_page.change_nth_option_of_choice(2, "changed value")
         #to get the focus out
         create_questionnaire_page.select_question_link(3)
-        self.confirm_warning_dialog()
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
     @attr('functional_test')
