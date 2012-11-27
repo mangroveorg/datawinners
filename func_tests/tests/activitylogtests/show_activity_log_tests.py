@@ -46,7 +46,7 @@ class TestShowActivityLog(BaseTest):
         self.assertEqual(activity_log_page.get_data_on_cell(1,1), TESTER_NAME)
         self.assertEqual(activity_log_page.get_data_on_cell(1,2), CREATED_PROJECT_ACTION)
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_only_show_logs_for_current_organization(self):
         self.prepare_data_for_showing_only_logs_for_current_organization()
         activity_log_page = self.navigate_to_activity_log_page()
