@@ -223,18 +223,49 @@ class TestDataAnalysis(BaseTest):
         self.assertTrue(analysis_page.dropdown_checklist_is_opened())
 
     @attr('functional_test')
-    def test_should_sort_data_in_alphanumerical_order(self):
+    def test_should_sort_data_in_alphanumerical_order_except_for_submission_date(self):
         analysis_page = self.go_to_analysis_page(project_name="test data sorting")
-        default = analysis_page.get_all_data_records_by_column(3)
-        expected_default = ["12.2012", "20, 34", "-12, 34", "12, 34", "cat, dog", "2012.01.14", "cat", "456", "123",
-                            "12.23.2011", "2011.12.12"]
+        default = analysis_page.get_all_data_records_by_column(4)
+        expected_default = ["456", "-12, 34", "2012.01.14", "12.23.2011", "12, 34", "cat", "12.2012", "20, 34",
+                            "cat, dog", "123", "2011.12.12"]
         self.assertEqual(default, expected_default)
-        analysis_page.click_column_header_to_change_order(4)
+        self.sort_data_by_word_question(analysis_page)
+        self.sort_data_by_mc_question(analysis_page)
+        self.sort_data_by_gps_question(analysis_page)
+        self.sort_data_by_date_question(analysis_page)
+        self.sort_data_by_submission_date(analysis_page)
+
+
+    def sort_data_by_word_question(self, analysis_page):
+        analysis_page.click_column_header_to_change_order(5)
         expected_ordered = ["-12, 34", "12, 34", "12.2012", "12.23.2011", "123", "20, 34", "2011.12.12", "2012.01.14",
                             "456", "cat", "cat, dog"]
-        ordered = analysis_page.get_all_data_records_by_column(3)
+        ordered = analysis_page.get_all_data_records_by_column(4)
         self.assertEqual(ordered, expected_ordered)
 
+    def sort_data_by_mc_question(self, analysis_page):
+        analysis_page.click_column_header_to_change_order(6)
+        expected_ordered = ["AB", "AB", "B+", "B+", "B+", "B+", "O+", "O+", "O+", "O-", "O-"]
+        ordered = analysis_page.get_all_data_records_by_column(5)
+        self.assertEqual(ordered, expected_ordered)
 
+    def sort_data_by_gps_question(self, analysis_page):
+        analysis_page.click_column_header_to_change_order(7)
+        expected_ordered = ["10.12,11.13", "11.23,17.66", "12,14", "16.34,11.26", "16.34,11.76", "21.16,14.3", "39,14",
+                            "5.10,50.12", "56.34,11.00", "61.10,58.99", "65.24,28.45"]
+        ordered = analysis_page.get_all_data_records_by_column(6)
+        self.assertEqual(ordered, expected_ordered)
 
+    def sort_data_by_date_question(self, analysis_page):
+        analysis_page.click_column_header_to_change_order(2)
+        expected_ordered = ["04.09.2010", "10.02.2012", "11.03.2010", "11.06.2012", "15.01.2011", "15.10.2011",
+                            "20.02.2011", "25.01.2011", "25.06.2011", "25.12.2010", "25.12.2012"]
+        ordered = analysis_page.get_all_data_records_by_column(1)
+        self.assertEqual(ordered, expected_ordered)
 
+    def sort_data_by_submission_date(self, analysis_page):
+        analysis_page.click_column_header_to_change_order(3)
+        expected_ordered = ["2011.12.12", "12.23.2011", "123", "456", "cat", "2012.01.14", "cat, dog", "20, 34",
+                            "12.2012", "12, 34", "-12, 34"]
+        ordered = analysis_page.get_all_data_records_by_column(4)
+        self.assertEqual(ordered, expected_ordered)

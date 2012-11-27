@@ -844,7 +844,12 @@ def create_clinic_projects(entity_type, manager):
     create_project15(entity_type, manager, questions)
     create_project16(entity_type, manager, questions)
     create_project17(entity_type, manager, questions[:6])
-    create_project18(entity_type, manager, questions[:2])
+
+    questions_for_018 = questions[:]
+    questions_for_018.pop()
+    questions_for_018.pop(5)
+    questions_for_018.pop(2)
+    create_project18(entity_type, manager, questions_for_018)
     create_clinic_project_with_monthly_reporting_period(entity_type, manager)
 
 def load_web_data_for_cli001(manager):
@@ -856,13 +861,13 @@ def load_web_data_for_cli001(manager):
 def load_web_data_for_cli018(manager):
     web_player = WebPlayer(manager, location_tree=LocationTree())
     web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
-    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'cat, dog'}
+    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'cat, dog', 'RD': '11.03.2010', 'BG': 'c', 'GPS': '12,14'}
     web_player.accept(Request(message=text, transportInfo=web_transport_info))
-    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'12, 34'}
+    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'12, 34', 'RD': '20.02.2011', 'BG': 'd', 'GPS': '39,14'}
     web_player.accept(Request(message=text, transportInfo=web_transport_info))
-    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'-12, 34'}
+    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'-12, 34', 'RD': '25.12.2010', 'BG': 'a', 'GPS': '5.10,50.12'}
     web_player.accept(Request(message=text, transportInfo=web_transport_info))
-    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'20, 34'}
+    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'20, 34', 'RD': '11.06.2012', 'BG': 'b', 'GPS': '21.16,14.3'}
     web_player.accept(Request(message=text, transportInfo=web_transport_info))
 
 def load_sms_data_for_cli018(manager):
@@ -879,32 +884,32 @@ def load_sms_data_for_cli018(manager):
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
-    mangrove_request = Request("cli018 .EID cid001 .NA 12.2012", transport)
+    mangrove_request = Request("cli018 .EID cid001 .NA 12.2012 .RD 15.01.2011 .BG a .GPS 16.34,11.26", transport)
     response = sms_player.accept(mangrove_request)
 
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(JAN)
-    mangrove_request = Request("cli018 .EID cid001 .NA 123", transport)
+    mangrove_request = Request("cli018 .EID cid001 .NA 123 .RD 10.02.2012 .BG b .GPS 61.10,58.99", transport)
     response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(FEB)
-    mangrove_request = Request("cli018 .EID cid001 .NA 456", transport)
+    mangrove_request = Request("cli018 .EID cid001 .NA 456 .RD 25.12.2012 .BG d .GPS 65.24,28.45", transport)
     response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(MARCH)
-    mangrove_request = Request("cli018 .EID cid003 .NA cat", transport)
+    mangrove_request = Request("cli018 .EID cid003 .NA cat .RD 15.10.2011 .BG c .GPS 56.34,11.00", transport)
     response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(APR)
-    mangrove_request = Request("cli018 .EID cid004 .NA 2012.01.14", transport)
+    mangrove_request = Request("cli018 .EID cid004 .NA 2012.01.14 .RD 25.06.2011 .BG d .GPS 16.34,11.76", transport)
     response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(NOV_2010)
-    mangrove_request = Request("cli018 .EID cid005 .NA 2011.12.12", transport)
+    mangrove_request = Request("cli018 .EID cid005 .NA 2011.12.12 .RD 04.09.2010 .BG d .GPS 10.12,11.13", transport)
     response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(DEC_2010)
-    mangrove_request = Request('cli018 .EID cid001 .NA 12.23.2011', transport)
+    mangrove_request = Request('cli018 .EID cid001 .NA 12.23.2011 .RD 25.01.2011 .BG a .GPS 11.23,17.66', transport)
     response = sms_player.accept(mangrove_request)
 
 def load_sms_data_for_cli001(manager):

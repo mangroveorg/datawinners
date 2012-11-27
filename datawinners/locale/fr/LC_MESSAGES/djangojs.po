@@ -678,3 +678,6 @@ msgstr "Informez Vos Expéditeurs de Données sur les Changements"
 
 msgid "You don't have any submissions for this question yet"
 msgstr "Vous n'avez encore aucune soumission pour cette question"
+
+msgid "Submission Date"
+msgstr "Date de soumission"

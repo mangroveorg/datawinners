@@ -117,7 +117,8 @@ $(document).ready(function () {
         var result = [];
         for( var index in header_type_list){
             var value = header_type_list[index];
-            result[result.length] = (value ? { "sType":  value} : null);
+            var column = gettext($($.sprintf("#data_analysis thead tr th:nth-child(%d)", parseInt(index)+1)).html().trim());
+            result[result.length] = (value && column == gettext("Submission Date"))  ? { "sType":  value} : {"sType": "string"};
         }
         return result;
     };

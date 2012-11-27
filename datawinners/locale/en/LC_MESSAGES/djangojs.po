@@ -556,3 +556,6 @@ msgstr ""
 
 msgid "You don't have any submissions for this question yet"
 msgstr ""
+
+msgid "Submission Date"
+msgstr ""
