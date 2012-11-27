@@ -18,7 +18,7 @@ conn = EC2Connection(aws_access_key, aws_secret_key)
 volumes = conn.get_all_volumes([vol_id])
 print "%s" % repr(volumes)
 volume = volumes[0]
-description = 'Created by manage_snapshots.py at ' + datetime.today().isoformat(' ')
+description = 'Created automatically at ' + datetime.today().isoformat(' ')
 if len(sys.argv) > 3:
     description = sys.argv[3]
 
