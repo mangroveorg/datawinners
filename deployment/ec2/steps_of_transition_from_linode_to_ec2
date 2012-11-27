@@ -1,0 +1,13 @@
+Steps to follow:
+* Trigger job deploy-to-ec2 on jenkins to deploy current release code to ec2. (probably done already)
+* Current production nginx point to update page. All channel should be closed.(Web, SMS)
+* Backup database. (1 hour)
+* Change server name on ec2 to www.datawinners.com
+* Point vumi to ec2
+* Import database files to ec2
+* Run view index update script (2 hours)
+* Restart nginx and uwsgi
+* Switch production ip address to the ip of EC2(54.243.31.50)(David)
+
+total time to transit 1 + 2 + 2(buffer) = 5hours
+
