@@ -384,4 +384,5 @@ def deploy_to_qa():
 
 def remove_cache():
     with cd(os.path.join(PROJECT_DIR, 'datawinners/media/')):
-        run('rm -rf CACHE')
+        run('rm -rf CACHE/js/*')
+        run('rm -rf CACHE/css/*')
