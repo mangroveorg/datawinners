@@ -25,7 +25,6 @@ def show_log(request):
     else:
         form = LogFilterForm(request.POST, request=request)
         filter = form.data.copy()
-        args = dict()
         filter.pop("csrfmiddlewaretoken")
         for key,value in filter.items():
             if value != "":

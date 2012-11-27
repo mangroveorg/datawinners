@@ -19,3 +19,5 @@ LOCATOR = "locator"
 BY = "by"
 
 FIND_DATA_BY_ROW_AND_COLUMN_NUMBER = "#users_list #log_data tbody tr:nth-child(%s) td:nth-child(%s)"
+LOG_INFO = by_css("#log_data_info")
+FILTER_BUTTON = by_css("#log_filter")
