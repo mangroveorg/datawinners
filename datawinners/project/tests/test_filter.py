@@ -144,3 +144,13 @@ class TestSubmissionFilters(unittest.TestCase):
 
         self.assertEquals(len(filtered_field_values), 1)
         self.assertEquals(filtered_field_values[0], raw_field_values[0])
+
+    def test_should_filter_for_other_reporting_date_format(self):
+        submission_logs_with_wrong_date_format = [
+            Submission(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.25.2012', 'entity_question_code': '001'}),
+            Submission(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.2012', 'entity_question_code': '001'})
+        ]
+
+        self.submissions.extend(submission_logs_with_wrong_date_format)
+        filtered_submission_logs = ReportPeriodFilter(question_name='q2', period={'start': '01.05.2012', 'end': '30.12.2012'}, date_format="mm.dd.yyyy").filter(self.submissions)
+        self.assertEqual(len(filtered_submission_logs), 1)
