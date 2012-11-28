@@ -15,7 +15,9 @@ function backup_db(){
         couch_backup=~/mangrove_couchdb_backup_$today.tar
         echo $couch_backup
         echo "################backup couchdb...################"
+        production_couch_path=/opt/couchbase-server/var/lib/
         cd $production_couch_path
+        echo $production_couch_path
         tar -czvPf  $couch_backup  couchdb
         cd ~
         echo "################backup couchdb done.################"
