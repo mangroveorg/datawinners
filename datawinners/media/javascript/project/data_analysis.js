@@ -173,7 +173,9 @@ $(document).ready(function () {
                 settings.presets = {dateRange:gettext('Choose Month(s)')}
             } else {
                 settings.presetRanges = settings.presetRanges.concat(year_to_date_setting);
-                settings.dateFormat = 'dd.mm.yy';
+                if (typeof(ismonthly) == "undefined") {
+                    settings.dateFormat = 'dd.mm.yy';
+                }
             }
             return settings;
         }

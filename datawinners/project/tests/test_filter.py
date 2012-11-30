@@ -152,5 +152,5 @@ class TestSubmissionFilters(unittest.TestCase):
         ]
 
         self.submissions.extend(submission_logs_with_wrong_date_format)
-        filtered_submission_logs = ReportPeriodFilter(question_name='q2', period={'start': '01.05.2012', 'end': '30.12.2012'}, date_format="mm.dd.yyyy").filter(self.submissions)
+        filtered_submission_logs = ReportPeriodFilter(question_name='q2', period={'start': '05.01.2012', 'end': '12.30.2012'}, date_format="mm.dd.yyyy").filter(self.submissions)
         self.assertEqual(len(filtered_submission_logs), 1)

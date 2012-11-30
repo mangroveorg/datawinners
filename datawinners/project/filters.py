@@ -10,8 +10,8 @@ class ReportPeriodFilter(object):
         assert isinstance(period, dict)
         self.rp_question_name = question_name
         self.date_format = date_format
-        self.start_time = self._parseDate(period['start'], date_format="dd.mm.yyyy")
-        self.end_time = self._parseDate(period['end'], date_format="dd.mm.yyyy")
+        self.start_time = self._parseDate(period['start'])
+        self.end_time = self._parseDate(period['end'])
 
     def filter(self, submission_logs):
         assert self.rp_question_name
@@ -28,10 +28,8 @@ class ReportPeriodFilter(object):
 
         return self.start_time <= report_time <= self.end_time
 
-    def _parseDate(self, dateString, date_format=None):
-        if date_format is None:
-            date_format = self.date_format
-        return datetime.strptime(dateString.strip(), DateField.get_datetime_format(date_format))
+    def _parseDate(self, dateString):
+        return datetime.strptime(dateString.strip(), DateField.get_datetime_format(self.date_format))
 
 class SubjectFilter(object):
     def __init__(self, entity_question_code, subject_ids):
