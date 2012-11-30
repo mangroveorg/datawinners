@@ -246,10 +246,6 @@ def checkout_project(branch, commit_sha):
         run("git checkout -b %s %s" % (branch_name, branch))
 
 
-def go_to_project(code_dir, project_name):
-    return cd(_project_dir(code_dir, project_name))
-
-
 def install_requirement(virtual_env):
     activate_and_run(virtual_env, "pip install -r requirements.pip")
 
@@ -270,7 +266,7 @@ def post_checkout_mangrove(virtual_env):
 def checkout_project_to_production(code_dir, mangrove_build_number, virtual_env, project_name, post_checkout_function, branch='develop'):
     commit_sha = commit_sha_from_build_number(ENVIRONMENT_JENKINS_JOB[project_name], mangrove_build_number)
 
-    with go_to_project(code_dir, project_name):
+    with cd(_project_dir(code_dir, project_name)):
         checkout_project(branch, commit_sha)
         post_checkout_function(virtual_env)
 
