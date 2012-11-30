@@ -353,7 +353,7 @@ DW.set_questionnaire_was_change = function(){
 
 $(document).ready(function(){
     var change_selector = "#range_min, #range_max, #max_length, [name=text_length], [name=date_format], #question_title";
-    change_selector += ", [name=answers_possible]";
+    change_selector += ", [name=answers_possible], [name=type]";
     var click_selector = "#question-detail-panel .add_link";
     
     $(change_selector).change(DW.set_questionnaire_was_change);
