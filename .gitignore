@@ -70,5 +70,3 @@ datawinners/media/CACHE
 # Emacs files
 .ropeproject
 
-# Country-IP mapping data file
-GeoIP.dat
