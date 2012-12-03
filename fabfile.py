@@ -236,7 +236,7 @@ def checkout_project(branch, commit_sha):
     branch_name = str(date.today()).replace('-', '')
     run("git reset --hard HEAD")
     run("git checkout develop")
-    run("git pull origin develop")
+    run("git pull --rebase origin develop")
     if branch_exists(branch_name):
         run("git branch -D %s" % branch_name)
     if branch == 'develop':
