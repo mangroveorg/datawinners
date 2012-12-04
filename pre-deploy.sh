@@ -1,7 +1,7 @@
 #!/bin/bash
 
 today=$(date -u +"%Y-%b-%d")
-production_server=178.79.185.35
+production_server=54.243.31.50
 production_couch_path=/opt/couchbase-server/var/lib/
 ssh_str=mangrover@$production_server
 local_db_backup_dir=~/workspace/db_backup/prod_db/
