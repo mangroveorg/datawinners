@@ -748,7 +748,7 @@ def export_subject(request):
     all_data, fields, labels = load_all_subjects_of_type(manager, filter_entities=include_of_type, type=entity_type)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
-    fields, labels, codes = import_module.get_entity_type_fields(manager, entity_type)
+    fields, labels, field_codes = import_module.get_entity_type_fields(manager, entity_type)
 
     raw_data = [labels]
     for data in all_data:
@@ -756,11 +756,16 @@ def export_subject(request):
             raw_data.append(data['cols'])
     wb = get_excel_sheet(raw_data, entity_type)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-    codes.insert(0, form_model.form_code)
-    ws = workbook_add_sheet(wb, [codes], "codes")
-    ws.visibility = 1
+    add_codes_sheet(wb, form_model.form_code, field_codes)
     wb.save(response)
     return response
+
+
+def add_codes_sheet(wb, form_code, field_codes):
+    codes = [form_code]
+    codes.extend(field_codes)
+    ws = workbook_add_sheet(wb, [codes], "codes")
+    ws.visibility = 1
 
 
 @login_required(login_url='/login')
@@ -771,15 +776,14 @@ def export_template(request, entity_type=None):
     if entity_type is None:
         return HttpResponseRedirect(reverse(all_subjects))
 
-    fields, labels, codes = import_module.get_entity_type_fields(manager, entity_type)
+    fields, labels, field_codes = import_module.get_entity_type_fields(manager, entity_type)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
 
     wb = get_excel_sheet([labels], entity_type)
-    codes.insert(0, form_model.form_code)
-    ws = workbook_add_sheet(wb, [codes], "codes")
-    ws.visibility = 1
+    form_code = form_model.form_code
+    add_codes_sheet(wb, form_code, field_codes)
     try:
         index_geocode = fields.index(GEO_CODE_FIELD_NAME)
     except ValueError:

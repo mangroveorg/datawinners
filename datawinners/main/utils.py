@@ -22,11 +22,11 @@ def get_database_manager(user):
     db = organization_settings.document_store
     return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
 
-def include_of_type(entity,type):
-    return True if entity.type_path[0] == type else False
+def include_of_type(entity, type):
+    return entity.type_path[0] == type
 
-def exclude_of_type(entity,type):
-    return False if entity.type_path[0] == type else True
+def exclude_of_type(entity, type):
+    return not include_of_type(entity, type)
 
 def create_views(dbm):
     """Creates a standard set of views in the database"""

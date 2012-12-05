@@ -45,7 +45,7 @@ from mangrove.transport import Channel
 import datawinners.utils as utils
 
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
-from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_infos
+from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_info
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, timebox
 from datawinners.messageprovider.message_handler import get_exception_message_for
@@ -761,7 +761,7 @@ def subjects(request, project_id=None):
     fields, project_links_with_subject_questionare, questions, reg_form = _get_registration_form(manager, project,
         type_of_subject='subject')
     example_sms = get_example_sms_message(fields, reg_form)
-    subject = get_entity_type_infos(project.entity_type, manager=manager)
+    subject = get_entity_type_info(project.entity_type, manager=manager)
     return render_to_response('project/subjects.html',
             {'project': project,
              'project_links': project_links,
@@ -781,7 +781,7 @@ def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     all_data, fields, labels = load_all_subjects_of_type(manager, type=project.entity_type)
-    subject = get_entity_type_infos(project.entity_type, manager=manager)
+    subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/registered_subjects.html',
             {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels,
@@ -957,7 +957,7 @@ def _make_form_context(questionnaire_form, project, form_code, hide_link_class, 
 
 
 def _get_subject_info(manager, project):
-    subject = get_entity_type_infos(project.entity_type, manager=manager)
+    subject = get_entity_type_info(project.entity_type, manager=manager)
     subject_info = {'subject': subject,
                     'add_link': add_link(project),
                     "entity_type": project.entity_type}
@@ -1194,7 +1194,7 @@ def edit_subject_questionaire(request, project_id=None):
         reg_form = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = reg_form.fields
     existing_questions = json.dumps(fields, default=field_to_json)
-    subject = get_entity_type_infos(project.entity_type, manager=manager)
+    subject = get_entity_type_info(project.entity_type, manager=manager)
     return render_to_response('project/subject_questionnaire.html',
             {'project': project,
              'project_links': project_links,

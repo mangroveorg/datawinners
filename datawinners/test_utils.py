@@ -4,6 +4,7 @@ from django.test.client import RequestFactory
 from mock import Mock
 from accountmanagement.models import Organization
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME, RAW_DATA, HEADER_LIST, DEFAULT_TEST_ORG_TEL_NO
+from entity.views import add_codes_sheet
 import utils
 
 class TestUtils(unittest.TestCase):
@@ -22,6 +23,14 @@ class TestUtils(unittest.TestCase):
          wb = utils.get_excel_sheet(raw_data, "test")
          self.assertEquals(3, len(wb.get_sheet(0).rows))
          self.assertEquals(3, wb.get_sheet(0).row(0).get_cells_count())
+
+    def test_should_add_codes_sheet_to_excel(self):
+        raw_data = RAW_DATA
+        wb = utils.get_excel_sheet(raw_data, "test")
+        add_codes_sheet(wb, "form_code", ('q1', 'q2', 'q3'))
+        code_sheet = wb.get_sheet(1)
+        self.assertEquals(1, len(code_sheet.rows))
+        self.assertEquals(4, code_sheet.row(0).get_cells_count())
 
     def test_should_return_organization(self):
         org_id = DEFAULT_TEST_ORG_ID

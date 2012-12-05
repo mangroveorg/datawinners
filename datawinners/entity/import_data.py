@@ -3,18 +3,18 @@ from collections import OrderedDict
 from copy import copy
 from datawinners.exceptions import InvalidEmailException
 from mangrove.data_cleaner import TelephoneNumber
-from mangrove.datastore.documents import attributes
+from mangrove.datastore.documents import  FormModelDocument
 from mangrove.datastore.entity_type import get_all_entity_types
 import os
 from django.conf import settings
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import  include_of_type, exclude_of_type
+from datawinners.main.utils import  include_of_type, exclude_of_type, timebox
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
-from mangrove.datastore.entity import get_all_entities
+from mangrove.datastore.entity import get_all_entities, Entity
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, get_form_model_by_entity_type, \
-    NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD
+    NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD, FormModel
 from mangrove.transport.player.parser import CsvParser, XlsParser, XlsDatasenderParser
 from mangrove.transport import Channel, TransportInfo, Response
 from mangrove.transport.player.player import Player
@@ -184,23 +184,21 @@ def tabulate_failures(rows):
     return tabulated_data
 
 
-def _tabulate_data(entity, form_model, values_for_fields):
+def _tabulate_data(entity, form_model, field_codes):
     data = {'id': entity.id, 'short_code': entity.short_code}
 
     dict = OrderedDict()
     tuples = [(field.code, field.name) for field in form_model.fields]
     for (code, name) in tuples :
-        if name in entity.data.keys():
+        if name in entity.data:
             dict[code] = _get_field_value(name, entity)
         else:
             dict[code] = _get_field_default_value(name, entity)
 
     stringified_dict = form_model.stringify(dict)
 
-    dict_values = [stringified_dict[field] for field in values_for_fields]
-    data['cols'] = dict_values
+    data['cols'] = [stringified_dict[field_code] for field_code in field_codes]
     return data
-
 
 def _get_entity_type_from_row(row):
     type = row['doc']['aggregation_paths']['_type']
@@ -222,88 +220,91 @@ def load_subject_registration_data(manager,
             data.append(tabulate_function(entity, form_model, codes))
     return data, fields, labels
 
-
+@timebox
 def _get_entity_types(manager):
     entity_types = get_all_entity_types(manager)
-    entity_list = [entity[0] for entity in entity_types if entity[0] != 'reporter']
-    entity_list.sort()
-    return entity_list
-
-
-def _get_registration_form_models(manager):
-    subjects = {}
-    form_models = manager.load_all_rows_in_view('questionnaire')
-    for form_model in form_models:
-        if form_model.value['is_registration_model'] and form_model.value['name'] != 'Reporter':
-            subjects[form_model.value['entity_type'][0]] = form_model
-    return subjects
-
+    entity_list = [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
+    return sorted(entity_list)
 
 def get_field_infos(fields):
-    fields_names = []
-    labels = []
-    codes = []
-    for field in fields:
-        if field['name'] != 'entity_type':
-            fields_names.append(field['name'])
-            labels.append(field['label'])
-            codes.append(field['code'])
-    return fields_names, labels, codes
+    return zip(*[(field['name'], field['label'], field['code']) for field in fields if field['name'] != 'entity_type'])
 
-
-def get_entity_type_infos(entity, form_model = None, manager = None):
-    if form_model is None:
-        if entity == 'reporter':
-            form_code = 'reg'
-        else:
-            form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(entity))
-            form_code = form_model.form_code
+def get_entity_type_info(entity_type, manager = None):
+    if entity_type == 'reporter':
+        form_code = 'reg'
         form_model = manager.load_all_rows_in_view("questionnaire", key = form_code)[0]
+    else:
+        form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(entity_type))
 
     names, labels, codes = get_field_infos(form_model.value['json_fields'])
-    subject = dict(entity = entity,
+
+    return dict(entity = entity_type,
                    code = form_model.value["form_code"],
                    names = names,
                    labels = labels,
                    codes = codes,
-                   data = [],)
-    return subject
+                   data = [])
 
+def _from_row_to_subject(dbm, row):
+    return Entity.new_from_doc(dbm=dbm, doc=Entity.__document_class__.wrap(row.get('value')))
 
+def _get_subject_type_infos(subject_types, form_models_grouped_by_subject_type):
+    subject_types_dict = {}
+    default_form_model = form_models_grouped_by_subject_type.get('registration')
+
+    for subject_type in subject_types:
+        form_model = form_models_grouped_by_subject_type.get(subject_type, default_form_model)
+        names, labels, codes = zip(*[(field.name, field.label, field.code) for field in form_model.fields])
+        subject_types_dict[subject_type] = dict(entity = subject_type,
+                                                code = form_model.form_code,
+                                                names = names,
+                                                labels = labels,
+                                                codes = codes,
+                                                data = [],)
+    return subject_types_dict
+
+@timebox
+def get_subject_form_models(manager):
+    form_models = {}
+    form_model_values = manager.load_all_rows_in_view('questionnaire')
+    for each in form_model_values:
+        form_model = FormModel.new_from_doc(manager, FormModelDocument.wrap(each['value']))
+        if form_model.is_registration_form() and not form_model.entity_defaults_to_reporter():
+            form_models[form_model.entity_type[0]] = form_model
+    return form_models
+
+@timebox
+def get_all_subjects(manager):
+    rows = manager.view.all_subjects()
+    return [_from_row_to_subject(manager, row) for row in rows]
+
+def _get_all_subject_data(form_models, subject_types, subjects):
+    subject_type_infos_dict = _get_subject_type_infos(subject_types, form_models)
+    for subject in subjects:
+        subject_type = subject.type_string
+        if subject_type in subject_type_infos_dict.keys():
+            form_model = form_models[subject_type]
+            data = _tabulate_data(subject, form_model, subject_type_infos_dict[subject_type]['codes'])
+            subject_type_infos_dict[subject_type]['data'].append(data)
+
+    return [subject_type_infos_dict[subject_type] for subject_type in subject_types]
+
+@timebox
 def load_all_subjects(manager):
-    entity_types_names = _get_entity_types(manager)
-    subjects = _get_registration_form_models(manager)
+    subject_types = _get_entity_types(manager)
+    form_models = get_subject_form_models(manager)
+    subjects = get_all_subjects(manager)
 
-    subjects_list = {}
-    for entity in entity_types_names:
-        if entity in subjects.keys():
-            form_model_row = subjects[entity]
-        else:
-            form_model_row = subjects['registration']
-        subjects_list[entity] = get_entity_type_infos(entity, form_model_row)
-
-    entities = get_all_entities(dbm=manager)
-    for entity in entities:
-        if exclude_of_type(entity, REPORTER):
-            entity_type = entity.type_string
-            if entity_type in subjects_list.keys():
-                form_model = get_form_model_by_code(manager, subjects_list[entity_type]['code'])
-                subjects_list[entity_type]['data'].append(_tabulate_data(entity, form_model, subjects_list[entity_type]['codes']))
-
-    data = [subjects_list[entity] for entity in entity_types_names]
-    return data
-
+    return _get_all_subject_data(form_models, subject_types, subjects)
 
 def load_all_subjects_of_type(manager, filter_entities=include_of_type, type=REPORTER):
     return load_subject_registration_data(manager, filter_entities, type)
-
 
 def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None):
     base_name, extension = os.path.splitext(file_name)
     player = FilePlayer.build(manager, extension, default_parser=default_parser, form_code=form_code)
     response = player.accept(file)
     return response
-
 
 def _get_imported_entities(responses):
     short_codes = dict()
@@ -320,11 +321,6 @@ def _get_imported_entities(responses):
 
 def _get_failed_responses(responses):
     return [i for i in enumerate(responses) if not i[1].success]
-
-
-def _get_success_status(successful_imports, total):
-    return True if total == successful_imports else False
-
 
 def import_data(request, manager, default_parser=None, form_code=None   ):
     response_message = ''

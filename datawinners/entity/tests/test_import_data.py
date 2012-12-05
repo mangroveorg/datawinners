@@ -2,7 +2,7 @@
 from collections import OrderedDict
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from datawinners.entity.import_data import load_all_subjects
+from datawinners.entity.import_data import load_all_subjects, get_field_infos
 from datawinners.entity.import_data import FilePlayer
 from datawinners.location.LocationTree import get_location_tree
 from mangrove.bootstrap import initializer
@@ -15,7 +15,6 @@ from mangrove.transport.player.parser import CsvParser, XlsDatasenderParser
 from mangrove.transport.facade import Channel
 from mangrove.transport import TransportInfo, Request
 from mangrove.transport.submissions import Submission
-from mangrove.errors.MangroveException import DataObjectAlreadyExists, MultipleReportersForANumberException
 from mangrove.form_model.form_model import FormModel
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.entity.helper import create_registration_form
@@ -314,3 +313,11 @@ class TestFilePlayer(MangroveTestCase):
         self.assertEqual(responses[1].errors['error'],"User with email address = test@mail.com already exists.")
         self.assertFalse(responses[2].success)
         self.assertEqual(responses[2].errors['error'],"Invalid email address.")
+
+    def test_should_get_field_infos_of_registration_questionnaire(self):
+        registration_form_model = self.manager.load_all_rows_in_view("questionnaire", key="reg")[0].get('value')
+        fields, labels, codes = get_field_infos(registration_form_model.get('json_fields'))
+
+        self.assertEqual(('name', 'short_code', 'location', 'geo_code', 'mobile_number'), fields)
+        self.assertEqual(("What is the subject's name?", "What is the subject's Unique ID Number", "What is the subject's location?","What is the subject's GPS co-ordinates?", 'What is the mobile number associated with the subject?'), labels)
+        self.assertEqual(('n', 's', 'l', 'g', 'm'), codes)
