@@ -81,3 +81,8 @@
   font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
   font-size: 11px !important;
 }
+.ui-daterangepickercontain {
+  .ranges, .range-end, .range-start{
+    display: block !important;
+  }
+}
