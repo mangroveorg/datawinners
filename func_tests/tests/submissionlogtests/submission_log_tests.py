@@ -9,6 +9,7 @@ from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_LOGIN_PA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.submission_log_data import *
+from pages.warningdialog.warning_dialog_page import WarningDialog
 
 @attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
@@ -33,10 +34,10 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(MESSAGE, from_(sms_data)))
         return self.navigate_to_submission_log_page()
 
-    def navigate_to_submission_log_page(self):
+    def navigate_to_submission_log_page(self, project_name=PROJECT_NAME):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
         view_all_project_page = self.dashboard.navigate_to_view_all_project_page()
-        project_overview_project = view_all_project_page.navigate_to_project_overview_page(PROJECT_NAME)
+        project_overview_project = view_all_project_page.navigate_to_project_overview_page(project_name)
         data_page = project_overview_project.navigate_to_data_page()
         submission_log_page = data_page.navigate_to_all_data_record_page()
         return submission_log_page
@@ -90,3 +91,11 @@ class TestSubmissionLog(unittest.TestCase):
         tab_text = submission_log_page.get_active_tab_text()
         self.assertEqual(tab_text, PAGE_TITLE_IN_FRENCH)
         submission_log_page.switch_language("en")
+
+    @attr('functional_test')
+    def test_should_show_warning_when_deleting_records(self):
+        submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
+        submission_log_page.check_all_submissions()
+        submission_log_page.choose_delete_on_the_action_dropdown()
+        warning_dialog = WarningDialog(self.driver)
+        self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())

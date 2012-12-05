@@ -335,9 +335,6 @@ msgstr "Veuillez remplir au moins un champ de localité"
 msgid "This data has already been deleted"
 msgstr "Cet enregistrement a déja été supprimé"
 
-msgid "Are you sure you want to delete the selected record/s?"
-msgstr "Etes-vous sûr de vouloir supprimer cet (ces) enregistrements"
-
 msgid "Add A Subject"
 msgstr "Ajouter un sujet"
 
@@ -681,3 +678,6 @@ msgstr "Vous n'avez encore aucune soumission pour cette question"
 
 msgid "Submission Date"
 msgstr "Date de soumission"
+
+msgid "Your Submission(s) will be deleted"
+msgstr "Votre/vos Soumission(s) sera/seront supprimée(s)"

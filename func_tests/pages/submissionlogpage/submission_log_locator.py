@@ -23,3 +23,5 @@ SUBMISSION_LOG_TR = by_xpath("//div[@id='sms_results']//../table/tbody/tr[2]")
 SUBMISSION_LOG_TR_XPATH = "//div[@id='sms_results']//../table/tbody/tr/td[contains(text(),\"%s\")]/.."
 SUBMISSION_LOG_FAILURE_MSG_XPATH = "/td[5]/span"
 ACTIVE_TAB_LOCATOR = by_css("ul.secondary_tab li.active")
+ACTION_SELECT_CSS_LOCATOR = by_css("#action")
+CHECKALL_CB_CSS_LOCATOR = by_css("#master_checkbox")

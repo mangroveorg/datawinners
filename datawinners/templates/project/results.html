@@ -26,7 +26,8 @@
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/project/results.js"></script>
-    <script src="/media/javascript/project/data_help_img.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/data_help_img.js"></script>
 {% endblock %}
 {% block page_css %}
     {{ block.super }}
@@ -91,6 +92,17 @@
                 </div>
             </div>
             <div id="pagination"></div>
+        </div>
+    </div>
+    <div id="delete_submission_warning_dialog">
+        <p class="warning_message">
+            {% trans "Your Submission(s) will be moved to Deleted Submissions. This action cannot be undone." %}
+            <br/><br/>
+            {% trans "Are you sure you want to continue?" %}
+        </p>
+        <div class="text_align_right">
+            <a class="no_button cancel_link">{% trans "Cancel" %}</a>
+            <a id="ok_button" class="button yes_button">{% trans "Continue" %}</a>
         </div>
     </div>
 {% endblock %}

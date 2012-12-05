@@ -2,7 +2,47 @@
 $(document).ready(function(){
 
     $.ajaxSetup({ cache: false });
+    DW.get_ids = function(){
+        var ids = [];
+        $(".selected_submissions:checked").each(function(){
+            if($(this).val()!="None"){
+                ids.push($(this).val());
+            }
+        });
+        return ids;
+    }
 
+    var kwargs = {container:"#delete_submission_warning_dialog",
+        continue_handler:function () {
+            var ids = this.ids;
+            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+            $.ajax({
+                type: 'POST',
+                url: window.location.pathname + "?rand="+ new Date().getTime(),
+                data:  {'id_list': JSON.stringify(ids), 'page_number':DW.current_page},
+                success:function(response) {
+                    $('#submission_table').empty();
+                    $('#submission_table').append(response);
+                    $("#action").val("0");
+                    $.unblockUI();
+                },
+                error: function(e) {
+                    $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
+                    $("#action").val("0");
+                    $.unblockUI();
+                }
+            });
+            return false;
+        },
+        title:gettext("Your Submission(s) will be deleted"),
+        cancel_handler:function () {
+            $("#action").val("0");
+        },
+        height:150,
+        width:550
+    }
+
+    DW.delete_submission_warning_dialog = new DW.warning_dialog(kwargs);
 
     DW.init_pagination = function () {
         DW.current_page = 0;
@@ -63,8 +103,8 @@ $(document).ready(function(){
     };
 
 
-   DW.screen_width = $(window).width() - 50;
-     $("#data_record").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>");
+    DW.screen_width = $(window).width() - 50;
+    $("#data_record").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>");
     DW.wrap_table = function() {
         $("#data_analysis").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>");
     };
@@ -95,41 +135,23 @@ $(document).ready(function(){
     });
 
     $('#action').change(function(){
-       var ids = [];
-       if($(".selected_submissions:checked").length == 0){
+        var ids = DW.get_ids();
+        if($(".selected_submissions:checked").length == 0){
             $("#message_text").html("<div class='error_message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
             $('#action').val(0);
-       }
-       else{
-       $(".selected_submissions:checked").each(function(){
-           if($(this).val()!="None"){
-               ids.push($(this).val());
-           }
-       });
-       if(ids.length==0){
-            $("#message_text").html("<div class='error_message message-box'>" + gettext("This data has already been deleted") + "</div>");
-            $('#action').val(0);
-       }
-       else{
-           var answer = confirm(gettext("Are you sure you want to delete the selected record/s?"));
-           if(answer){
-               $.ajax({
-                  type: 'POST',
-                  url: window.location.pathname + "?rand="+ new Date().getTime(),
-                  data:  {'id_list': JSON.stringify(ids), 'page_number':DW.current_page},
-                  success:function(response) {
-                        $('#submission_table').empty();
-                        $('#submission_table').append(response);
-                    },
-                  error: function(e) {
-                        $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
-                  }
-             });
-           }
-           $("#action").val(0);
         }
-       }
-   });
+        else{
+
+            if(ids.length==0){
+                $("#message_text").html("<div class='error_message message-box'>" + gettext("This data has already been deleted") + "</div>");
+                $('#action').val(0);
+            }
+            else{
+                DW.delete_submission_warning_dialog.show_warning();
+                DW.delete_submission_warning_dialog.ids = ids;
+            }
+        }
+    });
     $('#export_link').click(function(){
         var time_range = DW.submit_data();
         $("#start_time").attr("value", time_range[0]);
