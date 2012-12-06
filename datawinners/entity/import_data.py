@@ -227,7 +227,13 @@ def _get_entity_types(manager):
     return sorted(entity_list)
 
 def get_field_infos(fields):
-    return zip(*[(field['name'], field['label'], field['code']) for field in fields if field['name'] != 'entity_type'])
+    fields_names, labels, codes = [], [], []
+    for field in fields:
+        if field['name'] != 'entity_type':
+            fields_names.append(field['name'])
+            labels.append(field['label'])
+            codes.append(field['code'])
+    return fields_names, labels, codes
 
 def get_entity_type_info(entity_type, manager = None):
     if entity_type == 'reporter':

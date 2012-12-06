@@ -318,6 +318,6 @@ class TestFilePlayer(MangroveTestCase):
         registration_form_model = self.manager.load_all_rows_in_view("questionnaire", key="reg")[0].get('value')
         fields, labels, codes = get_field_infos(registration_form_model.get('json_fields'))
 
-        self.assertEqual(('name', 'short_code', 'location', 'geo_code', 'mobile_number'), fields)
-        self.assertEqual(("What is the subject's name?", "What is the subject's Unique ID Number", "What is the subject's location?","What is the subject's GPS co-ordinates?", 'What is the mobile number associated with the subject?'), labels)
-        self.assertEqual(('n', 's', 'l', 'g', 'm'), codes)
+        self.assertEqual(['name', 'short_code', 'location', 'geo_code', 'mobile_number'], fields)
+        self.assertEqual(["What is the subject's name?", "What is the subject's Unique ID Number", "What is the subject's location?","What is the subject's GPS co-ordinates?", 'What is the mobile number associated with the subject?'], labels)
+        self.assertEqual(['n', 's', 'l', 'g', 'm'], codes)
