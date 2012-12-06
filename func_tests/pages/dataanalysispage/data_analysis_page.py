@@ -159,7 +159,7 @@ class DataAnalysisPage(Page):
 
         Return list of web element
         """
-        return [unicode(each.text) for each in (self.get_all_question_labels())]
+        return [unicode(each.text.strip()) for each in (self.get_all_question_labels())]
 
     def select_current_month(self):
         """
