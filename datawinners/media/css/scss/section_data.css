@@ -180,11 +180,11 @@ table {
 #data_analysis_wrapper table thead th {
   color: #FFF; }
 #data_analysis_wrapper table thead .sorting {
-  background: url(/media/images/sort_arrow.png) no-repeat right 10px; }
+  background: url(/media/images/sort_arrow.png) no-repeat right 0px; }
 #data_analysis_wrapper table thead .sorting_desc {
-  background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right 10px; }
+  background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right 0px; }
 #data_analysis_wrapper table thead .sorting_asc {
-  background: url(/media/images/sort_arrow_active_top.png) no-repeat right 10px; }
+  background: url(/media/images/sort_arrow_active_top.png) no-repeat right 0px; }
 
 #dateRangePicker {
   width: 80%;
