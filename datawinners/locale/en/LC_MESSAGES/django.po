@@ -519,7 +519,7 @@ msgstr ""
 
 msgid "q_tooltip_submission_date"
 msgstr ""
-"The Date Stamp is the date you received the Submission from your Data Sender."
+"The Submission Date is the date you received the Submission from your Data Sender."
 "</br></br>"
 "The Submission Date is often different than the Reporting Period. Example: Your Data Sender sends his report for May 2012 (Reporting Period) on 10 June 2012 (Submission Date)."
 
