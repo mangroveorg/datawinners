@@ -77,6 +77,7 @@
             var date_format = '{{ date_format }}';
             var entity_type = '{{ entity_type }}';
             var statistics = JSON.parse({{ statistics_result|safe }});
+            var header_name_list = JSON.parse({{header_name_list|safe}});
             var header_type_list = JSON.parse({{header_type_list|safe}});
             var default_sort_order = JSON.parse({{ default_sort_order|safe }})
         </script>

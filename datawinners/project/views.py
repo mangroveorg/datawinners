@@ -416,6 +416,7 @@ def composite_analysis_result(analysis_result):
     return {"datasender_list": analysis_result.datasender_list,
                        "default_sort_order": repr(encode_json(analysis_result.default_sort_order)),
                        "header_list": analysis_result.header_list,
+                       "header_name_list": repr(encode_json(analysis_result.header_list)),
                        "header_type_list": repr(encode_json(analysis_result.header_type_list)),
                        "subject_list": analysis_result.subject_list,
                        "data_list": repr(encode_json(analysis_result.field_values)),

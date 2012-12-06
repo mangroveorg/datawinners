@@ -114,13 +114,10 @@ $(document).ready(function () {
     };
 
     function buildColumnTypes(){
-        var result = [];
-        for( var index in header_type_list){
-            var value = header_type_list[index];
-            var column = gettext($($.sprintf("#data_analysis thead tr th:nth-child(%d)", parseInt(index)+1)).html().replace(/(&nbsp;)/g,'').trim());
-            result[result.length] = (value && column == gettext("Submission Date"))  ? { "sType":  value} : {"sType": "string"};
-        }
-        return result;
+        return $(header_type_list).map(function(index, value){
+            var column_name = header_name_list[index];
+            return (value && column_name == gettext("Submission Date"))  ? { "sType":  value} : {"sType": "string"};
+        });
     };
 
     function showDatePicker($input) {
@@ -198,7 +195,7 @@ $(document).ready(function () {
     function init_page() {
         DW.dataBinding(initial_data, false, true, help_no_submission);
         DW.wrap_table();
-        drawChart(statistics,initial_data.length, initial_data.length == 0 ? help_no_submission: '');
+        drawChart(statistics, initial_data.length, initial_data.length == 0 ? help_no_submission: '');
         $('#data_analysis select').customStyle();
         DW.chart_view_shown = false;
         $('#data_analysis_chart').hide();
