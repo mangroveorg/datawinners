@@ -226,7 +226,7 @@ def _get_entity_types(manager):
     entity_list = [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
     return sorted(entity_list)
 
-def get_field_infos(fields):
+def get_json_field_infos(fields):
     fields_names, labels, codes = [], [], []
     for field in fields:
         if field['name'] != 'entity_type':
@@ -235,21 +235,26 @@ def get_field_infos(fields):
             codes.append(field['code'])
     return fields_names, labels, codes
 
+def get_field_infos(fields):
+    fields_names, labels, codes = [], [], []
+    for field in fields:
+        if field.name != 'entity_type':
+            fields_names.append(field.name)
+            labels.append(field.label)
+            codes.append(field.code)
+    return fields_names, labels, codes
+
 def get_entity_type_info(entity_type, manager = None):
     if entity_type == 'reporter':
         form_code = 'reg'
         form_model = manager.load_all_rows_in_view("questionnaire", key = form_code)[0]
+        names, labels, codes = get_json_field_infos(form_model.value['json_fields'])
     else:
         form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(entity_type))
+        form_code = form_model.form_code
+        names, labels, codes = get_field_infos(form_model.fields)
 
-    names, labels, codes = get_field_infos(form_model.value['json_fields'])
-
-    return dict(entity = entity_type,
-                   code = form_model.value["form_code"],
-                   names = names,
-                   labels = labels,
-                   codes = codes,
-                   data = [])
+    return dict(entity=entity_type, code=form_code, names=names, labels=labels, codes=codes, data=[])
 
 def _from_row_to_subject(dbm, row):
     return Entity.new_from_doc(dbm=dbm, doc=Entity.__document_class__.wrap(row.get('value')))
@@ -387,7 +392,7 @@ def get_entity_type_fields(manager, type=REPORTER):
     if form_model is not None:
         form_code = form_model.form_code
     form_model_rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
-    fields, labels, codes = get_field_infos(form_model_rows[0].value['json_fields'])
+    fields, labels, codes = get_json_field_infos(form_model_rows[0].value['json_fields'])
     return fields, labels, codes
 
 

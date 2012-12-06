@@ -1,8 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import OrderedDict
+from mangrove.utils.form_model_builder import FormModelBuilder, create_default_ddtype
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from datawinners.entity.import_data import load_all_subjects, get_field_infos
+from datawinners.entity.import_data import load_all_subjects, get_json_field_infos, get_entity_type_info
 from datawinners.entity.import_data import FilePlayer
 from datawinners.location.LocationTree import get_location_tree
 from mangrove.bootstrap import initializer
@@ -316,8 +317,35 @@ class TestFilePlayer(MangroveTestCase):
 
     def test_should_get_field_infos_of_registration_questionnaire(self):
         registration_form_model = self.manager.load_all_rows_in_view("questionnaire", key="reg")[0].get('value')
-        fields, labels, codes = get_field_infos(registration_form_model.get('json_fields'))
+        fields, labels, codes = get_json_field_infos(registration_form_model.get('json_fields'))
 
         self.assertEqual(['name', 'short_code', 'location', 'geo_code', 'mobile_number'], fields)
         self.assertEqual(["What is the subject's name?", "What is the subject's Unique ID Number", "What is the subject's location?","What is the subject's GPS co-ordinates?", 'What is the mobile number associated with the subject?'], labels)
         self.assertEqual(['n', 's', 'l', 'g', 'm'], codes)
+
+    def test_should_get_entity_type_info_for_reporter(self):
+        info = get_entity_type_info('reporter', self.manager)
+        expect = {'code': 'reg',
+                  'codes': ['n', 's', 'l', 'g', 'm'],
+                  'names': ['name', 'short_code', 'location', 'geo_code', 'mobile_number'],
+                  'labels': ["What is the subject's name?", "What is the subject's Unique ID Number",
+                             "What is the subject's location?", "What is the subject's GPS co-ordinates?",
+                             'What is the mobile number associated with the subject?'],
+                  'data': [],
+                  'entity': 'reporter'}
+
+        self.assertEqual(expect, info)
+
+    def test_should_get_entity_type_info_for_subject(self):
+        self._create_subject_registration_form()
+        info = get_entity_type_info('clinic', self.manager)
+        expect = {'code': u'form_code', 'codes': ['EID', 'BG'],
+                  'names': [u'What is associat\xe9d entity?', 'What is your blood group?'],
+                  'labels': ['What is associated entity?', 'What is your blood group?'], 'data': [], 'entity': 'clinic'}
+
+        self.assertEqual(expect, info)
+
+    def _create_subject_registration_form(self):
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",entity_question_flag=True, ddtype=self.entity_id_type)
+        blood_type_field = TextField(label="What is your blood group?", code="BG", name="What is your blood group?", ddtype=self.entity_id_type)
+        return FormModelBuilder(self.manager, ["clinic"]).is_registration_model(True).add_fields(eid_field, blood_type_field).build()
