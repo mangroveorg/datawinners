@@ -4015,8 +4015,8 @@ msgstr "Aucune action requise. Nous afficherons la version mise à jour du Quest
 msgid "OK, Got it"
 msgstr "OK, Compris"
 
-msgid "Your Submission(s) will be moved to Deleted Submissions. This action cannot be undone."
-msgstr "Votre/vos Soumission(s) sera/seront déplacée(s) vers Soumissions Supprimées."
+msgid "Your Submission(s) will be moved to Deleted Submissions.<br/>This action cannot be undone."
+msgstr "Votre/vos Soumission(s) sera/seront déplacée(s) vers Soumissions Supprimées.<br/>Cette action ne peut pas être annulée"
 
 msgid "Are you sure you want to continue?"
 msgstr "Etes-vous sûr de vouloir continuer?"

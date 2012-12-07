@@ -23,4 +23,4 @@ WITH_INVALID_GEO_CODE_FORMAT_LOG = {
     FAILURE_MSG: "Answer Mr. De`Melo for question NA is longer than allowed.,Answer ab for question BG contains more than one value.,The answer 127.178057 must be between -90 and 90"}
 PAGE_TITLE_IN_FRENCH = "Journal de Soumission"
 FIRST_PROJECT_NAME = "clinic test project"
-DELETE_SUBMISSION_WARNING_MESSAGE = u'Your Submission(s) will be moved to Deleted Submissions. This action cannot be undone.\n\nAre you sure you want to continue?'
+DELETE_SUBMISSION_WARNING_MESSAGE = u'Your Submission(s) will be moved to Deleted Submissions.\nThis action cannot be undone.\n\nAre you sure you want to continue?'

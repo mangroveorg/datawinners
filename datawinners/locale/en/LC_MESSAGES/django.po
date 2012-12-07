@@ -3939,7 +3939,7 @@ msgstr ""
 msgid "OK, Got it"
 msgstr ""
 
-msgid "Your Submission(s) will be moved to Deleted Submissions. This action cannot be undone."
+msgid "Your Submission(s) will be moved to Deleted Submissions.<br/>This action cannot be undone."
 msgstr ""
 
 msgid "Are you sure you want to continue?"

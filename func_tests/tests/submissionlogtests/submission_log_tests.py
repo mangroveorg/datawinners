@@ -10,6 +10,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog_page import WarningDialog
+import time
 
 @attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
@@ -96,6 +97,7 @@ class TestSubmissionLog(unittest.TestCase):
     def test_should_show_warning_when_deleting_records(self):
         submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
         submission_log_page.check_all_submissions()
+        time.sleep(1)
         submission_log_page.choose_delete_on_the_action_dropdown()
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
