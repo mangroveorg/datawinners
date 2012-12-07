@@ -64,3 +64,7 @@
     font-size: 11px !important;}
 .ui-daterangepickercontain .ranges, .ui-daterangepickercontain .range-end, .ui-daterangepickercontain .range-start{
     display: block !important;}
+table.styled_table thead th {
+    padding-right: 30px;
+    vertical-align: top !important;
+}
