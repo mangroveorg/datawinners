@@ -354,13 +354,17 @@ def build_filters(params, form_model):
 @is_datasender
 @is_not_expired
 def project_results(request, project_id=None, questionnaire_code=None):
+    analysis_result = get_analysis_response(request, project_id, questionnaire_code)
     manager, project, project_links, questionnaire = prepare_query_project_results(project_id, questionnaire_code,
         request)
 
     if request.method == 'GET':
+        return render_to_response('project/results.html',
+            analysis_result,
+            context_instance=RequestContext(request))
         return project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code)
     if request.method == "POST":
-        return project_result_for_post(manager, request, project, questionnaire, questionnaire_code)
+        return HttpResponse(analysis_result)
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET

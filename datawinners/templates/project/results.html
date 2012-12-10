@@ -26,6 +26,7 @@
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/project/results.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/project/data_help_img.js"></script>
 {% endblock %}
@@ -43,10 +44,23 @@
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
+    {% load compress %}
+    {% compress js %}
+        <script type="text/javascript">
+            var initial_data = JSON.parse({{data_list|safe}});
+            var date_format = '{{ date_format }}';
+            var entity_type = '{{ entity_type }}';
+            var statistics = JSON.parse({{ statistics_result|safe }});
+            var header_name_list = JSON.parse({{header_name_list|safe}});
+            var header_type_list = JSON.parse({{header_type_list|safe}});
+            var default_sort_order = JSON.parse({{ default_sort_order|safe }})
+        </script>
+    {% endcompress %}
     {% block secondary_navigation_data %}
     {% activetab "secondary_tab_nav" "activity_log" %}
     {{ block.super }}
     {% endblock %}
+
     <div class="grid_23">
             {% if  project.state  == "Test"  %}
         <div class="warning-message-box">
@@ -73,7 +87,7 @@
         <div class="date_range_box full_width">
             <label>{% trans "Show data for:" %}</label>
             <input type="text" id="dateRangePicker" value="{% trans 'Click to select a date range' %}" style="width: 240px;"/>
-            <input type="button" id="time_filter" value="{% trans 'Filter' %}" class="margin_top_null button_blue"/>
+            <input type="button" id="go" value="{% trans 'Filter' %}" class="margin_top_null button_blue"/>
             <input id="questionnaire_id" type="hidden" value="{{ questionnaire_code }}"/>
         </div>
     </div>
@@ -98,11 +112,10 @@
                         {% include 'project/log_table.html' %}
                     </div>
                 </div>
-                <div id="pagination"></div>
             </div>
-            <div id="tab-success" />
-            <div id="tab-failed" />
-            <div id="tab-deleted" />
+            <div id="tab-success">successful data goes here</div>
+            <div id="tab-failed" >failed data goes here</div>
+            <div id="tab-deleted" >deleted data goes here</div>
         </div>
 
     </div>

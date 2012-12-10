@@ -1,192 +1,131 @@
+$(document).ready(function () {
+    $("#tabs").tabs();
 
-$(document).ready(function(){
-    $( "#tabs" ).tabs();
-    $.ajaxSetup({ cache: false });
-    DW.get_ids = function(){
-        var ids = [];
-        $(".selected_submissions:checked").each(function(){
-            if($(this).val()!="None"){
-                ids.push($(this).val());
+    $('#delete_submission_warning_dialog').hide()
+
+    var help_no_submission = $('#help_no_submissions').html();
+    var message = gettext("No submissions available for this search. Try changing some of the filters.");
+    var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
+
+    $(document).ajaxStop($.unblockUI);
+
+    addOnClickListener();
+
+    function addOnClickListener() {
+        $('#export_link').click(function () {
+            var data = submit_data();
+
+            for (var name in data) {
+                $('input[name="' + name + '"]').val(data[name]);
             }
+            $('#export_form').submit();
         });
-        return ids;
+
+        $('#go').click(function () {
+                var data = submit_data();
+                $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+                $.ajax({
+                    type:'POST',
+                    url:window.location.pathname,
+                    data:data,
+                    success:function (response) {
+                        var response_data = JSON.parse(response);
+
+                        dataBinding(response_data.data_list, true, false, help_all_data_are_filtered);
+
+                        var emptyChartText = response_data.data_list.length == 0 ? gettext('No submissions available for this search. Try changing some of the filters.') : '';
+                        drawChart(response_data.statistics_result,
+                            response_data.data_list.length,
+                            emptyChartText);
+                        wrap_table();
+                    }});
+            }
+        );
     }
 
-    var kwargs = {container:"#delete_submission_warning_dialog",
-        continue_handler:function () {
-            var ids = this.ids;
-            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
-            $.ajax({
-                type: 'POST',
-                url: window.location.pathname + "?rand="+ new Date().getTime(),
-                data:  {'id_list': JSON.stringify(ids), 'page_number':DW.current_page},
-                success:function(response) {
-                    $('#submission_table').empty();
-                    $('#submission_table').append(response);
-                    $("#action").val("0");
-                    $.unblockUI();
+    function get_date($datePicker, default_text) {
+        var data = $datePicker.val().split("-");
+        if (data[0] == "" || data[0] == default_text) {
+            data = ['', ''];
+        } else if (data[0] != default_text && Date.parse(data[0]) == null) {
+            $datePicker.next().html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>').show();
+            data = ['', ''];
+        } else if (data.length == 1) {
+            data[1] = data[0];
+        }
+        return {start_time:data[0], end_time:data[1]};
+    }
+
+    var submit_data = function () {
+        var reporting_period = get_date($('#reportingPeriodPicker'), gettext("All Periods"));
+        var submission_date = get_date($('#submissionDatePicker'), gettext("All Dates"));
+        var subject_ids = $('#subjectSelect').attr('ids');
+        var submission_sources = $('#dataSenderSelect').attr('data');
+        var keyword = $('#keyword').val();
+        return {
+            'start_time':$.trim(reporting_period.start_time),
+            'end_time':$.trim(reporting_period.end_time),
+            'submission_date_start':$.trim(submission_date.start_time),
+            'submission_date_end':$.trim(submission_date.end_time),
+            'subject_ids':subject_ids,
+            'submission_sources':submission_sources,
+            'keyword':keyword
+        };
+        $(".dateErrorDiv").hide();
+    };
+
+    var wrap_table = function () {
+        $("#data_table").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
+    };
+
+    var dataBinding = function (data, destroy, retrive, emptyTableText) {
+        $dataTable = $('#data_table').dataTable({
+            "aaSorting":default_sort_order,
+            "aoColumns":buildColumnTypes(),
+            "bDestroy":destroy,
+            "bRetrieve":retrive,
+            "sPaginationType":"full_numbers",
+            "aaData":data,
+            "bSort":true,
+            "oLanguage":{
+                "sProcessing":gettext("Processing..."),
+                "sLengthMenu":gettext("Show _MENU_ Submissions"),
+                "sZeroRecords":emptyTableText,
+                "sEmptyTable":emptyTableText,
+                "sLoadingRecords":gettext("Loading..."),
+                "sInfo":gettext("<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</span> Submissions"),
+                "sInfoEmpty":gettext("0 Submissions"),
+                "sInfoFiltered":gettext("(filtered from _MAX_ total Data records)"),
+                "sInfoPostFix":"",
+                "sSearch":gettext("Search:"),
+                "sUrl":"",
+                "oPaginate":{
+                    "sFirst":gettext("First"),
+                    "sPrevious":gettext("Previous"),
+                    "sNext":gettext("Next"),
+                    "sLast":gettext("Last")
                 },
-                error: function(e) {
-                    $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
-                    $("#action").val("0");
-                    $.unblockUI();
-                }
-            });
-            return false;
-        },
-        title:gettext("Your Submission(s) will be deleted"),
-        cancel_handler:function () {
-            $("#action").val("0");
-        },
-        height:150,
-        width:550
+                "fnInfoCallback":null
+            },
+            "sDom":'<"@dataTables_info"i>rtpl<"@dataTable_search">',
+            "iDisplayLength":25
+        });
+    };
+
+    function buildColumnTypes() {
+        return $(header_type_list).map(function (index, value) {
+            var column_name = header_name_list[index];
+            return (value && column_name == gettext("Submission Date")) ? { "sType":value} : {"sType":"string"};
+        });
     }
 
-    DW.delete_submission_warning_dialog = new DW.warning_dialog(kwargs);
+    ;
 
-    DW.init_pagination = function () {
-        DW.current_page = 0;
-        $("#pagination").pagination($('#total_rows').val(), {
-            items_per_page:10,
-            num_display_entries : 5,
-            num_edge_entries:2,
-            load_first_page:false,
-            next_text: gettext("Next"),
-            prev_text: gettext("Prev"),
-            callback : function(page_number) {
-                new DW.show_data(page_number + 1);
-                DW.current_page = page_number + 1;
-            }
-        });
-    };
+    function init_page() {
+        dataBinding(initial_data, false, true, help_no_submission);
+        wrap_table();
+    }
 
-    DW.submit_data = function() {
-        var time_range = $($("#dateRangePicker").val().split("/")).map(function(i, e) {return $.trim(e)});
-
-        if(time_range[0] == "") {
-            time_range[0]='01-01-1996';
-            time_range[1]=Date.parse('today').toString('dd-MM-yyyy');
-            return time_range;
-        }
-        if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
-            $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>');
-            $("#dateErrorDiv").show();
-            time_range[0] = "";
-            time_range[1] = "";
-        }
-        return time_range;
-   };
-
-
-    DW.show_data = function(page_number) {
-        this.page_number = page_number;
-        this._init();
-    };
-    DW.show_data.prototype = {
-        _init : function(){
-            var time_range = DW.submit_data();
-            $.get('/project/datarecords/filter',
-                  {
-                      questionnaire_code: $('#questionnaire_id').val(),
-                      start_time:time_range[0],
-                      end_time: time_range[1],
-                      page_number: this.page_number,
-                      rand: Math.floor(Math.random()*10000000)
-                  }).success(
-                  function(data){
-                    if(data){
-                        $('#submission_table').html(data);
-                    }
-                  }
-);
-            }
-    };
-
-
-    DW.screen_width = $(window).width() - 50;
-    $("#data_record").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>");
-    DW.wrap_table = function() {
-        $("#data_analysis").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>");
-    };
-    $("#dateRangePicker").daterangepicker({
-                presetRanges: [
-                    {text: gettext('Current month'), dateStart: function() {
-                        return Date.parse('today').moveToFirstDayOfMonth();
-                    }, dateEnd: 'today' },
-                    {text: gettext('Last Month'), dateStart: function(){return Date.parse('last month').moveToFirstDayOfMonth();}, dateEnd: function(){return Date.parse('last month').moveToLastDayOfMonth();} },
-                    {text: gettext('Year to date'), dateStart: function() {
-                        var x = Date.parse('today');
-                        x.setMonth(0);
-                        x.setDate(1);
-                        return x;
-                    }, dateEnd: 'today' }
-                ],
-                presets: {dateRange: 'Date Range'},
-                earliestDate:'1/1/2011', latestDate:'21/12/2012', dateFormat:'dd-mm-yy', rangeSplitter:'/'
-
-            });
-
-    //Checkbox on/off functionality
-    $("#master_checkbox").live("click", function(){
-        $(".selected_submissions").each(function(){
-           $(this).attr("checked", !$(this).attr('checked'));
-        });
-
-    });
-
-    $('#action').change(function(){
-        var ids = DW.get_ids();
-        if($(".selected_submissions:checked").length == 0){
-            $("#message_text").html("<div class='error_message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
-            $('#action').val(0);
-        }
-        else{
-
-            if(ids.length==0){
-                $("#message_text").html("<div class='error_message message-box'>" + gettext("This data has already been deleted") + "</div>");
-                $('#action').val(0);
-            }
-            else{
-                DW.delete_submission_warning_dialog.show_warning();
-                DW.delete_submission_warning_dialog.ids = ids;
-            }
-        }
-    });
-    $('#export_link').click(function(){
-        var time_range = DW.submit_data();
-        $("#start_time").attr("value", time_range[0]);
-        $("#end_time").attr("value", time_range[1]);
-        $('#export_form').submit();
-    });
-
-    $('#time_filter').click(function() {
-        var time_range = DW.submit_data();
-
-        var start_time = time_range[0];
-        var end_time = time_range[1];
-
-//        if (start_time && end_time) {
-//            var start = new Date(start_time);
-//            var end = new Date(end_time);
-//            if (end < start) {
-//                alert("aaa");
-//                return;
-//            }
-//        }
-
-        $.ajax({
-            type: 'GET',
-            url: '/project/datarecords/filter',
-            data: {'questionnaire_code': $('#questionnaire_id').val(), 'start_time':start_time, 'end_time': end_time},
-            success:function(response) {
-                if (response) {
-                    $('#submission_table').html(response);
-                    DW.init_pagination();
-                }
-            }
-        });
-    });
-
-    DW.init_pagination();
+    init_page();
 });
 

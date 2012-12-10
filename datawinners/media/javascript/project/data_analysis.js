@@ -216,7 +216,7 @@ $(document).ready(function () {
                     } else {
                         filter.addClass('disabled');
                     }
-                    
+
                     filter.unbind('click');
                 })
                 $('.filter_label').css({color:"#888"});
@@ -271,7 +271,7 @@ $(document).ready(function () {
             $('.ui-daterangepicker:visible').hide();
         });
     }
-    
+
     $('#keyword').keypress(function(e) {
         if (e.which == 13) {
             $('#go').click();

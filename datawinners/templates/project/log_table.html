@@ -1,80 +1,19 @@
 {% load i18n %}
-<div id="message_text">
-    {% if  success_message  %}
-        <div class="success-message-box">{{ success_message }}</div>
-    {% endif %}
-</div>
-<input id="total_rows" type="hidden" value="{{ pages }}" />
-<table class="styled_table" id="data_record">
-    <thead>
-    <th>
-        <input type="checkbox" id="master_checkbox" value="master"/>
-    </th>
-    <th>
-        {% trans "To" %}
-    </th>
-    <th>
-        {% trans "From" %}
-    </th>
-    <th>
-        {% trans "Date Received" %}
-    </th>
-    <th>
-        {% trans "Submission Status" %}
-    </th>
-    <th>
-        {% trans "Submission Deleted" %}
-    </th>
-    {% for question in questions %}
-        <th>
-            <span style="cursor:default" title='{{ question.name }}'>{{ question.name }}</span>
-        </th>
-    {% endfor %}
-    </thead>
 
-    <tbody>
-    {% for answer in submissions %}
+<div class="grid_23 alpha omega data_block" style="width: 100%">
+
+    <table id="data_table" class="styled_table">
+        <thead>
         <tr>
-            <td class="text_align_center">
-                <input type="checkbox" class="selected_submissions" value="{{ answer.0 }}"/>
-            </td>
-            <td>
-                {{ answer.1 }}
-            </td>
-            <td>
-                {{ answer.2 }}
-            </td>
-            <td>
-                {{ answer.3 }}
-            </td>
-            <td>
-                <span title='{{ answer.4 }}'>{% trans  answer.5   %}
-</span>
-            </td>
-            <td>
-                {% trans answer.6 %}
-            </td>
-            {% for each in answer|slice:"7:" %}
-                <td>
+            {% for each in header_list %}
+                <th>
                     {{ each }}
-                </td>
+                </th>
             {% endfor %}
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
-{% if error_message %}
-    <div class="help_accordion">
-        {% trans "Your Data Senders’ successful submissions will appear here." %}<br/><br/>
-        {% trans "To collect data" %}
-        <ul class="bulleted margin_left_20">
-            {% if project_links.questionnaire_link %}
-            <li>{% blocktrans with project_links.questionnaire_link as url %}SMS: Give your <a href="{{ url }}">Questionnaire</a> to your Data Senders and have them send in data{% endblocktrans %}</li>
-            {% else %}
-            <li>{% blocktrans with project_links.overview_link as url %}SMS: Give your <a href="{{ url }}">Questionnaire</a> to your Data Senders and have them send in data{% endblocktrans %}</li>
-            {% endif %}
-            <li>{% blocktrans with project_links.datasenders_link as url %}Web & Smartphone: Grant your Data Senders Web submission access on the <a href="{{ url }}">all Data Senders</a> page{% endblocktrans %}</li>
-            <li>{% blocktrans with project_links.test_questionnaire_link as url%}<a href="{{ url }}">Submit Data</a> yourself{% endblocktrans %}</li>
-        </ul>
-    </div>
-{% endif %}
+        </thead>
+    </table>
+</div>
+{% block help_no_submissions %}
+    {% include 'project/help_no_submission.html' %}
+{% endblock %}
