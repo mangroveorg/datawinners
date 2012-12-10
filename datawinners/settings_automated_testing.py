@@ -1,4 +1,4 @@
 from settings import *
 
-SHOW_GOOGLE_MAPS = False
+GOOGLE_MAPS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'

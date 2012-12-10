@@ -10,7 +10,7 @@ DATABASES = {
     }
 }
 
-SHOW_GOOGLE_MAPS = False
+GOOGLE_MAPS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 HNI_SUPPORT_EMAIL_ID = 'tester150411@gmail.com'
 
