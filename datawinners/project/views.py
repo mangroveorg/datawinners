@@ -257,13 +257,6 @@ def project_overview(request, project_id=None):
     }))
 
 
-def prepare_query_project_results(project_id, questionnaire_code, request):
-    manager = get_database_manager(request.user)
-    project = Project.load(manager.database, project_id)
-    project_links = make_project_links(project, questionnaire_code)
-    questionnaire = get_form_model_by_code(manager, questionnaire_code)
-    return manager, project, project_links, questionnaire
-
 def delete_submissions_by_ids(manager, request, submission_ids):
     received_times = []
     for submission_id in submission_ids:
@@ -274,39 +267,6 @@ def delete_submissions_by_ids(manager, request, submission_ids):
             ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
     return received_times
 
-def project_result_for_post(manager, request, project, questionnaire, questionnaire_code):
-    submission_ids = json.loads(request.POST.get('id_list'))
-    received_times = delete_submissions_by_ids(manager, request, submission_ids)
-    if len(received_times):
-        UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=project.name,
-            detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
-    count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
-    submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
-    return render_to_response('project/log_table.html',
-            {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
-             'submissions': submission_display, 'pages': count,
-             'success_message': _("The selected records have been deleted")},
-        context_instance=RequestContext(request))
-
-
-def get_template_values_for_result_page(manager, request, project, project_links, questionnaire, questionnaire_code):
-    count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
-
-    submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
-    in_trial_mode = _in_trial_mode(request)
-    template_value_dict = {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
-                           'submissions': submission_display, 'pages': count, 'error_message': error_message,
-                           'project_links': project_links, 'project': project, 'in_trial_mode': in_trial_mode}
-    return template_value_dict
-
-
-def project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code):
-    template_value_dict = get_template_values_for_result_page(manager, request, project, project_links, questionnaire,
-        questionnaire_code)
-    return render_to_response('project/results.html',
-        template_value_dict,
-        context_instance=RequestContext(request)
-    )
 
 def _build_report_period_filter(form_model, start_time, end_time):
     if not start_time or not end_time:
@@ -355,14 +315,11 @@ def build_filters(params, form_model):
 @is_not_expired
 def project_results(request, project_id=None, questionnaire_code=None):
     analysis_result = get_analysis_response(request, project_id, questionnaire_code)
-    manager, project, project_links, questionnaire = prepare_query_project_results(project_id, questionnaire_code,
-        request)
 
     if request.method == 'GET':
         return render_to_response('project/results.html',
             analysis_result,
             context_instance=RequestContext(request))
-        return project_results_for_get(manager, request, project, project_links, questionnaire, questionnaire_code)
     if request.method == "POST":
         return HttpResponse(analysis_result)
 
@@ -482,6 +439,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
 
     elif request.method == "POST":
         return HttpResponse(analysis_result)
+
 
 @login_required(login_url='/login')
 @session_not_expired
