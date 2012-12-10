@@ -11,7 +11,6 @@ MANGROVE = 'mangrove'
 
 TODAY_IN_UTC = str(datetime.utcnow().date()).replace('-', '')
 
-PROJECT_DIR = os.path.dirname(__file__)
 ENVIRONMENT_CONFIGURATIONS = {
     "showcase": "showcase_local_settings.py",
     "test": "test_local_settings.py",
