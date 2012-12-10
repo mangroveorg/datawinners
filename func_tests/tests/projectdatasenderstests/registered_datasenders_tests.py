@@ -14,6 +14,7 @@ from pages.adddatasenderspage.add_data_senders_locator import REGISTERED_DATASEN
 @attr('suit_2')
 class ProjectDataSenders(BaseTest):
     def tearDown(self):
+        super(ProjectDataSenders, self).tearDown()
         import sys
 
         exception_info = sys.exc_info()
