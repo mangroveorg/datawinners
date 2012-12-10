@@ -85,14 +85,26 @@
         </select>
     </div>
     <div id="sms_results" class="grid_23 alpha margin_top_20">
-        <div>
-            <div id="results">
-                <div id="submission_table">
-                    {% include 'project/log_table.html' %}
+        <div id="tabs">
+            <ul>
+                <li><a href="#tab-all">All</a></li>
+                <li><a href="#tab-success">Successful</a></li>
+                <li><a href="#tab-failed">Failed</a></li>
+                <li><a href="#tab-deleted">Deleted</a></li>
+            </ul>
+            <div id="tab-all" style="padding: 0;">
+                <div id="results">
+                    <div id="submission_table">
+                        {% include 'project/log_table.html' %}
+                    </div>
                 </div>
+                <div id="pagination"></div>
             </div>
-            <div id="pagination"></div>
+            <div id="tab-success" />
+            <div id="tab-failed" />
+            <div id="tab-deleted" />
         </div>
+
     </div>
     <div id="delete_submission_warning_dialog">
         <p class="warning_message">

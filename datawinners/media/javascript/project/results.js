@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-
+    $( "#tabs" ).tabs();
     $.ajaxSetup({ cache: false });
     DW.get_ids = function(){
         var ids = [];
