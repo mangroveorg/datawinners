@@ -4,7 +4,12 @@ import getpass
 from fabric.api import run, env
 from fabric.context_managers import cd, settings
 import os
-from datetime import date
+from datetime import  datetime
+
+DATAWINNERS = 'datawinners'
+MANGROVE = 'mangrove'
+
+TODAY_IN_UTC = str(datetime.utcnow().date()).replace('-', '')
 
 PROJECT_DIR = os.path.dirname(__file__)
 ENVIRONMENT_CONFIGURATIONS = {
@@ -32,8 +37,8 @@ ENVIRONMENT_TOMCAT = {
 }
 
 ENVIRONMENT_JENKINS_JOB = {
-    'mangrove' : 'Mangrove-develop',
-    'datawinners': 'Datawinners'
+    MANGROVE : 'Mangrove-develop',
+    DATAWINNERS: 'Datawinners'
 }
 
 
@@ -47,7 +52,7 @@ def git_clone_mangrove_if_not_present(code_dir):
 
 
 def activate_and_run(virtual_env, command):
-    run('source %s/bin/activate && ' % virtual_env + command)
+    run('source %s/bin/activate && %s' % (virtual_env, command))
 
 
 def branch_exists(branch_name):
@@ -101,8 +106,7 @@ def start_servers():
 
 def set_mangrove_commit_sha(branch, mangrove_build_number):
     if mangrove_build_number == 'lastSuccessfulBuild':
-        mangrove_build_number = run(
-            "curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
+        mangrove_build_number = run("curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
     run("echo 'Checking the mangrove commit sha for build number %s'" % mangrove_build_number)
     run("export MANGROVE_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
             branch, mangrove_build_number))
@@ -110,8 +114,7 @@ def set_mangrove_commit_sha(branch, mangrove_build_number):
 
 def set_datawinner_commit_sha(datawinner_build_number):
     if datawinner_build_number == 'lastSuccessfulBuild':
-        datawinner_build_number = run(
-            "curl http://178.79.163.33:8080/job/Datawinners/lastSuccessfulBuild/buildNumber")
+        datawinner_build_number = run("curl http://178.79.163.33:8080/job/Datawinners/lastSuccessfulBuild/buildNumber")
     run("echo 'Checking the datawinner commit sha for build number %s'" % datawinner_build_number)
     run("export DATAWINNER_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Datawinners/%s/artifact/last_successful_commit_sha`" % (
             datawinner_build_number))
@@ -221,44 +224,34 @@ def anonymous():
 
 def commit_sha_from_build_number(jenkins_job_name, build_number):
     if build_number == 'lastSuccessfulBuild':
-        build_number = run(
-            "curl http://178.79.163.33:8080/job/%s/lastSuccessfulBuild/buildNumber" % (jenkins_job_name,))
+        build_number = run("curl http://178.79.163.33:8080/job/%s/lastSuccessfulBuild/buildNumber" % (jenkins_job_name,))
     print("Retrieving the commit sha for build number %s of jenkins job %s" % (build_number, jenkins_job_name,))
-    commit_sha = run("curl -s http://178.79.163.33:8080/job/%s/%s/artifact/last_successful_commit_sha" % (
-        jenkins_job_name, build_number))
+    commit_sha = run("curl -s http://178.79.163.33:8080/job/%s/%s/artifact/last_successful_commit_sha" % (jenkins_job_name, build_number))
 
     print("%s_commit_sha: %s" % (jenkins_job_name, commit_sha))
-
     return commit_sha
 
 
 def _project_dir(code_dir, project_name):
-    if run("cd %s && ls | grep %s" % (code_dir, project_name)).failed:
-        run('cd %s && git clone git://github.com/mangroveorg/%s.git' % (code_dir, project_name))
+    project_dir = os.path.join(code_dir, project_name)
+    if run("test -d %s" % project_dir).failed:
+        run('git clone git://github.com/mangroveorg/%s.git %s' % (project_name, project_dir))
+    return project_dir
 
-    return '/'.join([code_dir, project_name])
 
-
-def checkout_project(context, commit_sha):
-    branch_name = str(date.today()).replace('-', '')
+def checkout_project(context, project_name):
     run("git reset --hard HEAD")
     run("git checkout develop")
     run("git pull --rebase")
-    if branch_exists(branch_name):
-        run("git branch -D %s" % branch_name)
     if context.branch in ['develop', 'origin/develop']:
-        run("git checkout -b %s %s" % (branch_name, commit_sha))
-        run("git checkout .")
+        start_point = commit_sha_from_build_number(ENVIRONMENT_JENKINS_JOB[project_name], context.build_numbers[project_name])
     else:
-        run("git checkout -b %s %s" % (branch_name, context.branch))
+        start_point = context.branch
+    run("git checkout -B %s %s" % (TODAY_IN_UTC, start_point))
 
 
 def install_requirement(virtual_env):
     activate_and_run(virtual_env, "pip install -r requirements.pip")
-
-
-def setup(virtual_env):
-    activate_and_run(virtual_env, "python setup.py develop")
 
 
 def post_checkout_datawinners(virtual_env):
@@ -267,46 +260,30 @@ def post_checkout_datawinners(virtual_env):
 
 def post_checkout_mangrove(virtual_env):
     install_requirement(virtual_env)
-    setup(virtual_env)
+    activate_and_run(virtual_env, "python setup.py develop")
 
 
 def deploy_project(context, project_name, post_checkout_function):
-    commit_sha = commit_sha_from_build_number(ENVIRONMENT_JENKINS_JOB[project_name], context.mangrove_build_number)
-
     with cd(_project_dir(context.code_dir, project_name)):
-        checkout_project(context, commit_sha)
+        checkout_project(context, project_name)
         post_checkout_function(context.virtual_env)
 
 
 def check_out_latest_custom_reports_code_for_production(code_dir):
-    if run("cd %s && ls | grep custom_reports" % code_dir).failed:
-        run('cd %s && git clone git://github.com/mangroveorg/custom_reports.git' % code_dir)
-    custom_reports_dir = code_dir + '/custom_reports'
+    custom_reports_dir = _project_dir(code_dir, "custom_reports")
 
     with cd(custom_reports_dir):
         run("git reset --hard HEAD")
         run("git checkout develop")
         run("git pull origin develop")
-        custom_reports_branch = str(date.today()).replace('-', '')
-        if not run("git branch -a|grep %s" % custom_reports_branch).failed:
-            run("git branch -D %s" % custom_reports_branch)
-        run("git checkout -b %s HEAD" % custom_reports_branch)
+        if not run("git branch -a|grep %s" % TODAY_IN_UTC).failed:
+            run("git branch -D %s" % TODAY_IN_UTC)
+        run("git checkout -b %s HEAD" % TODAY_IN_UTC)
         run("git checkout .")
 
 
 def _make_sure_code_dir_exists(context):
-    if run('cd %s' % context.code_dir).failed:
-        print "code dir %s doesn't exist, will be created." % context.code_dir
-        run('mkdir %s' % context.code_dir)
-    else:
-        print 'code dir %s exists.' % context.code_dir
-
-
-def django_dir_of_datawinners(code_dir):
-    datawinners_dir = code_dir + '/datawinners/datawinners'
-    print 'Django directory of datawinner: %s' % datawinners_dir
-
-    return datawinners_dir
+    run('mkdir -p %s' % context.code_dir)
 
 
 def replace_setting_file_for_environment(environment):
@@ -314,61 +291,57 @@ def replace_setting_file_for_environment(environment):
 
 
 def migrate_couchdb(context):
-    if context.couch_migration_file is not None:
+    if context.couch_migration_file:
         with cd('%s/datawinners' % context.code_dir):
             activate_and_run(context.virtual_env, "python %s" % context.couch_migration_file)
 
 
-def link_mangrove(context):
-    if not run('cd mangrove').failed:
-        run('rm mangrove')
-    run('ln -s %s/mangrove/ mangrove' % context.code_dir)
-
-
-def link_datawinners(context):
-    if not run('cd datawinners').failed:
-        run('rm datawinners')
-    run('ln -s %s/datawinners/ datawinners' % context.code_dir)
-
+def link_repo(context, link_name):
+    run('rm -f %s' % link_name)
+    run('ln -s %s %s' % (os.path.join(context.code_dir, link_name), link_name))
 
 def _deploy_mangrove(context):
-    deploy_project(context, 'mangrove', post_checkout_mangrove)
-    link_mangrove(context)
+    deploy_project(context, MANGROVE, post_checkout_mangrove)
+    link_repo(context, MANGROVE)
 
 
 def _deploy_datawinners(context):
-    deploy_project(context, 'datawinners', post_checkout_datawinners)
+    deploy_project(context, DATAWINNERS, post_checkout_datawinners)
 
-    with cd(django_dir_of_datawinners(context.code_dir)):
+    with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS)):
         replace_setting_file_for_environment(context.environment)
         activate_and_run(context.virtual_env, "python manage.py migrate")
         activate_and_run(context.virtual_env, "python manage.py compilemessages")
         activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
 
     migrate_couchdb(context)
-    link_datawinners(context)
+    link_repo(context, DATAWINNERS)
 
 class Context(object):
-    def __init__(self, mangrove_build_number, datawinner_build_number, code_dir, environment, datawinner_branch, virtual_env, couch_migration_file):
-        self.mangrove_build_number = mangrove_build_number
-        self.datawinner_build_number = datawinner_build_number
+    def __init__(self, mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env, couch_migration_file):
+        self.build_numbers = {MANGROVE: mangrove_build_number, DATAWINNERS: datawinner_build_number}
         self.code_dir = code_dir
         self.environment = environment
-        self.branch = datawinner_branch
+        self.branch = branch_name
         self.virtual_env = virtual_env
         self.couch_migration_file = couch_migration_file
 
 
-def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, environment = 'showcase', datawinner_branch='develop', couch_migration_file=None):
+def production_deploy(mangrove_build_number="lastSuccessfulBuild",
+                      datawinner_build_number="lastSuccessfulBuild",
+                      code_dir="/home/twer/workspace",
+                      environment = 'showcase',
+                      branch_name='develop',
+                      couch_migration_file=None):
     virtual_env = ENVIRONMENT_VES[environment]
-    context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, datawinner_branch, virtual_env, couch_migration_file)
+    context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env, couch_migration_file)
 
     _make_sure_code_dir_exists(context)
 
     _deploy_mangrove(context)
     _deploy_datawinners(context)
 
-    remove_cache()
+    remove_cache(context)
     restart_servers()
 
 def custom_reports_deploy(code_dir, environment = 'showcase'):
@@ -378,42 +351,19 @@ def custom_reports_deploy(code_dir, environment = 'showcase'):
         run('./catalina.sh stop')
 
     with cd('%s/webapps/birt-viewer/' % ENVIRONMENT_TOMCAT[environment]):
-#        if not run('cd crs').failed:
         run('rm crs')
         run('ln -s %s/custom_reports/crs/ crs' % code_dir)
 
     with cd('%s/bin/' % ENVIRONMENT_TOMCAT[environment]):
         run('./catalina.sh start')
 
-
-def testRunFab():
-    print "hello"
-
-def test_production_deploy_on_local():
-    print "testing production deployment on local"
-    production_deploy(mangrove_build_number="lastSuccessfulBuild",
-        datawinner_build_number="lastSuccessfulBuild",
-        code_dir="/home/twer/workspace",
-        environment="test")
-
 def deploy_to_qa():
-    print 'start ...........'
-
-    production_deploy(mangrove_build_number="lastSuccessfulBuild",
-        datawinner_build_number="lastSuccessfulBuild",
-        code_dir="/home/twer/workspace",
-        environment="qa")
+    production_deploy(code_dir="/home/twer/workspace",environment="qa")
 
 def test_deploy_against_qa_machine():
-    print 'start ...........'
+    production_deploy(code_dir="/home/twer/workspace_for_script_test", branch_name="origin/release",environment="test")
 
-    production_deploy(mangrove_build_number="lastSuccessfulBuild",
-        datawinner_build_number="lastSuccessfulBuild",
-        code_dir="/home/twer/workspace_for_script_test",
-        datawinner_branch="origin/release",
-        environment="test")
-
-def remove_cache():
-    with cd(os.path.join(PROJECT_DIR, 'datawinners/media/')):
+def remove_cache(context):
+    with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS, 'media')):
         run('rm -rf CACHE/js/*')
         run('rm -rf CACHE/css/*')
