@@ -22,6 +22,9 @@ class TestEditQuestionnaire(BaseTest):
         login_page = LoginPage(self.driver)
         self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
 
+    def tearDown(self):
+        super(TestEditQuestionnaire, self).tearDown()
+
     def prerequisites_of_edit_questionnaire(self):
         all_project_page = self.global_navigation.navigate_to_view_all_project_page()
         project_overview_page = all_project_page.navigate_to_project_overview_page(
