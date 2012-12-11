@@ -14,7 +14,6 @@ from datawinners.main.utils import get_database_manager
 from django.contrib.gis.utils import GeoIP
 
 logger = logging.getLogger("datawinners.xform")
-sp_submission_logger = logging.getLogger("")
 
 def restrict_request_country(f):
     def wrapper(*args, **kw):
@@ -83,15 +82,10 @@ def submission(request):
                 source=request_user.email,
                 destination=''
             ))
-        log_entry = "message: " + str(mangrove_request.message) + "|source: " + mangrove_request.transport.source + "|"
         response = player.accept(mangrove_request)
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
-            log_entry += "status: False"
-            sp_submission_logger.info(log_entry)
             return HttpResponseBadRequest()
-        log_entry += "status: True"
-        sp_submission_logger.info(log_entry)
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
         return HttpResponseBadRequest()

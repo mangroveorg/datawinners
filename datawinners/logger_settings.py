@@ -6,8 +6,6 @@ LOG_FILE_NAME = "datawinners.log"
 REMINDER_LOG_FILE_NAME = "datawinners_reminders.log"
 XFORM_LOG_FILE_NAME = "datawinners_xform.log"
 PERFORMANCE_LOG_FILE_NAME = "datawinners-performance.log"
-WEB_SUBMISSION_LOG_FILE_NAME = "websubmission.log"
-SP_SUBMISSION_LOG_FILE_NAME = "sp-submission.log"
 
 LOGGING = {
     'version': 1,
@@ -53,20 +51,6 @@ LOGGING = {
             'mode': 'a', #append+create
             'formatter': 'verbose'
         },
-        'web-submission': {
-            'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join( LOG_FOLDER, WEB_SUBMISSION_LOG_FILE_NAME),
-            'mode': 'a', #append+create
-            'formatter': 'verbose'
-        },
-        'sp-submission': {
-            'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join( LOG_FOLDER, SP_SUBMISSION_LOG_FILE_NAME),
-            'mode': 'a', #append+create
-            'formatter': 'verbose'
-        },
         },
     'loggers': {
         'django': {
@@ -102,16 +86,6 @@ LOGGING = {
         'apscheduler.scheduler': {
             'level':'DEBUG',
             'handlers':['reminder-log-file'],
-            'propagate': True,
-            },
-        'websubmission': {
-            'level':'INFO',
-            'handlers':['web-submission'],
-            'propagate': True,
-            },
-        'spsubmission': {
-            'level':'INFO',
-            'handlers':['sp-submission'],
             'propagate': True,
             },
         }
