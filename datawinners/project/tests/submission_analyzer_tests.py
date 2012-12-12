@@ -21,7 +21,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
     def setUp(self):
         super(SubmissionAnalyzerTest, self).setUp()
         self.mocked_dbm = Mock(spec=DatabaseManager)
-        self.request = Mock()
+        self.user = Mock()
         self.transport = TransportInfo(transport="web", source="1234", destination="5678")
         self.form_model_generator = FormModelGenerator(self.mocked_dbm)
 
@@ -209,7 +209,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self._edit_fields(form_model, blood_type_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'ab'})
 
-        analyzer = SubmissionAnalyzer(form_model, self.manager, self.request)
+        analyzer = SubmissionAnalyzer(form_model, self.manager, self.user)
         statistics = analyzer.get_analysis_statistics()
 
         expected = [["What is your blood group?", field_attributes.MULTISELECT_FIELD, 2, [["O+", 1], ["O-", 1], ['unknown', 1], ["AB", 0], ["B+", 0]]]]
@@ -236,7 +236,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self._edit_fields(form_model, blood_type_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a'})
 
-        analyzer = SubmissionAnalyzer(form_model, self.manager, self.request)
+        analyzer = SubmissionAnalyzer(form_model, self.manager, self.user)
         statistics = analyzer.get_analysis_statistics()
 
         expected = [["What is your blood group?", field_attributes.SELECT_FIELD, 2, [["O+", 1], ['Type 1', 1], ["AB", 0], ["B+", 0], ["O-", 0]]]]
@@ -447,7 +447,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
                 form_code=form_model.form_code,
                 values=values)
             filter_submissions.return_value = [submission]
-            return SubmissionAnalyzer(form_model, self.mocked_dbm, self.request, None, with_status=with_status)
+            return SubmissionAnalyzer(form_model, self.mocked_dbm, self.user, None, with_status=with_status)
 
     def _prepare_analyzer(self, form_model, values_list, keywords=None):
         with patch("project.submission_analyzer.filter_submissions") as filter_submissions, patch(
@@ -462,7 +462,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
                 return_value.append(submission)
             filter_submissions.return_value = return_value
 
-            return SubmissionAnalyzer(form_model, self.mocked_dbm, self.request, None, keywords)
+            return SubmissionAnalyzer(form_model, self.mocked_dbm, self.user, None, keywords)
 
     def _edit_fields(self, form_model, *updated_fields):
         fields = []

@@ -19,14 +19,14 @@ field_enhancer.enhance()
 SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
 
 class SubmissionAnalyzer(object):
-    def __init__(self, form_model, manager, request, filters=None, keyword=None, header_class=Header, with_status=False):
+    def __init__(self, form_model, manager, user, filters=None, keyword=None, header_class=Header, with_status=False):
         assert isinstance(form_model, FormModel)
 
         self.form_model = form_model
         self.manager = manager
         self.with_status = with_status
 
-        self.request = request
+        self.user = user
         submissions = get_submissions_with_timing(form_model, manager)
         self.filtered_submissions = filter_submissions(submissions, filters or [])
         self._data_senders = []
@@ -125,7 +125,7 @@ class SubmissionAnalyzer(object):
             if each[-1] == submission.source:
                 return each
         else:
-            data_sender = get_data_sender(self.manager, self.request.user, submission)
+            data_sender = get_data_sender(self.manager, self.user, submission)
             self._data_senders.append(data_sender)
             return data_sender
 
