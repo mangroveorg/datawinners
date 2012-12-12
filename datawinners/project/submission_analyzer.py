@@ -5,7 +5,6 @@ from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import SelectField
 from mangrove.form_model.form_model import FormModel
-from mangrove.transport.submissions import get_submissions
 from mangrove.utils.types import is_sequence
 from project.Header import Header
 from project.analysis_result import AnalysisResult
@@ -209,7 +208,3 @@ def to_lowercase_submission_keys(submissions):
     for submission in submissions:
         values = submission.values
         submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
-
-@timebox
-def get_submissions_with_timing(form_model, manager):
-    return get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)

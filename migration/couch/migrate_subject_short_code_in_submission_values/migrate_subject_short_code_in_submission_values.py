@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from glob import iglob
-from mangrove.transport.submissions import get_submissions
+from mangrove.transport.submissions import successful_submissions
 import os
 from mangrove.datastore.database import get_db_manager, remove_db_manager
 from support.find_all_db_managers import all_db_names
@@ -47,7 +47,7 @@ def get_entity_question_code_key(entity_question_code, submission):
 def correct_submissions(dbm, subject_short_codes_dict, entity_question_codes_dict):
     for form_code, entity_question_code in entity_question_codes_dict.items():
         print 'Get submission by form_code: %s' % form_code
-        submissions = get_submissions(dbm, form_code, None, None, view_name="success_submission_log")
+        submissions = successful_submissions(dbm, form_code)
         for submission in submissions:
             entity_question_code_in_submission = get_entity_question_code_key(entity_question_code, submission)
             short_code_in_submission = submission.values.get(entity_question_code_in_submission)

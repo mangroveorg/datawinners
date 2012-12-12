@@ -4,15 +4,15 @@ from mangrove.transport import Request
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import TextField, SelectField, DateField, field_attributes, GeoCodeField, IntegerField
-from mangrove.form_model.form_model import FormModel, MOBILE_NUMBER_FIELD, NAME_FIELD
+from mangrove.form_model.form_model import  MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.submissions import Submission, get_submissions
+from mangrove.transport.submissions import Submission, successful_submissions
 from mock import Mock, patch
 from mangrove.utils.entity_builder import EntityBuilder
 from mangrove.utils.form_model_builder import FormModelBuilder, create_default_ddtype
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from project.submission_analyzer import SubmissionAnalyzer, SUCCESS_SUBMISSION_LOG_VIEW_NAME
+from project.submission_analyzer import SubmissionAnalyzer
 from project.tests.form_model_generator import FormModelGenerator
 
 today = datetime.utcnow().strftime("%d.%m.%Y")
@@ -200,8 +200,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self._edit_fields(form_model, blood_type_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'ab'})
 
-        submissions = get_submissions(self.manager, form_model.form_code, None, None,
-            view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+        submissions = successful_submissions(self.manager, form_model.form_code)
         analyzer = SubmissionAnalyzer(form_model, self.manager, self.user, submissions)
         statistics = analyzer.get_analysis_statistics()
 
@@ -229,8 +228,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self._edit_fields(form_model, blood_type_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a'})
 
-        submissions = get_submissions(self.manager, form_model.form_code, None, None,
-            view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+        submissions = successful_submissions(self.manager, form_model.form_code)
         analyzer = SubmissionAnalyzer(form_model, self.manager, self.user, submissions)
         statistics = analyzer.get_analysis_statistics()
 
@@ -282,8 +280,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
         self._edit_fields(form_model, IntegerField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=ddtype))
 
-        submissions = get_submissions(self.manager, form_model.form_code, None, None,
-            view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+        submissions = successful_submissions(self.manager, form_model.form_code)
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
 
@@ -310,7 +307,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self._edit_fields(form_model, symptoms_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
 
-        submissions = get_submissions(self.manager, form_model.form_code, None, None,view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+        submissions = successful_submissions(self.manager, form_model.form_code)
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
 
@@ -342,7 +339,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self._edit_fields(form_model, gps, national_day_field, symptoms_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': '100', 'GPS': '1,1', "ND":"01.10.2012"})
 
-        submissions = get_submissions(self.manager, form_model.form_code, None, None,view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+        submissions = successful_submissions(self.manager, form_model.form_code)
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
 
@@ -369,7 +366,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self._edit_fields(form_model, rp_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.24.2012'})
 
-        submissions = get_submissions(self.manager, form_model.form_code, None, None,view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+        submissions = successful_submissions(self.manager, form_model.form_code)
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
         reporting_periods = map(lambda value: value[1], values)
@@ -398,7 +395,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
 
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'GPS': '1,1'})
 
-        submissions = get_submissions(self.manager, form_model.form_code, None, None,view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+        submissions = successful_submissions(self.manager, form_model.form_code)
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
 
@@ -421,8 +418,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
             return SubmissionAnalyzer(form_model, self.manager, self.user, [submission], with_status=with_status)
 
     def _prepare_analyzer(self, form_model, values_list, keywords=None):
-        with patch("project.submission_analyzer.SubmissionAnalyzer._init_raw_values"), patch(
-            "project.submission_analyzer.get_submissions_with_timing"):
+        with patch("project.submission_analyzer.SubmissionAnalyzer._init_raw_values"):
             submissions = []
             for values in values_list:
                 submission = Submission(self.manager,

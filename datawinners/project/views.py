@@ -36,7 +36,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
 from mangrove.transport.facade import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.submissions import Submission, get_submissions, submission_count
+from mangrove.transport.submissions import Submission, get_submissions, submission_count, successful_submissions
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
@@ -318,8 +318,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     filter_list = build_filters(request.POST, form_model)
 
-    filtered_submissions = SubmissionFilter(filter_list).filter(
-        get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME))
+    filtered_submissions = SubmissionFilter(filter_list).filter(successful_submissions(manager, form_model.form_code))
 
     analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), AllSubmissionsHeader, with_status=True).analyse()
 
@@ -404,8 +403,7 @@ def get_analysis_response(request, project_id, questionnaire_code, header_class=
     form_model = get_form_model_by_code(manager, questionnaire_code)
     filters = build_filters(request.POST, form_model)
 
-    filtered_submissions = SubmissionFilter(filters).filter(
-        get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME))
+    filtered_submissions = SubmissionFilter(filters).filter(successful_submissions(manager, form_model.form_code))
 
     analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), header_class, with_status=with_status).analyse()
 
@@ -466,8 +464,7 @@ def export_data(request):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     filters = build_filters(request.POST, form_model)
 
-    filtered_submissions = SubmissionFilter(filters).filter(
-        get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME))
+    filtered_submissions = SubmissionFilter(filters).filter(successful_submissions(manager, form_model.form_code))
 
     analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''))
     raw_field_values = analyzer.get_raw_values()
@@ -1318,7 +1315,7 @@ def add_link(project):
 def project_has_data(request, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    submissions = get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+    submissions = successful_submissions(manager, form_model.form_code)
     analyzer = SubmissionAnalyzer(form_model, manager, request.user, submissions)
     raw_field_values = analyzer.get_raw_values()
 
