@@ -45,9 +45,6 @@ class TestSubmissionLog(unittest.TestCase):
 
     @attr('functional_test', 'smoke')
     def test_verify_successful_sms_submission_log(self):
-        """
-        Function to test the successful SMS submission
-        """
         submission_log_page = self.prerequisites_of_submission_log(VALID_DATA2)
         self.assertRegexpMatches(submission_log_page.get_submission_message(SMS_DATA_LOG),
                                  fetch_(SMS_SUBMISSION, from_(SMS_DATA_LOG)))
@@ -65,18 +62,12 @@ class TestSubmissionLog(unittest.TestCase):
 
     @attr('functional_test')
     def test_submission_log_for_extra_plus_in_btw_sms(self):
-        """
-        Function to test the successful SMS submission while using extra plus in between of SMS
-        """
         submission_log_page = self.prerequisites_of_submission_log(EXTRA_PLUS_IN_BTW)
         self.assertRegexpMatches(submission_log_page.get_submission_message(EXTRA_PLUS_IN_BTW_LOG),
                                  fetch_(SMS_SUBMISSION, from_(EXTRA_PLUS_IN_BTW_LOG)))
 
     @attr('functional_test')
     def test_submission_log_for_invalid_geo_code_format(self):
-        """
-        Function to test the invalid SMS submission for invalid geo code
-        """
         submission_log_page = self.prerequisites_of_submission_log(WITH_INVALID_GEO_CODE_FORMAT)
         self.assertRegexpMatches(submission_log_page.get_submission_message(WITH_INVALID_GEO_CODE_FORMAT_LOG),
                                  fetch_(SMS_SUBMISSION, from_(WITH_INVALID_GEO_CODE_FORMAT_LOG)))

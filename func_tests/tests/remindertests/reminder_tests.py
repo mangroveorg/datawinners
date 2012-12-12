@@ -20,13 +20,6 @@ class TestReminderSend(BaseTest):
         overview_page = all_project_page.navigate_to_project_overview_page(project)
         return overview_page.navigate_to_reminder_page()
 
-#    @attr("functional_test")
-#    def test_trial_account_should_see_reminder_not_work_message_when_creating_project(self):
-#        project_overview_page = self.start_create_normal_project()
-#        reminder_page = project_overview_page.navigate_to_reminder_page()
-#
-#        self.assertEqual(WARNING_MESSAGE, message)
-
     def set_deadline_by_week(self, reminder_settings, deadline):
         reminder_settings.set_frequency(fetch_(FREQUENCY, from_(deadline)))
         reminder_settings.set_week_day(fetch_(DAY, from_(deadline)))

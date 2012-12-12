@@ -53,9 +53,6 @@ class TestReviewProject(BaseTest):
     @SkipTest
     @attr('functional_test', 'smoke')
     def test_successful_review_of_project(self):
-        """
-        Function to test the successful review of the project profile
-        """
         review_page = self.prerequisites_of_create_project()
         self.assertEqual(fetch_(PROJECT_PROFILE, from_(VALID_DATA)), review_page.get_project_profile_details())
         review_page.open_subject_accordion()

@@ -21,9 +21,6 @@ class TestEditProject(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_successful_project_editing_with_subject_change(self):
-        """
-        Function to test the successful editing of project with given details e.g. project name and subject
-        """
         all_project_page = self.prerequisites_of_edit_project()
         project_overview_page = all_project_page.navigate_to_project_overview_page(
             fetch_(PROJECT_NAME, from_(VALID_DATA)))
@@ -45,9 +42,6 @@ class TestEditProject(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_successful_project_editing_with_report_type_change(self):
-        """
-        Function to test the successful editing of project with given details e.g. project name and report type
-        """
         all_project_page = self.prerequisites_of_edit_project()
         project_overview_page = all_project_page.navigate_to_project_overview_page(
             fetch_(PROJECT_NAME, from_(VALID_DATA2)))

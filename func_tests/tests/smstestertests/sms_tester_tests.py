@@ -11,9 +11,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_successful_sms_submission(self):
-        """
-        Function to test the successful SMS submission
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(VALID_DATA)
@@ -21,9 +18,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_without_entering_data(self):
-        """
-        Function to test the error message on the sms submission page for blank field
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(BLANK_FIELDS)
@@ -31,9 +25,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_for_exceeding_word_length(self):
-        """
-        Function to test the error message on the sms submission page for exceeding word limit for word type question
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(EXCEED_NAME_LENGTH)
@@ -41,9 +32,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_for_plus_in_the_beginning(self):
-        """
-        Function to test the error message on the sms submission page for plus sign in the beginning of SMS
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(PLUS_IN_THE_BEGINNING)
@@ -51,9 +39,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_for_unregistered_from_number(self):
-        """
-        Function to test the error message on the sms submission page for unregistered number in from field
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(UNREGISTERED_FROM_NUMBER)
@@ -72,9 +57,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_for_addition_of_data_sender_from_unknown_number(self):
-        """
-        Function to test the registration of the reporter using sms submission with unregistered number
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER)
@@ -83,9 +65,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_for_registration_of_new_subject(self):
-        """
-        Function to test the registration of the new subject using sms submission with registered number
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(REGISTER_NEW_SUBJECT)
@@ -93,9 +72,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_for_registration_of_existing_subject_short_code(self):
-        """
-        Function to test the registration of the existing subject short code using sms submission with registered number
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(REGISTER_EXISTING_SUBJECT_SHORT_CODE)
@@ -104,9 +80,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_for_registration_with_invalid_geo_code(self):
-        """
-        Function to test the registration of the new subject with invalid geo code using sms submission with registered number
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(REGISTER_INVALID_GEO_CODE)
@@ -114,9 +87,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_for_only_questionnaire_code(self):
-        """
-        Function to test the response for only questionnaire code
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(ONLY_QUESTIONNAIRE_CODE)
@@ -124,9 +94,6 @@ class TestSMSTester(BaseTest):
 
     @attr('functional_test')
     def test_sms_player_for_wrong_number_of_arg(self):
-        """
-        Function to test the response for wrong number of arguments
-        """
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(WRONG_NUMBER_OF_ARGS)

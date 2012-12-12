@@ -34,9 +34,6 @@ class ProjectDataSenders(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_successfully_giving_web_access_to_newly_registered_data_sender(self):
-        """
-        Function to test giving web access to newly registered data sender
-        """
         data_sender_mobile_number = VALID_DATA_FOR_ADDING_DATASENDER.get(MOBILE_NUMBER)
 
         all_project_page = self.all_projects_page()
@@ -70,10 +67,6 @@ class ProjectDataSenders(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_show_error_while_giving_web_access_without_selecting_data_sender(self):
-        """
-        Function to show error while trying to give web access without selecting data sender
-        """
-
         all_project_page = self.all_projects_page()
         project_overview_page = all_project_page.navigate_to_project_overview_page(
             fetch_(PROJECT_NAME, from_(VALID_DATA)))
@@ -134,10 +127,6 @@ class ProjectDataSenders(BaseTest):
 
     @attr('functional_test')
     def test_addition_and_editon(self):
-        """
-        Function to test the successful Addition of DataSender with given
-        details e.g. first name, last name, telephone number and commune
-        """
         project_datasenders_page = self.navigate_to_project_datasender_page()
         add_data_sender_page = project_datasenders_page.navigate_to_add_a_data_sender_page()
 
@@ -155,9 +144,6 @@ class ProjectDataSenders(BaseTest):
 
     @attr('functional_test')
     def test_addition_with_existing_unique_ID(self):
-        """
-        Add DS with existing unique ID
-        """
         project_datasenders_page = self.navigate_to_project_datasender_page()
         add_data_sender_page = project_datasenders_page.navigate_to_add_a_data_sender_page()
 

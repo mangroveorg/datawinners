@@ -40,9 +40,6 @@ class TestSMSTesterLightBox(BasePrepare):
 
     @attr('functional_test')
     def test_sms_player_for_exceeding_word_length(self):
-        """
-        Function to test the error message on the sms submission page for exceeding word limit for word type question
-        """
         sms_tester_page = self.prerequisites_of_sms_tester_light_box(PROJECT_DATA)
         sms_tester_page.send_sms_with(EXCEED_NAME_LENGTH)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(RESPONSE_MESSAGE, from_(EXCEED_NAME_LENGTH)))

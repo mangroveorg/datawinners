@@ -23,10 +23,6 @@ class TestAddSubject(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_successful_addition_of_subject(self):
-        """
-        Function to test the successful addition_of_subject with given
-        details
-        """
         add_subject_page = self.prerequisites_of_add_subject(VALID_DATA)
         add_subject_page.add_subject_with(VALID_DATA)
         add_subject_page.submit_subject()

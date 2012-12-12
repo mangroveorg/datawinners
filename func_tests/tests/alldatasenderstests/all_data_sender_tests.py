@@ -26,7 +26,6 @@ class TestAllDataSender(unittest.TestCase):
         cls.page = AllDataSendersPage(cls.driver)
 
     def setUp(self):
-        #self.driver.refresh()
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
 
     @classmethod
@@ -61,9 +60,6 @@ class TestAllDataSender(unittest.TestCase):
 
     @attr('functional_test', 'smoke')
     def test_successful_association_of_data_sender(self):
-        """
-        Function to test the successful association of DataSender with given project
-        """
         all_data_sender_page = self.page
         self.associate(all_data_sender_page)
         self.assertEqual(all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))),
@@ -71,9 +67,6 @@ class TestAllDataSender(unittest.TestCase):
 
     @attr('functional_test', 'smoke')
     def test_successful_dissociation_of_data_sender(self):
-        """
-        Function to test the successful dissociation of DataSender with given project
-        """
         all_data_sender_page = self.page
         if all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))) == "--":
             self.associate(all_data_sender_page)
@@ -85,9 +78,6 @@ class TestAllDataSender(unittest.TestCase):
 
     @attr('functional_test')
     def test_dissociate_ds_without_selecting_project(self):
-        """
-        Function to test the dissociation of DataSender without selecting project
-        """
         all_data_sender_page = self.page
         all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(DISSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
         all_data_sender_page.dissociate_data_sender()
@@ -96,9 +86,6 @@ class TestAllDataSender(unittest.TestCase):
 
     @attr('functional_test')
     def test_associate_ds_without_selecting_project(self):
-        """
-        Function to test the association of DataSender without selecting project
-        """
         all_data_sender_page = self.page
         all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
         all_data_sender_page.associate_data_sender()
@@ -107,36 +94,24 @@ class TestAllDataSender(unittest.TestCase):
 
     @attr('functional_test')
     def test_dissociate_ds_without_selecting_ds(self):
-        """
-        Function to test the dissociation of DataSender without selecting datasender
-        """
         all_data_sender_page = self.page
         all_data_sender_page.dissociate_data_sender()
         self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(DISSOCIATE_DS_WITHOUT_SELECTING_DS)))
 
     @attr('functional_test')
     def test_associate_ds_without_selecting_ds(self):
-        """
-        Function to test the association of DataSender without selecting datasender
-        """
         all_data_sender_page = self.page
         all_data_sender_page.associate_data_sender()
         self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(ASSOCIATE_DS_WITHOUT_SELECTING_DS)))
 
     @attr('functional_test')
     def test_delete_ds_without_selecting_ds(self):
-        """
-        Function to test the delete data sender without selecting data sender
-        """
         all_data_sender_page = self.page
         all_data_sender_page.delete_data_sender()
         self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(DELETE_DS_WITHOUT_SELECTING_DS)))
 
     @attr('functional_test')
     def test_delete_data_sender_and_re_register(self):
-        """
-        Function to test the delete data sender without selecting data sender
-        """
         all_data_sender_page = self.page
         self.delete_ds(all_data_sender_page)
         self.assertEqual(all_data_sender_page.get_delete_success_message(), DELETE_SUCCESS_TEXT)

@@ -28,9 +28,6 @@ class TestCreateQuestionnaire(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_successful_questionnaire_creation(self):
-        """
-        Function to test the successful Creation of a Questionnaire with given details
-        """
         create_questionnaire_page = self.prerequisites_of_create_questionnaire()
         create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
         index = 3
