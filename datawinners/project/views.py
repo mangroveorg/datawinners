@@ -63,14 +63,13 @@ from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
 from project.Header import Header, AllSubmissionsHeader
-from project.analysis_result import AnalysisResult
 from project.filters import ReportPeriodFilter, DataSenderFilter, SubmissionDateFilter, KeywordFilter
-from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list
+from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list, SUCCESS_SUBMISSION_LOG_VIEW_NAME
+from project.submission_utils.submission_filter import SubmissionFilter
 from project.tests.test_filter import SubjectFilter
-from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
+from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
 from questionnaire.questionnaire_builder import QuestionnaireBuilder
-import utils
 
 logger = logging.getLogger("django")
 performance_logger = logging.getLogger("performance")
@@ -317,9 +316,12 @@ def build_filters(params, form_model):
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    filters = build_filters(request.POST, form_model)
+    filter_list = build_filters(request.POST, form_model)
 
-    analysis_result = SubmissionAnalyzer(form_model, manager, request, filters, request.POST.get('keyword', ''), AllSubmissionsHeader, with_status=True).analyse()
+    filtered_submissions = SubmissionFilter(filter_list).filter(
+        get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME))
+
+    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), AllSubmissionsHeader, with_status=True).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
@@ -402,7 +404,10 @@ def get_analysis_response(request, project_id, questionnaire_code, header_class=
     form_model = get_form_model_by_code(manager, questionnaire_code)
     filters = build_filters(request.POST, form_model)
 
-    analysis_result = SubmissionAnalyzer(form_model, manager, request, filters, request.POST.get('keyword', ''), header_class, with_status=with_status).analyse()
+    filtered_submissions = SubmissionFilter(filters).filter(
+        get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME))
+
+    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), header_class, with_status=with_status).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
@@ -461,7 +466,10 @@ def export_data(request):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     filters = build_filters(request.POST, form_model)
 
-    analyzer = SubmissionAnalyzer(form_model, manager, request, filters,request.POST.get('keyword', ''))
+    filtered_submissions = SubmissionFilter(filters).filter(
+        get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME))
+
+    analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''))
     raw_field_values = analyzer.get_raw_values()
     header_list= Header(form_model).get()[0]
 
@@ -1310,6 +1318,8 @@ def add_link(project):
 def project_has_data(request, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    analyzer = SubmissionAnalyzer(form_model, manager, request, [])
+    submissions = get_submissions(manager, form_model.form_code, None, None, view_name=SUCCESS_SUBMISSION_LOG_VIEW_NAME)
+    analyzer = SubmissionAnalyzer(form_model, manager, request.user, submissions)
     raw_field_values = analyzer.get_raw_values()
+
     return HttpResponse(encode_json({'has_data': len(raw_field_values) != 0}))

@@ -13,6 +13,10 @@ class FormModelGenerator(object):
             fields=[self.eid_field, self.rp_field, self.symptoms_field, self.blood_type_field],
             entity_type=["clinic"])
 
+    def subject_form_model_without_rp(self):
+        return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
+            fields=[self.eid_field, self.symptoms_field, self.blood_type_field], entity_type=["clinic"])
+
     def summary_form_model_without_rp(self):
         return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
             fields=[self.eid_field, self.symptoms_field, self.blood_type_field],

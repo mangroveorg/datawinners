@@ -19,7 +19,7 @@ field_enhancer.enhance()
 SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
 
 class SubmissionAnalyzer(object):
-    def __init__(self, form_model, manager, user, filters=None, keyword=None, header_class=Header, with_status=False):
+    def __init__(self, form_model, manager, user, submissions, keyword=None, header_class=Header, with_status=False):
         assert isinstance(form_model, FormModel)
 
         self.form_model = form_model
@@ -27,8 +27,8 @@ class SubmissionAnalyzer(object):
         self.with_status = with_status
 
         self.user = user
-        submissions = get_submissions_with_timing(form_model, manager)
-        self.filtered_submissions = filter_submissions(submissions, filters or [])
+
+        self.submissions = submissions
         self._data_senders = []
         self._subject_list = []
         self.keyword_filter = KeywordFilter(keyword if keyword else '')
@@ -96,7 +96,7 @@ class SubmissionAnalyzer(object):
     @timebox
     def _get_leading_part(self):
         leading_part = []
-        for submission in self.filtered_submissions:
+        for submission in self.submissions:
             data_sender = self._get_data_sender(submission)
             submission_date = _to_str(submission.created)
             row = [submission_date]
@@ -111,7 +111,7 @@ class SubmissionAnalyzer(object):
 
     @timebox
     def _get_field_values(self):
-        submission_values = [(submission.form_model_revision, submission.values) for submission in self.filtered_submissions]
+        submission_values = [(submission.form_model_revision, submission.values) for submission in self.submissions]
         field_values = []
         for row in submission_values:
             self._replace_option_with_real_answer_value(row)
