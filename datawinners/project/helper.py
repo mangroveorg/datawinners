@@ -38,6 +38,7 @@ def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
             primitive_type=primitive_type, description=description)
     return ddtype
 
+
 def _create_entity_id_question(dbm, entity_id_question_code):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
         description="Entity ID")
@@ -49,12 +50,14 @@ def _create_entity_id_question(dbm, entity_id_question_code):
         instruction=(ugettext('Answer must be a word %d characters maximum') % 12))
     return entity_id_question
 
+
 def hide_entity_question(fields):
     return [each for each in fields if not each.is_entity_field]
 
 
 def is_submission_deleted(submission):
     return submission.is_void() if submission is not None else True
+
 
 def adapt_submissions_for_template(questions, submissions):
     assert is_sequence(questions)
@@ -72,12 +75,14 @@ def adapt_submissions_for_template(questions, submissions):
 
     return [tuple(each) for each in formatted_list]
 
+
 def get_according_value(value_dict, question):
     value = value_dict.get(question.code.lower(), '--')
     if value != '--' and question.type in ['select1', 'select']:
         value_list = question.get_option_value_list(value)
         return ", ".join(value_list)
     return value
+
 
 def generate_questionnaire_code(dbm):
     all_projects_count = models.count_projects(dbm)
@@ -92,29 +97,33 @@ def generate_questionnaire_code(dbm):
             break
     return code
 
+
 def get_org_id_by_user(user):
-    return NGOUserProfile.objects.get( user=user ).org_id
+    return NGOUserProfile.objects.get(user=user).org_id
+
 
 def get_datasender_by_mobile(dbm, mobile):
-    rows = dbm.load_all_rows_in_view( "datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}] )
+    rows = dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
     return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
+
 
 def get_data_sender(dbm, user, submission):
     submission_source = submission.source
     datasender = (ugettext(NOT_AVAILABLE_DS), None, submission_source)
 
     if submission.channel == 'sms':
-        datasender = tuple(get_datasender_by_mobile( dbm, submission_source ) + [submission_source])
+        datasender = tuple(get_datasender_by_mobile(dbm, submission_source) + [submission_source])
     elif submission.channel == 'web' or submission.channel == 'smartPhone':
         try:
-            org_id = get_org_id_by_user( user )
-            data_sender = User.objects.get(email=submission_source )
+            org_id = get_org_id_by_user(user)
+            data_sender = User.objects.get(email=submission_source)
             reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
             datasender = (data_sender.get_full_name(), reporter_id, submission_source)
         except:
             pass
 
-    return datasender if datasender[0] != "TEST" else ("TEST","", "TEST")
+    return datasender if datasender[0] != "TEST" else ("TEST", "", "TEST")
+
 
 def case_insensitive_lookup(search_key, dictionary):
     assert isinstance(dictionary, dict)
@@ -123,15 +132,18 @@ def case_insensitive_lookup(search_key, dictionary):
             return value
     return None
 
+
 def _to_str(value, form_field=None):
     if value is None:
         return u"--"
     if is_sequence(value):
         return sequence_to_str(value)
     if isinstance(value, datetime):
-        date_format = DateField.FORMAT_DATE_DICTIONARY.get(form_field.date_format) if form_field else DEFAULT_DATE_FORMAT
+        date_format = DateField.FORMAT_DATE_DICTIONARY.get(
+            form_field.date_format) if form_field else DEFAULT_DATE_FORMAT
         return format_date(value, date_format)
     return value
+
 
 def get_formatted_time_string(time_val):
     try:
@@ -152,11 +164,12 @@ def remove_reporter(entity_type_list):
 
 
 def get_preview_for_field(field):
-    preview =  {"description": field.name, "code": field.code, "type": field.type, "instruction": field.instruction}
-    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
-        [(option["text"], option["val"]) for option in field.options]
+    preview = {"description": field.name, "code": field.code, "type": field.type, "instruction": field.instruction}
+    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else\
+    [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
     return preview
+
 
 def delete_project(manager, project, void=True):
     project_id, qid = project.id, project.qid

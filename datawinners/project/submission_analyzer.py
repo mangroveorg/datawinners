@@ -1,27 +1,31 @@
 #encoding=utf-8
 from collections import OrderedDict, defaultdict
-from django.utils.translation import ugettext
 from main.utils import timebox
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.form_model.field import SelectField, DateField, GeoCodeField
+from mangrove.form_model.field import SelectField
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.submissions import get_submissions
 from mangrove.utils.types import is_sequence
+from project.Header import Header
+from project.analysis_result import AnalysisResult
 from project.filters import KeywordFilter
-from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE, DEFAULT_DATE_FORMAT
+from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
 from enhancer import field_enhancer
-from utils import sorted_unique_list
+import utils
 
 NULL = '--'
 field_enhancer.enhance()
 SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
 
 class SubmissionAnalyzer(object):
-    def __init__(self, form_model, manager, request, filters=None, keyword=None):
+    def __init__(self, form_model, manager, request, filters=None, keyword=None, header_class=Header, with_status=False):
         assert isinstance(form_model, FormModel)
+
         self.form_model = form_model
         self.manager = manager
+        self.with_status = with_status
+
         self.request = request
         submissions = get_submissions_with_timing(form_model, manager)
         self.filtered_submissions = filter_submissions(submissions, filters or [])
@@ -32,6 +36,9 @@ class SubmissionAnalyzer(object):
         self.filtered_leading_part = []
         self._init_raw_values()
 
+        self.header_class = header_class
+
+
     def get_raw_values(self):
         return self._raw_values
 
@@ -41,36 +48,19 @@ class SubmissionAnalyzer(object):
             default_sort_order = [[1, 'desc'],[0,'asc']]
         return default_sort_order
 
-    def get_headers(self):
-        prefix = [ugettext("Submission Date"), ugettext("Data Sender")]
-        prefix_types = [DEFAULT_DATE_FORMAT.lower(), '']
-        if self.form_model.event_time_question:
-            prefix = [ugettext("Reporting Period")] + prefix
-            prefix_types = [self.form_model.event_time_question.date_format] + prefix_types
-
-        if self.form_model.entity_type != ['reporter']:
-            prefix = [ugettext(self.form_model.entity_type[0]).capitalize()] + prefix
-            prefix_types = [''] + prefix_types
-
-        field_ = [(field.label,
-                   field.date_format if isinstance(field, DateField) else (
-                   "gps" if isinstance(field, GeoCodeField)  else "")) for field in self.form_model.fields[1:] if
-                                                                       not field.is_event_time_field]
-        return prefix + [each[0] for each in field_], prefix_types + [each[1] for each in field_]
-
     def get_subjects(self):
         if self.form_model.entity_defaults_to_reporter():  return []
         subjects = [row[0] for row in self.filtered_leading_part if row[0][1] != NULL]
         return sorted(list(set(subjects)))
 
     def get_data_senders(self):
-        return sorted_unique_list(each[-1] for each in self.filtered_leading_part)
+        return utils.sorted_unique_list(each[-1] for each in self.filtered_leading_part)
 
     @timebox
     def get_analysis_statistics(self):
         if not self._raw_values: return []
 
-        field_header = self.get_headers()[0][self.leading_part_length:]
+        field_header = self.header_class(self.form_model).get()[0][self.leading_part_length:]
         result = self._init_statistics_result()
         for row in self._raw_values:
             for idx, question_values in enumerate(row[self.leading_part_length:]):
@@ -94,9 +84,9 @@ class SubmissionAnalyzer(object):
 
     @timebox
     def _init_raw_values(self):
-        field_values = self._get_field_values()
         leading_part = self._get_leading_part()
-        raw_field_values = [leading + remaining[1:] for leading, remaining in zip(leading_part, field_values)]
+        raw_field_values = [leading + remaining[1:] for leading, remaining in zip(leading_part,
+            self._get_field_values())]
         self._raw_values = self.keyword_filter.filter(raw_field_values)
         if leading_part:
             self.leading_part_length = len(leading_part[0])
@@ -109,7 +99,10 @@ class SubmissionAnalyzer(object):
         for submission in self.filtered_submissions:
             data_sender = self._get_data_sender(submission)
             submission_date = _to_str(submission.created)
-            row = [submission_date, data_sender]
+            row = [submission_date]
+            if self.with_status:
+                row.append(submission.status)
+            row.append(data_sender)
             row = self._update_leading_part_for_rp(row, submission)
             row = self._update_leading_part_for_project_type(row, submission)
             leading_part.append(row)
@@ -124,6 +117,7 @@ class SubmissionAnalyzer(object):
             self._replace_option_with_real_answer_value(row)
             fields_ = [case_insensitive_lookup(field.code, row[-1]) for field in self.form_model.non_rp_fields_by()]
             field_values.append(fields_)
+
         return field_values
 
     def _get_data_sender(self, submission):
@@ -179,6 +173,9 @@ class SubmissionAnalyzer(object):
                 for option in each.options:
                     result[each.name]['choices'][option['text']] = 0
         return result
+
+    def analyse(self):
+        return AnalysisResult(self, self.header_class, with_status=self.with_status)
 
 
 def get_formatted_values_for_list(values, tuple_format='%s<span class="small_grey">%s</span>', list_delimiter=', '):

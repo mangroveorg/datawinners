@@ -1,9 +1,6 @@
-import json
 from unittest.case import SkipTest
 from django.test import TestCase
 from django.test import Client
-from mangrove.datastore.database import get_db_manager
-from tests.test_data_utils import load_manager_for_default_test_account
 
 
 class TestProject(TestCase):

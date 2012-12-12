@@ -62,6 +62,7 @@ from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireF
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
+from project.Header import Header, AllSubmissionsHeader
 from project.analysis_result import AnalysisResult
 from project.filters import ReportPeriodFilter, DataSenderFilter, SubmissionDateFilter, KeywordFilter
 from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list
@@ -69,7 +70,7 @@ from project.tests.test_filter import SubjectFilter
 from datawinners.common.constant import DELETED_PROJECT, DELETED_DATA_SUBMISSION, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
 from questionnaire.questionnaire_builder import QuestionnaireBuilder
-from utils import get_changed_questions
+import utils
 
 logger = logging.getLogger("django")
 performance_logger = logging.getLogger("performance")
@@ -164,7 +165,7 @@ def save_questionnaire(request):
                 return HttpResponseServerError(e.message)
             form_model.name = project.name
             form_model.entity_id = project.entity_type
-            detail = get_changed_questions(old_fields, form_model.fields, subject=False)
+            detail = utils.get_changed_questions(old_fields, form_model.fields, subject=False)
             form_model.save()
             UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
             return HttpResponse(json.dumps({"response": "ok"}))
@@ -314,14 +315,26 @@ def build_filters(params, form_model):
 @is_datasender
 @is_not_expired
 def project_results(request, project_id=None, questionnaire_code=None):
-    analysis_result = get_analysis_response(request, project_id, questionnaire_code)
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    filters = build_filters(request.POST, form_model)
+
+    analysis_result = SubmissionAnalyzer(form_model, manager, request, filters, request.POST.get('keyword', ''), AllSubmissionsHeader, with_status=True).analyse()
+
+    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
     if request.method == 'GET':
+        project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
+        analysis_result_dict = analysis_result.analysis_result_dict()
+        analysis_result_dict.update(project_infos)
+
         return render_to_response('project/results.html',
-            analysis_result,
+            analysis_result_dict,
             context_instance=RequestContext(request))
-    if request.method == "POST":
-        return HttpResponse(analysis_result)
+
+    if request.method == 'POST':
+        return HttpResponse(encode_json({'data_list': analysis_result.field_values,"statistics_result": analysis_result.statistics_result}))
+
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET
@@ -382,25 +395,20 @@ def composite_analysis_result(analysis_result):
                        "data_list": repr(encode_json(analysis_result.field_values)),
                        "statistics_result": repr(encode_json(analysis_result.statistics_result))}
 
-def build_analysis_result(request, manager, form_model, filters):
-    analyzer = SubmissionAnalyzer(form_model, manager, request, filters, request.POST.get('keyword', ''))
-    analysis_result = AnalysisResult(analyzer)
-    analysis_result.analyze_statistic_results()
-    return analysis_result
 
 @timebox
-def get_analysis_response(request, project_id, questionnaire_code):
+def get_analysis_response(request, project_id, questionnaire_code, header_class=Header, with_status=False):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
     filters = build_filters(request.POST, form_model)
 
-    analysis_result = build_analysis_result(request, manager, form_model, filters)
+    analysis_result = SubmissionAnalyzer(form_model, manager, request, filters, request.POST.get('keyword', ''), header_class, with_status=with_status).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-        analysis_result_dict = composite_analysis_result(analysis_result)
+        analysis_result_dict = analysis_result.analysis_result_dict()
         analysis_result_dict.update(project_infos)
 
         return analysis_result_dict
@@ -455,7 +463,7 @@ def export_data(request):
 
     analyzer = SubmissionAnalyzer(form_model, manager, request, filters,request.POST.get('keyword', ''))
     raw_field_values = analyzer.get_raw_values()
-    header_list= analyzer.get_headers()[0]
+    header_list= Header(form_model).get()[0]
 
     formatted_values = get_formatted_values_for_list(raw_field_values, tuple_format="%s (%s)")
     file_name = request.POST.get(u"project_name") + '_analysis'
