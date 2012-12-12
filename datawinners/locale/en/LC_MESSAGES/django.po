@@ -520,8 +520,9 @@ msgstr ""
 msgid "q_tooltip_submission_date"
 msgstr ""
 "The Submission Date is the date you received the Submission from your Data Sender."
-"</br></br>"
-"The Submission Date is often different than the Reporting Period. Example: Your Data Sender sends his report for May 2012 (Reporting Period) on 10 June 2012 (Submission Date)."
+
+msgid "q_tooltip_submission_date_next"
+msgstr "The Submission Date is often different than the Reporting Period. Example: Your Data Sender sends his report for May 2012 (Reporting Period) on 10 June 2012 (Submission Date)."
 
 msgid "r_tooltip_submission_date"
 msgstr "Click on the Submission Date dropdown and a choose a specific a date or date range."
