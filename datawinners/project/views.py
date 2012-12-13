@@ -35,7 +35,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
 from mangrove.transport.facade import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.submissions import Submission, get_submissions, submission_count, successful_submissions
+from mangrove.transport.submissions import Submission, get_submissions, submission_count, successful_submissions, submissions_by_form_code
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
@@ -278,7 +278,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
+    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions_by_form_code(manager, form_model.form_code))
     analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), with_status=True).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
