@@ -61,12 +61,13 @@ from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireF
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
-from project.Header import Header, AllSubmissionsHeader
+from project.Header import Header
 from project.filters import   KeywordFilter
-from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list
+from project.submission_analyzer import SubmissionAnalyzer
 from project.submission_utils.submission_filter import SubmissionFilter
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
+from project.submission_utils.submission_formatter import SubmissionFormatter
 from questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 logger = logging.getLogger("django")
@@ -427,7 +428,7 @@ def export_data(request):
     raw_field_values = analyzer.get_raw_values()
     header_list= Header(form_model).get()[0]
 
-    formatted_values = get_formatted_values_for_list(raw_field_values, tuple_format="%s (%s)")
+    formatted_values = SubmissionFormatter().get_formatted_values_for_list(raw_field_values, tuple_format="%s (%s)")
     file_name = request.POST.get(u"project_name") + '_analysis'
 
     return _create_excel_response([header_list] + formatted_values, file_name)

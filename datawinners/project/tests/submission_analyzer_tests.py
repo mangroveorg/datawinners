@@ -113,7 +113,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
             get_by_short_code.return_value = self._prepare_clinic_entity()
             analyzer._init_raw_values()
             raw_field_values = analyzer.get_raw_values()
-            expected = [[('Clinic-One', 'cli14'),  '01.01.2012', today, False, ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+            expected = [[('Clinic-One', 'cli14'),  '01.01.2012', today, u'Error', ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_raw_field_values_filtered_by_keyword(self):

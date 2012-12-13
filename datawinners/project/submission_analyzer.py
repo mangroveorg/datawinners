@@ -1,5 +1,6 @@
 #encoding=utf-8
 from collections import OrderedDict, defaultdict
+from django.utils.translation import ugettext
 from main.utils import timebox
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound
@@ -12,6 +13,7 @@ from project.filters import KeywordFilter
 from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
 from enhancer import field_enhancer
 import utils
+
 
 NULL = '--'
 field_enhancer.enhance()
@@ -37,6 +39,8 @@ class SubmissionAnalyzer(object):
 
         self.header_class = AllSubmissionsHeader if with_status else Header
 
+    def analyse(self):
+        return AnalysisResult(self, self.header_class, with_status=self.with_status)
 
     def get_raw_values(self):
         return self._raw_values
@@ -100,13 +104,16 @@ class SubmissionAnalyzer(object):
             submission_date = _to_str(submission.created)
             row = [submission_date]
             if self.with_status:
-                row.append(submission.status)
+                row.append(self._get_translated_submission_status(submission.status))
             row.append(data_sender)
             row = self._update_leading_part_for_rp(row, submission)
             row = self._update_leading_part_for_project_type(row, submission)
             leading_part.append(row)
 
         return leading_part
+
+    def _get_translated_submission_status(self, status):
+        return ugettext('Success') if status else ugettext('Error')
 
     @timebox
     def _get_field_values(self):
@@ -172,39 +179,3 @@ class SubmissionAnalyzer(object):
                 for option in each.options:
                     result[each.name]['choices'][option['text']] = 0
         return result
-
-    def analyse(self):
-        return AnalysisResult(self, self.header_class, with_status=self.with_status)
-
-
-def get_formatted_values_for_list(values, tuple_format='%s<span class="small_grey">%s</span>', list_delimiter=', '):
-    formatted_values = []
-    for row in values:
-        result = _format_row(row, tuple_format, list_delimiter)
-        formatted_values.append(list(result))
-    return formatted_values
-
-
-def _format_row(row, tuple_format, list_delimiter):
-    for each in row:
-        if isinstance(each, tuple):
-            new_val = tuple_format % (each[0], each[1]) if each[1] else each[0]
-        elif isinstance(each, list):
-            new_val = list_delimiter.join(each)
-        elif each:
-            new_val = each
-        else:
-            new_val = NULL
-        yield new_val
-
-@timebox
-def filter_submissions(submissions, filters):
-    to_lowercase_submission_keys(submissions)
-    for filter in filters:
-        submissions = filter.filter(submissions)
-    return submissions
-
-def to_lowercase_submission_keys(submissions):
-    for submission in submissions:
-        values = submission.values
-        submission._doc.values = dict((k.lower(), v) for k,v in values.iteritems())
