@@ -40,10 +40,10 @@ def get_project_analysis_and_log_link(project, project_id, questionnaire_code):
     return analysis, disabled, log
 
 
-def get_project_info(manager, raw_project, user):
+def get_project_info(manager, raw_project):
     project_id = raw_project['value']['_id']
     project = Project.load(manager.database, project_id)
-    questionnaire = manager.get(project['qid'], FormModel)
+    questionnaire = manager.get(project.qid, FormModel)
     questionnaire_code = questionnaire.form_code
 
     analysis, disabled, log = get_project_analysis_and_log_link(project, project_id, questionnaire_code)
@@ -74,7 +74,7 @@ def get_project_info(manager, raw_project, user):
 def get_project_list(request):
     projects = get_all_project_for_user(request.user)
     manager = get_database_manager(request.user)
-    return [get_project_info(manager, project, request.user) for project in projects]
+    return [get_project_info(manager, project) for project in projects]
 
 
 def projects_index(request):

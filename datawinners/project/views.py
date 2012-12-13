@@ -5,7 +5,7 @@ import datetime
 import logging
 from time import mktime
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
@@ -24,7 +24,6 @@ from datawinners.entity.helper import process_create_data_sender_form, add_impor
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
-from django.conf import settings as django_settings
 
 import helper
 
@@ -215,16 +214,29 @@ def undelete_project(request, project_id):
     helper.delete_project(manager, project, False)
     return HttpResponseRedirect(reverse(index))
 
+
+def is_project_exist(f):
+    def wrapper(*args, **kw):
+        try:
+            ret = f(*args, **kw)
+        except AttributeError, e:
+            if e[0] == "'NoneType' object has no attribute 'qid'":
+                raise Http404
+            raise e
+        return ret
+
+    return wrapper
+
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
 @is_not_expired
+@is_project_exist
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
-    if project is None:
-        return HttpResponseRedirect(django_settings.HOME_PAGE)
-    questionnaire = FormModel.get(manager, project['qid'])
+    questionnaire = FormModel.get(manager, project.qid)
     number_of_questions = len(questionnaire.fields)
     questionnaire_code = questionnaire.form_code
     project_links = make_project_links(project, questionnaire_code)
@@ -846,6 +858,7 @@ def get_preview_and_instruction_links_for_questionnaire():
 @login_required(login_url='/login')
 @session_not_expired
 @is_not_expired
+@is_project_exist
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
@@ -858,12 +871,12 @@ def questionnaire(request, project_id=None):
         project_links = make_project_links(project, form_model.form_code)
         in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/questionnaire.html',
-                {"existing_questions": repr(existing_questions),
-                 'questionnaire_code': form_model.form_code,
-                 'project': project,
-                 'project_links': project_links,
-                 'in_trial_mode': in_trial_mode,
-                 'preview_links': get_preview_and_instruction_links_for_questionnaire()},
+            {"existing_questions": repr(existing_questions),
+             'questionnaire_code': form_model.form_code,
+             'project': project,
+             'project_links': project_links,
+             'in_trial_mode': in_trial_mode,
+             'preview_links': get_preview_and_instruction_links_for_questionnaire()},
             context_instance=RequestContext(request))
 
 
@@ -925,6 +938,7 @@ def _get_form_code(manager, project):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
+@is_project_exist
 def web_questionnaire(request, project_id=None, subject=False):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -1016,6 +1030,7 @@ def get_example_sms(fields):
 @login_required(login_url='/login')
 @session_not_expired
 @is_not_expired
+@is_project_exist
 def questionnaire_preview(request, project_id=None, sms_preview=False):
     manager = get_database_manager(request.user)
     if request.method == 'GET':

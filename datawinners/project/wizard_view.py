@@ -26,6 +26,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions
 from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
+from project.views import is_project_exist
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -147,6 +148,7 @@ def is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire)
 @is_datasender
 @csrf_exempt
 @is_not_expired
+@is_project_exist
 def edit_project(request, project_id=None):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)

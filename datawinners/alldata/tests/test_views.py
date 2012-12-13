@@ -32,6 +32,5 @@ class TestViews(TestCase):
                 with patch("django.contrib.auth.models.User.get_profile") as get_profile:
                     get_profile.return_value = profile
                     profile.reporter = False
-                    user = User()
-                    project_info = get_project_info(manager, raw_project, user)
+                    project_info = get_project_info(manager, raw_project)
                     self.assertEqual(project_info["web_submission_link"], "/project/testquestionnaire/pid/")
