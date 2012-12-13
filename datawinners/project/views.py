@@ -287,7 +287,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
 
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-        result_dict = analysis_result.analysis_result_dict()
+        result_dict = analysis_result.analysis_result_dict
         result_dict.update(project_infos)
 
         return render_to_response('project/results.html',
@@ -295,7 +295,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        return HttpResponse(encode_json({'data_list': analysis_result.field_values,"statistics_result": analysis_result.statistics_result}))
+        return HttpResponse(encode_json({'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result}))
 
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
@@ -371,7 +371,7 @@ def get_analysis_response(request, project_id, questionnaire_code, with_status=F
 
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-        analysis_result_dict = analysis_result.analysis_result_dict()
+        analysis_result_dict = analysis_result.analysis_result_dict
         analysis_result_dict.update(project_infos)
 
         return analysis_result_dict
@@ -424,15 +424,11 @@ def export_data(request):
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
-
     analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''))
-    raw_field_values = analyzer.get_raw_values()
-    header_list= Header(form_model).get()[0]
-
-    formatted_values = SubmissionFormatter().get_formatted_values_for_list(raw_field_values, tuple_format="%s (%s)")
+    formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format="%s (%s)")
     file_name = request.POST.get(u"project_name") + '_analysis'
 
-    return _create_excel_response([header_list] + formatted_values, file_name)
+    return _create_excel_response([Header(form_model).header_list] + formatted_values, file_name)
 
 
 def _create_excel_response(raw_data_list, file_name):
@@ -1051,7 +1047,7 @@ def _get_preview_for_field_in_registration_questionnaire(field, language):
         [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
     return preview
-    
+
 
 
 def _get_registration_form(manager, project, type_of_subject='reporter'):
@@ -1184,7 +1180,7 @@ def create_data_sender_and_web_user(request, project_id=None):
             success = True
         except DataObjectAlreadyExists as e:
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
-            
+
         if not len(form.errors) and success:
             project.associate_data_sender_to_project(manager, reporter_id)
             if form.requires_web_access():

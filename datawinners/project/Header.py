@@ -4,7 +4,7 @@ from project.helper import DEFAULT_DATE_FORMAT
 
 class Header(object):
     def __init__(self, form_model):
-        prefix = self.prefix()
+        prefix = self._prefix()
         prefix_types = [DEFAULT_DATE_FORMAT.lower(), '']
         if form_model.event_time_question:
             prefix = [ugettext("Reporting Period")] + prefix
@@ -18,17 +18,25 @@ class Header(object):
                        "gps" if isinstance(field, GeoCodeField)  else "")) for field in form_model.fields[1:] if
                                                                            not field.is_event_time_field]
         self.leading = prefix + [each[0] for each in field_]
-        self.questions = prefix_types + [each[1] for each in field_]
+        self.questions_type_list = prefix_types + [each[1] for each in field_]
 
 
     def get(self):
-        return self.leading, self.questions
+        return self.leading, self.questions_type_list
 
-    def prefix(self):
+    @property
+    def header_list(self):
+        return self.leading
+
+    @property
+    def header_type_list(self):
+        return self.questions_type_list
+
+    def _prefix(self):
         return [ugettext("Submission Date"), ugettext("Data Sender")]
 
 class AllSubmissionsHeader(Header):
-    def prefix(self):
+    def _prefix(self):
         return [ugettext("Submission Date"), ugettext('Status'), ugettext("Data Sender")]
 
 

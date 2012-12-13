@@ -12,19 +12,19 @@ from project.analysis_result import AnalysisResult
 from project.filters import KeywordFilter
 from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
 from enhancer import field_enhancer
+from project.submission_utils.submission_formatter import SubmissionFormatter
 import utils
 
 
 NULL = '--'
 field_enhancer.enhance()
-SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
 
 class SubmissionAnalyzer(object):
     def __init__(self, form_model, manager, user, submissions, keyword=None, with_status=False):
         assert isinstance(form_model, FormModel)
 
-        self.form_model = form_model
         self.manager = manager
+        self.form_model = form_model
         self.with_status = with_status
 
         self.user = user
@@ -40,7 +40,14 @@ class SubmissionAnalyzer(object):
         self.header_class = AllSubmissionsHeader if with_status else Header
 
     def analyse(self):
-        return AnalysisResult(self, self.header_class, with_status=self.with_status)
+        header = self.header_class(self.form_model)
+        field_values = SubmissionFormatter().get_formatted_values_for_list(self.get_raw_values())
+        analysis_statistics = self.get_analysis_statistics()
+        data_sender_list = self.get_data_senders()
+        subject_lists = self.get_subjects()
+        default_sort_order = self.get_default_sort_order()
+
+        return AnalysisResult(header, field_values, analysis_statistics, data_sender_list, subject_lists, default_sort_order)
 
     def get_raw_values(self):
         return self._raw_values
@@ -49,6 +56,7 @@ class SubmissionAnalyzer(object):
         default_sort_order = [[0, 'desc'],[2, 'asc']] if self.form_model.event_time_question else [[0, 'desc'],[1, 'asc']]
         if self.form_model.entity_type != ['reporter']:
             default_sort_order = [[1, 'desc'],[0,'asc']]
+
         return default_sort_order
 
     def get_subjects(self):
