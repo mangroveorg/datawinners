@@ -357,13 +357,13 @@ def composite_analysis_result(analysis_result):
 
 
 @timebox
-def get_analysis_response(request, project_id, questionnaire_code, header_class=Header, with_status=False):
+def get_analysis_response(request, project_id, questionnaire_code, with_status=False):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
 
-    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), header_class, with_status=with_status).analyse()
+    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), with_status=with_status).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 

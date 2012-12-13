@@ -6,7 +6,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import SelectField
 from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import is_sequence
-from project.Header import Header
+from project.Header import Header, AllSubmissionsHeader
 from project.analysis_result import AnalysisResult
 from project.filters import KeywordFilter
 from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
@@ -18,7 +18,7 @@ field_enhancer.enhance()
 SUCCESS_SUBMISSION_LOG_VIEW_NAME = "success_submission_log"
 
 class SubmissionAnalyzer(object):
-    def __init__(self, form_model, manager, user, submissions, keyword=None, header_class=Header, with_status=False):
+    def __init__(self, form_model, manager, user, submissions, keyword=None, with_status=False):
         assert isinstance(form_model, FormModel)
 
         self.form_model = form_model
@@ -35,7 +35,7 @@ class SubmissionAnalyzer(object):
         self.filtered_leading_part = []
         self._init_raw_values()
 
-        self.header_class = header_class
+        self.header_class = AllSubmissionsHeader if with_status else Header
 
 
     def get_raw_values(self):
