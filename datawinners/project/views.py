@@ -279,7 +279,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
-    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), AllSubmissionsHeader, with_status=True).analyse()
+    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), with_status=True).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 

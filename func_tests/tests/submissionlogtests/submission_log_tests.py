@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 from framework.base_test import  setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
@@ -12,6 +13,7 @@ from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog_page import WarningDialog
 import time
 
+@SkipTest
 @attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
     @classmethod
@@ -57,6 +59,7 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page = self.prerequisites_of_submission_log(EXCEED_NAME_LENGTH2)
         self.assertRegexpMatches(submission_log_page.get_submission_message(EXCEED_WORD_LIMIT_LOG),
                                  fetch_(SMS_SUBMISSION, from_(EXCEED_WORD_LIMIT_LOG)))
+
         self.assertEqual(submission_log_page.get_failure_message(EXCEED_WORD_LIMIT_LOG),
                          fetch_(FAILURE_MSG, from_(EXCEED_WORD_LIMIT_LOG)))
 

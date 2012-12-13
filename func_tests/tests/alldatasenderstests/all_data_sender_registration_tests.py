@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from time import sleep
 import unittest
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
@@ -102,6 +103,8 @@ class TestAllDataSender(unittest.TestCase):
     def test_addition_of_data_sender_with_existing_data(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(EXISTING_DATA)
+
+        sleep(1)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(EXISTING_DATA)))
 
