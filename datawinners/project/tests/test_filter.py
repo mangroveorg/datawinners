@@ -65,16 +65,6 @@ class TestSubmissionFilters(unittest.TestCase):
 
         self.assertEqual(2, len(filtered_submissions))
 
-    def test_should_build_filter_by_subject(self):
-        filters = build_filters({'subject_ids': 'subject'}, self.mock_form_model)
-        self.assertEqual(1, len(filters))
-        self.assertIsInstance(filters[0], SubjectFilter)
-
-    def test_should_build_filter_by_datasender(self):
-        filters = build_filters({'submission_sources': 'tester150411@gmail.com'}, self.mock_form_model)
-        self.assertEqual(1, len(filters))
-        self.assertIsInstance(filters[0], DataSenderFilter)
-
     def test_should_return_submissions_filter_by_datasender(self):
         submission_logs = [
             Submission(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0]),
@@ -112,11 +102,6 @@ class TestSubmissionFilters(unittest.TestCase):
 
         filtered_submissions = DataSenderFilter('TEST').filter(submission_logs)
         self.assertEqual(1, len(filtered_submissions))
-
-    def test_should_build_filter_by_submission_date(self):
-        filters = build_filters({'submission_date_start': '01.08.2012', 'submission_date_end': '31.08.2012'}, self.mock_form_model)
-        self.assertEqual(1, len(filters))
-        self.assertIsInstance(filters[0], SubmissionDateFilter)
 
     def test_should_return_submissions_within_submission_date(self):
         submission1 = self.submissions[0]

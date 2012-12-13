@@ -17,7 +17,6 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from accountmanagement.views import  session_not_expired
 from datawinners.project.view_models import ReporterEntity
-from datawinners.questionnaire.helper import get_report_period_question_name_and_datetime_format
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -63,10 +62,9 @@ from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
 from project.Header import Header, AllSubmissionsHeader
-from project.filters import ReportPeriodFilter, DataSenderFilter, SubmissionDateFilter, KeywordFilter
-from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list, SUCCESS_SUBMISSION_LOG_VIEW_NAME
+from project.filters import   KeywordFilter
+from project.submission_analyzer import SubmissionAnalyzer, get_formatted_values_for_list
 from project.submission_utils.submission_filter import SubmissionFilter
-from project.tests.test_filter import SubjectFilter
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
 from questionnaire.questionnaire_builder import QuestionnaireBuilder
@@ -268,46 +266,9 @@ def delete_submissions_by_ids(manager, request, submission_ids):
     return received_times
 
 
-def _build_report_period_filter(form_model, start_time, end_time):
-    if not start_time or not end_time:
-        return None
-    time_range = {'start': start_time, 'end': end_time}
-    question_name, datetime_format = get_report_period_question_name_and_datetime_format(form_model)
-    period_filter = ReportPeriodFilter(question_name, time_range, datetime_format)
-
-    return period_filter
-
-def _build_submission_date_filter(start_time, end_time):
-    if not start_time or not end_time:
-        return None
-    time_range = {'start': start_time, 'end': end_time}
-    return SubmissionDateFilter(time_range)
-
-def _build_subject_filter(entity_question_code, subject_ids):
-    if not subject_ids.strip():
-        return None
-    return SubjectFilter(entity_question_code.lower(), subject_ids)
-
-
-def _build_datasender_filter(submission_sources):
-    if not submission_sources.strip():
-        return None
-    return DataSenderFilter(submission_sources)
-
-
 def filter_by_keyword(keyword, raw_field_values):
     return KeywordFilter(keyword).filter(raw_field_values)
 
-
-def build_filters(params, form_model):
-    if not params:
-        return []
-    return filter(lambda x: x is not None,
-        [_build_report_period_filter(form_model, params.get('start_time', ""), params.get('end_time', "")),
-         _build_submission_date_filter(params.get('submission_date_start', ""), params.get('submission_date_end', "")),
-         _build_subject_filter(form_model.entity_question.code, params.get('subject_ids', "").strip()),
-         _build_datasender_filter(params.get('submission_sources', "").strip()),
-         ])
 
 @login_required(login_url='/login')
 @session_not_expired
@@ -316,21 +277,19 @@ def build_filters(params, form_model):
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    filter_list = build_filters(request.POST, form_model)
 
-    filtered_submissions = SubmissionFilter(filter_list).filter(successful_submissions(manager, form_model.form_code))
-
+    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
     analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), AllSubmissionsHeader, with_status=True).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-        analysis_result_dict = analysis_result.analysis_result_dict()
-        analysis_result_dict.update(project_infos)
+        result_dict = analysis_result.analysis_result_dict()
+        result_dict.update(project_infos)
 
         return render_to_response('project/results.html',
-            analysis_result_dict,
+            result_dict,
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -401,9 +360,8 @@ def composite_analysis_result(analysis_result):
 def get_analysis_response(request, project_id, questionnaire_code, header_class=Header, with_status=False):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    filters = build_filters(request.POST, form_model)
 
-    filtered_submissions = SubmissionFilter(filters).filter(successful_submissions(manager, form_model.form_code))
+    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
 
     analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), header_class, with_status=with_status).analyse()
 
@@ -462,9 +420,8 @@ def export_data(request):
 
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    filters = build_filters(request.POST, form_model)
 
-    filtered_submissions = SubmissionFilter(filters).filter(successful_submissions(manager, form_model.form_code))
+    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
 
     analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''))
     raw_field_values = analyzer.get_raw_values()

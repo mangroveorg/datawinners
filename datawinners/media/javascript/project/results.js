@@ -81,7 +81,7 @@ $(document).ready(function () {
     var dataBinding = function (data, destroy, retrive, emptyTableText) {
         $dataTable = $('#data_table').dataTable({
             "aaSorting":default_sort_order,
-            "aoColumns":buildColumnTypes(),
+//            "aoColumns":buildColumnTypes(),
             "bDestroy":destroy,
             "bRetrieve":retrive,
             "sPaginationType":"full_numbers",
