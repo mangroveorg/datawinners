@@ -628,6 +628,9 @@ msgstr "réussi"
 msgid "error"
 msgstr "erreur"
 
+msgid "Errors"
+msgstr "Erreurs"
+
 msgid "go to this project"
 msgstr "Aller à ce projet"
 
