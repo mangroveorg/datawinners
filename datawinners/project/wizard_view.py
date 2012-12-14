@@ -26,7 +26,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions
 from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from project.views import is_project_exist
+from project.helper import is_project_exist
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type

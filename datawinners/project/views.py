@@ -5,7 +5,7 @@ import datetime
 import logging
 from time import mktime
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
@@ -62,6 +62,7 @@ from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
 from project.Header import Header
 from project.filters import   KeywordFilter
+from project.helper import is_project_exist
 from project.submission_analyzer import SubmissionAnalyzer
 from project.submission_utils.submission_filter import SubmissionFilter
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
@@ -213,19 +214,6 @@ def undelete_project(request, project_id):
     project = Project.load(manager.database, project_id)
     helper.delete_project(manager, project, False)
     return HttpResponseRedirect(reverse(index))
-
-
-def is_project_exist(f):
-    def wrapper(*args, **kw):
-        try:
-            ret = f(*args, **kw)
-        except AttributeError, e:
-            if e[0] == "'NoneType' object has no attribute 'qid'":
-                raise Http404
-            raise e
-        return ret
-
-    return wrapper
 
 
 @login_required(login_url='/login')

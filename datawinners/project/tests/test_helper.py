@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import unittest
+from django.http import Http404
 from mock import Mock, patch
 from datawinners.project import helper
 from datawinners.project.views import _get_imports_subjects_post_url
@@ -11,7 +12,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesN
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
 from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
-from project.helper import get_data_sender, NOT_AVAILABLE_DS
+from project.helper import get_data_sender, NOT_AVAILABLE_DS, is_project_exist
 from project.tests.submission_log_data import  SUBMISSIONS
 
 
@@ -184,6 +185,10 @@ class TestHelper(unittest.TestCase):
             self._create_report_period_question(form_model)
         return form_model
 
+    def test_should_raise_Http404_if_project_can_not_be_found(self):
+        wrapped_func = is_project_exist(lambda :None.qid)
+        with self.assertRaises(Http404):
+            wrapped_func()
 
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):

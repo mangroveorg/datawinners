@@ -2,6 +2,7 @@
 import logging
 from babel.dates import format_date
 from django.contrib.auth.models import User
+from django.http import Http404
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
 from accountmanagement.models import NGOUserProfile
@@ -264,3 +265,14 @@ def errors_to_list(errors, fields):
     return _translate_messages(error_dict, fields)
 
 
+def is_project_exist(f):
+    def wrapper(*args, **kw):
+        try:
+            ret = f(*args, **kw)
+        except AttributeError, e:
+            if e[0] == "'NoneType' object has no attribute 'qid'":
+                raise Http404
+            raise e
+        return ret
+
+    return wrapper
