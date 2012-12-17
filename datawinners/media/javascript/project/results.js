@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var $no_submission_hint = $('.help_no_submissions');
+    var help_no_submission = $('#help_no_submissions').html();
     var $page_hint = $('#page_hint');
     $("#tabs").tabs().find('>ul>li>a').click(function(){
         load_data($(this).parent().index());
@@ -117,8 +117,7 @@ $(document).ready(function () {
         var index = (active_tab_index || 0) + 1;
         $page_hint.find('>div:nth-child(' + index + ')').show().siblings().hide();
 
-        var emptyTableText = $no_submission_hint.find('>div:nth-child(' + index + ')').html();
-        dataBinding(initial_data, true, false, emptyTableText);
+        dataBinding(initial_data, true, false, help_no_submission);
         wrap_table();
     }
     load_data();
