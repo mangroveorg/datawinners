@@ -52,42 +52,6 @@ class TestSubmissionLog(unittest.TestCase):
                                  fetch_(SMS_SUBMISSION, from_(SMS_DATA_LOG)))
 
     @attr('functional_test')
-    def test_invalid_sms_submission_log(self):
-        """
-        Function to test the invalid SMS submission by exceeding value of the word field limit
-        """
-        submission_log_page = self.prerequisites_of_submission_log(EXCEED_NAME_LENGTH2)
-        self.assertRegexpMatches(submission_log_page.get_submission_message(EXCEED_WORD_LIMIT_LOG),
-                                 fetch_(SMS_SUBMISSION, from_(EXCEED_WORD_LIMIT_LOG)))
-
-        self.assertEqual(submission_log_page.get_failure_message(EXCEED_WORD_LIMIT_LOG),
-                         fetch_(FAILURE_MSG, from_(EXCEED_WORD_LIMIT_LOG)))
-
-    @attr('functional_test')
-    def test_submission_log_for_extra_plus_in_btw_sms(self):
-        submission_log_page = self.prerequisites_of_submission_log(EXTRA_PLUS_IN_BTW)
-        self.assertRegexpMatches(submission_log_page.get_submission_message(EXTRA_PLUS_IN_BTW_LOG),
-                                 fetch_(SMS_SUBMISSION, from_(EXTRA_PLUS_IN_BTW_LOG)))
-
-    @attr('functional_test')
-    def test_submission_log_for_invalid_geo_code_format(self):
-        submission_log_page = self.prerequisites_of_submission_log(WITH_INVALID_GEO_CODE_FORMAT)
-        self.assertRegexpMatches(submission_log_page.get_submission_message(WITH_INVALID_GEO_CODE_FORMAT_LOG),
-                                 fetch_(SMS_SUBMISSION, from_(WITH_INVALID_GEO_CODE_FORMAT_LOG)))
-        self.assertEqual(submission_log_page.get_failure_message(WITH_INVALID_GEO_CODE_FORMAT_LOG),
-                         fetch_(FAILURE_MSG, from_(WITH_INVALID_GEO_CODE_FORMAT_LOG)))
-
-    @attr('functional_test')
-    def test_should_see_journal_de_soumisfsion_text_ucword_format(self):
-        submission_log_page = self.navigate_to_submission_log_page()
-        submission_log_page.switch_language("fr")
-        title = self.driver.get_title()
-        self.assertEqual(title, PAGE_TITLE_IN_FRENCH)
-        tab_text = submission_log_page.get_active_tab_text()
-        self.assertEqual(tab_text, PAGE_TITLE_IN_FRENCH)
-        submission_log_page.switch_language("en")
-
-    @attr('functional_test')
     def test_should_show_warning_when_deleting_records(self):
         submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
         submission_log_page.check_all_submissions()
