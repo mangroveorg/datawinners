@@ -3892,6 +3892,9 @@ msgstr ""
 msgid "Submission Log"
 msgstr ""
 
+msgid "View and manage all Submissions for this project."
+msgstr ""
+
 msgid "If you modify this questionnaire, any previously collected data will be lost."
 msgstr ""
 

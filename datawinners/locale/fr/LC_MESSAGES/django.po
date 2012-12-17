@@ -3968,6 +3968,9 @@ msgstr "Votre compte est créé sur  %s"
 msgid "Submission Log"
 msgstr "Journal de Soumission"
 
+msgid "View and manage all Submissions for this project."
+msgstr "Voir et gérer toutes les Soumissions liées à ce projet."
+
 msgid "If you modify this questionnaire, any previously collected data will be lost."
 msgstr "Si vous modifiez ce questionnaire, toutes les données recueillies ultérieurement seront perdues."
 
