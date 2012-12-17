@@ -20,7 +20,7 @@ function install_pip {
 }
 
 function install_virtual_env {
- sudo pip install virtualenv
+ sudo /usr/local/bin/pip install virtualenv
 }
 
 function create_data_winner_virtual_env {
@@ -123,6 +123,7 @@ function add_current_user_to_postgresql {
 }
 
 function main {
+  sudo apt-get update && \
   install_package curl vim-gnome python-dev python-setuptools couchdb postgresql-9.1 postgresql-9.1-postgis libgeos-3.2.2 git-core python-gdal libpq-dev gettext libxml2-dev libxslt1-dev && \
   add_current_user_to_postgresql && \
   create_env && \
