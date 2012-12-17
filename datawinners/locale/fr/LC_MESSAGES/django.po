@@ -525,9 +525,6 @@ msgstr "A"
 msgid "Message"
 msgstr "Message"
 
-msgid "Error"
-msgstr "Erreur"
-
 msgid "View all failed submissions"
 msgstr "Voir toutes les erreurs d'envoi"
 
@@ -625,8 +622,14 @@ msgstr "Vos projets"
 msgid "successful"
 msgstr "réussi"
 
+msgid "Successful"
+msgstr "Réussi"
+
 msgid "error"
 msgstr "erreur"
+
+msgid "Error"
+msgstr "Erreur"
 
 msgid "Errors"
 msgstr "Erreurs"
@@ -1026,6 +1029,9 @@ msgstr "Date de réception"
 
 msgid "Submission Status"
 msgstr "Statut des envois"
+
+msgid "Status"
+msgstr "Statut"
 
 msgid "Submission Deleted"
 msgstr "Soumission supprimée"

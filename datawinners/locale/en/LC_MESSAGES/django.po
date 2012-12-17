@@ -569,6 +569,9 @@ msgstr ""
 msgid "successful"
 msgstr ""
 
+msgid "Successful"
+msgstr ""
+
 msgid "error"
 msgstr ""
 
@@ -976,6 +979,9 @@ msgid "Date Received"
 msgstr ""
 
 msgid "Submission Status"
+msgstr ""
+
+msgid "Status"
 msgstr ""
 
 msgid "Deleted Record"
