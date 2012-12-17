@@ -4,6 +4,28 @@ function prepare_mangrove_env {
 	(cd $MGROOT_DIR && pip install -r requirements.pip && python setup.py develop)
 }
 
+function prepare_datawinner_log {
+	sudo mkdir /var/log/datawinners
+	sudo chmod 755 /var/log/datawinners
+	sudo touch /var/log/datawinners/datawinners.log
+	sudo touch /var/log/datawinners/datawinners-performance.log
+	sudo touch /var/log/datawinners/datawinners_reminders.log
+	sudo touch /var/log/datawinners/datawinners_xform.log
+	sudo touch /var/log/datawinners/websubmission.log
+	sudo touch /var/log/datawinners/sp-submission.log
+	sudo chown $USER /var/log/datawinners/datawinners.log
+	sudo chown $USER /var/log/datawinners/datawinners-performance.log
+	sudo chown $USER /var/log/datawinners/datawinners_reminders.log
+	sudo chown $USER /var/log/datawinners/datawinners_xform.log
+	sudo chown $USER /var/log/datawinners/websubmission.log
+	sudo chown $USER /var/log/datawinners/sp-submission.log
+}
+
+function patch_postgresql {
+	cd $HOME/virtual_env/datawinner/lib/python2.7/site-packages/django
+	patch -p1 < $DWROOT_DIR/postgis-adapter-2.patch
+}
+
 function prepare_datawinner_env {
         cp "$DWROOT_DIR/datawinners/local_settings_example.py" "$DWROOT_DIR/datawinners/local_settings.py"
  	pip install -r requirements.pip
@@ -21,7 +43,7 @@ function pre_commit {
 }
 
 function prepare_env {
-  	update_source && prepare_mangrove_env && prepare_datawinner_env 
+  	prepare_datawinner_log && update_source && prepare_mangrove_env && prepare_datawinner_env && patch_postgresql
 }
 
 function restore_couchdb_and_postgres {
