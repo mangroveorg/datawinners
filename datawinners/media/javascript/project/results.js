@@ -83,12 +83,11 @@ $(document).ready(function () {
 
     var dataBinding = function (data, destroy, retrive, emptyTableText) {
         $dataTable = $('.submission_table').dataTable({
-//            "aaSorting":default_sort_order,
             "bDestroy":destroy,
             "bRetrieve":retrive,
             "sPaginationType":"full_numbers",
             "aaData":data,
-//            "bSort":true,
+            "bSort":false,
             "oLanguage":{
                 "sProcessing":gettext("Processing..."),
                 "sLengthMenu":gettext("Show _MENU_ Submissions"),

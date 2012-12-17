@@ -1,0 +1,7 @@
+#submission_logs tr, #submission_logs td {
+  background: none; }
+#submission_logs #tabs.ui-widget-content {
+  border: none;
+  background: none;
+  color: #fff;
+  font: 13px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
