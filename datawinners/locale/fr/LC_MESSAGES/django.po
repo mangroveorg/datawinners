@@ -3905,6 +3905,15 @@ msgstr "A enlevé un expéditeur à un projet"
 msgid "Data Submissions"
 msgstr "Soumissions de données"
 
+msgid "Deleted Submissions"
+msgstr "Soumissions supprimées"
+
+msgid "No deleted Submissions."
+msgstr "Aucune Soumission supprimée."
+
+msgid "View deleted Submissions for this project."
+msgstr "Voir les Soumissions supprimées pour ce projet."
+
 msgid "Deleted Data Submission(s)"
 msgstr "A supprimé une/des soumission(s) de données"
 

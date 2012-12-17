@@ -1,9 +1,12 @@
 $(document).ready(function () {
-    $("#tabs").tabs();
+    var $no_submission_hint = $('.help_no_submissions');
+    var $page_hint = $('#page_hint');
+    $("#tabs").tabs().find('>ul>li>a').click(function(){
+        load_data($(this).parent().index());
+    });
 
-    $('#delete_submission_warning_dialog').hide()
+    $('#delete_submission_warning_dialog').hide();
 
-    var help_no_submission = $('#help_no_submissions').html();
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
 
@@ -75,18 +78,17 @@ $(document).ready(function () {
     };
 
     var wrap_table = function () {
-        $("#data_table").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
+        $(".submission_table").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
     };
 
     var dataBinding = function (data, destroy, retrive, emptyTableText) {
-        $dataTable = $('#data_table').dataTable({
-            "aaSorting":default_sort_order,
-//            "aoColumns":buildColumnTypes(),
+        $dataTable = $('.submission_table').dataTable({
+//            "aaSorting":default_sort_order,
             "bDestroy":destroy,
             "bRetrieve":retrive,
             "sPaginationType":"full_numbers",
             "aaData":data,
-            "bSort":true,
+//            "bSort":true,
             "oLanguage":{
                 "sProcessing":gettext("Processing..."),
                 "sLengthMenu":gettext("Show _MENU_ Submissions"),
@@ -112,20 +114,14 @@ $(document).ready(function () {
         });
     };
 
-    function buildColumnTypes() {
-        return $(header_type_list).map(function (index, value) {
-            var column_name = header_name_list[index];
-            return (value && column_name == gettext("Submission Date")) ? { "sType":value} : {"sType":"string"};
-        });
-    }
+    function load_data(active_tab_index) {
+        var index = (active_tab_index || 0) + 1;
+        $page_hint.find('>div:nth-child(' + index + ')').show().siblings().hide();
 
-    ;
-
-    function init_page() {
-        dataBinding(initial_data, false, true, help_no_submission);
+        var emptyTableText = $no_submission_hint.find('>div:nth-child(' + index + ')').html();
+        dataBinding(initial_data, true, false, emptyTableText);
         wrap_table();
     }
-
-    init_page();
+    load_data();
 });
 

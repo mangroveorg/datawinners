@@ -97,24 +97,17 @@
             <option value="1">{% trans "Delete" %}</option>
         </select>
     </div>
-    <div id="sms_results" class="grid_23 alpha margin_top_20">
+    <div id="submission_logs" class="grid_23 alpha margin_top_20">
         <div id="tabs">
             <ul>
-                <li><a href="#tab-all">{% trans 'All' %}</a></li>
-                <li><a href="#tab-success">{% trans 'Success' %}</a></li>
-                <li><a href="#tab-errors">{% trans 'Errors' %}</a></li>
-                <li style="float:right"><a href="#tab-deleted">{% trans 'Delete' %}</a></li>
+                <li><a href="#tab_template">{% trans 'All' %}</a></li>
+                <li><a href="#tab_template">{% trans 'Success' %}</a></li>
+                <li><a href="#tab_template">{% trans 'Errors' %}</a></li>
+                <li style="float:right"><a href="#tab_template">{% trans 'Deleted Submissions' %}</a></li>
             </ul>
-            <div id="tab-all" style="padding: 0;">
-                <div id="results">
-                    <div id="submission_table">
-                        {% include 'project/log_table.html' %}
-                    </div>
-                </div>
+            <div id="tab_template" style="padding: 0px;">
+                {% include 'project/log_table.html' %}
             </div>
-            <div id="tab-success">successful data goes here</div>
-            <div id="tab-errors" >errors data goes here</div>
-            <div id="tab-deleted" >deleted data goes here</div>
         </div>
 
     </div>

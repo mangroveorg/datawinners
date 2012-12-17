@@ -62,7 +62,7 @@ table.styled_table {
     table.styled_table thead th {
       color: #FFFFFF;
       font-size: 15px;
-      text-align: left;
+      text-align: center;
       vertical-align: middle; }
 
 table.error_table td {

@@ -3814,6 +3814,15 @@ msgstr ""
 msgid "Deleted Data Submission(s)"
 msgstr ""
 
+msgid "Deleted Submissions"
+msgstr ""
+
+msgid "View deleted Submissions for this project."
+msgstr ""
+
+msgid "No deleted Submissions."
+msgstr ""
+
 msgid "Activated Reminders"
 msgstr ""
 

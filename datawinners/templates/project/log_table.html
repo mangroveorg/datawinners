@@ -1,13 +1,15 @@
 {% load i18n %}
 
-<div class="view_data_block grid_23 alpha">
-    <div style="width: 100%;float: left;">
-        <div class="grid_12 show_data_block alpha" id="dataTables_info"></div>
-    </div>
+{% block page_hint %}
+    {% include "project/submission_page_hint.html" %}
+{% endblock %}
+
+<div class="margin_top_10 margin_bottom_10 grid_23 alpha">
+    <div class="grid_23 show_data_block alpha" id="dataTables_info"></div>
 </div>
 
 <div class="grid_23 alpha omega data_block" style="width: 100%">
-    <table id="data_table" class="styled_table">
+    <table class="submission_table styled_table">
         <thead>
         <tr>
             {% for each in header_list %}
@@ -19,6 +21,7 @@
         </thead>
     </table>
 </div>
+
 {% block help_no_submissions %}
-    {% include 'project/help_no_submission.html' %}
+    {% include "project/help_no_submission_log.html" %}
 {% endblock %}

@@ -8,7 +8,7 @@ from time import sleep
 import urllib2
 import jsonpickle
 
-DB_NAME = "stability_test"
+DB_NAME = "hni_crs-stock_jhw14178"
 
 doc='''{
     "status": true,
@@ -18,25 +18,23 @@ doc='''{
     "created": "2012-12-08T15:03:38.357206+00:00",
     "error_message": "",
     "modified": "2012-11-16T15:03:38.527112+00:00",
-    "form_code": "ntd",
-    "source": "100000",
+    "form_code": "cli001",
+    "source": "0000000000",
     "values": {
-        "q1": "sch104",
-        "q2": "11.2012",
-        "q3": "450",
-        "q4": "385",
-        "q5": "448",
-        "q6": "384",
-        "q7": "25",
-        "q8": "30",
-        "q9": "200",
-        "q10": "52"
+       "eid": "cli12",
+       "na": "annita",
+       "fa": "90",
+       "rd": "07.11.2010",
+       "bg": "b",
+       "sy": "bbe",
+       "gps": "45.233 28.3324",
+       "EID": "cli12"
     },
     "test": true,
     "data_record_id": "cd2974b42ffe11e2b4b4fefdb24fb922",
     "submitted_on": "2012-11-16T15:03:38.357238+00:00",
-    "void": false,
-    "channel": "script"
+    "void": true,
+    "channel": "sms"
 }'''
 
 def _get_doc_count():
@@ -73,7 +71,7 @@ def verify():
 
 def run(db_name):
     print str(datetime.utcnow()) + 'inject data:'
-    for i in range(500):
+    for i in range(10):
         stdout.write(".")
         stdout.flush()
         commands.getoutput('''curl -i -d '%s' -X POST -H "Content-Type: application/json" http://localhost:5984/%s/_bulk_docs ''' % (data, db_name))
@@ -81,10 +79,12 @@ def run(db_name):
 def go():
     while True:
         run(DB_NAME)
-        verify()
+#        verify()
+        exit()
         sleep(30)
 
 data = '{"docs":[%s]}' % ','.join([doc]*100)
 commands.getoutput("curl -X PUT http://localhost:5984/%s" % DB_NAME)
 
 go()
+
