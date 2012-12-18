@@ -86,7 +86,7 @@ TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 SUBMISSION_ROUTER = {
     "all": undeleted_submissions,
-    "success": undeleted_submissions,
+    "success": successful_submissions,
     "error": undeleted_submissions,
     "deleted": deleted_submissions
 }

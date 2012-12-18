@@ -45,12 +45,6 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page = data_page.navigate_to_all_data_record_page()
         return submission_log_page
 
-    @attr('functional_test', 'smoke')
-    def test_verify_successful_sms_submission_log(self):
-        submission_log_page = self.prerequisites_of_submission_log(VALID_DATA2)
-        self.assertRegexpMatches(submission_log_page.get_submission_message(SMS_DATA_LOG),
-                                 fetch_(SMS_SUBMISSION, from_(SMS_DATA_LOG)))
-
     @attr('functional_test')
     def test_should_show_warning_when_deleting_records(self):
         submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)

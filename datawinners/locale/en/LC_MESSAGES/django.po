@@ -3823,6 +3823,9 @@ msgstr ""
 msgid "Deleted Submissions"
 msgstr ""
 
+msgid "View and manage successfully sent in Submissions for this project. Go to the Analysis Page to analyze your successful submissions."
+msgstr ""
+
 msgid "View deleted Submissions for this project."
 msgstr ""
 

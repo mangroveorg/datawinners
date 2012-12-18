@@ -1,11 +1,9 @@
 $(document).ready(function() {
-    $(".help_accordion .show_link").click(function() {
-        $(this).parent().find(".details").show();
-        $(this).hide();
+    $("#container_content").delegate('.show_link', 'click', function() {
+        $(this).parent().find(".details").show().end().end().hide();
     });
 
-    $(".help_accordion .hide_link").click(function() {
-        $(this).parent().hide();
-        $(this).parent().parent().find(".show_link").show();
+    $("#container_content").delegate('.hide_link', 'click', function() {
+        $(this).parent().hide().parents('.help_accordion').find(".show_link").show();
     });
 })

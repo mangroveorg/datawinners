@@ -3920,6 +3920,9 @@ msgstr "Aucune Soumission supprimée."
 msgid "View deleted Submissions for this project."
 msgstr "Voir les Soumissions supprimées pour ce projet."
 
+msgid "View and manage successfully sent in Submissions for this project. Go to the Analysis Page to analyze your successful submissions."
+msgstr "Voir et gérer toutes les Soumissions envoyées avec succès."
+
 msgid "Deleted Data Submission(s)"
 msgstr "A supprimé une/des soumission(s) de données"
 

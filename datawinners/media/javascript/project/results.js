@@ -4,7 +4,6 @@ $(document).ready(function () {
     var $page_hint = $('#page_hint');
     var tab = ["all", "success", "error", "deleted"];
     var active_tab_index;
-
     $("#tabs").tabs().find('>ul>li>a').click(function(){
         var tab_index = $(this).parent().index();
         if (active_tab_index != tab_index) {
@@ -60,7 +59,7 @@ $(document).ready(function () {
     function show_data(active_tab_index, data) {
         var index = (active_tab_index || 0) + 1;
         $page_hint.find('>div:nth-child(' + index + ')').show().siblings().hide();
-        var emptyTableText = $no_submission_hint.find('>div:nth-child(' + index + ')').html();
+        var emptyTableText = $no_submission_hint.filter(':eq(' + active_tab_index + ')').clone(true).html();
         dataBinding(data, true, false, emptyTableText);
         wrap_table();
     }
