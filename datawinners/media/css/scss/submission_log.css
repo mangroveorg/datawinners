@@ -20,3 +20,5 @@
 #submission_logs #page_hint div:first-child {
     display: block;
 }
+#submission_logs tbody td:first-child{
+  min-width: 15px !important;}

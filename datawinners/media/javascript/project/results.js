@@ -1,4 +1,14 @@
 $(document).ready(function () {
+    $.ajaxSetup({ cache: false });
+    DW.get_ids = function(){
+        var ids = [];
+        $(".selected_submissions:checked").each(function(){
+            if($(this).val()!="None"){
+                ids.push($(this).val());
+            }
+        });
+        return ids;
+    }
     $(document).ajaxStop($.unblockUI);
     var $no_submission_hint = $('.help_no_submissions');
     var $page_hint = $('#page_hint');
@@ -67,5 +77,71 @@ $(document).ready(function () {
     var wrap_table = function () {
         $(".submission_table").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
     };
+
+    //Checkbox on/off functionality
+    $("#master_checkbox").live("click", function(){
+        var status = $(this).attr('checked');
+        $(".selected_submissions").each(function(){
+            $(this).attr("checked", status);
+        });
+
+    });
+
+    $('#action').change(function(){
+        var ids = DW.get_ids();
+        if($(".selected_submissions:checked").length == 0){
+            $("#message_text").html("<div class='message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
+            $('#action>option:first').attr('selected', 'selected');
+        }
+        else{
+
+            if(ids.length==0){
+                $("#message_text").html("<div class='message message-box'>" + gettext("This data has already been deleted") + "</div>");
+                $('#action>option:first').attr('selected', 'selected');
+            }
+            else{
+                DW.delete_submission_warning_dialog.show_warning();
+                DW.delete_submission_warning_dialog.ids = ids;
+            }
+        }
+    });
+    var kwargs = {container:"#delete_submission_warning_dialog",
+        continue_handler:function () {
+            var ids = this.ids;
+            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+            $.ajax({
+                type: 'POST',
+                url: window.location.pathname + "?rand="+ new Date().getTime(),
+                data:  {'id_list': JSON.stringify(ids), 'page_number':DW.current_page},
+                success:function(response) {
+                    var data = JSON.parse(response);
+                    if (data.success) {
+                        $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
+                        fetch_data(0);
+                    } else {
+                        $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
+                    }
+                    $("#message_text .message").delay(5000).fadeOut();
+                    $('#action>option:first').attr('selected', 'selected');
+                    $.unblockUI();
+                },
+                error: function(e) {
+                    $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
+                    $("#action").val("0");
+                    $.unblockUI();
+                }
+            });
+            return false;
+        },
+        title:gettext("Your Submission(s) will be deleted"),
+        cancel_handler:function () {
+            $('#action>option:first').attr('selected', 'selected');
+        },
+        height:150,
+        width:550
+    }
+
+    DW.delete_submission_warning_dialog = new DW.warning_dialog(kwargs);
+
 });
 

@@ -65,8 +65,9 @@ from project.filters import   KeywordFilter
 from project.helper import is_project_exist
 from project.submission_analyzer import SubmissionAnalyzer
 from project.submission_utils.submission_filter import SubmissionFilter
-from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
-    REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
+from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
+    REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT, \
+    DELETED_DATA_SUBMISSION
 from project.submission_utils.submission_formatter import SubmissionFormatter
 from questionnaire.questionnaire_builder import QuestionnaireBuilder
 
@@ -261,7 +262,7 @@ def project_overview(request, project_id=None):
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
         'questionnaire_code': questionnaire_code,
-    }))
+        }))
 
 
 def delete_submissions_by_ids(manager, request, submission_ids):
@@ -293,7 +294,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
 
     submissions = _get_submissions_by_type(request.GET, manager, form_model)
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
-    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), with_status=True).analyse()
+    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), with_status=True, with_checkbox=True).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
@@ -307,8 +308,29 @@ def project_results(request, project_id=None, questionnaire_code=None):
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
+        if "id_list" in request.POST:
+            project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
+            return HttpResponse(_handle_delete_submissions(manager, request, project_infos.get("project").name))
         return HttpResponse(encode_json({'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result}))
 
+def _handle_delete_submissions(manager, request, project_name):
+    submission_ids = json.loads(request.POST.get('id_list'))
+    received_times = delete_submissions_by_ids(manager, request, submission_ids)
+    if len(received_times):
+        UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=project_name,
+            detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
+        return encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
+    return encode_json({'error_message': ugettext("No records deleted"), 'success': False})
+
+def delete_submissions_by_ids(manager, request, submission_ids):
+    received_times = []
+    for submission_id in submission_ids:
+        submission = Submission.get(manager, submission_id)
+        received_times.append(datetime.datetime.strftime(submission.created, "%d/%m/%Y %X"))
+        submission.void()
+        if submission.data_record:
+            ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
+    return received_times
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET
@@ -361,13 +383,13 @@ def composite_analysis_result(analysis_result):
     analysis_result.analyze_meta_info()
 
     return {"datasender_list": analysis_result.datasender_list,
-                       "default_sort_order": repr(encode_json(analysis_result.default_sort_order)),
-                       "header_list": analysis_result.header_list,
-                       "header_name_list": repr(encode_json(analysis_result.header_list)),
-                       "header_type_list": repr(encode_json(analysis_result.header_type_list)),
-                       "subject_list": analysis_result.subject_list,
-                       "data_list": repr(encode_json(analysis_result.field_values)),
-                       "statistics_result": repr(encode_json(analysis_result.statistics_result))}
+            "default_sort_order": repr(encode_json(analysis_result.default_sort_order)),
+            "header_list": analysis_result.header_list,
+            "header_name_list": repr(encode_json(analysis_result.header_list)),
+            "header_type_list": repr(encode_json(analysis_result.header_type_list)),
+            "subject_list": analysis_result.subject_list,
+            "data_list": repr(encode_json(analysis_result.field_values)),
+            "statistics_result": repr(encode_json(analysis_result.statistics_result))}
 
 
 @timebox
@@ -400,12 +422,12 @@ def project_info(request, manager, form_model, project_id, questionnaire_code):
     is_monthly_reporting = rp_field.date_format.find('dd') < 0 if has_rp else False
 
     return {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
-                    "is_monthly_reporting": is_monthly_reporting, "entity_type": form_model.entity_type[0].capitalize(),
-                    'project_links': (make_project_links(project, questionnaire_code)), 'project': project,
-                    'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
-                    'reporting_period_question_text': rp_field.label if has_rp else None,
-                    'has_reporting_period': has_rp,
-                    'is_summary_report': is_summary_report}
+            "is_monthly_reporting": is_monthly_reporting, "entity_type": form_model.entity_type[0].capitalize(),
+            'project_links': (make_project_links(project, questionnaire_code)), 'project': project,
+            'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
+            'reporting_period_question_text': rp_field.label if has_rp else None,
+            'has_reporting_period': has_rp,
+            'is_summary_report': is_summary_report}
 
 @login_required(login_url='/login')
 @session_not_expired
@@ -417,8 +439,8 @@ def project_data(request, project_id=None, questionnaire_code=None):
 
     if request.method == "GET":
         return render_to_response('project/data_analysis.html',
-                analysis_result,
-                context_instance=RequestContext(request))
+            analysis_result,
+            context_instance=RequestContext(request))
 
     elif request.method == "POST":
         return HttpResponse(analysis_result)
@@ -761,8 +783,8 @@ def registered_datasenders(request, project_id=None):
             sender["is_user"] = False
             if len(user_profile) > 0:
                 datasender_user_groups = list(user_profile[0].user.groups.values_list('name', flat=True))
-                if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
-                    or "Read Only Users" in datasender_user_groups:
+                if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups\
+                or "Read Only Users" in datasender_user_groups:
                     sender["is_user"] = True
                 sender['email'] = user_profile[0].user.email
                 sender['devices'] = "SMS,Web,Smartphone"
@@ -867,12 +889,12 @@ def questionnaire(request, project_id=None):
         project_links = make_project_links(project, form_model.form_code)
         in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/questionnaire.html',
-            {"existing_questions": repr(existing_questions),
-             'questionnaire_code': form_model.form_code,
-             'project': project,
-             'project_links': project_links,
-             'in_trial_mode': in_trial_mode,
-             'preview_links': get_preview_and_instruction_links_for_questionnaire()},
+                {"existing_questions": repr(existing_questions),
+                 'questionnaire_code': form_model.form_code,
+                 'project': project,
+                 'project_links': project_links,
+                 'in_trial_mode': in_trial_mode,
+                 'preview_links': get_preview_and_instruction_links_for_questionnaire()},
             context_instance=RequestContext(request))
 
 
@@ -1055,8 +1077,8 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
 def _get_preview_for_field_in_registration_questionnaire(field, language):
     preview = {"description": field.label, "code": field.code, "type": field.type,
                "instruction": field.instruction}
-    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
-        [(option["text"], option["val"]) for option in field.options]
+    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else\
+    [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
     return preview
 

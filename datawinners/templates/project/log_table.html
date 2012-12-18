@@ -1,5 +1,9 @@
 {% load i18n %}
-
+<div id="message_text">
+    {% if  success_message  %}
+        <div class="success-message-box">{{ success_message }}</div>
+    {% endif %}
+</div>
 {% block page_hint %}
     {% include "project/submission_page_hint.html" %}
 {% endblock %}
@@ -12,6 +16,7 @@
     <table class="submission_table styled_table">
         <thead>
         <tr>
+            <th><input type="checkbox" id="master_checkbox"/></th>
             {% for each in header_list %}
                 <th>
                     {{ each }}

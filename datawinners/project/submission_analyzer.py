@@ -20,9 +20,10 @@ NULL = '--'
 field_enhancer.enhance()
 
 class SubmissionAnalyzer(object):
-    def __init__(self, form_model, manager, user, submissions, keyword=None, with_status=False):
+    def __init__(self, form_model, manager, user, submissions, keyword=None, with_status=False, with_checkbox=False):
         assert isinstance(form_model, FormModel)
 
+        self._with_checkbox = with_checkbox
         self.manager = manager
         self.form_model = form_model
         self.with_status = with_status
@@ -72,6 +73,8 @@ class SubmissionAnalyzer(object):
         if not self._raw_values: return []
 
         field_header = self.header_class(self.form_model).get()[0][self.leading_part_length:]
+        if self._with_checkbox:
+            field_header = [""] + field_header
         result = self._init_statistics_result()
         for row in self._raw_values:
             for idx, question_values in enumerate(row[self.leading_part_length:]):
@@ -116,6 +119,8 @@ class SubmissionAnalyzer(object):
             row.append(data_sender)
             row = self._update_leading_part_for_rp(row, submission)
             row = self._update_leading_part_for_project_type(row, submission)
+            if self._with_checkbox:
+                row = self._add_checkbox(row, submission.id)
             leading_part.append(row)
 
         return leading_part
@@ -187,3 +192,6 @@ class SubmissionAnalyzer(object):
                 for option in each.options:
                     result[each.name]['choices'][option['text']] = 0
         return result
+
+    def _add_checkbox(self, row, id):
+        return ["<input type=\"checkbox\" value=\"%s\" class=\"selected_submissions\"/>" % id] + row
