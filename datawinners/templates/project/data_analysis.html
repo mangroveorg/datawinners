@@ -98,18 +98,7 @@
             <li><a href="#" id="export_link">{% trans "Export" %}</a></li>
         </ul>
     </div>
-    <div class="heading_block alpha data_ana">
-        <h3>{% trans "Analysis" %}</h3>
-
-        <p class="help_accordion">
-            {% trans 'Analyze your successful submissions' %}
-        </p>
-        <!--[if IE 7]>
-            <div class="float_right" style="display: inline-block; width: 1px; height: 1px;"></div>
-            <![endif]-->
-
-    </div>
-
+    {% include 'project/partials/_page_header.html' with title='Analysis' help_message='Analyze your successful submissions' %}
     <form id="export_form" action="/project/export/data" method='POST'>
         {% csrf_token %}
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
@@ -125,89 +114,12 @@
     </form>
     <div class="heading_block clearfix margin_bottom_10">
         <div id="filter_section" class="alpha data_ana float_left">
-            <div class="{% if is_summary_report %} none {% endif %} float_left">
-                <div class="filter_label" for="subjectSelect">
-                    <label class="full_width">{{ entity_type }}</label>
-                </div>
-                <div class="float_left ">
-                    <select multiple="multiple" id="subjectSelect">
-                        {%  for name, id in subject_list %}
-                            <option value="{{ name }}" code='{{ id }}'>{{ name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="{% if not has_reporting_period %} none {% endif %} float_left date_filter">
-                <div class="filter_label">
-                    {% if is_monthly_reporting %} <label>{% trans "Monthly Reporting Period" %}</label>
-                        {% else %}<label>{% trans "Daily Reporting Period" %}</label>
-                    {% endif %}
-                    <img id="img_tt" src="/media/images/help_icon.png" class="help_icon">
-
-                    <div class="tooltip"><p>
-                        <strong>{% trans "What is this?" %}</strong><br/>
-                        {% trans "q_tooltip_report_period_h" %}
-                        {{ reporting_period_question_text }}
-                        {% trans "q_tooltip_report_period_t" %}
-                        <br/><br/>
-                        <strong>{% trans "What do I need to do?" %}</strong><br/>
-                        {% trans "r_tooltip_report_period" %}
-                    </p></div>
-                </div>
-                <div class="float_left">
-                    <input type="text" readonly="true" id="reportingPeriodPicker" class="datepicker" data-ismonthly="{% if is_monthly_reporting %}true{% endif %}" value="{% trans "All Periods" %}"/>
-                    <span class="dateErrorDiv" class="error_arrow"></span>
-                    <div id="month_date_picker_div"></div>
-                </div>
-            </div>
-            <div class="float_left date_filter">
-                <div class="filter_label">
-                    <label>{% trans "Submission Date" %}</label>
-                    <img src="/media/images/help_icon.png" class="help_icon">
-
-                    <div class="tooltip"><p>
-                        <strong>{% trans "What is this?" %}</strong><br/>
-                        {% trans "q_tooltip_submission_date" %}
-                        <br/><br/>
-                        {% if has_reporting_period %}
-                            {% trans "q_tooltip_submission_date_next" %}
-                            <br/><br/>
-                        {% endif %}
-                        <strong>{% trans "What do I need to do?" %}</strong><br/>
-                        {% trans "r_tooltip_submission_date" %}
-                    </p></div>
-                </div>
-                <div class="float_left">
-                    <input type="text" readonly="true" id="submissionDatePicker" class="datepicker" value="{% trans "All Dates" %}"/>
-                    <span class="dateErrorDiv" class="error_arrow"></span>
-                </div>
-            </div>
-            <div class="float_left">
-                <div class="filter_label" for="dataSenderSelect">
-                    <label class="full_width">{% trans "Data Sender" %}</label>
-                </div>
-                <div class="float_left ">
-                    <select multiple="multiple" id="dataSenderSelect">
-                        {%  for name, id, source in datasender_list %}
-                            <option value="{{ name }}" code="{{ id }}" data="{{ source }}">{{ name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="float_left" id="keyword_input_container">
-                <div class="filter_label">
-                    <label>{% trans "Search for Keyword" %}</label>
-                </div>
-                <div class="float_left ">
-                    <input id="keyword" class="filter-input" value="" type="text"/>
-                </div>
-            </div>
-            <div class="float_left margin_top0" id="go_button_container">
-                <div class="filter_label clearfix">
-                    <label>&nbsp;&nbsp;</label>
-                </div>
-                <input type="button" class="margin_top0 button_blue" id="go" value="{% trans 'Go' %}"/>
-            </div>
+            {% include 'project/partials/_filter_by_subject.html' %}
+            {% include 'project/partials/_filter_by_reporting_period.html' %}
+            {% include 'project/partials/_filter_by_submission_date.html' %}
+            {% include 'project/partials/_filter_by_data_sender.html' %}
+            {% include 'project/partials/_filter_by_keyword.html' %}
+            {% include 'project/partials/_filter_button_container.html' %}
         </div>
 
         <!--[if IE 7]>

@@ -82,16 +82,20 @@
             <li><a href="#" class="null_border disable_link">{% trans "e-mail" %}</a> </li>
         </ul>
     </div>
-    <div class="heading_block grid_23 alpha data_ana">
-        <h3 class="grid_10">{% trans "Results" %}</h3>
-    </div>
-    <div class="heading_block grid_23 alpha data_ana">
-        <div class="date_range_box full_width">
-            <label>{% trans "Show data for:" %}</label>
-            <input type="text" id="dateRangePicker" value="{% trans 'Click to select a date range' %}" style="width: 240px;"/>
-            <input type="button" id="go" value="{% trans 'Filter' %}" class="margin_top_null button_blue"/>
-            <input id="questionnaire_id" type="hidden" value="{{ questionnaire_code }}"/>
+    {% include 'project/partials/_page_header.html' with title="Results" %}
+    <div class="heading_block clearfix margin_bottom_10">
+        <div id="filter_section" class="alpha data_ana float_left">
+            {% include 'project/partials/_filter_by_subject.html' %}
+            {% include 'project/partials/_filter_by_reporting_period.html' %}
+            {% include 'project/partials/_filter_by_submission_date.html' %}
+            {% include 'project/partials/_filter_by_data_sender.html' %}
+            {% include 'project/partials/_filter_by_keyword.html' %}
+            {% include 'project/partials/_filter_button_container.html' %}
         </div>
+
+        <!--[if IE 7]>
+            <div class="float_right"></div>
+        <![endif]-->
     </div>
     <div id="submission_logs" class="grid_23 alpha margin_top_20">
         <div id="tabs">
