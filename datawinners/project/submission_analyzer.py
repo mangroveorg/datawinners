@@ -7,7 +7,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import SelectField
 from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import is_sequence
-from project.Header import Header, AllSubmissionsHeader
+from project.Header import Header, SubmissionsPageHeader
 from project.analysis_result import AnalysisResult
 from project.filters import KeywordFilter
 from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
@@ -20,16 +20,14 @@ NULL = '--'
 field_enhancer.enhance()
 
 class SubmissionAnalyzer(object):
-    def __init__(self, form_model, manager, user, submissions, keyword=None, with_status=False, with_checkbox=False):
-        assert isinstance(form_model, FormModel)
 
+    def __init__(self, form_model, manager, user, submissions, keyword=None, is_for_submission_page=False, with_checkbox=False):
+        assert isinstance(form_model, FormModel)
         self._with_checkbox = with_checkbox
+        self.header_class = SubmissionsPageHeader if is_for_submission_page else Header
         self.manager = manager
         self.form_model = form_model
-        self.with_status = with_status
-
         self.user = user
-
         self.submissions = submissions
         self._data_senders = []
         self._subject_list = []
@@ -38,7 +36,6 @@ class SubmissionAnalyzer(object):
         self.filtered_leading_part = []
         self._init_raw_values()
 
-        self.header_class = AllSubmissionsHeader if with_status else Header
 
     def analyse(self):
         header = self.header_class(self.form_model)
@@ -72,7 +69,7 @@ class SubmissionAnalyzer(object):
     def get_analysis_statistics(self):
         if not self._raw_values: return []
 
-        field_header = self.header_class(self.form_model).get()[0][self.leading_part_length:]
+        field_header = self.header_class(self.form_model).header_list[self.leading_part_length:]
         if self._with_checkbox:
             field_header = [""] + field_header
         result = self._init_statistics_result()
@@ -107,20 +104,23 @@ class SubmissionAnalyzer(object):
             self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in
                                           self._raw_values]
 
+    def _get_leading_part_for_analysis_page(self, submission):
+        data_sender = self._get_data_sender(submission)
+        submission_date = _to_str(submission.created)
+        rp = self._get_rp_for_leading_part(submission)
+        subject = self._get_subject_for_leading_part(submission)
+        row = filter(lambda x: x, [subject, rp, submission_date, data_sender])
+        return row
+
     @timebox
     def _get_leading_part(self):
+
         leading_part = []
         for submission in self.submissions:
-            data_sender = self._get_data_sender(submission)
-            submission_date = _to_str(submission.created)
-            row = [submission_date]
-            if self.with_status:
-                row.append(self._get_translated_submission_status(submission.status))
-            row.append(data_sender)
-            row = self._update_leading_part_for_rp(row, submission)
-            row = self._update_leading_part_for_project_type(row, submission)
-            if self._with_checkbox:
-                row = self._add_checkbox(row, submission.id)
+            if self.header_class == Header:
+                row = self._get_leading_part_for_analysis_page(submission)
+            else:
+                row = self._get_leading_part_for_submission_page(submission)
             leading_part.append(row)
 
         return leading_part
@@ -163,19 +163,19 @@ class SubmissionAnalyzer(object):
             self._subject_list.append(subject)
             return subject
 
-    def _update_leading_part_for_rp(self, row, submission):
+    def _get_rp_for_leading_part(self, submission):
         rp_field = self.form_model.event_time_question
         if rp_field:
             reporting_period = case_insensitive_lookup(rp_field.code, submission.values)
-            reporting_period = _to_str(reporting_period, rp_field)
-            return [reporting_period] + row
+            return _to_str(reporting_period, rp_field)
         else:
-            return row
+            return None
 
-    def _update_leading_part_for_project_type(self, row, submission):
-        if  self.form_model.entity_defaults_to_reporter(): return row
-        subject = self._get_subject(submission)
-        return [subject] + row
+    def _get_subject_for_leading_part(self, submission):
+        if  not self.form_model.entity_defaults_to_reporter():
+            return self._get_subject(submission)
+        else:
+            return None
 
     def _replace_option_with_real_answer_value(self, row):
         assert isinstance(row[-1], dict)
@@ -195,3 +195,12 @@ class SubmissionAnalyzer(object):
 
     def _add_checkbox(self, row, id):
         return ["<input type=\"checkbox\" value=\"%s\" class=\"selected_submissions\"/>" % id] + row
+
+    def _get_leading_part_for_submission_page(self, submission):
+        data_sender = self._get_data_sender(submission)
+        submission_date = _to_str(submission.created)
+        rp = self._get_rp_for_leading_part(submission)
+        subject = self._get_subject_for_leading_part(submission)
+        status = self._get_translated_submission_status(submission.status)
+        leading_col = ["<input type=\"checkbox\" value=\"%s\" class=\"selected_submissions\"/>" % id]
+        return filter(lambda x: x, [leading_col, data_sender, submission_date, status, rp, subject])

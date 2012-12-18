@@ -105,7 +105,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_raw_field_values_with_status_for_all_submissions(self):
-        analyzer = self._prepare_analyzer_with_one_submission(self.form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}, with_status=True)
+        analyzer = self._prepare_analyzer_with_one_submission(self.form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}, is_for_submission_page=True)
 
         with patch("project.submission_analyzer.get_data_sender") as get_data_sender, patch(
             "project.submission_analyzer.get_by_short_code") as get_by_short_code:
@@ -113,7 +113,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
             get_by_short_code.return_value = self._prepare_clinic_entity()
             analyzer._init_raw_values()
             raw_field_values = analyzer.get_raw_values()
-            expected = [[('Clinic-One', 'cli14'),  '01.01.2012', today, u'Error', ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+            expected = [[('name', 'id', 'from'), today, 'Error', '01.01.2012', ('Clinic-One', 'cli14'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_raw_field_values_filtered_by_keyword(self):
@@ -408,14 +408,14 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         entity._doc.data = {'name': {'value': 'Clinic-One'}}
         return entity
 
-    def _prepare_analyzer_with_one_submission(self, form_model, values, with_status=False):
+    def _prepare_analyzer_with_one_submission(self, form_model, values, is_for_submission_page=False):
         with patch("project.submission_analyzer.SubmissionAnalyzer._init_raw_values"):
             submission = Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
                 form_code=form_model.form_code,
                 values=values)
 
-            return SubmissionAnalyzer(form_model, self.manager, self.user, [submission], with_status=with_status)
+            return SubmissionAnalyzer(form_model, self.manager, self.user, [submission], is_for_submission_page=is_for_submission_page)
 
     def _prepare_analyzer(self, form_model, values_list, keywords=None):
         with patch("project.submission_analyzer.SubmissionAnalyzer._init_raw_values"):

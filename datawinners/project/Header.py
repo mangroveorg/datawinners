@@ -4,39 +4,51 @@ from project.helper import DEFAULT_DATE_FORMAT
 
 class Header(object):
     def __init__(self, form_model):
-        prefix = self._prefix()
-        prefix_types = [DEFAULT_DATE_FORMAT.lower(), '']
-        if form_model.event_time_question:
-            prefix = [ugettext("Reporting Period")] + prefix
-            prefix_types = [form_model.event_time_question.date_format] + prefix_types
-
-        if form_model.entity_type != ['reporter']:
-            prefix = [ugettext(form_model.entity_type[0]).capitalize()] + prefix
-            prefix_types = [''] + prefix_types
-
-        field_ = [(field.label, field.date_format if isinstance(field, DateField) else (
-                       "gps" if isinstance(field, GeoCodeField)  else "")) for field in form_model.fields[1:] if
-                                                                           not field.is_event_time_field]
-        self.leading = prefix + [each[0] for each in field_]
-        self.questions_type_list = prefix_types + [each[1] for each in field_]
-
-
-    def get(self):
-        return self.leading, self.questions_type_list
+        self._form_model = form_model
+        self._header_list, self._header_type_list = zip(*self._select_header())
 
     @property
     def header_list(self):
-        return self.leading
+        return self._header_list
 
     @property
     def header_type_list(self):
-        return self.questions_type_list
+        return self._header_type_list
+
+    def _select_header(self):
+        return filter(lambda each: each, self._prefix()) + self._fields_header()
 
     def _prefix(self):
-        return [ugettext("Submission Date"), ugettext("Data Sender")]
+        return [self._subject_header(), self._reporting_period_header(), self._submission_date_header(), self._data_sender_header()]
 
-class AllSubmissionsHeader(Header):
+    def _submission_date_header(self):
+        return ugettext("Submission Date"), DEFAULT_DATE_FORMAT.lower()
+
+    def _data_sender_header(self):
+        return ugettext("Data Sender"), ''
+
+    def _reporting_period_header(self):
+        rp_field = self._form_model.event_time_question
+        return (ugettext("Reporting Period"), rp_field.date_format) if rp_field else None
+
+    def _subject_header(self):
+        subject_type = self._form_model.entity_type[0]
+        return (ugettext(subject_type).capitalize(), '')  if subject_type != 'reporter' else None
+
+    def _fields_header(self):
+        return [(field.label, field.date_format if isinstance(field, DateField) else (
+            "gps" if isinstance(field, GeoCodeField)  else "")) for field in self._form_model.fields[1:] if
+                  not field.is_event_time_field]
+
+
+class SubmissionsPageHeader(Header):
+    def _status(self):
+        return ugettext('Status'), ''
+
     def _prefix(self):
-        return [ugettext("Submission Date"), ugettext('Status'), ugettext("Data Sender")]
+        return [self._data_sender_header(), self._submission_date_header(), self._status(), self._reporting_period_header(), self._subject_header()]
+
+
+
 
 
