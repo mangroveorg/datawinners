@@ -108,8 +108,8 @@ def data_export(request):
         context_instance=RequestContext(request))
 
 
-def is_crs_user(request):
-    return get_organization(request).org_id == CRS_ORG_ID and not request.user.get_profile().reporter
+def is_crs_user(request, or_reporter=False):
+    return get_organization(request).org_id == CRS_ORG_ID and (or_reporter or not request.user.get_profile().reporter)
 
 
 @login_required(login_url='/login')
@@ -158,7 +158,7 @@ def failed_submissions(request):
 @is_allowed_to_view_reports
 def reports(request):
     report_list = get_reports_list(get_organization(request).org_id, request.session.get('django_language', 'en'))
-    if is_crs_user(request):
+    if is_crs_user(request, or_reporter=True):
         response = render_to_response('alldata/reports_page.html',
                 {'reports': report_list, 'page_heading': "All Data", 'project_links': get_alldata_project_links(), 'is_crs_user': True},
             context_instance=RequestContext(request))
