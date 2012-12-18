@@ -9,7 +9,7 @@
     font: 13px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif;
 }
 
-#submission_logs #tabs.ui-widget-content a, #submission_logs #tabs.ui-widget-content a:hover {
+#submission_logs #tabs.ui-widget-content a:hover {
     color: #0070ac;
 }
 
@@ -20,5 +20,7 @@
 #submission_logs #page_hint div:first-child {
     display: block;
 }
-#submission_logs tbody td:first-child{
-  min-width: 15px !important;}
+
+#submission_logs tbody td:first-child {
+    min-width: 15px !important;
+}

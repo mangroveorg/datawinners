@@ -61,7 +61,7 @@ $(document).ready(function () {
                 },
                 "fnInfoCallback":null
             },
-            "sDom":'<"@dataTables_info"i>rtpl<"@dataTable_search">',
+            "sDom":'<"@dataTables_info"i>rtpl',
             "iDisplayLength":25
         });
     };
@@ -69,11 +69,10 @@ $(document).ready(function () {
     function show_data(active_tab_index, data) {
         var index = (active_tab_index || 0) + 1;
         $page_hint.find('>div:nth-child(' + index + ')').show().siblings().hide();
-        var emptyTableText = $no_submission_hint.filter(':eq(' + active_tab_index + ')').clone(true).html();
+        var emptyTableText = $no_submission_hint.filter(':eq(' + active_tab_index + ')').html();
         dataBinding(data, true, false, emptyTableText);
         wrap_table();
     }
-
     var wrap_table = function () {
         $(".submission_table").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
     };
