@@ -1,93 +1,83 @@
-First Install Steps:
-=====================
-
+Installation steps
+==================
 
 Requirements
--------------------
+------------
 
-* Python 2.7
-* Python headers (sudo apt-get install python-dev)
-* CouchDB (sudo apt-get install couchdb)
-* PostgreSQL (sudo apt-get install postgres)
-* Geometry Engine - Open Source (sudo apt-get install geos)
-* PostGIS (sudo apt-get install postgis)
-* Pip (easy_install pip)
-* VirtualEnv (pip install virtualenv)
-* [Optional] VirtualEnvWrapper (pip install virtualenvwrapper)
-* NumPy (pip install numpy)
-* Geospatial Data Abstraction Library (sudo apt-get install gdal)
+* ubuntu 11.10
+* python 2.7
 
-1. Create a virtualenv
---------------------
-virtualenv ve && source ve/bin/activate
+0. Setting up your environment
+------------------------------
+1. Increase your apt-cache size:
 
-    or with virtualenvwrapper
+sudo vi /etc/apt/apt.conf.d/70debconf
 
-mkvirtualenv mangrove
+then add this line:
 
-2. Install required python packages
---------------------
-pip install -r requirements.pip
+APT::Cache-Limit "100000000";
 
-3. Create local_settings.py
---------------------
-cp src/datawinners/local_settings_example.py src/datawinners/local_settings.py
+2. Make sure your user can sudo without password:
 
-4. Create Postgres DB
---------------------
-createdb geodjango
-createlang plpgsql geodjango
-psql -d geodjango -c 'create role jenkins login createdb createrole;'
-psql -d geodjango -f '/usr/local/Cellar/postgis/1.5.3/share/postgis/postgis.sql'
-psql -d geodjango -f '/usr/local/Cellar/postgis/1.5.3/share/postgis/spatial_ref_sys.sql'
-psql -d geodjango -c 'grant all privileges on all tables in schema public to jenkins;'
+sudo visudo
 
-5. Load Shape Files
---------------------
-Clone https://github.com/mangroveorg/shape_files.git as a sibling to mangrove
-python src/datawinners/manage.py syncdb
-python src/datawinners/manage.py migrate
-python src/datawinners/manage.py loadshapes
+Make sure you have this line:
 
-6. Make trans tag work
---------------------
-brew install gettext
-ln -s /usr/local/Cellar/gettext/0.18.1.1/bin/msgfmt .ve/bin/msgfmt(Notes, the virtual environment path)
-cd src/datawinners/
-python manage.py compilemessages
+%admin ALL=(ALL) NOPASSWD:ALL
 
-Test dependencies!
-=====================
+Save the file, exit vi.
 
-In order to properly run Django tests our database user will need
-permissions to create a new database. Here's how to do it:
+Make sure your user is in the "admin" group:
 
-psql -d postgres -c 'ALTER ROLE jenkins WITH CREATEDB;'
+(datawinner)user@host:~/workspace/datawinners$ groups
+vagrant adm dialout cdrom plugdev lpadmin sambashare admin
 
-Also, a template called template_postgis should be created. This might
-be part of your PostGIS installation, but you can also create it
-yourself by following the instructions at
-http://geospatial.nomad-labs.com/2006/12/24/postgis-template-database/
+1. Clone datawinners from git
+-----------------------------
+cd /tmp
+mkdir datawinners
+cd /tmp/datawinners
+git clone https://github.com/mangroveorg/datawinners.git
 
-To run functional tests you will either need a version of Firefox
-supported by Selenium (this generally means not the latest version) or
-you will need Google Chrome. For local development tests tend to run
-more reliably with Chrome.
+2. Install software, setup database and clone codebase from git
+---------------------------------------------------------------
+cd /tmp/datawinners
+./init_env_11.10.sh
 
-If you choose to do this you will also need to download chromedriver
-from http://code.google.com/p/chromium/downloads/list
+If you successfully complete this step, you should see the following directories:
 
-For best results put the chromedriver binary in your virtual
-environment's bin folder. You may also put it in /usr/local/bin or
-somewhere else in PATH. However, symlinking ve/bin/chromedriver =>
-/usr/local/bin/chromedriver doesn't seem to work.
+1. ~/virtual_env
+2. ~/workspace
 
-Run tests!
-=====================
+You no longer need /tmp/datawinners so let's get rid of that:
 
-./runtests.sh ut
-./runtests.sh ft
+rm -rf /tmp/datawinners
 
-Push to GitHub
-=====================
-And hopefully Jenkins will run tests, and they will pass.
+You should also see the alias "dw" appended to your ~/.bashrc. Logout, log back in and type "dw". Your prompt should look like:
+
+(datawinner)user@host:~$
+
+3. Setup environments and run tests
+-----------------------------------
+cd ~/workspace/datawinners
+./build.sh init
+
+This step sets up some log files, clones more git repos, installs dependencies and runs some tests.
+
+By the end of this step your django server should be listening on port 8000.
+
+If you hit ctrl-c to stop the server, some functional tests would run and fail. TODO: get rid of the functional tests and invoke them separately.
+
+4. Access your server
+---------------------
+You can now point your browser to http://localhost:8000/
+
+5. Run the server
+-----------------
+To start the server again in the future:
+
+cd ~/workspace/datawinners/datawinners
+python manage.py runserver 0.0.0.0:8000
+
+Happy coding!
+=============
