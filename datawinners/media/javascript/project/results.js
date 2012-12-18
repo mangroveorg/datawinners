@@ -104,6 +104,7 @@ $(document).ready(function () {
                 DW.delete_submission_warning_dialog.ids = ids;
             }
         }
+        $("#message_text .message").delay(5000).fadeOut();
     });
     var kwargs = {container:"#delete_submission_warning_dialog",
         continue_handler:function () {

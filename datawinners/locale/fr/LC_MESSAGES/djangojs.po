@@ -330,7 +330,7 @@ msgid "Day Can't be blank."
 msgstr "Le jour doit être saisi"
 
 msgid "Please select atleast one undeleted record"
-msgstr "Veuillez remplir au moins un champ de localité"
+msgstr "Veuillez sélectionner au moins une soumission non supprimée"
 
 msgid "This data has already been deleted"
 msgstr "Cet enregistrement a déja été supprimé"
