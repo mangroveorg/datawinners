@@ -87,17 +87,17 @@ $(document).ready(function () {
 
     });
 
-    $('#action').change(function(){
+    $('select.action').change(function(){
         var ids = DW.get_ids();
         if($(".selected_submissions:checked").length == 0){
             $("#message_text").html("<div class='message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
-            $('#action>option:first').attr('selected', 'selected');
+            $('select.action>option:first').attr('selected', 'selected');
         }
         else{
 
             if(ids.length==0){
                 $("#message_text").html("<div class='message message-box'>" + gettext("This data has already been deleted") + "</div>");
-                $('#action>option:first').attr('selected', 'selected');
+                $('select.action>option:first').attr('selected', 'selected');
             }
             else{
                 DW.delete_submission_warning_dialog.show_warning();
@@ -122,12 +122,12 @@ $(document).ready(function () {
                         $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
                     }
                     $("#message_text .message").delay(5000).fadeOut();
-                    $('#action>option:first').attr('selected', 'selected');
+                    $('select.action>option:first').attr('selected', 'selected');
                     $.unblockUI();
                 },
                 error: function(e) {
                     $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
-                    $("#action").val("0");
+                    $('select.action>option:first').attr('selected', 'selected');
                     $.unblockUI();
                 }
             });
@@ -135,7 +135,7 @@ $(document).ready(function () {
         },
         title:gettext("Your Submission(s) will be deleted"),
         cancel_handler:function () {
-            $('#action>option:first').attr('selected', 'selected');
+            $('select.action>option:first').attr('selected', 'selected');
         },
         height:150,
         width:550
