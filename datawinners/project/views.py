@@ -34,7 +34,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
 from mangrove.transport.facade import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.submissions import Submission, get_submissions, submission_count, successful_submissions, submissions_by_form_code, undeleted_submissions
+from mangrove.transport.submissions import Submission, get_submissions, submission_count, successful_submissions, submissions_by_form_code, undeleted_submissions, deleted_submissions
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
@@ -83,6 +83,13 @@ MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "p
 DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
+
+SUBMISSION_ROUTER = {
+    "all": undeleted_submissions,
+    "success": undeleted_submissions,
+    "error": undeleted_submissions,
+    "deleted": deleted_submissions
+}
 
 def make_project_links(project, questionnaire_code, reporter_id=None):
     project_id = project.id
@@ -272,6 +279,10 @@ def filter_by_keyword(keyword, raw_field_values):
     return KeywordFilter(keyword).filter(raw_field_values)
 
 
+def _get_submissions_by_type(params, manager, form_model):
+    return SUBMISSION_ROUTER.get(params.get('type', 'all'))(manager, form_model.form_code)
+
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
@@ -280,7 +291,8 @@ def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(undeleted_submissions(manager, form_model.form_code))
+    submissions = _get_submissions_by_type(request.GET, manager, form_model)
+    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
     analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), with_status=True).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))

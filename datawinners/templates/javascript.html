@@ -8,6 +8,11 @@
 <script type="text/javascript" src="/media/javascript/jquery.blockUI.js"></script>
 <script type="text/javascript" src="/media/javascript/jquery.tools.min.js"></script>
 <script type="text/javascript">
+    DW.loading = function() {
+        $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px', zIndex:1000000}});
+    }
+</script>
+<script type="text/javascript">
     {% if GOOGLE_ANALYTICS_ENABLED %}
         var _gaq = _gaq || [];
         //CI

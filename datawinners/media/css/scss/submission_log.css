@@ -1,9 +1,22 @@
 #submission_logs tr, #submission_logs td {
-  background: none; }
+    background: none;
+}
+
 #submission_logs #tabs.ui-widget-content {
-  border: none;
-  background: none;
-  color: #fff;
-  font: 13px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
-  #submission_logs #tabs.ui-widget-content a, #submission_logs #tabs.ui-widget-content a:hover {
-    color: #0070ac; }
+    border: none;
+    background: none;
+    color: #fff;
+    font: 13px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif;
+}
+
+#submission_logs #tabs.ui-widget-content a, #submission_logs #tabs.ui-widget-content a:hover {
+    color: #0070ac;
+}
+
+#submission_logs #page_hint > div {
+    display: none;
+}
+
+#submission_logs #page_hint div:first-child {
+    display: block;
+}

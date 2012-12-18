@@ -11,4 +11,13 @@
       color: #0070AC
     }
   }
+  #page_hint {
+    >div {
+      display: none;
+    }
+    div:first-child {
+      display: block;
+    }
+  }
+
 }
