@@ -29,20 +29,20 @@ Save the file, exit vi.
 
 Make sure your user is in the "admin" group:
 
-(datawinner)user@host:~/workspace/datawinners$ groups
-vagrant adm dialout cdrom plugdev lpadmin sambashare admin
+| (datawinner)user@host:~/workspace/datawinners$ groups
+| vagrant adm dialout cdrom plugdev lpadmin sambashare admin
 
 1. Clone datawinners from git
 -----------------------------
-cd /tmp
-mkdir datawinners
-cd /tmp/datawinners
-git clone https://github.com/mangroveorg/datawinners.git
+| cd /tmp
+| mkdir datawinners
+| cd /tmp/datawinners
+| git clone https://github.com/mangroveorg/datawinners.git
 
 2. Install software, setup database and clone codebase from git
 ---------------------------------------------------------------
-cd /tmp/datawinners
-./init_env_11.10.sh
+| cd /tmp/datawinners
+| ./init_env_11.10.sh
 
 If you successfully complete this step, you should see the following directories:
 
@@ -59,8 +59,8 @@ You should also see the alias "dw" appended to your ~/.bashrc. Logout, log back 
 
 3. Setup environments and run tests
 -----------------------------------
-cd ~/workspace/datawinners
-./build.sh init
+| cd ~/workspace/datawinners
+| ./build.sh init
 
 This step sets up some log files, clones more git repos, installs dependencies and runs some tests.
 
@@ -76,8 +76,8 @@ You can now point your browser to http://localhost:8000/
 -----------------
 To start the server again in the future:
 
-cd ~/workspace/datawinners/datawinners
-python manage.py runserver 0.0.0.0:8000
+| cd ~/workspace/datawinners/datawinners
+| python manage.py runserver 0.0.0.0:8000
 
 Happy coding!
 =============
