@@ -41,6 +41,14 @@ $(document).ready(function () {
             "sPaginationType":"full_numbers",
             "aaData":data,
             "bSort":false,
+            "aoColumnDefs": [
+                {
+                    "fnRender": function ( oObj ) {
+                        return '<input type="checkbox" value="' + oObj.aData[0] +'" class="selected_submissions"/>' ;
+                    },
+                    "aTargets": [ 0 ]
+                }
+            ],
             "oLanguage":{
                 "sProcessing":gettext("Processing..."),
                 "sLengthMenu":gettext("Show _MENU_ Submissions"),

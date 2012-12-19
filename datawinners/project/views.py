@@ -34,7 +34,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
 from mangrove.transport.facade import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.submissions import Submission, get_submissions, submission_count, successful_submissions, submissions_by_form_code, undeleted_submissions, deleted_submissions
+from mangrove.transport.submissions import Submission, get_submissions, submission_count, successful_submissions, undeleted_submissions, deleted_submissions
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
@@ -69,7 +69,7 @@ from project.submission_utils.submission_filter import SubmissionFilter
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT, \
     DELETED_DATA_SUBMISSION
-from project.submission_utils.submission_formatter import SubmissionFormatter, SubmissionFormatter2
+from project.submission_utils.submission_formatter import SubmissionFormatter
 from questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 logger = logging.getLogger("django")
@@ -298,7 +298,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions,
         request.POST.get('keyword', ''), is_for_submission_page=True, with_checkbox=True)
 
-    field_values = SubmissionFormatter2().get_formatted_values_for_list(analyzer.get_raw_values())
+    field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
     analysis_result = AnalysisResult(analyzer.get_header(), field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
 
 
