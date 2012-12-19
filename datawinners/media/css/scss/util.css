@@ -466,3 +466,5 @@ div.border_top_bottom {
 
 .padding_top_10 {
   padding-top: 10px; }
+.border_none{
+  border: none !important;}

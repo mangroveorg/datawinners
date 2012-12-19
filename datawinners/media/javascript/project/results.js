@@ -31,6 +31,7 @@ $(document).ready(function () {
             success:function (response) {
                 var response_data = JSON.parse(response);
                 show_data(active_tab_index, response_data.data_list);
+                $(".action").parent().clone().addClass("margin_top_null").appendTo(".data_table");
             }});
     }
 
@@ -97,7 +98,7 @@ $(document).ready(function () {
 
     });
 
-    $('select.action').change(function(){
+    $('select.action').live("change", function(){
         var ids = DW.get_ids();
         if($(".selected_submissions:checked").length == 0){
             $("#message_text").html("<div class='message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
