@@ -39,6 +39,7 @@ class Header(object):
         return [(field.label, field.date_format if isinstance(field, DateField) else (
             "gps" if isinstance(field, GeoCodeField)  else "")) for field in self._form_model.fields[1:] if
                   not field.is_event_time_field]
+
     def _id(self):
         return "Submission Id", ''
 

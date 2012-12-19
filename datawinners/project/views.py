@@ -468,7 +468,8 @@ def export_data(request):
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format="%s (%s)")
     file_name = request.POST.get(u"project_name") + '_analysis'
 
-    return _create_excel_response([Header(form_model).header_list] + formatted_values, file_name)
+    data = [Header(form_model).header_list] + formatted_values
+    return _create_excel_response([each[1:] for each in data], file_name)
 
 
 def _create_excel_response(raw_data_list, file_name):
