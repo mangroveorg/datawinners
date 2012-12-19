@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from unittest.case import SkipTest
 from nose.plugins.attrib import attr
 import time
 from framework.base_test import BaseTest, setup_driver, teardown_driver

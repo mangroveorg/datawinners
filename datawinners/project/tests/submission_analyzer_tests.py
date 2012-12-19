@@ -139,9 +139,9 @@ class SubmissionAnalyzerTest(MangroveTestCase):
     def test_should_get_subject_list(self):
         form_model = self.form_model
         analyzer = self._prepare_analyzer_with_one_submission(form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
-        analyzer.filtered_leading_part =  [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
-                                              [('Clinic-1', 'cli15'),  '01.01.2011', today, ('name_2', 'id_2', 'from_2')],
-                                              [('Clinic-1', 'cli15'),  '01.10.2011', today, ('name_3', 'id_3', 'from_3')]]
+        analyzer.filtered_leading_part =  [['id1', ('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
+                                              ['id2', ('Clinic-1', 'cli15'),  '01.01.2011', today, ('name_2', 'id_2', 'from_2')],
+                                              ['id3', ('Clinic-1', 'cli15'),  '01.10.2011', today, ('name_3', 'id_3', 'from_3')]]
         subject_list = analyzer.get_subjects()
         expected = [('Clinic-1', 'cli15'), ('Clinic-2', 'cli14')]
         self.assertEqual(expected, subject_list)
@@ -256,7 +256,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self.form_model = self.form_model_generator.summary_form_model_without_rp()
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, None)
         default_sort_order = analyzer.get_default_sort_order()
-        self.assertEqual([[1, 'desc'],[3, 'asc']], default_sort_order)
+        self.assertEqual([[1, 'desc'],[2, 'asc']], default_sort_order)
 
     def submit_data(self, post_data):
         WebPlayer(self.manager).accept(Request(message=post_data, transportInfo=self.transport))
