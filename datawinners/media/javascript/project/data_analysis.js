@@ -88,6 +88,12 @@ $(document).ready(function () {
             "sPaginationType":"full_numbers",
             "aaData":data,
             "bSort":true,
+            "aoColumnDefs": [
+                {
+                    "bVisible":false,
+                    "aTargets": [ 0 ]
+                }
+            ],
             "oLanguage":{
                 "sProcessing":gettext("Processing..."),
                 "sLengthMenu":gettext("Show _MENU_ Submissions"),

@@ -31,7 +31,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, data)
 
         with patch("project.submission_analyzer.SubmissionAnalyzer._get_leading_part") as _get_leading_part:
-            _get_leading_part.return_value = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')]]
+            _get_leading_part.return_value = [['id1', ('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')]]
             analyzer._init_raw_values()
             try:
                 statistics = analyzer.get_analysis_statistics()
@@ -78,7 +78,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
             get_data_sender.return_value = ('name', 'id', 'from')
             get_by_short_code.return_value = self._prepare_clinic_entity()
             leading_part = analyzer._get_leading_part()
-            expected = [[('Clinic-One', 'cli14'), '01.01.2012', today, ('name', 'id', 'from')]]
+            expected = [[self.submission_id, ('Clinic-One', 'cli14'), '01.01.2012', today, ('name', 'id', 'from')]]
             self.assertEqual(expected, leading_part)
 
     def test_should_get_leading_part_for_summary_project(self):
@@ -89,7 +89,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
             get_data_sender.return_value = ('name', 'id', 'from')
             get_by_short_code.return_value = self._prepare_clinic_entity()
             leading_part = analyzer._get_leading_part()
-            expected = [[today, ('name', 'id', 'from')]]
+            expected = [[self.submission_id, today, ('name', 'id', 'from')]]
             self.assertEqual(expected, leading_part)
 
     def test_should_get_raw_field_values(self):
@@ -101,7 +101,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
             get_by_short_code.return_value = self._prepare_clinic_entity()
             analyzer._init_raw_values()
             raw_field_values = analyzer.get_raw_values()
-            expected = [[('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+            expected = [[self.submission_id, ('Clinic-One', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_raw_field_values_with_status_for_all_submissions(self):
@@ -170,8 +170,8 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         analyzer = self._prepare_analyzer(self.form_model, data)
 
         with patch("project.submission_analyzer.SubmissionAnalyzer._get_leading_part") as _get_leading_part:
-            _get_leading_part.return_value = [[('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
-                                     [('Clinic-3', 'cli15'),  '02.02.2012', today, ('name_2', 'id_2', 'from_3')]]
+            _get_leading_part.return_value = [['id1', ('Clinic-2', 'cli14'),  '01.01.2012', today, ('name', 'id', 'from')],
+                                     ['id2', ('Clinic-3', 'cli15'),  '02.02.2012', today, ('name_2', 'id_2', 'from_3')]]
             analyzer._init_raw_values()
             statistics = analyzer.get_analysis_statistics()
 
@@ -284,7 +284,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
 
-        self.assertEqual([['Rapid weight loss','Dry cough'], ['O-']], values[0][4:])
+        self.assertEqual([['Rapid weight loss','Dry cough'], ['O-']], values[0][5:])
 
     def test_should_get_old_answer_for_submissions_which_is_submitted_before_other_changed_to_MC(self):
         """
@@ -311,8 +311,8 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
 
-        self.assertEqual([['Rapid weight loss','Dry cough'], ['O-']], values[0][4:])
-        self.assertEqual(['Fever', ['O-']], values[1][4:])
+        self.assertEqual([['Rapid weight loss','Dry cough'], ['O-']], values[0][5:])
+        self.assertEqual(['Fever', ['O-']], values[1][5:])
 
     def test_should_get_old_answer_for_submissions_which_is_submitted_before_other_changed_to_other(self):
         """
@@ -343,8 +343,8 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
 
-        self.assertEqual(['100', '1,1', '01.10.2012'], values[0][4:])
-        self.assertEqual(['Fever', 'NewYork', 'oct 1'], values[1][4:])
+        self.assertEqual(['100', '1,1', '01.10.2012'], values[0][5:])
+        self.assertEqual(['Fever', 'NewYork', 'oct 1'], values[1][5:])
 
     def test_should_show_previous_submissions_in_old_format_after_change_date_format(self):
         ddtype = create_default_ddtype(self.manager)
@@ -369,7 +369,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         submissions = successful_submissions(self.manager, form_model.form_code)
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
-        reporting_periods = map(lambda value: value[1], values)
+        reporting_periods = map(lambda value: value[2], values)
 
         self.assertIn('08.2012', reporting_periods)
         self.assertIn('12.12.2012', reporting_periods)
@@ -399,8 +399,8 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         analyzer = SubmissionAnalyzer(form_model, self.manager, Mock(), submissions)
         values = analyzer.get_raw_values()
 
-        self.assertEqual(['1,1'], values[0][4:])
-        self.assertEqual(['NewYork'], values[1][4:])
+        self.assertEqual(['1,1'], values[0][5:])
+        self.assertEqual(['NewYork'], values[1][5:])
 
     def _prepare_clinic_entity(self):
         entity = Entity(self.mocked_dbm, entity_type="Clinic", location=["India", "MH", "Pune"], short_code="cli14",

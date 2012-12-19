@@ -19,7 +19,7 @@ class Header(object):
         return filter(lambda each: each, self._prefix()) + self._fields_header()
 
     def _prefix(self):
-        return [self._subject_header(), self._reporting_period_header(), self._submission_date_header(), self._data_sender_header()]
+        return [self._id(), self._subject_header(), self._reporting_period_header(), self._submission_date_header(), self._data_sender_header()]
 
     def _submission_date_header(self):
         return ugettext("Submission Date"), DEFAULT_DATE_FORMAT.lower()
@@ -39,6 +39,8 @@ class Header(object):
         return [(field.label, field.date_format if isinstance(field, DateField) else (
             "gps" if isinstance(field, GeoCodeField)  else "")) for field in self._form_model.fields[1:] if
                   not field.is_event_time_field]
+    def _id(self):
+        return "Submission Id", ''
 
 
 class SubmissionsPageHeader(Header):
@@ -47,7 +49,7 @@ class SubmissionsPageHeader(Header):
 
 
     def _prefix(self):
-        return [self._data_sender_header(), self._submission_date_header(), self._status(), self._reporting_period_header(), self._subject_header()]
+        return [self._id(), self._data_sender_header(), self._submission_date_header(), self._status(), self._reporting_period_header(), self._subject_header()]
 
 
 

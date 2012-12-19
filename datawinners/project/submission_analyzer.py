@@ -72,10 +72,7 @@ class SubmissionAnalyzer(object):
     def get_analysis_statistics(self):
         if not self._raw_values: return []
 
-        if self.header_class == Header:
-            field_header = self.header_class(self.form_model).header_list[self.leading_part_length:]
-        else:
-            field_header = self.header_class(self.form_model).header_list[self.leading_part_length-1:]
+        field_header = self.header_class(self.form_model).header_list[self.leading_part_length:]
 
         result = self._init_statistics_result()
         for row in self._raw_values:
@@ -113,7 +110,7 @@ class SubmissionAnalyzer(object):
         submission_date = _to_str(submission.created)
         rp = self._get_rp_for_leading_part(submission)
         subject = self._get_subject_for_leading_part(submission)
-        row = filter(lambda x: x, [subject, rp, submission_date, data_sender])
+        row = filter(lambda x: x, [submission.id, subject, rp, submission_date, data_sender])
         return row
 
     @timebox

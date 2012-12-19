@@ -49,6 +49,9 @@ $(document).ready(function () {
                     "aTargets": [ 0 ]
                 }
             ],
+            "fnHeaderCallback": function( nHead, aData, iStart, iEnd, aiDisplay ) {
+                nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';
+            },
             "oLanguage":{
                 "sProcessing":gettext("Processing..."),
                 "sLengthMenu":gettext("Show _MENU_ Submissions"),
