@@ -13,7 +13,10 @@ $(document).ready(function () {
     var $no_submission_hint = $('.help_no_submissions');
     var $page_hint = $('#page_hint');
     var tab = ["all", "success", "error", "deleted"];
+    var message = gettext("No submissions available for this search. Try changing some of the filters.");
+    var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
     var active_tab_index;
+    buildRangePicker();
     $("#tabs").tabs().find('>ul>li>a').click(function(){
         var tab_index = $(this).parent().index();
         if (active_tab_index != tab_index) {
@@ -27,6 +30,58 @@ $(document).ready(function () {
         $.each(header, function(index, element) {
             $("table.submission_table thead tr").append("<th>" + element + "</th>");
         });
+    }
+
+    function buildRangePicker() {
+        $('#reportingPeriodPicker').datePicker({header: gettext('All Periods')});
+        $('#submissionDatePicker').datePicker();
+    }
+
+    $('#go').click(function () {
+            var data = submit_data();
+            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+            $.ajax({
+                type:'POST',
+                url:window.location.pathname,
+                data: data,
+                success:function (response) {
+                    var response_data = JSON.parse(response);
+                    dataBinding(response_data.data_list, true, false, help_all_data_are_filtered);
+                    var emptyChartText = response_data.data_list.length ==0 ? gettext('No submissions available for this search. Try changing some of the filters.'):'';
+                    wrap_table();
+                }});
+        }
+    );
+
+    var submit_data = function () {
+        var reporting_period = get_date($('#reportingPeriodPicker'), gettext("All Periods"));
+        var submission_date = get_date($('#submissionDatePicker'), gettext("All Dates"));
+        var subject_ids = $('#subjectSelect').attr('ids');
+        var submission_sources = $('#dataSenderSelect').attr('data');
+        var keyword = $('#keyword').val();
+        return {
+            'start_time': $.trim(reporting_period.start_time),
+            'end_time': $.trim(reporting_period.end_time),
+            'submission_date_start': $.trim(submission_date.start_time),
+            'submission_date_end': $.trim(submission_date.end_time),
+            'subject_ids': subject_ids,
+            'submission_sources': submission_sources,
+            'keyword': keyword
+        };
+        $(".dateErrorDiv").hide();
+    };
+
+    var get_date = function($datePicker, default_text) {
+        var data = $datePicker.val().split("-");
+        if (data[0] == "" || data[0] == default_text) {
+            data = ['', ''];
+        } else if (data[0] != default_text && Date.parse(data[0]) == null) {
+            $datePicker.next().html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>').show();
+            data = ['', ''];
+        } else if (data.length == 1) {
+            data[1] = data[0];
+        }
+        return {start_time: data[0], end_time: data[1]};
     }
 
     function fetch_data(active_tab_index) {

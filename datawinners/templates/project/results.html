@@ -21,30 +21,36 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js" ></script>
-    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
-    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/jquery-ui-1.8.12.custom.min.js"></script>
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/project/results.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript" src="/media/javascript/project/data_help_img.js"></script>
+    <script type="text/javascript" src="/media/javascript/monthly_date_picker/month-picker.js"></script>
+    <script type="text/javascript" src="/media/javascript/custom_select_box.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.custom.js"></script>
+    <script type="text/javascript" src="/media/javascript/dropdown_check_list/dropdownchecklist.custom.js"></script>
+    <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/filters.js"></script>
 {% endblock %}
 {% block page_css %}
     {{ block.super }}
     <link href="/media/css/plugins/jquery_pagination/pagination.css" media="screen" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
     <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
 {% endblock %}
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet"/>
+    <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet"/>
     <link href="/media/css/scss/util.css" rel="stylesheet"/>
     <link href="/media/css/scss/submission_log.css" media="screen" rel="stylesheet" />
-    <link href="/media/css/scss/section_data.css" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/section_data.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet" />
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/form.css" rel="stylesheet"/>
     {% endblock %}
 {% block content %}
     {% load compress %}
