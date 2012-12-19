@@ -3,8 +3,9 @@ from mangrove.form_model.field import DateField, GeoCodeField
 from project.helper import DEFAULT_DATE_FORMAT
 
 class Header(object):
-    def __init__(self, form_model):
+    def __init__(self, form_model, type=None):
         self._form_model = form_model
+        self._submission_type = type
         self._header_list, self._header_type_list = zip(*self._select_header())
 
     @property
@@ -14,6 +15,10 @@ class Header(object):
     @property
     def header_type_list(self):
         return self._header_type_list
+
+    @property
+    def submission_type(self):
+        return self._submission_type
 
     def _select_header(self):
         return filter(lambda each: each, self._prefix()) + self._fields_header()
@@ -50,9 +55,7 @@ class SubmissionsPageHeader(Header):
 
 
     def _prefix(self):
-        return [self._id(), self._data_sender_header(), self._submission_date_header(), self._status(), self._reporting_period_header(), self._subject_header()]
-
-
-
-
-
+        if self.submission_type == "error":
+            return [self._id(), self._data_sender_header(), self._submission_date_header(), self._reporting_period_header(), self._subject_header()]
+        else:
+            return [self._id(), self._data_sender_header(), self._submission_date_header(), self._status(), self._reporting_period_header(), self._subject_header()]

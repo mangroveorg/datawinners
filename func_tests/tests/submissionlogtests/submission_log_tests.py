@@ -13,7 +13,6 @@ from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog_page import WarningDialog
 import time
 
-@SkipTest
 @attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
     @classmethod

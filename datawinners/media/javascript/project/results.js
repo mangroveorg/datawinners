@@ -22,6 +22,13 @@ $(document).ready(function () {
         }
     }).filter(':first').trigger('click');
 
+    function update_table_header(header) {
+        $("table.submission_table thead tr").html('');
+        $.each(header, function(index, element) {
+            $("table.submission_table thead tr").append("<th>" + element + "</th>");
+        });
+    }
+
     function fetch_data(active_tab_index) {
         DW.loading();
         $.ajax({
@@ -30,6 +37,7 @@ $(document).ready(function () {
             data:{},
             success:function (response) {
                 var response_data = JSON.parse(response);
+                update_table_header(response_data.header_list);
                 show_data(active_tab_index, response_data.data_list);
                 $(".action").parent().clone().addClass("margin_top_null").appendTo(".data_table");
             }});

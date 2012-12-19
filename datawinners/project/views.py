@@ -282,7 +282,11 @@ def filter_by_keyword(keyword, raw_field_values):
 
 
 def _get_submissions_by_type(params, manager, form_model):
-    return SUBMISSION_ROUTER.get(params.get('type', 'all'))(manager, form_model.form_code)
+    submission_type = params.get('type', 'all')
+    submissions = SUBMISSION_ROUTER.get(submission_type)(manager, form_model.form_code)
+    if submission_type == "error":
+        return filter(lambda x: not x.status, submissions)
+    return submissions
 
 
 @login_required(login_url='/login')
@@ -296,7 +300,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     submissions = _get_submissions_by_type(request.GET, manager, form_model)
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
     analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions,
-        request.POST.get('keyword', ''), is_for_submission_page=True, with_checkbox=True)
+        request.POST.get('keyword', ''), is_for_submission_page=True, with_checkbox=True, type=request.GET.get("type"))
 
     field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
     analysis_result = AnalysisResult(analyzer.get_header(), field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
@@ -317,7 +321,9 @@ def project_results(request, project_id=None, questionnaire_code=None):
         if "id_list" in request.POST:
             project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
             return HttpResponse(_handle_delete_submissions(manager, request, project_infos.get("project").name))
-        return HttpResponse(encode_json({'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result}))
+        return HttpResponse(encode_json({'data_list': analysis_result.field_values,
+                                         "statistics_result": analysis_result.statistics_result,
+                                         "header_list": analyzer.get_header().header_list}))
 
 def _handle_delete_submissions(manager, request, project_name):
     submission_ids = json.loads(request.POST.get('id_list'))
