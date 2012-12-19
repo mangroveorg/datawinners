@@ -70,11 +70,10 @@ class SubmissionAnalyzer(object):
         if not self._raw_values: return []
 
         field_header = self.header_class(self.form_model).header_list[self.leading_part_length:]
-        if self._with_checkbox:
-            field_header = [""] + field_header
+
         result = self._init_statistics_result()
         for row in self._raw_values:
-            for idx, question_values in enumerate(row[self.leading_part_length:]):
+            for idx, question_values in enumerate(row[self.leading_part_length+1:]):
                 question_name = field_header[idx]
                 if isinstance(self.form_model.get_field_by_name(question_name), SelectField) and question_values:
                     result[question_name]['total'] += 1
@@ -101,8 +100,7 @@ class SubmissionAnalyzer(object):
         self._raw_values = self.keyword_filter.filter(raw_field_values)
         if leading_part:
             self.leading_part_length = len(leading_part[0])
-            self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in
-                                          self._raw_values]
+            self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in self._raw_values]
 
     def _get_leading_part_for_analysis_page(self, submission):
         data_sender = self._get_data_sender(submission)
@@ -202,5 +200,5 @@ class SubmissionAnalyzer(object):
         rp = self._get_rp_for_leading_part(submission)
         subject = self._get_subject_for_leading_part(submission)
         status = self._get_translated_submission_status(submission.status)
-        leading_col = ["<input type=\"checkbox\" value=\"%s\" class=\"selected_submissions\"/>" % id]
+        leading_col = "<input type=\"checkbox\" value=\"%s\" class=\"selected_submissions\"/>" % id
         return filter(lambda x: x, [leading_col, data_sender, submission_date, status, rp, subject])

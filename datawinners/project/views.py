@@ -294,11 +294,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
 
     submissions = _get_submissions_by_type(request.GET, manager, form_model)
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
-<<<<<<< HEAD
-    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), with_status=True, with_checkbox=True).analyse()
-=======
-    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), is_for_submission_page=True).analyse()
->>>>>>> qszhuan | #1708: change order of columns according ac
+    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), is_for_submission_page=True, with_checkbox=True).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 

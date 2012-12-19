@@ -45,6 +45,7 @@ class SubmissionsPageHeader(Header):
     def _status(self):
         return ugettext('Status'), ''
 
+
     def _prefix(self):
         return [self._data_sender_header(), self._submission_date_header(), self._status(), self._reporting_period_header(), self._subject_header()]
 
