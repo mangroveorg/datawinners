@@ -61,6 +61,7 @@ from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
 from project.Header import Header
+from project.analysis_result import AnalysisResult
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
 from project.submission_analyzer import SubmissionAnalyzer
@@ -68,7 +69,7 @@ from project.submission_utils.submission_filter import SubmissionFilter
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT, \
     DELETED_DATA_SUBMISSION
-from project.submission_utils.submission_formatter import SubmissionFormatter
+from project.submission_utils.submission_formatter import SubmissionFormatter, SubmissionFormatter2
 from questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 logger = logging.getLogger("django")
@@ -294,7 +295,12 @@ def project_results(request, project_id=None, questionnaire_code=None):
 
     submissions = _get_submissions_by_type(request.GET, manager, form_model)
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
-    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), is_for_submission_page=True, with_checkbox=True).analyse()
+    analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions,
+        request.POST.get('keyword', ''), is_for_submission_page=True, with_checkbox=True)
+
+    field_values = SubmissionFormatter2().get_formatted_values_for_list(analyzer.get_raw_values())
+    analysis_result = AnalysisResult(analyzer.get_header(), field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
+
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 

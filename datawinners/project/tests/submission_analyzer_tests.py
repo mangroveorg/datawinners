@@ -113,7 +113,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
             get_by_short_code.return_value = self._prepare_clinic_entity()
             analyzer._init_raw_values()
             raw_field_values = analyzer.get_raw_values()
-            expected = [[('name', 'id', 'from'), today, 'Error', '01.01.2012', ('Clinic-One', 'cli14'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+            expected = [[self.submission_id, ('name', 'id', 'from'), today, 'Error', '01.01.2012', ('Clinic-One', 'cli14'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_raw_field_values_filtered_by_keyword(self):
@@ -414,6 +414,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
                 form_code=form_model.form_code,
                 values=values)
+            self.submission_id = submission.id
 
             return SubmissionAnalyzer(form_model, self.manager, self.user, [submission], is_for_submission_page=is_for_submission_page)
 

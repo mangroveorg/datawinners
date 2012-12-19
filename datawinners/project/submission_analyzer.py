@@ -38,7 +38,7 @@ class SubmissionAnalyzer(object):
 
 
     def analyse(self):
-        header = self.header_class(self.form_model)
+        header = self.get_header()
         field_values = SubmissionFormatter().get_formatted_values_for_list(self.get_raw_values())
         analysis_statistics = self.get_analysis_statistics()
         data_sender_list = self.get_data_senders()
@@ -49,6 +49,9 @@ class SubmissionAnalyzer(object):
 
     def get_raw_values(self):
         return self._raw_values
+
+    def get_header(self):
+        return self.header_class(self.form_model)
 
     def get_default_sort_order(self):
         default_sort_order = [[0, 'desc'],[2, 'asc']] if self.form_model.event_time_question else [[0, 'desc'],[1, 'asc']]
@@ -69,11 +72,14 @@ class SubmissionAnalyzer(object):
     def get_analysis_statistics(self):
         if not self._raw_values: return []
 
-        field_header = self.header_class(self.form_model).header_list[self.leading_part_length:]
+        if self.header_class == Header:
+            field_header = self.header_class(self.form_model).header_list[self.leading_part_length:]
+        else:
+            field_header = self.header_class(self.form_model).header_list[self.leading_part_length-1:]
 
         result = self._init_statistics_result()
         for row in self._raw_values:
-            for idx, question_values in enumerate(row[self.leading_part_length+1:]):
+            for idx, question_values in enumerate(row[self.leading_part_length:]):
                 question_name = field_header[idx]
                 if isinstance(self.form_model.get_field_by_name(question_name), SelectField) and question_values:
                     result[question_name]['total'] += 1
@@ -191,14 +197,11 @@ class SubmissionAnalyzer(object):
                     result[each.name]['choices'][option['text']] = 0
         return result
 
-    def _add_checkbox(self, row, id):
-        return ["<input type=\"checkbox\" value=\"%s\" class=\"selected_submissions\"/>" % id] + row
-
     def _get_leading_part_for_submission_page(self, submission):
         data_sender = self._get_data_sender(submission)
         submission_date = _to_str(submission.created)
         rp = self._get_rp_for_leading_part(submission)
         subject = self._get_subject_for_leading_part(submission)
         status = self._get_translated_submission_status(submission.status)
-        leading_col = "<input type=\"checkbox\" value=\"%s\" class=\"selected_submissions\"/>" % id
+        leading_col = submission.id
         return filter(lambda x: x, [leading_col, data_sender, submission_date, status, rp, subject])

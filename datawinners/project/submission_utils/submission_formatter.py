@@ -19,3 +19,10 @@ class SubmissionFormatter(object):
             else:
                 new_val = NULL
             yield new_val
+
+class SubmissionFormatter2(SubmissionFormatter):
+    def get_formatted_values_for_list(self, values, tuple_format='%s<span class="small_grey">%s</span>', list_delimiter=', '):
+        formatted_values = super(SubmissionFormatter2, self).get_formatted_values_for_list(values, tuple_format, list_delimiter)
+        for row in formatted_values:
+            row[0] = "<input type=\"checkbox\" value=\"%s\" class=\"selected_submissions\"/>" % row[0]
+        return formatted_values
