@@ -54,15 +54,15 @@ class SubmissionAnalyzer(object):
         return self.header_class(self.form_model)
 
     def get_default_sort_order(self):
-        default_sort_order = [[0, 'desc'],[2, 'asc']] if self.form_model.event_time_question else [[0, 'desc'],[1, 'asc']]
+        default_sort_order = [[1, 'desc'],[3, 'asc']] if self.form_model.event_time_question else [[1, 'desc'],[2, 'asc']]
         if self.form_model.entity_type != ['reporter']:
-            default_sort_order = [[1, 'desc'],[0,'asc']]
+            default_sort_order = [[2, 'desc'],[1,'asc']]
 
         return default_sort_order
 
     def get_subjects(self):
         if self.form_model.entity_defaults_to_reporter():  return []
-        subjects = [row[0] for row in self.filtered_leading_part if row[0][1] != NULL]
+        subjects = [row[1] for row in self.filtered_leading_part if row[0][1] != NULL]
         return sorted(list(set(subjects)))
 
     def get_data_senders(self):
