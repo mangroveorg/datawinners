@@ -3,12 +3,25 @@
 #submission_logs #tabs.ui-widget-content {
   border: none;
   background: none;
-  color: #fff;
   font: 13px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
   #submission_logs #tabs.ui-widget-content a, #submission_logs #tabs.ui-widget-content a:hover {
-    color: #0070ac; }
+    color: #0070AC; }
+  #submission_logs #tabs.ui-widget-content li.ui-state-default {
+    background: none;
+    border: none;
+    color: #000;
+    margin: 0px 0px 0px 0px;
+    margin-bottom: 2px; }
+    #submission_logs #tabs.ui-widget-content li.ui-state-default > a:hover {
+      background: #F0F0F0; }
+  #submission_logs #tabs.ui-widget-content li.ui-state-active > a, #submission_logs #tabs.ui-widget-content li.ui-state-active a:hover {
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+    background: -moz-linear-gradient(top, #525252, #262626);
+    background-color: #525252;
+    color: #fff; }
   #submission_logs #tabs.ui-widget-content .ui-widget-header {
-    background: none; }
+    background: none;
+    border-bottom: 4px solid #525252 !important; }
 #submission_logs #page_hint > div {
   display: none; }
 #submission_logs #page_hint div:first-child {

@@ -10,6 +10,7 @@ $(document).ready(function () {
         return ids;
     }
     $(document).ajaxStop($.unblockUI);
+
     var $no_submission_hint = $('.help_no_submissions');
     var $page_hint = $('#page_hint');
     var tab = ["all", "success", "error", "deleted"];
@@ -24,6 +25,8 @@ $(document).ready(function () {
             active_tab_index = tab_index;
         }
     }).filter(':first').trigger('click');
+    $(".ui-corner-all").removeClass("ui-corner-all");
+    $(".ui-corner-top").removeClass("ui-corner-top");
 
     function update_table_header(header) {
         $("table.submission_table thead tr").html('');

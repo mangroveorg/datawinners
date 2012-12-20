@@ -3921,7 +3921,7 @@ msgid "View deleted Submissions for this project."
 msgstr "Voir les Soumissions supprimées pour ce projet."
 
 msgid "hint for success submission page%(url)s"
-msgstr "Voir et gérer toutes les Soumissions envoyées avec succès."
+msgstr "Voir et gérer toutes les Soumissions envoyées avec succès. Allez sur la <a href=\"%(url)s\">Page Analyse</a> pour analyser les soumissions réussies."
 
 msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
 msgstr "Une fois que Expéditeurs de Données ont soumis leurs données avec succès, ils apparaîtront ici."

@@ -5,13 +5,38 @@
   #tabs.ui-widget-content {
     border: none;
     background: none;
-    color: #fff;
+    //color: #fff;
     font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
+
     a, a:hover {
-      color: #0070AC
+      color: #0070AC;
     }
+
+    li.ui-state-default{
+      background: none;
+      border: none;
+      color:#000;
+      margin: 0px 0px 0px 0px;
+      margin-bottom:2px;
+      > a:hover{
+          background: #F0F0F0;
+      }
+
+    }
+
+    li.ui-state-active{
+      >a, a:hover{
+        background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3D3D3D));
+        background: -moz-linear-gradient(top, #525252, #262626);
+        background-color: #525252;
+        color:#fff;
+      }
+
+    }
+
     .ui-widget-header{
       background: none;
+      border-bottom: 4px solid #525252 !important;
     }
   }
   #page_hint {
