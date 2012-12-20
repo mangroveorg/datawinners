@@ -86,19 +86,17 @@
         {% activetab "secondary_tab_nav" "analysis" %}
         {{ block.super }}
     {% endblock %}
-    <div class="grid_23">
-        {% if  project.state  == "Test" %}
-            <div class="warning-message-box">
-                <p> {% trans "This Project is not yet active. Data displayed is test data." %} <a
-                        href="{{ project_links.activate_project_link }}"
-                        class="activate_project">{% trans "Click Here to Activate" %}</a></p>
-            </div>
-        {% endif %}
+    <div class="heading_block alpha data_ana">
         <ul class="links">
             <li><a href="#" id="export_link">{% trans "Export" %}</a></li>
         </ul>
     </div>
     {% include 'project/partials/_page_header.html' with title='Analysis' help_message='Analyze your successful submissions' %}
+
+        <!--[if IE 7]>
+            <div class="float_right" style="display: inline-block; width: 1px; height: 1px;"></div>
+            <![endif]-->
+
     <form id="export_form" action="/project/export/data" method='POST'>
         {% csrf_token %}
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>

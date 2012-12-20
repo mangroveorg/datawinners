@@ -69,12 +69,6 @@
     {{ block.super }}
     {% endblock %}
 
-    <div class="grid_23">
-            {% if  project.state  == "Test"  %}
-        <div class="warning-message-box">
-            <p>{% trans "This Project is not yet active. Data displayed is test data" %}. <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Click Here to Activate" %}</a></p>
-        </div>
-        {% endif %}
     <form id = "export_form" method="get" action="/project/export/log">
     {% csrf_token %}
         <input id = "questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
@@ -82,6 +76,7 @@
         <input id='end_time' name='end_time'  type="hidden" />
         <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
+    <div class="heading_block alpha data_ana">
         <ul class="links">
             <li><a id = "export_link" href="#">{% trans "export" %}</a> </li>
             <li><a href="#" class="disable_link">{% trans "print" %}</a> </li>
