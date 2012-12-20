@@ -1,10 +1,8 @@
 $.fn.datePicker = function (options) {
     return this.each(function () {
         var $this = $(this);
-
         var config = $.extend({}, options || {});
-
-        $this.daterangepicker(getSettings(config.header || gettext('All Dates'), $this.data('ismonthly'))).monthpicker();
+        $this.daterangepicker(getSettings(config, config.header || gettext('All Dates'), $this.data('ismonthly'))).monthpicker();
         $this.click(function () {
             var $monthpicker = $('#monthpicker_start, #monthpicker_end', $('.ranges'));
             if ($this.data('ismonthly')) {
@@ -18,14 +16,13 @@ $.fn.datePicker = function (options) {
                     $(picker).hide();
                 }
             });
-            $this.dropdownchecklist("close");
         });
 
         function getDateFormat(date_format) {
             return date_format.replace('yyyy', 'yy');
         }
 
-        function getSettings(header, ismonthly) {
+        function getSettings(config, header, ismonthly) {
             var year_to_date_setting = {text:gettext('Year to date'), dateStart:function () {
                 var x = Date.parse('today');
                 x.setMonth(0);
@@ -50,10 +47,7 @@ $.fn.datePicker = function (options) {
                 earliestDate:'1/1/2011',
                 latestDate:'21/12/2012',
                 dateFormat:getDateFormat(date_format),
-                rangeSplitter:'-',
-                onOpen:function () {
-                    $this.dropdownchecklist("close");
-                }
+                rangeSplitter:'-'
             };
             if (ismonthly) {
                 settings.presets = {dateRange:gettext('Choose Month(s)')}
@@ -63,8 +57,8 @@ $.fn.datePicker = function (options) {
                     settings.dateFormat = 'dd.mm.yy';
                 }
             }
+            settings.eventCallback = config.eventCallback
             return settings;
         }
     })
-
 }

@@ -765,6 +765,11 @@
                     if ( firstActiveItem != null ) {
                         firstActiveItem.focus();
                     }
+
+                    if(self.options.eventCallback) {
+                        self.options.eventCallback();
+                    }
+
                 }
             };
             if ( makeOpen ) {

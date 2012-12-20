@@ -119,16 +119,20 @@ $(document).ready(function () {
         });
     };
 
-    function buildColumnTypes(){
+    function buildColumnTypes() {
         return $(header_type_list).map(function(index, value){
             var column_name = header_name_list[index];
             return (value && column_name == gettext("Submission Date"))  ? { "sType":  value} : {"sType": "string"};
         });
     };
 
+    function closeFilterSelects() {
+        $filterSelects.dropdownchecklist('close')
+    }
+
     function buildRangePicker() {
-        $('#reportingPeriodPicker').datePicker({header: gettext('All Periods')});
-        $('#submissionDatePicker').datePicker();
+        $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: closeFilterSelects});
+        $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects});
     }
 
     function init_page() {
@@ -199,15 +203,9 @@ $(document).ready(function () {
                 explicitClose:gettext("OK"),
                 explicitClear:gettext("Clear"),
                 width:$(this).width(),
+                eventCallback : function(){$('.ui-daterangepicker:visible').hide();},
                 maxDropHeight:200}, filter_options[index]));
 
-        });
-        hide_date_pickers_when_filter_show();
-    }
-
-    function hide_date_pickers_when_filter_show() {
-        $('.ui-dropdownchecklist-selector').click(function () {
-            $('.ui-daterangepicker:visible').hide();
         });
     }
 

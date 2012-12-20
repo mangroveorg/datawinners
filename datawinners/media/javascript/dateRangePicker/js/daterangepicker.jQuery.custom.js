@@ -241,10 +241,11 @@ jQuery.fn.daterangepicker = function(settings){
         rp.find('.range-end').datepicker('setDate', dateEnd).find('.ui-datepicker-current-day').trigger('click');
     }
 
-
-
     //preset menu click events
 	jQuery.fn.clickActions = function(rp, rpPickers, doneBtn){
+        if (settings.eventCallback) {
+            settings.eventCallback();
+        }
 
         var range_list_item = jQuery(this);
         if(range_list_item.is('.ui-daterangepicker-specificDate')){
@@ -402,8 +403,8 @@ jQuery.fn.daterangepicker = function(settings){
 
 	jQuery(document).click(function(){
 		if (rp.is(':visible')) {
-			hideRP();
-		}
+            hideRP();
+        }
 	});
 
 	rp.click(function(){return false;}).hide();

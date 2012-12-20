@@ -171,6 +171,7 @@ class TestDataAnalysis(BaseTest):
         self.assertFalse(data_analysis_page.dropdown_checklist_is_opened())
         data_analysis_page.open_subject_type_drop_down()
         self.assertTrue(data_analysis_page.dropdown_checklist_is_opened())
+        time.sleep(1)
         data_analysis_page.open_reporting_period_drop_down()
         time.sleep(1)
         self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
