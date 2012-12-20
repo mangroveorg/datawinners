@@ -300,7 +300,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     submissions = _get_submissions_by_type(request.GET, manager, form_model)
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
     analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions,
-        request.POST.get('keyword', ''), is_for_submission_page=True, with_checkbox=True, type=request.GET.get("type"))
+        request.POST.get('keyword', ''), is_for_submission_page=True)
 
     field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
     analysis_result = AnalysisResult(analyzer.get_header(), field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())

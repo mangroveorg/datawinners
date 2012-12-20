@@ -111,7 +111,12 @@ $(document).ready(function () {
                         return '<input type="checkbox" value="' + oObj.aData[0] +'" class="selected_submissions"/>' ;
                     },
                     "aTargets": [ 0 ]
+                },
+                {
+                    "bVisible": tab[active_tab_index] == 'all' || tab[active_tab_index] == 'deleted',
+                    "aTargets": [3]
                 }
+
             ],
             "fnHeaderCallback": function( nHead, aData, iStart, iEnd, aiDisplay ) {
                 nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';

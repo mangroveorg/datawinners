@@ -21,11 +21,8 @@ field_enhancer.enhance()
 
 class SubmissionAnalyzer(object):
 
-    def __init__(self, form_model, manager, user, submissions, keyword=None, is_for_submission_page=False,
-                 with_checkbox=False, type=None):
+    def __init__(self, form_model, manager, user, submissions, keyword=None, is_for_submission_page=False):
         assert isinstance(form_model, FormModel)
-        self._with_checkbox = with_checkbox
-        self.submission_type = type
         self.header_class = SubmissionsPageHeader if is_for_submission_page else Header
         self.manager = manager
         self.form_model = form_model
@@ -53,7 +50,7 @@ class SubmissionAnalyzer(object):
         return self._raw_values
 
     def get_header(self):
-        return self.header_class(self.form_model, self.submission_type)
+        return self.header_class(self.form_model)
 
     def get_default_sort_order(self):
         default_sort_order = [[1, 'desc'],[3, 'asc']] if self.form_model.event_time_question else [[1, 'desc'],[2, 'asc']]
@@ -204,6 +201,6 @@ class SubmissionAnalyzer(object):
         status = self._get_translated_submission_status(submission.status)
         leading_col = submission.id
         initial_leading_part = [leading_col, data_sender, submission_date, status, rp, subject]
-        if self.submission_type == "error":
-            initial_leading_part.pop(3)
+#        if self.submission_type == "error":
+#            initial_leading_part.pop(3)
         return filter(lambda x: x, initial_leading_part)
