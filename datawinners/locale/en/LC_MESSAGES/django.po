@@ -3823,7 +3823,10 @@ msgstr ""
 msgid "Deleted Submissions"
 msgstr ""
 
-msgid "View and manage successfully sent in Submissions for this project. Go to the Analysis Page to analyze your successful submissions."
+msgid "hint for success submission page%(url)s"
+msgstr "View and manage successfully sent in Submissions for this project. Go to the <a href=\"%(url)s\">Analysis Page</a> to analyze your successful submissions."
+
+msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
 msgstr ""
 
 msgid "View deleted Submissions for this project."

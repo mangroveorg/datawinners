@@ -7,6 +7,8 @@
   font: 13px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
   #submission_logs #tabs.ui-widget-content a, #submission_logs #tabs.ui-widget-content a:hover {
     color: #0070ac; }
+  #submission_logs #tabs.ui-widget-content .ui-widget-header {
+    background: none; }
 #submission_logs #page_hint > div {
   display: none; }
 #submission_logs #page_hint div:first-child {
