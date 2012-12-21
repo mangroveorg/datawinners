@@ -103,13 +103,17 @@ def data_export(request):
     return render_to_response('alldata/data_export.html',
             {'subject_types': subject_types,'registered_subject_types': registered_subject_types,
              'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
-             'hide_link_class': hide_link_class, 'is_crs_user': is_crs_user(request),
+             'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
              'project_links': get_alldata_project_links()},
         context_instance=RequestContext(request))
 
 
-def is_crs_user(request, or_reporter=False):
-    return get_organization(request).org_id == CRS_ORG_ID and (or_reporter or not request.user.get_profile().reporter)
+def is_crs_admin(request):
+    return get_organization(request).org_id == CRS_ORG_ID and not request.user.get_profile().reporter
+
+
+def is_crs_user(request):
+    return get_organization(request).org_id == CRS_ORG_ID
 
 
 @login_required(login_url='/login')
@@ -122,15 +126,15 @@ def index(request):
 
     smart_phone_instruction_link = reverse("smart_phone_instruction")
 
-    if is_crs_user(request):
+    if is_crs_admin(request):
         return render_to_response('alldata/index.html',
                 {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
-                 'hide_link_class': hide_link_class, 'is_crs_user': True, 'project_links': get_alldata_project_links()},
+                 'hide_link_class': hide_link_class, 'is_crs_admin': True, 'project_links': get_alldata_project_links()},
             context_instance=RequestContext(request))
     else:
         return render_to_response('alldata/index.html',
                 {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
-                 'hide_link_class': hide_link_class, 'is_crs_user': False,
+                 'hide_link_class': hide_link_class, 'is_crs_admin': False,
                  "smart_phone_instruction_link": smart_phone_instruction_link,
                  'project_links': get_alldata_project_links()},
             context_instance=RequestContext(request))
@@ -147,7 +151,7 @@ def failed_submissions(request):
     return render_to_response('alldata/failed_submissions.html',
             {'logs': org_logs, 'page_heading': page_heading,
              'disable_link_class': disable_link_class,
-             'hide_link_class': hide_link_class, 'is_crs_user': is_crs_user(request),
+             'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
              'project_links': get_alldata_project_links()},
         context_instance=RequestContext(request))
 
@@ -158,13 +162,15 @@ def failed_submissions(request):
 @is_allowed_to_view_reports
 def reports(request):
     report_list = get_reports_list(get_organization(request).org_id, request.session.get('django_language', 'en'))
-    if is_crs_user(request, or_reporter=True):
-        response = render_to_response('alldata/reports_page.html',
-                {'reports': report_list, 'page_heading': "All Data", 'project_links': get_alldata_project_links(), 'is_crs_user': True},
-            context_instance=RequestContext(request))
-        response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
-        return response
-    raise Http404
+    if not is_crs_user(request):
+        raise Http404
+
+    response = render_to_response('alldata/reports_page.html',
+            {'reports': report_list, 'page_heading': "All Data", 'project_links': get_alldata_project_links(), 'is_crs_admin': True},
+        context_instance=RequestContext(request))
+    response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
+
+    return response
 
 
 @login_required(login_url='/login')
