@@ -21,7 +21,10 @@
       > a:hover{
           background: #F0F0F0;
       }
-
+      >a.tab-separator{
+        background: none;
+        color: #525252;
+      }
     }
 
     li.ui-state-active{
