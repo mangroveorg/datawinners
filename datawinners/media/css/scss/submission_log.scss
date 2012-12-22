@@ -54,4 +54,14 @@
   tbody td:first-child{
     min-width: 15px !important;
   }
+  select.action {
+    background: url("/media/images/action.png") no-repeat scroll left 0 transparent;
+    border: medium none;
+    overflow:hidden;
+    width: 120%;
+    color: #536E8C;
+    font-size: 12px;
+    font-weight: bold;
+    padding-top: 2px;
+  }
 }

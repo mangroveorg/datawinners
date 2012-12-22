@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    DW.hint = [{"with_data": "", "no_data": ""},
+        {"with_data": "", "no_data": ""},
+        {"with_data": gettext("View and manage unsuccessful Submissions for this project"), "no_data": gettext("No unsuccessful Submissions!") } ]
     $.ajaxSetup({ cache:false });
     DW.get_ids = function () {
         var ids = [];
@@ -87,6 +90,12 @@ $(document).ready(function () {
                 update_table_header(response_data.header_list);
                 show_data(active_tab_index, response_data.data_list);
                 $(".action").parent().clone().addClass("margin_top_null").appendTo(".data_table");
+                if (response_data.data_list.length) {
+                    var hint = DW.hint[active_tab_index]["with_data"];
+                } else {
+                    var hint = DW.hint[active_tab_index]["no_data"];
+                }
+                $("#page_hint div").eq(active_tab_index).html(hint);
             }});
     }
 
@@ -172,11 +181,11 @@ $(document).ready(function () {
         var ids = DW.get_ids();
         if ($(".selected_submissions:checked").length == 0) {
             $("#message_text").html("<div class='message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
-            $('select.action>option:first').attr('selected', 'selected');
+            $('select.action option:first-child').attr('selected', 'selected');
         } else {
             if (ids.length == 0) {
                 $("#message_text").html("<div class='message message-box'>" + gettext("This data has already been deleted") + "</div>");
-                $('select.action>option:first').attr('selected', 'selected');
+                $('select.action option:first-child').attr('selected', 'selected');
             } else {
                 DW.delete_submission_warning_dialog.show_warning();
                 DW.delete_submission_warning_dialog.ids = ids;
@@ -197,17 +206,17 @@ $(document).ready(function () {
                     var data = JSON.parse(response);
                     if (data.success) {
                         $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
-                        fetch_data(0);
+                        fetch_data(active_tab_index);
                     } else {
                         $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
                     }
                     $("#message_text .message").delay(5000).fadeOut();
-                    $('select.action>option:first').attr('selected', 'selected');
+                    $('select.action option:first-child').attr('selected', 'selected');
                     $.unblockUI();
                 },
                 error:function (e) {
                     $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
-                    $('select.action>option:first').attr('selected', 'selected');
+                    $('select.action option:first-child').attr('selected', 'selected');
                     $.unblockUI();
                 }
             });
@@ -215,7 +224,7 @@ $(document).ready(function () {
         },
         title:gettext("Your Submission(s) will be deleted"),
         cancel_handler:function () {
-            $('select.action>option:first').attr('selected', 'selected');
+            $('select.action option:first-child').attr('selected', 'selected');
         },
         height:150,
         width:550
