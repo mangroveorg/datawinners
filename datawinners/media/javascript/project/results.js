@@ -95,7 +95,9 @@ $(document).ready(function () {
                 } else {
                     var hint = DW.hint[active_tab_index]["no_data"];
                 }
-                $("#page_hint div").eq(active_tab_index).html(hint);
+                if (hint.length) {
+                    $("#page_hint div").eq(active_tab_index).html(hint);
+                }
             }});
     }
 
