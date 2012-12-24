@@ -15,6 +15,25 @@ $(document).ready(function () {
 
     $(document).ajaxStop($.unblockUI);
 
+    function TabOptions() {
+        var defaultOptions = {
+            "show_status":true,
+            "show_actions":true,
+            "show_deleting_check_box":true
+
+        };
+        this._options = {
+            'all':defaultOptions,
+            'success':$.extend({}, defaultOptions, {"show_status":false}),
+            'error':$.extend({}, defaultOptions, {"show_status":false}),
+            'deleted':$.extend({}, defaultOptions, {"show_actions":false, "show_deleting_check_box":false})
+        }
+    }
+
+    TabOptions.prototype.getOptionsOf = function (current_tab) {
+        return this._options[current_tab]
+    }
+
     var $no_submission_hint = $('.help_no_submissions');
     var $page_hint = $('#page_hint');
     var tab = ["all", "success", "error", "deleted"];
@@ -28,7 +47,7 @@ $(document).ready(function () {
         var data_sender_options = {emptyText:gettext("All Data Senders")};
         var filter_options = [subject_options, data_sender_options];
 
-        $filterSelects.each(function(index, filter) {
+        $filterSelects.each(function (index, filter) {
             $(filter).dropdownchecklist($.extend({firstItemChecksAll:false,
                 explicitClose:gettext("OK"),
                 explicitClear:gettext("Clear"),
@@ -50,19 +69,14 @@ $(document).ready(function () {
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
 
-    function update_table_header(header) {
-        $("table.submission_table thead tr").html('');
-        $.each(header, function (index, element) {
-            $("table.submission_table thead tr").append("<th>" + element + "</th>");
-        });
-    }
-
     function buildRangePicker() {
         $('#reportingPeriodPicker').datePicker({header:gettext('All Periods')});
         $('#submissionDatePicker').datePicker();
     }
 
-    $('#go').click(function () { fetch_data(active_tab_index);});
+    $('#go').click(function () {
+        fetch_data(active_tab_index);
+    });
 
     function submit_data() {
         var reporting_period = get_date($('#reportingPeriodPicker'), gettext("All Periods"));
@@ -101,20 +115,11 @@ $(document).ready(function () {
         $.ajax({
             type:'POST',
             url:window.location.pathname + '?type=' + tab[active_tab_index],
-            data: data,
+            data:data,
             success:function (response) {
                 var response_data = JSON.parse(response);
-                update_table_header(response_data.header_list);
                 show_data(active_tab_index, response_data.data_list);
                 $(".action").parent().clone().addClass("margin_top_null").appendTo(".data_table");
-                if (response_data.data_list.length) {
-                    var hint = DW.hint[active_tab_index]["with_data"];
-                } else {
-                    var hint = DW.hint[active_tab_index]["no_data"];
-                }
-                if (hint.length) {
-                    $("#page_hint div").eq(active_tab_index).html(hint);
-                }
             }});
     }
 
@@ -130,21 +135,23 @@ $(document).ready(function () {
                     "fnRender":function (oObj) {
                         return '<input type="checkbox" value="' + oObj.aData[0] + '" class="selected_submissions"/>';
                     },
-                    "aTargets": [0]
+                    "aTargets":[0],
+                    'bVisible':tab.show_deleting_check_box(), new TabOptions().getOptionsOf(tab[active_tab_index]).show_deleting_check_box
                 },
                 {
-                    "bVisible": tab[active_tab_index] == 'all' || tab[active_tab_index] == 'deleted',
-                    "aTargets": [3]
+                    "bVisible":new TabOptions().getOptionsOf(tab[active_tab_index]).show_status,
+                    "aTargets":[3]
                 }
-
             ],
             "fnHeaderCallback":function (nHead, aData, iStart, iEnd, aiDisplay) {
-                nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';
+                if (new TabOptions().getOptionsOf(tab[active_tab_index]).show_deleting_check_box) {
+                    nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';
+                }
             },
             "oLanguage":{
                 "sProcessing":gettext("Processing..."),
                 "sLengthMenu":gettext("Show _MENU_ Submissions"),
-                "sZeroRecords": emptyTableText,
+                "sZeroRecords":emptyTableText,
                 "sEmptyTable":emptyTableText,
                 "sLoadingRecords":gettext("Loading..."),
                 "sInfo":gettext("<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</span> Submissions"),
@@ -164,7 +171,7 @@ $(document).ready(function () {
             "sDom":'<"@dataTables_info"i>rtpl',
             "iDisplayLength":25
         });
-    };
+    }
 
     function show_data(active_tab_index, data) {
         var index = (active_tab_index || 0) + 1;
@@ -178,14 +185,14 @@ $(document).ready(function () {
     }
 
     function isFiltering() {
-        return _.any(_.values(submit_data()), function(v) {
+        return _.any(_.values(submit_data()), function (v) {
             return !_.isUndefined(v) && !_.isEmpty($.trim(v))
         })
     }
 
     function wrap_table() {
         $(".submission_table").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
-    };
+    }
 
     //Checkbox on/off functionality
     $("#master_checkbox").live("click", function () {
@@ -200,11 +207,11 @@ $(document).ready(function () {
         var ids = DW.get_ids();
         if ($(".selected_submissions:checked").length == 0) {
             $("#message_text").html("<div class='message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
-            $('select.action option:first-child').attr('selected', 'selected');
+            $('select.action>option:first').attr('selected', 'selected');
         } else {
             if (ids.length == 0) {
                 $("#message_text").html("<div class='message message-box'>" + gettext("This data has already been deleted") + "</div>");
-                $('select.action option:first-child').attr('selected', 'selected');
+                $('select.action>option:first').attr('selected', 'selected');
             } else {
                 DW.delete_submission_warning_dialog.show_warning();
                 DW.delete_submission_warning_dialog.ids = ids;
@@ -225,17 +232,17 @@ $(document).ready(function () {
                     var data = JSON.parse(response);
                     if (data.success) {
                         $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
-                        fetch_data(active_tab_index);
+                        fetch_data(0);
                     } else {
                         $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
                     }
                     $("#message_text .message").delay(5000).fadeOut();
-                    $('select.action option:first-child').attr('selected', 'selected');
+                    $('select.action>option:first').attr('selected', 'selected');
                     $.unblockUI();
                 },
                 error:function (e) {
                     $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
-                    $('select.action option:first-child').attr('selected', 'selected');
+                    $('select.action>option:first').attr('selected', 'selected');
                     $.unblockUI();
                 }
             });
@@ -243,7 +250,7 @@ $(document).ready(function () {
         },
         title:gettext("Your Submission(s) will be deleted"),
         cancel_handler:function () {
-            $('select.action option:first-child').attr('selected', 'selected');
+            $('select.action>option:first').attr('selected', 'selected');
         },
         height:150,
         width:550
