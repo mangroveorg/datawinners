@@ -10,23 +10,21 @@ from mangrove.utils.types import is_sequence
 from project.Header import Header, SubmissionsPageHeader
 from project.analysis_result import AnalysisResult
 from project.filters import KeywordFilter
-from project.helper import get_data_sender, _to_str, case_insensitive_lookup, NOT_AVAILABLE
+from project.helper import  _to_str, case_insensitive_lookup, NOT_AVAILABLE, DataSenderHelper
 from enhancer import field_enhancer
 from project.submission_utils.submission_formatter import SubmissionFormatter
-import utils
 
 
 NULL = '--'
 field_enhancer.enhance()
 
 class SubmissionAnalyzer(object):
-
-    def __init__(self, form_model, manager, user, submissions, keyword=None, is_for_submission_page=False):
+    def __init__(self, form_model, manager, org_id, submissions, keyword=None, is_for_submission_page=False):
         assert isinstance(form_model, FormModel)
         self.header_class = SubmissionsPageHeader if is_for_submission_page else Header
         self.manager = manager
         self.form_model = form_model
-        self.user = user
+        self.org_id = org_id
         self.submissions = submissions
         self._data_senders = []
         self._subject_list = []
@@ -44,7 +42,7 @@ class SubmissionAnalyzer(object):
         subject_lists = self.get_subjects()
         default_sort_order = self.get_default_sort_order()
 
-        return AnalysisResult(header, field_values, analysis_statistics, data_sender_list, subject_lists, default_sort_order)
+        return AnalysisResult(header, field_values, analysis_statistics, data_sender_list, subject_lists,default_sort_order)
 
     def get_raw_values(self):
         return self._raw_values
@@ -53,19 +51,18 @@ class SubmissionAnalyzer(object):
         return self.header_class(self.form_model)
 
     def get_default_sort_order(self):
-        default_sort_order = [[1, 'desc'],[3, 'asc']] if self.form_model.event_time_question else [[1, 'desc'],[2, 'asc']]
+        default_sort_order = [[1, 'desc'], [3, 'asc']] if self.form_model.event_time_question else [[1, 'desc'],
+                                                                                                    [2, 'asc']]
         if self.form_model.entity_type != ['reporter']:
-            default_sort_order = [[2, 'desc'],[1,'asc']]
+            default_sort_order = [[2, 'desc'], [1, 'asc']]
 
         return default_sort_order
 
     def get_subjects(self):
-        if self.form_model.entity_defaults_to_reporter():  return []
-        subjects = [row[1] for row in self.filtered_leading_part if row[0][1] != NULL]
-        return sorted(list(set(subjects)))
+        return sorted(self._subject_list)
 
     def get_data_senders(self):
-        return utils.sorted_unique_list(each[-1] for each in self.filtered_leading_part)
+        return sorted(self._data_senders)
 
     @timebox
     def get_analysis_statistics(self):
@@ -102,19 +99,26 @@ class SubmissionAnalyzer(object):
         self._raw_values = self.keyword_filter.filter(raw_field_values)
         if leading_part:
             self.leading_part_length = len(leading_part[0])
-            self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in self._raw_values]
+            self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in
+                                          self._raw_values]
 
     def _get_leading_part_for_analysis_page(self, submission):
         data_sender = self._get_data_sender(submission)
         submission_date = _to_str(submission.created)
         rp = self._get_rp_for_leading_part(submission)
         subject = self._get_subject_for_leading_part(submission)
-        row = filter(lambda x: x, [submission.id, subject, rp, submission_date, data_sender])
-        return row
+        return filter(lambda x: x, [submission.id, subject, rp, submission_date, data_sender])
+
+    def _get_leading_part_for_submission_page(self, submission):
+        data_sender = self._get_data_sender(submission)
+        submission_date = _to_str(submission.created)
+        rp = self._get_rp_for_leading_part(submission)
+        subject = self._get_subject_for_leading_part(submission)
+        status = self._get_translated_submission_status(submission.status)
+        return filter(lambda x: x, [submission.id, data_sender, submission_date, status, rp, subject])
 
     @timebox
     def _get_leading_part(self):
-
         leading_part = []
         for submission in self.submissions:
             if self.header_class == Header:
@@ -144,7 +148,7 @@ class SubmissionAnalyzer(object):
             if each[-1] == submission.source:
                 return each
         else:
-            data_sender = get_data_sender(self.manager, self.user, submission)
+            data_sender = DataSenderHelper(self.manager).get_data_sender(self.org_id, submission)
             self._data_senders.append(data_sender)
             return data_sender
 
@@ -192,15 +196,3 @@ class SubmissionAnalyzer(object):
                 for option in each.options:
                     result[each.name]['choices'][option['text']] = 0
         return result
-
-    def _get_leading_part_for_submission_page(self, submission):
-        data_sender = self._get_data_sender(submission)
-        submission_date = _to_str(submission.created)
-        rp = self._get_rp_for_leading_part(submission)
-        subject = self._get_subject_for_leading_part(submission)
-        status = self._get_translated_submission_status(submission.status)
-        leading_col = submission.id
-        initial_leading_part = [leading_col, data_sender, submission_date, status, rp, subject]
-#        if self.submission_type == "error":
-#            initial_leading_part.pop(3)
-        return filter(lambda x: x, initial_leading_part)

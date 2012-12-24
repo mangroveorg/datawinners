@@ -299,7 +299,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
 
     submissions = _get_submissions_by_type(request.GET, manager, form_model)
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
-    analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions,
+    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions,
         request.POST.get('keyword', ''), is_for_submission_page=True)
 
     field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
@@ -411,7 +411,7 @@ def get_analysis_response(request, project_id, questionnaire_code, with_status=F
 
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
 
-    analysis_result = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''), is_for_submission_page=with_status).analyse()
+    analysis_result = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions, request.POST.get('keyword', ''), is_for_submission_page=with_status).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
@@ -470,7 +470,7 @@ def export_data(request):
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
-    analyzer = SubmissionAnalyzer(form_model, manager, request.user, filtered_submissions, request.POST.get('keyword', ''))
+    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions, request.POST.get('keyword', ''))
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format="%s (%s)")
     file_name = request.POST.get(u"project_name") + '_analysis'
 
@@ -1327,7 +1327,7 @@ def project_has_data(request, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
     submissions = successful_submissions(manager, form_model.form_code)
-    analyzer = SubmissionAnalyzer(form_model, manager, request.user, submissions)
+    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), submissions)
     raw_field_values = analyzer.get_raw_values()
 
     return HttpResponse(encode_json({'has_data': len(raw_field_values) != 0}))

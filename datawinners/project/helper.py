@@ -109,21 +109,46 @@ def get_datasender_by_mobile(dbm, mobile):
 
 
 def get_data_sender(dbm, user, submission):
-    submission_source = submission.source
-    datasender = (ugettext(NOT_AVAILABLE_DS), None, submission_source)
+    return DataSenderHelper(dbm).get_data_sender(user, submission)
 
-    if submission.channel == 'sms':
-        datasender = tuple(get_datasender_by_mobile(dbm, submission_source) + [submission_source])
-    elif submission.channel == 'web' or submission.channel == 'smartPhone':
+
+class DataSenderGetterByEmail(object):
+    def data_sender(self, org_id, email):
+        data_sender = User.objects.get(email=email)
+        reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
+
+        return data_sender.get_full_name(), reporter_id, email
+
+
+class DataSenderHelper(object):
+    def __init__(self, dbm):
+        self.dbm = dbm
+        self.dataSenderGetterByEmail = DataSenderGetterByEmail()
+
+    def get_data_sender(self, org_id, submission):
+        if submission.channel == 'sms':
+            return self._get_data_sender_for_sms(submission)
+        else:
+            return self._get_data_sender_for_not_sms(submission, org_id)
+
+    def _get_data_sender_for_sms(self, submission):
+        data_sender = tuple(self.data_sender_by_mobile(submission.source) + [submission.source])
+
+        return data_sender if data_sender[0] != "TEST" else ("TEST", "", "TEST")
+
+    def _get_data_sender_for_not_sms(self, submission, org_id):
+        submission_source = submission.source
+
         try:
-            org_id = get_org_id_by_user(user)
-            data_sender = User.objects.get(email=submission_source)
-            reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
-            datasender = (data_sender.get_full_name(), reporter_id, submission_source)
+            data_sender = self.dataSenderGetterByEmail.data_sender(org_id, submission_source)
         except:
-            pass
+            data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission_source)
 
-    return datasender if datasender[0] != "TEST" else ("TEST", "", "TEST")
+        return data_sender if data_sender[0] != "TEST" else ("TEST", "", "TEST")
+
+    def data_sender_by_mobile(self, mobile):
+        rows = self.dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
+        return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
 
 
 def case_insensitive_lookup(search_key, dictionary):
