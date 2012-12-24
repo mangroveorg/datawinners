@@ -15,5 +15,6 @@ ngo_user_profile = NGOUserProfile.objects.filter(user=users[0])[0]
 organization = Organization.objects.filter(org_id=ngo_user_profile.org_id)[0]
 organization_setting = OrganizationSetting.objects.filter(organization=organization)[0]
 
-print 'Document store found: %s\n' % organization_setting.document_store
+print 'Document store found: %s' % organization_setting.document_store
+print 'Organization name is: %s' % organization.name
 

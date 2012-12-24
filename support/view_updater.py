@@ -10,7 +10,9 @@ import sys
 from find_all_db_managers import all_db_names
 import logging
 
-THRESHOLD = 100
+
+DOC_COUNT_THRESHOLD = 2000
+COMMITTED_SEQ_THRESHOLD = 100
 INTERVAL = 60 * 60 * 1
 
 LOG_FOLDER = '/var/log/datawinners'
@@ -45,9 +47,9 @@ def all_view_names(server, db_name):
     return [each['id'].split('/')[-1] for each in eval(response)['rows']]
 
 @surround_wrapper
-def committed_update_seq(server, db_name):
+def database_basic_info(server, db_name):
     response = get_response('/'.join([server, db_name]))
-    return jsonpickle.decode(response).get('committed_update_seq', 0)
+    return jsonpickle.decode(response)
 
 @surround_wrapper
 def visit_view(server, db_name, view_name):
@@ -95,21 +97,26 @@ class ViewUpdater(object):
 
     def db_changes(self, db_name):
         logging.debug("Previous update sequence is: %s" % self._seq_dict[db_name])
-        seq = committed_update_seq(db_server, db_name)
-        changes = seq - self._seq_dict[db_name]
+        db_info = database_basic_info(db_server, db_name)
+        changes = db_info.get('committed_update_seq', 0) - self._seq_dict[db_name]
         return changes
 
-    def trigger(self, threshold):
+    def db_count(self, db_name):
+        db_info = database_basic_info(db_server, db_name)
+        return db_info.get('doc_count', 0)
+
+    def trigger(self, doc_count_threshold, commit_seq_threshold):
         self.db_names = all_db_names(db_server)
         logging.debug("get %s dbs" % len(self.db_names))
         for db_name in self.db_names:
-            self._try_to_update(db_name, threshold)
+            self._try_to_update(db_name, doc_count_threshold, commit_seq_threshold)
             logging.info("*"*80)
 
-    def _try_to_update(self, db_name, threshold):
+    def _try_to_update(self, db_name, doc_count_threshold, commit_seq_threshold):
         try:
+            doc_count = self.db_count(db_name)
             changes = self.db_changes(db_name)
-            if changes > threshold:
+            if doc_count > doc_count_threshold and changes > commit_seq_threshold:
                 logging.info("%-80s%s" % (db_name, "U P D A T I N G................"))
                 self._update_db(db_name)
                 self._seq_dict[db_name] += changes
@@ -160,7 +167,7 @@ def write_pid_file_or_die(pid_file):
 def main():
     logging.debug(db_server)
     updater = ViewUpdater(db_server)
-    task = partial(updater.trigger, THRESHOLD)
+    task = partial(updater.trigger, DOC_COUNT_THRESHOLD, COMMITTED_SEQ_THRESHOLD)
     while True:
         try:
             task()
@@ -187,7 +194,3 @@ if __name__ == '__main__':
 
     write_pid_file_or_die('/tmp/view_updater.pid')
     main()
-
-
-
-
