@@ -21,7 +21,7 @@
       > a:hover{
           background: #F0F0F0;
       }
-      >a.tab-separator{
+      >a.tab-separator, a.tab-separator:hover{
         background: none;
         color: #525252;
       }
@@ -34,7 +34,6 @@
         background-color: #525252;
         color:#fff;
       }
-
     }
 
     .ui-widget-header{

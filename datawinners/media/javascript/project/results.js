@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    var tab = ["all", "success", "error", "deleted"];
+
+    var active_tab_index;
+
     function TabOptions() {
         var defaultOptions = {
             "show_status":true,
@@ -13,41 +17,25 @@ $(document).ready(function () {
         }
     }
 
-    TabOptions.prototype.show_status = function() {
+    TabOptions.prototype.show_status = function () {
         return this._options[tab[active_tab_index]].show_status;
     }
 
-    TabOptions.prototype.show_actions = function() {
+    TabOptions.prototype.show_actions = function () {
         return this._options[tab[active_tab_index]].show_actions;
     }
 
-    TabOptions.prototype.show_deleting_check_box = function() {
+    TabOptions.prototype.show_deleting_check_box = function () {
         return this._options[tab[active_tab_index]].show_deleting_check_box;
     }
 
-    DW.hint = [{"with_data": "", "no_data": ""},
-        {"with_data": "", "no_data": ""},
-        {"with_data": gettext("View and manage unsuccessful Submissions for this project"), "no_data": gettext("No unsuccessful Submissions!") } ]
     $.ajaxSetup({ cache:false });
-    DW.get_ids = function () {
-        var ids = [];
-        $(".selected_submissions:checked").each(function () {
-            if ($(this).val() != "None") {
-                ids.push($(this).val());
-            }
-        });
-        return ids;
-    }
-
     $(document).ajaxStop($.unblockUI);
 
     var $no_submission_hint = $('.help_no_submissions');
     var $page_hint = $('#page_hint');
-    var tab = ["all", "success", "error", "deleted"];
-    var tabOptions = new TabOptions();
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
-    var active_tab_index;
     var $filterSelects = $('#subjectSelect, #dataSenderSelect');
 
     (function buildFilters() {
@@ -60,19 +48,31 @@ $(document).ready(function () {
                 explicitClose:gettext("OK"),
                 explicitClear:gettext("Clear"),
                 width:$(this).width(),
-                eventCallback : function(){$('.ui-daterangepicker:visible').hide();},
+                eventCallback:function () {
+                    $('.ui-daterangepicker:visible').hide();
+                },
                 maxDropHeight:200}, filter_options[index]));
 
         });
     })();
 
     buildRangePicker();
+    var tabOptions = new TabOptions();
     $("#tabs").tabs().find('>ul>li>a').click(function () {
         var tab_index = $(this).parent().index();
-        if (active_tab_index != tab_index) {
-            fetch_data(tab_index);
-            active_tab_index = tab_index;
+
+        if (active_tab_index === tab_index) {
+            return;
         }
+
+        active_tab_index = tab_index;
+
+        if (tabOptions.show_actions()) {
+            $('.action_container').show();
+        } else {
+            $('.action_container').hide();
+        }
+        fetch_data(tab_index);
     }).filter(':first').trigger('click');
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
@@ -127,7 +127,7 @@ $(document).ready(function () {
             success:function (response) {
                 var response_data = JSON.parse(response);
                 show_data(active_tab_index, response_data.data_list);
-                $(".action").parent().clone().addClass("margin_top_null").appendTo(".data_table");
+                $(".action_container").clone().addClass("margin_top_null").appendTo(".data_table");
             }});
     }
 
@@ -202,6 +202,21 @@ $(document).ready(function () {
         $(".submission_table").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
     }
 
+    DW.hint = [
+        {"with_data":"", "no_data":""},
+        {"with_data":"", "no_data":""},
+        {"with_data":gettext("View and manage unsuccessful Submissions for this project"), "no_data":gettext("No unsuccessful Submissions!") }
+    ]
+    DW.get_ids = function () {
+        var ids = [];
+        $(".selected_submissions:checked").each(function () {
+            if ($(this).val() != "None") {
+                ids.push($(this).val());
+            }
+        });
+        return ids;
+    }
+
     //Checkbox on/off functionality
     $("#master_checkbox").live("click", function () {
         var status = $(this).attr('checked');
@@ -267,4 +282,3 @@ $(document).ready(function () {
     DW.delete_submission_warning_dialog = new DW.warning_dialog(kwargs);
 
 });
-

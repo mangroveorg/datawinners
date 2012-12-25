@@ -14,7 +14,7 @@
     margin-bottom: 2px; }
     #submission_logs #tabs.ui-widget-content li.ui-state-default > a:hover {
       background: #F0F0F0; }
-    #submission_logs #tabs.ui-widget-content li.ui-state-default > a.tab-separator {
+    #submission_logs #tabs.ui-widget-content li.ui-state-default > a.tab-separator, #submission_logs #tabs.ui-widget-content li.ui-state-default a.tab-separator:hover {
       background: none;
       color: #525252; }
   #submission_logs #tabs.ui-widget-content li.ui-state-active > a, #submission_logs #tabs.ui-widget-content li.ui-state-active a:hover {
