@@ -1,4 +1,30 @@
 $(document).ready(function () {
+    function TabOptions() {
+        var defaultOptions = {
+            "show_status":true,
+            "show_actions":true,
+            "show_deleting_check_box":true
+        };
+        this._options = {
+            'all':defaultOptions,
+            'success':$.extend({}, defaultOptions, {"show_status":false}),
+            'error':$.extend({}, defaultOptions, {"show_status":false}),
+            'deleted':$.extend({}, defaultOptions, {"show_actions":false, "show_deleting_check_box":false})
+        }
+    }
+
+    TabOptions.prototype.show_status = function() {
+        return this._options[tab[active_tab_index]].show_status;
+    }
+
+    TabOptions.prototype.show_actions = function() {
+        return this._options[tab[active_tab_index]].show_actions;
+    }
+
+    TabOptions.prototype.show_deleting_check_box = function() {
+        return this._options[tab[active_tab_index]].show_deleting_check_box;
+    }
+
     DW.hint = [{"with_data": "", "no_data": ""},
         {"with_data": "", "no_data": ""},
         {"with_data": gettext("View and manage unsuccessful Submissions for this project"), "no_data": gettext("No unsuccessful Submissions!") } ]
@@ -15,28 +41,10 @@ $(document).ready(function () {
 
     $(document).ajaxStop($.unblockUI);
 
-    function TabOptions() {
-        var defaultOptions = {
-            "show_status":true,
-            "show_actions":true,
-            "show_deleting_check_box":true
-
-        };
-        this._options = {
-            'all':defaultOptions,
-            'success':$.extend({}, defaultOptions, {"show_status":false}),
-            'error':$.extend({}, defaultOptions, {"show_status":false}),
-            'deleted':$.extend({}, defaultOptions, {"show_actions":false, "show_deleting_check_box":false})
-        }
-    }
-
-    TabOptions.prototype.getOptionsOf = function (current_tab) {
-        return this._options[current_tab]
-    }
-
     var $no_submission_hint = $('.help_no_submissions');
     var $page_hint = $('#page_hint');
     var tab = ["all", "success", "error", "deleted"];
+    var tabOptions = new TabOptions();
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
     var active_tab_index;
@@ -136,15 +144,15 @@ $(document).ready(function () {
                         return '<input type="checkbox" value="' + oObj.aData[0] + '" class="selected_submissions"/>';
                     },
                     "aTargets":[0],
-                    'bVisible':tab.show_deleting_check_box(), new TabOptions().getOptionsOf(tab[active_tab_index]).show_deleting_check_box
+                    'bVisible':tabOptions.show_deleting_check_box()
                 },
                 {
-                    "bVisible":new TabOptions().getOptionsOf(tab[active_tab_index]).show_status,
+                    "bVisible":tabOptions.show_status(),
                     "aTargets":[3]
                 }
             ],
             "fnHeaderCallback":function (nHead, aData, iStart, iEnd, aiDisplay) {
-                if (new TabOptions().getOptionsOf(tab[active_tab_index]).show_deleting_check_box) {
+                if (tabOptions.show_deleting_check_box()) {
                     nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';
                 }
             },
