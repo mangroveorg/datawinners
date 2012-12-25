@@ -1,9 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
-from accountmanagement.models import OrganizationSetting
-
 os.environ['DJANGO_SETTINGS_MODULE'] = "datawinners.settings"
 
+from accountmanagement.models import OrganizationSetting
 from find_all_db_managers import all_db_names
 from mangrove.datastore.database import get_db_manager, remove_db_manager
 
@@ -33,7 +32,6 @@ def find_organization():
             print ("********************************************")
             print "Document store: %s" % db
             print "Organization name: %s" % organization_name
-
 
             break
         remove_db_manager(manager)

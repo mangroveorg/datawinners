@@ -60,7 +60,6 @@ from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireF
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
-from project.Header import Header
 from project.analysis_result import AnalysisResult
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
@@ -85,6 +84,8 @@ MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "p
 DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
+
+XLS_TUPLE_FORMAT = "%s (%s)"
 
 SUBMISSION_ROUTER = {
     "all": undeleted_submissions,
@@ -289,6 +290,15 @@ def _get_submissions_by_type(params, manager, form_model):
     return submissions
 
 
+def _build_submission_analyzer(request, manager, form_model, is_for_submission_page):
+    submissions = _get_submissions_by_type(request.GET, manager, form_model)
+    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
+    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions,
+        request.POST.get('keyword', ''), is_for_submission_page=is_for_submission_page)
+
+    return analyzer
+
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
@@ -297,12 +307,9 @@ def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    submissions = _get_submissions_by_type(request.GET, manager, form_model)
-    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
-    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions,
-        request.POST.get('keyword', ''), is_for_submission_page=True)
-
+    analyzer = _build_submission_analyzer(request, manager, form_model, True)
     field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
+
     analysis_result = AnalysisResult(analyzer.get_header(), field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
 
 
@@ -458,24 +465,29 @@ def project_data(request, project_id=None, questionnaire_code=None):
         return HttpResponse(analysis_result)
 
 
+def _export_submissions_in_xls(request, is_for_submission_log_page):
+    questionnaire_code = request.POST.get('questionnaire_code')
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+
+    suffix = '_log' if is_for_submission_log_page else '_analysis'
+
+    analyzer = _build_submission_analyzer(request, manager, form_model, is_for_submission_log_page)
+    formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format=XLS_TUPLE_FORMAT)
+
+    file_name = request.POST.get(u"project_name") + suffix
+    data = [analyzer.get_header().header_list] + formatted_values
+
+    return _create_excel_response([each[1:] for each in data], file_name)
+
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
 @is_not_expired
 @timebox
 def export_data(request):
-    questionnaire_code = request.POST.get("questionnaire_code")
-
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-
-    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
-    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions, request.POST.get('keyword', ''))
-    formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format="%s (%s)")
-    file_name = request.POST.get(u"project_name") + '_analysis'
-
-    data = [Header(form_model).header_list] + formatted_values
-    return _create_excel_response([each[1:] for each in data], file_name)
+    return _export_submissions_in_xls(request, False)
 
 
 def _create_excel_response(raw_data_list, file_name):
@@ -492,26 +504,8 @@ def _create_excel_response(raw_data_list, file_name):
 @is_datasender
 @is_not_expired
 def export_log(request):
-    questionnaire_code = request.GET.get("questionnaire_code")
-    manager = get_database_manager(request.user)
-    questionnaire = get_form_model_by_code(manager, questionnaire_code)
-    count, submissions, error_message = _get_submissions(manager, questionnaire_code, request, paginate=False)
+    return _export_submissions_in_xls(request, True)
 
-    header_list = [ugettext("To"), ugettext("From"), ugettext("Date Received"), ugettext("Submission status"),
-                   ugettext("Deleted Record"), ugettext("Errors")]
-    header_list.extend([field.label for field in questionnaire.fields])
-    raw_data_list = [header_list]
-    if count:
-        for submission in submissions:
-            case_insensitive_dict = {key.lower(): value for key, value in submission.values.items()}
-            raw_data_list.append(
-                [submission.destination, submission.source, submission.created, ugettext(str(submission.status)),
-                 ugettext(str(submission.data_record.is_void() if submission.data_record is not None else True)),
-                 submission.errors] + [helper.get_according_value(case_insensitive_dict, q) for q in
-                                       questionnaire.fields])
-
-    file_name = request.GET.get(u"project_name") + '_log'
-    return _create_excel_response(raw_data_list, file_name)
 
 def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)

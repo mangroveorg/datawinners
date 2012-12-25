@@ -86,7 +86,16 @@ $(document).ready(function () {
         fetch_data(active_tab_index);
     });
 
-    function submit_data() {
+    $('#export_link').click(function () {
+        var data = get_criteria();
+        for (var name in data) {
+            $('input[name="' + name + '"]').val(data[name]);
+        }
+        var url = '/project/export/log' + '?type=' + tab[active_tab_index];
+        $('#export_form').attr('action', url).submit();
+    });
+
+    function get_criteria() {
         var reporting_period = get_date($('#reportingPeriodPicker'), gettext("All Periods"));
         var submission_date = get_date($('#submissionDatePicker'), gettext("All Dates"));
         var subject_ids = $('#subjectSelect').attr('ids');
@@ -118,7 +127,7 @@ $(document).ready(function () {
     }
 
     function fetch_data(active_tab_index) {
-        var data = submit_data();
+        var data = get_criteria();
         DW.loading();
         $.ajax({
             type:'POST',
@@ -193,7 +202,7 @@ $(document).ready(function () {
     }
 
     function isFiltering() {
-        return _.any(_.values(submit_data()), function (v) {
+        return _.any(_.values(get_criteria()), function (v) {
             return !_.isUndefined(v) && !_.isEmpty($.trim(v))
         })
     }
