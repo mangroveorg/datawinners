@@ -61,7 +61,7 @@ class SubmissionAnalyzerTest(MangroveTestCase):
     def test_should_get_real_answer_for_select_question(self):
         answers = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
         submission_analyzer = self._prepare_analyzer_with_one_submission(self.form_model, answers)
-        expected = [[self.submission_id, ('Clinic-One', 'cli14'), '01.01.2012', u'24.12.2012', (u'Tester Pune', 'admin', u'tester150411@gmail.com'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+        expected = [[self.submission_id, ('Clinic-One', 'cli14'), '01.01.2012', today, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
 
         self.assertEqual(expected, submission_analyzer.get_raw_values())
 
