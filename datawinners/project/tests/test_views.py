@@ -13,10 +13,11 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.submissions import Submission
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
-from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject_questionaire, create_data_sender_and_web_user, registered_datasenders, make_data_sender_links, add_link, all_datasenders
+from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject_questionaire, create_data_sender_and_web_user, registered_datasenders, make_data_sender_links, add_link, all_datasenders, _prepare_export_data
 from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
+from project.submission_router import SubmissionRouter
 from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, delete_submissions_by_ids, append_success_to_context, formatted_data
 from project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field
 from questionnaire.questionnaire_builder import get_max_code
@@ -303,3 +304,32 @@ class TestProjectViews( unittest.TestCase ):
         data = formatted_data(field_values)
         self.assertEqual(data, [['key</br>(value)', 'string']])
         self.assertEqual(field_values, [[('key', 'value'), 'string']])
+
+    def test_should_prepare_export_data_for_success_submission_log_tab(self):
+        request = Mock()
+        request.GET.get.return_value = SubmissionRouter.SUCCESS
+        request.POST.get.return_value = 'proj_name'
+        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Q4", "Q5"], [[0, 1, 2, 3, 4, 5]])
+        expected = [['Q1', 'Q2', 'Q4', 'Q5'], [1, 2, 4, 5]]
+        self.assertEqual(expected, data)
+        self.assertEqual('proj_name_success_log', file_name)
+
+    def test_should_prepare_export_data_for_all_submission_log_tab(self):
+        request = Mock()
+        request.GET.get.return_value = SubmissionRouter.ALL
+        request.POST.get.return_value = 'proj_name'
+        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Q4", "Q5"], [[0, 1, 2, 3, 4, 5]])
+        expected = [['Q1', 'Q2', 'Status', 'Q4', 'Q5'], [1, 2, 3, 4, 5]]
+        self.assertEqual(expected, data)
+        self.assertEqual('proj_name_all_log', file_name)
+
+    def test_should_prepare_export_data_for_analysis_page(self):
+        request = Mock()
+        request.GET.get.return_value = None
+        request.POST.get.return_value = 'proj_name'
+        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Q4", "Q5"], [[0, 1, 2, 3, 4, 5]])
+        expected = [['Q1', 'Q2', 'Status', 'Q4', 'Q5'], [1, 2, 3, 4, 5]]
+        self.assertEqual(expected, data)
+        self.assertEqual('proj_name_analysis', file_name)
+
+

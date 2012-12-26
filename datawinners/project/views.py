@@ -24,9 +24,7 @@ from datawinners.entity.helper import process_create_data_sender_form, add_impor
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
-
 import helper
-
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException, MangroveException
 from mangrove.form_model import form_model
@@ -34,7 +32,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
 from mangrove.transport.facade import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.submissions import Submission, get_submissions, submission_count, successful_submissions, undeleted_submissions, deleted_submissions
+from mangrove.transport.submissions import Submission, get_submissions, submission_count
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
@@ -64,6 +62,7 @@ from project.analysis_result import AnalysisResult
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
 from project.submission_analyzer import SubmissionAnalyzer
+from project.submission_router import SubmissionRouter, successful_submissions
 from project.submission_utils.submission_filter import SubmissionFilter
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT, \
@@ -86,13 +85,6 @@ GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 XLS_TUPLE_FORMAT = "%s (%s)"
-
-SUBMISSION_ROUTER = {
-    "all": undeleted_submissions,
-    "success": successful_submissions,
-    "error": undeleted_submissions,
-    "deleted": deleted_submissions
-}
 
 def make_project_links(project, questionnaire_code, reporter_id=None):
     project_id = project.id
@@ -284,7 +276,7 @@ def filter_by_keyword(keyword, raw_field_values):
 
 def _get_submissions_by_type(request, manager, form_model):
     submission_type = request.GET.get('type', 'all')
-    submissions = SUBMISSION_ROUTER.get(submission_type)(manager, form_model.form_code)
+    submissions = SubmissionRouter().route(submission_type)(manager, form_model.form_code)
     if submission_type == "error":
         return filter(lambda x: not x.status, submissions)
     return submissions
@@ -311,7 +303,6 @@ def project_results(request, project_id=None, questionnaire_code=None):
     field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
 
     analysis_result = AnalysisResult(analyzer.get_header(), field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
-
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
@@ -465,9 +456,22 @@ def project_data(request, project_id=None, questionnaire_code=None):
         return HttpResponse(analysis_result)
 
 
-def _get_export_filename(request, is_for_submission_log_page):
-    suffix = '_' + request.GET.get('type', 'all') + '_log' if is_for_submission_log_page else '_analysis'
-    return request.POST.get(u"project_name") + suffix
+def _get_exported_data(header, formatted_values, submission_log_type):
+    data = [header] + formatted_values
+    exported_data = [each[1:] for each in data]
+    if submission_log_type in [SubmissionRouter.ERROR, SubmissionRouter.SUCCESS]:
+        exported_data = [each[:2] + each[3:] for each in exported_data]
+    return exported_data
+
+
+def _prepare_export_data(request, header_list, formatted_values):
+    submission_log_type = request.GET.get('type', None)
+    exported_data = _get_exported_data(header_list, formatted_values, submission_log_type)
+
+    suffix = submission_log_type + '_log' if submission_log_type else 'analysis'
+    project_name = request.POST.get(u"project_name")
+    file_name = "%s_%s" % (project_name, suffix)
+    return exported_data, file_name
 
 
 def _export_submissions_in_xls(request, is_for_submission_log_page):
@@ -475,15 +479,13 @@ def _export_submissions_in_xls(request, is_for_submission_log_page):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-
     analyzer = _build_submission_analyzer(request, manager, form_model, is_for_submission_log_page)
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format=XLS_TUPLE_FORMAT)
+    header_list = analyzer.get_header().header_list
 
-    file_name = _get_export_filename(request, is_for_submission_log_page)
+    exported_data, file_name = _prepare_export_data(request, header_list, formatted_values)
 
-    data = [analyzer.get_header().header_list] + formatted_values
-
-    return _create_excel_response([each[1:] for each in data], file_name)
+    return _create_excel_response(exported_data, file_name)
 
 
 @login_required(login_url='/login')
