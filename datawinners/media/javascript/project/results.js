@@ -87,47 +87,12 @@ $(document).ready(function () {
     });
 
     $('#export_link').click(function () {
-        var data = get_criteria();
-        for (var name in data) {
-            $('input[name="' + name + '"]').val(data[name]);
-        }
         var url = '/project/export/log' + '?type=' + tab[active_tab_index];
-        $('#export_form').attr('action', url).submit();
+        $('#export_form').appendJson(DW.get_criteria()).attr('action', url).submit();
     });
 
-    function get_criteria() {
-        var reporting_period = get_date($('#reportingPeriodPicker'), gettext("All Periods"));
-        var submission_date = get_date($('#submissionDatePicker'), gettext("All Dates"));
-        var subject_ids = $('#subjectSelect').attr('ids');
-        var submission_sources = $('#dataSenderSelect').attr('data');
-        var keyword = $('#keyword').val();
-        $(".dateErrorDiv").hide();
-        return {
-            'start_time':$.trim(reporting_period.start_time),
-            'end_time':$.trim(reporting_period.end_time),
-            'submission_date_start':$.trim(submission_date.start_time),
-            'submission_date_end':$.trim(submission_date.end_time),
-            'subject_ids':subject_ids,
-            'submission_sources':submission_sources,
-            'keyword':keyword
-        };
-    }
-
-    function get_date($datePicker, default_text) {
-        var data = $datePicker.val().split("-");
-        if (data[0] == "" || data[0] == default_text) {
-            data = ['', ''];
-        } else if (data[0] != default_text && Date.parse(data[0]) == null) {
-            $datePicker.next().html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>').show();
-            data = ['', ''];
-        } else if (data.length == 1) {
-            data[1] = data[0];
-        }
-        return {start_time:data[0], end_time:data[1]};
-    }
-
     function fetch_data(active_tab_index) {
-        var data = get_criteria();
+        var data = DW.get_criteria();
         DW.loading();
         $.ajax({
             type:'POST',
@@ -202,7 +167,7 @@ $(document).ready(function () {
     }
 
     function isFiltering() {
-        return _.any(_.values(get_criteria()), function (v) {
+        return _.any(_.values(DW.get_criteria()), function (v) {
             return !_.isUndefined(v) && !_.isEmpty($.trim(v))
         })
     }

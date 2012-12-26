@@ -62,3 +62,34 @@ $.fn.datePicker = function (options) {
         }
     })
 }
+
+DW.get_criteria = function() {
+    var reporting_period = DW.get_datepicker_value($('#reportingPeriodPicker'), gettext("All Periods"));
+    var submission_date = DW.get_datepicker_value($('#submissionDatePicker'), gettext("All Dates"));
+    var subject_ids = $('#subjectSelect').attr('ids');
+    var submission_sources = $('#dataSenderSelect').attr('data');
+    var keyword = $('#keyword').val();
+    $(".dateErrorDiv").hide();
+    return {
+        'start_time':$.trim(reporting_period.start_time),
+        'end_time':$.trim(reporting_period.end_time),
+        'submission_date_start':$.trim(submission_date.start_time),
+        'submission_date_end':$.trim(submission_date.end_time),
+        'subject_ids':subject_ids,
+        'submission_sources':submission_sources,
+        'keyword':keyword
+    };
+}
+
+DW.get_datepicker_value = function($datePicker, default_text) {
+    var data = $datePicker.val().split("-");
+    if (data[0] == "" || data[0] == default_text) {
+        data = ['', ''];
+    } else if (data[0] != default_text && Date.parse(data[0]) == null) {
+        $datePicker.next().html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>').show();
+        data = ['', ''];
+    } else if (data.length == 1) {
+        data[1] = data[0];
+    }
+    return {start_time:data[0], end_time:data[1]};
+}

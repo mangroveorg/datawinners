@@ -66,7 +66,9 @@
     <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
     <script type="text/javascript" src="/media/javascript/project/data_analysis_chart_view.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/filters.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/filter/filters.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/filter/json2form.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -100,14 +102,6 @@
     <form id="export_form" action="/project/export/data" method='POST'>
         {% csrf_token %}
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
-        <input name='start_time' type="hidden"/>
-        <input name='end_time' type="hidden"/>
-        <input name='submission_date_start' type="hidden"/>
-        <input name='submission_date_end' type="hidden"/>
-        <input name='subject_ids' type="hidden"/>
-        <input name='submission_sources' type="hidden"/>
-        <input name='keyword' type="hidden"/>
-
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
     <div class="heading_block clearfix margin_bottom_10">

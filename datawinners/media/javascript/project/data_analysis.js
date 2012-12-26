@@ -13,16 +13,11 @@ $(document).ready(function () {
 
     function addOnClickListener() {
         $('#export_link').click(function () {
-            var data = DW.submit_data();
-
-            for (var name in data) {
-                $('input[name="' + name + '"]').val(data[name]);
-            }
-            $('#export_form').submit();
+            $('#export_form').appendJson(DW.get_criteria()).submit();
         });
 
         $('#go').click(function () {
-                var data = DW.submit_data();
+                var data = DW.get_criteria();
                 $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
                 $.ajax({
                     type:'POST',
@@ -43,37 +38,6 @@ $(document).ready(function () {
             }
         );
     }
-
-    function get_date($datePicker, default_text) {
-        var data = $datePicker.val().split("-");
-        if (data[0] == "" || data[0] == default_text) {
-            data = ['', ''];
-        } else if (data[0] != default_text && Date.parse(data[0]) == null) {
-            $datePicker.next().html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>').show();
-            data = ['', ''];
-        } else if (data.length == 1) {
-            data[1] = data[0];
-        }
-        return {start_time: data[0], end_time: data[1]};
-    }
-
-    DW.submit_data = function () {
-        var reporting_period = get_date($('#reportingPeriodPicker'), gettext("All Periods"));
-        var submission_date = get_date($('#submissionDatePicker'), gettext("All Dates"));
-        var subject_ids = $('#subjectSelect').attr('ids');
-        var submission_sources = $('#dataSenderSelect').attr('data');
-        var keyword = $('#keyword').val();
-        return {
-            'start_time': $.trim(reporting_period.start_time),
-            'end_time': $.trim(reporting_period.end_time),
-            'submission_date_start': $.trim(submission_date.start_time),
-            'submission_date_end': $.trim(submission_date.end_time),
-            'subject_ids': subject_ids,
-            'submission_sources': submission_sources,
-            'keyword': keyword
-        };
-        $(".dateErrorDiv").hide();
-    };
 
     DW.wrap_table = function () {
         $("#data_analysis").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");

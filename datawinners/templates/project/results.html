@@ -32,7 +32,8 @@
     <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/dropdown_check_list/dropdownchecklist.custom.js"></script>
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/filters.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/filter/filters.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/filter/json2form.js"></script>
 
 {% endblock %}
 {% block page_css %}
@@ -73,14 +74,6 @@
     <form id="export_form" method="POST">
         {% csrf_token %}
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
-        <input name='start_time' type="hidden"/>
-        <input name='end_time' type="hidden"/>
-        <input name='submission_date_start' type="hidden"/>
-        <input name='submission_date_end' type="hidden"/>
-        <input name='subject_ids' type="hidden"/>
-        <input name='submission_sources' type="hidden"/>
-        <input name='keyword' type="hidden"/>
-
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
     <div class="heading_block alpha data_ana">
