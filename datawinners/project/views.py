@@ -282,8 +282,8 @@ def filter_by_keyword(keyword, raw_field_values):
     return KeywordFilter(keyword).filter(raw_field_values)
 
 
-def _get_submissions_by_type(params, manager, form_model):
-    submission_type = params.get('type', 'all')
+def _get_submissions_by_type(request, manager, form_model):
+    submission_type = request.GET.get('type', 'all')
     submissions = SUBMISSION_ROUTER.get(submission_type)(manager, form_model.form_code)
     if submission_type == "error":
         return filter(lambda x: not x.status, submissions)
@@ -291,7 +291,7 @@ def _get_submissions_by_type(params, manager, form_model):
 
 
 def _build_submission_analyzer(request, manager, form_model, is_for_submission_page):
-    submissions = _get_submissions_by_type(request.GET, manager, form_model)
+    submissions = _get_submissions_by_type(request, manager, form_model)
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
     analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions,
         request.POST.get('keyword', ''), is_for_submission_page=is_for_submission_page)
@@ -465,17 +465,22 @@ def project_data(request, project_id=None, questionnaire_code=None):
         return HttpResponse(analysis_result)
 
 
+def _get_export_filename(request, is_for_submission_log_page):
+    suffix = '_' + request.GET.get('type', 'all') + '_log' if is_for_submission_log_page else '_analysis'
+    return request.POST.get(u"project_name") + suffix
+
+
 def _export_submissions_in_xls(request, is_for_submission_log_page):
     questionnaire_code = request.POST.get('questionnaire_code')
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    suffix = '_log' if is_for_submission_log_page else '_analysis'
 
     analyzer = _build_submission_analyzer(request, manager, form_model, is_for_submission_log_page)
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format=XLS_TUPLE_FORMAT)
 
-    file_name = request.POST.get(u"project_name") + suffix
+    file_name = _get_export_filename(request, is_for_submission_log_page)
+
     data = [analyzer.get_header().header_list] + formatted_values
 
     return _create_excel_response([each[1:] for each in data], file_name)

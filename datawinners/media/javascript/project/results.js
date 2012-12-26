@@ -86,7 +86,7 @@ $(document).ready(function () {
         fetch_data(active_tab_index);
     });
 
-    $('#export_link').click(function () {
+    $('.export_link').click(function () {
         var url = '/project/export/log' + '?type=' + tab[active_tab_index];
         $('#export_form').appendJson(DW.get_criteria()).attr('action', url).submit();
     });
@@ -101,7 +101,7 @@ $(document).ready(function () {
             success:function (response) {
                 var response_data = JSON.parse(response);
                 show_data(active_tab_index, response_data.data_list);
-                $(".action_container").clone().addClass("margin_top_null").appendTo(".data_table");
+                $(".action_container").parent().clone().addClass("margin_top_null").appendTo(".data_table");
             }});
     }
 

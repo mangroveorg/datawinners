@@ -76,13 +76,6 @@
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
-    <div class="heading_block alpha data_ana">
-        <ul class="links">
-            <li><a id = "export_link" href="#">{% trans "export" %}</a> </li>
-            <li><a href="#" class="disable_link">{% trans "print" %}</a> </li>
-            <li><a href="#" class="null_border disable_link">{% trans "e-mail" %}</a> </li>
-        </ul>
-    </div>
     <div class="heading_block clearfix margin_bottom_10">
         <div id="filter_section" class="alpha data_ana float_left">
             {% include 'project/partials/_filter_by_subject.html' %}
