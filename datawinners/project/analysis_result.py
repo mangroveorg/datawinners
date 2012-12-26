@@ -11,12 +11,12 @@ class AnalysisResult(object):
 
     @property
     def analysis_result_dict(self):
-        return {"datasender_list": self._data_sender_list,
-                "default_sort_order": repr(encode_json(self._default_sort_order)),
-                "header_list": self._header.header_list,
+        return {"header_list": self._header.header_list,
                 "header_name_list": repr(encode_json(self._header.header_list)),
-                "header_type_list": repr(encode_json(self._header.header_type_list)),
+                "datasender_list": self._data_sender_list,
                 "subject_list": self._subject_list,
+                "header_type_list": repr(encode_json(self._header.header_type_list)),
+                "default_sort_order": repr(encode_json(self._default_sort_order)),
                 "data_list": repr(encode_json(self._field_values)),
                 "statistics_result": repr(encode_json(self._statistics_result))}
 

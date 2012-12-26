@@ -11,6 +11,8 @@ def undeleted_submissions(dbm, form_code):
 def deleted_submissions(dbm, form_code, from_time=None, to_time=None, page_number=0, page_size=None):
     return get_submissions(dbm, form_code, from_time, to_time, page_number, page_size, DELETED_SUBMISSION_LOG_VIEW_NAME)
 
+def all_submissions(dbm, form_code, from_time=None, to_time=None, page_number=0, page_size=None):
+    return get_submissions(dbm, form_code, from_time, to_time, page_number, page_size)
 
 class SubmissionRouter(object):
     ALL = "all"
@@ -26,5 +28,5 @@ class SubmissionRouter(object):
     }
 
     def route(self, type):
-        return self.SUBMISSION_ROUTER.get(type, undeleted_submissions)
+        return self.SUBMISSION_ROUTER.get(type, successful_submissions)
 

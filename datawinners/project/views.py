@@ -62,7 +62,7 @@ from project.analysis_result import AnalysisResult
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
 from project.submission_analyzer import SubmissionAnalyzer
-from project.submission_router import SubmissionRouter, successful_submissions
+from project.submission_router import SubmissionRouter, successful_submissions, all_submissions
 from project.submission_utils.submission_filter import SubmissionFilter
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT, \
@@ -275,9 +275,9 @@ def filter_by_keyword(keyword, raw_field_values):
 
 
 def _get_submissions_by_type(request, manager, form_model):
-    submission_type = request.GET.get('type', 'all')
+    submission_type = request.GET.get('type')
     submissions = SubmissionRouter().route(submission_type)(manager, form_model.form_code)
-    if submission_type == "error":
+    if submission_type == SubmissionRouter.ERROR:
         return filter(lambda x: not x.status, submissions)
     return submissions
 
@@ -299,23 +299,25 @@ def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    analyzer = _build_submission_analyzer(request, manager, form_model, True)
-    field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
-
-    analysis_result = AnalysisResult(analyzer.get_header(), field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
-
-    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-
     if request.method == 'GET':
-        project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-        result_dict = analysis_result.analysis_result_dict
-        result_dict.update(project_infos)
+        submissions = all_submissions(manager,form_model.form_code)
+        submission_analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user),
+            submissions, is_for_submission_page=True)
 
-        return render_to_response('project/results.html',
-            result_dict,
-            context_instance=RequestContext(request))
+        result_dict = {"header_list": submission_analyzer.get_header().header_list,
+                       "header_name_list": repr(encode_json(submission_analyzer.get_header().header_list)),
+                       "datasender_list": submission_analyzer.get_data_senders(),
+                       "subject_list": submission_analyzer.get_subjects()}
+        result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
 
+        return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
     if request.method == 'POST':
+        analyzer = _build_submission_analyzer(request, manager, form_model, True)
+        field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
+
+        analysis_result = AnalysisResult(analyzer.get_header(), field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
+        performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
+
         if "id_list" in request.POST:
             project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
             return HttpResponse(_handle_delete_submissions(manager, request, project_infos.get("project").name))

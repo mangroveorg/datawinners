@@ -64,7 +64,6 @@ $(document).ready(function () {
         if (active_tab_index === tab_index) {
             return;
         }
-
         active_tab_index = tab_index;
 
         if (tabOptions.show_actions()) {
@@ -74,6 +73,7 @@ $(document).ready(function () {
         }
         fetch_data(tab_index);
     }).filter(':first').trigger('click');
+
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
 
