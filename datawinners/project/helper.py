@@ -19,6 +19,7 @@ from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
 from mangrove.transport import Request, TransportInfo
+from project.data_sender import DataSender
 
 DEFAULT_DATE_FORMAT = 'dd.MM.yyyy'
 
@@ -120,6 +121,7 @@ class DataSenderGetterByEmail(object):
         return data_sender.get_full_name(), reporter_id, email
 
 
+
 class DataSenderHelper(object):
     def __init__(self, dbm):
         self.dbm = dbm
@@ -127,28 +129,33 @@ class DataSenderHelper(object):
 
     def get_data_sender(self, org_id, submission):
         if submission.channel == 'sms':
-            return self._get_data_sender_for_sms(submission)
+            data_sender = self._get_data_sender_for_sms(submission)
         else:
-            return self._get_data_sender_for_not_sms(submission, org_id)
+            data_sender = self._get_data_sender_for_not_sms(submission, org_id)
+
+        return data_sender if data_sender[0] != "TEST" else ("TEST", "", "TEST")
 
     def _get_data_sender_for_sms(self, submission):
         data_sender = tuple(self.data_sender_by_mobile(submission.source) + [submission.source])
 
-        return data_sender if data_sender[0] != "TEST" else ("TEST", "", "TEST")
+        return data_sender
 
     def _get_data_sender_for_not_sms(self, submission, org_id):
-        submission_source = submission.source
-
         try:
-            data_sender = self.dataSenderGetterByEmail.data_sender(org_id, submission_source)
+            data_sender = self.dataSenderGetterByEmail.data_sender(org_id, submission.source)
         except:
-            data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission_source)
+            data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission.source)
 
-        return data_sender if data_sender[0] != "TEST" else ("TEST", "", "TEST")
+        return data_sender
 
     def data_sender_by_mobile(self, mobile):
         rows = self.dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
         return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
+
+    def get_all_sms_data_senders(self):
+        rows = self.dbm.load_all_rows_in_view("datasender_by_mobile")
+
+        return map(lambda x: DataSender(*x.key), rows)
 
 
 def case_insensitive_lookup(search_key, dictionary):
