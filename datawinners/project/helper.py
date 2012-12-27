@@ -113,8 +113,8 @@ def get_data_sender(dbm, user, submission):
     return DataSenderHelper(dbm).get_data_sender(user, submission)
 
 
-class DataSenderGetterByEmail(object):
-    def data_sender(self, org_id, email):
+class DataSenderGetter(object):
+    def data_sender_by_email(self, org_id, email):
         data_sender = User.objects.get(email=email)
         reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
 
@@ -125,7 +125,7 @@ class DataSenderGetterByEmail(object):
 class DataSenderHelper(object):
     def __init__(self, dbm):
         self.dbm = dbm
-        self.dataSenderGetterByEmail = DataSenderGetterByEmail()
+        self.dataSenderGetterByEmail = DataSenderGetter()
 
     def get_data_sender(self, org_id, submission):
         if submission.channel == 'sms':
@@ -142,7 +142,7 @@ class DataSenderHelper(object):
 
     def _get_data_sender_for_not_sms(self, submission, org_id):
         try:
-            data_sender = self.dataSenderGetterByEmail.data_sender(org_id, submission.source)
+            data_sender = self.dataSenderGetterByEmail.data_sender_by_email(org_id, submission.source)
         except:
             data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission.source)
 
