@@ -68,9 +68,9 @@ $(document).ready(function () {
         active_tab_index = tab_index;
 
         if (tabOptions.show_actions()) {
-            $('.action_container').show();
+            $('.action_container').css('visibility', 'visible');
         } else {
-            $('.action_container').hide();
+            $('.action_container').css('visibility', 'hidden');
         }
         fetch_data(tab_index);
     }).filter(':first').trigger('click');
@@ -101,7 +101,7 @@ $(document).ready(function () {
             success:function (response) {
                 var response_data = JSON.parse(response);
                 show_data(active_tab_index, response_data.data_list);
-                $(".action_container").parent().clone().addClass("margin_top_null").appendTo(".data_table");
+                $(".action_container").parent().clone(true).addClass("margin_top_null").appendTo(".data_table");
             }});
     }
 
