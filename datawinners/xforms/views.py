@@ -1,8 +1,7 @@
 import logging
 import xml
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
 from django_digest.decorators import httpdigest
 from mangrove.transport import Request
 from mangrove.transport.facade import TransportInfo
@@ -12,6 +11,7 @@ from datawinners.accountmanagement.models import Organization
 from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.main.utils import get_database_manager
 from django.contrib.gis.utils import GeoIP
+from messageprovider.messages import SMART_PHONE
 
 logger = logging.getLogger("datawinners.xform")
 sp_submission_logger = logging.getLogger("")
@@ -79,7 +79,7 @@ def submission(request):
     try:
         mangrove_request = Request(message=submission_file,
             transportInfo=
-            TransportInfo(transport="smartPhone",
+            TransportInfo(transport=SMART_PHONE,
                 source=request_user.email,
                 destination=''
             ))

@@ -8,6 +8,7 @@ WEB = u"web"
 SMS = u"sms"
 SUBMISSION = u"submission"
 REGISTRATION = u"registration"
+SMART_PHONE=u"smartPhone"
 
 DEFAULT_EXCEPTION_MESSAGE = u"An exception has occurred"
 

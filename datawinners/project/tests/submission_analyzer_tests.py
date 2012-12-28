@@ -5,11 +5,12 @@ from mangrove.form_model.field import TextField, SelectField, DateField, field_a
 from mangrove.form_model.form_model import  MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.submissions import Submission, successful_submissions
+from mangrove.transport.submissions import Submission
 from mangrove.utils.entity_builder import EntityBuilder
 from mangrove.utils.form_model_builder import FormModelBuilder, create_default_ddtype
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from project.submission_analyzer import SubmissionAnalyzer
+from project.submission_router import successful_submissions
 from project.tests.form_model_generator import FormModelGenerator
 
 today = datetime.utcnow().strftime("%d.%m.%Y")
