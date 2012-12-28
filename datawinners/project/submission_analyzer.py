@@ -9,8 +9,9 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import is_sequence
 from project.Header import Header, SubmissionsPageHeader
 from project.analysis_result import AnalysisResult
+from project.data_sender_helper import DataSenderHelper
 from project.filters import KeywordFilter
-from project.helper import  _to_str, case_insensitive_lookup, NOT_AVAILABLE, DataSenderHelper
+from project.helper import  _to_str, case_insensitive_lookup, NOT_AVAILABLE
 from enhancer import field_enhancer
 from project.submission_utils.submission_formatter import SubmissionFormatter
 

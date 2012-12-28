@@ -16,6 +16,19 @@ class DataSender(object):
     def reporter_id(self):
         return self._reporter_id
 
+    def to_tuple(self):
+        return self._name, self._reporter_id, self._source
+
     def __eq__(self, other):
         return isinstance(other,
             DataSender) and self._name == other._name and self._source == other._source and self._reporter_id == other._reporter_id
+
+    def __hash__(self):
+        result = 17
+        result = 31 * result + hash(self._name)
+        result = 31 * result + hash(self._source)
+        result = 31 * result + hash(self._reporter_id)
+
+        return result
+
+

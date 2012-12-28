@@ -12,7 +12,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesN
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
 from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
-from project.helper import get_data_sender, NOT_AVAILABLE_DS, is_project_exist
+from project.helper import is_project_exist
 from project.tests.submission_log_data import  SUBMISSIONS
 
 
@@ -92,13 +92,15 @@ class TestHelper(unittest.TestCase):
             options=[("red", "a"), ("yellow", "b"), ('green', "c")], name="What is your favourite colour",
             ddtype=ddtype)
         multiple_answer = SelectField(label="multiple_choice_question", code="q1", single_select_flag=False,
-            options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ), ("d", "d"), ("e", "e"), ('f', "f"), ("g", "g"), ("h", "h"),
+            options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ), ("d", "d"), ("e", "e"), ('f', "f"),
+                     ("g", "g"), ("h", "h"),
                      ('i', "i"), ("j", "j"), ("k", "k"), ('l', "l"), ("m", "m"), ("n", "n"), ('o', "o"),
                      ("p", "p"), ("q", "q"), ('r', "r"), ("s", "s"), ("t", "t"), ('u', "u"), ("v", "v"), ("w", "w"),
-                     ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'), ("value_of_1b", "1b"), ("value_of_1c", "1c"), ('1d', "1d")],
+                     ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'), ("value_of_1b", "1b"),
+                     ("value_of_1c", "1c"), ('1d', "1d")],
             name="What is your favourite colour",
             ddtype=ddtype)
-        values = dict({"q":"B", "q1":"b1A1c"})
+        values = dict({"q": "B", "q1": "b1A1c"})
         single_value = helper.get_according_value(values, single_select)
         multiple_value = helper.get_according_value(values, multiple_answer)
         self.assertEquals(single_value, "yellow")
@@ -107,16 +109,18 @@ class TestHelper(unittest.TestCase):
     def test_should_return_according_value_for_select_field(self):
         ddtype = Mock(spec=DataDictType)
         single_select = SelectField(label="multiple_choice_question", code="q",
-                                options=[("red", "a"), ("yellow", "b"), ('green', "c")], name="What is your favourite colour",
-                                ddtype=ddtype)
+            options=[("red", "a"), ("yellow", "b"), ('green', "c")], name="What is your favourite colour",
+            ddtype=ddtype)
         multiple_answer = SelectField(label="multiple_choice_question", code="q1", single_select_flag=False,
-                                options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ), ("d", "d"), ("e", "e"), ('f', "f"), ("g", "g"), ("h", "h"),
-                                    ('i', "i"), ("j", "j"), ("k", "k"), ('l', "l"), ("m", "m"), ("n", "n"), ('o', "o"),
-                                    ("p", "p"), ("q", "q"), ('r', "r"), ("s", "s"), ("t", "t"), ('u', "u"), ("v", "v"), ("w", "w"),
-                                    ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'), ("value_of_1b", "1b"), ("value_of_1c", "1c"), ('1d', "1d")],
-                                name="What is your favourite colour",
-                                ddtype=ddtype)
-        values = dict({"q":"b", "q1":"b1a1c"})
+            options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ), ("d", "d"), ("e", "e"), ('f', "f"),
+                     ("g", "g"), ("h", "h"),
+                     ('i', "i"), ("j", "j"), ("k", "k"), ('l', "l"), ("m", "m"), ("n", "n"), ('o', "o"),
+                     ("p", "p"), ("q", "q"), ('r', "r"), ("s", "s"), ("t", "t"), ('u', "u"), ("v", "v"), ("w", "w"),
+                     ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'), ("value_of_1b", "1b"),
+                     ("value_of_1c", "1c"), ('1d', "1d")],
+            name="What is your favourite colour",
+            ddtype=ddtype)
+        values = dict({"q": "b", "q1": "b1a1c"})
         single_value = helper.get_according_value(values, single_select)
         multiple_value = helper.get_according_value(values, multiple_answer)
         self.assertEqual(single_value, "yellow")
@@ -170,7 +174,8 @@ class TestHelper(unittest.TestCase):
         rd_field.date_format = "dd.mm.yyyy"
         form_model.event_time_question = rd_field
 
-    def _prepare_submission_data(self, load_all_rows_in_view, get_data_sender, get_by_short_code, has_report_period_question):
+    def _prepare_submission_data(self, load_all_rows_in_view, get_data_sender, get_by_short_code,
+                                 has_report_period_question):
         load_all_rows_in_view.return_value = SUBMISSIONS
         get_data_sender.return_value = ("Sender1", "rep1")
         entity = Mock(spec=Entity)
@@ -186,9 +191,10 @@ class TestHelper(unittest.TestCase):
         return form_model
 
     def test_should_raise_Http404_if_project_can_not_be_found(self):
-        wrapped_func = is_project_exist(lambda :None.qid)
+        wrapped_func = is_project_exist(lambda: None.qid)
         with self.assertRaises(Http404):
             wrapped_func()
+
 
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):

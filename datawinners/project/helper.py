@@ -14,7 +14,6 @@ from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
 from mangrove.utils.types import  is_sequence, sequence_to_str
 from enhancer import field_enhancer
-from messageprovider.messages import SMS
 import models
 from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
@@ -109,11 +108,6 @@ def get_datasender_by_mobile(dbm, mobile):
     rows = dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
     return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
 
-
-def get_data_sender(dbm, user, submission):
-    return DataSenderHelper(dbm).get_data_sender(user, submission)
-
-
 class DataSenderGetter(object):
     def data_sender_by_email(self, org_id, email):
         data_sender = User.objects.get(email=email)
@@ -123,61 +117,9 @@ class DataSenderGetter(object):
 
     def list_data_sender(self, org_id):
         ngo_user_profiles = list(NGOUserProfile.objects.filter(org_id=org_id).all())
-        return [DataSender(each.user.email, each.user.get_full_name(), each.reporter_id or "admin") for each in ngo_user_profiles]
+        return [DataSender(each.user.email, each.user.get_full_name(), each.reporter_id or "admin") for each in
+                ngo_user_profiles]
 
-
-class DataSenderHelper(object):
-    def __init__(self, dbm):
-        self.manager = dbm
-        self.dataSenderGetter = DataSenderGetter()
-
-    def get_data_sender(self, org_id, submission):
-        if submission.channel == 'sms':
-            data_sender = self._get_data_sender_for_sms(submission)
-        else:
-            data_sender = self._get_data_sender_for_not_sms(submission, org_id)
-
-        return data_sender if data_sender[0] != "TEST" else ("TEST", "", "TEST")
-
-    def get_all_sms_data_senders_with_submission(self):
-        data_sender_info_list = [each for each in (self._get_all_submission_data_sender_info()) if each[0] == SMS]
-        source_to_data_sender_dict = {each.source: each for each in self._get_all_sms_data_senders()}
-
-        return map(
-            lambda x: source_to_data_sender_dict.get(x[1], DataSender(x[1], ugettext(NOT_AVAILABLE_DS), None)),
-            data_sender_info_list)
-
-    def get_all_non_sms_data_senders_with_submission(self, org_id):
-        data_sender_list = self.dataSenderGetter.list_data_sender(org_id)
-        source_to_data_sender_dict = {each.source: each for each in data_sender_list}
-        data_sender_info_list = [each for each in (self._get_all_submission_data_sender_info()) if each[0] != SMS]
-
-        return map(
-            lambda x: source_to_data_sender_dict.get(x[1], DataSender(x[1], ugettext(NOT_AVAILABLE_DS), None)),
-            data_sender_info_list)
-
-    def _get_data_sender_for_sms(self, submission):
-        return tuple(self._data_sender_by_mobile(submission.source) + [submission.source])
-
-    def _get_data_sender_for_not_sms(self, submission, org_id):
-        try:
-            data_sender = self.dataSenderGetter.data_sender_by_email(org_id, submission.source)
-        except:
-            data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission.source)
-
-        return data_sender
-
-    def _data_sender_by_mobile(self, mobile):
-        rows = self.manager.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
-        return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
-
-    def _get_all_sms_data_senders(self):
-        rows = self.manager.load_all_rows_in_view("datasender_by_mobile")
-
-        return map(lambda x: DataSender(*x.key), rows)
-
-    def _get_all_submission_data_sender_info(self):
-        return [each.key for each in self.manager.load_all_rows_in_view("submission_data_sender_info", group_level=2)]
 
 
 def case_insensitive_lookup(search_key, dictionary):
@@ -186,6 +128,7 @@ def case_insensitive_lookup(search_key, dictionary):
         if key.lower() == search_key.lower():
             return value
     return None
+
 
 def _to_str(value, form_field=None):
     if value is None:

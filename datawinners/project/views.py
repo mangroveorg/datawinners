@@ -25,6 +25,7 @@ from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
 import helper
+from data_sender_helper import DataSenderHelper
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException, MangroveException
 from mangrove.form_model import form_model
@@ -300,13 +301,15 @@ def project_results(request, project_id=None, questionnaire_code=None):
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
     if request.method == 'GET':
+        data_sender_ever_submitted = DataSenderHelper(manager).get_all_data_senders_ever_submitted(request.user.get_profile().org_id)
+
         submissions = all_submissions(manager,form_model.form_code)
         submission_analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user),
             submissions, is_for_submission_page=True)
 
         result_dict = {"header_list": submission_analyzer.get_header().header_list,
                        "header_name_list": repr(encode_json(submission_analyzer.get_header().header_list)),
-                       "datasender_list": submission_analyzer.get_data_senders(),
+                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted),
                        "subject_list": submission_analyzer.get_subjects()}
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
 
