@@ -15,7 +15,6 @@ from project.submission_router import successful_submissions
 from project.tests.form_model_generator import FormModelGenerator
 
 today = datetime.utcnow().strftime("%d.%m.%Y")
-today_submission_page = datetime.utcnow().strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
 
 class SubmissionAnalyzerTest(MangroveTestCase):
     def setUp(self):
@@ -89,9 +88,9 @@ class SubmissionAnalyzerTest(MangroveTestCase):
 
     def test_should_get_raw_field_values_with_status_for_all_submissions(self):
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}, is_for_submission_page=True)
-
-        raw_field_values = analyzer.get_raw_values()
-        expected = [[self.submission_id, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), today_submission_page, 'Error', '01.01.2012', ('Clinic-One', 'cli14'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+        datetime.utcnow().strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
+        submission_date = raw_field_values = analyzer.get_raw_values()
+        expected = [[self.submission_id, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), submission_date, 'Error', '01.01.2012', ('Clinic-One', 'cli14'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
         self.assertEqual(expected, raw_field_values)
 
     def test_should_get_raw_field_values_filtered_by_keyword(self):
