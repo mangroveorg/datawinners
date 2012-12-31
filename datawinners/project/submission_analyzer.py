@@ -113,10 +113,10 @@ class SubmissionAnalyzer(object):
     def _get_leading_part_for_submission_page(self, submission):
         data_sender = self._get_data_sender(submission)
         submission_date = format_dt_for_submission_log_page(submission)
-        rp = self._get_rp_for_leading_part(submission)
         subject = self._get_subject_for_leading_part(submission)
+        rp = self._get_rp_for_leading_part(submission)
         status = self._get_translated_submission_status(submission.status)
-        return filter(lambda x: x, [submission.id, data_sender, submission_date, status, rp, subject])
+        return filter(lambda x: x, [submission.id, data_sender, submission_date, status, subject, rp])
 
     @timebox
     def _get_leading_part(self):

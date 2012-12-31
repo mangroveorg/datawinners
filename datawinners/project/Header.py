@@ -50,4 +50,4 @@ class SubmissionsPageHeader(Header):
         return ugettext('Status'), ''
 
     def _prefix(self):
-        return [self._id(), self._data_sender_header(), self._submission_date_header(), self._status(), self._reporting_period_header(), self._subject_header()]
+        return [self._id(), self._data_sender_header(), self._submission_date_header(), self._status(), self._subject_header(), self._reporting_period_header()]
