@@ -11,10 +11,6 @@
                 {% if project_links.sms_questionnaire_preview_link %}
                     <li>
                         {% trans 'SMS: Give your <a href="#" class="sms_questionnaire sms-preview"> SMS Questionnaire</a> to your Data Senders and have them send in data' %}
-
-                        <div class="sms-questionnaire-preview" src_data="{% trans "SMS Questionnaire" %}">
-                            {% trans "Generating the questionnaire preview." %}
-                        </div>
                     </li>
                 {% else %}
                     <li>{% blocktrans with project_links.overview_link as url %}SMS: Give your <a href="{{ url }}">Questionnaire</a>

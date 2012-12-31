@@ -35,7 +35,7 @@ $(document).ready(function () {
             );
         },
         bind:function (dialog_element, preview_link) {
-            $(preview_link).bind("click", function () {
+            $("#container_content").delegate(preview_link, "click", function () {
                 $(dialog_element).dialog("open");
                 return false;
             });

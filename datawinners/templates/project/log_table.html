@@ -23,7 +23,7 @@
         </span>
         <a href="javascript:void(0);" class="export_link float_right margin_right_5">{% trans "Export" %}</a>
     </div>
-    <table class="submission_table styled_table">
+<table class="submission_table styled_table">
         <thead>
         <tr>
             {% for each in header_list %}
@@ -38,4 +38,5 @@
 
 {% block help_no_submissions %}
     {% include "project/help_no_submission_log.html" %}
+    {% include 'sms_preview_template.html' %}
 {% endblock %}

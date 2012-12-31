@@ -15,9 +15,7 @@
         <li><span style="font-weight: bold;">{{ number_of_questions }}</span> {% trans "Questions" %}</li>
         <div class="line"></div>
         <li><img src="/media/images/mini_mobile.png" /><a href="#" class="sms_questionnaire sms-preview"> {% trans "SMS Questionnaire" %}</a></li>
-        <div class="sms-questionnaire-preview" src_data="{% trans "SMS Questionnaire" %}">
-            {% trans "Generating the questionnaire preview." %}
-        </div>
+        {% include 'sms_preview_template.html' %}
         <div class="line"></div>
         {% if 'web' in project.devices %}
             <li><img src="/media/images/mini_computer.png"/><a href="{{ links.web_questionnaire_list }}" class="web_questionnaire"> {% trans "Web Questionnaire" %}</a></li>
