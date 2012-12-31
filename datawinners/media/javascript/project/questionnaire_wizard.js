@@ -147,6 +147,8 @@ $(document).ready(function() {
                     $("#message-label").removeClass("message-box");
                     $("#message-label").addClass("success-message-box");
                     $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
+                    var has_newly_added_question = questionnaireViewModel.has_newly_added_question();
+
                     questionnaireViewModel.set_all_questions_as_old_questions();
                     if($("#qtype").val() != undefined) {
                         var json_data = JSON.parse(response);
@@ -154,10 +156,10 @@ $(document).ready(function() {
                         questionnaireViewModel.selectedQuestion.valueHasMutated();
                         questionnaireViewModel.questions.valueHasMutated();
                     }
-                    if (DW.questionnaire_was_changed) {
+                    if (DW.questionnaire_was_changed || has_newly_added_question) {
                         DW.inform_datasender_about_changes.show_warning();
                         DW.questionnaire_was_changed = false;
-                    } 
+                    }
                     hide_message();
                     redirect();
                 }).error(function(e) {

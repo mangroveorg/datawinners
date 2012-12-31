@@ -19,7 +19,6 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.valueHasMutated();
         DW.charCount();
         questionnaireViewModel.hasAddedNewQuestions = true;
-        DW.questionnaire_was_changed = true;
     },
     loadQuestion: function(question) {
         question.display = ko.dependentObservable(function() {
@@ -134,6 +133,9 @@ var questionnaireViewModel =
         for (var question_index in questionnaireViewModel.questions()){
             questionnaireViewModel.questions()[question_index].newly_added_question(false)
         }
+    },
+    has_newly_added_question:function(){
+        return _.any($(questionnaireViewModel.questions()), function(v){return v.newly_added_question();})
     },
     choiceCanBeDeleted: function() {
         return questionnaireViewModel.selectedQuestion().choices().length > 1 && questionnaireViewModel.isEnabled();

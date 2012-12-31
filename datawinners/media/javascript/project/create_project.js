@@ -140,8 +140,9 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
         var responseJson = $.parseJSON(response);
         if (responseJson.success) {
             var redirect_url = function_to_construct_redirect_url_on_success(responseJson);
+            var has_newly_added_question = questionnaireViewModel.has_newly_added_question();
 
-            if (is_edit && DW.questionnaire_was_changed){
+            if (is_edit && (DW.questionnaire_was_changed || has_newly_added_question)){
                 $.unblockUI();
                 DW.inform_datasender_about_changes.redirect_url = redirect_url;
                 DW.inform_datasender_about_changes.show_warning();
