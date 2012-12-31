@@ -11,7 +11,7 @@ from project.Header import Header, SubmissionsPageHeader
 from project.analysis_result import AnalysisResult
 from project.data_sender_helper import DataSenderHelper
 from project.filters import KeywordFilter
-from project.helper import  _to_str, case_insensitive_lookup, NOT_AVAILABLE
+from project.helper import  _to_str, case_insensitive_lookup, NOT_AVAILABLE, format_dt_for_submission_log_page
 from enhancer import field_enhancer
 from project.submission_utils.submission_formatter import SubmissionFormatter
 
@@ -112,7 +112,7 @@ class SubmissionAnalyzer(object):
 
     def _get_leading_part_for_submission_page(self, submission):
         data_sender = self._get_data_sender(submission)
-        submission_date = _to_str(submission.created)
+        submission_date = format_dt_for_submission_log_page(submission)
         rp = self._get_rp_for_leading_part(submission)
         subject = self._get_subject_for_leading_part(submission)
         status = self._get_translated_submission_status(submission.status)

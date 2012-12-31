@@ -141,6 +141,8 @@ def _to_str(value, form_field=None):
         return format_date(value, date_format)
     return value
 
+def format_dt_for_submission_log_page(submission):
+    return datetime.strftime(submission.created, "%b. %d, %Y, %I:%M %p")
 
 def get_formatted_time_string(time_val):
     try:
