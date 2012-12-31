@@ -17,6 +17,9 @@ class DataSender(object):
         return self._reporter_id
 
     def to_tuple(self):
+        if self._name == 'TEST':
+            return "TEST", "TEST", ""
+
         return self._name, self._reporter_id, self._source
 
     def __eq__(self, other):

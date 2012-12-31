@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext
-from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
+from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
+from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD, FORM_CODE
 from mangrove.transport import TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 from mangrove.transport.submissions import Submission
@@ -52,18 +53,20 @@ class TestDataSenderHelper(MangroveTestCase):
         EMAIL2 = "mamy@mailinator.com"
         EMAIL_NOT_EXIST = "a@b.c"
 
-        Submission(self.manager, TransportInfo(SMS, FROM_NUMBER1, TO_NUMBER), "form_code", []).save()
-        Submission(self.manager, TransportInfo(SMS, FROM_NUMBER1, TO_NUMBER), "form_code", []).save()
-        Submission(self.manager, TransportInfo(SMS, FROM_NUMBER2, TO_NUMBER), "form_code", []).save()
-        Submission(self.manager, TransportInfo(SMS, FROM_NUMBER_NOT_EXIST, TO_NUMBER), "form_code", []).save()
-        Submission(self.manager, TransportInfo(WEB, EMAIL, "destination"), "form_code", []).save()
-        Submission(self.manager, TransportInfo(WEB, EMAIL, "destination"), "form_code", []).save()
-        Submission(self.manager, TransportInfo(SMART_PHONE, EMAIL, "destination"), "form_code", []).save()
-        Submission(self.manager, TransportInfo(WEB, EMAIL1, "destination"), "form_code", []).save()
-        Submission(self.manager, TransportInfo(SMART_PHONE, EMAIL2, "destination"), "form_code", []).save()
-        Submission(self.manager, TransportInfo(SMART_PHONE, EMAIL_NOT_EXIST, "destination"), "form_code", []).save()
+        Submission(self.manager, TransportInfo(SMS, FROM_NUMBER1, TO_NUMBER), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(SMS, FROM_NUMBER1, TO_NUMBER), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(SMS, FROM_NUMBER2, TO_NUMBER), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(SMS, FROM_NUMBER_NOT_EXIST, TO_NUMBER), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(WEB, EMAIL, "destination"), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(WEB, EMAIL, "destination"), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(SMART_PHONE, EMAIL, "destination"), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(WEB, EMAIL1, "destination"), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(SMART_PHONE, EMAIL2, "destination"), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(SMART_PHONE, EMAIL_NOT_EXIST, "destination"), FORM_CODE, []).save()
 
-        data_sender_list = DataSenderHelper(self.manager).get_all_data_senders_ever_submitted(self.org_id)
+        Submission(self.manager, TransportInfo(SMS, "4008123123", TO_NUMBER), "sent for other form_code which shouldn't be included in the result", []).save()
+
+        data_sender_list = DataSenderHelper(self.manager, FORM_CODE).get_all_data_senders_ever_submitted(self.org_id)
 
         self.assertEqual(7, len(data_sender_list))
 
@@ -75,6 +78,9 @@ class TestDataSenderHelper(MangroveTestCase):
         self.assertIn(DataSender(EMAIL2, "mamy rasamoel", "rep11"), data_sender_list)
         self.assertIn(DataSender(EMAIL_NOT_EXIST, ugettext(NOT_AVAILABLE_DS), None), data_sender_list)
 
+        self.assertEqual(DataSender(FROM_NUMBER1, "Beany", "rep1"), data_sender_list[0])
+        self.assertEqual(DataSender(EMAIL2, "mamy rasamoel", "rep11"), data_sender_list[-1])
+
 
     def _prepare_sms_data_senders(self):
         phone_number_type = create_data_dict(self.manager, name='Telephone Number', slug='telephone_number',primitive_type='string')
@@ -83,5 +89,6 @@ class TestDataSenderHelper(MangroveTestCase):
         coordinates = {"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]}
         location = [u'Madagascar', u'Menabe', u'Mahabo', u'Beronono']
         register(self.manager, REPORTER_ENTITY_TYPE, [(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type), (NAME_FIELD, "Beany", first_name_type)],location,"rep1", coordinates)
-        register(self.manager, REPORTER_ENTITY_TYPE, [(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),(NAME_FIELD, "Qingshan", first_name_type)],location=location,short_code="rep2", geometry=coordinates)
+        register(self.manager, REPORTER_ENTITY_TYPE, [(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type), (NAME_FIELD, "Qingshan", first_name_type)],location=location,short_code="rep2", geometry=coordinates)
+        register(self.manager, REPORTER_ENTITY_TYPE, [(MOBILE_NUMBER_FIELD, "4008123123", phone_number_type), (NAME_FIELD, "KFC", first_name_type)], location=location, short_code="rep4", geometry=coordinates)
 

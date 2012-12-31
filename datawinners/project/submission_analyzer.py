@@ -149,7 +149,7 @@ class SubmissionAnalyzer(object):
             if each[-1] == submission.source:
                 return each
         else:
-            data_sender = DataSenderHelper(self.manager).get_data_sender(self.org_id, submission)
+            data_sender = DataSenderHelper(self.manager, self.form_model.form_code).get_data_sender(self.org_id, submission)
             self._data_senders.append(data_sender)
             return data_sender
 

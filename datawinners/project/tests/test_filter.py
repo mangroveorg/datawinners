@@ -1,5 +1,6 @@
 import unittest
 from mock import Mock
+from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.datastore.database import DatabaseManager
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.submissions import Submission
@@ -90,7 +91,7 @@ class TestSubmissionFilters(unittest.TestCase):
             form_code='test', values=self.values[1])
         test_submission1._doc.test = True
 
-        test_submission2 = Submission(self.dbm, transport_info=TransportInfo('web', '0000000000', 'destination'),
+        test_submission2 = Submission(self.dbm, transport_info=TransportInfo('web', TEST_REPORTER_MOBILE_NUMBER, 'destination'),
             form_code='test', values=self.values[2])
         test_submission2._doc.test = False
 
@@ -102,6 +103,7 @@ class TestSubmissionFilters(unittest.TestCase):
 
         filtered_submissions = DataSenderFilter('TEST').filter(submission_logs)
         self.assertEqual(1, len(filtered_submissions))
+        self.assertEqual(test_submission2.id ,filtered_submissions[0].id)
 
     def test_should_return_submissions_within_submission_date(self):
         submission1 = self.submissions[0]

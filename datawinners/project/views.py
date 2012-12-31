@@ -301,7 +301,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
     if request.method == 'GET':
-        data_sender_ever_submitted = DataSenderHelper(manager).get_all_data_senders_ever_submitted(request.user.get_profile().org_id)
+        data_sender_ever_submitted = DataSenderHelper(manager, form_model.form_code).get_all_data_senders_ever_submitted(request.user.get_profile().org_id)
 
         submissions = all_submissions(manager,form_model.form_code)
         submission_analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user),
