@@ -53,10 +53,13 @@ $(document).ready(function () {
                 },
                 maxDropHeight:200}, filter_options[index]));
 
+
         });
     })();
 
     buildRangePicker();
+    DW.disable_filter_section_if_no_data();
+
     var tabOptions = new TabOptions();
     $("#tabs").tabs().find('>ul>li>a').click(function () {
         var tab_index = $(this).parent().index();

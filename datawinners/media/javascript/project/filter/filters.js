@@ -93,3 +93,13 @@ DW.get_datepicker_value = function($datePicker, default_text) {
     }
     return {start_time:data[0], end_time:data[1]};
 }
+
+DW.disable_filter_section_if_no_data = function() {
+    if ($('#dataSenderSelect>option').size() != 0) {
+        return false;
+    }
+    var $filters = $(".ui-dropdownchecklist, .ui-dropdownchecklist-selector, .ui-dropdownchecklist-text, #keyword, #reportingPeriodPicker, #submissionDatePicker").add($('#go').removeClass('button_blue').addClass('button_disabled'));
+    $filters.attr('disabled', 'disabled').addClass('disabled').filter('span').find('>span').addClass('disabled').end().unbind('click');
+
+    $('.filter_label').addClass('grey')
+};

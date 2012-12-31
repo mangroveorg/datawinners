@@ -77,8 +77,6 @@
 .margin_right_20 {
   margin-right: 20px; }
 
-.margin_right_5 {
-    margin-right: 5px; }
 /* Float styling */
 .float_left {
   float: left; }
@@ -458,8 +456,10 @@ ul.bulleted li {
 .full_width {
   width: 100%; }
 
+.grey, .small_grey {
+  color: #888888; }
+
 .small_grey {
-  color: #888;
   font-size: 10px; }
 
 div.border_top_bottom {
@@ -468,5 +468,6 @@ div.border_top_bottom {
 
 .padding_top_10 {
   padding-top: 10px; }
-.border_none{
-  border: none !important;}
+
+.border_none {
+  border: none !important; }

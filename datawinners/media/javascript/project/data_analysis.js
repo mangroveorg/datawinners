@@ -3,8 +3,6 @@ $(document).ready(function () {
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
     var $filterSelects = $('#subjectSelect, #dataSenderSelect');
-    var $datepicker_inputs = $('#reportingPeriodPicker, #submissionDatePicker');
-
     buildFilters();
     buildRangePicker();
     $(document).ajaxStop($.unblockUI);
@@ -109,26 +107,7 @@ $(document).ready(function () {
         $('#chart_info').hide();
         $('#chart_info_2').hide();
 
-        if (initial_data.length == 0) {
-            disableFilters = function () {
-                var filters = [$(".ui-dropdownchecklist"), $(".ui-dropdownchecklist-selector"), $(".ui-dropdownchecklist-text"),
-                    $("#go").removeClass('button_blue').addClass('button_disabled'),
-                    $('#keyword')].concat($datepicker_inputs);
-
-                $.each(filters, function (index, filter) {
-                    filter.attr('disabled', 'disabled');
-
-                    if (filter.is("span")) {
-                        $("> span", filter).addClass('disabled');
-                    } else {
-                        filter.addClass('disabled');
-                    }
-
-                    filter.unbind('click');
-                })
-                $('.filter_label').css({color:"#888"});
-            }();
-        }
+        DW.disable_filter_section_if_no_data();
     };
 
     DW.toggle_view = function () {

@@ -542,9 +542,13 @@ ul.bulleted li {
   width: 100%;
 }
 
+.grey {
+  color: #888
+}
+
 .small_grey {
   @extend .bold;
-  color: #888;
+  @extend .grey;
   font-size: 10px;
 }
 
