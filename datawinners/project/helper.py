@@ -21,6 +21,8 @@ from models import Reminder
 from mangrove.transport import Request, TransportInfo
 from project.data_sender import DataSender
 
+SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
+
 DEFAULT_DATE_FORMAT = 'dd.MM.yyyy'
 
 field_enhancer.enhance()
@@ -142,7 +144,7 @@ def _to_str(value, form_field=None):
     return value
 
 def format_dt_for_submission_log_page(submission):
-    return datetime.strftime(submission.created, "%b. %d, %Y, %I:%M %p")
+    return submission.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
 
 def get_formatted_time_string(time_val):
     try:
