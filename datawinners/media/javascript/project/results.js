@@ -7,13 +7,12 @@ $(document).ready(function () {
         var defaultOptions = {
             "show_status":true,
             "show_actions":true,
-            "show_deleting_check_box":true,
-            "show_reply_sms":false
+            "show_deleting_check_box":true
         };
         this._options = {
             'all':defaultOptions,
             'success':$.extend({}, defaultOptions, {"show_status":false}),
-            'error':$.extend({}, defaultOptions, {"show_status":false, "show_reply_sms":true}),
+            'error':$.extend({}, defaultOptions, {"show_status":false}),
             'deleted':$.extend({}, defaultOptions, {"show_actions":false, "show_deleting_check_box":false})
         }
     }
@@ -28,10 +27,6 @@ $(document).ready(function () {
 
     TabOptions.prototype.show_deleting_check_box = function () {
         return this._options[tab[active_tab_index]].show_deleting_check_box;
-    }
-
-    TabOptions.prototype.show_reply_sms = function () {
-        return this._options[tab[active_tab_index]].show_reply_sms;
     }
 
     $.ajaxSetup({ cache:false });
@@ -128,10 +123,6 @@ $(document).ready(function () {
                 {
                     "bVisible":tabOptions.show_status(),
                     "aTargets":[3]
-                },
-                {
-                    "bVisible":tabOptions.show_reply_sms(),
-                    "aTargets":[4]
                 }
             ],
             "fnHeaderCallback":function (nHead, aData, iStart, iEnd, aiDisplay) {
@@ -166,11 +157,6 @@ $(document).ready(function () {
 
     function show_data(active_tab_index, data) {
         var index = (active_tab_index || 0) + 1;
-        var with_or_without_data = (data.length) ? "with_data" : "no_data";
-        var hint = DW.hint[active_tab_index][with_or_without_data];
-        if (hint) {
-            $("#page_hint").find("div").eq(active_tab_index).html(hint);
-        }
         $page_hint.find('>div:nth-child(' + index + ')').show().siblings().hide();
         dataBinding(data, true, false, getEmptyTableText());
         wrap_table();
