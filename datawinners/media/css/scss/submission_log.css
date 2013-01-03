@@ -38,4 +38,9 @@
   color: #536E8C;
   font-size: 12px;
   font-weight: bold;
-  padding-top: 2px; }
+  padding-top: 2px;
+  width: 104px;}
+#submission_logs .action_container{
+  display: block;
+  overflow: hidden;
+  width: 90px;}
