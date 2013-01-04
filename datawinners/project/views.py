@@ -59,7 +59,7 @@ from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireF
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
-from project.Header import SubmissionsPageHeader
+from project.Header import SubmissionsPageHeader, Header
 from project.analysis_result import AnalysisResult
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
@@ -307,24 +307,23 @@ def project_results(request, project_id=None, questionnaire_code=None):
         result_dict = {"header_list": header.header_list,
                        "header_name_list": repr(encode_json(header.header_list)),
                        "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted)
-#                       "subject_list": submission_analyzer.get_subjects()
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
 
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
     if request.method == 'POST':
+
         analyzer = _build_submission_analyzer(request, manager, form_model, True)
         field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
 
-        analysis_result = AnalysisResult(analyzer.get_header(), field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
+        analysis_result = AnalysisResult(field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
         performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
         if "id_list" in request.POST:
             project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
             return HttpResponse(_handle_delete_submissions(manager, request, project_infos.get("project").name))
         return HttpResponse(encode_json({'data_list': analysis_result.field_values,
-                                         "statistics_result": analysis_result.statistics_result,
-                                         "header_list": analyzer.get_header().header_list}))
+                                         "statistics_result": analysis_result.statistics_result}))
 
 def _handle_delete_submissions(manager, request, project_name):
     submission_ids = json.loads(request.POST.get('id_list'))
@@ -406,20 +405,21 @@ def composite_analysis_result(analysis_result):
 
 
 @timebox
-def get_analysis_response(request, project_id, questionnaire_code, with_status=False):
+def get_analysis_response(request, project_id, questionnaire_code):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
 
-    analysis_result = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions, request.POST.get('keyword', ''), is_for_submission_page=with_status).analyse()
+    analysis_result = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions, request.POST.get('keyword', '')).analyse()
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-
+    header = Header(form_model)
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
         analysis_result_dict = analysis_result.analysis_result_dict
         analysis_result_dict.update(project_infos)
+        analysis_result_dict.update(header.info)
 
         return analysis_result_dict
 
@@ -484,7 +484,7 @@ def _export_submissions_in_xls(request, is_for_submission_log_page):
 
     analyzer = _build_submission_analyzer(request, manager, form_model, is_for_submission_log_page)
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format=XLS_TUPLE_FORMAT)
-    header_list = analyzer.get_header().header_list
+    header_list = SubmissionsPageHeader(form_model).header_list
 
     exported_data, file_name = _prepare_export_data(request, header_list, formatted_values)
 

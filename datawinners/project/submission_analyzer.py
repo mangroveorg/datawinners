@@ -36,20 +36,16 @@ class SubmissionAnalyzer(object):
 
 
     def analyse(self):
-        header = self.get_header()
         field_values = SubmissionFormatter().get_formatted_values_for_list(self.get_raw_values())
         analysis_statistics = self.get_analysis_statistics()
         data_sender_list = self.get_data_senders()
         subject_lists = self.get_subjects()
         default_sort_order = self.get_default_sort_order()
 
-        return AnalysisResult(header, field_values, analysis_statistics, data_sender_list, subject_lists,default_sort_order)
+        return AnalysisResult(field_values, analysis_statistics, data_sender_list, subject_lists,default_sort_order)
 
     def get_raw_values(self):
         return self._raw_values
-
-    def get_header(self):
-        return self.header_class(self.form_model)
 
     def get_default_sort_order(self):
         default_sort_order = [[1, 'desc'], [3, 'asc']] if self.form_model.event_time_question else [[1, 'desc'],

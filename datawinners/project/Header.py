@@ -1,11 +1,16 @@
 from django.utils.translation import ugettext
 from mangrove.form_model.field import DateField, GeoCodeField
+from mangrove.utils.json_codecs import encode_json
 from project.helper import DEFAULT_DATE_FORMAT
 
 class Header(object):
     def __init__(self, form_model):
         self._form_model = form_model
         self._header_list, self._header_type_list = zip(*self._select_header())
+
+    @property
+    def info(self):
+        return {'header_list': self._header_list, 'header_name_list': repr(encode_json(self._header_list)), 'header_type_list': repr(encode_json(self._header_type_list))}
 
     @property
     def header_list(self):

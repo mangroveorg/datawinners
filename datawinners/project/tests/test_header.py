@@ -2,6 +2,7 @@
 from unittest import TestCase
 from mock import Mock
 from mangrove.datastore.database import DatabaseManager
+from mangrove.utils.json_codecs import encode_json
 from project.Header import Header, SubmissionsPageHeader
 from project.tests.form_model_generator import FormModelGenerator
 
@@ -9,6 +10,17 @@ class TestHeader(TestCase):
     def setUp(self):
         super(TestHeader, self).setUp()
         self.form_model_generator = FormModelGenerator(Mock(spec=DatabaseManager))
+
+    def test_should_return_header_info_dict(self):
+        expected_header_list = ("Submission Id", "Clinic", "Reporting Period", "Submission Date", "Data Sender", "Zhat are symptoms?", "What is your blood group?")
+        expected_header_name_list = repr(encode_json(("Submission Id", "Clinic", "Reporting Period", "Submission Date", "Data Sender", "Zhat are symptoms?", "What is your blood group?")))
+        expected_header_type_list = repr(encode_json(('', "", 'dd.mm.yyyy', 'dd.mm.yyyy', "", "", "")))
+        expected_header_info_dict = {'header_list': expected_header_list, 'header_name_list': expected_header_name_list, 'header_type_list': expected_header_type_list}
+
+        header_info = Header(form_model=self.form_model_generator.form_model()).info
+
+        self.assertEqual(3, len(header_info))
+        self.assertDictEqual(expected_header_info_dict, header_info)
 
     def test_should_create_header_list_with_data_sender_if_the_project_is_not_a_summary_project(self):
         form_model = self.form_model_generator.form_model()

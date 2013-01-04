@@ -17,6 +17,7 @@ class TestDataSenderHelper(MangroveTestCase):
     def setUp(self):
         super(TestDataSenderHelper, self).setUp()
         self.org_id = 'SLX364903'
+        self._prepare_sms_data_senders()
 
     def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_sms(self):
         submission = Submission(self.manager, TransportInfo("sms", "123123", "destination"))
@@ -42,8 +43,13 @@ class TestDataSenderHelper(MangroveTestCase):
 
         self.assertEqual((NOT_AVAILABLE_DS, None, 'nobody@gmail.com'), data_sender)
 
+    def test_should_return_data_sender_TESTER_when_send_from_TEST_REPORTER_MOBILE_NUMBER(self):
+        submission = Submission(self.manager, TransportInfo("sms", TEST_REPORTER_MOBILE_NUMBER, "destination"))
+        data_sender = DataSenderHelper(self.manager).get_data_sender(self.org_id, submission)
+
+        self.assertEqual(('TEST', '', 'TEST'), data_sender)
+
     def test_should_return_all_data_senders_that_have_submitted_data(self):
-        self._prepare_sms_data_senders()
         FROM_NUMBER1 = '1234567890'
         FROM_NUMBER2 = '261332592634'
         FROM_NUMBER_NOT_EXIST = '434543545'
@@ -63,12 +69,13 @@ class TestDataSenderHelper(MangroveTestCase):
         Submission(self.manager, TransportInfo(WEB, EMAIL1, "destination"), FORM_CODE, []).save()
         Submission(self.manager, TransportInfo(SMART_PHONE, EMAIL2, "destination"), FORM_CODE, []).save()
         Submission(self.manager, TransportInfo(SMART_PHONE, EMAIL_NOT_EXIST, "destination"), FORM_CODE, []).save()
+        Submission(self.manager, TransportInfo(SMS, TEST_REPORTER_MOBILE_NUMBER, TO_NUMBER), FORM_CODE, []).save()
 
         Submission(self.manager, TransportInfo(SMS, "4008123123", TO_NUMBER), "sent for other form_code which shouldn't be included in the result", []).save()
 
         data_sender_list = DataSenderHelper(self.manager, FORM_CODE).get_all_data_senders_ever_submitted(self.org_id)
 
-        self.assertEqual(7, len(data_sender_list))
+        self.assertEqual(8, len(data_sender_list))
 
         self.assertIn(DataSender(FROM_NUMBER1, "Beany", "rep1"), data_sender_list)
         self.assertIn(DataSender(FROM_NUMBER2, "Qingshan", "rep2"), data_sender_list)
@@ -77,6 +84,7 @@ class TestDataSenderHelper(MangroveTestCase):
         self.assertIn(DataSender(EMAIL1, "Tester Pune", "admin"), data_sender_list)
         self.assertIn(DataSender(EMAIL2, "mamy rasamoel", "rep11"), data_sender_list)
         self.assertIn(DataSender(EMAIL_NOT_EXIST, ugettext(NOT_AVAILABLE_DS), None), data_sender_list)
+        self.assertIn(DataSender(TEST_REPORTER_MOBILE_NUMBER, "TEST", "test"), data_sender_list)
 
         self.assertEqual(DataSender(FROM_NUMBER1, "Beany", "rep1"), data_sender_list[0])
         self.assertEqual(DataSender(EMAIL2, "mamy rasamoel", "rep11"), data_sender_list[-1])
@@ -91,4 +99,5 @@ class TestDataSenderHelper(MangroveTestCase):
         register(self.manager, REPORTER_ENTITY_TYPE, [(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type), (NAME_FIELD, "Beany", first_name_type)],location,"rep1", coordinates)
         register(self.manager, REPORTER_ENTITY_TYPE, [(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type), (NAME_FIELD, "Qingshan", first_name_type)],location=location,short_code="rep2", geometry=coordinates)
         register(self.manager, REPORTER_ENTITY_TYPE, [(MOBILE_NUMBER_FIELD, "4008123123", phone_number_type), (NAME_FIELD, "KFC", first_name_type)], location=location, short_code="rep4", geometry=coordinates)
+        register(self.manager, REPORTER_ENTITY_TYPE, [(MOBILE_NUMBER_FIELD, TEST_REPORTER_MOBILE_NUMBER, phone_number_type), (NAME_FIELD, "TEST", first_name_type)], location=location, short_code="test", geometry=coordinates)
 
