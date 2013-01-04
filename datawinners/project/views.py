@@ -59,6 +59,7 @@ from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireF
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
+from project.Header import SubmissionsPageHeader
 from project.analysis_result import AnalysisResult
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
@@ -302,15 +303,12 @@ def project_results(request, project_id=None, questionnaire_code=None):
 
     if request.method == 'GET':
         data_sender_ever_submitted = DataSenderHelper(manager, form_model.form_code).get_all_data_senders_ever_submitted(request.user.get_profile().org_id)
-
-        submissions = all_submissions(manager,form_model.form_code)
-        submission_analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user),
-            submissions, is_for_submission_page=True)
-
-        result_dict = {"header_list": submission_analyzer.get_header().header_list,
-                       "header_name_list": repr(encode_json(submission_analyzer.get_header().header_list)),
-                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted),
-                       "subject_list": submission_analyzer.get_subjects()}
+        header = SubmissionsPageHeader(form_model)
+        result_dict = {"header_list": header.header_list,
+                       "header_name_list": repr(encode_json(header.header_list)),
+                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted)
+#                       "subject_list": submission_analyzer.get_subjects()
+        }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
 
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
