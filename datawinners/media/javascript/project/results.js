@@ -36,26 +36,15 @@ $(document).ready(function () {
     var $page_hint = $('#page_hint');
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
-    var $filterSelects = $('#subjectSelect, #dataSenderSelect');
 
-    (function buildFilters() {
-        var subject_options = {emptyText:gettext("All") + ' ' + entity_type};
-        var data_sender_options = {emptyText:gettext("All Data Senders")};
-        var filter_options = [subject_options, data_sender_options];
-
-        $filterSelects.each(function (index, filter) {
-            $(filter).dropdownchecklist($.extend({firstItemChecksAll:false,
-                explicitClose:gettext("OK"),
-                explicitClear:gettext("Clear"),
-                width:$(this).width(),
-                eventCallback:function () {
-                    $('.ui-daterangepicker:visible').hide();
-                },
-                maxDropHeight:200}, filter_options[index]));
-
-
-        });
-    })();
+    var $data_sender_filter = $('#dataSenderSelect');
+    $data_sender_filter.dropdownchecklist($.extend({firstItemChecksAll:false,
+        explicitClose:gettext("OK"),
+        explicitClear:gettext("Clear"),
+        width:$data_sender_filter.width(),
+        eventCallback:function () {
+            $('.ui-daterangepicker:visible').hide();
+        }, maxDropHeight:200}, {emptyText:gettext("All Data Senders")}));
 
     buildRangePicker();
     DW.disable_filter_section_if_no_data();
