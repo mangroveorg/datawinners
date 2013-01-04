@@ -1346,20 +1346,20 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     return project1
 
 def send_data_to_project_cli00_mp(manager):
-    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
+    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
-    month = datetime.today().month ;
-    year = datetime.today().year;
-    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month,year), transport))
-    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month,year-1), transport))
+    month = datetime.today().month
+    year = datetime.today().year
+    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month, year), transport))
+    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month, year - 1), transport))
     sms_player.accept(Request("cli00_mp cid001 01.%s" % year, transport))
-    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month -1,year), transport))
+    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month,year), transport))
 
     tester_transport = TransportInfo(SMS, TEST_REPORTER_MOBILE_NUMBER, TO_NUMBER)
-    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month -1,year), tester_transport))
+    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month, year), tester_transport))
 
 def load_data():
     manager = load_manager_for_default_test_account()
