@@ -18,15 +18,10 @@ DW.post_subject_data = function(){
             $("#message-label").addClass("success-message-box");
             $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
             $("#saved-questionnaire-code").val(responseJson.form_code);
-            var has_newly_added_question = questionnaireViewModel.has_newly_added_question();
 
             questionnaireViewModel.set_all_questions_as_old_questions();
             questionnaireViewModel.selectedQuestion.valueHasMutated();
             questionnaireViewModel.questions.valueHasMutated();
-            if (DW.questionnaire_was_changed || has_newly_added_question) {
-                DW.inform_datasender_about_changes.show_warning();
-                DW.questionnaire_was_changed = false;
-            }
             DW.hide_message();
         } else {
             $("#message-label").removeClass('none');
