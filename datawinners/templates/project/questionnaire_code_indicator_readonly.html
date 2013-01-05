@@ -1,0 +1,19 @@
+<ul class="questionnaire_code">
+    <li>
+        <label>{% trans "SMS Questionnaire Code:" %}</label>
+        <input id='project-id' type='hidden' value="{{ project.id }}"/>
+        <input id='questionnaire-code' class='required' type="hidden" disabled="disabled"
+               value="{{ questionnaire_code }}"/>
+        <span>{{ questionnaire_code }}</span>
+        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+
+        <div class="tooltip"><p>
+            <strong>{% trans "What is this?" %}</strong><br/>
+            {% trans "q_tooltip_questionnaire_code" %}
+            <br/><br/>
+            <strong>{% trans "What do I need to do?" %}</strong><br/>
+            {% trans "r_tooltip_questionnaire_code" %}
+        </p></div>
+        <span id="questionnaire-code-error"></span>
+    </li>
+</ul>
