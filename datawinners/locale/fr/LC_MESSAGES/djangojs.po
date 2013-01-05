@@ -329,7 +329,7 @@ msgstr "Ne peut être vide"
 msgid "Day Can't be blank."
 msgstr "Le jour doit être saisi"
 
-msgid "Please select atleast one undeleted record"
+msgid "Please select at least one undeleted record"
 msgstr "Veuillez sélectionner au moins une soumission non supprimée"
 
 msgid "This data has already been deleted"

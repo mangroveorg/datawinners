@@ -266,7 +266,7 @@ msgstr ""
 msgid "On the deadline"
 msgstr ""
 
-msgid "Please select atleast one undeleted record"
+msgid "Please select at least one undeleted record"
 msgstr ""
 
 msgid "This data has already been deleted"
