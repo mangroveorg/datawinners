@@ -558,6 +558,3 @@ msgstr ""
 
 msgid "Your Submission(s) will be deleted"
 msgstr ""
-
-msgid "No unsuccessful Submissions!"
-msgstr ""

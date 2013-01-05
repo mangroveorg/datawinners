@@ -3975,3 +3975,6 @@ msgstr ""
 
 msgid "View and manage unsuccessful Submissions for this project."
 msgstr "View and manage unsuccessful Submissions for this project. Also view the <a href=\"/allfailedsubmissions\">Failed SMS Submissions</a> page"
+
+msgid "No unsuccessful Submissions!"
+msgstr ""
