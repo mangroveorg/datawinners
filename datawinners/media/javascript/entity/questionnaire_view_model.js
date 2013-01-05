@@ -89,6 +89,7 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.valueHasMutated();
     },
     removeOptionFromQuestion:function(choice) {
+        questionnaireViewModel.checkForQuestionnaireChange(choice)
         var choices = questionnaireViewModel.selectedQuestion().choices();
         var indexOfChoice = $.inArray(choice, choices);
         var lastChoiceValue = choice['val'];//.charCodeAt(0);
@@ -111,16 +112,11 @@ var questionnaireViewModel =
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
     },
-    remove_option: function(choice){
-        var choices = questionnaireViewModel.selectedQuestion().options.choices;
-        var choice_values = $(choices).map(function(index, choice){
-            return choice.val;
-        });
-
-        if(is_edit){
-            if($.inArray(choice.val, choice_values) != -1){ DW.questionnaire_was_changed = true; }
+    checkForQuestionnaireChange: function(choice){
+        var is_editing = typeof(is_edit) != 'undefined' && is_edit;
+        if(is_editing && _.any($(questionnaireViewModel.selectedQuestion().options.choices), function(v){return v.val == choice.val;})){
+             DW.questionnaire_was_changed = true;
         }
-        questionnaireViewModel.removeOptionFromQuestion(choice);
     },
     changeQuestionType: function(type_selector) {
         DW.init_question_constraints();
