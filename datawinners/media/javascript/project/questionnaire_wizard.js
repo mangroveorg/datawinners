@@ -80,7 +80,7 @@ $(document).ready(function() {
 
     });
    $("#questionnaire_code_change").dialog({
-        title: "Warning!!",
+        title: gettext("Warning !!"),
         modal: true,
         autoOpen: false,
         height: 200,

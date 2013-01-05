@@ -74,7 +74,7 @@ $(document).ready(function() {
         width: 800
     });
    $("#delete_question").dialog({
-        title: "Warning!!",
+        title: "Warning !!",
         modal: true,
         autoOpen: false,
         height: 275,
@@ -83,7 +83,7 @@ $(document).ready(function() {
       }
    );
     $("#edit_question").dialog({
-        title: "Warning!!",
+        title: "Warning !!",
         modal: true,
         autoOpen: false,
         height: 275,
@@ -92,7 +92,7 @@ $(document).ready(function() {
       }
    );
     $("#questionnaire_code_change").dialog({
-        title: "Warning!!",
+        title: gettext("Warning !!"),
         modal: true,
         autoOpen: false,
         height: 200,
