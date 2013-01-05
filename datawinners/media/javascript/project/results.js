@@ -158,11 +158,6 @@ $(document).ready(function () {
 
     function show_data(active_tab_index, data) {
         var index = (active_tab_index || 0) + 1;
-        var with_or_without_data = (data.length) ? "with_data" : "no_data";
-        var hint = DW.hint[active_tab_index][with_or_without_data];
-        if (hint) {
-            $("#page_hint").find("div").eq(active_tab_index).html(hint);
-        }
         $page_hint.find('>div:nth-child(' + index + ')').show().siblings().hide();
         dataBinding(data, true, false, getEmptyTableText());
         wrap_table();
@@ -182,12 +177,7 @@ $(document).ready(function () {
         $(".submission_table").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
     }
 
-    DW.hint = [
-        {"with_data":"", "no_data":""},
-        {"with_data":"", "no_data":""},
-        {"with_data":gettext("View and manage unsuccessful Submissions for this project"), "no_data":gettext("No unsuccessful Submissions!") }
-    ]
-    DW.get_ids = function () {
+    function get_ids() {
         var ids = [];
         $(".selected_submissions:checked").each(function () {
             if ($(this).val() != "None") {
@@ -207,7 +197,7 @@ $(document).ready(function () {
     });
 
     $('select.action').live("change", function () {
-        var ids = DW.get_ids();
+        var ids = get_ids();
         if ($(".selected_submissions:checked").length == 0) {
             $("#message_text").html("<div class='message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
             $('select.action>option:first').attr('selected', 'selected');

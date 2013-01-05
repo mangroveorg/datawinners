@@ -682,8 +682,5 @@ msgstr "Date de soumission"
 msgid "Your Submission(s) will be deleted"
 msgstr "Votre/vos Soumission(s) sera/seront supprimée(s)"
 
-msgid "View and manage unsuccessful Submissions for this project"
-msgstr "Voir et gérer les soumissions non réussies pour ce projet. Voir aussi la page <a href=\"/allfailedsubmissions\">des erreurs d'envoi</a>"
-
 msgid "No unsuccessful Submissions!"
 msgstr "Aucune soumission non réussie"

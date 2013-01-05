@@ -4051,3 +4051,6 @@ msgstr "Votre/vos Soumission(s) sera/seront déplacée(s) vers Soumissions Suppr
 
 msgid "Are you sure you want to continue?"
 msgstr "Etes-vous sûr de vouloir continuer?"
+
+msgid "View and manage unsuccessful Submissions for this project."
+msgstr "Voir et gérer les soumissions non réussies pour ce projet. Voir aussi la page <a href=\"/allfailedsubmissions\">des erreurs d'envoi</a>"
