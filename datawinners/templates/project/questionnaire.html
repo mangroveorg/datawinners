@@ -52,15 +52,7 @@
     <p>{% trans "Review the question by clicking on each" %}</p>
 {% endblock %}
 {% block content %}
-    <script type="text/html" id="choice-template">
-        <li>
-            <span data-bind="text: val+'.'" class="bullet"></span>
-            <input id="choice_text" name="choice_text" class="required" type="text"
-                   data-bind="value: text, uniqueName: true, enable: questionnaireViewModel.isEnabled()"/>
-            <a href="questionnaire.html#" class='delete delete_link'
-               data-bind="visible: questionnaireViewModel.choiceCanBeDeleted(), click:function(){questionnaireViewModel.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
-        </li>
-    </script>
+    {% include 'project/choice_template.html' %}
     <script type="text/html" id="question-list-template_new">
         <div class="question_list que_num">
             <ol>
@@ -93,35 +85,8 @@
     {% csrf_token %}
         <fieldset>
             <div class="questionnaire_form_header clearfix">
-                <ul class="questionnaire_code">
-                    <li>
-                        <label>{% trans "SMS Questionnaire Code:" %}</label>
-                        <input id='project-id' type='hidden' value="{{ project.id }}"/>
-                        <input id='questionnaire-code' class='required' type="hidden" disabled="disabled" value="{{ questionnaire_code }}"/>
-                        <span>{{ questionnaire_code }}</span>
-                        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-                        <div class="tooltip"><p>
-                            <strong>{% trans "What is this?" %}</strong><br />
-                            {% trans "q_tooltip_questionnaire_code" %}
-                            <br /><br />
-                            <strong>{% trans "What do I need to do?" %}</strong><br />
-                            {% trans "r_tooltip_questionnaire_code" %}
-                        </p></div>
-                        <span id="questionnaire-code-error"></span>
-                    </li>
-                </ul>
-                <div class="preview-navigation">
-                    <span>{% trans "Preview" %}: </span>
-                    <div class="navigation-sms-preview"><a>{% trans "SMS" %}</a></div>
-                    <div class="navigation-smart-phone-preview"><a>{% trans "Smartphone" %}</a></div>
-                    <div class="navigation-web-preview"><a>{% trans "Web" %}</a></div>
-                </div>
-
-                <div id="questionnaire_preview_instruction">
-                    <a class="close_preview">{% trans "Close Window" %}</a>
-                    <div id="questionnaire_content"></div>
-                    <a class="close_preview">{% trans "Close Window" %}</a>
-                </div>
+                {% include 'project/questionnaire_code_indicator.html' %}
+                {% include 'project/preview_navigation.html' %}
             </div>
 
             <div class="questionnare_content grid_23 alpha omega">

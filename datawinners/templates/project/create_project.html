@@ -117,31 +117,8 @@
             {% csrf_token %}
             <fieldset>
                 <div class="questionnaire_form_header clearfix">
-                    <ul class="questionnaire_code">
-                        <li>
-                            <label>{% trans "SMS Questionnaire Code:" %}</label>
-                            <input id='project-id' type='hidden' value="{{ project.id }}"/>
-                            <input id='project-state' type='hidden' value="{{ project.state }}"/>
-                            <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}"/>
-                            <input id='questionnaire-code' value="{{ questionnaire_code }}"/>
-                            <span id="questionnaire-code-error"></span>
-                            <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
-                            <div class="tooltip"><p>
-                                {% trans "tooltip_question_code" %}
-                            </p></div>
-                        </li>
-                    </ul>
-                    <div class="preview-navigation">
-                        <span>{% trans "Preview" %}: </span>
-                        <div class="navigation-sms-preview"><a>{% trans "SMS" %}</a></div>
-                        <div class="navigation-smart-phone-preview"><a>{% trans "Smartphone" %}</a></div>
-                        <div class="navigation-web-preview"><a>{% trans "Web" %}</a></div>
-                    </div>
-                    <div id="questionnaire_preview_instruction">
-                        <a class="close_preview">{% trans "Close Window" %}</a>
-                        <div id="questionnaire_content"></div>
-                        <a class="close_preview">{% trans "Close Window" %}</a>
-                    </div>
+                    {% include 'project/questionnaire_code_indicator.html' %}
+                    {% include 'project/preview_navigation.html' %}
                 </div>
                 <div class="questionnare_content grid_23 alpha omega">
                     <div>

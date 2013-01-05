@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<div class="preview-navigation">
+    <span>{% trans "Preview" %}: </span>
+    <div class="navigation-sms-preview"><a>{% trans "SMS" %}</a></div>
+    <div class="navigation-smart-phone-preview"><a>{% trans "Smartphone" %}</a></div>
+    <div class="navigation-web-preview"><a>{% trans "Web" %}</a></div>
+</div>
+
+<div id="questionnaire_preview_instruction">
+    <a class="close_preview">{% trans "Close Window" %}</a>
+    <div id="questionnaire_content"></div>
+    <a class="close_preview">{% trans "Close Window" %}</a>
+</div>
