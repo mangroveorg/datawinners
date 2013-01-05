@@ -31,9 +31,6 @@ class TestAddSubject(BaseTest):
 
     @attr('functional_test')
     def test_addition_of_subject_with_existing_data(self):
-        """
-        Function to test the addition_of_subject with existing short code
-        """
         add_subject_page = self.prerequisites_of_add_subject(EXISTING_SHORT_CODE)
         add_subject_page.add_subject_with(EXISTING_SHORT_CODE)
         short_name = fetch_(SUB_UNIQUE_ID, from_(EXISTING_SHORT_CODE))
@@ -44,9 +41,6 @@ class TestAddSubject(BaseTest):
 
     @attr('functional_test')
     def test_addition_of_subject_with_auto_generate_false(self):
-        """
-        Function to test the addition_of_subject with auto generate false
-        """
         add_subject_page = self.prerequisites_of_add_subject(AUTO_GENERATE_FALSE)
         add_subject_page.add_subject_with(AUTO_GENERATE_FALSE)
         add_subject_page.submit_subject()
@@ -55,9 +49,6 @@ class TestAddSubject(BaseTest):
 
     @attr('functional_test')
     def test_addition_of_subject_without_location_name(self):
-        """
-        Function to test the addition_of_subject without location name
-        """
         add_subject_page = self.prerequisites_of_add_subject(WITHOUT_LOCATION_NAME)
         add_subject_page.add_subject_with(WITHOUT_LOCATION_NAME)
         add_subject_page.submit_subject()
@@ -68,9 +59,6 @@ class TestAddSubject(BaseTest):
 
     @attr('functional_test')
     def test_addition_of_subject_without_gps(self):
-        """
-        Function to test the addition_of_subject without GPS
-        """
         add_subject_page = self.prerequisites_of_add_subject(WITHOUT_GPS)
         add_subject_page.add_subject_with(WITHOUT_GPS)
         add_subject_page.submit_subject()
@@ -79,9 +67,6 @@ class TestAddSubject(BaseTest):
 
     @attr('functional_test')
     def test_addition_of_subject_invalid_latitude_gps(self):
-        """
-        Function to test the addition_of_subject with invalid latitude
-        """
         add_subject_page = self.prerequisites_of_add_subject(INVALID_LATITUDE_GPS)
         add_subject_page.add_subject_with(INVALID_LATITUDE_GPS)
         add_subject_page.submit_subject()
@@ -90,9 +75,6 @@ class TestAddSubject(BaseTest):
 
     @attr('functional_test')
     def test_addition_of_subject_invalid_longitude_gps(self):
-        """
-        Function to test the addition_of_subject with invalid latitude
-        """
         add_subject_page = self.prerequisites_of_add_subject(INVALID_LONGITUDE_GPS)
         add_subject_page.add_subject_with(INVALID_LONGITUDE_GPS)
         add_subject_page.submit_subject()
@@ -101,9 +83,6 @@ class TestAddSubject(BaseTest):
 
     @attr('functional_test')
     def test_addition_of_subject_invalid_gps(self):
-        """
-        Function to test the addition_of_subject with invalid gps
-        """
         add_subject_page = self.prerequisites_of_add_subject(INVALID_GPS)
         add_subject_page.add_subject_with(INVALID_GPS)
         add_subject_page.submit_subject()
@@ -112,9 +91,6 @@ class TestAddSubject(BaseTest):
 
     @SkipTest
     def test_addition_of_subject_invalid_gps_with_comma(self):
-        """
-        Function to test the addition_of_subject with invalid gps with comma
-        """
         add_subject_page = self.prerequisites_of_add_subject(INVALID_GPS_WITH_COMMA)
         add_subject_page.add_subject_with(INVALID_GPS_WITH_COMMA)
         add_subject_page.submit_subject()
@@ -123,9 +99,6 @@ class TestAddSubject(BaseTest):
 
     @attr('functional_test')
     def test_addition_of_subject_with_unicode_in_gps(self):
-        """
-        Function to test the addition_of_subject with unicode in GPS
-        """
         add_subject_page = self.prerequisites_of_add_subject(WITH_UNICODE_IN_GPS)
         add_subject_page.add_subject_with(WITH_UNICODE_IN_GPS)
         add_subject_page.submit_subject()
