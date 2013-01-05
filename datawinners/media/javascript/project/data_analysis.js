@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var help_no_submission = $('#help_no_submissions').html();
+    var help_no_submission = $('.help_no_submissions').html();
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
     var $filterSelects = $('#subjectSelect, #dataSenderSelect');

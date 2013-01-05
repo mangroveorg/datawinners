@@ -1,0 +1,39 @@
+{% load i18n %}
+<div class="help_no_submissions" style="display: none">
+    <div class="help_accordion" style="text-align: left;">
+        {% block help_text %}
+        {% endblock %}
+        <a href="javascript:void(0)" class="show_link">{% trans "Learn More" %}</a>
+
+        <div class="details">
+            {% block no_submission_hint %}
+                <br/>
+                {% blocktrans with project_links.submission_log_link as url %}no submission sub hint{{ url }}{% endblocktrans %}
+                <br/>
+            {% endblock %}
+            <br/>
+            {% trans "To collect data" %}
+            <br/>
+            <ul class="bulleted margin_left_20">
+                {% if project_links.sms_questionnaire_preview_link %}
+                    <li>
+                        {% blocktrans with "SMS Questionnaire" as val %}to collect data via sms{{ val }}{% endblocktrans %}
+                    </li>
+                {% else %}
+                    <li>{% blocktrans with project_links.overview_link as url %}SMS: Give your
+                        <a href="{{ url }}">Questionnaire</a>
+                        to your Data Senders and have them send in data{% endblocktrans %}
+                    </li>
+                {% endif %}
+                <li>{% blocktrans with project_links.datasenders_link as url %}Web & Smartphone: Grant your Data Senders
+                    Web
+                    submission access on the <a href="{{ url }}">All Data Senders</a> page{% endblocktrans %}</li>
+                <li>{% blocktrans with project_links.test_questionnaire_link as url %}<a href="{{ url }}">Submit Data
+                    </a>
+                    yourself{% endblocktrans %}</li>
+            </ul>
+            <br/>
+            <a href="javascript:void(0)" class="hide_link">{% trans "Hide help" %}</a>
+        </div>
+    </div>
+</div>

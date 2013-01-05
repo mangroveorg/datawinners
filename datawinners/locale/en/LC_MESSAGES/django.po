@@ -495,10 +495,10 @@ msgid "Analysis"
 msgstr ""
 
 msgid "no submission sub hint%(url)s"
-msgstr "Deleted submissions and submissions with errors will not be displayed as they should not be part of your analysis data.<br/> You can view and manage all submissions on the <a href=\"%(url)s\">Submission Log</a> page.<br/><br/>"
+msgstr "Deleted submissions and submissions with errors will not be displayed as they should not be part of your analysis data.<br/> You can view and manage all submissions on the <a href=\"%(url)s\">Submission Log</a> page."
 
-msgid "SMS: Give your <a href=\"#\" class=\"sms_questionnaire sms-preview\"> SMS Questionnaire</a> to your Data Senders and have them send in data"
-msgstr "<b>SMS</b>: Give your <a href=\"#\" class=\"sms_questionnaire sms-preview\"> SMS Questionnaire</a> to your Data Senders and have them send in data"
+msgid "to collect data via sms%(val)s"
+msgstr "<b>SMS</b>: Give your <a href=\"#\" class=\"sms_questionnaire sms-preview\"> %(val)s</a> to your Data Senders and have them send in data"
 
 msgid "Analyze your successful submissions"
 msgstr "Analyze your successful submissions."
@@ -3559,6 +3559,9 @@ msgid "Register a %(subject)s"
 msgstr ""
 
 msgid "Your Data Senders’ successful submissions will appear here."
+msgstr ""
+
+msgid "Once your Data Senders have sent in Submissions, they will appear here."
 msgstr ""
 
 msgid "To collect data"

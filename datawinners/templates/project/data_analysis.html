@@ -106,12 +106,12 @@
     </form>
     <div class="heading_block clearfix margin_bottom_10">
         <div id="filter_section" class="alpha data_ana float_left">
-            {% include 'project/partials/_filter_by_subject.html' %}
-            {% include 'project/partials/_filter_by_reporting_period.html' %}
-            {% include 'project/partials/_filter_by_submission_date.html' %}
-            {% include 'project/partials/_filter_by_data_sender.html' %}
-            {% include 'project/partials/_filter_by_keyword.html' %}
-            {% include 'project/partials/_filter_button_container.html' %}
+            {% include 'project/partials/filters/_filter_by_subject.html' %}
+            {% include 'project/partials/filters/_filter_by_reporting_period.html' %}
+            {% include 'project/partials/filters/_filter_by_submission_date.html' %}
+            {% include 'project/partials/filters/_filter_by_data_sender.html' %}
+            {% include 'project/partials/filters/_filter_by_keyword.html' %}
+            {% include 'project/partials/filters/_filter_button_container.html' %}
         </div>
 
         <!--[if IE 7]>
@@ -151,7 +151,7 @@
         </div>
     </div>
     {% block help_no_submissions %}
-        {% include 'project/help_no_submission.html' %}
+        {% include 'project/partials/help_no_submissions/help_no_submission.html' %}
         {% include 'sms_preview_template.html' %}
     {% endblock %}
 
