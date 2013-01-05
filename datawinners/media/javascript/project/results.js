@@ -1,6 +1,6 @@
 $(document).ready(function () {
+    var $dataTable = $('.submission_table');
     var tab = ["all", "success", "error", "deleted"];
-
     var active_tab_index;
 
     function TabOptions() {
@@ -35,7 +35,6 @@ $(document).ready(function () {
     }
 
     $.ajaxSetup({ cache:false });
-    $(document).ajaxStop($.unblockUI);
 
     var $no_submission_hint = $('.help_no_submissions');
     var $page_hint = $('#page_hint');
@@ -103,7 +102,8 @@ $(document).ready(function () {
     }
 
     function dataBinding(data, destroy, retrive, emptyTableText) {
-        $('.submission_table').dataTable({
+
+        $dataTable.dataTable({
             "bDestroy":destroy,
             "bRetrieve":retrive,
             "sPaginationType":"full_numbers",
@@ -178,13 +178,9 @@ $(document).ready(function () {
     }
 
     function get_ids() {
-        var ids = [];
-        $(".selected_submissions:checked").each(function () {
-            if ($(this).val() != "None") {
-                ids.push($(this).val());
-            }
-        });
-        return ids;
+        return $(".selected_submissions:checked").map(function (index, value) {
+            return $(value).val();
+        }).get();
     }
 
     //Checkbox on/off functionality
@@ -198,47 +194,46 @@ $(document).ready(function () {
 
     $('select.action').live("change", function () {
         var ids = get_ids();
-        if ($(".selected_submissions:checked").length == 0) {
-            $("#message_text").html("<div class='message message-box'>" + gettext("Please select at least one undeleted record") + "</div>");
+        if (ids.length == 0) {
+            $("#message_text").html("<div class='message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
             $('select.action>option:first').attr('selected', 'selected');
         } else {
-            if (ids.length == 0) {
-                $("#message_text").html("<div class='message message-box'>" + gettext("This data has already been deleted") + "</div>");
-                $('select.action>option:first').attr('selected', 'selected');
-            } else {
-                DW.delete_submission_warning_dialog.show_warning();
-                DW.delete_submission_warning_dialog.ids = ids;
-            }
+            delete_submission_warning_dialog.show_warning();
+            delete_submission_warning_dialog.ids = ids;
         }
         $("#message_text .message").delay(5000).fadeOut();
     });
 
-    var kwargs = {container:"#delete_submission_warning_dialog",
+    function removeRowsFromDataTable(ids) {
+        $.each(ids, function (index, value) {
+            $dataTable.fnDeleteRow($(':checkbox[value=' + $.trim(value) + ']').parents('tr').get(0));
+        });
+    }
+
+    var options = {container:"#delete_submission_warning_dialog",
         continue_handler:function () {
-            var ids = this.ids;
-            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+            var selected_ids = this.ids;
+            DW.loading();
             $.ajax({
                 type:'POST',
                 url:window.location.pathname + "?rand=" + new Date().getTime(),
-                data:{'id_list':JSON.stringify(ids), 'page_number':DW.current_page},
+                data:{'id_list':JSON.stringify(selected_ids)},
                 success:function (response) {
                     var data = JSON.parse(response);
                     if (data.success) {
                         $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
-                        fetch_data(0);
+                        removeRowsFromDataTable(selected_ids);
                     } else {
                         $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
                     }
                     $("#message_text .message").delay(5000).fadeOut();
-                    $('select.action>option:first').attr('selected', 'selected');
-                    $.unblockUI();
                 },
                 error:function (e) {
                     $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
-                    $('select.action>option:first').attr('selected', 'selected');
-                    $.unblockUI();
                 }
             });
+
+            $('select.action>option:first').attr('selected', 'selected');
             return false;
         },
         title:gettext("Your Submission(s) will be deleted"),
@@ -249,6 +244,6 @@ $(document).ready(function () {
         width:550
     }
 
-    DW.delete_submission_warning_dialog = new DW.warning_dialog(kwargs);
+    delete_submission_warning_dialog = new DW.warning_dialog(options);
 
 });

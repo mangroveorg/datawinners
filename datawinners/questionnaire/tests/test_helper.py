@@ -29,18 +29,15 @@ class TestHelper(unittest.TestCase):
         form_model.add_field(self._get_text_field())
         self.assertEqual(None, get_location_field_code(form_model))
 
-
     def test_should_give_geo_code(self):
         form_model = self._get_form_model()
         form_model.add_field(GeoCodeField(None, GEO_CODE, "label", ddtype=Mock(spec=DataDictType)))
         self.assertEqual(GEO_CODE, get_geo_code_field_question_code(form_model))
 
-
     def test_should_return_None_if_geo_code_field_is_not_present(self):
         form_model = self._get_form_model()
         form_model.add_field(self._get_text_field())
         self.assertEqual(None, get_geo_code_field_question_code(form_model))
-
 
     def _get_form_model(self, is_registration_form=False):
         self.dbm = Mock(spec=DatabaseManager)
