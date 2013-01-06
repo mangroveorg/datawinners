@@ -1,6 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
 
+BACK_UP_COUNT = 10
+MAX_LOG_BYTES = 1024 * 1025 * 50
+
 LOG_FOLDER = '/var/log/datawinners'
 LOG_FILE_NAME = "datawinners.log"
 REMINDER_LOG_FILE_NAME = "datawinners_reminders.log"
@@ -27,92 +30,104 @@ LOGGING = {
         },
         'log-file': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join( LOG_FOLDER, LOG_FILE_NAME),
+            'class': 'compress_rotating_file_handler.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, LOG_FILE_NAME),
             'mode': 'a', #append+create
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'performance-log-file': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join( LOG_FOLDER, PERFORMANCE_LOG_FILE_NAME),
+            'class': 'compress_rotating_file_handler.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, PERFORMANCE_LOG_FILE_NAME),
             'mode': 'a', #append+create
-            'formatter': 'simple'
+            'formatter': 'simple',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'reminder-log-file': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join( LOG_FOLDER, REMINDER_LOG_FILE_NAME),
+            'class': 'compress_rotating_file_handler.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, REMINDER_LOG_FILE_NAME),
             'mode': 'a', #append+create
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'xform-log-file': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join( LOG_FOLDER, XFORM_LOG_FILE_NAME),
+            'class': 'compress_rotating_file_handler.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, XFORM_LOG_FILE_NAME),
             'mode': 'a', #append+create
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'web-submission': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join( LOG_FOLDER, WEB_SUBMISSION_LOG_FILE_NAME),
+            'class': 'compress_rotating_file_handler.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, WEB_SUBMISSION_LOG_FILE_NAME),
             'mode': 'a', #append+create
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'sp-submission': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': os.path.join( LOG_FOLDER, SP_SUBMISSION_LOG_FILE_NAME),
+            'class': 'compress_rotating_file_handler.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, SP_SUBMISSION_LOG_FILE_NAME),
             'mode': 'a', #append+create
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
-        },
+    },
     'loggers': {
         'django': {
-            'level':'DEBUG',
-            'handlers':['log-file'],
+            'level': 'DEBUG',
+            'handlers': ['log-file'],
             'propagate': True,
-            },
+        },
         'performance': {
-            'level':'INFO',
-            'handlers':['performance-log-file'],
+            'level': 'INFO',
+            'handlers': ['performance-log-file'],
             'propagate': True,
-            },
+        },
         'django.request': {
-            'handlers': ['mail_admins','log-file'],
+            'handlers': ['mail_admins', 'log-file'],
             'level': 'ERROR',
             'propagate': True,
-            },
+        },
         'datawinners.reminders': {
-            'level':'INFO',
-            'handlers':['reminder-log-file'],
+            'level': 'INFO',
+            'handlers': ['reminder-log-file'],
             'propagate': True,
-            },
+        },
         'datawinners.xform': {
-            'level':'INFO',
-            'handlers':['xform-log-file'],
+            'level': 'INFO',
+            'handlers': ['xform-log-file'],
             'propagate': True,
-            },
+        },
         'datawinners.scheduler': {
-            'level':'INFO',
-            'handlers':['reminder-log-file'],
+            'level': 'INFO',
+            'handlers': ['reminder-log-file'],
             'propagate': True,
-            },
+        },
         'apscheduler.scheduler': {
-            'level':'DEBUG',
-            'handlers':['reminder-log-file'],
+            'level': 'DEBUG',
+            'handlers': ['reminder-log-file'],
             'propagate': True,
-            },
+        },
         'websubmission': {
-            'level':'INFO',
-            'handlers':['web-submission'],
+            'level': 'INFO',
+            'handlers': ['web-submission'],
             'propagate': True,
-            },
+        },
         'spsubmission': {
-            'level':'INFO',
-            'handlers':['sp-submission'],
+            'level': 'INFO',
+            'handlers': ['sp-submission'],
             'propagate': True,
-            },
-        }
+        },
+    }
 }
