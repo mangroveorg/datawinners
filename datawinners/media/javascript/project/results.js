@@ -195,7 +195,7 @@ $(document).ready(function () {
     $('select.action').live("change", function () {
         var ids = get_ids();
         if (ids.length == 0) {
-            $("#message_text").html("<div class='message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
+            $("#message_text").html("<div class='message message-box'>" + gettext("Please select at least one undeleted record") + "</div>");
             $('select.action>option:first').attr('selected', 'selected');
         } else {
             delete_submission_warning_dialog.show_warning();
