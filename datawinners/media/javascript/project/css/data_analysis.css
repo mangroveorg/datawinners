@@ -60,11 +60,12 @@
     border-radius: 4px; }
 
 .ui-daterangepickercontain > div {
-    font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
-    font-size: 11px !important;}
-.ui-daterangepickercontain .ranges, .ui-daterangepickercontain .range-end, .ui-daterangepickercontain .range-start{
-    display: block !important;}
+  font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
+  font-size: 11px !important; }
+
+.ui-daterangepickercontain .ranges, .ui-daterangepickercontain .range-end, .ui-daterangepickercontain .range-start {
+  display: block; }
+
 table.styled_table thead th {
-    padding-right: 30px;
-    vertical-align: top !important;
-}
+  padding-right: 30px;
+  vertical-align: top !important; }
