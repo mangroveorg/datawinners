@@ -32,6 +32,7 @@ class CompressRotatingFileHandler(RotatingFileHandler):
 
             os.remove(self.baseFilename)
 #            print "%s -> %s" % (self.baseFilename, dfn)
+        self.mode = 'w'
         self.stream = self._open()
 
 
