@@ -32,7 +32,6 @@ class CompressRotatingFileHandler(RotatingFileHandler):
 
 
 #            print "%s -> %s" % (self.baseFilename, dfn)
-        self.mode = 'w'
         self.stream = self._open()
 #        os.chmod(self.baseFilename, 777)
     #        os.remove(self.baseFilename)
