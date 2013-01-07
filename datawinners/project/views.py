@@ -461,10 +461,17 @@ def project_data(request, project_id=None, questionnaire_code=None):
 
 def _get_exported_data(header, formatted_values, submission_log_type):
     data = [header] + formatted_values
-    exported_data = [each[1:] for each in data]
-    if submission_log_type in [SubmissionRouter.ERROR, SubmissionRouter.SUCCESS]:
-        exported_data = [each[:2] + each[3:] for each in exported_data]
-    return exported_data
+    submission_id_col = 0
+    status_col = 3
+    reply_sms_col = 4
+    if submission_log_type in [SubmissionRouter.ALL, SubmissionRouter.DELETED]:
+        return [each[submission_id_col+1:reply_sms_col]+each[reply_sms_col+1:] for each in data]
+    elif submission_log_type in [SubmissionRouter.ERROR]:
+        return [each[submission_id_col+1:status_col]+each[status_col+1:] for each in data]
+    elif submission_log_type in [SubmissionRouter.SUCCESS]:
+        return [each[submission_id_col+1:status_col]+each[reply_sms_col+1:] for each in data]
+    else:
+        return [each[1:] for each in data]
 
 
 def _prepare_export_data(request, header_list, formatted_values):

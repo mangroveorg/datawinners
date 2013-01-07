@@ -124,12 +124,10 @@ $(document).ready(function () {
                     },
                     "aTargets":[0],
                     'bVisible':tabOptions.show_deleting_check_box()
-                },
-                {
+                }, {
                     "bVisible":tabOptions.show_status(),
                     "aTargets":[3]
-                },
-                {
+                }, {
                     "bVisible":tabOptions.show_reply_sms(),
                     "aTargets":[4]
                 }

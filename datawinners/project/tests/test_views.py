@@ -309,7 +309,7 @@ class TestProjectViews( unittest.TestCase ):
         request = Mock()
         request.GET.get.return_value = SubmissionRouter.SUCCESS
         request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Q4", "Q5"], [[0, 1, 2, 3, 4, 5]])
+        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Reply SMS", "Q4", "Q5"], [[0, 1, 2, 3, '-', 4, 5]])
         expected = [['Q1', 'Q2', 'Q4', 'Q5'], [1, 2, 4, 5]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_success_log', file_name)
@@ -318,10 +318,28 @@ class TestProjectViews( unittest.TestCase ):
         request = Mock()
         request.GET.get.return_value = SubmissionRouter.ALL
         request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Q4", "Q5"], [[0, 1, 2, 3, 4, 5]])
+        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Reply SMS", "Q4", "Q5"], [[0, 1, 2, 3, '-', 4, 5]])
         expected = [['Q1', 'Q2', 'Status', 'Q4', 'Q5'], [1, 2, 3, 4, 5]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_all_log', file_name)
+
+    def test_should_prepare_export_data_for_deleted_submission_log_tab(self):
+        request = Mock()
+        request.GET.get.return_value = SubmissionRouter.DELETED
+        request.POST.get.return_value = 'proj_name'
+        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Reply SMS", "Q4", "Q5"], [[0, 1, 2, 3, '-', 4, 5]])
+        expected = [['Q1', 'Q2', 'Status', 'Q4', 'Q5'], [1, 2, 3, 4, 5]]
+        self.assertEqual(expected, data)
+        self.assertEqual('proj_name_deleted_log', file_name)
+
+    def test_should_prepare_export_data_for_error_submission_log_tab(self):
+        request = Mock()
+        request.GET.get.return_value = SubmissionRouter.ERROR
+        request.POST.get.return_value = 'proj_name'
+        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Reply SMS", "Q4", "Q5"], [[0, 1, 2, 3, '-', 4, 5]])
+        expected = [['Q1', 'Q2', 'Reply SMS', 'Q4', 'Q5'], [1, 2, '-', 4, 5]]
+        self.assertEqual(expected, data)
+        self.assertEqual('proj_name_error_log', file_name)
 
     def test_should_prepare_export_data_for_analysis_page(self):
         request = Mock()
