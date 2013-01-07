@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
-import compress_rotating_file_handler
+from datawinners import compress_rotating_file_handler
 
 BACK_UP_COUNT = 10
 MAX_LOG_BYTES = 1024 * 1025 * 50
