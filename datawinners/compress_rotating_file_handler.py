@@ -30,9 +30,11 @@ class CompressRotatingFileHandler(RotatingFileHandler):
                 with self.compress_cls.open(dfn, 'wb') as comp_log:
                     comp_log.writelines(log)
 
-            os.remove(self.baseFilename)
+
 #            print "%s -> %s" % (self.baseFilename, dfn)
         self.mode = 'w'
         self.stream = self._open()
+#        os.chmod(self.baseFilename, 777)
+    #        os.remove(self.baseFilename)
 
 
