@@ -82,12 +82,7 @@ def stop_gunicorn():
     run("kill -9 `pgrep gunicorn`")
 
 
-def _chmod_of_log_folder():
-    run("sudo chmod -R 777 /var/log/datawinners")
-
-
 def start_gunicorn(virtual_env):
-    _chmod_of_log_folder()
     activate_and_run(virtual_env, "gunicorn_django -D -b 0.0.0.0:8000 --pid=mangrove_gunicorn")
 
 
@@ -152,7 +147,6 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
        home_dir: directory where you want to deploy the source code
        virtual_env : path to your virtual_env folder
     """
-    _chmod_of_log_folder()
     set_mangrove_commit_sha(branch, mangrove_build_number)
     set_datawinner_commit_sha(datawinner_build_number)
 
@@ -341,7 +335,6 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
     context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env, couch_migration_file)
 
     _make_sure_code_dir_exists(context)
-    _chmod_of_log_folder()
 
     _deploy_mangrove(context)
     _deploy_datawinners(context)
