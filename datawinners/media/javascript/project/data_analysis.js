@@ -41,6 +41,10 @@ $(document).ready(function () {
         $("#data_analysis").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
     };
 
+    function insertViewSwitch() {
+        $(".view_style_block").clone().appendTo($(".table_information")).show();
+    }
+
     DW.dataBinding = function (data, destroy, retrive, emptyTableText) {
         $dataTable = $('#data_analysis').dataTable({
             "aaSorting":default_sort_order,
@@ -73,11 +77,11 @@ $(document).ready(function () {
                     "sPrevious":gettext("Previous"),
                     "sNext":gettext("Next"),
                     "sLast":gettext("Last")
-                },
-                "fnInfoCallback":null
+                }
             },
-            "sDom":'<"@dataTables_info"i>rtpl<"@dataTable_search">',
-            "iDisplayLength":25
+            "sDom":'<"table_information"i>rtpl',
+            "iDisplayLength":25,
+            "fnInitComplete": insertViewSwitch
         });
     };
 
@@ -124,6 +128,7 @@ $(document).ready(function () {
             $("#chart_view").removeClass("active-right");
             DW.toggle_view();
             DW.chart_view_shown = false;
+            $('.view_data_block').toggle();
         }
     };
 
@@ -133,6 +138,7 @@ $(document).ready(function () {
             $("#chart_view").addClass("active-right");
             DW.toggle_view();
             DW.chart_view_shown = true;
+            $('.view_data_block').toggle();
         }
     };
 

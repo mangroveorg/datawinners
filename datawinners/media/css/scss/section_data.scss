@@ -93,8 +93,7 @@ table {
 }
 
 .view_data_block {
-  padding-bottom: 5px;
-  margin: 30px 0 10px 0;
+  margin-top: 10px;
   .show_data_block {
     label, select {
       float: left;
@@ -104,67 +103,71 @@ table {
       margin-left: 10px;
     }
   }
-  .view_style_block {
-    float: right;
-    label, ul {
-      font-weight: normal;
+}
+
+.table_information {
+  margin-top: 10px;
+  height: 40px;
+}
+
+.view_style_block {
+  float: right;
+  label, ul {
+    font-weight: normal;
+    float: left;
+    margin-left: 10px;
+  }
+  ul {
+    background: #e6f2fc;
+    border: 1px solid #e6f2fc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    margin-top: -3px;
+    li {
       float: left;
-      margin-left: 10px;
+      background: url(/media/images/list_chart_map.png) no-repeat top left;
+      padding: 2px 10px 2px 23px;
+      a {
+        padding: 10px;
+      }
     }
-    ul {
-      background: #e6f2fc;
-      border: 1px solid #e6f2fc;
-      -moz-border-radius: 10px;
-      -webkit-border-radius: 10px;
-      margin-top: -3px;
-      li {
-        float: left;
-        background: url(/media/images/list_chart_map.png) no-repeat top left;
-        padding: 2px 10px 2px 23px;
-        a {
-          padding: 10px;
-        }
+    li.active {
+      background-color: #94d1ff;
+      border: 1px solid #94d1ff;
+      -moz-border-radius: 10px 0 0px 10px;
+      -webkit-border-radius: 10px 0 0px 10px;
+      a {
+        color: #000000;
       }
-      li.active {
-        background-color: #94d1ff;
-        border: 1px solid #94d1ff;
-        -moz-border-radius: 10px 0 0px 10px;
-        -webkit-border-radius: 10px 0 0px 10px;
-        a {
-          color: #000000;
-        }
-        a:hover {
-          text-decoration: none;
-          cursor: default;
-        }
+      a:hover {
+        text-decoration: none;
+        cursor: default;
       }
-      li.active-right {
-        background-color: #94d1ff;
-        border: 1px solid #94d1ff;
-        -moz-border-radius: 0px 10px 10px 0px;
-        -webkit-border-radius: 0px 10px 10px 0px;
-        a {
-          color: #000000;
-        }
-        a:hover {
-          text-decoration: none;
-          cursor: default;
-        }
+    }
+    li.active-right {
+      background-color: #94d1ff;
+      border: 1px solid #94d1ff;
+      -moz-border-radius: 0px 10px 10px 0px;
+      -webkit-border-radius: 0px 10px 10px 0px;
+      a {
+        color: #000000;
       }
-      li.list {
-        background-position: 6px 3px;
-        border-right: 1px solid #CCC;
+      a:hover {
+        text-decoration: none;
+        cursor: default;
       }
-      li.chart {
-        background-position: 10px -27px;
-      }
+    }
+    li.list {
+      background-position: 6px 3px;
+      border-right: 1px solid #CCC;
+    }
+    li.chart {
+      background-position: 10px -27px;
     }
   }
-
 }
 
 .data_table {
-  float: left;
   overflow: auto;
   width: 100%;
   #data_analysis {
@@ -299,29 +302,33 @@ table {
 .dataTables_length {
   float: right;
   margin-top: 20px;
+  label {
+    font-weight: normal;
+  }
 }
 
 .dataTables_paginate {
   min-width: 200px;
   float: left;
   margin-top: 20px;
-  span {
+  a {
     float: left;
+    margin: 0 4px 0 4px;
     padding: 0px 7px !important;
     font-size: 10px !important;
   }
-  span.paginate_button {
+  a.paginate_button {
     color: #0070ac;
     background: none;
     border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
-    border-radius: 1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
     &:hover {
       background: none;
     }
   }
-  span.paginate_active {
+  a.paginate_active {
     background: #FFD857;
     color: #6F451D;
     border: 1px solid #D4972D;
@@ -329,7 +336,7 @@ table {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
   }
-  span.paginate_button_disabled {
+  a.paginate_button_disabled {
     color: #CCCCCC;
     &:hover {
       background: none;

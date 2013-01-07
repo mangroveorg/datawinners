@@ -97,8 +97,11 @@ $(document).ready(function () {
             success:function (response) {
                 var response_data = JSON.parse(response);
                 show_data(active_tab_index, response_data.data_list);
-                $(".action_container").parent().clone(true).addClass("margin_top_null").appendTo(".data_table");
             }});
+    }
+
+    function insertActionButton() {
+        $(".action_container").parent().clone(true).insertBefore(".dataTables_paginate");
     }
 
     function dataBinding(data, destroy, retrive, emptyTableText) {
@@ -149,10 +152,10 @@ $(document).ready(function () {
                     "sNext":gettext("Next"),
                     "sLast":gettext("Last")
                 },
-                "fnInfoCallback":null
             },
-            "sDom":'<"@dataTables_info"i>rtpl',
-            "iDisplayLength":25
+            "sDom":'<"table_information"i>rtpl',
+            "iDisplayLength":25,
+            "fnInitComplete": insertActionButton
         });
     }
 
