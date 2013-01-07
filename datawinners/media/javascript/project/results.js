@@ -1,3 +1,8 @@
+function reset_action_state() {
+    _.forEach($('select.action'), function (v) {
+        $(v).find('option:first').attr('selected', 'selected');
+    });
+}
 $(document).ready(function () {
     var $dataTable = $('.submission_table');
     var tab = ["all", "success", "error", "deleted"];
@@ -199,7 +204,7 @@ $(document).ready(function () {
         var ids = get_ids();
         if (ids.length == 0) {
             $("#message_text").html("<div class='message message-box'>" + gettext("Please select at least one undeleted record") + "</div>");
-            _.forEach($('select.action'), function(v){ $(v).find('option:first').attr('selected', 'selected'); })
+            reset_action_state();
         } else {
             delete_submission_warning_dialog.show_warning();
             delete_submission_warning_dialog.ids = ids;
@@ -236,12 +241,12 @@ $(document).ready(function () {
                 }
             });
 
-            $('select.action>option:first').attr('selected', 'selected');
+            reset_action_state();
             return false;
         },
         title:gettext("Your Submission(s) will be deleted"),
         cancel_handler:function () {
-            $('select.action>option:first').attr('selected', 'selected');
+            reset_action_state();
         },
         height:150,
         width:550
