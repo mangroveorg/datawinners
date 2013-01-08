@@ -5,7 +5,7 @@ from compress_rotating_file_handler import CompressRotatingFileHandler
 logging.handlers.CompressRotatingFileHandler = CompressRotatingFileHandler
 
 BACK_UP_COUNT = 10
-MAX_LOG_BYTES = 1024 * 10
+MAX_LOG_BYTES = 1024 * 1024 * 50
 
 LOG_FOLDER = '/var/log/datawinners'
 LOG_FILE_NAME = "datawinners.log"

@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 from framework.base_test import  setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
@@ -47,8 +46,8 @@ class TestSubmissionLog(unittest.TestCase):
     @attr('functional_test')
     def test_should_show_warning_when_deleting_records(self):
         submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
+        time.sleep(5)
         submission_log_page.check_all_submissions()
-        time.sleep(1)
         submission_log_page.choose_delete_on_the_action_dropdown()
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
