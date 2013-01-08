@@ -1,3 +1,4 @@
+import logging
 from logging.handlers import RotatingFileHandler
 import os
 import gzip
@@ -14,26 +15,28 @@ class CompressRotatingFileHandler(RotatingFileHandler):
         if self.stream:
             self.stream.close()
         if self.backupCount > 0:
-            for i in range(self.backupCount - 1, 0, -1):
-                sfn = "%s.%d.%s" % (self.baseFilename, i, self.compress_mode)
-                dfn = "%s.%d.%s" % (self.baseFilename, i + 1, self.compress_mode)
-                if os.path.exists(sfn):
-#                    print "%s -> %s" % (sfn, dfn)
-                    if os.path.exists(dfn):
-                        os.remove(dfn)
-                    os.rename(sfn, dfn)
-            dfn = "%s.%d.%s" % (self.baseFilename, 1, self.compress_mode)
-            if os.path.exists(dfn):
-                os.remove(dfn)
-
-            with open(self.baseFilename) as log:
-                with self.compress_cls.open(dfn, 'wb') as comp_log:
-                    comp_log.writelines(log)
-
-
-#            print "%s -> %s" % (self.baseFilename, dfn)
+            self._rotating()
+            self._compress_file()
+        self.mode = 'w'
         self.stream = self._open()
-#        os.chmod(self.baseFilename, 777)
-    #        os.remove(self.baseFilename)
+
+    def _rotating(self):
+        for i in range(self.backupCount - 1, 0, -1):
+            sfn = "%s.%d.%s" % (self.baseFilename, i, self.compress_mode)
+            dfn = "%s.%d.%s" % (self.baseFilename, i + 1, self.compress_mode)
+            if os.path.exists(sfn):
+                #print "%s -> %s" % (sfn, dfn)
+                if os.path.exists(dfn):
+                    os.remove(dfn)
+                os.rename(sfn, dfn)
+
+    def _compress_file(self):
+        dfn = "%s.%d.%s" % (self.baseFilename, 1, self.compress_mode)
+        tfn = "%s.%d" % (self.baseFilename, 1)
+        os.rename(self.baseFilename, tfn)
+        with open(tfn) as log:
+            with self.compress_cls.open(dfn, 'wb') as comp_log:
+                comp_log.writelines(log)
+                #print "%s -> %s" % (self.baseFilename, dfn)
 
 

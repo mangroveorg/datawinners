@@ -1,5 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import logging
 import os
+from compress_rotating_file_handler import CompressRotatingFileHandler
+logging.handlers.CompressRotatingFileHandler = CompressRotatingFileHandler
 
 BACK_UP_COUNT = 10
 MAX_LOG_BYTES = 1024 * 1025 * 50
@@ -30,46 +33,57 @@ LOGGING = {
         },
         'log-file': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
             'filename': os.path.join(LOG_FOLDER, LOG_FILE_NAME),
             'mode': 'a', #append+create
             'formatter': 'verbose',
             'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'performance-log-file': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
             'filename': os.path.join(LOG_FOLDER, PERFORMANCE_LOG_FILE_NAME),
             'mode': 'a', #append+create
             'formatter': 'simple',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'reminder-log-file': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
             'filename': os.path.join(LOG_FOLDER, REMINDER_LOG_FILE_NAME),
             'mode': 'a', #append+create
             'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'xform-log-file': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
             'filename': os.path.join(LOG_FOLDER, XFORM_LOG_FILE_NAME),
             'mode': 'a', #append+create
             'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'web-submission': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
             'filename': os.path.join(LOG_FOLDER, WEB_SUBMISSION_LOG_FILE_NAME),
             'mode': 'a', #append+create
             'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
         'sp-submission': {
             'level': 'INFO',
-            'class': 'logging.handlers.WatchedFileHandler',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
             'filename': os.path.join(LOG_FOLDER, SP_SUBMISSION_LOG_FILE_NAME),
             'mode': 'a', #append+create
             'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
         },
     },
     'loggers': {
