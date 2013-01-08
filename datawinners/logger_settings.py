@@ -30,10 +30,11 @@ LOGGING = {
         },
         'log-file': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.WatchedFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(LOG_FOLDER, LOG_FILE_NAME),
             'mode': 'a', #append+create
             'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
         },
         'performance-log-file': {
             'level': 'INFO',
