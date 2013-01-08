@@ -1,4 +1,3 @@
-import logging
 from logging.handlers import RotatingFileHandler
 import os
 import gzip
@@ -20,6 +19,15 @@ class CompressRotatingFileHandler(RotatingFileHandler):
         self.mode = 'w'
         self.stream = self._open()
 
+    def shouldRollover(self, record):
+        if self.stream is None:                 # delay was set...
+            self.stream = self._open()
+        if self.maxBytes > 0:                   # are we rolling over?
+            msg = "%s\n" % self.format(record)
+            if os.stat(self.baseFilename).st_size + len(msg) >= self.maxBytes:
+                return 1
+        return 0
+
     def _rotating(self):
         for i in range(self.backupCount - 1, 0, -1):
             sfn = "%s.%d.%s" % (self.baseFilename, i, self.compress_mode)
@@ -32,9 +40,7 @@ class CompressRotatingFileHandler(RotatingFileHandler):
 
     def _compress_file(self):
         dfn = "%s.%d.%s" % (self.baseFilename, 1, self.compress_mode)
-        tfn = "%s.%d" % (self.baseFilename, 1)
-        os.rename(self.baseFilename, tfn)
-        with open(tfn) as log:
+        with open(self.baseFilename) as log:
             with self.compress_cls.open(dfn, 'wb') as comp_log:
                 comp_log.writelines(log)
                 #print "%s -> %s" % (self.baseFilename, dfn)
