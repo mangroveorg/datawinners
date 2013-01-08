@@ -1,4 +1,4 @@
-SITE_ID = 4
+SITE_ID = 1
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
