@@ -220,30 +220,30 @@ table {
   min-width: 200px;
   float: left;
   margin-top: 20px; }
-  .dataTables_paginate a {
+  .dataTables_paginate span {
     float: left;
     margin: 0 4px 0 4px;
     padding: 0px 7px !important;
     font-size: 10px !important; }
-  .dataTables_paginate a.paginate_button {
+  .dataTables_paginate span.paginate_button {
     color: #0070ac;
     background: none;
     border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
-    border: 1px solid #CCCCCC; }
-    .dataTables_paginate a.paginate_button:hover {
+    border-radius: 1px solid #CCCCCC; }
+    .dataTables_paginate span.paginate_button:hover {
       background: none; }
-  .dataTables_paginate a.paginate_active {
+  .dataTables_paginate span.paginate_active {
     background: #FFD857;
     color: #6F451D;
     border: 1px solid #D4972D;
     border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0; }
-  .dataTables_paginate a.paginate_button_disabled {
+  .dataTables_paginate span.paginate_button_disabled {
     color: #CCCCCC; }
-    .dataTables_paginate a.paginate_button_disabled:hover {
+    .dataTables_paginate span.paginate_button_disabled:hover {
       background: none; }
 
 .table_footer {

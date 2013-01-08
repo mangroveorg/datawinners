@@ -168,6 +168,7 @@ table {
 }
 
 .data_table {
+  float: left;
   overflow: auto;
   width: 100%;
   #data_analysis {
@@ -311,24 +312,24 @@ table {
   min-width: 200px;
   float: left;
   margin-top: 20px;
-  a {
+  span {
     float: left;
     margin: 0 4px 0 4px;
     padding: 0px 7px !important;
     font-size: 10px !important;
   }
-  a.paginate_button {
+  span.paginate_button {
     color: #0070ac;
     background: none;
     border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
-    border: 1px solid #CCCCCC;
+    border-radius: 1px solid #CCCCCC;
     &:hover {
       background: none;
     }
   }
-  a.paginate_active {
+  span.paginate_active {
     background: #FFD857;
     color: #6F451D;
     border: 1px solid #D4972D;
@@ -336,7 +337,7 @@ table {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
   }
-  a.paginate_button_disabled {
+  span.paginate_button_disabled {
     color: #CCCCCC;
     &:hover {
       background: none;

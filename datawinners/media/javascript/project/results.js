@@ -1,9 +1,5 @@
-function reset_action_state() {
-    _.forEach($('select.action'), function (v) {
-        $(v).find('option:first').attr('selected', 'selected');
-    });
-}
 $(document).ready(function () {
+    var $actionBar = $(".action_bar");
     var $dataTable = $('.submission_table');
     var tab = ["all", "success", "error", "deleted"];
     var active_tab_index;
@@ -58,6 +54,10 @@ $(document).ready(function () {
     buildRangePicker();
     DW.disable_filter_section_if_no_data();
 
+    function resetActionBtnState() {
+        $('select.action>option:first-child').attr('selected', 'selected');
+    }
+
     var tabOptions = new TabOptions();
     $("#tabs").tabs().find('>ul>li>a').click(function () {
         var tab_index = $(this).parent().index();
@@ -105,12 +105,12 @@ $(document).ready(function () {
             }});
     }
 
-    function insertActionButton() {
-        $(".action_container").parent().clone(true).insertBefore(".dataTables_paginate");
+    function insertActionBar() {
+        $actionBar.clone(true).insertBefore(".dataTables_paginate").addClass('margin_top_10').show();
+        $actionBar.clone(true).appendTo(".table_information").show();
     }
 
     function dataBinding(data, destroy, retrive, emptyTableText) {
-
         $dataTable.dataTable({
             "bDestroy":destroy,
             "bRetrieve":retrive,
@@ -155,11 +155,12 @@ $(document).ready(function () {
                     "sNext":gettext("Next"),
                     "sLast":gettext("Last")
                 },
+                "fnInfoCallback":null
             },
             "sDom":'<"table_information"i>rtpl',
-            "iDisplayLength":25,
-            "fnInitComplete": insertActionButton
+            "iDisplayLength":25
         });
+        insertActionBar();
     }
 
     function show_data(active_tab_index, data) {
@@ -202,7 +203,7 @@ $(document).ready(function () {
         var ids = get_ids();
         if (ids.length == 0) {
             $("#message_text").html("<div class='message message-box'>" + gettext("Please select at least one undeleted record") + "</div>");
-            reset_action_state();
+            resetActionBtnState();
         } else {
             delete_submission_warning_dialog.show_warning();
             delete_submission_warning_dialog.ids = ids;
@@ -239,12 +240,12 @@ $(document).ready(function () {
                 }
             });
 
-            reset_action_state();
+            resetActionBtnState();
             return false;
         },
         title:gettext("Your Submission(s) will be deleted"),
         cancel_handler:function () {
-            reset_action_state();
+            resetActionBtnState();
         },
         height:150,
         width:550

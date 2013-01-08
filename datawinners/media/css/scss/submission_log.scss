@@ -1,16 +1,22 @@
+.link {
+  color: #0070AC;
+}
+
 #submission_logs {
+  a, a:hover {
+    @extend .link
+  }
   tr, td {
     background: none;
+  }
+  .export_link {
+    @extend .link
   }
   #tabs.ui-widget-content {
     border: none;
     background: none;
     //color: #fff;
     font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
-
-    a, a:hover {
-      color: #0070AC;
-    }
 
     li.ui-state-default{
       background: none;
@@ -53,14 +59,31 @@
   tbody td:first-child{
     min-width: 15px !important;
   }
+  .table_information {
+    height: 80px;
+  }
+  .dataTables_info {
+    padding-bottom: 10px;
+    height: 30px;
+  }
+  .action_bar {
+    width: 100%;
+    height: 30px;
+  }
   select.action {
     background: url("/media/images/action.png") no-repeat scroll left 0 transparent;
     border: medium none;
     overflow:hidden;
-    width: 90px;
+    width: 108px;
     color: #536E8C;
     font-size: 12px;
     font-weight: bold;
     padding-top: 2px;
+  }
+  .action_container{
+    display: block;
+    overflow: hidden;
+    width: 90px;
+    float: left;
   }
 }
