@@ -2,6 +2,13 @@
   color: #0070AC;
 }
 
+#action_menu {
+  width: 100px;
+  ul {
+    min-width: 100px;
+  }
+}
+
 #submission_logs {
   a, a:hover {
     @extend .link

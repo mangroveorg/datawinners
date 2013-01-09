@@ -6,26 +6,25 @@
 </div>
 
 <div class="grid_23 alpha omega data_block" style="width: 100%">
-    <div class="action_bar clear-both display_none">
-        <span class="action_container">
-            <select class="action">
-                    <option value="0">{% trans "Actions" %} ...</option>
-                    <option value="1">{% trans "Delete" %}</option>
-            </select>
-        </span>
-        <a href="javascript:void(0);" class="export_link float_right margin_right_5">{% trans "Export" %}</a>
+<div class="action_bar clear-both display_none">
+    <div class="btn-group">
+        <button class="btn dropdown-toggle action" href="#" data-dropdown="#action_menu">Actions
+            <span class="caret"></span>
+        </button>
     </div>
-    <table class="submission_table styled_table">
-            <thead>
-            <tr>
-                {% for each in header_list %}
-                    <th>
-                        {{ each }}
-                    </th>
-                {% endfor %}
-            </tr>
-            </thead>
-    </table>
+    <a href="javascript:void(0);" class="export_link float_right margin_right_5">{% trans "Export" %}</a>
+</div>
+<table class="submission_table styled_table">
+        <thead>
+        <tr>
+            {% for each in header_list %}
+                <th>
+                    {{ each }}
+                </th>
+            {% endfor %}
+        </tr>
+        </thead>
+</table>
 </div>
 
 {% block help_no_submissions %}

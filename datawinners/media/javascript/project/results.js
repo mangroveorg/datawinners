@@ -201,11 +201,10 @@ $(document).ready(function () {
 
     });
 
-    $('select.action').live("change", function () {
+    $('.delete').click(function () {
         var ids = get_ids();
         if (ids.length == 0) {
             $("#message_text").html("<div class='message message-box'>" + gettext("Please select at least one undeleted record") + "</div>");
-            resetActionBtnState();
         } else {
             delete_submission_warning_dialog.show_warning();
             delete_submission_warning_dialog.ids = ids;
@@ -242,12 +241,10 @@ $(document).ready(function () {
                 }
             });
 
-            resetActionBtnState();
             return false;
         },
         title:gettext("Your Submission(s) will be deleted"),
         cancel_handler:function () {
-            resetActionBtnState();
         },
         height:150,
         width:550
