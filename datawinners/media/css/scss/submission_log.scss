@@ -8,6 +8,12 @@
     min-width: 100px;
     border-radius: 0px;
   }
+  LI > A:hover,
+  LABEL:hover {
+    background-color: #E6F0F5;
+    color: #000;
+    cursor: pointer;
+  }
 }
 
 #submission_logs {
