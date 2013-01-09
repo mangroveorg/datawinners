@@ -35,6 +35,10 @@
   display: none; }
 #submission_logs #page_hint div:first-child {
   display: block; }
+#submission_logs thead th:first-child {
+  width: 10px !important;
+  padding: 6px;
+  vertical-align: middle !important; }
 #submission_logs tbody td:first-child {
   min-width: 15px !important; }
 #submission_logs .table_information {

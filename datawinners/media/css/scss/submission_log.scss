@@ -62,7 +62,11 @@
       display: block;
     }
   }
-
+  thead th:first-child{
+    width:10px !important;
+    padding: 6px;
+    vertical-align: middle !important;
+  }
   tbody td:first-child{
     min-width: 15px !important;
   }
