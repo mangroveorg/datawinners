@@ -42,18 +42,21 @@
   .export_link {
     @extend .link
   }
+  .ui-tabs-nav {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
   #tabs.ui-widget-content {
     border: none;
     background: none;
-    //color: #fff;
-    font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
+    font-family: "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif;
+    font-size: 14px;;
 
     li.ui-state-default{
       background: none;
       border: none;
       color:#000;
       margin: 0px 0px 0px 0px;
-      margin-bottom:2px;
       > a:hover{
           background: #F0F0F0;
       }

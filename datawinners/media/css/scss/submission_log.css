@@ -1,68 +1,87 @@
-/*
-Syntax error: Invalid CSS after "...er-radius: 0px;": expected "}", was "<<<<<<< HEAD"
-        on line 10 of ./datawinners/media/css/scss/submission_log.scss
+.link, #submission_logs a, #submission_logs a:hover, #submission_logs .export_link {
+  color: #0070AC; }
 
-5: #action_menu {
-6:   width: 100px;
-7:   ul {
-8:     min-width: 100px;
-9:     border-radius: 0px;
-10: <<<<<<< HEAD
-11: =======
-12:   }
-13:   LI > A:hover,
-14:   LABEL:hover {
-15:     background-color: #E6F0F5;
+#action_menu {
+  width: 100px; }
+  #action_menu ul {
+    min-width: 100px;
+    border-radius: 0px; }
+  #action_menu LI > A:hover,
+  #action_menu LABEL:hover {
+    background-color: #E6F0F5;
+    color: #000;
+    cursor: pointer; }
 
-Backtrace:
-./datawinners/media/css/scss/submission_log.scss:10
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:1130:in `expected'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:1066:in `expected'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:1061:in `tok!'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:519:in `block'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:512:in `ruleset'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:574:in `declaration_or_ruleset'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:1104:in `call'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:1104:in `rethrow'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:575:in `declaration_or_ruleset'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:537:in `block_child'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:529:in `block_contents'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:518:in `block'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:512:in `ruleset'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:536:in `block_child'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:529:in `block_contents'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:70:in `stylesheet'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/scss/parser.rb:27:in `parse'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/engine.rb:342:in `_to_tree'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/engine.rb:315:in `_render'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/engine.rb:262:in `render'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/plugin/compiler.rb:340:in `update_stylesheet'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/plugin/compiler.rb:202:in `update_stylesheets'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/plugin/compiler.rb:200:in `each'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/plugin/compiler.rb:200:in `update_stylesheets'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/plugin/compiler.rb:298:in `watch'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/multi_listener.rb:86:in `call'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/multi_listener.rb:86:in `on_change'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/multi_listener.rb:95:in `initialize_adapter'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/adapters/polling.rb:55:in `call'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/adapters/polling.rb:55:in `poll'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/adapters/polling.rb:31:in `start'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/adapters/polling.rb:31:in `initialize'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/adapters/polling.rb:31:in `new'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/adapters/polling.rb:31:in `start'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/vendor/listen/lib/listen/multi_listener.rb:44:in `start'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/plugin/compiler.rb:306:in `watch'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/plugin.rb:107:in `send'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/plugin.rb:107:in `method_missing'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/exec.rb:431:in `watch_or_update'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/exec.rb:302:in `process_result'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/exec.rb:41:in `parse'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/../lib/sass/../sass/exec.rb:21:in `parse!'
-/Users/twer/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.2.1/bin/sass:8
-/usr/bin/sass:19:in `load'
-/usr/bin/sass:19
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Syntax error: Invalid CSS after \"...er-radius: 0px;\": expected \"}\", was \"<<<<<<< HEAD\"\A         on line 10 of ./datawinners/media/css/scss/submission_log.scss\A \A 5: #action_menu {\A 6:   width: 100px;\A 7:   ul {\A 8:     min-width: 100px;\A 9:     border-radius: 0px;\A 10: <<<<<<< HEAD\A 11: =======\A 12:   }\A 13:   LI > A:hover,\A 14:   LABEL:hover {\A 15:     background-color: #E6F0F5;"; }
+#submission_logs .btn {
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
+  background: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+  display: inline-block;
+  /* IE is so silly */ }
+#submission_logs .btn:hover {
+  background: #DBE6F1; }
+#submission_logs .btn-group.open .btn.dropdown-toggle {
+  background: #DBE6F1; }
+#submission_logs .ui-state-default {
+  font-weight: normal; }
+#submission_logs tr, #submission_logs td {
+  background: none; }
+#submission_logs .ui-tabs-nav {
+  padding-left: 0px;
+  padding-right: 0px; }
+#submission_logs #tabs.ui-widget-content {
+  border: none;
+  background: none;
+  font-family: "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif;
+  font-size: 14px; }
+  #submission_logs #tabs.ui-widget-content li.ui-state-default {
+    background: none;
+    border: none;
+    color: #000;
+    margin: 0px 0px 0px 0px; }
+    #submission_logs #tabs.ui-widget-content li.ui-state-default > a:hover {
+      background: #F0F0F0; }
+    #submission_logs #tabs.ui-widget-content li.ui-state-default > a.tab-separator, #submission_logs #tabs.ui-widget-content li.ui-state-default a.tab-separator:hover {
+      background: none;
+      color: #525252; }
+  #submission_logs #tabs.ui-widget-content li.ui-state-active > a, #submission_logs #tabs.ui-widget-content li.ui-state-active a:hover {
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+    background: -moz-linear-gradient(top, #525252, #262626);
+    background-color: #525252;
+    color: #fff; }
+  #submission_logs #tabs.ui-widget-content .ui-widget-header {
+    background: none;
+    border-bottom: 4px solid #525252 !important; }
+#submission_logs #page_hint > div {
+  display: none; }
+#submission_logs #page_hint div:first-child {
+  display: block; }
+#submission_logs thead th:first-child {
+  width: 10px !important;
+  padding: 6px;
+  vertical-align: middle !important; }
+#submission_logs tbody td:first-child {
+  min-width: 15px !important; }
+#submission_logs .dataTables_info {
+  float: none;
+  display: inline; }
+#submission_logs .btn-group {
+  font-size: 13px; }
+#submission_logs .action_bar {
+  width: 100%;
+  height: 30px; }
+#submission_logs select.action {
+  background: url("/media/images/action.png") no-repeat scroll left 0 transparent;
+  border: medium none;
+  overflow: hidden;
+  width: 108px;
+  color: #536E8C;
+  font-size: 12px;
+  font-weight: bold;
+  padding-top: 2px; }
+#submission_logs .action_container {
+  display: block;
+  overflow: hidden;
+  width: 90px;
+  float: left; }
