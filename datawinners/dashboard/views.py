@@ -47,7 +47,7 @@ def get_submission_breakup(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     form_model = FormModel.get(dbm, project.qid)
-    rows = dbm.load_all_rows_in_view('submissionlog', startkey=[form_model.form_code], endkey=[form_model.form_code, {}],
+    rows = dbm.load_all_rows_in_view('undeleted_submission_log', startkey=[form_model.form_code], endkey=[form_model.form_code, {}],
                                      group=True, group_level=1, reduce=True)
     submission_success,submission_errors = 0, 0
     for row in rows:
@@ -60,7 +60,7 @@ def get_submissions_about_project(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     form_model = FormModel.get(dbm, project.qid)
-    rows = dbm.load_all_rows_in_view('submissionlog', reduce=False, descending=True, startkey=[form_model.form_code, {}],
+    rows = dbm.load_all_rows_in_view('undeleted_submission_log', reduce=False, descending=True, startkey=[form_model.form_code, {}],
                                      endkey=[form_model.form_code], limit=7)
     submission_list = []
     for row in rows:
