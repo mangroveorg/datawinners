@@ -33,7 +33,8 @@ class SubmissionLogPage(Page):
         return self.driver.find(ACTIVE_TAB_LOCATOR).text
 
     def choose_delete_on_the_action_dropdown(self):
-        self.driver.find_drop_down(ACTION_SELECT_CSS_LOCATOR).set_selected("1")
+        self.driver.find(ACTION_SELECT_CSS_LOCATOR).click()
+        self.driver.find(DELETE_BUTTON).click()
 
     def check_all_submissions(self):
         self.driver.find(CHECKALL_CB_CSS_LOCATOR).click()
