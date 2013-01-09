@@ -4,8 +4,20 @@
 #action_menu {
   width: 100px; }
   #action_menu ul {
-    min-width: 100px; }
+    min-width: 100px;
+    border-radius: 0px; }
 
+#submission_logs .btn {
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
+  background: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+  display: inline-block;
+  /* IE is so silly */ }
+#submission_logs .btn:hover {
+  background: #DBE6F1; }
+#submission_logs .btn-group.open .btn.dropdown-toggle {
+  background: #DBE6F1; }
 #submission_logs .ui-state-default {
   font-weight: normal; }
 #submission_logs tr, #submission_logs td {

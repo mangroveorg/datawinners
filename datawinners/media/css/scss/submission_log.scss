@@ -6,10 +6,24 @@
   width: 100px;
   ul {
     min-width: 100px;
+    border-radius: 0px;
   }
 }
 
 #submission_logs {
+  .btn {
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#CCDFED), to(#B0CFD7));
+    background: -moz-linear-gradient(top, #CCDFED, #B0CFD7);
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+    display:inline-block; /* IE is so silly */
+  }
+  .btn:hover {
+    background: #DBE6F1;
+  }
+  .btn-group.open .btn.dropdown-toggle {
+    background: #DBE6F1;
+  }
   .ui-state-default {
     font-weight: normal;
   }
