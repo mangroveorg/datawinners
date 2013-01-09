@@ -8,6 +8,7 @@
 #filter_section input[type="text"] {
   height: 22px; }
 #filter_section #keyword {
+  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   height: 22px !important; }
 #filter_section .ui-dropdownchecklist-selector-wrapper {
   background: url("/media/images/arrow.png") no-repeat scroll right 4px transparent;
