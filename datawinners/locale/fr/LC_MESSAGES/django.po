@@ -4057,3 +4057,6 @@ msgstr "Voir et gérer les soumissions non réussies pour ce projet. Voir aussi 
 
 msgid "No unsuccessful Submissions!"
 msgstr "Aucune soumission non réussie!"
+
+msgid "Error Messages"
+msgstr "Messages d’Erreur"
