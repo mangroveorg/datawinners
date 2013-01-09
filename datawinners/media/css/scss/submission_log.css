@@ -6,6 +6,8 @@
   #action_menu ul {
     min-width: 100px; }
 
+#submission_logs .ui-state-default {
+  font-weight: normal; }
 #submission_logs tr, #submission_logs td {
   background: none; }
 #submission_logs #tabs.ui-widget-content {

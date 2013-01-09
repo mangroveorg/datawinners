@@ -10,6 +10,9 @@
 }
 
 #submission_logs {
+  .ui-state-default {
+    font-weight: normal;
+  }
   a, a:hover {
     @extend .link
   }
