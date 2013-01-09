@@ -73,12 +73,12 @@
   tbody td:first-child{
     min-width: 15px !important;
   }
-  .table_information {
-    height: 80px;
-  }
   .dataTables_info {
-    padding-bottom: 10px;
-    height: 30px;
+    float: none;
+    display: inline;
+  }
+  .btn-group{
+    font-size: 13px;
   }
   .action_bar {
     width: 100%;

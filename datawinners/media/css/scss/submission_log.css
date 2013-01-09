@@ -43,11 +43,11 @@
   vertical-align: middle !important; }
 #submission_logs tbody td:first-child {
   min-width: 15px !important; }
-#submission_logs .table_information {
-  height: 80px; }
 #submission_logs .dataTables_info {
-  padding-bottom: 10px;
-  height: 30px; }
+  float: none;
+  display: inline; }
+#submission_logs .btn-group {
+  font-size: 13px; }
 #submission_logs .action_bar {
   width: 100%;
   height: 30px; }

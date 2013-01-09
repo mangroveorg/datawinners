@@ -110,6 +110,7 @@ $(document).ready(function () {
     function insertActionBar() {
         $actionBar.clone(true).insertBefore(".dataTables_paginate").addClass('margin_top_10').show();
         $actionBar.clone(true).appendTo(".table_information").show();
+        $(".dataTables_info").appendTo($('.table_information .btn-group'));
     }
 
     function dataBinding(data, destroy, retrive, emptyTableText) {
