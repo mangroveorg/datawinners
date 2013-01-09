@@ -74,7 +74,8 @@
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
-    {% include 'project/partials/_page_header.html' with title="Submission Log" %}
+    {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
+    {% include "project/submission_page_hint.html" %}
     <div class="heading_block clearfix margin_bottom_10">
         <div id="filter_section" class="alpha data_ana float_left">
             {% include 'project/partials/filters/_filter_by_data_sender.html' %}

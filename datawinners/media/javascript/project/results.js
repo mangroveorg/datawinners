@@ -39,6 +39,8 @@ $(document).ready(function () {
 
     var $no_submission_hint = $('.help_no_submissions');
     var $page_hint = $('#page_hint');
+    var $page_hint_section = $('#page_hint_section')
+    $page_hint_section.text($page_hint.find('>div:first').text())
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
 
@@ -165,7 +167,7 @@ $(document).ready(function () {
 
     function show_data(active_tab_index, data) {
         var index = (active_tab_index || 0) + 1;
-        $page_hint.find('>div:nth-child(' + index + ')').show().siblings().hide();
+        $page_hint_section.empty().append($page_hint.find('>div:nth-child(' + index + ')').clone())
         dataBinding(data, true, false, getEmptyTableText());
         wrap_table();
     }

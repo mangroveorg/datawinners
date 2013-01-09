@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div id="page_hint" class="help_accordion margin_top_15" >
+<div id="page_hint" class="help_accordion margin_top_15 display_none" >
     <div>{% trans 'View and manage all Submissions for this project.' %}</div>
     <div>{% blocktrans with project_links.data_analysis_link as url %}hint for success submission page{{ url }}{% endblocktrans %}</div>
     <div>{% trans "View and manage unsuccessful Submissions for this project." %}</div>
