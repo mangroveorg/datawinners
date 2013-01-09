@@ -8,9 +8,7 @@
 
         <div class="tooltip"><p>
             <strong>{% trans "What is this?" %}</strong><br/>
-            {% trans "q_tooltip_report_period_h" %}
-            {{ reporting_period_question_text }}
-            {% trans "q_tooltip_report_period_t" %}
+            {% trans "q_tooltip_report_period_h" %}{{ reporting_period_question_text }}{% trans "q_tooltip_report_period_t" %}
             <br/><br/>
             <strong>{% trans "What do I need to do?" %}</strong><br/>
             {% trans "r_tooltip_report_period" %}
