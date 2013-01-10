@@ -29,8 +29,15 @@ class DataSender(object):
         return self._name, self._reporter_id, ','.join(self._source)
 
     def __eq__(self, other):
-        return isinstance(other,
-            DataSender) and self._name == other._name and self._source == other._source and self._reporter_id == other._reporter_id
+        instance_equal = isinstance(other, DataSender)
+        if not instance_equal: return False
+
+        if isinstance(self.source, list):
+            source_equal = set(self.source) == set(other._source)
+        else:
+            source_equal = self.source == other._source
+
+        return self._name == other._name and source_equal and self._reporter_id == other._reporter_id
 
     def __hash__(self):
         result = 17

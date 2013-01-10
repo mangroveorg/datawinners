@@ -96,16 +96,14 @@ class TestDataSenderHelper(MangroveTestCase):
 
         data_sender_list = DataSenderHelper(self.manager, FORM_CODE).get_all_data_senders_ever_submitted(self.org_id)
 
-        self.assertEqual(5, len(data_sender_list))
+        self.assertEqual(6, len(data_sender_list))
 
         self.assertIn(DataSender([FROM_NUMBER1], "Beany", "rep1"), data_sender_list)
         self.assertIn(DataSender([FROM_NUMBER2], "Qingshan", "rep2"), data_sender_list)
         self.assertIn(DataSender([EMAIL1], "Tester Pune", "admin"), data_sender_list)
         self.assertIn(DataSender([TEST_REPORTER_MOBILE_NUMBER], "TEST", "test"), data_sender_list)
-        self.assertIn(DataSender([EMAIL_NOT_EXIST, FROM_NUMBER_NOT_EXIST, EMAIL, EMAIL2], ugettext(NOT_AVAILABLE_DS), None), data_sender_list)
-
-        self.assertEqual(DataSender([FROM_NUMBER1], "Beany", "rep1"), data_sender_list[0])
-        self.assertEqual(DataSender([EMAIL1], "Tester Pune", "admin"), data_sender_list[-1])
+        self.assertIn(DataSender(sorted([EMAIL_NOT_EXIST, FROM_NUMBER_NOT_EXIST, EMAIL]), ugettext(NOT_AVAILABLE_DS), None), data_sender_list)
+        self.assertIn(DataSender([EMAIL2], "mamy rasamoel", "rep11"), data_sender_list)
 
 
     def _prepare_sms_data_senders(self):
