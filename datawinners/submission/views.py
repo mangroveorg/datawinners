@@ -86,6 +86,9 @@ def find_dbm_for_web_sms(request):
     MangroveWebSMSRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
     incoming_request['organization'] = get_organization(request)
     incoming_request['next_state'] = submit_to_player
+    import logging
+    websubmission_logger = logging.getLogger("websubmission")
+    incoming_request["logger"] = websubmission_logger
     return incoming_request
 
 
@@ -114,7 +117,7 @@ def submit_to_player(incoming_request):
             post_sms_parser_processors=post_sms_parser_processors)
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
-        response = sms_player.accept(mangrove_request)
+        response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
         message = SMSResponse(response).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:

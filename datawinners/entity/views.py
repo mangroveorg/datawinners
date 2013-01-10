@@ -54,6 +54,9 @@ from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SEND
     DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
     ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM
 from datawinners.entity.helper import send_email_to_data_sender
+import logging
+
+websubmission_logger = logging.getLogger("websubmission")
 
 
 COUNTRY = ',MADAGASCAR'
@@ -609,7 +612,7 @@ def create_subject(request, entity_type=None):
 
             response = WebPlayer(manager,
                 LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
-                create_request(questionnaire_form, request.user.username))
+                create_request(questionnaire_form, request.user.username), logger=websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
                 success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (

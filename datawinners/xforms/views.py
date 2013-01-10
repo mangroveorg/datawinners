@@ -14,7 +14,7 @@ from django.contrib.gis.utils import GeoIP
 from messageprovider.messages import SMART_PHONE
 
 logger = logging.getLogger("datawinners.xform")
-sp_submission_logger = logging.getLogger("")
+sp_submission_logger = logging.getLogger("sp-submission")
 
 def restrict_request_country(f):
     def wrapper(*args, **kw):
@@ -83,15 +83,13 @@ def submission(request):
                 source=request_user.email,
                 destination=''
             ))
-        log_entry = "message: " + str(mangrove_request.message) + "|source: " + mangrove_request.transport.source + "|"
-        response = player.accept(mangrove_request)
+
+        response = player.accept(mangrove_request, logger=sp_submission_logger)
+
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
-            log_entry += "status: False"
-            sp_submission_logger.info(log_entry)
             return HttpResponseBadRequest()
-        log_entry += "status: True"
-        sp_submission_logger.info(log_entry)
+
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
         return HttpResponseBadRequest()

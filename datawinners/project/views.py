@@ -1017,10 +1017,9 @@ def web_questionnaire(request, project_id=None, subject=False):
         error_message = None
         try:
             created_request = helper.create_request(questionnaire_form, request.user.username)
-            log_entry = "message: " + str(created_request.message) + "|source: " + created_request.transport.source + "|"
             response = WebPlayer(manager,
                 LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
-                created_request)
+                created_request, logger=websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
                 if subject:
@@ -1033,15 +1032,11 @@ def web_questionnaire(request, project_id=None, subject=False):
                 else:
                     success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()
-                log_entry += "status: True"
-                websubmission_logger.info(log_entry)
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
 
                 form_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
                     manager, hide_link_class, disable_link_class)
-                log_entry += "status: True"
-                websubmission_logger.info(log_entry)
                 return render_to_response(template, form_context,
                     context_instance=RequestContext(request))
 

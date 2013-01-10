@@ -33,6 +33,7 @@ from django.contrib.auth.models import User, Group
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.utils import send_reset_password_email
 from django.core.validators import email_re
+import logging
 
 class FormCodeDoesNotMatchException(Exception):
     def __init__(self, message, form_code=None):
@@ -48,6 +49,7 @@ class FilePlayer(Player):
         self.parser = parser
         self.channel_name = channel_name
         self.form_code = None
+        self.logger = logging.getLogger("websubmission")
 
     @classmethod
     def build(cls, manager, extension, default_parser=None, form_code=None):
@@ -118,15 +120,24 @@ class FilePlayer(Player):
         submission = self._create_submission( transport_info, form_code, copy( values ) )
         try:
             form_model, values = self._process( form_code, values )
+            log_entry = "message: " + str(values) + "|source: web|"
             if case_insensitive_lookup( values, ENTITY_TYPE_FIELD_CODE ) == REPORTER:
                 response = self.import_data_sender( form_model, organization, registered_emails,
                                                     registered_phone_numbers, submission, values )
             else:
                 response = self.submit( form_model, values, submission, [] )
+
             if not response.success:
                 response.errors = dict( error=response.errors, row=values )
+                log_entry += "Status: False"
+            else:
+                log_entry += "Status: True"
+            self.logger.info(log_entry)
             responses.append( response )
         except DataObjectAlreadyExists as e:
+            if self.logger is not None:
+                log_entry += "Status: False"
+                self.logger.info(log_entry)
             self.appendFailedResponse( responses, "%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]), values=values )
         except (InvalidEmailException, MangroveException) as e:
             self.appendFailedResponse( responses, e.message, values=values )

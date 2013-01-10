@@ -178,16 +178,12 @@ def process_create_data_sender_form(dbm, form, org_id):
             request = Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'))
 
-            log_entry = "message: " + str(request.message) + "|source: " + request.transport.source + "|"
-            response = web_player.accept(request)
+            response = web_player.accept(request, logger=websubmission_logger)
             if response.success:
                 data_sender_id = response.short_code
                 message = get_success_msg_for_registration_using(response, "web")
-                log_entry += "status: True"
             else:
-                log_entry += "status: False"
                 form.update_errors(response.errors)
-            websubmission_logger.info(log_entry)
 
         except MangroveException as exception:
             message = exception.message
