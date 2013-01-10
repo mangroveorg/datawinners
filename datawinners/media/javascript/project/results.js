@@ -56,10 +56,6 @@ $(document).ready(function () {
     buildRangePicker();
     DW.disable_filter_section_if_no_data();
 
-    function resetActionBtnState() {
-        $('select.action>option:first-child').attr('selected', 'selected');
-    }
-
     var tabOptions = new TabOptions();
     $("#tabs").tabs().find('>ul>li>a').click(function () {
         var tab_index = $(this).parent().index();
