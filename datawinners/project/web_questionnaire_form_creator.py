@@ -57,15 +57,15 @@ def get_chars_constraints(field):
         if constraint.min is not None: constraints["min_length"] = constraint.min
     return constraints
 
-def get_integer_constraints(field):
+def get_number_constraints(field):
     constraints = {}
-    if not is_empty(field.constraints) :
+    if not is_empty(field.constraints):
         constraint = field.constraints[0]
-        if constraint.max is not None: constraints["max_value"] = int(constraint.max)
-        if constraint.min is not None: constraints["min_value"] = int(constraint.min)
+        if constraint.max is not None: constraints["max_value"] = float(constraint.max)
+        if constraint.min is not None: constraints["min_value"] = float(constraint.min)
     return constraints
 
-def get_integer_field_constraint_text(field):
+def get_number_field_constraint_text(field):
     max = min = None
     if len(field.constraints) > 0:
         constraint = field.constraints[0]
@@ -228,12 +228,12 @@ class WebQuestionnaireFormCreator(object):
         return date_field
 
     def _create_integer_field(self, field):
-        constraints = get_integer_constraints(field)
-        integer_field = django.forms.fields.FloatField(label=field.label,initial=field.value, required=field.is_required(),
-            error_messages={'invalid': _('Enter a valid integer')}, **constraints)
-        integer_field.widget.attrs["watermark"] = get_integer_field_constraint_text(field)
-        integer_field.widget.attrs['style'] = 'padding-top: 7px;'
-        return integer_field
+        constraints = get_number_constraints(field)
+        float_field = django.forms.fields.FloatField(label=field.label,initial=field.value, required=field.is_required(),
+            **constraints)
+        float_field.widget.attrs["watermark"] = get_number_field_constraint_text(field)
+        float_field.widget.attrs['style'] = 'padding-top: 7px;'
+        return float_field
 
     def _get_short_code_question_code(self):
         return {u'short_code_question_code': self.form_model.entity_question.code}
