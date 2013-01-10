@@ -70,9 +70,9 @@ $(document).ready(function () {
         active_tab_index = tab_index;
 
         if (tabOptions.show_actions()) {
-            $('.action_container').css('visibility', 'visible');
+            $('.action').show();
         } else {
-            $('.action_container').css('visibility', 'hidden');
+            $('.action').hide();
         }
         fetch_data(tab_index);
     }).filter(':first').trigger('click');
@@ -195,11 +195,7 @@ $(document).ready(function () {
 
     //Checkbox on/off functionality
     $("#master_checkbox").live("click", function () {
-        var status = $(this).attr('checked');
-        $(".selected_submissions").each(function () {
-            $(this).attr("checked", status);
-        });
-
+        $(".selected_submissions").attr("checked", $(this).attr('checked'));
     });
 
     $('.delete').click(function () {
