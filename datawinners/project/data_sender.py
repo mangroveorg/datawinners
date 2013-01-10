@@ -1,4 +1,10 @@
 class DataSender(object):
+
+    @staticmethod
+    def from_tuple(data_sender_tuple):
+        return DataSender(data_sender_tuple[-1], data_sender_tuple[0], data_sender_tuple[1])
+
+
     def __init__(self, source, name, reporter_id):
         self._source = source
         self._name = name
@@ -20,7 +26,7 @@ class DataSender(object):
         if self._name == 'TEST':
             return "TEST", "", "TEST"
 
-        return self._name, self._reporter_id, self._source
+        return self._name, self._reporter_id, ','.join(self._source)
 
     def __eq__(self, other):
         return isinstance(other,

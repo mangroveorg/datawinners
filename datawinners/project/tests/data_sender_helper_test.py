@@ -49,6 +49,27 @@ class TestDataSenderHelper(MangroveTestCase):
 
         self.assertEqual(('TEST', '', 'TEST'), data_sender)
 
+    def test_should_combine_sources_if_one_reporter_submits_data_from_different_channels(self):
+        data_sender1 = DataSender("12313123123", "data_sender1", "rep1")
+        data_sender2 = DataSender("data@winners.com", "data_sender1", "rep1")
+        data_sender3 = DataSender("14141241414", "data_sender3", "rep3")
+
+        data_senders = DataSenderHelper(self.manager, None)._combine_channels([data_sender1, data_sender2, data_sender3])
+
+        self.assertEqual(2, len(data_senders))
+        self.assertIn(["12313123123", "data@winners.com"], map(lambda x: x.source, data_senders))
+
+    def test_should_combine_sources_for_tuple(self):
+        data_sender1 = ("data_sender1", "rep1", "12313123123")
+        data_sender2 = ("data_sender1", "rep1", "data@winners.com")
+        data_sender3 = ("data_sender3", "rep3", "14141241414")
+
+        data_senders_tuple_list = DataSenderHelper(self.manager, None).combine_channels_for_tuple([data_sender1, data_sender2, data_sender3])
+
+        self.assertEqual(2, len(data_senders_tuple_list))
+        self.assertIn("12313123123,data@winners.com", map(lambda x: x[-1], data_senders_tuple_list))
+
+
     def test_should_return_all_data_senders_that_have_submitted_data(self):
         FROM_NUMBER1 = '1234567890'
         FROM_NUMBER2 = '261332592634'
@@ -75,19 +96,16 @@ class TestDataSenderHelper(MangroveTestCase):
 
         data_sender_list = DataSenderHelper(self.manager, FORM_CODE).get_all_data_senders_ever_submitted(self.org_id)
 
-        self.assertEqual(8, len(data_sender_list))
+        self.assertEqual(5, len(data_sender_list))
 
-        self.assertIn(DataSender(FROM_NUMBER1, "Beany", "rep1"), data_sender_list)
-        self.assertIn(DataSender(FROM_NUMBER2, "Qingshan", "rep2"), data_sender_list)
-        self.assertIn(DataSender(FROM_NUMBER_NOT_EXIST, ugettext(NOT_AVAILABLE_DS), None), data_sender_list)
-        self.assertIn(DataSender(EMAIL, ugettext(NOT_AVAILABLE_DS), None), data_sender_list)
-        self.assertIn(DataSender(EMAIL1, "Tester Pune", "admin"), data_sender_list)
-        self.assertIn(DataSender(EMAIL2, "mamy rasamoel", "rep11"), data_sender_list)
-        self.assertIn(DataSender(EMAIL_NOT_EXIST, ugettext(NOT_AVAILABLE_DS), None), data_sender_list)
-        self.assertIn(DataSender(TEST_REPORTER_MOBILE_NUMBER, "TEST", "test"), data_sender_list)
+        self.assertIn(DataSender([FROM_NUMBER1], "Beany", "rep1"), data_sender_list)
+        self.assertIn(DataSender([FROM_NUMBER2], "Qingshan", "rep2"), data_sender_list)
+        self.assertIn(DataSender([EMAIL1], "Tester Pune", "admin"), data_sender_list)
+        self.assertIn(DataSender([TEST_REPORTER_MOBILE_NUMBER], "TEST", "test"), data_sender_list)
+        self.assertIn(DataSender([EMAIL_NOT_EXIST, FROM_NUMBER_NOT_EXIST, EMAIL, EMAIL2], ugettext(NOT_AVAILABLE_DS), None), data_sender_list)
 
-        self.assertEqual(DataSender(FROM_NUMBER1, "Beany", "rep1"), data_sender_list[0])
-        self.assertEqual(DataSender(EMAIL2, "mamy rasamoel", "rep11"), data_sender_list[-1])
+        self.assertEqual(DataSender([FROM_NUMBER1], "Beany", "rep1"), data_sender_list[0])
+        self.assertEqual(DataSender([EMAIL1], "Tester Pune", "admin"), data_sender_list[-1])
 
 
     def _prepare_sms_data_senders(self):

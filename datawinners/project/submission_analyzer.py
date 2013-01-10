@@ -28,6 +28,7 @@ class SubmissionAnalyzer(object):
         self.org_id = org_id
         self.submissions = submissions
         self._data_senders = []
+        self.data_sender_helper = DataSenderHelper(self.manager, self.form_model.form_code)
         self._subject_list = []
         self.keyword_filter = KeywordFilter(keyword if keyword else '')
         self.leading_part_length = 0
@@ -59,7 +60,7 @@ class SubmissionAnalyzer(object):
         return sorted(self._subject_list)
 
     def get_data_senders(self):
-        return sorted(self._data_senders)
+        return self.data_sender_helper.combine_channels_for_tuple(self._data_senders)
 
     @timebox
     def get_analysis_statistics(self):
@@ -146,7 +147,7 @@ class SubmissionAnalyzer(object):
             if each[-1] == submission.source:
                 return each
         else:
-            data_sender = DataSenderHelper(self.manager, self.form_model.form_code).get_data_sender(self.org_id, submission)
+            data_sender = self.data_sender_helper.get_data_sender(self.org_id, submission)
             self._data_senders.append(data_sender)
             return data_sender
 

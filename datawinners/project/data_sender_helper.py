@@ -29,7 +29,17 @@ class DataSenderHelper(object):
         non_sms_data_senders = self._get_all_data_senders_with_submission(non_sms_data_sender_list,
             submission_data_sender_info_list, filter_function=self._is_not_submitted_via_sms)
 
-        return sorted(non_sms_data_senders.union(sms_data_senders), key=lambda ds:ds.name)
+        return self._combine_channels(non_sms_data_senders.union(sms_data_senders))
+
+    def _combine_channels(self, data_senders):
+        keys = {x.name for x in data_senders}
+        grouped_data_senders = [filter(lambda x: x.name == key, data_senders) for key in keys]
+
+        return sorted([DataSender(map(lambda x: x.source, a), a[0].name, a[0].reporter_id) for a in grouped_data_senders], key=lambda ds:ds.name)
+
+    def combine_channels_for_tuple(self, data_senders_tuple_list):
+        data_senders = [DataSender.from_tuple(data_sender_tuple) for data_sender_tuple in data_senders_tuple_list]
+        return map(lambda d: d.to_tuple(), self._combine_channels(data_senders))
 
     def _is_submitted_via_sms(self, data_sender_info):
         return data_sender_info[1] == SMS
