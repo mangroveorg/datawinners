@@ -76,9 +76,14 @@ $(document).ready(function () {
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
 
+    var $filterSelects = $('#dataSenderSelect');
+    function closeFilterSelects() {
+        $filterSelects.dropdownchecklist('close')
+    }
+
     function buildRangePicker() {
-        $('#reportingPeriodPicker').datePicker({header:gettext('All Periods')});
-        $('#submissionDatePicker').datePicker();
+        $('#reportingPeriodPicker').datePicker({header:gettext('All Periods'),eventCallback: closeFilterSelects});
+        $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects});
     }
 
     $('#go').click(function () {
