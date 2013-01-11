@@ -623,7 +623,7 @@ msgid "To"
 msgstr "A"
 
 msgid "All"
-msgstr "Tout(es) les"
+msgstr "Toutes"
 
 msgid "No submissions available for this search. Try changing some of the filters."
 msgstr "Aucune soumission disponible pour cette recherche. Essayez de modifier certains de vos filtres."

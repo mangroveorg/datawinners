@@ -4017,7 +4017,7 @@ msgid "Deleted Data Sender"
 msgstr "Expéditeur supprimé"
 
 msgid "All"
-msgstr "Tout(es) les"
+msgstr "Toutes"
 
 msgid "You have not registered a reporter yet."
 msgstr "Vous n’avez pas encore enregistré un expéditeur."
