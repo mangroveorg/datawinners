@@ -30,6 +30,9 @@
   .btn-group.open .btn.dropdown-toggle {
     background: #DBE6F1;
   }
+  .btn-group .btn.dropdown-toggle{
+    margin-right: 20px;
+  }
   .ui-state-default {
     font-weight: normal;
   }
@@ -94,6 +97,7 @@
   }
   .btn-group{
     font-size: 13px;
+    margin-right: 50px;
   }
   .action_bar {
     width: 100%;

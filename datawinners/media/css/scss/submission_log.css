@@ -23,6 +23,8 @@
   background: #DBE6F1; }
 #submission_logs .btn-group.open .btn.dropdown-toggle {
   background: #DBE6F1; }
+#submission_logs .btn-group .btn.dropdown-toggle {
+  margin-right: 20px; }
 #submission_logs .ui-state-default {
   font-weight: normal; }
 #submission_logs tr, #submission_logs td {
@@ -61,7 +63,8 @@
   float: none;
   display: inline; }
 #submission_logs .btn-group {
-  font-size: 13px; }
+  font-size: 13px;
+  margin-right: 50px; }
 #submission_logs .action_bar {
   width: 100%;
   height: 30px; }
