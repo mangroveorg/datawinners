@@ -88,14 +88,6 @@
       display: block;
     }
   }
-  thead th:first-child{
-    width:10px !important;
-    padding: 6px;
-    vertical-align: middle !important;
-  }
-  tbody td:first-child{
-    min-width: 15px !important;
-  }
   .dataTables_info {
     float: none;
     display: inline;
@@ -122,5 +114,16 @@
     overflow: hidden;
     width: 90px;
     float: left;
+  }
+}
+
+#submission_logs.narrow_first_col {
+  thead th:first-child{
+    width: 20px !important;
+    padding: 6px;
+    vertical-align: middle !important;
+  }
+  td:first-child {
+    min-width: 20px !important;
   }
 }

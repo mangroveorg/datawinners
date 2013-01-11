@@ -57,12 +57,6 @@
   display: none; }
 #submission_logs #page_hint div:first-child {
   display: block; }
-#submission_logs thead th:first-child {
-  width: 10px !important;
-  padding: 6px;
-  vertical-align: middle !important; }
-#submission_logs tbody td:first-child {
-  min-width: 15px !important; }
 #submission_logs .dataTables_info {
   float: none;
   display: inline; }
@@ -85,3 +79,10 @@
   overflow: hidden;
   width: 90px;
   float: left; }
+
+#submission_logs.narrow_first_col thead th:first-child {
+  width: 20px !important;
+  padding: 6px;
+  vertical-align: middle !important; }
+#submission_logs.narrow_first_col td:first-child {
+  min-width: 20px !important; }
