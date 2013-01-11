@@ -1,6 +1,10 @@
 table {
   margin: 0; }
 
+.ui-dropdownchecklist-item {
+  font-family: Helvetica, Arial, 'Liberation Sans', FreeSans, sans-serif;
+  font-size: 11px; }
+
 #header_application {
   margin: 0 auto;
   float: none;
@@ -121,6 +125,7 @@ table {
       background-position: 10px -27px; }
 
 .data_table {
+  float: left;
   overflow: auto;
   width: 100%; }
   .data_table #data_analysis {
