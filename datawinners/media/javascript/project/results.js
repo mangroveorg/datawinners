@@ -252,8 +252,8 @@ $(document).ready(function () {
         },
         height:150,
         width:550
-    }
+    };
 
-    delete_submission_warning_dialog = new DW.warning_dialog(options);
+    var delete_submission_warning_dialog = new DW.warning_dialog(options);
 
 });
