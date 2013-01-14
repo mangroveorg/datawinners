@@ -42,8 +42,8 @@ function copy_db(){
     couchdb_backup=`ls -t|grep mangrove_couchdb_backup_$today|sed -n 1p`
     psql_backup=`ls -t|grep mangrove_postgres_dump_$today|sed -n 1p`
     #Mac use md5 instead of md5sum
-    md5_of_couchdb=`md5 $couchdb_backup|awk '{print $NF}'`
-    md5_of_psql=`md5 $psql_backup|awk '{print $NF}'`
+    md5_of_couchdb=`md5sum $couchdb_backup|awk '{print $NF}'`
+    md5_of_psql=`md5sum $psql_backup|awk '{print $NF}'`
     verify_md5 $couchdb_backup $md5_of_couchdb
     verify_md5 $psql_backup $md5_of_psql
     echo "################${FUNCNAME[0]} done.################"
