@@ -9,7 +9,7 @@ from mangrove.transport.submissions import Submission
 from mangrove.utils.entity_builder import EntityBuilder
 from mangrove.utils.form_model_builder import FormModelBuilder, create_default_ddtype
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG
+from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG, NOT_AVAILABLE
 from project.submission_analyzer import SubmissionAnalyzer
 from project.submission_router import successful_submissions
 from project.tests.form_model_generator import FormModelGenerator
@@ -117,11 +117,12 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         data = [
             {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
             {"eid": "cli15", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
-            {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
+            {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
+            {"1": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
         ]
         analyzer = self._prepare_analyzer(self.form_model, data, is_for_submission_page=True)
         subject_list = analyzer.get_subjects()
-        expected = [('Clinic-One', u'cli14'), ('Clinic-Two', u'cli15')]
+        expected = [('Clinic-One', u'cli14'), ('Clinic-Two', u'cli15'), (NOT_AVAILABLE, str(None))]
         self.assertEqual(expected, subject_list)
 
     def test_should_get_data_sender_list(self):

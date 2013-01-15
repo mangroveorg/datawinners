@@ -160,8 +160,8 @@ class SubmissionAnalyzer(object):
             try:
                 entity = get_by_short_code(self.manager, subject_code, [self.form_model.entity_type[0]])
                 subject = entity.data['name']['value'], entity.short_code
-            except DataObjectNotFound:
-                subject = NOT_AVAILABLE, subject_code
+            except Exception:
+                subject = NOT_AVAILABLE, str(subject_code)
 
             self._subject_list.append(subject)
             return subject
