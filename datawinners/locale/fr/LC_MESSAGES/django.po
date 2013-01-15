@@ -1395,7 +1395,7 @@ msgstr "Aperçu du SMS"
 
 msgid ""
 "Warning: Changing the questionnaire code will remove all existing test data."
-msgstr "Attention : Le changement de type de projet va supprimer toutes les données enregistrées"
+msgstr "Attention:  Si vous changez le code questionnaire, toutes les données existantes seront supprimées"
 
 msgid "OK"
 msgstr "OK"
