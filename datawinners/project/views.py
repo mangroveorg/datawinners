@@ -491,7 +491,8 @@ def _export_submissions_in_xls(request, is_for_submission_log_page):
 
     analyzer = _build_submission_analyzer(request, manager, form_model, is_for_submission_log_page)
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format=XLS_TUPLE_FORMAT)
-    header_list = SubmissionsPageHeader(form_model).header_list
+
+    header_list = SubmissionsPageHeader(form_model).header_list if is_for_submission_log_page else Header(form_model).header_list
 
     exported_data, file_name = _prepare_export_data(request, header_list, formatted_values)
 
