@@ -1,12 +1,13 @@
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_LOGIN_PAGE
 from framework.base_test import BaseTest
-from data_sender_to_org_trial_account_data import VALID_DATA, PROJECT_NAME, TRIAL_SMS_DATA, VALID_PAID_DATA, PAID_SMS_DATA
+from data_sender_to_org_trial_account_data import VALID_DATA, PROJECT_NAME, TRIAL_SMS_DATA, VALID_PAID_DATA, \
+    PAID_SMS_DATA, RE_TRIAL_SMS_DATA, RE_PAID_SMS_DATA
 from pages.loginpage.login_page import LoginPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDENTIALS, TRIAL_CREDENTIALS_THREE
 from nose.plugins.attrib import attr
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
-import json
+import json, re
 
 
 # add data sender to trial account
@@ -26,36 +27,36 @@ class TestDataSenderAssociationWithTrialAccount(BaseTest):
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_trial_org_is_saved_in_trial_org(self):
         self.send_sms(VALID_DATA)
         analysis_page = self.go_to_analysis_page(TRIAL_CREDENTIALS_VALIDATES)
-        data_rows = analysis_page.get_all_data_records_from_multiple_pages()
-        self.assertIn(TRIAL_SMS_DATA,data_rows)
+        data_in_string = analysis_page.get_all_data_records_from_multiple_pages_in_string()
+        self.assertRegexpMatches(data_in_string, RE_TRIAL_SMS_DATA)
 
     @attr('functional_test')
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_trial_org_is_not_saved_in_paid_org(self):
         self.send_sms(VALID_DATA)
         analysis_page = self.go_to_analysis_page(VALID_CREDENTIALS)
-        data_rows = analysis_page.get_all_data_records_from_multiple_pages()
-        self.assertNotIn(TRIAL_SMS_DATA,data_rows)
+        data_in_string = analysis_page.get_all_data_records_from_multiple_pages_in_string()
+        self.assertNotRegexpMatches(data_in_string, RE_TRIAL_SMS_DATA)
 
     @attr('functional_test')
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_trial_org_is_not_saved_in_other_trial_org(self):
         self.send_sms(VALID_DATA)
         analysis_page = self.go_to_analysis_page(TRIAL_CREDENTIALS_THREE)
-        data_rows = analysis_page.get_all_data_records_from_multiple_pages()
-        self.assertNotIn(TRIAL_SMS_DATA,data_rows)
+        data_in_string = analysis_page.get_all_data_records_from_multiple_pages_in_string()
+        self.assertNotRegexpMatches(data_in_string, RE_TRIAL_SMS_DATA)
 
     @attr('functional_test')
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_paid_org_is_saved_in_paid_org(self):
         self.send_sms(VALID_PAID_DATA)
         analysis_page = self.go_to_analysis_page(VALID_CREDENTIALS)
-        data_rows = analysis_page.get_all_data_records_from_multiple_pages()
-        self.assertIn(PAID_SMS_DATA,data_rows)
+        data_in_string = analysis_page.get_all_data_records_from_multiple_pages_in_string()
+        self.assertRegexpMatches(data_in_string, RE_PAID_SMS_DATA)
 
     @attr('functional_test')
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_paid_org_is_not_saved_in_other_orgs(self):
         self.send_sms(VALID_PAID_DATA)
         analysis_page = self.go_to_analysis_page(TRIAL_CREDENTIALS_VALIDATES)
-        data_rows = analysis_page.get_all_data_records_from_multiple_pages()
-        self.assertNotIn(PAID_SMS_DATA,data_rows)
+        data_rows = analysis_page.get_all_data_records_from_multiple_pages_in_string()
+        self.assertNotRegexpMatches(data_rows, RE_PAID_SMS_DATA)
 
     def send_sms(self, sms_content):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)

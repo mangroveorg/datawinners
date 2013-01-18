@@ -282,3 +282,6 @@ class DataAnalysisPage(Page):
 
     def click_column_header_to_change_order(self, index):
         return self.driver.find(by_css(QUESTION_LABEL_CSS % (index))).click()
+
+    def get_all_data_records_from_multiple_pages_in_string(self):
+        return ", ".join(self.get_all_data_records_from_multiple_pages())
