@@ -57,33 +57,45 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, data)
 
         raw_field_values = analyzer.get_raw_values()
-        expected = [[self.submission_id, ('Clinic-One', 'cli14'),  '01.01.2012', today, ('Tester Pune', 'admin', 'tester150411@gmail.com'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+        expected = [[self.submission_id, ('Clinic-One', 'cli14'),  '01.01.2012', ('Tester Pune', 'admin', 'tester150411@gmail.com'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+        submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(3))
+        self.assertEqual(today, submission_date)
         self.assertEqual(expected, raw_field_values)
 
     def test_should_get_real_answer_for_select_question(self):
         answers = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
         submission_analyzer = self._prepare_analyzer_with_one_submission(self.form_model, answers)
-        expected = [[self.submission_id, ('Clinic-One', 'cli14'), '01.01.2012', today, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+        raw_field_values = submission_analyzer.get_raw_values()
+        expected = [[self.submission_id, ('Clinic-One', 'cli14'), '01.01.2012', (u'Tester Pune', 'admin', u'tester150411@gmail.com'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+        submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(3))
 
-        self.assertEqual(expected, submission_analyzer.get_raw_values())
+        self.assertEqual(today, submission_date)
+        self.assertEqual(expected, raw_field_values)
 
     def test_should_get_leading_part_for_non_summary_project(self):
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
-        expected = [[self.submission_id, ('Clinic-One', 'cli14'), '01.01.2012', today, ('Tester Pune', 'admin', 'tester150411@gmail.com')]]
-        self.assertEqual(expected, analyzer._get_leading_part())
+        expected = [[self.submission_id, ('Clinic-One', 'cli14'), '01.01.2012', ('Tester Pune', 'admin', 'tester150411@gmail.com')]]
+        result = analyzer._get_leading_part()
+        submission_date = self.get_submission_date_in_old_format(result[0].pop(3))
+        self.assertEqual(today, submission_date)
+        self.assertEqual(expected, result)
 
     def test_should_get_leading_part_for_summary_project(self):
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model_generator.summary_form_model_without_rp(), {"eid": "rep01", "SY": "a2bc", "BG": "d"})
         leading_part = analyzer._get_leading_part()
-        expected = [[self.submission_id, today, ('Tester Pune', 'admin', 'tester150411@gmail.com')]]
+        expected = [[self.submission_id, ('Tester Pune', 'admin', 'tester150411@gmail.com')]]
+        submission_date = self.get_submission_date_in_old_format(leading_part[0].pop(1))
+        self.assertEqual(today, submission_date)
         self.assertEqual(expected, leading_part)
 
     def test_should_get_raw_field_values(self):
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
 
         raw_field_values = analyzer.get_raw_values()
-        expected = [[self.submission_id, ('Clinic-One', 'cli14'),  '01.01.2012', today, ('Tester Pune', 'admin', 'tester150411@gmail.com'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+        expected = [[self.submission_id, ('Clinic-One', 'cli14'),  '01.01.2012', ('Tester Pune', 'admin', 'tester150411@gmail.com'), ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+        submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(3))
+        self.assertEqual(today, submission_date)
         self.assertEqual(expected, raw_field_values)
 
     def test_should_get_raw_field_values_with_status_for_all_submissions(self):
@@ -199,32 +211,32 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         expected = [["What is your blood group?", field_attributes.SELECT_FIELD, 2, [["O+", 1], ['Type 1', 1], ["AB", 0], ["B+", 0], ["O-", 0]]]]
         self.assertEqual(expected, statistics)
 
-    def test_should_sort_by_rp_and_subject_for_subject_project_with_rp(self):
+    def test_should_sort_by_submission_date_for_subject_project_with_rp(self):
         data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, data)
         default_sort_order = analyzer.get_default_sort_order()
-        self.assertEqual([[2, 'desc'],[1, 'asc']], default_sort_order)
+        self.assertEqual([[3, 'desc']], default_sort_order)
 
-    def test_should_sort_by_submission_date_and_subject_for_subject_project_without_rp(self):
+    def test_should_sort_by_submission_date_for_subject_project_without_rp(self):
         self.form_model = self.form_model_generator.subject_form_model_without_rp()
         data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, data)
         default_sort_order = analyzer.get_default_sort_order()
-        self.assertEqual([[2, 'desc'],[1, 'asc']], default_sort_order)
+        self.assertEqual([[2, 'desc']], default_sort_order)
 
-    def test_should_sort_by_rp_and_ds_for_summary_project_with_rp(self):
+    def test_should_sort_submission_date_for_summary_project_with_rp(self):
         self.form_model = self.form_model_generator.summary_form_model_with_rp()
         data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, data)
         default_sort_order = analyzer.get_default_sort_order()
-        self.assertEqual([[1, 'desc'],[3, 'asc']], default_sort_order)
+        self.assertEqual([[2, 'desc']], default_sort_order)
 
-    def test_should_sort_by_submission_date_and_ds_for_summary_project_without_rp(self):
+    def test_should_sort_by_submission_date_for_summary_project_without_rp(self):
         self.form_model = self.form_model_generator.summary_form_model_without_rp()
         data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
         analyzer = self._prepare_analyzer_with_one_submission(self.form_model, data)
         default_sort_order = analyzer.get_default_sort_order()
-        self.assertEqual([[1, 'desc'],[2, 'asc']], default_sort_order)
+        self.assertEqual([[1, 'desc']], default_sort_order)
 
     def submit_data(self, post_data):
         WebPlayer(self.manager).accept(Request(message=post_data, transportInfo=self.transport))
@@ -395,3 +407,8 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         form_model.delete_all_fields()
         [form_model.add_field(each) for each in fields]
         form_model.save()
+
+    def get_submission_date_in_old_format(self, submission_date):
+        submission_date = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
+        submission_date = submission_date.strftime("%d.%m.%Y")
+        return submission_date

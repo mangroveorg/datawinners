@@ -8,7 +8,9 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
 
-SUBMISSION_DATE_FORMAT = '%d.%m.%Y'
+SUBMISSION_DATE_FORMAT = "%b. %d, %Y, %I:%M %p"
+DD_MM_YYYY_FORMAT = '%d.%m.%Y'
+
 MONTHLY_REPORTING_PERIOD_FORMAT = "%m.%Y"
 
 @attr('suit_1')
@@ -67,8 +69,10 @@ class TestDataAnalysis(BaseTest):
     def _to_date_list(self, data_records, date_format):
         return [datetime.strptime(record, date_format) for record in data_records]
 
-    def assert_in_date_range(self, range, data_records, date_format=SUBMISSION_DATE_FORMAT):
-        range = self._to_date_list(range, date_format)
+    def assert_in_date_range(self, range, data_records, range_format=DD_MM_YYYY_FORMAT, date_format=DD_MM_YYYY_FORMAT):
+        range = self._to_date_list(range, range_format)
+        if date_format == SUBMISSION_DATE_FORMAT and range_format == DD_MM_YYYY_FORMAT:
+            range[-1] = range[-1].replace(hour=23, minute=59)
         self.assertTrue(all([range[0] <= each <= range[-1] for each in self._to_date_list(data_records, date_format)]))
 
     @attr('functional_test', 'smoke')
@@ -85,7 +89,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.click_go_button()
         report_period = data_analysis_page.get_all_data_records_by_column(1)
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
-        self.assert_in_date_range(current_month_period, report_period, MONTHLY_REPORTING_PERIOD_FORMAT)
+        self.assert_in_date_range(current_month_period, report_period, range_format=MONTHLY_REPORTING_PERIOD_FORMAT ,date_format=MONTHLY_REPORTING_PERIOD_FORMAT)
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_daily_reporting_period(self):
@@ -120,7 +124,7 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.click_go_button()
         submission_date = data_analysis_page.get_all_data_records_by_column(2)
         period = data_analysis_page.get_submission_date().split(' - ')
-        self.assert_in_date_range(period, submission_date)
+        self.assert_in_date_range(period, submission_date, date_format=SUBMISSION_DATE_FORMAT)
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_subject_filter(self):
@@ -226,8 +230,8 @@ class TestDataAnalysis(BaseTest):
     def test_should_sort_data_in_alphanumerical_order_except_for_submission_date(self):
         analysis_page = self.go_to_analysis_page(project_name="test data sorting")
         default = analysis_page.get_all_data_records_by_column(4)
-        expected_default = ["456", "-12, 34", "2012.01.14", "12.23.2011", "12, 34", "cat", "12.2012", "20, 34",
-                            "cat, dog", "123", "2011.12.12"]
+        expected_default = ["12.2012", "20, 34", "-12, 34", "12, 34", "cat, dog", "2012.01.14", "cat", "456", "123",
+                            "12.23.2011", "2011.12.12"]
         self.assertEqual(default, expected_default)
         self.sort_data_by_word_question(analysis_page)
         self.sort_data_by_mc_question(analysis_page)

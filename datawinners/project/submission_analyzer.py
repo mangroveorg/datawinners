@@ -49,10 +49,13 @@ class SubmissionAnalyzer(object):
         return self._raw_values
 
     def get_default_sort_order(self):
-        default_sort_order = [[1, 'desc'], [3, 'asc']] if self.form_model.event_time_question else [[1, 'desc'],
-                                                                                                    [2, 'asc']]
-        if self.form_model.entity_type != ['reporter']:
-            default_sort_order = [[2, 'desc'], [1, 'asc']]
+        default_sort_order = [[2, 'desc']]
+
+        if self.form_model.event_time_question and self.form_model.entity_type != ['reporter']:
+            default_sort_order = [[3, 'desc']]
+
+        if self.form_model.event_time_question is None and self.form_model.entity_type == ['reporter']:
+            default_sort_order = [[1, 'desc']]
 
         return default_sort_order
 
@@ -102,7 +105,7 @@ class SubmissionAnalyzer(object):
 
     def _get_leading_part_for_analysis_page(self, submission):
         data_sender = self._get_data_sender(submission)
-        submission_date = _to_str(submission.created)
+        submission_date = format_dt_for_submission_log_page(submission)
         rp = self._get_rp_for_leading_part(submission)
         subject = self._get_subject_for_leading_part(submission)
         return filter(lambda x: x, [submission.id, subject, rp, submission_date, data_sender])

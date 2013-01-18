@@ -71,6 +71,43 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
         var xCompare = compareNumber(b[0], a[0]);
         if (xCompare == 0) return compareNumber(b[1], a[1])
         return xCompare
+    },
+
+    "submission_date-pre": function (a) {
+        var ukDatea = a.split(" ");
+        var months = [ "",
+            gettext("Jan."),
+            gettext("Feb."),
+            gettext("Mar."),
+            gettext("Apr."),
+            gettext("May."),
+            gettext("Jun."),
+            gettext("Jul."),
+            gettext("Aug."),
+            gettext("Sep."),
+            gettext("Oct."),
+            gettext("Nov."),
+            gettext("Dec.")
+        ];
+        var month = $.inArray(gettext(ukDatea[0]), months) * 31 * 24 * 60;
+        var day = parseInt(ukDatea[1]) * 24 * 60;
+        var year = parseInt(ukDatea[2]) * 12 * 31 * 24 * 60;
+        var hh_mm = ukDatea[3].split(":");
+        var hour = (parseInt(hh_mm[0]) + ((ukDatea[4] == "PM") ? 12 : 0)) * 60;
+        var minute = parseInt(hh_mm[1]);
+        return month + day + year + hour + minute;
+    },
+
+    "submission_date-asc": function (a, b){
+        a = jQuery.fn.dataTableExt.oSort["submission_date-pre"](a);
+        b = jQuery.fn.dataTableExt.oSort["submission_date-pre"](b);
+        return compareNumber(a, b);
+    },
+
+    "submission_date-desc": function (a, b){
+        a = jQuery.fn.dataTableExt.oSort["submission_date-pre"](a);
+        b = jQuery.fn.dataTableExt.oSort["submission_date-pre"](b);
+        return compareNumber(b, a);
     }
 
 } );
