@@ -9,6 +9,8 @@ from datawinners.tests.data import LIMIT_TRIAL_ORG_MESSAGE_COUNT
 from datawinners.utils import generate_document_store_name
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from django.contrib.auth.models import User
+from django.utils.translation import get_language
+from datawinners.countrytotrialnumbermapping.models import Country
 
 TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
@@ -106,6 +108,13 @@ class Organization(models.Model):
     def _has_exceeded_limit_for_trial_account(self):
         return self._get_total_message_count() > LIMIT_TRIAL_ORG_MESSAGE_COUNT
 
+    def get_phone_country_code(self):
+        criteria = dict({"country_name_%s" % get_language(): self.country_name()})
+        try:
+            current_country = Country.objects.filter(**criteria)[0]
+            return current_country.country_code if current_country else None
+        except Exception:
+            return None
 
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)

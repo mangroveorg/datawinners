@@ -55,8 +55,8 @@
     },
     {
         "fields":{
-            "country_name_en":"Antigua & Barbuda",
-            "country_name_fr":"Antigua-et-Barbuda",
+            "country_name_en":"Antigua and Barbuda",
+            "country_name_fr":"Antigua et Barbuda",
             "country_code":"1268"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -118,7 +118,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Bahamas, the",
+            "country_name_en":"Bahamas",
             "country_name_fr":"Bahamas",
             "country_code":"1242"
         },
@@ -226,8 +226,8 @@
     },
     {
         "fields":{
-            "country_name_en":"Bosnia-Herzegovina",
-            "country_name_fr":"Bosnie Herzégovine",
+            "country_name_en":"Bosnia and Herzegovina",
+            "country_name_fr":"Bosnie-Herzégovine",
             "country_code":"387"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -253,8 +253,8 @@
     },
     {
         "fields":{
-            "country_name_en":"British Virgin Islands",
-            "country_name_fr":"Iles Vierges Britanniques",
+            "country_name_en":"Virgin Islands, British",
+            "country_name_fr":"Îles Vierges britanniques",
             "country_code":"1284"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -262,8 +262,8 @@
     },
     {
         "fields":{
-            "country_name_en":"Brunei",
-            "country_name_fr":"Brunei",
+            "country_name_en":"Brunei Darussalam",
+            "country_name_fr":"Brunei Darussalam",
             "country_code":"673"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -406,8 +406,8 @@
     },
     {
         "fields":{
-            "country_name_en":"Congo, Democratic Republic",
-            "country_name_fr":"République Démocratique du Congo",
+            "country_name_en":"Congo, The Democratic Republic of the",
+            "country_name_fr":"Congo, république démocratique du",
             "country_code":"243"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -784,7 +784,7 @@
     },
     {
         "fields":{
-            "country_name_en":"HongKong",
+            "country_name_en":"Hong Kong",
             "country_name_fr":"Hong Kong",
             "country_code":"852"
         },
@@ -1171,7 +1171,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Moldova",
+            "country_name_en":"Moldova, Republic of",
             "country_name_fr":"Moldavie",
             "country_code":"373"
         },
@@ -1441,8 +1441,8 @@
     },
     {
         "fields":{
-            "country_name_en":"Reunion",
-            "country_name_fr":"La Réunion",
+            "country_name_en":"Réunion",
+            "country_name_fr":"Réunion, La",
             "country_code":"262"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1477,8 +1477,8 @@
     },
     {
         "fields":{
-            "country_name_en":"Samoa (American)",
-            "country_name_fr":"Samoa (Américaines)",
+            "country_name_en":"American Samoa",
+            "country_name_fr":"Samoa américaines",
             "country_code":"1684"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1603,8 +1603,8 @@
     },
     {
         "fields":{
-            "country_name_en":"St. Kitts And Nevis",
-            "country_name_fr":"Saint Kitts et Nevis",
+            "country_name_en":"Saint Kitts And Nevis",
+            "country_name_fr":"Saint-Christophe-et-Niévès",
             "country_code":"1869"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1612,7 +1612,7 @@
     },
     {
         "fields":{
-            "country_name_en":"St. Lucia",
+            "country_name_en":"Saint Lucia",
             "country_name_fr":"Sainte-Lucie",
             "country_code":"1758"
         },
@@ -1621,8 +1621,8 @@
     },
     {
         "fields":{
-            "country_name_en":"St. Vincent",
-            "country_name_fr":"Saint Vincent",
+            "country_name_en":"Saint Vincent and the Grenadines",
+            "country_name_fr":"Saint-Vincent-et-les-Grenadines",
             "country_code":"1784"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1702,7 +1702,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Tanzania",
+            "country_name_en":"Tanzania, United Republic of",
             "country_name_fr":"Tanzanie",
             "country_code":"255"
         },
@@ -1729,7 +1729,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Tonga Islands",
+            "country_name_en":"Tonga",
             "country_name_fr":"Tonga",
             "country_code":"676"
         },
@@ -1837,8 +1837,8 @@
     },
     {
         "fields":{
-            "country_name_en":"US Virgin Islands",
-            "country_name_fr":"Iles Vierges Américaines",
+            "country_name_en":"Virgin Islands, U.S.",
+            "country_name_fr":"Îles Vierges des États-Unis",
             "country_code":"1340"
         },
         "model":"countrytotrialnumbermapping.country",
