@@ -664,7 +664,8 @@ def broadcast_message(request, project_id):
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
             sms_sent = helper.broadcast_message(data_senders, form.cleaned_data['text'],
-                organization_setting.get_organisation_sms_number()[0], other_numbers, message_tracker)
+                organization_setting.get_organisation_sms_number()[0], other_numbers, message_tracker,
+                country_code=organization.get_phone_country_code())
             form = BroadcastMessageForm()
             return render_to_response('project/broadcast_message.html',
                     {'project': project,

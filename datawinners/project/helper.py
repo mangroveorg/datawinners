@@ -203,7 +203,7 @@ def get_subject_report_questions(dbm):
     return [entity_id_question, activity_report_question]
 
 
-def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker):
+def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker, country_code=None):
     sms_client = SMSClient()
     sms_sent = None
     for data_sender in data_senders:
@@ -217,6 +217,9 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
 
     for number in other_numbers:
         number = number.strip()
+        if country_code:
+            number = "%s%s" % (country_code, number[1:])
+
         logger.info(("Sending broadcast message to %s from %s") % (number, organization_tel_number))
         sms_sent = sms_client.send_sms(organization_tel_number, number, message)
         if sms_sent:

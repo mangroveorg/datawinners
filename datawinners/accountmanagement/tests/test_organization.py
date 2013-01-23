@@ -2,6 +2,7 @@ import unittest
 import datetime
 from datawinners.accountmanagement.models import Organization
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
+from django_countries.countries import  COUNTRIES
 
 class TestOrganization(unittest.TestCase):
     
@@ -38,7 +39,7 @@ class TestOrganization(unittest.TestCase):
     def _prepare_organization(self):
         trial_organization = Organization(name='test_org_for_trial_account',
                                                             sector='PublicHealth', address='add',
-                                                            city='Pune', country='India',
+                                                            city='Pune', country='IN',
                                                             zipcode='411006', in_trial_mode=True,
                                                             org_id=OrganizationIdCreator().generateId())
         trial_organization.save()
@@ -49,3 +50,6 @@ class TestOrganization(unittest.TestCase):
         message_tracker = self.organization._get_message_tracker(current_month)
         return message_tracker
 
+    def test_should_return_country_phone_code(self):
+        country_code = self.organization.get_phone_country_code()
+        self.assertEqual(country_code, "91")
