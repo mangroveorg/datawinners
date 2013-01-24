@@ -10,6 +10,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog_page import WarningDialog
+from nose.plugins.skip import SkipTest
 import time
 
 @attr('suit_3')
@@ -52,6 +53,7 @@ class TestSubmissionLog(unittest.TestCase):
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
 
+    @SkipTest
     @attr('functional_test')
     def test_should_sort_data_by_submission_date_by_default(self):
         submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
