@@ -70,6 +70,7 @@ class TestEditQuestionnaire(BaseTest):
         self.driver.switch_to_window(new_tab)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(VALID_SMS)
+        time.sleep(1)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, VALID_SMS))
         self.assertEqual(first_tab, self.driver.window_handles[0])
         self.driver.switch_to_window(first_tab)
@@ -144,6 +145,7 @@ class TestEditQuestionnaire(BaseTest):
         self.driver.switch_to_window(new_tab)
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(VALID_SMS_SUBJECT_DATA)
+        time.sleep(1)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, VALID_SMS_SUBJECT_DATA))
         self.assertEqual(first_tab, self.driver.window_handles[0])
         self.driver.close()
@@ -192,6 +194,7 @@ class TestEditQuestionnaire(BaseTest):
 
 
     def create_project_and_add_one_question(self, question_type="word"):
+        time.sleep(2)
         create_questionnaire_page, project_name = self.create_new_project()
         number_question = {"question": "number", "code": "grades", "type": "number",
                         "min": "1", "max": "100"}
@@ -280,14 +283,14 @@ class TestEditQuestionnaire(BaseTest):
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
     @attr('functional_test')
-    def test_should_show_redistribute_questionnaire_message_when_osi_change_an_mc_question_option(self):
+    def test_should_show_redistribute_questionnaire_message_when_osi_add_an_mc_question_option(self):
         create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog("choice")
         create_questionnaire_page.select_question_link(3)
         create_questionnaire_page.add_option_to_a_multiple_choice_question("new option")
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
     @attr('functional_test')
-    def test_should_show_redistribute_questionnaire_message_when_osi_change_an_mc_question_option(self):
+    def test_should_show_redistribute_questionnaire_message_when_osi_change_answer_type_for_mc_question_option(self):
         create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog("choice")
         create_questionnaire_page.select_question_link(3)
         create_questionnaire_page.change_list_of_choice_answer_type("multiple_answers")
@@ -295,6 +298,7 @@ class TestEditQuestionnaire(BaseTest):
 
     def prerequisites_for_redistribute_questionnaire_dialog(self, question_type="word"):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        time.sleep(1)
         create_questionnaire_page, project_name = self.create_project_and_add_one_question(question_type)
         project_overview = create_questionnaire_page.save_and_create_project_successfully()
         self.assertEqual(project_overview.get_project_title(), project_name)
