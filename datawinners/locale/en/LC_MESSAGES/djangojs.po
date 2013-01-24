@@ -558,3 +558,6 @@ msgstr ""
 
 msgid "Your Submission(s) will be deleted"
 msgstr ""
+
+msgid "Enter local telephone number of 10 digits or less"
+msgstr ""

@@ -97,7 +97,7 @@ DW.additional_column.prototype={
                 }
             }
             return true;
-        }, gettext("Only 10 digit letters are valid"));
+        }, gettext("Enter local telephone number of 10 digits or less"));
 
     },
 
