@@ -14,6 +14,7 @@ from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from project.helper import is_project_exist
 from project.tests.submission_log_data import  SUBMISSIONS
+from datawinners.scheduler.smsclient import SMSClient
 
 
 class TestHelper(unittest.TestCase):
@@ -194,6 +195,17 @@ class TestHelper(unittest.TestCase):
         wrapped_func = is_project_exist(lambda: None.qid)
         with self.assertRaises(Http404):
             wrapped_func()
+
+    def test_should_add_country_code_when_broadcasting_sms_to_other_people(self):
+        message_tracker = Mock()
+        ONG_TEL_NUMBER = "12354"
+        sms_content = "test message"
+        with patch.object(SMSClient, "send_sms") as mock_send_sms:
+            helper.broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker, "261")
+            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "2613312345678", sms_content)
+            helper.broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker)
+            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "03312345678", sms_content)
+
 
 
 class TestPreviewCreator(unittest.TestCase):
