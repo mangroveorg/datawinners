@@ -26,3 +26,6 @@ ACTIVE_TAB_LOCATOR = by_css("ul.secondary_tab li.active")
 ACTION_SELECT_CSS_LOCATOR = by_css(".table_information .action")
 DELETE_BUTTON = by_css("#action_menu .delete")
 CHECKALL_CB_CSS_LOCATOR = by_id("master_checkbox")
+SHOWN_RECORDS_COUNT_CSS_LOCATOR = by_css(".dataTables_info span:first-child")
+XPATH_TO_CELL = "//div[@id='submission_logs']//../table/tbody/tr[%s]/td[%s]"
+HEADER_CELL_CSS_LOCATOR = "#submission_logs table>thead>tr>th:nth-child(%s)"

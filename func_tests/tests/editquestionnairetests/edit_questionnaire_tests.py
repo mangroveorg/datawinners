@@ -12,6 +12,7 @@ from tests.editquestionnairetests.edit_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from framework.utils.common_utils import  by_id
+from nose.plugins.skip import SkipTest
 import time
 
 @attr('suit_2')
@@ -20,6 +21,7 @@ class TestEditQuestionnaire(BaseTest):
         super(TestEditQuestionnaire, self).setUp()
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
+        time.sleep(1)
         self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
 
     def tearDown(self):
@@ -221,7 +223,7 @@ class TestEditQuestionnaire(BaseTest):
         create_questionnaire_page.delete_option_for_multiple_choice_question(2)
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
-
+    @SkipTest
     @attr('functional_test')
     def test_should_show_redistribute_questionnaire_message_when_osi_change_an_mc_question_option(self):
         create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog("choice")

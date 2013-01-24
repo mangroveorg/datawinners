@@ -121,25 +121,31 @@ $(document).ready(function () {
 
     function dataBinding(data, destroy, retrive, emptyTableText) {
         $dataTable.dataTable({
+            "aaSorting": [[2, "desc"]],
             "bDestroy":destroy,
             "bRetrieve":retrive,
             "sPaginationType":"full_numbers",
             "aaData":data,
-            "bSort":false,
+            "bSort":true,
             "aoColumnDefs":[
                 {
                     "fnRender":function (oObj) {
                         return '<input type="checkbox" value="' + oObj.aData[0] + '" class="selected_submissions"/>';
                     },
                     "aTargets":[0],
-                    'bVisible':tabOptions.show_deleting_check_box()
+                    'bVisible':tabOptions.show_deleting_check_box(),
+                    "bSortable":false
                 }, {
                     "bVisible":tabOptions.show_status(),
                     "aTargets":[3]
                 }, {
                     "bVisible":tabOptions.show_reply_sms(),
                     "aTargets":[4]
+                }, {
+                    "sType": "submission_date",
+                    "aTargets": [2]
                 }
+
             ],
             "fnHeaderCallback":function (nHead, aData, iStart, iEnd, aiDisplay) {
                 if (tabOptions.show_deleting_check_box()) {

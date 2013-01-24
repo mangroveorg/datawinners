@@ -7,6 +7,7 @@ from pages.expiredtrialpage.expired_trial_page import ExpiredTrialPage
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import *
+import time
 
 @attr('suit_2')
 class TestLoginPage(BaseTest):
@@ -80,6 +81,7 @@ class TestLoginPage(BaseTest):
         dbmanager = DatabaseManager()
         dbmanager.update_active_date_to_expired(EXPIRED_TRIAL_ACCOUNT[USERNAME], 31)
         login_page = LoginPage(self.driver)
+        time.sleep(2)
         login_page.login_with(EXPIRED_TRIAL_ACCOUNT)
         expired_trail_account_page = ExpiredTrialPage(self.driver)
         self.assertEqual(expired_trail_account_page.get_error_message(),

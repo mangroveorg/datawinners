@@ -4,6 +4,7 @@ from framework.utils.data_fetcher import *
 from pages.submissionlogpage.submission_log_locator import *
 from framework.utils.common_utils import *
 from tests.submissionlogtests.submission_log_data import UNIQUE_VALUE
+import re
 
 
 class SubmissionLogPage(Page):
@@ -38,3 +39,26 @@ class SubmissionLogPage(Page):
 
     def check_all_submissions(self):
         self.driver.find(CHECKALL_CB_CSS_LOCATOR).click()
+
+    def get_all_data_on_nth_column(self, column):
+        column_data = []
+        index = 1
+        while index <= self.get_shown_records_count():
+            column_data.append(self.get_cell_data(index, column))
+            index += 1
+        return column_data
+
+    def get_shown_records_count(self):
+        try:
+            datatable_info = self.driver.find(SHOWN_RECORDS_COUNT_CSS_LOCATOR).text
+            [begin, end] = re.findall('\d+', datatable_info)
+            return int(end) - int(begin) + 1
+        except Exception:
+            return 0
+
+    def get_cell_data(self, row, col):
+        locator = by_xpath(XPATH_TO_CELL % (str(row), str(col)))
+        return self.driver.find(locator).text
+
+    def click_on_nth_header(self, index):
+        self.driver.find(by_css(HEADER_CELL_CSS_LOCATOR % str(index))).click()

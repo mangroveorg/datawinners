@@ -51,3 +51,16 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page.choose_delete_on_the_action_dropdown()
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
+
+    @attr('functional_test')
+    def test_should_sort_data_by_submission_date_by_default(self):
+        submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
+        time.sleep(3)
+        self.assertEqual(submission_log_page.get_all_data_on_nth_column(6), EXPECTED_RP_LIST)
+
+    @attr('functional_test')
+    def test_should_sort_data_alphanumerically_for_other_column_than_submission_date(self):
+        submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
+        time.sleep(3)
+        submission_log_page.click_on_nth_header(8)
+        self.assertEqual(submission_log_page.get_all_data_on_nth_column(6), EXPECTED_RP_SORTED_BY_SUBJECT_LIST)
