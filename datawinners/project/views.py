@@ -302,11 +302,13 @@ def project_results(request, project_id=None, questionnaire_code=None):
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
     if request.method == 'GET':
+        analysis_result = get_analysis_response(request, project_id, questionnaire_code)
         data_sender_ever_submitted = DataSenderHelper(manager, form_model.form_code).get_all_data_senders_ever_submitted(request.user.get_profile().org_id)
         header = SubmissionsPageHeader(form_model)
         result_dict = {"header_list": header.header_list,
                        "header_name_list": repr(encode_json(header.header_list)),
-                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted)
+                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted),
+                       "subject_list": analysis_result['subject_list']
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
 

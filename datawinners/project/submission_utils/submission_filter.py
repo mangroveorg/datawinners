@@ -72,12 +72,12 @@ class SubmissionFilterTest(unittest.TestCase):
 
         self.transport_info = TransportInfo('web', 'source', 'destination')
         self.values = [
-            {'q1': 'q1', 'q2': '30.07.2012', 'entity_question_code': '001'},
-            {'q1': 'q1', 'q2': '30.08.2012', 'entity_question_code': '005'},
-            {'q1': 'q1', 'q2': '30.08.2012', 'entity_question_code': '002'},
+            {'q1': 'q1', 'q2': '30.07.2012', '123': '001'},
+            {'q1': 'q1', 'q2': '30.08.2012', '123': '005'},
+            {'q1': 'q1', 'q2': '30.08.2012', '123': '002'},
             ]
         self.submissions = [
-            Submission(self.dbm, self.transport_info, form_code='test', values=self.values[0]),
+            Submission(self.dbm, transport_info=self.transport_info, form_code='test', values=self.values[0]),
             Submission(self.dbm, transport_info=self.transport_info, form_code='test', values=self.values[1]),
             Submission(self.dbm, transport_info=self.transport_info, form_code='test', values=self.values[2])
         ]
@@ -88,8 +88,15 @@ class SubmissionFilterTest(unittest.TestCase):
         self.assertEqual(3, len(filtered_submissions))
 
     def test_should_return_submissions_that_filtered_by_filter_list(self):
-        params = {'submission_date_start': '01.08.2012', 'submission_date_end': '30.09.2012', 'subject_ids': '001,005'}
+        params = {'submission_date_start': '01.01.2013', 'submission_date_end': '30.01.2013', 'subject_ids': '005'}
         filtered_submissions = SubmissionFilter(params, self.mock_form_model).filter(submissions=self.submissions)
         self.assertEqual(1, len(filtered_submissions))
+
+#    def test_should_return_submissions_that_filtered_by_subject_ids(self):
+#            params = {'subject_ids': '006'}
+#            filtered_submissions = SubmissionFilter(params, self.mock_form_model).filter(submissions=self.submissions)
+#            self.assertEqual(1, len(filtered_submissions))
+
+
 
 
