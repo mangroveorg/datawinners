@@ -58,6 +58,11 @@ $(document).ready(function () {
 
     var tabOptions = new TabOptions();
     $("#tabs").tabs().find('>ul>li>a').click(function () {
+        if ($dataTable.parents('.dataTables_wrapper').length >= 1) {
+            DW.current_sort_order = $dataTable.dataTable().fnSettings().aaSorting;
+        } else {
+            DW.current_sort_order = [[2, "desc"]];
+        }
         var tab_index = $(this).parent().index();
 
         if (active_tab_index === tab_index) {
@@ -121,32 +126,13 @@ $(document).ready(function () {
 
     function dataBinding(data, destroy, retrive, emptyTableText) {
         $dataTable.dataTable({
-            "aaSorting": [[2, "desc"]],
+            "aaSorting": DW.current_sort_order,
             "bDestroy":destroy,
             "bRetrieve":retrive,
             "sPaginationType":"full_numbers",
             "aaData":data,
             "bSort":true,
-            "aoColumnDefs":[
-                {
-                    "fnRender":function (oObj) {
-                        return '<input type="checkbox" value="' + oObj.aData[0] + '" class="selected_submissions"/>';
-                    },
-                    "aTargets":[0],
-                    'bVisible':tabOptions.show_deleting_check_box(),
-                    "bSortable":false
-                }, {
-                    "bVisible":tabOptions.show_status(),
-                    "aTargets":[3]
-                }, {
-                    "bVisible":tabOptions.show_reply_sms(),
-                    "aTargets":[4]
-                }, {
-                    "sType": "submission_date",
-                    "aTargets": [2]
-                }
-
-            ],
+            "aoColumnDefs": getColumnDefinition(),
             "fnHeaderCallback":function (nHead, aData, iStart, iEnd, aiDisplay) {
                 if (tabOptions.show_deleting_check_box()) {
                     nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';
@@ -226,6 +212,38 @@ $(document).ready(function () {
         $.each(ids, function (index, value) {
             $dataTable.fnDeleteRow($(':checkbox[value=' + $.trim(value) + ']').parents('tr').get(0));
         });
+    }
+
+    function getColumnDefinition(){
+        var columns = [
+            {
+                "fnRender":function (oObj) {
+                    return '<input type="checkbox" value="' + oObj.aData[0] + '" class="selected_submissions"/>';
+                },
+                "aTargets":[0],
+                'bVisible':tabOptions.show_deleting_check_box(),
+                "bSortable":false
+            }, {
+            "bVisible":tabOptions.show_status(),
+                "aTargets":[3]
+            }, {
+                "bVisible":tabOptions.show_reply_sms(),
+                "aTargets":[4]
+            }, {
+                "sType": "submission_date",
+                "aTargets": [2]
+            }
+
+        ];
+
+        if (has_reporting_period) {
+            var reporting_period_column = {
+                "aTargets": [(entity_type == "Reporter") ? 5 : 6],
+                "sType": "reporting_period"
+            };
+            columns.push(reporting_period_column);
+        }
+        return columns;
     }
 
     var options = {container:"#delete_submission_warning_dialog",

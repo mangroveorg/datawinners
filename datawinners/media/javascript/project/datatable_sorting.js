@@ -108,6 +108,30 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
         a = jQuery.fn.dataTableExt.oSort["submission_date-pre"](a);
         b = jQuery.fn.dataTableExt.oSort["submission_date-pre"](b);
         return compareNumber(b, a);
+    },
+
+    "reporting_period-pre": function (a){
+        var ukDatea = a.split(".");
+
+        if (ukDatea.length == 2) {
+            ukDatea = get_month_last_day(ukDatea);
+        } else {
+            ukDatea = get_dd_mm_yyyy_values(ukDatea);
+        }
+
+        return jQuery.fn.dataTableExt.oSort["dd.mm.yyyy-pre"](ukDatea.join("."));
+    },
+
+    "reporting_period-asc": function (a, b){
+        a = jQuery.fn.dataTableExt.oSort["reporting_period-pre"](a);
+        b = jQuery.fn.dataTableExt.oSort["reporting_period-pre"](b);
+        return compareNumber(a, b);
+    },
+
+    "reporting_period-desc": function (a, b){
+        a = jQuery.fn.dataTableExt.oSort["reporting_period-pre"](a);
+        b = jQuery.fn.dataTableExt.oSort["reporting_period-pre"](b);
+        return compareNumber(b, a);
     }
 
 } );
@@ -115,3 +139,23 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 function compareNumber(a, b) {
     return ((a < b) ? -1 : ((a > b) ? 1 : 0));
 };
+
+function get_month_last_day(mm_yyyy) {
+    var d = new Date();
+    d.setFullYear(mm_yyyy[1], mm_yyyy[0], 0);
+    return [d.getDate(), mm_yyyy[0], mm_yyyy[1]];
+}
+
+function get_dd_mm_yyyy_values(datea) {
+    var date_format = window.date_format;
+
+    if (typeof(date_format) == 'undefined') {
+        var date_format = 'dd.mm.yyyy';
+    }
+
+    if ((datea[1] > 12) || ((datea[0] <= 12) && (date_format == 'mm.dd.yyyy'))){
+        return [datea[1], datea[0], datea[2]];
+    }
+
+    return datea;
+}
