@@ -3,9 +3,7 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mock import patch, Mock
 from datawinners.project.views import get_analysis_response
-from project.Header import Header
 from project.analysis_result import AnalysisResult
-from project.tests import form_model_generator
 
 class TestProjectData(TestCase):
 
@@ -23,22 +21,16 @@ class TestProjectData(TestCase):
                                 filters.return_value = Mock(spec=list)
 
                                 analysis_result = Mock(spec=AnalysisResult)
-                                analysis_result.analysis_result_dict = {"data_list" : []}
+                                analysis_result.analysis_result_dict = {"analysis_info" : []}
                                 analysis_result.field_values = []
                                 get_analysis_result.return_value = analysis_result
 
-                                project_info.return_value = {"date_format" : ''}
-                                header_info.return_value =  {"header_list" : []}
+                                project_info.return_value = {"project_info" : ''}
+                                header_info.return_value =  {"header_info" : []}
 
                                 response = get_analysis_response(request, None, None)
 
-        self.assertTrue({"data_list"}.issubset(response.keys()))
-        self.assertTrue({"date_format"}.issubset(response.keys()))
-        self.assertTrue({"header_list"}.issubset(response.keys()))
+        self.assertTrue({"analysis_info"}.issubset(response.keys()))
+        self.assertTrue({"project_info"}.issubset(response.keys()))
+        self.assertTrue({"header_info"}.issubset(response.keys()))
 
-    def test_get_analysis_response_is_called(self):
-        with patch("datawinners.project.views.get_analysis_response") as get_analysis_response:
-            with patch("datawinners.project.views.project_data") as project_data:
-                request = Mock()
-                project_data(request)
-                get_analysis_response.assert_called_with()
