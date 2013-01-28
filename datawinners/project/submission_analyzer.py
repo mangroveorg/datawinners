@@ -3,7 +3,6 @@ from collections import OrderedDict, defaultdict
 from django.utils.translation import ugettext
 from main.utils import timebox
 from mangrove.datastore.entity import get_by_short_code
-from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import SelectField
 from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import is_sequence
@@ -34,7 +33,6 @@ class SubmissionAnalyzer(object):
         self.leading_part_length = 0
         self.filtered_leading_part = []
         self._init_raw_values()
-
 
     def analyse(self):
         field_values = SubmissionFormatter().get_formatted_values_for_list(self.get_raw_values())

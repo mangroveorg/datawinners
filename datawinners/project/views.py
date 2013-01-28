@@ -24,7 +24,6 @@ from datawinners.entity.helper import process_create_data_sender_form, add_impor
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
-import helper
 from data_sender_helper import DataSenderHelper
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException, MangroveException
@@ -59,12 +58,15 @@ from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireF
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from activitylog.models import UserActivityLog
+import helper
+import submission_analyser_helper
+import header_helper
 from project.Header import SubmissionsPageHeader, Header
 from project.analysis_result import AnalysisResult
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
 from project.submission_analyzer import SubmissionAnalyzer
-from project.submission_router import SubmissionRouter, successful_submissions, all_submissions
+from project.submission_router import SubmissionRouter, successful_submissions
 from project.submission_utils.submission_filter import SubmissionFilter
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT, \
@@ -390,36 +392,28 @@ def _to_name_id_string(value, delimiter='</br>'):
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
 
+# TODO : Figure out how to mock mangrove methods
+def get_form_model_by_question_code(manager, questionnaire_code):
+    return get_form_model_by_code(manager, questionnaire_code)
 
-def composite_analysis_result(analysis_result):
-    analysis_result.analyze_meta_info()
-
-    return {"datasender_list": analysis_result.datasender_list,
-            "default_sort_order": repr(encode_json(analysis_result.default_sort_order)),
-            "header_list": analysis_result.header_list,
-            "header_name_list": repr(encode_json(analysis_result.header_list)),
-            "header_type_list": repr(encode_json(analysis_result.header_type_list)),
-            "subject_list": analysis_result.subject_list,
-            "data_list": repr(encode_json(analysis_result.field_values)),
-            "statistics_result": repr(encode_json(analysis_result.statistics_result))}
-
+def filter_submissions(form_model, manager, request):
+    return SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
 
 @timebox
 def get_analysis_response(request, project_id, questionnaire_code):
     manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-
-    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
-
-    analysis_result = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions, request.POST.get('keyword', '')).analyse()
+    form_model = get_form_model_by_question_code(manager, questionnaire_code)
+    filtered_submissions = filter_submissions(form_model, manager, request)
+    analysis_result = submission_analyser_helper.get_analysis_result(filtered_submissions, form_model, manager, request)
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-    header = Header(form_model)
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
+        header_info = header_helper.header_info(form_model)
+
         analysis_result_dict = analysis_result.analysis_result_dict
         analysis_result_dict.update(project_infos)
-        analysis_result_dict.update(header.info)
+        analysis_result_dict.update(header_info)
 
         return analysis_result_dict
 
@@ -713,7 +707,7 @@ def review_and_test(request, project_id=None):
     form_model = FormModel.get(manager, project.qid)
     if request.method == 'GET':
         number_of_registered_subjects = get_non_voided_entity_count_for_type(manager, project.entity_type)
-        number_of_registered_datasenders = len(project.data_senders)
+        number_of_registered_data_senders = len(project.data_senders)
         fields = form_model.fields
         if form_model.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(form_model.fields)
@@ -727,7 +721,7 @@ def review_and_test(request, project_id=None):
         return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': make_project_links(project,
                                                                        form_model.form_code),
-                                                                   'number_of_datasenders': number_of_registered_datasenders
+                                                                   'number_of_datasenders': number_of_registered_data_senders
             ,
                                                                    'number_of_subjects': number_of_registered_subjects,
                                                                    "is_reminder": is_reminder,
@@ -748,7 +742,7 @@ def _get_project_and_project_link(manager, project_id, reporter_id=None):
 def subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    fields, project_links_with_subject_questionare, questions, reg_form = _get_registration_form(manager, project,
+    fields, project_links_with_subject_questionnaire, questions, reg_form = _get_registration_form(manager, project,
         type_of_subject='subject')
     example_sms = get_example_sms_message(fields, reg_form)
     subject = get_entity_type_info(project.entity_type, manager=manager)
@@ -808,9 +802,9 @@ def registered_datasenders(request, project_id=None):
 
             sender["is_user"] = False
             if len(user_profile) > 0:
-                datasender_user_groups = list(user_profile[0].user.groups.values_list('name', flat=True))
-                if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups\
-                or "Read Only Users" in datasender_user_groups:
+                data_sender_user_groups = list(user_profile[0].user.groups.values_list('name', flat=True))
+                if "NGO Admins" in data_sender_user_groups or "Project Managers" in data_sender_user_groups\
+                or "Read Only Users" in data_sender_user_groups:
                     sender["is_user"] = True
                 sender['email'] = user_profile[0].user.email
                 sender['devices'] = "SMS,Web,Smartphone"

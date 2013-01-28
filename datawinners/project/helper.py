@@ -105,7 +105,6 @@ def generate_questionnaire_code(dbm):
 def get_org_id_by_user(user):
     return NGOUserProfile.objects.get(user=user).org_id
 
-
 def get_datasender_by_mobile(dbm, mobile):
     rows = dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
     return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
