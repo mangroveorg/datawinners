@@ -62,3 +62,6 @@ class SubmissionLogPage(Page):
 
     def click_on_nth_header(self, index):
         self.driver.find(by_css(HEADER_CELL_CSS_LOCATOR % str(index))).click()
+
+    def click_on_success_tab(self):
+        self.driver.find(SUCCESS_TAB_CSS_LOCATOR).click()

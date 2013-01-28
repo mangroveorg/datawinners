@@ -10,7 +10,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog_page import WarningDialog
-from nose.plugins.skip import SkipTest
+from datetime import datetime
 import time
 
 @attr('suit_3')
@@ -53,12 +53,20 @@ class TestSubmissionLog(unittest.TestCase):
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
 
-    @SkipTest
     @attr('functional_test')
     def test_should_sort_data_by_submission_date_by_default(self):
+        SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
         submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
         time.sleep(3)
-        self.assertEqual(submission_log_page.get_all_data_on_nth_column(8), EXPECTED_FA_LIST)
+        submission_dates = submission_log_page.get_all_data_on_nth_column(3)
+        self.assertTrue(len(submission_dates) >= 3)
+
+        for index, submission_date in enumerate(submission_dates[1:-1]):
+            before = datetime.strptime(submission_dates[index], SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
+            current = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
+            after = datetime.strptime(submission_dates[index +2], SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
+            self.assertTrue(before >= current >= after)
+
 
     @attr('functional_test')
     def test_should_sort_data_alphanumerically_for_other_column_than_submission_date(self):
@@ -66,3 +74,12 @@ class TestSubmissionLog(unittest.TestCase):
         time.sleep(3)
         submission_log_page.click_on_nth_header(8)
         self.assertEqual(submission_log_page.get_all_data_on_nth_column(8), EXPECTED_FA_SORTED)
+
+    @attr('functional_test')
+    def test_should_have_consistent_sorting_on_each_tabs_submission_log_page(self):
+        submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
+        time.sleep(3)
+        submission_log_page.click_on_nth_header(8)
+        submission_log_page.click_on_success_tab()
+        time.sleep(1)
+        self.assertEqual(submission_log_page.get_all_data_on_nth_column(7), EXPECTED_FA_SORTED)

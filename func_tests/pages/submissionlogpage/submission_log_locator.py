@@ -29,3 +29,4 @@ CHECKALL_CB_CSS_LOCATOR = by_id("master_checkbox")
 SHOWN_RECORDS_COUNT_CSS_LOCATOR = by_css(".dataTables_info span:first-child")
 XPATH_TO_CELL = "//div[@id='submission_logs']//../table/tbody/tr[%s]/td[%s]"
 HEADER_CELL_CSS_LOCATOR = "#submission_logs table>thead>tr>th:nth-child(%s)"
+SUCCESS_TAB_CSS_LOCATOR = by_css("#tabs ul li:nth-child(2) a:first-child")
