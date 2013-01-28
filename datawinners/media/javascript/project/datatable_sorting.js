@@ -90,11 +90,11 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
             gettext("Dec.")
         ];
         var month = $.inArray(gettext(ukDatea[0]), months) * 31 * 24 * 60;
-        var day = parseInt(ukDatea[1]) * 24 * 60;
-        var year = parseInt(ukDatea[2]) * 12 * 31 * 24 * 60;
+        var day = parseInt(ukDatea[1], 10) * 24 * 60;
+        var year = parseInt(ukDatea[2], 10) * 12 * 31 * 24 * 60;
         var hh_mm = ukDatea[3].split(":");
-        var hour = (parseInt(hh_mm[0]) + ((ukDatea[4] == "PM") ? 12 : 0)) * 60;
-        var minute = parseInt(hh_mm[1]);
+        var hour = ((parseInt(hh_mm[0], 10) + (( (ukDatea[4] == "PM") != (hh_mm[0] == "12")) ? 12 : 0)) % 24) * 60;
+        var minute = parseInt(hh_mm[1], 10);
         return month + day + year + hour + minute;
     },
 
