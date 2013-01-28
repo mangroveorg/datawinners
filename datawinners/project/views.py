@@ -286,47 +286,6 @@ def _get_submissions_by_type(request, manager, form_model):
     return submissions
 
 
-def _build_submission_analyzer(request, manager, form_model, is_for_submission_page):
-    submissions = _get_submissions_by_type(request, manager, form_model)
-    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
-    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions,
-        request.POST.get('keyword', ''), is_for_submission_page=is_for_submission_page)
-
-    return analyzer
-
-
-@login_required(login_url='/login')
-@session_not_expired
-@is_datasender
-@is_not_expired
-def project_results(request, project_id=None, questionnaire_code=None):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-    analyzer = _build_submission_analyzer(request, manager, form_model, True)
-
-    if request.method == 'GET':
-        data_sender_ever_submitted = DataSenderHelper(manager, form_model.form_code).get_all_data_senders_ever_submitted(request.user.get_profile().org_id)
-        header = SubmissionsPageHeader(form_model)
-        result_dict = {"header_list": header.header_list,
-                       "header_name_list": repr(encode_json(header.header_list)),
-                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted),
-                       "subject_list": analyzer.get_subjects()
-        }
-        result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
-
-        return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
-
-    if request.method == 'POST':
-        field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
-        analysis_result = AnalysisResult(field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
-        performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-
-        if "id_list" in request.POST:
-            project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-            return HttpResponse(_handle_delete_submissions(manager, request, project_infos.get("project").name))
-        return HttpResponse(encode_json({'data_list': analysis_result.field_values,
-                                         "statistics_result": analysis_result.statistics_result}))
-
 def _handle_delete_submissions(manager, request, project_name):
     submission_ids = json.loads(request.POST.get('id_list'))
     received_times = delete_submissions_by_ids(manager, request, submission_ids)
@@ -392,34 +351,6 @@ def _to_name_id_string(value, delimiter='</br>'):
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
 
-# TODO : Figure out how to mock mangrove methods
-def get_form_model_by_question_code(manager, questionnaire_code):
-    return get_form_model_by_code(manager, questionnaire_code)
-
-def filter_submissions(form_model, manager, request):
-    return SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
-
-@timebox
-def get_analysis_response(request, project_id, questionnaire_code):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_question_code(manager, questionnaire_code)
-    filtered_submissions = filter_submissions(form_model, manager, request)
-    analysis_result = submission_analyser_helper.get_analysis_result(filtered_submissions, form_model, manager, request)
-
-    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-    if request.method == 'GET':
-        project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-        header_info = header_helper.header_info(form_model)
-
-        analysis_result_dict = analysis_result.analysis_result_dict
-        analysis_result_dict.update(project_infos)
-        analysis_result_dict.update(header_info)
-
-        return analysis_result_dict
-
-    elif request.method == 'POST':
-        return encode_json({'data_list': analysis_result.field_values,"statistics_result": analysis_result.statistics_result})
-
 def project_info(request, manager, form_model, project_id, questionnaire_code):
     project = Project.load(manager.database, project_id)
     is_summary_report = form_model.entity_defaults_to_reporter()
@@ -452,6 +383,81 @@ def project_data(request, project_id=None, questionnaire_code=None):
     elif request.method == "POST":
         return HttpResponse(analysis_result)
 
+
+def _build_submission_analyzer(request, manager, form_model, is_for_submission_page):
+    submissions = _get_submissions_by_type(request, manager, form_model)
+    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
+    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions,
+        request.POST.get('keyword', ''), is_for_submission_page=is_for_submission_page)
+
+    return analyzer
+
+
+@login_required(login_url='/login')
+@session_not_expired
+@is_datasender
+@is_not_expired
+def project_results(request, project_id=None, questionnaire_code=None):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    analyzer = _build_submission_analyzer(request, manager, form_model, True)
+
+    if request.method == 'GET':
+        data_sender_ever_submitted = DataSenderHelper(manager,
+            form_model.form_code).get_all_data_senders_ever_submitted(request.user.get_profile().org_id)
+        header = SubmissionsPageHeader(form_model)
+        result_dict = {"header_list": header.header_list,
+                       "header_name_list": repr(encode_json(header.header_list)),
+                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted),
+                       "subject_list": analyzer.get_subjects()
+        }
+        result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
+
+        return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
+
+    if request.method == 'POST':
+        field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
+        analysis_result = AnalysisResult(field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(),
+            analyzer.get_subjects(), analyzer.get_default_sort_order())
+        performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
+
+        if "id_list" in request.POST:
+            project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
+            return HttpResponse(_handle_delete_submissions(manager, request, project_infos.get("project").name))
+        return HttpResponse(encode_json({'data_list': analysis_result.field_values,
+                                         "statistics_result": analysis_result.statistics_result}))
+
+
+# TODO : Figure out how to mock mangrove methods
+def get_form_model_by_question_code(manager, questionnaire_code):
+    return get_form_model_by_code(manager, questionnaire_code)
+
+
+def filter_submissions(form_model, manager, request):
+    return SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
+
+
+@timebox
+def get_analysis_response(request, project_id, questionnaire_code):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_question_code(manager, questionnaire_code)
+    filtered_submissions = filter_submissions(form_model, manager, request)
+    analysis_result = submission_analyser_helper.get_analysis_result(filtered_submissions, form_model, manager, request)
+
+    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
+    if request.method == 'GET':
+        project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
+        header_info = header_helper.header_info(form_model)
+
+        analysis_result_dict = analysis_result.analysis_result_dict
+        analysis_result_dict.update(project_infos)
+        analysis_result_dict.update(header_info)
+
+        return analysis_result_dict
+
+    elif request.method == 'POST':
+        return encode_json(
+            {'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result})
 
 def _get_exported_data(header, formatted_values, submission_log_type):
     data = [header] + formatted_values
