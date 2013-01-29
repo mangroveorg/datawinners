@@ -71,3 +71,4 @@ REMINDER_DATA_MONTHLY = {PROJECT_NAME: "clinic13 test project",
                          WHOM_TO_SEND: DEFAULTERS}
 
 
+MESSAGE_LONGER_THAN_160 = "2 day(s) are remainning to deadline. Please send your data for Clinic Test Project. 2 day(s) are remainning to deadline. Please send your data for Clinic Test Project."

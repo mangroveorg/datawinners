@@ -116,3 +116,51 @@ $(document).ready(function() {
         deadlineDetails.update_example();
     });
 });
+
+sms_text_counter = function(kwargs) {
+    var defaults = {
+        reminder_type: "on"
+    }
+    this.options = $.extend(true, defaults, kwargs);
+    this.sms_max_length = 160;
+    this._init();
+}
+
+sms_text_counter.prototype = {
+    _init: function() {
+        var opts = this.options;
+        this.reminder_type = opts.reminder_type;
+        this.sms_counter_container_id = "#counter_for_reminder_" + this.reminder_type + "_deadline";
+        this.sms_textarea_id = "#id_reminder_text_" + this.reminder_type + "_deadline";
+        this.bind_keyup_event = function(){
+            var cls = this;
+            $(this.sms_textarea_id).keyup(function(){
+                cls.update_counter_value();
+            })
+        };
+        this.update_counter_value = function() {
+            if (this.sms_max_length < this.get_sms_length()) {
+                $(this.sms_textarea_id).val(this.get_sms_text().substring(0, this.sms_max_length));
+            }
+
+            $(this.sms_counter_container_id).html($(this.sms_textarea_id).val().length);
+        };
+        this.get_sms_text = function () {
+            return $(this.sms_textarea_id).val();
+        }
+        this.get_sms_length = function () {
+            return this.get_sms_text().length;
+        }
+        this.init = function () {
+            this.bind_keyup_event();
+            this.update_counter_value();
+        }
+        this.init();
+    }
+}
+
+$(document).ready(function() {
+    new sms_text_counter({'reminder_type': 'before'});
+    new sms_text_counter({'reminder_type': 'on'});
+    new sms_text_counter({'reminder_type': 'after'});
+})

@@ -95,4 +95,43 @@ class TestReminderSend(BaseTest):
         reminders = reminder_settings.get_reminders_of_project(reminder_settings.get_project_id())
         self.assertEqual(fetch_(REMINDERS, from_(REMINDER_DATA_WEEKLY)), reminders[0])
 
+    @attr("functional_test")
+    def test_should_display_sms_length_for_before_deadline(self):
+        self.display_sms_length_for_a_reminder_type("before")
+
+    @attr("functional_test")
+    def test_should_display_sms_length_for_on_deadline(self):
+        self.display_sms_length_for_a_reminder_type("on")
+
+    @attr("functional_test")
+    def test_should_display_sms_length_for_after_deadline(self):
+        self.display_sms_length_for_a_reminder_type("after")
+
+    @attr('functional_test')
+    def test_should_limit_sms_length_for_before_reminder_deadline(self):
+        self.limit_sms_length_for_a_reminder_type("before")
+
+    @attr('functional_test')
+    def test_should_limit_sms_length_for_on_reminder_deadline(self):
+        self.limit_sms_length_for_a_reminder_type("on")
+
+    @attr('functional_test')
+    def test_should_limit_sms_length_for_after_reminder_deadline(self):
+        self.limit_sms_length_for_a_reminder_type("after")
+
+    def limit_sms_length_for_a_reminder_type(self, reminder_type):
+        all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
+        reminder_settings = all_reminder_pages.click_reminder_settings_tab()
+        getattr(reminder_settings, "enable_%s_deadline_reminder" % reminder_type)()
+        getattr(reminder_settings, "set_message_for_%s_deadline_reminder" % reminder_type)(MESSAGE_LONGER_THAN_160)
+        length = reminder_settings.get_sms_text_length_for_a_reminder_type(reminder_type)
+        self.assertEqual(length, 160)
+
+    def display_sms_length_for_a_reminder_type(self, reminder_type):
+        all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
+        reminder_settings = all_reminder_pages.click_reminder_settings_tab()
+        getattr(reminder_settings, "enable_%s_deadline_reminder" % reminder_type)()
+        getattr(reminder_settings, "set_message_for_%s_deadline_reminder" % reminder_type)("1234567890")
+        length = reminder_settings.get_sms_text_length_for_a_reminder_type(reminder_type)
+        self.assertEqual(length, 10)
 

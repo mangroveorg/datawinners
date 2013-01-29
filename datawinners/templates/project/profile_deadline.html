@@ -30,16 +30,20 @@
                     {{ form.number_of_days_before_deadline.errors }}
                 </li>
                 <li>
+                    <label>{{ form.reminder_text_before_deadline.label }}</label>
                     {{ form.reminder_text_before_deadline }}
                     {{ form.reminder_text_before_deadline.errors }}
+                    <span id="counter_for_reminder_before_deadline"></span> {% trans " of 160 characters used" %}
                 </li>
                  <li>
                      {{ form.should_send_reminders_on_deadline }}
                      {{ form.should_send_reminders_on_deadline.label }}
                  </li>
                  <li>
+                     <label>{{ form.reminder_text_on_deadline.label }}</label>
                      {{ form.reminder_text_on_deadline }}
                      {{ form.reminder_text_on_deadline.errors }}
+                     <span id="counter_for_reminder_on_deadline"></span> {% trans " of 160 characters used" %}
                  </li>
                  <li>
                      {{ form.should_send_reminders_after_deadline }}
@@ -49,8 +53,10 @@
                      {{ form.number_of_days_after_deadline.errors }}
                  </li>
                  <li>
+                     <label>{{ form.reminder_text_after_deadline.label }}</label>
                      {{ form.reminder_text_after_deadline }}
                      {{ form.reminder_text_after_deadline.errors }}
+                     <span id="counter_for_reminder_after_deadline"></span> {% trans " of 160 characters used" %}
                  </li>
                  <li>
                      {{ form.whom_to_send_message }}

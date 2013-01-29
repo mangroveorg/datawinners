@@ -51,8 +51,11 @@ fieldset {
 #reminders_section input[type="checkbox"] {
   margin-right: 10px; }
 
-#reminders_section textarea {
-  margin-left: 27px; }
+#reminders_section ul li label {
+  margin: auto 4px auto 28px;
+  width: 66px; }
+#reminders_section ul li span {
+  font-weight: bold; }
 
 #frequency_values ul li {
   display: inline; }

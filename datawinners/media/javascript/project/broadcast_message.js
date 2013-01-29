@@ -49,7 +49,7 @@ DW.broadcast_sms.prototype={
         return $(this.idToElement).val() == "Additional";
     },
     setMessageCount:function(){
-        $(this.messageCountElement).html(this.getSMSLength() + "/"+this.maxSMSChar);
+        $(this.messageCountElement).html("<b>"+ this.getSMSLength() + "</b> of "+this.maxSMSChar);
     },
     getSMSLength:function(){
         return $(this.smsContentElement).val().length;
