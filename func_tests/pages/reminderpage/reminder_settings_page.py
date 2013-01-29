@@ -103,10 +103,10 @@ class ReminderSettingsPage(Page):
         return self.driver.find_text_box(NUMBER_OF_DAYS_AFTER_DEADLINE_TB).text
 
     def set_message_for_on_deadline_reminder(self, message):
-        self.driver.find_text_box(AFTER_DEADLINE_REMINDER_TB).enter_text(message)
+        self.driver.find_text_box(ON_DEADLINE_REMINDER_TB).enter_text(message)
 
     def get_message_of_on_deadline_reminder(self, message):
-        return self.driver.find_text_box(AFTER_DEADLINE_REMINDER_TB).text
+        return self.driver.find_text_box(ON_DEADLINE_REMINDER_TB).text
 
     def save_reminders(self):
         self.driver.find(SAVE_BUTTON).click()
@@ -138,3 +138,6 @@ class ReminderSettingsPage(Page):
 
     def set_whom_to_send(self, whom_to_send):
         getattr(self, "send_reminder_to_%s" % whom_to_send)()
+
+    def get_sms_text_length_for_a_reminder_type(self, reminder_type):
+        return int(self.driver.find(by_id(SMS_TEXT_COUNTER % reminder_type)).text)
