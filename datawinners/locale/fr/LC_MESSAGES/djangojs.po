@@ -681,3 +681,9 @@ msgstr "Date de soumission"
 
 msgid "Your Submission(s) will be deleted"
 msgstr "Votre/vos Soumission(s) sera/seront supprimée(s)"
+
+msgid "Enter local telephone number of 10 digits or less"
+msgstr "Entrez un numéro de téléphone local de 10 chifres ou moins"
+
+msgid "Answer must be 20 characters maximum"
+msgstr "La réponse doit être de 20 caractères au maximum"

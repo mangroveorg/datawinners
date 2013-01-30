@@ -26,8 +26,8 @@ DW.instruction_template = {
     "gps":gettext("Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "),
     "dd.mm.yyyy":"25.12.2011",
     "mm.dd.yyyy":"12.25.2011",
-    "mm.yyyy":"12.2011"
-
+    "mm.yyyy":"12.2011",
+    "unique_id_question": gettext("Answer must be 20 characters maximum")
 };
 DW.date_template = {
     "dd.mm.yyyy":gettext("day.month.year"),
@@ -108,6 +108,10 @@ DW.question.prototype = {
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
         this.instruction = ko.dependentObservable({
             read:function () {
+                if (this.is_entity_question() && this.max_length() == 20) {
+                    return DW.instruction_template.unique_id_question;
+                }
+
                 if (this.type() == "text") {
                     if (this.max_length() != "" && this.max_length() > 0) {
                         return $.sprintf(DW.instruction_template.max_text, this.max_length());

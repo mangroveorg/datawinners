@@ -4060,3 +4060,6 @@ msgstr "Aucune soumission non réussie!"
 
 msgid "Error Messages"
 msgstr "Messages d’Erreur"
+
+msgid "Answer must be 20 characters maximum"
+msgstr "La réponse doit être de 20 caractères au maximum"
