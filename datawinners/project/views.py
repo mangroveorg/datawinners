@@ -285,7 +285,6 @@ def _get_submissions_by_type(request, manager, form_model):
         return filter(lambda x: not x.status, submissions)
     return submissions
 
-
 def _handle_delete_submissions(manager, request, project_name):
     submission_ids = json.loads(request.POST.get('id_list'))
     received_times = delete_submissions_by_ids(manager, request, submission_ids)
@@ -399,16 +398,17 @@ def _build_submission_analyzer(request, manager, form_model, is_for_submission_p
 @is_not_expired
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
+    form_model = get_form_model_by_question_code(manager, questionnaire_code)
     analyzer = _build_submission_analyzer(request, manager, form_model, True)
 
     if request.method == 'GET':
-        data_sender_ever_submitted = DataSenderHelper(manager,
-            form_model.form_code).get_all_data_senders_ever_submitted(request.user.get_profile().org_id)
+#        data_sender_ever_submitted = DataSenderHelper(manager,
+#            form_model.form_code).get_all_data_senders_ever_submitted(helper.get_org_id_by_user(request.user))
         header = SubmissionsPageHeader(form_model)
         result_dict = {"header_list": header.header_list,
                        "header_name_list": repr(encode_json(header.header_list)),
-                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted),
+#                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted),
+                       "datasender_list": analyzer.get_data_senders(),
                        "subject_list": analyzer.get_subjects()
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
@@ -427,7 +427,6 @@ def project_results(request, project_id=None, questionnaire_code=None):
         return HttpResponse(encode_json({'data_list': analysis_result.field_values,
                                          "statistics_result": analysis_result.statistics_result}))
 
-
 # TODO : Figure out how to mock mangrove methods
 def get_form_model_by_question_code(manager, questionnaire_code):
     return get_form_model_by_code(manager, questionnaire_code)
@@ -442,7 +441,7 @@ def get_analysis_response(request, project_id, questionnaire_code):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_question_code(manager, questionnaire_code)
     filtered_submissions = filter_submissions(form_model, manager, request)
-    analysis_result = submission_analyser_helper.get_analysis_result(filtered_submissions, form_model, manager, request)
+    analysis_result = submission_analyser_helper.get_analysis_result_for_analysis_page(filtered_submissions, form_model, manager, request)
 
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
     if request.method == 'GET':
