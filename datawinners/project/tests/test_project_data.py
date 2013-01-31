@@ -11,7 +11,7 @@ class TestProjectData(TestCase):
         with patch("datawinners.project.views.get_database_manager") as get_database_manager:
             with patch("datawinners.project.views.get_form_model_by_question_code") as get_form_model_by_code:
                 with patch("datawinners.project.views.filter_submissions") as filters:
-                    with patch("datawinners.project.submission_analyser_helper.get_analysis_result") as get_analysis_result:
+                    with patch("datawinners.project.submission_analyser_helper.get_analysis_result_for_analysis_page") as get_analysis_result:
                         with patch("datawinners.project.header_helper.header_info") as header_info:
                             with patch("datawinners.project.views.project_info") as project_info:
                                 request = Mock()

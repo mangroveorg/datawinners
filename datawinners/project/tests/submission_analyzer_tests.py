@@ -73,9 +73,12 @@ class SubmissionAnalyzerTest(MangroveTestCase):
         self.assertEqual(expected, raw_field_values)
 
     def test_should_get_leading_part_for_non_summary_project(self):
-        analyzer = self._prepare_analyzer_with_one_submission(self.form_model, {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
+        analyzer = self._prepare_analyzer_with_one_submission(self.form_model, {"eid": "cli14",
+                                                                                "RD": "01.01.2012",
+                                                                                "SY": "a2bc", "BG": "d"})
 
-        expected = [[self.submission_id, ('Clinic-One', 'cli14'), '01.01.2012', ('Tester Pune', 'admin', 'tester150411@gmail.com')]]
+        expected = [[self.submission_id, ('Clinic-One', 'cli14'), '01.01.2012',
+                     ('Tester Pune', 'admin', 'tester150411@gmail.com')]]
         result = analyzer._get_leading_part()
         submission_date = self.get_submission_date_in_old_format(result[0].pop(3))
         self.assertEqual(today, submission_date)
