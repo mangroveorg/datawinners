@@ -23,6 +23,9 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript">
+        DW.ong_country = "{{ ong_country }}";
+    </script>
     <script type="text/javascript" src="/media/javascript/project/broadcast_message.js"></script>
 {% endblock %}
 

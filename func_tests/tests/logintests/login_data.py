@@ -53,3 +53,7 @@ BLANK_CREDENTIALS = {USERNAME: "",
 EXPIRED_TRIAL_ACCOUNT = {USERNAME: "chinatwu@gmail.com",
                      PASSWORD: "chinatwu",
                      ERROR_MESSAGE: "Your 30 Day Test Drive is expired"}
+
+NIGERIA_ACCOUNT_CREDENTIAL = {USERNAME: "gerard@mailinator.com",
+                     PASSWORD: "gerard",
+                     WELCOME_MESSAGE: "Welcome Gerard!"}

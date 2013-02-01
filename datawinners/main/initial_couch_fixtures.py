@@ -1427,6 +1427,7 @@ def load_data():
     create_trial_test_organization('chinatwu2@gmail.com','COJ00001', True, [phone_number_type, first_name_type])
     create_trial_test_organization('chinatwu3@gmail.com','COJ00002', False)
     create_trial_test_organization('chinatwu4@gmail.com','COJ00003', False)
+    create_project_for_nigeria_test_orgnization()
 
 def create_trial_test_organization(email, org_id, register_a_data_sender, data_types_for_datasender=None):
     manager = get_database_manager(User.objects.get(username=email))
@@ -1448,7 +1449,7 @@ def create_trial_test_organization(email, org_id, register_a_data_sender, data_t
     return manager
 
 def load_test_managers():
-    test_emails = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com']
+    test_emails = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com' , 'gerard@mailinator.com']
     return [get_database_manager(User.objects.get(username=email)) for email in test_emails]
 
 def load_all_managers():
@@ -1458,3 +1459,19 @@ def load_all_managers():
         manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
         managers.append(manager)
     return managers
+
+def create_project_for_nigeria_test_orgnization():
+    manager = get_database_manager(User.objects.get(username="gerard@mailinator.com"))
+    initializer.run(manager)
+    CLINIC_ENTITY_TYPE = [u"clinic"]
+    create_entity_types(manager, [CLINIC_ENTITY_TYPE])
+    load_datadict_types(manager)
+    questions = create_questions(manager)
+    weekly_reminder_and_deadline = {
+        "deadline_week": "5",
+        "deadline_type": "Same",
+        "has_deadline": True,
+        "frequency_period": "week",
+        "should_send_reminder_to_all_ds": True
+    }
+    create_project1(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline)
