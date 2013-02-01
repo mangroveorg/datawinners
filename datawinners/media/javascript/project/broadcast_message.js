@@ -91,14 +91,13 @@ DW.additional_column.prototype={
             }
             var telephone_numbers = text.split(',');
             var each;
-            for (each in telephone_numbers){
-                if (telephone_numbers[each].length>10){
+            for (each in telephone_numbers) {
+                if (telephone_numbers[each].length > DW.digits_number_limit){
                     return false;
                 }
             }
             return true;
-        }, gettext("Only 10 digit letters are valid"));
-
+        }, interpolate(gettext("Enter local telephone number of %(limit)s digits or less"), {limit: DW.digits_number_limit}, true));
     },
 
     addRule:function(){
@@ -130,7 +129,16 @@ DW.additional_column.prototype={
     }
 };
 
+
+DW.getDigitsNumberLimit = function(){
+    if (DW.ong_country == "NG") {
+        return 11;
+    }
+    return 10;
+};
+
 $(document).ready(function() {
+    DW.digits_number_limit = DW.getDigitsNumberLimit();
     var broadcast_sms=new DW.broadcast_sms();
     broadcast_sms.init();
 

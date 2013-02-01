@@ -147,6 +147,25 @@
         }
     },
     {
+        "pk": "LSF553279",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "FoodSecurity",
+            "city": "Carpenter shop",
+            "name": "Nigeria ONG Test",
+            "active_date": "2013-02-01 05:28:05",
+            "is_deactivate_email_sent": false,
+            "country": "NG",
+            "zipcode": "12345",
+            "in_trial_mode": false,
+            "website": "",
+            "office_phone": "",
+            "state": "",
+            "addressline2": "",
+            "address": "Kafanchan"
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
@@ -250,6 +269,26 @@
         }
     },
     {
+        "pk": -10,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep2",
+            "mobile_phone": "2341234567890",
+            "org_id": "LSF553279",
+            "user": -10,
+            "title": "System administrator"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "accountmanagement.paymentdetails",
+        "fields": {
+            "organization": "LSF553279",
+            "preferred_payment": "",
+            "invoice_period": "half_yearly"
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.organizationsetting",
         "fields": {
@@ -299,6 +338,16 @@
             "organization": "COJ00003",
             "document_store": "hni_testorg_coj00003",
             "sms_tel_number": "987654324"
+        }
+    },
+    {
+        "pk": -7,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "LSF553279",
+            "outgoing_number": null,
+            "sms_tel_number": null,
+            "document_store": "hni_nigeria-ong-test_lsf553279"
         }
     },
     {
@@ -421,6 +470,26 @@
             "password": "sha1$9f237$4380fa83adb58f7d0b0b944cf1d5be80dea66aab",
             "email": "mamy@mailinator.com",
             "date_joined": "2012-11-08 17:00:48"
+        }
+    },
+    {
+        "pk": -10,
+        "model": "auth.user",
+        "fields": {
+            "username": "gerard@mailinator.com",
+            "first_name": "Richard",
+            "last_name": "Gerard",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-02-01 05:28:35",
+            "groups": [
+                1
+            ],
+            "user_permissions": [],
+            "password": "sha1$03816$e2428b89b7efc1b3a60bf42a45e293f9cfa383db",
+            "email": "gerard@mailinator.com",
+            "date_joined": "2013-02-01 05:25:32"
         }
     },
     {

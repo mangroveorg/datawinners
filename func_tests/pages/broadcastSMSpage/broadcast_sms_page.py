@@ -1,5 +1,5 @@
 from pages.broadcastSMSpage.broadcast_sms_locator import SMS_CONTENT_TB, SEND_BROADCAST_SMS_BTN, SEND_TO_SELECT, \
-    SEND_TO_TB, OTHER_PEOPLE_HELP_TEXT
+    SEND_TO_TB, OTHER_PEOPLE_HELP_TEXT, OTHER_PEOPLE_ERROR_TEXT_BY_CSS
 from pages.page import Page
 
 class BroadcastSmsPage(Page):
@@ -22,3 +22,6 @@ class BroadcastSmsPage(Page):
 
     def is_other_people_help_text_visible(self):
         return self.driver.find(OTHER_PEOPLE_HELP_TEXT).is_displayed()
+
+    def get_other_people_number_error(self):
+        return self.driver.find(OTHER_PEOPLE_ERROR_TEXT_BY_CSS).text
