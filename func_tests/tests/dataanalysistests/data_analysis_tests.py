@@ -262,14 +262,14 @@ class TestDataAnalysis(BaseTest):
 
     def sort_data_by_date_question(self, analysis_page):
         analysis_page.click_column_header_to_change_order(2)
-        expected_ordered = ["04.09.2010", "10.02.2012", "11.03.2010", "11.06.2012", "15.01.2011", "15.10.2011",
-                            "20.02.2011", "25.01.2011", "25.06.2011", "25.12.2010", "25.12.2012"]
+        expected_ordered = ["11.03.2010", "04.09.2010", "25.12.2010", "15.01.2011", "25.01.2011", "20.02.2011",
+                            "25.06.2011", "15.10.2011", "10.02.2012", "11.06.2012", "25.12.2012"]
         ordered = analysis_page.get_all_data_records_by_column(1)
         self.assertEqual(ordered, expected_ordered)
 
     def sort_data_by_submission_date(self, analysis_page):
         analysis_page.click_column_header_to_change_order(3)
-        expected_ordered = ["2011.12.12", "12.23.2011", "123", "456", "cat", "2012.01.14", "cat, dog", "20, 34",
-                            "12.2012", "12, 34", "-12, 34"]
+        expected_ordered = ["2011.12.12", "12.23.2011", "123", "456", "cat", "2012.01.14", "cat, dog", "-12, 34",
+                            "12.2012", "12, 34", "20, 34"]
         ordered = analysis_page.get_all_data_records_by_column(4)
-        self.assertEqual(ordered, expected_ordered)
+        self.assertEqual(', '.join(ordered), ', '.join(expected_ordered))
