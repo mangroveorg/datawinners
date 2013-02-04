@@ -19,6 +19,8 @@
     <link href="/media/css/scss/section_all_datasenders.css" rel="stylesheet"/>
     <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
+    <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -31,6 +33,7 @@
     <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
 
 {% endblock %}
 
@@ -78,6 +81,25 @@
         <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>
         <option value="delete">{% trans "Delete" %}</option>
     </select>
+
+    <div class="action_bar clear-both">
+        <div class="btn-group">
+            <button class="btn dropdown-toggle action" href="#" data-dropdown="#action_menu">{% trans "Actions" %}
+                <span class="caret"></span>
+            </button>
+        </div>
+    </div>
+
+    <div id="action_menu" class="dropdown-menu">
+        <ul>
+            {% if EDIT_DATA_SENDERS_ENABLED and not in_trial_mode %}
+                <li><a class="edit">{% trans "Edit" %}</a></li>
+            {% endif %}
+            <li><a class="disassociate">{% trans "Remove from project" %}</a></li>
+            <li><a class="makewebuser">{% trans "Give Web Submission Access" %}</a></li>
+            <li><a class="delete">{% trans "Delete" %}</a></li>
+        </ul>
+    </div>
 
     <div class="data-sender-table-wrapper">
         <table id='associated_data_senders' class="styled_table">
