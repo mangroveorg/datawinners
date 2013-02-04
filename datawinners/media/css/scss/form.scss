@@ -84,14 +84,14 @@ form{
             background:url(/media/images/arrow_error.png) no-repeat left 10px;
             margin-top:-3px;
             padding:3px 10px 3px 10px;
-            border:1px solid #00000;
+            border:1px solid #000000;
             -moz-border-radius:5px;
             -webkit-moz-border-radius:5px;
             -webkit-border-radius:5px;
             li{
                 background:#c20303;
                 padding:3px 10px 3px 10px;
-                border:1px solid #00000;
+                border:1px solid #000000;
                 -moz-border-radius:5px;
                 -webkit-moz-border-radius:5px;
                 -webkit-border-radius:5px;
@@ -116,7 +116,7 @@ span .error_arrow,div.error_arrow,#questionnaire-code-error, label.error_arrow{
                 display:inline !important;
                 background: #c20303;
                 padding:5px 10px;
-                border:1px solid #00000;
+                border:1px solid #000000;
                 -moz-border-radius:5px;
                 -webkit-border-radius:5px;
                 border-radius:5px;
@@ -255,6 +255,7 @@ select{
 .multiple_select{
     height: auto;
 }
+
 .button{
     border: 1px solid #D4972D !important;
     -moz-border-radius:3px;
@@ -268,6 +269,18 @@ select{
     padding: 6px 23px 5px 22px;
     cursor:pointer;
     cursor:hand;
+    opacity: 0.9;
+    &:hover {
+      -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+      box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+      opacity: 1;
+    }
+
+    &:active {
+      -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+      box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+      opacity: 0.9;
+    }
 }
 
 .button_wizard_blue{
@@ -511,14 +524,14 @@ ol {
                     background:url(/media/images/arrow_error.png) no-repeat left 10px;
                     margin-top: 0;
                     padding:3px 10px 3px 10px;
-                    border:1px solid #00000;
+                    border:1px solid #000000;
                     -moz-border-radius:5px;
                     -webkit-moz-border-radius:5px;
                     -webkit-border-radius:5px;
                     li {
                         background:#c20303;
                         padding:3px 10px 3px 10px;
-                        border:1px solid #00000;
+                        border:1px solid #000000;
                         -moz-border-radius:5px;
                         -webkit-moz-border-radius:5px;
                         -webkit-border-radius:5px;

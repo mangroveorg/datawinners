@@ -56,6 +56,17 @@ body{
                 background:url('/media/images/dw_home_button1.png') no-repeat left top;
                 float:left;
                 margin-right:15px;
+                text-decoration: none;
+                &:hover {
+                  -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+                  box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+                  opacity: 1;
+                }
+                &:active {
+                  -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+                  box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+                  opacity: 0.9;
+                }
             }
             .intro_learn_button{
                 display:block;
@@ -70,6 +81,17 @@ body{
                 text-shadow:#E1F7CA 0 1px 1px;
                 background:url('/media/images/dw_home_button2.png') no-repeat left top;
                 float:left;
+                text-decoration: none;
+                &:hover {
+                  -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+                  box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+                  opacity: 1;
+                }
+                &:active {
+                  -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+                  box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+                  opacity: 0.9;
+                }
             }
         }
         #home_intro {
