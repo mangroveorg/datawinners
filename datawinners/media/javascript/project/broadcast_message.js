@@ -85,17 +85,13 @@ DW.additional_column.prototype={
         $.validator.addMethod(this.telephone_number_rule, function(value, element) {
             var text = $('#' + element.id).val();
             var re = new RegExp('^[0-9 ,]+$');
-            var string_has_non_numeric_char = re.test(text);
-            if (!string_has_non_numeric_char){
-                return false;
-            }
             var telephone_numbers = text.split(',');
             var each;
             var invalid = [];
             var telephone_number = "";
             for (each in telephone_numbers) {
-                telephone_number = telephone_numbers[each].trim();
-                if (telephone_number.length > DW.digits_number_limit){
+                telephone_number = $.trim(telephone_numbers[each]);
+                if (telephone_number.length > DW.digits_number_limit || !re.test(telephone_number)){
                     invalid.push(telephone_number);
                 }
             }
