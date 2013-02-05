@@ -19,11 +19,19 @@
     <link href="/media/css/scss/section_project_overview.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_broadcast_sms.css" rel="stylesheet"/>
+    <link href="/media/css/scss/jquery.highlighttextarea.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/jquery.highlighttextarea.js"></script>
     <script type="text/javascript">
+        $(document).ready(function() {
+            $("#id_others").highlightTextarea({
+                color: "#FCA0A0",
+                caseSensitive: false
+            });
+        });
         DW.ong_country = "{{ ong_country }}";
     </script>
     <script type="text/javascript" src="/media/javascript/project/broadcast_message.js"></script>

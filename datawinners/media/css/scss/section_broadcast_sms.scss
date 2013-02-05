@@ -16,9 +16,19 @@
     width: 250px;
 }
 
-#additional_people_column .black_italic{
+#additional_people_column{
+  .highlightTextarea{
+    width: 654px !important;
+    div.error_arrow {
+      left: 352px;
+      top: 4px;
+      position: absolute;
+    }
+  }
+  .black_italic{
     font-style: italic;
     margin-left: 170px;
     width: 350px;
     color: #8A8A8A;
+  }
 }

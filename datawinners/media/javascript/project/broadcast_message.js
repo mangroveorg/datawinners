@@ -91,10 +91,17 @@ DW.additional_column.prototype={
             }
             var telephone_numbers = text.split(',');
             var each;
+            var invalid = [];
+            var telephone_number = "";
             for (each in telephone_numbers) {
-                if (telephone_numbers[each].length > DW.digits_number_limit){
-                    return false;
+                telephone_number = telephone_numbers[each].trim();
+                if (telephone_number.length > DW.digits_number_limit){
+                    invalid.push(telephone_number);
                 }
+            }
+            if (invalid.length) {
+                $("#id_others").highlightTextarea('setWords', invalid);
+                return false;
             }
             return true;
         }, interpolate(gettext("Enter local telephone number of %(limit)s digits or less"), {limit: DW.digits_number_limit}, true));
