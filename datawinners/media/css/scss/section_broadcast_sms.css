@@ -12,6 +12,12 @@
 #message-submit {
   width: 250px; }
 
+#additional_people_column .highlightTextarea {
+  width: 654px !important; }
+  #additional_people_column .highlightTextarea div.error_arrow {
+    left: 352px;
+    top: 4px;
+    position: absolute; }
 #additional_people_column .black_italic {
   font-style: italic;
   margin-left: 170px;
