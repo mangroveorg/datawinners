@@ -74,6 +74,12 @@ class AllDataSendersPage(Page):
         Function to associate data sender with project
          """
         self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(ASSOCIATE)
+
+    def associate_data_sender_action(self):
+            """
+            Function to associate data sender with project
+             """
+            self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected_for_action(ASSOCIATE)
     def select_edit_action(self):
             """
             Function to associate data sender with project
