@@ -24,6 +24,12 @@
       top: 4px;
       position: absolute;
     }
+    .highlighterContainer .highlighter{
+      color: #FFFFFF;
+      .highlight{
+          color: #FCA0A0 !important;
+      }
+    }
   }
   .black_italic{
     font-style: italic;
