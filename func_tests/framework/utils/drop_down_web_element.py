@@ -1,4 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from selenium.webdriver.firefox import webdriver
+from selenium.webdriver.firefox.webdriver import WebDriver
 
 from selenium.webdriver.remote.webelement import WebElement
 
@@ -38,6 +40,16 @@ class DropDown(WebElement):
             if value == itemText:
                 option.click()
                 break
+    def set_selected_for_action(self, itemText):
+            """ Selects the provided itemText in the drop down
+            """
+            actions = WebDriver.find_elements_by_xpath(".//*[@id='action']/ul/li/a")
+
+            for action in actions:
+                value = action.get_attribute("class")
+                if value == itemText:
+                    action.click()
+                    break
 
     def set_selected_by_text(self, itemText):
         """ Selects the provided itemText in the drop down

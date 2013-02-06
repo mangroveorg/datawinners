@@ -39,7 +39,7 @@ class TestAllDataSender(unittest.TestCase):
 
     def associate(self, all_data_sender_page):
         all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(ASSOCIATE_DATA_SENDER)))
-        all_data_sender_page.associate_data_sender()
+        all_data_sender_page.associate_data_sender_action()
         all_data_sender_page.select_project(fetch_(PROJECT_NAME, from_(ASSOCIATE_DATA_SENDER)))
         all_data_sender_page.click_confirm(wait=True)
 
