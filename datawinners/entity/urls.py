@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.conf.urls.defaults import patterns
+from django.conf.urls.defaults import patterns, url
 from datawinners.entity.views import create_data_sender, disassociate_datasenders, associate_datasenders, create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_data_sender, edit_subject
 from datawinners.entity.views import create_subject
 from datawinners.entity.views import create_type
@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     (r'^entity/subjects/$', all_subjects),
     (r'^entity/subjects/(?P<form_code>.+?)/$', all_subjects),
     (r'^entity/delete/$', delete_entity),
-    (r'^entity/datasenders/$', all_datasenders),
+    url(r'^entity/datasenders/$', all_datasenders,name='all_datasenders'),
     (r'^entity/disassociate/$', disassociate_datasenders),
     (r'^entity/associate/$', associate_datasenders),
     (r'^entity/subject/import/$', import_subjects_from_project_wizard),
