@@ -131,12 +131,12 @@ def check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, vi
         activate_and_run(virtual_env, "pip install -r requirements.pip")
         activate_and_run(virtual_env, "python setup.py develop")
 
-def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, virtual_env):
+def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, branch, virtual_env):
     git_clone_datawinners_if_not_present(datawinners_code_dir)
     with cd(datawinners_code_dir):
         run("cd %s" % datawinners_code_dir)
         run("git reset --hard HEAD")
-        sync_branch("develop")
+        sync_branch(branch)
         delete_if_branch_exists(datawinner_build_number)
         run("git checkout -b %s $DATAWINNER_COMMIT_SHA" % (datawinner_build_number, ))
         run("git checkout .")
@@ -155,7 +155,7 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
     datawinners_code_dir = home_dir + '/datawinners'
     with settings(warn_only=True):
         check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env)
-        check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, virtual_env)
+        check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, branch, virtual_env)
         with cd(datawinners_code_dir + '/datawinners'):
             run("cd %s/datawinners" % datawinners_code_dir)
             run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS[environment],))
