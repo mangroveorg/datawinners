@@ -1,12 +1,33 @@
 {% load i18n %}
-<label class="inline margin_left_20">{% trans "Actions:" %} </label>
-<select id='action'>
-    <option value="">--</option>
-    <option value="associate">{% trans "Add to project" %}</option>
-    <option value="disassociate">{% trans "Remove from project" %}</option>
-    <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>
-{% if EDIT_SUBJECT_ENABLED and not in_trial_mode %}
-    <option value="edit">{% trans "Edit" %}</option>
-{% endif %}
-    <option value="delete">{% trans "Delete" %}</option>
-</select>
+{#<label class="inline margin_left_20">{% trans "Actions:" %} </label>#}
+{#<select id='action'>#}
+{#    <option value="">--</option>#}
+{#    <option value="associate">{% trans "Add to project" %}</option>#}
+{#    <option value="disassociate">{% trans "Remove from project" %}</option>#}
+{#    <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>#}
+{#{% if EDIT_SUBJECT_ENABLED and not in_trial_mode %}#}
+{#    <option value="edit">{% trans "Edit" %}</option>#}
+{#{% endif %}#}
+{#    <option value="delete">{% trans "Delete" %}</option>#}
+{#</select>#}
+
+
+<div id="action_button"  class="action_bar clear-both" style="margin-bottom: 20px">
+    <div class="btn-group">
+        <button class="btn dropdown-toggle action" href="#" data-dropdown="#action">{% trans "Actions" %}
+            <span class="caret"></span>
+        </button>
+    </div>
+</div>
+
+<div id="action" class="dropdown-menu" >
+    <ul>
+        <li><a class="associate">{% trans "Add to project" %}</a></li>
+        <li><a class="disassociate">{% trans "Remove from project" %}</a></li>
+        <li><a class="makewebuser">{% trans "Give Web Submission Access" %}</a></li>
+    {% if EDIT_SUBJECT_ENABLED and not in_trial_mode %}
+        <li><a class="edit">{% trans "Edit" %}</a></li>
+    {% endif %}
+        <li><a class="delete">{% trans "Delete" %}</a></li>
+    </ul>
+</div>

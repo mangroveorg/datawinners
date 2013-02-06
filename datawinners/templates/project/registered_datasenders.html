@@ -21,6 +21,7 @@
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
@@ -71,26 +72,26 @@
 
     {% include 'entity/all_data_senders/web_submission_access_block.html' %}
 
-    <label class="float_left">{% trans "Actions:" %} </label>
-    <select id='action' class="margin_bottom_20">
-        <option value="">--</option>
-        {% if EDIT_DATA_SENDERS_ENABLED and not in_trial_mode %}
-        <option value="edit">{% trans "Edit" %}</option>
-        {% endif %}
-        <option value="disassociate">{% trans "Remove from project" %}</option>
-        <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>
-        <option value="delete">{% trans "Delete" %}</option>
-    </select>
+{#    <label class="float_left">{% trans "Actions:" %} </label>#}
+{#    <select id='action' class="margin_bottom_20">#}
+{#        <option value="">--</option>#}
+{#        {% if EDIT_DATA_SENDERS_ENABLED and not in_trial_mode %}#}
+{#        <option value="edit">{% trans "Edit" %}</option>#}
+{#        {% endif %}#}
+{#        <option value="disassociate">{% trans "Remove from project" %}</option>#}
+{#        <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>#}
+{#        <option value="delete">{% trans "Delete" %}</option>#}
+{#    </select>#}
 
-    <div class="action_bar clear-both">
+    <div id="action_button"  class="action_bar clear-both" style="margin-bottom: 20px">
         <div class="btn-group">
-            <button class="btn dropdown-toggle action" href="#" data-dropdown="#action_menu">{% trans "Actions" %}
+            <button class="btn dropdown-toggle action" href="#" data-dropdown="#action">{% trans "Actions" %}
                 <span class="caret"></span>
             </button>
         </div>
     </div>
 
-    <div id="action_menu" class="dropdown-menu">
+    <div id="action" class="dropdown-menu" >
         <ul>
             {% if EDIT_DATA_SENDERS_ENABLED and not in_trial_mode %}
                 <li><a class="edit">{% trans "Edit" %}</a></li>
