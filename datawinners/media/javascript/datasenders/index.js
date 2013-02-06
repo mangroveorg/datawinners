@@ -17,7 +17,8 @@ DW.uncheck_all_users = function () {
 $(document).ready(function () {
     var kwargs = {container:"#delete_all_ds_are_users_warning_dialog",
         cancel_handler:function () {
-            $("#action").val("");
+//            $("#action").val("");
+            $('#action').removeAttr("clicked");
             $("input.is_user").attr("checked", false);
         },
         height:150,
@@ -45,7 +46,7 @@ $(document).ready(function () {
         title:gettext('Select Projects'),
         zIndex:1100,
         beforeClose:function () {
-            $('#action').val('');
+            $('#action').at;
         }
     });
     $("#web_user_block").dialog({
@@ -55,7 +56,8 @@ $(document).ready(function () {
         zIndex:1100,
         width:900,
         beforeClose:function () {
-            $('#action').val('');
+//            $('#action').val('');
+            $('#action').removeAttr("clicked");
             $('#web_user_error').hide();
         }
     });
@@ -78,7 +80,7 @@ $(document).ready(function () {
         if (projects.length == 0) {
             $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project") + '</div>').insertBefore($("#all_projects"));
         } else {
-            var url = '/entity/' + $('#action').val() + '/';
+            var url = '/entity/' + $('#action').attr("clicked") + '/';
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px', zIndex:1000000}});
             $.post(url,
                 {'ids':allIds.join(';'), 'project_id':projects.join(';')}
@@ -109,7 +111,7 @@ $(document).ready(function () {
         $("#web_user_block").dialog("open");
     }
 
-    $('#action').change(function () {
+    $('#action li a').click(function () {
         var allIds = updateIds();
         $('#error').remove();
         if (allIds.length == 0) {
@@ -119,7 +121,9 @@ $(document).ready(function () {
             $(this).val("");
             return;
         }
-        var action = $(this).val();
+        var action = this.className;
+        $("#action").attr("clicked", action);
+
         if (action == 'makewebuser') {
             populate_dialog_box_for_web_users();
             return false;
@@ -152,6 +156,8 @@ $(document).ready(function () {
             $("#all_project_block").dialog("open");
         }
     });
+
+
 
     $('#web_user_button').click(function () {
         $('#web_user_error').hide();

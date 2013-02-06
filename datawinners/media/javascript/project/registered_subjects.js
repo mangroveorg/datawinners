@@ -1,4 +1,5 @@
 
+// Can remove action_element
 function getEntityIdsToBeDeleted(action_element) {
     var allIds = [];
     $('input:checked').each(function () {
@@ -7,13 +8,11 @@ function getEntityIdsToBeDeleted(action_element) {
     return allIds;
 }
 
+// Can remove action_element
 function getEntityType(action_element){
     return $('#entity_type').val();
 }
 
-function getActionValue(action_element){
-    return $(action_element).val();
-}
 function getEditURL(){
     return edit_url;
 }

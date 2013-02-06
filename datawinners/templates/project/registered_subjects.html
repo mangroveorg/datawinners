@@ -18,17 +18,21 @@
     <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
     <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">var edit_url = "{{ edit_url }}"</script>
+    <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/project/registered_subjects.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript">
         var upload_url = "{% url datawinners.entity.views.all_subjects %}";
     </script>
@@ -68,13 +72,24 @@
 
     <input type='hidden' id='entity_type' value="{{ project.entity_type }}" />
 
-    <select class="margin_bottom_10 action">
-        <option value="" selected="selected">--</option>
-        <option value="delete">{% trans "Delete" %}</option>
+    <div id="action_button"  class="action_bar clear-both" style="margin-bottom: 20px">
+        <div class="btn-group">
+            <button class="btn dropdown-toggle action" href="#" data-dropdown="#action">{% trans "Actions" %}
+                <span class="caret"></span>
+            </button>
+        </div>
+    </div>
+
+    <div id="action" class="dropdown-menu" >
+        <ul>
+            <li><a class="delete">{% trans "Delete" %}</a></li>
         {% if EDIT_SUBJECT_ENABLED %}
-        <option value="edit">{% trans "Edit" %}</option>
+            <li><a class="edit">{% trans "Edit" %}</a></li>
         {% endif %}
-    </select>
+        </ul>
+    </div>
+
+
     <table class="styled_table">
         <thead>
             <tr>

@@ -34,11 +34,11 @@ $(document).ready(function () {
         return false;
     });
 
-    $('#action li a').click(function () {
+    $('.action').change(function () {
         $('#error').hide();
-        var allIds = getEntityIdsToBeDeleted(this.className);
-        var entity_type = getEntityType(this.className);
-        var action = getActionValue(this.className);
+        var allIds = getEntityIdsToBeDeleted(this);
+        var entity_type = getEntityType(this);
+        var action = getActionValue(this);
         if (allIds.length == 0) {
             $('<div class="message-box" id="error">' + gettext('Please select atleast 1 subject') + '</div>').insertAfter($(this));
             $(this).val("--");
@@ -62,12 +62,9 @@ $(document).ready(function () {
             warnThenDeleteDialogBox(allIds, entity_type, this);
         }
     });
-});
 
-function getActionValue(action_class){
-    var separated_values = action_class.split('-');
-    return separated_values[separated_values.length-1];
-}
+
+});
 
 function warnThenDeleteDialogBox(allIds, entity_type, action_element) {
     $("#delete_entity_block").data("allIds", allIds);

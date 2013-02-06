@@ -15,7 +15,8 @@
     </div>
     <div class="subject-container">
         <div class="subjects_links">
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" class="edit-form-link margin_right_20" id="link-to-edit-form-{{ subject.entity }}">{% trans "Edit Registration Form" %}</a>
+            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
+               class="edit-form-link margin_right_20" id="link-to-edit-form-{{ subject.entity }}">{% trans "Edit Registration Form" %}</a>
             <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Register a" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
             <a class="import-subject" id="import-{{ subject.entity }}">{% trans "Import a list" %}</a>&nbsp;|&nbsp;
             <a href="javascript:void(0);" class="export-entity-link"  id="export-{{ subject.entity }}">Export</a>
@@ -30,6 +31,24 @@
             <option value="{{ subject.entity }}-{{ subject.code }}-edit">{% trans "Edit"%}</option>
             {% endif %}
         </select>
+
+{#        <div class="action_button action_bar clear-both" style="margin-bottom: 20px">#}
+{#            <div class="btn-group">#}
+{#                <button class="btn dropdown-toggle action" href="#" data-dropdown="#action{{forloop.counter}}">{% trans "Actions" %}#}
+{#                    <span class="caret"></span>#}
+{#                </button>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div id="action{{forloop.counter}}" class="dropdown-menu" >#}
+{#            <ul>#}
+{#                <li><a class="{{ subject.entity }}-{{ subject.code }}-delete">{% trans "Delete" %}</a></li>#}
+{#                {% if EDIT_SUBJECT_ENABLED %}#}
+{#                <li><a class="{{ subject.entity }}-{{ subject.code }}-edit">{% trans "Edit" %}</a></li>#}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </div>#}
+{##}
         {% if subject.data|length > 0 %}
             <table class="styled_table" id="{{ subject.entity }}-table">
                 <thead>

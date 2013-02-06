@@ -19,10 +19,10 @@ $(document).ready(function () {
         })
     });
 
-    $('#action').change(function () {
+    $('#action li a').click(function () {
         updateIds();
         $('#error').remove();
-        var action = $(this).val();
+        var action = this.className;
         if (allIds.length == 0) {
             $('<div class="message-box" id="error">' + gettext("Please select atleast 1 data sender") + '</div>').insertAfter($(this));
             $('#project').val('');
@@ -31,7 +31,7 @@ $(document).ready(function () {
             $.post('/project/disassociate/',
                 {'ids':allIds.join(';'), 'project_id':$("#project_id").val()}
             ).success(function (data) {
-                    $('<div class="success-message-box" id="success_message">' + gettext("Data Senders dissociated Successfully") + '. ' + gettext("Please Wait") + '....</div>').insertAfter($('#action'));
+                    $('<div class="success-message-box" id="success_message">' + gettext("Data Senders dissociated Successfully") + '. ' + gettext("Please Wait") + '....</div>').insertAfter($('#action_menu'));
                     $('#success_message').delay(4000).fadeOut(1000, function () {
                         $('#success_message').remove();
                     });

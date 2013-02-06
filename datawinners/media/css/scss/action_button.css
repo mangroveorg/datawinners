@@ -1,0 +1,29 @@
+#action_button .btn {
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
+  background: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+  display: inline-block;
+  /* IE is so silly */ }
+#action_button .btn:hover {
+  background: #DBE6F1; }
+#action_button .btn-group.open .btn.dropdown-toggle {
+  background: #DBE6F1; }
+#action_button .btn-group .btn.dropdown-toggle {
+  margin-right: 20px; }
+#action_button .ui-state-default {
+  font-weight: normal; }
+
+#action_menu {
+  width: 100px; }
+
+#action_menu ul {
+  min-width: 300px;
+  border-radius: 0px; }
+
+#action_menu LI > A:hover,
+#action_menu LABEL:hover {
+  background-color: #94D1FF;
+  color: #000;
+  font-weight: normal;
+  cursor: pointer; }
