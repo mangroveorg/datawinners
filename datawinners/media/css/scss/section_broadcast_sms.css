@@ -18,6 +18,10 @@
     left: 352px;
     top: 4px;
     position: absolute; }
+  #additional_people_column .highlightTextarea .highlighterContainer .highlighter {
+    color: #FFFFFF; }
+    #additional_people_column .highlightTextarea .highlighterContainer .highlighter .highlight {
+      color: #FCA0A0 !important; }
 #additional_people_column .black_italic {
   font-style: italic;
   margin-left: 170px;
