@@ -37,7 +37,7 @@ $(document).ready(function() {
                         $("#subjects_create_type").dialog("close");
                         window.location.replace("/entity/subjects/");
                     } else {
-                        var options = $("#id_entity_type").attr('options');
+                        var options = $("#id_entity_type>option").map(function() { return $(this).val(); });
                         if (should_append(options, new_type)) {
                             $("#id_entity_type").prepend($('<option></option>').val(new_type).html(new_type));
                         }
