@@ -3,40 +3,146 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "datawinners" %}
-{{ block.super }}
+    {% activetab "main_nav" "datawinners" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/en/home/">Home</a> &gt; What is DataWinners
+    <a href="/en/home/">Home</a> &gt; What is DataWinners
 {% endblock %}
 
 {% block main_content %}
-<div id="nav_content">
-    <h1><a href="/en/what-is-datawinners/">WHAT IS DATAWINNERS</a></h1>
-    <ul>
-        <li><a href="/en/what-is-datawinners/how-it-works">How it Works</a></li>
-        <li><a href="/en/what-is-datawinners/benefits">Benefits</a></li>
-        <li><a href="/en/what-is-datawinners/features">Features</a></li>
-    </ul>
-</div>
-<div id="main_content">
-    <div class="margin_left_20">
-        <p>DataWinners is an online mobile data collection service designed and built for development professionals. With DataWinners, you collect and analyze the data you need using the equipment you already have – a computer, the Internet and basic mobile phones.</p>
-        <h2>DataWinners’ goal is to help you</h2>
-        <div id="use_dw">
-            <div>
-                <img src="/media/images/dw_goals_en.png"/><br/>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <h2>Learn more</h2>
-        <p>
-            <a href="/en/what-is-datawinners/how-it-works">How it Works</a><br/>
-            <a href="/en/what-is-datawinners/benefits">Benefits</a><br/>
-            <a href="/en/what-is-datawinners/features">Features</a><br/>
-        </p>
+    <div id="nav_content">
+        <h1><a href="/en/what-is-datawinners/">WHAT IS DATAWINNERS</a></h1>
+        <ul>
+            <li><a href="/en/what-is-datawinners/how-it-works">How it Works</a></li>
+        </ul>
     </div>
-</div>
-<div class="clear"></div>
+    <div id="main_content">
+        <div class="margin_left_20">
+            <div id="left-what-is" class="english">
+                <p id="left-title">
+                    Shorten the Time Between <br/>Data Collection and Decision Making
+                </p>
+                <p class="size_13">
+                    DataWinners is the data collection service for development professionals like you.
+                    Organizations all over the world use DataWinners to transform paper forms into digital questionnaires.
+                    Staff submit data in seconds using any combination of SMS, Smartphone and Web with the equipment they already have.
+                </p>
+                <p id="try_it_button">
+                    <a class="try_button_min try_button" href="/register/trial">Try it free</a>
+                </p>
+            </div>
+            <div id="video-container">
+                <!-- Embedded Video -->
+                <iframe width="338" height="208" src="http://www.youtube.com/embed/iDTwwBjarqs?rel=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div style="clear: both;"></div>
+
+            <div id="what-is-and-features" class="english">
+                <h3>Features</h3>
+                <br/>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Save Money - <br/>Collect Unlimited Data</span>
+                    <div class="feature_description">
+                        Keep mobile data collection costs from spiraling out of control. Collect unlimited data for one low monthly fee - as many users, questionnaires, submissions and Data Senders as you need.
+                    </div>
+                </div>
+
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Multi-Channel Data Collection - <br/>Even Offline</span>
+                    <div class="feature_description">
+                        Choose any combination of SMS, Smartphone and Web to collect data. Every phone works - no special handsets or SIMs required. Use the DataWinners Smartphone App to collect data even offline.
+                    </div>
+                </div>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Your Very Own<br/>Local Telephone Number</span>
+                    <div class="feature_description">
+                        We link a local telephone number to your DataWinners.com account.
+                        Reduce SMS costs by 80% when field staff SMS their data to a local number rather than an international line.
+                    </div>
+                </div>
+
+                <div class="clear-both"></div>
+                <br/>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Easy-to-Use<br/>Questionnaire Builder</span>
+
+                    <div class="feature_description">
+                        Start from scratch or choose a template to create your digital questionnaire in minutes.
+                        Specify answer types and criteria to increase accuracy. Make edits as your needs change.
+                    </div>
+                </div>
+
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Register People,<br/>Places and Things</span>
+                    <div class="feature_description">
+                        Keep your data clean and speed up collection by assigning ID numbers to your patients, villages, schools or other subjects. 
+                        Add GPS coordinates to display your subjects on a map.
+                    </div>
+                </div>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Automate the<br/>Back-and-Forth</span>
+                    <div class="feature_description">
+                        Open new lines of communication with staff, partners and beneficiaries.
+                        Manage automatic confirmation and error messages. Specify deadlines and reminders.
+                        Send SMS from your account.
+                    </div>
+                </div>
+
+                <div class="clear-both"></div>
+                <br/>
+
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Powerful<br/>Data Visualization Tools</span>
+                    <div class="feature_description">
+                        Review your data in real-time as it’s submitted. Gain insight with maps, graphs and charts.
+                        Filter your data and export to Excel in a single click. Instantly share your data across the world.
+                    </div>
+                </div>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text align_center">We Handle the Tech</span>
+                    <div class="feature_description">
+                        DataWinners lives in the cloud - no software installation, no local servers and no maintenance required.
+                        Our online service keeps your data safe, secure and private.
+                    </div>
+                </div>
+
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text align_center">Multilingual Support</span>
+                    <div class="feature_description">
+                        Our hard-working customer support team is available 24/7, 365 days of the year.
+                        Have a question, need information or want a personal demonstration? Contact us <a herf="/en/about-us/contact-us/">here</a>.
+                    </div>
+                </div>
+
+                <div class="clear-both"></div>
+                <br/>
+
+            </div>
+            <p style="text-align:center;">
+                <a class="try_button" href="/register/trial">Try it free</a>
+                Sign up for your free account
+            </p>
+        </div>
+    </div>
+    <div class="clear"></div>
 {% endblock %}

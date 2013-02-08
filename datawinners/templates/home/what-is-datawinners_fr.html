@@ -3,40 +3,150 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "datawinners" %}
-{{ block.super }}
+    {% activetab "main_nav" "datawinners" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/fr/home/">Accueil</a> &gt; Qu’est-ce que DataWinners
+    <a href="/fr/home/">Accueil</a> &gt; Qu’est-ce que DataWinners
 {% endblock %}
 
 {% block main_content %}
-<div id="nav_content">
-    <h1><a href="/fr/what-is-datawinners/">QU'EST-CE QUE DATAWINNERS</a></h1>
-    <ul>
-        <li><a href="/fr/what-is-datawinners/how-it-works">Comment Est-ce Que Cela Marche ?</a></li>
-        <li><a href="/fr/what-is-datawinners/benefits">Avantages</a></li>
-        <li><a href="/fr/what-is-datawinners/features">Fonctionnalités</a></li>
-    </ul>
-</div>
-<div id="main_content">
-    <div class="margin_left_20">
-        <p>DataWinners est un service mobile de collecte de données en ligne conçu et créé pour les professionnels du développement. Avec DataWinners, vous collectez et analysez les données dont vous avez besoin en utilisant des équipements déjà en votre possession - un ordinateur, l'Internet et des téléphones portables ordinaires.</p>
-        <h2>L’objectif de DataWinners est de vous aider </h2>
-        <div id="use_dw">
-            <div>
-                <img src="/media/images/dw_goals_fr.png"/><br/>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <h2>En savoir plus</h2>
-        <p>
-            <a href="/fr/what-is-datawinners/how-it-works">Comment Est-ce Que Cela Marche ?</a><br/>
-            <a href="/fr/what-is-datawinners/benefits">Avantages</a><br/>
-            <a href="/fr/what-is-datawinners/features">Fonctionnalit&eacute;s</a><br/>
-        </p>
+    <div id="nav_content">
+        <h1><a href="/fr/what-is-datawinners/">QU'EST-CE QUE DATAWINNERS</a></h1>
+        <ul>
+            <li><a href="/fr/what-is-datawinners/how-it-works">Comment ça marche?</a></li>
+        </ul>
     </div>
-</div>
-<div class="clear"></div>
+    <div id="main_content">
+        <div class="margin_left_20">
+            <div id="left-what-is">
+                <p id="left-title">
+                    Réduire le Temps entre la Collecte<br/>de Données et la Prise de Décision
+                </p>
+                <p class="size_13 french">
+                    DataWinners est le service de collecte de données destiné aux professionnels du développement comme vous.
+                    Des Organisations à travers le monde utilisent DataWinners pour transformer les questionnaires papier sous format  électronique.
+                    Le personnel envoie leurs données qui sont reçues en quelques secondes par SMS, par Smartphone ou  par Web, en n’utilisant que leur propre équipement.
+                </p>
+                <p id="try_it_button">
+                    <a class="try_button_min try_button" href="/register/trial">Essai gratuit</a>
+                </p>
+            </div>
+            <div id="video-container">
+                <!-- Embedded Video -->
+                <iframe width="338" height="208" src="http://www.youtube.com/embed/iDTwwBjarqs?rel=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div style="clear: both;"></div>
+
+            <div id="what-is-and-features">
+                <h3>Fonctionnalités</h3>
+                <br/>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Economisez de l’argent – Collectez<br/> un nombre illimité de Données</span>
+                    <div class="feature_description">
+                        Notre service vous aide à garder le contrôle de vos coûts de collecte de données.
+                        Collectez un nombre illimité de données avec un coût mensuel abordable, effectuez autant d’envois que vous le désirez et créez autant d’utilisateurs, de questionnaires, d’Expéditeurs de Données que vous le souhaitez.
+                    </div>
+                </div>
+
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Collecte de Données par plusieurs <br/>Canaux - même hors connexion</span>
+                    <div class="feature_description">
+                        Choisissez n’importe quelle combinaison de canaux que vous désirez : SMS, Smartphone ou Web pour collecter des données.
+                        N’importe quel téléphone peut être utilisé avec le système - aucun appareil ni SIM spécial n’est requis. Utilisez le Smartphone App de DataWinners pour collecter les données, même hors connexion.
+                    </div>
+                </div>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Votre Propre Numéro<br/>de Téléphone Local</span>
+                    <div class="feature_description">
+                        Nous lions un numéro de téléphone local à votre compte DataWinners.
+                        Réduisez le coût de vos SMS de 80% par un envoi des données du personnel de terrain vers un numéro local plutôt que vers un numéro international.
+                    </div>
+                </div>
+
+                <div class="clear-both"></div>
+                <br/>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Facilité de création<br/>de Questionnaire</span>
+
+                    <div class="feature_description">
+                        Créez votre propre questionnaire ou choisissez un modèle pour créer un questionnaire électronique en quelques minutes.
+                        Spécifiez les critères et types de réponse pour améliorer l’exactitude des données.
+                        Vous pouvez effectuer des modifications à mesure que vos besoins évoluent.
+                    </div>
+                </div>
+
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Enregistrez des Personnes,<br/>des Lieux et des Choses</span>
+                    <div class="feature_description">
+                        Ayez des données fiables et accélérez votre collecte en assignant des numéros d’identification à vos patients, villages, écoles ou autres sujets.
+                        Ajouter les coordonnées GPS pour que vos sujets puissent être affichés sur une carte.
+                    </div>
+                </div>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Automatisez la Communication<br/>Bidirectionnelle</span>
+                    <div class="feature_description">
+                        Utilisez les nouveaux canaux pour communiquer avec votre personnel, vos partenaires, et vos bénéficiaires.
+                        Bénéficiez des messages automatiques de confirmation et d’erreur. Spécifiez les dates limites de dernier envoi de données et les dates de rappels automatiques.
+                        Envoyez des SMS à partir de votre compte DataWinners.
+                    </div>
+                </div>
+
+                <div class="clear-both"></div>
+                <br/>
+
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Puissants Outils de<br>Visualisation des Données</span>
+                    <div class="feature_description">
+                        Analysez vos données en temps réel au fur et à mesure de leur réception. Ayez un aperçu des données sur cartes, graphiques et diagrammes.
+                        Filtrez vos données et exportez-les vers Excel en un seul clic. Vos données peuvent être vues instantanément à travers le monde.
+                    </div>
+                </div>
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text">Nous nous occupons des<br/>Questions Techniques</span>
+                    <div class="feature_description">
+                        DataWinners utilise un serveur en ligne - aucune installation de logiciel, aucun serveur local et aucune maintenance ne sont requis.
+                        Notre service garantit la sécurité et la confidentialité de vos données.
+                    </div>
+                </div>
+
+
+                <div class="feature_container">
+                    <div class="img_container"><img height="66" width="120" src="/media/images/no-image.jpg"/></div>
+                    <span class="feature_title feature_green_text align_center">Support Multilingue</span>
+                    <div class="feature_description">
+                        Notre laborieuse équipe de support à la clientèle est disponible 24h sur 24 et 7 jours sur 7, soit 365 jours par année.
+                        Avez-vous des questions, avez-vous besoin d’informations ou d’une démonstration personnalisée?
+                        Contactez-nous en cliquant <a herf="/fr/about-us/contact-us/">ici</a>.
+                    </div>
+                </div>
+
+                <div class="clear-both"></div>
+                <br/>
+
+            </div>
+            <p style="text-align:center;">
+                <a class="try_button" href="/register/trial">Essai gratuit</a>
+                Créez un compte gratuitement
+            </p>
+        </div>
+    </div>
+    <div class="clear"></div>
 {% endblock %}

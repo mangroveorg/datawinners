@@ -34,9 +34,9 @@ body {
       #container_home_intro #home_intro_bg .content p {
         margin-bottom: 12px; }
       #container_home_intro #home_intro_bg .content .title {
-        font-size: 23px;
+        font-size: 32px;
         font-weight: bold;
-        line-height: 30px;
+        line-height: 36px;
         text-shadow: #10210B 0 0 1px; }
       #container_home_intro #home_intro_bg .content .intro_try_button {
         display: block;
@@ -65,9 +65,18 @@ body {
         text-shadow: #E1F7CA 0 1px 1px;
         background: url("/media/images/dw_home_button2.png") no-repeat left top;
         float: left; }
+    #container_home_intro #home_intro_bg #home_intro .title_medium_size {
+      font-size: 17px !important;
+      font-weight: bold;
+      margin-bottom: 5px;
+      width: 540px; }
+    #container_home_intro #home_intro_bg #home_intro .title_min_size {
+      font-size: 17px; }
+    #container_home_intro #home_intro_bg #home_intro .content {
+      width: 464px; }
 
 #container_home_carousel {
-  background: url("/media/images/dw_pattern_bg.gif") repeat left top;
+  background: #ebf1f6 url("/media/images/dw_how_bg.gif") repeat-x left top;
   height: 330px;
   overflow: hidden; }
   #container_home_carousel #home_carousel {
@@ -180,9 +189,16 @@ body {
         right: 0;
         width: 40px;
         height: 40px; }
+      #container_home_carousel #home_carousel .carousel_popup .repeat_y {
+        background: repeat-y; }
+        #container_home_carousel #home_carousel .carousel_popup .repeat_y .image_in_top {
+          background: url("/media/images/dw_popup_bd1.png") top left no-repeat; }
+          #container_home_carousel #home_carousel .carousel_popup .repeat_y .image_in_top .image_in_bottom {
+            background: url("/media/images/dw_popup_bd3.png") bottom left no-repeat;
+            padding: 15px 0 16px; }
 
 #container_home_how {
-  background: #ebf1f6 url("/media/images/dw_how_bg.gif") repeat-x left top;
+  background: url("/media/images/dw_pattern_bg.gif") repeat left top;
   height: 250px;
   overflow: hidden; }
   #container_home_how #home_how {
@@ -195,6 +211,8 @@ body {
         margin: 0 0 0 10px; }
         #container_home_how #home_how div p.margin_left_20 {
           margin-left: 20px; }
+        #container_home_how #home_how div p.margin_left_57 {
+          margin-left: 57px; }
     #container_home_how #home_how img.title {
       margin: 25px 0 5px 0; }
 
@@ -601,3 +619,78 @@ ol .lower_i {
   .blog-post .blog-header .blog-title {
     width: 680px;
     float: right; }
+
+#what-is-and-features {
+  /*height: 1031px;*/
+  height: 800px;
+  background: none repeat scroll 0 0 #F1F1F1;
+  margin: 12px auto 40px;
+  border: 1px solid #EFEFEF;
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  border-radius: 3px;
+  padding: 5px; }
+  #what-is-and-features h3 {
+    padding-left: 5px;
+    margin-top: 7px !important; }
+  #what-is-and-features .feature_container {
+    float: left;
+    width: 225px;
+    /*height: 323px;*/
+    height: 239px;
+    padding: 5px; }
+    #what-is-and-features .feature_container .feature_title {
+      font-size: 12px !important;
+      display: block;
+      height: 36px; }
+    #what-is-and-features .feature_container .feature_green_text {
+      color: #3A9912;
+      font-size: 10px;
+      font-weight: bold; }
+      #what-is-and-features .feature_container .feature_green_text.align_center {
+        margin-top: 12px;
+        height: 24px; }
+    #what-is-and-features .feature_container .feature_description {
+      font-size: 13px; }
+    #what-is-and-features .feature_container .img_container {
+      margin: auto 42px;
+      display: none;
+      /*height: 80px;
+      border: 1px solid #EEEEEE;*/ }
+
+#what-is-and-features.english {
+  /*height: 830px;*/
+  height: 630px;
+  margin-top: 15px; }
+  #what-is-and-features.english .feature_container {
+    /*height: 250px !important;*/
+    height: 180px !important; }
+
+#left-what-is {
+  width: 350px;
+  float: left;
+  text-align: left; }
+  #left-what-is #left-title {
+    font-size: 18px;
+    font-weight: bold; }
+  #left-what-is .size_13 {
+    font-size: 13px;
+    height: 90px;
+    height: 134px; }
+    #left-what-is .size_13.english {
+      height: 124px; }
+  #left-what-is #try_it_button {
+    width: 100px;
+    margin-top: 17px !important; }
+
+#left-what-is.english .size_13 {
+  height: 124px; }
+#left-what-is.english #try_it_button {
+  margin-top: 11px !important; }
+
+#video-container {
+  width: 350px;
+  float: right;
+  padding-top: 20px; }
+  #video-container iframe {
+    border: 6px solid #000000; }
