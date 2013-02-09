@@ -41,13 +41,11 @@ class NewDropDown(WebElement):
                 option.click()
                 break
 
-    def set_selected_for_action(self, itemText):
+    def click_on_action_button(self, itemText):
             """ Selects the provided itemText in the drop down
             """
 
             self.webElement.click()
-            action = self.webElement.find_element_by_css_selector("#action li a.associate")
-            action.click()
 
 
     def set_selected_by_text(self, itemText):

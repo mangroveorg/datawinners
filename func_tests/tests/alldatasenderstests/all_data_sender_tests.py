@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
@@ -39,8 +40,14 @@ class TestAllDataSender(unittest.TestCase):
 
     def associate(self, all_data_sender_page):
         all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(ASSOCIATE_DATA_SENDER)))
-        all_data_sender_page.associate_data_sender_action()
+        all_data_sender_page.associate_data_sender()
         all_data_sender_page.select_project(fetch_(PROJECT_NAME, from_(ASSOCIATE_DATA_SENDER)))
+        all_data_sender_page.click_confirm(wait=True)
+
+    def dissociate(self, all_data_sender_page):
+        all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(DISSOCIATE_DATA_SENDER)))
+        all_data_sender_page.dissociate_data_sender()
+        all_data_sender_page.select_project(fetch_(PROJECT_NAME, from_(DISSOCIATE_DATA_SENDER)))
         all_data_sender_page.click_confirm(wait=True)
 
     def delete_ds(self, all_data_sender_page):
@@ -65,17 +72,16 @@ class TestAllDataSender(unittest.TestCase):
         self.assertEqual(all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))),
                                     fetch_(PROJECT_NAME, from_(ASSOCIATE_DATA_SENDER)))
 
+
     @attr('functional_test', 'smoke')
     def test_successful_dissociation_of_data_sender(self):
         all_data_sender_page = self.page
         if all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))) == "--":
             self.associate(all_data_sender_page)
-        all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(DISSOCIATE_DATA_SENDER)))
-        all_data_sender_page.dissociate_data_sender()
-        all_data_sender_page.select_project(fetch_(PROJECT_NAME, from_(DISSOCIATE_DATA_SENDER)))
-        all_data_sender_page.click_confirm(wait=True)
+        self.dissociate(all_data_sender_page)
         self.assertEqual(all_data_sender_page.get_project_names(fetch_(UID, from_(DISSOCIATE_DATA_SENDER))), "--")
 
+#    @SkipTest
     @attr('functional_test')
     def test_dissociate_ds_without_selecting_project(self):
         all_data_sender_page = self.page
@@ -83,7 +89,7 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.dissociate_data_sender()
         all_data_sender_page.click_confirm()
         self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(DISSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
-
+#    @SkipTest
     @attr('functional_test')
     def test_associate_ds_without_selecting_project(self):
         all_data_sender_page = self.page
@@ -91,19 +97,19 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.associate_data_sender()
         all_data_sender_page.click_confirm()
         self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
-
+#    @SkipTest
     @attr('functional_test')
     def test_dissociate_ds_without_selecting_ds(self):
         all_data_sender_page = self.page
         all_data_sender_page.dissociate_data_sender()
         self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(DISSOCIATE_DS_WITHOUT_SELECTING_DS)))
-
+#    @SkipTest
     @attr('functional_test')
     def test_associate_ds_without_selecting_ds(self):
         all_data_sender_page = self.page
         all_data_sender_page.associate_data_sender()
         self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(ASSOCIATE_DS_WITHOUT_SELECTING_DS)))
-
+#    @SkipTest
     @attr('functional_test')
     def test_delete_ds_without_selecting_ds(self):
         all_data_sender_page = self.page
