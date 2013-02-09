@@ -38,7 +38,7 @@ $(document).ready(function () {
         $('#error').hide();
         var allIds = getEntityIdsToBeDeleted(this.className);
         var entity_type = getEntityType(this.className);
-        var action = getActionValue(this.className);
+        var action = this.className;
         if (allIds.length == 0) {
             $('<div class="message-box" id="error">' + gettext('Please select atleast 1 subject') + '</div>').insertAfter($(this));
             $(this).val("--");
@@ -64,10 +64,6 @@ $(document).ready(function () {
     });
 });
 
-function getActionValue(action_class){
-    var separated_values = action_class.split('-');
-    return separated_values[separated_values.length-1];
-}
 
 function warnThenDeleteDialogBox(allIds, entity_type, action_element) {
     $("#delete_entity_block").data("allIds", allIds);

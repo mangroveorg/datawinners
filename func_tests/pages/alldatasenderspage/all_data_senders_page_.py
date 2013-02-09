@@ -69,32 +69,31 @@ class AllDataSendersPage(Page):
         if wait:
             self.driver.wait_until_modal_dismissed(7)
 
-
     def associate_data_sender(self):
+        """
+        Function to associate data sender with project
+         """
+        self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(ASSOCIATE)
+
+    def associate_data_sender_action(self):
             """
             Function to associate data sender with project
              """
-            option_to_select = ASSOCIATE
-            self.do_action(option_to_select)
+            self.driver.find(ACTION_DROP_DOWN).click()
+            something = self.driver.find_visible_element(by_css("#action li a."+ASSOCIATE))
+            something.click()
 
     def select_edit_action(self):
             """
             Function to associate data sender with project
              """
-            option_to_select = EDIT
-            self.do_action(option_to_select)
-
-    def do_action(self, option_to_select):
-        self.driver.find(ACTION_DROP_DOWN).click()
-        option = self.driver.find_visible_element(by_css("#action li a." + option_to_select))
-        option.click()
+            self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(EDIT)
 
     def dissociate_data_sender(self):
         """
         Function to dissociate data sender with project
          """
-        option_to_select = DISSOCIATE
-        self.do_action(option_to_select)
+        self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(DISSOCIATE)
 
     def get_success_message(self):
         """
@@ -130,8 +129,9 @@ class AllDataSendersPage(Page):
     def delete_data_sender(self):
         """"
         Function to delete datasender """
-        option_to_select = DELETE
-        self.do_action(option_to_select)
+        self.driver.find(ACTION_DROP_DOWN).click()
+        something = self.driver.find_visible_element(by_css("#action li a." + DELETE))
+        something.click()
 
     def check_links(self):
         self.driver.is_element_present(IMPORT_LINK)
