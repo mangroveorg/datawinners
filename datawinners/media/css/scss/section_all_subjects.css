@@ -1,9 +1,9 @@
 #all_subjects {
   width: 910px !important;
-  border-top: 1px solid #CCCCCC !important;
+  border-top: 1px solid #cccccc !important;
   margin-top: 20px; }
   #all_subjects .list_header {
-    border-bottom: 1px solid #CCCCCC !important;
+    border-bottom: 1px solid #cccccc !important;
     padding: 10px; }
     #all_subjects .list_header .header {
       font-weight: normal;
@@ -14,6 +14,10 @@
       font-weight: normal;
       color: #666666;
       float: right; }
+  #all_subjects .list_header {
+    cursor: pointer; }
+  #all_subjects .list_header:hover, #all_subjects .list_header.highlight {
+    background: #ccdfed; }
   #all_subjects .list_header.ui-state-active {
     background-color: #525252 !important;
     border: 0;
@@ -25,9 +29,13 @@
       padding-left: 15px; }
     #all_subjects .list_header.ui-state-active .success_error {
       color: #FFFFFF; }
+  #all_subjects .subject-container {
+    max-height: 275px;
+    overflow-y: auto;
+    padding: 10px; }
   #all_subjects .ui-accordion-content {
     border: 0;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid black;
     padding: 10px; }
   #all_subjects .register_subject {
     float: right;

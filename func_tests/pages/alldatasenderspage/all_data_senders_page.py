@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from framework.utils import web_driver
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import *
 from pages.page import Page
@@ -79,7 +80,7 @@ class AllDataSendersPage(Page):
             """
             Function to associate data sender with project
              """
-            self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected_for_action(ASSOCIATE)
+            self.driver.find_new_drop_down(ACTION_DROP_DOWN).set_selected_for_action(ASSOCIATE)
     def select_edit_action(self):
             """
             Function to associate data sender with project

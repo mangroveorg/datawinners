@@ -7,6 +7,7 @@ from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 from framework.exception import ElementStillPresentException, CouldNotLocatePageException, ElementFoundWithoutDesiredVisibility
 from framework.exception import CouldNotLocateElementException
 from framework.utils.drop_down_web_element import DropDown
+from framework.utils.new_drop_down_web_element import NewDropDown
 from framework.utils.text_box_web_element import TextBox
 from framework.utils.radio_button_web_element import RadioButton
 from pages.loginpage.login_locator import *
@@ -59,6 +60,18 @@ class DriverWrapper(object):
         Return DropDown
         """
         return DropDown(self.find(locator_dict))
+
+    def find_new_drop_down(self, locator_dict):
+        """
+        Create DropDown class object with the given web element
+
+        Args:
+        locator_dict is the dictionary of the locator which contains key
+        values like {"locator":"input[name='email']","by":"By.CSS_SELECTOR"}
+
+        Return DropDown
+        """
+        return NewDropDown(self.find(locator_dict))
 
     def find_text_box(self, locator_dict):
         """

@@ -51,7 +51,7 @@ $(document).ready(function() {
 });
 
 function getEntityIdsToBeDeleted(action_element) {
-    var entity_code = $(action_element).val().split('-')[1];
+    var entity_code = $(action_element).attr('data-entity').split('-')[1];
     var allIds = [];
     var tbody_id = entity_code + "-table";
     $('#' + tbody_id + ' :checked').each(function () {
@@ -61,13 +61,13 @@ function getEntityIdsToBeDeleted(action_element) {
 }
 
 function getEntityType(action_element){
-    return $(action_element).val().split('-')[0];
+    return $(action_element).attr('data-entity').split('-')[0];
 }
 function getEditURL(){
     return edit_url;// current page is All Subjects Page
 }
 
 function getActionValue(action_element){
-    var separated_values = $(action_element).val().split('-');
+    var separated_values = $(action_element).attr('data-entity').split('-');
     return separated_values[separated_values.length-1];
 }

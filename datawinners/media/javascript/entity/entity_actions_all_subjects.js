@@ -34,7 +34,7 @@ $(document).ready(function () {
         return false;
     });
 
-    $('.action').change(function () {
+    $('.action li a').click(function () {
         $('#error').hide();
         var allIds = getEntityIdsToBeDeleted(this);
         var entity_type = getEntityType(this);
