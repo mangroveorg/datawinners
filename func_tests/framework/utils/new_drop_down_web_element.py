@@ -1,15 +1,15 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from selenium.webdriver.firefox import webdriver
-from selenium.webdriver.firefox.webdriver import WebDriver
 
 from selenium.webdriver.remote.webelement import WebElement
+import time
 
 
-class DropDown(WebElement):
+class NewDropDown(WebElement):
     def __init__(self, dropDownWebElement):
-        super(DropDown, self).__init__(dropDownWebElement.parent, dropDownWebElement.id)
+        super(NewDropDown, self).__init__(dropDownWebElement.parent, dropDownWebElement.id)
         self.webElement = dropDownWebElement
-        self.selectOptions = self.webElement.find_elements_by_tag_name("option")
+#        self.selectOptions = self.webElement.find_elements_by_id("action_dropdown")
+        self.selectOptions = "something"
 
     def get_options(self):
         """Gets the list of options in the drop down
@@ -41,6 +41,15 @@ class DropDown(WebElement):
                 option.click()
                 break
 
+    def set_selected_for_action(self, itemText):
+            """ Selects the provided itemText in the drop down
+            """
+
+            self.webElement.click()
+            action = self.webElement.find_element_by_css_selector("#action li a.associate")
+            action.click()
+
+
     def set_selected_by_text(self, itemText):
         """ Selects the provided itemText in the drop down
         """
@@ -49,3 +58,5 @@ class DropDown(WebElement):
             if value == itemText:
                 option.click()
                 break
+
+

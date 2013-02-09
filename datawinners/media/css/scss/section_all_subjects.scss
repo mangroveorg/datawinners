@@ -17,6 +17,12 @@
             float:right;
         }
     }
+    .list_header {
+      cursor: pointer;
+    }
+    .list_header:hover, .list_header.highlight {
+      background: #ccdfed;
+    }
     .list_header.ui-state-active{
         background-color:#525252 !important;
         border:0;
@@ -30,6 +36,11 @@
         .success_error{
             color:#FFFFFF;
         }
+    }
+    .subject-container {
+      max-height: 275px;
+      overflow-y: auto;
+      padding: 10px;
     }
     .ui-accordion-content{
         border:0;
