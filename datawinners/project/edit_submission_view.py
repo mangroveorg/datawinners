@@ -5,8 +5,10 @@ from accountmanagement.views import is_not_expired, session_not_expired
 from alldata.helper import get_visibility_settings_for
 from main.utils import get_database_manager
 from mangrove.form_model.form_model import  FormModel
+from mangrove.transport.player.parser import WebParser
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport.submissions import get_submission_by_id
+from project import helper
 from project.models import Project
 from project.views import _get_form_context
 from project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
@@ -38,7 +40,9 @@ def edit_submission(request, project_id=None, questionnaire_code=None, submissio
 
 
 def edit_my_submission(request, submission, questionnaire_form, manager, project, form_model,form_context):
-    webplayer = WebPlayer(manager).submit(form_model,request.POST,submission,[],True)
+    created_request = helper.create_request(questionnaire_form, request.user.username)
+    values = _fetch_string_value(created_request.message)
+    webplayer = WebPlayer(manager).submit(form_model,values,submission,[],True)
     form_code_for_project_links = form_model.form_code
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     template = "project/web_questionnaire.html"
@@ -70,5 +74,13 @@ def _make_form_context(questionnaire_form, project):
 def _map_submission_and_questionnaire(submission, questionnaire_form):
     for field_name, field in questionnaire_form.fields.iteritems():
         if not field.widget.is_hidden:
-            field.initial = submission.values.get(field_name.lower())
+            field.initial = submission.values.get(field_name)
 
+
+def _fetch_string_value(message):
+    return {code: _to_str(value) for code, value in message.iteritems()}
+
+def _to_str(value):
+    if isinstance(value, (int, float, long)):
+        return str(value)
+    return "".join(value) if value is not None else None

@@ -975,12 +975,12 @@ def _get_form_code(manager, project):
     return FormModel.get(manager, project.qid).form_code
 
 
-#@login_required(login_url='/login')
-#@session_not_expired
-#@is_datasender_allowed
-#@project_has_web_device
-#@is_not_expired
-#@is_project_exist
+@login_required(login_url='/login')
+@session_not_expired
+@is_datasender_allowed
+@project_has_web_device
+@is_not_expired
+@is_project_exist
 def web_questionnaire(request, project_id=None, subject=False):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
