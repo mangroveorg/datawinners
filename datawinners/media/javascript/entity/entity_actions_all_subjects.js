@@ -40,13 +40,13 @@ $(document).ready(function () {
         var entity_type = getEntityType(this);
         var action = getActionValue(this);
         if (allIds.length == 0) {
-            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 subject') + '</div>').insertAfter($(this));
+            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 subject') + '</div>').insertAfter($('#action_dropdown'));
             $(this).val("--");
             return;
         }
         if (action == 'edit') {
             if (allIds.length > 1) {
-                $('<div class="message-box" id="error">' + gettext('Please select only 1 subject') + '</div>').insertAfter($(this));
+                $('<div class="message-box" id="error">' + gettext('Please select only 1 subject') + '</div>').insertAfter($('#action_dropdown'));
                 $(this).val("--");
                 return;
             }

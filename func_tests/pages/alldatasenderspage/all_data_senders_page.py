@@ -75,18 +75,18 @@ class AllDataSendersPage(Page):
             Function to associate data sender with project
              """
             option_to_select = ASSOCIATE
-            self.do_action(option_to_select)
+            self.perform_datasender_action(option_to_select)
 
     def select_edit_action(self):
             """
             Function to associate data sender with project
              """
             option_to_select = EDIT
-            self.do_action(option_to_select)
+            self.perform_datasender_action(option_to_select)
 
-    def do_action(self, option_to_select):
+    def perform_datasender_action(self, action_to_be_performed):
         self.driver.find(ACTION_DROP_DOWN).click()
-        option = self.driver.find_visible_element(by_css("#action li a." + option_to_select))
+        option = self.driver.find_visible_element(by_id(action_to_be_performed))
         option.click()
 
     def dissociate_data_sender(self):
@@ -94,7 +94,7 @@ class AllDataSendersPage(Page):
         Function to dissociate data sender with project
          """
         option_to_select = DISSOCIATE
-        self.do_action(option_to_select)
+        self.perform_datasender_action(option_to_select)
 
     def get_success_message(self):
         """
@@ -131,7 +131,7 @@ class AllDataSendersPage(Page):
         """"
         Function to delete datasender """
         option_to_select = DELETE
-        self.do_action(option_to_select)
+        self.perform_datasender_action(option_to_select)
 
     def check_links(self):
         self.driver.is_element_present(IMPORT_LINK)
