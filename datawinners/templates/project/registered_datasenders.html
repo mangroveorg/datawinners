@@ -83,23 +83,25 @@
 {#        <option value="delete">{% trans "Delete" %}</option>#}
 {#    </select>#}
 
-    <div id="action_button"  class="action_bar clear-both" style="margin-bottom: 20px">
-        <div class="btn-group">
-            <button class="btn dropdown-toggle action" href="#" data-dropdown="#action">{% trans "Actions" %}
-                <span class="caret"></span>
-            </button>
+    <div id="action_dropdown">
+        <div id="action_button"  class="action_bar clear-both" style="margin-bottom: 20px">
+            <div class="btn-group">
+                <button class="btn dropdown-toggle action" href="#" data-dropdown="#action">{% trans "Actions" %}
+                    <span class="caret"></span>
+                </button>
+            </div>
         </div>
-    </div>
 
-    <div id="action" class="dropdown-menu" >
-        <ul>
-            {% if EDIT_DATA_SENDERS_ENABLED and not in_trial_mode %}
-                <li><a class="edit">{% trans "Edit" %}</a></li>
-            {% endif %}
-            <li><a class="disassociate">{% trans "Remove from project" %}</a></li>
-            <li><a class="makewebuser">{% trans "Give Web Submission Access" %}</a></li>
-            <li><a class="delete">{% trans "Delete" %}</a></li>
-        </ul>
+        <div id="action" class="dropdown-menu" >
+            <ul>
+                {% if EDIT_DATA_SENDERS_ENABLED and not in_trial_mode %}
+                    <li><a class="edit" id="edit">{% trans "Edit" %}</a></li>
+                {% endif %}
+                <li><a class="disassociate" id="disassociate">{% trans "Remove from project" %}</a></li>
+                <li><a class="makewebuser" id="makewebuser">{% trans "Give Web Submission Access" %}</a></li>
+                <li><a class="delete" id="delete">{% trans "Delete" %}</a></li>
+            </ul>
+        </div>
     </div>
 
     <div class="data-sender-table-wrapper">

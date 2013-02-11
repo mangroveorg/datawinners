@@ -25,7 +25,7 @@ DATA_SENDER_ROW_BY_UID_XPATH = "//input[@id='%s']/../.."
 DATA_SENDER_EMAIL_BY_UID_XPATH = "//input[@id='%s']/../../td[8]"
 DATA_SENDER_EMAIL_BY_MOBILE_NUMBER_XPATH = "//tr/td[6][text()='%s']/../td[8]"
 PROJECT_CB_XPATH = "//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/ul[@id='all_projects']/li[text()='%s']/input"
-ACTION_DROP_DOWN = by_css("select#action")
+ACTION_DROP_DOWN = by_css(".action")
 WEB_USER_BLOCK = by_css("div#web_user_block")
 WEB_USER_BLOCK_EMAIL = by_css("div#web_user_block input.ds-email")
 GIVE_ACCESS_LINK = by_css('a#web_user_button.button')

@@ -48,7 +48,13 @@ class ProjectDataSendersPage(AllDataSendersPage):
         return email_element.text
 
     def select_web_access_action(self):
-        self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(GIVE_WEB_ACCESS)
+        option_to_select = GIVE_WEB_ACCESS
+        self.perform_datasender_action(option_to_select)
+
+    def perform_datasender_action(self, action_to_be_performed):
+        self.driver.find(ACTION_DROP_DOWN).click()
+        option = self.driver.find_visible_element(by_id(action_to_be_performed))
+        option.click()
 
     def give_web_access(self, email_id):
         """

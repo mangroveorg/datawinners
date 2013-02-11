@@ -78,10 +78,12 @@ $(document).ready(function () {
             projects.push($(this).val());
         });
         if (projects.length == 0) {
-            $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project") + '</div>').insertBefore($("#all_projects"));
+            $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project")
+                + '</div>').insertBefore($("#all_projects"));
         } else {
             var url = '/entity/' + $('#action').attr("clicked") + '/';
-            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px', zIndex:1000000}});
+            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
+                + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px', zIndex:1000000}});
             $.post(url,
                 {'ids':allIds.join(';'), 'project_id':projects.join(';')}
             ).success(function (data) {
@@ -116,7 +118,8 @@ $(document).ready(function () {
         $('#error').remove();
         if (allIds.length == 0) {
             $('#web-access-success').remove();
-            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 data sender') + '</div>').insertAfter($(this));
+            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 data sender')
+                + '</div>').insertAfter($("#action_dropdown"));
             $('#project').val('');
             $(this).val("");
             return;
@@ -147,7 +150,8 @@ $(document).ready(function () {
             }
         } else if (action == "edit") {
             if (allIds.length > 1) {
-                $('<div class="message-box" id="error">' + gettext("Please select only 1 data sender") + '</div>').insertAfter($(this));
+                $('<div class="message-box" id="error">' + gettext("Please select only 1 data sender")
+                    + '</div>').insertAfter($('#action_dropdown'));
                 $(this).val('');
             }
             else { location.href = '/entity/datasender/edit' + '/' + allIds[0] + '/';
@@ -186,7 +190,8 @@ $(document).ready(function () {
         if (!should_post || post_data.length == 0) {
             return;
         }
-        $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px', zIndex:1000000}});
+        $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
+            + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px', zIndex:1000000}});
         $.post('/entity/webuser/create', {post_data:JSON.stringify(post_data)},
             function (response) {
                 $.unblockUI();
@@ -218,6 +223,10 @@ $(document).ready(function () {
         return false;
     });
 
-    var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>${location}</td><td>${contactInformation}</td><td><input type='text' style='width:150px' class='ds-email' value='${email}' ${input_field_disabled}/></td></tr>";
+    var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>" +
+        "${location}</td><td>${contactInformation}</td><td>" +
+        "<input type='text' style='width:150px' class='ds-email' value='${email}' " +
+        "${input_field_disabled}/></td></tr>";
     $.template("webUserTemplate", markup);
 });
+
