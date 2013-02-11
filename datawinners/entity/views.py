@@ -799,5 +799,8 @@ def export_template(request, entity_type=None):
     gps_col = ws.col(index_geocode)
     gps_col.set_style(style)
 
+    uid_col = ws.col(len(fields)-1)
+    uid_col.set_style(style)
+
     wb.save(response)
     return response
