@@ -87,11 +87,11 @@ $(document).ready(function () {
 
     function buildColumnTypes() {
         return $(header_type_list).map(function(index, value){
-            if ( index == 2) {
+            if (header_name_list[index] == gettext("Reporting Period")) {
                 return { "sType":  "reporting_period"};
             }
 
-            if (index == 3) {
+            if (header_name_list[index] == gettext("Submission Date")) {
                 return { "sType":  "submission_date"};
             }
             return { "sType":  "string"};
