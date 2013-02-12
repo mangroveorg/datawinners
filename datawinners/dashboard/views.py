@@ -23,10 +23,15 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport import Channel
 
 def _find_reporter_name(dbm, row):
+
     channel = row.value.get("channel")
     if channel == Channel.SMS:
-        reporters = dbm.load_all_rows_in_view('reporters_by_number_and_name',key=(row.value["source"]))
-        reporter = reporters[0].value
+        mobile_number = row.value["source"]
+        reporters = dbm.load_all_rows_in_view('reporters_by_number_and_name',key=(mobile_number))
+        if len(reporters) != 0:
+            reporter = reporters[0].value
+        else:
+            reporter = mobile_number
     else:
         reporter = ""
     return reporter
