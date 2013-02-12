@@ -266,6 +266,7 @@ select{
     color: #6F451D !important;
     font-family: "Arial";
     font-weight: bold;
+    text-decoration: none !important;
     padding: 6px 23px 5px 22px;
     cursor:pointer;
     cursor:hand;
@@ -300,6 +301,19 @@ select{
     height: 29px;
     width: 180px;
     vertical-align: middle;
+    opacity: 0.9;
+    &:hover {
+      -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+      box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+      opacity: 1;
+    }
+
+    &:active {
+      -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+      box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+      opacity: 0.9;
+    }
+    &:-moz-focus-inner {outline:0;}
 }
 
 .button_wizard_back{
@@ -326,6 +340,18 @@ select{
     cursor:pointer;
     cursor:hand;
     vertical-align: middle;
+  opacity: 0.9;
+  &:hover {
+    -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+    box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+    opacity: 1;
+  }
+
+  &:active {
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+    box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+    opacity: 0.9;
+  }
 }
 
 .button_wizard_next_small{
@@ -339,6 +365,19 @@ select{
     font-weight: bold;
     cursor:pointer;
     cursor:hand;
+    opacity: 0.9;
+    &:hover {
+      -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+      box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+      opacity: 1;
+    }
+
+    &:active {
+      -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+      box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+      opacity: 0.9;
+    }
+
 }
 
 .button_blue{
@@ -354,6 +393,18 @@ select{
     padding: 4px 15px 4px 15px;
     cursor:pointer;
     cursor:hand;
+    opacity: 0.9;
+    &:hover {
+      -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+      box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+      opacity: 1;
+    }
+
+    &:active {
+      -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+      box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+      opacity: 0.9;
+    }
 }
 
 .cancel_project {

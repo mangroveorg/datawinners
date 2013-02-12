@@ -18,11 +18,17 @@ class AllUsersPage(Page):
             checkbox.click()
 
     def select_delete_action(self, confirm=False, cancel=False):
-        self.driver.find_drop_down(ALL_USERS_ACTION_SELECT).set_selected(DELETE)
+        action_to_be_performed = DELETE
+        self.perform_user_action(action_to_be_performed)
         if confirm:
             self.confirm_delete()
         if cancel:
             self.cancel_delete()
+
+    def perform_user_action(self, action_to_be_performed):
+        self.driver.find(ALL_USERS_ACTION_SELECT).click()
+        option = self.driver.find_visible_element(by_id(action_to_be_performed))
+        option.click()
 
     def check_nth_user(self, number):
         self.driver.find(by_css(CHECK_NTH_USER_LOCATOR % str(number))).click()

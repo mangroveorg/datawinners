@@ -35,34 +35,6 @@ $(document).ready(function () {
         return false;
     });
 
-//    $('#action li a').click(function () {
-//        $('#error').hide();
-//        var allIds = getEntityIdsToBeDeleted(this.className);
-//        var entity_type = getEntityType(this.className);
-//        var action = this.className;
-//        if (allIds.length == 0) {
-//            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 subject') + '</div>').insertAfter($('#action_dropdown'));
-////            $(this).val("--");
-//            return;
-//        }
-//        if (action == 'edit') {
-//            if (allIds.length > 1) {
-//                $('<div class="message-box" id="error">' + gettext('Please select only 1 subject') + '</div>').insertAfter($('#action_dropdown'));
-////                $(this).val("--");
-//                return;
-//            }
-//            else {
-//                location.href = getEditURL() + entity_type + '/' + allIds[0] + '/';
-//            }
-//
-//        }
-//        else if(action==""){
-//            return;
-//        }
-//        else{
-//            warnThenDeleteDialogBox(allIds, entity_type, this);
-//        }
-//    });
 });
 
 function warnThenDeleteDialogBox(allIds, entity_type, action_element) {

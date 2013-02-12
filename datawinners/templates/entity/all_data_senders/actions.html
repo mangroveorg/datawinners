@@ -1,20 +1,9 @@
 {% load i18n %}
-{#<label class="inline margin_left_20">{% trans "Actions:" %} </label>#}
-{#<select id='action'>#}
-{#    <option value="">--</option>#}
-{#    <option value="associate">{% trans "Add to project" %}</option>#}
-{#    <option value="disassociate">{% trans "Remove from project" %}</option>#}
-{#    <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>#}
-{#{% if EDIT_SUBJECT_ENABLED and not in_trial_mode %}#}
-{#    <option value="edit">{% trans "Edit" %}</option>#}
-{#{% endif %}#}
-{#    <option value="delete">{% trans "Delete" %}</option>#}
-{#</select>#}
 
 <div id="action_dropdown" >
     <div id="action_button"  class="action_bar clear-both" style="margin-top:20px; margin-bottom: 20px">
         <div class="btn-group">
-            <button class="btn dropdown-toggle action" href="#" data-dropdown="#action">{% trans "Actions" %}
+            <button id="something" class="btn dropdown-toggle action" href="#" data-dropdown="#action">{% trans "Actions" %}
                 <span class="caret"></span>
             </button>
         </div>

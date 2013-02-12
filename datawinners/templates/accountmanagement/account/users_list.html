@@ -7,11 +7,18 @@
     {% activetab "tab_nav" "users" %}
     {{ block.super }}
 {% endblock %}
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
+{% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/account/users_list.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
 {% endblock %}
 
 {% block content %}

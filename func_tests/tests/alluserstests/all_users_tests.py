@@ -1,5 +1,4 @@
 import unittest
-from framework.utils.data_fetcher import fetch_
 from framework.base_test import setup_driver, teardown_driver
 from nose.plugins.attrib import attr
 from datawinners.messageprovider.tests.test_message_handler import THANKS
@@ -9,8 +8,6 @@ from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.alluserstests.all_users_data import *
-from tests.addusertests.add_user_data import ADD_USER_DATA
-from tests.addusertests.add_user_data import DEFAULT_PASSWORD, MOBILE_PHONE
 from pages.dashboardpage.dashboard_page import DashboardPage
 from tests.createprojecttests.create_project_data import VALID_DATA
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
