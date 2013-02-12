@@ -17,7 +17,7 @@ VALID_DATA = {SMS: "cli005 .EID cid003 .NA Mr. Tessy .FA 58 .RD 17.05.2011 .BG b
 
 EXCEED_NAME_LENGTH = {
     SMS: "cli009 .EID CID003 .NA Mr. O'brain .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
-    RESPONSE_MESSAGE: "Error. Incorrect answer for na. Please resend entire message."}
+    RESPONSE_MESSAGE: "Error. Incorrect answer for q2. Please resend entire message."}
 
 VALID_DATA2 = {SMS: "cli005 .EID cid004 .NA Mr. O'man .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789",
                RESPONSE_MESSAGE:THANKS }#+ " EID: cid004 NA: Mr. O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057, -78.007789"}
