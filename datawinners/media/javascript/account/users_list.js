@@ -4,11 +4,11 @@ $(document).ready(function () {
         $(".user_entry").attr("checked", $(this).attr("checked"));
     });
 
-    $(".action").each(function (i, action) {
-        $(action).bind("change", function () {
+    $("#action li a").each(function (i, action) {
+        $(action).bind("click", function () {
             var ids = updateIds();
             $("#error").css("display", "none");
-            var action = $(this).val();
+            var action = $(this).attr('action-dropdown');
             if (ids.length == 0) {
                 $("#error").css("display", "block");
                 $(this).val("");

@@ -1,7 +1,7 @@
 from framework.utils.common_utils import *
 
 CHECK_ALL_USERS_LOCATOR = by_css("#check_all_users")
-ALL_USERS_ACTION_SELECT = by_css("select.action")
+ALL_USERS_ACTION_SELECT = by_css(".action")
 ERROR_CONTAINER = by_css("div#error")
 CONFIRM_DELETE_BUTTON = by_css("#delete_user_warning_dialog a.yes_button")
 CANCEL_DELETE_BUTTON = by_css("#delete_user_warning_dialog a.no_button")

@@ -20,7 +20,7 @@ $(document).ready(function () {
         var allIds = $('#delete_entity_block').data("allIds");
         var entity_type = $('#delete_entity_block').data("entity_type");
         var path = $(this).attr("href");
-        post_data = {'all_ids':allIds.join(';'), 'entity_type':entity_type}
+        post_data = {'all_ids':allIds.join(';'), 'entity_type':entity_type};
         if ($("#project_name").length)
             post_data.project = $("#project_name").val();
         $.post("/entity/delete/", post_data,
@@ -40,14 +40,12 @@ $(document).ready(function () {
         var entity_type = getEntityType(this);
         var action = getActionValue(this);
         if (allIds.length == 0) {
-            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 subject') + '</div>').insertAfter($('#action_dropdown'));
-            $(this).val("--");
+            displayErrorMessage('Please select atleast 1 subject');
             return;
         }
         if (action == 'edit') {
             if (allIds.length > 1) {
-                $('<div class="message-box" id="error">' + gettext('Please select only 1 subject') + '</div>').insertAfter($('#action_dropdown'));
-                $(this).val("--");
+                displayErrorMessage('Please select only 1 subject')
                 return;
             }
             else {
@@ -72,4 +70,15 @@ function warnThenDeleteDialogBox(allIds, entity_type, action_element) {
     $("#delete_entity_block").data("action_element", action_element);
 
     $("#delete_entity_block").dialog("open");
+}
+
+function displayErrorMessage(errorMessage){
+    action_dropdowns = $("[id ='action_dropdown']");
+    action_dropdowns.each(function(){
+        //to get div id of currently active tab
+        if(!($(this).is(':hidden'))){
+            $('<div class="message-box" id="error">' + gettext(errorMessage) + '</div>').insertAfter(this);
+            return;
+        }
+    });
 }
