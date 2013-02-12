@@ -130,7 +130,7 @@ $(document).ready(function () {
         if (action == 'makewebuser') {
 //            this.removeClass('dropdown-open').parents('.btn-group').removeClass('open');
             populate_dialog_box_for_web_users();
-            return false;
+        
         } else if (action == "delete") {
             $(this).val('');
             $("#note_for_delete_users").hide();
