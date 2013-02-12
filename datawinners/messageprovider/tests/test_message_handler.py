@@ -62,12 +62,13 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         return form_submission_mock
 
     def test_should_format_success_message_for_submission_with_reporter_name(self):
-        expected_message = THANKS + " age: 12 name: tester choice: red"
+        expected_message = THANKS + " q1: 12 q2: tester q3: red"
         form_submission_mock = self.create_form_submission_mock()
         response = create_response_from_form_submission(reporters=[{"name": "rep1"}], submission_id=123,
             form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'tester', 'age': '12', 'choice': 'red'}
+        form_model_mock.entity_defaults_to_reporter.return_value = False
         message = get_success_msg_for_submission_using(response, form_model_mock)
         self.assertEqual(expected_message, message)
 
@@ -75,7 +76,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         expected_message = THANKS
         response_text = "1"*125
         self.assertEqual(161, len(expected_message + response_text))
-        with patch.object(ResponseBuilder, "get_expanded_response") as get_expanded_response:
+        with patch.object(ResponseBuilder, "get_expanded_response_with_ordered_question_code") as get_expanded_response:
             get_expanded_response.return_value = response_text
             message = get_success_msg_for_submission_using(Mock(), None)
 
@@ -87,7 +88,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
 
         self.assertEqual(160, len(expected_message))
 
-        with patch.object(ResponseBuilder, "get_expanded_response") as get_expanded_response:
+        with patch.object(ResponseBuilder, "get_expanded_response_with_ordered_question_code") as get_expanded_response:
             get_expanded_response.return_value = response_text
             message = get_success_msg_for_submission_using(Mock(), None)
 

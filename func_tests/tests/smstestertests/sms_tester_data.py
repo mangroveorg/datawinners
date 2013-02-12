@@ -26,7 +26,7 @@ VALID_DATA2 = {SENDER: "1234567890",
 EXCEED_NAME_LENGTH = {SENDER: "1234567890",
                       RECEIVER: "919880734937",
                       SMS: "cli009 .EID CID003 .NA Mr. O'brain .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM bc",
-                      ERROR_MSG: "Error. Incorrect answer for na. Please resend entire message."}
+                      ERROR_MSG: "Error. Incorrect answer for q2. Please resend entire message."}
 
 EXCEED_NAME_LENGTH2 = {SENDER: "1234567890",
                        RECEIVER: "919880734937",
@@ -76,7 +76,7 @@ REGISTER_EXISTING_SUBJECT_SHORT_CODE = {SENDER: "1234567890",
 REGISTER_INVALID_GEO_CODE = {SENDER: "1234567890",
                              RECEIVER: "919880734937",
                              SMS: "REG .T Clinic .m   123456 .l Agra .G 127.178057 -78.007789 .n Clinic Agra .S CLIAGRA",
-                             ERROR_MSG: "Error. Incorrect answer for g. Please resend entire message."}
+                             ERROR_MSG: "Error. Incorrect answer for q4. Please resend entire message."}
 
 WITH_INVALID_GEO_CODE_FORMAT = {SENDER: "1234567890",
                                 RECEIVER: "919880734937",
