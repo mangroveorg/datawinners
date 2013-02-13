@@ -20,9 +20,26 @@
     .list_header {
       cursor: pointer;
     }
-    .list_header:hover, .list_header.highlight {
+    .list_header:hover {
       background: #ccdfed;
     }
+    .list_header.highlight{
+      background-color:#525252 !important;
+      border:0;
+      background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;  //for webkit browsers
+      background: -moz-linear-gradient(top,  #525252,  #262626) !important;  //for firefox 3.6+
+      .header{
+        color:#FFFFFF;
+        background:url(/media/images/accordion_arrows.png) no-repeat left 5px;
+        padding-left:15px;
+      }
+      .success_error{
+        color:#FFFFFF;
+      }
+    }
+    //.list_header:hover, .list_header.highlight {
+    //    background: #ccdfed;
+    //  }
     .list_header.ui-state-active{
         background-color:#525252 !important;
         border:0;
@@ -38,7 +55,7 @@
         }
     }
     .subject-container {
-      max-height: 275px;
+      //max-height: 275px;
       overflow-y: auto;
       padding: 10px;
     }
