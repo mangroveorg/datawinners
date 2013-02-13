@@ -6,9 +6,10 @@ from nose.plugins.attrib import attr
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.submission.organization_finder import OrganizationFinder
 
-@attr('unit_test')
+#@attr('unit_test')
 class TestOrganizationFinder(unittest.TestCase):
 
+    @attr('unit_test')
     def test_should_find_organization_for_paid_account_using_any_of_multiple_registered_phone_numbers(self):
         mock_org = Mock(spec=Organization)
         mock_org.name  = 'Argha\'s TEST Organization'
@@ -25,6 +26,7 @@ class TestOrganizationFinder(unittest.TestCase):
             self.assertIsNone(error)
             self.assertEqual(org.name, 'Argha\'s TEST Organization')
 
+    @attr('unit_test')
     def test_should_not_return_organization_for_partial_matches_on_phone_number(self):
         mock_org = Mock(spec=Organization)
         mock_org.name  = 'Argha\'s TEST Organization'
@@ -49,6 +51,7 @@ class TestOrganizationFinder(unittest.TestCase):
         mock_org_setting.sms_tel_number = phone_numbers
         return mock_org, mock_org_setting
 
+    @attr('unit_test')
     def test_should_return_organization_with_exact_match_on_phone_number(self):
         mock_org1, mock_org_setting1 = self.create_mock_org_and_org_setting(org_name = 'Argha\'s TEST Organization', phone_numbers = '3283298932,328,298,932')
         mock_org2, mock_org_setting2 = self.create_mock_org_and_org_setting(org_name = 'Ashish\'s TEST Organization', phone_numbers = '328329893,327,292')

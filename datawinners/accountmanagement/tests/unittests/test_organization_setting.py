@@ -5,9 +5,9 @@ from mock import Mock, patch
 from nose.plugins.attrib import attr
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 
-@attr('unit_test')
 class TestOrganizationSetting(unittest.TestCase):
 
+    @attr('unit_test')
     def test_should_get_organisation_sms_number(self):
         mock_org = Mock(spec=Organization)
         mock_org.in_trial_mode = False

@@ -53,7 +53,6 @@ function restore_couchdb_and_postgres {
 
 function unit_test {
 	echo "running unit test"
-	recreate_couch_db && \
 	compile_messages && \
 	(cd "$DWROOT_DIR/datawinners" && python manage.py test --verbosity=2)
 }

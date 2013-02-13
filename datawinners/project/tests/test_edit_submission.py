@@ -23,7 +23,7 @@ class TestEdit_submission(TestCase):
         questionnaire_fields = {'NA': CharField(label='What is your name?')}
         properties = {'fields': questionnaire_fields}
         submission = Submission(self.manager,
-            transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), values={'na': 'tester'})
+            transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), values={'NA': 'tester'})
         questionnaire_form = type('QuestionnaireForm', (Form, ), properties)
         _map_submission_and_questionnaire(submission, questionnaire_form)
         self.assertEqual('tester', questionnaire_form.fields.get('NA').initial)

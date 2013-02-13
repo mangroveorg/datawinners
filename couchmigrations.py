@@ -62,9 +62,9 @@ def migrate_01(managers, map_fun_project_docs, map_fun_raw_form_model_docs, map_
             document = form_model.key
             if document['form_code'] == 'reg':
                 continue
-            document['label']['en']= document['label']['eng']
+            document['label']['en'] = document['label']['eng']
             del document['label']['eng']
-            document['metadata']['activeLanguages']= ["en"]
+            document['metadata']['activeLanguages'] = ["en"]
             for index, json_field in enumerate(document['json_fields']):
                 json_field['label']['en'] = json_field['label']['eng']
                 del json_field['label']['eng']

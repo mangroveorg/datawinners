@@ -1,4 +1,3 @@
-from datawinners import initializer
 from datawinners.main.initial_couch_fixtures import load_all_managers
 
 managers = load_all_managers()
@@ -18,12 +17,13 @@ def migrate_01(managers, map_fun_project_docs):
             print project
             document = project.key
             document['reminder_and_deadline'] = {"deadline_type": "Following",
-                                      "should_send_reminder_to_all_ds": False,
-                                      "has_deadline": True,
-                                      "deadline_month": "5",
-                                      "frequency_period": "month"}
+                                                 "should_send_reminder_to_all_ds": False,
+                                                 "has_deadline": True,
+                                                 "deadline_month": "5",
+                                                 "frequency_period": "month"}
 
             manager.database.save(document)
+
 
 def migrate():
     migrate_01(managers, map_fun_project_docs)
