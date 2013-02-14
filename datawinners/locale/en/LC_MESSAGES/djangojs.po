@@ -564,3 +564,6 @@ msgstr ""
 
 msgid "Answer must be 20 characters maximum"
 msgstr ""
+
+msgid "Enter local telephone number of %(limit)s digits or less"
+msgstr ""

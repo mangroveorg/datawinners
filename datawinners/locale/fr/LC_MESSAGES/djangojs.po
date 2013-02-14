@@ -687,3 +687,6 @@ msgstr "Entrez un numéro de téléphone local de 10 chifres ou moins"
 
 msgid "Answer must be 20 characters maximum"
 msgstr "La réponse doit être de 20 caractères au maximum"
+
+msgid "Enter local telephone number of %(limit)s digits or less"
+msgstr "Entrez un numéro de téléphone local de %(limit)s chifres ou moins"
