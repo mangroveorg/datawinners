@@ -18,7 +18,8 @@ ENVIRONMENT_CONFIGURATIONS = {
     "beta": "local_settings.py",
     "production": "prod_local_settings.py",
     "ec2": "ec2_local_settings.py",
-    "qa": "local_settings_qa.py"
+    "qa": "local_settings_qa.py",
+    "qa_supreme":"local_settings_supreme.py"
 }
 
 ENVIRONMENT_VES = {
@@ -27,6 +28,7 @@ ENVIRONMENT_VES = {
     "ec2": "/home/mangrover/.virtualenvs/datawinners",
     "qa": "/home/twer/virtual_env/datawinner",
     "test": "/home/twer/virtual_env/datawinner",
+    "qa_supreme":"/home/datawinners/virtual_env/datawinner"
 }
 
 ENVIRONMENT_TOMCAT = {
@@ -183,6 +185,12 @@ def qa():
     env.user = "twer"
     env.hosts = ["10.18.2.237"]
     env.key_filename = ["/home/dw/.ssh/id_rsa"]
+    env.warn_only = True
+
+def qa_supreme():
+    env.user = "datawiners"
+    env.hosts = ["172.18.9.1"]
+    env.key_filename = ["/home/datawinners/.ssh/id_rsa"]
     env.warn_only = True
 
 def test():
