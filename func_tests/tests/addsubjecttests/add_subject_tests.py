@@ -104,3 +104,14 @@ class TestAddSubject(BaseTest):
         add_subject_page.submit_subject()
         message = fetch_(ERROR_MSG, from_(WITH_UNICODE_IN_GPS))
         self.assertEqual(add_subject_page.get_error_message(), message)
+
+
+    @attr('functional_test')
+    def test_addition_of_subject_with_uid_longer_than_allowed(self):
+        add_subject_page = self.prerequisites_of_add_subject(CLINIC_WITH_LONG_UID)
+        add_subject_page.add_subject_with(CLINIC_WITH_LONG_UID)
+        short_name = fetch_(SUB_UNIQUE_ID, from_(CLINIC_WITH_LONG_UID))
+        self.driver.find_text_box(UNIQUE_ID_TB).enter_text(short_name)
+        add_subject_page.submit_subject()
+        message = fetch_(ERROR_MSG, from_(CLINIC_WITH_LONG_UID))
+        self.assertRegexpMatches(add_subject_page.get_error_message(), message)

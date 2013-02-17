@@ -1,5 +1,9 @@
 $(document).ready(function() {
-    $(".subject_field").attr("disabled", "disabled");
+    if (!$(".subject_field").val()) {
+        $(".subject_field").attr("disabled", "disabled");
+    } else {
+        $("#generate_id").attr("checked", false);
+    }
     $("#generate_id").click(function() {
         if($(this).is(":checked")) {
             $(".subject_field").attr("disabled", "disabled");
