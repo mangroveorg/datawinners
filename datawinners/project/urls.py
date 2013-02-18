@@ -11,7 +11,7 @@ from datawinners.project.views import  save_questionnaire, index, project_overvi
     edit_subject_questionaire, create_data_sender_and_web_user, edit_data_sender, project_has_data
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
-from project.edit_submission_view import edit_submission
+from datawinners.project.edit_submission_view import edit_submission
 
 js_info_dict = {
     'domain': 'djangojs',
