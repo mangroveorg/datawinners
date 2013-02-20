@@ -27,8 +27,9 @@ from datawinners.utils import get_organization, _get_email_template_name_for_res
 from datawinners.activitylog.models import UserActivityLog
 import json
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS
-from datawinners.entity.helper import send_email_to_data_sender, delete_datasender_for_trial_mode, \
+from datawinners.entity.helper import delete_datasender_for_trial_mode, \
     delete_datasender_from_project, delete_datasender_users_if_any, delete_entity_instance
+from datawinners.entity.import_data import send_email_to_data_sender
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import  TransportInfo

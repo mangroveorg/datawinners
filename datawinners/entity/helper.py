@@ -30,12 +30,6 @@ from datawinners.messageprovider.message_handler import\
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project.models import get_all_projects, Project
 from datawinners.submission.location import LocationBridge
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import  get_current_site
-from django.core.mail.message import EmailMessage
-from django.template.loader import render_to_string
-from django.utils.http import int_to_base36
-from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 import logging
 
 websubmission_logger = logging.getLogger("websubmission")
@@ -235,36 +229,3 @@ def add_imported_data_sender_to_trial_organization(request, imported_datasenders
             if ds['short_code'] in imported_datasenders:
                 add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
 
-def send_email_to_data_sender(user, language_code, request=None, type="activation"):
-    site = get_current_site(request)
-    ctx_dict = {
-        'domain': site.domain,
-        'uid': int_to_base36(user.id),
-        'user': user,
-        'token': default_token_generator.make_token(user),
-        'protocol': 'http',
-        'site': site,
-        }
-    types = dict({"activation":
-                dict({"subject":'activatedatasenderemail/activation_email_subject_for_data_sender_account_',
-                      "subject_param":False,
-                      "template": 'activatedatasenderemail/activation_email_for_data_sender_account_'}),
-                   "created_user":
-                dict({"subject": 'registration/created_user_email_subject_',
-                      "subject_param":site.domain,
-                      "template": 'registration/created_user_email_'})})
-    if type not in types:
-        return
-    action = types.get(type)
-    subject = render_to_string(action.get("subject") + language_code + '.txt')
-    subject = ''.join(subject.splitlines())
-    if action.get("subject_param"):
-        subject = subject % action.get("subject_param")
-
-    if request is not None:
-        ctx_dict.update({"creator_user": request.user.first_name})
-
-    message = render_to_string(action.get("template") + language_code + '.html', ctx_dict)
-    email = EmailMessage(subject, message, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
-    email.content_subtype = "html"
-    email.send()

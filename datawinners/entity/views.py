@@ -53,7 +53,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, IMPORTED_SUBJECTS, \
     DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
     ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM
-from datawinners.entity.helper import send_email_to_data_sender
+from datawinners.entity.import_data import send_email_to_data_sender
 import logging
 
 websubmission_logger = logging.getLogger("websubmission")

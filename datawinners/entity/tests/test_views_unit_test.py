@@ -9,7 +9,7 @@ from mangrove.datastore.entity import Entity
 from mock import  Mock, patch
 from accountmanagement.models import Organization, NGOUserProfile
 from entity.views import create_single_web_user
-from datawinners.entity.helper import send_email_to_data_sender
+from datawinners.entity.import_data import send_email_to_data_sender
 from django.core import mail
 from datawinners.tests.test_email_utils import set_email_settings
 
