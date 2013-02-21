@@ -1,9 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
-from alldata.views import  get_entity_list_by_type
-from alldata.views import smart_phone_instruction
-from alldata.views import index, reports
-from alldata.views import failed_submissions
+from datawinners.alldata.views import  get_entity_list_by_type
+from datawinners.alldata.views import smart_phone_instruction
+from datawinners.alldata.views import index, reports
+from datawinners.alldata.views import failed_submissions
 
 urlpatterns = patterns('',
     url(r'^alldata/$', index, name = "alldata_index"),

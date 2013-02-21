@@ -58,7 +58,7 @@ urlpatterns = patterns('',
     url(r'^project/questionnaire_web_preview$', questionnaire_web_preview, name="questionnaire_web_preview"),
     url(r'^project/has_submission/(?P<questionnaire_code>[^\\/]+?)/$', project_has_data),
 
-    url(r'^project/(?P<project_id>.+?)/results/(?P<questionnaire_code>.+?)$', submissions, name='project_results'),
+    url(r'^project/(?P<project_id>.+?)/results/(?P<questionnaire_code>.+?)$', submissions, name='submissions'),
     url(r'^project/(?P<project_id>.+?)/data/(?P<questionnaire_code>[^\\/]+?)/$', project_data, name="project_data"),
     (r'^project/export/data$', export_data),
     (r'^project/export/log$', export_log),

@@ -105,24 +105,6 @@ def generate_questionnaire_code(dbm):
 def get_org_id_by_user(user):
     return NGOUserProfile.objects.get(user=user).org_id
 
-def get_datasender_by_mobile(dbm, mobile):
-    rows = dbm.load_all_rows_in_view("datasender_by_mobile", startkey=[mobile], endkey=[mobile, {}])
-    return rows[0].key[1:] if len(rows) > 0 else [ugettext(NOT_AVAILABLE_DS), None]
-
-class DataSenderGetter(object):
-    def data_sender_by_email(self, org_id, email):
-        data_sender = User.objects.get(email=email)
-        reporter_id = NGOUserProfile.objects.filter(user=data_sender, org_id=org_id)[0].reporter_id or "admin"
-
-        return data_sender.get_full_name(), reporter_id, email
-
-    def list_data_sender(self, org_id):
-        ngo_user_profiles = list(NGOUserProfile.objects.filter(org_id=org_id).all())
-        return [DataSender(each.user.email, each.user.get_full_name(), each.reporter_id or "admin") for each in
-                ngo_user_profiles]
-
-
-
 def case_insensitive_lookup(search_key, dictionary):
     assert isinstance(dictionary, dict)
     for key, value in dictionary.items():
@@ -133,7 +115,6 @@ def case_insensitive_lookup(search_key, dictionary):
 def get_values_from_dict(dictionary):
     for key, value in dictionary.items():
         return value
-
 
 def _to_str(value, form_field=None):
     if value is None:
@@ -156,7 +137,6 @@ def get_formatted_time_string(time_val):
         return None
     return time_val.strftime('%d-%m-%Y %H:%M:%S')
 
-
 def remove_reporter(entity_type_list):
     removable = None
     for each in entity_type_list:
@@ -174,7 +154,6 @@ def get_preview_for_field(field):
     preview.update({"constraints": constraints})
     return preview
 
-
 def delete_project(manager, project, void=True):
     project_id, qid = project.id, project.qid
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=project_id))]
@@ -182,7 +161,6 @@ def delete_project(manager, project, void=True):
     [submission.void(void) for submission in get_submissions(manager, questionnaire.form_code, None, None)]
     questionnaire.void(void)
     project.set_void(manager, void)
-
 
 def get_activity_report_questions(dbm):
     reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
@@ -194,7 +172,6 @@ def get_activity_report_questions(dbm):
 
     return [activity_report_question]
 
-
 def get_subject_report_questions(dbm):
     entity_id_question = _create_entity_id_question(dbm, 'q1')
     reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
@@ -204,7 +181,6 @@ def get_subject_report_questions(dbm):
         label="Period being reported on", ddtype=reporting_period_dict_type,
         date_format="dd.mm.yyyy", event_time_field_flag=True)
     return [entity_id_question, activity_report_question]
-
 
 def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker, country_code=None):
     sms_client = SMSClient()

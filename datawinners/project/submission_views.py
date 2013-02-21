@@ -50,24 +50,23 @@ def submissions(request, project_id=None, questionnaire_code=None):
     filters = request.POST
     keyword = request.POST.get('keyword', '')
     org_id = helper.get_org_id_by_user(request.user)
-    analyzer = SubmissionList(form_model, manager, org_id, submission_type, filters, keyword)
+
+    submissions = SubmissionList(form_model, manager, org_id, submission_type, filters, keyword)
 
     if request.method == 'GET':
         header = SubmissionsPageHeader(form_model)
         result_dict = {"header_list": header.header_list,
                        "header_name_list": repr(encode_json(header.header_list)),
-                       "datasender_list": analyzer.get_data_senders(),
-                       "subject_list": analyzer.get_subjects()
-                       #                       "datasender_list": analysis_result.get_data_senders)
-                       #                       "subject_id": analysis_result.get_subjects)
+                       "datasender_list": submissions.get_data_senders(),
+                       "subject_list": submissions.get_subjects()
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
-
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
+
     if request.method == 'POST':
-        field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
-        analysis_result = AnalysisResult(field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(),
-            analyzer.get_subjects(), analyzer.get_default_sort_order())
+        field_values = SubmissionFormatter().get_formatted_values_for_list(submissions.get_raw_values())
+        analysis_result = AnalysisResult(field_values, submissions.get_analysis_statistics(), submissions.get_data_senders(),
+            submissions.get_subjects(), submissions.get_default_sort_order())
         performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
         if "id_list" in request.POST:
@@ -75,6 +74,7 @@ def submissions(request, project_id=None, questionnaire_code=None):
             return HttpResponse(_handle_delete_submissions(manager, request, project_infos.get("project").name))
         return HttpResponse(encode_json({'data_list': analysis_result.field_values,
                                          "statistics_result": analysis_result.statistics_result}))
+
 
 def _build_submission_analyzer_for_analysis(request, manager, form_model):
     #Analysis page wont hv any type since it has oly success submission data.

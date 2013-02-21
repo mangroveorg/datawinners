@@ -2,15 +2,14 @@ from collections import OrderedDict, defaultdict
 import abc
 from django.utils.translation import ugettext
 from datawinners.enhancer import field_enhancer
-from datawinners.main.utils import timebox, get_database_manager
+from datawinners.main.utils import timebox
 from mangrove.datastore.entity import get_by_short_code
-from datawinners.project.data_sender_helper import DataSenderHelper
+from datawinners.project.data_sender_helper import DataSenderHelper, combine_channels_for_tuple, get_data_sender
 from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import format_dt_for_submission_log_page, case_insensitive_lookup, _to_str, NOT_AVAILABLE
 from datawinners.project.submission_router import SubmissionRouter
 from datawinners.project.submission_utils.submission_filter import SubmissionFilter
 from mangrove.form_model.field import SelectField, IntegerField, GeoCodeField, DateField
-from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.types import is_sequence
 
 field_enhancer.enhance()
@@ -20,7 +19,6 @@ class SubmissionData(object):
 
     def __init__(self, form_model, manager, org_id, header, submission_type, filters, keyword=None):
         self.header_class = header
-        self.data_sender_helper = DataSenderHelper(manager, form_model.form_code)
         self.manager = manager
         self.form_model = form_model
         self.org_id = org_id
@@ -76,9 +74,12 @@ class SubmissionData(object):
             if each[-1] == submission.source:
                 return each
         else:
-            data_sender = self.data_sender_helper.get_data_sender(self.org_id, submission)
+            data_sender = get_data_sender(self.manager, self.org_id, submission)
             self._data_senders.append(data_sender)
             return data_sender
+
+    def get_data_senders(self):
+        return combine_channels_for_tuple(self._data_senders)
 
     def _get_rp_for_leading_part(self, submission):
         rp_field = self.form_model.event_time_question
@@ -178,7 +179,6 @@ class SubmissionData(object):
     def get_raw_values(self):
         return self._raw_values
 
-
     @timebox
     def get_analysis_statistics(self):
         if not self._raw_values: return []
@@ -205,10 +205,6 @@ class SubmissionData(object):
                 row[-1].append([option, count])
             list_result.append(row)
         return list_result
-
-
-    def get_data_senders(self):
-        return self.data_sender_helper.combine_channels_for_tuple(self._data_senders)
 
     def get_subjects(self):
         return sorted(self._subject_list)
