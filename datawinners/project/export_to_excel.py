@@ -5,7 +5,6 @@ from project.submission_list import SubmissionList
 from project.submission_router import SubmissionRouter
 from project.submission_utils.submission_formatter import SubmissionFormatter
 from project.views import XLS_TUPLE_FORMAT
-import helper
 import datawinners.utils as utils
 
 

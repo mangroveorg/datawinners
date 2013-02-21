@@ -2,6 +2,7 @@ import unittest
 from mock import patch, PropertyMock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
+from mangrove.transport import TransportInfo
 from mangrove.transport.submissions import Submission
 from project.analysis import Analysis
 
@@ -23,13 +24,12 @@ class TestAnalysis(unittest.TestCase):
 
 #    def test_should_populate_excel_data(self):
 #        with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
-#            with patch(
-#                "datawinners.project.submission_data.SubmissionData._get_submission_details") as get_submission_details:
-#                get_submissions.return_value = [Submission(self.manager, form_code="cli001",
-#                                                           values={"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc",
-#                                                                   "BG": "d"})]
-#                get_submission_details.return_value = (
-#                                                          'Tester Pune', 'admin', 'tester150411@gmail.com'), "12-03-2012", (
-#                                                          'Clinic-One', u'cli15'), "23-02-2012"
+#            with patch("datawinners.project.submission_data.SubmissionData._get_submission_details") as get_submission_details:
+#                get_submissions.return_value = [Submission(self.manager,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
+#                               form_code="cli001",values={'SY': 'ade', 'BG': 'c', 'NA': 'Mr. Admin', 'RD': '28.02.2011',
+#                                       'FA': '58', 'EID': 'cid001', 'RM': 'a', 'GPS': '79.2 20.34567'})]
+#                get_submission_details.return_value = ('Tester Pune', 'admin', 'tester150411@gmail.com'), "12-03-2012", ('Clinic-One', u'cli15'), "23-02-2012"
 #                analysis_data = Analysis(self.form_model, self.manager, "org_id", self.filters)
-#                analysis_data._init_excel_values()
+#                analysisList = analysis_data._init_excel_values()
+#                assert isinstance(analysisList,list)
+#                print "something"

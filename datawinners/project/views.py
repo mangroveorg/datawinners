@@ -397,7 +397,7 @@ def broadcast_message(request, project_id):
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': project,
                                          "project_links": make_project_links(project, questionnaire.form_code),
-                                         "form": form,
+                                         "form": form, "ong_country":organization.country,
                                          "success": None},
             context_instance=RequestContext(request))
     if request.method == 'POST':
@@ -415,13 +415,13 @@ def broadcast_message(request, project_id):
             return render_to_response('project/broadcast_message.html',
                     {'project': project,
                      "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                     'success': sms_sent},
+                     "ong_country":organization.country,'success': sms_sent},
                 context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',
                 {'project': project,
                  "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                 'success': None},
+                 'success': None, "ong_country":organization.country},
             context_instance=RequestContext(request))
 
 
