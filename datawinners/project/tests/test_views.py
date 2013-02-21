@@ -250,33 +250,33 @@ class TestProjectViews( unittest.TestCase ):
     def test_should_append_success_status_to_context_when_no_error(self):
         context = {}
         form = Mock( spec=ReporterRegistrationForm )
-        form.errors = [];
+        form.errors = []
         new_context = append_success_to_context( context, form )
         self.assertTrue( new_context['success'] )
 
     def test_should_append_failed_status_to_context_when_has_error(self):
         context = {}
         form = Mock( spec=ReporterRegistrationForm )
-        form.errors = [''];
+        form.errors = ['']
         new_context = append_success_to_context( context, form )
         self.assertFalse( new_context['success'] )
 
     def test_should_return_max_code_in_questionnaire(self):
         ddtype = Mock( spec=DataDictType )
         fields = [TextField( name="f1", code="q1", label="f1", ddtype=ddtype ),
-                         TextField( name="f2", code="q2", label="f2", ddtype=ddtype ),
-                         TextField( name="f3", code="q3", label="f3", ddtype=ddtype ),
-                         TextField( name="f3", code="q4", label="f4", ddtype=ddtype ),
-                         TextField( name="f5", code="q5", label="f5", ddtype=ddtype )]
+                  TextField( name="f2", code="q2", label="f2", ddtype=ddtype ),
+                  TextField( name="f3", code="q3", label="f3", ddtype=ddtype ),
+                  TextField( name="f3", code="q4", label="f4", ddtype=ddtype ),
+                  TextField( name="f5", code="q5", label="f5", ddtype=ddtype )]
         self.assertEqual( 5, get_max_code( fields ) )
 
     def test_should_return_one_in_questionnaire_without_start_with_q(self):
         ddtype = Mock( spec=DataDictType )
         fields = [TextField( name="f1", code="c1", label="f1", ddtype=ddtype ),
-                         TextField( name="f2", code="c2", label="f2", ddtype=ddtype ),
-                         TextField( name="f3", code="c3", label="f3", ddtype=ddtype ),
-                         TextField( name="f3", code="c4", label="f4", ddtype=ddtype ),
-                         TextField( name="f5", code="c5", label="f5", ddtype=ddtype )]
+                  TextField( name="f2", code="c2", label="f2", ddtype=ddtype ),
+                  TextField( name="f3", code="c3", label="f3", ddtype=ddtype ),
+                  TextField( name="f3", code="c4", label="f4", ddtype=ddtype ),
+                  TextField( name="f5", code="c5", label="f5", ddtype=ddtype )]
         self.assertEqual( 1, get_max_code( fields ) )
 
     def test_should_return_reporting_period_field_if_questionnaire_contains(self):
@@ -311,17 +311,14 @@ class TestProjectViews( unittest.TestCase ):
         request = Mock()
         request.GET.get.return_value = SubmissionRouter.SUCCESS
         request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
-                                                         "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
+        data, file_name = _prepare_export_data(SubmissionRouter.SUCCESS,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+                                                                                      "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date', 'Subject_name','Subject_id'], [1, 2,3, 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_success_log', file_name)
 
     def test_should_prepare_export_data_for_all_submission_log_tab(self):
-        request = Mock()
-        request.GET.get.return_value = SubmissionRouter.ALL
-        request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+        data, file_name = _prepare_export_data(SubmissionRouter.ALL,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
                                                          "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date','Status', 'Subject_name','Subject_id'], [1, 2 ,3, 4, 5, 6]]
 
@@ -329,30 +326,21 @@ class TestProjectViews( unittest.TestCase ):
         self.assertEqual('proj_name_all_log', file_name)
 
     def test_should_prepare_export_data_for_deleted_submission_log_tab(self):
-        request = Mock()
-        request.GET.get.return_value = SubmissionRouter.DELETED
-        request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+        data, file_name = _prepare_export_data(SubmissionRouter.DELETED,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
                                                          "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date','Status', 'Subject_name','Subject_id'], [1, 2 ,3, 4, 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_deleted_log', file_name)
 
     def test_should_prepare_export_data_for_error_submission_log_tab(self):
-        request = Mock()
-        request.GET.get.return_value = SubmissionRouter.ERROR
-        request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+        data, file_name = _prepare_export_data(SubmissionRouter.ERROR,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
                                                          "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date','Reply SMS', 'Subject_name','Subject_id'], [1, 2 ,3, '-', 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_error_log', file_name)
 
     def test_should_prepare_export_data_for_analysis_page(self):
-        request = Mock()
-        request.GET.get.return_value = None
-        request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Q4", "Q5"], [[0, 1, 2, 3, 4, 5]])
+        data, file_name = _prepare_export_data(None,'proj_name',["Submission ID", "Q1", "Q2", "Status", "Q4", "Q5"], [[0, 1, 2, 3, 4, 5]])
         expected = [['Q1', 'Q2', 'Status', 'Q4', 'Q5'], [1, 2, 3, 4, 5]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_analysis', file_name)

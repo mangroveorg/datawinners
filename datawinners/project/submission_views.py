@@ -187,15 +187,24 @@ def get_DB_manager_and_form_model(request):
 @timebox
 #export_submissions_for_analysis
 def export_data(request):
+    project_name = request.POST.get(u"project_name")
+    user = helper.get_org_id_by_user(request.user)
+    filters = request.POST
     form_model, manager = get_DB_manager_and_form_model(request)
-    return export_submissions_in_xls_for_analysis_page(request,form_model,manager)
+    return export_submissions_in_xls_for_analysis_page(filters,form_model,manager,user,project_name)
 
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
 @is_not_expired
 def export_log(request):
+    project_name = request.POST.get(u"project_name")
+    user = helper.get_org_id_by_user(request.user)
+    submission_type = request.GET.get('type')
+    filters = request.POST
+    keyword = request.POST.get('keyword', '')
+    filter_list = [submission_type,filters,keyword]
     form_model, manager = get_DB_manager_and_form_model(request)
-    return export_submissions_in_xls_for_submission_log(request,form_model,manager)
+    return export_submissions_in_xls_for_submission_log(filter_list,form_model,manager,user,project_name)
 
 

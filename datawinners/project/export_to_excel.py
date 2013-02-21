@@ -9,36 +9,41 @@ import helper
 import datawinners.utils as utils
 
 
-def export_submissions_in_xls_for_submission_log(request,form_model,manager):
-    analyzer = _build_submission_list_for_submission_log_page_export(request, manager, form_model)
-    formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format=XLS_TUPLE_FORMAT)
+def export_submissions_in_xls_for_submission_log(filter_list, form_model, manager,user,project_name):
+    submission_list = _build_submission_list_for_submission_log_page_export(filter_list, manager, form_model,user)
+    formatted_values = SubmissionFormatter().get_formatted_values_for_list(submission_list.get_raw_values(),
+                                                                           tuple_format=XLS_TUPLE_FORMAT)
     header_list = ExcelFileSubmissionHeader(form_model).header_list
-    exported_data, file_name = _prepare_export_data(request, header_list, formatted_values)
+    submission_type = filter_list[0]
+    exported_data, file_name = _prepare_export_data(submission_type,project_name, header_list, formatted_values)
     return _create_excel_response(exported_data, file_name)
 
-def _build_submission_list_for_submission_log_page_export(request, manager, form_model):
-    submission_type = request.GET.get('type')
-    filters = request.POST
-    keyword = request.POST.get('keyword', '')
-    submission_list = SubmissionList(form_model, manager, helper.get_org_id_by_user(request.user), submission_type,
-                                        filters,keyword)
+
+def _build_submission_list_for_submission_log_page_export(filter_list, manager, form_model,user):
+    submission_type = filter_list[0]
+    filters = filter_list[1]
+    keyword = filter_list[2]
+    submission_list = SubmissionList(form_model, manager, user, submission_type,
+                                     filters, keyword)
     submission_list._init_excel_values()
     return submission_list
 
-def export_submissions_in_xls_for_analysis_page(request,form_model,manager):
-    analyzer = _build_submission_analyzer_for_analysis_export(request, manager, form_model)
+
+def export_submissions_in_xls_for_analysis_page(filters, form_model, manager,user,project_name):
+    analyzer = _build_submission_analyzer_for_analysis_export(manager, form_model,filters,user)
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(),
-                                    tuple_format=XLS_TUPLE_FORMAT)
+                                                                           tuple_format=XLS_TUPLE_FORMAT)
     header_list = ExcelFileAnalysisHeader(form_model).header_list
-    exported_data, file_name = _prepare_export_data(request, header_list, formatted_values)
+    exported_data, file_name = _prepare_export_data(None,project_name, header_list, formatted_values)
     return _create_excel_response(exported_data, file_name)
 
-def _build_submission_analyzer_for_analysis_export(request, manager, form_model):
+
+def _build_submission_analyzer_for_analysis_export(manager, form_model,filters,user):
     #Analysis page wont hv any type since it has oly success submission data.
-    filters = request.POST
-    analysis = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), filters)
+    analysis = Analysis(form_model, manager, user, filters)
     analysis._init_excel_values()
     return analysis
+
 
 def _create_excel_response(raw_data_list, file_name):
     response = HttpResponse(mimetype="application/vnd.ms-excel")
@@ -50,12 +55,9 @@ def _create_excel_response(raw_data_list, file_name):
     return response
 
 
-def _prepare_export_data(request, header_list, formatted_values):
-    submission_log_type = request.GET.get('type', None)
-    exported_data = _get_exported_data(header_list, formatted_values, submission_log_type)
-
-    suffix = submission_log_type + '_log' if submission_log_type else 'analysis'
-    project_name = request.POST.get(u"project_name")
+def _prepare_export_data(submission_type,project_name,header_list, formatted_values):
+    exported_data = _get_exported_data(header_list, formatted_values, submission_type)
+    suffix = submission_type + '_log' if submission_type else 'analysis'
     file_name = "%s_%s" % (project_name, suffix)
     return exported_data, file_name
 

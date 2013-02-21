@@ -132,11 +132,11 @@ class SubmissionData(object):
             fields_ = []
             formatted_row = self._format_field_values_for_excel(row)
             for field in self.form_model.non_rp_fields_by():
-                fields_.extend(self.order_formatted_row(field.code, formatted_row))
+                fields_.extend(self._order_formatted_row(field.code, formatted_row))
             field_values.append(fields_)
         return field_values
 
-    def order_formatted_row(self,search_key,formatted_row):
+    def _order_formatted_row(self,search_key,formatted_row):
 
         for key, value in formatted_row.items():
             if search_key.lower()!='gps':
