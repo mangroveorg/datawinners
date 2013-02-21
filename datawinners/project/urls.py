@@ -4,7 +4,7 @@ from datawinners.entity.views import edit_subject, save_questionnaire, disassoci
 
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
-from project.submission_views import project_results, project_data, export_data, export_log
+from project.submission_views import submissions, project_data, export_data, export_log
 from project.views import questionnaire, web_questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, index, project_overview, subjects, registered_subjects, registered_datasenders, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, submissions, review_and_test, edit_subject_questionaire, project_has_data, edit_data_sender
 
 js_info_dict = {
@@ -58,7 +58,7 @@ urlpatterns = patterns('',
     url(r'^project/questionnaire_web_preview$', questionnaire_web_preview, name="questionnaire_web_preview"),
     url(r'^project/has_submission/(?P<questionnaire_code>[^\\/]+?)/$', project_has_data),
 
-    url(r'^project/(?P<project_id>.+?)/results/(?P<questionnaire_code>.+?)$', project_results, name='project_results'),
+    url(r'^project/(?P<project_id>.+?)/results/(?P<questionnaire_code>.+?)$', submissions, name='project_results'),
     url(r'^project/(?P<project_id>.+?)/data/(?P<questionnaire_code>[^\\/]+?)/$', project_data, name="project_data"),
     (r'^project/export/data$', export_data),
     (r'^project/export/log$', export_log),

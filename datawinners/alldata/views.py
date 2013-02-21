@@ -19,7 +19,7 @@ from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
 from datawinners.accountmanagement.views import is_not_expired
 from django.http import Http404
-from project.submission_views import project_data, project_results
+from project.submission_views import project_data, submissions
 
 REPORTER_ENTITY_TYPE = u'reporter'
 
@@ -37,7 +37,7 @@ def get_project_analysis_and_log_link(project, project_id, questionnaire_code):
     if project.state != ProjectState.INACTIVE:
         disabled = ""
         analysis = reverse(project_data, args=[project_id, questionnaire_code])
-        log = reverse(project_results, args=[project_id, questionnaire_code])
+        log = reverse(submissions, args=[project_id, questionnaire_code])
     return analysis, disabled, log
 
 

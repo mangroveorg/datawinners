@@ -43,7 +43,7 @@ performance_logger = logging.getLogger("performance")
 # TODO : TW_BLR : delete_submissions should be a separate view with a redirect to this page
 # TODO : TW_BLR : view should be renamed to submission logs
 # TODO : TW_BLR : should have separate view for ui and data
-def project_results(request, project_id=None, questionnaire_code=None):
+def submissions(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
     analyzer = _build_submission_list_for_submission_log_page(request, manager, form_model)
