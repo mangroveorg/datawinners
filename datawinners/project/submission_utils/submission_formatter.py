@@ -19,3 +19,4 @@ class SubmissionFormatter(object):
             else:
                 new_val = NULL
             yield new_val
+

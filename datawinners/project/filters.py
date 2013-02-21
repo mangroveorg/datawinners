@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from dateutil.parser import parse
-from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
+from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.form_model.field import DateField
 from mangrove.utils.types import is_sequence
 

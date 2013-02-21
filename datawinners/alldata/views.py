@@ -10,7 +10,7 @@ from datawinners.alldata.helper import get_all_project_for_user, get_visibility_
 from datawinners.settings import CRS_ORG_ID
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import ProjectState, Project
-from datawinners.project.views import project_overview, project_data, project_results
+from datawinners.project.views import project_overview
 from mangrove.datastore.entity import get_all_entities
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.form_model.form_model import FormModel
@@ -19,6 +19,7 @@ from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
 from datawinners.accountmanagement.views import is_not_expired
 from django.http import Http404
+from project.submission_views import project_data, project_results
 
 REPORTER_ENTITY_TYPE = u'reporter'
 
@@ -62,7 +63,7 @@ def get_project_info(manager, raw_project):
         qid=questionnaire_code,
         created=raw_project['value']['created'],
         type=raw_project['value']['project_type'],
-        link=(reverse(project_overview, args=[project_id])),
+        link=(reverse('project-overview', args=[project_id])),
         log=log, analysis=analysis, disabled=disabled,
         web_submission_link=web_submission_link,
         web_submission_link_disabled=web_submission_link_disabled,

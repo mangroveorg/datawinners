@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext
 from mangrove.form_model.field import DateField, GeoCodeField
 from mangrove.utils.json_codecs import encode_json
-from project.helper import DEFAULT_DATE_FORMAT
+from datawinners.project.helper import DEFAULT_DATE_FORMAT
 
 class Header(object):
     def __init__(self, form_model):
@@ -42,8 +42,7 @@ class Header(object):
         return (ugettext(subject_type).capitalize(), '')  if subject_type != 'reporter' else None
 
     def _fields_header(self):
-        return [(field.label, field.date_format if isinstance(field, DateField) else (
-            "gps" if isinstance(field, GeoCodeField)  else "")) for field in self._form_model.fields[1:] if
+        return [(field.label, field.date_format if isinstance(field, DateField) else ("gps" if isinstance(field, GeoCodeField)  else "")) for field in self._form_model.fields[1:] if
                   not field.is_event_time_field]
 
     def _id(self):

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
-from accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
@@ -13,13 +13,13 @@ from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCod
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
 from mangrove.utils.types import  is_sequence, sequence_to_str
-from enhancer import field_enhancer
+from datawinners.enhancer import field_enhancer
 import models
 from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
 from mangrove.transport import Request, TransportInfo
-from project.data_sender import DataSender
+from datawinners.project.data_sender import DataSender
 
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
 
@@ -50,8 +50,8 @@ def _create_entity_id_question(dbm, entity_id_question_code):
     entity_id_question = TextField(name=name, code=entity_id_question_code,
         label=name,
         entity_question_flag=True, ddtype=entity_data_dict_type,
-        constraints=[TextLengthConstraint(min=1, max=20)],
-        instruction=(ugettext('Answer must be %d characters maximum') % 20))
+        constraints=[TextLengthConstraint(min=1, max=12)],
+        instruction=(ugettext('Answer must be a word %d characters maximum') % 12))
     return entity_id_question
 
 
@@ -129,6 +129,10 @@ def case_insensitive_lookup(search_key, dictionary):
         if key.lower() == search_key.lower():
             return value
     return None
+
+def get_values_from_dict(dictionary):
+    for key, value in dictionary.items():
+        return value
 
 
 def _to_str(value, form_field=None):
@@ -244,17 +248,17 @@ def _translate_messages(error_dict, fields):
             error = error_dict[field.code][0]
             if type(field) == TextField:
                 text, code = error.split(' ')[1], field.code
-                errors[code] = [ugettext("Answer %s for question %s is longer than allowed.") % (text, code)]
+                errors[code] = [_("Answer %s for question %s is longer than allowed.") % (text, code)]
             if type(field) == IntegerField:
                 number, error_context = error.split(' ')[1], error.split(' ')[6]
                 errors[field.code] = [
-                    ugettext("Answer %s for question %s is %s than allowed.") % (number, field.code, _(error_context),)]
+                    _("Answer %s for question %s is %s than allowed.") % (number, field.code, _(error_context),)]
             if type(field) == GeoCodeField:
-                errors[field.code] = [ugettext(
+                errors[field.code] = [_(
                     "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315")]
             if type(field) == DateField:
                 answer, format = error.split(' ')[1], field.date_format
-                errors[field.code] = [ugettext("Answer %s for question %s is invalid. Expected date in %s format") % (
+                errors[field.code] = [_("Answer %s for question %s is invalid. Expected date in %s format") % (
                     answer, field.code, format)]
 
     return errors

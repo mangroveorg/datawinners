@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
-from accountmanagement.views import  session_not_expired
+from datawinners.accountmanagement.views import  session_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
@@ -26,7 +26,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions
 from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from project.helper import is_project_exist
+from datawinners.project.helper import is_project_exist
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type

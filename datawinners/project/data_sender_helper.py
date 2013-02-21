@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext
-from messageprovider.messages import SMS
-from project.data_sender import DataSender
-from project.helper import DataSenderGetter, NOT_AVAILABLE_DS
+from datawinners.messageprovider.messages import SMS
+from datawinners.project.data_sender import DataSender
+from datawinners.project.helper import DataSenderGetter, NOT_AVAILABLE_DS
 
 class DataSenderHelper(object):
     def __init__(self, dbm, form_code=None):

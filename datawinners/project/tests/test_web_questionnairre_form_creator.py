@@ -243,8 +243,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(django.forms.fields.FloatField, type(django_integer_field))
         self.assertEqual(django_integer_field.max_value, 100)
         self.assertEqual(django_integer_field.min_value, 18)
-        expected_help_text = u"Answer must be a number between 18-100."
-        self.assertEqual(django_integer_field.help_text, expected_help_text)
 
     def test_should_validate_gps_code_and_return_error_if_only_longitude_is_passed(self):
         mock = Mock()
@@ -305,8 +303,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
     def _get_integer_field(self):
         integer_field = IntegerField(name=self.field_name, code='ag', label=self.field_name,
-            ddtype=Mock(spec=DataDictType), constraints=[NumericRangeConstraint(min=18, max=100)],
-            instruction="Answer must be a number between 18-100.")
+            ddtype=Mock(spec=DataDictType), constraints=[NumericRangeConstraint(min=18, max=100)])
         return integer_field
 
 

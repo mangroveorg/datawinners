@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from mangrove.form_model.form_model import REPORTER
-from accountmanagement.views import  session_not_expired
+from datawinners.accountmanagement.views import  session_not_expired
 from datawinners.accountmanagement.views import is_not_expired
 from datawinners.main.utils import get_database_manager
 from datawinners.project.helper import  get_preview_for_field, hide_entity_question

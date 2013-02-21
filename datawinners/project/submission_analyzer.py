@@ -1,18 +1,18 @@
 #encoding=utf-8
 from collections import OrderedDict, defaultdict
 from django.utils.translation import ugettext
-from main.utils import timebox
+from datawinners.main.utils import timebox
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.form_model.field import SelectField
 from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import is_sequence
-from project.Header import Header, SubmissionsPageHeader
-from project.analysis_result import AnalysisResult
-from project.data_sender_helper import DataSenderHelper
-from project.filters import KeywordFilter
-from project.helper import  _to_str, case_insensitive_lookup, NOT_AVAILABLE, format_dt_for_submission_log_page
-from enhancer import field_enhancer
-from project.submission_utils.submission_formatter import SubmissionFormatter
+from datawinners.project.Header import Header, SubmissionsPageHeader
+from datawinners.project.analysis_result import AnalysisResult
+from datawinners.project.data_sender_helper import DataSenderHelper
+from datawinners.project.filters import KeywordFilter
+from datawinners.project.helper import  _to_str, case_insensitive_lookup, NOT_AVAILABLE, format_dt_for_submission_log_page
+from datawinners.enhancer import field_enhancer
+from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 
 
 NULL = '--'

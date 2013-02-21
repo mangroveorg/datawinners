@@ -15,7 +15,7 @@ from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from accountmanagement.views import  session_not_expired
+from datawinners.accountmanagement.views import session_not_expired
 from datawinners.project.view_models import ReporterEntity
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -24,7 +24,6 @@ from datawinners.entity.helper import process_create_data_sender_form, add_impor
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
-from data_sender_helper import DataSenderHelper
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException, MangroveException
 from mangrove.form_model import form_model
@@ -32,7 +31,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
 from mangrove.transport.facade import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.submissions import Submission, get_submissions, submission_count
+from mangrove.transport.submissions import  get_submissions, submission_count
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
@@ -43,36 +42,31 @@ import datawinners.utils as utils
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_info
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_database_manager, timebox
+from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
-from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
+from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import import_subjects_from_project_wizard, all_datasenders, save_questionnaire as subject_save_questionnaire, create_single_web_user
-from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
+from datawinners.entity.views import import_subjects_from_project_wizard, save_questionnaire as subject_save_questionnaire, create_single_web_user
+from datawinners.project.wizard_view import edit_project, reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
-from activitylog.models import UserActivityLog
 import helper
-import submission_analyser_helper
-import header_helper
-from project.Header import SubmissionsPageHeader, Header
-from project.analysis_result import AnalysisResult
+from project.utils import make_project_links, make_data_sender_links, make_subject_links
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
 from project.submission_analyzer import SubmissionAnalyzer
 from project.submission_router import SubmissionRouter, successful_submissions
 from project.submission_utils.submission_filter import SubmissionFilter
+from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
-    REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT, \
-    DELETED_DATA_SUBMISSION
-from project.submission_utils.submission_formatter import SubmissionFormatter
-from questionnaire.questionnaire_builder import QuestionnaireBuilder
+    REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 logger = logging.getLogger("django")
 performance_logger = logging.getLogger("performance")
@@ -89,57 +83,6 @@ GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 XLS_TUPLE_FORMAT = "%s (%s)"
-
-def make_project_links(project, questionnaire_code, reporter_id=None):
-    project_id = project.id
-    project_links = {'overview_link': reverse("project-overview", args=[project_id]),
-                     'activate_project_link': reverse('activate_project', args=[project_id]),
-                     'delete_project_link': reverse('delete_project', args=[project_id]),
-                     'questionnaire_preview_link': reverse("questionnaire_preview", args=[project_id]),
-                     'sms_questionnaire_preview_link': reverse("sms_questionnaire_preview", args=[project_id]),
-                     'current_language': translation.get_language()
-    }
-
-    if project.state == ProjectState.TEST or project.state == ProjectState.ACTIVE:
-        project_links['data_analysis_link'] = reverse("project_data", args=[project_id, questionnaire_code])
-        project_links['submission_log_link'] = reverse("project_results", args=[project_id, questionnaire_code])
-        project_links['finish_link'] = reverse("review_and_test", args=[project_id])
-        project_links['reminders_link'] = reverse("reminder_settings", args=[project_id])
-
-        project_links.update(make_subject_links(project_id))
-        project_links.update(make_data_sender_links(project_id, reporter_id))
-
-        project_links['sender_registration_preview_link'] = reverse('sender_registration_form_preview', args=[project_id])
-        project_links['sent_reminders_link'] = reverse('sent_reminders', args=[project_id])
-        project_links['setting_reminders_link'] = reverse('reminder_settings', args=[project_id])
-        project_links['broadcast_message_link'] = reverse('broadcast_message', args=[project_id])
-        if 'web' in project.devices:
-            project_links['test_questionnaire_link'] = reverse('web_questionnaire', args=[project_id])
-        else:
-            project_links['test_questionnaire_link'] = ""
-    if project.state == ProjectState.ACTIVE:
-        project_links['questionnaire_link'] = reverse('questionnaire', args=[project_id])
-
-    return project_links
-
-
-def make_subject_links(project_id):
-    subject_links = {'subjects_link': reverse('subjects', args=[project_id]),
-                     'subjects_edit_link': reverse('edit_subject_questionaire', args=[project_id]),
-                     'register_subjects_link': reverse('subject_questionnaire', args=[project_id]),
-                     'registered_subjects_link': reverse('registered_subjects', args=[project_id]),
-                     'subject_registration_preview_link': reverse('subject_registration_form_preview',
-                         args=[project_id])}
-    return subject_links
-
-
-def make_data_sender_links(project_id, reporter_id=None):
-    datasender_links = {'datasenders_link': reverse('all_datasenders'),
-                        'edit_datasender_link': reverse('edit_data_sender', args=[project_id, reporter_id]),
-                        'register_datasenders_link': reverse('create_data_sender_and_web_user', args=[project_id]),
-                        'registered_datasenders_link': reverse('registered_datasenders', args=[project_id])}
-    return datasender_links
-
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -186,11 +129,11 @@ def index(request):
     rows = models.get_all_projects(dbm=get_database_manager(request.user))
     for row in rows:
         project_id = row['value']['_id']
-        link = reverse(project_overview, args=[project_id])
+        link = reverse('project-overview', args=[project_id])
         if row['value']['state'] == 'Inactive':
-            link = reverse(edit_project, args=[project_id])
-        activate_link = reverse(activate_project, args=[project_id])
-        delete_link = reverse(delete_project, args=[project_id])
+            link = reverse('edit_project', args=[project_id])
+        activate_link = reverse('activate_project', args=[project_id])
+        delete_link = reverse('delete_project', args=[project_id])
         project = dict(delete_link=delete_link, name=row['value']['name'], created=row['value']['created'],
             type=row['value']['project_type'],
             link=link, activate_link=activate_link, state=row['value']['state'])
@@ -262,18 +205,6 @@ def project_overview(request, project_id=None):
         'questionnaire_code': questionnaire_code,
         }))
 
-
-def delete_submissions_by_ids(manager, request, submission_ids):
-    received_times = []
-    for submission_id in submission_ids:
-        submission = Submission.get(manager, submission_id)
-        received_times.append(datetime.datetime.strftime(submission.created, "%d/%m/%Y %X"))
-        submission.void()
-        if submission.data_record:
-            ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
-    return received_times
-
-
 def filter_by_keyword(keyword, raw_field_values):
     return KeywordFilter(keyword).filter(raw_field_values)
 
@@ -285,24 +216,6 @@ def _get_submissions_by_type(request, manager, form_model):
         return filter(lambda x: not x.status, submissions)
     return submissions
 
-def _handle_delete_submissions(manager, request, project_name):
-    submission_ids = json.loads(request.POST.get('id_list'))
-    received_times = delete_submissions_by_ids(manager, request, submission_ids)
-    if len(received_times):
-        UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=project_name,
-            detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
-        return encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
-    return encode_json({'error_message': ugettext("No records deleted"), 'success': False})
-
-def delete_submissions_by_ids(manager, request, submission_ids):
-    received_times = []
-    for submission_id in submission_ids:
-        submission = Submission.get(manager, submission_id)
-        received_times.append(datetime.datetime.strftime(submission.created, "%d/%m/%Y %X"))
-        submission.void()
-        if submission.data_record:
-            ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
-    return received_times
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET
@@ -350,39 +263,6 @@ def _to_name_id_string(value, delimiter='</br>'):
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
 
-def project_info(request, manager, form_model, project_id, questionnaire_code):
-    project = Project.load(manager.database, project_id)
-    is_summary_report = form_model.entity_defaults_to_reporter()
-    rp_field = form_model.event_time_question
-    in_trial_mode = _in_trial_mode(request)
-    has_rp = rp_field is not None
-    is_monthly_reporting = rp_field.date_format.find('dd') < 0 if has_rp else False
-
-    return {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
-            "is_monthly_reporting": is_monthly_reporting, "entity_type": form_model.entity_type[0].capitalize(),
-            'project_links': (make_project_links(project, questionnaire_code)), 'project': project,
-            'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
-            'reporting_period_question_text': rp_field.label if has_rp else None,
-            'has_reporting_period': has_rp,
-            'is_summary_report': is_summary_report}
-
-@login_required(login_url='/login')
-@session_not_expired
-@is_datasender
-@is_not_expired
-@timebox
-def project_data(request, project_id=None, questionnaire_code=None):
-    analysis_result = get_analysis_response(request, project_id, questionnaire_code)
-
-    if request.method == "GET":
-        return render_to_response('project/data_analysis.html',
-            analysis_result,
-            context_instance=RequestContext(request))
-
-    elif request.method == "POST":
-        return HttpResponse(analysis_result)
-
-
 def _build_submission_analyzer(request, manager, form_model, is_for_submission_page):
     submissions = _get_submissions_by_type(request, manager, form_model)
     filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
@@ -390,139 +270,6 @@ def _build_submission_analyzer(request, manager, form_model, is_for_submission_p
         request.POST.get('keyword', ''), is_for_submission_page=is_for_submission_page)
 
     return analyzer
-
-
-@login_required(login_url='/login')
-@session_not_expired
-@is_datasender
-@is_not_expired
-def project_results(request, project_id=None, questionnaire_code=None):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_question_code(manager, questionnaire_code)
-    analyzer = _build_submission_analyzer(request, manager, form_model, True)
-
-    if request.method == 'GET':
-#        data_sender_ever_submitted = DataSenderHelper(manager,
-#            form_model.form_code).get_all_data_senders_ever_submitted(helper.get_org_id_by_user(request.user))
-        header = SubmissionsPageHeader(form_model)
-        result_dict = {"header_list": header.header_list,
-                       "header_name_list": repr(encode_json(header.header_list)),
-#                       "datasender_list": map(lambda x: x.to_tuple(), data_sender_ever_submitted),
-                       "datasender_list": analyzer.get_data_senders(),
-                       "subject_list": analyzer.get_subjects()
-        }
-        result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
-
-        return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
-
-    if request.method == 'POST':
-        field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
-        analysis_result = AnalysisResult(field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(),
-            analyzer.get_subjects(), analyzer.get_default_sort_order())
-        performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-
-        if "id_list" in request.POST:
-            project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-            return HttpResponse(_handle_delete_submissions(manager, request, project_infos.get("project").name))
-        return HttpResponse(encode_json({'data_list': analysis_result.field_values,
-                                         "statistics_result": analysis_result.statistics_result}))
-
-# TODO : Figure out how to mock mangrove methods
-def get_form_model_by_question_code(manager, questionnaire_code):
-    return get_form_model_by_code(manager, questionnaire_code)
-
-
-def filter_submissions(form_model, manager, request):
-    return SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
-
-
-@timebox
-def get_analysis_response(request, project_id, questionnaire_code):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_question_code(manager, questionnaire_code)
-    filtered_submissions = filter_submissions(form_model, manager, request)
-    analysis_result = submission_analyser_helper.get_analysis_result_for_analysis_page(filtered_submissions, form_model, manager, request)
-
-    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-    if request.method == 'GET':
-        project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-        header_info = header_helper.header_info(form_model)
-
-        analysis_result_dict = analysis_result.analysis_result_dict
-        analysis_result_dict.update(project_infos)
-        analysis_result_dict.update(header_info)
-
-        return analysis_result_dict
-
-    elif request.method == 'POST':
-        return encode_json(
-            {'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result})
-
-def _get_exported_data(header, formatted_values, submission_log_type):
-    data = [header] + formatted_values
-    submission_id_col = 0
-    status_col = 3
-    reply_sms_col = 4
-    if submission_log_type in [SubmissionRouter.ALL, SubmissionRouter.DELETED]:
-        return [each[submission_id_col+1:reply_sms_col]+each[reply_sms_col+1:] for each in data]
-    elif submission_log_type in [SubmissionRouter.ERROR]:
-        return [each[submission_id_col+1:status_col]+each[status_col+1:] for each in data]
-    elif submission_log_type in [SubmissionRouter.SUCCESS]:
-        return [each[submission_id_col+1:status_col]+each[reply_sms_col+1:] for each in data]
-    else:
-        return [each[1:] for each in data]
-
-
-def _prepare_export_data(request, header_list, formatted_values):
-    submission_log_type = request.GET.get('type', None)
-    exported_data = _get_exported_data(header_list, formatted_values, submission_log_type)
-
-    suffix = submission_log_type + '_log' if submission_log_type else 'analysis'
-    project_name = request.POST.get(u"project_name")
-    file_name = "%s_%s" % (project_name, suffix)
-    return exported_data, file_name
-
-
-def _export_submissions_in_xls(request, is_for_submission_log_page):
-    questionnaire_code = request.POST.get('questionnaire_code')
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-
-    analyzer = _build_submission_analyzer(request, manager, form_model, is_for_submission_log_page)
-    formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(), tuple_format=XLS_TUPLE_FORMAT)
-
-    header_list = SubmissionsPageHeader(form_model).header_list if is_for_submission_log_page else Header(form_model).header_list
-
-    exported_data, file_name = _prepare_export_data(request, header_list, formatted_values)
-
-    return _create_excel_response(exported_data, file_name)
-
-
-@login_required(login_url='/login')
-@session_not_expired
-@is_datasender
-@is_not_expired
-@timebox
-def export_data(request):
-    return _export_submissions_in_xls(request, False)
-
-
-def _create_excel_response(raw_data_list, file_name):
-    response = HttpResponse(mimetype="application/vnd.ms-excel")
-    from django.template.defaultfilters import slugify
-
-    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (slugify(file_name),)
-    wb = utils.get_excel_sheet(raw_data_list, 'data_log')
-    wb.save(response)
-    return response
-
-@login_required(login_url='/login')
-@session_not_expired
-@is_datasender
-@is_not_expired
-def export_log(request):
-    return _export_submissions_in_xls(request, True)
-
 
 def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)
@@ -543,8 +290,7 @@ def _format_reminder(reminder, project_id):
     return dict(message=reminder.message, id=reminder.id,
         to=_format_string_for_reminder_table(reminder.remind_to),
         when=_make_reminder_mode(reminder.reminder_mode, reminder.day),
-        delete_link=reverse(delete_reminder, args=[project_id, reminder.id]))
-
+        delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
 
 def _format_reminders(reminders, project_id):
     return [_format_reminder(reminder, project_id) for reminder in reminders]
@@ -651,7 +397,7 @@ def broadcast_message(request, project_id):
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': project,
                                          "project_links": make_project_links(project, questionnaire.form_code),
-                                         "form": form, "ong_country":organization.country,
+                                         "form": form,
                                          "success": None},
             context_instance=RequestContext(request))
     if request.method == 'POST':
@@ -669,13 +415,13 @@ def broadcast_message(request, project_id):
             return render_to_response('project/broadcast_message.html',
                     {'project': project,
                      "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                     "ong_country":organization.country,'success': sms_sent},
+                     'success': sms_sent},
                 context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',
                 {'project': project,
                  "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                 'success': None, "ong_country":organization.country},
+                 'success': None},
             context_instance=RequestContext(request))
 
 
@@ -700,7 +446,7 @@ def activate_project(request, project_id=None):
     for submission in submissions:
         submission.void()
     UserActivityLog().log(request, action=ACTIVATED_PROJECT, project=project.name)
-    return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
+    return HttpResponseRedirect(reverse('project-overview', args=[project_id]))
 
 
 @login_required(login_url='/login')
@@ -960,6 +706,7 @@ def _get_form_context(form_code, project, questionnaire_form, manager, hide_link
 
     return form_context
 
+
 def get_form_model_and_template(manager, project, is_data_sender, subject):
     form_model = FormModel.get(manager, project.qid)
     template = 'project/data_submission.html' if is_data_sender else "project/web_questionnaire.html"
@@ -1068,6 +815,7 @@ def get_example_sms(fields):
 @session_not_expired
 @is_not_expired
 @is_project_exist
+# TODO : TW_BLR : what happens in case of POST?
 def questionnaire_preview(request, project_id=None, sms_preview=False):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
@@ -1309,10 +1057,8 @@ def edit_data_sender(request, project_id, reporter_id):
                  'project_links': links, 'in_trial_mode': _in_trial_mode(request)},
             context_instance=RequestContext(request))
 
-
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode
-
 
 def add_link(project):
     add_link_named_tuple = namedtuple("Add_Link", ['url', 'text'])

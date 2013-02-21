@@ -13,12 +13,14 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.submissions import Submission
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
-from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject_questionaire, create_data_sender_and_web_user, registered_datasenders, make_data_sender_links, add_link, all_datasenders, _prepare_export_data
-from datawinners.project.views import make_subject_links, subjects
+from datawinners.project.views import _format_reminders, make_data_sender_links, add_link
+from project.export_to_excel import _prepare_export_data
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
 from project.submission_router import SubmissionRouter
-from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, delete_submissions_by_ids, append_success_to_context, formatted_data
+from project.submission_views import delete_submissions_by_ids
+from project.utils import make_subject_links
+from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
 from project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field
 from questionnaire.questionnaire_builder import get_max_code
 
@@ -53,21 +55,21 @@ class TestProjectViews( unittest.TestCase ):
     def test_should_return_subject_project_links(self):
         project_id = "1"
         subject_links = make_subject_links(project_id)
-        self.assertEqual( reverse( subjects, args=[project_id] ), subject_links['subjects_link'] )
-        self.assertEqual( reverse( edit_subject_questionaire, args=[project_id] ), subject_links['subjects_edit_link'] )
-        self.assertEqual( reverse( subject_registration_form_preview, args=[project_id] ),
+        self.assertEqual( reverse( 'subjects', args=[project_id] ), subject_links['subjects_link'] )
+        self.assertEqual( reverse( 'edit_subject_questionaire', args=[project_id] ), subject_links['subjects_edit_link'] )
+        self.assertEqual( reverse( 'subject_registration_form_preview', args=[project_id] ),
                           subject_links['subject_registration_preview_link'] )
-        self.assertEqual( reverse( registered_subjects, args=[project_id] ), subject_links['registered_subjects_link'] )
+        self.assertEqual( reverse( 'registered_subjects', args=[project_id] ), subject_links['registered_subjects_link'] )
         self.assertEqual( reverse( 'subject_questionnaire', args=[project_id] ),
                           subject_links['register_subjects_link'] )
 
     def test_should_return_datasender_project_links(self):
         project_id = "1"
         datasender_links = make_data_sender_links( project_id )
-        self.assertEqual( reverse( all_datasenders ), datasender_links['datasenders_link'] )
-        self.assertEqual( reverse( create_data_sender_and_web_user, args=[project_id] ),
+        self.assertEqual( reverse( 'all_datasenders' ), datasender_links['datasenders_link'] )
+        self.assertEqual( reverse( 'create_data_sender_and_web_user', args=[project_id] ),
                           datasender_links['register_datasenders_link'] )
-        self.assertEqual( reverse( registered_datasenders, args=[project_id] ),
+        self.assertEqual( reverse( 'registered_datasenders', args=[project_id] ),
                           datasender_links['registered_datasenders_link'] )
 
 
@@ -84,7 +86,7 @@ class TestProjectViews( unittest.TestCase ):
         project.id = "1"
         project.entity_type = "reporter"
         link = add_link( project )
-        self.assertEqual( reverse( create_data_sender_and_web_user, args=[project.id] ), link.url )
+        self.assertEqual( reverse( 'create_data_sender_and_web_user', args=[project.id] ), link.url )
         self.assertEqual( 'Add a data sender', link.text )
 
     def test_should_get_correct_template_for_non_data_sender(self):
@@ -238,9 +240,9 @@ class TestProjectViews( unittest.TestCase ):
         submission = Mock( spec=Submission )
         submission.created = date( 2012, 8, 20 )
         submission.data_record = None
-        with patch( "project.views.Submission.get" ) as get_submission:
+        with patch( "project.submission_views.Submission.get" ) as get_submission:
             get_submission.return_value = submission
-            with patch( "project.views.get_organization" ) as get_organization:
+            with patch( "project.submission_views.get_organization" ) as get_organization:
                 get_organization.return_value = Mock( )
                 received_times = delete_submissions_by_ids( dbm, request, ['1'] )
                 self.assertEqual( ['20/08/2012 00:00:00'], received_times )
@@ -309,8 +311,9 @@ class TestProjectViews( unittest.TestCase ):
         request = Mock()
         request.GET.get.return_value = SubmissionRouter.SUCCESS
         request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Reply SMS", "Q4", "Q5"], [[0, 1, 2, 3, '-', 4, 5]])
-        expected = [['Q1', 'Q2', 'Q4', 'Q5'], [1, 2, 4, 5]]
+        data, file_name = _prepare_export_data(request, ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+                                                         "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
+        expected = [['DS_name', 'DS_id', 'Submission_date', 'Subject_name','Subject_id'], [1, 2,3, 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_success_log', file_name)
 
@@ -318,8 +321,10 @@ class TestProjectViews( unittest.TestCase ):
         request = Mock()
         request.GET.get.return_value = SubmissionRouter.ALL
         request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Reply SMS", "Q4", "Q5"], [[0, 1, 2, 3, '-', 4, 5]])
-        expected = [['Q1', 'Q2', 'Status', 'Q4', 'Q5'], [1, 2, 3, 4, 5]]
+        data, file_name = _prepare_export_data(request, ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+                                                         "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
+        expected = [['DS_name', 'DS_id', 'Submission_date','Status', 'Subject_name','Subject_id'], [1, 2 ,3, 4, 5, 6]]
+
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_all_log', file_name)
 
@@ -327,8 +332,9 @@ class TestProjectViews( unittest.TestCase ):
         request = Mock()
         request.GET.get.return_value = SubmissionRouter.DELETED
         request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Reply SMS", "Q4", "Q5"], [[0, 1, 2, 3, '-', 4, 5]])
-        expected = [['Q1', 'Q2', 'Status', 'Q4', 'Q5'], [1, 2, 3, 4, 5]]
+        data, file_name = _prepare_export_data(request, ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+                                                         "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
+        expected = [['DS_name', 'DS_id', 'Submission_date','Status', 'Subject_name','Subject_id'], [1, 2 ,3, 4, 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_deleted_log', file_name)
 
@@ -336,8 +342,9 @@ class TestProjectViews( unittest.TestCase ):
         request = Mock()
         request.GET.get.return_value = SubmissionRouter.ERROR
         request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(request, ["Submission ID", "Q1", "Q2", "Status", "Reply SMS", "Q4", "Q5"], [[0, 1, 2, 3, '-', 4, 5]])
-        expected = [['Q1', 'Q2', 'Reply SMS', 'Q4', 'Q5'], [1, 2, '-', 4, 5]]
+        data, file_name = _prepare_export_data(request, ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+                                                         "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
+        expected = [['DS_name', 'DS_id', 'Submission_date','Reply SMS', 'Subject_name','Subject_id'], [1, 2 ,3, '-', 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_error_log', file_name)
 

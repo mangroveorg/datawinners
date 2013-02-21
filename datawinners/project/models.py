@@ -144,6 +144,7 @@ class ReminderLog(DataObject):
         return  (' '.join(value.split('_'))).title()
 
 
+# TODO : TW_BLR : mpve this out of models
 class ProjectState(object):
     INACTIVE = 'Inactive'
     ACTIVE = 'Active'
