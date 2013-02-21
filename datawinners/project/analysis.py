@@ -1,12 +1,12 @@
-from datawinners.project import Header
 from datawinners.project.submission_data import SubmissionData
+from project.Header import Header
 from project.analysis_result import AnalysisResult
 from project.data_sender import DataSender
 from project.submission_utils.submission_formatter import SubmissionFormatter
 
 class Analysis(SubmissionData):
-    def __init__(self, form_model, manager, org_id, filters):
-        super(Analysis, self).__init__(form_model, manager, org_id, Header, None, filters)
+    def __init__(self, form_model, manager, org_id, filters, keyword=None):
+        super(Analysis, self).__init__(form_model, manager, org_id, Header, None, filters,keyword)
 #        self._init_excel_values()
 
     def get_leading_part(self):

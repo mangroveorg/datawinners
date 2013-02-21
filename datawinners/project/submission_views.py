@@ -23,6 +23,7 @@ import helper
 from project import submission_analyser_helper, header_helper
 from project.analysis import Analysis
 from project.export_to_excel import export_submissions_in_xls_for_analysis_page, export_submissions_in_xls_for_submission_log
+from project.submission_analyzer import SubmissionAnalyzer
 from project.submission_router import successful_submissions
 from project.submission_utils.submission_filter import SubmissionFilter
 from project.utils import   make_project_links
@@ -134,6 +135,7 @@ def delete_submissions_by_ids(manager, request, submission_ids):
 def project_data(request, project_id=None, questionnaire_code=None):
     analysis_result = get_analysis_response(request, project_id, questionnaire_code)
 
+
     if request.method == "GET":
         return render_to_response('project/data_analysis.html',
             analysis_result,
@@ -147,23 +149,42 @@ def get_analysis_response(request, project_id, questionnaire_code):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_question_code(manager, questionnaire_code)
     filtered_submissions = filter_submissions(form_model, manager, request)
-    analysis_result = submission_analyser_helper.get_analysis_result(filtered_submissions, form_model, manager, request)
+#    analysis_result = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user),
+#                                         filtered_submissions, request.POST.get('keyword', '')).analyse()
+    analysis_result = Analysis(form_model, manager, helper.get_org_id_by_user(request.user),
+                                         request.POST, request.POST.get('keyword', ''))
+    analysis_result._init_raw_values()
 
-    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
+    field_values = SubmissionFormatter().get_formatted_values_for_list(analysis_result.get_raw_values())
+    temp_field_values = repr(encode_json(field_values))
+#    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
+    performance_logger.info("Fetch %d submissions from couchdb." % len(temp_field_values))
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
         header_info = header_helper.header_info(form_model)
 
-        analysis_result_dict = analysis_result.analysis_result_dict
-        analysis_result_dict.update(project_infos)
-        analysis_result_dict.update(header_info)
-
-        return analysis_result_dict
+        analysis_dict = {
+            "datasender_list" : analysis_result.get_data_senders(),
+            "subject_list" : analysis_result.get_subjects(),
+            "default_sort_order": repr(encode_json(analysis_result.get_default_sort_order())),
+            "data_list": repr(encode_json(field_values)),
+            "statistics_result": repr(encode_json(analysis_result.get_analysis_statistics()))
+        }
+#        analysis_result_dict = analysis_result.analysis_result_dict
+        analysis_dict.update(project_infos)
+        analysis_dict.update(header_info)
+        return analysis_dict
+#        return analysis_result_dict
 
     elif request.method == 'POST':
+#        return encode_json(
+#            {'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result})
         return encode_json(
-            {'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result})
-
+            {
+                "data_list": repr(encode_json(field_values)),
+                "statistics_result": repr(encode_json(analysis_result.get_analysis_statistics()))
+            }
+        )
 
 # TODO : Figure out how to mock mangrove methods
 def get_form_model_by_question_code(manager, questionnaire_code):

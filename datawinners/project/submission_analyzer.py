@@ -93,6 +93,7 @@ class SubmissionAnalyzer(object):
     @timebox
     def _init_raw_values(self):
         leading_part = self._get_leading_part()
+        #raw_field_values has all values including answers with subjects and DS in tuple
         raw_field_values = [leading + remaining[1:] for leading, remaining in zip(leading_part,
             self._get_field_values())]
         self._raw_values = self.keyword_filter.filter(raw_field_values)
