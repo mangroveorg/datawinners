@@ -19,7 +19,11 @@ ENVIRONMENT_CONFIGURATIONS = {
     "production": "prod_local_settings.py",
     "ec2": "ec2_local_settings.py",
     "qa": "local_settings_qa.py",
+<<<<<<< HEAD
     "qa_supreme":"local_settings_qa.py"
+=======
+    "qa_supreme":"local_settings_qa_supreme.py"
+>>>>>>> 5af9f3b... Jags | Adding settings file  for QA CI SetUp
 }
 
 ENVIRONMENT_VES = {
