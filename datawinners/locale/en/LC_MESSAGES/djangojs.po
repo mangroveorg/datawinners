@@ -567,3 +567,6 @@ msgstr ""
 
 msgid "Enter local telephone number of %(limit)s digits or less"
 msgstr ""
+
+msgid "All %(entity)s"
+msgstr ""

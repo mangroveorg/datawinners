@@ -472,3 +472,6 @@ msgstr ""
 
 msgid "answer"
 msgstr ""
+
+msgid "All %(entity)s"
+msgstr ""

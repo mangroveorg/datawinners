@@ -58,7 +58,7 @@ $(document).ready(function () {
 //
 
     function buildFilters() {
-        var subject_options = {emptyText:gettext("All") + ' ' + entity_type};
+        var subject_options = {emptyText: interpolate(gettext('All %(entity)s'), {entity:entity_type}, true)};
         var data_sender_options = {emptyText:gettext("All Data Senders")};
         var filter_options = [subject_options, data_sender_options];
 

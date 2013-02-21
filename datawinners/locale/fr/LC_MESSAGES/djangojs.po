@@ -690,3 +690,6 @@ msgstr "La réponse doit être de 20 caractères au maximum"
 
 msgid "Enter local telephone number of %(limit)s digits or less"
 msgstr "Entrez un numéro de téléphone local de %(limit)s chifres ou moins"
+
+msgid "All %(entity)s"
+msgstr "Tout(es) les %(entity)s"
