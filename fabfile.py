@@ -188,7 +188,7 @@ def qa():
     env.warn_only = True
 
 def qa_supreme():
-    env.user = "datawiners"
+    env.user = "datawinners"
     env.hosts = ["172.18.9.1"]
     env.key_filename = ["/home/datawinners/.ssh/id_rsa"]
     env.warn_only = True
