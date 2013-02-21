@@ -41,12 +41,16 @@ performance_logger = logging.getLogger("performance")
 @is_datasender
 @is_not_expired
 # TODO : TW_BLR : delete_submissions should be a separate view with a redirect to this page
-# TODO : TW_BLR : view should be renamed to submission logs
 # TODO : TW_BLR : should have separate view for ui and data
 def submissions(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
+
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    analyzer = _build_submission_list_for_submission_log_page(request, manager, form_model)
+    submission_type = request.GET.get('type')
+    filters = request.POST
+    keyword = request.POST.get('keyword', '')
+    org_id = helper.get_org_id_by_user(request.user)
+    analyzer = SubmissionList(form_model, manager, org_id, submission_type, filters, keyword)
 
     if request.method == 'GET':
         header = SubmissionsPageHeader(form_model)
@@ -62,7 +66,8 @@ def submissions(request, project_id=None, questionnaire_code=None):
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
     if request.method == 'POST':
         field_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values())
-        analysis_result = AnalysisResult(field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(), analyzer.get_subjects(), analyzer.get_default_sort_order())
+        analysis_result = AnalysisResult(field_values, analyzer.get_analysis_statistics(), analyzer.get_data_senders(),
+            analyzer.get_subjects(), analyzer.get_default_sort_order())
         performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
         if "id_list" in request.POST:
@@ -71,16 +76,6 @@ def submissions(request, project_id=None, questionnaire_code=None):
         return HttpResponse(encode_json({'data_list': analysis_result.field_values,
                                          "statistics_result": analysis_result.statistics_result}))
 
-def _build_submission_list_for_submission_log_page(request, manager, form_model):
-    submission_type = request.GET.get('type')
-    filters = request.POST
-    keyword = request.POST.get('keyword', '')
-    submission_list = SubmissionList(form_model, manager, helper.get_org_id_by_user(request.user), submission_type, filters,
-        keyword)
-    submission_list._init_raw_values()
-    return submission_list
-
-
 def _build_submission_analyzer_for_analysis(request, manager, form_model):
     #Analysis page wont hv any type since it has oly success submission data.
     filters = request.POST
@@ -88,6 +83,7 @@ def _build_submission_analyzer_for_analysis(request, manager, form_model):
     analysis = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), filters,keyword)
     analysis._init_raw_values()
     return analysis
+
 
 def project_info(request, manager, form_model, project_id, questionnaire_code):
     project = Project.load(manager.database, project_id)
@@ -105,8 +101,10 @@ def project_info(request, manager, form_model, project_id, questionnaire_code):
             'has_reporting_period': has_rp,
             'is_summary_report': is_summary_report}
 
+
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode
+
 
 def _handle_delete_submissions(manager, request, project_name):
     submission_ids = json.loads(request.POST.get('id_list'))
@@ -116,6 +114,7 @@ def _handle_delete_submissions(manager, request, project_name):
             detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
         return encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
     return encode_json({'error_message': ugettext("No records deleted"), 'success': False})
+
 
 def delete_submissions_by_ids(manager, request, submission_ids):
     received_times = []
@@ -145,6 +144,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
     elif request.method == "POST":
         return HttpResponse(analysis_result)
 
+
 @timebox
 def get_analysis_response(request, project_id, questionnaire_code):
     manager = get_database_manager(request.user)
@@ -171,6 +171,7 @@ def get_analysis_response(request, project_id, questionnaire_code):
 def get_form_model_by_question_code(manager, questionnaire_code):
     return get_form_model_by_code(manager, questionnaire_code)
 
+
 def filter_submissions(form_model, manager, request):
     return SubmissionFilter(request.POST, form_model).filter(successful_submissions(manager, form_model.form_code))
 
@@ -196,7 +197,7 @@ def export_data(request):
     keyword = request.POST.get('keyword', '')
     filter_list = [submission_type,filters,keyword]
     form_model, manager = get_DB_manager_and_form_model(request)
-    return export_submissions_in_xls_for_analysis_page(filter_list,form_model,manager,user,project_name)
+    return export_submissions_in_xls_for_analysis_page(filter_list, form_model, manager, user, project_name)
 
 @login_required(login_url='/login')
 @session_not_expired
@@ -208,8 +209,8 @@ def export_log(request):
     submission_type = request.GET.get('type')
     filters = request.POST
     keyword = request.POST.get('keyword', '')
-    filter_list = [submission_type,filters,keyword]
+    filter_list = [submission_type, filters, keyword]
     form_model, manager = get_DB_manager_and_form_model(request)
-    return export_submissions_in_xls_for_submission_log(filter_list,form_model,manager,user,project_name)
+    return export_submissions_in_xls_for_submission_log(filter_list, form_model, manager, user, project_name)
 
 
