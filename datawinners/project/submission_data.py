@@ -4,7 +4,7 @@ from django.utils.translation import ugettext
 from datawinners.enhancer import field_enhancer
 from datawinners.main.utils import timebox
 from mangrove.datastore.entity import get_by_short_code
-from datawinners.project.data_sender_helper import DataSenderHelper, combine_channels_for_tuple, get_data_sender
+from datawinners.project.data_sender_helper import  combine_channels_for_tuple, get_data_sender
 from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import format_dt_for_submission_log_page, case_insensitive_lookup, _to_str, NOT_AVAILABLE
 from datawinners.project.submission_router import SubmissionRouter
@@ -25,9 +25,9 @@ class SubmissionData(object):
         self._data_senders = []
         self._subject_list = []
         self.keyword_filter = KeywordFilter(keyword if keyword else '')
-        self.submissions = self._get_submissions_by_type(manager, form_model, submission_type)
-        self.filtered_submissions = SubmissionFilter(filters, form_model).filter(self.submissions)
-
+        submissions = self._get_submissions_by_type(manager, form_model, submission_type)
+        self.filtered_submissions = SubmissionFilter(filters, form_model).filter(submissions)
+        self._init_values()
 
     def _get_submissions_by_type(self, manager, form_model, submission_type):
         submissions = SubmissionRouter().route(submission_type)(manager, form_model.form_code)
@@ -35,28 +35,14 @@ class SubmissionData(object):
             return filter(lambda x: not x.status, submissions)
         return submissions
 
-    @timebox
-    @abc.abstractmethod
-    def _init_raw_values(self):
-        return
+    def _init_values(self):
+        leading_part = self.get_leading_part()
+        raw_field_values = [leading + remaining[1:] for leading, remaining in
+                            zip(leading_part, self._get_field_values())]
 
-    def populate_submission_data(self, leading_part):
-        raw_field_values = [leading + remaining[1:] for leading, remaining in zip(leading_part,
-            self._get_field_values())]
         self._raw_values = self.keyword_filter.filter(raw_field_values)
         if leading_part:
             self.leading_part_length = len(leading_part[0])
-            self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in
-                                          self._raw_values]
-
-    def populate_submission_data_for_excel(self, leading_part):
-        raw_field_values = [leading + remaining[1:] for leading, remaining in zip(leading_part,
-            self._get_field_values_for_excel())]
-        self._raw_values = self.keyword_filter.filter(raw_field_values)
-        if leading_part:
-            self.leading_part_length = len(leading_part[0])
-            self.filtered_leading_part = [raw_value_row[:self.leading_part_length] for raw_value_row in
-                                          self._raw_values]
 
     def _get_submission_details(self, submission):
         data_sender = self._get_data_sender(submission)
@@ -64,10 +50,6 @@ class SubmissionData(object):
         rp = self._get_rp_for_leading_part(submission)
         subject = self._get_subject_for_leading_part(submission)
         return data_sender, rp, subject, submission_date
-
-    @abc.abstractmethod
-    def get_leading_part(self):
-        return
 
     def _get_data_sender(self, submission):
         for each in self._data_senders:
@@ -113,68 +95,15 @@ class SubmissionData(object):
     def _get_translated_submission_status(self, status):
         return ugettext('Success') if status else ugettext('Error')
 
-
-    @timebox
-    def _get_field_values(self):
-        submission_values = [(submission.form_model_revision, submission.values) for submission in self.filtered_submissions]
-        field_values = []
-        for row in submission_values:
-            self._replace_option_with_real_answer_value(row)
-            fields_ = [case_insensitive_lookup(field.code, row[-1]) for field in self.form_model.non_rp_fields_by()]
-            field_values.append(fields_)
-
-        return field_values
-
-    @timebox
-    def _get_field_values_for_excel(self):
-        submission_values = [(submission.form_model_revision, submission.values) for submission in self.filtered_submissions]
-        field_values = []
-        for row in submission_values:
-            fields_ = []
-            formatted_row = self._format_field_values_for_excel(row)
-            for field in self.form_model.non_rp_fields_by():
-                fields_.extend(self._order_formatted_row(field.code, formatted_row))
-            field_values.append(fields_)
-        return field_values
-
-    def _order_formatted_row(self,search_key,formatted_row):
-
+    def _order_formatted_row(self, search_key, formatted_row):
         for key, value in formatted_row.items():
-            if search_key.lower()!='gps':
-                if key.lower()==search_key.lower():
+            if search_key.lower() != 'gps':
+                if key.lower() == search_key.lower():
                     return [value]
                 else:
                     pass
             else:
-                return [formatted_row['gps_lat'],formatted_row['gps_long']]
-
-    def _format_field_values_for_excel(self, row):
-        changed_row = dict()
-        for question_code, question_value in row[-1].iteritems():
-            field = self.form_model.get_field_by_code_and_rev(question_code, row[0])
-            if isinstance(field, SelectField):
-                row[-1][question_code] = field.get_option_value_list(question_value)
-                changed_row[question_code] = row[-1][question_code]
-            elif isinstance(field, IntegerField):
-                row[-1][question_code] = float(question_value)
-                changed_row[question_code] = row[-1][question_code]
-            elif isinstance(field, GeoCodeField):
-                formatted_question_value = question_value.replace(',',' ')
-                changed_row['gps_lat'] = formatted_question_value.split(' ')[0]
-                changed_row['gps_long'] = formatted_question_value.split(' ')[1]
-            elif isinstance(field,DateField):
-                row[-1][question_code] = _to_str(question_value,field)
-                changed_row[question_code] = row[-1][question_code]
-            else:
-                changed_row[question_code] = question_value
-        return changed_row
-
-    def _replace_option_with_real_answer_value(self, row):
-        assert isinstance(row[-1], dict)
-        for question_code, question_value in row[-1].iteritems():
-            field = self.form_model.get_field_by_code_and_rev(question_code, row[0])
-            if isinstance(field, SelectField):
-                row[-1][question_code] = field.get_option_value_list(question_value)
+                return [formatted_row['gps_lat'], formatted_row['gps_long']]
 
     def get_raw_values(self):
         return self._raw_values
@@ -229,3 +158,12 @@ class SubmissionData(object):
                     result[each.name]['choices'][option['text']] = 0
         return result
 
+
+    @abc.abstractmethod
+    def get_leading_part(self):
+        return
+
+    @timebox
+    @abc.abstractmethod
+    def _get_field_values(self):
+        pass

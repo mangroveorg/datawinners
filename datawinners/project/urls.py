@@ -4,8 +4,8 @@ from datawinners.entity.views import edit_subject, save_questionnaire, disassoci
 
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
-from project.submission_views import submissions, project_data, export_data, export_log
-from project.views import questionnaire, web_questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, index, project_overview, subjects, registered_subjects, registered_datasenders, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, submissions, review_and_test, edit_subject_questionaire, project_has_data, edit_data_sender
+from datawinners.project.submission_views import submissions, project_data, export_data, export_log
+from datawinners.project.views import questionnaire, web_questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, index, project_overview, subjects, registered_subjects, registered_datasenders, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, review_and_test, edit_subject_questionaire, project_has_data, edit_data_sender
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -48,7 +48,7 @@ urlpatterns = patterns('',
     url(r'^project/activate/(?P<project_id>.+?)/$', activate_project, name="activate_project"),
     url(r'^project/delete/(?P<project_id>.+?)/$', delete_project, name="delete_project"),
     (r'^project/undelete/(?P<project_id>.+?)/$', undelete_project),
-    (r'^project/datarecords/filter$', submissions),
+#    (r'^project/datarecords/filter$', submissions),
     url(r'^project/finish/(?P<project_id>.+?)/$', review_and_test, name='review_and_test'),
     url(r'^project/edit_subjects/(?P<project_id>.+?)/$', edit_subject_questionaire, name = "edit_subject_questionaire"),
     url(r'^project/sms_preview$', sms_preview, name="sms_preview"),

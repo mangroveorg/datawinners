@@ -8,7 +8,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import is_sequence
 from datawinners.project.Header import Header, SubmissionsPageHeader
 from datawinners.project.analysis_result import AnalysisResult
-from datawinners.project.data_sender_helper import DataSenderHelper
+from datawinners.project.data_sender_helper import DataSenderHelper, get_data_sender
 from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import  _to_str, case_insensitive_lookup, NOT_AVAILABLE, format_dt_for_submission_log_page
 from datawinners.enhancer import field_enhancer
@@ -41,7 +41,7 @@ class SubmissionAnalyzer(object):
         subject_lists = self.get_subjects()
         default_sort_order = self.get_default_sort_order()
 
-        return AnalysisResult(field_values, analysis_statistics, data_sender_list, subject_lists,default_sort_order)
+        return AnalysisResult(field_values, analysis_statistics, data_sender_list, subject_lists, default_sort_order)
 
     def get_raw_values(self):
         return self._raw_values
@@ -149,7 +149,7 @@ class SubmissionAnalyzer(object):
             if each[-1] == submission.source:
                 return each
         else:
-            data_sender = self.data_sender_helper.get_data_sender(self.org_id, submission)
+            data_sender = get_data_sender(self.manager, self.org_id, submission)
             self._data_senders.append(data_sender)
             return data_sender
 

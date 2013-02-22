@@ -20,16 +20,19 @@ from datawinners.main.utils import get_database_manager, timebox
 from datawinners.project.models import Project
 from datawinners.accountmanagement.views import is_not_expired
 import helper
-from project import submission_analyser_helper, header_helper
+from project import header_helper
+from project.ExcelHeader import ExcelFileAnalysisHeader, ExcelFileSubmissionHeader
 from project.analysis import Analysis
-from project.export_to_excel import export_submissions_in_xls_for_analysis_page, export_submissions_in_xls_for_submission_log
-from project.submission_analyzer import SubmissionAnalyzer
+from project.analysis_for_excel import AnalysisForExcel
+from project.export_to_excel import _prepare_export_data, _create_excel_response
+from project.submission_list_for_excel import SubmissionListForExcel
 from project.submission_router import successful_submissions
 from project.submission_utils.submission_filter import SubmissionFilter
 from project.utils import   make_project_links
 from project.Header import SubmissionsPageHeader
 from project.analysis_result import AnalysisResult
 from datawinners.activitylog.models import UserActivityLog
+from project.views import XLS_TUPLE_FORMAT
 from submission_list import SubmissionList
 from datawinners.common.constant import   DELETED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
@@ -65,7 +68,8 @@ def submissions(request, project_id=None, questionnaire_code=None):
 
     if request.method == 'POST':
         field_values = SubmissionFormatter().get_formatted_values_for_list(submissions.get_raw_values())
-        analysis_result = AnalysisResult(field_values, submissions.get_analysis_statistics(), submissions.get_data_senders(),
+        analysis_result = AnalysisResult(field_values, submissions.get_analysis_statistics(),
+            submissions.get_data_senders(),
             submissions.get_subjects(), submissions.get_default_sort_order())
         performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
@@ -76,13 +80,47 @@ def submissions(request, project_id=None, questionnaire_code=None):
                                          "statistics_result": analysis_result.statistics_result}))
 
 
-def _build_submission_analyzer_for_analysis(request, manager, form_model):
+@login_required(login_url='/login')
+@session_not_expired
+@is_datasender
+@is_not_expired
+@timebox
+def project_data(request, project_id=None, questionnaire_code=None):
+    analysis_result = get_analysis_response(request, project_id, questionnaire_code)
+    if request.method == "GET":
+        return render_to_response('project/data_analysis.html',
+            analysis_result,
+            context_instance=RequestContext(request))
+    elif request.method == "POST":
+        return HttpResponse(analysis_result)
+
+
+@timebox
+def get_analysis_response(request, project_id, questionnaire_code):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_question_code(manager, questionnaire_code)
+
     #Analysis page wont hv any type since it has oly success submission data.
     filters = request.POST
     keyword = request.POST.get('keyword', '')
-    analysis = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), filters,keyword)
-    analysis._init_raw_values()
-    return analysis
+    analysis = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), filters, keyword)
+    analysis_result = analysis.analyse()
+
+    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
+    if request.method == 'GET':
+        project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
+        header_info = header_helper.header_info(form_model)
+        analysis_result_dict = analysis_result.analysis_result_dict
+        analysis_result_dict.update(project_infos)
+        analysis_result_dict.update(header_info)
+        return analysis_result_dict
+
+    elif request.method == 'POST':
+        return encode_json(
+            {
+                'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result
+            }
+        )
 
 
 def project_info(request, manager, form_model, project_id, questionnaire_code):
@@ -127,47 +165,6 @@ def delete_submissions_by_ids(manager, request, submission_ids):
     return received_times
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_datasender
-@is_not_expired
-@timebox
-def project_data(request, project_id=None, questionnaire_code=None):
-    analysis_result = get_analysis_response(request, project_id, questionnaire_code)
-
-
-    if request.method == "GET":
-        return render_to_response('project/data_analysis.html',
-            analysis_result,
-            context_instance=RequestContext(request))
-
-    elif request.method == "POST":
-        return HttpResponse(analysis_result)
-
-
-@timebox
-def get_analysis_response(request, project_id, questionnaire_code):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_question_code(manager, questionnaire_code)
-    analysis = _build_submission_analyzer_for_analysis(request,manager,form_model)
-    analysis_result = analysis.analyse()
-    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-    if request.method == 'GET':
-        project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-        header_info = header_helper.header_info(form_model)
-        analysis_result_dict = analysis_result.analysis_result_dict
-        analysis_result_dict.update(project_infos)
-        analysis_result_dict.update(header_info)
-        return analysis_result_dict
-
-    elif request.method == 'POST':
-        return encode_json(
-            {
-                'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result
-            }
-        )
-
-# TODO : Figure out how to mock mangrove methods
 def get_form_model_by_question_code(manager, questionnaire_code):
     return get_form_model_by_code(manager, questionnaire_code)
 
@@ -191,13 +188,19 @@ def get_DB_manager_and_form_model(request):
 #export_submissions_for_analysis
 def export_data(request):
     project_name = request.POST.get(u"project_name")
-    user = helper.get_org_id_by_user(request.user)
-    submission_type = None
     filters = request.POST
     keyword = request.POST.get('keyword', '')
-    filter_list = [submission_type,filters,keyword]
+
+    user = helper.get_org_id_by_user(request.user)
     form_model, manager = get_DB_manager_and_form_model(request)
-    return export_submissions_in_xls_for_analysis_page(filter_list, form_model, manager, user, project_name)
+
+    submissions = AnalysisForExcel(form_model, manager, user, filters, keyword)
+    formatted_values = SubmissionFormatter().get_formatted_values_for_list(submissions.get_raw_values(),
+        tuple_format=XLS_TUPLE_FORMAT)
+    header_list = ExcelFileAnalysisHeader(form_model).header_list
+    exported_data, file_name = _prepare_export_data(None, project_name, header_list, formatted_values)
+    return _create_excel_response(exported_data, file_name)
+
 
 @login_required(login_url='/login')
 @session_not_expired
@@ -205,12 +208,16 @@ def export_data(request):
 @is_not_expired
 def export_log(request):
     project_name = request.POST.get(u"project_name")
-    user = helper.get_org_id_by_user(request.user)
     submission_type = request.GET.get('type')
     filters = request.POST
     keyword = request.POST.get('keyword', '')
-    filter_list = [submission_type, filters, keyword]
+
+    user = helper.get_org_id_by_user(request.user)
     form_model, manager = get_DB_manager_and_form_model(request)
-    return export_submissions_in_xls_for_submission_log(filter_list, form_model, manager, user, project_name)
 
-
+    submission_list = SubmissionListForExcel(form_model, manager, user, submission_type, filters, keyword)
+    formatted_values = SubmissionFormatter().get_formatted_values_for_list(submission_list.get_raw_values(),
+        tuple_format=XLS_TUPLE_FORMAT)
+    header_list = ExcelFileSubmissionHeader(form_model).header_list
+    exported_data, file_name = _prepare_export_data(submission_type, project_name, header_list, formatted_values)
+    return _create_excel_response(exported_data, file_name)

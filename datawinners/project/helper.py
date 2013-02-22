@@ -101,7 +101,6 @@ def generate_questionnaire_code(dbm):
             break
     return code
 
-
 def get_org_id_by_user(user):
     return NGOUserProfile.objects.get(user=user).org_id
 

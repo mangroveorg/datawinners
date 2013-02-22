@@ -1,48 +1,10 @@
 from django.http import HttpResponse
-from project.ExcelHeader import ExcelFileSubmissionHeader, ExcelFileAnalysisHeader
-from project.analysis import Analysis
-from project.submission_list_for_excel import SubmissionListForExcel
+from mangrove.form_model.field import SelectField, IntegerField, GeoCodeField, DateField
+
+from project.helper import _to_str
 from project.submission_router import SubmissionRouter
-from project.submission_utils.submission_formatter import SubmissionFormatter
-from project.views import XLS_TUPLE_FORMAT
+
 import datawinners.utils as utils
-
-
-def export_submissions_in_xls_for_submission_log(filter_list, form_model, manager, user, project_name):
-    submission_list = _build_submission_list_for_submission_log_page_export(filter_list, manager, form_model, user)
-    formatted_values = SubmissionFormatter().get_formatted_values_for_list(submission_list.get_raw_values(),
-        tuple_format=XLS_TUPLE_FORMAT)
-    header_list = ExcelFileSubmissionHeader(form_model).header_list
-    submission_type = filter_list[0]
-    exported_data, file_name = _prepare_export_data(submission_type, project_name, header_list, formatted_values)
-    return _create_excel_response(exported_data, file_name)
-
-
-def _build_submission_list_for_submission_log_page_export(filter_list, manager, form_model, user):
-    submission_type = filter_list[0]
-    filters = filter_list[1]
-    keyword = filter_list[2]
-    submission_list = SubmissionListForExcel(form_model, manager, user, submission_type, filters, keyword)
-    return submission_list
-
-
-def export_submissions_in_xls_for_analysis_page(filters, form_model, manager, user, project_name):
-    analyzer = _build_submission_analyzer_for_analysis_export(manager, form_model, filters, user)
-    formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(),
-        tuple_format=XLS_TUPLE_FORMAT)
-    header_list = ExcelFileAnalysisHeader(form_model).header_list
-    exported_data, file_name = _prepare_export_data(None, project_name, header_list, formatted_values)
-    return _create_excel_response(exported_data, file_name)
-
-
-def _build_submission_analyzer_for_analysis_export(manager, form_model, filter_list, user):
-    #Analysis page wont hv any type since it has oly success submission data.
-    filters = filter_list[1]
-    keyword = filter_list[2]
-    analysis = Analysis(form_model, manager, user, filters,keyword)
-    analysis._init_excel_values()
-    return analysis
-
 
 def _create_excel_response(raw_data_list, file_name):
     response = HttpResponse(mimetype="application/vnd.ms-excel")
@@ -75,3 +37,25 @@ def _get_exported_data(header, formatted_values, submission_log_type):
     else:
         #for analysis page
         return [each[1:] for each in data]
+
+
+def format_field_values_for_excel(row, form_model):
+    changed_row = dict()
+    for question_code, question_value in row[-1].iteritems():
+        field = form_model.get_field_by_code_and_rev(question_code, row[0])
+        if isinstance(field, SelectField):
+            row[-1][question_code] = field.get_option_value_list(question_value)
+            changed_row[question_code] = row[-1][question_code]
+        elif isinstance(field, IntegerField):
+            row[-1][question_code] = float(question_value)
+            changed_row[question_code] = row[-1][question_code]
+        elif isinstance(field, GeoCodeField):
+            formatted_question_value = question_value.replace(',', ' ')
+            changed_row['gps_lat'] = formatted_question_value.split(' ')[0]
+            changed_row['gps_long'] = formatted_question_value.split(' ')[1]
+        elif isinstance(field, DateField):
+            row[-1][question_code] = _to_str(question_value, field)
+            changed_row[question_code] = row[-1][question_code]
+        else:
+            changed_row[question_code] = question_value
+    return changed_row

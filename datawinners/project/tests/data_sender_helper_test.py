@@ -7,7 +7,7 @@ from mangrove.transport.submissions import Submission
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from datawinners.messageprovider.messages import SMS, WEB, SMART_PHONE
 from datawinners.project.data_sender import DataSender
-from datawinners.project.data_sender_helper import DataSenderHelper
+from datawinners.project.data_sender_helper import DataSenderHelper, get_data_sender
 from datawinners.project.helper import  NOT_AVAILABLE_DS
 from datawinners.tests.test_data_utils import register, create_data_dict
 
@@ -21,31 +21,31 @@ class TestDataSenderHelper(MangroveTestCase):
 
     def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_sms(self):
         submission = Submission(self.manager, TransportInfo("sms", "123123", "destination"))
-        data_sender = DataSenderHelper(self.manager).get_data_sender(self.org_id, submission)
+        data_sender = get_data_sender(self.manager,self.org_id, submission)
 
         self.assertEqual((NOT_AVAILABLE_DS, None, '123123'), data_sender)
 
     def test_should_return_data_sender_information_send_from_web(self):
         submission = Submission(self.manager, TransportInfo("web", "tester150411@gmail.com", "destination"))
-        data_sender = DataSenderHelper(self.manager).get_data_sender(self.org_id, submission)
+        data_sender = get_data_sender(self.manager,self.org_id, submission)
 
         self.assertEqual(("Tester Pune", "admin", "tester150411@gmail.com"), data_sender)
 
     def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_web(self):
         submission = Submission(self.manager, TransportInfo("web", "nobody@gmail.com", "destination"))
-        data_sender = DataSenderHelper(self.manager).get_data_sender(self.org_id, submission)
+        data_sender = get_data_sender(self.manager,self.org_id, submission)
 
         self.assertEqual((NOT_AVAILABLE_DS, None, 'nobody@gmail.com'), data_sender)
 
     def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_smart_phone(self):
         submission = Submission(self.manager, TransportInfo("smartPhone", "nobody@gmail.com", "destination"))
-        data_sender = DataSenderHelper(self.manager).get_data_sender(self.org_id, submission)
+        data_sender = get_data_sender(self.manager,self.org_id, submission)
 
         self.assertEqual((NOT_AVAILABLE_DS, None, 'nobody@gmail.com'), data_sender)
 
     def test_should_return_data_sender_TESTER_when_send_from_TEST_REPORTER_MOBILE_NUMBER(self):
         submission = Submission(self.manager, TransportInfo("sms", TEST_REPORTER_MOBILE_NUMBER, "destination"))
-        data_sender = DataSenderHelper(self.manager).get_data_sender(self.org_id, submission)
+        data_sender = get_data_sender(self.manager,self.org_id, submission)
 
         self.assertEqual(('TEST', '', 'TEST'), data_sender)
 
