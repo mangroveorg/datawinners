@@ -50,19 +50,18 @@ from datawinners.project.models import Project, Reminder, ReminderMode, get_all_
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import import_subjects_from_project_wizard, save_questionnaire as subject_save_questionnaire, create_single_web_user
-from datawinners.project.wizard_view import edit_project, reminders
+from datawinners.project.wizard_view import  reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 import helper
+from project.analysis import Analysis
 from project.utils import make_project_links, make_data_sender_links, make_subject_links
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
-from project.submission_analyzer import SubmissionAnalyzer
-from project.submission_router import SubmissionRouter, successful_submissions
-from project.submission_utils.submission_filter import SubmissionFilter
+from project.submission_router import SubmissionRouter
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
@@ -262,14 +261,6 @@ def _to_name_id_string(value, delimiter='</br>'):
 
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
-
-def _build_submission_analyzer(request, manager, form_model, is_for_submission_page):
-    submissions = _get_submissions_by_type(request, manager, form_model)
-    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
-    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions,
-        request.POST.get('keyword', ''), is_for_submission_page=is_for_submission_page)
-
-    return analyzer
 
 def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)
@@ -1078,8 +1069,8 @@ def add_link(project):
 def project_has_data(request, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    submissions = successful_submissions(manager, form_model.form_code)
-    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), submissions)
+    analyzer = Analysis(form_model, manager, helper.get_org_id_by_user(request.user),request.POST)
+    analyzer._init_raw_values()
     raw_field_values = analyzer.get_raw_values()
 
     return HttpResponse(encode_json({'has_data': len(raw_field_values) != 0}))
