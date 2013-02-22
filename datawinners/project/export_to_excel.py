@@ -28,8 +28,8 @@ def _build_submission_list_for_submission_log_page_export(filter_list, manager, 
     return submission_list
 
 
-def export_submissions_in_xls_for_analysis_page(filters, form_model, manager,user,project_name):
-    analyzer = _build_submission_analyzer_for_analysis_export(manager, form_model,filters,user)
+def export_submissions_in_xls_for_analysis_page(filter_list, form_model, manager,user,project_name):
+    analyzer = _build_submission_analyzer_for_analysis_export(manager, form_model,filter_list,user)
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(analyzer.get_raw_values(),
                                                                            tuple_format=XLS_TUPLE_FORMAT)
     header_list = ExcelFileAnalysisHeader(form_model).header_list
@@ -37,9 +37,11 @@ def export_submissions_in_xls_for_analysis_page(filters, form_model, manager,use
     return _create_excel_response(exported_data, file_name)
 
 
-def _build_submission_analyzer_for_analysis_export(manager, form_model,filters,user):
+def _build_submission_analyzer_for_analysis_export(manager, form_model,filter_list,user):
     #Analysis page wont hv any type since it has oly success submission data.
-    analysis = Analysis(form_model, manager, user, filters)
+    filters = filter_list[1]
+    keyword = filter_list[2]
+    analysis = Analysis(form_model, manager, user, filters,keyword)
     analysis._init_excel_values()
     return analysis
 

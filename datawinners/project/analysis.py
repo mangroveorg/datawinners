@@ -7,7 +7,6 @@ from project.submission_utils.submission_formatter import SubmissionFormatter
 class Analysis(SubmissionData):
     def __init__(self, form_model, manager, org_id, filters, keyword=None):
         super(Analysis, self).__init__(form_model, manager, org_id, Header, None, filters,keyword)
-#        self._init_excel_values()
 
     def get_leading_part(self):
         leading_part = []

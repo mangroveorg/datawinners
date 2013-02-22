@@ -20,4 +20,3 @@ class TestAnalysis(unittest.TestCase):
                 leading_part = analysis_data._get_leading_part_for_excel()
                 expected_leading_part = [['Clinic-One', u'cli15', "12-03-2012","23-02-2012", "Tester Pune", "admin"]]
                 self.assertEqual(expected_leading_part,leading_part)
-

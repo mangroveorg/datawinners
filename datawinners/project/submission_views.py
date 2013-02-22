@@ -84,7 +84,8 @@ def _build_submission_list_for_submission_log_page(request, manager, form_model)
 def _build_submission_analyzer_for_analysis(request, manager, form_model):
     #Analysis page wont hv any type since it has oly success submission data.
     filters = request.POST
-    analysis = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), filters)
+    keyword = request.POST.get('keyword', '')
+    analysis = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), filters,keyword)
     analysis._init_raw_values()
     return analysis
 
@@ -148,41 +149,21 @@ def project_data(request, project_id=None, questionnaire_code=None):
 def get_analysis_response(request, project_id, questionnaire_code):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_question_code(manager, questionnaire_code)
-    filtered_submissions = filter_submissions(form_model, manager, request)
-#    analysis_result = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user),
-#                                         filtered_submissions, request.POST.get('keyword', '')).analyse()
-    analysis_result = Analysis(form_model, manager, helper.get_org_id_by_user(request.user),
-                                         request.POST, request.POST.get('keyword', ''))
-    analysis_result._init_raw_values()
-
-    field_values = SubmissionFormatter().get_formatted_values_for_list(analysis_result.get_raw_values())
-    temp_field_values = repr(encode_json(field_values))
-#    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-    performance_logger.info("Fetch %d submissions from couchdb." % len(temp_field_values))
+    analysis = _build_submission_analyzer_for_analysis(request,manager,form_model)
+    analysis_result = analysis.analyse()
+    performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
     if request.method == 'GET':
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
         header_info = header_helper.header_info(form_model)
-
-        analysis_dict = {
-            "datasender_list" : analysis_result.get_data_senders(),
-            "subject_list" : analysis_result.get_subjects(),
-            "default_sort_order": repr(encode_json(analysis_result.get_default_sort_order())),
-            "data_list": repr(encode_json(field_values)),
-            "statistics_result": repr(encode_json(analysis_result.get_analysis_statistics()))
-        }
-#        analysis_result_dict = analysis_result.analysis_result_dict
-        analysis_dict.update(project_infos)
-        analysis_dict.update(header_info)
-        return analysis_dict
-#        return analysis_result_dict
+        analysis_result_dict = analysis_result.analysis_result_dict
+        analysis_result_dict.update(project_infos)
+        analysis_result_dict.update(header_info)
+        return analysis_result_dict
 
     elif request.method == 'POST':
-#        return encode_json(
-#            {'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result})
         return encode_json(
             {
-                "data_list": repr(encode_json(field_values)),
-                "statistics_result": repr(encode_json(analysis_result.get_analysis_statistics()))
+                'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result
             }
         )
 
@@ -210,9 +191,12 @@ def get_DB_manager_and_form_model(request):
 def export_data(request):
     project_name = request.POST.get(u"project_name")
     user = helper.get_org_id_by_user(request.user)
+    submission_type = None
     filters = request.POST
+    keyword = request.POST.get('keyword', '')
+    filter_list = [submission_type,filters,keyword]
     form_model, manager = get_DB_manager_and_form_model(request)
-    return export_submissions_in_xls_for_analysis_page(filters,form_model,manager,user,project_name)
+    return export_submissions_in_xls_for_analysis_page(filter_list,form_model,manager,user,project_name)
 
 @login_required(login_url='/login')
 @session_not_expired

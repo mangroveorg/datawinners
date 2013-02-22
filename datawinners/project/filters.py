@@ -84,6 +84,9 @@ class KeywordFilter(object):
         return filter(lambda row: exists(self.contains, row, True), rows)
 
     def contains(self, i):
+        #Formatted values for xcel will hv Integerfields as float
+        #Hence str is used .
+        if isinstance(i,float) : i = str(i)
         return i is not None and self.keyword in i.lower()
 
 def exists(func, list, need_flatten=False):
