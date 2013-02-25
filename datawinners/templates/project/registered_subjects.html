@@ -81,12 +81,12 @@
             </div>
         </div>
 
-        <div id="action" class="dropdown-menu" >
+        <div id="action{{forloop.counter}}" class="dropdown-menu action" >
             <ul>
-                <li><a class="delete">{% trans "Delete" %}</a></li>
-            {% if EDIT_SUBJECT_ENABLED %}
-                <li><a class="edit">{% trans "Edit" %}</a></li>
-            {% endif %}
+                <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-delete">{% trans "Delete" %}</a></li>
+                {% if EDIT_SUBJECT_ENABLED %}
+                    <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-edit">{% trans "Edit" %}</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>
