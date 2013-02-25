@@ -57,4 +57,4 @@ class SubmissionsPageHeader(Header):
         return ugettext("Error Messages"), ''
 
     def _prefix(self):
-        return [self._id(), self._data_sender_header(), self._submission_date_header(), self._status(), self._error_msg(), self._subject_header(), self._reporting_period_header()]
+        return [self._id(), self._subject_header(), self._submission_date_header(), self._status(), self._error_msg(),self._data_sender_header(),self._reporting_period_header()]
