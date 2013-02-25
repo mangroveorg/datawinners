@@ -157,10 +157,10 @@ msgid "We received : "
 msgstr "Nous avons reçu : "
 
 msgid "Error. Incorrect answer for %s. Please resend entire message."
-msgstr "Erreur. Mauvaise réponse à la %s. Veuillez renvoyer la totalité du message."
+msgstr "Erreur. Mauvaise reponse a la %s. Veuillez renvoyer la totalite du message."
 
 msgid "Thank you. We received your message."
-msgstr "Merci. Nous avons reçu votre message."
+msgstr "Merci. Nous avons recu votre message."
 
 msgid "Registration successful."
 msgstr "Inscription réussie."
@@ -1942,7 +1942,7 @@ msgstr "Ce/cette %s n'est pas enregistré(e) dans notre système. Vérifiez le n
 "de nouveau le SMS"
 
 msgid "This %s %s is not registered in our system.Please register this %s or contact your supervisor."
-msgstr "Ce/cette %s %s n'est pas enregistré(e) dans notre système. Veuillez enregistrer ce/cette %s "
+msgstr "Ce/cette %s %s n'est pas enregistre(e) dans notre systeme. Veuillez enregistrer ce/cette %s "
 "ou contacter votre superviseur."
 
 msgid "This telephone number is not registered in our system."
@@ -1985,7 +1985,7 @@ msgid "Error: Invalid Submission. No valid question found. Check the Question Co
 msgstr "Erreur. Trouvez le code questionnaire sur le questionnaire imprimé et envoyez de nouveau le SMS en commençant par ce code questionnaire."
 
 msgid "Error. This project is not yet active. Submissions can be made only for an active project."
-msgstr "Erreur. Ce projet n'est pas encore actif. Les soumissions ne peuvent être effectuées  que pour un projet actif."
+msgstr "Erreur. Ce projet n'est pas encore actif. Les soumissions ne peuvent etre effectuees  que pour un projet actif."
 
 msgid "Error. Internal error. Please call technical support"
 msgstr "Erreur. Erreur interne. Veuillez contacter le support technique"
@@ -2252,7 +2252,7 @@ msgid"Questionnaire ID %s doesnt exist."
 msgstr "Le ID Questionnaire %s n'existe pas."
 
 msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend SMS starting with this questionnaire code."
-msgstr "Erreur sur le code Questionnaire %s. Cherchez le code sur le questionnaire imprimé et envoyez de nouveau le SMS en commençant par ce code questionnaire"
+msgstr "Erreur sur le code Questionnaire %s. Cherchez le code sur le questionnaire imprime et envoyez de nouveau le SMS en commençant par ce code questionnaire"
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
 msgstr "Cet entité pour laquelle vous avez envoyé un rapport n'existe pas sur notre système. Veuillez enregistrer cette entité ou appelez-nous au 033 20 426 89"
@@ -2410,7 +2410,7 @@ msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou v
 "<br/>Si certains de vos Expéditeurs de Données ont (ou auront) accès à Internet, nous vous recommandons de laisser la case 'WEB' cochée."
 
 msgid "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
-msgstr "Erreur. SMS incorrect. Le nombre de données est insuffisant ou en surnombre. Revoyez le questionnaire imprimé et envoyez de nouveau le  SMS."
+msgstr "Erreur. SMS incorrect. Le nombre de donnees est insuffisant ou en surnombre. Revoyez le questionnaire imprime et envoyez de nouveau le  SMS."
 
 msgid "Privacy Policy"
 msgstr "Politique de Confidentialité"
