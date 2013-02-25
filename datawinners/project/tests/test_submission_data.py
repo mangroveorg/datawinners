@@ -1,6 +1,6 @@
 from datetime import datetime
-from mock import patch
-from mangrove.form_model.field import field_attributes, TextField, SelectField
+from mock import patch, Mock
+from mangrove.form_model.field import field_attributes, TextField, SelectField, DateField, IntegerField, GeoCodeField
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD
 from mangrove.transport import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
@@ -9,6 +9,7 @@ from mangrove.utils.entity_builder import EntityBuilder
 from mangrove.utils.form_model_builder import create_default_ddtype, FormModelBuilder
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from project.analysis import Analysis
+from project.analysis_for_excel import AnalysisForExcel
 from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG, NOT_AVAILABLE
 from project.submission_list import SubmissionList
 from project.submission_router import successful_submissions
@@ -28,8 +29,7 @@ class TestSubmissionList(MangroveTestCase):
 
     def _prepare_submission_list_with_one_submission(self, form_model):
         submission_list = SubmissionList(form_model, self.manager, self.org_id, "all", [])
-        submission_list._init_raw_values()
-        self.submission_id = submission_list.submissions[0].id
+        self.submission_id = submission_list.filtered_submissions[0].id
         return submission_list
 
     def _prepare_subjects(self):
@@ -171,14 +171,12 @@ class TestSubmissionList(MangroveTestCase):
 
     def _prepare_submission_list(self, form_model, keywords=None):
         submission_list = SubmissionList(form_model, self.manager, self.org_id, "all", [], keywords)
-        submission_list._init_raw_values()
-        self.submission_id = submission_list.submissions[0].id
+        self.submission_id = submission_list.filtered_submissions[0].id
         return submission_list
 
     def _prepare_analysis_list(self, form_model, keywords=None):
         analysis_list = Analysis(form_model, self.manager, self.org_id, [], keywords)
-        analysis_list._init_raw_values()
-        self.submission_id = analysis_list.submissions[0].id
+        self.submission_id = analysis_list.filtered_submissions[0].id
         return analysis_list
 
     def test_should_get_raw_field_values_filtered_by_keyword(self):
@@ -219,7 +217,7 @@ class TestSubmissionList(MangroveTestCase):
 
             submission_list = self._prepare_submission_list(self.form_model)
             subject_list = submission_list.get_subjects()
-            expected = [('Clinic-One', u'cli14'), ('Clinic-Two', u'cli15'),(NOT_AVAILABLE, str(None))]
+            expected = [('Clinic-One', u'cli14'), ('Clinic-Two', u'cli15'), (NOT_AVAILABLE, str(None))]
             self.assertEqual(expected, subject_list)
 
     def test_should_get_datasender_list(self):
@@ -302,8 +300,7 @@ class TestSubmissionList(MangroveTestCase):
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'ab'})
         with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
             get_submissions.return_value = successful_submissions(self.manager, form_model.form_code)
-            analysis_list = Analysis(form_model,self.manager,self.org_id,[])
-            analysis_list._init_raw_values()
+            analysis_list = Analysis(form_model, self.manager, self.org_id, [])
             statistics = analysis_list.get_analysis_statistics()
 
             expected = [["What is your blood group?", field_attributes.MULTISELECT_FIELD, 2,
@@ -362,3 +359,148 @@ class TestSubmissionList(MangroveTestCase):
             analyzer = self._prepare_analysis_list(self.form_model)
             default_sort_order = analyzer.get_default_sort_order()
             self.assertEqual([[2, 'desc']], default_sort_order)
+
+    def test_should_get_old_answer_for_submissions_which_is_submitted_before_MC_changed_to_other(self):
+        """
+        Function to test get old answer for submissions which is submitted before answer type changed from multiple choice/single choice to other type(word, number, date, GPS)
+        """
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
+            entity_question_flag=True, ddtype=self.ddtype)
+        rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="dd.mm.yyyy",
+            event_time_field_flag=True, ddtype=self.ddtype)
+        symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
+            options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
+                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
+            ddtype=self.ddtype)
+        blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
+            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=self.ddtype)
+
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
+            symptoms_field, blood_type_field).build()
+
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
+        self._edit_fields(form_model,
+            IntegerField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=self.ddtype))
+
+        with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
+            get_submissions.return_value = successful_submissions(self.manager, form_model.form_code)
+            analyzer = self._prepare_analysis_list(form_model)
+            values = analyzer.get_raw_values()
+
+            self.assertEqual([['Rapid weight loss', 'Dry cough'], ['O-']], values[0][5:])
+
+    def test_should_get_old_answer_for_submissions_which_is_submitted_before_other_changed_to_MC(self):
+        """
+        Function to test get old answer for submissions which is submitted before answer type changed from other type(word, number, date, GPS) to multiple choice/single choice
+        """
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",entity_question_flag=True, ddtype=self.ddtype)
+        rp_field = DateField(label="Report date", code="RD", name="What is reporting date?",date_format="dd.mm.yyyy", event_time_field_flag=True, ddtype=self.ddtype)
+        symptoms_field = TextField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=self.ddtype)
+        blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
+            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=self.ddtype)
+
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,symptoms_field, blood_type_field).build()
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'BG': 'b'})
+
+        symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
+            options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
+                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=self.ddtype)
+        self._edit_fields(form_model, symptoms_field)
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
+        with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
+            get_submissions.return_value = successful_submissions(self.manager, form_model.form_code)
+            analyzer = self._prepare_analysis_list(form_model)
+            values = analyzer.get_raw_values()
+
+            self.assertEqual([['Rapid weight loss','Dry cough'], ['O-']], values[0][5:])
+            self.assertEqual(['Fever', ['O-']], values[1][5:])
+
+    def test_should_show_previous_submissions_in_old_format_after_change_date_format(self):
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
+            entity_question_flag=True, ddtype=self.ddtype)
+        rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="dd.mm.yyyy",
+            event_time_field_flag=True, ddtype=self.ddtype)
+
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field,
+            rp_field).build()
+
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012'})
+
+        rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="mm.yyyy",
+            event_time_field_flag=True, ddtype=self.ddtype)
+        self._edit_fields(form_model, rp_field)
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '08.2012'})
+
+        rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="mm.dd.yyyy",
+            event_time_field_flag=True, ddtype=self.ddtype)
+        self._edit_fields(form_model, rp_field)
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.24.2012'})
+
+        with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
+            get_submissions.return_value = successful_submissions(self.manager, form_model.form_code)
+            analyzer = self._prepare_analysis_list(form_model)
+            values = analyzer.get_raw_values()
+
+            reporting_periods = map(lambda value: value[2], values)
+            self.assertIn('08.2012', reporting_periods)
+            self.assertIn('12.12.2012', reporting_periods)
+            self.assertIn('12.24.2012', reporting_periods)
+
+    def test_should_should_get_fields_values_after_question_count_changed(self):
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
+            entity_question_flag=True, ddtype=self.ddtype)
+        rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="dd.mm.yyyy",
+            event_time_field_flag=True, ddtype=self.ddtype)
+        symptoms_field = TextField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=self.ddtype)
+        gps = TextField(label="What is your blood group?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
+            symptoms_field, gps).build()
+
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'GPS': 'NewYork'})
+
+        form_model.create_snapshot()
+        form_model.delete_field("SY")
+        form_model.save()
+
+        self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'GPS': '1,1'})
+        with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
+            get_submissions.return_value = successful_submissions(self.manager, form_model.form_code)
+            analyzer = self._prepare_analysis_list(form_model)
+            values = analyzer.get_raw_values()
+
+            self.assertEqual(['1,1'], values[0][5:])
+            self.assertEqual(['NewYork'], values[1][5:])
+
+    def test_should_prepare_data_for_excel(self):
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
+            entity_question_flag=True, ddtype=self.ddtype)
+        blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
+            options=[("Type 1", "a"), ("Type 2", "b")], single_select_flag=True, ddtype=self.ddtype)
+        rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="dd.mm.yyyy",
+            event_time_field_flag=True, ddtype=self.ddtype)
+        age_field = IntegerField(label="Fathers age", code="FA", name="Zhat is your father's age?",
+            ddtype=self.ddtype)
+        gps_field = GeoCodeField(label="What is your gps?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
+
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field,
+            blood_type_field,rp_field,age_field,gps_field).build()
+
+        post_data = {'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a', 'RD': '12.11.2013', 'FA': '45',
+                    'GPS': '12.74,77.45'}
+        self.submit_data(post_data)
+
+        with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
+            get_submissions.return_value = [Submission(self.manager,
+                transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
+                form_code=form_model.form_code,
+                values=post_data)]
+            analyzer = AnalysisForExcel(form_model, self.manager, self.org_id, [])
+            excel_values = analyzer.get_raw_values()
+            self.assertEqual(excel_values[0][1],'Ritesh')
+            self.assertEqual(excel_values[0][2],u'cid001')
+            self.assertEqual(excel_values[0][3],'12.11.2013')
+            self.assertEqual(excel_values[0][5],u'Tester Pune')
+            self.assertEqual(excel_values[0][6],'admin')
+            self.assertEqual(excel_values[0][8],45.0)
+            self.assertEqual(excel_values[0][9],'12.74')
+            self.assertEqual(excel_values[0][10],'77.45')
