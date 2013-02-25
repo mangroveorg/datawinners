@@ -202,7 +202,8 @@ def project_overview(request, project_id=None):
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
         'in_trial_mode': in_trial_mode,
         'questionnaire_code': questionnaire_code,
-        }))
+    }))
+
 
 def filter_by_keyword(keyword, raw_field_values):
     return KeywordFilter(keyword).filter(raw_field_values)
@@ -247,13 +248,14 @@ def submissions(request):
         count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
         submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
         return render_to_response('project/log_table.html',
-                {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
-                 'submissions': submission_display, 'pages': count,
-                 'error_message': error_message,
-                 'success_message': ""}, context_instance=RequestContext(request))
+            {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
+             'submissions': submission_display, 'pages': count,
+             'error_message': error_message,
+             'success_message': ""}, context_instance=RequestContext(request))
+
 
 def _to_name_id_string(value, delimiter='</br>'):
-    if not isinstance(value, tuple):return value
+    if not isinstance(value, tuple): return value
     assert len(value) >= 2
     if not value[1]: return value[0]
 
@@ -261,6 +263,14 @@ def _to_name_id_string(value, delimiter='</br>'):
 
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
+
+def _build_submission_analyzer(request, manager, form_model, is_for_submission_page):
+    submissions = _get_submissions_by_type(request, manager, form_model)
+    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
+    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions,
+        request.POST.get('keyword', ''), is_for_submission_page=is_for_submission_page)
+
+    return analyzer
 
 def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)
@@ -282,6 +292,7 @@ def _format_reminder(reminder, project_id):
         to=_format_string_for_reminder_table(reminder.remind_to),
         when=_make_reminder_mode(reminder.reminder_mode, reminder.day),
         delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
+
 
 def _format_reminders(reminders, project_id):
     return [_format_reminder(reminder, project_id) for reminder in reminders]
@@ -358,10 +369,10 @@ def sent_reminders(request, project_id):
     is_trial_account = organization.in_trial_mode
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/sent_reminders.html'
     return render_to_response(html,
-            {'project': project, "project_links": make_project_links(project, questionnaire.form_code),
-             'reminders': get_all_reminder_logs_for_project(project_id, dbm),
-             'in_trial_mode': is_trial_account,
-             'create_reminder_link': reverse(create_reminder, args=[project_id])},
+        {'project': project, "project_links": make_project_links(project, questionnaire.form_code),
+         'reminders': get_all_reminder_logs_for_project(project_id, dbm),
+         'in_trial_mode': is_trial_account,
+         'create_reminder_link': reverse(create_reminder, args=[project_id])},
         context_instance=RequestContext(request))
 
 
@@ -388,7 +399,7 @@ def broadcast_message(request, project_id):
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': project,
                                          "project_links": make_project_links(project, questionnaire.form_code),
-                                         "form": form, "ong_country":organization.country,
+                                         "form": form, "ong_country": organization.country,
                                          "success": None},
             context_instance=RequestContext(request))
     if request.method == 'POST':
@@ -404,15 +415,15 @@ def broadcast_message(request, project_id):
                 country_code=organization.get_phone_country_code())
             form = BroadcastMessageForm()
             return render_to_response('project/broadcast_message.html',
-                    {'project': project,
-                     "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                     "ong_country":organization.country,'success': sms_sent},
+                {'project': project,
+                 "project_links": make_project_links(project, questionnaire.form_code), "form": form,
+                 "ong_country": organization.country, 'success': sms_sent},
                 context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',
-                {'project': project,
-                 "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                 'success': None, "ong_country":organization.country},
+            {'project': project,
+             "project_links": make_project_links(project, questionnaire.form_code), "form": form,
+             'success': None, "ong_country": organization.country},
             context_instance=RequestContext(request))
 
 
@@ -478,6 +489,7 @@ def _get_project_and_project_link(manager, project_id, reporter_id=None):
     project_links = make_project_links(project, questionnaire.form_code, reporter_id)
     return project, project_links
 
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_not_expired
@@ -489,14 +501,14 @@ def subjects(request, project_id=None):
     example_sms = get_example_sms_message(fields, reg_form)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     return render_to_response('project/subjects.html',
-            {'project': project,
-             'project_links': project_links,
-             'questions': questions,
-             'questionnaire_code': reg_form.form_code,
-             'example_sms': example_sms,
-             'org_number': get_organization_telephone_number(request),
-             'current_language': translation.get_language(),
-             'subject': subject},
+        {'project': project,
+         'project_links': project_links,
+         'questions': questions,
+         'questionnaire_code': reg_form.form_code,
+         'example_sms': example_sms,
+         'org_number': get_organization_telephone_number(request),
+         'current_language': translation.get_language(),
+         'subject': subject},
         context_instance=RequestContext(request))
 
 
@@ -510,8 +522,8 @@ def registered_subjects(request, project_id=None):
     subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/registered_subjects.html',
-            {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels,
-             "subject": subject, 'in_trial_mode': in_trial_mode, 'edit_url': '/project/subject/edit/%s/' % project_id},
+        {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels,
+         "subject": subject, 'in_trial_mode': in_trial_mode, 'edit_url': '/project/subject/edit/%s/' % project_id},
         context_instance=RequestContext(request))
 
 
@@ -557,9 +569,9 @@ def registered_datasenders(request, project_id=None):
             sender['project'] = project.name
 
         return render_to_response('project/registered_datasenders.html',
-                {'project': project, 'project_links': project_links, 'all_data': (
+            {'project': project, 'project_links': project_links, 'all_data': (
                 senders), 'grant_web_access': grant_web_access, "labels": labels,
-                 'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
+             'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
             context_instance=RequestContext(request))
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
@@ -576,11 +588,11 @@ def registered_datasenders(request, project_id=None):
         add_imported_data_sender_to_trial_organization(request, imported_entities,
             all_data_senders=all_data_senders, index=mobile_number_index)
         return HttpResponse(json.dumps(
-                {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
-                 'error_message': error_message,
-                 'failure_imports': failure_imports, 'all_data_senders': all_data_senders,
-                 'imported_entities': imported_entities,
-                 'associated_datasenders': project.data_senders}))
+            {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+             'error_message': error_message,
+             'failure_imports': failure_imports, 'all_data_senders': all_data_senders,
+             'imported_entities': imported_entities,
+             'associated_datasenders': project.data_senders}))
 
 
 @login_required(login_url='/login')
@@ -619,13 +631,13 @@ def datasenders(request, project_id=None):
     questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
     example_sms = get_example_sms_message(questions, reg_form)
     return render_to_response('project/datasenders.html',
-            {'project': project,
-             'project_links': project_links,
-             'questions': questions,
-             'questionnaire_code': reg_form.form_code,
-             'example_sms': example_sms,
-             'org_number': get_organization_telephone_number(request),
-             'current_language': translation.get_language()},
+        {'project': project,
+         'project_links': project_links,
+         'questions': questions,
+         'questionnaire_code': reg_form.form_code,
+         'example_sms': example_sms,
+         'org_number': get_organization_telephone_number(request),
+         'current_language': translation.get_language()},
         context_instance=RequestContext(request))
 
 
@@ -651,12 +663,12 @@ def questionnaire(request, project_id=None):
         project_links = make_project_links(project, form_model.form_code)
         in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/questionnaire.html',
-                {"existing_questions": repr(existing_questions),
-                 'questionnaire_code': form_model.form_code,
-                 'project': project,
-                 'project_links': project_links,
-                 'in_trial_mode': in_trial_mode,
-                 'preview_links': get_preview_and_instruction_links_for_questionnaire()},
+            {"existing_questions": repr(existing_questions),
+             'questionnaire_code': form_model.form_code,
+             'project': project,
+             'project_links': project_links,
+             'in_trial_mode': in_trial_mode,
+             'preview_links': get_preview_and_instruction_links_for_questionnaire()},
             context_instance=RequestContext(request))
 
 
@@ -680,7 +692,7 @@ def _make_form_context(questionnaire_form, project, form_code, hide_link_class, 
             'disable_link_class': disable_link_class,
             'back_to_project_link': reverse("alldata_index"),
             'smart_phone_instruction_link': reverse("smart_phone_instruction"),
-            }
+    }
 
 
 def _get_subject_info(manager, project):
@@ -764,7 +776,7 @@ def web_questionnaire(request, project_id=None, subject=False):
                     success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
                         response.short_code,)
                     detail_dict = dict(
-                            {"Subject Type": project.entity_type.capitalize(), "Unique ID": response.short_code})
+                        {"Subject Type": project.entity_type.capitalize(), "Unique ID": response.short_code})
                     UserActivityLog().log(request, action=REGISTERED_SUBJECT, project=project.name,
                         detail=json.dumps(detail_dict))
                 else:
@@ -826,9 +838,9 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
 
     template = 'project/questionnaire_preview.html' if sms_preview else 'project/questionnaire_preview_list.html'
     return render_to_response(template,
-            {"questions": questions, 'questionnaire_code': form_model.form_code,
-             'project': project, 'project_links': project_links,
-             'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
+        {"questions": questions, 'questionnaire_code': form_model.form_code,
+         'project': project, 'project_links': project_links,
+         'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
         context_instance=RequestContext(request))
 
 
@@ -839,7 +851,6 @@ def _get_preview_for_field_in_registration_questionnaire(field, language):
     [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
     return preview
-
 
 
 def _get_registration_form(manager, project, type_of_subject='reporter'):
@@ -876,9 +887,9 @@ def subject_registration_form_preview(request, project_id=None):
             project, project.entity_type)
         example_sms = get_example_sms_message(fields, registration_questionnaire)
         return render_to_response('project/questionnaire_preview_list.html',
-                {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
-                 'project': project, 'project_links': project_links,
-                 'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
+            {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
+             'project': project, 'project_links': project_links,
+             'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
             context_instance=RequestContext(request))
 
 
@@ -895,9 +906,9 @@ def sender_registration_form_preview(request, project_id=None):
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
         example_sms = get_example_sms_message(datasender_questions, registration_questionnaire)
         return render_to_response('project/questionnaire_preview_list.html',
-                {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
-                 'project': project, 'project_links': project_links,
-                 'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
+            {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
+             'project': project, 'project_links': project_links,
+             'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
             context_instance=RequestContext(request))
 
 
@@ -927,14 +938,14 @@ def edit_subject_questionaire(request, project_id=None):
     existing_questions = json.dumps(fields, default=field_to_json)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     return render_to_response('project/subject_questionnaire.html',
-            {'project': project,
-             'project_links': project_links,
-             'existing_questions': repr(existing_questions),
-             'questionnaire_code': reg_form.form_code,
-             'language': reg_form.activeLanguages[0],
-             'entity_type': project.entity_type,
-             'subject': subject,
-             'post_url': reverse(subject_save_questionnaire)},
+        {'project': project,
+         'project_links': project_links,
+         'existing_questions': repr(existing_questions),
+         'questionnaire_code': reg_form.form_code,
+         'language': reg_form.activeLanguages[0],
+         'entity_type': project.entity_type,
+         'subject': subject,
+         'post_url': reverse(subject_save_questionnaire)},
         context_instance=RequestContext(request))
 
 
@@ -960,7 +971,7 @@ def create_data_sender_and_web_user(request, project_id=None):
         form = ReporterRegistrationForm(initial={'project_id': project_id})
         return render_to_response('project/register_datasender.html', {
             'project': project, 'project_links': project_links, 'form': form,
-            'in_trial_mode': in_trial_mode,'current_language': translation.get_language()},
+            'in_trial_mode': in_trial_mode, 'current_language': translation.get_language()},
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -1001,8 +1012,8 @@ def edit_data_sender(request, project_id, reporter_id):
                                                  'telephone_number': reporter_entity.mobile_number, 'location': location
             , 'geo_code': geo_code})
         return render_to_response('project/edit_datasender.html',
-                {'project': project, 'reporter_id': reporter_id, 'form': form, 'project_links': links,
-                 'in_trial_mode': _in_trial_mode(request)}, context_instance=RequestContext(request))
+            {'project': project, 'reporter_id': reporter_id, 'form': form, 'project_links': links,
+             'in_trial_mode': _in_trial_mode(request)}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
@@ -1044,12 +1055,14 @@ def edit_data_sender(request, project_id, reporter_id):
                 message = exception.message
 
         return render_to_response('edit_datasender_form.html',
-                {'project': project, 'form': form, 'reporter_id': reporter_id, 'message': message,
-                 'project_links': links, 'in_trial_mode': _in_trial_mode(request)},
+            {'project': project, 'form': form, 'reporter_id': reporter_id, 'message': message,
+             'project_links': links, 'in_trial_mode': _in_trial_mode(request)},
             context_instance=RequestContext(request))
+
 
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode
+
 
 def add_link(project):
     add_link_named_tuple = namedtuple("Add_Link", ['url', 'text'])
@@ -1061,6 +1074,7 @@ def add_link(project):
         text = _("Register a %(subject)s") % {'subject': project.entity_type}
         url = make_subject_links(project.id)['register_subjects_link']
         return add_link_named_tuple(url=url, text=text)
+
 
 @login_required(login_url='/login')
 @session_not_expired

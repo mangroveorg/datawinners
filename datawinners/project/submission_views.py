@@ -69,8 +69,7 @@ def submissions(request, project_id=None, questionnaire_code=None):
     if request.method == 'POST':
         field_values = SubmissionFormatter().get_formatted_values_for_list(submissions.get_raw_values())
         analysis_result = AnalysisResult(field_values, submissions.get_analysis_statistics(),
-            submissions.get_data_senders(),
-            submissions.get_subjects(), submissions.get_default_sort_order())
+            submissions.get_data_senders(),submissions.get_subjects(), submissions.get_default_sort_order())
         performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
         if "id_list" in request.POST:

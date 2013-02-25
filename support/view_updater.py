@@ -73,6 +73,7 @@ class ViewUpdater(object):
                             "daily_aggregate_latest",
                             "daily_aggregate_stats",
                             "data_record_by_form_code",
+                            "data_record_by_form_code_latest",
                             "entity_by_label_value",
                             "entity_data",
                             "entity_datatypes",

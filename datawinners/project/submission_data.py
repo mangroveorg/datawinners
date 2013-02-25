@@ -9,7 +9,7 @@ from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import format_dt_for_submission_log_page, case_insensitive_lookup, _to_str, NOT_AVAILABLE
 from datawinners.project.submission_router import SubmissionRouter
 from datawinners.project.submission_utils.submission_filter import SubmissionFilter
-from mangrove.form_model.field import SelectField, IntegerField, GeoCodeField, DateField
+from mangrove.form_model.field import SelectField
 from mangrove.utils.types import is_sequence
 
 field_enhancer.enhance()
@@ -157,7 +157,6 @@ class SubmissionData(object):
                 for option in each.options:
                     result[each.name]['choices'][option['text']] = 0
         return result
-
 
     @abc.abstractmethod
     def get_leading_part(self):
