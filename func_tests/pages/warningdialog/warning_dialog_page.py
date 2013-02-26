@@ -16,4 +16,5 @@ class WarningDialog(Page):
         self.driver.find(self.confirm_link).click()
 
     def get_message(self):
+        self.driver.wait_for_element(5, self.message_link)
         return self.driver.find(self.message_link).text

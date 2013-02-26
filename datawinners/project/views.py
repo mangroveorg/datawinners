@@ -1084,7 +1084,6 @@ def project_has_data(request, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
     analyzer = Analysis(form_model, manager, helper.get_org_id_by_user(request.user),request.POST)
-    analyzer._init_raw_values()
     raw_field_values = analyzer.get_raw_values()
 
     return HttpResponse(encode_json({'has_data': len(raw_field_values) != 0}))

@@ -77,7 +77,6 @@ class TestEditQuestionnaire(BaseTest):
         self.assertEqual(first_tab, self.driver.window_handles[0])
         self.driver.switch_to_window(first_tab)
         create_questionnaire_page.save_and_create_project()
-        time.sleep(4)
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING, warning_dialog.get_message())
         warning_dialog.cancel()
@@ -237,7 +236,6 @@ class TestEditQuestionnaire(BaseTest):
     def test_should_show_redistribute_questionnaire_message_when_osi_delete_a_question(self):
         create_questionnaire_page = self.prerequisites_for_redistribute_questionnaire_dialog()
         create_questionnaire_page.delete_question(3)
-        time.sleep(4)
         self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
     @attr('functional_test')
