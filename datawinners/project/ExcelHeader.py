@@ -25,7 +25,7 @@ class ExcelFileAnalysisHeader(Header):
             return [(field.label, field.date_format)]
         else:
             if isinstance(field, GeoCodeField):
-                return [(field.label+ "Latitude","gps"),(field.label+"Longitude","gps")]
+                return [(field.label+ " Latitude","gps"),(field.label+" Longitude","gps")]
             else:
                 return [(field.label,"")]
 
