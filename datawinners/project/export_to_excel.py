@@ -39,6 +39,9 @@ def _get_exported_data(header, formatted_values, submission_log_type):
         return [each[1:] for each in data]
 
 
+def _empty_if_no_data(list, index):
+    return '' if len(list) < index + 1 else list[index]
+
 def format_field_values_for_excel(row, form_model):
     changed_row = dict()
     for question_code, question_value in row[-1].iteritems():
@@ -53,9 +56,10 @@ def format_field_values_for_excel(row, form_model):
             except ValueError:
                 changed_row[question_code] = question_value
         elif isinstance(field, GeoCodeField):
-            formatted_question_value = question_value.replace(',', ' ')
-            changed_row[field.code + '_lat'] = formatted_question_value.split(' ')[0]
-            changed_row[field.code + '_long'] = formatted_question_value.split(' ')[1]
+            value_list = question_value.replace(',', ' ').split(' ')
+            changed_row[field.code + '_lat'] = _empty_if_no_data(value_list, 0)
+            changed_row[field.code + '_long'] = _empty_if_no_data(value_list, 1)
         else:
             changed_row[question_code] = question_value
     return changed_row
+
