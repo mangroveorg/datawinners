@@ -71,8 +71,7 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
     my_font.colour_index = 0x09
 
     my_pattern = xlwt.Pattern()
-    #https://secure.simplistix.co.uk/svn/xlwt/trunk/xlwt/Style.py for color codes
-    my_pattern.pattern = 0x14
+    my_pattern.pattern = my_pattern.SOLID_PATTERN
     my_alignment = xlwt.Alignment()
     my_alignment.vert = my_alignment.VERT_CENTER
     my_alignment.wrap = my_alignment.WRAP_AT_RIGHT
