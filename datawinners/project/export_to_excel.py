@@ -56,9 +56,6 @@ def format_field_values_for_excel(row, form_model):
             formatted_question_value = question_value.replace(',', ' ')
             changed_row[field.code + '_lat'] = formatted_question_value.split(' ')[0]
             changed_row[field.code + '_long'] = formatted_question_value.split(' ')[1]
-        elif isinstance(field, DateField):
-            row[-1][question_code] = _to_str(question_value, field)
-            changed_row[question_code] = row[-1][question_code]
         else:
             changed_row[question_code] = question_value
     return changed_row
