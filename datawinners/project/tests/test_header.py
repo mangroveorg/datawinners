@@ -66,7 +66,7 @@ class AllSubmissionsHeaderTest(TestCase):
     def test_should_contain_column_status_for_all_submissions_head(self):
         form_model = self.form_model_generator.form_model()
 
-        expected_header_list = ("Submission Id", "Clinic", "Submission Date", "Status", "Error Messages","Data Sender", "Reporting Period", "Zhat are symptoms?", "What is your blood group?")
+        expected_header_list = ("Submission Id","Data Sender","Submission Date", "Status", "Error Messages", "Clinic",  "Reporting Period", "Zhat are symptoms?", "What is your blood group?")
         expected_header_type_list = ('', '', 'dd.mm.yyyy', '', '', '', 'dd.mm.yyyy', '', '')
 
         self.assertEqual(expected_header_list, SubmissionsPageHeader(form_model).header_list)
