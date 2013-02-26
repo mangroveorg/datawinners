@@ -10,7 +10,8 @@ class Header(object):
 
     @property
     def info(self):
-        return {'header_list': self._header_list, 'header_name_list': repr(encode_json(self._header_list)), 'header_type_list': repr(encode_json(self._header_type_list))}
+        return {'header_list': self._header_list, 'header_name_list': repr(encode_json(self._header_list)),
+                'header_type_list': repr(encode_json(self._header_type_list))}
 
     @property
     def header_list(self):
@@ -25,7 +26,8 @@ class Header(object):
         return filter(lambda each: each, self._prefix()) + self._fields_header()
 
     def _prefix(self):
-        return [self._id(), self._subject_header(), self._reporting_period_header(), self._submission_date_header(), self._data_sender_header()]
+        return [self._id(), self._subject_header(), self._reporting_period_header(), self._submission_date_header(),
+                self._data_sender_header()]
 
     def _submission_date_header(self):
         return ugettext("Submission Date"), DEFAULT_DATE_FORMAT.lower()
@@ -39,11 +41,12 @@ class Header(object):
 
     def _subject_header(self):
         subject_type = self._form_model.entity_type[0]
-        return (ugettext(subject_type).capitalize(), '')  if subject_type != 'reporter' else None
+        return (ugettext(subject_type).capitalize(), '') if subject_type != 'reporter' else None
 
     def _fields_header(self):
-        return [(field.label, field.date_format if isinstance(field, DateField) else ("gps" if isinstance(field, GeoCodeField)  else "")) for field in self._form_model.fields[1:] if
-                  not field.is_event_time_field]
+        return [(field.label, field.date_format if isinstance(field, DateField) else (
+            "gps" if isinstance(field, GeoCodeField)  else "")) for field in self._form_model.fields[1:] if
+                not field.is_event_time_field]
 
     def _id(self):
         return "Submission Id", ''
@@ -57,4 +60,5 @@ class SubmissionsPageHeader(Header):
         return ugettext("Error Messages"), ''
 
     def _prefix(self):
-        return [self._id(), self._subject_header(), self._submission_date_header(), self._status(), self._error_msg(),self._data_sender_header(),self._reporting_period_header()]
+        return [self._id(),self._data_sender_header(), self._submission_date_header(), self._status(), self._error_msg(),
+                self._subject_header(), self._reporting_period_header()]

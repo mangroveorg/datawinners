@@ -5,17 +5,17 @@ from datawinners.project.data_sender import DataSender
 from datawinners.project.export_to_excel import format_field_values_for_excel
 
 class AnalysisForExcel(SubmissionData):
+
     def __init__(self, form_model, manager, org_id, filters, keyword=None):
         super(AnalysisForExcel, self).__init__(form_model, manager, org_id, Header, None, filters, keyword)
-
 
     def get_leading_part(self):
         leading_part = []
         for submission in self.filtered_submissions:
             data_sender_tuple, rp, subject_tuple, submission_date = super(AnalysisForExcel,
                 self)._get_submission_details(submission)
-            subject_id = subject_tuple[1]
-            subject_name = subject_tuple[0]
+            subject_id = subject_tuple[1] if subject_tuple else ""
+            subject_name = subject_tuple[0] if subject_tuple else ""
             data_sender = DataSender.from_tuple(data_sender_tuple)
             leading_part.append(
                 filter(lambda x: x, [submission.id, subject_name, subject_id, rp, submission_date, data_sender.name,
@@ -31,6 +31,6 @@ class AnalysisForExcel(SubmissionData):
             fields_ = []
             formatted_row = format_field_values_for_excel(row, self.form_model)
             for field in self.form_model.non_rp_fields_by():
-                fields_.extend(self._order_formatted_row(field.code, formatted_row))
+                fields_.extend(self._order_formatted_row(field, formatted_row))
             field_values.append(fields_)
         return field_values

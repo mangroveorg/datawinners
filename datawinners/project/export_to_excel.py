@@ -47,12 +47,15 @@ def format_field_values_for_excel(row, form_model):
             row[-1][question_code] = field.get_option_value_list(question_value)
             changed_row[question_code] = row[-1][question_code]
         elif isinstance(field, IntegerField):
-            row[-1][question_code] = float(question_value)
-            changed_row[question_code] = row[-1][question_code]
+            try:
+                row[-1][question_code] = float(question_value)
+                changed_row[question_code] = row[-1][question_code]
+            except ValueError:
+                changed_row[question_code] = question_value
         elif isinstance(field, GeoCodeField):
             formatted_question_value = question_value.replace(',', ' ')
-            changed_row['gps_lat'] = formatted_question_value.split(' ')[0]
-            changed_row['gps_long'] = formatted_question_value.split(' ')[1]
+            changed_row[field.code + '_lat'] = formatted_question_value.split(' ')[0]
+            changed_row[field.code + '_long'] = formatted_question_value.split(' ')[1]
         elif isinstance(field, DateField):
             row[-1][question_code] = _to_str(question_value, field)
             changed_row[question_code] = row[-1][question_code]

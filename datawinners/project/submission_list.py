@@ -15,7 +15,7 @@ class SubmissionList(SubmissionData):
             status = self._get_translated_submission_status(submission.status)
             error_message = submission.errors if submission.errors else "-"
             leading_part.append(
-                filter(lambda x: x, [submission.id, subject, submission_date, status, error_message, data_sender, rp]))
+                filter(lambda x: x, [submission.id, data_sender, submission_date, status, error_message, subject, rp]))
         return leading_part
 
     @timebox

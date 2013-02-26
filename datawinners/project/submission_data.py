@@ -9,10 +9,13 @@ from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import format_dt_for_submission_log_page, case_insensitive_lookup, _to_str, NOT_AVAILABLE
 from datawinners.project.submission_router import SubmissionRouter
 from datawinners.project.submission_utils.submission_filter import SubmissionFilter
-from mangrove.form_model.field import SelectField
+from mangrove.form_model.field import SelectField, GeoCodeField
 from mangrove.utils.types import is_sequence
 
 field_enhancer.enhance()
+
+def _override_value_if_not_present(value):
+    return value if value else "--"
 
 class SubmissionData(object):
     __metaclass__ = abc.ABCMeta
@@ -95,15 +98,13 @@ class SubmissionData(object):
     def _get_translated_submission_status(self, status):
         return ugettext('Success') if status else ugettext('Error')
 
-    def _order_formatted_row(self, search_key, formatted_row):
-        for key, value in formatted_row.items():
-            if search_key.lower() != 'gps':
-                if key.lower() == search_key.lower():
-                    return [value]
-                else:
-                    pass
-            else:
-                return [formatted_row['gps_lat'], formatted_row['gps_long']]
+    def _order_formatted_row(self, question_field, formatted_answers):
+        for key, value in formatted_answers.items():
+            question_code = question_field.code
+            if isinstance(question_field, GeoCodeField):
+                return [_override_value_if_not_present(formatted_answers[question_code +'_lat']), _override_value_if_not_present(formatted_answers[question_code + '_long'])]
+            if key.lower() == question_code.lower():
+                return [_override_value_if_not_present(value)]
 
     def get_raw_values(self):
         return self._raw_values
