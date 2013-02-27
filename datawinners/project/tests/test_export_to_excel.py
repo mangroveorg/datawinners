@@ -16,14 +16,13 @@ class TestExportToExcel(unittest.TestCase):
         formatted_dict = format_field_values_for_excel(row, form_model)
         self.assertEqual(expected_value, formatted_dict['int'])
 
-    def test_geo_field_returns_string(self):
+    def test_geo_field_returns_number(self):
         form_model = Mock(spec=FormModel)
-        row = [{'geocode': 'incorrect_geo_code,12.2'}]
+        row = [{'geocode': '-13.235467,12.21267348'}]
         form_model.get_field_by_code_and_rev.return_value = GeoCodeField(label="What is your gps?", code="GPS",
             name="What is your gps?", ddtype=Mock(spec=DataDictType))
         formatted_dict = format_field_values_for_excel(row, form_model)
-        self.assertEqual(('incorrect_geo_code','12.2'), formatted_dict['geocode'])
-#        self.assertEqual('12.2', formatted_dict['GPS_long'])
+        self.assertEqual((-13.235467,12.21267348), formatted_dict['geocode'])
 
     def test_longitude_geo_field_not_provided_returns_empty(self):
         form_model = Mock(spec=FormModel)
@@ -31,7 +30,6 @@ class TestExportToExcel(unittest.TestCase):
         form_model.get_field_by_code_and_rev.return_value = GeoCodeField(label="What is your gps?", code="GPS",
             name="What is your gps?", ddtype=Mock(spec=DataDictType))
         formatted_dict = format_field_values_for_excel(row, form_model)
-#        self.assertEqual('incorrect_geo_code', formatted_dict['geocode'])
         self.assertEqual(('incorrect_geo_code', ''), formatted_dict['geocode'])
 
     def test_lat_geo_field_not_provided_returns_empty(self):
@@ -41,7 +39,6 @@ class TestExportToExcel(unittest.TestCase):
             name="What is your gps?", ddtype=Mock(spec=DataDictType))
         formatted_dict = format_field_values_for_excel(row, form_model)
         self.assertEqual(('','incorrect_geo_code'), formatted_dict['geocode'])
-#        self.assertEqual('', formatted_dict['GPS_lat'])
 
     def test_error_date_field_returns_string(self):
         form_model = Mock(spec=FormModel)
