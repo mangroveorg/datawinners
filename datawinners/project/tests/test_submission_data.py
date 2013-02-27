@@ -520,7 +520,7 @@ class TestSubmissionData(MangroveTestCase):
         answers = {'EID' : 'answer', 'other_value' : 'other_value'}
         question_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
             entity_question_flag=True, ddtype=self.ddtype)
-        value = submission_list.order_formatted_row(question_field, answers)
+        value = submission_list.order_formatted_row(question_field.code, answers)
         expected = ['answer']
         self.assertEqual(expected,value)
 
@@ -528,6 +528,6 @@ class TestSubmissionData(MangroveTestCase):
         submission_list = self.create_submission_list_instance()
         answers = {'GPS': ('lat','long'), 'other_value': 'other_value'}
         question_field = GeoCodeField(label="What is your gps?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
-        value = submission_list.order_formatted_row(question_field, answers)
+        value = submission_list.order_formatted_row(question_field.code, answers)
         expected = ['lat','long']
         self.assertEqual(expected, value)
