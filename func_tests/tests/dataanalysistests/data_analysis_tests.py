@@ -157,7 +157,7 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_test_data_sender(self):
-        self.verify_filter_by_data_sender(('TEST', '', 'TEST'), 'Clinic Test Project With Monthly Reporting Period'.lower())
+        self.verify_filter_by_data_sender(('TEST', 'n/a', 'TEST'), 'Clinic Test Project With Monthly Reporting Period'.lower())
 
     @attr('functional_test')
     def test_should_close_daterange_dropdown_when_opening_subject_dropdown(self):
