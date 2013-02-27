@@ -135,3 +135,13 @@ class TestReminderSend(BaseTest):
         length = reminder_settings.get_sms_text_length_for_a_reminder_type(reminder_type)
         self.assertEqual(length, 10)
 
+    @attr("functional_test")
+    def test_deadline_type_should_remain_after_saving(self):
+        all_reminder_page = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
+        reminder_settings = all_reminder_page.click_reminder_settings_tab()
+        reminder_settings = self.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK)))
+        text_example_before_save = reminder_settings.get_example_text()
+        reminder_settings.save_reminders()
+        self.assertEqual(reminder_settings.get_example_text(), text_example_before_save)
+
+

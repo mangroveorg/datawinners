@@ -254,7 +254,7 @@ def reminder_settings(request, project_id):
              'form': form}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        form = ReminderForm(data=request.POST)
+        form = ReminderForm(data=request.POST.copy())
         if form.is_valid():
             org_id = NGOUserProfile.objects.get(user=request.user).org_id
             organization = Organization.objects.get(org_id=org_id)

@@ -132,6 +132,12 @@ class ReminderForm(Form):
                                        required=False, initial=True)
 
     def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is not None:
+            deadline_type = data.get('deadline_type')
+            data.update({"deadline_type_week": deadline_type, "deadline_type_month": deadline_type})
+            kwargs.update({"data": data})
+
         super(ReminderForm, self).__init__(*args, **kwargs)
         deadline_month = ChoiceField(
             choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 31)] + [(31, ugettext_lazy('Last Day'))])), widget=forms.Select,
