@@ -92,7 +92,7 @@ def get_data_sender(manager, org_id, submission):
     else:
         data_sender = get_data_sender_for_not_sms(submission, org_id)
 
-    return data_sender if data_sender[0] != "TEST" else ("TEST", "", "TEST")
+    return data_sender if data_sender[0] != "TEST" else ("TEST", "n/a", "TEST")
 
 def get_data_sender_for_sms(manager, submission):
     return tuple(data_sender_by_mobile(manager, submission.source) + [submission.source])

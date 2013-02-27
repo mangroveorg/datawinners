@@ -47,7 +47,7 @@ class TestDataSenderHelper(MangroveTestCase):
         submission = Submission(self.manager, TransportInfo("sms", TEST_REPORTER_MOBILE_NUMBER, "destination"))
         data_sender = get_data_sender(self.manager,self.org_id, submission)
 
-        self.assertEqual(('TEST', '', 'TEST'), data_sender)
+        self.assertEqual(('TEST', 'n/a', 'TEST'), data_sender)
 
     def test_should_combine_sources_if_one_reporter_submits_data_from_different_channels(self):
         data_sender1 = DataSender("12313123123", "data_sender1", "rep1")

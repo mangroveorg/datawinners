@@ -98,13 +98,17 @@ class SubmissionData(object):
     def _get_translated_submission_status(self, status):
         return ugettext('Success') if status else ugettext('Error')
 
-    def order_formatted_row(self, question_field, formatted_answers):
-        for question_code, submitted_answer in formatted_answers.items():
-            if question_code.lower() == question_field.lower():
-                if type(submitted_answer) is tuple:
-                    lat,long = submitted_answer
-                    return [_override_value_if_not_present(lat),_override_value_if_not_present(long)]
-                return [_override_value_if_not_present(submitted_answer)]
+#  TODO : should be moved to utils
+    def order_formatted_row(self, question_field_code, formatted_answers):
+        if question_field_code.lower() not in eval(repr(formatted_answers).lower()):
+            return ['--']
+        else:
+            for question_code, submitted_answer in formatted_answers.items():
+                if question_code.lower() == question_field_code.lower():
+                    if type(submitted_answer) is tuple:
+                        lat,long = submitted_answer
+                        return [_override_value_if_not_present(lat),_override_value_if_not_present(long)]
+                    return [_override_value_if_not_present(submitted_answer)]
 
     def get_raw_values(self):
         return self._raw_values

@@ -531,3 +531,21 @@ class TestSubmissionData(MangroveTestCase):
         value = submission_list.order_formatted_row(question_field.code, answers)
         expected = ['lat','long']
         self.assertEqual(expected, value)
+
+    def test_should_return_blank_if_answer_is_not_present(self):
+            submission_list = self.create_submission_list_instance()
+            answers = {'other_value': 'other_value','some_value':'some_value'}
+            question_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
+                entity_question_flag=True, ddtype=self.ddtype)
+            value = submission_list.order_formatted_row(question_field.code, answers)
+            expected = ['--']
+            self.assertEqual(expected, value)
+
+    def test_should_return_blank_if_answer_is_not_present_irrespective_of_case(self):
+            submission_list = self.create_submission_list_instance()
+            answers = {'EID': 'other_value','some_value':'some_value'}
+            question_field = TextField(label="What is associated entity?", code="eid", name="What is associated entity?",
+                entity_question_flag=True, ddtype=self.ddtype)
+            value = submission_list.order_formatted_row(question_field.code, answers)
+            expected = ['other_value']
+            self.assertEqual(expected, value)

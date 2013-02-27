@@ -24,7 +24,7 @@ class DataSender(object):
 
     def to_tuple(self):
         if self._name == 'TEST':
-            return "TEST", "", "TEST"
+            return "TEST", "n/a", "TEST"
 
         return self._name, self._reporter_id, ','.join(self._source)
 
