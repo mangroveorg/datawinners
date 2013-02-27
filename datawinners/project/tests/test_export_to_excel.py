@@ -1,7 +1,7 @@
 import unittest
 from mock import Mock
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import IntegerField, GeoCodeField, DateField
+from mangrove.form_model.field import IntegerField, GeoCodeField, DateField, SelectField
 from mangrove.form_model.form_model import FormModel
 from project.export_to_excel import format_field_values_for_excel
 
@@ -22,8 +22,8 @@ class TestExportToExcel(unittest.TestCase):
         form_model.get_field_by_code_and_rev.return_value = GeoCodeField(label="What is your gps?", code="GPS",
             name="What is your gps?", ddtype=Mock(spec=DataDictType))
         formatted_dict = format_field_values_for_excel(row, form_model)
-        self.assertEqual('incorrect_geo_code', formatted_dict['GPS_lat'])
-        self.assertEqual('12.2', formatted_dict['GPS_long'])
+        self.assertEqual(('incorrect_geo_code','12.2'), formatted_dict['geocode'])
+#        self.assertEqual('12.2', formatted_dict['GPS_long'])
 
     def test_longitude_geo_field_not_provided_returns_empty(self):
         form_model = Mock(spec=FormModel)
@@ -31,8 +31,8 @@ class TestExportToExcel(unittest.TestCase):
         form_model.get_field_by_code_and_rev.return_value = GeoCodeField(label="What is your gps?", code="GPS",
             name="What is your gps?", ddtype=Mock(spec=DataDictType))
         formatted_dict = format_field_values_for_excel(row, form_model)
-        self.assertEqual('incorrect_geo_code', formatted_dict['GPS_lat'])
-        self.assertEqual('', formatted_dict['GPS_long'])
+#        self.assertEqual('incorrect_geo_code', formatted_dict['geocode'])
+        self.assertEqual(('incorrect_geo_code', ''), formatted_dict['geocode'])
 
     def test_lat_geo_field_not_provided_returns_empty(self):
         form_model = Mock(spec=FormModel)
@@ -40,8 +40,8 @@ class TestExportToExcel(unittest.TestCase):
         form_model.get_field_by_code_and_rev.return_value = GeoCodeField(label="What is your gps?", code="GPS",
             name="What is your gps?", ddtype=Mock(spec=DataDictType))
         formatted_dict = format_field_values_for_excel(row, form_model)
-        self.assertEqual('incorrect_geo_code', formatted_dict['GPS_long'])
-        self.assertEqual('', formatted_dict['GPS_lat'])
+        self.assertEqual(('','incorrect_geo_code'), formatted_dict['geocode'])
+#        self.assertEqual('', formatted_dict['GPS_lat'])
 
     def test_error_date_field_returns_string(self):
         form_model = Mock(spec=FormModel)
@@ -60,3 +60,19 @@ class TestExportToExcel(unittest.TestCase):
             event_time_field_flag=True, ddtype=Mock(spec=DataDictType))
         formatted_dict = format_field_values_for_excel(row, form_model)
         self.assertEqual('03_2012_23', formatted_dict['date_format_mm_yyyy_dd'])
+
+    def test_get_option_value_for_select_field(self):
+        form_model = Mock(spec=FormModel)
+        row = [{'select': 'a'}]
+        form_model.get_field_by_code_and_rev.return_value = SelectField(label="What is your blood group?", code="select", name="What is your blood group?",
+            options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")], single_select_flag=False, ddtype=Mock(spec=DataDictType))
+        formatted_dict = format_field_values_for_excel(row, form_model)
+        self.assertEqual(['one'], formatted_dict['select'])
+
+    def test_get_multiple_option_value_for_select_field(self):
+        form_model = Mock(spec=FormModel)
+        row = [{'select': 'ab'}]
+        form_model.get_field_by_code_and_rev.return_value = SelectField(label="What is your blood group?", code="select", name="What is your blood group?",
+            options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")], single_select_flag=False, ddtype=Mock(spec=DataDictType))
+        formatted_dict = format_field_values_for_excel(row, form_model)
+        self.assertEqual(['one','two'], formatted_dict['select'])

@@ -98,13 +98,13 @@ class SubmissionData(object):
     def _get_translated_submission_status(self, status):
         return ugettext('Success') if status else ugettext('Error')
 
-    def _order_formatted_row(self, question_field, formatted_answers):
-        for key, value in formatted_answers.items():
-            question_code = question_field.code
-            if isinstance(question_field, GeoCodeField):
-                return [_override_value_if_not_present(formatted_answers[question_code +'_lat']), _override_value_if_not_present(formatted_answers[question_code + '_long'])]
-            if key.lower() == question_code.lower():
-                return [_override_value_if_not_present(value)]
+    def order_formatted_row(self, question_field, formatted_answers):
+        for question_code, submitted_answer in formatted_answers.items():
+            if question_code.lower() == question_field.lower():
+                if type(submitted_answer) is tuple:
+                    lat,long = submitted_answer
+                    return [_override_value_if_not_present(lat),_override_value_if_not_present(long)]
+                return [_override_value_if_not_present(submitted_answer)]
 
     def get_raw_values(self):
         return self._raw_values

@@ -504,3 +504,30 @@ class TestSubmissionData(MangroveTestCase):
             self.assertEqual(excel_values[0][8],45.0)
             self.assertEqual(excel_values[0][9],'12.74')
             self.assertEqual(excel_values[0][10],'77.45')
+
+    def create_submission_list_instance(self):
+        with patch("project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
+            data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
+            get_submissions.return_value = [Submission(self.manager,
+                transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
+                form_code=self.form_model.form_code,
+                values=data)]
+            submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
+        return submission_list
+
+    def test_should_give_answers_values_according_to_question_code(self):
+        submission_list = self.create_submission_list_instance()
+        answers = {'EID' : 'answer', 'other_value' : 'other_value'}
+        question_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
+            entity_question_flag=True, ddtype=self.ddtype)
+        value = submission_list.order_formatted_row(question_field, answers)
+        expected = ['answer']
+        self.assertEqual(expected,value)
+
+    def test_should_split_fields_according_to_question_code_for_geocode_fields(self):
+        submission_list = self.create_submission_list_instance()
+        answers = {'GPS': ('lat','long'), 'other_value': 'other_value'}
+        question_field = GeoCodeField(label="What is your gps?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
+        value = submission_list.order_formatted_row(question_field, answers)
+        expected = ['lat','long']
+        self.assertEqual(expected, value)

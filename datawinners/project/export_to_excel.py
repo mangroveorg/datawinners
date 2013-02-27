@@ -35,7 +35,6 @@ def _get_exported_data(header, formatted_values, submission_log_type):
     elif submission_log_type in [SubmissionRouter.SUCCESS]:
         return [each[submission_id_col + 1:status_col] + each[reply_sms_col + 1:] for each in data]
     else:
-        #for analysis page
         return [each[1:] for each in data]
 
 
@@ -46,20 +45,6 @@ def format_field_values_for_excel(row, form_model):
     changed_row = dict()
     for question_code, question_value in row[-1].iteritems():
         field = form_model.get_field_by_code_and_rev(question_code, row[0])
-        if isinstance(field, SelectField):
-            row[-1][question_code] = field.get_option_value_list(question_value)
-            changed_row[question_code] = row[-1][question_code]
-        elif isinstance(field, IntegerField):
-            try:
-                row[-1][question_code] = float(question_value)
-                changed_row[question_code] = row[-1][question_code]
-            except ValueError:
-                changed_row[question_code] = question_value
-        elif isinstance(field, GeoCodeField):
-            value_list = question_value.replace(',', ' ').split(' ')
-            changed_row[field.code + '_lat'] = _empty_if_no_data(value_list, 0)
-            changed_row[field.code + '_long'] = _empty_if_no_data(value_list, 1)
-        else:
-            changed_row[question_code] = question_value
+        changed_row[question_code] = field.formatted_field_values_for_excel(question_value)
     return changed_row
 
