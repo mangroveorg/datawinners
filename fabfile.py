@@ -373,3 +373,9 @@ def remove_cache(context):
     with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS, 'media')):
         run('rm -rf CACHE/js/*')
         run('rm -rf CACHE/css/*')
+
+def run_func_tests(environment="qa_supreme"):
+    virtual_env = ENVIRONMENT_VES[environment]
+    activate_and_run(virtual_env,"true")
+    run("cd workspace/datawinners")
+    run("./build.sh ft")
