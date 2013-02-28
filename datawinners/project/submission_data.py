@@ -9,13 +9,14 @@ from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import format_dt_for_submission_log_page, case_insensitive_lookup, _to_str, NOT_AVAILABLE
 from datawinners.project.submission_router import SubmissionRouter
 from datawinners.project.submission_utils.submission_filter import SubmissionFilter
-from mangrove.form_model.field import SelectField, GeoCodeField
+from mangrove.form_model.field import SelectField
 from mangrove.utils.types import is_sequence
 
 field_enhancer.enhance()
 
 def _override_value_if_not_present(value):
     return value if value else "--"
+
 
 class SubmissionData(object):
     __metaclass__ = abc.ABCMeta
@@ -98,16 +99,16 @@ class SubmissionData(object):
     def _get_translated_submission_status(self, status):
         return ugettext('Success') if status else ugettext('Error')
 
-#  TODO : should be moved to utils
+    #  TODO : should be moved to utils
     def order_formatted_row(self, question_field_code, formatted_answers):
-        if question_field_code.lower() not in eval(repr(formatted_answers).lower()):
+        if question_field_code.lower() not in eval(repr(formatted_answers.keys()).lower()):
             return ['--']
         else:
             for question_code, submitted_answer in formatted_answers.items():
                 if question_code.lower() == question_field_code.lower():
                     if type(submitted_answer) is tuple:
-                        lat,long = submitted_answer
-                        return [_override_value_if_not_present(lat),_override_value_if_not_present(long)]
+                        lat, long = submitted_answer
+                        return [_override_value_if_not_present(lat), _override_value_if_not_present(long)]
                     return [_override_value_if_not_present(submitted_answer)]
 
     def get_raw_values(self):

@@ -502,8 +502,8 @@ class TestSubmissionData(MangroveTestCase):
             self.assertEqual(excel_values[0][5],u'Tester Pune')
             self.assertEqual(excel_values[0][6],'admin')
             self.assertEqual(excel_values[0][8],45.0)
-            self.assertEqual(excel_values[0][9],'12.74')
-            self.assertEqual(excel_values[0][10],'77.45')
+            self.assertEqual(excel_values[0][9],12.74)
+            self.assertEqual(excel_values[0][10],77.45)
 
     def create_submission_list_instance(self):
         with patch("project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
