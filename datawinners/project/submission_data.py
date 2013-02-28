@@ -1,4 +1,5 @@
 from collections import OrderedDict, defaultdict
+from datetime import datetime
 import abc
 from django.utils.translation import ugettext
 from datawinners.enhancer import field_enhancer
@@ -9,7 +10,7 @@ from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import format_dt_for_submission_log_page, case_insensitive_lookup, _to_str, NOT_AVAILABLE
 from datawinners.project.submission_router import SubmissionRouter
 from datawinners.project.submission_utils.submission_filter import SubmissionFilter
-from mangrove.form_model.field import SelectField
+from mangrove.form_model.field import SelectField, DateField
 from mangrove.utils.types import is_sequence
 
 field_enhancer.enhance()
@@ -48,12 +49,17 @@ class SubmissionData(object):
         if leading_part:
             self.leading_part_length = len(leading_part[0])
 
-    def _get_submission_details(self, submission):
-        data_sender = self._get_data_sender(submission)
-        submission_date = format_dt_for_submission_log_page(submission)
-        rp = self._get_rp_for_leading_part(submission)
-        subject = self._get_subject_for_leading_part(submission)
+    def _get_submission_details(self, filtered_submissions):
+        data_sender = self._get_data_sender(filtered_submissions)
+        submission_date = format_dt_for_submission_log_page(filtered_submissions)
+        rp = self._get_rp_for_leading_part(filtered_submissions)
+        subject = self._get_subject_for_leading_part(filtered_submissions)
         return data_sender, rp, subject, submission_date
+
+    def get_submission_details_for_excel(self, filtered_submissions):
+        data_sender, rp, subject, submission_date = self._get_submission_details(filtered_submissions)
+        reporting_date =  datetime.strptime(rp, DateField.DATE_DICTIONARY.get(self.form_model.event_time_question.date_format))
+        return data_sender, reporting_date, subject, filtered_submissions.created
 
     def _get_data_sender(self, submission):
         for each in self._data_senders:

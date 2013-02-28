@@ -1,10 +1,11 @@
 from datetime import datetime
 from mock import patch, Mock
 from mangrove.form_model.field import field_attributes, TextField, SelectField, DateField, IntegerField, GeoCodeField
-from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD
+from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, FormModel
 from mangrove.transport import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport.submissions import Submission
+from mangrove.utils.dates import utcnow
 from mangrove.utils.entity_builder import EntityBuilder
 from mangrove.utils.form_model_builder import create_default_ddtype, FormModelBuilder
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
@@ -393,18 +394,22 @@ class TestSubmissionData(MangroveTestCase):
         """
         Function to test get old answer for submissions which is submitted before answer type changed from other type(word, number, date, GPS) to multiple choice/single choice
         """
-        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",entity_question_flag=True, ddtype=self.ddtype)
-        rp_field = DateField(label="Report date", code="RD", name="What is reporting date?",date_format="dd.mm.yyyy", event_time_field_flag=True, ddtype=self.ddtype)
+        eid_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
+            entity_question_flag=True, ddtype=self.ddtype)
+        rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="dd.mm.yyyy",
+            event_time_field_flag=True, ddtype=self.ddtype)
         symptoms_field = TextField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=self.ddtype)
         blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=self.ddtype)
 
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,symptoms_field, blood_type_field).build()
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
+            symptoms_field, blood_type_field).build()
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'BG': 'b'})
 
         symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
-                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=self.ddtype)
+                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
+            ddtype=self.ddtype)
         self._edit_fields(form_model, symptoms_field)
         self.submit_data({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
         with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
@@ -412,7 +417,7 @@ class TestSubmissionData(MangroveTestCase):
             analyzer = self._prepare_analysis_list(form_model)
             values = analyzer.get_raw_values()
 
-            self.assertEqual([['Rapid weight loss','Dry cough'], ['O-']], values[0][5:])
+            self.assertEqual([['Rapid weight loss', 'Dry cough'], ['O-']], values[0][5:])
             self.assertEqual(['Fever', ['O-']], values[1][5:])
 
     def test_should_show_previous_submissions_in_old_format_after_change_date_format(self):
@@ -483,10 +488,10 @@ class TestSubmissionData(MangroveTestCase):
         gps_field = GeoCodeField(label="What is your gps?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
 
         form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field,
-            blood_type_field,rp_field,age_field,gps_field).build()
+            blood_type_field, rp_field, age_field, gps_field).build()
 
         post_data = {'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a', 'RD': '12.11.2013', 'FA': '45',
-                    'GPS': '12.74,77.45'}
+                     'GPS': '12.74,77.45'}
         self.submit_data(post_data)
 
         with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
@@ -496,14 +501,14 @@ class TestSubmissionData(MangroveTestCase):
                 values=post_data)]
             analyzer = AnalysisForExcel(form_model, self.manager, self.org_id, [])
             excel_values = analyzer.get_raw_values()
-            self.assertEqual(excel_values[0][1],'Ritesh')
-            self.assertEqual(excel_values[0][2],u'cid001')
-            self.assertEqual(excel_values[0][3],'12.11.2013')
-            self.assertEqual(excel_values[0][5],u'Tester Pune')
-            self.assertEqual(excel_values[0][6],'admin')
-            self.assertEqual(excel_values[0][8],45.0)
-            self.assertEqual(excel_values[0][9],12.74)
-            self.assertEqual(excel_values[0][10],77.45)
+            self.assertEqual(excel_values[0][1], 'Ritesh')
+            self.assertEqual(excel_values[0][2], u'cid001')
+            self.assertEqual(excel_values[0][3], datetime.strptime('12.11.2013', '%d.%m.%Y'))
+            self.assertEqual(excel_values[0][5], u'Tester Pune')
+            self.assertEqual(excel_values[0][6], 'admin')
+            self.assertEqual(excel_values[0][8], 45.0)
+            self.assertEqual(excel_values[0][9], 12.74)
+            self.assertEqual(excel_values[0][10], 77.45)
 
     def create_submission_list_instance(self):
         with patch("project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
@@ -517,35 +522,52 @@ class TestSubmissionData(MangroveTestCase):
 
     def test_should_give_answers_values_according_to_question_code(self):
         submission_list = self.create_submission_list_instance()
-        answers = {'EID' : 'answer', 'other_value' : 'other_value'}
+        answers = {'EID': 'answer', 'other_value': 'other_value'}
         question_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
             entity_question_flag=True, ddtype=self.ddtype)
         value = submission_list.order_formatted_row(question_field.code, answers)
         expected = ['answer']
-        self.assertEqual(expected,value)
+        self.assertEqual(expected, value)
 
     def test_should_split_fields_according_to_question_code_for_geocode_fields(self):
         submission_list = self.create_submission_list_instance()
-        answers = {'GPS': ('lat','long'), 'other_value': 'other_value'}
-        question_field = GeoCodeField(label="What is your gps?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
+        answers = {'GPS': ('lat', 'long'), 'other_value': 'other_value'}
+        question_field = GeoCodeField(label="What is your gps?", code="GPS", name="What is your gps?",
+            ddtype=self.ddtype)
         value = submission_list.order_formatted_row(question_field.code, answers)
-        expected = ['lat','long']
+        expected = ['lat', 'long']
         self.assertEqual(expected, value)
 
     def test_should_return_blank_if_answer_is_not_present(self):
-            submission_list = self.create_submission_list_instance()
-            answers = {'other_value': 'other_value','some_value':'some_value'}
-            question_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
-                entity_question_flag=True, ddtype=self.ddtype)
-            value = submission_list.order_formatted_row(question_field.code, answers)
-            expected = ['--']
-            self.assertEqual(expected, value)
+        submission_list = self.create_submission_list_instance()
+        answers = {'other_value': 'other_value', 'some_value': 'some_value'}
+        question_field = TextField(label="What is associated entity?", code="EID", name="What is associated entity?",
+            entity_question_flag=True, ddtype=self.ddtype)
+        value = submission_list.order_formatted_row(question_field.code, answers)
+        expected = ['--']
+        self.assertEqual(expected, value)
 
     def test_should_return_blank_if_answer_is_not_present_irrespective_of_case(self):
-            submission_list = self.create_submission_list_instance()
-            answers = {'EID': 'other_value','some_value':'some_value'}
-            question_field = TextField(label="What is associated entity?", code="eid", name="What is associated entity?",
-                entity_question_flag=True, ddtype=self.ddtype)
-            value = submission_list.order_formatted_row(question_field.code, answers)
-            expected = ['other_value']
-            self.assertEqual(expected, value)
+        submission_list = self.create_submission_list_instance()
+        answers = {'EID': 'other_value', 'some_value': 'some_value'}
+        question_field = TextField(label="What is associated entity?", code="eid", name="What is associated entity?",
+            entity_question_flag=True, ddtype=self.ddtype)
+        value = submission_list.order_formatted_row(question_field.code, answers)
+        expected = ['other_value']
+        self.assertEqual(expected, value)
+
+    def test_reporting_date_is_of_date_type(self):
+        with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
+            with patch("datawinners.project.submission_data.SubmissionData._get_submission_details") as get_test_data:
+                get_test_data.return_value = 'data_sender', '02.2013', "hospital", '20.03.2013'
+                get_submissions.return_value = []
+                form_model = Mock(spec=FormModel)
+                form_model.event_time_question.date_format = 'mm.yyyy'
+                analyzer = AnalysisForExcel(form_model, self.manager, self.org_id, [])
+                filtered_submissions = Mock(spec=Submission)
+                expected_created_date = utcnow()
+                filtered_submissions.created = expected_created_date
+                data_sender, rp, subject, submission_date = analyzer.get_submission_details_for_excel(
+                    filtered_submissions)
+                self.assertEqual(datetime.strptime('02.2013', '%m.%Y'), rp)
+                self.assertEqual(expected_created_date, submission_date)

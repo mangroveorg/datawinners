@@ -1,7 +1,5 @@
 from django.http import HttpResponse
-from mangrove.form_model.field import SelectField, IntegerField, GeoCodeField, DateField
 
-from project.helper import _to_str
 from project.submission_router import SubmissionRouter
 
 import datawinners.utils as utils

@@ -13,7 +13,7 @@ class SubmissionListForExcel(SubmissionData):
         leading_part = []
         for submission in self.filtered_submissions:
             data_sender_tuple, rp, subject_tuple, submission_date = super(SubmissionListForExcel,
-                self)._get_submission_details(submission)
+                self).get_submission_details_for_excel(submission)
             status = self._get_translated_submission_status(submission.status)
             error_message = submission.errors if submission.errors else "-"
             subject_id = subject_tuple[1] if subject_tuple else ""
