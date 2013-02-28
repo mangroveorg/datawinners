@@ -285,3 +285,6 @@ class DataAnalysisPage(Page):
 
     def get_all_data_records_from_multiple_pages_in_string(self):
         return ", ".join(self.get_all_data_records_from_multiple_pages())
+
+    def get_subject_filter_caption(self):
+        return self.driver.wait_for_element(20, by_xpath('//select[@id="subjectSelect"]/../span/span')).text

@@ -273,3 +273,15 @@ class TestDataAnalysis(BaseTest):
                             "12.2012", "12, 34", "20, 34"]
         ordered = analysis_page.get_all_data_records_by_column(4)
         self.assertEqual(', '.join(ordered), ', '.join(expected_ordered))
+
+    @attr('functional_test', 'smoke')
+    def test_should_update_text_when_selecting_subjects(self):
+        data_analysis_page = self.go_to_analysis_page()
+        subjects = ['ANALAMANGA', 'Andapa', "Antsirabe"]
+        data_analysis_page.select_for_subject_type(subjects[0])
+        data_analysis_page.select_for_subject_type(subjects[1])
+        subject_text = data_analysis_page.get_subject_filter_caption()
+        self.assertEqual(subject_text, 'ANALAMANGA, Andapa')
+        data_analysis_page.select_for_subject_type(subjects[2])
+        subject_text = data_analysis_page.get_subject_filter_caption()
+        self.assertEqual(subject_text, 'ANALAMANGA, Andapa, Antsirabe')

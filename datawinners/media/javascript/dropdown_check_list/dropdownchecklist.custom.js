@@ -586,7 +586,7 @@
                     empties += 1;
                     anOption = $(selectOptions[index + empties]);
                 }
-                anOption.attr("selected", $(this).attr("checked"));
+                anOption.attr("selected", $(this).prop("checked"));
             });
             // update the text shown in the control
             self._updateControlText();
