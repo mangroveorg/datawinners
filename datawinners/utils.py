@@ -68,31 +68,25 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
     my_font = xlwt.Font()
     my_font.name = 'Helvetica Bold'
     my_font.bold = True
-    my_font.colour_index = 0x09
-
-    my_pattern = xlwt.Pattern()
-    my_pattern.pattern = my_pattern.SOLID_PATTERN
     my_alignment = xlwt.Alignment()
     my_alignment.vert = my_alignment.VERT_CENTER
     my_alignment.wrap = my_alignment.WRAP_AT_RIGHT
     header_style = xlwt.easyxf()
     header_style.font = my_font
-    header_style.pattern = my_pattern
     header_style.alignment = my_alignment
     for row_number, row  in enumerate(raw_data):
         if(row_number == 0):
            row = _clean(row)
            for col_number, val in enumerate(row):
                ws.row(row_number).height = 256 * 4
-               if val == SUBMISSION_DATE_QUESTION:
-                   ws.col(col_number).width = 256 * 25
-        #                ws.col(col_number).width = 256 * (len(val) + 2)
                ws.write(row_number,col_number, val, header_style)
 
         if (row_number!=0):
            if row_number > 0 and row_number % 500 == 0: ws.flush_row_data()
            row = _clean(row)
            for col_number, val in enumerate(row):
+#               if isinstance(val,datetime):
+#                   ws.col(col_number).width = 256 * (len(val) + 2)
                gangnam_style = dt_cell_style if isinstance(val, datetime) else default_cell_style
                ws.write(row_number, col_number, val, style=gangnam_style)
     return ws
