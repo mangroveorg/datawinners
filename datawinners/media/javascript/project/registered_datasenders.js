@@ -36,7 +36,7 @@ $(document).ready(function () {
                         $('#success_message').remove();
                     });
                     setTimeout(function () {
-                        window.location.href = data;
+                        window.location.reload(true);
                     }, 5000);
                 }
             );
