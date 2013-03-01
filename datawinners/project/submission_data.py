@@ -10,7 +10,7 @@ from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import format_dt_for_submission_log_page, case_insensitive_lookup, _to_str, NOT_AVAILABLE
 from datawinners.project.submission_router import SubmissionRouter
 from datawinners.project.submission_utils.submission_filter import SubmissionFilter
-from mangrove.form_model.field import SelectField, DateField
+from mangrove.form_model.field import SelectField, DateField, ExcelDate
 from mangrove.utils.types import is_sequence
 
 field_enhancer.enhance()
@@ -57,9 +57,16 @@ class SubmissionData(object):
         return data_sender, rp, subject, submission_date
 
     def get_submission_details_for_excel(self, filtered_submissions):
-        data_sender, rp, subject, submission_date = self._get_submission_details(filtered_submissions)
-        reporting_date =  datetime.strptime(rp, DateField.DATE_DICTIONARY.get(self.form_model.event_time_question.date_format))
-        return data_sender, reporting_date, subject, filtered_submissions.created
+        data_sender, reporting_date, subject, submission_date = self._get_submission_details(filtered_submissions)
+        question_date_format = self.form_model.event_time_question.date_format
+        try:
+            reporting_date_excel = ExcelDate(
+                datetime.strptime(reporting_date, DateField.DATE_DICTIONARY.get(question_date_format)),
+                question_date_format)
+        except ValueError:
+            reporting_date_excel = reporting_date
+        submission_date = ExcelDate(filtered_submissions.created, 'submission_date')
+        return data_sender, reporting_date_excel, subject, submission_date
 
     def _get_data_sender(self, submission):
         for each in self._data_senders:

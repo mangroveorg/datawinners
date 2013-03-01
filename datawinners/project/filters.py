@@ -29,7 +29,7 @@ class ReportPeriodFilter(object):
         return self.start_time <= report_time <= self.end_time
 
     def _parseDate(self, dateString):
-        return datetime.strptime(dateString.strip(), DateField.get_datetime_format(self.date_format))
+        return datetime.strptime(dateString.strip(), DateField.DATE_DICTIONARY.get(self.date_format))
 
 class SubjectFilter(object):
     def __init__(self, entity_question_code, subject_ids):

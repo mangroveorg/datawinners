@@ -3,7 +3,7 @@ from mock import patch, PropertyMock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.submissions import Submission
-from project.analysis_for_excel import AnalysisForExcel
+from project.analysis import Analysis
 from mangrove.transport import TransportInfo
 
 class TestAnalysis(unittest.TestCase):
@@ -20,9 +20,11 @@ class TestAnalysis(unittest.TestCase):
                     transport_info=TransportInfo(transport='SMS', source='123', destination='456'),
                     values={"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
                 get_submissions.return_value = [submission]
-                get_submission_details.return_value = ('Tester Pune', 'admin', 'tester150411@gmail.com'), "12-03-2012", (
-                                                      'Clinic-One', u'cli15'), "23-02-2012"
-                analysis_data = AnalysisForExcel(self.form_model, self.manager, "org_id", self.filters)
+                get_submission_details.return_value = (
+                                                      'Tester Pune', 'admin', 'tester150411@gmail.com'), "12-03-2012", (
+                                                          'Clinic-One', u'cli15'), "23-02-2012"
+                analysis_data = Analysis(self.form_model, self.manager, "org_id", self.filters)
                 leading_part = analysis_data.get_raw_values()
-                expected_leading_part = [[submission.id, 'Clinic-One', u'cli15', "12-03-2012", "23-02-2012", "Tester Pune", "admin"]]
+                expected_leading_part = [
+                    [submission.id, ('Clinic-One', u'cli15'), "12-03-2012", "23-02-2012", ('Tester Pune', 'admin', 'tester150411@gmail.com')]]
                 self.assertEqual(expected_leading_part, leading_part)

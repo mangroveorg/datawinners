@@ -3,7 +3,7 @@ import unittest
 from dateutil.parser import parse
 from mock import Mock
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import IntegerField, GeoCodeField, DateField, SelectField
+from mangrove.form_model.field import IntegerField, GeoCodeField, DateField, SelectField, ExcelDate
 from mangrove.form_model.form_model import FormModel
 from project.export_to_excel import format_field_values_for_excel
 
@@ -65,7 +65,7 @@ class TestExportToExcel(unittest.TestCase):
             event_time_field_flag=True, ddtype=Mock(spec=DataDictType))
         formatted_dict = format_field_values_for_excel(row, form_model)
         expected_date = datetime.strptime(date_as_string, date_format)
-        self.assertEqual(expected_date, formatted_dict['date'])
+        self.assertEqual(ExcelDate(expected_date ,date_field_format), formatted_dict['date'])
 
     def test_get_option_value_for_select_field(self):
         form_model = Mock(spec=FormModel)
@@ -86,3 +86,4 @@ class TestExportToExcel(unittest.TestCase):
             ddtype=Mock(spec=DataDictType))
         formatted_dict = format_field_values_for_excel(row, form_model)
         self.assertEqual(['one', 'two'], formatted_dict['select'])
+

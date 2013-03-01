@@ -1,6 +1,6 @@
 from datetime import datetime
 from mock import patch, Mock
-from mangrove.form_model.field import field_attributes, TextField, SelectField, DateField, IntegerField, GeoCodeField
+from mangrove.form_model.field import field_attributes, TextField, SelectField, DateField, IntegerField, GeoCodeField, ExcelDate
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, FormModel
 from mangrove.transport import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
@@ -503,7 +503,7 @@ class TestSubmissionData(MangroveTestCase):
             excel_values = analyzer.get_raw_values()
             self.assertEqual(excel_values[0][1], 'Ritesh')
             self.assertEqual(excel_values[0][2], u'cid001')
-            self.assertEqual(excel_values[0][3], datetime.strptime('12.11.2013', '%d.%m.%Y'))
+            self.assertEqual(excel_values[0][3], ExcelDate(datetime.strptime('12.11.2013', '%d.%m.%Y'),'dd.mm.yyyy'))
             self.assertEqual(excel_values[0][5], u'Tester Pune')
             self.assertEqual(excel_values[0][6], 'admin')
             self.assertEqual(excel_values[0][8], 45.0)
@@ -569,5 +569,5 @@ class TestSubmissionData(MangroveTestCase):
                 filtered_submissions.created = expected_created_date
                 data_sender, rp, subject, submission_date = analyzer.get_submission_details_for_excel(
                     filtered_submissions)
-                self.assertEqual(datetime.strptime('02.2013', '%m.%Y'), rp)
-                self.assertEqual(expected_created_date, submission_date)
+                self.assertEqual(ExcelDate(datetime.strptime('02.2013', '%m.%Y'), 'mm.yyyy'), rp)
+                self.assertEqual(ExcelDate(expected_created_date, 'submission_date'), submission_date)
