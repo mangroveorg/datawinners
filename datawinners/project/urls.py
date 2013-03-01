@@ -1,11 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
-from datawinners.entity.views import edit_subject, save_questionnaire, disassociate_datasenders
+from datawinners.entity.views import edit_subject, disassociate_datasenders
 
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
 from datawinners.project.submission_views import submissions, project_data, export_data, export_log
-from datawinners.project.views import questionnaire, web_questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, index, project_overview, subjects, registered_subjects, registered_datasenders, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, review_and_test, edit_subject_questionaire, project_has_data, edit_data_sender
+from datawinners.project.views import questionnaire, web_questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, index, project_overview, subjects, registered_subjects, registered_datasenders, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, review_and_test, edit_subject_questionaire, project_has_data, edit_data_sender,save_questionnaire
 
 js_info_dict = {
     'domain': 'djangojs',
