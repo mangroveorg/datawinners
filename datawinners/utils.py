@@ -85,8 +85,8 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
            if row_number > 0 and row_number % 500 == 0: ws.flush_row_data()
            row = _clean(row)
            for col_number, val in enumerate(row):
-#               if isinstance(val,datetime):
-#                   ws.col(col_number).width = 256 * (len(val) + 2)
+               if isinstance(val,datetime):
+                   ws.col(col_number).width = 256 * (len(str(val)) + 2)
                gangnam_style = dt_cell_style if isinstance(val, datetime) else default_cell_style
                ws.write(row_number, col_number, val, style=gangnam_style)
     return ws
