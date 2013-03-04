@@ -106,10 +106,11 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
                     ws.col(col_number).width = WIDTH_ONE_CHAR * (len(str(val.date)) + BUFFER_WIDTH)
                     ws.write(row_number, col_number, val.date.replace(tzinfo = None),
                         style=xlwt.easyxf(num_format_str=val.excel_cell_date_format))
+                elif isinstance(val, float):
+                    ws.write(row_number, col_number, val, style=xlwt.easyxf(num_format_str='#.0###'))
                 else:
                     ws.write(row_number, col_number, val, style=xlwt.Style.default_style)
     return ws
-
 
 def get_organization_from_manager(manager):
     from datawinners.accountmanagement.models import Organization, OrganizationSetting
