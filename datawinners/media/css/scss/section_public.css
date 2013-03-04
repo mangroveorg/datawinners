@@ -28,7 +28,7 @@ body {
   #container_home_intro #home_intro_bg {
     background: url("/media/images/dw_home_bg.jpg") no-repeat top center; }
     #container_home_intro #home_intro_bg .content {
-      padding: 100px 0 0 20px;
+      padding: 75px 0 0 20px;
       color: #ffffff;
       font-size: 15px; }
       #container_home_intro #home_intro_bg .content p {
@@ -37,7 +37,7 @@ body {
         font-size: 32px;
         font-weight: bold;
         line-height: 36px;
-        text-shadow: #10210b 0 0 1px; }
+        text-shadow: #10210B 0 0 1px; }
       #container_home_intro #home_intro_bg .content .intro_try_button {
         display: block;
         width: 158px;
@@ -48,7 +48,7 @@ body {
         line-height: 46px;
         text-align: center;
         color: #6f451b;
-        text-shadow: #fff2b2 0 1px 1px;
+        text-shadow: #FFF2B2 0 1px 1px;
         background: url("/media/images/dw_home_button1.png") no-repeat left top;
         float: left;
         margin-right: 15px;
@@ -71,7 +71,7 @@ body {
         line-height: 46px;
         text-align: center;
         color: #23620D;
-        text-shadow: #e1f7ca 0 1px 1px;
+        text-shadow: #E1F7CA 0 1px 1px;
         background: url("/media/images/dw_home_button2.png") no-repeat left top;
         float: left;
         text-decoration: none; }
@@ -83,6 +83,15 @@ body {
           -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
           box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
           opacity: 0.9; }
+    #container_home_intro #home_intro_bg #home_intro .title_medium_size {
+      font-size: 17px !important;
+      font-weight: bold;
+      margin-bottom: 5px;
+      width: 540px; }
+    #container_home_intro #home_intro_bg #home_intro .title_min_size {
+      font-size: 17px; }
+    #container_home_intro #home_intro_bg #home_intro .content {
+      width: 464px; }
 
 #container_home_carousel {
   background: #ebf1f6 url("/media/images/dw_how_bg.gif") repeat-x left top;
@@ -105,7 +114,7 @@ body {
         margin: 0;
         font-size: 20px;
         color: #444;
-        text-shadow: white 0 1px 1px; }
+        text-shadow: #ffffff 0 1px 1px; }
     #container_home_carousel #home_carousel #carousel {
       width: 810px;
       margin: 0 auto;
@@ -208,7 +217,7 @@ body {
 
 #container_home_how {
   background: url("/media/images/dw_pattern_bg.gif") repeat left top;
-  height: 250px;
+  height: 230px;
   overflow: hidden; }
   #container_home_how #home_how {
     padding-top: 43px; }
@@ -229,7 +238,7 @@ body {
   height: 75px;
   overflow: hidden;
   background: url("/media/images/dw_pattern_bg.gif") repeat left top;
-  border-bottom: 1px solid #cccccc; }
+  border-bottom: 1px solid #CCCCCC; }
   #container_page_title #page_title {
     width: 720px;
     float: right;
@@ -287,7 +296,7 @@ body {
         font-weight: bold;
         font-size: 14px;
         padding: 5px 0 15px;
-        border-top: 1px solid black; }
+        border-top: 1px solid #000; }
         #container_main_content #nav_content ul li ul {
           margin: 0 0 0 10px; }
           #container_main_content #nav_content ul li ul li {
@@ -300,7 +309,7 @@ body {
     width: 740px;
     margin-right: 5px;
     float: right;
-    border-left: 1px solid #dddddd; }
+    border-left: 1px solid #DDDDDD; }
     #container_main_content #main_content a {
       color: #044c83; }
       #container_main_content #main_content a:hover {
@@ -352,18 +361,26 @@ body {
       margin: 0 20px;
       padding: 0 10px; }
     #container_main_content #main_content .with_border {
-      border: 1px solid #cccccc;
+      border: 1px solid #CCCCCC;
       padding: 0 10px; }
       #container_main_content #main_content .with_border legend {
         padding: 0 10px; }
     #container_main_content #main_content table.border_1 td, #container_main_content #main_content table.border_1 th {
-      border: 1px solid #cccccc;
+      border: 1px solid #CCCCCC;
       padding: 5px;
       text-align: center; }
     #container_main_content #main_content table.border_1 th {
       background: #DDDDDD; }
     #container_main_content #main_content table.border_1 tr.no_bord_bottom th, #container_main_content #main_content table.border_1 tr.no_bord_bottom td {
       border-bottom: 0; }
+    #container_main_content #main_content #try_it_bt_container {
+      text-align: center; }
+      #container_main_content #main_content #try_it_bt_container a.try_button {
+        margin-bottom: 3px !important; }
+        #container_main_content #main_content #try_it_bt_container a.try_button:hover {
+          -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+          box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+          opacity: 1; }
 
 #use_dw {
   margin: 20px 0; }
@@ -396,7 +413,7 @@ body {
     text-align: center;
     line-height: 14px; }
     #how_menu .title a {
-      color: #044c83 !important; }
+      color: #044C83 !important; }
       #how_menu .title a:hover {
         text-decoration: none !important; }
   #how_menu #how_active {
@@ -426,7 +443,7 @@ body {
 #how_nav #how_links {
   margin: 20px 0 0 0;
   padding-top: 10px;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid #DDDDDD;
   text-align: center; }
   #how_nav #how_links #how_try_button {
     display: block;
@@ -437,7 +454,7 @@ body {
     font-weight: bold;
     line-height: 46px;
     color: #6f451b !important;
-    text-shadow: #fff2b2 0 1px 1px;
+    text-shadow: #FFF2B2 0 1px 1px;
     background: url("/media/images/dw_home_button1.png") no-repeat left top;
     margin: 0 auto; }
 #how_nav #how_prev {
@@ -464,9 +481,9 @@ body {
   position: relative;
   padding: 15px 0 20px 10px; }
   #features_content .screen .capture {
-    -moz-box-shadow: 1px 1px 6px #eeeeee;
-    -webkit-box-shadow: 1px 1px 6px #eeeeee;
-    box-shadow: 1px 1px 6px #eeeeee; }
+    -moz-box-shadow: 1px 1px 6px #EEE;
+    -webkit-box-shadow: 1px 1px 6px #EEE;
+    box-shadow: 1px 1px 6px #EEE; }
   #features_content .screen .plus {
     position: absolute;
     width: 40px;
@@ -483,7 +500,7 @@ body {
   font-weight: bold;
   line-height: 46px;
   color: #6f451b !important;
-  text-shadow: #fff2b2 0 1px 1px;
+  text-shadow: #FFF2B2 0 1px 1px;
   background: url("/media/images/dw_home_button1.png") no-repeat left top;
   margin: 10px auto; }
 
@@ -498,7 +515,7 @@ body {
   font-weight: bold;
   line-height: 46px;
   color: #6f451b !important;
-  text-shadow: #fff2b2 0 1px 1px;
+  text-shadow: #FFF2B2 0 1px 1px;
   background: url("/media/images/dw_home_button1.png") no-repeat left top;
   text-align: center; }
 
@@ -552,9 +569,9 @@ body {
 
 .pricelist {
   margin: 20px 0 0 0;
-  border-top: 1px solid #eeeeee; }
+  border-top: 1px solid #eee; }
   .pricelist td {
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid #eee;
     padding: 6px 10px;
     font-size: 14px; }
 
@@ -564,7 +581,7 @@ body {
     background: url("/media/images/dw_dialog_bg_title.gif") repeat-x;
     color: #fff;
     border: none;
-    text-shadow: 1px 1px 0 #444444; }
+    text-shadow: 1px 1px 0 #444; }
   .ui-dialog .ui-dialog-titlebar-close {
     height: 28px;
     width: 28px;
@@ -594,15 +611,15 @@ ol .lower_i {
   list-style-type: lower-roman; }
 
 .blog-post img.alignnone {
-  border: 5px solid #efefef; }
+  border: 5px solid #EFEFEF; }
 .blog-post .blog-header {
   width: 720px; }
   .blog-post .blog-header h2 {
     padding-left: 10px;
-    border-bottom: 1px solid #67aa58;
+    border-bottom: 1px solid #67AA58;
     margin: 8px 0 0 0 !important; }
     .blog-post .blog-header h2 a {
-      color: black !important; }
+      color: #000000 !important; }
     .blog-post .blog-header h2 a:hover {
       text-decoration: none !important; }
   .blog-post .blog-header .blog-date {

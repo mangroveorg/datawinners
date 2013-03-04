@@ -59,14 +59,14 @@ form ul li {
     background: url(/media/images/arrow_error.png) no-repeat left 10px;
     margin-top: -3px;
     padding: 3px 10px 3px 10px;
-    /*border: 1px solid black;*/
+    border: 1px solid #000000;
     -moz-border-radius: 5px;
     -webkit-moz-border-radius: 5px;
     -webkit-border-radius: 5px; }
     form ul li ul.errorlist li {
       background: #c20303;
       padding: 3px 10px 3px 10px;
-      /*border: 1px solid black;*/
+      border: 1px solid #000000;
       -moz-border-radius: 5px;
       -webkit-moz-border-radius: 5px;
       -webkit-border-radius: 5px; }
@@ -86,7 +86,7 @@ span .error_arrow label, div.error_arrow label, #questionnaire-code-error label,
   display: inline !important;
   background: #c20303;
   padding: 5px 10px;
-  border: 1px solid black;
+  border: 1px solid #000000;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
@@ -98,17 +98,17 @@ span .error_arrow label, div.error_arrow label, #questionnaire-code-error label,
 
 .message-box {
   background: #fdd3d2 url(/media/images/error_alert.png) no-repeat 10px 3px;
-  color: black !important;
+  color: #000000 !important;
   margin: 10px;
   padding: 7px 10px 7px 40px;
-  border: 1px solid red; }
+  border: 1px solid #FF0000; }
   .message-box label {
     color: #000000;
     font-weight: normal !important; }
 
 .success-message-box, .success-box {
   background: #e7fed5 url("/media/images/right_icons.png") no-repeat scroll 4px -29px;
-  color: black !important;
+  color: #000000 !important;
   margin: 10px;
   padding: 7px 10px 7px 50px;
   border: 1px solid #2a8634; }
@@ -136,7 +136,7 @@ span .error_arrow label, div.error_arrow label, #questionnaire-code-error label,
   font-weight: bold;
   line-height: 46px;
   color: #6f451b !important;
-  text-shadow: #fff2b2 0 1px 1px;
+  text-shadow: #FFF2B2 0 1px 1px;
   background: url("/media/images/dw_home_button1.png") no-repeat left top;
   margin: 10px auto;
   text-align: center; }
@@ -147,7 +147,11 @@ span .error_arrow label, div.error_arrow label, #questionnaire-code-error label,
   font-weight: bold;
   height: 29px;
   line-height: 27px;
-  width: 102px; }
+  width: 100px; }
+  .try_button_min:hover {
+    -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+    box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+    opacity: 1; }
 
 .application_register form fieldset legend {
   font-size: 20px; }
@@ -205,7 +209,7 @@ select {
   height: auto; }
 
 .button {
-  border: 1px solid #d4972d !important;
+  border: 1px solid #D4972D !important;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   background: #FFD857;
@@ -214,7 +218,7 @@ select {
   /* for webkit browsers */
   background: -moz-linear-gradient(top, #feea89, #ffd857);
   /* for firefox 3.6+ */
-  color: #6f451d !important;
+  color: #6F451D !important;
   font-family: "Arial";
   font-weight: bold;
   text-decoration: none !important;
@@ -241,7 +245,7 @@ select {
   /* for webkit browsers */
   background: -moz-linear-gradient(top, #e1eff7, #c6deec);
   /* for firefox 3.6+ */
-  color: #0070ac !important;
+  color: #0070AC !important;
   font-family: "Arial";
   font-weight: bold;
   font-size: 11px !important;
@@ -265,8 +269,8 @@ select {
 
 .button_wizard_back {
   border: none !important;
-  background: white !important;
-  color: #0070ac !important;
+  background: #ffffff !important;
+  color: #0070AC !important;
   font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
   font-size: 11px !important;
   padding: 6px 0;
@@ -279,45 +283,43 @@ select {
   height: 29px;
   border: none !important;
   background: url("/media/images/button_wizard_next.png") no-repeat top left;
-  color: #6f451d !important;
+  color: #6F451D !important;
   font-family: "Arial";
   font-size: 11px !important;
   font-weight: bold;
   cursor: pointer;
   cursor: hand;
   vertical-align: middle;
-  /*opacity: 0.9; */
-}
-  /*.button_wizard_next:hover {*/
-    /*-webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);*/
-    /*box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);*/
-    /*opacity: 1; }*/
-  /*.button_wizard_next:active {*/
-    /*-webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);*/
-    /*box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);*/
-    /*opacity: 0.9; }*/
+  opacity: 0.9; }
+  .button_wizard_next:hover {
+    -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+    box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+    opacity: 1; }
+  .button_wizard_next:active {
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+    box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+    opacity: 0.9; }
 
 .button_wizard_next_small {
   width: 120px;
   height: 29px;
   border: none !important;
   background: url("/media/images/button_wizard_next_small.png") no-repeat top left;
-  color: #6f451d !important;
+  color: #6F451D !important;
   font-family: "Arial";
   font-size: 11px !important;
   font-weight: bold;
   cursor: pointer;
   cursor: hand;
-  /*opacity: 0.9; */
-}
-  /*.button_wizard_next_small:hover {*/
-    /*-webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);*/
-    /*box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);*/
-    /*opacity: 1; }*/
-  /*.button_wizard_next_small:active {*/
-    /*-webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);*/
-    /*box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);*/
-    /*opacity: 0.9; }*/
+  opacity: 0.9; }
+  .button_wizard_next_small:hover {
+    -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+    box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+    opacity: 1; }
+  .button_wizard_next_small:active {
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+    box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
+    opacity: 0.9; }
 
 .button_blue {
   margin: 5px;
@@ -365,7 +367,7 @@ select {
     width: 160px;
     float: left; }
   #file-uploader .qq-upload-button, .file-uploader .qq-upload-button {
-    border: 1px solid #d4972d;
+    border: 1px solid #D4972D;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     background: #FFD857;
@@ -383,7 +385,7 @@ select {
 
 /* UI Dialog */
 .ui-dialog-title {
-  color: white !important; }
+  color: #FFFFFF !important; }
 
 /* Accordian */
 .ui-accordion {
@@ -405,16 +407,16 @@ select {
     font-weight: normal; }
 
 .ui-accordion-header.ui-state-active h3 {
-  border: 1px solid #ececec !important; }
+  border: 1px solid #ECECEC !important; }
 .ui-accordion-header.ui-state-active a {
-  color: black !important; }
+  color: #000000 !important; }
 
 .ui-accordion-icons .ui-accordion-header a {
   padding-left: 3px !important; }
 
 /* jQuery UI Stylings */
 .ui-widget-overlay {
-  background: black !important;
+  background: #000000 !important;
   opacity: 0.8 !important; }
 
 .ui-widget-content {
@@ -484,14 +486,14 @@ ol.que_width {
         background: url(/media/images/arrow_error.png) no-repeat left 10px;
         margin-top: 0;
         padding: 3px 10px 3px 10px;
-        /*border: 1px solid black;*/
+        border: 1px solid #000000;
         -moz-border-radius: 5px;
         -webkit-moz-border-radius: 5px;
         -webkit-border-radius: 5px; }
         ol.que_width li ul.errorlist li {
           background: #c20303;
           padding: 3px 10px 3px 10px;
-          /*border: 1px solid black;*/
+          border: 1px solid #000000;
           -moz-border-radius: 5px;
           -webkit-moz-border-radius: 5px;
           -webkit-border-radius: 5px; }
