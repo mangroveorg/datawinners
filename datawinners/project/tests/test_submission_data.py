@@ -503,7 +503,7 @@ class TestSubmissionData(MangroveTestCase):
             excel_values = analyzer.get_raw_values()
             self.assertEqual(excel_values[0][1], 'Ritesh')
             self.assertEqual(excel_values[0][2], u'cid001')
-            self.assertEqual(excel_values[0][3], ExcelDate(datetime.strptime('12.11.2013', '%d.%m.%Y'),'dd.mm.yyyy'))
+            self.assertEqual(excel_values[0][3], ExcelDate(datetime.strptime('12.11.2013', '%d.%m.%Y'), 'dd.mm.yyyy'))
             self.assertEqual(excel_values[0][5], u'Tester Pune')
             self.assertEqual(excel_values[0][6], 'admin')
             self.assertEqual(excel_values[0][8], 45.0)
@@ -563,6 +563,9 @@ class TestSubmissionData(MangroveTestCase):
                 get_submissions.return_value = []
                 form_model = Mock(spec=FormModel)
                 form_model.event_time_question.date_format = 'mm.yyyy'
+                form_model.event_time_question.code = 'RP'
+                form_model.get_field_by_code_and_rev.return_value = DateField(name='RP', code='RP',
+                    label='RP', date_format='mm.yyyy', ddtype=Mock())
                 analyzer = AnalysisForExcel(form_model, self.manager, self.org_id, [])
                 filtered_submissions = Mock(spec=Submission)
                 expected_created_date = utcnow()
