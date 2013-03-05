@@ -6,6 +6,7 @@ from datawinners.project.helper import case_insensitive_lookup
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from mangrove.form_model.field import SelectField
 
+# TODO Should rename
 class Analysis(SubmissionData):
     def __init__(self, form_model, manager, org_id, filters, keyword=None):
         super(Analysis, self).__init__(form_model, manager, org_id, Header, None, filters, keyword)

@@ -37,7 +37,7 @@ performance_logger = logging.getLogger("performance")
 @is_not_expired
 # TODO : TW_BLR : delete_submissions should be a separate view with a redirect to this page
 # TODO : TW_BLR : should have separate view for ui and data
-def submissions(request, project_id=None, questionnaire_code=None):
+def index(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
 
     form_model = get_form_model_by_code(manager, questionnaire_code)
@@ -70,6 +70,29 @@ def submissions(request, project_id=None, questionnaire_code=None):
         return HttpResponse(encode_json({'data_list': analysis_result.field_values,
                                          "statistics_result": analysis_result.statistics_result}))
 
+@login_required(login_url='/login')
+@session_not_expired
+@is_datasender
+@is_not_expired
+def export(request):
+    project_name = request.POST.get(u"project_name")
+    submission_type = request.GET.get('type')
+    filters = request.POST
+    keyword = request.POST.get('keyword', '')
+
+    user = helper.get_org_id_by_user(request.user)
+    manager = get_database_manager(request.user)
+    questionnaire_code = request.POST.get('questionnaire_code')
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+
+    submission_list = SubmissionListForExcel(form_model, manager, user, submission_type, filters, keyword)
+    formatted_values = SubmissionFormatter().get_formatted_values_for_list(submission_list.get_raw_values(),
+        tuple_format=XLS_TUPLE_FORMAT)
+    header_list = ExcelFileSubmissionHeader(form_model).header_list
+    exported_data, file_name = _prepare_export_data(submission_type, project_name, header_list, formatted_values)
+    return _create_excel_response(exported_data, file_name)
+
+
 def _handle_delete_submissions(manager, request, project_name):
     submission_ids = json.loads(request.POST.get('id_list'))
     received_times = delete_submissions_by_ids(manager, request, submission_ids)
@@ -89,25 +112,3 @@ def delete_submissions_by_ids(manager, request, submission_ids):
         if submission.data_record:
             ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
     return received_times
-
-@login_required(login_url='/login')
-@session_not_expired
-@is_datasender
-@is_not_expired
-def export_log(request):
-    project_name = request.POST.get(u"project_name")
-    submission_type = request.GET.get('type')
-    filters = request.POST
-    keyword = request.POST.get('keyword', '')
-
-    user = helper.get_org_id_by_user(request.user)
-    manager = get_database_manager(request.user)
-    questionnaire_code = request.POST.get('questionnaire_code')
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-
-    submission_list = SubmissionListForExcel(form_model, manager, user, submission_type, filters, keyword)
-    formatted_values = SubmissionFormatter().get_formatted_values_for_list(submission_list.get_raw_values(),
-        tuple_format=XLS_TUPLE_FORMAT)
-    header_list = ExcelFileSubmissionHeader(form_model).header_list
-    exported_data, file_name = _prepare_export_data(submission_type, project_name, header_list, formatted_values)
-    return _create_excel_response(exported_data, file_name)

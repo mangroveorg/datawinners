@@ -26,50 +26,37 @@ performance_logger = logging.getLogger("performance")
 @is_datasender
 @is_not_expired
 @timebox
-def project_data(request, project_id=None, questionnaire_code=None):
-    analysis_result = get_analysis_response(request, project_id, questionnaire_code)
-    if request.method == "GET":
-        return render_to_response('project/data_analysis.html',
-            analysis_result,
-            context_instance=RequestContext(request))
-    elif request.method == "POST":
-        return HttpResponse(analysis_result)
-
-
-# TODO : merge with the calling function
-@timebox
-def get_analysis_response(request, project_id, questionnaire_code):
+def index(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    #Analysis page wont hv any type since it has oly success submission data.
     filters = request.POST
     keyword = request.POST.get('keyword', '')
     analysis = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), filters, keyword)
     analysis_result = analysis.analyse()
-
     performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
-    if request.method == 'GET':
+
+    if request.method == "GET":
         project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
         header_info = header_helper.header_info(form_model)
         analysis_result_dict = analysis_result.analysis_result_dict
         analysis_result_dict.update(project_infos)
         analysis_result_dict.update(header_info)
-        return analysis_result_dict
 
-    elif request.method == 'POST':
-        return encode_json(
-            {
-                'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result
-            }
-        )
+        return render_to_response('project/data_analysis.html',
+            analysis_result_dict,
+            context_instance=RequestContext(request))
+    elif request.method == "POST":
+        response = encode_json({'data_list': analysis_result.field_values, "statistics_result": analysis_result.statistics_result})
+        return HttpResponse(response)
+
 
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
 @is_not_expired
 @timebox
-def export_data(request):
+def export(request):
     project_name = request.POST.get(u"project_name")
     filters = request.POST
     keyword = request.POST.get('keyword', '')

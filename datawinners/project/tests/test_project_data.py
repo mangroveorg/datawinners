@@ -3,7 +3,7 @@ from mock import Mock, patch
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from datawinners.project.analysis_result import AnalysisResult
-from project.views.analysis_views import get_analysis_response
+from project.views.analysis_views import index
 
 @SkipTest
 class TestProjectData(TestCase):
@@ -29,7 +29,7 @@ class TestProjectData(TestCase):
                                 project_info.return_value = {"project_info" : ''}
                                 header_info.return_value =  {"header_info" : []}
 
-                                response = get_analysis_response(request, None, None)
+                                response = index(request, None, None)
 
         self.assertTrue({"analysis_info"}.issubset(response.keys()))
         self.assertTrue({"project_info"}.issubset(response.keys()))
