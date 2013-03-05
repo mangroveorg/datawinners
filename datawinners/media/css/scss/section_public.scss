@@ -40,7 +40,7 @@ body{
                 font-size:32px;
                 font-weight:bold;
                 line-height:36px;
-                text-shadow:#10210B 0 0 1px;
+                text-shadow:#10210b 0 0 1px;
             }
             .intro_try_button{
                 display:block;
@@ -52,7 +52,7 @@ body{
                 line-height:46px;
                 text-align:center;
                 color:#6f451b;
-                text-shadow:#FFF2B2 0 1px 1px;
+                text-shadow:#fff2b2 0 1px 1px;
                 background:url('/media/images/dw_home_button1.png') no-repeat left top;
                 float:left;
                 margin-right:15px;
@@ -78,7 +78,7 @@ body{
                 line-height:46px;
                 text-align:center;
                 color:#23620D;
-                text-shadow:#E1F7CA 0 1px 1px;
+                text-shadow:#e1f7cA 0 1px 1px;
                 background:url('/media/images/dw_home_button2.png') no-repeat left top;
                 float:left;
                 text-decoration: none;
@@ -133,7 +133,7 @@ body{
                 margin:0;
                 font-size:20px;
                 color:#444;
-                text-shadow:#ffffff 0 1px 1px;
+                text-shadow: white 0 1px 1px;
             }
         }
         #carousel{
@@ -293,7 +293,7 @@ body{
     height:75px;
     overflow:hidden;
     background:url("/media/images/dw_pattern_bg.gif") repeat left top;
-    border-bottom:1px solid #CCCCCC;
+    border-bottom:1px solid #cccccc;
     #page_title{
         width:720px;
         float:right;
@@ -365,7 +365,7 @@ body{
                 font-weight:bold;
                 font-size:14px;
                 padding:5px 0 15px;
-                border-top:1px solid #000;
+                border-top:1px solid black;
                 ul{
                     margin:0 0 0 10px;
                     li{
@@ -384,7 +384,7 @@ body{
         width:740px;
         margin-right:5px;
         float:right;
-        border-left:1px solid #DDDDDD;
+        border-left:1px solid #dddddd;
         a{
             color:#044c83;
             &:hover{
@@ -450,7 +450,7 @@ body{
             padding:0 10px;
         }
         .with_border{
-             border: 1px solid #CCCCCC;
+             border: 1px solid #cccccc;
              padding: 0 10px;
              legend{
                     padding: 0 10px;
@@ -458,7 +458,7 @@ body{
         }
         table.border_1{
             td, th{
-                border: 1px solid #CCCCCC;
+                border: 1px solid #cccccc;
                 padding: 5px;
                 text-align: center;
             }
@@ -519,7 +519,7 @@ body{
         text-align:center;
         line-height:14px;
         a{
-            color:#044C83 !important;
+            color:#044c83 !important;
             &:hover{
                 text-decoration:none !important;
             }
@@ -562,7 +562,7 @@ body{
     #how_links{
         margin:20px 0 0 0;
         padding-top:10px;
-        border-top:1px solid #DDDDDD;
+        border-top:1px solid #dddddd;
         text-align:center;
         #how_try_button{
             display:block;
@@ -573,7 +573,7 @@ body{
             font-weight:bold;
             line-height:46px;
             color:#6f451b !important;
-            text-shadow:#FFF2B2 0 1px 1px;
+            text-shadow:#fff2b2 0 1px 1px;
             background:url('/media/images/dw_home_button1.png') no-repeat left top;
             margin:0 auto;
         }
@@ -632,7 +632,7 @@ body{
                 font-weight:bold;
                 line-height:46px;
                 color:#6f451b !important;
-                text-shadow:#FFF2B2 0 1px 1px;
+                text-shadow:#fff2b2 0 1px 1px;
                 background:url('/media/images/dw_home_button1.png') no-repeat left top;
                 margin:10px auto;
             }
@@ -648,7 +648,7 @@ body{
                 font-weight:bold;
                 line-height:46px;
                 color:#6f451b !important;
-                text-shadow:#FFF2B2 0 1px 1px;
+                text-shadow:#fff2b2 0 1px 1px;
                 background:url('/media/images/dw_home_button1.png') no-repeat left top;
                 text-align: center;
             }
@@ -716,9 +716,9 @@ body{
 }
 .pricelist{
     margin:20px 0 0 0;
-    border-top:1px solid #eee;
+    border-top:1px solid #eeeeee;
     td{
-        border-bottom:1px solid #eee;
+        border-bottom:1px solid #eeeeee;
         padding:6px 10px;
         font-size:14px;
     }
@@ -729,7 +729,7 @@ body{
         background:url('/media/images/dw_dialog_bg_title.gif') repeat-x;
         color:#fff;
         border:none;
-        text-shadow: 1px 1px 0 #444;
+        text-shadow: 1px 1px 0 #444444;
     }
     .ui-dialog-titlebar-close{
         height:28px;
@@ -769,16 +769,16 @@ ol{
 }
 .blog-post{
     img.alignnone{
-        border:5px solid #EFEFEF;
+        border:5px solid #efefef;
     }
     .blog-header{
         width:720px;
         h2{
             padding-left:10px;
-            border-bottom:1px solid #67AA58;
+            border-bottom:1px solid #67aa58;
             margin:8px 0 0 0 !important;
             a{
-                color:#000000 !important;
+                color:black !important;
             }
             a:hover{
                 text-decoration:none !important;
