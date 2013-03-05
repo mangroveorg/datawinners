@@ -2,10 +2,9 @@
 from couchdb.client import Row
 from django.utils import unittest
 from django.test import Client
-from mock import Mock, patch
+from mock import Mock
 from dashboard.views import _find_reporter_name
 from mangrove.datastore.database import DatabaseManager
-from project.models import Project
 
 class TestDashboard(unittest.TestCase):
 

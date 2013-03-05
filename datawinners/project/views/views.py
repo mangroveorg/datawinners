@@ -56,7 +56,7 @@ from datawinners.project import models
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
-import helper
+from project import helper
 from project.analysis import Analysis
 from project.utils import make_project_links, make_data_sender_links, make_subject_links
 from project.filters import   KeywordFilter
@@ -264,7 +264,6 @@ def _to_name_id_string(value, delimiter='</br>'):
 
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
-
 
 def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)

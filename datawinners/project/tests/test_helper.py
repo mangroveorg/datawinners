@@ -4,7 +4,7 @@ import unittest
 from django.http import Http404
 from mock import Mock, patch
 from datawinners.project import helper
-from datawinners.project.views import _get_imports_subjects_post_url
+from datawinners.project.views.views import _get_imports_subjects_post_url
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import Entity

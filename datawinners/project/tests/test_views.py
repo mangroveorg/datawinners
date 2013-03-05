@@ -13,14 +13,14 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.submissions import Submission
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
-from datawinners.project.views import _format_reminders, make_data_sender_links, add_link
+from datawinners.project.views.views import _format_reminders, make_data_sender_links, add_link
 from project.export_to_excel import _prepare_export_data
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
 from project.submission_router import SubmissionRouter
-from project.submission_views import delete_submissions_by_ids
+from project.views.submission_views import delete_submissions_by_ids
 from project.utils import make_subject_links
-from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
+from project.views.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
 from project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field
 from questionnaire.questionnaire_builder import get_max_code
 
@@ -126,7 +126,7 @@ class TestProjectViews( unittest.TestCase ):
 
         with patch.object( FormModel, "get" ) as get_form_model:
             get_form_model.return_value = {}
-            with patch( "project.views.get_form_model_by_entity_type" ) as get_subject_form:
+            with patch( "project.views.views.get_form_model_by_entity_type" ) as get_subject_form:
                 get_subject_form.return_value = {}
                 is_data_sender = False
                 subject = True
@@ -226,7 +226,7 @@ class TestProjectViews( unittest.TestCase ):
                         self.assertEquals( web_preview_context['add_link']['text'], 'Add a datasender' )
 
     def test_should_get_correct_instruction_and_preview_links_for_questionnaire(self):
-        with patch( "project.views.reverse" ) as reverse:
+        with patch( "project.views.views.reverse" ) as reverse:
             reverse.side_effect = lambda *args, **kw: "/project/%s" % args[0]
             links = get_preview_and_instruction_links_for_questionnaire( )
             self.assertEqual( links["sms_preview"], "/project/questionnaire_sms_preview" )
@@ -240,9 +240,9 @@ class TestProjectViews( unittest.TestCase ):
         submission = Mock( spec=Submission )
         submission.created = date( 2012, 8, 20 )
         submission.data_record = None
-        with patch( "project.submission_views.Submission.get" ) as get_submission:
+        with patch( "project.views.submission_views.Submission.get" ) as get_submission:
             get_submission.return_value = submission
-            with patch( "project.submission_views.get_organization" ) as get_organization:
+            with patch( "project.views.submission_views.get_organization" ) as get_organization:
                 get_organization.return_value = Mock( )
                 received_times = delete_submissions_by_ids( dbm, request, ['1'] )
                 self.assertEqual( ['20/08/2012 00:00:00'], received_times )

@@ -1,6 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.utils import translation
-from project.models import ProjectState
+from datawinners.utils import get_organization
+
+from project.models import ProjectState, Project
 
 def make_subject_links(project_id):
     subject_links = {'subjects_link': reverse('subjects', args=[project_id]),
@@ -50,3 +52,20 @@ def make_project_links(project, questionnaire_code, reporter_id=None):
         project_links['questionnaire_link'] = reverse("questionnaire", args=[project_id])
 
     return project_links
+
+
+def project_info(request, manager, form_model, project_id, questionnaire_code):
+    project = Project.load(manager.database, project_id)
+    is_summary_report = form_model.entity_defaults_to_reporter()
+    rp_field = form_model.event_time_question
+    in_trial_mode = get_organization(request).in_trial_mode
+    has_rp = rp_field is not None
+    is_monthly_reporting = rp_field.date_format.find('dd') < 0 if has_rp else False
+
+    return {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
+            "is_monthly_reporting": is_monthly_reporting, "entity_type": form_model.entity_type[0].capitalize(),
+            'project_links': (make_project_links(project, questionnaire_code)), 'project': project,
+            'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
+            'reporting_period_question_text': rp_field.label if has_rp else None,
+            'has_reporting_period': has_rp,
+            'is_summary_report': is_summary_report}

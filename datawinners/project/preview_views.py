@@ -9,7 +9,7 @@ from datawinners.accountmanagement.views import is_not_expired
 from datawinners.main.utils import get_database_manager
 from datawinners.project.helper import  get_preview_for_field, hide_entity_question
 from datawinners.project.models import Project
-from datawinners.project.views import get_example_sms, get_organization_telephone_number
+from datawinners.project.views.views import get_example_sms, get_organization_telephone_number
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
 from datawinners.project.wizard_view import create_questionnaire
 

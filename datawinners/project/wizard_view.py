@@ -241,7 +241,7 @@ def reminder_settings(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     questionnaire = FormModel.get(dbm, project.qid)
-    from datawinners.project.views import make_project_links
+    from datawinners.project.views.views import make_project_links
 
     project_links = make_project_links(project, questionnaire.form_code)
     org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
