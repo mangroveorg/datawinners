@@ -261,16 +261,10 @@ def _to_name_id_string(value, delimiter='</br>'):
 
     return "%s%s(%s)" % (value[0], delimiter, value[1])
 
+
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
 
-def _build_submission_analyzer(request, manager, form_model, is_for_submission_page):
-    submissions = _get_submissions_by_type(request, manager, form_model)
-    filtered_submissions = SubmissionFilter(request.POST, form_model).filter(submissions)
-    analyzer = SubmissionAnalyzer(form_model, manager, helper.get_org_id_by_user(request.user), filtered_submissions,
-        request.POST.get('keyword', ''), is_for_submission_page=is_for_submission_page)
-
-    return analyzer
 
 def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)
@@ -1083,7 +1077,7 @@ def add_link(project):
 def project_has_data(request, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    analyzer = Analysis(form_model, manager, helper.get_org_id_by_user(request.user),request.POST)
+    analyzer = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), request.POST)
     raw_field_values = analyzer.get_raw_values()
 
     return HttpResponse(encode_json({'has_data': len(raw_field_values) != 0}))
