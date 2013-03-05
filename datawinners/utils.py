@@ -107,9 +107,9 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
                     ws.write(row_number, col_number, val.date.replace(tzinfo = None),
                         style=xlwt.easyxf(num_format_str=val.excel_cell_date_format))
                 elif isinstance(val, float):
-                    cell_format = xlwt.easyxf(num_format_str='#.0###')
+                    cell_format = xlwt.easyxf(num_format_str='#0.0###')
                     if(int(val) == val):
-                        cell_format = xlwt.easyxf(num_format_str='#')
+                        cell_format = xlwt.easyxf(num_format_str='#0')
                     ws.write(row_number, col_number, val, style=cell_format)
                 else:
                     ws.write(row_number, col_number, val, style=xlwt.Style.default_style)

@@ -14,7 +14,7 @@ class SubmissionFormatter(object):
                 new_val = tuple_format % (each[0], each[1]) if each[1] else each[0]
             elif isinstance(each, list):
                 new_val = list_delimiter.join(each)
-            elif each:
+            elif each or each == 0:
                 new_val = each
             else:
                 new_val = NULL
