@@ -12,6 +12,7 @@ from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from project.analysis import Analysis
 from project.analysis_for_excel import AnalysisForExcel
 from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG, NOT_AVAILABLE
+from project.submission_data import _override_value_if_not_present
 from project.submission_list import SubmissionList
 from project.submission_router import successful_submissions
 from project.tests.form_model_generator import FormModelGenerator
@@ -574,3 +575,7 @@ class TestSubmissionData(MangroveTestCase):
                     filtered_submissions)
                 self.assertEqual(ExcelDate(datetime.strptime('02.2013', '%m.%Y'), 'mm.yyyy'), rp)
                 self.assertEqual(ExcelDate(expected_created_date, 'submission_date'), submission_date)
+
+    def test_do_not_override_zero(self):
+        self.assertEqual(0, _override_value_if_not_present(0))
+        self.assertEqual(0, _override_value_if_not_present(0.00))

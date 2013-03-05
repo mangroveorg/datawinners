@@ -16,7 +16,7 @@ from mangrove.utils.types import is_sequence
 field_enhancer.enhance()
 
 def _override_value_if_not_present(value):
-    return value if value else "--"
+    return value if value or value == 0 else "--"
 
 
 class SubmissionData(object):
