@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from dateutil.parser import parse
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
-from mangrove.form_model.field import DateField
+from mangrove.form_model.field import DateField, ExcelDate
 from mangrove.utils.types import is_sequence
 
 
@@ -87,6 +87,7 @@ class KeywordFilter(object):
         #Formatted values for xcel will hv Integerfields as float
         #Hence str is used .
         if isinstance(i,float) : i = str(i)
+        if isinstance(i,ExcelDate) : i = i.date_as_string()
         return i is not None and self.keyword in i.lower()
 
 def exists(func, list, need_flatten=False):
