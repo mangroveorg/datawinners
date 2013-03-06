@@ -58,10 +58,11 @@ class SubmissionData(object):
 
     def get_submission_details_for_excel(self, filtered_submissions):
         data_sender, reporting_date, subject, submission_date = self._get_submission_details(filtered_submissions)
-        reporting_date_excel = self.form_model.get_field_by_code_and_rev(self.form_model.event_time_question.code,
-            filtered_submissions.form_model_revision).formatted_field_values_for_excel(reporting_date)
+        if reporting_date is not None:
+            reporting_date = self.form_model.get_field_by_code_and_rev(self.form_model.event_time_question.code,
+                filtered_submissions.form_model_revision).formatted_field_values_for_excel(reporting_date)
         submission_date = ExcelDate(filtered_submissions.created, 'submission_date')
-        return data_sender, reporting_date_excel, subject, submission_date
+        return data_sender, reporting_date, subject, submission_date
 
     def _get_data_sender(self, submission):
         for each in self._data_senders:

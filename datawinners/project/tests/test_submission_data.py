@@ -576,6 +576,25 @@ class TestSubmissionData(MangroveTestCase):
                 self.assertEqual(ExcelDate(datetime.strptime('02.2013', '%m.%Y'), 'mm.yyyy'), rp)
                 self.assertEqual(ExcelDate(expected_created_date, 'submission_date'), submission_date)
 
+    def test_reporting_date_is_None_if_there_is_no_reporting_date_type(self):
+        with patch("datawinners.project.submission_data.SubmissionData._get_submissions_by_type") as get_submissions:
+            with patch("datawinners.project.submission_data.SubmissionData._get_submission_details") as get_test_data:
+                get_test_data.return_value = 'data_sender', None, "hospital", '20.03.2013'
+                get_submissions.return_value = []
+                form_model = Mock(spec=FormModel)
+                form_model.event_time_question.date_format = 'mm.yyyy'
+                form_model.event_time_question.code = 'RP'
+                form_model.get_field_by_code_and_rev.return_value = DateField(name='RP', code='RP',
+                    label='RP', date_format='mm.yyyy', ddtype=Mock())
+                analyzer = AnalysisForExcel(form_model, self.manager, self.org_id, [])
+                filtered_submissions = Mock(spec=Submission)
+                expected_created_date = utcnow()
+                filtered_submissions.created = expected_created_date
+                data_sender, rp, subject, submission_date = analyzer.get_submission_details_for_excel(
+                    filtered_submissions)
+                self.assertEqual(None, rp)
+                self.assertEqual(ExcelDate(expected_created_date, 'submission_date'), submission_date)
+
     def test_do_not_override_zero(self):
         self.assertEqual(0, _override_value_if_not_present(0))
         self.assertEqual(0, _override_value_if_not_present(0.00))
