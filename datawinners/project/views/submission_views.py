@@ -78,16 +78,24 @@ def index(request, project_id=None, questionnaire_code=None):
 @session_not_expired
 @is_not_expired
 def edit(request, project_id, submission_id):
-    if request.method == 'GET':
-        manager = get_database_manager(request.user)
-        project = Project.load(manager.database, project_id)
-        questionnaire_form_model = FormModel.get(manager, project.qid)
-        submission = get_submission_by_id(manager, submission_id)
+    manager = get_database_manager(request.user)
+    project = Project.load(manager.database, project_id)
+    questionnaire_form_model = FormModel.get(manager, project.qid)
+    questionnaire_form = SubmissionForm.create(manager, project, questionnaire_form_model)
 
-        questionnaire_form = SubmissionForm.create(manager, project, questionnaire_form_model, submission)
-        form_ui_model = {'questionnaire_form': questionnaire_form, 'project': project, }
+    form_ui_model = {'questionnaire_form': questionnaire_form, 'project': project}
+
+    if request.method == 'GET':
+        submission = get_submission_by_id(manager, submission_id)
+        questionnaire_form.initial(submission.values)
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
+
+    if request.method == 'POST':
+        questionnaire_form.bind(request.POST)
+        if not questionnaire_form.is_valid():
+                return render_to_response("project/web_questionnaire.html", form_ui_model,
+                    context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')

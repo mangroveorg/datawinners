@@ -9,7 +9,7 @@ from project.questionnaire_fields import SubjectCodeField, SubjectField, FormFie
 class SubmissionForm(Form):
 
     @staticmethod
-    def create(manager, project, questionnaire_form_model, submission=None):
+    def create(manager, project, questionnaire_form_model):
         properties = dict()
         properties.update({'form_model': questionnaire_form_model})
 
@@ -23,25 +23,25 @@ class SubmissionForm(Form):
             properties.update(SubjectCodeField().create(subject_question.code))
             properties.update({u'short_code_question_code': questionnaire_form_model.entity_question.code})
 
-        properties.update({field.code: FormField().create(field) for field in questionnaire_form_model.fields if not field.is_entity_field})
+        properties.update({field.code: FormField().create(field) for field in questionnaire_form_model.fields if
+                           not field.is_entity_field})
         properties.update(FormCodeField().create(questionnaire_form_model.form_code))
 
-        submission_form = type('BoundSubmissionForm', (SubmissionForm,), properties)()
-
-        if submission:
-            submission_form._bind(submission)
-
-        return submission_form
+        return type('BoundSubmissionForm', (SubmissionForm,), properties)()
 
     def __init__(self, country=None, *args, **kwargs):
         self.country = country
-        self.form_model = None
         super(SubmissionForm, self).__init__(*args, **kwargs)
 
-    def _bind(self, submission):
+    def initial(self, initial):
         for field_name, field in self.fields.iteritems():
             if not field.widget.is_hidden:
-                field.initial = submission.values.get(field_name)
+                field.initial = initial.get(field_name)
+
+    def bind(self, data):
+        if data:
+            self.data = data
+            self.is_bound = True
 
     def clean(self):
         location_field_code = get_location_field_code(self.form_model)
