@@ -380,7 +380,8 @@ body {
         #container_main_content #main_content #try_it_bt_container a.try_button:hover {
           -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
           box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
-          opacity: 1; }
+          opacity: 1;
+          text-decoration: none; }
 
 #use_dw {
   margin: 20px 0; }
