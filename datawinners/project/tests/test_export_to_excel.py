@@ -1,6 +1,5 @@
-from datetime import datetime, date
+from datetime import datetime
 import unittest
-from dateutil.parser import parse
 from mock import Mock
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import IntegerField, GeoCodeField, DateField, SelectField, ExcelDate

@@ -9,7 +9,7 @@ from django.utils.translation import ugettext
 from datawinners.accountmanagement.views import session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
-from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.transport.submissions import Submission
 from mangrove.utils.json_codecs import encode_json
 
@@ -19,6 +19,7 @@ from datawinners.accountmanagement.views import is_not_expired
 from project import helper
 from project.ExcelHeader import  ExcelFileSubmissionHeader
 from project.export_to_excel import _prepare_export_data, _create_excel_response
+from project.models import Project
 from project.submission_list import SubmissionList
 from project.submission_list_for_excel import SubmissionListForExcel
 from project.utils import    project_info
@@ -28,6 +29,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.project.views.views import XLS_TUPLE_FORMAT
 from datawinners.common.constant import   DELETED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
+from project.web_questionnaire_form import SubmissionForm
 
 performance_logger = logging.getLogger("performance")
 
@@ -37,6 +39,7 @@ performance_logger = logging.getLogger("performance")
 @is_not_expired
 # TODO : TW_BLR : delete_submissions should be a separate view with a redirect to this page
 # TODO : TW_BLR : should have separate view for ui and data
+# TODO : no test
 def index(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
 
@@ -61,7 +64,7 @@ def index(request, project_id=None, questionnaire_code=None):
     if request.method == 'POST':
         field_values = SubmissionFormatter().get_formatted_values_for_list(submissions.get_raw_values())
         analysis_result = AnalysisResult(field_values, submissions.get_analysis_statistics(),
-            submissions.get_data_senders(),submissions.get_subjects(), submissions.get_default_sort_order())
+            submissions.get_data_senders(), submissions.get_subjects(), submissions.get_default_sort_order())
         performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
 
         if "id_list" in request.POST:
@@ -70,10 +73,27 @@ def index(request, project_id=None, questionnaire_code=None):
         return HttpResponse(encode_json({'data_list': analysis_result.field_values,
                                          "statistics_result": analysis_result.statistics_result}))
 
+
+@login_required(login_url='/login')
+@session_not_expired
+@is_not_expired
+def edit(request, project_id):
+    if request.method == 'GET':
+        manager = get_database_manager(request.user)
+        project = Project.load(manager.database, project_id)
+        questionnaire_form_model = FormModel.get(manager, project.qid)
+
+        questionnaire_form = SubmissionForm.create(manager, project, questionnaire_form_model)
+        form_ui_model = {'questionnaire_form': questionnaire_form, 'project': project, }
+        return render_to_response("project/web_questionnaire.html", form_ui_model,
+            context_instance=RequestContext(request))
+
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_datasender
 @is_not_expired
+# TODO : no test
 def export(request):
     project_name = request.POST.get(u"project_name")
     submission_type = request.GET.get('type')

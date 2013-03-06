@@ -10,7 +10,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.createprojecttests.create_project_data import *
 import time
 
-@attr('suit_1')
+#@attr('suit_1')
 class TestCreateProject(BaseTest):
     def prerequisites_of_create_project(self):
         # doing successful login with valid credentials
