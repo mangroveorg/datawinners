@@ -10,7 +10,7 @@ from datawinners.accountmanagement.views import session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
-from mangrove.transport.submissions import Submission
+from mangrove.transport.submissions import Submission, get_submission_by_id
 from mangrove.utils.json_codecs import encode_json
 
 from datawinners.accountmanagement.views import is_datasender
@@ -77,13 +77,14 @@ def index(request, project_id=None, questionnaire_code=None):
 @login_required(login_url='/login')
 @session_not_expired
 @is_not_expired
-def edit(request, project_id):
+def edit(request, project_id, submission_id):
     if request.method == 'GET':
         manager = get_database_manager(request.user)
         project = Project.load(manager.database, project_id)
         questionnaire_form_model = FormModel.get(manager, project.qid)
+        submission = get_submission_by_id(manager, submission_id)
 
-        questionnaire_form = SubmissionForm.create(manager, project, questionnaire_form_model)
+        questionnaire_form = SubmissionForm.create(manager, project, questionnaire_form_model, submission)
         form_ui_model = {'questionnaire_form': questionnaire_form, 'project': project, }
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))

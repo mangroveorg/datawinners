@@ -9,7 +9,7 @@ from project.questionnaire_fields import SubjectCodeField, SubjectField, FormFie
 class SubmissionForm(Form):
 
     @staticmethod
-    def create(manager, project, questionnaire_form_model):
+    def create(manager, project, questionnaire_form_model, submission=None):
         properties = dict()
         properties.update({'form_model': questionnaire_form_model})
 
@@ -26,12 +26,22 @@ class SubmissionForm(Form):
         properties.update({field.code: FormField().create(field) for field in questionnaire_form_model.fields if not field.is_entity_field})
         properties.update(FormCodeField().create(questionnaire_form_model.form_code))
 
-        return type('SubmissionForm', (Form,), properties)
+        submission_form = type('Some', (SubmissionForm,), properties)()
+
+        if submission:
+            submission_form._bind(submission)
+
+        return submission_form
 
     def __init__(self, country=None, *args, **kwargs):
         self.country = country
         self.form_model = None
-        super(Form, self).__init__(*args, **kwargs)
+        super(SubmissionForm, self).__init__(*args, **kwargs)
+
+    def _bind(self, submission):
+        for field_name, field in self.fields.iteritems():
+            if not field.widget.is_hidden:
+                field.initial = submission.values.get(field_name)
 
     def clean(self):
         location_field_code = get_location_field_code(self.form_model)

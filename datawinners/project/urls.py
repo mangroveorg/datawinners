@@ -60,7 +60,7 @@ urlpatterns = patterns('',
 
     url(r'^project/(?P<project_id>.+?)/results/(?P<questionnaire_code>.+?)$', submission_views.index, name='submissions'),
     url(r'^project/(?P<project_id>.+?)/data/(?P<questionnaire_code>[^\\/]+?)/$', analysis_views.index, name="project_data"),
-    url(r'^project/submissions/edit/(?P<project_id>[^\\/]+?)/$', submission_views.edit, name="submissions_edit"),
+    url(r'^project/(?P<project_id>.+?)/submissions/edit/(?P<submission_id>[^\\/]+?)/$', submission_views.edit, name="submissions_edit"),
     (r'^project/export/data$', submission_views.export),
     (r'^project/export/log$', analysis_views.export),
 )
