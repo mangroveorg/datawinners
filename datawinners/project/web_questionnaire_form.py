@@ -26,7 +26,7 @@ class SubmissionForm(Form):
         properties.update({field.code: FormField().create(field) for field in questionnaire_form_model.fields if not field.is_entity_field})
         properties.update(FormCodeField().create(questionnaire_form_model.form_code))
 
-        submission_form = type('Some', (SubmissionForm,), properties)()
+        submission_form = type('BoundSubmissionForm', (SubmissionForm,), properties)()
 
         if submission:
             submission_form._bind(submission)
