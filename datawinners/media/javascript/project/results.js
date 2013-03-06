@@ -214,7 +214,7 @@ $(document).ready(function () {
 
     //Checkbox on/off functionality
     $("#master_checkbox").live("click", function () {
-        $(".selected_submissions").attr("checked", $(this).attr('checked'));
+        $(".selected_submissions").attr("checked", $(this).attr('checked') == "checked");
     });
 
     $('.delete').click(function () {

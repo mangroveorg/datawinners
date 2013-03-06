@@ -9,6 +9,8 @@
 
 .data-sender-table-wrapper {
   overflow-x: scroll; }
+  .data-sender-table-wrapper table thead th:first-child input#checkall-datasenders {
+    margin-left: 0px !important; }
 
 .devices {
   vertical-align: bottom !important; }

@@ -5,6 +5,7 @@ from pages.allsubjectspage.all_subjects_locator import *
 from pages.page import Page
 from testdata.test_data import url
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+import re
 
 
 class AllSubjectsPage(Page):
@@ -42,4 +43,30 @@ class AllSubjectsPage(Page):
         if close_warning:
             self.driver.find(CONTINUE_EDITING_BUTTON).click()
         return CreateQuestionnairePage(self.driver)
+
+    def click_checkall_checkbox_for_entity_type(self, entity_type):
+        commUtils = CommonUtilities(self.driver)
+        if commUtils.is_element_present(by_css(CHECKALL_CB % entity_type)):
+            self.driver.find(by_css(CHECKALL_CB % entity_type)).click()
+            return True
+        return False
+
+    def get_checked_subjects_for_entity_type(self, entity_type):
+        return len(self.driver.find(by_css(SUBJECT_TABLE_TBODY % entity_type)).find_elements(by="css selector", value="tr td:first-child input[checked]"))
+
+    def get_number_of_subject_for_entity_type(self, entity_type):
+        commUtils = CommonUtilities(self.driver)
+        if commUtils.is_element_present(by_xpath(SUBJECTS_INFO % entity_type.capitalize())):
+            info = self.driver.find(by_xpath(SUBJECTS_INFO % entity_type.capitalize())).text
+            return int(re.match(r'\d+', info).group(), 10)
+        else:
+            return False
+
+    def open_subjects_table_for_entity_type(self, entity_type):
+        commUtils = CommonUtilities(self.driver)
+        if commUtils.is_element_present(by_xpath(SUBJECT_ACCORDION_LINK % entity_type.capitalize())):
+            self.driver.find(by_xpath(SUBJECT_ACCORDION_LINK % entity_type.capitalize())).click()
+        else:
+            return False
+
         

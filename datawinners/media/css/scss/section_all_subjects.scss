@@ -58,6 +58,17 @@
       //max-height: 275px;
       overflow-y: auto;
       padding: 10px;
+      .styled_table{
+        tbody tr td:first-child, thead tr th:first-child{
+          width: 21px !important;
+        }
+        tbody tr td:first-child input{
+          margin-left: 6px !important;
+        }
+        thead tr th:first-child input{
+          margin-left: 0px !important;
+        }
+      }
     }
     .ui-accordion-content{
         border:0;

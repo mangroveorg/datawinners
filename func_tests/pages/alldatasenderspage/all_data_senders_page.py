@@ -157,3 +157,12 @@ class AllDataSendersPage(Page):
 
     def select_all_datasender_user(self):
         self.driver.find(CHECK_ALL_DS_USER).click()
+
+    def click_checkall_checkbox(self):
+        self.driver.find(CHECKALL_DS_CB).click()
+
+    def get_datasenders_count(self):
+        return len(self.driver.find(ALL_DS_ROWS).find_elements(by="tag name", value="tr"))
+
+    def get_checked_datasenders_count(self):
+        return len(self.driver.find(ALL_DS_ROWS).find_elements(by="css selector", value="tr td:first-child input[checked]"))

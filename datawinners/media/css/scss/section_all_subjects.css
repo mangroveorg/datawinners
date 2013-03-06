@@ -1,9 +1,9 @@
 #all_subjects {
   width: 910px !important;
-  border-top: 1px solid #cccccc !important;
+  border-top: 1px solid #CCCCCC !important;
   margin-top: 20px; }
   #all_subjects .list_header {
-    border-bottom: 1px solid #cccccc !important;
+    border-bottom: 1px solid #CCCCCC !important;
     padding: 10px; }
     #all_subjects .list_header .header {
       font-weight: normal;
@@ -43,9 +43,15 @@
   #all_subjects .subject-container {
     overflow-y: auto;
     padding: 10px; }
+    #all_subjects .subject-container .styled_table tbody tr td:first-child, #all_subjects .subject-container .styled_table thead tr th:first-child {
+      width: 21px !important; }
+    #all_subjects .subject-container .styled_table tbody tr td:first-child input {
+      margin-left: 6px !important; }
+    #all_subjects .subject-container .styled_table thead tr th:first-child input {
+      margin-left: 0px !important; }
   #all_subjects .ui-accordion-content {
     border: 0;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #000000;
     padding: 10px; }
   #all_subjects .register_subject {
     float: right;

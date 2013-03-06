@@ -229,5 +229,10 @@ $(document).ready(function () {
         "<input type='text' style='width:150px' class='ds-email' value='${email}' " +
         "${input_field_disabled}/></td></tr>";
     $.template("webUserTemplate", markup);
+
+    $("#checkall-datasenders").bind("click", function(){
+        var checked = $(this).attr("checked") == "checked";
+        $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
+    });
 });
 

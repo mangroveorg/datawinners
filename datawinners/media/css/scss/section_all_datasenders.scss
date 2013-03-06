@@ -14,6 +14,9 @@
 
 .data-sender-table-wrapper {
   overflow-x: scroll;
+  table thead th:first-child input#checkall-datasenders{
+     margin-left: 0px !important;
+  }
 }
 
 .devices {

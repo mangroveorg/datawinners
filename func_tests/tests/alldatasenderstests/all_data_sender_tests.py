@@ -201,3 +201,15 @@ class TestAllDataSender(unittest.TestCase):
         message = warning.get_message()
         time.sleep(10)
         self.assertNotRegexpMatches(message, NOTE_FOR_DELETE_SOME_DS_USER)
+
+    @attr('functional_test')
+    def test_should_check_all_checkboxes_when_checking_checkall(self):
+        all_data_sender_page = self.page
+        all_data_sender_page.click_checkall_checkbox()
+        all_ds_count = all_data_sender_page.get_datasenders_count()
+        all_checked_ds_count = all_data_sender_page.get_checked_datasenders_count()
+        self.assertEqual(all_ds_count, all_checked_ds_count)
+
+        all_data_sender_page.click_checkall_checkbox()
+        all_checked_ds_count = all_data_sender_page.get_checked_datasenders_count()
+        self.assertEqual(all_checked_ds_count, 0)
