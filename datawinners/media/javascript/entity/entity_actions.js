@@ -28,7 +28,11 @@ $(document).ready(function () {
             function (json_response) {
                 var response = $.parseJSON(json_response);
                 if (response.success) {
-                    window.location.href = path;
+                    if ($("#project_name").length) {
+                        window.location.reload(true);
+                    } else {
+                        window.location.href = path;
+                    }
                 }
             }
         );
