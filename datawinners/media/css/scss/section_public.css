@@ -41,7 +41,7 @@ body {
       #container_home_intro #home_intro_bg .content .intro_try_button {
         display: block;
         width: 158px;
-        height: 46px;
+        height: 45px;
         overflow: hidden;
         font-size: 16px;
         font-weight: bold;
@@ -56,6 +56,9 @@ body {
         #container_home_intro #home_intro_bg .content .intro_try_button:hover {
           -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
           box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+          -moz-border-radius: 3px;
+          -webkit-border-radius: 3px;
+          border-radius: 3px;
           opacity: 1; }
         #container_home_intro #home_intro_bg .content .intro_try_button:active {
           -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
@@ -64,7 +67,7 @@ body {
       #container_home_intro #home_intro_bg .content .intro_learn_button {
         display: block;
         width: 158px;
-        height: 46px;
+        height: 45px;
         overflow: hidden;
         font-size: 16px;
         font-weight: bold;
@@ -78,6 +81,9 @@ body {
         #container_home_intro #home_intro_bg .content .intro_learn_button:hover {
           -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
           box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+          -moz-border-radius: 3px;
+          -webkit-border-radius: 3px;
+          border-radius: 3px;
           opacity: 1; }
         #container_home_intro #home_intro_bg .content .intro_learn_button:active {
           -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
@@ -380,6 +386,9 @@ body {
         #container_main_content #main_content #try_it_bt_container a.try_button:hover {
           -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
           box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
+          -moz-border-radius: 3px;
+          -webkit-border-radius: 3px;
+          border-radius: 3px;
           opacity: 1;
           text-decoration: none; }
 
