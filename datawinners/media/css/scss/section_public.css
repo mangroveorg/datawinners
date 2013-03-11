@@ -447,35 +447,51 @@ body {
     list-style-type: disc; }
 #how_content .container {
   display: none; }
+  #how_content .container div.feature_row {
+    border-top: 1px solid #cccccc;
+    float: left;
+    padding-bottom: 40px; }
+    #how_content .container div.feature_row div {
+      width: 350px;
+      float: left;
+      text-align: center;
+      margin: auto 5px; }
+      #how_content .container div.feature_row div h3 {
+        font-weight: normal;
+        margin-top: 0px !important; }
+        #how_content .container div.feature_row div h3.two_lines {
+          height: 42px; }
 #how_content .active {
   display: block; }
 
-#how_nav #how_links {
-  margin: 20px 0 0 0;
-  padding-top: 10px;
+#how_nav {
   border-top: 1px solid #dddddd;
-  text-align: center; }
-  #how_nav #how_links #how_try_button {
-    display: block;
-    width: 158px;
-    height: 46px;
-    overflow: hidden;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 46px;
-    color: #6f451b !important;
-    text-shadow: #fff2b2 0 1px 1px;
-    background: url("/media/images/dw_home_button1.png") no-repeat left top;
-    margin: 0 auto; }
-#how_nav #how_prev {
-  width: 40%;
-  float: left;
-  font-size: 14px; }
-#how_nav #how_next {
-  width: 40%;
-  float: right;
-  text-align: right;
-  font-size: 14px; }
+  padding-top: 20px; }
+  #how_nav #how_links {
+    margin: 20px 0 0 0;
+    padding-top: 10px;
+    text-align: center; }
+    #how_nav #how_links #how_try_button {
+      display: block;
+      width: 158px;
+      height: 46px;
+      overflow: hidden;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 46px;
+      color: #6f451b !important;
+      text-shadow: #fff2b2 0 1px 1px;
+      background: url("/media/images/dw_home_button1.png") no-repeat left top;
+      margin: 0 auto; }
+  #how_nav #how_prev {
+    width: 40%;
+    float: left;
+    font-size: 14px; }
+  #how_nav #how_next {
+    width: 40%;
+    float: right;
+    text-align: right;
+    font-size: 14px; }
 
 #features_menu .tab {
   width: 144px;
@@ -691,8 +707,8 @@ ol .lower_i {
     #what-is-and-features .feature_container .img_container {
       margin: auto 42px;
       display: none;
-      /*height: 80px;
-      border: 1px solid #EEEEEE;*/ }
+   /*height: 80px;
+border: 1px solid #EEEEEE;*/ }
 
 #what-is-and-features.english {
   /*height: 830px;*/

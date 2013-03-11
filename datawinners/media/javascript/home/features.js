@@ -1,16 +1,21 @@
 $(document).ready(function() {
-    $('#popbox').dialog({
-        autoOpen: false,
-        modal: true,
-        width: 640
-    });
 
     function showDialog(src, title) {
         $('#popbox img').attr('src', src);
         $('#popbox').dialog({
-            title: title
+            autoOpen: true,
+            modal: true,
+            width: 780,
+            height: "auto",
+            title: title,
+            position: ["center", "top"],
+            open: function(){
+                $(".ui-dialog").css("top", $(window).scrollTop());
+            },
+            close: function(){
+                $("#popbox").dialog("destroy");
+            }
         });
-        $('#popbox').dialog('open');
     }
 
     $('.popbox').click(function(){

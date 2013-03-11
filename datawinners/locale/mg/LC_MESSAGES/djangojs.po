@@ -475,3 +475,7 @@ msgstr ""
 
 msgid "All %(entity)s"
 msgstr ""
+
+
+msgid "Next:"
+msgstr "Manaraka:"

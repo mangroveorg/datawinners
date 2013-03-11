@@ -34,6 +34,11 @@ $(document).ready(function() {
         moveActive(n);
         showContent(n);
         active = parseInt(n, 10);
+        updateNavLinks(n);
+    }
+
+    function updateNavLinks(n){
+        $("#how_next a").html(gettext("Next:") +" "+ $("#how_menu a[rel=" + (active + 1) + "] strong").html() + " &gt;&gt;");
     }
 
     $('#how_menu a').click(function(){

@@ -1047,6 +1047,7 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 #~ "données pour ce choix auparavant, elles seront supprimées.<br><br>Etes-"
 #~ "vous sûr de vouloir continuer?"
 
+
 #~ msgid ""
 #~ "You have deleted an answer choice.<br>If you have previously collected "
 #~ "data for this choice it will be deleted.<br><br>Also, the position of "
@@ -1085,3 +1086,10 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 
 #~ msgid "Enter local telephone number of 10 digits or less"
 #~ msgstr "Entrez un numéro de téléphone local de 10 chifres ou moins"
+
+msgid "All %(entity)s"
+msgstr "Tout(es) les %(entity)s"
+
+msgid "Next:"
+msgstr "Suiv:"
+
