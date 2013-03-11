@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-19 15:32+0530\n"
+"POT-Creation-Date: 2013-03-11 17:05+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,295 +12,723 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
-msgid "Clear"
-msgstr "Effacer"
-
+#: media/admin/js/SelectFilter2.js:77
 msgid "Clear all"
 msgstr ""
 
+#: media/admin/js/actions.js:18
 msgid "%(sel)s of %(cnt)s selected"
 msgid_plural "%(sel)s of %(cnt)s selected"
 msgstr[0] ""
 msgstr[1] ""
 
+#: media/admin/js/actions.js:109
 msgid ""
 "You have unsaved changes on individual editable fields. If you run an "
 "action, your unsaved changes will be lost."
 msgstr ""
 
+#: media/admin/js/actions.js:121 media/admin/js/actions.min.js:6
 msgid ""
 "You have selected an action, but you haven't saved your changes to "
 "individual fields yet. Please click OK to save. You'll need to re-run the "
 "action."
 msgstr ""
 
+#: media/admin/js/actions.js:123 media/admin/js/actions.min.js:6
 msgid ""
 "You have selected an action, and you haven't made any changes on individual "
 "fields. You're probably looking for the Go button rather than the Save "
 "button."
 msgstr ""
 
+#: media/admin/js/calendar.js:24 media/admin/js/dateparse.js:32
 msgid ""
 "January February March April May June July August September October November "
 "December"
 msgstr ""
 
+#: media/admin/js/calendar.js:25
 msgid "S M T W T F S"
 msgstr ""
 
+#: media/admin/js/collapse.js:9 media/admin/js/collapse.js.py:21
+#: media/admin/js/collapse.min.js:1
 msgid "Show"
 msgstr ""
 
+#: media/admin/js/collapse.js:16 media/admin/js/collapse.min.js:1
 msgid "Hide"
 msgstr ""
 
+#: media/admin/js/dateparse.js:33
 msgid "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:49
+#: media/admin/js/admin/DateTimeShortcuts.js:84
 msgid "Now"
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:53
 msgid "Clock"
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:80
 msgid "Choose a time"
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:85
 msgid "Midnight"
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:86
 msgid "6 a.m."
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:87
 msgid "Noon"
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:91
+#: media/admin/js/admin/DateTimeShortcuts.js:188
+#: media/javascript/file_uploader/fileuploader.js:489
 msgid "Cancel"
 msgstr "Annuler"
 
+#: media/admin/js/admin/DateTimeShortcuts.js:133
+#: media/admin/js/admin/DateTimeShortcuts.js:182
 msgid "Today"
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:137
 msgid "Calendar"
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:180
 msgid "Yesterday"
 msgstr ""
 
+#: media/admin/js/admin/DateTimeShortcuts.js:184
 msgid "Tomorrow"
 msgstr ""
 
-msgid "Just a moment"
-msgstr "Veuillez patienter"
-
-msgid "Choose Date(s)"
-msgstr "Choisir la/les Date(s)"
-
-msgid "Choose Month(s)"
-msgstr "Choisir le(s) Mois"
-
-msgid "All Periods"
-msgstr "Toutes les Périodes"
-
-msgid "All Dates"
-msgstr "Toutes les dates"
-
-msgid "All Data Senders"
-msgstr "Tous les Expéditeurs"
-
-msgid "Submissions"
-msgstr "Soumissions"
-
-msgid "Drop files here to upload"
-msgstr "Glisser les fichiers à télécharger ici"
-
-msgid "Upload a file"
-msgstr "Télécharger un fichier"
-
-msgid "Failed"
-msgstr "Echec"
-
-msgid "Activate this Project?"
-msgstr "Activer ce projet ?"
-
-msgid "View charts of your multiple choice questions."
-msgstr "Visionnez un schéma de vos questions à choix multiples."
-
-msgid "Percentage = Frequency / Total number of Submissions for this question.<br/>Example for "
-msgstr "Fréquence/Nombre total de soumissions pour cette question = Pourcentage.<br/>Exemple pour "
-
-msgid "You do not have any multiple choice questions (Answer Type: List of choices) to display here."
-msgstr "Vous n’avez aucune question à choix multiples (Type de Réponse : Liste de Choix) à afficher ici."
-
-msgid "Total number of Submissions for this question: "
-msgstr "Nombre total de Soumissions pour cette question: "
-
-msgid "Your Data Senders can choose more than 1 answer.<br>That is why percentages may add up to more than 100%"
-msgstr "Vos Expéditeurs de Données peuvent choisir plus d'une réponse.<br>C'est pour cela que la somme des pourcentages peut dépasser 100%"
-
-msgid "Previously multiple answers were permitted.<br> That is why percentages may add up to more than 100%."
-msgstr "Les réponses multiples ont été permises précédemment.<br> C'est la raison pour laquelle le total des pourcentages peut dépasser 100%."
-
-msgid "Enter a correct date. No filtering applied"
-msgstr "Entrez la date exacte. Aucun filtre appliqué"
-
-msgid "Current month"
-msgstr "Mois courant"
-
-msgid "Last Month"
-msgstr "Mois dernier"
-
-msgid "Year to date"
-msgstr "Du début de l'année à date"
-
-msgid "Date Range"
-msgstr "Intervalle de dates"
-
-msgid "Add A Data Sender"
-msgstr "Ajouter un expéditeur"
-
-msgid "Data Sender Registration Preview"
-msgstr "Aperçu de l'ajout d'expéditeur"
-
-msgid "Import a List"
-msgstr "Importer une liste"
-
-msgid "%(day)s of the week following the reporting week"
-msgstr "%(day)s de la semaine après la semaine d'envoi du rapport"
-
-msgid "%(day)s of the reporting week"
-msgstr "%(day)s de la semaine d'envoi du rapport"
-
-msgid "%(day)s of October for September report"
-msgstr "%(day)s d'octobre pour le rapport de septembre"
-
-msgid "%(day)s of October for October report"
-msgstr "%(day)s d'october pour le rapport d'octobre"
-
-msgid "Warning !!"
-msgstr "Attention !!"
-
+#: media/javascript/data_modified_warning.js:17
+#: media/javascript/warning_dialog.js:16
 msgid "Warning"
 msgstr "Attention"
 
-msgid "characters used"
-msgstr "caractères utilisés"
+#: media/javascript/datawinners.js:2 media/javascript/entity_import.js:28
+#: media/javascript/account/users_list.js:35
+#: media/javascript/datasenders/import.js:36
+#: media/javascript/datasenders/index.js:86
+#: media/javascript/datasenders/index.js:195
+#: media/javascript/entity/create_subject_questionnaire.js:51
+#: media/javascript/entity/create_subject_questionnaire.js:67
+#: media/javascript/entity/questionnaire_helper.js:303
+#: media/javascript/project/create_project.js:18
+#: media/javascript/project/create_project.js:235
+#: media/javascript/project/data_analysis.js:19
+#: media/javascript/project/register_reporter.js:47
+#: media/javascript/project/sms_tester.js:25
+msgid "Just a moment"
+msgstr "Veuillez patienter"
 
+#: media/javascript/entity_import.js:38
+#: media/javascript/datasenders/import.js:44
+msgid ""
+"Sorry, an error occured - the reason could be connectivity issues or the "
+"import taking too long to process.  Please try again.  Limit the number of "
+"subjects you import to 200 or less."
+msgstr ""
+"Désolé, une erreur s'est produite - cela peut être dû à des problemes de "
+"connexion ou bien l'importation prend trop de temps. Veuillez réessayer. "
+"Veuillez  limiter le nombre de sujets à importer à 200 ou moins."
+
+#: media/javascript/entity_import.js:85
+msgid "Import a list of %(entity)s"
+msgstr "Importer une liste de %(entity)s"
+
+#: media/javascript/account/users_list.js:46
+msgid "Your User(s) will be deleted"
+msgstr "Votre(vos) utilisateur(s) sera/seront supprimé(s)"
+
+#: media/javascript/alldata/data_export.js:63
+#: media/javascript/useractivity/log.js:11
+msgid "Date Range"
+msgstr "Intervalle de dates"
+
+#: media/javascript/alldata/data_export.js:65
+#: media/javascript/useractivity/log.js:13
+msgid "to"
+msgstr "au"
+
+#: media/javascript/datasenders/import.js:5
+msgid "Import a Data Senders list"
+msgstr "Importer une liste d'expéditeurs"
+
+#: media/javascript/datasenders/index.js:46
+msgid "Select Projects"
+msgstr "Sélectionnez les projets"
+
+#: media/javascript/datasenders/index.js:55
+msgid "Give Web Submission Access"
+msgstr "Donnez un accès Web et Smartphone"
+
+#: media/javascript/datasenders/index.js:81
+msgid "Please select atleast 1 Project"
+msgstr "Veuillez sélectionner au moins 1 Projet"
+
+#: media/javascript/datasenders/index.js:121
+#: media/javascript/project/registered_datasenders.js:27
+msgid "Please select atleast 1 data sender"
+msgstr "Veuillez sélectionner au moins 1 expéditeur des données"
+
+#: media/javascript/datasenders/index.js:154
+#: media/javascript/project/registered_datasenders.js:69
+msgid "Please select only 1 data sender"
+msgstr "Veuillez choisir un seul expéditeur"
+
+#: media/javascript/datasenders/index.js:175
+msgid "Emails are mandatory"
+msgstr "Les emails sont obligatoires"
+
+#: media/javascript/datasenders/index.js:183
+msgid ": is not a valid email"
+msgstr ": n'est pas une adresse email valide"
+
+#: media/javascript/datasenders/index.js:212
+msgid "User with email "
+msgstr "Utilisateur avec l'email "
+
+#: media/javascript/datasenders/index.js:212
+msgid " already exists"
+msgstr " existe déjà"
+
+#: media/javascript/dateRangePicker/js/daterangepicker.jQuery.custom.js:37
+#: media/javascript/dateRangePicker/js/daterangepicker.jQuery.js:37
+msgid "From"
+msgstr "De"
+
+#: media/javascript/dateRangePicker/js/daterangepicker.jQuery.custom.js:38
+#: media/javascript/dateRangePicker/js/daterangepicker.jQuery.js:38
+msgid "To"
+msgstr "A"
+
+#: media/javascript/dateRangePicker/js/daterangepicker.jQuery.custom.js:41
+#: media/javascript/dateRangePicker/js/daterangepicker.jQuery.js:41
+#: media/javascript/project/data_analysis.js:158
+#: media/javascript/project/results.js:66
+msgid "OK"
+msgstr ""
+
+#: media/javascript/dateRangePicker/js/daterangepicker.jQuery.withoutdrilldown.js:7
+msgid "Start date"
+msgstr "Date début"
+
+#: media/javascript/dateRangePicker/js/daterangepicker.jQuery.withoutdrilldown.js:8
+msgid "End date"
+msgstr "Date fin"
+
+#: media/javascript/dateRangePicker/js/daterangepicker.jQuery.withoutdrilldown.js:11
+msgid "Done"
+msgstr "Terminé"
+
+#: media/javascript/entity/create_questionnaire.js:125
+#: media/javascript/project/new_questionnaire_wizard.js:16
+#: media/javascript/project/questionnaire_wizard.js:29
+msgid "Space is not allowed in question code"
+msgstr "Les espaces ne sont pas autorisés dans le code du questionnaire"
+
+#: media/javascript/entity/create_questionnaire.js:131
+#: media/javascript/project/new_questionnaire_wizard.js:22
+#: media/javascript/project/questionnaire_wizard.js:35
+#: media/javascript/project/questionnaire_wizard.js:125
+msgid "Only letters and digits are valid"
+msgstr "Seuls les chiffres et les lettres sont valides."
+
+#: media/javascript/entity/create_questionnaire.js:136
+#: media/javascript/project/new_questionnaire_wizard.js:27
+#: media/javascript/project/questionnaire_wizard.js:40
+msgid "Answer cannot be of length less than 1"
+msgstr "La réponse doit comporter au moins 1 caractère."
+
+#: media/javascript/entity/create_questionnaire.js:151
+msgid "This question is a duplicate"
+msgstr "Cette question est un doublon"
+
+#: media/javascript/entity/create_questionnaire.js:156
+#: media/javascript/project/new_questionnaire_wizard.js:32
+#: media/javascript/project/questionnaire_wizard.js:45
+msgid "Please enter positive numbers only"
+msgstr "Veuillez saisir uniquement des nombres positifs"
+
+#: media/javascript/entity/create_subject_questionnaire.js:19
+#: media/javascript/project/questionnaire_wizard.js:150
+msgid "The question has been saved."
+msgstr "Le questionnaire a été enregistré."
+
+#: media/javascript/entity/create_subject_questionnaire.js:42
+#: media/javascript/entity/create_subject_questionnaire.js:49
+#: media/javascript/project/create_project.js:4
+#: media/javascript/project/create_project.js:16
+#: media/javascript/project/create_project.js:29
+msgid "Warning: Your Collected Data Will be Lost"
+msgstr "Attention: Les données que vous avez collecté seront perdues"
+
+#: media/javascript/entity/create_subject_questionnaire.js:75
+#: media/javascript/project/questionnaire_wizard.js:213
+msgid "Shared Registration Form"
+msgstr "Formulaire d'enregistrement partagé"
+
+#: media/javascript/entity/create_type.js:59
+msgid "Read More"
+msgstr "En lire plus"
+
+#: media/javascript/entity/create_type.js:71
+msgid "New subject type"
+msgstr "Nouveau type de sujet"
+
+#: media/javascript/entity/entity_actions.js:5
+#: media/javascript/entity/entity_actions_all_subjects.js:3
+#: media/javascript/entity/questionnaire_helper.js:245
+#: media/javascript/project/create_project.js:254
+#: media/javascript/project/create_project.js:264
+#: media/javascript/project/create_project.js:274
+#: media/javascript/project/new_questionnaire_wizard.js:95
+#: media/javascript/project/questionnaire_wizard.js:84
+#: media/javascript/project/subject_warning_dialog_module.js:44
+msgid "Warning !!"
+msgstr "Attention !!"
+
+#: media/javascript/entity/questionnaire_helper.js:6
+msgid "Inform Your Data Senders about the Changes"
+msgstr "Informez Vos Expéditeurs de Données sur les Changements"
+
+#: media/javascript/entity/questionnaire_helper.js:18
 msgid "Answer must be a number."
 msgstr "La réponse doit être un nombre"
 
-msgid ""
-"name));\n"
-"        this"
-msgstr ""
-"nom));\n"
-"        this"
-
+#: media/javascript/entity/questionnaire_helper.js:19
+#, perl-format
 msgid "Answer must be a number. The minimum is %d."
 msgstr "La réponse doit être un nombre. Le minimum est %d"
 
+#: media/javascript/entity/questionnaire_helper.js:20
+#, perl-format
 msgid "Answer must be a number. The maximum is %d."
 msgstr "La réponse doit être un nombre. Le maximum est %d."
 
+#: media/javascript/entity/questionnaire_helper.js:21
+#, perl-format
 msgid "Answer must be a number between %d-%d."
 msgstr "La réponse doit être entre %d-%d."
 
-msgid "Answer must be a word or phrase"
+#: media/javascript/entity/questionnaire_helper.js:22
+msgid "Answer must be a word"
 msgstr "La réponse doit être un mot"
 
-msgid "Answer must be a word or phrase %d characters maximum"
-msgstr "La réponse doit être un mot de %d caractères au maximum"
+#: media/javascript/entity/questionnaire_helper.js:23
+#, perl-format
+msgid "Answer must be a word %d characters maximum"
+msgstr "La réponse doit être un mot à %d caractères au maximum"
 
+#: media/javascript/entity/questionnaire_helper.js:24
+#, perl-format
 msgid "Answer must be a date in the following format: %s. Example: %s"
 msgstr "La réponse doit être une date au format : %s. Exemple : %s"
 
+#: media/javascript/entity/questionnaire_helper.js:25
 msgid "Choose 1 answer from the list. Example: a"
 msgstr "Choisissez une réponse de la liste. Exemple: a"
 
+#: media/javascript/entity/questionnaire_helper.js:26
 msgid "Choose 1 or more answers from the list. Example: a or ab "
 msgstr ""
 "Choisissez 1 ou plusieurs réponses dans la liste suivante. Exemple : a ou ab"
 
+#: media/javascript/entity/questionnaire_helper.js:27
 msgid ""
 "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy "
-"Example: -18.1324 27.6547 "
+"Example: -18.1324,27.6547 "
 msgstr ""
-"Format de GPS incorrect. Les coordonnées GPS doivent être de la forme : xx."
-"xxxx,yy.yyyy. Exemple -18.8665,27.6547"
+"La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy."
+"yyyy Exemple: -18.1324,27.6547"
 
+#: media/javascript/entity/questionnaire_helper.js:31
+msgid "Answer must be 20 characters maximum"
+msgstr "La réponse doit être de 20 caractères au maximum"
+
+#: media/javascript/entity/questionnaire_helper.js:34
 msgid "day.month.year"
 msgstr "jour.mois.année"
 
+#: media/javascript/entity/questionnaire_helper.js:35
 msgid "month.day.year"
 msgstr "mois.jour.année"
 
+#: media/javascript/entity/questionnaire_helper.js:36
 msgid "month.year"
 msgstr "mois.année"
 
+#: media/javascript/entity/questionnaire_helper.js:60
 msgid "Answer must be a text"
 msgstr "La réponse doit être un texte"
 
-msgid "Questionnaire Preview"
-msgstr "Aperçu du questionnaire"
-
-msgid "Space is not allowed in question code"
-msgstr "Les espaces ne sont pas autorisés dans le code du questionnaire"
-
-msgid "Only letters and digits are valid"
-msgstr "Seuls les chiffres et les lettres sont valides."
-
-msgid "Answer cannot be of length less than 1"
-msgstr "La réponse doit comporter au moins 1 caractère."
-
-msgid "Please enter positive numbers only"
-msgstr "Veuillez saisir uniquement des nombres positifs"
-
-msgid "The Questionnaire code is required"
-msgstr "Le code questionnaire est obligatoire"
-
-msgid "Space is not allowed in questionnaire code"
-msgstr "Les espaces ne sont pas autorisés dans le code du questionnaire"
-
-msgid "This questionnaire has an error"
-msgstr "Le questionnaire comporte une erreur"
-
-msgid "The question has been saved."
-msgstr "Le questionnaire a été enregistré."
-
+#: media/javascript/entity/questionnaire_helper.js:329
 msgid "default"
 msgstr "valeur par défaut"
 
-msgid "Hello. We have not received your data for "
-msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour"
+#: media/javascript/file_uploader/fileuploader.js:480
+msgid "Drop files here to upload"
+msgstr "Glisser les fichiers à télécharger ici"
 
-msgid ".Please send it to us today. Thank you."
-msgstr ". Veuillez l'envoyer aujourd'hui. Merci."
+#: media/javascript/file_uploader/fileuploader.js:481
+msgid "Upload a file"
+msgstr "Télécharger un fichier"
 
-msgid " days before deadline"
-msgstr " jours avant la date limite d'envoi"
+#: media/javascript/file_uploader/fileuploader.js:490
+msgid "Failed"
+msgstr "Echec"
 
-msgid " days after deadline"
-msgstr " jours après la date limite d'envoi"
+#: media/javascript/home/dashboard.js:8
+msgid "No submissions present for this project"
+msgstr "Aucune donnée pour ce projet"
 
-msgid "On the deadline"
-msgstr "A propos de la date limite d'envoi"
+#: media/javascript/home/dashboard.js:20
+msgid " successful | "
+msgstr " succès | "
 
-msgid "number"
-msgstr "nombre"
+#: media/javascript/home/dashboard.js:20
+msgid " errors"
+msgstr " erreurs"
 
-msgid "text"
-msgstr "texte"
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Jan"
+msgstr "Jan"
 
-msgid "list of choices"
-msgstr "liste de choix"
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Feb"
+msgstr "Fév"
 
-msgid "geo code"
-msgstr "code geo"
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Mar"
+msgstr "Mar"
 
-msgid "Please enter a valid phone number."
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Apr"
+msgstr "Avr"
+
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "May"
+msgstr "Mai"
+
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Jun"
+msgstr "Jun"
+
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Jul"
+msgstr "Jul"
+
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Aug"
+msgstr "Aoû"
+
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Sep"
+msgstr "Sep"
+
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Oct"
+msgstr "Oct"
+
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Nov"
+msgstr "Nov"
+
+#: media/javascript/monthly_date_picker/month-picker.js:56
+msgid "Dec"
+msgstr "Déc"
+
+#: media/javascript/project/activate_project.js:3
+msgid "Activate this Project?"
+msgstr "Activer ce projet ?"
+
+#: media/javascript/project/broadcast_message.js:103
+msgid "Enter local telephone number of %(limit)s digits or less"
+msgstr "Entrez un numéro de téléphone local de %(limit)s chifres ou moins"
+
+#: media/javascript/project/data_analysis.js:3
+#: media/javascript/project/data_analysis.js:27
+#: media/javascript/project/results.js:47
+msgid ""
+"No submissions available for this search. Try changing some of the filters."
 msgstr ""
-"Veuillez saisir un numéro de téléphone valide."
+"Aucune soumission disponible pour cette recherche. Essayez de modifier "
+"certains de vos filtres."
 
+#: media/javascript/project/data_analysis.js:64
+#: media/javascript/project/results.js:161
+#: media/javascript/useractivity/log.js:27
+msgid "Processing..."
+msgstr "Traitement en cours..."
+
+#: media/javascript/project/data_analysis.js:65
+#: media/javascript/project/results.js:162
+msgid "Show _MENU_ Submissions"
+msgstr "Afficher _MENU_ Soumissions"
+
+#: media/javascript/project/data_analysis.js:68
+#: media/javascript/project/results.js:165
+#: media/javascript/useractivity/log.js:31
+msgid "Loading..."
+msgstr "Chargement..."
+
+#: media/javascript/project/data_analysis.js:69
+#: media/javascript/project/results.js:166
+#, fuzzy
+msgid ""
+"<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</"
+"span> Submissions"
+msgstr "<span>_START_ - _END_</span> of _TOTAL_ Soumissions"
+
+#: media/javascript/project/data_analysis.js:70
+#: media/javascript/project/results.js:167
+msgid "0 Submissions"
+msgstr "0 Soumissions"
+
+#: media/javascript/project/data_analysis.js:71
+#: media/javascript/project/results.js:168
+#: media/javascript/useractivity/log.js:34
+msgid "(filtered from _MAX_ total Data records)"
+msgstr "(filtrée de _MAX_ d'enregistrements)"
+
+#: media/javascript/project/data_analysis.js:73
+#: media/javascript/project/results.js:170
+#: media/javascript/useractivity/log.js:36
+msgid "Search:"
+msgstr "Recherche:"
+
+#: media/javascript/project/data_analysis.js:76
+#: media/javascript/project/results.js:173
+#: media/javascript/useractivity/log.js:39
+msgid "First"
+msgstr "Premiere"
+
+#: media/javascript/project/data_analysis.js:77
+#: media/javascript/project/results.js:174
+#: media/javascript/useractivity/log.js:40
+msgid "Previous"
+msgstr "Préc."
+
+#: media/javascript/project/data_analysis.js:78
+#: media/javascript/project/results.js:175
+#: media/javascript/useractivity/log.js:41
+msgid "Next"
+msgstr "Suiv."
+
+#: media/javascript/project/data_analysis.js:79
+#: media/javascript/project/results.js:176
+#: media/javascript/useractivity/log.js:42
+msgid "Last"
+msgstr "Dernière"
+
+#: media/javascript/project/data_analysis.js:90
+msgid "Reporting Period"
+msgstr ""
+
+#: media/javascript/project/data_analysis.js:94
+msgid "Submission Date"
+msgstr "Date de soumission"
+
+#: media/javascript/project/data_analysis.js:106
+#: media/javascript/project/results.js:104
+#: media/javascript/project/filter/filters.js:67
+msgid "All Periods"
+msgstr "Toutes les Périodes"
+
+#: media/javascript/project/data_analysis.js:152
+#: media/javascript/project/results.js:60
+msgid "All %(entity)s"
+msgstr "Tout(es) les %(entity)s"
+
+#: media/javascript/project/data_analysis.js:153
+#: media/javascript/project/results.js:61
+msgid "All Data Senders"
+msgstr "Tous les Expéditeurs"
+
+#: media/javascript/project/data_analysis.js:159
+#: media/javascript/project/results.js:67
+msgid "Clear"
+msgstr "Effacer"
+
+#: media/javascript/project/data_analysis_chart_view.js:18
+msgid "Choice"
+msgstr "Choix"
+
+#: media/javascript/project/data_analysis_chart_view.js:19
+msgid "Frequency"
+msgstr "Fréquence"
+
+#: media/javascript/project/data_analysis_chart_view.js:31
+msgid "Percent"
+msgstr "Pourcentage"
+
+#: media/javascript/project/data_analysis_chart_view.js:34
+msgid ""
+"Percentage = Frequency / Total number of Submissions for this question.<br/"
+">Example for "
+msgstr ""
+"Fréquence/Nombre total de soumissions pour cette question = Pourcentage.<br/"
+">Exemple pour "
+
+#: media/javascript/project/data_analysis_chart_view.js:45
+msgid "Total"
+msgstr "Total"
+
+#: media/javascript/project/data_analysis_chart_view.js:75
+msgid "Total number of Submissions for this question: "
+msgstr "Nombre total de Soumissions pour cette question: "
+
+#: media/javascript/project/data_analysis_chart_view.js:80
+msgid ""
+"Your Data Senders can choose more than 1 answer.<br>That is why percentages "
+"may add up to more than 100%"
+msgstr ""
+"Vos Expéditeurs de Données peuvent choisir plus d'une réponse.<br>C'est pour "
+"cela que la somme des pourcentages peut dépasser 100%"
+
+#: media/javascript/project/data_analysis_chart_view.js:82
+msgid ""
+"Previously multiple answers were permitted.<br> That is why percentages may "
+"add up to more than 100%."
+msgstr ""
+"Les réponses multiples ont été permises précédemment.<br> C'est la raison "
+"pour laquelle le total des pourcentages peut dépasser 100%."
+
+#: media/javascript/project/data_analysis_chart_view.js:164
+msgid "Submissions"
+msgstr "Soumissions"
+
+#: media/javascript/project/data_analysis_chart_view.js:172
+msgid "Pie Chart"
+msgstr "Graphique Circulaire"
+
+#: media/javascript/project/data_analysis_chart_view.js:174
+msgid "Bar Chart"
+msgstr "Histogramme"
+
+#: media/javascript/project/data_analysis_chart_view.js:225
+msgid ""
+"You do not have any multiple choice questions (Answer Type: List of choices) "
+"to display here."
+msgstr ""
+"Vous n’avez aucune question à choix multiples (Type de Réponse : Liste de "
+"Choix) à afficher ici."
+
+#: media/javascript/project/data_analysis_chart_view.js:272
+msgid "You don't have any submissions for this question yet"
+msgstr "Vous n'avez encore aucune soumission pour cette question"
+
+#: media/javascript/project/datasender.js:7
+msgid "Add A Data Sender"
+msgstr "Ajouter un expéditeur"
+
+#: media/javascript/project/datasenders_registration_questionnaire_preview.js:3
+msgid "Data Sender Registration Preview"
+msgstr "Aperçu de l'ajout d'expéditeur"
+
+#: media/javascript/project/datatable_sorting.js:79
+msgid "Jan."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:80
+msgid "Feb."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:81
+msgid "Mar."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:82
+msgid "Apr."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:83
+msgid "May."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:84
+msgid "Jun."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:85
+msgid "Jul."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:86
+msgid "Aug."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:87
+msgid "Sep."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:88
+msgid "Oct."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:89
+msgid "Nov."
+msgstr ""
+
+#: media/javascript/project/datatable_sorting.js:90
+msgid "Dec."
+msgstr ""
+
+#: media/javascript/project/delete_project.js:3
+msgid "Delete this Project?"
+msgstr "Supprimer ce projet?"
+
+#: media/javascript/project/import_section.js:7
+msgid "Import a List"
+msgstr "Importer une liste"
+
+#: media/javascript/project/new_questionnaire_wizard.js:71
+msgid "Learn More"
+msgstr "En savoir plus"
+
+#: media/javascript/project/questionnaire_charcount.js:49
+msgid "characters used"
+msgstr "caractères utilisés"
+
+#: media/javascript/project/questionnaire_preview.js:18
+msgid "Questionnaire Preview"
+msgstr "Aperçu du questionnaire"
+
+#: media/javascript/project/questionnaire_wizard.js:109
+msgid "The Questionnaire code is required"
+msgstr "Le code questionnaire est obligatoire"
+
+#: media/javascript/project/questionnaire_wizard.js:115
+msgid "Space is not allowed in questionnaire code"
+msgstr "Les espaces ne sont pas autorisés dans le code du questionnaire"
+
+#: media/javascript/project/questionnaire_wizard.js:132
+msgid "This questionnaire has an error"
+msgstr "Le questionnaire comporte une erreur"
+
+#: media/javascript/project/questionnaire_wizard.js:179
+#: media/javascript/project/questionnaire_wizard.js:187
+msgid "Your Collected Data Will be Lost"
+msgstr "Les données que vous avez collecté seront perdues"
+
+#: media/javascript/project/register_entity_validation.js:18
+msgid "Please enter a valid phone number."
+msgstr "Veuillez saisir un numéro de téléphone valide."
+
+#: media/javascript/project/register_entity_validation.js:34
 msgid ""
 "Incorrect GPS format. The GPS coordinates must be in the following format: "
 "xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
@@ -308,388 +736,352 @@ msgstr ""
 "Format de GPS incorrect. Les coordonnées GPS doivent être de la forme : xx."
 "xxxx,yy.yyyy. Exemple -18.8665,47.5315"
 
+#: media/javascript/project/register_entity_validation.js:39
+#: media/javascript/project/register_entity_validation.js:42
 msgid "Please fill out at least one location field"
 msgstr "Veuillez remplir au moins un champ de localité"
 
+#: media/javascript/project/registered_datasenders.js:34
 msgid "Data Senders dissociated Successfully"
 msgstr "Expéditeurs dissociés avec succès"
 
+#: media/javascript/project/registered_datasenders.js:34
 msgid "Please Wait"
 msgstr "Veuillez patienter"
 
-msgid "Please select at least 1 data sender"
-msgstr "Veuillez remplir au moins un champ de localité"
+#: media/javascript/project/reminders.js:14
+msgid "Hello. We have not received your data for "
+msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour"
 
-msgid "Please select only 1 data sender"
-msgstr "Veuillez choisir un seul expéditeur"
+#: media/javascript/project/reminders.js:14
+msgid ".Please send it to us today. Thank you."
+msgstr ". Veuillez l'envoyer aujourd'hui. Merci."
 
-msgid "Can't be blank."
-msgstr "Ne peut être vide"
+#: media/javascript/project/reminders.js:24
+msgid " days before deadline"
+msgstr " jours avant la date limite d'envoi"
 
-msgid "Day Can't be blank."
-msgstr "Le jour doit être saisi"
+#: media/javascript/project/reminders.js:26
+msgid " days after deadline"
+msgstr " jours après la date limite d'envoi"
 
-msgid "Please select at least one undeleted record"
-msgstr "Veuillez sélectionner au moins une soumission non supprimée"
+#: media/javascript/project/reminders.js:28
+msgid "On the deadline"
+msgstr "A propos de la date limite d'envoi"
 
-msgid "This data has already been deleted"
-msgstr "Cet enregistrement a déja été supprimé"
-
-msgid "Add A Subject"
-msgstr "Ajouter un sujet"
-
-msgid "Subject Registration Preview"
-msgstr "Aperçu du sujet"
-
-msgid "Which subject are you reporting on?"
-msgstr "Votre rapport concerne quel sujet?"
-
-msgid "What is the reporting period for the activity?"
-msgstr "Votre rapport concerne quelle période?"
-
-msgid "What is associated subject type?"
-msgstr "Quel est le type de sujet associé?"
-
-msgid "What is the subject's name?"
-msgstr "Quel est le nom du sujet?"
-
-msgid "What is the subject's Unique ID Number"
-msgstr "Quel est l'ID unique du sujet"
-
-msgid "What is the subject's location?"
-msgstr "Quel est la localité du sujet?"
-
-msgid "What is the subject's GPS co-ordinates?"
-msgstr "Quelles sont les coordonnées GPS de la localité de sujet ?"
-
-msgid "Describe the subject"
-msgstr "Décrivez le sujet"
-
-msgid "What is the mobile number associated with the subject?"
-msgstr "Quel est le numéro de téléphone portable associé au sujet?"
-
-msgid "What is the data sender's name?"
-msgstr "Quel est le nom de l'expéditeur données?"
-
-msgid "What is the data sender's location?"
-msgstr "Quel est la localité de l'expéditeur de données ?"
-
-msgid "What is the data sender's GPS co-ordinates?"
-msgstr "Quel sont les coordonnées GPS de l'expéditeur de données ?"
-
-msgid "What is the mobile number associated with the data sender?"
-msgstr ""
-"Quel est le numéro de téléphone portable associé à l'expéditeur de "
-"données ?"
-
-msgid "Please select atleast 1 data sender"
-msgstr "Veuillez sélectionner au moins 1 expéditeur des données"
-
-msgid "Please select atleast 1 Project"
-msgstr "Veuillez sélectionner au moins 1 Projet"
-
-msgid "Delete this Project?"
-msgstr "Supprimer ce projet?"
-
-msgid "Next"
-msgstr "Suiv."
-
-msgid "Prev"
-msgstr "Préc."
-
-msgid "Processing..."
-msgstr "Traitement en cours..."
-
-msgid "Show _MENU_ Submissions"
-msgstr "Afficher _MENU_ Soumissions"
-
-msgid "No matching records found"
-msgstr "Aucun enregistrement trouvé"
-
-msgid "No data available in table"
-msgstr "Aucune donnée disponible dans le tableau"
-
-msgid "No data available"
-msgstr "Aucune donnée disponible"
-
-msgid "No submissions yet"
-msgstr "Une fois que vos Expéditeurs de Données ont soumis leurs données avec succès, ces données seront affichées ici. <a href='#'>En savoir plus</a>"
-
-msgid "Loading..."
-msgstr "Chargement..."
-
-msgid "<span>_START_ - _END_</span> of _TOTAL_ Submissions"
-msgstr "<span>_START_ - _END_</span> of _TOTAL_ Soumissions"
-
-msgid "0 Data Records"
-msgstr "0 enregistrements"
-
-msgid "0 Submissions"
-msgstr "0 Soumissions"
-
-msgid "Showing 0 to 0 of 0 Data records"
-msgstr "Afficher 0 à 0 de 0 Enregistrements"
-
-msgid "(filtered from _MAX_ total Data records)"
-msgstr "(filtrée de _MAX_ d'enregistrements)"
-
-msgid "Search:"
-msgstr "Recherche:"
-
-msgid "First"
-msgstr "Premiere"
-
-msgid "Previous"
-msgstr "Préc."
-
-msgid "Last"
-msgstr "Dernière"
-
-msgid "Cancel this Project?"
-msgstr "Annuler ce projet?"
-
+#: media/javascript/project/reminders.js:81
 msgid "The reminders has been saved"
 msgstr "Le message de rappèl a été enregistré"
 
-msgid "Give Web Submission Access"
-msgstr "Donnez un accès Web et Smartphone"
-
-msgid "Emails are mandatory"
-msgstr "Les emails sont obligatoires"
-
-msgid ": is not a valid email"
-msgstr ": n'est pas une adresse email valide"
-
-msgid "User with email "
-msgstr "Utilisateur avec l'email "
-
-msgid " already exists"
-msgstr " existe déjà"
-
-msgid "Agree terms and conditions"
-msgstr "Acceptez les termes et conditions"
-
-msgid "Renews automatically each month. Cancel at any time without penalty."
-msgstr "Renouvellement mensuel automatique. Annulation sans pénalité, faisable à tout moment."
-
-msgid "Save 10% by paying 6 months in advance"
-msgstr "Économisez 10% en payant 6 mois à l’avance"
-
-msgid "Call us directly and we can securely process your credit card payment over the phone"
-msgstr "Appelez-nous directement et nous pouvons, par téléphone, traiter en toute sécurité votre paiement par carte de crédit"
-
-msgid "Securely transfer funds between your US-based bank account and ours (normally free of charge)."
-msgstr "Transférez en toute sécurité des fonds entre votre compte bancaire aux États-Unis et la nôtre (normalement, gratuit)."
-
-msgid "subject"
-msgstr "sujet"
-
-msgid "Read More"
-msgstr "En lire plus"
-
-msgid " successful | "
-msgstr " succès | "
-
-msgid " errors"
-msgstr " erreurs"
-
-msgid "No submissions present for this project"
-msgstr "Aucune donnée pour ce projet"
-
-msgid "Example: %(day)s of the week following the reporting week"
-msgstr "Exemple: %(day)s de la semaine suivante"
-
-msgid "Example: %(day)s of the reporting week"
-msgstr "Exemple: %(day)s de la même semaine"
-
-msgid "Example: %(day)s of October for September report"
-msgstr "Exemple: Le %(day)s octobre pour le rapport du mois de septembre"
-
-msgid "Example: %(day)s of October for October report"
-msgstr "Exemple: Le %(day)s octobre pour le rapport du mois d'octobre"
-
-msgid "Start date"
-msgstr "Date début"
-
-msgid "End date"
-msgstr "Date fin"
-
-msgid "Done"
-msgstr "Terminé"
-
-msgid "Between 1 -- 12 characters"
-msgstr ""
-
-msgid "DataWinners Terms & Conditions"
-msgstr "Termes & Conditions de DataWinners"
-
-msgid "Terms And Conditions"
-msgstr "Termes et Conditions"
-
-msgid "Learn More"
-msgstr "En savoir plus"
-
-msgid "Import a list of %(entity)s"
-msgstr "Importer une liste de %(entity)s"
-
-msgid "Select Projects"
-msgstr "Sélectionnez les projets"
-
-msgid "Answer must be a word"
-msgstr "La réponse doit être un mot"
-
-msgid "Shared Registration Form"
-msgstr "Formulaire d'enregistrement partagé"
-
-msgid "Your Collected Data Will be Lost"
-msgstr "Les données que vous avez collecté seront perdues"
-
-msgid "Answer must be a word %d characters maximum"
-msgstr "La réponse doit être un mot à %d caractères au maximum"
-
-msgid "New subject type"
-msgstr "Nouveau type de sujet"
-
-msgid "Import a Data Senders list"
-msgstr "Importer une liste d'expéditeurs"
-
-msgid "Questionnaire with this code already exists"
-msgstr "Un questionnaire avec ce code existe déjà"
-
-msgid "word"
-msgstr "mot"
-
-msgid "choice"
-msgstr "choix"
-
-msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
-msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy.yyyy Exemple: -18.1324,27.6547"
-
-msgid "answer"
-msgstr "réponse"
-
-msgid "Please select atleast 1 subject"
-msgstr "Veuillez sélectionner au moins 1 Sujet"
-
-msgid "Please select only 1 subject"
-msgstr "Veuillez choisir un seul sujet"
-
-msgid "to"
-msgstr "au"
-
-msgid "This question is a duplicate"
-msgstr "Cette question est un doublon"
-
-msgid "Jan"
-msgstr "Jan"
-
-msgid "Feb"
-msgstr "Fév"
-
-msgid "Mar"
-msgstr "Mar"
-
-msgid "Apr"
-msgstr "Avr"
-
-msgid "May"
-msgstr "Mai"
-
-msgid "Jun"
-msgstr "Jun"
-
-msgid "Jul"
-msgstr "Jul"
-
-msgid "Aug"
-msgstr "Aoû"
-
-msgid "Sep"
-msgstr "Sep"
-
-msgid "Oct"
-msgstr "Oct"
-
-msgid "Nov"
-msgstr "Nov"
-
-msgid "Dec"
-msgstr "Déc"
-
-msgid "From"
-msgstr "De"
-
-msgid "To"
-msgstr "A"
-
-msgid "All"
-msgstr "Toutes"
-
-msgid "No submissions available for this search. Try changing some of the filters."
-msgstr "Aucune soumission disponible pour cette recherche. Essayez de modifier certains de vos filtres."
-
-msgid "Pie Chart"
-msgstr "Graphique Circulaire"
-
-msgid "Bar Chart"
-msgstr "Histogramme"
-
-msgid "Total"
-msgstr "Total"
-
-msgid "Choice"
-msgstr "Choix"
-
-msgid "Percent"
-msgstr "Pourcentage"
-
-msgid "Amount"
-msgstr "Montant"
-
-msgid "Warning: Your Collected Data Will be Lost"
-msgstr "Attention: Les données que vous avez collecté seront perdues"
-
-msgid "Close"
-msgstr "Fermer"
-
-msgid "Frequency"
-msgstr "Fréquence"
-
-msgid "You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Are you sure you want to continue?"
-msgstr "Vous avez supprimé un choix de réponse.<br>Si vous avez collecté des données pour ce choix auparavant, elles seront supprimées.<br><br>Etes-vous sûr de vouloir continuer?"
-
-msgid "You have deleted an answer choice.<br>If you have previously collected data for this choice it will be deleted.<br><br>Also, the position of your answer choices has changed (Example: You have deleted “A. Cat”, so “B. Dog” is now “A. Dog”).<br>If you have previously collected data it will be adjusted to the new choice in that position (Example: The choice “Cat”, it will be replaced with “Dog”).<br><br>Are you sure you want to continue?"
-msgstr "Vous avez supprimé un choix de réponse.<br>Si vous avez collecté des données pour ce choix auparavant, elles seront supprimées.<br><br> Vous avez également changé la position de vos choix de réponse. (Exemple : Vous avez supprimé «A. Chat», donc «B. Chien» est maintenant devenu «A. Chien»).<br>Si vous avez déjà collecté des données, elles seront ajustées au nouveau choix correspondant à cette position (Exemple : Le choix «Chat» sera remplacé par «Chien»<br><br>Etes-vous sûr de vouloir continuer?"
-
-msgid "You have changed the text of your answer choice.<br>If you have previously collected data for this choice it will be replaced with the new text.<br><br>Are you sure you want to continue?"
-msgstr "Vous avez changé le texte de votre choix de réponse.<br>Si vous avez collecté des données pour ce choix auparavant, elles seront remplacées par le nouveau texte.<br><br>Etes-vous sûr de vouloir continuer?"
-
-msgid "You have changed the Answer Type.<br>If you have previously collected data, it may be rendered incorrect.<br><br>Are you sure you want to continue?"
-msgstr "Vous avez changé le Type de Réponse.<br>Si vous avez déjà collecté des données auparavant, celles-ci peuvent être considérées incorrectes.<br><br>Etes-vous sûr de vouloir continuer ?"
-
-msgid "Your User(s) will be deleted"
-msgstr "Votre(vos) utilisateur(s) sera/seront supprimé(s)"
-
-msgid "Inform Your Data Senders about the Changes"
-msgstr "Informez Vos Expéditeurs de Données sur les Changements"
-
-msgid "You don't have any submissions for this question yet"
-msgstr "Vous n'avez encore aucune soumission pour cette question"
-
-msgid "Submission Date"
-msgstr "Date de soumission"
-
+#: media/javascript/project/results.js:292
 msgid "Your Submission(s) will be deleted"
 msgstr "Votre/vos Soumission(s) sera/seront supprimée(s)"
 
-msgid "Enter local telephone number of 10 digits or less"
-msgstr "Entrez un numéro de téléphone local de 10 chifres ou moins"
+#: media/javascript/project/sms_preview.js:4
+msgid "answer"
+msgstr "réponse"
 
-msgid "Answer must be 20 characters maximum"
-msgstr "La réponse doit être de 20 caractères au maximum"
+#: media/javascript/project/subject.js:20
+msgid "Add A Subject"
+msgstr "Ajouter un sujet"
 
-msgid "Enter local telephone number of %(limit)s digits or less"
-msgstr "Entrez un numéro de téléphone local de %(limit)s chifres ou moins"
+#: media/javascript/project/subject_warning_dialog_module.js:5
+msgid "subject"
+msgstr "sujet"
 
-msgid "All %(entity)s"
-msgstr "Tout(es) les %(entity)s"
+#: media/javascript/project/subjects_registration_questionnaire_preview.js:3
+msgid "Subject Registration Preview"
+msgstr "Aperçu du sujet"
+
+#: media/javascript/project/filter/filters.js:5
+#: media/javascript/project/filter/filters.js:68
+msgid "All Dates"
+msgstr "Toutes les dates"
+
+#: media/javascript/project/filter/filters.js:26
+msgid "Year to date"
+msgstr "Du début de l'année à date"
+
+#: media/javascript/project/filter/filters.js:37
+msgid "Current month"
+msgstr "Mois courant"
+
+#: media/javascript/project/filter/filters.js:40
+msgid "Last Month"
+msgstr "Mois dernier"
+
+#: media/javascript/project/filter/filters.js:46
+msgid "Choose Date(s)"
+msgstr "Choisir la/les Date(s)"
+
+#: media/javascript/project/filter/filters.js:53
+msgid "Choose Month(s)"
+msgstr "Choisir le(s) Mois"
+
+#: media/javascript/project/filter/filters.js:89
+msgid "Enter a correct date. No filtering applied"
+msgstr "Entrez la date exacte. Aucun filtre appliqué"
+
+#: media/javascript/registration/register.js:2
+msgid "Renews automatically each month. Cancel at any time without penalty."
+msgstr ""
+"Renouvellement mensuel automatique. Annulation sans pénalité, faisable à "
+"tout moment."
+
+#: media/javascript/registration/register.js:3
+#, fuzzy, perl-format
+msgid "Save 10% by paying 6 months in advance"
+msgstr "Économisez 10% en payant 6 mois à l’avance"
+
+#: media/javascript/registration/register.js:4
+msgid ""
+"Call us directly and we can securely process your credit card payment over "
+"the phone"
+msgstr ""
+"Appelez-nous directement et nous pouvons, par téléphone, traiter en toute "
+"sécurité votre paiement par carte de crédit"
+
+#: media/javascript/registration/register.js:5
+msgid ""
+"Securely transfer funds between your US-based bank account and ours "
+"(normally free of charge)."
+msgstr ""
+"Transférez en toute sécurité des fonds entre votre compte bancaire aux États-"
+"Unis et la nôtre (normalement, gratuit)."
+
+#: media/javascript/registration/register.js:10
+msgid "DataWinners Terms & Conditions"
+msgstr "Termes & Conditions de DataWinners"
+
+#: media/javascript/registration/register.js:43
+msgid "Terms And Conditions"
+msgstr "Termes et Conditions"
+
+#: media/javascript/useractivity/log.js:28
+#, fuzzy
+msgid "Show _MENU_ Data records"
+msgstr "Afficher 0 à 0 de 0 Enregistrements"
+
+#: media/javascript/useractivity/log.js:29
+msgid "No matching records found"
+msgstr "Aucun enregistrement trouvé"
+
+#: media/javascript/useractivity/log.js:30
+msgid "No data available in table"
+msgstr "Aucune donnée disponible dans le tableau"
+
+#: media/javascript/useractivity/log.js:32
+#, fuzzy
+msgid "Showing _START_ to _END_ of _TOTAL_ Data records"
+msgstr "Afficher 0 à 0 de 0 Enregistrements"
+
+#: media/javascript/useractivity/log.js:33
+msgid "Showing 0 to 0 of 0 Data records"
+msgstr "Afficher 0 à 0 de 0 Enregistrements"
+
+#~ msgid "View charts of your multiple choice questions."
+#~ msgstr "Visionnez un schéma de vos questions à choix multiples."
+
+#~ msgid "%(day)s of the week following the reporting week"
+#~ msgstr "%(day)s de la semaine après la semaine d'envoi du rapport"
+
+#~ msgid "%(day)s of the reporting week"
+#~ msgstr "%(day)s de la semaine d'envoi du rapport"
+
+#~ msgid "%(day)s of October for September report"
+#~ msgstr "%(day)s d'octobre pour le rapport de septembre"
+
+#~ msgid "%(day)s of October for October report"
+#~ msgstr "%(day)s d'october pour le rapport d'octobre"
+
+#~ msgid ""
+#~ "name));\n"
+#~ "        this"
+#~ msgstr ""
+#~ "nom));\n"
+#~ "        this"
+
+#~ msgid "Answer must be a word or phrase"
+#~ msgstr "La réponse doit être un mot"
+
+#~ msgid "Answer must be a word or phrase %d characters maximum"
+#~ msgstr "La réponse doit être un mot de %d caractères au maximum"
+
+#~ msgid ""
+#~ "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy "
+#~ "Example: -18.1324 27.6547 "
+#~ msgstr ""
+#~ "Format de GPS incorrect. Les coordonnées GPS doivent être de la forme : "
+#~ "xx.xxxx,yy.yyyy. Exemple -18.8665,27.6547"
+
+#~ msgid "number"
+#~ msgstr "nombre"
+
+#~ msgid "text"
+#~ msgstr "texte"
+
+#~ msgid "list of choices"
+#~ msgstr "liste de choix"
+
+#~ msgid "geo code"
+#~ msgstr "code geo"
+
+#~ msgid "Please select at least 1 data sender"
+#~ msgstr "Veuillez remplir au moins un champ de localité"
+
+#~ msgid "Can't be blank."
+#~ msgstr "Ne peut être vide"
+
+#~ msgid "Day Can't be blank."
+#~ msgstr "Le jour doit être saisi"
+
+#~ msgid "Please select at least one undeleted record"
+#~ msgstr "Veuillez sélectionner au moins une soumission non supprimée"
+
+#~ msgid "This data has already been deleted"
+#~ msgstr "Cet enregistrement a déja été supprimé"
+
+#~ msgid "Which subject are you reporting on?"
+#~ msgstr "Votre rapport concerne quel sujet?"
+
+#~ msgid "What is the reporting period for the activity?"
+#~ msgstr "Votre rapport concerne quelle période?"
+
+#~ msgid "What is associated subject type?"
+#~ msgstr "Quel est le type de sujet associé?"
+
+#~ msgid "What is the subject's name?"
+#~ msgstr "Quel est le nom du sujet?"
+
+#~ msgid "What is the subject's Unique ID Number"
+#~ msgstr "Quel est l'ID unique du sujet"
+
+#~ msgid "What is the subject's location?"
+#~ msgstr "Quel est la localité du sujet?"
+
+#~ msgid "What is the subject's GPS co-ordinates?"
+#~ msgstr "Quelles sont les coordonnées GPS de la localité de sujet ?"
+
+#~ msgid "Describe the subject"
+#~ msgstr "Décrivez le sujet"
+
+#~ msgid "What is the mobile number associated with the subject?"
+#~ msgstr "Quel est le numéro de téléphone portable associé au sujet?"
+
+#~ msgid "What is the data sender's name?"
+#~ msgstr "Quel est le nom de l'expéditeur données?"
+
+#~ msgid "What is the data sender's location?"
+#~ msgstr "Quel est la localité de l'expéditeur de données ?"
+
+#~ msgid "What is the data sender's GPS co-ordinates?"
+#~ msgstr "Quel sont les coordonnées GPS de l'expéditeur de données ?"
+
+#~ msgid "What is the mobile number associated with the data sender?"
+#~ msgstr ""
+#~ "Quel est le numéro de téléphone portable associé à l'expéditeur de "
+#~ "données ?"
+
+#~ msgid "Prev"
+#~ msgstr "Préc."
+
+#~ msgid "No data available"
+#~ msgstr "Aucune donnée disponible"
+
+#~ msgid "No submissions yet"
+#~ msgstr ""
+#~ "Une fois que vos Expéditeurs de Données ont soumis leurs données avec "
+#~ "succès, ces données seront affichées ici. <a href='#'>En savoir plus</a>"
+
+#~ msgid "0 Data Records"
+#~ msgstr "0 enregistrements"
+
+#~ msgid "Cancel this Project?"
+#~ msgstr "Annuler ce projet?"
+
+#~ msgid "Agree terms and conditions"
+#~ msgstr "Acceptez les termes et conditions"
+
+#~ msgid "Example: %(day)s of the week following the reporting week"
+#~ msgstr "Exemple: %(day)s de la semaine suivante"
+
+#~ msgid "Example: %(day)s of the reporting week"
+#~ msgstr "Exemple: %(day)s de la même semaine"
+
+#~ msgid "Example: %(day)s of October for September report"
+#~ msgstr "Exemple: Le %(day)s octobre pour le rapport du mois de septembre"
+
+#~ msgid "Example: %(day)s of October for October report"
+#~ msgstr "Exemple: Le %(day)s octobre pour le rapport du mois d'octobre"
+
+#~ msgid "Questionnaire with this code already exists"
+#~ msgstr "Un questionnaire avec ce code existe déjà"
+
+#~ msgid "word"
+#~ msgstr "mot"
+
+#~ msgid "choice"
+#~ msgstr "choix"
+
+#~ msgid "Please select atleast 1 subject"
+#~ msgstr "Veuillez sélectionner au moins 1 Sujet"
+
+#~ msgid "Please select only 1 subject"
+#~ msgstr "Veuillez choisir un seul sujet"
+
+#~ msgid "All"
+#~ msgstr "Toutes"
+
+#~ msgid "Amount"
+#~ msgstr "Montant"
+
+#~ msgid "Close"
+#~ msgstr "Fermer"
+
+#~ msgid ""
+#~ "You have deleted an answer choice.<br>If you have previously collected "
+#~ "data for this choice it will be deleted.<br><br>Are you sure you want to "
+#~ "continue?"
+#~ msgstr ""
+#~ "Vous avez supprimé un choix de réponse.<br>Si vous avez collecté des "
+#~ "données pour ce choix auparavant, elles seront supprimées.<br><br>Etes-"
+#~ "vous sûr de vouloir continuer?"
+
+#~ msgid ""
+#~ "You have deleted an answer choice.<br>If you have previously collected "
+#~ "data for this choice it will be deleted.<br><br>Also, the position of "
+#~ "your answer choices has changed (Example: You have deleted “A. Cat”, so "
+#~ "“B. Dog” is now “A. Dog”).<br>If you have previously collected data it "
+#~ "will be adjusted to the new choice in that position (Example: The choice "
+#~ "“Cat”, it will be replaced with “Dog”).<br><br>Are you sure you want to "
+#~ "continue?"
+#~ msgstr ""
+#~ "Vous avez supprimé un choix de réponse.<br>Si vous avez collecté des "
+#~ "données pour ce choix auparavant, elles seront supprimées.<br><br> Vous "
+#~ "avez également changé la position de vos choix de réponse. (Exemple : "
+#~ "Vous avez supprimé «A. Chat», donc «B. Chien» est maintenant devenu «A. "
+#~ "Chien»).<br>Si vous avez déjà collecté des données, elles seront ajustées "
+#~ "au nouveau choix correspondant à cette position (Exemple : Le choix "
+#~ "«Chat» sera remplacé par «Chien»<br><br>Etes-vous sûr de vouloir "
+#~ "continuer?"
+
+#~ msgid ""
+#~ "You have changed the text of your answer choice.<br>If you have "
+#~ "previously collected data for this choice it will be replaced with the "
+#~ "new text.<br><br>Are you sure you want to continue?"
+#~ msgstr ""
+#~ "Vous avez changé le texte de votre choix de réponse.<br>Si vous avez "
+#~ "collecté des données pour ce choix auparavant, elles seront remplacées "
+#~ "par le nouveau texte.<br><br>Etes-vous sûr de vouloir continuer?"
+
+#~ msgid ""
+#~ "You have changed the Answer Type.<br>If you have previously collected "
+#~ "data, it may be rendered incorrect.<br><br>Are you sure you want to "
+#~ "continue?"
+#~ msgstr ""
+#~ "Vous avez changé le Type de Réponse.<br>Si vous avez déjà collecté des "
+#~ "données auparavant, celles-ci peuvent être considérées incorrectes."
+#~ "<br><br>Etes-vous sûr de vouloir continuer ?"
+
+#~ msgid "Enter local telephone number of 10 digits or less"
+#~ msgstr "Entrez un numéro de téléphone local de 10 chifres ou moins"
