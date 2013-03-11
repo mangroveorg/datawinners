@@ -234,5 +234,11 @@ $(document).ready(function () {
         var checked = $(this).attr("checked") == "checked";
         $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
     });
+
+    $("#all_data_senders tr td:first-child input:checkbox").bind("click", function(){
+        if ($(this).attr("checked") != "checked") {
+            $("#checkall-datasenders").attr("checked", false);
+        }
+    });
 });
 

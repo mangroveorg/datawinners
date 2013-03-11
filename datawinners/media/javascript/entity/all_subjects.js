@@ -14,4 +14,11 @@ $(document).ready(function () {
 
         $($.sprintf("#%s-table tr td:first-child input:checkbox", type)).attr("checked", checked);
     });
+
+    $(".subject-container table tbody tr td:first-child input:checkbox").bind("click", function(){
+        if ($(this).attr("checked") != "checked") {
+            var table = $(this).parent().parent().parent().parent();
+            $("thead tr th input.checkall-subjects", table).attr("checked", false);
+        }
+    })
 });
