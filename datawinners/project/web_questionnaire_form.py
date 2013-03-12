@@ -33,7 +33,7 @@ class SubmissionForm(Form):
         self.country = country
         super(SubmissionForm, self).__init__(*args, **kwargs)
 
-    def initial(self, initial):
+    def initial_values(self, initial):
         for field_name, field in self.fields.iteritems():
             if not field.widget.is_hidden:
                 field.initial = initial.get(field_name)

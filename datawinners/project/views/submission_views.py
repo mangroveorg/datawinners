@@ -87,15 +87,15 @@ def edit(request, project_id, submission_id):
 
     if request.method == 'GET':
         submission = get_submission_by_id(manager, submission_id)
-        questionnaire_form.initial(submission.values)
+        questionnaire_form.initial_values(submission.values)
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
         questionnaire_form.bind(request.POST)
         if not questionnaire_form.is_valid():
-                return render_to_response("project/web_questionnaire.html", form_ui_model,
-                    context_instance=RequestContext(request))
+            return render_to_response("project/web_questionnaire.html", form_ui_model,
+                context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
