@@ -76,7 +76,7 @@ class TestPostSMSProcessorNumberOfAnswersValidators(unittest.TestCase):
 
     def _get_form_model_mock(self, is_registration_form, fields, entity_question=None):
         form_model_mock = Mock(spec=FormModel)
-        form_model_mock.is_registration_form.return_value = is_registration_form
+        form_model_mock.is_entity_registration_form.return_value = is_registration_form
         form_model_mock.fields = fields
         form_model_mock.entity_question = entity_question
         return form_model_mock

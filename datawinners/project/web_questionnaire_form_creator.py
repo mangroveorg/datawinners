@@ -110,7 +110,7 @@ class WebQuestionnaireFormCreator(object):
         geo_code_field_code = get_geo_code_field_question_code(self.form_model)
         if geo_code_field_code is not None:
             properties.update({'clean_' + geo_code_field_code: clean_geocode})
-        if self.form_model.is_registration_form():
+        if self.form_model.is_entity_registration_form():
             properties.update({'__init__': question_form_init__})
             properties.update(self._get_entity_type_hidden_field())
             properties.update(self._get_short_code_question_code())

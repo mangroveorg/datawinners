@@ -30,7 +30,7 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
 
 
     def _get_handlers(self,form_model):
-        if form_model.is_registration_form():
+        if form_model.is_entity_registration_form():
             return self._process_registration_request
         else:
             return self._process_data_submission_request
@@ -52,7 +52,7 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
         return len(form_model.fields) == len(submission_values.keys())
 
     def _correct_number_of_questions_with_short_code_absent(self, form_model, submission_values):
-        if form_model.is_registration_form() or form_model.entity_defaults_to_reporter():
+        if form_model.is_entity_registration_form() or form_model.entity_defaults_to_reporter():
             return len(form_model.fields) == len(submission_values.keys()) + 1
         return False
 

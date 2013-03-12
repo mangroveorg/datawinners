@@ -62,6 +62,7 @@ websubmission_logger = logging.getLogger("websubmission")
 COUNTRY = ',MADAGASCAR'
 
 #TODO This method has to be moved into a proper place since this is used for registering entities.
+# TODO : Not sure where this is getting used - Shruthi
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])
