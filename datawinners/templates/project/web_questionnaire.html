@@ -32,6 +32,9 @@
         {{ block.super }}
     {% endblock %}
     <div>
+        {% if  is_edit  %}
+            {% include 'project/static_info_for_edit.html' %}
+        {% endif %}
         {% include 'project/web_questionnaire_questions.html' %}
     </div>
 {% endblock %}

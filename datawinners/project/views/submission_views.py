@@ -18,7 +18,9 @@ from datawinners.main.utils import get_database_manager
 from datawinners.accountmanagement.views import is_not_expired
 from project import helper
 from project.ExcelHeader import  ExcelFileSubmissionHeader
+from project.data_sender_helper import get_data_sender
 from project.export_to_excel import _prepare_export_data, _create_excel_response
+from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from project.models import Project
 from project.submission_list import SubmissionList
 from project.submission_list_for_excel import SubmissionListForExcel
@@ -74,6 +76,17 @@ def index(request, project_id=None, questionnaire_code=None):
                                          "statistics_result": analysis_result.statistics_result}))
 
 
+def build_static_info_context(form_ui_model, manager, org_id, submission):
+    form_ui_model.update({'channel': submission.channel,
+                          'status': 'Success' if submission.status else 'Error',
+                          'created': submission.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION),
+                          'data_sender': get_data_sender(manager, org_id, submission),
+                          'is_edit':True,
+                          'errors':submission.errors
+    })
+    return form_ui_model
+
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_not_expired
@@ -88,6 +101,9 @@ def edit(request, project_id, submission_id):
     if request.method == 'GET':
         submission = get_submission_by_id(manager, submission_id)
         questionnaire_form.initial_values(submission.values)
+
+        build_static_info_context(form_ui_model, manager, get_organization(request).org_id, submission)
+
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
 

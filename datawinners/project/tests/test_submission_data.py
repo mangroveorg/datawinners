@@ -11,7 +11,7 @@ from mangrove.utils.form_model_builder import create_default_ddtype, FormModelBu
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from project.analysis import Analysis
 from project.analysis_for_excel import AnalysisForExcel
-from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG, NOT_AVAILABLE
+from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, NOT_AVAILABLE
 from project.submission_data import _override_value_if_not_present
 from project.submission_list import SubmissionList
 from project.submission_router import successful_submissions
@@ -68,7 +68,7 @@ class TestSubmissionData(MangroveTestCase):
             self.assertEqual(expected, statistics)
 
     def get_submission_date_in_old_format(self, submission_date):
-        submission_date = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
+        submission_date = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
         submission_date = submission_date.strftime("%d.%m.%Y")
         return submission_date
 
@@ -163,7 +163,7 @@ class TestSubmissionData(MangroveTestCase):
                 form_code=self.form_model.form_code,
                 values=data)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
-            submission_date = datetime.utcnow().strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
+            submission_date = datetime.utcnow().strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
             raw_field_values = submission_list.get_raw_values()
             expected = [
                 [self.submission_id, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), submission_date, 'Error',
