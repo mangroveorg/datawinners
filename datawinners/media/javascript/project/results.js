@@ -3,7 +3,7 @@ $(document).ready(function () {
     var $dataTable = $('.submission_table');
     var tab = ["all", "success", "error", "deleted"];
     var active_tab_index;
-    var $filterSelects = $('#subjectSelect, #dataSenderSelect');
+    var $filterSelects = $('#dataSenderSelect, #subjectSelect');
     buildFilters();
 
 
@@ -60,7 +60,7 @@ $(document).ready(function () {
     function buildFilters() {
         var subject_options = {emptyText: interpolate(gettext('All %(entity)s'), {entity:entity_type}, true)};
         var data_sender_options = {emptyText:gettext("All Data Senders")};
-        var filter_options = [subject_options, data_sender_options];
+        var filter_options = [data_sender_options,subject_options];
 
         $filterSelects.each(function(index, filter) {
             $(filter).dropdownchecklist($.extend({firstItemChecksAll:false,
