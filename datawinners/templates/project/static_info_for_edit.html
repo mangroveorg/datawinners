@@ -1,7 +1,16 @@
+{% load i18n %}
+<h6 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">{% trans "You are editing the Submission Details" %}</h6>
+
 <div id="static-info">
-    <h3>Source: {{ channel  }}</h3>
-    <h3>SubmissionDate: {{ created }}</h3>
-    <h3>DataSender: {{ data_sender.0 }} {{ data_sender.1 }}</h3>
-    <h3>Status: {{ status }} {{ errors }}</h3>
-    <p></p>
+    {% for header,value in static_content.items %}
+        <text class='content-header'>{%  trans header %}</text>
+        {% if header == 'Data Sender' %}
+            <text class='content-values'>{{ value.0 }}</text><text id = 'datasender-id'>{{ value.1 }}</text>
+        {% else %}
+            <text class='content-values'>{{ value }}</text>
+        {% endif %}
+    {% endfor %}
+
 </div>
+
+

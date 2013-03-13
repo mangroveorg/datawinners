@@ -18,11 +18,10 @@ class TestSubmissionViews(unittest.TestCase):
             submission._doc = submission_document
             build_static_info_context(temp_dict, Mock(), Mock(spec=HttpRequest), submission)
             SUBMISSION_DATE_FORMAT = "%b. %d, %Y, %I:%M %p"
-            expected_values = {'channel': 'web',
-                               'status': 'Error',
-                               'created': created_time.strftime(SUBMISSION_DATE_FORMAT),
-                               'data_sender': ('Psub', 'rep2', 'tester@gmail.com'),
-                               'is_edit': True,
-                               'errors':'Some Error in submission'
-                               }
+            expected_values = {'static_content':{
+                               'Data Sender': ('Psub', 'rep2', 'tester@gmail.com'),
+                               'Source': 'web',
+                               'Status': 'Error. Some Error in submission',
+                               'Submission Date': created_time.strftime(SUBMISSION_DATE_FORMAT)
+                               },'is_edit':True}
             self.assertEqual(expected_values, temp_dict)

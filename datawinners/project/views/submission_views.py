@@ -77,13 +77,15 @@ def index(request, project_id=None, questionnaire_code=None):
 
 
 def build_static_info_context(form_ui_model, manager, org_id, submission):
-    form_ui_model.update({'channel': submission.channel,
-                          'status': 'Success' if submission.status else 'Error',
-                          'created': submission.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION),
-                          'data_sender': get_data_sender(manager, org_id, submission),
-                          'is_edit':True,
-                          'errors':submission.errors
-    })
+    static_content = {'Data Sender': get_data_sender(manager, org_id, submission),
+                      'Source': submission.channel,
+                      'Status': 'Success' if submission.status else 'Error. ' + submission.errors,
+                      'Submission Date': submission.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
+    }
+
+    form_ui_model.update({'static_content': static_content})
+    form_ui_model.update({'is_edit': True})
+
     return form_ui_model
 
 

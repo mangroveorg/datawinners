@@ -4063,3 +4063,7 @@ msgstr "Messages d’Erreur"
 
 msgid "Answer must be 20 characters maximum"
 msgstr "La réponse doit être de 20 caractères au maximum"
+
+msgid "You are editing the Submission Details"
+msgstr "Vous êtes en train de modifier les détails relatifs à votre Soumission"
+
