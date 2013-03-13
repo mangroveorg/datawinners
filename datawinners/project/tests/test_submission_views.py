@@ -19,7 +19,7 @@ class TestSubmissionViews(unittest.TestCase):
             SUBMISSION_DATE_FORMAT = "%b. %d, %Y, %I:%M %p"
             expected_values = {'static_content':{
                                'Data Sender': ('Psub', 'rep2', 'tester@gmail.com'),
-                               'Source': 'web',
+                               'Source': 'Web',
                                'Status': 'Error. Some Error in submission',
                                'Submission Date': created_time.strftime(SUBMISSION_DATE_FORMAT)
                                },'is_edit':True}

@@ -1,6 +1,7 @@
 import json
 import datetime
 import logging
+from string import capitalize, uppercase
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -81,8 +82,8 @@ def index(request, project_id=None, questionnaire_code=None):
 def build_static_info_context(manager, org_id, submission):
     form_ui_model = {}
     static_content = {'Data Sender': get_data_sender(manager, org_id, submission),
-                      'Source': submission.channel,
-                      'Status': 'Success' if submission.status else 'Error. ' + submission.errors,
+                      'Source': capitalize(submission.channel) if submission.channel == 'web' else submission.channel.upper(),
+                      'Status': ugettext('Success') if submission.status else ugettext('Error')+'. ' + submission.errors,
                       'Submission Date': submission.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
     }
 
