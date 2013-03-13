@@ -1087,9 +1087,6 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 #~ msgid "Enter local telephone number of 10 digits or less"
 #~ msgstr "Entrez un numéro de téléphone local de 10 chifres ou moins"
 
-msgid "All %(entity)s"
-msgstr "Tout(es) les %(entity)s"
-
 msgid "Next:"
 msgstr "Suiv:"
 
