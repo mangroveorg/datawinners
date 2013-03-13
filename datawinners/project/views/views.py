@@ -66,6 +66,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
+from mangrove.transport.services.survey_response_service import SurveyResponseService
 
 logger = logging.getLogger("django")
 performance_logger = logging.getLogger("performance")
@@ -264,6 +265,7 @@ def _to_name_id_string(value, delimiter='</br>'):
 
 def formatted_data(field_values, delimiter='</br>'):
     return  [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
+
 
 def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)
@@ -760,9 +762,8 @@ def web_questionnaire(request, project_id=None, subject=False):
         error_message = None
         try:
             created_request = helper.create_request(questionnaire_form, request.user.username)
-            response = WebPlayer(manager,
-                LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
-                created_request, logger=websubmission_logger)
+            service = SurveyResponseService(manager, websubmission_logger)
+            response = service.save_survey_response(created_request)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
                 if subject:
