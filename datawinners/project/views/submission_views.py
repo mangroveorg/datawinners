@@ -34,7 +34,7 @@ from datawinners.project.views.views import XLS_TUPLE_FORMAT
 from datawinners.common.constant import   DELETED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from datawinners.project.views.utils import get_form_context
-from project.web_questionnaire_form import SubmissionForm
+from project.submission_form import SubmissionForm
 
 performance_logger = logging.getLogger("performance")
 

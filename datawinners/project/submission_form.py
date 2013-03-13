@@ -36,7 +36,7 @@ class SubmissionForm(Form):
     def initial_values(self, initial):
         for field_name, field in self.fields.iteritems():
             if not field.widget.is_hidden:
-                field.initial = initial.get(field_name)
+                field.initial = initial.get(field_name) if initial.get(field_name) is not None else initial.get(field_name.lower())
 
     def bind(self, data):
         if data:
