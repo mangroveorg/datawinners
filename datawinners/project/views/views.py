@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from collections import namedtuple
 import json
 import datetime
 import logging
@@ -58,7 +57,7 @@ from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from project import helper
 from project.analysis import Analysis
-from project.utils import make_project_links, make_data_sender_links, make_subject_links
+from project.utils import make_project_links
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
 from project.submission_router import SubmissionRouter
@@ -66,8 +65,8 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from mangrove.transport.services.survey_response_service import SurveyResponseService
 from datawinners.project.views.utils import get_form_context
+from mangrove.transport.player.new_players import WebPlayerV2
 
 logger = logging.getLogger("django")
 performance_logger = logging.getLogger("performance")
@@ -747,8 +746,7 @@ def web_questionnaire(request, project_id=None, subject=False):
         error_message = None
         try:
             created_request = helper.create_request(questionnaire_form, request.user.username)
-            service = SurveyResponseService(manager, websubmission_logger)
-            response = service.save_survey_response(created_request)
+            response = WebPlayerV2(manager).add_survey_response(created_request, websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
                 if subject:
