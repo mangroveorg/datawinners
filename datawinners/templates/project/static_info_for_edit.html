@@ -1,16 +1,22 @@
 {% load i18n %}
+<script src="/media/javascript/jquery.autoellipsis-1.0.10.min.js" type="text/javascript"></script>
+<script src="/media/javascript/project/edit_submission.js" type="text/javascript"></script>
+
 <h6 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">{% trans "You are editing the Submission Details" %}</h6>
 
 <div id="static-info">
+    <ul>
     {% for header,value in static_content.items %}
-        <text class='content-header'>{%  trans header %}</text>
-        {% if header == 'Data Sender' %}
-            <text class='content-values'>{{ value.0 }}</text><text id = 'datasender-id'>{{ value.1 }}</text>
-        {% else %}
-            <text class='content-values'>{{ value }}</text>
-        {% endif %}
+        <li class="info">
+            <text class='content-header'>{%  trans header %}</text>
+            {% if header == 'Data Sender' %}
+                <text class='content-values'>{{ value.0 }}</text><text class='datasender-id'>{{ value.1 }}</text>
+            {% else %}
+                <text class='content-values' title="{{ value }}">{{ value }}</text>
+            {% endif %}
+        </li>
     {% endfor %}
-
+    </ul>
 </div>
 
 
