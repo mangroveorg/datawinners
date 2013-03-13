@@ -11,12 +11,11 @@ class TestSubmissionViews(unittest.TestCase):
         with patch("project.views.submission_views.get_data_sender") as get_data_sender:
             get_data_sender.return_value = ('Psub', 'rep2', 'tester@gmail.com')
             created_time = utcnow()
-            temp_dict = {}
             submission_document = SubmissionLogDocument(source='tester@gmail.com', channel='web', status=False,
                 event_time=created_time,error_message="Some Error in submission")
             submission = Submission(Mock())
             submission._doc = submission_document
-            build_static_info_context(temp_dict, Mock(), Mock(spec=HttpRequest), submission)
+            static_info = build_static_info_context(Mock(), Mock(spec=HttpRequest), submission)
             SUBMISSION_DATE_FORMAT = "%b. %d, %Y, %I:%M %p"
             expected_values = {'static_content':{
                                'Data Sender': ('Psub', 'rep2', 'tester@gmail.com'),
@@ -24,4 +23,4 @@ class TestSubmissionViews(unittest.TestCase):
                                'Status': 'Error. Some Error in submission',
                                'Submission Date': created_time.strftime(SUBMISSION_DATE_FORMAT)
                                },'is_edit':True}
-            self.assertEqual(expected_values, temp_dict)
+            self.assertEqual(expected_values, static_info)

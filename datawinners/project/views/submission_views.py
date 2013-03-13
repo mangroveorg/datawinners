@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
+from alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.views import session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
@@ -31,6 +32,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.project.views.views import XLS_TUPLE_FORMAT
 from datawinners.common.constant import   DELETED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
+from datawinners.project.views.utils import get_form_context
 from project.web_questionnaire_form import SubmissionForm
 
 performance_logger = logging.getLogger("performance")
@@ -76,7 +78,8 @@ def index(request, project_id=None, questionnaire_code=None):
                                          "statistics_result": analysis_result.statistics_result}))
 
 
-def build_static_info_context(form_ui_model, manager, org_id, submission):
+def build_static_info_context(manager, org_id, submission):
+    form_ui_model = {}
     static_content = {'Data Sender': get_data_sender(manager, org_id, submission),
                       'Source': submission.channel,
                       'Status': 'Success' if submission.status else 'Error. ' + submission.errors,
@@ -98,19 +101,21 @@ def edit(request, project_id, submission_id):
     questionnaire_form_model = FormModel.get(manager, project.qid)
     questionnaire_form = SubmissionForm.create(manager, project, questionnaire_form_model)
 
-    form_ui_model = {'questionnaire_form': questionnaire_form, 'project': project}
+    disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
+    submission = get_submission_by_id(manager, submission_id)
+    form_ui_model = build_static_info_context(manager, get_organization(request).org_id, submission)
 
     if request.method == 'GET':
-        submission = get_submission_by_id(manager, submission_id)
         questionnaire_form.initial_values(submission.values)
-
-        build_static_info_context(form_ui_model, manager, get_organization(request).org_id, submission)
-
+        form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, questionnaire_form,
+            manager, hide_link_class, disable_link_class))
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
         questionnaire_form.bind(request.POST)
+        form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, questionnaire_form,
+            manager, hide_link_class, disable_link_class))
         if not questionnaire_form.is_valid():
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                 context_instance=RequestContext(request))

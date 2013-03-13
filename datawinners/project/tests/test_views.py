@@ -13,13 +13,14 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.submissions import Submission
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
-from datawinners.project.views.views import _format_reminders, make_data_sender_links, add_link
+from datawinners.project.views.views import _format_reminders, make_data_sender_links
 from project.export_to_excel import _prepare_export_data
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
 from project.submission_router import SubmissionRouter
 from project.views.submission_views import delete_submissions_by_ids
 from project.utils import make_subject_links
+from project.views.utils import add_link
 from project.views.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
 from project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field
 from questionnaire.questionnaire_builder import get_max_code
