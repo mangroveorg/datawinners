@@ -3,26 +3,22 @@
 }
 
 .content-header{
-  padding-left: 10px;
   font-weight: bold;
 }
 
 #static-info{
   margin-top: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccbf97;
   background-color: #E8EFF6;
-  height: 50px;
   overflow: hidden;
 }
 
 #static-info .info {
+  padding-left: 10px;
   float: left;
-  width: 454px;
+  width: 436px;
   display: block;
-  height: 25px;
   line-height: 25px;
-  cursor: pointer;
 }
 
 #static-info .info .content-header:after {
