@@ -22,6 +22,7 @@ from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 from datawinners.submission.location import LocationBridge
 from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, \
     create_data_dict, define_entity_instance, register
+from transport.player.new_players import SMSPlayerV2
 
 class DateTimeMocker(object):
     def __init__(self):
@@ -878,39 +879,39 @@ def load_sms_data_for_cli018(manager):
     DEC_2010 = datetime(2010, 12, 28, hour=00, minute=00, second=59, tzinfo=UTC)
     NOV_2010 = datetime(2010, 11, 26, hour=23, minute=59, second=59, tzinfo=UTC)
     today = datetime.today()
-    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
+    sms_player = SMSPlayerV2(manager, [])
 
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
     mangrove_request = Request("cli018 .EID cid001 .NA 12.2012 .RD 15.01.2011 .BG a .GPS 16.34,11.26", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(JAN)
     mangrove_request = Request("cli018 .EID cid001 .NA 123 .RD 10.02.2012 .BG b .GPS 61.10,58.99", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(FEB)
     mangrove_request = Request("cli018 .EID cid001 .NA 456 .RD 25.12.2012 .BG d .GPS 65.24,28.45", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(MARCH)
     mangrove_request = Request("cli018 .EID cid003 .NA cat .RD 15.10.2011 .BG c .GPS 56.34,11.00", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(APR)
     mangrove_request = Request("cli018 .EID cid004 .NA 2012.01.14 .RD 25.06.2011 .BG d .GPS 16.34,11.76", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(NOV_2010)
     mangrove_request = Request("cli018 .EID cid005 .NA 2011.12.12 .RD 04.09.2010 .BG d .GPS 10.12,11.13", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(DEC_2010)
     mangrove_request = Request('cli018 .EID cid001 .NA 12.23.2011 .RD 25.01.2011 .BG a .GPS 11.23,17.66', transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
 def load_sms_data_for_cli001(manager):
     FEB = datetime(2011, 02, 28, hour=12, minute=00, second=00, tzinfo=UTC)
@@ -921,142 +922,142 @@ def load_sms_data_for_cli001(manager):
     LAST_WEEK = today - timedelta(days=7)
     THIS_MONTH = datetime(today.year, today.month, 2, 12, 45, 58)
     PREV_MONTH = THIS_MONTH - timedelta(days=6)
-    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
+    sms_player = SMSPlayerV2(manager, [])
 
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
     mangrove_request = Request("cli .q1 Clinic .q2 Analalava .q3 Analalava .q4 -14.6333,47.7667 .q5 987654321", transport)
-    sms_player.accept(mangrove_request)
+    sms_player.add_survey_response(mangrove_request)
 
     mangrove_request = Request("cli .q1 Clinic .q2 Andapa .q3 Andapa .q4 -14.65,49.6167 .q5 87654322", transport)
-    sms_player.accept(mangrove_request)
+    sms_player.add_survey_response(mangrove_request)
 
     mangrove_request = Request("cli .q1 Clinic .q2 Antalaha .q3 Antalaha .q4 -14.8833,50.25 .q5 87654323", transport)
-    sms_player.accept(mangrove_request)
+    sms_player.add_survey_response(mangrove_request)
     
     mangrove_request = Request("cli .q1 Clinic .q2 ANALAMANGA .q3 ANALAMANGA .q4 -18.8,47.4833 .q5 87654324", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     
     mangrove_request = Request(
         "cli .q1 Clinic .q2 TSIMANARIRAZANA .q3 TSIMANARIRAZANA .q4 -12.35,49.3 .q5 87654325", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli .q1 Clinic .q2 Antsirabe .q3 Antsirabe .q4 -19.8167,47.0667 .q5 87654326", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli .q1 Clinic .q2 Besalampy .q3 Besalampy .q4 -16.75,44.5 .q5 87654327", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli .q1 Clinic .q2 Farafangana .q3 Farafangana .q4 -22.8,47.8333 .q5 87654328", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli .q1 Clinic .q2 Fianarantsoa-I .q3 Fianarantsoa-I .q4 -21.45,47.1 .q5 87654329", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli .q1 Clinic .q2 Sainte-Marie .q3 Sainte-Marie .q4 -17.0833,49.8167 .q5 87654330", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli .q1 Clinic .q2 Mahajanga .q3 Mahajanga .q4 -15.6667,46.35 .q5 87654331", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(FEB)
     # Total number of identical records = 3
     mangrove_request = Request(
         "cli001 .EID cid001 .NA Mr. Tessy .FA 58 .RD 28.02.2011 .BG c .SY ade .GPS 79.2,20.34567 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid002 .NA Mr. Adam .FA 62 .RD 15.02.2011 .BG a .SY ab .GPS 74.2678,23.3567 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid003 .NA Ms. Beth .FA 75 .RD 09.02.2011 .BG b .SY bc .GPS 18.245,29.3123 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(MARCH)
     # Total number of identical records = 4
     mangrove_request = Request(
         "cli001 .EID cid004 .NA Jannita .FA 90 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233,28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid005 .NA Aanda .FA 58 .RD 12.03.2011 .BG c .SY bd .GPS 40.2,69.3123 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         'cli001 .EID cid001 .NA Ianda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452,15.3345 .RM b', transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid001 .NA ànita .FA 45 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233,28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid004 .NA Amanda .FA 81 .RD 12.03.2011 .BG c .SY bd .GPS 40.2,69.3123 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         'cli001 .EID cid005 .NA Vanda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452,15.3345 .RM b', transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid003 .NA ànnita .FA 80 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233,28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid002 .NA Amanda .FA 69 .RD 12.03.2011 .BG c .SY bd .GPS 40.2,69.3123 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         'cli001 .EID cid004 .NA Panda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452,15.3345 .RM b', transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid005 .NA ànnita .FA 50 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233,28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid003 .NA Jimanda .FA 86 .RD 12.03.2011 .BG c .SY bd .GPS 40.2,69.3123 .RM ac", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         'cli001 .EID cli10 .NA Kanda (",) .FA 64 .RD 27.03.2011 .BG d .SY be .GPS 38.3452,15.3345 .RM b', transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid004 .NA ànnita .FA 30 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233,28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid005 .NA Qamanda  .FA 47 .RD 12.03.2011 .BG c .SY bd .GPS 40.2,69.3123 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         'cli001 .EID cid001 .NA Huanda (*_*) .FA 74 .RD 27.03.2011 .BG d .SY be .GPS 38.3452,15.3345 .RM b', transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(DEC_2010)
     # Total number of identical records = 4
     mangrove_request = Request(
         "cli001 .EID cli12 .NA Jugal .FA 47 .RD 15.12.2010 .BG d .SY ace .GPS -58.3452,19.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cli11 .NA De'melo .FA 38 .RD 27.12.2010 .BG c .SY ba .GPS 81.672,92.33456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cli13 .NA Dono`mova .FA 24 .RD 06.12.2010 .BG b .SY cd .GPS 65.23452,-28.3456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cli15 .NA Aàntra .FA 89 .RD 11.12.2010 .BG a .SY bd .GPS 45.234,89.32345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(NOV_2010)
     # Total number of identical records = 3
     mangrove_request = Request(
         "cli001 .EID cli12 .NA ànnita .FA 90 .RD 07.11.2010 .BG b .SY bbe .GPS 45.233,28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cli14 .NA Amanda .FA 67 .RD 12.11.2010 .BG c .SY bd .GPS 40.2,69.3123 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         'cli001 .EID cli8 .NA Kanda (",) .FA 34 .RD 27.11.2010 .BG d .SY be .GPS 38.3452,15.3345 .RM b', transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cli9 .NA ànnita .FA 90 .RD 17.11.2010 .BG b .SY bbe .GPS 45.233,28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         "cli001 .EID cid007 .NA Amanda .FA 73 .RD 12.11.2010 .BG c .SY bd .GPS 40.2,69.3123 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request(
         'cli001 .EID cli8 .NA Kanda (",) .FA 34 .RD 27.11.2010 .BG d .SY be .GPS 38.3452,15.3345 .RM b', transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(PREV_MONTH)
     month = today.month - 1
@@ -1067,67 +1068,67 @@ def load_sms_data_for_cli001(manager):
     Last_month_date = "12." + str(month) + "." + str(year)
     # Total number of identical records = 4
     mangrove_request = Request("cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672,92.33456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452,-28.3456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli11 .NA Aàntra .FA 98 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234,89.32345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli12 .NA ànnita .FA 37 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233,-28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672,92.33456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452,-28.3456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli11 .NA Aàntra .FA 95 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234,89.32345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli12 .NA ànnita .FA 35 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233,-28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli9 .NA Demelo .FA 32 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672,92.33456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli10 .NA Zorro .FA 43 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452,-28.3456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli11 .NA Aàntra .FA 91 .RD " + Last_month_date + " .BG a .SY be .GPS -45.234,89.32345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli12 .NA ànnita .FA 45 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233,-28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(THIS_MONTH)
     current_month_date = "01." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 4
     mangrove_request = Request("cli001 .EID cli13 .NA Dmanda .FA 69 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli14 .NA Vamand .FA 36 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli15 .NA M!lo .FA 88 .RD " + current_month_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli16 .NA K!llo .FA 88 .RD " + current_month_date + " .BG a .SY ac .GPS 19.672,92.33456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli13 .NA Dmanda .FA 89 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli14 .NA Vamand .FA 56 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli15 .NA M!lo .FA 45 .RD " + current_month_date + " .BG c .SY ca .GPS 19.672,92.33456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli16 .NA K!llo .FA 28 .RD " + current_month_date + " .BG b .SY ae .GPS 19.672,92.33456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.end_mock()
 
     today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 3
     mangrove_request = Request("cli001 .EID cli17 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli18 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     mangrove_request = Request("cli001 .EID cli17 .NA Catty .FA 98 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli18 .NA àntra .FA 58 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 27 .BG d .SY ace .GPS -78.233,-28.3324 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     FROM_NUMBER = '919970059125'
     TO_NUMBER = '919880734937'
@@ -1138,27 +1139,27 @@ def load_sms_data_for_cli001(manager):
     last_week_date = str(LAST_WEEK.day) + "." + str(LAST_WEEK.month) + "." + str(LAST_WEEK.year)
     # Total number of identical records = 4
     mangrove_request = Request("cli010 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli010 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli010 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 4
     mangrove_request = Request("cli012 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli012 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli012 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 4
     mangrove_request = Request("cli011 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli011 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli011 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     FROM_NUMBER = '919970059125'
     TO_NUMBER = '919880734937'
@@ -1168,35 +1169,35 @@ def load_sms_data_for_cli001(manager):
     last_week_date = str(PREV_MONTH.day) + "." + str(PREV_MONTH.month) + "." + str(PREV_MONTH.year)
     # Total number of identical records = 3
     mangrove_request = Request("cli013 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli013 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli013 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
     mangrove_request = Request("cli015 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli015 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli015 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
     mangrove_request = Request("cli014 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli014 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli014 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
     mangrove_request = Request("cli016 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli016 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.345,115.3345 .RM b", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli016 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
 
     FROM_NUMBER = '917798987102'
@@ -1208,35 +1209,35 @@ def load_sms_data_for_cli001(manager):
     this_month = str(THIS_MONTH.day) + "." + str(THIS_MONTH.month) + "." + str(THIS_MONTH.year)
     # Total number of identical records = 3
     mangrove_request = Request("cli013 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli013 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli013 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
     mangrove_request = Request("cli014 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli014 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli014 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
     mangrove_request = Request("cli015 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli015 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli015 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
     mangrove_request = Request("cli016 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli016 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli016 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker2.end_mock()
 
@@ -1247,27 +1248,27 @@ def load_sms_data_for_cli001(manager):
     today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 3
     mangrove_request = Request("cli010 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli010 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli010 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
     mangrove_request = Request("cli011 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli011 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli011 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
     mangrove_request = Request("cli012 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli012 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
     mangrove_request = Request("cli012 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
 def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)
@@ -1346,20 +1347,20 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     return project1
 
 def send_data_to_project_cli00_mp(manager):
-    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+    sms_player = SMSPlayerV2(manager,[])
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
     month = datetime.today().month
     year = datetime.today().year
-    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month, year), transport))
-    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month, year - 1), transport))
-    sms_player.accept(Request("cli00_mp cid001 01.%s" % year, transport))
-    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month,year), transport))
+    sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month, year), transport))
+    sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month, year - 1), transport))
+    sms_player.add_survey_response(Request("cli00_mp cid001 01.%s" % year, transport))
+    sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month,year), transport))
 
     tester_transport = TransportInfo(SMS, TEST_REPORTER_MOBILE_NUMBER, TO_NUMBER)
-    sms_player.accept(Request("cli00_mp cid001 %s.%s" % (month, year), tester_transport))
+    sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month, year), tester_transport))
 
 def load_data():
     manager = load_manager_for_default_test_account()

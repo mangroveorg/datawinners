@@ -9,13 +9,15 @@ from mangrove.transport.submissions import Submission
 
 #submission date,       source,     destination, messages,
 #2012-11-24 13:48:22	24535435348	26134535750	 009 MCHTDV07 22.11.2012 ABE0000369 72.15 0 0 0 0
+from transport.player.new_players import SMSPlayerV2
+
 data_folder = "/Users/twer/Downloads/lost_data_folder/*.xlsx"
 
 db_server = "localhost"
 db_name = "hni_crs-stock_jhw14178"
 
 dbm = get_db_manager(server="http://%s:5984" % db_server, database=db_name)
-sms_player = SMSPlayer(dbm)
+sms_player = SMSPlayerV2(dbm,[])
 
 def update_submission_date(response, submission_date):
     submission = Submission.get(dbm, response.submission_id)
@@ -28,7 +30,7 @@ def update_submission_date(response, submission_date):
 def send_sms(source, destination, text):
     print text
     transport_info = TransportInfo(transport="sms", source=source, destination=destination)
-    response = sms_player.accept(Request(message=text, transportInfo=transport_info))
+    response = sms_player.add_survey_response(Request(message=text, transportInfo=transport_info))
     print response
     return response
 
