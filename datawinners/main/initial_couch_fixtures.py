@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
-from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy, LocationTree
+from datawinners.location.LocationTree import   LocationTree
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
@@ -16,13 +16,12 @@ from mangrove.errors.MangroveException import   DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
-from mangrove.transport.player.player import SMSPlayer, WebPlayer
+from mangrove.transport.player.player import  WebPlayer
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
-from datawinners.submission.location import LocationBridge
 from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, \
     create_data_dict, define_entity_instance, register
-from transport.player.new_players import SMSPlayerV2
+from mangrove.transport.player.new_players import SMSPlayerV2
 
 class DateTimeMocker(object):
     def __init__(self):
