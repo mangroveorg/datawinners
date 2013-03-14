@@ -3,19 +3,28 @@
 <div id="action_dropdown" >
     <div id="action_button"  class="action_bar clear-both" style="margin-top:20px; margin-bottom: 20px">
         <div class="btn-group">
-            <button id="something" class="btn dropdown-toggle action" href="#" data-dropdown="#action">{% trans "Actions" %}
+            <button class="btn dropdown-toggle action" href="#" data-dropdown="#none-selected">{% trans "Actions" %}
                 <span class="caret"></span>
             </button>
         </div>
     </div>
+    <div id="none-selected" class="dropdown">
+        <div class="dropdown-panel">
+            {% trans "Select a Data Sender" %}
+        </div>
+    </div>
 
-    <div id="action" class="dropdown-menu" >
-        <ul>
+    <div id="action" class="dropdown" >
+        <ul class="dropdown-menu">
             <li><a class="associate" id="associate">{% trans "Add to project" %}</a></li>
             <li><a class="disassociate" id="disassociate">{% trans "Remove from project" %}</a></li>
             <li><a class="makewebuser" id="makewebuser">{% trans "Give Web Submission Access" %}</a></li>
         {% if EDIT_SUBJECT_ENABLED and not in_trial_mode %}
             <li><a class="edit" id="edit">{% trans "Edit" %}</a></li>
+        {% else %}
+            {% if in_trial_mode %}
+                <li class="disabled"><a class="edit" id="edit">{% trans "Edit" %}({% trans "not available for trial accounts" %})</a></li>
+            {% endif %}
         {% endif %}
             <li><a class="delete" id="delete">{% trans "Delete" %}</a></li>
         </ul>

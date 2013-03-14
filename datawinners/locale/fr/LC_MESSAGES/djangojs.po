@@ -1090,3 +1090,5 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 msgid "Next:"
 msgstr "Suiv:"
 
+msgid "Select 1 %s only"
+msgstr "Sélectionnez seulement 1 %s"

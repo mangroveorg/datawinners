@@ -739,3 +739,6 @@ ol .lower_i {
   padding-top: 20px; }
   #video-container iframe {
     border: 6px solid #000000; }
+
+.margin_top_12 {
+  margin-top: 12px !important; }

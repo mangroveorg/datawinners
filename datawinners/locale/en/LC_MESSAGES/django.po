@@ -3987,3 +3987,12 @@ msgstr ""
 
 msgid "You are editing the Submission Details"
 msgstr ""
+
+msgid "Select a %(subject_type)"
+msgstr ""
+
+msgid "not available for trial accounts"
+msgstr ""
+
+msgid "Select a Submission"
+msgstr ""

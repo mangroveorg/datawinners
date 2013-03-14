@@ -21,6 +21,7 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js" ></script>
+    <script type="text/javascript" src="/media/javascript/action_dropdown.js" ></script>
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="/media/javascript/project/datatable_sorting.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
@@ -60,10 +61,16 @@
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
-    <div id="action_menu" class="dropdown-menu">
-        <ul>
+    <div id="action_menu" class="dropdown">
+        <ul class="dropdown-menu">
             <li><a href="#1" class="delete">{% trans "Delete" %}</a></li>
         </ul>
+    </div>
+
+    <div id="none-selected" class="dropdown">
+        <div class="dropdown-panel">
+            {% trans "Select a Submission" %}
+        </div>
     </div>
     {% load compress %}
     {% compress js %}

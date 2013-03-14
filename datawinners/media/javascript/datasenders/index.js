@@ -14,6 +14,8 @@ DW.uncheck_all_users = function () {
     $(".datasenders_list .is_user").attr("checked", false);
 }
 
+DW.action_enabled = false;
+
 $(document).ready(function () {
     var kwargs = {container:"#delete_all_ds_are_users_warning_dialog",
         cancel_handler:function () {
@@ -113,16 +115,11 @@ $(document).ready(function () {
         $("#web_user_block").dialog("open");
     }
 
-    $('#action li a').click(function () {
+    $('#action li a').click(function (e) {
         var allIds = updateIds();
-        $('#error').remove();
-        if (allIds.length == 0) {
-            $('#web-access-success').remove();
-            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 data sender')
-                + '</div>').insertAfter($("#action_dropdown"));
-            $('#project').val('');
-            $(this).val("");
-            return;
+        if ($(this).parent().hasClass("disabled")) {
+            e.preventDefault();
+            return false;
         }
         var action = this.className;
         $("#action").attr("clicked", action);
@@ -148,14 +145,6 @@ $(document).ready(function () {
                 }
             } else {
                 warnThenDeleteDialogBox(allIds, "reporter", this);
-            }
-        } else if (action == "edit") {
-            if (allIds.length > 1) {
-                $('<div class="message-box" id="error">' + gettext("Please select only 1 data sender")
-                    + '</div>').insertAfter($('#action_dropdown'));
-                $(this).val('');
-            }
-            else { location.href = '/entity/datasender/edit' + '/' + allIds[0] + '/';
             }
         } else {
             $("#all_project_block").dialog("open");

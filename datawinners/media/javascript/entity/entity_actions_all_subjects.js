@@ -34,7 +34,7 @@ $(document).ready(function () {
         return false;
     });
 
-    $('.action li a').click(function () {
+    $('.action li a').click(function (e) {
         $('#error').hide();
         var allIds = getEntityIdsToBeDeleted(this);
         var entity_type = getEntityType(this);
@@ -45,8 +45,8 @@ $(document).ready(function () {
         }
         if (action == 'edit') {
             if (allIds.length > 1) {
-                displayErrorMessage('Please select only 1 subject')
-                return;
+                e.preventDefault();
+                return false;
             }
             else {
                 location.href = getEditURL() + entity_type + '/' + allIds[0] + '/';

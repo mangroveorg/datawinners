@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.action li a').click(function () {
+    $('.action li a').click(function (e) {
         $('#error').hide();
         var allIds = getEntityIdsToBeDeleted(this);
         var entity_type = getEntityType(this);
@@ -10,8 +10,8 @@ $(document).ready(function () {
         }
         if (action == 'edit') {
             if (allIds.length > 1) {
-                displayErrorMessage('Please select only 1 subject');
-                return;
+                e.preventDefault();
+                return false;
             }
             else {
                 location.href = getEditURL() + entity_type + '/' + allIds[0] + '/';
@@ -25,6 +25,21 @@ $(document).ready(function () {
             warnThenDeleteDialogBox(allIds, entity_type, this);
         }
     });
+
+    var subject_type = $("#entity_type").val();
+
+    var kwargs = {
+        trigger: "button.action",
+        checkbox_locator:"#subjects-table input:checkbox",
+        data_locator:"#action",
+        none_selected_locator:"#none-selected",
+        many_selected_msg: $.sprintf(gettext("Please select 1 %s only"), subject_type),
+        check_single_checked_locator: "#subjects-table tbody input:checkbox[checked=checked]",
+        no_cb_checked_locator: "#subjects-table input:checkbox[checked=checked]",
+        edit_link_locator: "#edit"
+    }
+    var registered_subjects_action_dropdown = new DW.action_dropdown(kwargs);
+
 });
 // Can remove action_element
 function getEntityIdsToBeDeleted(action_element) {

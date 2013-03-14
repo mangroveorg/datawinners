@@ -862,3 +862,6 @@ msgstr ""
 
 msgid "Next:"
 msgstr ""
+
+msgid "Select 1 %s only"
+msgstr ""

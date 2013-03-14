@@ -33,3 +33,14 @@ display:inline-block; /* IE is so silly */
   color: #000;
   font-weight: normal;
   cursor: pointer; }
+
+ul li.disabled{
+  background-color: #dddddd;
+  &:hover{
+    background-color: #dddddd !important;
+  }
+  a{
+    cursor: default !important;
+    background-color: #dddddd !important;
+  }
+}

@@ -2804,3 +2804,9 @@ msgstr ""
 
 msgid "ID is:"
 msgstr "ID dia:"
+
+msgid "not available for trial accounts"
+msgstr ""
+
+msgid "Select a Submission"
+msgstr ""

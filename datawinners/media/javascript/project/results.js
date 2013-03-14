@@ -190,6 +190,7 @@ $(document).ready(function () {
         $page_hint_section.empty().append($page_hint.find('>div:nth-child(' + index + ')').clone())
         dataBinding(data, true, false, getEmptyTableText());
         wrap_table();
+        submissions_action_dropdown.init_dropdown();
     }
 
     function getEmptyTableText() {
@@ -299,5 +300,16 @@ $(document).ready(function () {
     };
 
     var delete_submission_warning_dialog = new DW.warning_dialog(options);
+
+    var kwargs = {
+        checkbox_locator:"#tabs table.submission_table input:checkbox",
+        data_locator:"#action_menu",
+        none_selected_locator:"#none-selected",
+        many_selected_msg: gettext("Please select 1 Submission only"),
+        check_single_checked_locator: "#tabs table.submission_table tbody input:checkbox[checked=checked]",
+        no_cb_checked_locator: "#tabs table.submission_table input:checkbox[checked=checked]",
+        checkall: "#master_checkbox"
+    }
+    var submissions_action_dropdown = new DW.action_dropdown(kwargs);
 
 });

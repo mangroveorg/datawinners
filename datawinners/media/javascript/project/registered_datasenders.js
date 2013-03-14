@@ -19,15 +19,11 @@ $(document).ready(function () {
         })
     });
 
-    $('#action li a').click(function () {
+    $('#action li a').click(function (e) {
         updateIds();
         $('#error').remove();
         var action = this.className;
-        if (allIds.length == 0) {
-            $('<div class="message-box" id="error">' + gettext("Please select atleast 1 data sender") + '</div>').insertAfter($('#action_dropdown'));
-            $('#project').val('');
-            $(this).val("");
-        } else if (action == 'disassociate') {
+        if (action == 'disassociate') {
             $.post('/project/disassociate/',
                 {'ids':allIds.join(';'), 'project_id':$("#project_id").val()}
             ).success(function (data) {
@@ -66,13 +62,23 @@ $(document).ready(function () {
             }
         } else if (action == 'edit') {
             if (allIds.length > 1) {
-                $('<div class="message-box" id="error">' + gettext("Please select only 1 data sender") + '</div>').insertAfter($('#action_dropdown'));
-                $(this).val('');
+                e.preventDefault();
+                return false;
             } else {
                 location.href = '/project/datasender/edit/' + $("#project_id").val() + '/' + allIds[0] + '/';
             }
         }
     });
+
+    var kwargs = {
+        checkbox_locator:"#associated_data_senders input:checkbox",
+        many_selected_msg: gettext("Please select only 1 Data Sender"),
+        check_single_checked_locator: "#associated_data_senders tbody input:checkbox[checked=checked]",
+        no_cb_checked_locator: "#associated_data_senders input:checkbox[checked=checked]",
+        edit_link_locator: "#edit",
+        container: document
+    }
+    var registered_ds_action_dropdown = new DW.action_dropdown(kwargs);
 });
 
 

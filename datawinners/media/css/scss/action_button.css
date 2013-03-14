@@ -27,3 +27,11 @@
   color: #000;
   font-weight: normal;
   cursor: pointer; }
+
+ul li.disabled {
+  background-color: #dddddd; }
+  ul li.disabled:hover {
+    background-color: #dddddd !important; }
+  ul li.disabled a {
+    cursor: default !important;
+    background-color: #dddddd !important; }

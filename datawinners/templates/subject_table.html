@@ -24,22 +24,28 @@
         
         {% include 'popup-import.html' %}
 
-        <div id="action_dropdown">
+        <div class="action_dropdown">
             <div class="action_button action_bar clear-both" style="margin-bottom: 20px">
                 <div class="btn-group">
-                    <button class="btn dropdown-toggle action" href="#" data-dropdown="#action{{forloop.counter}}">{% trans "Actions" %}
+                    <button class="btn dropdown-toggle action" href="#" data-dropdown="#none-selected{{forloop.counter}}">{% trans "Actions" %}
                         <span class="caret"></span>
                     </button>
                 </div>
             </div>
 
-            <div id="action{{forloop.counter}}" class="dropdown-menu action" >
-                <ul>
+            <div id="action{{forloop.counter}}" class="dropdown action" >
+                <ul class="dropdown-menu">
                     <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-delete">{% trans "Delete" %}</a></li>
                     {% if EDIT_SUBJECT_ENABLED %}
-                    <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-edit">{% trans "Edit" %}</a></li>
+                    <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-edit" class="edit">{% trans "Edit" %}</a></li>
                     {% endif %}
                 </ul>
+            </div>
+
+            <div class="none_selected dropdown" id="none-selected{{ forloop.counter }}">
+                <div class="dropdown-panel">
+                    {% blocktrans with subject.entity as subject_type%}Select a {{ subject_type }}{% endblocktrans %}
+                </div>
             </div>
         </div>
 
