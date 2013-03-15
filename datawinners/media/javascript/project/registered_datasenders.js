@@ -79,6 +79,25 @@ $(document).ready(function () {
         container: document
     }
     var registered_ds_action_dropdown = new DW.action_dropdown(kwargs);
+
+    $("#checkall-datasenders").bind("click", function(){
+        var checked = $(this).attr("checked") == "checked";
+        $("#associated_data_senders tbody input").attr("checked", checked);
+
+        if (!checked) {
+            registered_ds_action_dropdown.deactivate_action();
+        } else {
+            registered_ds_action_dropdown.update_edit_action();
+        }
+
+    });
+
+    $("#associated_data_senders tbody input").bind("click", function(){
+        var checked = $(this).attr("checked") == "checked";
+        if (!checked){
+            $("#checkall-datasenders").attr("checked", false);
+        }
+    });
 });
 
 

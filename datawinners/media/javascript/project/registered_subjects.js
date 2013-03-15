@@ -38,7 +38,27 @@ $(document).ready(function () {
         no_cb_checked_locator: "#subjects-table input:checkbox[checked=checked]",
         edit_link_locator: "#edit"
     }
+
     var registered_subjects_action_dropdown = new DW.action_dropdown(kwargs);
+
+    $("#checkall-subjects").bind("click", function(){
+        var checked = $(this).attr("checked") == "checked";
+        $("#subjects-table tbody input").attr("checked", checked);
+
+        if (!checked) {
+            registered_subjects_action_dropdown.deactivate_action();
+        } else {
+            registered_subjects_action_dropdown.update_edit_action();
+        }
+
+    });
+
+    $("#subjects-table tbody input").bind("click", function(){
+        var checked = $(this).attr("checked") == "checked";
+        if (!checked){
+            $("#checkall-subjects").attr("checked", false);
+        }
+    });
 
 });
 // Can remove action_element

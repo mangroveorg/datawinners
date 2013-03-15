@@ -222,6 +222,12 @@ $(document).ready(function () {
     $("#checkall-datasenders").bind("click", function(){
         var checked = $(this).attr("checked") == "checked";
         $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
+
+        if (!checked) {
+            DW.all_ds_action_dropdown.deactivate_action();
+        } else {
+            DW.all_ds_action_dropdown.update_edit_action();
+        }
     });
 
     $("#all_data_senders tr td:first-child input:checkbox").bind("click", function(){

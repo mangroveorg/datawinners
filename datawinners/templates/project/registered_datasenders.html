@@ -108,7 +108,7 @@
         <table id='associated_data_senders' class="styled_table">
             <thead>
             <tr>
-                <th>{% trans "Select" %}</th>
+                <th><input type="checkbox" id="checkall-datasenders"/></th>
                 {% for title in labels %}
                     <th>{% trans title %}</th>
                 {% endfor %}
