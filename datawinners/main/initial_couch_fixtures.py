@@ -966,6 +966,7 @@ def load_sms_data_for_cli001(manager):
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(FEB)
     # Total number of identical records = 3
+    sms_player_v2 = SMSPlayerV2(manager, [])
     mangrove_request = Request(
         "cli001 .EID cid001 .NA Mr. Tessy .FA 58 .RD 28.02.2011 .BG c .SY ade .GPS 79.2,20.34567 .RM a", transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
