@@ -78,16 +78,16 @@ $(document).ready(function () {
         edit_link_locator: "#edit",
         container: document
     }
-    var registered_ds_action_dropdown = new DW.action_dropdown(kwargs);
+    DW.registered_ds_action_dropdown = new DW.action_dropdown(kwargs);
 
     $("#checkall-datasenders").bind("click", function(){
         var checked = $(this).attr("checked") == "checked";
         $("#associated_data_senders tbody input").attr("checked", checked);
 
         if (!checked) {
-            registered_ds_action_dropdown.deactivate_action();
+            DW.registered_ds_action_dropdown.deactivate_action();
         } else {
-            registered_ds_action_dropdown.update_edit_action();
+            DW.registered_ds_action_dropdown.update_edit_action();
         }
 
     });

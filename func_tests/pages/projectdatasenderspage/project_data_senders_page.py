@@ -102,3 +102,18 @@ class ProjectDataSendersPage(AllDataSendersPage):
 
     def actions_menu_shown(self):
         return self.driver.find(ACTION_MENU).is_displayed()
+
+    def click_checkall_checkbox(self):
+        self.driver.find(CHECKALL_CB).click()
+
+    def get_number_of_selected_datasenders(self):
+        return len([element for element in self.get_inputs_webelement() if element.get_attribute("checked") == "true"])
+
+    def get_all_datasenders_count(self):
+        return len(self.get_inputs_webelement())
+
+    def get_inputs_webelement(self):
+        return self.driver.find(by_id("associated_data_senders")).find_elements(by="css selector", value="tbody tr td input")
+
+    def is_checkall_checked(self):
+        return self.driver.find(CHECKALL_CB).get_attribute("checked") == "true"

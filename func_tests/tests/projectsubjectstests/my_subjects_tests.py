@@ -46,3 +46,27 @@ class TestMySubjects(unittest.TestCase):
         self.assertFalse(my_subjects_page.is_none_selected_shown())
         self.assertTrue(my_subjects_page.actions_menu_shown())
         self.assertTrue(my_subjects_page.is_edit_enabled())
+
+    @attr("functional_test")
+    def test_should_check_all_checkboxes(self):
+        my_subjects_page = self.page
+        my_subjects_page.navigate_to_my_subjects_list_tab()
+        my_subjects_page.click_checkall_checkbox()
+
+        checked = my_subjects_page.get_number_of_selected_subjects()
+        subjects_count = my_subjects_page.get_all_subjects_count()
+        self.assertEqual(checked, subjects_count)
+
+        my_subjects_page.click_checkall_checkbox()
+        checked = my_subjects_page.get_number_of_selected_subjects()
+        self.assertEqual(checked, 0)
+
+    @attr("functional_test")
+    def test_should_uncheck_checkall_if_one_cb_is_unchecked(self):
+        my_subjects_page = self.page
+        my_subjects_page.navigate_to_my_subjects_list_tab()
+        my_subjects_page.click_checkall_checkbox()
+        self.assertTrue(my_subjects_page.is_checkall_checked())
+        my_subjects_page.select_subject_by_uid("cid002")
+        self.assertFalse(my_subjects_page.is_checkall_checked())
+

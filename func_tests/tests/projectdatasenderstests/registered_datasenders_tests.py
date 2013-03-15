@@ -45,3 +45,23 @@ class TestRegisteredDataSenders(unittest.TestCase):
         self.assertFalse(registered_ds_page.is_none_selected_shown())
         self.assertTrue(registered_ds_page.actions_menu_shown())
         self.assertTrue(registered_ds_page.is_edit_enabled())
+
+    @attr("functional_test")
+    def test_should_check_all_checkboxes_following_master_cb(self):
+        registered_ds_page = self.page
+        registered_ds_page.click_checkall_checkbox()
+
+        checked = registered_ds_page.get_number_of_selected_datasenders()
+        ds_count = registered_ds_page.get_all_datasenders_count()
+        self.assertEqual(checked, ds_count)
+
+        registered_ds_page.click_checkall_checkbox()
+        self.assertEqual(registered_ds_page.get_number_of_selected_datasenders(), 0)
+
+    @attr("functional_test")
+    def test_should_uncheck_checkall_if_one_cb_is_unchecked(self):
+        registered_ds_page = self.page
+        registered_ds_page.click_checkall_checkbox()
+        self.assertTrue(registered_ds_page.is_checkall_checked())
+        registered_ds_page.select_a_data_sender_by_id("rep3")
+        self.assertFalse(registered_ds_page.is_checkall_checked())

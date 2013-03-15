@@ -1,7 +1,5 @@
 from pages.page import Page
-from pages.projectsubjectspage.project_subjects_locator import EDIT_FORM_LINK, EDIT_CONTINUE_LINK, ADD_QUESTION_LINK, \
-    SELECTED_QUESTION_LABEL, SUBMIT_BTN, SUCCESS_MESSAGE_TIP, TYPE_CB, ACTION_DROP_DOWN, EDIT_LI_LOCATOR, \
-    NONE_SELECTED_LOCATOR, ACTION_MENU, MY_SUBJECTS_TAB_LINK, SUBJECT_CB_LOCATOR, SUCCESS_MESSAGE_TIP
+from pages.projectsubjectspage.project_subjects_locator import *
 from framework.utils.common_utils import by_css
 
 class ProjectSubjectsPage(Page):
@@ -47,3 +45,18 @@ class ProjectSubjectsPage(Page):
 
     def select_subject_by_uid(self, uid):
         self.driver.find(by_css(SUBJECT_CB_LOCATOR % str(uid))).click()
+
+    def click_checkall_checkbox(self):
+        self.driver.find(CHECKALL_CB).click()
+
+    def get_number_of_selected_subjects(self):
+        return len([input_element for input_element in self.get_inputs_webelement() if input_element.get_attribute("checked") == "true"])
+
+    def get_inputs_webelement(self):
+        return self.driver.find(by_id("subjects-table")).find_elements(by="css selector", value="tbody tr td input")
+
+    def get_all_subjects_count(self):
+        return len(self.get_inputs_webelement())
+
+    def is_checkall_checked(self):
+        return self.driver.find(CHECKALL_CB).get_attribute("checked") == "true"

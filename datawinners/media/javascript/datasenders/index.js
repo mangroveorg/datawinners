@@ -223,10 +223,11 @@ $(document).ready(function () {
         var checked = $(this).attr("checked") == "checked";
         $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
 
+        var action_dropdown = get_action_dropdown_object();
         if (!checked) {
-            DW.all_ds_action_dropdown.deactivate_action();
+            action_dropdown.deactivate_action();
         } else {
-            DW.all_ds_action_dropdown.update_edit_action();
+            action_dropdown.update_edit_action();
         }
     });
 
@@ -235,5 +236,13 @@ $(document).ready(function () {
             $("#checkall-datasenders").attr("checked", false);
         }
     });
+
+    function get_action_dropdown_object() {
+        if ($("#associated_data_senders").length) {
+            return DW.registered_ds_action_dropdown;
+        } else {
+            return DW.all_ds_action_dropdown
+        }
+    }
 });
 
