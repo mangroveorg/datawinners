@@ -121,7 +121,7 @@ class TestExcelStyles(unittest.TestCase):
         date_1 = ExcelDate(datetime.datetime(2012, 04, 24), 'mm.yyyy')
         date_2 = ExcelDate(datetime.datetime(2012, 05, 24), 'mm.yyyy')
         row = [date_1, date_2]
-        width = utils.WIDTH_ONE_CHAR * (7 + utils.BUFFER_WIDTH)
+        width = utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + utils.BUFFER_WIDTH)
         mock_width = PropertyMock(return_value=width)
         mock_column = Mock(spec=Column)
         ws.col.return_value = mock_column
@@ -129,9 +129,67 @@ class TestExcelStyles(unittest.TestCase):
 
         utils.write_row_to_worksheet(ws, row, 1)
 
-        mock_width.assert_called_with(5376)
-        ws.write.assert_any_call(1, 0, date_1.date, style = utils.EXCEL_DATE_STYLE.get('mm.yyyy'))
-        ws.write.assert_any_call(1, 1, date_2.date, style = utils.EXCEL_DATE_STYLE.get('mm.yyyy'))
+        mock_width.assert_called_with(width)
+        ws.write.assert_any_call(1, 0, date_1.date, style=utils.EXCEL_DATE_STYLE.get('mm.yyyy'))
+        ws.write.assert_any_call(1, 1, date_2.date, style=utils.EXCEL_DATE_STYLE.get('mm.yyyy'))
+        ws.col.assert_any_with(0)
+        ws.col.assert_any_with(1)
 
+    def test_data_values_should_use_same_style_for_dd_mm_yyyy_format(self):
+        ws = Mock(spec=Worksheet)
+        date_1 = ExcelDate(datetime.datetime(2012, 04, 12), 'dd.mm.yyyy')
+        date_2 = ExcelDate(datetime.datetime(2012, 05, 29), 'dd.mm.yyyy')
+        row = [date_1, date_2]
+        width = utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + utils.BUFFER_WIDTH)
+        mock_width_property = PropertyMock(return_value=width)
+        mock_column = Mock(spec=Column)
+        ws.col.return_value = mock_column
+        type(mock_column).width = mock_width_property
+
+        utils.write_row_to_worksheet(ws, row, 1)
+
+        mock_width_property.assert_called_with(width)
+        ws.write.assert_any_call(1, 0, date_1.date, style=utils.EXCEL_DATE_STYLE.get('dd.mm.yyyy'))
+        ws.write.assert_any_call(1, 1, date_2.date, style=utils.EXCEL_DATE_STYLE.get('dd.mm.yyyy'))
+        ws.col.assert_any_with(0)
+        ws.col.assert_any_with(1)
+
+    def test_data_values_should_use_same_style_for_mm_dd_yyyy_format(self):
+        ws = Mock(spec=Worksheet)
+        date_1 = ExcelDate(datetime.datetime(2012, 04, 12), 'mm.dd.yyyy')
+        date_2 = ExcelDate(datetime.datetime(2012, 05, 29), 'mm.dd.yyyy')
+        row = [date_1, date_2]
+        width = utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + utils.BUFFER_WIDTH)
+        mock_width_property = PropertyMock(return_value=width)
+        mock_column = Mock(spec=Column)
+        ws.col.return_value = mock_column
+        type(mock_column).width = mock_width_property
+
+        utils.write_row_to_worksheet(ws, row, 1)
+
+        mock_width_property.assert_called_with(width)
+        ws.write.assert_any_call(1, 0, date_1.date, style=utils.EXCEL_DATE_STYLE.get('mm.dd.yyyy'))
+        ws.write.assert_any_call(1, 1, date_2.date, style=utils.EXCEL_DATE_STYLE.get('mm.dd.yyyy'))
+        ws.col.assert_any_with(0)
+        ws.col.assert_any_with(1)
+
+    def test_data_values_should_use_same_style_for_submission_dates(self):
+        ws = Mock(spec=Worksheet)
+        date_1 = ExcelDate(datetime.datetime(2012, 04, 12, 13, 56, 40), 'submission_date')
+        date_2 = ExcelDate(datetime.datetime(2012, 05, 29, 13, 56, 40), 'submission_date')
+        row = [date_1, date_2]
+        width = utils.WIDTH_ONE_CHAR * (len(str(date_1.date)) + utils.BUFFER_WIDTH)
+        mock_width_property = PropertyMock(return_value=width)
+        mock_column = Mock(spec=Column)
+        ws.col.return_value = mock_column
+        type(mock_column).width = mock_width_property
+
+        utils.write_row_to_worksheet(ws, row, 1)
+
+        mock_width_property.assert_called_with(width)
+        ws.write.assert_any_call(1, 0, date_1.date, style=utils.EXCEL_DATE_STYLE.get('submission_date'))
+        ws.write.assert_any_call(1, 1, date_2.date, style=utils.EXCEL_DATE_STYLE.get('submission_date'))
+        ws.col.assert_any_with(0)
+        ws.col.assert_any_with(1)
 
 
