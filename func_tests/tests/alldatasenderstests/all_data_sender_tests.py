@@ -213,3 +213,29 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.click_checkall_checkbox()
         all_checked_ds_count = all_data_sender_page.get_checked_datasenders_count()
         self.assertEqual(all_checked_ds_count, 0)
+
+    @attr("functional_test")
+    def test_should_load_actions_dynamically(self):
+        all_data_sender_page = self.page
+        all_data_sender_page.click_action_button()
+        self.assert_none_selected_shown(all_data_sender_page)
+
+        all_data_sender_page.select_a_data_sender_by_id("rep5")
+        all_data_sender_page.click_action_button()
+        self.assert_action_menu_shown(all_data_sender_page)
+
+        all_data_sender_page.select_a_data_sender_by_id("rep4")
+        self.assertFalse(all_data_sender_page.is_edit_enabled())
+
+    def assert_none_selected_shown(self, all_data_sender_page):
+        self.assertTrue(all_data_sender_page.is_edit_enabled())
+        self.assertTrue(all_data_sender_page.is_none_selected_shown())
+        self.assertFalse(all_data_sender_page.actions_menu_shown())
+
+    def assert_action_menu_shown(self, all_data_sender_page):
+        self.assertFalse(all_data_sender_page.is_none_selected_shown())
+        self.assertTrue(all_data_sender_page.actions_menu_shown())
+        self.assertTrue(all_data_sender_page.is_edit_enabled())
+
+
+

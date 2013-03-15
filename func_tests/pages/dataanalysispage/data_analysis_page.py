@@ -63,6 +63,7 @@ class DataAnalysisPage(Page):
         Return data all data record
          """
         self.driver.find(ALL_DATA_RECORDS_LINK).click()
+        self.driver.wait_for_element(20, by_css("table.submission_table"))
         return SubmissionLogPage(self.driver)
 
     def get_data_from_row(self, row_web_element):

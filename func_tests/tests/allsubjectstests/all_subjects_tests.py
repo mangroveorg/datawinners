@@ -38,3 +38,29 @@ class TestAllSubjects(unittest.TestCase):
         all_subjects_page.click_checkall_checkbox_for_entity_type(subject_type)
         checked_count = all_subjects_page.get_checked_subjects_for_entity_type(subject_type)
         self.assertEqual(checked_count, 0)
+
+    @attr("functional_test")
+    def test_should_load_actions_dynamically(self):
+        all_subjects_page = self.page
+        subject_type = "clinic"
+        all_subjects_page.open_subjects_table_for_entity_type(subject_type)
+        all_subjects_page.click_action_button_for(subject_type)
+        self.assert_none_selected_shown_for(subject_type, all_subjects_page)
+
+        all_subjects_page.select_a_subject_by_type_and_id(subject_type, "cid005")
+        all_subjects_page.click_action_button_for(subject_type)
+        self.assert_action_menu_shown_for(subject_type, all_subjects_page)
+
+        all_subjects_page.select_a_subject_by_type_and_id(subject_type, "cid004")
+        all_subjects_page.click_action_button_for(subject_type)
+        self.assertFalse(all_subjects_page.is_edit_enabled_for(subject_type))
+
+    def assert_none_selected_shown_for(self, subject_type, all_subjects_page):
+        self.assertTrue(all_subjects_page.is_edit_enabled_for(subject_type))
+        self.assertTrue(all_subjects_page.is_none_selected_shown_for(subject_type))
+        self.assertFalse(all_subjects_page.actions_menu_shown_for(subject_type))
+
+    def assert_action_menu_shown_for(self, subject_type, all_subjects_page):
+        self.assertFalse(all_subjects_page.is_none_selected_shown_for(subject_type))
+        self.assertTrue(all_subjects_page.actions_menu_shown_for(subject_type))
+        self.assertTrue(all_subjects_page.is_edit_enabled_for(subject_type))

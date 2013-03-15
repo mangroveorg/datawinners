@@ -4070,8 +4070,14 @@ msgstr "Vous êtes en train de modifier les détails relatifs à votre Soumissio
 msgid "Select a %(subject_type)"
 msgstr "Sélectionnez un(e) %(subject_type)"
 
+msgid "Select a %(subject_type)s"
+msgstr "Sélectionnez un(e) %(subject_type)s"
+
 msgid "not available for trial accounts"
-msgstr "pas disponible pour le comptes essai"
+msgstr "non disponible pour le comptes essai"
 
 msgid "Select a Submission"
-msgstr ""
+msgstr "Sélectionnez une soumission"
+
+msgid "Select a Data Sender"
+msgstr "Sélectionnez un Expéditeur de Données"

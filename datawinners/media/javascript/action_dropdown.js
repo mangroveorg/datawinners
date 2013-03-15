@@ -4,7 +4,7 @@ DW.action_dropdown = function (kwargs) {
         checkbox_locator:"#subject_table input:checkbox",
         data_locator:"#action",
         none_selected_locator:"#none-selected",
-        many_selected_msg: gettext("Please select only 1 Data Sender"),
+        many_selected_msg: gettext("Select 1 Data Sender only"),
         check_single_checked_locator: "#subject_table tbody input:checkbox[checked=checked]",
         no_cb_checked_locator: "#subject_table input:checkbox[checked=checked]",
         edit_link_locator: "#edit",
@@ -30,8 +30,15 @@ DW.action_dropdown.prototype = {
         this.edit_link_locator = opts.edit_link_locator;
         this.container = opts.container;
         this.checkall = opts.checkall;
+        this.is_on_trial = false;
 
         this.init_dropdown = function(){
+            var edit_link = $(this.edit_link_locator, this.container);
+            if (edit_link.parent().hasClass("on_trial")) {
+                edit_link.removeAttr("title");
+                edit_link.parent().addClass("disabled");
+                this.is_on_trial = true;
+            }
 
             $(this.checkbox_locator, this.container).bind("click", {self:this}, function(event){
                 var self = event.data.self;
@@ -43,7 +50,7 @@ DW.action_dropdown.prototype = {
                     self.deactivate_action();
                 }
 
-                if (self.action_enabled) {
+                if (self.action_enabled && !self.is_on_trial) {
                     self.update_edit_action();
                 }
             });

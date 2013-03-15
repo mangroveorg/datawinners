@@ -37,10 +37,23 @@ display:inline-block; /* IE is so silly */
 ul li.disabled{
   background-color: #dddddd;
   &:hover{
-    background-color: #dddddd !important;
+    background-color: #ffffff !important;
+    color: #aaaaaa !important;
   }
   a{
     cursor: default !important;
-    background-color: #dddddd !important;
+    background-color: #ffffff !important;
+    color: #aaaaaa !important;
+    span.info{
+      font-size: 11px;
+      font-style: italic;
+    }
   }
+}
+
+div.dropdown-panel{
+  font-family: tahoma, arial, helvetica, sans-serif;
+  font-style: italic;
+  font-size: 16px;
+  color: #8a7f7f;
 }

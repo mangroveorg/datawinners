@@ -61,7 +61,7 @@ $(document).ready(function () {
                 warnThenDeleteDialogBox(allIds, "reporter", this);
             }
         } else if (action == 'edit') {
-            if (allIds.length > 1) {
+            if (allIds.length > 1 || $(this).parent().hasClass("disabled")) {
                 e.preventDefault();
                 return false;
             } else {

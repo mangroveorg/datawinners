@@ -89,3 +89,16 @@ class ProjectDataSendersPage(AllDataSendersPage):
         from pages.lightbox.import_datasender_light_box_page import ImportDatasenderLightBox
         self.driver.find(OPEN_IMPORT_DIALOG_LINK).click()
         return ImportDatasenderLightBox(self.driver)
+
+    def click_action_button(self):
+        self.driver.find(ACTION_DROP_DOWN).click()
+
+    def is_edit_enabled(self):
+        css_class = self.driver.find(EDIT_LI_LOCATOR).get_attribute("class")
+        return css_class.find("disabled") < 0
+
+    def is_none_selected_shown(self):
+        return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()
+
+    def actions_menu_shown(self):
+        return self.driver.find(ACTION_MENU).is_displayed()

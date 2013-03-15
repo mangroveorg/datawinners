@@ -30,3 +30,7 @@ SHOWN_RECORDS_COUNT_CSS_LOCATOR = by_css(".dataTables_info span:first-child")
 XPATH_TO_CELL = "//div[@id='submission_logs']//../table/tbody/tr[%s]/td[%s]"
 HEADER_CELL_CSS_LOCATOR = "#submission_logs table>thead>tr>th:nth-child(%s)"
 SUCCESS_TAB_CSS_LOCATOR = by_css("#tabs ul li:nth-child(2) a:first-child")
+ACTION_DROP_DOWN = by_css("button.action")
+NONE_SELECTED_LOCATOR = by_id("none-selected")
+ACTION_MENU = by_id("action_menu")
+SUBMISSION_CB_LOCATOR = "table.submission_table tbody tr:nth-child(%s) td:first-child input"

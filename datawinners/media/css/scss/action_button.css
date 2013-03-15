@@ -31,7 +31,18 @@
 ul li.disabled {
   background-color: #dddddd; }
   ul li.disabled:hover {
-    background-color: #dddddd !important; }
+    background-color: #ffffff !important;
+    color: #aaaaaa !important; }
   ul li.disabled a {
     cursor: default !important;
-    background-color: #dddddd !important; }
+    background-color: #ffffff !important;
+    color: #aaaaaa !important; }
+    ul li.disabled a span.info {
+      font-size: 11px;
+      font-style: italic; }
+
+div.dropdown-panel {
+  font-family: tahoma, arial, helvetica, sans-serif;
+  font-style: italic;
+  font-size: 16px;
+  color: #8a7f7f; }

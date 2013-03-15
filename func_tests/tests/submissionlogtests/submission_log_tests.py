@@ -83,3 +83,30 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page.click_on_success_tab()
         time.sleep(1)
         self.assertEqual(submission_log_page.get_all_data_on_nth_column(7), EXPECTED_FA_SORTED)
+
+    @attr('functional_test')
+    def test_should_load_actions_dynamically(self):
+        submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
+        submission_log_page.click_action_button()
+
+        self.assert_none_selected_shown(submission_log_page)
+
+        submission_log_page.check_submission_by_row_number(3)
+
+        submission_log_page.click_action_button()
+        self.assert_action_menu_shown_for(submission_log_page)
+
+        submission_log_page.check_submission_by_row_number(3)
+        submission_log_page.click_action_button()
+        self.assert_none_selected_shown(submission_log_page)
+
+
+    def assert_none_selected_shown(self, submission_log_page):
+        self.assertTrue(submission_log_page.is_none_selected_shown())
+        self.assertFalse(submission_log_page.actions_menu_shown())
+
+    def assert_action_menu_shown_for(self, submission_log_page):
+        self.assertTrue(submission_log_page.actions_menu_shown())
+        self.assertFalse(submission_log_page.is_none_selected_shown())
+
+

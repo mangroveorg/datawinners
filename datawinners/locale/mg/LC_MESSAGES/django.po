@@ -2810,3 +2810,9 @@ msgstr ""
 
 msgid "Select a Submission"
 msgstr ""
+
+msgid "Select a %(subject_type)s"
+msgstr ""
+
+msgid "Select a Data Sender"
+msgstr ""

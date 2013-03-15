@@ -23,7 +23,7 @@
             <li><a class="edit" id="edit">{% trans "Edit" %}</a></li>
         {% else %}
             {% if in_trial_mode %}
-                <li class="disabled"><a class="edit" id="edit">{% trans "Edit" %}({% trans "not available for trial accounts" %})</a></li>
+                <li class="disabled on_trial"><a class="edit" id="edit">{% trans "Edit" %} <span class="info">({% trans "not available for trial accounts" %})</span></a></li>
             {% endif %}
         {% endif %}
             <li><a class="delete" id="delete">{% trans "Delete" %}</a></li>

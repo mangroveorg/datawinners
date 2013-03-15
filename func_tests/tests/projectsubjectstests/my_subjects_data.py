@@ -1,0 +1,1 @@
+CLINIC_PROJECT1_NAME = "clinic test project"

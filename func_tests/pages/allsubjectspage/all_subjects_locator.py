@@ -26,3 +26,4 @@ SUBJECT_ACCORDION_LINK = '//div[@id="all_subjects"]/div/span[@class="header" and
 SUBJECTS_INFO = '//div[@id="all_subjects"]/div/span[@class="header" and text()="%s"]/following-sibling::span[1]'
 CHECKALL_CB = 'table#%s-table thead tr th:first-child input'
 SUBJECT_TABLE_TBODY = 'table#%s-table tbody'
+ALL_SUBJECT_TYPES_CONTAINER = by_css("div#all_subjects")

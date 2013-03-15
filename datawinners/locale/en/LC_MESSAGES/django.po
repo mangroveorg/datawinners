@@ -3991,8 +3991,14 @@ msgstr ""
 msgid "Select a %(subject_type)"
 msgstr ""
 
+msgid "Select a %(subject_type)s"
+msgstr ""
+
 msgid "not available for trial accounts"
 msgstr ""
 
 msgid "Select a Submission"
+msgstr ""
+
+msgid "Select a Data Sender"
 msgstr ""

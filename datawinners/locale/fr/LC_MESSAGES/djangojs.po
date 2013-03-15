@@ -1092,3 +1092,9 @@ msgstr "Suiv:"
 
 msgid "Select 1 %s only"
 msgstr "Sélectionnez seulement 1 %s"
+
+msgid "Select 1 Data Sender only"
+msgstr "Sélectionnez seulement 1 Expéditeur de Données"
+
+msgid "Not available for trial accounts"
+msgstr "Non disponible pour les comptes essai"

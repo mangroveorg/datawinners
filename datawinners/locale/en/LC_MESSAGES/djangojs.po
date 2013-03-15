@@ -865,3 +865,9 @@ msgstr ""
 
 msgid "Select 1 %s only"
 msgstr ""
+
+msgid "Select 1 Data Sender only"
+msgstr ""
+
+msgid "Not available for trial accounts"
+msgstr ""

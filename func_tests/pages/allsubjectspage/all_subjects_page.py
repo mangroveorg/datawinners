@@ -69,4 +69,35 @@ class AllSubjectsPage(Page):
         else:
             return False
 
+    def get_subject_type_number(self, subject_type):
+        for i, type in enumerate(self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector", value="div.list_header span.header")):
+            if type.text.lower() == subject_type.lower():
+                return i + 1
+
+        return -1
+
+    def click_action_button_for(self, subject_type):
+        subject_number = self.get_subject_type_number(subject_type)
+        buttons = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector", value="div.subject-container button.action")
+        if subject_number > 0:
+            buttons[subject_number -1].click()
+
+    def is_edit_enabled_for(self, subject_type):
+        subject_number = self.get_subject_type_number(subject_type)
+        edit_links = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="xpath", value="//a[@class='edit']/parent::li")
+        css_class = edit_links[subject_number - 1].get_attribute("class")
+        return css_class.find("disabled") < 0
+
+    def is_none_selected_shown_for(self, subject_type):
+        subject_number = self.get_subject_type_number(subject_type)
+        return self.driver.find(by_id("none-selected%s" % str(subject_number))).is_displayed()
+
+    def actions_menu_shown_for(self, subject_type):
+        subject_number = self.get_subject_type_number(subject_type)
+        return self.driver.find(by_id("action%s" % str(subject_number))).is_displayed()
+
+    def select_a_subject_by_type_and_id(self, subject_type, uid):
+        subject_number = self.get_subject_type_number(subject_type)
+        container = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector", value="div.subject-container")
+        container[subject_number - 1].find_elements(by="css selector", value="input#%s" %uid)[0].click()
         
