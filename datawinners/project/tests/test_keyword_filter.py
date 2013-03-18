@@ -10,19 +10,41 @@ class TestKeywordFilter(unittest.TestCase):
         date_contains_keyword = datetime.strptime('25.12.2004', '%d.%m.%Y')
         date = datetime.strptime('01.12.2004', '%d.%m.%Y')
         expected_values = [
-            ['datasender', ExcelDate(date_contains_keyword, 'dd.mm.yyyy'), 'ans1', 'ans3',
+            ['submission_id', 'datasender', ExcelDate(date_contains_keyword, 'dd.mm.yyyy'), 'ans1', 'ans3',
              ExcelDate(date, 'dd.mm.yyyy')],
-            ['datasender', ExcelDate(date_contains_keyword, 'dd.mm.yyyy'), 'ans1', 'ans3',
+            ['submission_id', 'datasender', ExcelDate(date_contains_keyword, 'dd.mm.yyyy'), 'ans1', 'ans3',
              ExcelDate(date_contains_keyword, 'dd.mm.yyyy')],
-            ['datasender', ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans3',
+            ['submission_id', 'datasender', ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans3',
              ExcelDate(date_contains_keyword, 'dd.mm.yyyy')]
         ]
 
         row_values = [
-            ['datasender', ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans3', ExcelDate(date, 'dd.mm.yyyy')],
+            ['submission_id', 'datasender', ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans3',
+             ExcelDate(date, 'dd.mm.yyyy')],
         ]
         row_values.extend(expected_values)
         filtered_values = keyword_filter.filter(row_values)
         self.assertEqual(expected_values, filtered_values)
+
+    def test_filters_not_applied_for_submission_id(self):
+            keyword_filter = KeywordFilter('25')
+            date_contains_keyword = datetime.strptime('25.12.2004', '%d.%m.%Y')
+            date = datetime.strptime('01.12.2004', '%d.%m.%Y')
+            expected_values = [
+                ['89848625', 'datasender', ExcelDate(date_contains_keyword, 'dd.mm.yyyy'), 'ans1', 'ans3',
+                 ExcelDate(date, 'dd.mm.yyyy')],
+                ['submission_id', 'datasender', ExcelDate(date_contains_keyword, 'dd.mm.yyyy'), 'ans1', 'ans3',
+                 ExcelDate(date_contains_keyword, 'dd.mm.yyyy')],
+                ['12345625', 'datasender', ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans3',
+                 ExcelDate(date_contains_keyword, 'dd.mm.yyyy')]
+            ]
+
+            row_values = [
+                ['12345625', 'datasender', ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans3',
+                 ExcelDate(date, 'dd.mm.yyyy')],
+            ]
+            row_values.extend(expected_values)
+            filtered_values = keyword_filter.filter(row_values)
+            self.assertEqual(expected_values, filtered_values)
 
 
