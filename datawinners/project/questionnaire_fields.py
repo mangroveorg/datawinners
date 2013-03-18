@@ -14,10 +14,11 @@ class FormField(object):
             field_creation_map = {SelectField: SelectFormField,
                                   TelephoneNumberField: PhoneNumberFormField,
                                   IntegerField: IntegerFormField,
-                                  DateField: DateFormField}
+                                  DateField: DateFormField,
+                                  }
             return field_creation_map[type(field)]().create(field)
         except KeyError:
-            return type(CharFormField)(field)
+            return CharFormField().create(field)
 
 class SelectFormField(object):
     def create(self, field):
