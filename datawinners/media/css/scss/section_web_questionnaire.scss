@@ -7,7 +7,7 @@
 }
 
 #static-info{
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 10px;
   background-color: #CCDFED;
   overflow: hidden;
@@ -31,4 +31,20 @@
   font-size: 12px;
   color: #888888;
   margin-left: 5px;
+}
+
+.static-info-header .static-text{
+  display: inline-block;
+}
+
+//.static-info-header
+
+.action-section{
+  display: inline-block;
+  float: right;
+}
+
+form ul li{
+  margin-bottom: 0px;
+
 }

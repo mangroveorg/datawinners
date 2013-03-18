@@ -25,6 +25,9 @@
     {% endif %}
 {% endfor %}
 <form method="POST">
+    {% if  is_edit  %}
+        {% include 'project/static_info_for_edit.html' %}
+    {% endif %}
     {% csrf_token %}
     {% for field in questionnaire_form %}
         {% if field.is_hidden %}
@@ -125,7 +128,11 @@
     {% block action_section_block %}
     <div class="action-section">
             {% block cancel_block %}{% endblock %}
-            <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
+            {% if is_edit %}
+                <input id="submit " type="submit" class="button" value="{% trans 'Save Changes' %}"/>
+            {% else %}
+                <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
+            {%  endif %}
     </div>
     {% endblock %}
 </form>
