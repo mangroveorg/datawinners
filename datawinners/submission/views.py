@@ -16,11 +16,13 @@ from datawinners.submission.organization_finder import OrganizationFinder
 from datawinners.submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor, get_vumi_parameters
 from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
 from datawinners.utils import  get_database_manager_for_org
+from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from mangrove.transport.facade import Request
 from datawinners.messageprovider.exception_handler import handle
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from datawinners.accountmanagement.views import is_not_expired
-from mangrove.transport.player.new_players import SMSPlayerV2
+from mangrove.transport.player.player import SMSPlayer
+from datawinners.submission.location import LocationBridge
 
 logger = logging.getLogger("django")
 
@@ -110,14 +112,11 @@ def submit_to_player(incoming_request):
         dbm = incoming_request['dbm']
         post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request),
                                       PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request)]
-        #        Need to use location blah while creating Entity only
-        #        sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy),
-        #            post_sms_parser_processors=post_sms_parser_processors)
-        sms_player = SMSPlayerV2(dbm, post_sms_parser_processors=post_sms_parser_processors)
-
+        sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy),
+            post_sms_parser_processors=post_sms_parser_processors)
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
-        response = sms_player.add_survey_response(mangrove_request, logger=incoming_request.get("logger"))
+        response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
         message = SMSResponse(response).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:

@@ -879,39 +879,39 @@ def load_sms_data_for_cli018(manager):
     DEC_2010 = datetime(2010, 12, 28, hour=00, minute=00, second=59, tzinfo=UTC)
     NOV_2010 = datetime(2010, 11, 26, hour=23, minute=59, second=59, tzinfo=UTC)
     today = datetime.today()
-    sms_player = SMSPlayerV2(manager, [])
+    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
 
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
     mangrove_request = Request("cli018 .EID cid001 .NA 12.2012 .RD 15.01.2011 .BG a .GPS 16.34,11.26", transport)
-    response = sms_player.add_survey_response(mangrove_request)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(JAN)
     mangrove_request = Request("cli018 .EID cid001 .NA 123 .RD 10.02.2012 .BG b .GPS 61.10,58.99", transport)
-    response = sms_player.add_survey_response(mangrove_request)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(FEB)
     mangrove_request = Request("cli018 .EID cid001 .NA 456 .RD 25.12.2012 .BG d .GPS 65.24,28.45", transport)
-    response = sms_player.add_survey_response(mangrove_request)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(MARCH)
     mangrove_request = Request("cli018 .EID cid003 .NA cat .RD 15.10.2011 .BG c .GPS 56.34,11.00", transport)
-    response = sms_player.add_survey_response(mangrove_request)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(APR)
     mangrove_request = Request("cli018 .EID cid004 .NA 2012.01.14 .RD 25.06.2011 .BG d .GPS 16.34,11.76", transport)
-    response = sms_player.add_survey_response(mangrove_request)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(NOV_2010)
     mangrove_request = Request("cli018 .EID cid005 .NA 2011.12.12 .RD 04.09.2010 .BG d .GPS 10.12,11.13", transport)
-    response = sms_player.add_survey_response(mangrove_request)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(DEC_2010)
     mangrove_request = Request('cli018 .EID cid001 .NA 12.23.2011 .RD 25.01.2011 .BG a .GPS 11.23,17.66', transport)
-    response = sms_player.add_survey_response(mangrove_request)
+    response = sms_player.accept(mangrove_request)
 
 def load_sms_data_for_cli001(manager):
     FEB = datetime(2011, 02, 28, hour=12, minute=00, second=00, tzinfo=UTC)
@@ -962,7 +962,6 @@ def load_sms_data_for_cli001(manager):
         "cli .q1 Clinic .q2 Mahajanga .q3 Mahajanga .q4 -15.6667,46.35 .q5 87654331", transport)
     response = sms_player.accept(mangrove_request)
 
-    sms_player_v2 = SMSPlayerV2(manager, [])
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(FEB)
     # Total number of identical records = 3
