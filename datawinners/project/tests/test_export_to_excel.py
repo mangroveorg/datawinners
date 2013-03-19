@@ -87,3 +87,9 @@ class TestExportToExcel(unittest.TestCase):
         formatted_dict = format_field_values_for_excel(row, form_model)
         self.assertEqual(['one', 'two'], formatted_dict['select'])
 
+    def test_should_return_a_string_if_field_does_not_exist(self):
+        form_model = Mock(spec=FormModel)
+        row = [{'reporting_date': '31.03.1999'}]
+        form_model.get_field_by_code_and_rev.return_value = None
+        formatted_dict = format_field_values_for_excel(row, form_model)
+        self.assertEqual('31.03.1999',formatted_dict['reporting_date'])
