@@ -22,7 +22,7 @@ from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, \
     create_data_dict, define_entity_instance, register
 from mangrove.transport.player.new_players import SMSPlayerV2
-from submission.location import LocationBridge
+from datawinners.submission.location import LocationBridge
 
 class DateTimeMocker(object):
     def __init__(self):
