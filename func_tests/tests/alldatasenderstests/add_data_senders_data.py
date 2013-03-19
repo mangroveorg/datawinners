@@ -91,3 +91,10 @@ WITH_UNICODE_IN_GPS = {NAME: "Unicode in GPS",
                        COMMUNE: "",
                        GPS: u"23º 45",
                        ERROR_MSG: "Mobile Number Please enter a valid phone number.GPS Coordinates Find GPS coordinates Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
+
+VALID_DATA_FOR_LONG_UID = {NAME: "Donald Duck",
+              MOBILE_NUMBER: "261336231",
+              MOBILE_NUMBER_WITHOUT_HYPHENS: "261336231",
+              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+              GPS: "-21.7622088847 48.0690991394",
+              ERROR_MSG: u'Unique ID Unique ID should be less than 12 characters    Let us generate an ID for you'}

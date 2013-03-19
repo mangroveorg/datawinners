@@ -58,9 +58,7 @@ class ReporterRegistrationForm(Form):
         error_messages={
             'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
-    short_code = RegexField("^[a-zA-Z0-9]+$", label=_("Unique ID"), required=False,
-                             widget=TextInput(attrs=dict({'class': 'subject_field','disabled':'disabled'})),
-                             error_message=_("Only letters and numbers are valid"))
+    short_code = CharField(required=False, label=_("Unique ID"), widget=TextInput(attrs=dict({'class': 'subject_field','disabled':'disabled'})))
 
 #    Needed for telephone number validation
     org_id = None
@@ -109,6 +107,21 @@ class ReporterRegistrationForm(Form):
             self._geo_code_validations(geo_code)
         return self.cleaned_data
 
+    def clean_short_code(self):
+        short_code = self.cleaned_data.get('short_code')
+
+        if short_code:
+            self.fields.get("short_code").widget.attrs.pop("disabled")
+        if len(short_code) > 12:
+            msg = _("Unique ID should be less than 12 characters")
+            self.errors['short_code'] = self.error_class([msg])
+
+        if not re.match("^[a-zA-Z0-9]+$", short_code):
+            msg = _("Only letters and numbers are valid")
+            self.errors['short_code'] = self.error_class([msg])
+
+        return short_code
+
     def clean_telephone_number(self):
         """
         Validate telephone number. This expects the dbm to be set on the form before trying to clean.
@@ -155,11 +168,7 @@ class ReporterRegistrationForm(Form):
         validation_error = validation_errors.get(MOBILE_NUMBER_FIELD_CODE)
         self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]]= self.error_class([validation_error])
 
-    def clean_short_code(self):
-        short_code = self.cleaned_data.get('short_code')
-        if short_code:
-            self.fields.get("short_code").widget.attrs.pop("disabled")
-        return short_code
+
 
 class SubjectUploadForm(Form):
     error_css_class = 'error'

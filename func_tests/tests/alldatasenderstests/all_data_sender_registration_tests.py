@@ -157,3 +157,10 @@ class TestAllDataSender(unittest.TestCase):
         add_data_sender_page.enter_data_sender_details_from(INVALID_GPS_WITH_COMMA)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(INVALID_GPS_WITH_COMMA)))
+
+    @attr('functional_test', 'smoke')
+    def test_add_datasender_with_long_uid(self):
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_LONG_UID, "rep012345678901234567891")
+
+        self.assertEqual(add_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(VALID_DATA_FOR_LONG_UID)))

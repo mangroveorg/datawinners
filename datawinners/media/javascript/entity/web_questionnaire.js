@@ -3,6 +3,7 @@ $(document).ready(function() {
         $(".subject_field").attr("disabled", "disabled");
     } else {
         $("#generate_id").attr("checked", false);
+        $(".subject_field").removeAttr("disabled");
     }
     $("#generate_id").click(function() {
         if($(this).is(":checked")) {
