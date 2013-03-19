@@ -42,7 +42,10 @@ def _empty_if_no_data(list, index):
 def format_field_values_for_excel(row, form_model):
     changed_row = dict()
     for question_code, question_value in row[-1].iteritems():
-        field = form_model.get_field_by_code_and_rev(question_code, row[0])
-        changed_row[question_code] = field.formatted_field_values_for_excel(question_value)
+        revision = row[0]
+        field = form_model.get_field_by_code_and_rev(question_code, revision)
+        if field:
+            changed_row[question_code] = field.formatted_field_values_for_excel(question_value)
+        else:
+            changed_row[question_code] = question_value
     return changed_row
-

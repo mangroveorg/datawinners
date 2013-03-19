@@ -7,6 +7,6 @@ var subjectQuestionnaireViewModel = {
     },
 
     isTypeEnabled:function () {
-        return true;
+        return questionnaireViewModel.selectedQuestion().newly_added_question();
     }
 };
