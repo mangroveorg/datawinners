@@ -98,24 +98,6 @@ class TestAllDataSender(unittest.TestCase):
         self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
 
     @attr('functional_test')
-    def test_dissociate_ds_without_selecting_ds(self):
-        all_data_sender_page = self.page
-        all_data_sender_page.dissociate_data_sender()
-        self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(DISSOCIATE_DS_WITHOUT_SELECTING_DS)))
-
-    @attr('functional_test')
-    def test_associate_ds_without_selecting_ds(self):
-        all_data_sender_page = self.page
-        all_data_sender_page.associate_data_sender()
-        self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(ASSOCIATE_DS_WITHOUT_SELECTING_DS)))
-
-    @attr('functional_test')
-    def test_delete_ds_without_selecting_ds(self):
-        all_data_sender_page = self.page
-        all_data_sender_page.delete_data_sender()
-        self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(DELETE_DS_WITHOUT_SELECTING_DS)))
-
-    @attr('functional_test')
     def test_delete_data_sender_and_re_register(self):
         all_data_sender_page = self.page
         self.delete_ds(all_data_sender_page)

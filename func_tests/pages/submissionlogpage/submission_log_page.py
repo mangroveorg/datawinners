@@ -67,12 +67,8 @@ class SubmissionLogPage(Page):
         self.driver.find(SUCCESS_TAB_CSS_LOCATOR).click()
 
     def click_action_button(self):
-        #return self.driver.find(ACTION_DROP_DOWN).get_attribute("class")
         buttons = self.driver.find(by_css("#submission_logs")).find_elements(by="css selector", value="button.action")
         buttons[1].click()
-
-        #return [button.get_attribute("class") for button in ]
-
 
     def is_none_selected_shown(self):
         return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()

@@ -112,13 +112,13 @@ class ReporterRegistrationForm(Form):
 
         if short_code:
             self.fields.get("short_code").widget.attrs.pop("disabled")
-        if len(short_code) > 12:
-            msg = _("Unique ID should be less than 12 characters")
-            self.errors['short_code'] = self.error_class([msg])
+            if len(short_code) > 12:
+                msg = _("Unique ID should be less than 12 characters")
+                self.errors['short_code'] = self.error_class([msg])
 
-        if not re.match("^[a-zA-Z0-9]+$", short_code):
-            msg = _("Only letters and numbers are valid")
-            self.errors['short_code'] = self.error_class([msg])
+            if not re.match("^[a-zA-Z0-9]+$", short_code):
+                msg = _("Only letters and numbers are valid")
+                self.errors['short_code'] = self.error_class([msg])
 
         return short_code
 

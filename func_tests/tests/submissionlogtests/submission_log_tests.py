@@ -87,6 +87,7 @@ class TestSubmissionLog(unittest.TestCase):
     @attr('functional_test')
     def test_should_load_actions_dynamically(self):
         submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
+        time.sleep(1)
         submission_log_page.click_action_button()
 
         self.assert_none_selected_shown(submission_log_page)
