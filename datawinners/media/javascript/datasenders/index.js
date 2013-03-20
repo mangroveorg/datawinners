@@ -146,6 +146,8 @@ $(document).ready(function () {
             } else {
                 warnThenDeleteDialogBox(allIds, "reporter", this);
             }
+        } else if (action == "edit") {
+            location.href = '/entity/datasender/edit' + '/' + allIds[0] + '/';
         } else {
             $("#all_project_block").dialog("open");
         }
