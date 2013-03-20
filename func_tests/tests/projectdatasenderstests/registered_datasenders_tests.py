@@ -37,7 +37,6 @@ class TestRegisteredDataSenders(unittest.TestCase):
         self.assertFalse(registered_ds_page.is_edit_enabled())
 
     def assert_none_selected_shown(self, registered_ds_page):
-        self.assertTrue(registered_ds_page.is_edit_enabled())
         self.assertTrue(registered_ds_page.is_none_selected_shown())
         self.assertFalse(registered_ds_page.actions_menu_shown())
 
