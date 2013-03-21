@@ -15,7 +15,7 @@ class TestSMSResponse(unittest.TestCase):
 
     def test_should_return_expected_success_response(self):
         self.form_submission_mock.is_registration = False
-        response = create_response_from_form_submission(reporters=[{NAME_FIELD: "Mr. X"}], submission_id=123,
+        response = create_response_from_form_submission(reporters=[{NAME_FIELD: "Mr. X"}], survey_response_id=123,
             form_submission=self.form_submission_mock)
         dbm_mock = Mock()
         form_model_mock = Mock(spec=FormModel)
@@ -28,7 +28,7 @@ class TestSMSResponse(unittest.TestCase):
     def test_should_return_expected_success_response_for_registration(self):
         self.form_submission_mock.is_registration = True
 
-        response = create_response_from_form_submission(reporters=[{NAME_FIELD: "Mr. X"}], submission_id=123,form_submission=self.form_submission_mock)
+        response = create_response_from_form_submission(reporters=[{NAME_FIELD: "Mr. X"}], survey_response_id=123,form_submission=self.form_submission_mock)
         dbm_mock = Mock()
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'Clinic X'}
@@ -42,5 +42,5 @@ class TestSMSResponse(unittest.TestCase):
         error_response = "horrible hack. feeling bad about it. But need to change mangrove error handling and error response"
         self.form_submission_mock.errors = error_response
 
-        response = create_response_from_form_submission(reporters=[], submission_id=123,form_submission=self.form_submission_mock)
+        response = create_response_from_form_submission(reporters=[], survey_response_id=123,form_submission=self.form_submission_mock)
         self.assertEqual(error_response,SMSResponse(response).text(Mock(spec=FormModel)))

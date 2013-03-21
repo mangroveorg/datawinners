@@ -64,7 +64,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
     def test_should_format_success_message_for_submission_with_reporter_name(self):
         expected_message = THANKS + " q1: 12 q2: tester q3: red"
         form_submission_mock = self.create_form_submission_mock()
-        response = create_response_from_form_submission(reporters=[{"name": "rep1"}], submission_id=123,
+        response = create_response_from_form_submission(reporters=[{"name": "rep1"}], survey_response_id=123,
             form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'tester', 'age': '12', 'choice': 'red'}
@@ -98,7 +98,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
     def test_should_format_success_message_for_submission_with_blank_if_no_reporter(self):
         expected_message = THANKS + " name: tester"
         form_submission_mock = self.create_form_submission_mock()
-        response = create_response_from_form_submission(reporters=[], submission_id=123,
+        response = create_response_from_form_submission(reporters=[], survey_response_id=123,
             form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'tester'}
@@ -111,7 +111,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         form_submission_mock = Mock()
         form_submission_mock.cleaned_data = {'name': 'tester'}
         form_submission_mock.short_code = "REP1"
-        response = create_response_from_form_submission(reporters=[], submission_id=123,
+        response = create_response_from_form_submission(reporters=[],survey_response_id=123,
             form_submission=form_submission_mock)
         message = get_success_msg_for_registration_using(response, "web")
         self.assertEqual(expected_message, message)

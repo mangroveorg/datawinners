@@ -87,7 +87,7 @@ class FilePlayer(Player):
         return form_model, values
 
     def appendFailedResponse(self, responses, message, values = None):
-        response = Response( reporters=[], submission_id=None )
+        response = Response( reporters=[], survey_response_id=None)
         response.success = False
         response.errors = dict( error=ugettext( message ), row=values )
         responses.append( response )

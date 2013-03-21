@@ -36,7 +36,7 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
             return self._process_data_submission_request
 
     def _get_wrong_number_of_question_response(self):
-        response = Response(reporters=[], submission_id=None)
+        response = Response(reporters=[], survey_response_id=None)
         response.success = False
         response.errors = get_wrong_number_of_answer_error_message()
         return response
