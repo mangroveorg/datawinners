@@ -17,7 +17,7 @@ from datawinners.project.views.views import _format_reminders
 from project.export_to_excel import _prepare_export_data
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
-from project.submission_router import SubmissionRouter
+from project.submission_router import SurveyResponseRouter
 from project.views.submission_views import delete_submissions_by_ids
 from project.utils import make_subject_links, make_data_sender_links
 from project.views.utils import add_link
@@ -310,16 +310,16 @@ class TestProjectViews( unittest.TestCase ):
 
     def test_should_prepare_export_data_for_success_submission_log_tab(self):
         request = Mock()
-        request.GET.get.return_value = SubmissionRouter.SUCCESS
+        request.GET.get.return_value = SurveyResponseRouter.SUCCESS
         request.POST.get.return_value = 'proj_name'
-        data, file_name = _prepare_export_data(SubmissionRouter.SUCCESS,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+        data, file_name = _prepare_export_data(SurveyResponseRouter.SUCCESS,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
                                                                                       "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date', 'Subject_name','Subject_id'], [1, 2,3, 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_success_log', file_name)
 
     def test_should_prepare_export_data_for_all_submission_log_tab(self):
-        data, file_name = _prepare_export_data(SubmissionRouter.ALL,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+        data, file_name = _prepare_export_data(SurveyResponseRouter.ALL,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
                                                          "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date','Status', 'Subject_name','Subject_id'], [1, 2 ,3, 4, 5, 6]]
 
@@ -327,14 +327,14 @@ class TestProjectViews( unittest.TestCase ):
         self.assertEqual('proj_name_all_log', file_name)
 
     def test_should_prepare_export_data_for_deleted_submission_log_tab(self):
-        data, file_name = _prepare_export_data(SubmissionRouter.DELETED,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+        data, file_name = _prepare_export_data(SurveyResponseRouter.DELETED,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
                                                          "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date','Status', 'Subject_name','Subject_id'], [1, 2 ,3, 4, 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_deleted_log', file_name)
 
     def test_should_prepare_export_data_for_error_submission_log_tab(self):
-        data, file_name = _prepare_export_data(SubmissionRouter.ERROR,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
+        data, file_name = _prepare_export_data(SurveyResponseRouter.ERROR,'proj_name', ["Submission ID", "DS_name", "DS_id", "Submission_date","Status",
                                                          "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3,4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date','Reply SMS', 'Subject_name','Subject_id'], [1, 2 ,3, '-', 5, 6]]
         self.assertEqual(expected, data)

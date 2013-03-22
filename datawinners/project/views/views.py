@@ -60,7 +60,7 @@ from project.analysis import Analysis
 from project.utils import make_project_links
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
-from project.submission_router import SubmissionRouter
+from project.submission_router import SurveyResponseRouter
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
@@ -208,15 +208,6 @@ def project_overview(request, project_id=None):
 
 def filter_by_keyword(keyword, raw_field_values):
     return KeywordFilter(keyword).filter(raw_field_values)
-
-
-def _get_submissions_by_type(request, manager, form_model):
-    submission_type = request.GET.get('type')
-    submissions = SubmissionRouter().route(submission_type)(manager, form_model.form_code)
-    if submission_type == SubmissionRouter.ERROR:
-        return filter(lambda x: not x.status, submissions)
-    return submissions
-
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET

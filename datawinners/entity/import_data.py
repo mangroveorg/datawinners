@@ -157,13 +157,13 @@ class FilePlayer(Player):
             registered_emails = User.objects.values_list('email', flat=True)
         else:
             registered_emails = []
-        submissions = self.parser.parse(file_contents)
-        if len(submissions) > 0:
-            (form_code, values) = submissions[0]
+        rows = self.parser.parse(file_contents)
+        if len(rows) > 0:
+            (form_code, values) = rows[0]
             if self.form_code is not None and form_code != self.form_code:
                 form_model = get_form_model_by_code(self.dbm, self.form_code )
                 raise FormCodeDoesNotMatchException(ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') % form_model.entity_type[0], form_code=form_code)
-        for (form_code, values) in submissions:
+        for (form_code, values) in rows:
             self.import_submission( form_code, organization, registered_emails, registered_phone_numbers, responses,
                                    values )
         return responses

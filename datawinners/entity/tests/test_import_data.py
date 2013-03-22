@@ -184,11 +184,11 @@ class TestFilePlayer(MangroveTestCase):
             get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
             responses = self.file_player.accept(self.csv_data_about_reporter)
         self.assertTrue(responses[0].success)
-        submission_log = Submission.get(self.manager, responses[0].survey_response_id)
-        self.assertEquals(True, submission_log. status)
-        self.assertEquals("csv", submission_log.channel)
-        self.assertEquals("reg", submission_log.form_code)
-        self.assertDictContainsSubset({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
+        submission = Submission.get(self.manager, responses[0].submission_id)
+        self.assertEquals(True, submission. status)
+        self.assertEquals("csv", submission.channel)
+        self.assertEquals("reg", submission.form_code)
+        self.assertDictContainsSubset({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission.values)
 
     def test_should_import_csv_string_if_it_contains_data_for_activity_reporters(self):
         organization = Mock(spec=Organization)
@@ -196,7 +196,7 @@ class TestFilePlayer(MangroveTestCase):
             get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
             responses = self.file_player.accept(self.csv_data_for_activity_report)
         self.assertTrue(responses[0].success)
-        submission_log = Submission.get(self.manager, responses[0].survey_response_id)
+        submission_log = Submission.get(self.manager, responses[0].submission_id)
         self.assertEquals("csv", submission_log.channel)
         self.assertEquals(u'rep1', responses[0].short_code)
 
@@ -217,10 +217,10 @@ class TestFilePlayer(MangroveTestCase):
         self.assertTrue(responses[0].success)
         self.assertFalse(responses[1].success)
         self.assertTrue(responses[2].success)
-        submission_log = Submission.get(self.manager, responses[0].survey_response_id)
+        submission_log = Submission.get(self.manager, responses[0].submission_id)
         self.assertDictContainsSubset({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
         self.assertEquals({'error':{'m': u'Sorry, the telephone number 201 has already been registered'}, 'row':{'t':u'reporter', 'n':u'Dr. B','l':[u'arantany'],'d':u'Description','m':u'201','s':u'rep3'}}, responses[1].errors)
-        submission_log = Submission.get(self.manager, responses[2].survey_response_id)
+        submission_log = Submission.get(self.manager, responses[2].submission_id)
         self.assertDictContainsSubset({'t':'reporter', 'n':'Dr. C','l':'Pune','d':'Description','m':'202'}, submission_log.values)
 
     def test_should_not_import_data_for_missing_field(self):

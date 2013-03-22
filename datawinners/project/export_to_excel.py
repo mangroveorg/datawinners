@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 
-from project.submission_router import SubmissionRouter
+from project.submission_router import SurveyResponseRouter
 
 import datawinners.utils as utils
 
@@ -26,11 +26,11 @@ def _get_exported_data(header, formatted_values, submission_log_type):
     submission_id_col = 0
     status_col = 4
     reply_sms_col = 5
-    if submission_log_type in [SubmissionRouter.ALL, SubmissionRouter.DELETED]:
+    if submission_log_type in [SurveyResponseRouter.ALL, SurveyResponseRouter.DELETED]:
         return [each[submission_id_col + 1:reply_sms_col] + each[reply_sms_col + 1:] for each in data]
-    elif submission_log_type in [SubmissionRouter.ERROR]:
+    elif submission_log_type in [SurveyResponseRouter.ERROR]:
         return [each[submission_id_col + 1:status_col] + each[status_col + 1:] for each in data]
-    elif submission_log_type in [SubmissionRouter.SUCCESS]:
+    elif submission_log_type in [SurveyResponseRouter.SUCCESS]:
         return [each[submission_id_col + 1:status_col] + each[reply_sms_col + 1:] for each in data]
     else:
         return [each[1:] for each in data]

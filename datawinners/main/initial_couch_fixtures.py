@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
-from datawinners.location.LocationTree import   LocationTree, get_location_hierarchy, get_location_tree
+from datawinners.location.LocationTree import    get_location_hierarchy, get_location_tree
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
@@ -16,12 +16,12 @@ from mangrove.errors.MangroveException import   DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
-from mangrove.transport.player.player import  WebPlayer, SMSPlayer
+from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, \
     create_data_dict, define_entity_instance, register
-from mangrove.transport.player.new_players import SMSPlayerV2
+from mangrove.transport.player.new_players import SMSPlayerV2, WebPlayerV2
 from datawinners.submission.location import LocationBridge
 
 class DateTimeMocker(object):
@@ -854,22 +854,22 @@ def create_clinic_projects(entity_type, manager):
     create_clinic_project_with_monthly_reporting_period(entity_type, manager)
 
 def load_web_data_for_cli001(manager):
-    web_player = WebPlayer(manager, location_tree=LocationTree())
+    web_player = WebPlayerV2(manager)
     text = {'form_code': 'cli001', 'EID':'cid001', 'NA':'Mr. Admin', 'FA':'58', 'RD':'28.02.2011', 'BG':'c', 'SY':'ade', 'GPS':'79.2,20.34567', 'RM':'a'}
     web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
-    web_player.accept(Request(message=text, transportInfo=web_transport_info))
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
 
 def load_web_data_for_cli018(manager):
-    web_player = WebPlayer(manager, location_tree=LocationTree())
+    web_player = WebPlayerV2(manager)
     web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
     text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'cat, dog', 'RD': '11.03.2010', 'BG': 'c', 'GPS': '12,14'}
-    web_player.accept(Request(message=text, transportInfo=web_transport_info))
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
     text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'12, 34', 'RD': '20.02.2011', 'BG': 'd', 'GPS': '39,14'}
-    web_player.accept(Request(message=text, transportInfo=web_transport_info))
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
     text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'-12, 34', 'RD': '25.12.2010', 'BG': 'a', 'GPS': '5.10,50.12'}
-    web_player.accept(Request(message=text, transportInfo=web_transport_info))
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
     text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'20, 34', 'RD': '11.06.2012', 'BG': 'b', 'GPS': '21.16,14.3'}
-    web_player.accept(Request(message=text, transportInfo=web_transport_info))
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
 
 def load_sms_data_for_cli018(manager):
     JAN = datetime(2011, 01, 05, hour=12, minute=00, second=00, tzinfo=UTC)
@@ -878,40 +878,40 @@ def load_sms_data_for_cli018(manager):
     APR = datetime(2011, 04, 01, tzinfo=UTC)
     DEC_2010 = datetime(2010, 12, 28, hour=00, minute=00, second=59, tzinfo=UTC)
     NOV_2010 = datetime(2010, 11, 26, hour=23, minute=59, second=59, tzinfo=UTC)
-    today = datetime.today()
-    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
+
+    sms_player = SMSPlayerV2(manager, [])
 
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
     mangrove_request = Request("cli018 .EID cid001 .NA 12.2012 .RD 15.01.2011 .BG a .GPS 16.34,11.26", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(JAN)
     mangrove_request = Request("cli018 .EID cid001 .NA 123 .RD 10.02.2012 .BG b .GPS 61.10,58.99", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(FEB)
     mangrove_request = Request("cli018 .EID cid001 .NA 456 .RD 25.12.2012 .BG d .GPS 65.24,28.45", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(MARCH)
     mangrove_request = Request("cli018 .EID cid003 .NA cat .RD 15.10.2011 .BG c .GPS 56.34,11.00", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(APR)
     mangrove_request = Request("cli018 .EID cid004 .NA 2012.01.14 .RD 25.06.2011 .BG d .GPS 16.34,11.76", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(NOV_2010)
     mangrove_request = Request("cli018 .EID cid005 .NA 2011.12.12 .RD 04.09.2010 .BG d .GPS 10.12,11.13", transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(DEC_2010)
     mangrove_request = Request('cli018 .EID cid001 .NA 12.23.2011 .RD 25.01.2011 .BG a .GPS 11.23,17.66', transport)
-    response = sms_player.accept(mangrove_request)
+    response = sms_player.add_survey_response(mangrove_request)
 
 def load_sms_data_for_cli001(manager):
     FEB = datetime(2011, 02, 28, hour=12, minute=00, second=00, tzinfo=UTC)

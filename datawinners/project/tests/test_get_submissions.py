@@ -1,6 +1,6 @@
 from mangrove.form_model.form_model import FORM_CODE
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from project.submission_router import successful_submissions, undeleted_submissions
+from project.submission_router import successful_survey_responses, undeleted_survey_responses
 
 from mangrove.utils.test_utils.submission_builder import SubmissionBuilder
 
@@ -13,7 +13,7 @@ class TestGetSubmissions(MangroveTestCase):
         submissions = self.submission_builder.build_two_successful_submissions()
         self.submission_builder.build_two_error_submission()
 
-        success_submissions = successful_submissions(self.manager, FORM_CODE)
+        success_submissions = successful_survey_responses(self.manager, FORM_CODE)
 
         self.assertEqual(2, len(success_submissions))
 
@@ -24,7 +24,7 @@ class TestGetSubmissions(MangroveTestCase):
         submissions[-1].void()
         submissions.remove(submissions[-1])
 
-        expected_undeleted_submission = undeleted_submissions(self.manager, FORM_CODE)
+        expected_undeleted_submission = undeleted_survey_responses(self.manager, FORM_CODE)
 
         self.assertEqual(3, len(expected_undeleted_submission))
 

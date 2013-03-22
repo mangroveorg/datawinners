@@ -8,7 +8,7 @@ from mangrove.datastore.entity import get_by_short_code
 from datawinners.project.data_sender_helper import  combine_channels_for_tuple, get_data_sender
 from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import format_dt_for_submission_log_page, case_insensitive_lookup, _to_str, NOT_AVAILABLE
-from datawinners.project.submission_router import SubmissionRouter
+from datawinners.project.submission_router import SurveyResponseRouter
 from datawinners.project.submission_utils.submission_filter import SubmissionFilter
 from mangrove.form_model.field import SelectField, DateField, ExcelDate
 from mangrove.utils.types import is_sequence
@@ -30,15 +30,15 @@ class SubmissionData(object):
         self._data_senders = []
         self._subject_list = []
         self.keyword_filter = KeywordFilter(keyword if keyword else '')
-        submissions = self._get_submissions_by_type(manager, form_model, submission_type)
+        submissions = self._get_survey_responses_by_status(manager, form_model, submission_type)
         self.filtered_submissions = SubmissionFilter(filters, form_model).filter(submissions)
         self._init_values()
 
-    def _get_submissions_by_type(self, manager, form_model, submission_type):
-        submissions = SubmissionRouter().route(submission_type)(manager, form_model.form_code)
-        if submission_type == SubmissionRouter.ERROR:
-            return filter(lambda x: not x.status, submissions)
-        return submissions
+    def _get_survey_responses_by_status(self, manager, form_model, survey_response_type):
+        survey_responses = SurveyResponseRouter().route(survey_response_type)(manager, form_model.form_code)
+        if survey_response_type == SurveyResponseRouter.ERROR:
+            return filter(lambda x: not x.status, survey_responses)
+        return survey_responses
 
     def _init_values(self):
         leading_part = self.get_leading_part()
