@@ -3,8 +3,9 @@ from mangrove.transport.player.new_players import WebPlayerV2
 from mock import patch, Mock
 from mangrove.form_model.field import field_attributes, TextField, SelectField, DateField, IntegerField, GeoCodeField, ExcelDate
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, FormModel
-from mangrove.transport import TransportInfo, Request
-from mangrove.transport.submissions import Submission
+from mangrove.transport.contract.transport_info import TransportInfo
+from mangrove.transport.contract.request import Request
+from mangrove.transport.contract.submission import Submission
 from mangrove.utils.dates import utcnow
 from mangrove.utils.entity_builder import EntityBuilder
 from mangrove.utils.form_model_builder import create_default_ddtype, FormModelBuilder

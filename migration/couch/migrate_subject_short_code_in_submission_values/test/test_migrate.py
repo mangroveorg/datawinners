@@ -1,7 +1,7 @@
 from unittest import TestCase
 from mangrove.datastore.entity import get_by_short_code, Entity
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.transport.submissions import get_submissions, Submission
+from mangrove.transport.contract.submission import Submission
 from mangrove.form_model import form_model
 from mangrove.datastore.database import get_db_manager
 from migration.couch.migrate_subject_short_code_in_submission_values.migrate_subject_short_code_in_submission_values import migrate
@@ -36,10 +36,30 @@ class TestMigrate(TestCase):
         return old_short_code, new_short_code
 
     def change_submissions(self, dbm, form_code, entity_question_code):
-        submission = get_submissions(dbm, form_code, None, None, 0, 1)[0]
+        submission = self.get_submissions(dbm, form_code, None, None, 0, 1)[0]
         old, new = self.make_wrong_subject_short_code(submission, entity_question_code)
         self.update_submission_values(submission, entity_question_code, new)
         return old, new
+
+    def _get_start_and_end_key(self, form_code, from_time, to_time):
+        end = [form_code] if from_time is None else [form_code, from_time]
+        start = [form_code, {}] if to_time is None else [form_code, to_time]
+
+        return start, end
+
+    def get_submissions(self, dbm, form_code, from_time, to_time, page_number=0, page_size=None, view_name="submissionlog"):
+        startkey, endkey = self._get_start_and_end_key(form_code, from_time, to_time)
+        if page_size is None:
+            rows = dbm.load_all_rows_in_view(view_name, reduce=False, descending=True,
+                startkey=startkey,
+                endkey=endkey)
+        else:
+            rows = dbm.load_all_rows_in_view(view_name, reduce=False, descending=True,
+                startkey=startkey,
+                endkey=endkey, skip=page_number * page_size, limit=page_size)
+        submissions = [Submission.new_from_doc(dbm=dbm, doc=Submission.__document_class__.wrap(row['value'])) for row in
+                       rows]
+        return submissions
 
     def update_subject(self, subject, short_code):
         entity_id_field = [field for field in subject.data.values() if field["type"]["name"] == 'Entity Id Type'][0]

@@ -1,7 +1,7 @@
 import json
 import datetime
 import logging
-from string import capitalize, uppercase
+from string import capitalize
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -12,7 +12,7 @@ from datawinners.accountmanagement.views import session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
-from mangrove.transport.submissions import Submission, get_submission_by_id
+from mangrove.transport.contract.submission import Submission
 from mangrove.utils.json_codecs import encode_json
 
 from datawinners.accountmanagement.views import is_datasender
@@ -35,6 +35,7 @@ from datawinners.common.constant import   DELETED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from datawinners.project.views.utils import get_form_context
 from project.submission_form import SubmissionForm
+from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 
 performance_logger = logging.getLogger("performance")
 
@@ -103,11 +104,11 @@ def edit(request, project_id, submission_id):
     questionnaire_form = SubmissionForm.create(manager, project, questionnaire_form_model)
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
-    submission = get_submission_by_id(manager, submission_id)
-    form_ui_model = build_static_info_context(manager, get_organization(request).org_id, submission)
+    survey_response = get_survey_response_by_id(manager, submission_id)
+    form_ui_model = build_static_info_context(manager, get_organization(request).org_id, survey_response)
 
     if request.method == 'GET':
-        questionnaire_form.initial_values(submission.values)
+        questionnaire_form.initial_values(survey_response.values)
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, questionnaire_form,
             manager, hide_link_class, disable_link_class))
         return render_to_response("project/web_questionnaire.html", form_ui_model,

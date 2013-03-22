@@ -3,7 +3,7 @@ import datetime
 from django.conf import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from mangrove.datastore.database import get_db_manager
-from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import create_entity
 from mangrove.datastore.datadict import   get_or_create_data_dict
 from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD

@@ -5,7 +5,7 @@
 #from mangrove.datastore.database import DatabaseManager
 #from mangrove.form_model.form_model import FormModel
 #from mangrove.transport import TransportInfo
-#from mangrove.transport.submissions import Submission
+#from mangrove.transport.domain.submission import Submission
 #from project.edit_submission_view import _map_submission_and_questionnaire, edit_my_submission
 #from project.models import Project
 #

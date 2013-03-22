@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
 from babel.dates import format_date
-from django.contrib.auth.models import User
 from django.http import Http404
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
@@ -16,10 +15,11 @@ from mangrove.utils.types import  is_sequence, sequence_to_str
 from datawinners.enhancer import field_enhancer
 import models
 from datetime import datetime
-from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
-from mangrove.transport import Request, TransportInfo
-from datawinners.project.data_sender import DataSender
+from mangrove.transport.contract.submission import Submission
+from mangrove.transport.repository.survey_responses import get_survey_responses
+from mangrove.transport.contract.transport_info import TransportInfo
+from mangrove.transport.contract.request import Request
 
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION = "%b. %d, %Y, %I:%M %p"
 
@@ -157,7 +157,7 @@ def delete_project(manager, project, void=True):
     project_id, qid = project.id, project.qid
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=project_id))]
     questionnaire = FormModel.get(manager, qid)
-    [submission.void(void) for submission in get_submissions(manager, questionnaire.form_code, None, None)]
+    [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
     questionnaire.void(void)
     project.set_void(manager, void)
 

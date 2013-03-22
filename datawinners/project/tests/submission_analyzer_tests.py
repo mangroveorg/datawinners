@@ -5,7 +5,7 @@
 #from mangrove.form_model.form_model import  MOBILE_NUMBER_FIELD, NAME_FIELD
 #from mangrove.transport.facade import TransportInfo
 #from mangrove.transport.player.player import WebPlayer
-#from mangrove.transport.submissions import Submission
+#from mangrove.transport.domain.submission import Submission
 #from mangrove.utils.entity_builder import EntityBuilder
 #from mangrove.utils.form_model_builder import FormModelBuilder, create_default_ddtype
 #from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase

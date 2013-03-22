@@ -18,7 +18,7 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
-from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, \
     create_data_dict, define_entity_instance, register
 from mangrove.transport.player.new_players import SMSPlayerV2, WebPlayerV2

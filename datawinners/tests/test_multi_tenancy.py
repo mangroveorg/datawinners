@@ -8,7 +8,7 @@ from datawinners.accountmanagement.models import Organization, OrganizationSetti
 from registration.models import RegistrationProfile
 from django.contrib.auth.models import User
 from mangrove.datastore.database import get_db_manager
-from mangrove.transport import reporter
+from mangrove.transport.repository import reporters
 
 
 @SkipTest
@@ -60,7 +60,7 @@ class TestMultiTenancy(unittest.TestCase):
         self.assertIsNotNone(org_db)
 
         manager = get_db_manager(server=couch_server, database=organization_db_name)
-        test_reporter = reporter.find_reporter_entity(manager, TEST_REPORTER_MOBILE_NUMBER)
+        test_reporter = reporters.find_reporter_entity(manager, TEST_REPORTER_MOBILE_NUMBER)
         self.assertIsNotNone(test_reporter)
 
         #clean up the org db

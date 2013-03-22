@@ -2,14 +2,14 @@ from django.utils.translation import ugettext
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD, FORM_CODE
 from mangrove.transport import TransportInfo
-from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
-from mangrove.transport.submissions import Submission
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from datawinners.messageprovider.messages import SMS, WEB, SMART_PHONE
 from datawinners.project.data_sender import DataSender
 from datawinners.project.data_sender_helper import DataSenderHelper, get_data_sender
 from datawinners.project.helper import  NOT_AVAILABLE_DS
 from datawinners.tests.test_data_utils import register, create_data_dict
+from mangrove.transport.contract.submission import Submission
 
 
 class TestDataSenderHelper(MangroveTestCase):

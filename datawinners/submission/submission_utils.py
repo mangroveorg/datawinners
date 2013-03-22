@@ -1,7 +1,7 @@
 from django.utils import translation
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
-from mangrove.transport.facade import Response
+from mangrove.transport.contract.response import Response
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
 
 class PostSMSProcessorLanguageActivator(object):

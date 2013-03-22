@@ -7,7 +7,7 @@ from mangrove.datastore.datadict import get_or_create_data_dict
 from mangrove.datastore.entity import create_entity, get_by_short_code_include_voided
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.form_model import   MOBILE_NUMBER_FIELD, NAME_FIELD
-from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
 REPORTER_SHORT_CODE = 'test'

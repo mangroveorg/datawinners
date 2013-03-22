@@ -2,8 +2,8 @@ import unittest
 from mock import Mock
 from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.datastore.database import DatabaseManager
-from mangrove.transport.facade import TransportInfo
-from mangrove.transport.submissions import Submission
+from mangrove.transport.contract.transport_info import TransportInfo
+from mangrove.transport.contract.submission import Submission
 from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SubmissionDateFilter
 from project.views.views import *
 

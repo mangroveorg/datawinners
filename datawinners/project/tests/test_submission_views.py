@@ -2,7 +2,7 @@ import unittest
 from django.http import HttpRequest
 from mock import Mock, patch
 from mangrove.datastore.documents import SubmissionLogDocument
-from mangrove.transport.submissions import Submission
+from mangrove.transport.contract.submission import Submission
 from mangrove.utils.dates import utcnow
 from project.views.submission_views import build_static_info_context
 

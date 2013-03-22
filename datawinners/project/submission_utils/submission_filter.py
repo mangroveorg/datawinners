@@ -3,9 +3,9 @@ from mock import Mock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport import TransportInfo
-from mangrove.transport.submissions import Submission
 from datawinners.project.filters import ReportPeriodFilter, SubjectFilter, SubmissionDateFilter, DataSenderFilter
 from datawinners.questionnaire.helper import get_report_period_question_name_and_datetime_format
+from mangrove.transport.contract.submission import Submission
 
 class SubmissionFilter(object):
 

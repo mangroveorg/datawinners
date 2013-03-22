@@ -3,8 +3,8 @@ import xml
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
-from mangrove.transport import Request
-from mangrove.transport.facade import TransportInfo
+from mangrove.transport.contract.request import Request
+from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.player import XFormPlayer
 from mangrove.transport.xforms.xform import list_all_forms, xform_for
 from datawinners.accountmanagement.models import Organization

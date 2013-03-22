@@ -10,7 +10,7 @@ from mangrove.form_model.field import TextField, DateField
 from entity.forms import ReporterRegistrationForm
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
-from mangrove.transport.submissions import Submission
+from mangrove.transport.contract.submission import Submission
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders

@@ -17,7 +17,7 @@ from datawinners.submission.request_processor import    MangroveWebSMSRequestPro
 from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
 from datawinners.utils import  get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
-from mangrove.transport.facade import Request
+from mangrove.transport.contract.request import Request
 from datawinners.messageprovider.exception_handler import handle
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from datawinners.accountmanagement.views import is_not_expired

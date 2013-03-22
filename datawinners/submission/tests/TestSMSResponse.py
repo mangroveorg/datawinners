@@ -3,7 +3,7 @@ import unittest
 from mock import Mock, patch
 from datawinners.submission.models import SMSResponse
 from mangrove.form_model.form_model import NAME_FIELD, FormModel
-from mangrove.transport.facade import  create_response_from_form_submission, Response
+from mangrove.transport.contract.response import Response
 from datawinners.messageprovider.tests.test_message_handler import THANKS
 
 class TestSMSResponse(unittest.TestCase):

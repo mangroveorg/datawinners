@@ -3,7 +3,7 @@ from collections import OrderedDict
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.datastore.database import get_db_manager
 from django.core.management.base import BaseCommand
-from mangrove.transport.submissions import Submission
+from mangrove.transport.contract.submission import Submission
 from datawinners import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.custom_reports.crs.handler import CRSCustomReportHandler

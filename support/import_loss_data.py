@@ -5,7 +5,7 @@ from xlrd import open_workbook
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport import TransportInfo, Request
 from mangrove.transport.player.player import SMSPlayer
-from mangrove.transport.submissions import Submission
+from mangrove.transport.contract.submission import Submission
 
 #submission date,       source,     destination, messages,
 #2012-11-24 13:48:22	24535435348	26134535750	 009 MCHTDV07 22.11.2012 ABE0000369 72.15 0 0 0 0

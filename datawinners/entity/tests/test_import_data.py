@@ -13,9 +13,8 @@ from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport.player.parser import CsvParser, XlsDatasenderParser
-from mangrove.transport.facade import Channel
-from mangrove.transport import TransportInfo, Request
-from mangrove.transport.submissions import Submission
+from mangrove.transport.contract.transport_info import Channel, TransportInfo
+from mangrove.transport.contract.request import Request
 from mangrove.form_model.form_model import FormModel
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.entity.helper import create_registration_form
@@ -23,6 +22,7 @@ from datawinners.submission.location import LocationBridge
 from datawinners.accountmanagement.models import Organization
 from mock import Mock, patch
 from django.contrib.auth.models import UserManager
+from mangrove.transport.contract.submission import Submission
 
 class TestImportData(MangroveTestCase):
     def setUp(self):

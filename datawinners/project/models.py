@@ -10,7 +10,7 @@ from mangrove.datastore.database import  DatabaseManager, DataObject
 from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel, REPORTER
-from mangrove.transport.reporter import get_reporters_who_submitted_data_for_frequency_period
+from mangrove.transport.repository.reporters import get_reporters_who_submitted_data_for_frequency_period
 from mangrove.utils.types import  is_string, is_empty
 from django.db import models
 

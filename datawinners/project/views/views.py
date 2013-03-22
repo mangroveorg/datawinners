@@ -9,7 +9,6 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.translation import ugettext_lazy as _, get_language, activate
-from django.utils.translation import ugettext
 from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
@@ -28,13 +27,12 @@ from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
-from mangrove.transport.facade import TransportInfo, Request
+from mangrove.transport.contract.transport_info import TransportInfo
+from mangrove.transport.contract.request import Request
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.submissions import  get_submissions, submission_count
-from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
-from mangrove.transport import Channel
+from mangrove.transport.contract.transport_info import Channel
 
 import datawinners.utils as utils
 
@@ -66,6 +64,7 @@ from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPO
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.views.utils import get_form_context
 from mangrove.transport.player.new_players import WebPlayerV2
+from mangrove.transport.repository.survey_responses import survey_response_count, get_survey_responses
 
 logger = logging.getLogger("django")
 performance_logger = logging.getLogger("performance")
@@ -178,7 +177,7 @@ def project_overview(request, project_id=None):
     project_links = make_project_links(project, questionnaire_code)
     map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
     number_data_sender = len(project.get_data_senders(manager))
-    number_records = submission_count(manager, questionnaire_code, None, None)
+    number_records = survey_response_count(manager, questionnaire_code, None, None)
     number_reminders = Reminder.objects.filter(project_id=project.id).count()
     links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id]),
              'web_questionnaire_list': reverse(web_questionnaire, args=[project_id])}
@@ -207,43 +206,6 @@ def project_overview(request, project_id=None):
 
 def filter_by_keyword(keyword, raw_field_values):
     return KeywordFilter(keyword).filter(raw_field_values)
-
-def _get_submissions(manager, questionnaire_code, request, paginate=True):
-    request_bag = request.GET
-    start_time = request_bag.get("start_time") or ""
-    end_time = request_bag.get("end_time") or ""
-    start_time_epoch = convert_date_string_in_UTC_to_epoch(
-        helper.get_formatted_time_string(start_time.strip() + START_OF_DAY))
-    end_time_epoch = convert_date_string_in_UTC_to_epoch(
-        helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
-    current_page = (int(request_bag.get('page_number') or 1) - 1) if paginate else 0
-    page_size = PAGE_SIZE if paginate else None
-    submissions = get_submissions(manager, questionnaire_code, start_time_epoch, end_time_epoch, current_page,
-        page_size)
-    count = submission_count(manager, questionnaire_code, start_time_epoch, end_time_epoch)
-    error_message = ugettext("No submissions present for this project") if not count else None
-    return count, submissions, error_message
-
-
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
-def submissions(request):
-    """
-            Called via ajax, returns the partial HTML for the submissions made for the project, paginated.
-    """
-    manager = get_database_manager(request.user)
-    if request.method == 'GET':
-        questionnaire_code = request.GET.get('questionnaire_code')
-        questionnaire = get_form_model_by_code(manager, questionnaire_code)
-        count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
-        submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
-        return render_to_response('project/log_table.html',
-            {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
-             'submissions': submission_display, 'pages': count,
-             'error_message': error_message,
-             'success_message': ""}, context_instance=RequestContext(request))
-
 
 def _to_name_id_string(value, delimiter='</br>'):
     if not isinstance(value, tuple): return value
@@ -428,9 +390,9 @@ def activate_project(request, project_id=None):
     form_model = FormModel.get(manager, project.qid)
     oneDay = datetime.timedelta(days=1)
     tomorrow = datetime.datetime.now() + oneDay
-    submissions = get_submissions(manager, form_model.form_code, from_time=0,
+    survey_responses = get_survey_responses(manager, form_model.form_code, from_time=0,
         to_time=int(mktime(tomorrow.timetuple())) * 1000, page_size=None)
-    for submission in submissions:
+    for submission in survey_responses:
         submission.void()
     UserActivityLog().log(request, action=ACTIVATED_PROJECT, project=project.name)
     return HttpResponseRedirect(reverse('project-overview', args=[project_id]))

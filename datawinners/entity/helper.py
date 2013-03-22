@@ -18,7 +18,7 @@ from mangrove.utils.types import  is_sequence, is_not_empty
 import re
 from mangrove.errors.MangroveException import NumberNotRegisteredException,\
     DataObjectNotFound
-from mangrove.transport.reporter import find_reporter_entity
+from mangrove.transport.repository.reporters import find_reporter_entity
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _, get_language
 from datawinners.accountmanagement.models import Organization,\

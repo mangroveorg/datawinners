@@ -1,4 +1,4 @@
-from mangrove.transport.survey_responses import SUCCESS_SURVEY_RESPONSE_VIEW_NAME, UNDELETED_SURVEY_RESPONSE_VIEW_NAME, DELETED_SURVEY_RESPONSE_VIEW_NAME, get_survey_responses
+from mangrove.transport.repository.survey_responses import SUCCESS_SURVEY_RESPONSE_VIEW_NAME, UNDELETED_SURVEY_RESPONSE_VIEW_NAME, DELETED_SURVEY_RESPONSE_VIEW_NAME, get_survey_responses
 
 def successful_survey_responses(dbm, form_code):
     return get_survey_responses(dbm, form_code, None, None, view_name=SUCCESS_SURVEY_RESPONSE_VIEW_NAME)

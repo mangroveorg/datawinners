@@ -2,7 +2,7 @@ import unittest
 from mock import patch, PropertyMock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
-from mangrove.transport.submissions import Submission
+from mangrove.transport.contract.submission import Submission
 from project.analysis import Analysis
 from mangrove.transport import TransportInfo
 

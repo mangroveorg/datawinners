@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.utils.types import is_empty
-from mangrove.transport.reporter import find_reporters_by_from_number
+from mangrove.transport.repository.reporters import find_reporters_by_from_number
 from datawinners.accountmanagement.models import Organization, NGOUserProfile,\
     get_data_senders_on_trial_account_with_mobile_number, DataSenderOnTrialAccount
 from datawinners.utils import get_database_manager_for_org
