@@ -17,7 +17,7 @@ from datawinners.project.views.views import _format_reminders
 from project.export_to_excel import _prepare_export_data
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
-from project.submission_router import SurveyResponseRouter
+from datawinners.project.survey_response_router import SurveyResponseRouter
 from project.views.submission_views import delete_submissions_by_ids
 from project.utils import make_subject_links, make_data_sender_links
 from project.views.utils import add_link

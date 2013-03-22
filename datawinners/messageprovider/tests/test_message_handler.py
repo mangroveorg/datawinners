@@ -64,7 +64,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
     def test_should_format_success_message_for_submission_with_reporter_name(self):
         expected_message = THANKS + " q1: 12 q2: tester q3: red"
         form_submission_mock = self.create_form_submission_mock()
-        response = create_response_from_form_submission(reporters=[{"name": "rep1"}], survey_response_id=123,
+        response = create_response_from_form_submission(reporters=[{"name": "rep1"}], submission_id=123,
             form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'tester', 'age': '12', 'choice': 'red'}

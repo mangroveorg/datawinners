@@ -1,8 +1,8 @@
 from mangrove.form_model.form_model import FORM_CODE
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from project.submission_router import successful_survey_responses, undeleted_survey_responses
 
 from mangrove.utils.test_utils.submission_builder import SubmissionBuilder
+from datawinners.project.survey_response_router import successful_survey_responses, undeleted_survey_responses
 
 class TestGetSubmissions(MangroveTestCase):
     def setUp(self):

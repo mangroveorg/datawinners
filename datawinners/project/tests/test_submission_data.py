@@ -4,7 +4,6 @@ from mock import patch, Mock
 from mangrove.form_model.field import field_attributes, TextField, SelectField, DateField, IntegerField, GeoCodeField, ExcelDate
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, FormModel
 from mangrove.transport import TransportInfo, Request
-from mangrove.transport.player.player import WebPlayer
 from mangrove.transport.submissions import Submission
 from mangrove.utils.dates import utcnow
 from mangrove.utils.entity_builder import EntityBuilder
@@ -15,7 +14,7 @@ from project.analysis_for_excel import AnalysisForExcel
 from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, NOT_AVAILABLE
 from project.submission_data import _override_value_if_not_present
 from project.submission_list import SubmissionList
-from project.submission_router import successful_survey_responses
+from datawinners.project.survey_response_router import successful_survey_responses
 from project.tests.form_model_generator import FormModelGenerator
 
 today = datetime.utcnow().strftime("%d.%m.%Y")

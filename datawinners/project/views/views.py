@@ -60,7 +60,6 @@ from project.analysis import Analysis
 from project.utils import make_project_links
 from project.filters import   KeywordFilter
 from project.helper import is_project_exist
-from project.submission_router import SurveyResponseRouter
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
