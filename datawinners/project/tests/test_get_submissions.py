@@ -1,17 +1,17 @@
 from mangrove.form_model.form_model import FORM_CODE
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 
-from mangrove.utils.test_utils.submission_builder import SubmissionBuilder
+from mangrove.utils.test_utils.submission_builder import SurveyResponseBuilder
 from datawinners.project.survey_response_router import successful_survey_responses, undeleted_survey_responses
 
 class TestGetSubmissions(MangroveTestCase):
     def setUp(self):
         super(TestGetSubmissions, self).setUp()
-        self.submission_builder = SubmissionBuilder(self.manager)
+        self.submission_builder = SurveyResponseBuilder(self.manager)
 
     def test_should_get_successful_submissions(self):
-        submissions = self.submission_builder.build_two_successful_submissions()
-        self.submission_builder.build_two_error_submission()
+        submissions = self.submission_builder.build_two_successful_survey_responses()
+        self.submission_builder.build_two_error_survey_responses()
 
         success_submissions = successful_survey_responses(self.manager, FORM_CODE)
 
@@ -20,7 +20,7 @@ class TestGetSubmissions(MangroveTestCase):
         self._assertSubmissionsEqual(submissions, success_submissions)
 
     def test_should_get_undeleted_submissions(self):
-        submissions = self.submission_builder.build_four_submissions()
+        submissions = self.submission_builder.build_four_survey_responses()
         submissions[-1].void()
         submissions.remove(submissions[-1])
 
