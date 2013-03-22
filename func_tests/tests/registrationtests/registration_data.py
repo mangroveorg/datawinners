@@ -48,7 +48,7 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION = {ORGANIZATION_NAME: u"ÑGÓ 001"
                                                  PAY_MONTHLY: PAY_MONTHLY,
                                                  WIRE_TRANSFER: WIRE_TRANSFER}
 
-REGISTRATION_SUCCESS_MESSAGE = u"You have successfully registered!!\nAn activation email has been sent to your email address. Please activate before login."
+REGISTRATION_SUCCESS_MESSAGE = u"You have successfully signed up with DataWinners!!\n\nLast Step: Activate your account\nWe've sent you an activation email. Please check your Spam folder if you haven't received it.\n\nContact support@datawinners.com if you need help."
 
 REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION = {ORGANIZATION_NAME: u"ÑGÓ 001",
                                                  ORGANIZATION_SECTOR: u"PublicHealth",
