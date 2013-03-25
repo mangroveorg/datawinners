@@ -55,23 +55,23 @@ def index(request, project_id=None, questionnaire_code=None):
     keyword = request.POST.get('keyword', '')
     org_id = helper.get_org_id_by_user(request.user)
 
-    submissions = SurveyResponseList(form_model, manager, org_id, submission_type, filters, keyword)
+    survey_responses = SurveyResponseList(form_model, manager, org_id, submission_type, filters, keyword)
 
     if request.method == 'GET':
         header = SubmissionsPageHeader(form_model)
         result_dict = {"header_list": header.header_list,
                        "header_name_list": repr(encode_json(header.header_list)),
-                       "datasender_list": submissions.get_data_senders(),
-                       "subject_list": submissions.get_subjects()
+                       "datasender_list": survey_responses.get_data_senders(),
+                       "subject_list": survey_responses.get_subjects()
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        field_values = SubmissionFormatter().get_formatted_values_for_list(submissions.get_raw_values())
-        analysis_result = AnalysisResult(field_values, submissions.get_analysis_statistics(),
-            submissions.get_data_senders(), submissions.get_subjects(), submissions.get_default_sort_order())
-        performance_logger.info("Fetch %d submissions from couchdb." % len(analysis_result.field_values))
+        field_values = SubmissionFormatter().get_formatted_values_for_list(survey_responses.get_raw_values())
+        analysis_result = AnalysisResult(field_values, survey_responses.get_analysis_statistics(),
+            survey_responses.get_data_senders(), survey_responses.get_subjects(), survey_responses.get_default_sort_order())
+        performance_logger.info("Fetch %d survey_responses from couchdb." % len(analysis_result.field_values))
 
         if "id_list" in request.POST:
             project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)

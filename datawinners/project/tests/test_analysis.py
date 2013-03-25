@@ -13,9 +13,9 @@ class TestAnalysis(unittest.TestCase):
         self.filters = {u"name": "abcd"}
 
     def test_should_return_leading_part_of_submissions(self):
-        with patch("datawinners.project.submission_data.SubmissionData._get_survey_responses_by_status") as get_submissions:
+        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             with patch(
-                "datawinners.project.submission_data.SubmissionData._get_submission_details") as get_submission_details:
+                "datawinners.project.survey_response_data.SurveyResponseData._get_survey_response_details") as get_submission_details:
                 submission = Submission(self.manager, form_code="cli001",
                     transport_info=TransportInfo(transport='SMS', source='123', destination='456'),
                     values={"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"})
