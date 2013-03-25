@@ -39,7 +39,7 @@ from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
-import logging
+import logging, xlwt
 
 class FormCodeDoesNotMatchException(Exception):
     def __init__(self, message, form_code=None):
@@ -243,12 +243,21 @@ def _get_entity_types(manager):
     entity_list = [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
     return sorted(entity_list)
 
-def get_json_field_infos(fields):
+def get_json_field_infos(fields, for_export=False):
     fields_names, labels, codes = [], [], []
+    if for_export:
+        bold = xlwt.easyfont('bold true, height 220, name Helvetica Neue')
+        brown = xlwt.easyfont('color_index brown, name Helvetica Neue, height 220')
+        italic = xlwt.easyfont('italic true, name Helvetica Neue, height 220')
+
     for field in fields:
         if field['name'] != 'entity_type':
             fields_names.append(field['name'])
-            labels.append(field['label'])
+            if for_export:
+                instruction, example = _get_json_field_instruction_example(field)
+                labels.append(((field["label"], bold), ("\n" + instruction, brown), ("\n\n" + example, italic)))
+            else:
+                labels.append(field['label'])
             codes.append(field['code'])
     return fields_names, labels, codes
 
@@ -405,13 +414,13 @@ def _entity_type_as_sequence(entity_type):
     return entity_type
 
 
-def get_entity_type_fields(manager, type=REPORTER):
+def get_entity_type_fields(manager, type=REPORTER, for_export=False):
     form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(type))
     form_code = "reg"
     if form_model is not None:
         form_code = form_model.form_code
     form_model_rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
-    fields, labels, codes = get_json_field_infos(form_model_rows[0].value['json_fields'])
+    fields, labels, codes = get_json_field_infos(form_model_rows[0].value['json_fields'], for_export=for_export)
     return fields, labels, codes
 
 
@@ -474,3 +483,49 @@ def send_email_to_data_sender(user, language_code, request=None, type="activatio
     email = EmailMessage(subject, message, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
     email.send()
+
+def _get_json_field_instruction_example(field):
+    if field.get("entity_question_flag", False):
+        return _("Assign a unique ID for each Subject."), _("Leave this column blank if you want DataWinners to assign an ID for you.")
+
+    if field["type"] == "text":
+        if "constraints" in field and field["constraints"][0][0] == "length" and "max" in field["constraints"][0][1]:
+            return _("Enter a Word with a maximum %s of characters.") % field["constraints"][0][1].get("max"), ""
+        return _("Enter a word"), ""
+
+    if field["type"] == "integer":
+        if "constraints" in field and field["constraints"][0][0] == "range":
+            max = field["constraints"][0][1].get("max")
+            min = field["constraints"][0][1].get("min")
+            if max and min:
+                return _("Enter a number between %s-%s.") % (min,max), ""
+            if max and not min:
+                return _("Enter a number. The maximum is %s") % max, ""
+            if not max and min:
+                return _("Enter a number. The minimum is %s") % min, ""
+            return _("Enter a number"), ""
+
+    if field["type"] == "geocode":
+        return _("Enter GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."), _("Example: -18.1324,27.6547")
+
+    if field["type"] == "list":
+        return _("Enter name of the location."), _("Example: Nairobi")
+
+    if field["type"] == "select1":
+        return _("Enter 1 answer from the list."), _("Example: a")
+
+    if field["type"] == "select":
+        return _("Choose 1 or more answers from the list."), _("Example: a or ab")
+
+    if field["type"] == "telephone_number":
+        return _("Enter a telephone number along with the country code."), _("Example: 261333745269")
+
+    date_format_mapping = {
+            "mm.yyyy": (_("Enter the date in the following format: month.year"), _("Example: 12.2011")),
+            "dd.mm.yyyy": (_("Enter the date in the following format: day.month.year"), _("Example: 25.12.2011")),
+            "mm.dd.yyyy": (_("Enter the date in the following format: month.day.year"), _("Example: 12.25.2011"))
+        }
+
+    if field["type"] == "date":
+        return date_format_mapping.get(field["date_format"])
+    return field["instruction"], ""

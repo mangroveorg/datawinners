@@ -4093,3 +4093,60 @@ msgstr "Nous vous avons envoyé un email d’activation. Veuillez vérifier dans
 
 msgid "Contact <a href=\"mailto:support@datawinners.com\">support@datawinners.com</a> if you need help."
 msgstr "Veuillez contacter <a href=\"support@datawinners.com\">support@datawinners.com</a> si vous avez besoin d'aide."
+
+msgid "Assign a unique ID for each Subject."
+msgstr "Attribuez un code ID unique à chaque Sujet."
+
+msgid "Leave this column blank if you want DataWinners to assign an ID for you."
+msgstr "Laissez cette colonne vide si vous voulez que DataWinners attribue un code ID pour vous."
+
+msgid "Enter a Word with a maximum %s of characters."
+msgstr "Entrez un Mot de %s caractères au maximum."
+
+msgid "Enter a number between %s-%s."
+msgstr "Entrez un nombre entre %s-%s."
+
+msgid "Enter a number. The maximum is %s"
+msgstr "Entrez un nombre. Le maximum est %s."
+
+msgid "Enter a number. The minimum is %s"
+msgstr "Entrez un nombre. Le minimum est %s."
+
+msgid "Enter GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."
+msgstr "Entrez les coordonnées GPS sous le format suivant : xx.xxxx,yy.yyyy."
+
+msgid "Example: -18.1324,27.6547"
+msgstr "Exemple : -18.1324,27.6547"
+
+msgid "Enter name of the location."
+msgstr "Entrez le nom de l'emplacement"
+
+msgid "Example: Nairobi"
+msgstr "Exemple : Nairobi"
+
+msgid "Choose 1 or more answers from the list."
+msgstr "Choisissez 1 ou plusieurs réponses dans la liste."
+
+msgid "Enter 1 answer from the list."
+msgstr "Choisissez 1 réponse dans la liste."
+
+msgid "Example: a"
+msgstr "Exemple: a"
+
+msgid "Example: a or ab"
+msgstr "Exemple : a ou ab"
+
+msgid "Enter a telephone number along with the country code."
+msgstr "Entrez un numéro de téléphone précédé du code pays."
+
+msgid "Example: 261333745269"
+msgstr "Exemple : 261333745269"
+
+msgid "Enter the date in the following format: month.year"
+msgstr "Entrez la date sous le format suivant : mois.année"
+
+msgid "Example: 12.2011"
+msgstr "Exemple : 12.2011"
+
+msgid "Enter a word"
+msgstr "Entrez un mot"

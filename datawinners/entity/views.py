@@ -753,7 +753,7 @@ def export_subject(request):
     all_data, fields, labels = load_all_subjects_of_type(manager, filter_entities=include_of_type, type=entity_type)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
-    fields, labels, field_codes = import_module.get_entity_type_fields(manager, entity_type)
+    fields, labels, field_codes = import_module.get_entity_type_fields(manager, entity_type, for_export=True)
 
     raw_data = [labels]
     for data in all_data:
@@ -781,7 +781,7 @@ def export_template(request, entity_type=None):
     if entity_type is None:
         return HttpResponseRedirect(reverse(all_subjects))
 
-    fields, labels, field_codes = import_module.get_entity_type_fields(manager, entity_type)
+    fields, labels, field_codes = import_module.get_entity_type_fields(manager, entity_type, for_export=True)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])

@@ -2828,3 +2828,60 @@ msgstr ""
 
 msgid "Contact <a href=\"mailto:support@datawinners.com\">support@datawinners.com</a> if you need help."
 msgstr ""
+
+msgid "Assign a unique ID for each Subject."
+msgstr ""
+
+msgid "Leave this column blank if you want DataWinners to assign an ID for you."
+msgstr ""
+
+msgid "Enter a Word with a maximum %s of characters."
+msgstr ""
+
+msgid "Enter a number between %s-%s."
+msgstr ""
+
+msgid "Enter a number. The maximum is %s"
+msgstr ""
+
+msgid "Enter a number. The minimum is %s"
+msgstr ""
+
+msgid "Enter GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."
+msgstr ""
+
+msgid "Example: -18.1324,27.6547"
+msgstr ""
+
+msgid "Enter name of the location."
+msgstr ""
+
+msgid "Example: Nairobi"
+msgstr ""
+
+msgid "Choose 1 or more answers from the list."
+msgstr ""
+
+msgid "Enter 1 answer from the list."
+msgstr ""
+
+msgid "Example: a"
+msgstr ""
+
+msgid "Example: a or ab"
+msgstr ""
+
+msgid "Enter a telephone number along with the country code."
+msgstr ""
+
+msgid "Example: 261333745269"
+msgstr ""
+
+msgid "Enter the date in the following format: month.year"
+msgstr ""
+
+msgid "Example: 12.2011"
+msgstr ""
+
+msgid "Enter a word"
+msgstr ""

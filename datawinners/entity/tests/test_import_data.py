@@ -349,3 +349,16 @@ class TestFilePlayer(MangroveTestCase):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",entity_question_flag=True, ddtype=self.entity_id_type)
         blood_type_field = TextField(label="What is your blood group?", code="BG", name="What is your blood group?", ddtype=self.entity_id_type)
         return FormModelBuilder(self.manager, ["clinic"]).is_registration_model(True).add_fields(eid_field, blood_type_field).build()
+
+    def test_should_get_field_infos_for_header_in_excel_export(self):
+        registration_form_model = self.manager.load_all_rows_in_view("questionnaire", key="reg")[0].get('value')
+        fields, labels, codes = get_json_field_infos(registration_form_model.get('json_fields'), for_export=True)
+        header = []
+        for label in labels:
+            self.assertTrue(isinstance(label, tuple))
+            self.assertEqual(len(label), 3)
+            header.append(label[0][0])
+
+        self.assertEqual(['name', 'short_code', 'location', 'geo_code', 'mobile_number'], fields)
+        self.assertEqual(["What is the subject's name?", "What is the subject's Unique ID Number", "What is the subject's location?","What is the subject's GPS co-ordinates?", 'What is the mobile number associated with the subject?'], header)
+        self.assertEqual(['n', 's', 'l', 'g', 'm'], codes)

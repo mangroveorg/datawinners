@@ -100,9 +100,16 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
     for row_number, row in enumerate(raw_data):
         if(row_number == 0):
             row = _clean(row)
+            style = xlwt.easyxf('borders: top double, bottom double, right double')
             for col_number, val in enumerate(row):
-                ws.row(row_number).height = WIDTH_ONE_CHAR * 4
-                ws.write(row_number, col_number, val, _header_style())
+                if isinstance(val, tuple):
+                    max_width = max([len(item) for item, style_object in val])
+                    ws.col(col_number).width = WIDTH_ONE_CHAR * max_width
+                    ws.row(row_number).height = WIDTH_ONE_CHAR * 5
+                    ws.write_rich_text(row_number, col_number, val, style)
+                else:
+                    ws.row(row_number).height = WIDTH_ONE_CHAR * 4
+                    ws.write(row_number, col_number, val, _header_style())
 
         if (row_number != 0):
             if row_number > 0 and row_number % MAX_ROWS_IN_MEMORY == 0: ws.flush_row_data()
