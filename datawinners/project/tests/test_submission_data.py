@@ -33,7 +33,7 @@ class TestSubmissionData(MangroveTestCase):
 
     def _prepare_submission_list_with_one_submission(self, form_model):
         submission_list = SubmissionList(form_model, self.manager, self.org_id, "all", [])
-        self.submission_id = submission_list.filtered_submissions[0].id
+        self.submission_id = submission_list.filtered_survey_responses[0].id
         return submission_list
 
     def _prepare_subjects(self):
@@ -175,12 +175,12 @@ class TestSubmissionData(MangroveTestCase):
 
     def _prepare_submission_list(self, form_model, keywords=None):
         submission_list = SubmissionList(form_model, self.manager, self.org_id, "all", [], keywords)
-        self.submission_id = submission_list.filtered_submissions[0].id
+        self.submission_id = submission_list.filtered_survey_responses[0].id
         return submission_list
 
     def _prepare_analysis_list(self, form_model, keywords=None):
         analysis_list = Analysis(form_model, self.manager, self.org_id, [], keywords)
-        self.submission_id = analysis_list.filtered_submissions[0].id
+        self.submission_id = analysis_list.filtered_survey_responses[0].id
         return analysis_list
 
     def test_should_get_raw_field_values_filtered_by_keyword(self):

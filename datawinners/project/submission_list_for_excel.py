@@ -11,7 +11,7 @@ class SubmissionListForExcel(SubmissionData):
 
     def get_leading_part(self):
         leading_part = []
-        for submission in self.filtered_submissions:
+        for submission in self.filtered_survey_responses:
             data_sender_tuple, rp, subject_tuple, submission_date = super(SubmissionListForExcel,
                 self).get_submission_details_for_excel(submission)
             status = self._get_translated_submission_status(submission.status)
@@ -27,7 +27,7 @@ class SubmissionListForExcel(SubmissionData):
     @timebox
     def _get_field_values(self):
         submission_values = [(submission.form_model_revision, submission.values) for submission in
-                             self.filtered_submissions]
+                             self.filtered_survey_responses]
         field_values = []
         for row in submission_values:
             fields_ = []

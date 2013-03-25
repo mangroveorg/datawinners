@@ -4,7 +4,7 @@ from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.datastore.database import DatabaseManager
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.submission import Submission
-from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SubmissionDateFilter
+from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SurveyResponseDateFilter
 from project.views.views import *
 
 
@@ -13,6 +13,7 @@ class TestSubmissionFilters(unittest.TestCase):
         self.dbm = Mock(spec=DatabaseManager)
         self.mock_form_model = Mock(spec=FormModel)
         self.mock_form_model.entity_question.code = '123'
+
         self.transport_info = TransportInfo('web', 'source', 'destination')
         self.values = [
             {'q1': 'q1', 'q2': '30.07.2012', 'entity_question_code': '001'},
@@ -117,7 +118,7 @@ class TestSubmissionFilters(unittest.TestCase):
 
         submission_logs = [submission1, submission2, submission3]
 
-        filtered_submission_logs = SubmissionDateFilter(
+        filtered_submission_logs = SurveyResponseDateFilter(
             period={'start': '10.08.2012', 'end': '31.08.2012'}).filter(submission_logs)
 
         self.assertEquals(submission_logs[:2], filtered_submission_logs)

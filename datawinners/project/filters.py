@@ -13,12 +13,12 @@ class ReportPeriodFilter(object):
         self.start_time = self._parseDate(period['start'])
         self.end_time = self._parseDate(period['end'])
 
-    def filter(self, submission_logs):
+    def filter(self, survey_responses):
         assert self.rp_question_name
 
-        self.form_code = None if not len(submission_logs) else submission_logs[0].form_code
+        self.form_code = None if not len(survey_responses) else survey_responses[0].form_code
 
-        return filter(lambda x: self._withinReportPeriod(x.values), submission_logs)
+        return filter(lambda x: self._withinReportPeriod(x.values), survey_responses)
 
     def _withinReportPeriod(self, values):
         try:
@@ -36,40 +36,40 @@ class SubjectFilter(object):
         self.entity_question_code = entity_question_code
         self.subject_ids = subject_ids.split(',')
 
-    def filter(self, submission_logs):
+    def filter(self, survey_responses):
         assert self.entity_question_code
         assert is_sequence(self.subject_ids)
 
-        return filter(lambda x: self._with_subject(x.values), submission_logs)
+        return filter(lambda x: self._with_subject(x.values), survey_responses)
 
     def _with_subject(self, values):
         return values.get(self.entity_question_code) in self.subject_ids
 
 
 class DataSenderFilter(object):
-    def __init__(self, submission_sources):
-        self.submission_sources = submission_sources.split(',')
+    def __init__(self, survey_response_sources):
+        self.survey_response_sources = survey_response_sources.split(',')
 
-    def filter(self, submission_logs):
-        return filter(lambda x: self._with_source(x), submission_logs)
+    def filter(self, survey_responses):
+        return filter(lambda x: self._with_source(x), survey_responses)
 
-    def _with_source(self, submission):
-        source = 'TEST' if submission.source == TEST_REPORTER_MOBILE_NUMBER else submission.source
-        return source in self.submission_sources
+    def _with_source(self, survey_response):
+        source = 'TEST' if survey_response.source == TEST_REPORTER_MOBILE_NUMBER else survey_response.source
+        return source in self.survey_response_sources
 
 
-class SubmissionDateFilter(object):
+class SurveyResponseDateFilter(object):
     def __init__(self, period, date_format="%d.%m.%Y %H:%M:%S %z"):
         assert isinstance(period, dict)
         self.date_format = date_format
         self.start_time = self._parseDate(period['start'])
         self.end_time = self._parseDate(period['end']) + timedelta(days=1)
 
-    def filter(self, submission_logs):
-        return filter(lambda x: self._in(x), submission_logs)
+    def filter(self, survey_responses):
+        return filter(lambda x: self._in(x), survey_responses)
 
-    def _in(self, submission):
-        return self.start_time <= submission.created < self.end_time
+    def _in(self, survey_response):
+        return self.start_time <= survey_response.created < self.end_time
 
     def _parseDate(self, dateString):
         return parse(dateString.strip() + " 00:00:00+0000", dayfirst=True)
