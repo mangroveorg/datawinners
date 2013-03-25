@@ -18,10 +18,10 @@ def _override_value_if_not_present(value):
     return value if value or value == 0 else "--"
 
 
-class SubmissionData(object):
+class SurveyResponseData(object):
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, form_model, manager, org_id, header, submission_type, filters, keyword=None):
+    def __init__(self, form_model, manager, org_id, header, survey_response_type, filters, keyword=None):
         self.header_class = header
         self.manager = manager
         self.form_model = form_model
@@ -29,7 +29,7 @@ class SubmissionData(object):
         self._data_senders = []
         self._subject_list = []
         self.keyword_filter = KeywordFilter(keyword if keyword else '')
-        survey_responses = self._get_survey_responses_by_status(manager, form_model, submission_type)
+        survey_responses = self._get_survey_responses_by_status(manager, form_model, survey_response_type)
         self.filtered_survey_responses = SurveyResponseFilter(filters, form_model).filter(survey_responses)
         self._init_values()
 
@@ -48,49 +48,49 @@ class SubmissionData(object):
         if leading_part:
             self.leading_part_length = len(leading_part[0])
 
-    def _get_submission_details(self, filtered_submissions):
-        data_sender = self._get_data_sender(filtered_submissions)
-        submission_date = format_dt_for_submission_log_page(filtered_submissions)
-        rp = self._get_rp_for_leading_part(filtered_submissions)
-        subject = self._get_subject_for_leading_part(filtered_submissions)
+    def _get_survey_response_details(self, filtered_survey_responses):
+        data_sender = self._get_data_sender(filtered_survey_responses)
+        submission_date = format_dt_for_submission_log_page(filtered_survey_responses)
+        rp = self._get_rp_for_leading_part(filtered_survey_responses)
+        subject = self._get_subject_for_leading_part(filtered_survey_responses)
         return data_sender, rp, subject, submission_date
 
-    def get_submission_details_for_excel(self, filtered_submissions):
-        data_sender, reporting_date, subject, submission_date = self._get_submission_details(filtered_submissions)
+    def get_survey_response_details_for_excel(self, filtered_survey_response):
+        data_sender, reporting_date, subject, submission_date = self._get_survey_response_details(filtered_survey_response)
         if reporting_date is not None:
             reporting_date = self.form_model.get_field_by_code_and_rev(self.form_model.event_time_question.code,
-                filtered_submissions.form_model_revision).formatted_field_values_for_excel(reporting_date)
-        submission_date = ExcelDate(filtered_submissions.created, 'submission_date')
+                filtered_survey_response.form_model_revision).formatted_field_values_for_excel(reporting_date)
+        submission_date = ExcelDate(filtered_survey_response.created, 'submission_date')
         return data_sender, reporting_date, subject, submission_date
 
-    def _get_data_sender(self, submission):
+    def _get_data_sender(self, survey_response):
         for each in self._data_senders:
-            if each[-1] == submission.source:
+            if each[-1] == survey_response.source:
                 return each
         else:
-            data_sender = get_data_sender(self.manager, self.org_id, submission)
+            data_sender = get_data_sender(self.manager, self.org_id, survey_response)
             self._data_senders.append(data_sender)
             return data_sender
 
     def get_data_senders(self):
         return combine_channels_for_tuple(self._data_senders)
 
-    def _get_rp_for_leading_part(self, submission):
+    def _get_rp_for_leading_part(self, survey_response):
         rp_field = self.form_model.event_time_question
         if rp_field:
-            reporting_period = case_insensitive_lookup(rp_field.code, submission.values)
+            reporting_period = case_insensitive_lookup(rp_field.code, survey_response.values)
             return _to_str(reporting_period, rp_field)
         else:
             return None
 
-    def _get_subject_for_leading_part(self, submission):
+    def _get_subject_for_leading_part(self, survey_response):
         if  not self.form_model.entity_defaults_to_reporter():
-            return self._get_subject(submission)
+            return self._get_subject(survey_response)
         else:
             return None
 
-    def _get_subject(self, submission):
-        subject_code = case_insensitive_lookup(self.form_model.entity_question.code, submission.values)
+    def _get_subject(self, survey_response):
+        subject_code = case_insensitive_lookup(self.form_model.entity_question.code, survey_response.values)
         for each in self._subject_list:
             if each[-1] == subject_code:
                 return each
@@ -104,7 +104,7 @@ class SubmissionData(object):
             self._subject_list.append(subject)
             return subject
 
-    def _get_translated_submission_status(self, status):
+    def _get_translated_survey_response_status(self, status):
         return ugettext('Success') if status else ugettext('Error')
 
     #  TODO : should be moved to utils

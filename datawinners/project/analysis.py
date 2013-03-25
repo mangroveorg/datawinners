@@ -1,4 +1,4 @@
-from datawinners.project.submission_data import SubmissionData
+from datawinners.project.survey_response_data import SurveyResponseData
 from datawinners.main.utils import timebox
 from datawinners.project.Header import Header
 from datawinners.project.analysis_result import AnalysisResult
@@ -7,14 +7,14 @@ from datawinners.project.submission_utils.submission_formatter import Submission
 from mangrove.form_model.field import SelectField
 
 # TODO Should rename
-class Analysis(SubmissionData):
+class Analysis(SurveyResponseData):
     def __init__(self, form_model, manager, org_id, filters, keyword=None):
         super(Analysis, self).__init__(form_model, manager, org_id, Header, None, filters, keyword)
 
     def get_leading_part(self):
         leading_part = []
         for submission in self.filtered_survey_responses:
-            data_sender, rp, subject, submission_date = super(Analysis, self)._get_submission_details(submission)
+            data_sender, rp, subject, submission_date = super(Analysis, self)._get_survey_response_details(submission)
             leading_part.append(filter(lambda x: x, [submission.id, subject, rp, submission_date, data_sender]))
         return leading_part
 

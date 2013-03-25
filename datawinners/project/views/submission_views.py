@@ -24,8 +24,8 @@ from project.data_sender_helper import get_data_sender
 from project.export_to_excel import _prepare_export_data, _create_excel_response
 from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from project.models import Project
-from project.submission_list import SubmissionList
-from project.submission_list_for_excel import SubmissionListForExcel
+from project.survey_response_list import SurveyResponseList
+from project.submission_list_for_excel import SurveyResponseForExcel
 from project.utils import    project_info
 from project.Header import SubmissionsPageHeader
 from project.analysis_result import AnalysisResult
@@ -55,7 +55,7 @@ def index(request, project_id=None, questionnaire_code=None):
     keyword = request.POST.get('keyword', '')
     org_id = helper.get_org_id_by_user(request.user)
 
-    submissions = SubmissionList(form_model, manager, org_id, submission_type, filters, keyword)
+    submissions = SurveyResponseList(form_model, manager, org_id, submission_type, filters, keyword)
 
     if request.method == 'GET':
         header = SubmissionsPageHeader(form_model)
@@ -139,7 +139,7 @@ def export(request):
     questionnaire_code = request.POST.get('questionnaire_code')
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    submission_list = SubmissionListForExcel(form_model, manager, user, submission_type, filters, keyword)
+    submission_list = SurveyResponseForExcel(form_model, manager, user, submission_type, filters, keyword)
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(submission_list.get_raw_values(),
         tuple_format=XLS_TUPLE_FORMAT)
     header_list = ExcelFileSubmissionHeader(form_model).header_list

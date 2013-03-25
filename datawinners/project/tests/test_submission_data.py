@@ -13,8 +13,8 @@ from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from project.analysis import Analysis
 from project.analysis_for_excel import AnalysisForExcel
 from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, NOT_AVAILABLE
-from project.submission_data import _override_value_if_not_present
-from project.submission_list import SubmissionList
+from project.survey_response_data import _override_value_if_not_present
+from project.survey_response_list import SurveyResponseList
 from datawinners.project.survey_response_router import successful_survey_responses
 from project.tests.form_model_generator import FormModelGenerator
 
@@ -32,7 +32,7 @@ class TestSubmissionData(MangroveTestCase):
         self.form_model = self.form_model_generator.form_model()
 
     def _prepare_submission_list_with_one_submission(self, form_model):
-        submission_list = SubmissionList(form_model, self.manager, self.org_id, "all", [])
+        submission_list = SurveyResponseList(form_model, self.manager, self.org_id, "all", [])
         self.submission_id = submission_list.filtered_survey_responses[0].id
         return submission_list
 
@@ -174,7 +174,7 @@ class TestSubmissionData(MangroveTestCase):
             self.assertEqual(expected, raw_field_values)
 
     def _prepare_submission_list(self, form_model, keywords=None):
-        submission_list = SubmissionList(form_model, self.manager, self.org_id, "all", [], keywords)
+        submission_list = SurveyResponseList(form_model, self.manager, self.org_id, "all", [], keywords)
         self.submission_id = submission_list.filtered_survey_responses[0].id
         return submission_list
 
@@ -573,7 +573,7 @@ class TestSubmissionData(MangroveTestCase):
                 filtered_submissions = Mock(spec=Submission)
                 expected_created_date = utcnow()
                 filtered_submissions.created = expected_created_date
-                data_sender, rp, subject, submission_date = analyzer.get_submission_details_for_excel(
+                data_sender, rp, subject, submission_date = analyzer.get_survey_response_details_for_excel(
                     filtered_submissions)
                 self.assertEqual(ExcelDate(datetime.strptime('02.2013', '%m.%Y'), 'mm.yyyy'), rp)
                 self.assertEqual(ExcelDate(expected_created_date, 'submission_date'), submission_date)
@@ -592,7 +592,7 @@ class TestSubmissionData(MangroveTestCase):
                 filtered_submissions = Mock(spec=Submission)
                 expected_created_date = utcnow()
                 filtered_submissions.created = expected_created_date
-                data_sender, rp, subject, submission_date = analyzer.get_submission_details_for_excel(
+                data_sender, rp, subject, submission_date = analyzer.get_survey_response_details_for_excel(
                     filtered_submissions)
                 self.assertEqual(None, rp)
                 self.assertEqual(ExcelDate(expected_created_date, 'submission_date'), submission_date)

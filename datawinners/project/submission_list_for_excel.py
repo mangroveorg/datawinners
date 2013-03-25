@@ -2,19 +2,19 @@ from datawinners.project.Header import SubmissionsPageHeader
 from main.utils import timebox
 from project.data_sender import DataSender
 from project.export_to_excel import format_field_values_for_excel
-from submission_data import SubmissionData
+from survey_response_data import SurveyResponseData
 
-class SubmissionListForExcel(SubmissionData):
-    def __init__(self, form_model, manager, org_id, submission_type, filters, keyword=None):
-        super(SubmissionListForExcel, self).__init__(form_model, manager, org_id, SubmissionsPageHeader,
-            submission_type, filters, keyword)
+class SurveyResponseForExcel(SurveyResponseData):
+    def __init__(self, form_model, manager, org_id, survey_response_type, filters, keyword=None):
+        super(SurveyResponseForExcel, self).__init__(form_model, manager, org_id, SubmissionsPageHeader,
+            survey_response_type, filters, keyword)
 
     def get_leading_part(self):
         leading_part = []
         for submission in self.filtered_survey_responses:
-            data_sender_tuple, rp, subject_tuple, submission_date = super(SubmissionListForExcel,
-                self).get_submission_details_for_excel(submission)
-            status = self._get_translated_submission_status(submission.status)
+            data_sender_tuple, rp, subject_tuple, submission_date = super(SurveyResponseForExcel,
+                self).get_survey_response_details_for_excel(submission)
+            status = self._get_translated_survey_response_status(submission.status)
             error_message = submission.errors if submission.errors else "-"
             subject_id = subject_tuple[1] if subject_tuple else ""
             subject_name = subject_tuple[0] if subject_tuple else ""

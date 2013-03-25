@@ -1,10 +1,10 @@
-from datawinners.project.submission_data import SubmissionData
+from datawinners.project.survey_response_data import SurveyResponseData
 from datawinners.main.utils import timebox
 from datawinners.project.Header import Header
 from datawinners.project.data_sender import DataSender
 from datawinners.project.export_to_excel import format_field_values_for_excel
 
-class AnalysisForExcel(SubmissionData):
+class AnalysisForExcel(SurveyResponseData):
 
     def __init__(self, form_model, manager, org_id, filters, keyword=None):
         super(AnalysisForExcel, self).__init__(form_model, manager, org_id, Header, None, filters, keyword)
@@ -13,7 +13,7 @@ class AnalysisForExcel(SubmissionData):
         leading_part = []
         for submission in self.filtered_survey_responses:
             data_sender_tuple, rp, subject_tuple, submission_date = super(AnalysisForExcel,
-                self).get_submission_details_for_excel(submission)
+                self).get_survey_response_details_for_excel(submission)
             subject_id = subject_tuple[1] if subject_tuple else ""
             subject_name = subject_tuple[0] if subject_tuple else ""
             data_sender = DataSender.from_tuple(data_sender_tuple)

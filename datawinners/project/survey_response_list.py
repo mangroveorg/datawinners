@@ -1,29 +1,29 @@
 from datawinners.project.Header import SubmissionsPageHeader
 from main.utils import timebox
 from project.helper import case_insensitive_lookup
-from submission_data import SubmissionData
+from survey_response_data import SurveyResponseData
 from mangrove.form_model.field import SelectField
 
-class SubmissionList(SubmissionData):
-    def __init__(self, form_model, manager, org_id, submission_type, filters, keyword=None):
-        super(SubmissionList, self).__init__(form_model, manager, org_id, SubmissionsPageHeader, submission_type,filters, keyword)
+class SurveyResponseList(SurveyResponseData):
+    def __init__(self, form_model, manager, org_id, survey_response_type, filters, keyword=None):
+        super(SurveyResponseList, self).__init__(form_model, manager, org_id, SubmissionsPageHeader, survey_response_type,filters, keyword)
 
     def get_leading_part(self):
         leading_part = []
-        for submission in self.filtered_survey_responses:
-            data_sender, rp, subject, submission_date = super(SubmissionList, self)._get_submission_details(submission)
-            status = self._get_translated_submission_status(submission.status)
-            error_message = submission.errors if submission.errors else "-"
+        for survey_response in self.filtered_survey_responses:
+            data_sender, rp, subject, submission_date = super(SurveyResponseList, self)._get_survey_response_details(survey_response)
+            status = self._get_translated_survey_response_status(survey_response.status)
+            error_message = survey_response.errors if survey_response.errors else "-"
             leading_part.append(
-                filter(lambda x: x, [submission.id, data_sender, submission_date, status, error_message, subject, rp]))
+                filter(lambda x: x, [survey_response.id, data_sender, submission_date, status, error_message, subject, rp]))
         return leading_part
 
     @timebox
     def _get_field_values(self):
-        submission_values = [(submission.form_model_revision, submission.values) for submission in
+        survey_response_values = [(survey_response.form_model_revision, survey_response.values) for survey_response in
                              self.filtered_survey_responses]
         field_values = []
-        for row in submission_values:
+        for row in survey_response_values:
             self._replace_option_with_real_answer_value(row)
             fields_ = [case_insensitive_lookup(field.code, row[-1]) for field in self.form_model.non_rp_fields_by()]
             field_values.append(fields_)
