@@ -133,6 +133,7 @@ $(document).ready(function () {
             $("#note_for_delete_users").hide();
             var users = DW.get_is_user();
             if (users["names"].length) {
+                $("#checkall-datasenders").attr("checked", false);
                 var users_list_for_html = "<li>" + users["names"].join("</li><li>") + "</li>";
                 if (users["names"].length == allIds.length) { //Each DS selected is also User
                     $(delete_all_ds_are_users.container + " .users_list").html(users_list_for_html);

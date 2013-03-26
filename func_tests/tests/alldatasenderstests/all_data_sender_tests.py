@@ -219,5 +219,13 @@ class TestAllDataSender(unittest.TestCase):
         self.assertTrue(all_data_sender_page.actions_menu_shown())
         self.assertTrue(all_data_sender_page.is_edit_enabled())
 
+    @attr("functional_test")
+    def test_should_uncheck_checkall_when_trying_to_delete_ds_user(self):
+        all_data_sender_page = self.page
+        all_data_sender_page.click_checkall_checkbox()
+        all_data_sender_page.delete_data_sender()
+        self.assertFalse(all_data_sender_page.is_checkall_checked())
+
+
 
 

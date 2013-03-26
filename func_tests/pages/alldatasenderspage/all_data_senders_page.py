@@ -179,3 +179,6 @@ class AllDataSendersPage(Page):
     def is_edit_enabled(self):
         css_class = self.driver.find(EDIT_LI_LOCATOR).get_attribute("class")
         return css_class.find("disabled") < 0
+
+    def is_checkall_checked(self):
+        return self.driver.find(CHECKALL_DS_CB).get_attribute("checked") == "true"
