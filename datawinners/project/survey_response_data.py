@@ -52,8 +52,17 @@ class SurveyResponseData(object):
         data_sender = self._get_data_sender(filtered_survey_responses)
         submission_date = format_dt_for_submission_log_page(filtered_survey_responses)
         rp = self._get_rp_for_leading_part(filtered_survey_responses)
+        if rp is not None:
+            rp = self._format_rp_date(rp, filtered_survey_responses)
         subject = self._get_subject_for_leading_part(filtered_survey_responses)
         return data_sender, rp, subject, submission_date
+
+    def _format_rp_date(self, rp, submission):
+        rp_field = self.form_model.get_field_by_code_and_rev(self.form_model.event_time_question.code,
+            submission.form_model_revision)
+        from datetime import datetime
+        rp = datetime.strptime(rp, rp_field.DATE_DICTIONARY.get(rp_field.date_format))
+        return rp.strftime(rp_field.DATE_DICTIONARY.get(rp_field.date_format))
 
     def get_survey_response_details_for_excel(self, filtered_survey_response):
         data_sender, reporting_date, subject, submission_date = self._get_survey_response_details(filtered_survey_response)
