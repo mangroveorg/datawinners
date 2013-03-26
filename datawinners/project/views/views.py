@@ -8,7 +8,6 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.translation import ugettext_lazy as _, get_language, activate
 from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse

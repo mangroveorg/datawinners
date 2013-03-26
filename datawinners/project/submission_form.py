@@ -26,8 +26,7 @@ class SubmissionForm(Form):
         properties.update({field.code: FormField().create(field) for field in questionnaire_form_model.fields if
                            not field.is_entity_field})
         properties.update(FormCodeField().create(questionnaire_form_model.form_code))
-
-        return type('BoundSubmissionForm', (SubmissionForm,), properties)()
+        return type('BoundSubmissionForm', (SubmissionForm,), properties)
 
     def __init__(self, country=None, *args, **kwargs):
         self.country = country

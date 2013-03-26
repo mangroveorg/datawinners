@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext_lazy as _
 import json
 import datetime
 import logging
@@ -7,6 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
+from mangrove.transport.player.new_players import WebPlayerV2
 from alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.views import session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -38,6 +40,8 @@ from project.submission_form import SubmissionForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 
 performance_logger = logging.getLogger("performance")
+websubmission_logger = logging.getLogger("websubmission")
+
 
 @login_required(login_url='/login')
 @session_not_expired
@@ -97,30 +101,44 @@ def build_static_info_context(manager, org_id, submission):
 @login_required(login_url='/login')
 @session_not_expired
 @is_not_expired
-def edit(request, project_id, submission_id):
+def edit(request, project_id, survey_response_id):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     questionnaire_form_model = FormModel.get(manager, project.qid)
-    questionnaire_form = SubmissionForm.create(manager, project, questionnaire_form_model)
+    SurveyResponseForm = SubmissionForm.create(manager, project, questionnaire_form_model)
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
-    survey_response = get_survey_response_by_id(manager, submission_id)
+    survey_response = get_survey_response_by_id(manager, survey_response_id)
     form_ui_model = build_static_info_context(manager, get_organization(request).org_id, survey_response)
 
     if request.method == 'GET':
-        questionnaire_form.initial_values(survey_response.values)
-        form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, questionnaire_form,
+        survey_response_form = SurveyResponseForm()
+        survey_response_form.initial_values(survey_response.values)
+        form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        questionnaire_form.bind(request.POST)
-        form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, questionnaire_form,
+        survey_response_form = SurveyResponseForm(data = request.POST)
+        form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
-        if not questionnaire_form.is_valid():
+        if not survey_response_form.is_valid():
             return render_to_response("project/web_questionnaire.html", form_ui_model,
+                    context_instance=RequestContext(request))
+
+        created_request = helper.create_request(survey_response_form, request.user.username)
+        response = WebPlayerV2(manager).edit_survey_response(created_request, survey_response_id, websubmission_logger)
+        if response.success:
+            ReportRouter().route(get_organization(request).org_id, response)
+            success_message = _("Your changes have been saved.")
+            form_ui_model.update({'success_message':success_message})
+        else:
+            survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
+        return render_to_response("project/web_questionnaire.html", form_ui_model,
                 context_instance=RequestContext(request))
+
+
 
 
 @login_required(login_url='/login')

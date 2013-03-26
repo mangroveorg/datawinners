@@ -41,6 +41,7 @@ class TestSubmissionForm(unittest.TestCase):
         field_property_mock = PropertyMock(return_value=fields)
         type(mock_form_model).fields = field_property_mock
         type(mock_form_model).entity_question = entity_question
-        submission_form_create = SubmissionForm.create(Mock(DatabaseManager), mock_project, mock_form_model)
+        SurveyResponseForm = SubmissionForm.create(Mock(DatabaseManager), mock_project, mock_form_model)
+        submission_form_create = SurveyResponseForm()
         expected_field_keys = ['integer_field_code', 'date_field_code','geo_field_code', 'text_field_code','form_code']
         self.assertEquals(submission_form_create.fields.keys(), expected_field_keys)
