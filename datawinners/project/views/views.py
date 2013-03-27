@@ -16,6 +16,7 @@ from datawinners.accountmanagement.views import session_not_expired
 from datawinners.project.view_models import ReporterEntity
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
+from django.utils.translation import ugettext_lazy as _, get_language, activate
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_data_sender_form, add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization
 from datawinners.entity import import_data as import_module
