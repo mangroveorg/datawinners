@@ -68,3 +68,12 @@ class WebSubmissionPage(Page):
     def fill_and_submit_answer(self, answer):
         self.fill_questionnaire_with(answer)
         self.submit_answers()
+
+    def get_questions_and_instructions(self):
+        labels, instructions = [], []
+        for question in self.driver.find(by_css("form ol.que_width")).find_elements(by="css selector", value="li h6"):
+            labels.append(question.text)
+        for question in self.driver.find(by_css("form ol.que_width")).find_elements(by="css selector", value="li p.instructions"):
+            if question.get_attribute("id"):
+                instructions.append(question.text)
+        return labels, instructions

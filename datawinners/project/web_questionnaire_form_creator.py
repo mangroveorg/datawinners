@@ -229,7 +229,7 @@ class WebQuestionnaireFormCreator(object):
     def _create_integer_field(self, field):
         constraints = get_number_constraints(field)
         float_field = django.forms.fields.FloatField(label=field.label,initial=field.value, required=field.is_required(),
-            **constraints)
+            help_text=field.instruction, **constraints)
         float_field.widget.attrs["watermark"] = get_number_field_constraint_text(field)
         float_field.widget.attrs['style'] = 'padding-top: 7px;'
         return float_field
