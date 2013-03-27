@@ -45,3 +45,4 @@ class TestSubmissionForm(unittest.TestCase):
         submission_form_create = SurveyResponseForm()
         expected_field_keys = ['integer_field_code', 'date_field_code','geo_field_code', 'text_field_code','form_code']
         self.assertEquals(submission_form_create.fields.keys(), expected_field_keys)
+

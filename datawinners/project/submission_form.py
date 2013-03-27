@@ -19,7 +19,7 @@ class SubmissionForm(Form):
 
         subject_question = questionnaire_form_model.entity_question
         if subject_question is not None:
-            properties.update(SubjectField(manager).create(subject_question, project.entity_type))
+            properties.update(SubjectField(manager,project).create(subject_question, project.entity_type))
             properties.update(SubjectCodeField().create(subject_question.code))
             properties.update({u'short_code_question_code': questionnaire_form_model.entity_question.code})
 

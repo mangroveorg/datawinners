@@ -1,8 +1,8 @@
 from django.forms import HiddenInput, ChoiceField, FloatField
 from django.utils.translation import ugettext
 from entity.fields import PhoneNumberField, DjangoDateField
-from entity.import_data import load_all_subjects_of_type
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
+from entity.import_data import load_all_subjects_of_type, get_entity_type_fields
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REPORTER
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField, DateField
 from django import forms
 from mangrove.utils.types import is_empty
@@ -15,10 +15,11 @@ class FormField(object):
                                   TelephoneNumberField: PhoneNumberFormField,
                                   IntegerField: IntegerFormField,
                                   DateField: DateFormField,
-                                  }
+            }
             return field_creation_map[type(field)]().create(field)
         except KeyError:
             return CharFormField().create(field)
+
 
 class SelectFormField(object):
     def create(self, field):
@@ -48,9 +49,11 @@ class SelectFormField(object):
         choices = tuple(choice_list)
         return choices
 
-class PhoneNumberFormField(object) :
+
+class PhoneNumberFormField(object):
     def create(self, field):
-        telephone_number_field = PhoneNumberField(label=field.label, initial=field.value, required=field.is_required(),help_text=field.instruction)
+        telephone_number_field = PhoneNumberField(label=field.label, initial=field.value, required=field.is_required(),
+            help_text=field.instruction)
         telephone_number_field.widget.attrs["watermark"] = self.get_text_field_constraint_text(field)
         telephone_number_field.widget.attrs['style'] = 'padding-top: 7px;'
         if field.name == LOCATION_TYPE_FIELD_NAME and isinstance(field, HierarchyField):
@@ -72,6 +75,7 @@ class PhoneNumberFormField(object) :
                 constraint_text = _("Between %s -- %s characters") % (min, max)
                 return constraint_text
         return ""
+
 
 class IntegerFormField(object):
     def create(self, field):
@@ -108,6 +112,7 @@ class IntegerFormField(object):
             return constraint_text
         return ""
 
+
 class DateFormField(object):
     def create(self, field):
         format = field.DATE_DICTIONARY.get(field.date_format)
@@ -117,7 +122,8 @@ class DateFormField(object):
         date_field.widget.attrs['style'] = 'padding-top: 7px;'
         return date_field
 
-class CharFormField(object) :
+
+class CharFormField(object):
     def create(self, field):
         constraints = self._get_chars_constraints(field)
         char_field = forms.CharField(label=field.label, initial=field.value, required=field.is_required(),
@@ -153,20 +159,29 @@ class FormCodeField(object):
     def create(self, form_code):
         return {'form_code': forms.CharField(widget=HiddenInput, initial=form_code)}
 
+
 class SubjectCodeField(object):
     def create(self, subject_code):
         return {'entity_question_code': forms.CharField(required=False, widget=HiddenInput, label=subject_code)}
 
+
 class SubjectField(object):
-    def __init__(self, dbm):
+    def __init__(self, dbm, project):
         self.dbm = dbm
+        self.project = project
 
     def create(self, subject_field, entity_type):
-        subjects, fields, label = load_all_subjects_of_type(self.dbm, type=entity_type)
-        subject_data = self._build_subject_choice_data(subjects, fields)
-        all_subject_choices = map(self.choice, subject_data)
+        reporter_entity_type = 'reporter'
         instruction_for_subject_field = ugettext("Choose Subject from this list.")
-        return {subject_field.code : self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)}
+        if self.project.is_on_type(reporter_entity_type):
+            choice_fields = self._data_sender_choice_fields(subject_field)
+        else:
+            subjects, fields, label = load_all_subjects_of_type(self.dbm, type=entity_type)
+            subjects = self._build_subject_choice_data(subjects, fields)
+            all_subject_choices = map(self.choice, subjects)
+            choice_fields = self._get_choice_field(all_subject_choices, subject_field,
+                help_text=instruction_for_subject_field)
+        return {subject_field.code: choice_fields}
 
     def _build_subject_choice_data(self, subjects, key_list):
         values = map(lambda x: x["cols"] + [x["short_code"]], subjects)
@@ -185,6 +200,15 @@ class SubjectField(object):
 
     def choice(self, subject):
         return subject['unique_id'], self.get_value(subject)
+
+
+    def _data_sender_choice_fields(self, subject_field):
+        data_senders = self.project.get_data_senders(self.dbm)
+        data_sender_choices = self._get_all_choices(data_senders)
+        return self._get_choice_field(data_sender_choices, subject_field, help_text=subject_field.instruction)
+
+    def _get_all_choices(self, entities):
+        return [(entity['short_code'], entity['name'] + '  (' + entity['short_code'] + ')') for entity in entities]
 
 
 def get_text_field_constraint_text(field):
