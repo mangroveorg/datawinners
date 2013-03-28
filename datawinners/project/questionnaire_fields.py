@@ -172,15 +172,11 @@ class SubjectField(object):
 
     def create(self, subject_field, entity_type):
         reporter_entity_type = 'reporter'
-        instruction_for_subject_field = ugettext("Choose Subject from this list.")
         if self.project.is_on_type(reporter_entity_type):
             choice_fields = self._data_sender_choice_fields(subject_field)
         else:
-            subjects, fields, label = load_all_subjects_of_type(self.dbm, type=entity_type)
-            subjects = self._build_subject_choice_data(subjects, fields)
-            all_subject_choices = map(self.choice, subjects)
-            choice_fields = self._get_choice_field(all_subject_choices, subject_field,
-                help_text=instruction_for_subject_field)
+            choice_fields = self._subject_choice_fields(entity_type, subject_field)
+
         return {subject_field.code: choice_fields}
 
     def _build_subject_choice_data(self, subjects, key_list):
@@ -209,6 +205,16 @@ class SubjectField(object):
 
     def _get_all_choices(self, entities):
         return [(entity['short_code'], entity['name'] + '  (' + entity['short_code'] + ')') for entity in entities]
+
+    def _subject_choice_fields(self, entity_type, subject_field):
+        subjects, fields, label = load_all_subjects_of_type(self.dbm, type=entity_type)
+        subjects = self._build_subject_choice_data(subjects, fields)
+        instruction_for_subject_field = ugettext("Choose Subject from this list.")
+        all_subject_choices = map(self.choice, subjects)
+        choice_fields = self._get_choice_field(all_subject_choices, subject_field,
+            help_text=instruction_for_subject_field)
+        return choice_fields
+
 
 
 def get_text_field_constraint_text(field):
