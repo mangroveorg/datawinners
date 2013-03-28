@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.utils.translation import ugettext_lazy as _
 import json
 import datetime
@@ -85,7 +86,7 @@ def index(request, project_id=None, questionnaire_code=None):
 
 
 def build_static_info_context(manager, org_id, submission):
-    form_ui_model = {}
+    form_ui_model = OrderedDict()
     static_content = {'Data Sender': get_data_sender(manager, org_id, submission),
                       'Source': capitalize(submission.channel) if submission.channel == 'web' else submission.channel.upper(),
                       'Status': ugettext('Success') if submission.status else ugettext('Error')+'. ' + submission.errors,
