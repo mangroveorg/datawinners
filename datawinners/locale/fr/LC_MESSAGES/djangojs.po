@@ -1098,3 +1098,6 @@ msgstr "Sélectionnez seulement 1 Expéditeur de Données"
 
 msgid "Not available for trial accounts"
 msgstr "Non disponible pour les comptes essai"
+
+msgid "Answer must be country code plus telephone number. Example: 261333745269"
+msgstr "La réponse doit être un numéro de téléphone précédé du code pays. Exemple : 261333745269"

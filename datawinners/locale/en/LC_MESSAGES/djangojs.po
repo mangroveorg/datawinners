@@ -871,3 +871,6 @@ msgstr ""
 
 msgid "Not available for trial accounts"
 msgstr ""
+
+msgid "Answer must be country code plus telephone number. Example: 261333745269"
+msgstr ""

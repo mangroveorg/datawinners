@@ -60,3 +60,10 @@ class ProjectSubjectsPage(Page):
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_CB).get_attribute("checked") == "true"
+
+    def choose_question_type(self, type):
+        if self.is_question_type_enabled():
+            self.driver.find(by_css(SPECIFIC_TYPE_CB_BY_CSS % type)).click()
+
+    def get_instruction_for_current_question(self):
+        return self.driver.find(by_id("question_instruction")).text

@@ -476,6 +476,8 @@ msgstr ""
 msgid "All %(entity)s"
 msgstr ""
 
-
 msgid "Next:"
 msgstr "Manaraka:"
+
+msgid "Answer must be country code plus telephone number. Example: 261333745269"
+msgstr ""

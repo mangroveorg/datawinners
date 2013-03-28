@@ -27,7 +27,8 @@ DW.instruction_template = {
     "dd.mm.yyyy":"25.12.2011",
     "mm.dd.yyyy":"12.25.2011",
     "mm.yyyy":"12.2011",
-    "unique_id_question": gettext("Answer must be 20 characters maximum")
+    "unique_id_question": gettext("Answer must be 20 characters maximum"),
+    "telephone_number": gettext("Answer must be country code plus telephone number. Example: 261333745269")
 };
 DW.date_template = {
     "dd.mm.yyyy":gettext("day.month.year"),
@@ -119,7 +120,7 @@ DW.question.prototype = {
                     return DW.instruction_template.text;
                 }
                 if (this.type() == "telephone_number") {
-                    return $.sprintf(DW.instruction_template.max_text, "15");
+                    return $.sprintf(DW.instruction_template.telephone_number);
                 }
                 if (this.type() == "list") {
                     return DW.instruction_template.text;

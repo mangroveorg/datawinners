@@ -14,3 +14,4 @@ ACTION_MENU = by_id("action")
 MY_SUBJECTS_TAB_LINK = by_css("#my_subjects ul.secondary_tab li:first-child a")
 SUBJECT_CB_LOCATOR = "#subjects-table tbody tr td:first-child input#%s"
 CHECKALL_CB = by_id("checkall-subjects")
+SPECIFIC_TYPE_CB_BY_CSS = "[name=type][value=%s]"
