@@ -33,9 +33,9 @@ class SubmissionLogPage(Page):
     def get_active_tab_text(self):
         return self.driver.find(ACTIVE_TAB_LOCATOR).text
 
-    def choose_delete_on_the_action_dropdown(self):
+    def choose_on_dropdown_action(self,action_button):
         self.driver.find(ACTION_SELECT_CSS_LOCATOR).click()
-        self.driver.find(DELETE_BUTTON).click()
+        self.driver.find(action_button).click()
 
     def check_all_submissions(self):
         self.driver.find(CHECKALL_CB_CSS_LOCATOR).click()
@@ -47,6 +47,13 @@ class SubmissionLogPage(Page):
             column_data.append(self.get_cell_data(index, column))
             index += 1
         return column_data
+
+    def get_all_data_on_nth_row(self,row):
+        row_data = []
+        header_cell_count = len(self.driver.find_elements_by_css_selector(HEADER_CELLS)) #find_elements(by_css)
+        for col in range(2,header_cell_count):
+            row_data.append(self.get_cell_data(row,col))
+        return row_data
 
     def get_shown_records_count(self):
         try:

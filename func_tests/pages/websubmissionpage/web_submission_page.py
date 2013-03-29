@@ -1,6 +1,7 @@
 from pages.datasenderpage.data_sender_locator import SMARTPHONE_NAV
 from pages.page import Page
 from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage
+from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from pages.websubmissionpage.web_submission_locator import *
 from tests.websubmissiontests.web_submission_data import *
@@ -77,3 +78,7 @@ class WebSubmissionPage(Page):
             if question.get_attribute("id"):
                 instructions.append(question.text)
         return labels, instructions
+
+    def navigate_to_submission_log(self):
+        self.driver.find_elements_by_css_selector('.secondary_tab .inactive>a')[1].click()
+        return SubmissionLogPage(self.driver)

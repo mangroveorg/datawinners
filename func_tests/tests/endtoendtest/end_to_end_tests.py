@@ -132,7 +132,7 @@ class TestApplicationEndToEnd(BaseTest):
 
     def verify_submission2(self, global_navigation, sms_log):
         view_all_data_page = global_navigation.navigate_to_all_data_page()
-        submission_log_page = view_all_data_page.navigate_to_submission_log_page(
+        submission_log_page = view_all_data_page.navigate_to_submission_log_page_from_project_dashboard(
             fetch_(PROJECT_NAME, VALID_DATA_FOR_PROJECT).lower())
         self.assertRegexpMatches(submission_log_page.get_submission_message(sms_log),
                                  fetch_(SMS_SUBMISSION, from_(sms_log)))

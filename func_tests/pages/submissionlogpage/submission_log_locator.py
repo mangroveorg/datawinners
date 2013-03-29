@@ -25,10 +25,12 @@ SUBMISSION_LOG_FAILURE_MSG_XPATH = "/td[5]/span"
 ACTIVE_TAB_LOCATOR = by_css("ul.secondary_tab li.active")
 ACTION_SELECT_CSS_LOCATOR = by_css(".table_information .action")
 DELETE_BUTTON = by_css("#action_menu .delete")
+EDIT_BUTTON = by_css("#action_menu .edit")
 CHECKALL_CB_CSS_LOCATOR = by_id("master_checkbox")
 SHOWN_RECORDS_COUNT_CSS_LOCATOR = by_css(".dataTables_info span:first-child")
 XPATH_TO_CELL = "//div[@id='submission_logs']//../table/tbody/tr[%s]/td[%s]"
 HEADER_CELL_CSS_LOCATOR = "#submission_logs table>thead>tr>th:nth-child(%s)"
+HEADER_CELLS = "#submission_logs table>thead>tr>th"
 SUCCESS_TAB_CSS_LOCATOR = by_css("#tabs ul li:nth-child(2) a:first-child")
 ACTION_DROP_DOWN = by_css("button.action")
 NONE_SELECTED_LOCATOR = by_id("none-selected")
