@@ -229,20 +229,15 @@ $(document).ready(function () {
         $("#message_text .message").delay(5000).fadeOut();
     });
 
-    $('.edit').click(function () {
+    $('#edit').click(function () {
         var survey_response_id = get_ids();
         var project_id = $(location).attr('href').split('/')[4];
 
-        if (survey_response_id.length == 0) {
-            $("#message_text").html("<div class='message message-box'>" + gettext("Please select at least one record to edit") + "</div>");
-        }
-        else if (survey_response_id.length > 1) {
-            $("#message_text").html("<div class='message message-box'>" + gettext("Please select only one record to edit") + "</div>");
-        }
-        else {
+        if (survey_response_id.length > 1) {
+            return false;
+        } else {
             $(this).attr('href','/project/'+project_id+'/submissions/edit/' + survey_response_id)
         }
-        $("#message_text .message").delay(5000).fadeOut();
     });
 
     function removeRowsFromDataTable(ids) {
@@ -328,4 +323,10 @@ $(document).ready(function () {
     }
     var submissions_action_dropdown = new DW.action_dropdown(kwargs);
 
+    $(".selected_submissions").live("click", function(){
+        var checked = $(this).attr("checked") == 'checked';
+        if (!checked) {
+            $("#master_checkbox").removeAttr("checked");
+        }
+    });
 });

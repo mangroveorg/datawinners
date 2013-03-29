@@ -874,3 +874,6 @@ msgstr ""
 
 msgid "Answer must be country code plus telephone number. Example: 261333745269"
 msgstr ""
+
+msgid "Please select 1 Submission only"
+msgstr ""
