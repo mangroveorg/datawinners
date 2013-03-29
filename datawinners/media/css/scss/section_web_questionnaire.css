@@ -11,11 +11,10 @@
   overflow: hidden; }
 
 #static-info .info {
-  padding-left: 10px;
+  padding: 8px 8px 8px 10px;
   float: left;
   width: 436px;
-  display: block;
-  line-height: 25px; }
+  display: block; }
 
 #static-info .info .content-header:after {
   content: ":";
