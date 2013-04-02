@@ -2,19 +2,15 @@
 import unittest
 from nose.plugins.attrib import attr
 from framework.base_test import  setup_driver, teardown_driver
-from framework.utils.data_fetcher import fetch_, from_
 from pages.loginpage.login_page import LoginPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, EDIT_BUTTON
-from pages.websubmissionpage.web_submission_page import WebSubmissionPage
+from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_LOGIN_PAGE, DATA_WINNER_DASHBOARD_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from datetime import datetime
 import time
-from tests.websubmissiontests.web_submission_data import  EDITED_ANSWERS, VALID_SMS
 
 @attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
@@ -33,11 +29,6 @@ class TestSubmissionLog(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    def prerequisites_of_submission_log(self, sms_data):
-        sms_tester_page = self.page
-        sms_tester_page.send_sms_with(sms_data)
-        self.assertEqual(sms_tester_page.get_response_message(), fetch_(MESSAGE, from_(sms_data)))
-        return self.navigate_to_submission_log_page_from_project_dashboard()
 
     def navigate_to_submission_log_page_from_project_dashboard(self, project_name=PROJECT_NAME):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
@@ -103,26 +94,6 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page.check_submission_by_row_number(3)
         submission_log_page.click_action_button()
         self.assert_none_selected_shown(submission_log_page)
-
-    @attr('functional_test')
-    def test_should_edit_a_submission(self):
-        self.prerequisites_of_submission_log(VALID_SMS)
-        submission_log_page = self.navigate_to_submission_log_page_from_project_dashboard(project_name=FIRST_PROJECT_NAME)
-        time.sleep(1)
-        submission_log_page.check_submission_by_row_number(1)
-        submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
-        submission_page = WebSubmissionPage(self.driver)
-        submission_page.fill_and_submit_answer(EDITED_ANSWERS)
-        submission_log_page = submission_page.navigate_to_submission_log()
-        self.assert_edited_data(submission_log_page.get_all_data_on_nth_row(1))
-
-    def assert_edited_data(self,row_data):
-        self.assertEqual(row_data[3],u'Testcid001')
-        self.assertEqual(row_data[5],u'Bob')
-        self.assertEqual(row_data[6],u'78.0')
-        self.assertEqual(row_data[7],u'O-')
-        self.assertEqual(row_data[8],u'Rapid weight loss, Pneumonia, Memory loss')
-        self.assertEqual(row_data[9],u'-18.1324 27.6547')
 
     def assert_none_selected_shown(self, submission_log_page):
         self.assertTrue(submission_log_page.is_none_selected_shown())
