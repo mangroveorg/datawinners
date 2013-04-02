@@ -1,3 +1,4 @@
+from pages.addsubjectpage.add_subject_page import AddSubjectPage
 from pages.page import Page
 from pages.projectsubjectspage.project_subjects_locator import *
 from framework.utils.common_utils import by_css
@@ -67,3 +68,8 @@ class ProjectSubjectsPage(Page):
 
     def get_instruction_for_current_question(self):
         return self.driver.find(by_id("question_instruction")).text
+
+    def click_register_subject(self):
+        self.driver.find(REGISTER_SUBJECT_LINK).click()
+        return AddSubjectPage(self.driver)
+

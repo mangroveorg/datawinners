@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import copy
 from nose.plugins.attrib import attr
 import time
 from framework.base_test import BaseTest, setup_driver, teardown_driver
@@ -124,6 +125,10 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.click_go_button()
         submission_date = data_analysis_page.get_all_data_records_by_column(2)
         period = data_analysis_page.get_submission_date().split(' - ')
+        #This is specifically put in here as on the 1st of a month when we choose 'Current Month' we dont get date as
+        # date1-date2 it comes as just date1
+        if len(period) == 1 :
+            period.append(copy.deepcopy(period[0]))
         self.assert_in_date_range(period, submission_date, date_format=SUBMISSION_DATE_FORMAT)
 
     @attr('functional_test', 'smoke')

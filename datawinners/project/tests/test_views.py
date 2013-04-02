@@ -21,7 +21,7 @@ from datawinners.project.survey_response_router import SurveyResponseRouter
 from project.views.submission_views import delete_submissions_by_ids
 from project.utils import make_subject_links, make_data_sender_links
 from project.views.utils import add_link
-from project.views.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
+from project.views.views import get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
 from project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field
 from questionnaire.questionnaire_builder import get_max_code
 
@@ -89,51 +89,6 @@ class TestProjectViews( unittest.TestCase ):
         link = add_link( project )
         self.assertEqual( reverse( 'create_data_sender_and_web_user', args=[project.id] ), link.url )
         self.assertEqual( 'Add a data sender', link.text )
-
-    def test_should_get_correct_template_for_non_data_sender(self):
-        request = Mock( )
-        request.user = Mock( spec=User )
-        manager = Mock( spec=DatabaseManager )
-        manager.database = dict( )
-        project = Project( project_type="survey", entity_type="clinic", state=ProjectState.ACTIVE )
-
-        with patch.object( FormModel, "get" ) as get_form_model:
-            get_form_model.return_value = {}
-            is_data_sender = False
-            subject = False
-            form_model, template = get_form_model_and_template( manager, project, is_data_sender, subject )
-            self.assertEquals( template, "project/web_questionnaire.html" )
-
-    def test_should_get_correct_template_for_data_sender(self):
-        request = Mock( )
-        request.user = Mock( spec=User )
-        manager = Mock( spec=DatabaseManager )
-        manager.database = dict( )
-        project = Project( project_type="survey", entity_type="clinic", state=ProjectState.ACTIVE )
-
-        with patch.object( FormModel, "get" ) as get_form_model:
-            get_form_model.return_value = {}
-            is_data_sender = True
-            subject = False
-            form_model, template = get_form_model_and_template( manager, project, is_data_sender, subject )
-            self.assertEquals( template, "project/data_submission.html" )
-
-    def test_should_get_correct_template_for_subject_questionnaire(self):
-        request = Mock( )
-        request.user = Mock( spec=User )
-        manager = Mock( spec=DatabaseManager )
-        manager.database = dict( )
-        project = Project( project_type="survey", entity_type="clinic", state=ProjectState.ACTIVE )
-
-        with patch.object( FormModel, "get" ) as get_form_model:
-            get_form_model.return_value = {}
-            with patch( "project.views.views.get_form_model_by_entity_type" ) as get_subject_form:
-                get_subject_form.return_value = {}
-                is_data_sender = False
-                subject = True
-                form_model, template = get_form_model_and_template( manager, project, is_data_sender, subject )
-                self.assertEquals( template, "project/register_subject.html" )
-
 
     def test_should_get_preview_and_instruction_links(self):
         with patch( "project.wizard_view.reverse" ) as reverse:

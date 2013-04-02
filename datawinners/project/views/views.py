@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import abc
 import json
 import datetime
 import logging
@@ -180,7 +181,7 @@ def project_overview(request, project_id=None):
     number_records = survey_response_count(manager, questionnaire_code, None, None)
     number_reminders = Reminder.objects.filter(project_id=project.id).count()
     links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id]),
-             'web_questionnaire_list': reverse(web_questionnaire, args=[project_id])}
+             'web_questionnaire_list': reverse('web_questionnaire', args=[project_id])}
     add_data_senders_to_see_on_map_msg = _(
         "Register Data Senders to see them on this map") if number_data_sender == 0 else ""
     add_subjects_to_see_on_map_msg = _(
@@ -641,19 +642,145 @@ def _make_form_context(questionnaire_form, project, form_code, hide_link_class, 
             'smart_phone_instruction_link': reverse("smart_phone_instruction"),
     }
 
-def get_form_model_and_template(manager, project, is_data_sender, subject):
-    form_model = FormModel.get(manager, project.qid)
-    template = 'project/data_submission.html' if is_data_sender else "project/web_questionnaire.html"
-
-    if subject:
-        template = 'project/register_subject.html'
-        form_model = _get_subject_form_model(manager, project.entity_type)
-
-    return form_model, template
-
-
 def _get_form_code(manager, project):
     return FormModel.get(manager, project.qid).form_code
+
+class WebQuestionnaireRequest:
+    def __init__(self, request, project_id=None):
+        self.request = request
+        self.manager = get_database_manager(self.request.user)
+        self.project = Project.load(self.manager.database, project_id)
+        self.is_data_sender = self.request.user.get_profile().reporter
+        self.QuestionnaireForm = WebQuestionnaireFormCreator(SubjectQuestionFieldCreator(self.manager, self.project),
+            form_model=self.form_model).create()
+        self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
+
+    @abc.abstractproperty
+    def template(self):
+        pass
+
+    @abc.abstractproperty
+    def form_code(self):
+        pass
+
+    @abc.abstractproperty
+    def form_model(self):
+        pass
+
+    @abc.abstractmethod
+    def player_response(self, created_request, logger):
+        pass
+
+    @abc.abstractmethod
+    def success_message(self, response_short_code):
+        pass
+
+    def response_for_get_request(self):
+        questionnaire_form = self.QuestionnaireForm()
+        form_context = get_form_context(self.form_code, self.project, questionnaire_form,
+            self.manager, self.hide_link_class, self.disable_link_class)
+        return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
+
+    def response_for_post_request(self):
+        questionnaire_form = self.QuestionnaireForm(country=utils.get_organization_country(self.request), data=self.request.POST)
+        if not questionnaire_form.is_valid():
+            form_context = get_form_context(self.form_code, self.project, questionnaire_form,
+                self.manager, self.hide_link_class, self.disable_link_class)
+
+            return render_to_response(self.template, form_context,
+                context_instance=RequestContext(self.request))
+
+        success_message = None
+        error_message = None
+        try:
+            created_request = helper.create_request(questionnaire_form, self.request.user.username)
+            response = self.player_response(created_request, websubmission_logger)
+            if response.success:
+                ReportRouter().route(get_organization(self.request).org_id, response)
+                success_message = self.success_message(response.short_code)
+                questionnaire_form = self.QuestionnaireForm()
+            else:
+                questionnaire_form._errors = helper.errors_to_list(response.errors, self.form_model.fields)
+
+                form_context = get_form_context(self.form_code, self.project, questionnaire_form,
+                    self.manager, self.hide_link_class, self.disable_link_class)
+                return render_to_response(self.template, form_context,
+                    context_instance=RequestContext(self.request))
+
+        except DataObjectNotFound as exception:
+            logger.exception(exception)
+            message = exception_messages.get(DataObjectNotFound).get(WEB)
+            error_message = _(message) % (self.form_model.entity_type[0], self.form_model.entity_type[0])
+        except Exception as exception:
+            logger.exception('Web Submission failure:-')
+            error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
+
+        _project_context = get_form_context(self.form_code, self.project, questionnaire_form,
+            self.manager, self.hide_link_class, self.disable_link_class)
+
+        _project_context.update({'success_message': success_message, 'error_message': error_message})
+
+        return render_to_response(self.template, _project_context,
+            context_instance=RequestContext(self.request))
+
+class SubjectWebQuestionnaireRequest(WebQuestionnaireRequest):
+    def __init__(self, request, project_id=None):
+        self.subject_form_model = None
+        self.subject_form_code = None
+        WebQuestionnaireRequest.__init__(self, request, project_id)
+
+    @property
+    def template(self):
+        return 'project/register_subject.html'
+
+    @property
+    def form_model(self):
+        if self.subject_form_model is None:
+            self.subject_form_model = _get_subject_form_model(self.manager, self.project.entity_type)
+        return self.subject_form_model
+
+    @property
+    def form_code(self):
+        if self.subject_form_code is None:
+            self.subject_form_code =  _get_form_code(self.manager, self.project)
+        return self.subject_form_code
+
+    def player_response(self, created_request, logger):
+        location_bridge = LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)
+        return WebPlayer(self.manager,location_bridge).accept(created_request, logger=websubmission_logger)
+
+    def success_message(self, response_short_code):
+        detail_dict = dict({"Subject Type": self.project.entity_type.capitalize(), "Unique ID": response_short_code})
+        UserActivityLog().log(self.request, action=REGISTERED_SUBJECT, project=self.project.name,
+            detail=json.dumps(detail_dict))
+        return (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (response_short_code,)
+
+
+class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
+    def __init__(self, request, project_id=None):
+        self.survey_form_model = None
+        self.survey_form_code = None
+        WebQuestionnaireRequest.__init__(self, request, project_id)
+
+    @property
+    def template(self):
+        return 'project/data_submission.html' if self.is_data_sender else "project/web_questionnaire.html"
+
+    @property
+    def form_model(self):
+        if self.survey_form_model is None:
+            self.survey_form_model = FormModel.get(self.manager, self.project.qid)
+        return self.survey_form_model
+
+    @property
+    def form_code(self):
+        return self.form_model.form_code
+
+    def player_response(self, created_request, logger):
+        return WebPlayerV2(self.manager).add_survey_response(created_request, websubmission_logger)
+
+    def success_message(self, response_short_code):
+        return _("Successfully submitted")
 
 
 @login_required(login_url='/login')
@@ -662,79 +789,26 @@ def _get_form_code(manager, project):
 @project_has_web_device
 @is_not_expired
 @is_project_exist
-def web_questionnaire(request, project_id=None, subject=False):
-    manager = get_database_manager(request.user)
-    project = Project.load(manager.database, project_id)
+def survey_web_questionnaire(request, project_id=None):
+    survey_request = SurveyWebQuestionnaireRequest(request, project_id)
+    if request.method == 'GET' :
+        return survey_request.response_for_get_request()
+    elif request.method == 'POST':
+        return survey_request.response_for_post_request()
 
-    is_data_sender = request.user.get_profile().reporter
 
-    form_model, template = get_form_model_and_template(manager, project, is_data_sender, subject)
-
-    QuestionnaireForm = WebQuestionnaireFormCreator(SubjectQuestionFieldCreator(manager, project),
-        form_model=form_model).create()
-
-    form_code_for_project_links = _get_form_code(manager, project) if subject else form_model.form_code
-
-    disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
-
+@login_required(login_url='/login')
+@session_not_expired
+@is_datasender_allowed
+@project_has_web_device
+@is_not_expired
+@is_project_exist
+def subject_web_questionnaire(request, project_id=None):
+    subject_request = SubjectWebQuestionnaireRequest(request, project_id)
     if request.method == 'GET':
-        questionnaire_form = QuestionnaireForm()
-        form_context = get_form_context(form_code_for_project_links, project, questionnaire_form,
-            manager, hide_link_class, disable_link_class)
-
-        return render_to_response(template, form_context,
-            context_instance=RequestContext(request))
-
-    if request.method == 'POST':
-        questionnaire_form = QuestionnaireForm(country=utils.get_organization_country(request), data=request.POST)
-        if not questionnaire_form.is_valid():
-            form_context = get_form_context(form_code_for_project_links, project, questionnaire_form,
-                manager, hide_link_class, disable_link_class)
-
-            return render_to_response(template, form_context,
-                context_instance=RequestContext(request))
-
-        success_message = None
-        error_message = None
-        try:
-            created_request = helper.create_request(questionnaire_form, request.user.username)
-            response = WebPlayerV2(manager).add_survey_response(created_request, websubmission_logger)
-            if response.success:
-                ReportRouter().route(get_organization(request).org_id, response)
-                if subject:
-                    success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
-                        response.short_code,)
-                    detail_dict = dict(
-                        {"Subject Type": project.entity_type.capitalize(), "Unique ID": response.short_code})
-                    UserActivityLog().log(request, action=REGISTERED_SUBJECT, project=project.name,
-                        detail=json.dumps(detail_dict))
-                else:
-                    success_message = _("Successfully submitted")
-                questionnaire_form = QuestionnaireForm()
-            else:
-                questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
-
-                form_context = get_form_context(form_code_for_project_links, project, questionnaire_form,
-                    manager, hide_link_class, disable_link_class)
-                return render_to_response(template, form_context,
-                    context_instance=RequestContext(request))
-
-        except DataObjectNotFound as exception:
-            logger.exception(exception)
-            message = exception_messages.get(DataObjectNotFound).get(WEB)
-            error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
-        except Exception as exception:
-            logger.exception('Web Submission failure:-')
-            error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
-
-        _project_context = get_form_context(form_code_for_project_links, project, questionnaire_form,
-            manager, hide_link_class, disable_link_class)
-
-        _project_context.update({'success_message': success_message, 'error_message': error_message})
-
-        return render_to_response(template, _project_context,
-            context_instance=RequestContext(request))
-
+        return subject_request.response_for_get_request()
+    elif request.method == 'POST':
+        return subject_request.response_for_post_request()
 
 def get_example_sms(fields):
     example_sms = ""

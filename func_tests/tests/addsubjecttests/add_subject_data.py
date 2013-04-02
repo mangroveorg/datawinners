@@ -81,16 +81,14 @@ INVALID_LONGITUDE_GPS = {ENTITY_TYPE: "clinic",
                          SUB_UNIQUE_ID: None,
                          ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
 
-
-INVALID_GPS =   {ENTITY_TYPE: "clinic",
-                 SUB_FIRST_NAME: "Invalid GPS with Semi-Colon",
-                 SUB_LAST_NAME: "Invalid GPS with Semi-Colon",
-                 LOCATION: "DIANA",
-                 GPS: "23; 10",
-                 MOBILE_NUMBER: "734!@#$456",
-                 SUB_UNIQUE_ID: None,
-                 ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315Please enter a valid phone number."}
-
+INVALID_GPS = {ENTITY_TYPE: "clinic",
+               SUB_FIRST_NAME: "Invalid GPS with Semi-Colon",
+               SUB_LAST_NAME: "Invalid GPS with Semi-Colon",
+               LOCATION: "DIANA",
+               GPS: "23; 10",
+               MOBILE_NUMBER: "734!@#$456",
+               SUB_UNIQUE_ID: None,
+               ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315Please enter a valid phone number."}
 
 INVALID_GPS_WITH_COMMA = {ENTITY_TYPE: "clinic",
                           SUB_FIRST_NAME: "Invalid GPS With Comma",
@@ -111,10 +109,44 @@ WITH_UNICODE_IN_GPS = {ENTITY_TYPE: "clinic",
                        ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315Please enter a valid phone number."}
 
 CLINIC_WITH_LONG_UID = {ENTITY_TYPE: "clinic",
-                       SUB_FIRST_NAME: "Clinic Monodova",
-                       SUB_LAST_NAME: "wat",
-                       LOCATION: "Monodova",
-                       GPS: "47.411631 28.369885",
-                       MOBILE_NUMBER: "34-567-890",
-                       SUB_UNIQUE_ID: "12345678901234567890123",
-                       ERROR_MSG: "Answer 12345678901234567890123 for question q6 is longer than allowed."}
+                        SUB_FIRST_NAME: "Clinic Monodova",
+                        SUB_LAST_NAME: "wat",
+                        LOCATION: "Monodova",
+                        GPS: "47.411631 28.369885",
+                        MOBILE_NUMBER: "34-567-890",
+                        SUB_UNIQUE_ID: "12345678901234567890123",
+                        ERROR_MSG: "Answer 12345678901234567890123 for question q6 is longer than allowed."}
+
+PROJECT_NAME = "project_name"
+PROJECT_BACKGROUND = "project_background"
+PROJECT_TYPE = "project_type"
+REPORT_TYPE = "report_type"
+SUBJECT = "subject"
+DEVICES = "devices"
+ERROR_MSG = "message"
+PAGE_TITLE = "page_title"
+GEN_RANDOM = "gen_random"
+SURVEY = "survey"
+PUBLIC_INFO = "public information"
+DATA_SENDER_WORK = "data sender work"
+OTHER_SUBJECT = "other subject"
+WARNING_MESSAGE = "warning_message"
+
+VALID_PROJECT_DATA = {PROJECT_NAME: "Subject reg Activities ", GEN_RANDOM: True,
+                      PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                      PROJECT_TYPE: SURVEY,
+                      SUBJECT: "clinic",
+                      REPORT_TYPE: "other subject",
+                      DEVICES: "sms",
+                      PAGE_TITLE: "Projects - Overview",
+                      WARNING_MESSAGE:
+                          u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
+
+VALID_SUBJECT_REGISTRATION_DATA = {ENTITY_TYPE: "clinic",
+              SUB_FIRST_NAME: "Clinic BANGALORE",
+              SUB_LAST_NAME: "something",
+              LOCATION: "Monodova",
+              GPS: "47.411631 28.369885",
+              MOBILE_NUMBER: "990099000",
+              SUB_UNIQUE_ID: None,
+              SUCCESS_MSG: SUCCESSFUL_MESSAGE}
