@@ -327,6 +327,7 @@ $(document).ready(function () {
         var checked = $(this).attr("checked") == 'checked';
         if (!checked) {
             $("#master_checkbox").removeAttr("checked");
-        }
+        } else if ($(".selected_submissions").length == $(".selected_submissions:checkbox[checked]").length)
+            $("#master_checkbox").attr("checked", true);
     });
 });

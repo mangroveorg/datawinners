@@ -100,4 +100,6 @@ class AllSubjectsPage(Page):
         subject_number = self.get_subject_type_number(subject_type)
         container = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector", value="div.subject-container")
         container[subject_number - 1].find_elements(by="css selector", value="input#%s" %uid)[0].click()
-        
+
+    def is_checkall_checked_for_entity_type(self, entity_type):
+        return self.driver.find(by_css(CHECKALL_CB % entity_type)).get_attribute("checked") == "true"

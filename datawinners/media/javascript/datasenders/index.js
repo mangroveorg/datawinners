@@ -237,6 +237,8 @@ $(document).ready(function () {
     $("#all_data_senders tr td:first-child input:checkbox").bind("click", function(){
         if ($(this).attr("checked") != "checked") {
             $("#checkall-datasenders").attr("checked", false);
+        } else if ($("#all_data_senders tr td:first-child input:checkbox[checked]").length == $("#all_data_senders tr td:first-child input:checkbox").length) {
+                $("#checkall-datasenders").attr("checked", true);
         }
     });
 

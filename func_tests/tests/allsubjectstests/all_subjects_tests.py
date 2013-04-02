@@ -64,3 +64,15 @@ class TestAllSubjects(unittest.TestCase):
         self.assertFalse(all_subjects_page.is_none_selected_shown_for(subject_type))
         self.assertTrue(all_subjects_page.actions_menu_shown_for(subject_type))
         self.assertTrue(all_subjects_page.is_edit_enabled_for(subject_type))
+
+    @attr("functional_test")
+    def test_should_check_checkall_cb_when_all_cb_are_checked(self):
+        all_subjects_page = self.page
+        subject_type = "clinic"
+        all_subjects_page.open_subjects_table_for_entity_type(subject_type)
+        all_subjects_page.click_checkall_checkbox_for_entity_type(subject_type)
+        self.assertTrue(all_subjects_page.is_checkall_checked_for_entity_type(subject_type))
+        all_subjects_page.select_a_subject_by_type_and_id(subject_type, "cid005")
+        self.assertFalse(all_subjects_page.is_checkall_checked_for_entity_type(subject_type))
+        all_subjects_page.select_a_subject_by_type_and_id(subject_type, "cid005")
+        self.assertTrue(all_subjects_page.is_checkall_checked_for_entity_type(subject_type))

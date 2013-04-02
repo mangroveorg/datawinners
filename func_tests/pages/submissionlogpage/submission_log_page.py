@@ -85,3 +85,6 @@ class SubmissionLogPage(Page):
 
     def check_submission_by_row_number(self, row_number):
         self.driver.find(by_css(SUBMISSION_CB_LOCATOR % str(row_number))).click()
+
+    def is_checkall_checked(self):
+        return self.driver.find(CHECKALL_CB_CSS_LOCATOR).get_attribute("checked") == "true"

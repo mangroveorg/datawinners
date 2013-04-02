@@ -226,6 +226,15 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.delete_data_sender()
         self.assertFalse(all_data_sender_page.is_checkall_checked())
 
+    @attr("functional_test")
+    def test_should_check_checkall_when_all_cb_are_checked(self):
+        all_data_sender_page = self.page
+        all_data_sender_page.click_checkall_checkbox()
+        self.assertTrue(all_data_sender_page.is_checkall_checked())
+        all_data_sender_page.select_a_data_sender_by_id("rep4")
+        self.assertFalse(all_data_sender_page.is_checkall_checked())
+        all_data_sender_page.select_a_data_sender_by_id("rep4")
+        self.assertTrue(all_data_sender_page.is_checkall_checked())
 
 
 

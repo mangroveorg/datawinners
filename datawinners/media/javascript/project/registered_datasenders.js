@@ -96,6 +96,8 @@ $(document).ready(function () {
         var checked = $(this).attr("checked") == "checked";
         if (!checked){
             $("#checkall-datasenders").attr("checked", false);
+        } else if ($("#associated_data_senders tbody input:checkbox").length == $("#associated_data_senders tbody input:checkbox[checked]").length) {
+            $("#checkall-datasenders").attr("checked", true);
         }
     });
 });

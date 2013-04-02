@@ -69,4 +69,6 @@ class TestMySubjects(unittest.TestCase):
         self.assertTrue(my_subjects_page.is_checkall_checked())
         my_subjects_page.select_subject_by_uid("cid002")
         self.assertFalse(my_subjects_page.is_checkall_checked())
+        my_subjects_page.select_subject_by_uid("cid002")
+        self.assertTrue(my_subjects_page.is_checkall_checked())
 

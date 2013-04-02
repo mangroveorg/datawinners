@@ -64,3 +64,5 @@ class TestRegisteredDataSenders(unittest.TestCase):
         self.assertTrue(registered_ds_page.is_checkall_checked())
         registered_ds_page.select_a_data_sender_by_id("rep3")
         self.assertFalse(registered_ds_page.is_checkall_checked())
+        registered_ds_page.select_a_data_sender_by_id("rep3")
+        self.assertTrue(registered_ds_page.is_checkall_checked())

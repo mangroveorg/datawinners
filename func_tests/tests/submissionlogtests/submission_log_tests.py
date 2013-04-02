@@ -103,4 +103,13 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertTrue(submission_log_page.actions_menu_shown())
         self.assertFalse(submission_log_page.is_none_selected_shown())
 
-
+    @attr("functional_test")
+    def test_should_check_checkall_cb_when_all_cb_are_checked(self):
+        submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
+        time.sleep(1)
+        submission_log_page.check_all_submissions()
+        self.assertTrue(submission_log_page.is_checkall_checked())
+        submission_log_page.check_submission_by_row_number(3)
+        self.assertFalse(submission_log_page.is_checkall_checked())
+        submission_log_page.check_submission_by_row_number(3)
+        self.assertTrue(submission_log_page.is_checkall_checked())
