@@ -85,12 +85,12 @@ def index(request, project_id=None, questionnaire_code=None):
                                          "statistics_result": analysis_result.statistics_result}))
 
 
-def build_static_info_context(manager, org_id, submission):
+def build_static_info_context(manager, org_id, survey_response):
     form_ui_model = OrderedDict()
-    static_content = {'Data Sender': get_data_sender(manager, org_id, submission),
-                      'Source': capitalize(submission.channel) if submission.channel == 'web' else submission.channel.upper(),
-                      'Status': ugettext('Success') if submission.status else ugettext('Error')+'. ' + submission.errors,
-                      'Submission Date': submission.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
+    static_content = {'Data Sender': get_data_sender(manager, org_id, survey_response),
+                      'Source': capitalize(survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
+                      'Status': ugettext('Success') if survey_response.status else ugettext('Error')+'. ' + survey_response.errors,
+                      'Submission Date': survey_response.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
     }
 
     form_ui_model.update({'static_content': static_content})
@@ -117,10 +117,12 @@ def edit(request, project_id, survey_response_id):
         survey_response_form.initial_values(survey_response.values)
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
+
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
+        is_errored_before_edit = True if survey_response.errors == '' else False
         survey_response_form = SurveyResponseForm(data = request.POST)
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
@@ -129,11 +131,12 @@ def edit(request, project_id, survey_response_id):
                     context_instance=RequestContext(request))
 
         created_request = helper.create_request(survey_response_form, request.user.username)
-        response = WebPlayerV2(manager).edit_survey_response(created_request, survey_response_id, websubmission_logger)
+        response = WebPlayerV2(manager).edit_survey_response(created_request, survey_response, websubmission_logger)
         if response.success:
             ReportRouter().route(get_organization(request).org_id, response)
             success_message = _("Your changes have been saved.")
             form_ui_model.update({'success_message':success_message})
+            _update_static_info_block_status(form_ui_model,is_errored_before_edit)
         else:
             survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
         return render_to_response("project/web_questionnaire.html", form_ui_model,
@@ -185,3 +188,8 @@ def delete_submissions_by_ids(manager, request, submission_ids):
         if submission.data_record:
             ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
     return received_times
+
+def _update_static_info_block_status(form_model_ui,is_errored_before_edit):
+    if(is_errored_before_edit):
+        form_model_ui.update({'is_error_to_success':is_errored_before_edit})
+        form_model_ui['static_content']['Status'] = ugettext('Success')

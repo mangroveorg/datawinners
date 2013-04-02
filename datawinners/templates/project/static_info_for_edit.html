@@ -17,6 +17,9 @@
             {% if header == 'Data Sender' %}
                 <text class='content-values'>{{ value.0 }}</text><text class='datasender-id'>{{ value.1 }}</text>
             {% else %}
+                {% if is_error_to_success and header == 'Status' %}
+                    <img class="device-icon" src="/media/images/success_check.png" alt="Success">
+                 {% endif %}
                 <text class='content-values'>{{ value }}</text>
             {% endif %}
         </li>
