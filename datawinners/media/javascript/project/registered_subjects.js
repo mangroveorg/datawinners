@@ -57,7 +57,7 @@ $(document).ready(function () {
         var checked = $(this).attr("checked") == "checked";
         if (!checked){
             $("#checkall-subjects").attr("checked", false);
-        } else if ($("#subjects-table tbody input").length == $("#subjects-table tbody input[checked]").length ) {
+        } else if ($("#subjects-table tbody input").length == $("#subjects-table tbody input:checkbox[checked]").length ) {
             $("#checkall-subjects").attr("checked", true);
         }
     });
