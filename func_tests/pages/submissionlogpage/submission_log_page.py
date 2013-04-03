@@ -2,9 +2,9 @@
 from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.submissionlogpage.submission_log_locator import *
-from framework.utils.common_utils import *
 from tests.submissionlogtests.submission_log_data import UNIQUE_VALUE
 import re
+import time
 
 
 class SubmissionLogPage(Page):
@@ -51,6 +51,7 @@ class SubmissionLogPage(Page):
     def get_all_data_on_nth_row(self,row):
         row_data = []
         header_cell_count = len(self.driver.find_elements_by_css_selector(HEADER_CELLS)) #find_elements(by_css)
+        time.sleep(2)
         for col in range(2,header_cell_count):
             row_data.append(self.get_cell_data(row,col))
         return row_data

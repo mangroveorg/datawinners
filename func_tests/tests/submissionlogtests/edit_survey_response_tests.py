@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from nose.plugins.attrib import attr
+import time
 from framework.base_test import  setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
@@ -57,6 +58,7 @@ class TestEditSurveyResponse(unittest.TestCase):
 
         submission_page = WebSubmissionPage(self.driver)
         submission_page.fill_and_submit_answer(EDITED_ANSWERS)
+        time.sleep(2)
         submission_log_page = submission_page.navigate_to_submission_log()
 
         actual_data = submission_log_page.get_all_data_on_nth_row(1)

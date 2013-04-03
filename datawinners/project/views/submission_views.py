@@ -122,7 +122,7 @@ def edit(request, project_id, survey_response_id):
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        is_errored_before_edit = True if survey_response.errors == '' else False
+        is_errored_before_edit = True if survey_response.errors != '' else False
         survey_response_form = SurveyResponseForm(data = request.POST)
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
@@ -190,6 +190,6 @@ def delete_submissions_by_ids(manager, request, submission_ids):
     return received_times
 
 def _update_static_info_block_status(form_model_ui,is_errored_before_edit):
-    if(is_errored_before_edit):
+    if is_errored_before_edit:
         form_model_ui.update({'is_error_to_success':is_errored_before_edit})
         form_model_ui['static_content']['Status'] = ugettext('Success')
