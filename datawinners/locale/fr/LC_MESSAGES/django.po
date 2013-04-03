@@ -4150,3 +4150,6 @@ msgstr "Exemple : 12.2011"
 
 msgid "Enter a word"
 msgstr "Entrez un mot"
+
+msgid "Please check your answers below for errors."
+msgstr "Veuillez vérifier vos réponses ci-dessous s’il n’y a pas d’erreur."
