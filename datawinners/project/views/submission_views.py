@@ -127,6 +127,8 @@ def edit(request, project_id, survey_response_id):
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
         if not survey_response_form.is_valid():
+            error_message = _("Please check your answers below for errors")
+            form_ui_model.update({'error_message':error_message})
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                     context_instance=RequestContext(request))
 

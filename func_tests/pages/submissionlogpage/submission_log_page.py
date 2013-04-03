@@ -48,11 +48,10 @@ class SubmissionLogPage(Page):
             index += 1
         return column_data
 
-    def get_all_data_on_nth_row(self,row):
+    def get_all_data_on_nth_row(self,row,header_count):
         row_data = []
-        header_cell_count = len(self.driver.find_elements_by_css_selector(HEADER_CELLS)) #find_elements(by_css)
         time.sleep(2)
-        for col in range(2,header_cell_count):
+        for col in range(2, header_count+1):
             row_data.append(self.get_cell_data(row,col))
         return row_data
 

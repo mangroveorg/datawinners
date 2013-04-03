@@ -61,7 +61,7 @@ class TestEditSurveyResponse(unittest.TestCase):
         time.sleep(2)
         submission_log_page = submission_page.navigate_to_submission_log()
 
-        actual_data = submission_log_page.get_all_data_on_nth_row(1)
+        actual_data = submission_log_page.get_all_data_on_nth_row(1,12)
         expected_data=[u'Testwp02',u'25.12.2013',u'8.0',u'24.12.2012',u'LIGHT YELLOW',u'admin1',u'Aquificae, Chlorobia',u'-18 27']
         self.assertEquals(actual_data[3:],expected_data)
 
