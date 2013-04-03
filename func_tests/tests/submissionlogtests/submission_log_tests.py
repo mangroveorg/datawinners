@@ -105,7 +105,7 @@ class TestSubmissionLog(unittest.TestCase):
 
     @attr("functional_test")
     def test_should_check_checkall_cb_when_all_cb_are_checked(self):
-        submission_log_page = self.navigate_to_submission_log_page(project_name=FIRST_PROJECT_NAME)
+        submission_log_page = self.navigate_to_submission_log_page_from_project_dashboard(project_name=FIRST_PROJECT_NAME)
         time.sleep(1)
         submission_log_page.check_all_submissions()
         self.assertTrue(submission_log_page.is_checkall_checked())
