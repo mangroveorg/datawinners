@@ -101,6 +101,10 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
         if(row_number == 0):
             row = _clean(row)
             style = xlwt.easyxf('borders: top double, bottom double, right double')
+            algn = xlwt.Alignment()
+            algn.wrap = 1
+            style.alignment = algn
+
             for col_number, val in enumerate(row):
                 if isinstance(val, tuple):
                     max_width = max([len(item) for item, style_object in val])
