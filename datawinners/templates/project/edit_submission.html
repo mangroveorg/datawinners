@@ -1,0 +1,28 @@
+{% load i18n %}
+{% load field_tags %}
+{% for field in questionnaire_form %}
+    {% if field.is_hidden and field.name == 'entity_question_code' %}
+        <input id='code' type="hidden" value="{{ field.label }}"/>
+    {% endif %}
+{% endfor %}
+<form method="POST">
+    <div class="edit_submission_heading">
+        <div class="static-text">
+            <h6 xmlns="http://www.w3.org/1999/html"
+                xmlns="http://www.w3.org/1999/html">{% trans "You are editing the Submission Details" %}</h6>
+        </div>
+        <div class="action-section">
+            <input id="submit" type="submit" class="button" value="{% trans 'Save Changes' %}"/>
+        </div>
+    </div>
+    {% include "project/message.html" %}
+    {% include 'project/static_info_for_edit.html' %}
+    {% csrf_token %}
+    {% include "project/questionnaire_fields.html" %}
+    {% block action_section_block %}
+        <div class="action-section">
+            {% block cancel_block %}{% endblock %}
+            <input id="submit " type="submit" class="button" value="{% trans 'Save Changes' %}"/>
+        </div>
+    {% endblock %}
+</form>

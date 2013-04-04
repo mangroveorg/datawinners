@@ -33,7 +33,11 @@
         {{ block.super }}
     {% endblock %}
     <div>
-        {% include 'project/web_questionnaire_questions.html' %}
+        {% if is_edit %}
+            {% include 'project/edit_submission.html' %}
+        {% else %}
+            {% include 'project/web_questionnaire_questions.html' %}
+        {% endif %}
     </div>
 {% endblock %}
 

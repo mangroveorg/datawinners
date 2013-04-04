@@ -1,0 +1,100 @@
+{% load i18n %}
+{% load field_tags %}
+{% for field in questionnaire_form %}
+    {% if field.is_hidden %}
+        <div class="answer">
+            {% if field|field_type == 'ChoiceField' %}
+                <span class="single_select_question" wmwrap="true">
+                            {{ field }}
+                        </span>
+            {% else %}
+                {{ field }}
+            {% endif %}
+
+            <ul class="errorlist">
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <li>
+                            {{ error }}
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+{% endfor %}
+<ol class="que_width">
+    {% for field in questionnaire_form %}
+        {% if not field.is_hidden %}
+            <li>
+                <h6>
+                    {{ field.label }}
+                    {% if field.name == questionnaire_form.short_code_question_code %}
+
+                        <span id="tooltip1" style="position:absolute;">
+                                <img src="/media/images/help_icon.png" class="help_icon">
+                                <div class="tooltip">
+                                    <p>
+                                        {% if 'yes' in project.activity_report %}
+                                            {% trans "tooltip_questionnaire_form_data_sender_entity_question" %}
+                                        {% else %}
+                                            {% trans "tooltip_questionnaire_form_subject_entity_question" %}
+                                        {% endif %}
+                                    </p></div>
+                            </span>
+                    {% endif %}
+                </h6>
+                <input id='code1' type="hidden" value="{{ field.name }}"/>
+
+                <p id="ins_{{ field.name }}" class="instructions italic">
+                    {{ field.help_text }}
+                </p>
+
+                <div class="answer">
+                    {% if field|field_type == 'ChoiceField' %}
+                        <span class="single_select_question" wmwrap="true">
+                                    {{ field }}
+                                </span>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+
+                    <ul class="errorlist">
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <li>
+                                    {{ error }}
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    <div class="clear-left"></div>
+                </div>
+                <div id="add_link" class="clear-left padding_top_20" style="display:none">
+                    <p class="instructions italic">
+                        {% if 'yes' in project.activity_report %}
+                            {% trans "You have not registered a reporter yet." %}
+                        {% else %}
+                            {% blocktrans with subject.entity as subject %}You have not registered a {{ subject }} yet.
+                            {% endblocktrans %}
+                        {% endif %}
+                    </p>
+                    <a id="datasenders_edit_link" href="{{ add_link.url }}" {% if add_link.url == '#' %}
+                       class="inactive_link ui-state-disabled" {% endif %}>
+                        {{ add_link.text }}
+                    </a>
+                </div>
+                {% if field.name == questionnaire_form.short_code_question_code %}
+                    <script type="text/javascript">
+                        if ($(".subject_field option").size() == 0) {
+                            $("#add_link").show();
+                            $("#id_{{ field.name }}").hide();
+                            $("#ins_{{ field.name }}").hide();
+                        }
+                    </script>
+
+                {% endif %}
+            </li>
+        {% endif %}
+    {% endfor %}
+</ol>

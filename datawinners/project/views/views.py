@@ -701,12 +701,6 @@ class WebQuestionnaireRequest:
                 questionnaire_form = self.QuestionnaireForm()
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, self.form_model.fields)
-
-                form_context = get_form_context(self.form_code, self.project, questionnaire_form,
-                    self.manager, self.hide_link_class, self.disable_link_class)
-                return render_to_response(self.template, form_context,
-                    context_instance=RequestContext(self.request))
-
         except DataObjectNotFound as exception:
             logger.exception(exception)
             message = exception_messages.get(DataObjectNotFound).get(WEB)

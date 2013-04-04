@@ -55,6 +55,7 @@ from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SEND
     ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM
 from datawinners.entity.import_data import send_email_to_data_sender
 import logging
+from datawinners.project.helper import create_request
 
 websubmission_logger = logging.getLogger("websubmission")
 
@@ -547,7 +548,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
         success_message = None
         error_message = None
         try:
-            from datawinners.project.helper import create_request
+
 
             response = WebPlayer(manager,
                 LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
