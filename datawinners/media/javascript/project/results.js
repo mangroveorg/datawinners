@@ -58,16 +58,18 @@ $(document).ready(function () {
 //
 
     function buildFilters() {
-        var subject_options = {emptyText: interpolate(gettext('All %(entity)s'), {entity:entity_type}, true)};
+        var subject_options = {emptyText:interpolate(gettext('All %(entity)s'), {entity:entity_type}, true)};
         var data_sender_options = {emptyText:gettext("All Data Senders")};
-        var filter_options = [data_sender_options,subject_options];
+        var filter_options = [data_sender_options, subject_options];
 
-        $filterSelects.each(function(index, filter) {
+        $filterSelects.each(function (index, filter) {
             $(filter).dropdownchecklist($.extend({firstItemChecksAll:false,
                 explicitClose:gettext("OK"),
                 explicitClear:gettext("Clear"),
                 width:$(this).width(),
-                eventCallback : function(){$('.ui-daterangepicker:visible').hide();},
+                eventCallback:function () {
+                    $('.ui-daterangepicker:visible').hide();
+                },
                 maxDropHeight:200}, filter_options[index]));
 
         });
@@ -81,7 +83,9 @@ $(document).ready(function () {
         if ($dataTable.parents('.dataTables_wrapper').length >= 1) {
             DW.current_sort_order = $dataTable.dataTable().fnSettings().aaSorting;
         } else {
-            DW.current_sort_order = [[2, "desc"]];
+            DW.current_sort_order = [
+                [2, "desc"]
+            ];
         }
         var tab_index = $(this).parent().index();
 
@@ -97,13 +101,14 @@ $(document).ready(function () {
     $(".ui-corner-top").removeClass("ui-corner-top");
 
     var $filterSelects = $('#dataSenderSelect');
+
     function closeFilterSelects() {
         $filterSelects.dropdownchecklist('close')
     }
 
     function buildRangePicker() {
-        $('#reportingPeriodPicker').datePicker({header:gettext('All Periods'),eventCallback: closeFilterSelects});
-        $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects});
+        $('#reportingPeriodPicker').datePicker({header:gettext('All Periods'), eventCallback:closeFilterSelects});
+        $('#submissionDatePicker').datePicker({eventCallback:closeFilterSelects});
     }
 
     $('#go').click(function () {
@@ -146,13 +151,13 @@ $(document).ready(function () {
 
     function dataBinding(data, destroy, retrive, emptyTableText) {
         $dataTable.dataTable({
-            "aaSorting": DW.current_sort_order,
+            "aaSorting":DW.current_sort_order,
             "bDestroy":destroy,
             "bRetrieve":retrive,
             "sPaginationType":"full_numbers",
             "aaData":data,
             "bSort":true,
-            "aoColumnDefs": getColumnDefinition(),
+            "aoColumnDefs":getColumnDefinition(),
             "fnHeaderCallback":function (nHead, aData, iStart, iEnd, aiDisplay) {
                 if (tabOptions.show_deleting_check_box()) {
                     nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';
@@ -236,7 +241,7 @@ $(document).ready(function () {
         if (survey_response_id.length > 1) {
             return false;
         } else {
-            $(this).attr('href','/project/'+project_id+'/submissions/edit/' + survey_response_id)
+            $(this).attr('href', '/project/' + project_id + '/submissions/edit/' + survey_response_id)
         }
     });
 
@@ -255,23 +260,26 @@ $(document).ready(function () {
                 "aTargets":[0],
                 'bVisible':tabOptions.show_deleting_check_box(),
                 "bSortable":false
-            }, {
-            "bVisible":tabOptions.show_status(),
+            },
+            {
+                "bVisible":tabOptions.show_status(),
                 "aTargets":[3]
-            }, {
+            },
+            {
                 "bVisible":tabOptions.show_reply_sms(),
                 "aTargets":[4]
-            }, {
-                "sType": "submission_date",
-                "aTargets": [2]
+            },
+            {
+                "sType":"submission_date",
+                "aTargets":[2]
             }
 
         ];
 
         if (has_reporting_period) {
             var reporting_period_column = {
-                "aTargets": [(entity_type == "Reporter") ? 5 : 6],
-                "sType": "reporting_period"
+                "aTargets":[(entity_type == "Reporter") ? 5 : 6],
+                "sType":"reporting_period"
             };
             columns.push(reporting_period_column);
         }
@@ -279,36 +287,42 @@ $(document).ready(function () {
     }
 
     var options = {container:"#delete_submission_warning_dialog",
-        continue_handler:function () {
-            var selected_ids = this.ids;
-            DW.loading();
-            $.ajax({
-                type:'POST',
-                url:window.location.pathname + "?rand=" + new Date().getTime(),
-                data:{'id_list':JSON.stringify(selected_ids)},
-                success:function (response) {
-                    var data = JSON.parse(response);
-                    if (data.success) {
-                        $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
-                        removeRowsFromDataTable(selected_ids);
-                    } else {
-                        $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
+            continue_handler:function () {
+                var selected_ids = this.ids;
+                DW.loading();
+                var project_id = $(location).attr('href').split('/')[4];
+                $.ajax({
+                        type:'POST',
+                        url:'/project/' + project_id + '/submissions/delete/',
+                        data:{
+                            'id_list':JSON.stringify(selected_ids)
+                        },
+                        success:function (response) {
+                            var data = JSON.parse(response);
+                            if (data.success) {
+                                $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
+                                removeRowsFromDataTable(selected_ids);
+                            } else {
+                                $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
+                            }
+                            $("#message_text .message").delay(5000).fadeOut();
+                        },
+                        error:function (e) {
+                            $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
+                        }
                     }
-                    $("#message_text .message").delay(5000).fadeOut();
-                },
-                error:function (e) {
-                    $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
-                }
-            });
+                )
+                ;
 
-            return false;
-        },
-        title:gettext("Your Submission(s) will be deleted"),
-        cancel_handler:function () {
-        },
-        height:150,
-        width:550
-    };
+                return false;
+            },
+            title:gettext("Your Submission(s) will be deleted"),
+            cancel_handler:function () {
+            },
+            height:150,
+            width:550
+        }
+        ;
 
     var delete_submission_warning_dialog = new DW.warning_dialog(options);
 
@@ -316,18 +330,19 @@ $(document).ready(function () {
         checkbox_locator:"#tabs table.submission_table input:checkbox",
         data_locator:"#action_menu",
         none_selected_locator:"#none-selected",
-        many_selected_msg: gettext("Please select 1 Submission only"),
-        check_single_checked_locator: "#tabs table.submission_table tbody input:checkbox[checked=checked]",
-        no_cb_checked_locator: "#tabs table.submission_table input:checkbox[checked=checked]",
-        checkall: "#master_checkbox"
+        many_selected_msg:gettext("Please select 1 Submission only"),
+        check_single_checked_locator:"#tabs table.submission_table tbody input:checkbox[checked=checked]",
+        no_cb_checked_locator:"#tabs table.submission_table input:checkbox[checked=checked]",
+        checkall:"#master_checkbox"
     }
     var submissions_action_dropdown = new DW.action_dropdown(kwargs);
 
-    $(".selected_submissions").live("click", function(){
+    $(".selected_submissions").live("click", function () {
         var checked = $(this).attr("checked") == 'checked';
         if (!checked) {
             $("#master_checkbox").removeAttr("checked");
         } else if ($(".selected_submissions").length == $(".selected_submissions:checkbox[checked]").length)
             $("#master_checkbox").attr("checked", true);
     });
-});
+})
+;

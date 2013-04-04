@@ -190,19 +190,6 @@ class TestProjectViews( unittest.TestCase ):
             self.assertEqual( links["smart_phone_preview"], "/project/smart_phone_preview" )
 
 
-    def test_should_delete_submission_with_error_status(self):
-        dbm = Mock( )
-        request = Mock( )
-        submission = Mock( spec=Submission )
-        submission.created = date( 2012, 8, 20 )
-        submission.data_record = None
-        with patch( "project.views.submission_views.Submission.get" ) as get_submission:
-            get_submission.return_value = submission
-            with patch( "project.views.submission_views.get_organization" ) as get_organization:
-                get_organization.return_value = Mock( )
-                received_times = delete_submissions_by_ids( dbm, request, ['1'] )
-                self.assertEqual( ['20/08/2012 00:00:00'], received_times )
-
     def test_should_append_success_status_to_context_when_no_error(self):
         context = {}
         form = Mock( spec=ReporterRegistrationForm )

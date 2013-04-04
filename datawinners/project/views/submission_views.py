@@ -75,21 +75,33 @@ def index(request, project_id=None, questionnaire_code=None):
     if request.method == 'POST':
         field_values = SubmissionFormatter().get_formatted_values_for_list(survey_responses.get_raw_values())
         analysis_result = AnalysisResult(field_values, survey_responses.get_analysis_statistics(),
-            survey_responses.get_data_senders(), survey_responses.get_subjects(), survey_responses.get_default_sort_order())
+            survey_responses.get_data_senders(), survey_responses.get_subjects(),
+            survey_responses.get_default_sort_order())
         performance_logger.info("Fetch %d survey_responses from couchdb." % len(analysis_result.field_values))
-
-        if "id_list" in request.POST:
-            project_infos = project_info(request, manager, form_model, project_id, questionnaire_code)
-            return HttpResponse(_handle_delete_submissions(manager, request, project_infos.get("project").name))
         return HttpResponse(encode_json({'data_list': analysis_result.field_values,
                                          "statistics_result": analysis_result.statistics_result}))
+
+
+def delete(request, project_id):
+    manager = get_database_manager(request.user)
+    project = Project.load(manager.database, project_id)
+    submission_ids = json.loads(request.POST.get('id_list'))
+    received_times = delete_submissions_by_ids(manager, request, submission_ids)
+    if len(received_times):
+        UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=project.name,
+            detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
+        response = encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
+    else: response = encode_json({'error_message': ugettext("No records deleted"), 'success': False})
+    return HttpResponse(response)
 
 
 def build_static_info_context(manager, org_id, survey_response):
     form_ui_model = OrderedDict()
     static_content = {'Data Sender': get_data_sender(manager, org_id, survey_response),
-                      'Source': capitalize(survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
-                      'Status': ugettext('Success') if survey_response.status else ugettext('Error')+'. ' + survey_response.errors,
+                      'Source': capitalize(
+                          survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
+                      'Status': ugettext('Success') if survey_response.status else ugettext(
+                          'Error') + '. ' + survey_response.errors,
                       'Submission Date': survey_response.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
     }
 
@@ -123,28 +135,26 @@ def edit(request, project_id, survey_response_id):
 
     if request.method == 'POST':
         is_errored_before_edit = True if survey_response.errors != '' else False
-        survey_response_form = SurveyResponseForm(data = request.POST)
+        survey_response_form = SurveyResponseForm(data=request.POST)
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors")
-            form_ui_model.update({'error_message':error_message})
+            form_ui_model.update({'error_message': error_message})
             return render_to_response("project/web_questionnaire.html", form_ui_model,
-                    context_instance=RequestContext(request))
+                context_instance=RequestContext(request))
 
         created_request = helper.create_request(survey_response_form, request.user.username)
         response = WebPlayerV2(manager).edit_survey_response(created_request, survey_response, websubmission_logger)
         if response.success:
             ReportRouter().route(get_organization(request).org_id, response)
             success_message = _("Your changes have been saved.")
-            form_ui_model.update({'success_message':success_message})
-            _update_static_info_block_status(form_ui_model,is_errored_before_edit)
+            form_ui_model.update({'success_message': success_message})
+            _update_static_info_block_status(form_ui_model, is_errored_before_edit)
         else:
             survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
         return render_to_response("project/web_questionnaire.html", form_ui_model,
-                context_instance=RequestContext(request))
-
-
+            context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -171,16 +181,6 @@ def export(request):
     return _create_excel_response(exported_data, file_name)
 
 
-def _handle_delete_submissions(manager, request, project_name):
-    submission_ids = json.loads(request.POST.get('id_list'))
-    received_times = delete_submissions_by_ids(manager, request, submission_ids)
-    if len(received_times):
-        UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=project_name,
-            detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
-        return encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
-    return encode_json({'error_message': ugettext("No records deleted"), 'success': False})
-
-
 def delete_submissions_by_ids(manager, request, submission_ids):
     received_times = []
     for submission_id in submission_ids:
@@ -191,7 +191,8 @@ def delete_submissions_by_ids(manager, request, submission_ids):
             ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
     return received_times
 
-def _update_static_info_block_status(form_model_ui,is_errored_before_edit):
+
+def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
     if is_errored_before_edit:
-        form_model_ui.update({'is_error_to_success':is_errored_before_edit})
+        form_model_ui.update({'is_error_to_success': is_errored_before_edit})
         form_model_ui['static_content']['Status'] = ugettext('Success')
