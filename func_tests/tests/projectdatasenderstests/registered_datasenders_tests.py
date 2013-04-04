@@ -11,20 +11,25 @@ class TestRegisteredDataSenders(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        all_project_page = global_navigation.navigate_to_view_all_project_page()
-        project_overview_page = all_project_page.navigate_to_project_overview_page(CLINIC_PROJECT1_NAME)
-        cls.page = project_overview_page.navigate_to_datasenders_page()
 
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
+    def tearDown(self):
+        self.global_navigation.sign_out()
+
+    def go_to_registered_datasenders_page(self, project_name=CLINIC_PROJECT1_NAME):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        all_project_page = self.global_navigation.navigate_to_view_all_project_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page(project_name)
+        return project_overview_page.navigate_to_datasenders_page()
+
     @attr("functional_test")
     def test_should_load_actions_dynamically(self):
-        registered_ds_page = self.page
+        registered_ds_page = self.go_to_registered_datasenders_page()
         registered_ds_page.click_action_button()
         self.assert_none_selected_shown(registered_ds_page)
 
@@ -47,7 +52,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
 
     @attr("functional_test")
     def test_should_check_all_checkboxes_following_master_cb(self):
-        registered_ds_page = self.page
+        registered_ds_page = self.go_to_registered_datasenders_page()
         registered_ds_page.click_checkall_checkbox()
 
         checked = registered_ds_page.get_number_of_selected_datasenders()
@@ -59,10 +64,15 @@ class TestRegisteredDataSenders(unittest.TestCase):
 
     @attr("functional_test")
     def test_should_uncheck_checkall_if_one_cb_is_unchecked(self):
-        registered_ds_page = self.page
+        registered_ds_page = self.go_to_registered_datasenders_page()
         registered_ds_page.click_checkall_checkbox()
         self.assertTrue(registered_ds_page.is_checkall_checked())
         registered_ds_page.select_a_data_sender_by_id("rep3")
         self.assertFalse(registered_ds_page.is_checkall_checked())
         registered_ds_page.select_a_data_sender_by_id("rep3")
         self.assertTrue(registered_ds_page.is_checkall_checked())
+
+    @attr("functional_test")
+    def test_should_disable_checkall_cb_if_there_is_no_ds(self):
+        registered_ds_page = self.go_to_registered_datasenders_page("project having people as subject")
+        self.assertFalse(registered_ds_page.is_checkall_enabled())

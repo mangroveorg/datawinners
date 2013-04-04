@@ -196,6 +196,9 @@ $(document).ready(function () {
         dataBinding(data, true, false, getEmptyTableText());
         wrap_table();
         submissions_action_dropdown.init_dropdown();
+        if (data.length == 0) {
+            $("#master_checkbox").attr("disabled", "disabled");
+        }
     }
 
     function getEmptyTableText() {

@@ -73,3 +73,7 @@ class ProjectSubjectsPage(Page):
         self.driver.find(REGISTER_SUBJECT_LINK).click()
         return AddSubjectPage(self.driver)
 
+    def is_checkall_enabled(self):
+        return self.driver.find(CHECKALL_CB).is_enabled()
+
+

@@ -88,3 +88,6 @@ class SubmissionLogPage(Page):
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_CB_CSS_LOCATOR).get_attribute("checked") == "true"
+
+    def is_checkall_enabled(self):
+        return self.driver.find(CHECKALL_CB_CSS_LOCATOR).is_enabled()

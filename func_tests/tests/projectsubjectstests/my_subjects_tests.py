@@ -6,25 +6,31 @@ from framework.base_test import setup_driver, teardown_driver
 from pages.loginpage.login_page import LoginPage
 from tests.projectsubjectstests.my_subjects_data import *
 
-@attr('suit_1')
 class TestMySubjects(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        all_project_page = global_navigation.navigate_to_view_all_project_page()
-        project_overview_page = all_project_page.navigate_to_project_overview_page(CLINIC_PROJECT1_NAME)
-        cls.page = project_overview_page.navigate_to_subjects_page()
+
+    def setUp(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        self.all_project_page = self.global_navigation.navigate_to_view_all_project_page()
 
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
+    def tearDown(self):
+        self.global_navigation.sign_out()
+
+    def goto_my_subjects_page(self, project_name=CLINIC_PROJECT1_NAME):
+        project_overview_page = self.all_project_page.navigate_to_project_overview_page(project_name)
+        return project_overview_page.navigate_to_subjects_page()
+
     @attr("functional_test")
     def test_should_load_actions_dynamically(self):
-        my_subjects_page = self.page
+        my_subjects_page = self.goto_my_subjects_page()
         my_subjects_page.navigate_to_my_subjects_list_tab()
         my_subjects_page.click_action_button()
         self.assert_none_selected_shown(my_subjects_page)
@@ -49,7 +55,7 @@ class TestMySubjects(unittest.TestCase):
 
     @attr("functional_test")
     def test_should_check_all_checkboxes(self):
-        my_subjects_page = self.page
+        my_subjects_page = self.goto_my_subjects_page()
         my_subjects_page.navigate_to_my_subjects_list_tab()
         my_subjects_page.click_checkall_checkbox()
 
@@ -63,7 +69,7 @@ class TestMySubjects(unittest.TestCase):
 
     @attr("functional_test")
     def test_should_uncheck_checkall_if_one_cb_is_unchecked(self):
-        my_subjects_page = self.page
+        my_subjects_page = self.goto_my_subjects_page()
         my_subjects_page.navigate_to_my_subjects_list_tab()
         my_subjects_page.click_checkall_checkbox()
         self.assertTrue(my_subjects_page.is_checkall_checked())
@@ -71,4 +77,10 @@ class TestMySubjects(unittest.TestCase):
         self.assertFalse(my_subjects_page.is_checkall_checked())
         my_subjects_page.select_subject_by_uid("cid002")
         self.assertTrue(my_subjects_page.is_checkall_checked())
+
+    @attr("functional_test")
+    def test_should_disable_checkall_cb_if_there_is_no_data(self):
+        my_subjects_page = self.goto_my_subjects_page("project having people as subject")
+        my_subjects_page.navigate_to_my_subjects_list_tab()
+        self.assertFalse(my_subjects_page.is_checkall_enabled())
 

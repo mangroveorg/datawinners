@@ -117,3 +117,6 @@ class ProjectDataSendersPage(AllDataSendersPage):
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_CB).get_attribute("checked") == "true"
+
+    def is_checkall_enabled(self):
+        return self.driver.find(CHECKALL_CB).is_enabled()

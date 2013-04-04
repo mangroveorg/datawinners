@@ -62,6 +62,10 @@ $(document).ready(function () {
         }
     });
 
+    if ($("#subjects-table tbody input:checkbox").length == 0) {
+        $("#checkall-subjects").attr("disabled", "disabled");
+    }
+
 });
 // Can remove action_element
 function getEntityIdsToBeDeleted(action_element) {

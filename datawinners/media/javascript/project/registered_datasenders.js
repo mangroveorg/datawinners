@@ -100,6 +100,10 @@ $(document).ready(function () {
             $("#checkall-datasenders").attr("checked", true);
         }
     });
+
+    if ($("#associated_data_senders tbody input:checkbox").length == 0) {
+        $("#checkall-datasenders").attr("disabled", "disabled");
+    }
 });
 
 

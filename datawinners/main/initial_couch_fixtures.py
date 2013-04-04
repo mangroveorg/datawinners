@@ -777,6 +777,25 @@ def create_project18(CLINIC_ENTITY_TYPE, manager, questions_):
     except Exception:
         pass
 
+def create_project19(ENTITY_TYPE, manager):
+    questions_ = create_questions(manager)
+    form_model19 = FormModel(manager, name="AIDS", label="Aids form_model",
+        form_code="peo019", type='survey',
+        fields=questions_,
+        entity_type=ENTITY_TYPE)
+    try:
+        qid19 = form_model19.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "peo019").delete()
+        qid19 = form_model19.save()
+    project19 = Project(name="Project having people as subject", goals="This project is for automation", project_type="survey",
+        entity_type='people', devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+    project19.qid = qid19
+    project19.state = ProjectState.TEST
+    try:
+        project19.save(manager)
+    except Exception:
+        pass
 
 def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager):
     clinic_code = "cli00_mp"
@@ -1368,11 +1387,13 @@ def load_data():
     initializer.run(manager)
     CLINIC_ENTITY_TYPE = [u"clinic"]
     WATER_POINT_ENTITY_TYPE = [u"waterpoint"]
-    create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
+    PEOPLE_ENTITY_TYPE = [u"people"]
+    create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE, PEOPLE_ENTITY_TYPE])
     load_datadict_types(manager)
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
     create_clinic_projects(CLINIC_ENTITY_TYPE, manager)
+    create_project19(PEOPLE_ENTITY_TYPE, manager)
     #Register Reporters
     phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number',
                                          primitive_type='string')

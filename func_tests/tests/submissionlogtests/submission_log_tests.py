@@ -113,3 +113,8 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertFalse(submission_log_page.is_checkall_checked())
         submission_log_page.check_submission_by_row_number(3)
         self.assertTrue(submission_log_page.is_checkall_checked())
+
+    @attr("functional_test")
+    def test_should_disable_checkall_cb_if_there_is_no_submission(self):
+        submission_log_page = self.navigate_to_submission_log_page_from_project_dashboard(project_name="project having people as subject")
+        self.assertFalse(submission_log_page.is_checkall_enabled())
