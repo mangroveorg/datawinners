@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from copy import deepcopy
 from django.utils.translation import ugettext_lazy as _
 import json
 import datetime
@@ -157,16 +158,14 @@ def edit(request, project_id, survey_response_id):
 def log_edit_action(old_survey_response, new_survey_response, request, project_name, form_model):
     differences = new_survey_response.differs_from(old_survey_response)
     diff_dict = {}
-    changed_answers = []
+    changed_answers = deepcopy(differences.changed_answers)
     if differences.changed_answers:
         for key, value in differences.changed_answers.iteritems():
             question_label = form_model._get_field_by_code(key).label
-            changed_answers.append(question_label + ' : "' + str(value['old']) + '" to "' + str(value['new']) + '"')
-        diff_dict.update({'Changed Answers': changed_answers})
-
-    diff_dict.update({'Submission Received on': differences.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
-    if differences.status_changed:
-        diff_dict.update({'Changed Status': '"Error" to "Success"'})
+            changed_answers[question_label] = changed_answers.pop(key)
+        diff_dict.update({'changed_answers' : changed_answers})
+    diff_dict.update({'received_on': differences.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
+    diff_dict.update({'status_changed': differences.status_changed})
     activity_log = UserActivityLog()
     activity_log.log(request, project=project_name, action=EDITED_DATA_SUBMISSION, detail=json.dumps(diff_dict))
 

@@ -69,9 +69,11 @@ class TestSubmissionViews(unittest.TestCase):
             activity_log.return_value = mock_log
             log_edit_action(original_survey_response, edited_survey_response, request, project_name, form_model)
             expected_changed_answer_dict = {
-                'Submission Received on': difference.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION),
-                'Changed Status': '"Error" to "Success"',
-                'Changed Answers': ['question one : "23" to "43"', 'question two : "text2" to "correct text"']}
+                'received_on': difference.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION),
+                'status_changed': True,
+                'changed_answers': {'question one': {'old': 23, 'new': 43},
+                                    'question two': {'old': 'text2', 'new': 'correct text'}}}
+
 
             form_model._get_field_by_code.assert_calls_with([call('q1'), call('q2')])
             mock_log.log.assert_called_once_with(request, action=EDITED_DATA_SUBMISSION, project=project_name,

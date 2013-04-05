@@ -1,4 +1,5 @@
 from django.db import models
+from activitylog.html_views import EditedDataSubmissionView
 from datawinners.accountmanagement.models import Organization
 from django.contrib.auth.models import User
 from datetime import datetime
@@ -75,7 +76,7 @@ class UserActivityLog(models.Model):
             assert isinstance(detail_dict, dict)
         except Exception:
             return self.detail
-        
+
         if self.action == "Edited Registration Form":
             detail_list = []
             if "entity_type" in detail_dict:
@@ -95,6 +96,8 @@ class UserActivityLog(models.Model):
                     pass
             detail_list = self._get_detail(detail_dict)
             detail_list.extend(questionnaire_detail)
+        elif self.action == EDITED_DATA_SUBMISSION :
+            detail_list = EditedDataSubmissionView(detail_dict).html()
         else:
             detail_list = self._get_detail(detail_dict)
         return "<br/>".join(detail_list)

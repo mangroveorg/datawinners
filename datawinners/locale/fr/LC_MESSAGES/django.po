@@ -3932,6 +3932,18 @@ msgstr "Une fois que Expéditeurs de Données ont soumis leurs données avec suc
 msgid "Deleted Data Submission(s)"
 msgstr "A supprimé une/des soumission(s) de données"
 
+msgid "Edited Data Submission(s)"
+msgstr "Soumission(s) de données modifiée(s)"
+
+msgid "Submission Received on"
+msgstr "Soumission reçue le"
+
+msgid "Changed Answers:"
+msgstr "Réponses modifiées"
+
+msgid "Changed Status: \"Error\" to \"Success\""
+msgstr "Statut modifié: “Erreur” à “Succès”"
+
 msgid "Activated Reminders"
 msgstr "A activé les rappels"
 
@@ -3960,7 +3972,7 @@ msgid "Untitled Project"
 msgstr "Projet sans titre"
 
 msgid "to"
-msgstr "au"
+msgstr "à"
 
 msgid "Data Sender with Unique Identification Number (ID) = %s already exists."
 msgstr "Un expéditeur avec le numéro d'identification unique (ID) =% s existe déjà."
