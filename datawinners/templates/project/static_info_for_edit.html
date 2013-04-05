@@ -8,13 +8,20 @@
                     <text class='content-values'>{{ value.0 }}</text>
                     <text class='datasender-id'>{{ value.1 }}</text>
                 {% else %}
-                    {% if is_error_to_success and header == 'Status' %}
-                        <img class="device-icon" src="/media/images/success_check.png" alt="Success">
-                    {% endif %}
                     <text class='content-values'>{{ value }}</text>
                 {% endif %}
             </li>
         {% endfor %}
+        <li class="info">
+            {% if is_error_to_success %}
+                <text class='highlight content-header'>{% trans 'Status' %}</text>
+                <img class="device-icon" src="/media/images/success_check.png" alt="Success">
+                <text class='highlight content-values'>{{ status }}</text>
+            {% else %}
+                <text class='content-header'>{% trans 'Status' %}</text>
+                <text class='content-values'>{{ status}}</text>
+            {% endif %}
+        </li>
     </ul>
 </div>
 

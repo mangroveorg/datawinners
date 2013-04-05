@@ -32,11 +32,13 @@
   margin-left: 5px;
 }
 
+.edit_submission_heading{
+  margin-bottom: 20px;
+}
+
 .edit_submission_heading .static-text{
   display: inline-block;
 }
-
-//.static-info-header
 
 .action-section{
   display: inline-block;
@@ -45,5 +47,9 @@
 
 form ul li{
   margin-bottom: 0px;
+}
 
+.highlight{
+  color: #669933;
+  font-weight: bold;
 }

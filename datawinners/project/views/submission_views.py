@@ -97,16 +97,13 @@ def delete(request, project_id):
 def build_static_info_context(manager, org_id, survey_response):
     form_ui_model = OrderedDict()
     static_content = {'Data Sender': get_data_sender(manager, org_id, survey_response),
-                      'Source': capitalize(
-                          survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
-                      'Status': ugettext('Success') if survey_response.status else ugettext(
-                          'Error') + '. ' + survey_response.errors,
+                      'Source': capitalize(survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
                       'Submission Date': survey_response.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
     }
 
     form_ui_model.update({'static_content': static_content})
     form_ui_model.update({'is_edit': True})
-
+    form_ui_model.update({'status': ugettext('Success') if survey_response.status else ugettext('Error') + '. ' + survey_response.errors,})
     return form_ui_model
 
 
@@ -122,7 +119,6 @@ def edit(request, project_id, survey_response_id):
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     survey_response = get_survey_response_by_id(manager, survey_response_id)
     form_ui_model = build_static_info_context(manager, get_organization(request).org_id, survey_response)
-
     if request.method == 'GET':
         survey_response_form = SurveyResponseForm()
         survey_response_form.initial_values(survey_response.values)
@@ -213,4 +209,4 @@ def delete_submissions_by_ids(manager, request, submission_ids):
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
     if is_errored_before_edit:
         form_model_ui.update({'is_error_to_success': is_errored_before_edit})
-        form_model_ui['static_content']['Status'] = ugettext('Success')
+        form_model_ui['status'] = ugettext('Success')
