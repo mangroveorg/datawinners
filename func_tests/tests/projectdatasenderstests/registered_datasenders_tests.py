@@ -1,4 +1,4 @@
-import unittest
+import unittest, time
 from nose.plugins.attrib import attr
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
@@ -75,4 +75,8 @@ class TestRegisteredDataSenders(unittest.TestCase):
     @attr("functional_test")
     def test_should_disable_checkall_cb_if_there_is_no_ds(self):
         registered_ds_page = self.go_to_registered_datasenders_page("project having people as subject")
+        if registered_ds_page.is_checkall_enabled():
+            registered_ds_page.click_checkall_checkbox()
+            registered_ds_page.perform_datasender_action("disassociate")
+            time.sleep(6)
         self.assertFalse(registered_ds_page.is_checkall_enabled())
