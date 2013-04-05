@@ -34,7 +34,7 @@ from project.Header import SubmissionsPageHeader
 from project.analysis_result import AnalysisResult
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.project.views.views import XLS_TUPLE_FORMAT
-from datawinners.common.constant import   DELETED_DATA_SUBMISSION
+from datawinners.common.constant import   DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from datawinners.project.views.utils import get_form_context
 from project.submission_form import SubmissionForm
@@ -42,7 +42,6 @@ from mangrove.transport.repository.survey_responses import get_survey_response_b
 
 performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
-
 
 @login_required(login_url='/login')
 @session_not_expired
@@ -134,6 +133,7 @@ def edit(request, project_id, survey_response_id):
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
+        original_survey_response = survey_response.copy()
         is_errored_before_edit = True if survey_response.errors != '' else False
         survey_response_form = SurveyResponseForm(data=request.POST)
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
@@ -151,10 +151,28 @@ def edit(request, project_id, survey_response_id):
             success_message = _("Your changes have been saved.")
             form_ui_model.update({'success_message': success_message})
             _update_static_info_block_status(form_ui_model, is_errored_before_edit)
+            log_edit_action(original_survey_response, survey_response, request, project.name, questionnaire_form_model)
         else:
             survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
+
+
+def log_edit_action(old_survey_response, new_survey_response, request, project_name, form_model):
+    differences = new_survey_response.differs_from(old_survey_response)
+    diff_dict = {}
+    changed_answers = []
+    if differences.changed_answers:
+        for key, value in differences.changed_answers.iteritems():
+            question_label = form_model._get_field_by_code(key).label
+            changed_answers.append(question_label + ' : "' + str(value['old']) + '" to "' + str(value['new']) + '"')
+        diff_dict.update({'Changed Answers': changed_answers})
+
+    diff_dict.update({'Submission Received on': differences.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
+    if differences.status_changed:
+        diff_dict.update({'Changed Status': '"Error" to "Success"'})
+    activity_log = UserActivityLog()
+    activity_log.log(request, project=project_name, action=EDITED_DATA_SUBMISSION, detail=json.dumps(diff_dict))
 
 
 @login_required(login_url='/login')

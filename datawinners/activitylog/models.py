@@ -41,6 +41,7 @@ action_list = (
 
     (_("Data Submissions"),(
         (DELETED_DATA_SUBMISSION, _(DELETED_DATA_SUBMISSION)),
+        (EDITED_DATA_SUBMISSION, _(EDITED_DATA_SUBMISSION)),
     )),
 
     (_("Reminders"),(
