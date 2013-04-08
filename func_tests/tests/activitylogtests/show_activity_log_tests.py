@@ -1,9 +1,14 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from nose.plugins.attrib import attr
+import time
 from framework.base_test import BaseTest
+from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.loginpage.login_page import LoginPage
 from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE
+from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
+from pages.websubmissionpage.web_submission_page import WebSubmissionPage
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.activitylogtests.show_activity_log_data import *
 from pages.dashboardpage.dashboard_page import DashboardPage
@@ -21,7 +26,7 @@ class TestShowActivityLog(BaseTest):
         login_page = LoginPage(self.driver)
         login_page.do_successful_login_with(credential)
         return DashboardPage(self.driver)
-        
+
 
     def create_a_project_and_navigate_to_activity_log_page(self):
         dashboard = self.login()
@@ -41,10 +46,10 @@ class TestShowActivityLog(BaseTest):
         """
         activity_log_page = self.create_a_project_and_navigate_to_activity_log_page()
         self.assertEqual(PAGE_TITLE, self.driver.get_title())
-        project_title = activity_log_page.get_data_on_cell(1,3)
+        project_title = activity_log_page.get_data_on_cell(1, 3)
         self.assertEqual(project_title.lower(), self.project_title)
-        self.assertEqual(activity_log_page.get_data_on_cell(1,1), TESTER_NAME)
-        self.assertEqual(activity_log_page.get_data_on_cell(1,2), CREATED_PROJECT_ACTION)
+        self.assertEqual(activity_log_page.get_data_on_cell(1, 1), TESTER_NAME)
+        self.assertEqual(activity_log_page.get_data_on_cell(1, 2), CREATED_PROJECT_ACTION)
 
     @attr('functional_test')
     def test_should_only_show_logs_for_current_organization(self):
@@ -78,3 +83,35 @@ class TestShowActivityLog(BaseTest):
         activity_log_page = self.navigate_to_activity_log_page()
         entries_number = activity_log_page.get_number_of_entries_found()
         self.assertTrue(entries_number != 0)
+
+    def test_edit_submissions_are_logged(self):
+        dashboard = self.login()
+        create_project_page = dashboard.navigate_to_create_project_page()
+        create_project_page.create_project_with(NEW_PROJECT_DATA)
+        create_project_page.continue_create_project()
+        questionnaire_page = CreateQuestionnairePage(self.driver)
+        questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
+        questionnaire_page.save_and_create_project()
+        project_overview = ProjectOverviewPage(self.driver)
+
+        web_submission_page = project_overview.navigate_to_data_page().navigate_to_web_submission_tab()
+        web_submission_page.fill_and_submit_answer(VALID_ANSWERS)
+        submission_log_page = web_submission_page.navigate_to_submission_log()
+        submission_log_page.check_submission_by_row_number(1)
+        submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
+        edit_submission_page = WebSubmissionPage(self.driver)
+        edit_submission_page.fill_and_submit_answer(EDITED_ANSWERS)
+        time.sleep(3)
+        activity_log_page = self.navigate_to_activity_log_page()
+        self.assertEqual("Edited Data Submission(s)", activity_log_page.get_data_on_cell(row=1, column=2))
+        self.assertTrue(activity_log_page.get_data_on_cell(row=1, column=3).startswith("Reporter activities"))
+        details_data = activity_log_page.get_data_on_cell(row=1, column=4)
+        self.assertTrue("Submission Received on" in details_data)
+        self.assertTrue("Changed Answers" in details_data)
+        self.assertFalse("Changed Status" in details_data)
+        self.assertTrue('Number of Docs: "5.0" to "4.0"' in details_data)
+        self.assertTrue('Date of report: "12.01.2013" to "11.01.2013"' in details_data)
+        self.assertTrue('Color of Eyes: "a" to "b"' in details_data)
+        self.assertTrue('Clinic admin name: "something" to "nothing"' in details_data)
+        self.assertTrue('Bacterias in water: "b" to "abc"' in details_data)
+        self.assertTrue('Geo points of Clinic: "-1,-1" to "1,1"' in details_data)
