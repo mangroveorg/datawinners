@@ -44,10 +44,10 @@ class TestSubmissionViews(unittest.TestCase):
 
             expected_values = OrderedDict({'static_content': {
                 'Data Sender': ('Psub', 'rep2', 'tester@gmail.com'),
-                'Source': 'Web',
-                'Status': 'Error. Some Error in submission',
-                'Submission Date': created_time.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
-            }, 'is_edit': True})
+                'Source': u'Web',
+                'Submission Date': created_time.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)}})
+            expected_values.update({'is_edit': True})
+            expected_values.update({'status': u'Error. Some Error in submission'})
             self.assertEqual(expected_values, static_info)
 
     def test_log_edit_of_existing_successful_submission(self):
