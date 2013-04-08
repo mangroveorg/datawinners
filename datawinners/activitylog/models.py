@@ -1,6 +1,5 @@
 from django.db import models
-from activitylog.html_views import EditedDataSubmissionView
-from datawinners.accountmanagement.models import Organization
+from activitylog.html_views import EditedDataSubmissionView, EditedRegistrationFormView, EditedProjectView
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.utils.translation import ugettext_lazy as _, ugettext
@@ -52,6 +51,11 @@ action_list = (
     ))
 )
 
+_mapping_dict = {EDITED_REGISTRATION_FORM: EditedRegistrationFormView,
+                EDITED_PROJECT: EditedProjectView,
+                EDITED_DATA_SUBMISSION: EditedDataSubmissionView}
+
+
 class UserActivityLog(models.Model):
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     organization = models.TextField(max_length=40)
@@ -77,57 +81,12 @@ class UserActivityLog(models.Model):
         except Exception:
             return self.detail
 
-        if self.action == "Edited Registration Form":
-            detail_list = []
-            if "entity_type" in detail_dict:
-                detail_list.append( "%s: %s" % (ugettext("Subject Type"), detail_dict["entity_type"]))
-
-            if "form_code" in detail_dict:
-                detail_list.append( "%s: %s" % (ugettext("Questionnaire Code"), detail_dict["form_code"]))
-
-            detail_list.append(self._get_questionnaire_detail(detail_dict))
-
-        elif self.action == "Edited Project" :
-            questionnaire_detail = [self._get_questionnaire_detail(detail_dict)]
-            for type in ["changed","added","changed_type", "deleted"]:
-                try:
-                    detail_dict.pop(type)
-                except:
-                    pass
-            detail_list = self._get_detail(detail_dict)
-            detail_list.extend(questionnaire_detail)
-        elif self.action == EDITED_DATA_SUBMISSION :
-            detail_list = EditedDataSubmissionView(detail_dict).html()
+        if _mapping_dict.has_key(self.action):
+            detail_list = _mapping_dict[self.action](detail_dict).html()
         else:
-            detail_list = self._get_detail(detail_dict)
-        return "<br/>".join(detail_list)
+            detail_list = "<br/>".join(self._get_detail(detail_dict))
 
-    def _get_questionnaire_detail(self, detail_dict):
-        detail_list = []
-        for type in ["added", "deleted"]:
-            if type in detail_dict:
-                str = '<ul class="bulleted">'
-                for item in detail_dict[type]:
-                    str += "<li>%s</li>" % item
-                str += "</ul>"
-                detail_list.append( "%s: %s" % (ugettext("%s Questions" % type.capitalize()), str))
-
-        if "changed" in detail_dict:
-            str = '<ul class="bulleted">'
-            for changed in detail_dict["changed"]:
-                if changed is not None:
-                    str += "<li>%s</li>" % changed
-            str += "</ul>"
-            detail_list.append("%s: %s" % (ugettext("Question Labels Changed"), str))
-
-        if "changed_type" in detail_dict:
-            response_type = {"select1": "List of Choices", "select": "List of Choices", "text": "Word or Phrase", "integer":"Number",
-                             "geocode": "GPS Coordinates", "date": "date", "telephone_number": "Telephone Number"}
-            for type_changed in detail_dict["changed_type"]:
-                detail_list.append(ugettext('Answer type changed to %(answer_type)s for \"%(question_label)s\"') %
-                                            {"answer_type":ugettext(response_type.get(type_changed["type"], "")), "question_label":type_changed["label"]})
-                
-        return "<br/>".join(detail_list)
+        return detail_list
 
     def _get_detail(self, detail_dict):
         detail_list = []
