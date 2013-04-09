@@ -35,6 +35,7 @@ def get_questionnaire_detail(detail_dict):
 
     return "<br/>".join(detail_list)
 
+
 class EditedDataSubmissionView(object):
     def __init__(self, details):
         self.details = details
@@ -54,7 +55,14 @@ class EditedDataSubmissionView(object):
         return "<br/>".join(html)
 
     def _html_li_tag(self, key, value):
-        return "<li>%s: %s</li>" % (key, '"' + str(value[OLD]) + '" ' + ugettext('to') + ' "' + str(value[NEW]) + '"')
+        return "<li>%s: %s</li>" % (
+        key, '"' + self._to_str(value[OLD]) + '" ' + ugettext('to') + ' "' + self._to_str(value[NEW]) + '"')
+
+    def _to_str(self, value):
+        #Unicoded value come as u'something'. So str() cant be called on it because str() uses ascii encoding
+        if type(value) is unicode:
+            return value
+        return str(value)
 
 
 class EditedRegistrationFormView(object):
@@ -74,12 +82,12 @@ class EditedRegistrationFormView(object):
 
 
 class EditedProjectView(object):
-    def __init__(self,details):
+    def __init__(self, details):
         self.details = details
 
     def html(self):
         questionnaire_detail = [get_questionnaire_detail(self.details)]
-        for type in ["changed","added","changed_type", "deleted"]:
+        for type in ["changed", "added", "changed_type", "deleted"]:
             try:
                 self.details.pop(type)
             except:

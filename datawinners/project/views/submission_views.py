@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
+from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.views import session_not_expired
@@ -98,13 +99,16 @@ def delete(request, project_id):
 def build_static_info_context(manager, org_id, survey_response):
     form_ui_model = OrderedDict()
     static_content = {'Data Sender': get_data_sender(manager, org_id, survey_response),
-                      'Source': capitalize(survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
+                      'Source': capitalize(
+                          survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
                       'Submission Date': survey_response.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
     }
 
     form_ui_model.update({'static_content': static_content})
     form_ui_model.update({'is_edit': True})
-    form_ui_model.update({'status': ugettext('Success') if survey_response.status else ugettext('Error') + '. ' + survey_response.errors,})
+    form_ui_model.update({
+        'status': ugettext('Success') if survey_response.status else ugettext(
+            'Error') + '. ' + survey_response.errors, })
     return form_ui_model
 
 
@@ -161,14 +165,35 @@ def log_edit_action(old_survey_response, new_survey_response, request, project_n
     changed_answers = deepcopy(differences.changed_answers)
     if differences.changed_answers:
         for key, value in differences.changed_answers.iteritems():
-            question_label = form_model._get_field_by_code(key).label
+            question_field = form_model._get_field_by_code(key)
+            question_label = question_field.label
+            #replacing question code with actual question text
             changed_answers[question_label] = changed_answers.pop(key)
-        diff_dict.update({'changed_answers' : changed_answers})
+            #relace option with value for choice field
+            if isinstance(question_field,SelectField):
+                changed_answers[question_label] = get_option_value_for_field(value,question_field)
+
+        diff_dict.update({'changed_answers': changed_answers})
     diff_dict.update({'received_on': differences.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
     diff_dict.update({'status_changed': differences.status_changed})
     activity_log = UserActivityLog()
     activity_log.log(request, project=project_name, action=EDITED_DATA_SUBMISSION, detail=json.dumps(diff_dict))
 
+
+def get_choice_list(diff_value, question_field):
+    #TODO change the method name formatted_field_value_for_excel
+    prev_choice_values = question_field.formatted_field_values_for_excel(diff_value)
+    return prev_choice_values
+
+
+def get_option_value_for_field(diff_value, question_field):
+
+    prev_choice_values = get_choice_list(diff_value["old"], question_field)
+
+    reslt_dict = {"old" : ', '.join(prev_choice_values) if prev_choice_values else diff_value["old"],
+                  "new" : ', '.join(get_choice_list(diff_value["new"],question_field))}
+
+    return reslt_dict
 
 @login_required(login_url='/login')
 @session_not_expired
