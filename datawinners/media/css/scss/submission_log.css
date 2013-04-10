@@ -89,3 +89,6 @@
   vertical-align: middle !important; }
 #submission_logs.narrow_first_col td:first-child {
   min-width: 20px !important; }
+
+#none-selected .dropdown-panel {
+  display: inline; }
