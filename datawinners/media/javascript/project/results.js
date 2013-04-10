@@ -79,7 +79,7 @@ $(document).ready(function () {
     DW.disable_filter_section_if_no_data();
 
     var tabOptions = new TabOptions();
-    $("#tabs").tabs().find('>ul>li>a').click(function () {
+    $("#tabs").tabs().find('>ul>li>a[href$=tab_template]').click(function () {
         if ($dataTable.parents('.dataTables_wrapper').length >= 1) {
             DW.current_sort_order = $dataTable.dataTable().fnSettings().aaSorting;
         } else {
@@ -95,7 +95,8 @@ $(document).ready(function () {
         active_tab_index = tab_index;
 
         fetch_data(tab_index);
-    }).filter(':first').trigger('click');
+    }).eq(default_tab).trigger('click');
+
 
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
@@ -244,7 +245,7 @@ $(document).ready(function () {
         if (survey_response_id.length > 1) {
             return false;
         } else {
-            $(this).attr('href', '/project/' + project_id + '/submissions/edit/' + survey_response_id)
+            $(this).attr('href', '/project/' + project_id + '/submissions/edit/' + survey_response_id + '/tab/'+active_tab_index)
         }
     });
 
@@ -252,6 +253,9 @@ $(document).ready(function () {
         $.each(ids, function (index, value) {
             $dataTable.fnDeleteRow($(':checkbox[value=' + $.trim(value) + ']').parents('tr').get(0));
         });
+        if ( $("table.submission_table tbody tr").length ) {
+            $("#master_checkbox").attr("disabled", "disabled");
+        }
     }
 
     function getColumnDefinition() {
@@ -341,11 +345,7 @@ $(document).ready(function () {
     var submissions_action_dropdown = new DW.action_dropdown(kwargs);
 
     $(".selected_submissions").live("click", function () {
-        var checked = $(this).attr("checked") == 'checked';
-        if (!checked) {
-            $("#master_checkbox").removeAttr("checked");
-        } else if ($(".selected_submissions").length == $(".selected_submissions:checkbox[checked]").length)
-            $("#master_checkbox").attr("checked", true);
+        $("#master_checkbox").attr("checked", $(".selected_submissions").length == $(".selected_submissions:checkbox[checked]").length);
     });
 })
 ;

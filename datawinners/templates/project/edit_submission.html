@@ -6,23 +6,43 @@
     {% endif %}
 {% endfor %}
 <form method="POST">
+    <div >
+        <a href="{{ back_link }}" class="back-to-list"> {% trans "Back to Submission Log" %}</a>
+    </div>
     <div class="edit_submission_heading">
         <div class="static-text">
             <h6 xmlns="http://www.w3.org/1999/html"
                 xmlns="http://www.w3.org/1999/html">{% trans "You are editing the Submission Details" %}</h6>
         </div>
         <div class="action-section">
-            <input id="submit" type="submit" class="button" value="{% trans 'Save Changes' %}"/>
+            <span>
+                <a href="{{ back_link }}" class="cancel-editing-link"> {% trans "Cancel Editing" %}</a> &nbsp;
+            </span>
+            <input id="submit-other-1" type="submit" class="button" value="{% trans 'Save Changes' %}"/>
         </div>
     </div>
     {% include "project/message.html" %}
     {% include 'project/static_info_for_edit.html' %}
     {% csrf_token %}
+    <input type="hidden" id="redirect_url" name="redirect_url" value="{{ redirect_url }}"/>
     {% include "project/questionnaire_fields.html" %}
     {% block action_section_block %}
         <div class="action-section">
             {% block cancel_block %}{% endblock %}
-            <input id="submit " type="submit" class="button" value="{% trans 'Save Changes' %}"/>
+            <span>
+                <a href="{{ back_link }}" class="cancel-editing-link"> {% trans "Cancel Editing" %}</a> &nbsp;
+            </span>
+            <input id="submit-other" type="submit" class="button" value="{% trans 'Save Changes' %}"/>
         </div>
     {% endblock %}
 </form>
+
+<div id="cancel_submission_warning_message">
+    {% trans "Do you want to save any unsaved changes before leaving this page?" %}
+
+    <div class="text_align_right padding_top_20">
+        <a id="cancel_leave" href="javascript:void(0);">{% trans "Cancel" %}</a>
+        <a class="button_blue no_button">{% trans "Don't Save" %}</a>
+        <a class="button yes_button">{% trans "Save" %}</a>
+    </div>
+</div>

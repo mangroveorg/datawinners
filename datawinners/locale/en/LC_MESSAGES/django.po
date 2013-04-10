@@ -4086,3 +4086,15 @@ msgstr ""
 
 msgid "Please check your answers below for errors."
 msgstr ""
+
+msgid "Don't Save"
+msgstr ""
+
+msgid "Cancel Editing"
+msgstr ""
+
+msgid "Do you want to save any unsaved changes before leaving this page?"
+msgstr ""
+
+msgid "Back to Submission Log"
+msgstr ""

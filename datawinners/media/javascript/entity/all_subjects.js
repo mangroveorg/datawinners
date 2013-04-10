@@ -16,12 +16,9 @@ $(document).ready(function () {
     });
 
     $(".subject-container table tbody tr td:first-child input:checkbox").bind("click", function(){
-        var table = $(this).parent().parent().parent().parent();
-        if ($(this).attr("checked") != "checked") {
-            $("thead tr th input.checkall-subjects", table).attr("checked", false);
-        } else if ($("tbody tr td:first-child input:checkbox", table).length == $("tbody tr td:first-child input:checkbox[checked]", table).length) {
-            $("thead tr th input.checkall-subjects", table).attr("checked", true);
-        }
+        var holding_container = $(this).closest('.subject-container');
+        var check_all = holding_container.find('tbody[id$=table] input:checkbox[checked]').length == holding_container.find('tbody[id$=table] input:checkbox').length;
+        holding_container.find('.checkall-subjects').attr('checked', check_all);
     });
 
     $("#all_subjects div.list_header span.header").each(function(i){

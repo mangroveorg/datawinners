@@ -69,6 +69,14 @@ $(document).ready(function () {
                     }
                 });
                 DW.set_focus_on_flash_message();
+                if ( $("#cancel_submission_warning_message").length){
+                    if (!$("#flash-message.success-message-box").length)
+                        DW.edit_datasender.refresh();
+                    else {
+                        DW.edit_datasender.init_warning_dialog();
+                        $("a[href]").unbind();
+                    }
+                }
             },
             error:function (e) {
                 $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");

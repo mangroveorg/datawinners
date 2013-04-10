@@ -235,11 +235,7 @@ $(document).ready(function () {
     });
 
     $("#all_data_senders tr td:first-child input:checkbox").bind("click", function(){
-        if ($(this).attr("checked") != "checked") {
-            $("#checkall-datasenders").attr("checked", false);
-        } else if ($("#all_data_senders tr td:first-child input:checkbox[checked]").length == $("#all_data_senders tr td:first-child input:checkbox").length) {
-                $("#checkall-datasenders").attr("checked", true);
-        }
+        $("#checkall-datasenders").attr("checked", $('#all_data_senders input:checkbox').length == $('#all_data_senders input:checkbox[checked]').length);
     });
 
     function get_action_dropdown_object() {

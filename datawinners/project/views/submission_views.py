@@ -6,7 +6,7 @@ import datetime
 import logging
 from string import capitalize
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
@@ -42,6 +42,7 @@ from datawinners.project.views.utils import get_form_context
 from project.submission_form import SubmissionForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.transport.contract.survey_response import SurveyResponse
+from django.core.urlresolvers import reverse
 
 performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
@@ -51,7 +52,7 @@ websubmission_logger = logging.getLogger("websubmission")
 @is_datasender
 @is_not_expired
 # TODO : TW_BLR : should have separate view for ui and data
-def index(request, project_id=None, questionnaire_code=None):
+def index(request, project_id=None, questionnaire_code=None, tab="0"):
     manager = get_database_manager(request.user)
 
     form_model = get_form_model_by_code(manager, questionnaire_code)
@@ -67,7 +68,8 @@ def index(request, project_id=None, questionnaire_code=None):
         result_dict = {"header_list": header.header_list,
                        "header_name_list": repr(encode_json(header.header_list)),
                        "datasender_list": survey_responses.get_data_senders(),
-                       "subject_list": survey_responses.get_subjects()
+                       "subject_list": survey_responses.get_subjects(),
+                       "tab": tab
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
@@ -124,7 +126,7 @@ def build_static_info_context(manager, org_id, survey_response):
 @login_required(login_url='/login')
 @session_not_expired
 @is_not_expired
-def edit(request, project_id, survey_response_id):
+def edit(request, project_id, survey_response_id, tab=0):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     questionnaire_form_model = FormModel.get(manager, project.qid)
@@ -132,12 +134,15 @@ def edit(request, project_id, survey_response_id):
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     survey_response = get_survey_response_by_id(manager, survey_response_id)
+    back_link = reverse(index, kwargs={"project_id":project_id, "questionnaire_code": questionnaire_form_model.form_code, "tab":tab})
     form_ui_model = build_static_info_context(manager, get_organization(request).org_id, survey_response)
+    form_ui_model.update({"back_link": back_link})
     if request.method == 'GET':
         survey_response_form = SurveyResponseForm()
         survey_response_form.initial_values(survey_response.values)
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
+        form_ui_model.update({"redirect_url": request.path_info})
 
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
@@ -148,6 +153,7 @@ def edit(request, project_id, survey_response_id):
         survey_response_form = SurveyResponseForm(data=request.POST)
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
+        form_ui_model.update({"redirect_url": request.POST.get("redirect_url")})
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
             form_ui_model.update({'error_message': error_message})
@@ -162,6 +168,7 @@ def edit(request, project_id, survey_response_id):
             form_ui_model.update({'success_message': success_message})
             _update_static_info_block_status(form_ui_model, is_errored_before_edit)
             log_edit_action(original_survey_response, survey_response, request, project.name, questionnaire_form_model)
+            return HttpResponseRedirect(request.POST.get("redirect_url"))
         else:
             survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
         return render_to_response("project/web_questionnaire.html", form_ui_model,

@@ -1,15 +1,35 @@
-$(function () {
-    DW.data_submission.init();
-});
+DW.data_submission = function (kwargs) {
+    var defaults = {
+        bind_no_button_in_dialog:function () {
+            $("#cancel_submission_warning_message .no_button").bind('click', function () {
+                $("#cancel_submission_warning_message").dialog("close");
+            })
+        },
 
+        bind_yes_button_in_dialog:function () {
+            var that = this;
+            $("#cancel_submission_warning_message .yes_button").bind('click', function () {
+                that.redirect();
+            })
+        },
 
-DW.data_submission = {
-    init:function () {
-        DW.data_submission.init_warning_dialog();
-        DW.data_submission.initial_form_values();
-        DW.data_submission.bind_cancel_link();
-        DW.data_submission.bind_cancel_link_in_dialog();
-        DW.data_submission.bind_confirm_link_in_dialog();
+        bind_cancel_link_in_dialog:function () {
+            return false;
+        }
+    };
+
+    this.options = $.extend(true, defaults, kwargs);
+    this._init();
+}
+
+DW.data_submission.prototype = {
+    _init:function () {
+        var opts = this.options;
+        this.bind_no_button_in_dialog = opts.bind_no_button_in_dialog;
+        this.bind_yes_button_in_dialog = opts.bind_yes_button_in_dialog;
+        this.bind_cancel_link_in_dialog = opts.bind_cancel_link_in_dialog;
+        this.cancel_id = "#cancel";
+        this.init();
     },
 
     init_warning_dialog:function () {
@@ -17,7 +37,7 @@ DW.data_submission = {
             title:gettext("Warning"),
             modal:true,
             autoOpen:false,
-            height:130,
+            height:160,
             width:400,
             closeText:'hide'
         });
@@ -31,11 +51,13 @@ DW.data_submission = {
 
     bind_cancel_link:function () {
         var that = this;
-        $("#cancel").bind('click', function () {
-            if (that.is_form_changed())
+        $("a[href]:visible").not(".delete_project, .sms_tester, .activate_project").bind('click', function () {
+            that.redirect_url = $(this).attr("href");
+            if (that.is_form_changed() || $(".message-box").length || $(".errorlist li").length) {
                 $("#cancel_submission_warning_message").dialog("open");
-            else
-                that.go_to_back_list();
+                return false;
+            } else
+                that.redirect();
         });
     },
 
@@ -49,20 +71,20 @@ DW.data_submission = {
         return is_changed;
     },
 
-    bind_cancel_link_in_dialog:function () {
-        $("#cancel_submission_warning_message .no_button").bind('click', function () {
-            $("#cancel_submission_warning_message").dialog("close");
-        })
+    redirect: function() {
+        window.location.href = this.redirect_url;
     },
 
-    bind_confirm_link_in_dialog:function () {
-        var that = this;
-        $("#cancel_submission_warning_message .yes_button").bind('click', function () {
-            that.go_to_back_list();
-        })
+    init: function () {
+        this.init_warning_dialog();
+        this.initial_form_values();
+        this.bind_cancel_link();
+        this.bind_no_button_in_dialog();
+        this.bind_yes_button_in_dialog();
+        this.bind_cancel_link_in_dialog();
     },
 
-    go_to_back_list:function () {
-        window.location.href = $(".back-to-list").attr("href");
+    refresh: function () {
+        this.init();
     }
 };

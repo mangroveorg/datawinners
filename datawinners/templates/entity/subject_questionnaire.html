@@ -97,7 +97,7 @@
     <div class="action-section">
         {% block cancel_block %}
         {% if is_update %}
-            <a id="cancel">{% trans "Cancel Editing" %}</a>
+            <a id="cancel" href="{{ back_link }}">{% trans "Cancel Editing" %}</a>
             {% include "warning_section.html" %}
 
         {% endif %}

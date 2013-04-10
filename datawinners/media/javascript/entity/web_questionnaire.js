@@ -18,4 +18,7 @@ $(document).ready(function() {
         source: "/places"
     });
 
+    if ( $("#cancel_submission_warning_message").length ){
+        DW.edit_datasender = new DW.data_submission({});
+    }
 });

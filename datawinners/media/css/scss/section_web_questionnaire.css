@@ -42,3 +42,6 @@ form ul li {
 .highlight {
   color: #669933;
   font-weight: bold; }
+
+a#cancel_leave {
+  color: #0070AC !important; }

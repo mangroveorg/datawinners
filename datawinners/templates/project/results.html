@@ -81,6 +81,7 @@
             var entity_type = '{{ entity_type }}';
             var header_name_list = JSON.parse({{header_name_list|safe}});
             var has_reporting_period = {{ has_reporting_period|lower }};
+            var default_tab = {{ tab }};
         </script>
     {% endcompress %}
     {% block secondary_navigation_data %}
