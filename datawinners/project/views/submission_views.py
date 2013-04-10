@@ -154,6 +154,7 @@ def edit(request, project_id, survey_response_id, tab=0):
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
         form_ui_model.update({"redirect_url": request.POST.get("redirect_url")})
+        form_ui_model.update({"click_after_reload": request.POST.get("click_after_reload")})
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
             form_ui_model.update({'error_message': error_message})
@@ -168,7 +169,8 @@ def edit(request, project_id, survey_response_id, tab=0):
             form_ui_model.update({'success_message': success_message})
             _update_static_info_block_status(form_ui_model, is_errored_before_edit)
             log_edit_action(original_survey_response, survey_response, request, project.name, questionnaire_form_model)
-            return HttpResponseRedirect(request.POST.get("redirect_url"))
+            if request.POST.get("redirect_url") :
+                return HttpResponseRedirect(request.POST.get("redirect_url"))
         else:
             survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
         return render_to_response("project/web_questionnaire.html", form_ui_model,

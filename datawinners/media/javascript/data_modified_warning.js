@@ -29,6 +29,7 @@ DW.data_submission.prototype = {
         this.bind_yes_button_in_dialog = opts.bind_yes_button_in_dialog;
         this.bind_cancel_link_in_dialog = opts.bind_cancel_link_in_dialog;
         this.cancel_id = "#cancel";
+        this.click_after_reload = '';
         this.init();
     },
 
@@ -50,10 +51,14 @@ DW.data_submission.prototype = {
     },
 
     bind_cancel_link:function () {
-        var that = this;
-        $("a[href]:visible").not(".delete_project, .sms_tester, .activate_project").bind('click', function () {
+        $("a[href]:visible").bind('click', {self:this}, function (event) {
+            var that = event.data.self;
             that.redirect_url = $(this).attr("href");
-            if (that.is_form_changed() || $(".message-box").length || $(".errorlist li").length) {
+
+            var class_name = $(this).attr("class");
+            that.click_after_reload = $.inArray(class_name, ["activate_project", "sms_tester", "delete_project"]) >= 0 ? class_name: "";
+
+            if (that.is_form_changed() || that.form_has_errors()) {
                 $("#cancel_submission_warning_message").dialog("open");
                 return false;
             } else
@@ -86,5 +91,9 @@ DW.data_submission.prototype = {
 
     refresh: function () {
         this.init();
+    },
+
+    form_has_errors: function () {
+        return $(".message-box").length || $(".errorlist li").length;
     }
 };
