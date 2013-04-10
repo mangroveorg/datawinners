@@ -56,13 +56,7 @@ class EditedDataSubmissionView(object):
 
     def _html_li_tag(self, key, value):
         return "<li>%s: %s</li>" % (
-        key, '"' + self._to_str(value[OLD]) + '" ' + ugettext('to') + ' "' + self._to_str(value[NEW]) + '"')
-
-    def _to_str(self, value):
-        #Unicoded value come as u'something'. So str() cant be called on it because str() uses ascii encoding
-        if type(value) is unicode:
-            return value
-        return str(value)
+            key, '"' + unicode(value[OLD]) + '" ' + ugettext('to') + ' "' + unicode(value[NEW]) + '"')
 
 
 class EditedRegistrationFormView(object):
