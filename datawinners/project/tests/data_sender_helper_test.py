@@ -23,7 +23,7 @@ class TestDataSenderHelper(MangroveTestCase):
         submission = Submission(self.manager, TransportInfo("sms", "123123", "destination"))
         data_sender = get_data_sender(self.manager,self.org_id, submission)
 
-        self.assertEqual((NOT_AVAILABLE_DS, None, '123123'), data_sender)
+        self.assertEqual((NOT_AVAILABLE_DS, None), data_sender)
 
     def test_should_return_data_sender_information_send_from_web(self):
         submission = Submission(self.manager, TransportInfo("web", "tester150411@gmail.com", "destination"))
