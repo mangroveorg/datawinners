@@ -10,18 +10,16 @@ from mangrove.utils.dates import utcnow
 from mangrove.utils.entity_builder import EntityBuilder
 from mangrove.utils.form_model_builder import create_default_ddtype, FormModelBuilder
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from project.analysis import Analysis
-from project.analysis_for_excel import AnalysisForExcel
-from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, NOT_AVAILABLE
-from project.survey_response_data import _override_value_if_not_present
-from project.survey_response_list import SurveyResponseList
+from datawinners.project.analysis import Analysis
+from datawinners.project.analysis_for_excel import AnalysisForExcel
+from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, NOT_AVAILABLE
+from datawinners.project.survey_response_list import SurveyResponseList
 from datawinners.project.survey_response_router import successful_survey_responses
-from project.tests.form_model_generator import FormModelGenerator
+from datawinners.project.tests.form_model_generator import FormModelGenerator
 
 today = datetime.utcnow().strftime("%d.%m.%Y")
 
 class TestSurveyResponseData(MangroveTestCase):
-
     def setUp(self):
         super(TestSurveyResponseData, self).setUp()
         self.org_id = 'SLX364903'
@@ -44,7 +42,8 @@ class TestSurveyResponseData(MangroveTestCase):
             [(MOBILE_NUMBER_FIELD, "919970059125", self.ddtype), (NAME_FIELD, "Ritesh", self.ddtype)]).build()
 
     def test_should_ignore_not_existed_option(self):
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -75,7 +74,8 @@ class TestSurveyResponseData(MangroveTestCase):
         return submission_date
 
     def test_should_get_real_answer_for_select_questions_case_insensitively(self):
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -91,7 +91,8 @@ class TestSurveyResponseData(MangroveTestCase):
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_real_answer_for_select_questions(self):
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -107,7 +108,8 @@ class TestSurveyResponseData(MangroveTestCase):
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_leading_part_for_non_summary_project(self):
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -125,7 +127,8 @@ class TestSurveyResponseData(MangroveTestCase):
             #self.form_model_generator.summary_form_model_without_rp
 
     def test_should_get_leading_part_for_summary_project(self):
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "rep01", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -142,7 +145,8 @@ class TestSurveyResponseData(MangroveTestCase):
 
 
     def test_should_get_raw_field_values(self):
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -158,7 +162,8 @@ class TestSurveyResponseData(MangroveTestCase):
             self.assertEqual(expected, raw_field_values)
 
     def test_should_get_raw_field_values_with_status_for_all_submissions(self):
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -185,7 +190,8 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_raw_field_values_filtered_by_keyword(self):
         submissions = []
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data_list = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
                          {"eid": "cli15", "RD": "02.02.2012", "SY": "c", "BG": "d"}]
             for values in data_list:
@@ -203,7 +209,8 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_subject_list(self):
         submissions = []
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = [
                 {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
                 {"eid": "cli15", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
@@ -225,7 +232,8 @@ class TestSurveyResponseData(MangroveTestCase):
             self.assertEqual(expected, subject_list)
 
     def test_should_get_datasender_list(self):
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -244,7 +252,8 @@ class TestSurveyResponseData(MangroveTestCase):
             total = submission count of this question
         """
         submissions = []
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
                     {"eid": "cli14", "RD": "01.01.2012", "BG": "c"}
             ]
@@ -302,7 +311,8 @@ class TestSurveyResponseData(MangroveTestCase):
             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=False, ddtype=self.ddtype)
         self._edit_fields(form_model, blood_type_field)
         self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'ab'})
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
             analysis_list = Analysis(form_model, self.manager, self.org_id, [])
             statistics = analysis_list.get_analysis_statistics()
@@ -332,7 +342,8 @@ class TestSurveyResponseData(MangroveTestCase):
             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=self.ddtype)
         self._edit_fields(form_model, blood_type_field)
         self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a'})
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
             analysis_list = self._prepare_analysis_list(form_model)
             statistics = analysis_list.get_analysis_statistics()
@@ -342,7 +353,8 @@ class TestSurveyResponseData(MangroveTestCase):
             self.assertEqual(expected, statistics)
 
     def test_should_get_default_sort_order_of_submission_date_for_subject_project_with_rp(self):
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -354,7 +366,8 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_default_sort_order_of_submission_date_for_subject_project_without_rp(self):
         self.form_model = self.form_model_generator.subject_form_model_without_rp()
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -386,8 +399,10 @@ class TestSurveyResponseData(MangroveTestCase):
         self._edit_fields(form_model,
             IntegerField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=self.ddtype))
 
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as _get_survey_responses_by_status:
-            _get_survey_responses_by_status.return_value = successful_survey_responses(self.manager, form_model.form_code)
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as _get_survey_responses_by_status:
+            _get_survey_responses_by_status.return_value = successful_survey_responses(self.manager,
+                form_model.form_code)
             analyzer = self._prepare_analysis_list(form_model)
             values = analyzer.get_raw_values()
 
@@ -407,7 +422,8 @@ class TestSurveyResponseData(MangroveTestCase):
 
         form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
             symptoms_field, blood_type_field).build()
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'BG': 'b'})
+        self.submit_survey_response(
+            {'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'BG': 'b'})
 
         symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
@@ -415,7 +431,8 @@ class TestSurveyResponseData(MangroveTestCase):
             ddtype=self.ddtype)
         self._edit_fields(form_model, symptoms_field)
         self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
             analyzer = self._prepare_analysis_list(form_model)
             values = analyzer.get_raw_values()
@@ -444,7 +461,8 @@ class TestSurveyResponseData(MangroveTestCase):
         self._edit_fields(form_model, rp_field)
         self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.24.2012'})
 
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
             analyzer = self._prepare_analysis_list(form_model)
             values = analyzer.get_raw_values()
@@ -464,14 +482,16 @@ class TestSurveyResponseData(MangroveTestCase):
         form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
             symptoms_field, gps).build()
 
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'GPS': 'NewYork'})
+        self.submit_survey_response(
+            {'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'GPS': 'NewYork'})
 
         form_model.create_snapshot()
         form_model.delete_field("SY")
         form_model.save()
 
         self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'GPS': '1,1'})
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
             analyzer = self._prepare_analysis_list(form_model)
             values = analyzer.get_raw_values()
@@ -497,7 +517,8 @@ class TestSurveyResponseData(MangroveTestCase):
                      'GPS': '12.74,77.45'}
         self.submit_survey_response(post_data)
 
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
                 form_code=form_model.form_code,
@@ -514,7 +535,8 @@ class TestSurveyResponseData(MangroveTestCase):
             self.assertEqual(excel_values[0][10], 77.45)
 
     def create_submission_list_instance(self):
-        with patch("project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+        with patch(
+            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -560,8 +582,10 @@ class TestSurveyResponseData(MangroveTestCase):
         self.assertEqual(expected, value)
 
     def test_reporting_date_is_of_date_type(self):
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
-            with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_response_details") as get_test_data:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            with patch(
+                "datawinners.project.survey_response_data.SurveyResponseData._get_survey_response_details") as get_test_data:
                 get_test_data.return_value = 'data_sender', '02.2013', "hospital", '20.03.2013'
                 get_submissions.return_value = []
                 form_model = Mock(spec=FormModel)
@@ -579,8 +603,10 @@ class TestSurveyResponseData(MangroveTestCase):
                 self.assertEqual(ExcelDate(expected_created_date, 'submission_date'), submission_date)
 
     def test_reporting_date_is_None_if_there_is_no_reporting_date_type(self):
-        with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
-            with patch("datawinners.project.survey_response_data.SurveyResponseData._get_survey_response_details") as get_test_data:
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            with patch(
+                "datawinners.project.survey_response_data.SurveyResponseData._get_survey_response_details") as get_test_data:
                 get_test_data.return_value = 'data_sender', None, "hospital", '20.03.2013'
                 get_submissions.return_value = []
                 form_model = Mock(spec=FormModel)
@@ -597,6 +623,17 @@ class TestSurveyResponseData(MangroveTestCase):
                 self.assertEqual(None, rp)
                 self.assertEqual(ExcelDate(expected_created_date, 'submission_date'), submission_date)
 
-    def test_do_not_override_zero(self):
-        self.assertEqual(0, _override_value_if_not_present(0))
-        self.assertEqual(0, _override_value_if_not_present(0.00))
+    def test_survey_response_data_is_returned_with_wrong_reporting_date(self):
+        filters = {}
+        with patch(
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            data = {"eid": "cli14", "RD": "55.55.2012", "SY": "A2bCZ", "BG": "D"}
+            valid_submission = Submission(self.manager,
+                transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
+                form_code=self.form_model.form_code, values=data)
+            get_submissions.return_value = [valid_submission]
+            response_data = SurveyResponseList(self.form_model, self.manager, self.org_id, None, filters, None)
+            data_sender, rp, subject, submission_date = response_data._get_survey_response_details(
+                response_data.filtered_survey_responses[0])
+            self.assertEqual("55.55.2012", rp)
+
