@@ -43,7 +43,7 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_ignore_not_existed_option(self):
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -75,7 +75,7 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_real_answer_for_select_questions_case_insensitively(self):
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -92,7 +92,7 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_real_answer_for_select_questions(self):
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -109,7 +109,7 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_leading_part_for_non_summary_project(self):
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -128,7 +128,7 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_leading_part_for_summary_project(self):
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "rep01", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -146,7 +146,7 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_raw_field_values(self):
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -163,7 +163,7 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_raw_field_values_with_status_for_all_submissions(self):
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -191,7 +191,7 @@ class TestSurveyResponseData(MangroveTestCase):
     def test_should_get_raw_field_values_filtered_by_keyword(self):
         submissions = []
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data_list = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
                          {"eid": "cli15", "RD": "02.02.2012", "SY": "c", "BG": "d"}]
             for values in data_list:
@@ -210,7 +210,7 @@ class TestSurveyResponseData(MangroveTestCase):
     def test_should_get_subject_list(self):
         submissions = []
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = [
                 {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
                 {"eid": "cli15", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
@@ -233,7 +233,7 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def test_should_get_datasender_list(self):
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
@@ -536,7 +536,7 @@ class TestSurveyResponseData(MangroveTestCase):
 
     def create_submission_list_instance(self):
         with patch(
-            "project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
+            "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
             get_submissions.return_value = [Submission(self.manager,
                 transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'),
