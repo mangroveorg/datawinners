@@ -103,6 +103,7 @@ class TestRegistrationPage(unittest.TestCase):
         self.driver.switch_to_window(new_tab)
         self.driver.wait_for_page_with_title(2, "Pricing")
         self.assertEqual("Pricing", self.driver.get_title())
+        self.driver.switch_to_window(self.driver.window_handles[0])
 
     @attr('functional_test')
     def test_register_without_preferred_payment(self):
