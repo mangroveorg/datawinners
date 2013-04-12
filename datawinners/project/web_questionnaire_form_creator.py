@@ -7,6 +7,7 @@ from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
 from datawinners.entity.helper import get_country_appended_location
+from mangrove.form_model.validation import TextLengthConstraint
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.validation import GeoCodeConstraint
 from datawinners.entity.import_data import load_all_subjects_of_type
@@ -33,6 +34,7 @@ def questionnaire_form_clean(self):
 
     return self.cleaned_data
 
+
 def get_text_field_constraint_text(field):
     if not is_empty(field.constraints):
         length_constraint = field.constraints[0]
@@ -49,6 +51,7 @@ def get_text_field_constraint_text(field):
             return constraint_text
     return ""
 
+
 def get_chars_constraints(field):
     constraints = {}
     if not is_empty(field.constraints):
@@ -57,6 +60,7 @@ def get_chars_constraints(field):
         if constraint.min is not None: constraints["min_length"] = constraint.min
     return constraints
 
+
 def get_number_constraints(field):
     constraints = {}
     if not is_empty(field.constraints):
@@ -64,6 +68,7 @@ def get_number_constraints(field):
         if constraint.max is not None: constraints["max_value"] = float(constraint.max)
         if constraint.min is not None: constraints["min_value"] = float(constraint.min)
     return constraints
+
 
 def get_number_field_constraint_text(field):
     max = min = None
@@ -92,8 +97,8 @@ def clean_geocode(self):
             raise Exception
         GeoCodeConstraint().validate(latitude=lat_long[0], longitude=lat_long[1])
     except Exception:
-            raise ValidationError(_(
-                "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"))
+        raise ValidationError(_(
+            "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"))
     return self.cleaned_data[geo_code_field_code]
 
 
@@ -172,7 +177,14 @@ class WebQuestionnaireFormCreator(object):
         return char_field
 
     def _get_short_code_django_field(self, field):
-        django_field = forms.RegexField("^[a-zA-Z0-9]+$", label=field.label, initial=field.value, required=field.is_required(),
+        max_length = None
+        min_length = None
+        for constraint in field.constraints:
+            if isinstance(constraint, TextLengthConstraint):
+                max_length = constraint.max
+                min_length = constraint.min
+        django_field = forms.RegexField("^[a-zA-Z0-9]+$", label=field.label, initial=field.value,
+            required=field.is_required(), max_length=max_length, min_length=min_length,
             help_text=field.instruction, error_message=_("Only letters and numbers are valid"))
         self._create_field_type_class(django_field, field)
         return {field.code: django_field}
@@ -209,7 +221,7 @@ class WebQuestionnaireFormCreator(object):
         return {u't': forms.CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])}
 
     def _create_phone_number_field(self, field):
-        telephone_number_field = PhoneNumberField(label=field.label,initial=field.value, required=field.is_required(),
+        telephone_number_field = PhoneNumberField(label=field.label, initial=field.value, required=field.is_required(),
             help_text=field.instruction)
         telephone_number_field.widget.attrs["watermark"] = get_text_field_constraint_text(field)
         telephone_number_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -220,15 +232,16 @@ class WebQuestionnaireFormCreator(object):
 
     def _create_date_field(self, field):
         format = field.DATE_DICTIONARY.get(field.date_format)
-        date_field = DjangoDateField(input_formats=(format,),label=field.label,initial=field.value,
-                                                 required=field.is_required(),help_text=field.instruction)
+        date_field = DjangoDateField(input_formats=(format,), label=field.label, initial=field.value,
+            required=field.is_required(), help_text=field.instruction)
         date_field.widget.attrs["watermark"] = get_text_field_constraint_text(field)
         date_field.widget.attrs['style'] = 'padding-top: 7px;'
         return date_field
 
     def _create_integer_field(self, field):
         constraints = get_number_constraints(field)
-        float_field = django.forms.fields.FloatField(label=field.label,initial=field.value, required=field.is_required(),
+        float_field = django.forms.fields.FloatField(label=field.label, initial=field.value,
+            required=field.is_required(),
             help_text=field.instruction, **constraints)
         float_field.widget.attrs["watermark"] = get_number_field_constraint_text(field)
         float_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -274,7 +287,7 @@ class SubjectQuestionFieldCreator(object):
 
     def _subjects_choice_fields(self, subject_field):
         subjects, fields, label = self.project_subject_loader(self.dbm, type=self.project.entity_type)
-        subject_data =  self._build_subject_choice_data(subjects, fields)
+        subject_data = self._build_subject_choice_data(subjects, fields)
         all_subject_choices = map(self._data_to_choice, subject_data)
         instruction_for_subject_field = ugettext("Choose Subject from this list.")
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)

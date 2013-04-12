@@ -211,8 +211,8 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         fields = ['name', 'short_code']
         label = None
         project_subject_loader_mock.return_value = [{'short_code': 'a', 'cols': ['clinic1', 'a']},
-                {'short_code': 'b', 'cols': ['clinic2', 'b']},
-        ], fields, label
+                                                    {'short_code': 'b', 'cols': ['clinic2', 'b']},
+                                                   ], fields, label
         project.entity_type.return_value = ["Clinic"]
         project.is_on_type.return_value = False
         expected_choices = [('a', 'clinic1  (a)'), ('b', 'clinic2  (b)')]
@@ -288,7 +288,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
     def _get_location_field(self):
         location_field = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
-            label=self.field_name,ddtype=Mock(spec=DataDictType))
+            label=self.field_name, ddtype=Mock(spec=DataDictType))
 
         return location_field
 
@@ -310,7 +310,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
     def _get_mock_project(self):
         project = Mock()
         data_senders = [{field_attributes.NAME: 'reporter1', 'short_code': 'a'},
-                {field_attributes.NAME: 'reporter2', 'short_code': 'b'},
+                        {field_attributes.NAME: 'reporter2', 'short_code': 'b'},
         ]
         project.get_data_senders.return_value = data_senders
         return project
@@ -331,3 +331,12 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
             web_text_field = questionnaire_form_class().fields[self.text_field_code]
             self.assertEqual(RegexField, type(web_text_field))
+
+    def test_create_subject_unique_id_field_with_constraints(self):
+        ddtype = DataDictType(self.dbm, name=u'Name', primitive_type=u'string', constraints={})
+        constraints = [TextLengthConstraint(max=20)]
+        field = TextField("short_code", "q6", "'What is the clinic\\'s Unique ID Number?'", ddtype, constraints,
+            'entity_question_flag')
+        dictionary = WebQuestionnaireFormCreator(None, None)._get_short_code_django_field(field)
+        self.assertEqual(20, dictionary.get('q6').max_length)
+        self.assertIsNone(dictionary.get('q6').min_length)
