@@ -2,7 +2,7 @@
 
 
 ##Variables
-PAGE_TITLE = "Activity Log"
+ACTIVITY_LOG_PAGE_TITLE = "Activity Log"
 TESTER_NAME = "Tester Pune"
 CREATED_PROJECT_ACTION = "Created Project"
 

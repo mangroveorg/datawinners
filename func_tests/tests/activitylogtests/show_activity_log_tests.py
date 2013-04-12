@@ -45,7 +45,7 @@ class TestShowActivityLog(BaseTest):
         This function will create a project and will check the user activity log entry for that action
         """
         activity_log_page = self.create_a_project_and_navigate_to_activity_log_page()
-        self.assertEqual(PAGE_TITLE, self.driver.get_title())
+        self.assertEqual(ACTIVITY_LOG_PAGE_TITLE, self.driver.get_title())
         project_title = activity_log_page.get_data_on_cell(1, 3)
         self.assertEqual(project_title.lower(), self.project_title)
         self.assertEqual(activity_log_page.get_data_on_cell(1, 1), TESTER_NAME)
