@@ -2,7 +2,7 @@
 import json
 from unittest import TestCase
 from django.utils.translation import activate
-from activitylog.html_views import EditedDataSubmissionView, EditedRegistrationFormView, EditedProjectView
+from datawinners.activitylog.html_views import EditedDataSubmissionView, EditedRegistrationFormView, EditedProjectView
 
 class TestHtmlViews(TestCase):
     '''Please put DJANGO_SETTINGS_MODULE=datawinners.settings in your environment variables for the test configuration you use

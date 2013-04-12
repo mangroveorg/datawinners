@@ -108,14 +108,14 @@ WITH_UNICODE_IN_GPS = {ENTITY_TYPE: "clinic",
                        SUB_UNIQUE_ID: None,
                        ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315Please enter a valid phone number."}
 
-CLINIC_WITH_LONG_UID = {ENTITY_TYPE: "clinic",
+CLINIC_WITH_INVALID_UID = {ENTITY_TYPE: "clinic",
                         SUB_FIRST_NAME: "Clinic Monodova",
                         SUB_LAST_NAME: "wat",
                         LOCATION: "Monodova",
                         GPS: "47.411631 28.369885",
                         MOBILE_NUMBER: "34-567-890",
-                        SUB_UNIQUE_ID: "12345678901234567890123",
-                        ERROR_MSG: "Answer 12345678901234567890123 for question q6 is longer than allowed."}
+                        SUB_UNIQUE_ID: "12345678-=323223",
+                        ERROR_MSG: "Only letters and numbers are valid"}
 
 PROJECT_NAME = "project_name"
 PROJECT_BACKGROUND = "project_background"

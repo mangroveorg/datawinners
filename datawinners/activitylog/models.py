@@ -1,5 +1,5 @@
 from django.db import models
-from activitylog.html_views import EditedDataSubmissionView, EditedRegistrationFormView, EditedProjectView
+from datawinners.activitylog.html_views import EditedDataSubmissionView, EditedRegistrationFormView, EditedProjectView
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.utils.translation import ugettext_lazy as _, ugettext
