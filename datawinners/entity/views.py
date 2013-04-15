@@ -524,7 +524,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
             field.value = subject.data[field.name]['value'] if field.name in subject.data.keys() else None
         field.value = field._to_str()
 
-    QuestionnaireForm = WebQuestionnaireFormCreator(None, form_model=form_model).create()
+    QuestionnaireForm = WebQuestionnaireFormCreator(None, form_model=form_model, is_update=True).create()
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     if request.method == 'GET':
