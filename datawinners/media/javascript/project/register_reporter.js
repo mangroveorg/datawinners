@@ -71,7 +71,7 @@ $(document).ready(function () {
                 DW.set_focus_on_flash_message();
                 if ( $("#cancel_submission_warning_message").length){
                     if (!$("#flash-message.success-message-box").length)
-                        DW.edit_datasender.refresh();
+                        DW.edit_datasender.init();
                     else {
                         DW.edit_datasender.init_warning_dialog();
                         $("a[href]").unbind();

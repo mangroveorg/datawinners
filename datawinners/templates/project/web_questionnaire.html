@@ -27,6 +27,14 @@
     <script src="/media/javascript/project/ie7_web_questionnaire.js" type="text/javascript"></script>
 {% endblock %}
 
+{% if is_edit %}
+    {% block page_js %}
+        {{ block.super }}
+        <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
+        <script type="text/javascript" src="/media/javascript/project/edit_submission.js"></script>
+    {% endblock %}
+{% endif %}
+
 {% block content %}
     {% block secondary_navigation_data %}
         {% activetab "secondary_tab_nav" "web_questionnaire" %}
@@ -34,11 +42,6 @@
     {% endblock %}
     <div>
         {% if is_edit %}
-            {% block page_js %}
-                {{ block.super }}
-                <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
-                <script type="text/javascript" src="/media/javascript/project/edit_submission.js"></script>
-            {% endblock %}
             {% include 'project/edit_submission.html' %}
         {% else %}
             {% include 'project/web_questionnaire_questions.html' %}

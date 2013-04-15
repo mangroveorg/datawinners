@@ -26,9 +26,13 @@ $(document).ready(function(){
                 var self = event.data.self;
                 if (DW.edit_submission_modified_data_handler.click_after_reload) {
                     $("#cancel_submission_warning_message").dialog("close");
+                    DW.edit_submission_modified_data_handler.discard_changes();
+                    var click_after_reload = $("." + DW.edit_submission_modified_data_handler.click_after_reload);
+                    DW.bind_project_links();
+                    click_after_reload.trigger("click");
                     return false;
-                }
-                self.redirect();
+                } else
+                    self.redirect();
             })
         }
     };

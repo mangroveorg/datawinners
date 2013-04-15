@@ -29,6 +29,7 @@ DW.data_submission.prototype = {
         this.bind_yes_button_in_dialog = opts.bind_yes_button_in_dialog;
         this.bind_cancel_link_in_dialog = opts.bind_cancel_link_in_dialog;
         this.cancel_id = "#cancel";
+        this.handlers = [];
         this.click_after_reload = '';
         this.init();
     },
@@ -48,21 +49,24 @@ DW.data_submission.prototype = {
         $('form :input').each(function () {
             $(this).data('initialValue', $(this).val());
         });
+        $('form :input').live('change', {self: this}, function(event) {
+            var self = event.data.self;
+            if (self.is_form_changed()) {
+                DW.bind_project_links(true);
+            }
+        });
     },
 
     bind_cancel_link:function () {
-        $("a[href]:visible").bind('click', {self:this}, function (event) {
+        $("a[href]:visible").not(".sms_tester, .activate_project, .delete_project").bind('click', {self:this}, function (event) {
             var that = event.data.self;
             that.redirect_url = $(this).attr("href");
-
-            var class_name = $(this).attr("class");
-            that.click_after_reload = $.inArray(class_name, ["activate_project", "sms_tester", "delete_project"]) >= 0 ? class_name: "";
 
             if (that.is_form_changed() || that.form_has_errors()) {
                 $("#cancel_submission_warning_message").dialog("open");
                 return false;
             } else
-                that.redirect();
+                return that.redirect();
         });
     },
 
@@ -77,7 +81,10 @@ DW.data_submission.prototype = {
     },
 
     redirect: function() {
-        window.location.href = this.redirect_url;
+        if (this.redirect_url != "#")
+            window.location.href = this.redirect_url;
+
+        return true;
     },
 
     init: function () {
@@ -89,11 +96,13 @@ DW.data_submission.prototype = {
         this.bind_cancel_link_in_dialog();
     },
 
-    refresh: function () {
-        this.init();
-    },
-
     form_has_errors: function () {
         return $(".message-box").length || $(".errorlist li").length;
+    },
+
+    discard_changes: function() {
+        $('form :input').each(function () {
+            $(this).val($(this).data("initialValue"));
+        });
     }
 };
