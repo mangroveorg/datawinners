@@ -59,7 +59,7 @@ class TestDeleteSurveyResponse(unittest.TestCase):
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
 
-        submission_log_page = SubmissionLogPage(self.driver)
+        submission_log_page = self._navigate_to_submission_log_page_from_project_dashboard()
         self.assertEquals(int(total_records) - 1, int(submission_log_page.get_shown_records_count()))
 
     def _navigate_to_submission_log_page_from_project_dashboard(self, project_name=PROJECT_NAME):
