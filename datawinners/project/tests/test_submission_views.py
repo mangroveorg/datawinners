@@ -14,23 +14,10 @@ from mangrove.transport.contract.survey_response import SurveyResponse, SurveyRe
 from mangrove.utils.dates import utcnow
 from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from datawinners.project.views.submission_views import build_static_info_context, get_option_value_for_field
-from datetime import date, datetime
-from project.views.submission_views import delete_submissions_by_ids
+from datetime import  datetime
 from datawinners.project.views.submission_views import  log_edit_action
 
 class TestSubmissionViews(unittest.TestCase):
-    def test_should_delete_submission_with_error_status(self):
-        dbm = Mock()
-        request = Mock()
-        submission = Mock(spec=Submission)
-        submission.created = date(2012, 8, 20)
-        submission.data_record = None
-        with patch("project.views.submission_views.Submission.get") as get_submission:
-            get_submission.return_value = submission
-            with patch("project.views.submission_views.get_organization") as get_organization:
-                get_organization.return_value = Mock()
-                received_times = delete_submissions_by_ids(dbm, request, ['1'])
-                self.assertEqual(['20/08/2012 00:00:00'], received_times)
 
     def test_should_get_static_info_from_submission(self):
         with patch("datawinners.project.views.submission_views.get_data_sender") as get_data_sender:

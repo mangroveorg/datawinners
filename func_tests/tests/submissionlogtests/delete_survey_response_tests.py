@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from nose.plugins.attrib import attr
-import time
 from framework.base_test import  setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
@@ -9,19 +8,19 @@ from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import LoginPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from pages.submissionlogpage.submission_log_locator import  EDIT_BUTTON
-from pages.websubmissionpage.web_submission_page import WebSubmissionPage
+from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON
+from pages.submissionlogpage.submission_log_page import SubmissionLogPage
+from pages.warningdialog.warning_dialog_page import WarningDialog
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_LOGIN_PAGE, DATA_WINNER_DASHBOARD_PAGE
 from tests.createquestionnairetests.create_questionnaire_data import QUESTIONNAIRE_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
-from tests.submissionlogtests.edit_survey_response_data import EDITED_ANSWERS, get_sms_data_with_questionnaire_code
+from tests.submissionlogtests.edit_survey_response_data import  get_sms_data_with_questionnaire_code
 from tests.submissionlogtests.submission_log_data import *
 from tests.createprojecttests.create_project_data import  CREATE_NEW_PROJECT_DATA
 
 @attr('suit_3')
-class TestEditSurveyResponse(unittest.TestCase):
-
+class TestDeleteSurveyResponse(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
@@ -47,22 +46,21 @@ class TestEditSurveyResponse(unittest.TestCase):
         create_project_page.save_and_create_project_successfully()
 
     @attr('functional_test')
-    def test_should_edit_a_submission(self):
-        project_name,questionnaire_code = self._get_project_details()
+    def test_should_delete_a_submission(self):
+        project_name, questionnaire_code = self._get_project_details()
         self._submit_sms_data(get_sms_data_with_questionnaire_code(questionnaire_code))
 
         submission_log_page = self._navigate_to_submission_log_page_from_project_dashboard(project_name=project_name)
+
+        total_records = submission_log_page.get_total_count_of_records()
+
         submission_log_page.check_submission_by_row_number(1)
-        submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
+        submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
+        warning_dialog = WarningDialog(self.driver)
+        warning_dialog.confirm()
 
-        submission_page = WebSubmissionPage(self.driver)
-        submission_page.fill_and_submit_answer(EDITED_ANSWERS)
-        time.sleep(2)
-        submission_log_page = submission_page.navigate_to_submission_log()
-
-        actual_data = submission_log_page.get_all_data_on_nth_row(1,12)
-        expected_data=[u'Testwp02',u'25.12.2013',u'8.0',u'24.12.2012',u'LIGHT YELLOW',u'admin1',u'Aquificae, Chlorobia',u'-18 27']
-        self.assertEquals(actual_data[3:],expected_data)
+        submission_log_page = SubmissionLogPage(self.driver)
+        self.assertEquals(int(total_records) - 1, int(submission_log_page.get_shown_records_count()))
 
     def _navigate_to_submission_log_page_from_project_dashboard(self, project_name=PROJECT_NAME):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)

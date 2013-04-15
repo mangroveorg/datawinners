@@ -63,6 +63,9 @@ class SubmissionLogPage(Page):
         except Exception:
             return 0
 
+    def get_total_count_of_records(self):
+        return self.driver.find(TOTAL_RECORDS_COUNT).text
+
     def get_cell_data(self, row, col):
         locator = by_xpath(XPATH_TO_CELL % (str(row), str(col)))
         return self.driver.find(locator).text

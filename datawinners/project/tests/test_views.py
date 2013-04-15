@@ -1,24 +1,17 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datetime import date
 
 import unittest
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.forms.forms import Form
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, DateField
 from entity.forms import ReporterRegistrationForm
-from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.form_model import FormModel
-from mangrove.transport.contract.submission import Submission
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders
 from project.export_to_excel import _prepare_export_data
-from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
 from datawinners.project.survey_response_router import SurveyResponseRouter
-from project.views.submission_views import delete_submissions_by_ids
 from project.utils import make_subject_links, make_data_sender_links
 from project.views.utils import add_link
 from project.views.views import get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
@@ -26,6 +19,7 @@ from project.wizard_view import get_preview_and_instruction_links, get_reporting
 from questionnaire.questionnaire_builder import get_max_code
 
 class TestProjectViews( unittest.TestCase ):
+
     def test_should_return_reminders_in_the_required_format(self):
         reminder1 = Mock( spec=Reminder )
         reminder1.message = ''

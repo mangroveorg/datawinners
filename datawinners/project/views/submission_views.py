@@ -17,7 +17,7 @@ from datawinners.accountmanagement.views import session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
-from mangrove.transport.contract.submission import Submission
+
 from mangrove.utils.json_codecs import encode_json
 
 from datawinners.accountmanagement.views import is_datasender
@@ -41,6 +41,7 @@ from datawinners.project.submission_utils.submission_formatter import Submission
 from datawinners.project.views.utils import get_form_context
 from project.submission_form import SubmissionForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
+from mangrove.transport.contract.survey_response import SurveyResponse
 
 performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
@@ -49,9 +50,7 @@ websubmission_logger = logging.getLogger("websubmission")
 @session_not_expired
 @is_datasender
 @is_not_expired
-# TODO : TW_BLR : delete_submissions should be a separate view with a redirect to this page
 # TODO : TW_BLR : should have separate view for ui and data
-# TODO : no test
 def index(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
 
@@ -86,13 +85,23 @@ def index(request, project_id=None, questionnaire_code=None):
 def delete(request, project_id):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
-    submission_ids = json.loads(request.POST.get('id_list'))
-    received_times = delete_submissions_by_ids(manager, request, submission_ids)
+    survey_response_ids = json.loads(request.POST.get('id_list'))
+
+    received_times = []
+    for survey_response_id in survey_response_ids:
+        survey_response = SurveyResponse.get(manager, survey_response_id)
+        received_times.append( datetime.datetime.strftime(survey_response.created, "%d/%m/%Y %X"))
+        WebPlayerV2(manager).delete_survey_response(survey_response, websubmission_logger)
+
+        if survey_response.data_record:
+            ReportRouter().delete(get_organization(request).org_id, survey_response.form_code, survey_response.data_record.id)
+
     if len(received_times):
         UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=project.name,
             detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
         response = encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
     else: response = encode_json({'error_message': ugettext("No records deleted"), 'success': False})
+    
     return HttpResponse(response)
 
 
@@ -217,18 +226,6 @@ def export(request):
     header_list = ExcelFileSubmissionHeader(form_model).header_list
     exported_data, file_name = _prepare_export_data(submission_type, project_name, header_list, formatted_values)
     return _create_excel_response(exported_data, file_name)
-
-
-def delete_submissions_by_ids(manager, request, submission_ids):
-    received_times = []
-    for submission_id in submission_ids:
-        submission = Submission.get(manager, submission_id)
-        received_times.append(datetime.datetime.strftime(submission.created, "%d/%m/%Y %X"))
-        submission.void()
-        if submission.data_record:
-            ReportRouter().delete(get_organization(request).org_id, submission.form_code, submission.data_record.id)
-    return received_times
-
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
     if is_errored_before_edit:
