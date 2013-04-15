@@ -339,6 +339,7 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
                       environment = 'showcase',
                       branch_name='develop',
                       couch_migration_file=None):
+    stop_servers()
     virtual_env = ENVIRONMENT_VES[environment]
     context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env, couch_migration_file)
 
@@ -348,7 +349,7 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
     _deploy_datawinners(context)
 
     remove_cache(context)
-    restart_servers()
+    start_servers()
 
 def custom_reports_deploy(code_dir, environment = 'showcase'):
     check_out_latest_custom_reports_code_for_production(code_dir)
