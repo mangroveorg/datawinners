@@ -67,7 +67,7 @@ def all_db_names(server):
 
 #This is for the manual run and is supposed to be used from [workspace]/datawinners/datawinners after activating the
 #virtual environment by running 'source [path of virtual env bin] activate' and using the format
-# python ../migration/couch/migrate_questionnaire_submission_logs_to_survey_responses/migration.py [db name] [offset]
+# python ../migration/couch/release_6/migration_to_survey_response_from_submission_logs.py [db name] [offset]
 # where offset - is the number of documents to skip when doing migration for that db.
 arguments = sys.argv
 if len(arguments) == 3:
