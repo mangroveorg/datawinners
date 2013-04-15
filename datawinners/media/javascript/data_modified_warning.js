@@ -49,12 +49,17 @@ DW.data_submission.prototype = {
         $('form :input').each(function () {
             $(this).data('initialValue', $(this).val());
         });
-        $('form :input').live('change', {self: this}, function(event) {
-            var self = event.data.self;
-            if (self.is_form_changed()) {
-                DW.bind_project_links(true);
-            }
-        });
+
+        if (this.form_has_errors()) {
+            DW.bind_project_links(true);
+        } else {
+            $('form :input').live('change', {self: this}, function(event) {
+                var self = event.data.self;
+                if (self.is_form_changed()) {
+                    DW.bind_project_links(true);
+                }
+            });
+        }
     },
 
     bind_cancel_link:function () {
@@ -101,8 +106,13 @@ DW.data_submission.prototype = {
     },
 
     discard_changes: function() {
-        $('form :input').each(function () {
-            $(this).val($(this).data("initialValue"));
-        });
+        if (this.form_has_errors()) {
+            $("#discard").val(1);
+            $("form:first").trigger("submit");
+        } else {
+            $('form :input').each(function () {
+                $(this).val($(this).data("initialValue"));
+            });
+        }
     }
 };

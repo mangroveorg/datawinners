@@ -26,6 +26,7 @@
     {% csrf_token %}
     <input type="hidden" id="redirect_url" name="redirect_url" value="{{ redirect_url }}"/>
     <input type="hidden" id="click_after_reload" name="click_after_reload" value="{{ click_after_reload }}"/>
+    <input type="hidden" id="discard" name="discard" value=""/>
     {% include "project/questionnaire_fields.html" %}
     {% block action_section_block %}
         <div class="action-section">

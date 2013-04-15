@@ -103,9 +103,10 @@ def clean_geocode(self):
 
 
 class WebQuestionnaireFormCreator(object):
-    def __init__(self, subject_question_creator, form_model):
+    def __init__(self, subject_question_creator, form_model, is_update=False):
         self.subject_question_creator = subject_question_creator
         self.form_model = form_model
+        self.is_update = is_update
 
     def create(self):
         properties = dict()
@@ -186,6 +187,8 @@ class WebQuestionnaireFormCreator(object):
         django_field = forms.RegexField("^[a-zA-Z0-9]+$", label=field.label, initial=field.value,
             required=field.is_required(), max_length=max_length, min_length=min_length,
             help_text=field.instruction, error_message=_("Only letters and numbers are valid"))
+        if self.is_update :
+            django_field.widget.attrs['readonly'] = 'readonly'
         self._create_field_type_class(django_field, field)
         return {field.code: django_field}
 

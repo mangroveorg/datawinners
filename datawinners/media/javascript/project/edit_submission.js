@@ -26,6 +26,7 @@ $(document).ready(function(){
                 var self = event.data.self;
                 if (DW.edit_submission_modified_data_handler.click_after_reload) {
                     $("#cancel_submission_warning_message").dialog("close");
+                    $("#click_after_reload").val(DW.edit_submission_modified_data_handler.click_after_reload);
                     DW.edit_submission_modified_data_handler.discard_changes();
                     var click_after_reload = $("." + DW.edit_submission_modified_data_handler.click_after_reload);
                     DW.bind_project_links();
@@ -37,11 +38,12 @@ $(document).ready(function(){
         }
     };
 
-    DW.edit_submission_modified_data_handler = new DW.data_submission(options);
+    if ($(".cancel-editing-link").length) {
+        DW.edit_submission_modified_data_handler = new DW.data_submission(options);
+    }
 
     if ($("#click_after_reload").val() && !DW.edit_submission_modified_data_handler.form_has_errors()) {
         var element = $("." + $("#click_after_reload").val());
-        element.prop("href", "javascript:void(0);");
         element.trigger("click");
     }
 });

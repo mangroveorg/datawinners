@@ -340,3 +340,12 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         dictionary = WebQuestionnaireFormCreator(None, None)._get_short_code_django_field(field)
         self.assertEqual(20, dictionary.get('q6').max_length)
         self.assertIsNone(dictionary.get('q6').min_length)
+
+
+    def test_should_make_short_code_field_readonly_for_subject_edition(self):
+        form_model = self._get_form_model(is_registration_form=True)
+        subject_code = "subject_code"
+        form_model.add_field(self._get_text_field(True, True, subject_code))
+        questionnaire_form_class = WebQuestionnaireFormCreator(subject_question_creator=None,
+            form_model=form_model, is_update=True).create()
+        self.assertEqual('readonly', questionnaire_form_class().fields[subject_code].widget.attrs['readonly'])
