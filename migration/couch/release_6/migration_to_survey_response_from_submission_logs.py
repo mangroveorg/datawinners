@@ -73,6 +73,6 @@ arguments = sys.argv
 if len(arguments) == 3:
     db_name = sys.argv[1].strip()
     offset = sys.argv[2].strip()
-    migrate_db(db_name, offset)
+    migrate_db(db_name, int(offset))
 else:
     migrate(all_db_names(SERVER))
