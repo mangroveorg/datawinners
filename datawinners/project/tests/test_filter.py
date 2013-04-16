@@ -3,9 +3,9 @@ from mock import Mock
 from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.datastore.database import DatabaseManager
 from mangrove.transport.contract.transport_info import TransportInfo
-from mangrove.transport.contract.submission import Submission
 from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SurveyResponseDateFilter
 from project.views.views import *
+from mangrove.transport.contract.survey_response import SurveyResponse
 
 
 class TestSubmissionFilters(unittest.TestCase):
@@ -21,9 +21,9 @@ class TestSubmissionFilters(unittest.TestCase):
             {'q1': 'q1', 'q2': '30.08.2012', 'entity_question_code': '002'},
         ]
         self.submissions = [
-            Submission(self.dbm, self.transport_info, form_code='test', values=self.values[0]),
-            Submission(self.dbm, transport_info=self.transport_info, form_code='test', values=self.values[1]),
-            Submission(self.dbm, transport_info=self.transport_info, form_code='test', values=self.values[2])
+            SurveyResponse(self.dbm, self.transport_info, form_code='test', values=self.values[0]),
+            SurveyResponse(self.dbm, transport_info=self.transport_info, form_code='test', values=self.values[1]),
+            SurveyResponse(self.dbm, transport_info=self.transport_info, form_code='test', values=self.values[2])
         ]
 
     def test_should_return_empty_list_when_filtering_empty_submissions(self):
@@ -36,8 +36,8 @@ class TestSubmissionFilters(unittest.TestCase):
 
     def test_should_remove_submissions_whose_reporting_period_does_not_match_date_format(self):
         submission_logs_with_wrong_date_format = [
-            Submission(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.25.2012', 'entity_question_code': '001'}),
-            Submission(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.2012', 'entity_question_code': '001'})
+            SurveyResponse(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.25.2012', 'entity_question_code': '001'}),
+            SurveyResponse(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.2012', 'entity_question_code': '001'})
         ]
 
         self.submissions.extend(submission_logs_with_wrong_date_format)
@@ -69,9 +69,9 @@ class TestSubmissionFilters(unittest.TestCase):
 
     def test_should_return_submissions_filter_by_datasender(self):
         submission_logs = [
-            Submission(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0]),
-            Submission(self.dbm, transport_info=TransportInfo('web', '127359085', 'destination'), form_code='test',values=self.values[1]),
-            Submission(self.dbm, transport_info=TransportInfo('web', '0000000000', 'destination'), form_code='test',values=self.values[2])
+            SurveyResponse(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0]),
+            SurveyResponse(self.dbm, transport_info=TransportInfo('web', '127359085', 'destination'), form_code='test',values=self.values[1]),
+            SurveyResponse(self.dbm, transport_info=TransportInfo('web', '0000000000', 'destination'), form_code='test',values=self.values[2])
         ]
 
         filtered_submissions = DataSenderFilter('tester150411@gmail.com').filter(submission_logs)
@@ -79,25 +79,25 @@ class TestSubmissionFilters(unittest.TestCase):
 
     def test_should_return_empty_submission_list_when_no_matching_datasender_found(self):
         submission_logs = [
-            Submission(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0]),
-            Submission(self.dbm, transport_info=TransportInfo('web', '127359085', 'destination'), form_code='test',values=self.values[1]),
-            Submission(self.dbm, transport_info=TransportInfo('web', '0000000000', 'destination'), form_code='test',values=self.values[2])
+            SurveyResponse(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0]),
+            SurveyResponse(self.dbm, transport_info=TransportInfo('web', '127359085', 'destination'), form_code='test',values=self.values[1]),
+            SurveyResponse(self.dbm, transport_info=TransportInfo('web', '0000000000', 'destination'), form_code='test',values=self.values[2])
         ]
 
         filtered_submissions = DataSenderFilter('no_matching_datasender').filter(submission_logs)
         self.assertEqual(0, len(filtered_submissions))
 
     def test_should_return_submissions_filter_by_test_datasender(self):
-        test_submission1 = Submission(self.dbm, transport_info=TransportInfo('web', '127359085', 'destination'),
+        test_submission1 = SurveyResponse(self.dbm, transport_info=TransportInfo('web', '127359085', 'destination'),
             form_code='test', values=self.values[1])
         test_submission1._doc.test = True
 
-        test_submission2 = Submission(self.dbm, transport_info=TransportInfo('web', TEST_REPORTER_MOBILE_NUMBER, 'destination'),
+        test_submission2 = SurveyResponse(self.dbm, transport_info=TransportInfo('web', TEST_REPORTER_MOBILE_NUMBER, 'destination'),
             form_code='test', values=self.values[2])
         test_submission2._doc.test = False
 
         submission_logs = [
-            Submission(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0]),
+            SurveyResponse(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0]),
             test_submission1,
             test_submission2
         ]
@@ -107,21 +107,24 @@ class TestSubmissionFilters(unittest.TestCase):
         self.assertEqual(test_submission2.id ,filtered_submissions[0].id)
 
     def test_should_return_submissions_within_submission_date(self):
-        submission1 = self.submissions[0]
-        submission1._doc.created = datetime.date(2012, 8, 15)
+        late_submission = self.submissions[0]
+        late_submission._doc.created = datetime.date(2012, 8, 16)
+        late_submission._doc.submitted_on = datetime.date(2012, 9, 01)
 
-        submission2 = self.submissions[1]
-        submission2._doc.created = datetime.date(2012, 8, 27)
+        early_submission = self.submissions[1]
+        early_submission._doc.created = datetime.date(2012, 8, 27)
+        early_submission._doc.submitted_on = datetime.date(2012, 8, 2)
 
-        submission3 = self.submissions[2]
-        submission3._doc.created = datetime.date(2012, 8, 3)
+        expected_filtered_submission = self.submissions[2]
+        expected_filtered_submission._doc.created = datetime.date(2012, 8, 3)
+        expected_filtered_submission._doc.submitted_on = datetime.date(2012, 8, 13)
 
-        submission_logs = [submission1, submission2, submission3]
+        submission_logs = [late_submission, early_submission, expected_filtered_submission]
 
         filtered_submission_logs = SurveyResponseDateFilter(
             period={'start': '10.08.2012', 'end': '31.08.2012'}).filter(submission_logs)
 
-        self.assertEquals(submission_logs[:2], filtered_submission_logs)
+        self.assertEquals(submission_logs[2:3], filtered_submission_logs)
 
     def test_should_build_filter_by_keyword(self):
         raw_field_values = [('Test', u'cid001'), '25.12.2012', u'20.09.2012', ('N/A', None, u'261333745261'), 'sms', '40', ['O+'], ['Rapid weight loss', 'Dry cough'], '-18.1324,27.6547'],\
@@ -135,8 +138,8 @@ class TestSubmissionFilters(unittest.TestCase):
 
     def test_should_filter_for_other_reporting_date_format(self):
         submission_logs_with_wrong_date_format = [
-            Submission(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.25.2012', 'entity_question_code': '001'}),
-            Submission(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.2012', 'entity_question_code': '001'})
+            SurveyResponse(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.25.2012', 'entity_question_code': '001'}),
+            SurveyResponse(self.dbm, self.transport_info, form_code='test',values={'q1': 'q1', 'q2': '12.2012', 'entity_question_code': '001'})
         ]
 
         self.submissions.extend(submission_logs_with_wrong_date_format)

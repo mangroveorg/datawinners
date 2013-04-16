@@ -69,7 +69,7 @@ class SurveyResponseDateFilter(object):
         return filter(lambda x: self._in(x), survey_responses)
 
     def _in(self, survey_response):
-        return self.start_time <= survey_response.created < self.end_time
+        return self.start_time <= survey_response.submitted_on < self.end_time
 
     def _parseDate(self, dateString):
         return parse(dateString.strip() + " 00:00:00+0000", dayfirst=True)

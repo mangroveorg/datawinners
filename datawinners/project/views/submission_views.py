@@ -92,7 +92,7 @@ def delete(request, project_id):
     received_times = []
     for survey_response_id in survey_response_ids:
         survey_response = SurveyResponse.get(manager, survey_response_id)
-        received_times.append( datetime.datetime.strftime(survey_response.created, "%d/%m/%Y %X"))
+        received_times.append( datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
         WebPlayerV2(manager).delete_survey_response(survey_response, websubmission_logger)
 
         if survey_response.data_record:
@@ -112,7 +112,7 @@ def build_static_info_context(manager, org_id, survey_response):
     static_content = {'Data Sender': get_data_sender(manager, org_id, survey_response),
                       'Source': capitalize(
                           survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
-                      'Submission Date': survey_response.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
+                      'Submission Date': survey_response.submitted_on.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
     }
 
     form_ui_model.update({'static_content': static_content})

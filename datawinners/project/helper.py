@@ -126,8 +126,8 @@ def _to_str(value, form_field=None):
         return format_date(value, date_format)
     return value
 
-def format_dt_for_submission_log_page(submission):
-    return submission.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
+def format_dt_for_submission_log_page(survey_response):
+    return survey_response.submitted_on.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
 
 def get_formatted_time_string(time_val):
     try:
