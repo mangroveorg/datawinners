@@ -2,6 +2,6 @@
 {% load i18n %}
 
 {% block cancel_block %}
-    <a id="cancel">{% trans "Cancel" %}</a>
+    <a id="cancel" href="{{ back_to_project_link }}">{% trans "Cancel" %}</a>
     {% include "warning_section.html" %}
 {% endblock %}

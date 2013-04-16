@@ -47,4 +47,21 @@ class TestKeywordFilter(unittest.TestCase):
             filtered_values = keyword_filter.filter(row_values)
             self.assertEqual(expected_values, filtered_values)
 
+    def test_should_not_filter_by_datasender_mobile_number(self):
+        keyword_filter = KeywordFilter('567')
+        date = datetime.strptime('01.12.2004', '%d.%m.%Y')
+        row_values = [
+            ['89848625', ('Shweta', 'rep1', '1234567890'), ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans3',
+             ExcelDate(date, 'dd.mm.yyyy')],
+            ['submission_id', ('Shweta', 'rep1', '123456890'), ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans3',
+             ExcelDate(date, 'dd.mm.yyyy')],
+            ['12345625', ('Shweta', 'rep1', '123456890'), ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans567',
+             ExcelDate(date, 'dd.mm.yyyy')]
+        ]
 
+        expected_values = [
+            ['12345625', ('Shweta', 'rep1', '123456890'), ExcelDate(date, 'dd.mm.yyyy'), 'ans1', 'ans567',
+             ExcelDate(date, 'dd.mm.yyyy')],
+        ]
+        filtered_values = keyword_filter.filter(row_values)
+        self.assertEqual(expected_values, filtered_values)

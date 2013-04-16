@@ -105,6 +105,8 @@ def flatten(less_than_two_layers_list):
     """
     result = []
     for i in less_than_two_layers_list:
-        if is_sequence(i): result.extend(i)
+        if is_sequence(i):
+            if len(i) ==3: i = i[:2]
+            result.extend(i)
         else: result.append(i)
     return result

@@ -15,6 +15,19 @@ DW.data_submission = function (kwargs) {
 
         bind_cancel_link_in_dialog:function () {
             return false;
+        },
+
+        bind_all_links: function () {
+            $("a[href]:visible").not(".sms_tester, .activate_project, .delete_project").bind('click', {self:this}, function (event) {
+                var that = event.data.self;
+                that.redirect_url = $(this).attr("href");
+
+                if (that.is_form_changed() || that.form_has_errors()) {
+                    $("#cancel_submission_warning_message").dialog("open");
+                    return false;
+                } else
+                    return that.redirect();
+            });
         }
     };
 
@@ -28,6 +41,7 @@ DW.data_submission.prototype = {
         this.bind_no_button_in_dialog = opts.bind_no_button_in_dialog;
         this.bind_yes_button_in_dialog = opts.bind_yes_button_in_dialog;
         this.bind_cancel_link_in_dialog = opts.bind_cancel_link_in_dialog;
+        this.bind_all_links = opts.bind_all_links;
         this.cancel_id = "#cancel";
         this.handlers = [];
         this.click_after_reload = '';
@@ -62,19 +76,6 @@ DW.data_submission.prototype = {
         }
     },
 
-    bind_cancel_link:function () {
-        $("a[href]:visible").not(".sms_tester, .activate_project, .delete_project").bind('click', {self:this}, function (event) {
-            var that = event.data.self;
-            that.redirect_url = $(this).attr("href");
-
-            if (that.is_form_changed() || that.form_has_errors()) {
-                $("#cancel_submission_warning_message").dialog("open");
-                return false;
-            } else
-                return that.redirect();
-        });
-    },
-
     is_form_changed:function () {
         var is_changed = false;
         $('form :input').each(function () {
@@ -95,7 +96,7 @@ DW.data_submission.prototype = {
     init: function () {
         this.init_warning_dialog();
         this.initial_form_values();
-        this.bind_cancel_link();
+        this.bind_all_links();
         this.bind_no_button_in_dialog();
         this.bind_yes_button_in_dialog();
         this.bind_cancel_link_in_dialog();
