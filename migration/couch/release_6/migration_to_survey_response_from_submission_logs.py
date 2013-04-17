@@ -58,6 +58,29 @@ def registration_form_model_codes(dbm):
     return form_codes
 
 
+def refresh_survey_response_views(dbm):
+    log_statement('Starting refresh of views')
+    dbm.view.survey_response_for_activity_period(include_docs=False)
+    log_statement('View Refreshed : survey_response_for_activity_period')
+
+    dbm.view.survey_response_by_survey_response_id(include_docs=False)
+    log_statement('View Refreshed : survey_response_by_survey_response_id')
+
+    dbm.view.deleted_survey_response(include_docs=False)
+    log_statement('View Refreshed : deleted_survey_response')
+
+    dbm.view.success_survey_response(include_docs=False)
+    log_statement('View Refreshed : success_survey_response')
+
+    dbm.view.undeleted_survey_response(include_docs=False)
+    log_statement('View Refreshed : undeleted_survey_response')
+
+    dbm.view.web_surveyresponse(include_docs=False)
+    log_statement('View Refreshed : web_surveyresponse')
+
+    log_statement('All views refreshed')
+
+
 def migrate_db(db, offset):
     db_failures = []
     successfully_processed = 0
@@ -77,7 +100,9 @@ def migrate_db(db, offset):
             rows = dbm.view.submissionlog(reduce=False, skip=successfully_processed + offset, limit=MAX_NUMBER_DOCS)
 
         log_success_summary(dbm, skipped_count, successfully_processed)
-    except Exception as exception:
+        refresh_survey_response_views(dbm)
+
+    except Exception:
         db_failures.append(db)
         log_failure_summary(db, successfully_processed, skipped_count)
 
