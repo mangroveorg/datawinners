@@ -50,19 +50,25 @@
             {% if not field.is_hidden %}
                 <li>
                     <h6>{{ field.label }}</h6>
-                    {% if field.name == questionnaire_form.short_code_question_code and not is_update%}
+                    {% if field.name == questionnaire_form.short_code_question_code %}
                         <div class="answer">
-                            {{ field }}
-                            {% if field.errors %}
-                                <ul class="errorlist">
-                                    {% for error in field.errors %}
-                                        <li>
-                                            {{ error }}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                            {% if is_update%}
+                                <label>{{ field.value }}</label>
+                                <span class="none">{{ field }}</span>
+                            {% else %}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <ul class="errorlist">
+                                        {% for error in field.errors %}
+                                            <li>
+                                                {{ error }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                <span><input type="checkbox" id="generate_id" name="generate_id" value="" checked="checked" /> {% trans "Let us generate an ID for you" %}</span>
                             {% endif %}
-                            <span><input type="checkbox" id="generate_id" name="generate_id" value="" checked="checked" /> {% trans "Let us generate an ID for you" %}</span>
+
                         </div>
                         <div class="clear-left"></div>
                     {% else %}
