@@ -205,7 +205,7 @@ class TestDataAnalysis(BaseTest):
         analysis_page.input_keyword(keyword)
         analysis_page.click_go_button()
         filtered_data = analysis_page.get_all_data_records_by_column(7)
-        self.assertEqual(len(filtered_data), 25)
+        self.assertEqual(len(filtered_data), 10)
         self.assertTrue(all([keyword in item for item in filtered_data]))
 
     @attr('functional_test', 'smoke')
