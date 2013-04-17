@@ -8,7 +8,7 @@ class DataSender(object):
     def __init__(self, source, name, reporter_id):
         self._source = source
         self._name = name
-        self._reporter_id = reporter_id
+        self._reporter_id = reporter_id or '-'
 
     @property
     def name(self):
