@@ -81,7 +81,7 @@ class IntegerFormField(object):
     def create(self, field):
         constraints = self._get_number_constraints(field)
         float_field = FloatField(label=field.label, initial=field.value,
-            required=field.is_required(),
+            required=field.is_required(), help_text=field.instruction,
             **constraints)
         float_field.widget.attrs["watermark"] = self._get_number_field_constraint_text(field)
         float_field.widget.attrs['style'] = 'padding-top: 7px;'
