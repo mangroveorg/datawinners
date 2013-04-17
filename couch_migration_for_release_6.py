@@ -5,7 +5,7 @@ from mangrove.form_model.form_model import get_form_model_by_code
 
 managers = load_all_managers()
 
-def migrate_01(managers):
+def migrate_story_1924(managers):
     failed_managers = []
     for manager in managers:
         try:
@@ -31,5 +31,6 @@ def migrate_01(managers):
     for manager, exception_message in failed_managers:
         print " %s failed. the reason :  %s" % (manager, exception_message)
 
-migrate_01(managers)
+migrate_story_1924(managers)
+
 

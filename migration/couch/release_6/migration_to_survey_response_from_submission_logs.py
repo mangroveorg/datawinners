@@ -102,6 +102,8 @@ def migrate(dbs):
     log_statement('Completed migration process ...... ')
     print('Completed migrations of submissions to survey responses')
 
+def log_statement(statement):
+    log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
 
 def all_db_names(server):
     all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
