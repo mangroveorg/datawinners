@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
 from mangrove.transport.contract.request import Request
 from mangrove.transport.contract.transport_info import TransportInfo
-from mangrove.transport.player.player import XFormPlayer
+from mangrove.transport.player.new_players import XFormPlayerV2
 from mangrove.transport.xforms.xform import list_all_forms, xform_for
 from datawinners.accountmanagement.models import Organization
 from datawinners.alldata.helper import get_all_project_for_user
@@ -75,7 +75,7 @@ def submission(request):
 
 
     manager = get_database_manager(request_user)
-    player = XFormPlayer(manager)
+    player = XFormPlayerV2(manager)
     try:
         mangrove_request = Request(message=submission_file,
             transportInfo=
@@ -84,7 +84,7 @@ def submission(request):
                 destination=''
             ))
 
-        response = player.accept(mangrove_request, logger=sp_submission_logger)
+        response = player.add_survey_response(mangrove_request, logger=sp_submission_logger)
 
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
