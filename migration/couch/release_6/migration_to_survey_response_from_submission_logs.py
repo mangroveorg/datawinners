@@ -15,16 +15,17 @@ def log_statement(statement):
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
 
 
-def log_success_summary(dbm, skipped_count, successfully_processed):
+def log_success_summary(db, dbm, skipped_count, successfully_processed):
+    log_statement('Completed Survey Response creation for : %s' % db)
+    log_statement("Submissions Processed: %s" % successfully_processed)
+    log_statement('Skipped submissions: %s' % skipped_count)
+    log_statement('Created Response: %s' % (successfully_processed - skipped_count))
     reduced_result = dbm.view.submissionlog(reduce=True)
     if reduced_result:
         log_statement('Total number of submission %s' % reduced_result[0].value.get('count'))
     response_result = dbm.view.surveyresponse(reduce=True)
     if response_result:
         log_statement('Total Number of responses: %s' % response_result[0].value.get('count'))
-    log_statement("Submissions Processed: %s" % successfully_processed)
-    log_statement('Skipped submissions: %s' % skipped_count)
-    log_statement('Created Response: %s' % (successfully_processed - skipped_count))
 
 
 def log_failure_summary(db, successfully_processed, skipped_count):
@@ -103,7 +104,7 @@ def migrate_db(db, offset):
                 successfully_processed += 1
             rows = dbm.view.submissionlog(reduce=False, skip=successfully_processed + offset, limit=MAX_NUMBER_DOCS)
 
-        log_success_summary(dbm, skipped_count, successfully_processed)
+        log_success_summary(db, dbm, skipped_count, successfully_processed)
         refresh_survey_response_views(dbm)
 
     except Exception:
@@ -125,7 +126,7 @@ def migrate(dbs):
     for db in dbs:
         db_failures.append(migrate_db(db, 0))
 
-    if not db_failures:
+    if db_failures:
         log_statement('Failed DBs: %s' % db_failures)
         print('Failed DBs: %s' % db_failures)
     log_statement('Completed migration process ...... ')
