@@ -59,27 +59,31 @@ def registration_form_model_codes(dbm):
 
 
 def refresh_survey_response_views(dbm):
-    log_statement('Starting refresh of views')
-    dbm.view.survey_response_for_activity_period(include_docs=False)
-    log_statement('View Refreshed : survey_response_for_activity_period')
+    try:
+        log_statement('Starting refresh of views')
+        dbm.view.survey_response_for_activity_period(include_docs=False)
+        log_statement('View Refreshed : survey_response_for_activity_period')
 
-    dbm.view.survey_response_by_survey_response_id(include_docs=False)
-    log_statement('View Refreshed : survey_response_by_survey_response_id')
+        dbm.view.survey_response_by_survey_response_id(include_docs=False)
+        log_statement('View Refreshed : survey_response_by_survey_response_id')
 
-    dbm.view.deleted_survey_response(include_docs=False)
-    log_statement('View Refreshed : deleted_survey_response')
+        dbm.view.deleted_survey_response(include_docs=False)
+        log_statement('View Refreshed : deleted_survey_response')
 
-    dbm.view.success_survey_response(include_docs=False)
-    log_statement('View Refreshed : success_survey_response')
+        dbm.view.success_survey_response(include_docs=False)
+        log_statement('View Refreshed : success_survey_response')
 
-    dbm.view.undeleted_survey_response(include_docs=False)
-    log_statement('View Refreshed : undeleted_survey_response')
+        dbm.view.undeleted_survey_response(include_docs=False)
+        log_statement('View Refreshed : undeleted_survey_response')
 
-    dbm.view.web_surveyresponse(include_docs=False)
-    log_statement('View Refreshed : web_surveyresponse')
+        dbm.view.web_surveyresponse(include_docs=False)
+        log_statement('View Refreshed : web_surveyresponse')
 
-    log_statement('All views refreshed')
+        log_statement('All views refreshed')
 
+    except Exception as e:
+        log_statement('Refreshing of views failed.')
+        traceback.print_exc(file=log_file)
 
 def migrate_db(db, offset):
     db_failures = []
@@ -127,8 +131,10 @@ def migrate(dbs):
     log_statement('Completed migration process ...... ')
     print('Completed migrations of submissions to survey responses')
 
+
 def log_statement(statement):
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
+
 
 def all_db_names(server):
     all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
