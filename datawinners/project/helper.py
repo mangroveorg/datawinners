@@ -157,7 +157,7 @@ def delete_project(manager, project, void=True):
     project_id, qid = project.id, project.qid
     [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=project_id))]
     questionnaire = FormModel.get(manager, qid)
-    [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
+    [survey_response.void() for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
     questionnaire.void()
     project.set_void(manager, void)
 
