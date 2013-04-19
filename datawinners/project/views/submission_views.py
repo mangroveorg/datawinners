@@ -156,7 +156,7 @@ def edit(request, project_id, survey_response_id, tab=0):
 
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
-        form_ui_model.update({"redirect_url": request.path_info})
+        form_ui_model.update({"redirect_url": ""})
 
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
