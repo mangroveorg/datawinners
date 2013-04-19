@@ -36,7 +36,7 @@ class TestSubmissionViews(unittest.TestCase):
                 'Source': u'Web',
                 'Submission Date': submission_date.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)}})
             expected_values.update({'is_edit': True})
-            expected_values.update({'status': u'Error. Some Error in submission'})
+            expected_values.update({'status': u'Error'})
             self.assertEqual(expected_values, static_info)
 
     def test_log_edit_of_existing_successful_submission(self):
@@ -92,3 +92,5 @@ class TestSubmissionViews(unittest.TestCase):
         expected = {"old": "hi", "new": "one, two"}
         self.assertEqual(expected,result_dict)
 
+    def test_should_create_request_dict(self):
+        pass

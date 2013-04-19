@@ -92,18 +92,19 @@ def delete(request, project_id):
     received_times = []
     for survey_response_id in survey_response_ids:
         survey_response = SurveyResponse.get(manager, survey_response_id)
-        received_times.append( datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
+        received_times.append(datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
         WebPlayerV2(manager).delete_survey_response(survey_response, websubmission_logger)
 
         if survey_response.data_record:
-            ReportRouter().delete(get_organization(request).org_id, survey_response.form_code, survey_response.data_record.id)
+            ReportRouter().delete(get_organization(request).org_id, survey_response.form_code,
+                survey_response.data_record.id)
 
     if len(received_times):
         UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=project.name,
             detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
         response = encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
     else: response = encode_json({'error_message': ugettext("No records deleted"), 'success': False})
-    
+
     return HttpResponse(response)
 
 
@@ -119,8 +120,19 @@ def build_static_info_context(manager, org_id, survey_response):
     form_ui_model.update({'is_edit': True})
     form_ui_model.update({
         'status': ugettext('Success') if survey_response.status else ugettext(
-            'Error') + '. ' + survey_response.errors, })
+            'Error')})
     return form_ui_model
+
+def construct_request_dict(survey_response, questionnaire_form_model):
+    result_dict = OrderedDict()
+    for field in questionnaire_form_model.fields:
+        value = survey_response.values.get(field.code) if survey_response.values.get(
+            field.code) else survey_response.values.get(field.code.lower())
+        if isinstance(field, SelectField) and field.type == 'select':
+            value = [character for character in value]
+        result_dict.update({field.code: value})
+    result_dict.update({'form_code': questionnaire_form_model.form_code})
+    return result_dict
 
 
 @login_required(login_url='/login')
@@ -134,16 +146,21 @@ def edit(request, project_id, survey_response_id, tab=0):
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     survey_response = get_survey_response_by_id(manager, survey_response_id)
-    back_link = reverse(index, kwargs={"project_id":project_id, "questionnaire_code": questionnaire_form_model.form_code, "tab":tab})
+    back_link = reverse(index,
+        kwargs={"project_id": project_id, "questionnaire_code": questionnaire_form_model.form_code, "tab": tab})
     form_ui_model = build_static_info_context(manager, get_organization(request).org_id, survey_response)
     form_ui_model.update({"back_link": back_link})
     if request.method == 'GET':
-        survey_response_form = SurveyResponseForm()
-        survey_response_form.initial_values(survey_response.values)
+        form_initial_values = construct_request_dict(survey_response, questionnaire_form_model)
+        survey_response_form = SurveyResponseForm(data=form_initial_values)
+
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
         form_ui_model.update({"redirect_url": request.path_info})
 
+        if not survey_response_form.is_valid():
+            error_message = _("Please check your answers below for errors.")
+            form_ui_model.update({'error_message': error_message})
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
 
@@ -177,7 +194,7 @@ def edit(request, project_id, survey_response_id, tab=0):
             form_ui_model.update({'success_message': success_message})
             _update_static_info_block_status(form_ui_model, is_errored_before_edit)
             log_edit_action(original_survey_response, survey_response, request, project.name, questionnaire_form_model)
-            if request.POST.get("redirect_url") :
+            if request.POST.get("redirect_url"):
                 return HttpResponseRedirect(request.POST.get("redirect_url"))
         else:
             survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
@@ -196,8 +213,8 @@ def log_edit_action(old_survey_response, new_survey_response, request, project_n
             #replacing question code with actual question text
             changed_answers[question_label] = changed_answers.pop(key)
             #relace option with value for choice field
-            if isinstance(question_field,SelectField):
-                changed_answers[question_label] = get_option_value_for_field(value,question_field)
+            if isinstance(question_field, SelectField):
+                changed_answers[question_label] = get_option_value_for_field(value, question_field)
 
         diff_dict.update({'changed_answers': changed_answers})
     diff_dict.update({'received_on': differences.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
@@ -213,13 +230,13 @@ def get_choice_list(diff_value, question_field):
 
 
 def get_option_value_for_field(diff_value, question_field):
-
     prev_choice_values = get_choice_list(diff_value["old"], question_field)
 
-    reslt_dict = {"old" : ', '.join(prev_choice_values) if prev_choice_values else diff_value["old"],
-                  "new" : ', '.join(get_choice_list(diff_value["new"],question_field))}
+    reslt_dict = {"old": ', '.join(prev_choice_values) if prev_choice_values else diff_value["old"],
+                  "new": ', '.join(get_choice_list(diff_value["new"], question_field))}
 
     return reslt_dict
+
 
 @login_required(login_url='/login')
 @session_not_expired
@@ -243,6 +260,7 @@ def export(request):
     header_list = ExcelFileSubmissionHeader(form_model).header_list
     exported_data, file_name = _prepare_export_data(submission_type, project_name, header_list, formatted_values)
     return _create_excel_response(exported_data, file_name)
+
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
     if is_errored_before_edit:
