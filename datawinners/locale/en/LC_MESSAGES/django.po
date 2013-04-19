@@ -4093,8 +4093,11 @@ msgstr ""
 msgid "Cancel Editing"
 msgstr ""
 
-msgid "Do you want to save any unsaved changes before leaving this page?"
+msgid "Do you want to save the changes before leaving this page?"
 msgstr ""
 
 msgid "Back to Submission Log"
+msgstr ""
+
+msgid "Your changes will be lost if you don't save them."
 msgstr ""

@@ -7,7 +7,7 @@
 {% endfor %}
 <form method="POST">
     <div >
-        <a href="{{ back_link }}" class="back-to-list"> {% trans "Back to Submission Log" %}</a>
+        <a href="{{ back_link }}" class="back-to-list"> « {% trans "Back to Submission Log" %}</a>
     </div>
     <div class="edit_submission_heading">
         <div class="static-text">
@@ -40,7 +40,8 @@
 </form>
 
 <div id="cancel_submission_warning_message">
-    {% trans "Do you want to save any unsaved changes before leaving this page?" %}
+    {% trans "Do you want to save the changes before leaving this page?" %}<br/>
+    {% trans "Your changes will be lost if you don't save them." %}
 
     <div class="text_align_right padding_top_20">
         <a id="cancel_leave" href="javascript:void(0);">{% trans "Cancel" %}</a>

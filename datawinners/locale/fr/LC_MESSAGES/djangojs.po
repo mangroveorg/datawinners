@@ -1104,3 +1104,9 @@ msgstr "La réponse doit être un numéro de téléphone précédé du code pays
 
 msgid "Please select 1 Submission only"
 msgstr "Sélectionnez seulement 1 Soumission"
+
+msgid "You Have Unsaved Changes"
+msgstr "Vous avez des modifications non sauvegardées"
+
+msgid "en"
+msgstr "fr"

@@ -33,11 +33,11 @@
 }
 
 .edit_submission_heading{
-  margin-bottom: 20px;
-}
-
-.edit_submission_heading .static-text{
-  display: inline-block;
+  margin: 10px auto 20px;
+  .static-text{
+    display: inline-block;
+    margin-top: 6px;
+  }
 }
 
 .action-section{

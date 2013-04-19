@@ -19,6 +19,9 @@ $(document).ready(function() {
     });
 
     if ( $("#cancel_submission_warning_message").length ){
+        DW.bind_project_links = function() {
+            return;
+        }
         DW.edit_datasender = new DW.data_submission({});
     }
 });

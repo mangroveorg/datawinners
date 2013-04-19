@@ -50,11 +50,12 @@ DW.data_submission.prototype = {
 
     init_warning_dialog:function () {
         $("#cancel_submission_warning_message").dialog({
-            title:gettext("Warning"),
+            title:gettext("You Have Unsaved Changes"),
             modal:true,
             autoOpen:false,
-            height:160,
-            width:400,
+            width:function(){
+                return (gettext("en") == "en") ? 450 : 550;
+            },
             closeText:'hide'
         });
     },
@@ -103,7 +104,7 @@ DW.data_submission.prototype = {
     },
 
     form_has_errors: function () {
-        return $(".message-box").length || $(".errorlist li").length;
+        return $(".message-box:visible").length || $(".errorlist li").length;
     },
 
     discard_changes: function() {
