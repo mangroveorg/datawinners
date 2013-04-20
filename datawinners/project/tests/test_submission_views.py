@@ -11,7 +11,7 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import SurveyResponse, SurveyResponseDifference
 from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
-from datawinners.project.views.submission_views import build_static_info_context, get_option_value_for_field
+from datawinners.project.views.submission_views import build_static_info_context, get_option_value_for_field, construct_request_dict
 from datetime import  datetime
 from datawinners.project.views.submission_views import  log_edit_action
 
@@ -93,4 +93,35 @@ class TestSubmissionViews(unittest.TestCase):
         self.assertEqual(expected,result_dict)
 
     def test_should_create_request_dict(self):
-        pass
+        survey_response_doc = SurveyResponseDocument(values = {'q1' : 23, 'q2':'sometext', 'q3': 'ab'})
+        survey_response = SurveyResponse(Mock())
+        survey_response._doc = survey_response_doc
+        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
+        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        choice_field = SelectField(name='question three', code='q3', label='question three',
+            options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")], single_select_flag=False,
+            ddtype=Mock(spec=DataDictType))
+        questionnaire_form_model = Mock(spec=FormModel)
+        questionnaire_form_model.form_code = 'test_form_code'
+        questionnaire_form_model.fields = [int_field,text_field,choice_field]
+
+        request_dict = construct_request_dict(survey_response, questionnaire_form_model)
+        expected_dict = {'q1':23, 'q2':'sometext', 'q3':['a','b'],'form_code':'test_form_code'}
+        self.assertEqual(request_dict,expected_dict)
+
+    def test_should_create_request_dict_with_older_survey_response(self):
+        survey_response_doc = SurveyResponseDocument(values = {'q1' : 23, 'q2':'sometext', 'q3': 'ab'})
+        survey_response = SurveyResponse(Mock())
+        survey_response._doc = survey_response_doc
+        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
+        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        choice_field = SelectField(name='question three', code='q4', label='question three',
+            options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")], single_select_flag=False,
+            ddtype=Mock(spec=DataDictType))
+        questionnaire_form_model = Mock(spec=FormModel)
+        questionnaire_form_model.form_code = 'test_form_code'
+        questionnaire_form_model.fields = [int_field,text_field,choice_field]
+
+        request_dict = construct_request_dict(survey_response, questionnaire_form_model)
+        expected_dict = {'q1':23, 'q2':'sometext', 'q4': None,'form_code':'test_form_code'}
+        self.assertEqual(request_dict,expected_dict)
