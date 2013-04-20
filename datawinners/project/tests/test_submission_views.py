@@ -7,7 +7,7 @@ from activitylog.models import UserActivityLog
 from common.constant import EDITED_DATA_SUBMISSION
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import  SurveyResponseDocument
-from mangrove.form_model.field import TextField, IntegerField, SelectField
+from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, DateField
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import SurveyResponse, SurveyResponseDifference
 from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
@@ -16,15 +16,14 @@ from datetime import  datetime
 from datawinners.project.views.submission_views import  log_edit_action
 
 class TestSubmissionViews(unittest.TestCase):
-
     def test_should_get_static_info_from_submission(self):
         with patch("datawinners.project.views.submission_views.get_data_sender") as get_data_sender:
             get_data_sender.return_value = ('Psub', 'rep2', 'tester@gmail.com')
             survey_response_document = SurveyResponseDocument(source='tester@gmail.com', channel='web', status=False,
-                 error_message="Some Error in submission")
+                error_message="Some Error in submission")
             submission_date = datetime(2012, 02, 20, 12, 15, 44)
             survey_response_document.submitted_on = submission_date
-            survey_response_document.created = datetime(2012,02,20,12,15,50)
+            survey_response_document.created = datetime(2012, 02, 20, 12, 15, 50)
 
             survey_response = SurveyResponse(Mock())
 
@@ -58,7 +57,8 @@ class TestSubmissionViews(unittest.TestCase):
         form_model._get_field_by_code.side_effect = lambda x: {'q1': int_field, 'q2': text_field, 'q3': choice_field}[x]
 
         with patch('datawinners.project.views.submission_views.UserActivityLog') as activity_log:
-            with patch('datawinners.project.views.submission_views.get_option_value_for_field') as get_option_value_for_field:
+            with patch(
+                'datawinners.project.views.submission_views.get_option_value_for_field') as get_option_value_for_field:
                 get_option_value_for_field.return_value = {'old': u'one', 'new': u'one, two'}
                 mock_log = Mock(spec=UserActivityLog)
                 activity_log.return_value = mock_log
@@ -81,7 +81,7 @@ class TestSubmissionViews(unittest.TestCase):
             ddtype=Mock(spec=DataDictType))
         result_dict = get_option_value_for_field(choices, choice_field)
         expected = {"old": "one", "new": "one, two"}
-        self.assertEqual(expected,result_dict)
+        self.assertEqual(expected, result_dict)
 
     def test_get_option_value_for_other_field_changed_to_choice_fields(self):
         choices = {"old": "hi", "new": "ab"}
@@ -90,7 +90,61 @@ class TestSubmissionViews(unittest.TestCase):
             ddtype=Mock(spec=DataDictType))
         result_dict = get_option_value_for_field(choices, choice_field)
         expected = {"old": "hi", "new": "one, two"}
-        self.assertEqual(expected,result_dict)
+        self.assertEqual(expected, result_dict)
+
+    def test_convert_survey_response_values_to_dict_format(self):
+        survey_response_doc = SurveyResponseDocument(
+            values={'q1': '23', 'q2': 'sometext', 'q3': 'a', 'geo': '2.34,5.64', 'date': '12.12.2012'})
+        survey_response = SurveyResponse(Mock())
+        survey_response._doc = survey_response_doc
+        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
+        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        single_choice_field = SelectField(name='question three', code='q3', label='question three',
+            options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")], single_select_flag=True,
+            ddtype=Mock(spec=DataDictType))
+        geo_field = GeoCodeField(name='geo', code='GEO', label='geo', ddtype=Mock())
+        date_field = DateField(name='date', code='DATE', label='date', date_format='dd.mm.yyyy', ddtype=Mock())
+        questionnaire_form_model = Mock(spec=FormModel)
+        questionnaire_form_model.form_code = 'test_form_code'
+        questionnaire_form_model.fields = [int_field, text_field, single_choice_field, geo_field, date_field]
+
+        request_dict = construct_request_dict(survey_response, questionnaire_form_model)
+        expected_dict = OrderedDict({'q1': '23', 'q2': 'sometext', 'q3': 'a', 'GEO': '2.34,5.64', 'DATE': '12.12.2012',
+                         'form_code': 'test_form_code'})
+        self.assertEqual(expected_dict, request_dict)
+
+    def test_multiple_choice_field_should_be_split(self):
+        survey_response_doc = SurveyResponseDocument(values={'q1': '23', 'q2': 'sometext', 'q3': 'ab'})
+        survey_response = SurveyResponse(Mock())
+        survey_response._doc = survey_response_doc
+        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
+        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        choice_field = SelectField(name='question three', code='Q3', label='question three',
+            options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")], single_select_flag=False,
+            ddtype=Mock(spec=DataDictType))
+        questionnaire_form_model = Mock(spec=FormModel)
+        questionnaire_form_model.form_code = 'test_form_code'
+        questionnaire_form_model.fields = [int_field, text_field, choice_field]
+
+        result_dict = construct_request_dict(survey_response, questionnaire_form_model)
+        expected_dict = {'q1': '23', 'q2': 'sometext', 'Q3': ['a','b'], 'form_code': 'test_form_code'}
+        self.assertEqual(expected_dict,result_dict)
+
+    def test_should_return_none_if_survey_response_questionnaire_is_different_from_form_model(self):
+        survey_response_doc = SurveyResponseDocument(values={'q5': '23', 'q6': 'sometext', 'q7': 'ab'})
+        survey_response = SurveyResponse(Mock())
+        survey_response._doc = survey_response_doc
+        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
+        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        choice_field = SelectField(name='question three', code='Q3', label='question three',
+            options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")], single_select_flag=False,
+            ddtype=Mock(spec=DataDictType))
+        questionnaire_form_model = Mock(spec=FormModel)
+        questionnaire_form_model.form_code = 'test_form_code'
+        questionnaire_form_model.fields = [int_field, text_field, choice_field]
+        result_dict = construct_request_dict(survey_response, questionnaire_form_model)
+        expected_dict = {'q1': None, 'q2': None, 'Q3': None, 'form_code': 'test_form_code'}
+        self.assertEqual(expected_dict,result_dict)
 
     def test_should_create_request_dict(self):
         survey_response_doc = SurveyResponseDocument(values = {'q1' : 23, 'q2':'sometext', 'q3': 'ab'})

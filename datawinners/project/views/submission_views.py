@@ -124,7 +124,7 @@ def build_static_info_context(manager, org_id, survey_response):
     return form_ui_model
 
 def construct_request_dict(survey_response, questionnaire_form_model):
-    result_dict = OrderedDict()
+    result_dict = {}
     for field in questionnaire_form_model.fields:
         value = survey_response.values.get(field.code) if survey_response.values.get(
             field.code) else survey_response.values.get(field.code.lower())
