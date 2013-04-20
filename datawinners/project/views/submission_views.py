@@ -189,7 +189,7 @@ def edit(request, project_id, survey_response_id, tab=0):
 
         success_message = _("Your changes have been saved.")
         form_ui_model.update({'success_message': success_message})
-        if len(survey_response_form.changed_data):
+        if len(survey_response_form.changed_data) or is_errored_before_edit:
             created_request = helper.create_request(survey_response_form, request.user.username)
             response = WebPlayerV2(manager).edit_survey_response(created_request, survey_response, websubmission_logger)
             if response.success:
@@ -220,10 +220,10 @@ def log_edit_action(old_survey_response, new_survey_response, request, project_n
                 changed_answers[question_label] = get_option_value_for_field(value, question_field)
 
         diff_dict.update({'changed_answers': changed_answers})
-        diff_dict.update({'received_on': differences.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
-        diff_dict.update({'status_changed': differences.status_changed})
-        activity_log = UserActivityLog()
-        activity_log.log(request, project=project_name, action=EDITED_DATA_SUBMISSION, detail=json.dumps(diff_dict))
+    diff_dict.update({'received_on': differences.created.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)})
+    diff_dict.update({'status_changed': differences.status_changed})
+    activity_log = UserActivityLog()
+    activity_log.log(request, project=project_name, action=EDITED_DATA_SUBMISSION, detail=json.dumps(diff_dict))
 
 
 def get_choice_list(diff_value, question_field):
