@@ -8,12 +8,11 @@ from mangrove.datastore.database import get_db_manager
 from mangrove.transport.contract.submission import Submission
 
 MAX_NUMBER_DOCS = 50
-log_file = open('migration_release_6.log', 'a')
+log_file = open('migration_release_6_1.log', 'a')
 SERVER = 'http://localhost:5984'
 
 def log_statement(statement):
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
-
 
 def log_success_summary(db, dbm, skipped_count, successfully_processed):
     log_statement('Completed Survey Response creation for : %s' % db)
@@ -136,7 +135,6 @@ def migrate(dbs):
 def log_statement(statement):
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
 
-
 def all_db_names(server):
     all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
     dbs = eval(all_dbs)
@@ -144,7 +142,7 @@ def all_db_names(server):
 
 #This is for the manual run and is supposed to be used from [workspace]/datawinners/datawinners after activating the
 #virtual environment by running 'source [path of virtual env bin] activate' and using the format
-# python ../migration/couch/release_6/migration_to_survey_response_from_submission_logs.py [db name] [offset]
+# python ../migration/couch/release_6/1.migration_to_survey_response_from_submission_logs.py [db name] [offset]
 # where offset - is the number of documents to skip when doing migration for that db.
 arguments = sys.argv
 if len(arguments) == 3:

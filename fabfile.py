@@ -5,6 +5,7 @@ from fabric.api import run, env
 from fabric.context_managers import cd, settings
 import os
 from datetime import  datetime
+from time import sleep
 
 DATAWINNERS = 'datawinners'
 MANGROVE = 'mangrove'
@@ -19,7 +20,7 @@ ENVIRONMENT_CONFIGURATIONS = {
     "production": "prod_local_settings.py",
     "ec2": "ec2_local_settings.py",
     "qa": "local_settings_qa.py",
-    "qa_supreme":"local_settings_qa_supreme.py"
+    "qa_supreme": "local_settings_qa_supreme.py"
 }
 
 ENVIRONMENT_VES = {
@@ -28,7 +29,8 @@ ENVIRONMENT_VES = {
     "ec2": "/home/mangrover/.virtualenvs/datawinners",
     "qa": "/home/twer/virtual_env/datawinner",
     "test": "/home/twer/virtual_env/datawinner",
-    "qa_supreme":"/home/datawinners/virtual_env/datawinner"
+    "qa_supreme": "/home/datawinners/virtual_env/datawinner",
+    "beta": "/home/administrator/virtual_env/datawinner",
 }
 
 ENVIRONMENT_TOMCAT = {
@@ -38,7 +40,7 @@ ENVIRONMENT_TOMCAT = {
 }
 
 ENVIRONMENT_JENKINS_JOB = {
-    MANGROVE : 'Mangrove-develop',
+    MANGROVE: 'Mangrove-develop',
     DATAWINNERS: 'Datawinners'
 }
 
@@ -46,6 +48,7 @@ ENVIRONMENT_JENKINS_JOB = {
 def git_clone_datawinners_if_not_present(code_dir):
     if run("test -d %s" % code_dir).failed:
         run("git clone git://github.com/mangroveorg/datawinners.git %s" % code_dir)
+
 
 def git_clone_mangrove_if_not_present(code_dir):
     if run("test -d %s" % code_dir).failed:
@@ -107,19 +110,24 @@ def start_servers():
 
 def set_mangrove_commit_sha(branch, mangrove_build_number):
     if mangrove_build_number == 'lastSuccessfulBuild':
-        mangrove_build_number = run("curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
+        mangrove_build_number = run(
+            "curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
     run("echo 'Checking the mangrove commit sha for build number %s'" % mangrove_build_number)
-    run("export MANGROVE_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
+    run(
+        "export MANGROVE_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
             branch, mangrove_build_number))
-    run("echo MANGROVE_COMMIT_SHA=$MANGROVE_COMMIT_SHA" )
+    run("echo MANGROVE_COMMIT_SHA=$MANGROVE_COMMIT_SHA")
+
 
 def set_datawinner_commit_sha(datawinner_build_number):
     if datawinner_build_number == 'lastSuccessfulBuild':
         datawinner_build_number = run("curl http://178.79.163.33:8080/job/Datawinners/lastSuccessfulBuild/buildNumber")
     run("echo 'Checking the datawinner commit sha for build number %s'" % datawinner_build_number)
-    run("export DATAWINNER_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Datawinners/%s/artifact/last_successful_commit_sha`" % (
+    run(
+        "export DATAWINNER_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Datawinners/%s/artifact/last_successful_commit_sha`" % (
             datawinner_build_number))
-    run("echo DATAWINNER_COMMIT_SHA=$DATAWINNER_COMMIT_SHA" )
+    run("echo DATAWINNER_COMMIT_SHA=$DATAWINNER_COMMIT_SHA")
+
 
 def check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env):
     git_clone_mangrove_if_not_present(mangrove_code_dir)
@@ -133,6 +141,7 @@ def check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, vi
         activate_and_run(virtual_env, "pip install -r requirements.pip")
         activate_and_run(virtual_env, "python setup.py develop")
 
+
 def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, branch, virtual_env):
     git_clone_datawinners_if_not_present(datawinners_code_dir)
     with cd(datawinners_code_dir):
@@ -144,14 +153,15 @@ def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, br
         run("git checkout .")
         activate_and_run(virtual_env, "pip install -r requirements.pip")
 
-def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env, branch="develop", environment="showcase"):
+
+def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env, branch="develop",
+           environment="showcase"):
     """build_number : hudson build number to be deployed
        home_dir: directory where you want to deploy the source code
        virtual_env : path to your virtual_env folder
     """
     set_mangrove_commit_sha(branch, mangrove_build_number)
     set_datawinner_commit_sha(datawinner_build_number)
-
 
     mangrove_code_dir = home_dir + '/mangrove'
     datawinners_code_dir = home_dir + '/datawinners'
@@ -171,9 +181,11 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
             else:
                 restart_servers()
 
+
 def killfirefox():
     with settings(warn_only=True):
         run("killall firefox")
+
 
 def showcase():
     env.user = "mangrover"
@@ -181,11 +193,13 @@ def showcase():
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
+
 def qa():
     env.user = "twer"
     env.hosts = ["10.18.2.237"]
     env.key_filename = ["/home/dw/.ssh/id_rsa"]
     env.warn_only = True
+
 
 def qa_supreme():
     env.user = "datawinners"
@@ -193,22 +207,26 @@ def qa_supreme():
     env.key_filename = ["/home/datawinners/.ssh/id_rsa"]
     env.warn_only = True
 
+
 def test():
     env.user = "twer"
     env.hosts = ["10.18.2.237"]
     env.key_filename = ["/Users/twer/.ssh/id_rsa"]
     env.warn_only = True
 
+
 def local():
     env.user = "mangrover"
     env.hosts = ["127.0.0.1"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+
 
 def production():
     env.user = "mangrover"
     env.hosts = ["178.79.185.34"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
     env.warn_only = True
+
 
 def ec2():
     env.user = "mangrover"
@@ -217,11 +235,12 @@ def ec2():
     env.warn_only = True
 
 
-def local_test():
+def beta():
     env.user = getpass.getuser()
     env.hosts = ["localhost"]
     env.key_filename = ["%s/.ssh/id_rsa" % os.getenv("HOME")]
     env.warn_only = True
+    env.couch_db_service_name = 'couchdb'
 
 
 def anonymous():
@@ -230,9 +249,11 @@ def anonymous():
 
 def commit_sha_from_build_number(jenkins_job_name, build_number):
     if build_number == 'lastSuccessfulBuild':
-        build_number = run("curl http://178.79.163.33:8080/job/%s/lastSuccessfulBuild/buildNumber" % (jenkins_job_name,))
+        build_number = run(
+            "curl http://178.79.163.33:8080/job/%s/lastSuccessfulBuild/buildNumber" % (jenkins_job_name,))
     print("Retrieving the commit sha for build number %s of jenkins job %s" % (build_number, jenkins_job_name,))
-    commit_sha = run("curl -s http://178.79.163.33:8080/job/%s/%s/artifact/last_successful_commit_sha" % (jenkins_job_name, build_number))
+    commit_sha = run("curl -s http://178.79.163.33:8080/job/%s/%s/artifact/last_successful_commit_sha" % (
+        jenkins_job_name, build_number))
 
     print("%s_commit_sha: %s" % (jenkins_job_name, commit_sha))
     return commit_sha
@@ -250,7 +271,8 @@ def checkout_project(context, project_name):
     run("git checkout " + context.branch)
     run("git pull --rebase")
     if context.branch in ['develop', 'origin/develop']:
-        start_point = commit_sha_from_build_number(ENVIRONMENT_JENKINS_JOB[project_name], context.build_numbers[project_name])
+        start_point = commit_sha_from_build_number(ENVIRONMENT_JENKINS_JOB[project_name],
+            context.build_numbers[project_name])
     else:
         start_point = context.branch
     run("git checkout -B %s %s" % (TODAY_IN_UTC, start_point))
@@ -301,10 +323,23 @@ def migrate_couchdb(context):
         with cd('%s/datawinners' % context.code_dir):
             activate_and_run(context.virtual_env, "python %s" % context.couch_migration_file)
 
+    if context.couch_migrations_folder:
+        with cd('%s/datawinners/%s' % (context.code_dir, context.couch_migrations_folder)):
+            migration_files = run('ls').split()
+            for migration in migration_files:
+                if not (migration.__contains__('.log') or migration.__eq__('__init__.py')):
+                    run("sudo /etc/init.d/%s stop" % env.couch_db_service_name)
+                    run("sudo /etc/init.d/%s start" % env.couch_db_service_name)
+                    sleep(3)
+                    print 'Running migration: %s' % migration
+                    activate_and_run(context.virtual_env, "python %s" % migration)
+                    print 'Migration: %s complete' % migration
+
 
 def link_repo(context, link_name):
     run('rm -f %s' % link_name)
     run('ln -s %s %s' % (os.path.join(context.code_dir, link_name), link_name))
+
 
 def _deploy_mangrove(context):
     deploy_project(context, MANGROVE, post_checkout_mangrove)
@@ -323,35 +358,42 @@ def _deploy_datawinners(context):
     migrate_couchdb(context)
     link_repo(context, DATAWINNERS)
 
+
 class Context(object):
-    def __init__(self, mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env, couch_migration_file):
+    def __init__(self, mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env,
+                 couch_migration_file, couch_migrations_folder):
         self.build_numbers = {MANGROVE: mangrove_build_number, DATAWINNERS: datawinner_build_number}
         self.code_dir = code_dir
         self.environment = environment
         self.branch = branch_name
         self.virtual_env = virtual_env
         self.couch_migration_file = couch_migration_file
+        self.couch_migrations_folder = couch_migrations_folder
 
 
 def production_deploy(mangrove_build_number="lastSuccessfulBuild",
                       datawinner_build_number="lastSuccessfulBuild",
                       code_dir="/home/twer/workspace",
-                      environment = 'showcase',
+                      environment='beta',
                       branch_name='develop',
-                      couch_migration_file=None):
-    stop_servers()
+                      couch_migration_file=None,
+                      couch_migrations_folder=None):
+#    stop_servers()
     virtual_env = ENVIRONMENT_VES[environment]
-    context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env, couch_migration_file)
+    context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env,
+        couch_migration_file, couch_migrations_folder)
+    migrate_couchdb(context)
 
-    _make_sure_code_dir_exists(context)
+#
+#    _make_sure_code_dir_exists(context)
+#
+#    _deploy_mangrove(context)
+#    _deploy_datawinners(context)
+#
+#    remove_cache(context)
+#    start_servers()
 
-    _deploy_mangrove(context)
-    _deploy_datawinners(context)
-
-    remove_cache(context)
-    start_servers()
-
-def custom_reports_deploy(code_dir, environment = 'showcase'):
+def custom_reports_deploy(code_dir, environment='showcase'):
     check_out_latest_custom_reports_code_for_production(code_dir)
 
     with cd('%s/bin/' % ENVIRONMENT_TOMCAT[environment]):
@@ -364,19 +406,23 @@ def custom_reports_deploy(code_dir, environment = 'showcase'):
     with cd('%s/bin/' % ENVIRONMENT_TOMCAT[environment]):
         run('./catalina.sh start')
 
+
 def deploy_to_qa():
-    production_deploy(code_dir="/home/twer/workspace",environment="qa")
+    production_deploy(code_dir="/home/twer/workspace", environment="qa")
+
 
 def test_deploy_against_qa_machine():
-    production_deploy(code_dir="/home/twer/workspace_for_script_test", branch_name="origin/release",environment="test")
+    production_deploy(code_dir="/home/twer/workspace_for_script_test", branch_name="origin/release", environment="test")
+
 
 def remove_cache(context):
     with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS, 'media')):
         run('rm -rf CACHE/js/*')
         run('rm -rf CACHE/css/*')
 
+
 def run_func_tests(environment="qa_supreme"):
     virtual_env = ENVIRONMENT_VES[environment]
-    activate_and_run(virtual_env,"true")
+    activate_and_run(virtual_env, "true")
     run("cd workspace/datawinners")
     run("./build.sh ft")

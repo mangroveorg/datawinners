@@ -9,7 +9,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import TextLengthConstraint
 
 SERVER = 'http://localhost:5984'
-log_file = open('migration_max_length_to_20_release_6.log', 'a')
+log_file = open('migration_release_6_3.log', 'a')
 
 failed_managers = []
 
