@@ -192,6 +192,7 @@ def showcase():
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
     env.warn_only = True
+    env.couch_db_service_name = 'couchdb'
 
 
 def qa():
@@ -206,6 +207,7 @@ def qa_supreme():
     env.hosts = ["172.18.9.1"]
     env.key_filename = ["/home/datawinners/.ssh/id_rsa"]
     env.warn_only = True
+    env.couch_db_service_name = 'couchdb'
 
 
 def test():
@@ -233,6 +235,7 @@ def ec2():
     env.hosts = ["54.243.31.50"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
     env.warn_only = True
+    env.couch_db_service_name = 'couchbase-server'
 
 
 def beta():
@@ -378,20 +381,19 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
                       branch_name='develop',
                       couch_migration_file=None,
                       couch_migrations_folder=None):
-#    stop_servers()
+    stop_servers()
     virtual_env = ENVIRONMENT_VES[environment]
     context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env,
         couch_migration_file, couch_migrations_folder)
-    migrate_couchdb(context)
 
-#
-#    _make_sure_code_dir_exists(context)
-#
-#    _deploy_mangrove(context)
-#    _deploy_datawinners(context)
-#
-#    remove_cache(context)
-#    start_servers()
+    _make_sure_code_dir_exists(context)
+
+    _deploy_mangrove(context)
+    _deploy_datawinners(context)
+
+    remove_cache(context)
+    start_servers()
+
 
 def custom_reports_deploy(code_dir, environment='showcase'):
     check_out_latest_custom_reports_code_for_production(code_dir)

@@ -37,5 +37,3 @@ CRS_ORG_ID = 'JHW14178'
 HNI_SUPPORT_EMAIL_ID="support@datawinners.com"
 HNI_BLOG_FEED = 'http://datawinners.wordpress.com/feed/'
 COMPRESS_ENABLED = True
-
-COUCH_DB_SERVICE_NAME ='couchbase-server'
