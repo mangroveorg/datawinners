@@ -2632,7 +2632,7 @@ msgid "Close"
 msgstr ""
 
 msgid "Choose Data Sender from this list."
-msgstr ""
+msgstr "Choose Data Sender from the list."
 
 msgid "Choose Subject from this list."
 msgstr ""

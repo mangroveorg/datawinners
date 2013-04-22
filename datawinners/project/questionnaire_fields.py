@@ -187,7 +187,7 @@ class SubjectField(object):
     def _get_choice_field(self, data_sender_choices, subject_field, help_text):
         subject_choice_field = ChoiceField(required=subject_field.is_required(), choices=data_sender_choices,
             label=subject_field.name,
-            initial=subject_field.value, help_text=help_text)
+            initial=subject_field.value, help_text=_(help_text))
         subject_choice_field.widget.attrs['class'] = 'subject_field'
         return subject_choice_field
 
