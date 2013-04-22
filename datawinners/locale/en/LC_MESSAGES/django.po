@@ -4101,3 +4101,6 @@ msgstr ""
 
 msgid "Your changes will be lost if you don't save them."
 msgstr ""
+
+msgid "Choose Data Sender from the list."
+msgstr ""

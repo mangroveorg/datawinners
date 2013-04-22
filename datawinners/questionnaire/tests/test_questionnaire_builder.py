@@ -51,7 +51,7 @@ class TestQuestionnaireBuilder(MangroveTestCase):
         entity_id_question = summary_form_model.entity_question
         self.assertEqual('eid', entity_id_question.code)
         self.assertEqual('I am submitting this data on behalf of', entity_id_question.name)
-        self.assertEqual("Choose Data Sender from this list.", entity_id_question.instruction)
+        self.assertEqual("Choose Data Sender from the list.", entity_id_question.instruction)
 
     def test_should_no_snapshot_when_questionnaire_first_created(self):
         self._create_form_model()

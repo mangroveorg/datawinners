@@ -4177,3 +4177,6 @@ msgstr "Retour au Journal de soumission"
 
 msgid "Your changes will be lost if you don't save them."
 msgstr "Vos modifications seront perdues si vous ne les sauvegardez pas."
+
+msgid "Choose Data Sender from the list."
+msgstr "Choisissez un Expéditeur de données dans la liste."
