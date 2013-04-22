@@ -7,11 +7,14 @@ from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import TextLengthConstraint
+from migration.couch.release_6.utils import init_migrations, should_not_skip
 
 SERVER = 'http://localhost:5984'
 log_file = open('migration_release_6_3.log', 'a')
 
 failed_managers = []
+
+init_migrations('dbs_migrated_release_6_3.csv')
 
 def all_db_names(server):
     all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
@@ -58,7 +61,6 @@ def migrate_db(database):
             for field in form_model.fields:
                 if field.is_entity_field:
                     field.set_constraints([TextLengthConstraint(min=1, max=20)._to_json()])
-                #                    form_model.fields[0].set_instruction("Answer must be 20 characters maximum")
             form_model.save()
             log_statement(
                 "End process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
@@ -76,9 +78,10 @@ def migrate_story_2074(all_db_names):
         '\nStart ===================================================================================================\n')
     for database in all_db_names:
         try:
-            migrate_db(database)
+            if should_not_skip(database):
+                migrate_db(database)
         except Exception as e:
-            log_statement('failed for  %s :\n ' % database)
+            log_statement("error:" + e.message)
             traceback.print_exc(file=log_file)
     if len(failed_managers) > 0:
         log_statement('failed managers:')
