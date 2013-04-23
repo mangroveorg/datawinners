@@ -7,12 +7,10 @@ from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import TextLengthConstraint
-from migration.couch.release_6.utils import init_migrations, should_not_skip
+from utils import init_migrations, should_not_skip
 
 SERVER = 'http://localhost:5984'
 log_file = open('migration_release_6_3.log', 'a')
-
-failed_managers = []
 
 init_migrations('dbs_migrated_release_6_3.csv')
 
@@ -48,7 +46,6 @@ def get_form_model(manager, questionnaire):
 
 
 def migrate_db(database):
-    failed_managers = []
     log_statement(
         '\nStart migration on database : %s \n' % database)
     try:
@@ -67,10 +64,8 @@ def migrate_db(database):
         log_statement(
             '\nEnd migration on database : %s\n' % database)
     except Exception as e:
-        log_statement('failed for %s :\n ' % database)
+        log_statement('error:%s:%s\n' % (e.message, database))
         traceback.print_exc(file=log_file)
-        failed_managers.append(database + ":" + e.message)
-
 
 def migrate_story_2074(all_db_names):
     print "start ...."
@@ -83,11 +78,6 @@ def migrate_story_2074(all_db_names):
         except Exception as e:
             log_statement("error:" + e.message)
             traceback.print_exc(file=log_file)
-    if len(failed_managers) > 0:
-        log_statement('failed managers:')
-        for manager, exception_message in failed_managers:
-            log_statement(" %s failed. the reason :  %s" % (manager, exception_message))
-
     log_statement(
         '\n End ====================================================================================================\n')
     print "Completed migration"
