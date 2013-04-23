@@ -9,6 +9,7 @@ from pages.projectsubjectspage.project_subjects_page import ProjectSubjectsPage
 from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.reminderpage.all_reminder_page import AllReminderPage
 from pages.smstesterlightbox.sms_tester_light_box_page import SMSTesterLightBoxPage
+from pages.projectreviewandtest.project_review_and_test_page import ProjectReviewTestPage
 
 
 class ProjectOverviewPage(Page):
@@ -73,3 +74,7 @@ class ProjectOverviewPage(Page):
     def get_questionnaire_code(self):
         url_data_tab = self.driver.find(DATA_TAB).get_attribute("href")
         return url_data_tab.split("/")[6]
+
+    def navigate_to_review_and_test(self):
+        self.driver.find(REVIEW_AND_TEST_TAB).click()
+        return ProjectReviewTestPage(self.driver)

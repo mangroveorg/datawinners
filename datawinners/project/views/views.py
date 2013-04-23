@@ -412,7 +412,7 @@ def review_and_test(request, project_id=None):
         fields = form_model.fields
         if form_model.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(form_model.fields)
-        is_reminder = "enabled" if project['reminder_and_deadline']['has_deadline'] else "disabled"
+        is_reminder = "enabled" if len(Reminder.objects.filter(project_id=project.id)) != 0 else "disabled"
 
         project_devices = project.devices
         devices = ", ".join(project_devices).replace('sms', 'SMS').replace('web', 'Web').replace('smartPhone',
