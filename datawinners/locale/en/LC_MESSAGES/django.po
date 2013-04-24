@@ -4104,3 +4104,6 @@ msgstr ""
 
 msgid "Choose Data Sender from the list."
 msgstr ""
+
+msgid "disabled"
+msgstr ""
