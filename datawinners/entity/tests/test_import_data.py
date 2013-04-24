@@ -244,8 +244,8 @@ class TestFilePlayer(MangroveTestCase):
         self.assertFalse(responses[0].success)
         self.assertFalse(responses[1].success)
         self.assertFalse(responses[2].success)
-        self.assertEqual(OrderedDict([('q3', 'Answer 2014678447676512 for question m is longer than allowed.')]),responses[0].errors['error'])
-        self.assertEqual(OrderedDict([('q3', 'Invalid Mobile Number. Only Numbers and Dash(-) allowed.')]),responses[1].errors['error'])
+        self.assertEqual(OrderedDict([('q6', 'Answer 2014678447676512 for question m is longer than allowed.')]),responses[0].errors['error'])
+        self.assertEqual(OrderedDict([('q6', 'Invalid Mobile Number. Only Numbers and Dash(-) allowed.')]),responses[1].errors['error'])
         self.assertEqual(OrderedDict([('m', 'Mobile number is missing')]),responses[2].errors['error'])
 
     def test_should_not_import_data_for_incorrect_GPS_format(self):
@@ -254,7 +254,7 @@ class TestFilePlayer(MangroveTestCase):
             get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
             responses = self.file_player.accept(self.csv_data_with_incorrect_GPS)
         self.assertFalse(responses[0].success)
-        error_message = OrderedDict([('q2',
+        error_message = OrderedDict([('q5',
             'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315')])
         self.assertEqual(error_message,responses[0].errors['error'])
 
@@ -265,10 +265,10 @@ class TestFilePlayer(MangroveTestCase):
             responses = self.file_player.accept(self.csv_data_with_out_of_range_GPS_value)
         self.assertFalse(responses[0].success)
         self.assertFalse(responses[1].success)
-        error_message1 = OrderedDict([('q2',
+        error_message1 = OrderedDict([('q5',
             'The answer -95 must be between -90 and 90')])
         self.assertEqual(error_message1,responses[0].errors['error'])
-        error_message2 = OrderedDict([('q2',
+        error_message2 = OrderedDict([('q5',
             'The answer 184 must be between -180 and 180')])
         self.assertEqual(error_message2,responses[1].errors['error'])
 
