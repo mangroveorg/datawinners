@@ -21,11 +21,10 @@ db_names = all_db_names(SERVER)
 
 def log_statement(statement, db=""):
     print '%s:%s:%s\n' % (datetime.utcnow(), db, statement)
-    log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
+    log_file.writelines('%s:%s:%s\n' % (datetime.utcnow(), db, statement))
 
 
 def migrate_db(db):
-    global manager
     try:
         mark_start_of_migration(db)
         manager = get_db_manager(server=SERVER, database=db)
@@ -37,7 +36,7 @@ def migrate_db(db):
                 field.set_constraints([])
         form_model.save()
     except Exception as e:
-        log_statement("error:" + e.message, manager)
+        log_statement(":Error", db)
         traceback.print_exc(file=log_file)
 
 def migrate_story_1924():
