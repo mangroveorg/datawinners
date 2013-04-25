@@ -1,4 +1,5 @@
-from django.forms import HiddenInput, ChoiceField, FloatField
+from django.forms import HiddenInput, ChoiceField, FloatField, TextInput
+from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext
 from entity.fields import PhoneNumberField, DjangoDateField
 from entity.import_data import load_all_subjects_of_type, get_entity_type_fields
@@ -77,11 +78,28 @@ class PhoneNumberFormField(object):
         return ""
 
 
+class TextInputForFloat(TextInput):
+
+    def _has_changed(self, initial, data):
+        if data is None:
+             data_value = 0
+        else:
+             data_value = data
+        if initial is None:
+             initial_value = 0
+        else:
+             initial_value = initial
+        try:
+            return float(initial_value) != float(data_value)
+        except ValueError :
+            return force_unicode(initial_value) != force_unicode(data_value)
+
+
 class IntegerFormField(object):
     def create(self, field):
         constraints = self._get_number_constraints(field)
         float_field = FloatField(label=field.label, initial=field.value,
-            required=field.is_required(), help_text=field.instruction,
+            required=field.is_required(), help_text=field.instruction, widget=TextInputForFloat,
             **constraints)
         float_field.widget.attrs["watermark"] = self._get_number_field_constraint_text(field)
         float_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -214,7 +232,6 @@ class SubjectField(object):
         choice_fields = self._get_choice_field(all_subject_choices, subject_field,
             help_text=instruction_for_subject_field)
         return choice_fields
-
 
 
 def get_text_field_constraint_text(field):
