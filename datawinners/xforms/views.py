@@ -21,14 +21,15 @@ def restrict_request_country(f):
         request = args[0]
         user = request.user
         org = Organization.objects.get(org_id=user.get_profile().org_id)
-        try :
+        try:
             country_code = GeoIP().country_code(request.META.get('REMOTE_ADDR'))
         except Exception as e:
-            logger.exception("Error resolving country from IP : \n%s"%e)
+            logger.exception("Error resolving country from IP : \n%s" % e)
             raise
-        if country_code is None or org.country.code == country_code:
-            return f(*args, **kw)
-        return HttpResponse(status=401)
+        log_message = 'User: %s, IP: %s resolved in %s, for Oragnization id: %s located in country: %s ' %\
+                      (user, request.META.get('REMOTE_ADDR'), country_code, org.org_id, org.country)
+        logger.info(log_message)
+        return f(*args, **kw)
 
     return wrapper
 
@@ -46,7 +47,7 @@ def formList(request):
 
 
 def get_errors(errors):
-    return '\n'.join(['{0} : {1}'.format(key,val) for key, val in errors.items()])
+    return '\n'.join(['{0} : {1}'.format(key, val) for key, val in errors.items()])
 
 
 def __authorized_to_make_submission_on_requested_form(request_user, submission_file):
@@ -69,10 +70,9 @@ def submission(request):
     request_user = request.user
     submission_file = request.FILES.get("xml_submission_file").read()
 
-    if not __authorized_to_make_submission_on_requested_form(request_user, submission_file) :
+    if not __authorized_to_make_submission_on_requested_form(request_user, submission_file):
         response = HttpResponse(status=403)
         return response
-
 
     manager = get_database_manager(request_user)
     player = XFormPlayerV2(manager)
@@ -104,4 +104,4 @@ def submission(request):
 def xform(request, questionnaire_code=None):
     request_user = request.user
     form = xform_for(get_database_manager(request_user), questionnaire_code, request_user.get_profile().reporter_id)
-    return HttpResponse(content= form, mimetype="text/xml")
+    return HttpResponse(content=form, mimetype="text/xml")

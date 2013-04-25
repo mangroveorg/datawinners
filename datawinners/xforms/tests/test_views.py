@@ -47,7 +47,7 @@ class TestXFormsViews(TestCase):
                 xform(request, questionnaire_code)
                 mock_xform_for.assert_called_once_with(mock_get_dbm(), questionnaire_code)
 
-    def test_should_restrict_request_from_country_of_organization(self):
+    def test_should_allow_request_from_country_other_than_of_organization(self):
         request = Mock(spec=HttpRequest)
         request.user = Mock()
         request.META = {'REMOTE_ADDR': "someIp"}
@@ -59,7 +59,7 @@ class TestXFormsViews(TestCase):
             organization_mock.objects = objects_mock
             with patch.object(GeoIP, 'country_code') as geo_ip_mock:
                 geo_ip_mock.return_value = Country('MG')
-                self.assertEquals(dummy_form_list(request).status_code, 401)
+                self.assertEquals(dummy_form_list(request).status_code, 200)
 
     def test_should_allow_request_from_country_of_organization(self):
         request = Mock(spec=HttpRequest)
