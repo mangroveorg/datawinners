@@ -4170,7 +4170,7 @@ msgid "Don't Save"
 msgstr "Ne pas enregistrer"
 
 msgid "Do you want to save the changes before leaving this page?"
-msgstr "Voulez-vous enregistrer vos modifications avant de retourner à la Liste des Soumissions?"
+msgstr "Voulez-vous sauvegarder vos modifications avant de quitter cette page?"
 
 msgid "Back to Submission Log"
 msgstr "Retour au Journal de soumission"

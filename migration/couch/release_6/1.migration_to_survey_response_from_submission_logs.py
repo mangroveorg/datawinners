@@ -6,10 +6,13 @@ from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport.contract.submission import Submission
+from utils import init_migrations, mark_start_of_migration, should_not_skip
 
 MAX_NUMBER_DOCS = 50
-log_file = open('migration_release_6.log', 'a')
+log_file = open('migration_release_6_1.log', 'a')
 SERVER = 'http://localhost:5984'
+
+init_migrations('dbs_migrated_release_6_1.csv')
 
 def log_statement(statement):
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
@@ -86,12 +89,14 @@ def refresh_survey_response_views(dbm):
         log_statement('Refreshing of views failed.')
         traceback.print_exc(file=log_file)
 
+
 def migrate_db(db, offset):
     db_failures = []
     successfully_processed = 0
     skipped_count = 0
-
     try:
+        print db
+        mark_start_of_migration(db)
         dbm = get_db_manager(server=SERVER, database=db)
         log_statement('Database: %s' % db)
         rows = dbm.view.submissionlog(reduce=False, skip=successfully_processed + offset, limit=MAX_NUMBER_DOCS)
@@ -124,7 +129,8 @@ def migrate(dbs):
     log_statement('Starting migration process ...... ')
     db_failures = []
     for db in dbs:
-        db_failures.append(migrate_db(db, 0))
+        if should_not_skip(db):
+            db_failures.append(migrate_db(db, 0))
 
     if db_failures:
         log_statement('Failed DBs: %s' % db_failures)
@@ -144,7 +150,7 @@ def all_db_names(server):
 
 #This is for the manual run and is supposed to be used from [workspace]/datawinners/datawinners after activating the
 #virtual environment by running 'source [path of virtual env bin] activate' and using the format
-# python ../migration/couch/release_6/migration_to_survey_response_from_submission_logs.py [db name] [offset]
+# python ../migration/couch/release_6/1.migration_to_survey_response_from_submission_logs.py [db name] [offset]
 # where offset - is the number of documents to skip when doing migration for that db.
 arguments = sys.argv
 if len(arguments) == 3:

@@ -45,3 +45,7 @@ form ul li {
 
 a#cancel_leave {
   color: #0070AC !important; }
+
+#cancel_submission_warning_message .font_size_13 {
+  font-size: 13px;
+  margin: 10px 0; }

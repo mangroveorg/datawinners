@@ -123,8 +123,9 @@ def build_static_info_context(manager, org_id, survey_response):
             'Error')})
     return form_ui_model
 
+
 def construct_request_dict(survey_response, questionnaire_form_model):
-    result_dict = OrderedDict()
+    result_dict = {}
     for field in questionnaire_form_model.fields:
         value = survey_response.values.get(field.code) if survey_response.values.get(
             field.code) else survey_response.values.get(field.code.lower())
@@ -178,8 +179,8 @@ def edit(request, project_id, survey_response_id, tab=0):
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                 context_instance=RequestContext(request))
         else:
-            survey_response_form = SurveyResponseForm(data=request.POST)
-            survey_response_form.initial_values(survey_response.values)
+            survey_response_form = SurveyResponseForm(data=request.POST,
+                initial=construct_request_dict(survey_response, questionnaire_form_model))
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
         if not survey_response_form.is_valid():
@@ -188,18 +189,21 @@ def edit(request, project_id, survey_response_id, tab=0):
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                 context_instance=RequestContext(request))
 
-        created_request = helper.create_request(survey_response_form, request.user.username)
-        response = WebPlayerV2(manager).edit_survey_response(created_request, survey_response, websubmission_logger)
-        if response.success:
-            ReportRouter().route(get_organization(request).org_id, response)
-            success_message = _("Your changes have been saved.")
-            form_ui_model.update({'success_message': success_message})
-            _update_static_info_block_status(form_ui_model, is_errored_before_edit)
-            log_edit_action(original_survey_response, survey_response, request, project.name, questionnaire_form_model)
-            if request.POST.get("redirect_url"):
-                return HttpResponseRedirect(request.POST.get("redirect_url"))
-        else:
-            survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
+        success_message = _("Your changes have been saved.")
+        form_ui_model.update({'success_message': success_message})
+        if len(survey_response_form.changed_data) or is_errored_before_edit:
+            created_request = helper.create_request(survey_response_form, request.user.username)
+            response = WebPlayerV2(manager).edit_survey_response(created_request, survey_response, websubmission_logger)
+            if response.success:
+                ReportRouter().route(get_organization(request).org_id, response)
+                _update_static_info_block_status(form_ui_model, is_errored_before_edit)
+                log_edit_action(original_survey_response, survey_response, request, project.name,
+                    questionnaire_form_model)
+                if request.POST.get("redirect_url"):
+                    return HttpResponseRedirect(request.POST.get("redirect_url"))
+            else:
+                del form_ui_model["success_message"]
+                survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
         return render_to_response("project/web_questionnaire.html", form_ui_model,
             context_instance=RequestContext(request))
 
