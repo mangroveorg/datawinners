@@ -392,7 +392,8 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
     _deploy_datawinners(context)
 
     remove_cache(context)
-    start_servers()
+#TODO : Add this back once the release of edit submissions is done.This has been commented out so as to test migrations before start of servers.
+#    start_servers()
 
 
 def custom_reports_deploy(code_dir, environment='showcase'):
