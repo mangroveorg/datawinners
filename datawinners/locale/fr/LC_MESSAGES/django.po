@@ -4182,4 +4182,4 @@ msgid "Choose Data Sender from the list."
 msgstr "Choisissez un Expéditeur de données dans la liste."
 
 msgid "disabled"
-msgstr "desactivé"
+msgstr "desactivés"
