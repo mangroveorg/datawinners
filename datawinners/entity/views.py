@@ -150,7 +150,7 @@ def edit_data_sender(request, reporter_id):
     create_data_sender = False
     manager = get_database_manager(request.user)
     reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
-    entity_links = {'back_link': reverse(all_datasenders)}
+    entity_links = {'registered_datasenders_link': reverse(all_datasenders)}
 
     if request.method == 'GET':
         name = reporter_entity.name
@@ -161,7 +161,7 @@ def edit_data_sender(request, reporter_id):
                                                  'telephone_number': phone_number, 'location': location,
                                                  'geo_code': geo_code})
         return render_to_response('entity/create_or_edit_data_sender.html',
-                {'reporter_id': reporter_id, 'form': form, 'entity_links': entity_links
+                {'reporter_id': reporter_id, 'form': form, 'project_links': entity_links
                 , 'create_data_sender': create_data_sender}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -203,7 +203,7 @@ def edit_data_sender(request, reporter_id):
                 message = exception.message
 
         return render_to_response('edit_datasender_form.html',
-                {'form': form, 'message': message, 'reporter_id': reporter_id, 'entity_links': entity_links},
+                {'form': form, 'message': message, 'reporter_id': reporter_id, 'project_links': entity_links},
             context_instance=RequestContext(request))
 
 

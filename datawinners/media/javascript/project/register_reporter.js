@@ -54,7 +54,7 @@ $(document).ready(function () {
             url:sender_registration_link,
             data:$("#registration_form").serialize(),
             success:function (response) {
-                $.unblockUI()
+                $.unblockUI();
                 $("#add_data_sender_form").html(response);
                 new DW.InitializeEditDataSender().init();
                 $("#id_location").catcomplete({
