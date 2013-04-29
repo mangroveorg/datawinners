@@ -46,5 +46,7 @@ class PhoneNumberField(RegexField):
 
 class DjangoDateField(DateField):
     def clean(self, value):
+        if value:
+            value = value.strip()
         super(DjangoDateField, self).clean(value)
         return value if value else None

@@ -35,6 +35,7 @@ class TestDateField(TestCase):
         valid_dates = {
             "29.02.2012": "29.02.2012",
             "31.12.1999": "31.12.1999",
+            "  11.03.2012  ": "11.03.2012",
             }
         field_kwargs = {"input_formats": ("%d.%m.%Y",)}
         assertFieldOutput(self, DjangoDateField, {}, invalid_dates, field_kwargs=field_kwargs, empty_value=None)
