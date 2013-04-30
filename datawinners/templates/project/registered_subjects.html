@@ -103,7 +103,9 @@
     <table class="styled_table" id="subjects-table">
         <thead>
             <tr>
+                {% if all_data|length > 0 %}
                 <th><input type="checkbox" id="checkall-subjects"/></th>
+                {% endif %}
             {% for title in labels %}
                 <th>{{ title }}</th>
             {% endfor %}

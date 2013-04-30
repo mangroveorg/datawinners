@@ -76,4 +76,7 @@ class ProjectSubjectsPage(Page):
     def is_checkall_enabled(self):
         return self.driver.find(CHECKALL_CB).is_enabled()
 
+    def is_checkall_shown(self):
+        return self.driver.is_element_present(CHECKALL_CB)
+
 

@@ -79,8 +79,8 @@ class TestMySubjects(unittest.TestCase):
         self.assertTrue(my_subjects_page.is_checkall_checked())
 
     @attr("functional_test")
-    def test_should_disable_checkall_cb_if_there_is_no_data(self):
+    def test_should_hide_checkall_cb_if_there_is_no_data(self):
         my_subjects_page = self.goto_my_subjects_page("project having people as subject")
         my_subjects_page.navigate_to_my_subjects_list_tab()
-        self.assertFalse(my_subjects_page.is_checkall_enabled())
+        self.assertFalse(my_subjects_page.is_checkall_shown())
 

@@ -54,12 +54,7 @@ $(document).ready(function () {
     });
 
     $("#subjects-table tbody input").bind("click", function(){
-        var checked = $(this).attr("checked") == "checked";
-        if (!checked){
-            $("#checkall-subjects").attr("checked", false);
-        } else if ($("#subjects-table tbody input").length == $("#subjects-table tbody input:checkbox[checked]").length ) {
-            $("#checkall-subjects").attr("checked", true);
-        }
+        $("#checkall-subjects").attr("checked", $("#subjects-table tbody input").length == $("#subjects-table tbody input:checkbox[checked]").length );
     });
 
     if ($("#subjects-table tbody input:checkbox").length == 0) {
