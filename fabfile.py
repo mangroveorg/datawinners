@@ -395,20 +395,6 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
 #TODO : Add this back once the release of edit submissions is done.This has been commented out so as to test migrations before start of servers.
 #    start_servers()
 
-def retrigger_migration(mangrove_build_number="lastSuccessfulBuild",
-                      datawinner_build_number="lastSuccessfulBuild",
-                      code_dir="/home/twer/workspace",
-                      environment='beta',
-                      branch_name='develop',
-                      couch_migration_file=None,
-                      couch_migrations_folder=None):
-    stop_servers()
-
-    virtual_env = ENVIRONMENT_VES[environment]
-    context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env,
-        couch_migration_file, couch_migrations_folder)
-    _make_sure_code_dir_exists(context)
-    migrate_couchdb(context)
 
 def custom_reports_deploy(code_dir, environment='showcase'):
     check_out_latest_custom_reports_code_for_production(code_dir)
