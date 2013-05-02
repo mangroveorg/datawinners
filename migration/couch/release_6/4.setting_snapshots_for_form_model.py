@@ -23,13 +23,10 @@ def all_db_names(server):
     return filter(lambda x: x.startswith('hni_'), dbs)
 
 
-def should_create_revisions(form_model, revision_ids, revision_number):
-    revision_number = revision_number - 1
-    for revision in revision_ids[1:]:
-        revision_id = str(revision_number) + '-' + revision
+def should_create_revisions(form_model, revision_ids):
+    for revision_id in revision_ids[1:]:
         if revision_id not in form_model.snapshots.keys():
             return True
-        revision_number = revision_number - 1
     return False
 
 
@@ -39,23 +36,19 @@ def migrate(database):
         dbm = get_db_manager(SERVER, database=database)
         results = dbm.database.query(map_form_model_for_subject_questionnaires)
         for row in results:
-            revision_dict = get_revisions_dict(database, row)
+            revision_ids = get_revisions_dict(database, row)
             log_statement("Form Model _id : %s " % row['key'])
             form_model = get_form_model(dbm, row['value'])
-            revision_number = revision_dict['start']
-            if should_create_revisions(form_model, revision_dict['ids'], revision_number):
+            if should_create_revisions(form_model, revision_ids):
             #The topmost id will be the current revision id of the document.
-                for revision in revision_dict['ids']:
-                    revision_id = str(revision_number) + '-' + str(revision)
-                    log_statement("Existing Revisions : %s" % form_model.snapshots.keys())
+                log_statement("Existing Revisions : %s" % form_model.snapshots.keys())
+                for revision_id in revision_ids:
                     if revision_id not in form_model.snapshots.keys():
                         revision_doc = urllib2.urlopen(
                             SERVER + "/" + database + "/" + row['key'] + "?rev=" + revision_id).read()
                         revision_doc = get_form_model(dbm, json.decode(revision_doc))
                         form_model._snapshots[revision_id] = revision_doc.fields
-                        log_statement('%s : %s ' % (revision_id, revision_doc.fields))
                         log_statement("added revision: %s" % revision_id)
-                    revision_number -= 1
                 form_model.save()
         log_statement("Completed Database : %s" % database)
         mark_start_of_migration(database)
@@ -73,9 +66,13 @@ def get_form_model(manager, raw_str):
 
 
 def get_revisions_dict(database, row):
-    doc = urllib2.urlopen(SERVER + "/" + database + "/" + row['key'] + "?revs=true").read()
+    doc = urllib2.urlopen(SERVER + "/" + database + "/" + row['key'] + "?revs_info=true").read()
     doc = json.decode(doc)
-    return doc.get('_revisions')
+    result = []
+    for dictionary in doc.get('_revs_info'):
+        if (dictionary.get('status') == "available"):
+            result.append(dictionary.get('rev'))
+    return result
 
 
 def migrate_all():
