@@ -75,7 +75,11 @@
             <li>
                 <div class="button_block">
                     {% block cancel_block %}
-                        <a id="cancel" href="{{ project_links.registered_datasenders_link}}">{% trans "Cancel Editing" %}</a>
+                        {% if entity_links %}
+                            <a id="cancel" href="{{ entity_links.back_link }}">{% trans "Cancel Editing" %}</a>
+                        {% else %}
+                            <a id="cancel" href="{{ project_links.registered_datasenders_link }}">{% trans "Cancel Editing" %}</a>
+                        {% endif %}
                         {% include "warning_section.html" %}
                     {% endblock %}
                     <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}"

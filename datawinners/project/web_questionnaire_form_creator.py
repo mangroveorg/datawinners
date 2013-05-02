@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-import django
+import django, re
 from django.forms.fields import ChoiceField
 from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
@@ -91,9 +91,10 @@ def get_number_field_constraint_text(field):
 def clean_geocode(self):
     geo_code_field_code = get_geo_code_field_question_code(self.form_model)
     lat_long_string = self.cleaned_data[geo_code_field_code]
-    lat_long = lat_long_string.replace(",", " ").strip().split()
+    lat_long = lat_long_string.replace(",", " ")
+    lat_long = re.sub(' +', ' ', lat_long).split(" ")
     try:
-        if len(lat_long) < 2:
+        if len(lat_long) != 2:
             raise Exception
         GeoCodeConstraint().validate(latitude=lat_long[0], longitude=lat_long[1])
     except Exception:
