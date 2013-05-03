@@ -283,3 +283,12 @@
         }
     }
 }
+
+#subjects-table{
+  thead tr th.checkall{
+     width: 23px;
+  }
+  tbody tr td.cb{
+     text-align: center;
+  }
+}

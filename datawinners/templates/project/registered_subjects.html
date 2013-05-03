@@ -104,7 +104,7 @@
         <thead>
             <tr>
                 {% if all_data|length > 0 %}
-                <th><input type="checkbox" id="checkall-subjects"/></th>
+                <th class="checkall"><input type="checkbox" id="checkall-subjects"/></th>
                 {% endif %}
             {% for title in labels %}
                 <th>{{ title }}</th>
@@ -114,7 +114,7 @@
         <tbody>
         {% for row in all_data %}
             <tr>
-                <td>
+                <td class="cb">
                     <input type="checkbox" value="{{ row.short_code }}" id="{{ row.short_code }}">
                 </td>
                 {% for col in row.cols %}
