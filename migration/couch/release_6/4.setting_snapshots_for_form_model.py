@@ -57,7 +57,7 @@ def revsion_map(database, dbm):
                 revision_doc = get_form_model(dbm, json.decode(revision_doc))
                 if is_max_len_equal_to(revision_doc, 12):
                     revid_map[previous_rev] = (rev_with_20, form_model.form_code)
-                    log_statement("added revision: %s" % previous_rev)
+                    log_statement("added revision for form:%s old:%s new:%s " % (form_model.form_code, previous_rev, rev_with_20))
                     break
                 rev_with_20 = previous_rev
     return revid_map
@@ -79,6 +79,7 @@ def migrate(database):
             survey_response_docs = dbm.database.query(map_survey_response_by_form_model_revision % (values[1], old_rev))
             for survey_response_doc in survey_response_docs :
                 survey_response = SurveyResponse.new_from_doc(dbm=dbm, doc=SurveyResponse.__document_class__.wrap(survey_response_doc['value']))
+                log_statement("Changing revision on:%s from:%s to:%s" % (survey_response.id, survey_response.form_model_revision, values[0]))
                 survey_response.form_model_revision = values[0]
                 survey_response.save()
         log_statement("Completed Database : %s" % database)
