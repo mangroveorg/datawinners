@@ -44,7 +44,7 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
                                CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
                                ALLOWED_CHOICE: MULTIPLE_ANSWERS},
                               {QUESTION: "Geo points of water point", CODE: "GPS", TYPE: GEO}],
-                      CHARACTER_REMAINING: "65 / 160 characters used (1 SMS)",
+                      CHARACTER_REMAINING: "73 / 160 characters used (1 SMS)",
                       SUCCESS_MSG: "Your questionnaire has been saved",
                       PAGE_TITLE: "Data Senders"}
 

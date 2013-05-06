@@ -27,7 +27,7 @@ class TestCreateQuestionnaire(BaseTest):
         return CreateQuestionnairePage(self.driver)
 
     @attr('functional_test', 'smoke')
-    def test_successful_questionnaire_creation(self):
+    def test_successful_questionnaire_creation1(self):
         create_questionnaire_page = self.prerequisites_of_create_questionnaire()
         create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
         index = 3

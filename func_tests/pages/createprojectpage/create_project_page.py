@@ -77,7 +77,7 @@ class CreateProjectPage(Page):
         return self
 
     def continue_create_project(self):
-        self.driver.find(CONTINUE_BTN).click()
+        return self.driver.find(CONTINUE_BTN).click()
         return self
 
     def set_subject(self, project_data):
