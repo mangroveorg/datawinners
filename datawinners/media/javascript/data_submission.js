@@ -1,6 +1,10 @@
-$(document).ready(function() {
+$(document).ready(function () {
+    new DW.InitializeEditDataSender().init();
+});
+
+DW.InitializeEditDataSender = function () {
     var options = {
-        bind_all_links: function () {
+        bind_all_links:function () {
             $("a#cancel").bind('click', {self:this}, function (event) {
                 var that = event.data.self;
                 that.redirect_url = $(this).attr("href");
@@ -13,15 +17,18 @@ $(document).ready(function() {
             });
         },
 
-        bind_yes_button_in_dialog: function() {
+        bind_yes_button_in_dialog:function () {
             $("#cancel_submission_warning_message .yes_button").bind('click', function () {
                 $("#cancel_submission_warning_message").dialog("close");
                 window.location.href = $('.back-to-list').attr("href");
             });
         }
+    };
+
+    this.init = function () {
+        DW.data_submission_handler = new DW.data_submission(options);
+        DW.bind_project_links = function () {
+            return;
+        }
     }
-    DW.data_submission_handler = new DW.data_submission(options);
-    DW.bind_project_links = function() {
-        return;
-    }
-});
+};

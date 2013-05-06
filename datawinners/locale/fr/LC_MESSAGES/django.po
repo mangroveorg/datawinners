@@ -274,7 +274,7 @@ msgid "Cancel"
 msgstr "Annuler"
 
 msgid "Cancel Editing"
-msgstr "Annuler le modfications"
+msgstr "Annuler les Modfications"
 
 msgid "Add"
 msgstr "Ajouter"
@@ -4173,7 +4173,7 @@ msgid "Do you want to save the changes before leaving this page?"
 msgstr "Voulez-vous sauvegarder vos modifications avant de quitter cette page?"
 
 msgid "Back to Submission Log"
-msgstr "Retour au Journal de soumission"
+msgstr "Retourner à la Liste des Soumissions"
 
 msgid "Your changes will be lost if you don't save them."
 msgstr "Vos modifications seront perdues si vous ne les sauvegardez pas."

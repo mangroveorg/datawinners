@@ -54,7 +54,9 @@ $(document).ready(function () {
             url:sender_registration_link,
             data:$("#registration_form").serialize(),
             success:function (response) {
+                $.unblockUI();
                 $("#add_data_sender_form").html(response);
+                new DW.InitializeEditDataSender().init();
                 $("#id_location").catcomplete({
                     source:"/places"});
                 sms_device.checked();

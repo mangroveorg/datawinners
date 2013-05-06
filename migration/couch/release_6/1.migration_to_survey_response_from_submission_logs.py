@@ -89,6 +89,21 @@ def refresh_survey_response_views(dbm):
         log_statement('Refreshing of views failed.')
         traceback.print_exc(file=log_file)
 
+map_all_survey_response = """
+function(doc) {
+  if(doc.document_type == 'SurveyResponse') {
+ 	 emit(doc._id, doc);
+  }
+}"""
+
+def remove_all_survey_response_documents(manager) :
+    log_statement('Start:Removing survey response docs...:%s' % manager.database)
+    all_survey_response_docs = manager.database.query(map_all_survey_response)
+    for sr_doc in all_survey_response_docs :
+        log_statement('Removing %s' % sr_doc.id)
+        manager.database.delete(sr_doc.value)
+    log_statement('Done:Removing survey response docs...:%s' % manager.database)
+
 
 def migrate_db(db, offset):
     db_failures = []
@@ -99,6 +114,9 @@ def migrate_db(db, offset):
         mark_start_of_migration(db)
         dbm = get_db_manager(server=SERVER, database=db)
         log_statement('Database: %s' % db)
+
+        remove_all_survey_response_documents(dbm)
+
         rows = dbm.view.submissionlog(reduce=False, skip=successfully_processed + offset, limit=MAX_NUMBER_DOCS)
         registration_form_codes = registration_form_model_codes(dbm)
 

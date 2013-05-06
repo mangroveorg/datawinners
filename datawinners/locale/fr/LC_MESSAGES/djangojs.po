@@ -1103,7 +1103,7 @@ msgid "Answer must be country code plus telephone number. Example: 261333745269"
 msgstr "La réponse doit être un numéro de téléphone précédé du code pays. Exemple : 261333745269"
 
 msgid "Please select 1 Submission only"
-msgstr "Sélectionnez seulement 1 Soumission"
+msgstr "Veuillez choisir une seule Soumission."
 
 msgid "You Have Unsaved Changes"
 msgstr "Vous avez des modifications non sauvegardées"
