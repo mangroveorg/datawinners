@@ -912,7 +912,9 @@ def sender_registration_form_preview(request, project_id=None):
 def get_organization_telephone_number(request):
     organization_settings = utils.get_organization_settings_from_request(request)
     organisation_sms_numbers = organization_settings.get_organisation_sms_number()
-    return organisation_sms_numbers if organization_settings.organization.in_trial_mode else organisation_sms_numbers[0]
+    if organization_settings.organization.in_trial_mode:
+        return organisation_sms_numbers
+    return organisation_sms_numbers[0] if organisation_sms_numbers[0][0] == "+" else "+%s" % organisation_sms_numbers[0]
 
 
 def _get_subject_form_model(manager, entity_type):
