@@ -20,6 +20,7 @@ if not DEBUG:
 MANAGERS = ADMINS
 
 COUCH_DB_SERVER = "http://localhost:5984"
+FEEDS_COUCH_SERVER = "http://localhost:6984"
 VUMI_USER = "vumi"
 VUMI_PASSWORD = "vumi"
 REFRESH_RATE = None

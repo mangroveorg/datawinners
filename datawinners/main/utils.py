@@ -16,11 +16,14 @@ from datawinners.accountmanagement.models import Organization, OrganizationSetti
 performance_logger = logging.getLogger("performance")
 
 def get_database_manager(user):
+    db = get_database_name(user)
+    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+
+def get_database_name(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
-    db = organization_settings.document_store
-    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+    return organization_settings.document_store
 
 def include_of_type(entity, type):
     return entity.type_path[0] == type

@@ -15,6 +15,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from datawinners.accountmanagement.views import session_not_expired
 from datawinners.project.view_models import ReporterEntity
+from datawinners.feeds.database import get_feeds_database
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
 from django.utils.translation import ugettext_lazy as _, get_language, activate
@@ -754,6 +755,7 @@ class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
     def __init__(self, request, project_id=None):
         self.survey_form_model = None
         self.survey_form_code = None
+        self.feeds_dbm = get_feeds_database(request.user)
         WebQuestionnaireRequest.__init__(self, request, project_id)
 
     @property
@@ -771,7 +773,7 @@ class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
         return self.form_model.form_code
 
     def player_response(self, created_request, logger):
-        return WebPlayerV2(self.manager).add_survey_response(created_request, websubmission_logger)
+        return WebPlayerV2(self.manager, self.feeds_dbm).add_survey_response(created_request, websubmission_logger)
 
     def success_message(self, response_short_code):
         return _("Successfully submitted")

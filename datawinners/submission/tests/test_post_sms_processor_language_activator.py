@@ -1,5 +1,4 @@
 import unittest
-from unittest.case import SkipTest
 from django.utils import translation
 from mock import patch, Mock
 from mangrove.form_model.form_model import FormModel
