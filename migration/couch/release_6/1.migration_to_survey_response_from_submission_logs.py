@@ -6,7 +6,7 @@ from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport.contract.submission import Submission
-from utils import init_migrations, mark_start_of_migration, should_not_skip
+from migration.couch.utils import init_migrations, mark_start_of_migration, should_not_skip
 
 MAX_NUMBER_DOCS = 50
 log_file = open('migration_release_6_1.log', 'a')

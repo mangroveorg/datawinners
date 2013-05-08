@@ -6,13 +6,12 @@ import urllib2
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
-from mangrove.form_model.validation import TextLengthConstraint
 from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration
 
 SERVER = 'http://localhost:5984'
-log_file = open('migration_release_6_3.log', 'a')
+log_file = open('migration_release_7_1.log', 'a')
 
-init_migrations('dbs_migrated_release_6_3.csv')
+init_migrations('dbs_migrated_release_7_1.csv')
 
 def all_db_names(server):
     all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
@@ -24,19 +23,12 @@ db_names = all_db_names(SERVER)
 # excluding the following
 # doc.form_code != 'reg' - to ignore the registration form model
 # doc.form_code != 'delete' - to ignore the deletion form model
-# doc.entity_type[0] != 'reporter' - to ignore summary reports
-map_form_model_for_subject_questionnaires = """
+map_form_model_questionnaire = """
 function(doc) {
-   if (doc.document_type == 'FormModel'&& doc.form_code != 'reg'
-       && doc.form_code != 'delete' && doc.entity_type[0] != 'reporter'
+   if (doc.document_type == 'FormModel' && doc.form_code != 'reg'
+       && doc.form_code != 'delete' && doc.is_registration_model != true
        && !doc.void) {
-
-       for (var i in doc.json_fields){
-           var field = doc.json_fields[i]
-           if (field.entity_question_flag == true && field.constraints[0][1]['max'] == 12){
-               emit( doc.form_code, doc);
-           }
-       }
+            emit(doc.form_code,doc)
    }
 }"""
 
@@ -46,21 +38,32 @@ def get_form_model(manager, questionnaire):
     return form_model
 
 
+def migrate_form_model(form_model):
+    form_model.create_snapshot()
+    for field in form_model.fields:
+        field.set_required(True)
+    form_model.save()
+
+def any_field_is_optional_in(form_model):
+    for field in form_model.fields:
+        if not field.is_required():
+            return True
+    return False
+
 def migrate_db(database):
     log_statement(
         '\nStart migration on database : %s \n' % database)
     try:
         manager = get_db_manager(server=SERVER, database=database)
-        subject_form_model_docs = manager.database.query(map_form_model_for_subject_questionnaires)
+        questionnaire_form_model_docs = manager.database.query(map_form_model_questionnaire)
         mark_start_of_migration(database)
-        for form_model_doc in subject_form_model_docs:
+        for form_model_doc in questionnaire_form_model_docs:
             form_model = get_form_model(manager, form_model_doc)
             log_statement(
                 "Process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
-            for field in form_model.fields:
-                if field.is_entity_field:
-                    field.set_constraints([TextLengthConstraint(min=1, max=20)._to_json()])
-            form_model.save()
+            if any_field_is_optional_in(form_model):
+                migrate_form_model(form_model)
+                log_statement("Form Model updated :%s %s" % (database,form_model.form_code))
             log_statement(
                 "End process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
         log_statement(
@@ -69,7 +72,8 @@ def migrate_db(database):
         log_statement('error:%s:%s\n' % (e.message, database))
         traceback.print_exc(file=log_file)
 
-def migrate_story_2074(all_db_names):
+
+def migrate_bug_2004(all_db_names):
     print "start ...."
     log_statement(
         '\nStart ===================================================================================================\n')
@@ -89,4 +93,5 @@ def log_statement(statement):
     print '%s : %s\n' % (datetime.utcnow(), statement)
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
 
-migrate_story_2074(db_names)
+migrate_bug_2004(db_names)
+#migrate_db('hni_testorg_slx364903')
