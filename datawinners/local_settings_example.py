@@ -95,3 +95,5 @@ DEBUG_TOOLBAR_CONFIG = {
     'TAG': 'p',
     'ENABLE_STACKTRACES' : False,
     }
+
+FEEDS_ENABLED=False

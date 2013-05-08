@@ -8,7 +8,9 @@ def get_feed_database_name(user):
 
 
 def get_feeds_database(user):
-    return get_db_manager(server=settings.FEEDS_COUCH_SERVER, database=get_feed_database_name(user))
+    if settings.FEEDS_ENABLED:
+        return get_db_manager(server=settings.FEEDS_COUCH_SERVER, database=get_feed_database_name(user))
+    return None
 
 
 
