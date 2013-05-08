@@ -4,7 +4,7 @@ from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.datadict import get_datadict_type_by_slug,\
     create_datadict_type
 from mangrove.datastore.entity import get_by_short_code_include_voided
-from mangrove.errors import MangroveException
+from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
