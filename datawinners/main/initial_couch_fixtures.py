@@ -1647,7 +1647,7 @@ def load_all_managers():
     managers = []
     for org in OrganizationSetting.objects.all():
         db = org.document_store
-        manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+        manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=db,credentials=settings.COUCHDBMAIN_CREDENTIALS)
         managers.append(manager)
     return managers
 

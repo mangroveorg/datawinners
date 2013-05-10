@@ -51,6 +51,7 @@ class TestMultiTenancy(unittest.TestCase):
         self.assertEqual(expected_org_db_name, organization_db_name)
 
         couch_server = couchdb.client.Server(settings.COUCH_DB_SERVER)
+        couch_server.resource.credentials = settings.COUCHDB_CREDENTIALS
 
         org_db = None
         try:

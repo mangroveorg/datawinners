@@ -13,7 +13,7 @@ class TestMigrate(TestCase):
     def setUp(self):
         self.database = "hni_testorg_slx364903"
         self.form_code = "cli001"
-        self.dbm = get_db_manager(settings.COUCH_DB_SERVER, database=self.database)
+        self.dbm = get_db_manager(settings.COUCH_DB_SERVER, database=self.database,credentials=settings.COUCHDB_CREDENTIALS)
         self.form = form_model.get_form_model_by_code(self.dbm, self.form_code)
         self.entity_question_code = self.form.entity_question.code
         self.old_short_code, self.new_short_code = self.change_submissions(self.dbm, self.form_code, self.entity_question_code)

@@ -17,7 +17,7 @@ performance_logger = logging.getLogger("performance")
 
 def get_database_manager(user):
     db = get_database_name(user)
-    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db , credentials = settings.COUCHDBMAIN_CREDENTIALS)
 
 def get_database_name(user):
     profile = user.get_profile()

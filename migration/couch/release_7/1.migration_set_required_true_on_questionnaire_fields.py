@@ -11,8 +11,10 @@ from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration
+from datawinners import  settings
 
 SERVER = 'http://localhost:5984'
+credentials = settings.COUCHDBMAIN_CREDENTIALS
 log_file = open('migration/couch/release_7/migration_release_7_1.log', 'a')
 
 init_migrations('migration/couch/release_7/dbs_migrated_release_7_1.csv')
@@ -58,7 +60,7 @@ def migrate_db(database):
     log_statement(
         '\nStart migration on database : %s \n' % database)
     try:
-        manager = get_db_manager(server=SERVER, database=database)
+        manager = get_db_manager(server=SERVER, database=database,credentials = credentials)
         questionnaire_form_model_docs = manager.database.query(map_form_model_questionnaire)
         mark_start_of_migration(database)
         for form_model_doc in questionnaire_form_model_docs:

@@ -35,7 +35,7 @@ def get_database_manager_for_org(organization):
 
     organization_settings = OrganizationSetting.objects.get(organization=organization)
     db = organization_settings.document_store
-    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db, credentials = settings.COUCHDBMAIN_CREDENTIALS)
 
 
 def get_organization(request):

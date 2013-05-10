@@ -2,6 +2,7 @@
 import logging
 from find_all_db_managers import all_db_names
 from mangrove.datastore.database import get_db_manager
+import settings
 
 db_server = "http://localhost:5984"
 managers = all_db_names(db_server)
@@ -66,7 +67,7 @@ def find_subject():
     for manager_name in managers:
         logger.info(manager_name)
 
-        manager = get_db_manager(server=db_server, database=manager_name)
+        manager = get_db_manager(server=db_server, database=manager_name,credentials=settings.COUCHDBMAIN_CREDENTIALS)
         database_query = manager.database.query(map_fun_project_docs)
         if database_query:
             result[manager.database_name]=database_query

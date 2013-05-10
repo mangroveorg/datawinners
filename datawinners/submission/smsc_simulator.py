@@ -17,7 +17,7 @@ def get_organization_setting_by_mobile(mobile):
 
 def is_data_sender(data_sender_number, org_settings):
     document_store = org_settings.document_store
-    dbm = get_db_manager(settings.COUCH_DB_SERVER, document_store)
+    dbm = get_db_manager(settings.COUCH_DB_SERVER, document_store, credentials=settings.COUCHDBMAIN_CREDENTIALS)
     data_sender = data_sender_by_mobile(dbm, data_sender_number)
     return data_sender[0] != NOT_AVAILABLE_DS
 

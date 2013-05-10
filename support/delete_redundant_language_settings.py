@@ -4,9 +4,11 @@ from mangrove.datastore.database import DatabaseManager, get_db_manager, remove_
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.documents import FormModelDocument
 from find_all_db_managers import all_db_names
+import settings
 
 logger = logging.getLogger("django")
 db_server = "http://localhost:5984"
+db_credentials = settings.COUCHDBMAIN_CREDENTIALS
 
 def delete_label_language_setting_on_form_model(form_model_row_value, active_language):
     label_dict = form_model_row_value["label"]
@@ -72,7 +74,7 @@ def delete_redundant_language_setting_from_form():
         try:
             logger.info(db_name)
             print db_name
-            manager = get_db_manager(server=db_server, database=db_name)
+            manager = get_db_manager(server=db_server, database=db_name,credentials=db_credentials)
             delete_language_setting_for_form_models(manager)
             remove_db_manager(manager)
         except Exception as e:
