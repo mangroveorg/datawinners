@@ -709,6 +709,8 @@ ol .lower_i {
   #what-is-and-features.english .feature_container {
     height: 242px !important;
     margin-top: 1px; }
+  #what-is-and-features.english div:nth-child(8) span {
+    height: 34px; }
 
 #left-what-is {
   width: 350px;

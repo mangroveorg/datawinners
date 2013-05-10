@@ -884,11 +884,13 @@ ol{
 }
 #what-is-and-features.english{
   height: 860px;
-
   margin-top: 15px;
   .feature_container{
     height: 242px !important;
     margin-top: 1px;
+  }
+  div:nth-child(8) span{
+    height: 34px;
   }
 }
 
