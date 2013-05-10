@@ -75,3 +75,7 @@
         font-weight: normal; }
         #questionnaire .questionnare_content #questions-panel .add_question .add-link {
           background: #f0f0f0 url("/media/images/icons.png") no-repeat scroll left top !important; }
+
+#submit-button-container {
+  width: 860px;
+  margin-left: 1px; }

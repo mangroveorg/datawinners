@@ -37,7 +37,7 @@ form{
             display:block;
             float:left;
             width:170px;
-            argin-right:10px;
+            margin-right:10px;
             font-weight:bold;
         }
         input{
@@ -519,6 +519,16 @@ select{
 #delete_project_block{
     height:110px ! important;
     width:350px ! important;
+    .cancel_link{
+        margin-left: 10px;
+        &.cancel_en{
+            margin-left: 100px !important;
+        }
+    }
+}
+
+#activate_project_block .cancel_link{
+    margin-left: 100px;
 }
 
 .right_aligned_button{
@@ -611,4 +621,10 @@ ol {
     select{
         vertical-align:middle;
     }
+}
+
+form div.action-section{
+    width: 379px;
+    text-align: right;
+    float: none;
 }

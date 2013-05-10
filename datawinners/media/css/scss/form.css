@@ -17,17 +17,17 @@ form ul li {
     width: 350px;
     height: 100px;
     border-color: #cccccc;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li label {
     font-size: 14px;
     display: block;
     float: left;
     width: 170px;
-    argin-right: 10px;
+    margin-right: 10px;
     font-weight: bold; }
   form ul li input {
     float: left;
-    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
   form ul li span[wmwrap=true] {
     float: left;
     top: 3px; }
@@ -78,7 +78,7 @@ div.error_arrow {
 span.error_arrow, #questionnaire-code-error, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 3px;
   display: inline;
-  float: left!important; }
+  float: left !important; }
 
 span .error_arrow label, div.error_arrow label, #questionnaire-code-error label, label.error_arrow label {
   float: none;
@@ -444,6 +444,13 @@ select {
 #delete_project_block {
   height: 110px !important;
   width: 350px !important; }
+  #delete_project_block .cancel_link {
+    margin-left: 10px; }
+    #delete_project_block .cancel_link.cancel_en {
+      margin-left: 100px !important; }
+
+#activate_project_block .cancel_link {
+  margin-left: 100px; }
 
 .right_aligned_button {
   float: right;
@@ -515,3 +522,8 @@ ol.que_width {
 
 #frequency_values select {
   vertical-align: middle; }
+
+form div.action-section {
+  width: 379px;
+  text-align: right;
+  float: none; }

@@ -132,6 +132,8 @@ form.registration_form #id_organization_country {
   float: left; }
 form.registration_form ul.payment_details {
   width: 675px; }
+  form.registration_form ul.payment_details > li:last-child {
+    width: 766px; }
 form.registration_form ul.administrative {
   width: 756px; }
   form.registration_form ul.administrative li.width_700 {
@@ -139,3 +141,10 @@ form.registration_form ul.administrative {
 
 .clear_both {
   clear: both; }
+
+#submit_registration_form {
+  float: right;
+  margin-right: 383px; }
+
+ul.organization li:last-child {
+  width: 383px; }

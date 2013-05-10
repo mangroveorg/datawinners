@@ -152,11 +152,6 @@ table.no_border td, table.no_border th {
 .none {
   display: none !important; }
 
-.display_none {
-    display: none;
-}
-
-
 /* List styles */
 .alpha_list li {
   list-style-type: upper-alpha !important;
@@ -178,7 +173,7 @@ table.no_border td, table.no_border th {
   padding-left: 25px; }
 
 .cancel_link {
-  color: #0070AC !important;
+  color: #0070ac !important;
   margin-right: 10px; }
 
 /* Titles */
@@ -476,3 +471,9 @@ div.border_top_bottom {
 
 .border_none {
   border: none !important; }
+
+.margin_right_4 {
+  margin-right: 4px; }
+
+.display_none {
+  display: none; }

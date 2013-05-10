@@ -2,15 +2,20 @@
   padding-top: 15px;
   padding-left: 10px; }
 
+#broadcast_sms_form ul li {
+  width: 535px; }
+  #broadcast_sms_form ul li #sms_content {
+    margin: 0;
+    padding: 0; }
+  #broadcast_sms_form ul li#message-submit {
+    text-align: right; }
+
 #message_count {
-  padding-left: 400px;
+  text-align: right;
   margin-bottom: 10px; }
 
 #id_to {
   width: 355px; }
-
-#message-submit {
-  width: 250px; }
 
 #additional_people_column .highlightTextarea {
   width: 720px !important; }

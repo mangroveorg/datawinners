@@ -190,6 +190,9 @@ form.registration_form{
     }
     ul.payment_details{
         width: 675px;
+        > li:last-child{
+            width:766px;
+        }
     }
     ul.administrative{
         width: 756px;
@@ -202,3 +205,11 @@ form.registration_form{
     clear:both;
 }
 
+#submit_registration_form{
+    float: right;
+    margin-right: 383px;
+}
+
+ul.organization li:last-child{
+    width: 383px;
+}

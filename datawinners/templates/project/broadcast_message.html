@@ -76,13 +76,18 @@
                         <p class="black_italic">{% trans "Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers." %}</p>
                     </li>
 
-                    <li class="float_right" id="message-submit">
-                        <div class="float_left margin_left_20 margin_top_10">
+                    <li class="" id="message-submit">
+                        
                             <a id="clear_broadcast_sms_form" class="cancel_link"> {% trans "Clear" %} </a>
+                            <input id="id_send_broadcast_sms_button" type="submit" value="{% trans "Send" %}" class="button" style="float: none;"/>
+
+                        <!--
+                        <div class="float_left margin_left_20 margin_top_10">
+
                         </div>
                         <div>
-                            <input id="id_send_broadcast_sms_button" type="submit" value="{% trans "Send" %}" class="button" />
-                        </div>
+
+                        </div>-->
                     </li>
                 </ul>
             </form>
