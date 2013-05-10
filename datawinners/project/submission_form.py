@@ -1,10 +1,8 @@
-from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 from datawinners.entity.helper import get_country_appended_location
-from mangrove.form_model.validation import GeoCodeConstraint
-from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_field_question_code
+from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_fields_question_code
 from project.questionnaire_fields import SubjectCodeField, SubjectField, FormField, FormCodeField
+from datawinners.questionnaire.helper import make_clean_geocode_method
 
 class SubmissionForm(Form):
 
@@ -13,9 +11,9 @@ class SubmissionForm(Form):
         properties = dict()
         properties.update({'form_model': questionnaire_form_model})
 
-        geo_code_field_code = get_geo_code_field_question_code(questionnaire_form_model)
-        if geo_code_field_code is not None:
-            properties.update({'clean_' + geo_code_field_code: SubmissionForm.clean_geocode})
+        geo_code_fields_code = get_geo_code_fields_question_code(questionnaire_form_model)
+        for geo_code_field_code in geo_code_fields_code:
+            properties.update({'clean_' + geo_code_field_code: make_clean_geocode_method(geo_code_field_code)})
 
         subject_question = questionnaire_form_model.entity_question
         if subject_question is not None:
@@ -54,6 +52,7 @@ class SubmissionForm(Form):
 
         return self.cleaned_data
 
+    """
     @staticmethod
     def clean_geocode(self):
         geo_code_field_code = get_geo_code_field_question_code(self.form_model)
@@ -66,4 +65,4 @@ class SubmissionForm(Form):
         except Exception:
             raise ValidationError(_(
                 "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"))
-        return self.cleaned_data[geo_code_field_code]
+        return self.cleaned_data[geo_code_field_code]"""

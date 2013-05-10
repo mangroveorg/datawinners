@@ -9,8 +9,9 @@ from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, 
 from mock import Mock, patch, self
 from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint, NumericRangeConstraint
 from datawinners.common.constant import DEFAULT_LANGUAGE, FRENCH_LANGUAGE
-from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator, clean_geocode
+from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
 from datawinners.entity.fields import PhoneNumberField
+from datawinners.questionnaire.helper import make_clean_geocode_method
 
 class TestWebQuestionnaireFormCreator(unittest.TestCase):
     def setUp(self):
@@ -24,11 +25,12 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.text_field_code = "text"
         self.select_field_code = "select"
         self.get_geo_code_field_question_code_patch = patch(
-            'datawinners.project.web_questionnaire_form_creator.get_geo_code_field_question_code')
+            'datawinners.project.web_questionnaire_form_creator.get_geo_code_fields_question_code')
 
         self.get_geo_code_field_question_code_mock = self.get_geo_code_field_question_code_patch.start()
         self.geo_code = 'g'
-        self.get_geo_code_field_question_code_mock.return_value = self.geo_code
+        self.get_geo_code_field_question_code_mock.return_value = [self.geo_code]
+        self.clean_geocode = make_clean_geocode_method(self.geo_code)
 
     def tearDown(self):
         self.get_geo_code_field_question_code_patch.stop()
@@ -248,22 +250,22 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         mock = Mock()
         mock.cleaned_data = {self.geo_code: '1'}
         with self.assertRaises(ValidationError):
-            clean_geocode(mock)
+            self.clean_geocode(mock)
 
     def test_should_validate_gps_code_and_return_error_if_gps_code_is_incorrect(self):
         mock = Mock()
         mock.cleaned_data = {self.geo_code: 'a,b'}
         with self.assertRaises(ValidationError):
-            clean_geocode(mock)
+            self.clean_geocode(mock)
         mock.cleaned_data = {self.geo_code: '200,300'}
         with self.assertRaises(ValidationError):
-            clean_geocode(mock)
+            self.clean_geocode(mock)
 
 
     def test_should_validate_gps_code_and_should_not_return_error_if_correct_gps_code(self):
         mock = Mock()
         mock.cleaned_data = {self.geo_code: '10,20'}
-        self.assertEqual(mock.cleaned_data[self.geo_code], clean_geocode(mock))
+        self.assertEqual(mock.cleaned_data[self.geo_code], self.clean_geocode(mock))
 
 
     def _get_select_field(self, is_required, single_select_flag, label='test'):

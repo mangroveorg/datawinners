@@ -1,7 +1,6 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-import django, re
+import django
 from django.forms.fields import ChoiceField
 from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
@@ -9,11 +8,10 @@ from django.utils.translation import ugettext
 from datawinners.entity.helper import get_country_appended_location
 from mangrove.form_model.validation import TextLengthConstraint
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
-from mangrove.form_model.validation import GeoCodeConstraint
 from datawinners.entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField, DateField
 from datawinners.entity.fields import PhoneNumberField, DjangoDateField
-from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_field_question_code
+from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_fields_question_code, make_clean_geocode_method
 from mangrove.utils.types import is_empty
 
 def question_form_init__(self, country=None, *args, **kwargs):
@@ -88,21 +86,6 @@ def get_number_field_constraint_text(field):
     return ""
 
 
-def clean_geocode(self):
-    geo_code_field_code = get_geo_code_field_question_code(self.form_model)
-    lat_long_string = self.cleaned_data[geo_code_field_code]
-    lat_long = lat_long_string.replace(",", " ")
-    lat_long = re.sub(' +', ' ', lat_long).split(" ")
-    try:
-        if len(lat_long) != 2:
-            raise Exception
-        GeoCodeConstraint().validate(latitude=lat_long[0], longitude=lat_long[1])
-    except Exception:
-        raise ValidationError(_(
-            "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"))
-    return self.cleaned_data[geo_code_field_code]
-
-
 class WebQuestionnaireFormCreator(object):
     def __init__(self, subject_question_creator, form_model, is_update=False):
         self.subject_question_creator = subject_question_creator
@@ -114,9 +97,9 @@ class WebQuestionnaireFormCreator(object):
         properties.update({'__init__': question_form_init__})
         properties.update({'form_model': self.form_model})
         properties.update({'clean': questionnaire_form_clean})
-        geo_code_field_code = get_geo_code_field_question_code(self.form_model)
-        if geo_code_field_code is not None:
-            properties.update({'clean_' + geo_code_field_code: clean_geocode})
+        geo_code_fields_code = get_geo_code_fields_question_code(self.form_model)
+        for geo_code_field_code in geo_code_fields_code:
+            properties.update({'clean_' + geo_code_field_code: make_clean_geocode_method(geo_code_field_code)})
         if self.form_model.is_entity_registration_form():
             properties.update({'__init__': question_form_init__})
             properties.update(self._get_entity_type_hidden_field())
