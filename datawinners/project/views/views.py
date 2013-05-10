@@ -786,16 +786,16 @@ class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
 
     def player_response(self, created_request, logger):
         user_profile = NGOUserProfile.objects.get(user=self.request.user)
-        sender_info = {'id': user_profile.reporter_id, 'first_name': user_profile.user.first_name,
-                       'last_name': user_profile.user.last_name}
-        additional_feed_dictionary = {'data_sender': sender_info}
+        additional_feed_dictionary = {}
 
         project = {'id': self.project.id, 'name': self.project.name, 'type': self.project.project_type,
                    'status': self.project.state, 'subject_type': self.project.entity_type}
         additional_feed_dictionary.update({'project': project})
 
-        return WebPlayerV2(self.manager, self.feeds_dbm).add_survey_response(created_request, websubmission_logger,
-                                                                             additional_feed_dictionary)
+        return WebPlayerV2(self.manager, self.feeds_dbm).add_survey_response(created_request,
+                                                                             user_profile.reporter_id,
+                                                                             additional_feed_dictionary,
+                                                                             websubmission_logger)
 
     def success_message(self, response_short_code):
         return _("Successfully submitted")

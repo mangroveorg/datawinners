@@ -4,15 +4,15 @@ from django.contrib.auth.models import User
 from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
-from datawinners.location.LocationTree import    get_location_hierarchy, get_location_tree
+from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
 from mangrove.datastore.database import get_db_manager
-from mangrove.datastore.datadict import  get_datadict_type_by_slug
+from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
 from pytz import UTC
-from mangrove.errors.MangroveException import   DataObjectAlreadyExists
+from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
@@ -23,6 +23,7 @@ from datawinners.tests.test_data_utils import load_manager_for_default_test_acco
     create_data_dict, define_entity_instance, register
 from mangrove.transport.player.new_players import SMSPlayerV2, WebPlayerV2
 from datawinners.submission.location import LocationBridge
+
 
 class DateTimeMocker(object):
     def __init__(self):
@@ -54,7 +55,8 @@ def load_datadict_types(manager):
 def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Bhopal'], short_code="cid001",
                                geometry={"type": "Point", "coordinates": [23.2833, 77.35]},
-        name="Test", firstname="Bhopal Clinic", description="This a clinic in Bhopal.", mobile_number="123456")
+                               name="Test", firstname="Bhopal Clinic", description="This a clinic in Bhopal.",
+                               mobile_number="123456")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
     try:
         e.save()
@@ -62,7 +64,8 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Satna'], short_code="cid002",
                                geometry={"type": "Point", "coordinates": [24.5667, 80.8333]},
-                               name="Test", firstname="Satna Clinic", description="This a clinic in Satna.", mobile_number="123457")
+                               name="Test", firstname="Satna Clinic", description="This a clinic in Satna.",
+                               mobile_number="123457")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Surgeon"])
     try:
         e.save()
@@ -70,7 +73,8 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Jabalpur'], short_code="cid003",
                                geometry={"type": "Point", "coordinates": [23.2, 79.95]},
-                               name="Test", firstname="Jabalpur Clinic", description="This a clinic in Jabalpur.", mobile_number="123458")
+                               name="Test", firstname="Jabalpur Clinic", description="This a clinic in Jabalpur.",
+                               mobile_number="123458")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Doctor"])
     try:
         e.save()
@@ -78,7 +82,8 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Khandwa'], short_code="cid004",
                                geometry={"type": "Point", "coordinates": [21.8333, 76.3667]},
-                               name="Test", firstname="Khandwa Clinic", description="This a clinic in Khandwa.", mobile_number="123459")
+                               name="Test", firstname="Khandwa Clinic", description="This a clinic in Khandwa.",
+                               mobile_number="123459")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Nurse"])
     try:
         e.save()
@@ -86,7 +91,8 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], short_code="cid005",
                                geometry={"type": "Point", "coordinates": [9.939248, 76.259625]},
-                               name="Test", firstname="Kochi Clinic", description="This a clinic in Kochi.", mobile_number="123460")
+                               name="Test", firstname="Kochi Clinic", description="This a clinic in Kochi.",
+                               mobile_number="123460")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -103,7 +109,8 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Indore'], short_code="cid007",
                                geometry={"type": "Point", "coordinates": [22.7167, 75.8]},
-                               name="Test", firstname="Indore Clinic", description="This a clinic in Indore.", mobile_number="1234562")
+                               name="Test", firstname="Indore Clinic", description="This a clinic in Indore.",
+                               mobile_number="1234562")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -114,7 +121,8 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
 def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="wp01",
                                geometry={"type": "Point", "coordinates": [23.0395677, 72.566005]},
-                               name="Test", firstname="Ahmedabad waterpoint", description="This a waterpoint in Ahmedabad.",
+                               name="Test", firstname="Ahmedabad waterpoint",
+                               description="This a waterpoint in Ahmedabad.",
                                mobile_number="1234563")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
@@ -149,46 +157,47 @@ def create_questions(manager):
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
-    question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",entity_question_flag=True, ddtype=entity_id_type,
-        constraints=[TextLengthConstraint(min=1, max=20)],
-        instruction="Answer must be 12 characters maximum")
+    question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
+                          entity_question_flag=True, ddtype=entity_id_type,
+                          constraints=[TextLengthConstraint(min=1, max=20)],
+                          instruction="Answer must be 12 characters maximum")
     question2 = TextField(label="What is your namé?", code="NA", name="What is your namé?",
-        constraints=[TextLengthConstraint(min=1, max=10)],
-        defaultValue="some default value", ddtype=name_type,
-        instruction="Answer must be a word or phrase 10 characters maximum")
+                          constraints=[TextLengthConstraint(min=1, max=10)],
+                          defaultValue="some default value", ddtype=name_type,
+                          instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="What is age öf father?", code="FA", name="What is age öf father?",
-        constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
-        instruction="Answer must be a number between 18-100.")
+                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
+                             instruction="Answer must be a number between 18-100.")
     question4 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
-        date_format="dd.mm.yyyy", ddtype=date_type,
-        instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
-        event_time_field_flag=True)
+                          date_format="dd.mm.yyyy", ddtype=date_type,
+                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
+                          event_time_field_flag=True)
     question5 = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
-        options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
-        ddtype=select_type, instruction="Choose 1 answer from the list.")
+                            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
+                            ddtype=select_type, instruction="Choose 1 answer from the list.")
     question6 = SelectField(label="What aré symptoms?", code="SY", name="What aré symptoms?",
-        options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
-            ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
-        ddtype=select_type,
-        instruction="Choose 1 or more answers from the list.")
+                            options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
+                                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
+                            ddtype=select_type,
+                            instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS code for clinic?", code="GPS",
-        label="What is the GPS code for clinic?",
-        ddtype=geo_code_type,
-        instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
+                             label="What is the GPS code for clinic?",
+                             ddtype=geo_code_type,
+                             instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
     question8 = SelectField(label="What are the required medicines?", code="RM", name="What are the required medicines?"
         ,
-        options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
-        single_select_flag=False,
-        ddtype=select_type,
-        instruction="Choose 1 or more answers from the list.", required=False)
+                            options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
+                            single_select_flag=False,
+                            ddtype=select_type,
+                            instruction="Choose 1 or more answers from the list.", required=False)
     return [question1, question2, question3, question4, question5, question6, question7, question8]
 
 
 def create_project1(entity_type, manager, questions, weekly_reminder_and_deadline):
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli001", type='survey',
-        fields=questions,
-        entity_type=entity_type
+                           form_code="cli001", type='survey',
+                           fields=questions,
+                           entity_type=entity_type
     )
     try:
         qid = form_model.save()
@@ -196,8 +205,8 @@ def create_project1(entity_type, manager, questions, weekly_reminder_and_deadlin
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
     project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-        entity_type=entity_type[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                       entity_type=entity_type[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                       sender_group="close")
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
     project1.reminder_and_deadline = weekly_reminder_and_deadline
@@ -206,36 +215,36 @@ def create_project1(entity_type, manager, questions, weekly_reminder_and_deadlin
     except Exception:
         pass
     reminder = Reminder(project_id=project1.id, day=2, reminder_mode=ReminderMode.BEFORE_DEADLINE,
-        organization_id='SLX364903',
-        message="2 day(s) are remainning to deadline. Please send your data for Clinic Test Project.")
+                        organization_id='SLX364903',
+                        message="2 day(s) are remainning to deadline. Please send your data for Clinic Test Project.")
     reminder.save()
     # Create reminders for project1
     reminder = Reminder(project_id=project1.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
-        organization_id='SLX364903',
-        message="Today is the deadline. Please send your data for Clinic Test Project.")
+                        organization_id='SLX364903',
+                        message="Today is the deadline. Please send your data for Clinic Test Project.")
     reminder.save()
     reminder = Reminder(project_id=project1.id, day=2, reminder_mode=ReminderMode.AFTER_DEADLINE,
-        organization_id='SLX364903',
-        message="2 days are overdue the deadline. Please send your data for Clinic Test Project.")
+                        organization_id='SLX364903',
+                        message="2 days are overdue the deadline. Please send your data for Clinic Test Project.")
     reminder.save()
     # Associate datasenders/reporters with project 1
     project1.data_senders.extend(["rep5", "rep6", "rep1", "rep8", "rep9", "rep3"])
     project1.save(manager)
 
 
-def create_project2(CLINIC_ENTITY_TYPE, manager,questions):
+def create_project2(CLINIC_ENTITY_TYPE, manager, questions):
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli002", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE)
+                            form_code="cli002", type='survey',
+                            fields=questions,
+                            entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid2 = form_model2.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli002").delete()
         qid2 = form_model2.save()
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                       sender_group="close")
     project2.qid = qid2
     project2.state = ProjectState.ACTIVE
     try:
@@ -246,17 +255,17 @@ def create_project2(CLINIC_ENTITY_TYPE, manager,questions):
 
 def create_project3(CLINIC_ENTITY_TYPE, manager, questions):
     form_model3 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli003", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            form_code="cli003", type='survey',
+                            fields=questions,
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid3 = form_model3.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli003").delete()
         qid3 = form_model3.save()
     project3 = Project(name="Clinic3 Test Project", goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                       sender_group="close")
     project3.qid = qid3
     project3.state = ProjectState.TEST
     try:
@@ -267,17 +276,17 @@ def create_project3(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project4(CLINIC_ENTITY_TYPE, manager, questions):
     form_model4 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli004", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            form_code="cli004", type='survey',
+                            fields=questions,
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid4 = form_model4.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli004").delete()
         qid4 = form_model4.save()
     project4 = Project(name="Clinic4 Test Project", goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                       sender_group="close")
     project4.qid = qid4
     project4.state = ProjectState.TEST
     try:
@@ -288,17 +297,17 @@ def create_project4(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project5(CLINIC_ENTITY_TYPE, manager, questions):
     form_model5 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli005", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            form_code="cli005", type='survey',
+                            fields=questions,
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid5 = form_model5.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli005").delete()
         qid5 = form_model5.save()
     project5 = Project(name="Clinic5 Test Project", goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                       sender_group="close")
     project5.qid = qid5
     project5.state = ProjectState.TEST
     try:
@@ -309,17 +318,17 @@ def create_project5(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project6(CLINIC_ENTITY_TYPE, manager, questions):
     form_model6 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli006", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            form_code="cli006", type='survey',
+                            fields=questions,
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid6 = form_model6.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli006").delete()
         qid6 = form_model6.save()
     project6 = Project(name="Clinic6 Test Project", goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                       sender_group="close")
     project6.qid = qid6
     project6.state = ProjectState.TEST
     try:
@@ -330,17 +339,17 @@ def create_project6(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project7(CLINIC_ENTITY_TYPE, manager, questions):
     form_model7 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli007", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            form_code="cli007", type='survey',
+                            fields=questions,
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid7 = form_model7.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli007").delete()
         qid7 = form_model7.save()
     project7 = Project(name="Clinic7 Test Project", goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                       sender_group="close")
     project7.qid = qid7
     project7.state = ProjectState.TEST
     try:
@@ -351,9 +360,9 @@ def create_project7(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project11(CLINIC_ENTITY_TYPE, manager, questions):
     form_model11 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli011", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE
+                             form_code="cli011", type='survey',
+                             fields=questions,
+                             entity_type=CLINIC_ENTITY_TYPE
     )
     weekly_reminder_and_deadline = {
         "deadline_week": "5",
@@ -368,8 +377,8 @@ def create_project11(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli011").delete()
         qid11 = form_model11.save()
     project11 = Project(name="Clinic All DS (Following)", goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                        sender_group="close")
     project11.qid = qid11
     project11.state = ProjectState.ACTIVE
     project11.reminder_and_deadline = weekly_reminder_and_deadline
@@ -378,17 +387,17 @@ def create_project11(CLINIC_ENTITY_TYPE, manager, questions):
     except Exception:
         pass
     reminder = Reminder(project_id=project11.id, day=3, reminder_mode=ReminderMode.BEFORE_DEADLINE,
-        organization_id='SLX364903',
-        message="3 day(s) are remainning to deadline. Please send your data for Clinic All DS (Following).")
+                        organization_id='SLX364903',
+                        message="3 day(s) are remainning to deadline. Please send your data for Clinic All DS (Following).")
     reminder.save()
     # Create reminders for project11
     reminder = Reminder(project_id=project11.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
-        organization_id='SLX364903',
-        message="Today is the deadline. Please send your data for Clinic All DS (Following).")
+                        organization_id='SLX364903',
+                        message="Today is the deadline. Please send your data for Clinic All DS (Following).")
     reminder.save()
     reminder = Reminder(project_id=project11.id, day=3, reminder_mode=ReminderMode.AFTER_DEADLINE,
-        organization_id='SLX364903',
-        message="3 days are overdue the deadline. Please send your data for Clinic All DS (Following).")
+                        organization_id='SLX364903',
+                        message="3 days are overdue the deadline. Please send your data for Clinic All DS (Following).")
     reminder.save()
     # Associate datasenders/reporters with project 1
     project11.data_senders.extend(["rep5", "rep6", "rep7"])
@@ -397,9 +406,9 @@ def create_project11(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project10(CLINIC_ENTITY_TYPE, manager, questions):
     form_model10 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli010", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE
+                             form_code="cli010", type='survey',
+                             fields=questions,
+                             entity_type=CLINIC_ENTITY_TYPE
     )
     weekly_reminder_and_deadline = {
         "deadline_week": "5",
@@ -414,9 +423,9 @@ def create_project10(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli010").delete()
         qid10 = form_model10.save()
     project10 = Project(name="Clinic DS W/O Submission (Following)", goals="This project is for automation",
-        project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                        project_type="survey",
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                        sender_group="close")
     project10.qid = qid10
     project10.state = ProjectState.ACTIVE
     project10.reminder_and_deadline = weekly_reminder_and_deadline
@@ -425,17 +434,17 @@ def create_project10(CLINIC_ENTITY_TYPE, manager, questions):
     except Exception:
         pass
     reminder = Reminder(project_id=project10.id, day=1, reminder_mode=ReminderMode.BEFORE_DEADLINE,
-        organization_id='SLX364903',
-        message="1 day is remainning to deadline. Please send your data for Clinic DS W/O Submission (Following).")
+                        organization_id='SLX364903',
+                        message="1 day is remainning to deadline. Please send your data for Clinic DS W/O Submission (Following).")
     reminder.save()
     # Create reminders for project10
     reminder = Reminder(project_id=project10.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
-        organization_id='SLX364903',
-        message="Today is the deadline. Please send your data for Clinic10 Test Project.")
+                        organization_id='SLX364903',
+                        message="Today is the deadline. Please send your data for Clinic10 Test Project.")
     reminder.save()
     reminder = Reminder(project_id=project10.id, day=1, reminder_mode=ReminderMode.AFTER_DEADLINE,
-        organization_id='SLX364903',
-        message="1 day is overdue the deadline. Please send your data for Clinic DS W/O Submission (Following).")
+                        organization_id='SLX364903',
+                        message="1 day is overdue the deadline. Please send your data for Clinic DS W/O Submission (Following).")
     reminder.save()
     # Associate datasenders/reporters with project 1
     project10.data_senders.extend(["rep5", "rep6", "rep7"])
@@ -444,18 +453,18 @@ def create_project10(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project9(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline):
     form_model9 = FormModel(manager, name="AIDS Clinici", label="Aids form_model",
-        form_code="cli009", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE)
+                            form_code="cli009", type='survey',
+                            fields=questions,
+                            entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid = form_model9.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli009").delete()
         qid = form_model9.save()
     project9 = Project(name="Clinic9 Reminder Test Project", goals="This project is for automation",
-        project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                       project_type="survey",
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                       sender_group="close")
     project9.qid = qid
     project9.state = ProjectState.ACTIVE
     project9.reminder_and_deadline = weekly_reminder_and_deadline
@@ -466,8 +475,8 @@ def create_project9(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_
 
     # Create reminders for project2 and project 9
     reminder = Reminder(project_id=project9.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
-        organization_id='SLX364903',
-        message="Reminder test")
+                        organization_id='SLX364903',
+                        message="Reminder test")
     reminder.save()
     # Associate datasenders/reporters with project 9
     project9.data_senders.extend(["rep3", "rep4"])
@@ -476,16 +485,16 @@ def create_project9(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_
 
 def create_project8(CLINIC_ENTITY_TYPE, manager, questions):
     form_model8 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli008", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
+                            form_code="cli008", type='survey',
+                            fields=questions,
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
     try:
         qid8 = form_model8.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli008").delete()
         qid8 = form_model8.save()
     project8 = Project(name="Clinic8 Test Project", goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
     project8.qid = qid8
     project8.state = ProjectState.INACTIVE
     try:
@@ -496,9 +505,9 @@ def create_project8(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project12(CLINIC_ENTITY_TYPE, manager, questions):
     form_model12 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli012", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE
+                             form_code="cli012", type='survey',
+                             fields=questions,
+                             entity_type=CLINIC_ENTITY_TYPE
     )
     weekly_reminder_and_deadline = {
         "deadline_week": "5",
@@ -513,9 +522,9 @@ def create_project12(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli012").delete()
         qid12 = form_model12.save()
     project12 = Project(name="Clinic DS W/O Submission (That)", goals="This project is for automation",
-        project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                        project_type="survey",
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                        sender_group="close")
     project12.qid = qid12
     project12.state = ProjectState.ACTIVE
     project12.reminder_and_deadline = weekly_reminder_and_deadline
@@ -526,17 +535,17 @@ def create_project12(CLINIC_ENTITY_TYPE, manager, questions):
 
     # Create reminders for project12
     reminder = Reminder(project_id=project12.id, day=4, reminder_mode=ReminderMode.BEFORE_DEADLINE,
-        organization_id='SLX364903',
-        message="4 day(s) are remainning to deadline. Please send your data for Clinic DS W/O Submission (That).")
+                        organization_id='SLX364903',
+                        message="4 day(s) are remainning to deadline. Please send your data for Clinic DS W/O Submission (That).")
     reminder.save()
     reminder = Reminder(project_id=project12.id, day=4, reminder_mode=ReminderMode.AFTER_DEADLINE,
-        organization_id='SLX364903',
-        message="4 day(s) are overdue the deadline. Please send your data for Clinic DS W/O Submission (That).")
+                        organization_id='SLX364903',
+                        message="4 day(s) are overdue the deadline. Please send your data for Clinic DS W/O Submission (That).")
     reminder.save()
     # Create reminders for project12
     reminder = Reminder(project_id=project12.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
-        organization_id='SLX364903',
-        message="Today is the deadline. Please send your data for Clinic DS W/O Submission (That).")
+                        organization_id='SLX364903',
+                        message="Today is the deadline. Please send your data for Clinic DS W/O Submission (That).")
     reminder.save()
     # Associate datasenders/reporters with project 1
     project12.data_senders.extend(["rep5", "rep6", "rep7"])
@@ -545,9 +554,9 @@ def create_project12(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project13(CLINIC_ENTITY_TYPE, manager, questions):
     form_model13 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli013", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE
+                             form_code="cli013", type='survey',
+                             fields=questions,
+                             entity_type=CLINIC_ENTITY_TYPE
     )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
@@ -562,9 +571,9 @@ def create_project13(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli013").delete()
         qid13 = form_model13.save()
     project13 = Project(name="Clinic DS W/O Monthly Submission (Same)", goals="This project is for automation",
-        project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                        project_type="survey",
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                        sender_group="close")
     project13.qid = qid13
     project13.state = ProjectState.ACTIVE
     project13.reminder_and_deadline = monthly_reminder_and_deadline
@@ -575,17 +584,17 @@ def create_project13(CLINIC_ENTITY_TYPE, manager, questions):
 
     # Create reminders for project13
     reminder = Reminder(project_id=project13.id, day=15, reminder_mode=ReminderMode.BEFORE_DEADLINE,
-        organization_id='SLX364903',
-        message="15 days are remainning to deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
+                        organization_id='SLX364903',
+                        message="15 days are remainning to deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
     reminder.save()
     reminder = Reminder(project_id=project13.id, day=15, reminder_mode=ReminderMode.AFTER_DEADLINE,
-        organization_id='SLX364903',
-        message="15 days are overdue the deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
+                        organization_id='SLX364903',
+                        message="15 days are overdue the deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
     reminder.save()
     # Create reminders for project13
     reminder = Reminder(project_id=project13.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
-        organization_id='SLX364903',
-        message="Today is the deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
+                        organization_id='SLX364903',
+                        message="Today is the deadline. Please send your data for Clinic DS W/O Monthly Submission (Same).")
     reminder.save()
     # Associate datasenders/reporters with project 1
     project13.data_senders.extend(["rep5", "rep6", "rep7"])
@@ -594,9 +603,9 @@ def create_project13(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project14(CLINIC_ENTITY_TYPE, manager, questions):
     form_model14 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli014", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE
+                             form_code="cli014", type='survey',
+                             fields=questions,
+                             entity_type=CLINIC_ENTITY_TYPE
     )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
@@ -611,9 +620,9 @@ def create_project14(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli014").delete()
         qid14 = form_model14.save()
     project14 = Project(name="Clinic DS W/O Monthly Submission (following)", goals="This project is for automation",
-        project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                        project_type="survey",
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                        sender_group="close")
     project14.qid = qid14
     project14.state = ProjectState.ACTIVE
     project14.reminder_and_deadline = monthly_reminder_and_deadline
@@ -624,17 +633,17 @@ def create_project14(CLINIC_ENTITY_TYPE, manager, questions):
 
     # Create reminders for project14
     reminder = Reminder(project_id=project14.id, day=10, reminder_mode=ReminderMode.BEFORE_DEADLINE,
-        organization_id='SLX364903',
-        message="10 days are remainning to deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
+                        organization_id='SLX364903',
+                        message="10 days are remainning to deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
     reminder.save()
     reminder = Reminder(project_id=project14.id, day=10, reminder_mode=ReminderMode.AFTER_DEADLINE,
-        organization_id='SLX364903',
-        message="10 days are overdue the deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
+                        organization_id='SLX364903',
+                        message="10 days are overdue the deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
     reminder.save()
     # Create reminders for project14
     reminder = Reminder(project_id=project14.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
-        organization_id='SLX364903',
-        message="Today is the deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
+                        organization_id='SLX364903',
+                        message="Today is the deadline. Please send your data for Clinic DS W/O Monthly Submission (following).")
     reminder.save()
     # Associate datasenders/reporters with project 1
     project14.data_senders.extend(["rep5", "rep6", "rep7"])
@@ -643,9 +652,9 @@ def create_project14(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project15(CLINIC_ENTITY_TYPE, manager, questions):
     form_model15 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli015", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE
+                             form_code="cli015", type='survey',
+                             fields=questions,
+                             entity_type=CLINIC_ENTITY_TYPE
     )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
@@ -660,9 +669,9 @@ def create_project15(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli015").delete()
         qid15 = form_model15.save()
     project15 = Project(name="Clinic All DS Monthly Submission (following)", goals="This project is for automation",
-        project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                        project_type="survey",
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                        sender_group="close")
     project15.qid = qid15
     project15.state = ProjectState.ACTIVE
     project15.reminder_and_deadline = monthly_reminder_and_deadline
@@ -673,17 +682,17 @@ def create_project15(CLINIC_ENTITY_TYPE, manager, questions):
 
     # Create reminders for project15
     reminder = Reminder(project_id=project15.id, day=5, reminder_mode=ReminderMode.BEFORE_DEADLINE,
-        organization_id='SLX364903',
-        message="5 days are remainning to deadline. Please send your data for Clinic All DS Monthly Submission (following).")
+                        organization_id='SLX364903',
+                        message="5 days are remainning to deadline. Please send your data for Clinic All DS Monthly Submission (following).")
     reminder.save()
     reminder = Reminder(project_id=project15.id, day=5, reminder_mode=ReminderMode.AFTER_DEADLINE,
-        organization_id='SLX364903',
-        message="5 days are overdue the deadline. Please send your data for Clinic All DS Monthly Submission (following).")
+                        organization_id='SLX364903',
+                        message="5 days are overdue the deadline. Please send your data for Clinic All DS Monthly Submission (following).")
     reminder.save()
     # Create reminders for project15
     reminder = Reminder(project_id=project15.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
-        organization_id='SLX364903',
-        message="Today is the deadline. Please send your data for Clinic All DS Monthly Submission (following).")
+                        organization_id='SLX364903',
+                        message="Today is the deadline. Please send your data for Clinic All DS Monthly Submission (following).")
     reminder.save()
     # Associate datasenders/reporters with project 1
     project15.data_senders.extend(["rep5", "rep6", "rep7"])
@@ -692,9 +701,9 @@ def create_project15(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project16(CLINIC_ENTITY_TYPE, manager, questions):
     form_model16 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli016", type='survey',
-        fields=questions,
-        entity_type=CLINIC_ENTITY_TYPE
+                             form_code="cli016", type='survey',
+                             fields=questions,
+                             entity_type=CLINIC_ENTITY_TYPE
     )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
@@ -709,9 +718,9 @@ def create_project16(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli016").delete()
         qid16 = form_model16.save()
     project16 = Project(name="Clinic All DS Monthly Submission (that)", goals="This project is for automation",
-        project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                        project_type="survey",
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                        sender_group="close")
     project16.qid = qid16
     project16.state = ProjectState.ACTIVE
     project16.reminder_and_deadline = monthly_reminder_and_deadline
@@ -722,17 +731,17 @@ def create_project16(CLINIC_ENTITY_TYPE, manager, questions):
 
     # Create reminders for project16
     reminder = Reminder(project_id=project16.id, day=2, reminder_mode=ReminderMode.BEFORE_DEADLINE,
-        organization_id='SLX364903',
-        message="2 days are remainning to deadline. Please send your data for Clinic All DS Monthly Submission (that).")
+                        organization_id='SLX364903',
+                        message="2 days are remainning to deadline. Please send your data for Clinic All DS Monthly Submission (that).")
     reminder.save()
     reminder = Reminder(project_id=project16.id, day=2, reminder_mode=ReminderMode.AFTER_DEADLINE,
-        organization_id='SLX364903',
-        message="2 days are overdue the deadline. Please send your data for Clinic All DS Monthly Submission (that).")
+                        organization_id='SLX364903',
+                        message="2 days are overdue the deadline. Please send your data for Clinic All DS Monthly Submission (that).")
     reminder.save()
     # Create reminders for project16
     reminder = Reminder(project_id=project16.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
-        organization_id='SLX364903',
-        message="Today is the deadline. Please send your data for Clinic All DS Monthly Submission (that).")
+                        organization_id='SLX364903',
+                        message="Today is the deadline. Please send your data for Clinic All DS Monthly Submission (that).")
     reminder.save()
     # Associate datasenders/reporters with project 1
     project16.data_senders.extend(["rep5", "rep6", "rep7"])
@@ -741,22 +750,24 @@ def create_project16(CLINIC_ENTITY_TYPE, manager, questions):
 
 def create_project17(CLINIC_ENTITY_TYPE, manager, questions_):
     form_model17 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="cli017", type='survey',
-        fields=questions_,
-        entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
+                             form_code="cli017", type='survey',
+                             fields=questions_,
+                             entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
     try:
         qid17 = form_model17.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli017").delete()
         qid17 = form_model17.save()
     project17 = Project(name="Clinic13 Test Project", goals="This project is for automation", project_type="survey",
-        entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes', sender_group="close")
+                        entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes',
+                        sender_group="close")
     project17.qid = qid17
     project17.state = ProjectState.TEST
     try:
         project17.save(manager)
     except Exception:
         pass
+
 
 def create_project18(CLINIC_ENTITY_TYPE, manager, questions_):
     form_model18 = FormModel(manager, name="AIDS", label="Aids form_model",
@@ -769,7 +780,8 @@ def create_project18(CLINIC_ENTITY_TYPE, manager, questions_):
         get_form_model_by_code(manager, "cli018").delete()
         qid18 = form_model18.save()
     project18 = Project(name="Test data sorting", goals="This project is for automation", project_type="survey",
-                        entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes', sender_group="close")
+                        entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes',
+                        sender_group="close")
     project18.qid = qid18
     project18.state = ProjectState.TEST
     try:
@@ -777,25 +789,29 @@ def create_project18(CLINIC_ENTITY_TYPE, manager, questions_):
     except Exception:
         pass
 
+
 def create_project19(ENTITY_TYPE, manager):
     questions_ = create_questions(manager)
     form_model19 = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code="peo019", type='survey',
-        fields=questions_,
-        entity_type=ENTITY_TYPE)
+                             form_code="peo019", type='survey',
+                             fields=questions_,
+                             entity_type=ENTITY_TYPE)
     try:
         qid19 = form_model19.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "peo019").delete()
         qid19 = form_model19.save()
-    project19 = Project(name="Project having people as subject", goals="This project is for automation", project_type="survey",
-        entity_type='people', devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+    project19 = Project(name="Project having people as subject", goals="This project is for automation",
+                        project_type="survey",
+                        entity_type='people', devices=["sms", "web", "smartPhone"], activity_report='no',
+                        sender_group="close")
     project19.qid = qid19
     project19.state = ProjectState.TEST
     try:
         project19.save(manager)
     except Exception:
         pass
+
 
 def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager):
     clinic_code = "cli00_mp"
@@ -804,18 +820,18 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
 
     question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-        entity_question_flag=True, ddtype=entity_id_type,
-        constraints=[TextLengthConstraint(min=1, max=20)],
-        instruction="Answer must be 12 characters maximum")
+                          entity_question_flag=True, ddtype=entity_id_type,
+                          constraints=[TextLengthConstraint(min=1, max=20)],
+                          instruction="Answer must be 12 characters maximum")
     question2 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
-        date_format="mm.yyyy", ddtype=date_type,
-        instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
-        event_time_field_flag=True)
+                          date_format="mm.yyyy", ddtype=date_type,
+                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
+                          event_time_field_flag=True)
 
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
-        form_code=clinic_code, type='survey',
-        fields=[question1, question2],
-        entity_type=CLINIC_ENTITY_TYPE
+                           form_code=clinic_code, type='survey',
+                           fields=[question1, question2],
+                           entity_type=CLINIC_ENTITY_TYPE
     )
     try:
         qid = form_model.save()
@@ -823,8 +839,8 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
         get_form_model_by_code(manager, clinic_code).delete()
         qid = form_model.save()
     project = Project(name=project_name, goals="This project is for automation", project_type="survey",
-        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
-        sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                      sender_group="close")
     project.qid = qid
     project.state = ProjectState.TEST
     try:
@@ -833,10 +849,9 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
         pass
 
 
-
 def create_clinic_projects(entity_type, manager):
     organization = Organization.objects.get(pk='SLX364903')
-    Reminder.objects.filter(organization = organization).delete()
+    Reminder.objects.filter(organization=organization).delete()
     questions = create_questions(manager)
 
     weekly_reminder_and_deadline = {
@@ -848,7 +863,7 @@ def create_clinic_projects(entity_type, manager):
     }
 
     create_project1(entity_type, manager, questions, weekly_reminder_and_deadline)
-    create_project2(entity_type, manager,questions)
+    create_project2(entity_type, manager, questions)
     create_project3(entity_type, manager, questions[:7])
     create_project4(entity_type, manager, questions[:7])
     create_project5(entity_type, manager, questions[:7])
@@ -860,7 +875,7 @@ def create_clinic_projects(entity_type, manager):
     create_project11(entity_type, manager, questions)
     create_project12(entity_type, manager, questions)
     create_project13(entity_type, manager, questions)
-    create_project14(entity_type, manager,questions)
+    create_project14(entity_type, manager, questions)
     create_project15(entity_type, manager, questions)
     create_project16(entity_type, manager, questions)
     create_project17(entity_type, manager, questions[:6])
@@ -872,23 +887,27 @@ def create_clinic_projects(entity_type, manager):
     create_project18(entity_type, manager, questions_for_018)
     create_clinic_project_with_monthly_reporting_period(entity_type, manager)
 
+
 def load_web_data_for_cli001(manager):
     web_player = WebPlayerV2(manager)
-    text = {'form_code': 'cli001', 'EID':'cid001', 'NA':'Mr. Admin', 'FA':'58', 'RD':'28.02.2011', 'BG':'c', 'SY':'ade', 'GPS':'79.2,20.34567', 'RM':'a'}
+    text = {'form_code': 'cli001', 'EID': 'cid001', 'NA': 'Mr. Admin', 'FA': '58', 'RD': '28.02.2011', 'BG': 'c',
+            'SY': 'ade', 'GPS': '79.2,20.34567', 'RM': 'a'}
     web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+
 
 def load_web_data_for_cli018(manager):
     web_player = WebPlayerV2(manager)
     web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
-    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'cat, dog', 'RD': '11.03.2010', 'BG': 'c', 'GPS': '12,14'}
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
-    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'12, 34', 'RD': '20.02.2011', 'BG': 'd', 'GPS': '39,14'}
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
-    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'-12, 34', 'RD': '25.12.2010', 'BG': 'a', 'GPS': '5.10,50.12'}
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
-    text = {'form_code': 'cli018', 'EID':'cid001', 'NA':'20, 34', 'RD': '11.06.2012', 'BG': 'b', 'GPS': '21.16,14.3'}
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info))
+    text = {'form_code': 'cli018', 'EID': 'cid001', 'NA': 'cat, dog', 'RD': '11.03.2010', 'BG': 'c', 'GPS': '12,14'}
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+    text = {'form_code': 'cli018', 'EID': 'cid001', 'NA': '12, 34', 'RD': '20.02.2011', 'BG': 'd', 'GPS': '39,14'}
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+    text = {'form_code': 'cli018', 'EID': 'cid001', 'NA': '-12, 34', 'RD': '25.12.2010', 'BG': 'a', 'GPS': '5.10,50.12'}
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+    text = {'form_code': 'cli018', 'EID': 'cid001', 'NA': '20, 34', 'RD': '11.06.2012', 'BG': 'b', 'GPS': '21.16,14.3'}
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+
 
 def load_sms_data_for_cli018(manager):
     JAN = datetime(2011, 01, 05, hour=12, minute=00, second=00, tzinfo=UTC)
@@ -932,6 +951,7 @@ def load_sms_data_for_cli018(manager):
     mangrove_request = Request('cli018 .EID cid001 .NA 12.23.2011 .RD 25.01.2011 .BG a .GPS 11.23,17.66', transport)
     response = sms_player.add_survey_response(mangrove_request)
 
+
 def load_sms_data_for_cli001(manager):
     FEB = datetime(2011, 02, 28, hour=12, minute=00, second=00, tzinfo=UTC)
     MARCH = datetime(2011, 03, 01, tzinfo=UTC)
@@ -941,13 +961,14 @@ def load_sms_data_for_cli001(manager):
     LAST_WEEK = today - timedelta(days=7)
     THIS_MONTH = datetime(today.year, today.month, 2, 12, 45, 58)
     PREV_MONTH = THIS_MONTH - timedelta(days=6)
-    sms_player = SMSPlayer(manager,  LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
+    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
 
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
-    mangrove_request = Request("cli .q1 Clinic .q2 Analalava .q3 Analalava .q4 -14.6333,47.7667 .q5 987654321", transport)
+    mangrove_request = Request("cli .q1 Clinic .q2 Analalava .q3 Analalava .q4 -14.6333,47.7667 .q5 987654321",
+                               transport)
     sms_player.accept(mangrove_request)
 
     mangrove_request = Request("cli .q1 Clinic .q2 Andapa .q3 Andapa .q4 -14.65,49.6167 .q5 87654322", transport)
@@ -955,10 +976,10 @@ def load_sms_data_for_cli001(manager):
 
     mangrove_request = Request("cli .q1 Clinic .q2 Antalaha .q3 Antalaha .q4 -14.8833,50.25 .q5 87654323", transport)
     sms_player.accept(mangrove_request)
-    
+
     mangrove_request = Request("cli .q1 Clinic .q2 ANALAMANGA .q3 ANALAMANGA .q4 -18.8,47.4833 .q5 87654324", transport)
     response = sms_player.accept(mangrove_request)
-    
+
     mangrove_request = Request(
         "cli .q1 Clinic .q2 TSIMANARIRAZANA .q3 TSIMANARIRAZANA .q4 -12.35,49.3 .q5 87654325", transport)
     response = sms_player.accept(mangrove_request)
@@ -1082,72 +1103,124 @@ def load_sms_data_for_cli001(manager):
     datetime_mocker.set_date_time_now(PREV_MONTH)
     month = today.month - 1
     year = today.year
-    if not(month):
+    if not (month):
         month = 12
         year = today.year - 1
     Last_month_date = "12." + str(month) + "." + str(year)
     # Total number of identical records = 4
-    mangrove_request = Request("cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672,92.33456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672,92.33456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452,-28.3456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452,-28.3456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli11 .NA Aàntra .FA 98 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234,89.32345 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli11 .NA Aàntra .FA 98 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234,89.32345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli12 .NA ànnita .FA 37 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233,-28.3324 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli12 .NA ànnita .FA 37 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233,-28.3324 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672,92.33456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672,92.33456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452,-28.3456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452,-28.3456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli11 .NA Aàntra .FA 95 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234,89.32345 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli11 .NA Aàntra .FA 95 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234,89.32345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli12 .NA ànnita .FA 35 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233,-28.3324 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli12 .NA ànnita .FA 35 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233,-28.3324 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli9 .NA Demelo .FA 32 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672,92.33456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli9 .NA Demelo .FA 32 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672,92.33456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli10 .NA Zorro .FA 43 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452,-28.3456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli10 .NA Zorro .FA 43 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452,-28.3456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli11 .NA Aàntra .FA 91 .RD " + Last_month_date + " .BG a .SY be .GPS -45.234,89.32345 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli11 .NA Aàntra .FA 91 .RD " + Last_month_date + " .BG a .SY be .GPS -45.234,89.32345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli12 .NA ànnita .FA 45 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233,-28.3324 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli12 .NA ànnita .FA 45 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233,-28.3324 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     datetime_mocker.set_date_time_now(THIS_MONTH)
     current_month_date = "01." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 4
-    mangrove_request = Request("cli001 .EID cli13 .NA Dmanda .FA 69 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli13 .NA Dmanda .FA 69 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli14 .NA Vamand .FA 36 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli14 .NA Vamand .FA 36 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli15 .NA M!lo .FA 88 .RD " + current_month_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli15 .NA M!lo .FA 88 .RD " + current_month_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli16 .NA K!llo .FA 88 .RD " + current_month_date + " .BG a .SY ac .GPS 19.672,92.33456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli16 .NA K!llo .FA 88 .RD " + current_month_date + " .BG a .SY ac .GPS 19.672,92.33456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli13 .NA Dmanda .FA 89 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli13 .NA Dmanda .FA 89 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli14 .NA Vamand .FA 56 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli14 .NA Vamand .FA 56 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli15 .NA M!lo .FA 45 .RD " + current_month_date + " .BG c .SY ca .GPS 19.672,92.33456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli15 .NA M!lo .FA 45 .RD " + current_month_date + " .BG c .SY ca .GPS 19.672,92.33456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli16 .NA K!llo .FA 28 .RD " + current_month_date + " .BG b .SY ae .GPS 19.672,92.33456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli16 .NA K!llo .FA 28 .RD " + current_month_date + " .BG b .SY ae .GPS 19.672,92.33456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     datetime_mocker.end_mock()
 
     today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 3
-    mangrove_request = Request("cli001 .EID cli17 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli17 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli18 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli18 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
-    mangrove_request = Request("cli001 .EID cli17 .NA Catty .FA 98 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli17 .NA Catty .FA 98 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli18 .NA àntra .FA 58 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli18 .NA àntra .FA 58 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 27 .BG d .SY ace .GPS -78.233,-28.3324 .RM b", transport)
+    mangrove_request = Request(
+        "cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 27 .BG d .SY ace .GPS -78.233,-28.3324 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     FROM_NUMBER = '919970059125'
@@ -1158,27 +1231,45 @@ def load_sms_data_for_cli001(manager):
     datetime_mocker2.set_date_time_now(LAST_WEEK)
     last_week_date = str(LAST_WEEK.day) + "." + str(LAST_WEEK.month) + "." + str(LAST_WEEK.year)
     # Total number of identical records = 4
-    mangrove_request = Request("cli010 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
+    mangrove_request = Request(
+        "cli010 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli010 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
+    mangrove_request = Request(
+        "cli010 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli010 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-
-    # Total number of identical records = 4
-    mangrove_request = Request("cli012 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli012 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli012 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
+    mangrove_request = Request(
+        "cli010 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     # Total number of identical records = 4
-    mangrove_request = Request("cli011 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
+    mangrove_request = Request(
+        "cli012 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli011 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
+    mangrove_request = Request(
+        "cli012 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli011 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
+    mangrove_request = Request(
+        "cli012 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+
+    # Total number of identical records = 4
+    mangrove_request = Request(
+        "cli011 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+    mangrove_request = Request(
+        "cli011 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+    mangrove_request = Request(
+        "cli011 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     FROM_NUMBER = '919970059125'
@@ -1188,37 +1279,60 @@ def load_sms_data_for_cli001(manager):
     datetime_mocker2.set_date_time_now(PREV_MONTH)
     last_week_date = str(PREV_MONTH.day) + "." + str(PREV_MONTH.month) + "." + str(PREV_MONTH.year)
     # Total number of identical records = 3
-    mangrove_request = Request("cli013 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
+    mangrove_request = Request(
+        "cli013 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli013 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
+    mangrove_request = Request(
+        "cli013 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli013 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-
-    # Total number of identical records = 3
-    mangrove_request = Request("cli015 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli015 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli015 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
+    mangrove_request = Request(
+        "cli013 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
-    mangrove_request = Request("cli014 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
+    mangrove_request = Request(
+        "cli015 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli014 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b", transport)
+    mangrove_request = Request(
+        "cli015 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli014 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
+    mangrove_request = Request(
+        "cli015 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
-    mangrove_request = Request("cli016 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a", transport)
+    mangrove_request = Request(
+        "cli014 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli016 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.345,115.3345 .RM b", transport)
+    mangrove_request = Request(
+        "cli014 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452,115.3345 .RM b",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli016 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c", transport)
+    mangrove_request = Request(
+        "cli014 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
+    # Total number of identical records = 3
+    mangrove_request = Request(
+        "cli016 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2,69.3123 .RM a",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+    mangrove_request = Request(
+        "cli016 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.345,115.3345 .RM b",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+    mangrove_request = Request(
+        "cli016 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672,92.33456 .RM c",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
 
     FROM_NUMBER = '917798987102'
     TO_NUMBER = '919880734937'
@@ -1228,35 +1342,59 @@ def load_sms_data_for_cli001(manager):
 
     this_month = str(THIS_MONTH.day) + "." + str(THIS_MONTH.month) + "." + str(THIS_MONTH.year)
     # Total number of identical records = 3
-    mangrove_request = Request("cli013 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
+    mangrove_request = Request(
+        "cli013 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli013 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
+    mangrove_request = Request(
+        "cli013 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli013 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-
-    # Total number of identical records = 3
-    mangrove_request = Request("cli014 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli014 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli014 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
+    mangrove_request = Request(
+        "cli013 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
-    mangrove_request = Request("cli015 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
+    mangrove_request = Request(
+        "cli014 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli015 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
+    mangrove_request = Request(
+        "cli014 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli015 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
+    mangrove_request = Request(
+        "cli014 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
-    mangrove_request = Request("cli016 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
+    mangrove_request = Request(
+        "cli015 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli016 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
+    mangrove_request = Request(
+        "cli015 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli016 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
+    mangrove_request = Request(
+        "cli015 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+
+    # Total number of identical records = 3
+    mangrove_request = Request(
+        "cli016 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+    mangrove_request = Request(
+        "cli016 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234,169.32345 .RM c",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+    mangrove_request = Request(
+        "cli016 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     datetime_mocker2.end_mock()
@@ -1267,32 +1405,51 @@ def load_sms_data_for_cli001(manager):
 
     today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 3
-    mangrove_request = Request("cli010 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
+    mangrove_request = Request(
+        "cli010 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli010 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
+    mangrove_request = Request(
+        "cli010 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli010 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-
-    # Total number of identical records = 3
-    mangrove_request = Request("cli011 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli011 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
-    response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli011 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
+    mangrove_request = Request(
+        "cli010 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
 
     # Total number of identical records = 3
-    mangrove_request = Request("cli012 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a", transport)
+    mangrove_request = Request(
+        "cli011 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli012 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM c", transport)
+    mangrove_request = Request(
+        "cli011 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM c",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
-    mangrove_request = Request("cli012 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d", transport)
+    mangrove_request = Request(
+        "cli011 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d",
+        transport)
     response = sms_player_v2.add_survey_response(mangrove_request)
+
+    # Total number of identical records = 3
+    mangrove_request = Request(
+        "cli012 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452,-68.3456 .RM a",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+    mangrove_request = Request(
+        "cli012 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234,169.32345 .RM c",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+    mangrove_request = Request(
+        "cli012 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233,-28.3324 .RM d",
+        transport)
+    response = sms_player_v2.add_survey_response(mangrove_request)
+
 
 def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)
-    Reminder.objects.filter(organization = organization).delete()
+    Reminder.objects.filter(organization=organization).delete()
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
     # Entity id is a default type in the system.
     entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
@@ -1319,7 +1476,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
                             ddtype=select_type, instruction="Choose 1 answer from the list.")
     question6 = SelectField(label="Symptoms", code="SY", name="What aré symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
-                                    ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
+                                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
                             ddtype=select_type,
                             instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS",
@@ -1339,12 +1496,12 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     )
 
     weekly_reminder_and_deadline = {
-            "deadline_week": "5",
-            "deadline_type": "Same",
-            "has_deadline": True,
-            "frequency_period": "week",
-            "should_send_reminder_to_all_ds": True
-        }
+        "deadline_week": "5",
+        "deadline_type": "Same",
+        "has_deadline": True,
+        "frequency_period": "week",
+        "should_send_reminder_to_all_ds": True
+    }
 
     try:
         qid = form_model.save()
@@ -1352,7 +1509,8 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
     project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
+                       sender_group="close")
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
     project1.reminder_and_deadline = weekly_reminder_and_deadline
@@ -1360,14 +1518,15 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
         project1.save(manager)
     except Exception:
         pass
-    if(register_a_datasender):
+    if (register_a_datasender):
         project1.data_senders.extend(["rep1"])
         project1.save(manager)
 
     return project1
 
+
 def send_data_to_project_cli00_mp(manager):
-    sms_player = SMSPlayerV2(manager,[])
+    sms_player = SMSPlayerV2(manager, [])
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
@@ -1377,10 +1536,11 @@ def send_data_to_project_cli00_mp(manager):
     sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month, year), transport))
     sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month, year - 1), transport))
     sms_player.add_survey_response(Request("cli00_mp cid001 01.%s" % year, transport))
-    sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month,year), transport))
+    sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month, year), transport))
 
     tester_transport = TransportInfo(SMS, TEST_REPORTER_MOBILE_NUMBER, TO_NUMBER)
     sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month, year), tester_transport))
+
 
 def load_data():
     manager = load_manager_for_default_test_account()
@@ -1399,41 +1559,41 @@ def load_data():
                                          primitive_type='string')
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
-            (NAME_FIELD, "Shweta", first_name_type)],
+                                                              (NAME_FIELD, "Shweta", first_name_type)],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),
-            (NAME_FIELD, "David", first_name_type)],
+                                                              (NAME_FIELD, "David", first_name_type)],
              location=[u'Madagascar', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
              short_code="rep2", geometry={"type": "Point", "coordinates": [-20.9027586764, 47.165034158]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567891", phone_number_type),
-            (NAME_FIELD, "Shilpa", first_name_type)],
+                                                              (NAME_FIELD, "Shilpa", first_name_type)],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep3", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567892", phone_number_type),
-        (NAME_FIELD, "Asif", first_name_type)],
-         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-         short_code="rep4", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+                                                              (NAME_FIELD, "Asif", first_name_type)],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep4", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919970059125", phone_number_type),
-        (NAME_FIELD, "Ritesh", first_name_type)],
-         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-         short_code="rep5", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+                                                              (NAME_FIELD, "Ritesh", first_name_type)],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep5", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987116", phone_number_type),
-        (NAME_FIELD, "RiteshY", first_name_type)],
-         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-         short_code="rep6", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+                                                              (NAME_FIELD, "RiteshY", first_name_type)],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep6", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987102", phone_number_type),
-        (NAME_FIELD, "AkshaY", first_name_type)],
-         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-         short_code="rep7", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+                                                              (NAME_FIELD, "AkshaY", first_name_type)],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep7", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919049008976", phone_number_type),
-        (NAME_FIELD, "Ashwini", first_name_type)],
-        location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-        short_code="rep8", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+                                                              (NAME_FIELD, "Ashwini", first_name_type)],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep8", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619876", phone_number_type),
-        (NAME_FIELD, "stefan", first_name_type)],
-        location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-        short_code="rep10", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+                                                              (NAME_FIELD, "stefan", first_name_type)],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep10", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619875", phone_number_type),
         (NAME_FIELD, "mamy", first_name_type)],
         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
@@ -1450,11 +1610,12 @@ def load_data():
     load_web_data_for_cli018(manager)
     load_sms_data_for_cli018(manager)
 
-    create_trial_test_organization('chinatwu@gmail.com','COJ00000', False)
-    create_trial_test_organization('chinatwu2@gmail.com','COJ00001', True, [phone_number_type, first_name_type])
-    create_trial_test_organization('chinatwu3@gmail.com','COJ00002', False)
-    create_trial_test_organization('chinatwu4@gmail.com','COJ00003', False)
+    create_trial_test_organization('chinatwu@gmail.com', 'COJ00000', False)
+    create_trial_test_organization('chinatwu2@gmail.com', 'COJ00001', True, [phone_number_type, first_name_type])
+    create_trial_test_organization('chinatwu3@gmail.com', 'COJ00002', False)
+    create_trial_test_organization('chinatwu4@gmail.com', 'COJ00003', False)
     create_project_for_nigeria_test_orgnization()
+
 
 def create_trial_test_organization(email, org_id, register_a_data_sender, data_types_for_datasender=None):
     manager = get_database_manager(User.objects.get(username=email))
@@ -1466,18 +1627,21 @@ def create_trial_test_organization(email, org_id, register_a_data_sender, data_t
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
 
-    if(register_a_data_sender):
-        register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", data_types_for_datasender[0]),
-            (NAME_FIELD, "Shweta", data_types_for_datasender[1])],
-             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-             short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+    if (register_a_data_sender):
+        register(manager, entity_type=REPORTER_ENTITY_TYPE,
+                 data=[(MOBILE_NUMBER_FIELD, "1234567890", data_types_for_datasender[0]),
+                       (NAME_FIELD, "Shweta", data_types_for_datasender[1])],
+                 location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+                 short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
     create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, org_id, register_a_data_sender)
     return manager
 
+
 def load_test_managers():
-    test_emails = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com' , 'gerard@mailinator.com']
+    test_emails = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'gerard@mailinator.com']
     return [get_database_manager(User.objects.get(username=email)) for email in test_emails]
+
 
 def load_all_managers():
     managers = []
@@ -1486,6 +1650,7 @@ def load_all_managers():
         manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
         managers.append(manager)
     return managers
+
 
 def create_project_for_nigeria_test_orgnization():
     manager = get_database_manager(User.objects.get(username="gerard@mailinator.com"))
