@@ -1,8 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import base64
 
 import httplib
 import json
 import simplejson
+import settings
 
 
 def prettyPrint(s):
@@ -84,7 +86,10 @@ class CouchHttpWrapper(object):
 
     def get(self, uri):
         c = self.connect()
-        headers = {"Accept": "application/json"}
+        base64_couchdbmain_credentials = base64.encodestring('%s:%s' %settings.COUCHDBMAIN_CREDENTIALS)[:-1]
+        headers = {
+            "Accept": "application/json",
+            "Authorization": "Basic %s" % base64_couchdbmain_credentials}
         c.request("GET", uri, None, headers)
         return c.getresponse()
 
