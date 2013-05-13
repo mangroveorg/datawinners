@@ -4,7 +4,7 @@ import base64
 import httplib
 import json
 import simplejson
-import settings
+from datawinners import settings
 
 
 def prettyPrint(s):
