@@ -1,28 +1,22 @@
 #Change the unique id in the older entity registration form model. Change the instruction
 import sys
+import traceback
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
 from datetime import datetime
-import traceback
-import urllib2
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
-from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration
+from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, all_db_names
 from datawinners import  settings
 
 SERVER = 'http://localhost:5984'
 credentials = settings.COUCHDBMAIN_CREDENTIALS
-log_file = open('migration/couch/release_7/migration_release_7_1.log', 'a')
 
-init_migrations('migration/couch/release_7/dbs_migrated_release_7_1.csv')
-
-def all_db_names(server):
-    all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
-    dbs = eval(all_dbs)
-    return filter(lambda x: x.startswith('hni_'), dbs)
+log_file = open('/var/log/datawinners/migration/migration_release_7_1.log', 'a')
+init_migrations('/var/log/datawinners/migration/dbs_migrated_release_7_1.csv')
 
 db_names = all_db_names(SERVER)
 
@@ -50,17 +44,19 @@ def migrate_form_model(form_model):
         field.set_required(True)
     form_model.save()
 
+
 def any_field_is_optional_in(form_model):
     for field in form_model.fields:
         if not field.is_required():
             return True
     return False
 
+
 def migrate_db(database):
     log_statement(
         '\nStart migration on database : %s \n' % database)
     try:
-        manager = get_db_manager(server=SERVER, database=database,credentials = credentials)
+        manager = get_db_manager(server=SERVER, database=database, credentials=credentials)
         questionnaire_form_model_docs = manager.database.query(map_form_model_questionnaire)
         mark_start_of_migration(database)
         for form_model_doc in questionnaire_form_model_docs:
@@ -69,7 +65,7 @@ def migrate_db(database):
                 "Process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
             if any_field_is_optional_in(form_model):
                 migrate_form_model(form_model)
-                log_statement("Form Model updated :%s %s" % (database,form_model.form_code))
+                log_statement("Form Model updated :%s %s" % (database, form_model.form_code))
             log_statement(
                 "End process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
         log_statement(
@@ -100,4 +96,3 @@ def log_statement(statement):
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
 
 migrate_bug_2004(db_names)
-#migrate_db('hni_testorg_slx364903')

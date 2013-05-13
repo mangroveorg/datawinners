@@ -1,25 +1,17 @@
 import sys
 
 if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
-#    import migration
-#    __package__ = str("migration")
+    sys.path.insert(0,".")
 
-from migration.couch.utils import should_not_skip, mark_start_of_migration, init_migrations
+from migration.couch.utils import should_not_skip, mark_start_of_migration, init_migrations, all_db_names
 from datetime import datetime
 import traceback
-import urllib2
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport.contract.survey_response import SurveyResponse
 
 SERVER = 'http://localhost:5984'
-log_file = open('migration/couch/release_7/migration_release_7_2.log', 'a')
-init_migrations('migration/couch/release_7/dbs_migrated_release_7_2.csv')
-
-def all_db_names():
-    all_dbs = urllib2.urlopen(SERVER + "/_all_dbs").read()
-    dbs = eval(all_dbs)
-    return filter(lambda x: x.startswith('hni_'), dbs)
+log_file = open('/var/log/datawinners/migration/migration_release_7_2.log', 'a')
+init_migrations('/var/log/datawinners/migration/dbs_migrated_release_7_2.csv')
 
 map_invalid_survey_responses = """
 function(doc){
@@ -49,14 +41,17 @@ def migrate_db(database):
 
 
 def migrate_bug_2134(all_db_names):
+    print "start ...."
     for database in all_db_names:
         if should_not_skip(database):
+            print "starting database : %s" % database
             log_statement('\nStart ==============================================================================\n')
             migrate_db(database)
             log_statement('\n End ================================================================================\n')
 
+    print "Completed migration"
 
 def log_statement(statement):
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
 
-migrate_bug_2134(all_db_names())
+migrate_bug_2134(all_db_names(SERVER))

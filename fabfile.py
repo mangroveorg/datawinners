@@ -327,7 +327,7 @@ def migrate_couchdb(context):
             activate_and_run(context.virtual_env, "python %s" % context.couch_migration_file)
 
     if context.couch_migrations_folder:
-        with cd('%s/datawinners/%s' % (context.code_dir, context.couch_migrations_folder)):
+        with cd('%s/datawinners' %context.code_dir):
             migration_files = run('ls').split()
             for migration in migration_files:
                 if not (migration.__contains__('.log') or migration.__eq__('__init__.py')):
@@ -335,7 +335,7 @@ def migrate_couchdb(context):
                     run("sudo /etc/init.d/%s start" % env.couch_db_service_name)
                     sleep(3)
                     print 'Running migration: %s' % migration
-                    activate_and_run(context.virtual_env, "python %s" % migration)
+                    activate_and_run(context.virtual_env, "python %s/%s" % (context.couch_migrations_folder, migration))
                     print 'Migration: %s complete' % migration
 
 
