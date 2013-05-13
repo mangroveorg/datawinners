@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-11 17:05+0530\n"
+"POT-Creation-Date: 2013-05-13 17:30+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,24 +112,31 @@ msgstr ""
 msgid "Tomorrow"
 msgstr ""
 
-#: media/javascript/data_modified_warning.js:17
-#: media/javascript/warning_dialog.js:16
-msgid "Warning"
+#: media/javascript/action_dropdown.js:7
+msgid "Select 1 Data Sender only"
+msgstr ""
+
+#: media/javascript/data_modified_warning.js:53
+msgid "You Have Unsaved Changes"
+msgstr ""
+
+#: media/javascript/data_modified_warning.js:57
+msgid "en"
 msgstr ""
 
 #: media/javascript/datawinners.js:2 media/javascript/entity_import.js:28
 #: media/javascript/account/users_list.js:35
 #: media/javascript/datasenders/import.js:36
-#: media/javascript/datasenders/index.js:86
-#: media/javascript/datasenders/index.js:195
+#: media/javascript/datasenders/index.js:88
+#: media/javascript/datasenders/index.js:187
 #: media/javascript/entity/create_subject_questionnaire.js:51
 #: media/javascript/entity/create_subject_questionnaire.js:67
-#: media/javascript/entity/questionnaire_helper.js:303
+#: media/javascript/entity/questionnaire_helper.js:304
 #: media/javascript/project/create_project.js:18
 #: media/javascript/project/create_project.js:235
 #: media/javascript/project/data_analysis.js:19
 #: media/javascript/project/register_reporter.js:47
-#: media/javascript/project/sms_tester.js:25
+#: media/javascript/project/sms_tester.js:20
 msgid "Just a moment"
 msgstr ""
 
@@ -143,6 +150,10 @@ msgstr ""
 
 #: media/javascript/entity_import.js:85
 msgid "Import a list of %(entity)s"
+msgstr ""
+
+#: media/javascript/warning_dialog.js:16
+msgid "Warning"
 msgstr ""
 
 #: media/javascript/account/users_list.js:46
@@ -163,41 +174,31 @@ msgstr ""
 msgid "Import a Data Senders list"
 msgstr ""
 
-#: media/javascript/datasenders/index.js:46
+#: media/javascript/datasenders/index.js:48
 msgid "Select Projects"
 msgstr ""
 
-#: media/javascript/datasenders/index.js:55
+#: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
 msgstr "Give Web & Smartphone Access"
 
-#: media/javascript/datasenders/index.js:81
+#: media/javascript/datasenders/index.js:83
 msgid "Please select atleast 1 Project"
 msgstr ""
 
-#: media/javascript/datasenders/index.js:121
-#: media/javascript/project/registered_datasenders.js:27
-msgid "Please select atleast 1 data sender"
-msgstr ""
-
-#: media/javascript/datasenders/index.js:154
-#: media/javascript/project/registered_datasenders.js:69
-msgid "Please select only 1 data sender"
-msgstr ""
-
-#: media/javascript/datasenders/index.js:175
+#: media/javascript/datasenders/index.js:167
 msgid "Emails are mandatory"
 msgstr ""
 
-#: media/javascript/datasenders/index.js:183
+#: media/javascript/datasenders/index.js:175
 msgid ": is not a valid email"
 msgstr ""
 
-#: media/javascript/datasenders/index.js:212
+#: media/javascript/datasenders/index.js:204
 msgid "User with email "
 msgstr ""
 
-#: media/javascript/datasenders/index.js:212
+#: media/javascript/datasenders/index.js:204
 msgid " already exists"
 msgstr ""
 
@@ -228,6 +229,11 @@ msgstr ""
 
 #: media/javascript/dateRangePicker/js/daterangepicker.jQuery.withoutdrilldown.js:11
 msgid "Done"
+msgstr ""
+
+#: media/javascript/entity/all_subjects.js:36
+#, perl-format
+msgid "Select 1 %s only"
 msgstr ""
 
 #: media/javascript/entity/create_questionnaire.js:125
@@ -287,7 +293,7 @@ msgstr ""
 
 #: media/javascript/entity/entity_actions.js:5
 #: media/javascript/entity/entity_actions_all_subjects.js:3
-#: media/javascript/entity/questionnaire_helper.js:245
+#: media/javascript/entity/questionnaire_helper.js:246
 #: media/javascript/project/create_project.js:254
 #: media/javascript/project/create_project.js:264
 #: media/javascript/project/create_project.js:274
@@ -352,23 +358,28 @@ msgstr ""
 msgid "Answer must be 20 characters maximum"
 msgstr ""
 
-#: media/javascript/entity/questionnaire_helper.js:34
-msgid "day.month.year"
+#: media/javascript/entity/questionnaire_helper.js:32
+msgid ""
+"Answer must be country code plus telephone number. Example: 261333745269"
 msgstr ""
 
 #: media/javascript/entity/questionnaire_helper.js:35
-msgid "month.day.year"
+msgid "day.month.year"
 msgstr ""
 
 #: media/javascript/entity/questionnaire_helper.js:36
+msgid "month.day.year"
+msgstr ""
+
+#: media/javascript/entity/questionnaire_helper.js:37
 msgid "month.year"
 msgstr ""
 
-#: media/javascript/entity/questionnaire_helper.js:60
+#: media/javascript/entity/questionnaire_helper.js:61
 msgid "Answer must be a text"
 msgstr ""
 
-#: media/javascript/entity/questionnaire_helper.js:329
+#: media/javascript/entity/questionnaire_helper.js:330
 msgid "default"
 msgstr ""
 
@@ -394,6 +405,10 @@ msgstr ""
 
 #: media/javascript/home/dashboard.js:20
 msgid " errors"
+msgstr ""
+
+#: media/javascript/home/howto.js:41
+msgid "Next:"
 msgstr ""
 
 #: media/javascript/monthly_date_picker/month-picker.js:56
@@ -460,66 +475,66 @@ msgid ""
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:64
-#: media/javascript/project/results.js:161
+#: media/javascript/project/results.js:167
 #: media/javascript/useractivity/log.js:27
 msgid "Processing..."
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:65
-#: media/javascript/project/results.js:162
+#: media/javascript/project/results.js:168
 msgid "Show _MENU_ Submissions"
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:68
-#: media/javascript/project/results.js:165
+#: media/javascript/project/results.js:171
 #: media/javascript/useractivity/log.js:31
 msgid "Loading..."
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:69
-#: media/javascript/project/results.js:166
+#: media/javascript/project/results.js:172
 msgid ""
 "<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</"
 "span> Submissions"
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:70
-#: media/javascript/project/results.js:167
+#: media/javascript/project/results.js:173
 msgid "0 Submissions"
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:71
-#: media/javascript/project/results.js:168
+#: media/javascript/project/results.js:174
 #: media/javascript/useractivity/log.js:34
 msgid "(filtered from _MAX_ total Data records)"
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:73
-#: media/javascript/project/results.js:170
+#: media/javascript/project/results.js:176
 #: media/javascript/useractivity/log.js:36
 msgid "Search:"
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:76
-#: media/javascript/project/results.js:173
+#: media/javascript/project/results.js:179
 #: media/javascript/useractivity/log.js:39
 msgid "First"
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:77
-#: media/javascript/project/results.js:174
+#: media/javascript/project/results.js:180
 #: media/javascript/useractivity/log.js:40
 msgid "Previous"
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:78
-#: media/javascript/project/results.js:175
+#: media/javascript/project/results.js:181
 #: media/javascript/useractivity/log.js:41
 msgid "Next"
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:79
-#: media/javascript/project/results.js:176
+#: media/javascript/project/results.js:182
 #: media/javascript/useractivity/log.js:42
 msgid "Last"
 msgstr ""
@@ -533,7 +548,7 @@ msgid "Submission Date"
 msgstr ""
 
 #: media/javascript/project/data_analysis.js:106
-#: media/javascript/project/results.js:104
+#: media/javascript/project/results.js:110
 #: media/javascript/project/filter/filters.js:67
 msgid "All Periods"
 msgstr ""
@@ -724,12 +739,21 @@ msgstr ""
 msgid "Please fill out at least one location field"
 msgstr ""
 
-#: media/javascript/project/registered_datasenders.js:34
+#: media/javascript/project/registered_datasenders.js:30
 msgid "Data Senders dissociated Successfully"
 msgstr ""
 
-#: media/javascript/project/registered_datasenders.js:34
+#: media/javascript/project/registered_datasenders.js:30
 msgid "Please Wait"
+msgstr ""
+
+#: media/javascript/project/registered_datasenders.js:75
+msgid "Please select only 1 Data Sender"
+msgstr ""
+
+#: media/javascript/project/registered_subjects.js:36
+#, perl-format
+msgid "Please select 1 %s only"
 msgstr ""
 
 #: media/javascript/project/reminders.js:14
@@ -756,8 +780,12 @@ msgstr ""
 msgid "The reminders has been saved"
 msgstr ""
 
-#: media/javascript/project/results.js:292
+#: media/javascript/project/results.js:325
 msgid "Your Submission(s) will be deleted"
+msgstr ""
+
+#: media/javascript/project/results.js:339
+msgid "Please select 1 Submission only"
 msgstr ""
 
 #: media/javascript/project/sms_preview.js:4
@@ -859,27 +887,3 @@ msgstr ""
 
 #~ msgid "Answer must be a word or phrase %d characters maximum"
 #~ msgstr "Answer must be a word %d characters maximum"
-
-msgid "Next:"
-msgstr ""
-
-msgid "Select 1 %s only"
-msgstr ""
-
-msgid "Select 1 Data Sender only"
-msgstr ""
-
-msgid "Not available for trial accounts"
-msgstr ""
-
-msgid "Answer must be country code plus telephone number. Example: 261333745269"
-msgstr ""
-
-msgid "Please select 1 Submission only"
-msgstr ""
-
-msgid "You Have Unsaved Changes"
-msgstr ""
-
-msgid "en"
-msgstr ""

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-11 17:05+0530\n"
+"POT-Creation-Date: 2013-05-13 15:49+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,24 +113,31 @@ msgstr ""
 msgid "Tomorrow"
 msgstr ""
 
-#: media/javascript/data_modified_warning.js:17
-#: media/javascript/warning_dialog.js:16
-msgid "Warning"
-msgstr "Attention"
+#: media/javascript/action_dropdown.js:7
+msgid "Select 1 Data Sender only"
+msgstr "Sélectionnez seulement 1 Expéditeur de Données"
+
+#: media/javascript/data_modified_warning.js:53
+msgid "You Have Unsaved Changes"
+msgstr "Vous avez des modifications non sauvegardées"
+
+#: media/javascript/data_modified_warning.js:57
+msgid "en"
+msgstr "fr"
 
 #: media/javascript/datawinners.js:2 media/javascript/entity_import.js:28
 #: media/javascript/account/users_list.js:35
 #: media/javascript/datasenders/import.js:36
-#: media/javascript/datasenders/index.js:86
-#: media/javascript/datasenders/index.js:195
+#: media/javascript/datasenders/index.js:88
+#: media/javascript/datasenders/index.js:187
 #: media/javascript/entity/create_subject_questionnaire.js:51
 #: media/javascript/entity/create_subject_questionnaire.js:67
-#: media/javascript/entity/questionnaire_helper.js:303
+#: media/javascript/entity/questionnaire_helper.js:304
 #: media/javascript/project/create_project.js:18
 #: media/javascript/project/create_project.js:235
 #: media/javascript/project/data_analysis.js:19
 #: media/javascript/project/register_reporter.js:47
-#: media/javascript/project/sms_tester.js:25
+#: media/javascript/project/sms_tester.js:20
 msgid "Just a moment"
 msgstr "Veuillez patienter"
 
@@ -148,6 +155,10 @@ msgstr ""
 #: media/javascript/entity_import.js:85
 msgid "Import a list of %(entity)s"
 msgstr "Importer une liste de %(entity)s"
+
+#: media/javascript/warning_dialog.js:16
+msgid "Warning"
+msgstr "Attention"
 
 #: media/javascript/account/users_list.js:46
 msgid "Your User(s) will be deleted"
@@ -167,41 +178,31 @@ msgstr "au"
 msgid "Import a Data Senders list"
 msgstr "Importer une liste d'expéditeurs"
 
-#: media/javascript/datasenders/index.js:46
+#: media/javascript/datasenders/index.js:48
 msgid "Select Projects"
 msgstr "Sélectionnez les projets"
 
-#: media/javascript/datasenders/index.js:55
+#: media/javascript/datasenders/index.js:57
 msgid "Give Web Submission Access"
 msgstr "Donnez un accès Web et Smartphone"
 
-#: media/javascript/datasenders/index.js:81
+#: media/javascript/datasenders/index.js:83
 msgid "Please select atleast 1 Project"
 msgstr "Veuillez sélectionner au moins 1 Projet"
 
-#: media/javascript/datasenders/index.js:121
-#: media/javascript/project/registered_datasenders.js:27
-msgid "Please select atleast 1 data sender"
-msgstr "Veuillez sélectionner au moins 1 expéditeur des données"
-
-#: media/javascript/datasenders/index.js:154
-#: media/javascript/project/registered_datasenders.js:69
-msgid "Please select only 1 data sender"
-msgstr "Veuillez choisir un seul expéditeur"
-
-#: media/javascript/datasenders/index.js:175
+#: media/javascript/datasenders/index.js:167
 msgid "Emails are mandatory"
 msgstr "Les emails sont obligatoires"
 
-#: media/javascript/datasenders/index.js:183
+#: media/javascript/datasenders/index.js:175
 msgid ": is not a valid email"
 msgstr ": n'est pas une adresse email valide"
 
-#: media/javascript/datasenders/index.js:212
+#: media/javascript/datasenders/index.js:204
 msgid "User with email "
 msgstr "Utilisateur avec l'email "
 
-#: media/javascript/datasenders/index.js:212
+#: media/javascript/datasenders/index.js:204
 msgid " already exists"
 msgstr " existe déjà"
 
@@ -233,6 +234,11 @@ msgstr "Date fin"
 #: media/javascript/dateRangePicker/js/daterangepicker.jQuery.withoutdrilldown.js:11
 msgid "Done"
 msgstr "Terminé"
+
+#: media/javascript/entity/all_subjects.js:36
+#, perl-format
+msgid "Select 1 %s only"
+msgstr "Sélectionnez seulement 1 %s"
 
 #: media/javascript/entity/create_questionnaire.js:125
 #: media/javascript/project/new_questionnaire_wizard.js:16
@@ -291,7 +297,7 @@ msgstr "Nouveau type de sujet"
 
 #: media/javascript/entity/entity_actions.js:5
 #: media/javascript/entity/entity_actions_all_subjects.js:3
-#: media/javascript/entity/questionnaire_helper.js:245
+#: media/javascript/entity/questionnaire_helper.js:246
 #: media/javascript/project/create_project.js:254
 #: media/javascript/project/create_project.js:264
 #: media/javascript/project/create_project.js:274
@@ -359,23 +365,30 @@ msgstr ""
 msgid "Answer must be 20 characters maximum"
 msgstr "La réponse doit être de 20 caractères au maximum"
 
-#: media/javascript/entity/questionnaire_helper.js:34
+#: media/javascript/entity/questionnaire_helper.js:32
+msgid ""
+"Answer must be country code plus telephone number. Example: 261333745269"
+msgstr ""
+"La réponse doit être un numéro de téléphone précédé du code pays. Exemple : "
+"261333745269"
+
+#: media/javascript/entity/questionnaire_helper.js:35
 msgid "day.month.year"
 msgstr "jour.mois.année"
 
-#: media/javascript/entity/questionnaire_helper.js:35
+#: media/javascript/entity/questionnaire_helper.js:36
 msgid "month.day.year"
 msgstr "mois.jour.année"
 
-#: media/javascript/entity/questionnaire_helper.js:36
+#: media/javascript/entity/questionnaire_helper.js:37
 msgid "month.year"
 msgstr "mois.année"
 
-#: media/javascript/entity/questionnaire_helper.js:60
+#: media/javascript/entity/questionnaire_helper.js:61
 msgid "Answer must be a text"
 msgstr "La réponse doit être un texte"
 
-#: media/javascript/entity/questionnaire_helper.js:329
+#: media/javascript/entity/questionnaire_helper.js:330
 msgid "default"
 msgstr "valeur par défaut"
 
@@ -402,6 +415,10 @@ msgstr " succès | "
 #: media/javascript/home/dashboard.js:20
 msgid " errors"
 msgstr " erreurs"
+
+#: media/javascript/home/howto.js:41
+msgid "Next:"
+msgstr "Suiv:"
 
 #: media/javascript/monthly_date_picker/month-picker.js:56
 msgid "Jan"
@@ -469,24 +486,24 @@ msgstr ""
 "certains de vos filtres."
 
 #: media/javascript/project/data_analysis.js:64
-#: media/javascript/project/results.js:161
+#: media/javascript/project/results.js:167
 #: media/javascript/useractivity/log.js:27
 msgid "Processing..."
 msgstr "Traitement en cours..."
 
 #: media/javascript/project/data_analysis.js:65
-#: media/javascript/project/results.js:162
+#: media/javascript/project/results.js:168
 msgid "Show _MENU_ Submissions"
 msgstr "Afficher _MENU_ Soumissions"
 
 #: media/javascript/project/data_analysis.js:68
-#: media/javascript/project/results.js:165
+#: media/javascript/project/results.js:171
 #: media/javascript/useractivity/log.js:31
 msgid "Loading..."
 msgstr "Chargement..."
 
 #: media/javascript/project/data_analysis.js:69
-#: media/javascript/project/results.js:166
+#: media/javascript/project/results.js:172
 #, fuzzy
 msgid ""
 "<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</"
@@ -494,42 +511,42 @@ msgid ""
 msgstr "<span>_START_ - _END_</span> of _TOTAL_ Soumissions"
 
 #: media/javascript/project/data_analysis.js:70
-#: media/javascript/project/results.js:167
+#: media/javascript/project/results.js:173
 msgid "0 Submissions"
 msgstr "0 Soumissions"
 
 #: media/javascript/project/data_analysis.js:71
-#: media/javascript/project/results.js:168
+#: media/javascript/project/results.js:174
 #: media/javascript/useractivity/log.js:34
 msgid "(filtered from _MAX_ total Data records)"
 msgstr "(filtrée de _MAX_ d'enregistrements)"
 
 #: media/javascript/project/data_analysis.js:73
-#: media/javascript/project/results.js:170
+#: media/javascript/project/results.js:176
 #: media/javascript/useractivity/log.js:36
 msgid "Search:"
 msgstr "Recherche:"
 
 #: media/javascript/project/data_analysis.js:76
-#: media/javascript/project/results.js:173
+#: media/javascript/project/results.js:179
 #: media/javascript/useractivity/log.js:39
 msgid "First"
 msgstr "Premiere"
 
 #: media/javascript/project/data_analysis.js:77
-#: media/javascript/project/results.js:174
+#: media/javascript/project/results.js:180
 #: media/javascript/useractivity/log.js:40
 msgid "Previous"
 msgstr "Préc."
 
 #: media/javascript/project/data_analysis.js:78
-#: media/javascript/project/results.js:175
+#: media/javascript/project/results.js:181
 #: media/javascript/useractivity/log.js:41
 msgid "Next"
 msgstr "Suiv."
 
 #: media/javascript/project/data_analysis.js:79
-#: media/javascript/project/results.js:176
+#: media/javascript/project/results.js:182
 #: media/javascript/useractivity/log.js:42
 msgid "Last"
 msgstr "Dernière"
@@ -543,7 +560,7 @@ msgid "Submission Date"
 msgstr "Date de soumission"
 
 #: media/javascript/project/data_analysis.js:106
-#: media/javascript/project/results.js:104
+#: media/javascript/project/results.js:110
 #: media/javascript/project/filter/filters.js:67
 msgid "All Periods"
 msgstr "Toutes les Périodes"
@@ -741,13 +758,23 @@ msgstr ""
 msgid "Please fill out at least one location field"
 msgstr "Veuillez remplir au moins un champ de localité"
 
-#: media/javascript/project/registered_datasenders.js:34
+#: media/javascript/project/registered_datasenders.js:30
 msgid "Data Senders dissociated Successfully"
 msgstr "Expéditeurs dissociés avec succès"
 
-#: media/javascript/project/registered_datasenders.js:34
+#: media/javascript/project/registered_datasenders.js:30
 msgid "Please Wait"
 msgstr "Veuillez patienter"
+
+#: media/javascript/project/registered_datasenders.js:75
+#, fuzzy
+msgid "Please select only 1 Data Sender"
+msgstr "Veuillez choisir un seul expéditeur"
+
+#: media/javascript/project/registered_subjects.js:36
+#, fuzzy, perl-format
+msgid "Please select 1 %s only"
+msgstr "Veuillez choisir une seule Soumission."
 
 #: media/javascript/project/reminders.js:14
 msgid "Hello. We have not received your data for "
@@ -773,9 +800,13 @@ msgstr "A propos de la date limite d'envoi"
 msgid "The reminders has been saved"
 msgstr "Le message de rappèl a été enregistré"
 
-#: media/javascript/project/results.js:292
+#: media/javascript/project/results.js:325
 msgid "Your Submission(s) will be deleted"
 msgstr "Votre/vos Soumission(s) sera/seront supprimée(s)"
+
+#: media/javascript/project/results.js:339
+msgid "Please select 1 Submission only"
+msgstr "Veuillez choisir une seule Soumission."
 
 #: media/javascript/project/sms_preview.js:4
 msgid "answer"
@@ -878,6 +909,9 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 #: media/javascript/useractivity/log.js:33
 msgid "Showing 0 to 0 of 0 Data records"
 msgstr "Afficher 0 à 0 de 0 Enregistrements"
+
+#~ msgid "Please select atleast 1 data sender"
+#~ msgstr "Veuillez sélectionner au moins 1 expéditeur des données"
 
 #~ msgid "View charts of your multiple choice questions."
 #~ msgstr "Visionnez un schéma de vos questions à choix multiples."
@@ -1047,7 +1081,6 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 #~ "données pour ce choix auparavant, elles seront supprimées.<br><br>Etes-"
 #~ "vous sûr de vouloir continuer?"
 
-
 #~ msgid ""
 #~ "You have deleted an answer choice.<br>If you have previously collected "
 #~ "data for this choice it will be deleted.<br><br>Also, the position of "
@@ -1087,26 +1120,5 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 #~ msgid "Enter local telephone number of 10 digits or less"
 #~ msgstr "Entrez un numéro de téléphone local de 10 chifres ou moins"
 
-msgid "Next:"
-msgstr "Suiv:"
-
-msgid "Select 1 %s only"
-msgstr "Sélectionnez seulement 1 %s"
-
-msgid "Select 1 Data Sender only"
-msgstr "Sélectionnez seulement 1 Expéditeur de Données"
-
-msgid "Not available for trial accounts"
-msgstr "Non disponible pour les comptes essai"
-
-msgid "Answer must be country code plus telephone number. Example: 261333745269"
-msgstr "La réponse doit être un numéro de téléphone précédé du code pays. Exemple : 261333745269"
-
-msgid "Please select 1 Submission only"
-msgstr "Veuillez choisir une seule Soumission."
-
-msgid "You Have Unsaved Changes"
-msgstr "Vous avez des modifications non sauvegardées"
-
-msgid "en"
-msgstr "fr"
+#~ msgid "Not available for trial accounts"
+#~ msgstr "Non disponible pour les comptes essai"

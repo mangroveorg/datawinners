@@ -788,8 +788,8 @@ class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
         user_profile = NGOUserProfile.objects.get(user=self.request.user)
         additional_feed_dictionary = {}
 
-        project = {'id': self.project.id, 'name': self.project.name, 'type': self.project.project_type,
-                   'status': self.project.state, 'subject_type': self.project.entity_type}
+        project = {'id': self.project.id, 'name': self.project.name, 'type': self.project.entity_type,
+                   'status': self.project.state}
         additional_feed_dictionary.update({'project': project})
 
         return WebPlayerV2(self.manager, self.feeds_dbm).add_survey_response(created_request,
