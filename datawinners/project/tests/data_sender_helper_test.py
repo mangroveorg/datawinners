@@ -29,7 +29,7 @@ class TestDataSenderHelper(MangroveTestCase):
         submission = Submission(self.manager, TransportInfo("web", "tester150411@gmail.com", "destination"))
         data_sender = get_data_sender(self.manager,self.org_id, submission)
 
-        self.assertEqual(("Tester Pune", "admin", "tester150411@gmail.com"), data_sender)
+        self.assertEqual(("Tester Pune", "rep12", "tester150411@gmail.com"), data_sender)
 
     def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_web(self):
         submission = Submission(self.manager, TransportInfo("web", "nobody@gmail.com", "destination"))
@@ -100,7 +100,7 @@ class TestDataSenderHelper(MangroveTestCase):
 
         self.assertIn(DataSender([FROM_NUMBER1], "Beany", "rep1"), data_sender_list)
         self.assertIn(DataSender([FROM_NUMBER2], "Qingshan", "rep2"), data_sender_list)
-        self.assertIn(DataSender([EMAIL1], "Tester Pune", "admin"), data_sender_list)
+        self.assertIn(DataSender([EMAIL1], "Tester Pune", "rep12"), data_sender_list)
         self.assertIn(DataSender([TEST_REPORTER_MOBILE_NUMBER], "TEST", "test"), data_sender_list)
         self.assertIn(DataSender(sorted([EMAIL_NOT_EXIST, FROM_NUMBER_NOT_EXIST, EMAIL]), ugettext(NOT_AVAILABLE_DS), None), data_sender_list)
         self.assertIn(DataSender([EMAIL2], "mamy rasamoel", "rep11"), data_sender_list)

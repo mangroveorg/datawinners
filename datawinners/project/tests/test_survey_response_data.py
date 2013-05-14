@@ -85,7 +85,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            values=data)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             raw_field_values = submission_list.get_raw_values()
-            expected = [[self.submission_id, ('Tester Pune', 'admin', 'tester150411@gmail.com'), u'Error',
+            expected = [[self.submission_id, ('Tester Pune', 'rep12', 'tester150411@gmail.com'), u'Error',
                          '-', ('Clinic-One', 'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'],
                          ['B+']]]
             submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(2))
@@ -103,7 +103,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            values=data)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             raw_field_values = submission_list.get_raw_values()
-            expected = [[self.submission_id, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), u'Error',
+            expected = [[self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), u'Error',
                          '-', ('Clinic-One', u'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'],
                          ['B+']]]
             submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(2))
@@ -121,7 +121,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            values=data)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
 
-            expected = [[self.submission_id, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), u'Error',
+            expected = [[self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), u'Error',
                          '-', ('Clinic-One', u'cli14'), '01.01.2012']]
             result = submission_list.get_leading_part()
             submission_date = self.get_submission_date_in_old_format(result[0].pop(2))
@@ -142,7 +142,7 @@ class TestSurveyResponseData(MangroveTestCase):
             submission_list = self._prepare_submission_list_with_one_submission(
                 self.form_model_generator.summary_form_model_without_rp())
 
-            expected = [[self.submission_id, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), u'Error', '-']]
+            expected = [[self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), u'Error', '-']]
             result = submission_list.get_leading_part()
             submission_date = self.get_submission_date_in_old_format(result[0].pop(2))
             self.assertEqual(today, submission_date)
@@ -160,7 +160,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            values=data)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             raw_field_values = submission_list.get_raw_values()
-            expected = [[self.submission_id, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), u'Error', '-',
+            expected = [[self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), u'Error', '-',
                          ('Clinic-One', 'cli14'), '01.01.2012',
                          ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(2))
@@ -180,7 +180,7 @@ class TestSurveyResponseData(MangroveTestCase):
             submission_date = datetime.utcnow().strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
             raw_field_values = submission_list.get_raw_values()
             expected = [
-                [self.submission_id, (u'Tester Pune', 'admin', u'tester150411@gmail.com'), submission_date, 'Error',
+                [self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), submission_date, 'Error',
                  '-',
                  ('Clinic-One', 'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
@@ -251,7 +251,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            values=data)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             data_sender_list = submission_list.get_data_senders()
-            expected = [('Tester Pune', 'admin', 'tester150411@gmail.com')]
+            expected = [('Tester Pune', 'rep12', 'tester150411@gmail.com')]
             self.assertEqual(expected, data_sender_list)
 
     def test_should_get_statistic_result_for_analysis_page(self):
@@ -558,7 +558,7 @@ class TestSurveyResponseData(MangroveTestCase):
             self.assertEqual(excel_values[0][2], u'cid001')
             self.assertEqual(excel_values[0][3], ExcelDate(datetime.strptime('12.11.2013', '%d.%m.%Y'), 'dd.mm.yyyy'))
             self.assertEqual(excel_values[0][5], u'Tester Pune')
-            self.assertEqual(excel_values[0][6], 'admin')
+            self.assertEqual(excel_values[0][6], 'rep12')
             self.assertEqual(excel_values[0][8], 45.0)
             self.assertEqual(excel_values[0][9], 12.74)
             self.assertEqual(excel_values[0][10], 77.45)
