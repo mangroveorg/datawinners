@@ -889,8 +889,14 @@ ol{
     height: 242px !important;
     margin-top: 1px;
   }
-  div:nth-child(8) span{
-    height: 34px;
+  div:nth-child(8) {
+      span{
+          height: 34px;
+          margin-bottom: 2px;
+      }
+      div.img_container{
+          margin-bottom: 8px !important;
+      }
   }
 }
 
