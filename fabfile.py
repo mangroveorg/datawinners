@@ -327,16 +327,18 @@ def migrate_couchdb(context):
             activate_and_run(context.virtual_env, "python %s" % context.couch_migration_file)
 
     if context.couch_migrations_folder:
-        with cd('%s/datawinners' %context.code_dir):
+        with cd('%s/datawinners/%s' % (context.code_dir, context.couch_migrations_folder)):
             migration_files = run('ls').split()
-            for migration in migration_files:
-                if not (migration.__contains__('.log') or migration.__eq__('__init__.py')):
-                    run("sudo /etc/init.d/%s stop" % env.couch_db_service_name)
-                    run("sudo /etc/init.d/%s start" % env.couch_db_service_name)
-                    sleep(3)
-                    print 'Running migration: %s' % migration
-                    activate_and_run(context.virtual_env, "python %s/%s" % (context.couch_migrations_folder, migration))
-                    print 'Migration: %s complete' % migration
+            with cd('%s/datawinners' % context.code_dir):
+                for migration in migration_files:
+                    if not (migration.__contains__('.log') or migration.__eq__('__init__.py')):
+                        run("sudo /etc/init.d/%s stop" % env.couch_db_service_name)
+                        run("sudo /etc/init.d/%s start" % env.couch_db_service_name)
+                        sleep(3)
+                        print 'Running migration: %s' % migration
+                        activate_and_run(context.virtual_env,
+                            "python %s/%s" % (context.couch_migrations_folder, migration))
+                        print 'Migration: %s complete' % migration
 
 
 def link_repo(context, link_name):

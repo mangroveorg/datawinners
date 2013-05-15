@@ -15,8 +15,8 @@ from datawinners import  settings
 SERVER = 'http://localhost:5984'
 credentials = settings.COUCHDBMAIN_CREDENTIALS
 
-log_file = open('/var/log/datawinners/migration/migration_release_7_1.log', 'a')
-init_migrations('/var/log/datawinners/migration/dbs_migrated_release_7_1.csv')
+log_file = open('/var/log/datawinners/migration_release_7_1.log', 'a')
+init_migrations('/var/log/datawinners/dbs_migrated_release_7_1.csv')
 
 db_names = all_db_names(SERVER)
 

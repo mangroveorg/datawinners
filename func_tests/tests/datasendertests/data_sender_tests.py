@@ -27,16 +27,18 @@ class DataSenderTest(BaseTest):
     def test_send_in_data_to_a_project(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
+        self.driver.wait_for_element(5, web_submission_page.get_title())
         self.assertEquals(web_submission_page.get_title(), PAGE_TITLE)
         self.assertEquals(web_submission_page.get_section_title(), SECTION_TITLE)
         self.assertEquals(web_submission_page.get_project_name(), fetch_(PROJECT_NAME, from_(DEFAULT_ORG_DATA)))
         self.submission_data(web_submission_page)
-        self.assertEqual(web_submission_page.get_errors(),[])
+        self.assertEqual(web_submission_page.get_errors(), [])
 
     @attr("functional_test")
     def test_go_back_to_project_list_from_data_submission_page(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
+        self.driver.wait_for_page_with_title(5, web_submission_page.get_title())
         web_submission_page.go_back_to_project_list()
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
@@ -45,6 +47,7 @@ class DataSenderTest(BaseTest):
     def test_cancel_data_submission(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
+        self.driver.wait_for_page_with_title(5, web_submission_page.get_title())
         web_submission_page.fill_questionnaire_with(VALID_ANSWERS)
         warning_dialog = web_submission_page.cancel_submission()
         warning_dialog.cancel()
@@ -79,6 +82,7 @@ class DataSenderTest(BaseTest):
     def test_navigation_via_navigate_bar(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
+        self.driver.wait_for_page_with_title(5, web_submission_page.get_title())
         web_submission_page.navigate_to_project_list()
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
@@ -103,6 +107,7 @@ class DataSenderTest(BaseTest):
     def test_go_back_to_project_list_directly_when_user_cancel_submission_without_fill_out_form(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
+        self.driver.wait_for_element(4, web_submission_page.CANCEL)
         web_submission_page.cancel_submission()
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())

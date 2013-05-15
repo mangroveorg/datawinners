@@ -10,8 +10,8 @@ from mangrove.datastore.database import get_db_manager
 from mangrove.transport.contract.survey_response import SurveyResponse
 
 SERVER = 'http://localhost:5984'
-log_file = open('/var/log/datawinners/migration/migration_release_7_2.log', 'a')
-init_migrations('/var/log/datawinners/migration/dbs_migrated_release_7_2.csv')
+log_file = open('/var/log/datawinners/migration_release_7_2.log', 'a')
+init_migrations('/var/log/datawinners/dbs_migrated_release_7_2.csv')
 
 map_invalid_survey_responses = """
 function(doc){

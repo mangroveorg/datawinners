@@ -16,6 +16,7 @@ class TestWebSubmission(BaseTest):
 
     def submit_web_submission(self, credentials):
         web_submission_page = self.navigate_to_web_submission(credentials)
+        self.driver.wait_for_page_with_title(5,web_submission_page.get_title())
         web_submission_page.fill_questionnaire_with(VALID_ANSWERS)
         web_submission_page.submit_answers()
         return web_submission_page
@@ -46,6 +47,7 @@ class TestWebSubmission(BaseTest):
     @attr('functional_test')
     def test_should_check_each_questions_has_instruction(self):
         web_submission_page = self.navigate_to_web_submission(VALID_CREDENTIALS)
+        self.driver.wait_for_page_with_title(5, web_submission_page.get_title())
         questions, instructions = web_submission_page.get_questions_and_instructions()
         self.assertEqual(questions[2], u"What is age \xf6f father?")
         self.assertEqual(instructions[2], "Answer must be a number between 18-100.")
