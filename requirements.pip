@@ -8,7 +8,7 @@ simplejson
 jsonpickle
 ipython
 mock
-selenium==2.16
+selenium==2.32
 iso8601
 pytz
 django-registration==0.8
