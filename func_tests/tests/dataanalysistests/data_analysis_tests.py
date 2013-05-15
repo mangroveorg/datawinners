@@ -25,12 +25,12 @@ class TestDataAnalysis(BaseTest):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    def setUp(self):pass
+    def setUp(self): pass
 
-    def tearDown(self):pass
+    def tearDown(self): pass
 
     @classmethod
-    def go_to_analysis_page(cls, project_name = fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
+    def go_to_analysis_page(cls, project_name=fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
         all_data_page = cls.global_navigation.navigate_to_all_data_page()
         return all_data_page.navigate_to_data_analysis_page(project_name)
 
@@ -49,7 +49,6 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_should_return_data_records_in_table(self):
-
         analysis_page = self.go_to_analysis_page()
         analysis_page.select_page_size()
         records = analysis_page.get_all_data_records()
@@ -90,7 +89,8 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page.click_go_button()
         report_period = data_analysis_page.get_all_data_records_by_column(1)
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
-        self.assert_in_date_range(current_month_period, report_period, range_format=MONTHLY_REPORTING_PERIOD_FORMAT ,date_format=MONTHLY_REPORTING_PERIOD_FORMAT)
+        self.assert_in_date_range(current_month_period, report_period, range_format=MONTHLY_REPORTING_PERIOD_FORMAT,
+            date_format=MONTHLY_REPORTING_PERIOD_FORMAT)
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_daily_reporting_period(self):
@@ -127,7 +127,7 @@ class TestDataAnalysis(BaseTest):
         period = data_analysis_page.get_submission_date().split(' - ')
         #This is specifically put in here as on the 1st of a month when we choose 'Current Month' we dont get date as
         # date1-date2 it comes as just date1
-        if len(period) == 1 :
+        if len(period) == 1:
             period.append(copy.deepcopy(period[0]))
         self.assert_in_date_range(period, submission_date, date_format=SUBMISSION_DATE_FORMAT)
 
@@ -142,7 +142,8 @@ class TestDataAnalysis(BaseTest):
         self.assertEqual(1, len(subject_sets))
         self.assertEqual(subject[0] + subject[1], subject_names[0])
 
-    def verify_filter_by_data_sender(self, data_sender, project_name = fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
+    def verify_filter_by_data_sender(self, data_sender,
+                                     project_name=fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
         data_analysis_page = self.go_to_analysis_page(project_name)
         data_analysis_page.select_for_data_sender(data_sender[-1])
         data_analysis_page.click_go_button()
@@ -154,7 +155,7 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_admin(self):
-        self.verify_filter_by_data_sender(('Tester Pune', 'admin', 'tester150411@gmail.com'))
+        self.verify_filter_by_data_sender(('Tester Pune', 'rep12', 'tester150411@gmail.com'))
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_sms_or_web_data_sender(self):
@@ -162,7 +163,8 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_test_data_sender(self):
-        self.verify_filter_by_data_sender(('TEST', 'n/a', 'TEST'), 'Clinic Test Project With Monthly Reporting Period'.lower())
+        self.verify_filter_by_data_sender(('TEST', 'n/a', 'TEST'),
+            'Clinic Test Project With Monthly Reporting Period'.lower())
 
     @attr('functional_test')
     def test_should_close_daterange_dropdown_when_opening_subject_dropdown(self):
@@ -228,7 +230,7 @@ class TestDataAnalysis(BaseTest):
         analysis_page = self.go_to_analysis_page()
         analysis_page.open_subject_type_drop_down()
         analysis_page.clear_dropdown()
-        
+
         self.assertTrue(analysis_page.dropdown_checklist_is_opened())
 
     @attr('functional_test')
