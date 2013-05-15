@@ -14,7 +14,7 @@ DW.action_dropdown = function (kwargs) {
 
     this.options = $.extend(true, defaults, kwargs);
     this._init();
-}
+};
 
 DW.action_dropdown.prototype = {
     _init: function(){
@@ -56,19 +56,19 @@ DW.action_dropdown.prototype = {
             });
 
             this.deactivate_action();
-        }
+        };
 
         this.init_action_dropdown = function(){
             $(this.trigger, this.container).dropdown("detach");
             $(this.trigger, this.container).dropdown("attach", [this.data_locator]);
             this.action_enabled = true;
-        }
+        };
 
         this.deactivate_action = function(){
             $(this.trigger, this.container).dropdown("detach");
             $(this.trigger, this.container).dropdown("attach", [this.none_selected_locator]);
             this.action_enabled = false;
-        }
+        };
 
         this.update_edit_action = function(){
             var link = $(this.edit_link_locator, this.container);
@@ -80,8 +80,8 @@ DW.action_dropdown.prototype = {
                 link.parent().removeClass("disabled");
                 link.removeAttr("title");
             }
-        }
+        };
 
         this.init_dropdown();
     }
-}
+};
