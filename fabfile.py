@@ -3,9 +3,9 @@ import getpass
 
 from fabric.api import run, env
 from fabric.context_managers import cd, settings
+from fabric.operations import sudo
 import os
 from datetime import  datetime
-from time import sleep
 
 DATAWINNERS = 'datawinners'
 MANGROVE = 'mangrove'
@@ -321,6 +321,10 @@ def replace_setting_file_for_environment(environment):
     run("cp %s local_settings.py" % ENVIRONMENT_CONFIGURATIONS[environment])
 
 
+def restart_couchdb():
+    sudo("/etc/init.d/%s restart" % env.couch_db_service_name , pty=False)
+
+
 def migrate_couchdb(context):
     if context.couch_migration_file:
         with cd('%s/datawinners' % context.code_dir):
@@ -332,9 +336,7 @@ def migrate_couchdb(context):
             with cd('%s/datawinners' % context.code_dir):
                 for migration in migration_files:
                     if not (migration.__contains__('.log') or migration.__eq__('__init__.py')):
-                        run("sudo /etc/init.d/%s stop" % env.couch_db_service_name)
-                        run("sudo /etc/init.d/%s start" % env.couch_db_service_name)
-                        sleep(3)
+                        restart_couchdb()
                         print 'Running migration: %s' % migration
                         activate_and_run(context.virtual_env,
                             "python %s/%s" % (context.couch_migrations_folder, migration))
