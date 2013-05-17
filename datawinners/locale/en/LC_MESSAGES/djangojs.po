@@ -887,3 +887,12 @@ msgstr ""
 
 #~ msgid "Answer must be a word or phrase %d characters maximum"
 #~ msgstr "Answer must be a word %d characters maximum"
+
+msgid "Not available for trial accounts"
+msgstr ""
+
+msgid "recipient(s)"
+msgstr ""
+
+msgid "Send Message?"
+msgstr ""

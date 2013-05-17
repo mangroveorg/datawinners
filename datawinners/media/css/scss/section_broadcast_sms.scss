@@ -4,14 +4,31 @@
 }
 
 #broadcast_sms_form{
-    ul li{
-        width: 535px;
+    > ul > li{
+        width: 569px;
         #sms_content{
             margin: 0;
             padding: 0;
         }
         &#message-submit{
             text-align: right;
+        }
+        &:first-child{
+            width: 760px;
+            margin-bottom: 0px;
+        }
+        &:nth-child(3){
+            margin-bottom: 26px;
+        }
+        textarea{
+            width: 425px;
+        }
+        > label{
+            width: 130px;
+        }
+        .small_grey{
+            font-style: italic;
+            font-weight: normal;
         }
     }
 }
@@ -27,10 +44,11 @@
 
 
 #additional_people_column{
+  width: 920px !important;
   .highlightTextarea{
-    width: 720px !important;
+    width: 780px !important;
     div.error_arrow {
-      left: 352px;
+      left: 428px;
       top: 4px;
       position: absolute;
     }
@@ -43,8 +61,38 @@
   }
   .black_italic{
     font-style: italic;
-    margin-left: 170px;
-    width: 350px;
+    margin-left: 140px;
+    width: 429px;
     color: #8A8A8A;
   }
+}
+
+#input_to{
+    display: inline-block;
+    background: url('/media/images/arrow.png') no-repeat scroll 402px 4px transparent;
+    > span{
+        display: inline-block;
+        border: 2px inset rgb(204, 204, 204);
+        /*width: 351px;*/
+        width: 425px;
+        > span{
+            display: inline-block;
+            padding: 5px 0px 0px 5px;
+        }
+    }
+}
+
+#to_list ul{
+    width: 427px;
+    border-radius: 0 0 6px 6px;
+    max-width: 500px;
+    li {
+        width: 427px;
+        a:hover{
+            text-decoration: none !important;
+            span{
+                color: #FFFFFF!important;
+            }
+        }
+    }
 }

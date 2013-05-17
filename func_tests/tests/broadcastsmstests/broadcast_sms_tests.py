@@ -4,7 +4,7 @@ from nose.plugins.attrib import attr
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.broadcastsmstests.broadcast_sms_data import SMS_VALID_DATA, SMS_EXACT_ON_LIMIT_DATA, \
-    ERROR_MESSAGE_MAX_LENGTH_11, ERROR_MESSAGE_MAX_LENGTH_10
+    ERROR_MESSAGE_MAX_LENGTH_11, ERROR_MESSAGE_MAX_LENGTH_10, MORE_THAN_100_NUMBER
 from tests.editprojecttests.edit_project_data import PROJECT_NAME, ACTIVATED_PROJECT_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS, NIGERIA_ACCOUNT_CREDENTIAL
 
@@ -62,3 +62,13 @@ class TestBroadcastSMS(BaseTest):
         send_message_page.click_send()
         error_message = send_message_page.get_other_people_number_error()
         self.assertEqual(error_message, expected_error_message)
+
+    @attr('functional_test')
+    def test_should_show_warning_when_people_number_is_more_than_100(self):
+        send_message_page = self._navigate_to_send_message_page()
+        send_message_page.write_sms_content(SMS_VALID_DATA)
+        send_message_page.choose_type_other_people(other_numbers=MORE_THAN_100_NUMBER)
+        self.assertFalse(send_message_page.is_warning_shown())
+        send_message_page.click_send()
+        self.assertTrue(send_message_page.is_warning_shown())
+

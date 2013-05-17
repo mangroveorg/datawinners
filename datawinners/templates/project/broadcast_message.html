@@ -20,6 +20,8 @@
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_broadcast_sms.css" rel="stylesheet"/>
     <link href="/media/css/scss/jquery.highlighttextarea.css" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
@@ -34,6 +36,8 @@
         });
         DW.ong_country = "{{ ong_country }}";
     </script>
+    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript" src="/media/javascript/project/broadcast_message.js"></script>
 {% endblock %}
 
@@ -66,6 +70,19 @@
                     <li class="{{ form.to.css_classes }} form-row-10px">
                         {{ form.to.label_tag }}
                         {{ form.to }}
+                        <span id="input_to" class="btn-group">
+                            <span class="dropdown-toggle action" data-dropdown="#to_list">
+                                <span>&nbsp;</span>
+                                <span class="small_grey"> gris</span>
+                            </span>
+                        </span>
+                        <div id="to_list" class="dropdown" >
+                            <ul class="dropdown-menu">
+                                <li><a id="Associated" href="javascript:void(0);">{% trans "My Data Senders linked to this project" %} <span class="small_grey"></span></a></li>
+                                <li><a id="All" href="javascript:void(0);">{% trans "All Data Senders of all projects" %}  <span class="small_grey"></span></a></li>
+                                <li><a id="Additional" href="javascript:void(0);">{% trans "Other People" %}</a></li>
+                            </ul>
+                        </div>
                         {{ form.to.errors }}
                     </li>
 
@@ -80,17 +97,19 @@
                         
                             <a id="clear_broadcast_sms_form" class="cancel_link"> {% trans "Clear" %} </a>
                             <input id="id_send_broadcast_sms_button" type="submit" value="{% trans "Send" %}" class="button" style="float: none;"/>
-
-                        <!--
-                        <div class="float_left margin_left_20 margin_top_10">
-
-                        </div>
-                        <div>
-
-                        </div>-->
                     </li>
                 </ul>
             </form>
+        </div>
+    </div>
+    <div id="more_people_warning">
+        <p class="warning_message">
+            {% trans "Do you want to send this message to <span id=\"number_of_peoples\"></span> recipient(s)?"  %}
+            <br/><br/>
+        </p>
+        <div class="text_align_right">
+            <a class="no_button cancel_link">{% trans "Don't Send" %}</a>
+            <a id="ok_button" class="button yes_button">{% trans "Send" %}</a>
         </div>
     </div>
 {% endblock %}

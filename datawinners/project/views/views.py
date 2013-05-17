@@ -345,10 +345,12 @@ def _get_data_senders(dbm, form, project):
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
+    number_associated_ds = len(project.data_senders)
+    number_of_ds = len(import_module.load_all_subjects_of_type(dbm, type=REPORTER)[0]) -1
     questionnaire = FormModel.get(dbm, project.qid)
     organization = utils.get_organization(request)
     if request.method == 'GET':
-        form = BroadcastMessageForm()
+        form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': project,
                                          "project_links": make_project_links(project, questionnaire.form_code),
@@ -356,7 +358,7 @@ def broadcast_message(request, project_id):
                                          "success": None},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
-        form = BroadcastMessageForm(request.POST)
+        form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
         if form.is_valid():
             data_senders = _get_data_senders(dbm, form, project)
             organization_setting = OrganizationSetting.objects.get(organization=organization)
@@ -367,7 +369,7 @@ def broadcast_message(request, project_id):
                                                 organization_setting.get_organisation_sms_number()[0], other_numbers,
                                                 message_tracker,
                                                 country_code=organization.get_phone_country_code())
-            form = BroadcastMessageForm()
+            form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
             return render_to_response('project/broadcast_message.html',
                                       {'project': project,
                                        "project_links": make_project_links(project, questionnaire.form_code),
@@ -943,7 +945,8 @@ def get_organization_telephone_number(request):
     organisation_sms_numbers = organization_settings.get_organisation_sms_number()
     if organization_settings.organization.in_trial_mode:
         return organisation_sms_numbers
-    return organisation_sms_numbers[0] if organisation_sms_numbers[0][0] == "+" else "+%s" % organisation_sms_numbers[0]
+    return organisation_sms_numbers[0] if not organisation_sms_numbers[0] or organisation_sms_numbers[0][0] \
+        == "+" else "+%s" % organisation_sms_numbers[0]
 
 
 def _get_subject_form_model(manager, entity_type):

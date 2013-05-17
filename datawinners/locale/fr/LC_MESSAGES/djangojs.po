@@ -1120,5 +1120,11 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 #~ msgid "Enter local telephone number of 10 digits or less"
 #~ msgstr "Entrez un numéro de téléphone local de 10 chifres ou moins"
 
-#~ msgid "Not available for trial accounts"
-#~ msgstr "Non disponible pour les comptes essai"
+msgid "Not available for trial accounts"
+msgstr "Non disponible pour les comptes essai"
+
+msgid "recipient(s)"
+msgstr "destinataire(s)"
+
+msgid "Send Message?"
+msgstr "Envoyer un message ?"

@@ -23,7 +23,7 @@ class OrganizationFinder(object):
     def find_organization_setting(self, number):
         organization_settings = self._find_organization_settings(number)
         for os in organization_settings:
-            if number in [num.strip() for num in os.sms_tel_number.split(',')]:
+            if number in [re.sub("(\-)|(\+)", "", num.strip()) for num in os.sms_tel_number.split(',')]:
                 return os
         return None
 

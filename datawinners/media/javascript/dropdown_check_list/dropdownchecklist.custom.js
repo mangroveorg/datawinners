@@ -240,7 +240,7 @@
             sourceSelect.attr('data', data);
         },
         // Creates a drop item that coresponds to an option element in the source select
-        _createDropItem: function(index, tabIndex, value, code, data, text, optCss, checked, disabled, indent) {
+        _createDropItem: function(index, tabIndex, value, code, data, number, text, optCss, checked, disabled, indent) {
             var self = this, options = this.options, sourceSelect = this.sourceSelect, controlWrapper = this.controlWrapper;
             var data = data || "";
             // the item contains a div that contains a checkbox input and a lable for the text
@@ -266,13 +266,18 @@
             item.append(checkBox);
 
             // the text
-            var label = $("<label for=" + code + "/>");
+            var label_for = (typeof(code) != "undefined") ? code : id;
+            var label = $("<label for=" + label_for + "/>");
             var $hit = $("<span></span>");
             label.addClass("ui-dropdownchecklist-text");
             if ( optCss != null ) label.attr('style',optCss);
             label.css({ cursor: "default" ,height:'auto'});
             label.html(text);
-            $hit.addClass('small_grey').html(code);
+            if (typeof(number) != 'undefined') {
+                $hit.addClass('small_grey').html(number + " "+ ngettext(gettext("people"), gettext("peoples"), parseInt(number)));
+            } else {
+                $hit.addClass('small_grey').html(code);
+            }
             if (indent) {
                 item.addClass("ui-dropdownchecklist-indent");
             }
@@ -508,10 +513,11 @@
                 var selected = option.attr("selected");
                 var code = option.attr('code');
                 var data = option.attr('data');
+                var number = option.attr('number');
                 var disabled = (forceDisabled || option.attr("disabled"));
                 // Use the same tab index as the selector replacement
                 var tabIndex = self.controlSelector.attr("tabindex");
-                var item = self._createDropItem(index, tabIndex, value, code, data, text, optCss, selected, disabled, indent);
+                var item = self._createDropItem(index, tabIndex, value, code, data, number,text, optCss, selected, disabled, indent);
                 container.append(item);
             }
         },

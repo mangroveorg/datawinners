@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import calendar
+import calendar, re
 from django.forms import DecimalField
 
 from django.forms.fields import CharField, ChoiceField, BooleanField
@@ -9,17 +9,37 @@ from django.forms.widgets import RadioFieldRenderer, RadioInput
 from django import forms
 from datawinners.utils import convert_to_ordinal
 from mangrove.form_model.form_model import REPORTER
+from django.utils.encoding import force_unicode
+from django.utils.html import escape, conditional_escape
+
+class MySelect(forms.Select):
+    def render_option(self, selected_choices, option_value, option_label):
+        option_value = force_unicode(option_value)
+        selected_html = (option_value in selected_choices) and u' selected="selected"' or ''
+        options_labels = re.match(r'(.*?)(\d+$)', unicode(option_label))
+        number_html = ''
+        if options_labels is not None:
+            option_label, number = options_labels.groups()
+            number_html = ' number="%s"' % number
+        return u'<option value="%s"%s%s>%s</option>' % (
+            escape(option_value), selected_html, number_html,
+            conditional_escape(force_unicode(option_label)))
+
 
 class BroadcastMessageForm(forms.Form):
 
     text = CharField(label=ugettext_lazy("Text:"), required=True, max_length=160, widget=forms.Textarea)
-    to = ChoiceField(label=ugettext_lazy("To:"),choices=(("All", ugettext_lazy("All Data Senders")),
+    to = ChoiceField(label=ugettext_lazy("To:"),widget=MySelect(), choices=(("All", ugettext_lazy("All Data Senders")),
                                                          ("Associated", ugettext_lazy("Data Senders associated to my project")),
-                                                         ("Additional", ugettext_lazy("Other People"))),initial=("All"))
-    others = CharField(label=ugettext_lazy("Other People:"), max_length=160, widget=forms.Textarea, required=False)
+                                                         ("Additional", ugettext_lazy("Other People"))),initial=("Asossciated"))
+    others = CharField(label=ugettext_lazy("Other People:"), widget=forms.Textarea, required=False)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, associated_ds=0, number_of_ds=0, *args, **kwargs):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)
+        self.fields["to"].widget.choices = (("Associated", u"%s %s" % (ugettext_lazy("My Data Senders linked to this project"), str(associated_ds))),
+                                                        ("All", u"%s %s" % (ugettext_lazy("All Data Senders of all projects"), str(number_of_ds))),
+                                                        ("Additional", ugettext_lazy("Other People")))
+        self.fields["to"].widget.attrs["class"] = "none"
         self.fields['text'].widget.attrs['watermark'] = ugettext_lazy('Enter your SMS text')
         self.fields['text'].widget.attrs['id'] = 'sms_content'
 

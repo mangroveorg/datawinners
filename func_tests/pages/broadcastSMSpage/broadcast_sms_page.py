@@ -1,5 +1,4 @@
-from pages.broadcastSMSpage.broadcast_sms_locator import SMS_CONTENT_TB, SEND_BROADCAST_SMS_BTN, SEND_TO_SELECT, \
-    SEND_TO_TB, OTHER_PEOPLE_HELP_TEXT, OTHER_PEOPLE_ERROR_TEXT_BY_CSS
+from pages.broadcastSMSpage.broadcast_sms_locator import *
 from pages.page import Page
 
 class BroadcastSmsPage(Page):
@@ -16,7 +15,8 @@ class BroadcastSmsPage(Page):
         return self.driver.find_text_box(SMS_CONTENT_TB).get_attribute("value")
 
     def choose_type_other_people(self, other_numbers=None):
-        self.driver.find_drop_down(SEND_TO_SELECT).set_selected("Additional")
+        self.driver.find(SEND_TO_DDCL).click()
+        self.driver.find(OTHER_PEOPLE_OPTION_DDCL).click()
         if other_numbers is not None:
             self.driver.find_text_box(SEND_TO_TB).enter_text(other_numbers)
 
@@ -25,3 +25,6 @@ class BroadcastSmsPage(Page):
 
     def get_other_people_number_error(self):
         return self.driver.find(OTHER_PEOPLE_ERROR_TEXT_BY_CSS).text
+
+    def is_warning_shown(self):
+        return self.driver.find(by_id("more_people_warning")).is_displayed()

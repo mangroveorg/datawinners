@@ -15,6 +15,8 @@ DW.broadcast_sms.prototype={
         this.createAdditionalTelephoneValidationRule();
         this.additional_column.hide();
         this.setMessageCount();
+        this.updateToFieldText();
+        this.updateToMenuItem();
     },
 
     createAdditionalTelephoneValidationRule:function(){
@@ -31,6 +33,17 @@ DW.broadcast_sms.prototype={
             errorPlacement: function(error, element) {
                 error.insertAfter(element);
                 error.addClass('error_arrow');  // add a class to the wrapper
+            },
+            submitHandler: function(form){
+                var people_number = DW.broadcast_sms_handler.getPeopleNumber();
+                if (people_number >= 100) {
+                    DW.broadcast_warning.form = form;
+                    $("#number_of_peoples").html(people_number);
+                    DW.broadcast_warning.show_warning();
+                } else {
+                    form.submit();
+                }
+
             }
         });
 
@@ -43,6 +56,7 @@ DW.broadcast_sms.prototype={
         else {
             this.additional_column.processUnSelected();
         }
+        this.updateToFieldText();
     },
 
     isAdditionalSelected:function(){
@@ -70,6 +84,24 @@ DW.broadcast_sms.prototype={
             $(this.smsContentElement).val(this.getSMSContent().substring(0, this.maxSMSChar));
         }
         this.setMessageCount();
+    },
+    getPeopleNumber:function() {
+        if (this.isAdditionalSelected())
+            return $("#id_others").val().split(',').length;
+        return parseInt($(this.idToElement + ' :selected').attr('number'));
+    },
+    updateToFieldText:function() {
+        $("#input_to > span > span:first-child").html($('#id_to option:selected').html());
+        $("#input_to > span > span:last-child").html(this.getPeopleNumber() + " " + gettext("recipient(s)"));
+        if (this.isAdditionalSelected()) {
+            $("#input_to > span > span:last-child").hide();
+        } else {
+            $("#input_to > span > span:last-child").show();
+        }
+    },
+    updateToMenuItem: function() {
+        $("#All span").html($("#id_to option[value=All]").attr('number') + " " + gettext("recipient(s)"));
+        $("#Associated span").html($("#id_to option[value=Associated]").attr('number') + " " + gettext("recipient(s)"));
     }
 };
 
@@ -101,7 +133,6 @@ DW.additional_column.prototype={
             }
             return true;
         }, interpolate(gettext("Enter local telephone number of %(limit)s digits or less"), {limit: DW.digits_number_limit}, true));
-
     },
 
     addRule:function(){
@@ -143,22 +174,34 @@ DW.getDigitsNumberLimit = function(){
 
 $(document).ready(function() {
     DW.digits_number_limit = DW.getDigitsNumberLimit();
-    var broadcast_sms=new DW.broadcast_sms();
-    broadcast_sms.init();
+    DW.broadcast_sms_handler=new DW.broadcast_sms();
+    DW.broadcast_sms_handler.init();
 
-    $(broadcast_sms.smsContentElement).keyup(function() {
-        broadcast_sms.limitCount();
+    $(DW.broadcast_sms_handler.smsContentElement).keyup(function() {
+        DW.broadcast_sms_handler.limitCount();
     });
 
-    $(broadcast_sms.smsContentElement).keydown(function() {
-        broadcast_sms.limitCount();
-    });
-
-    $('#id_to').change(function() {
-        broadcast_sms.processAddtionalColumnValidation();
+    $(DW.broadcast_sms_handler.smsContentElement).keydown(function() {
+        DW.broadcast_sms_handler.limitCount();
     });
 
     $('#clear_broadcast_sms_form').click(function() {
-        broadcast_sms.clearContent();
+        DW.broadcast_sms_handler.clearContent();
     });
+
+    $("#to_list ul li a").bind("click", function(){
+        $("#id_to").val($(this).attr("id"));
+        DW.broadcast_sms_handler.processAddtionalColumnValidation();
+    });
+
+    var kwargs = {container: "#more_people_warning",
+        title: gettext('Send Message?'),
+        width: 350,
+        height: 120,
+        continue_handler: function(){
+            this.form.submit();
+        }
+    }
+    DW.broadcast_warning = new DW.warning_dialog(kwargs);
+
 });
