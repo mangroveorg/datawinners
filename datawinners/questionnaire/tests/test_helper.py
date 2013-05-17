@@ -3,7 +3,7 @@ from unittest import TestCase
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import HierarchyField, TextField, DateField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, GEO_CODE, GEO_CODE1
+from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, GEO_CODE
 from mock import Mock
 from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_fields_question_code, get_report_period_question_name_and_datetime_format
 
@@ -35,6 +35,7 @@ class TestHelper(unittest.TestCase):
         self.assertEqual([GEO_CODE], get_geo_code_fields_question_code(form_model))
 
     def test_should_give_fields_codes_for_multiple_geocode_questionnaire(self):
+        GEO_CODE1 = "gc"
         form_model = self._get_form_model()
         form_model.add_field(GeoCodeField(None, GEO_CODE, "label", ddtype=Mock(spec=DataDictType)))
         form_model.add_field(GeoCodeField(None, GEO_CODE1, "label1", ddtype=Mock(spec=DataDictType)))
