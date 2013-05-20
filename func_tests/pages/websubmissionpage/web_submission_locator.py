@@ -14,4 +14,4 @@ BACK_TO_PROJECT_LINK = by_css(".back-to-list")
 
 WEB_NAVIGATION = by_css(".device-navigation .web")
 
-CANCEL = by_css("#cancel")
+CANCEL = by_id("cancel")

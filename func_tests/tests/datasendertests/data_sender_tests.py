@@ -9,7 +9,6 @@ from tests.addsubjecttests.add_subject_data import VALID_DATA, SUCCESS_MSG
 from tests.datasendertests.data_sender_data import PAGE_TITLE, SECTION_TITLE, SUBJECT_TYPE
 from tests.logintests.login_data import DATA_SENDER_CREDENTIALS
 from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA, PROJECT_NAME, VALID_ANSWERS
-import time
 
 class DataSenderTest(BaseTest):
 
@@ -28,7 +27,6 @@ class DataSenderTest(BaseTest):
     def test_send_in_data_to_a_project(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
-        time.sleep(5)
         self.assertEquals(web_submission_page.get_title(), PAGE_TITLE)
         self.assertEquals(web_submission_page.get_section_title(), SECTION_TITLE)
         self.assertEquals(web_submission_page.get_project_name(), fetch_(PROJECT_NAME, from_(DEFAULT_ORG_DATA)))
@@ -108,7 +106,6 @@ class DataSenderTest(BaseTest):
     def test_go_back_to_project_list_directly_when_user_cancel_submission_without_fill_out_form(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
-        time.sleep(4)
         web_submission_page.cancel_submission()
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())

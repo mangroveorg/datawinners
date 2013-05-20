@@ -35,7 +35,7 @@ class TestCreateProject(BaseTest):
         create_project_page.save_and_create_project_successfully()
         self.driver.wait_for_page_with_title(15, fetch_(PAGE_TITLE, from_(VALID_DATA)))
         self.assertEqual(self.driver.get_title(),
-                                 fetch_(PAGE_TITLE, from_(VALID_DATA)))
+            fetch_(PAGE_TITLE, from_(VALID_DATA)))
 
     @attr('functional_test')
     def test_sms_preview_of_questionnaire_when_create_project(self):
@@ -47,9 +47,10 @@ class TestCreateProject(BaseTest):
         sms_questionnaire_preview_page = preview_navigation_page.sms_questionnaire_preview()
 
         self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
-        self.assertRegexpMatches(sms_questionnaire_preview_page.get_project_name(), "^%s" % fetch_(PROJECT_NAME, from_(VALID_DATA)))
+        self.assertRegexpMatches(sms_questionnaire_preview_page.get_project_name(),
+            "^%s" % fetch_(PROJECT_NAME, from_(VALID_DATA)))
         self.assertIsNotNone(sms_questionnaire_preview_page.get_sms_instruction())
-        
+
         sms_questionnaire_preview_page.close_preview()
         self.assertFalse(sms_questionnaire_preview_page.sms_questionnaire_exist())
 
@@ -61,7 +62,7 @@ class TestCreateProject(BaseTest):
 
         preview_navigation_page = PreviewNavigationPage(self.driver)
         web_questionnaire_preview_page = preview_navigation_page.web_questionnaire_preview()
-        
+
         self.assertIsNotNone(web_questionnaire_preview_page.web_questionnaire())
         self.assertIsNotNone(web_questionnaire_preview_page.get_web_instruction())
 
