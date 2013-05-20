@@ -105,13 +105,13 @@ def submit(request):
 @is_not_expired
 def create_data_sender(request):
     create_data_sender = True
-    entity_links = {'back_link': reverse(all_datasenders)}
+    entity_links = {'registered_datasenders_link': reverse(all_datasenders)}
 
     if request.method == 'GET':
         form = ReporterRegistrationForm()
         return render_to_response('entity/create_or_edit_data_sender.html', {'form': form,
                                                                              'create_data_sender': create_data_sender,
-                                                                             'entity_links': entity_links},
+                                                                             'project_links': entity_links},
             context_instance=RequestContext(request))
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
@@ -139,7 +139,7 @@ def create_data_sender(request):
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
-                {'form': form, 'message': message, 'success': success,'entity_links': entity_links},
+                {'form': form, 'message': message, 'success': success,'project_inks': entity_links},
             context_instance=RequestContext(request))
 
 
