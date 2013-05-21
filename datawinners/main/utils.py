@@ -46,12 +46,14 @@ def create_views(dbm):
 def sync_views(dbm):
     """Updates or Creates a standard set of views in the database"""
     global view_js
-    database_manager = dbm
+    sync_views_functions(dbm, view_js)
+
+def sync_views_functions(dbm, view_js):
     for v in view_js.keys():
         funcs = view_js[v]
         map = (funcs['map'] if 'map' in funcs else None)
         reduce = (funcs['reduce'] if 'reduce' in funcs else None)
-        database_manager.create_view(v, map, reduce)
+        dbm.create_view(v, map, reduce)
 
 
 def exists_view(aggregation, database_manager):
@@ -61,9 +63,9 @@ def exists_view(aggregation, database_manager):
     return False
 
 
-def find_views():
+def find_views(db_view_dir):
     views = {}
-    for fn in iglob(os.path.join(settings.PROJECT_DIR, 'main', 'couchview', '*.js')):
+    for fn in iglob(os.path.join(settings.PROJECT_DIR, 'main', db_view_dir, '*.js')):
         try:
             func, name = string.split(os.path.splitext(os.path.basename(fn))[0], '_', 1)
             with open(fn) as f:
@@ -94,4 +96,4 @@ def timebox(view_func):
     return _wrapped_view
 
 
-view_js = find_views()
+view_js = find_views('couchview')
