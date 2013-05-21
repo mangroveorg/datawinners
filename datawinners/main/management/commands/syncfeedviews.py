@@ -19,7 +19,7 @@ def sync_views(dbm):
     view_js = find_views('feedview')
     sync_views_functions(dbm, view_js)
 
-    
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         managers = load_all_managers()
