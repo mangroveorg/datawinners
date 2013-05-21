@@ -3,6 +3,7 @@ import xml
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
+from datawinners.feeds.database import get_feeds_database
 from mangrove.transport.contract.request import Request
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
@@ -75,7 +76,7 @@ def submission(request):
         return response
 
     manager = get_database_manager(request_user)
-    player = XFormPlayerV2(manager)
+    player = XFormPlayerV2(manager, get_feeds_database(request_user))
     try:
         mangrove_request = Request(message=submission_file,
             transportInfo=

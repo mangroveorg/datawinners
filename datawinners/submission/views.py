@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.translation import ugettext
@@ -17,6 +18,7 @@ from datawinners.submission.request_processor import    MangroveWebSMSRequestPro
 from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
 from datawinners.utils import  get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
+from datawinners.feeds.database import get_feeds_database, get_feeds_db_for_org
 from mangrove.transport.contract.request import Request
 from datawinners.messageprovider.exception_handler import handle
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -60,6 +62,7 @@ def find_dbm(request):
         return incoming_request
 
     incoming_request['dbm'] = get_database_manager_for_org(organization)
+    incoming_request['feeds_dbm'] = get_feeds_db_for_org(organization)
     incoming_request['organization'] = organization
 
     incoming_request['next_state'] = process_sms_counter
@@ -112,8 +115,8 @@ def submit_to_player(incoming_request):
         dbm = incoming_request['dbm']
         post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request),
                                       PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request)]
-        sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy),
-            post_sms_parser_processors=post_sms_parser_processors)
+        sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy),
+            post_sms_parser_processors=post_sms_parser_processors, feeds_dbm=incoming_request['feeds_dbm'])
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
