@@ -1,5 +1,6 @@
 from datetime import datetime
 import urllib2
+from django.conf import settings
 from django.http import HttpResponse
 from django_digest.decorators import httpdigest
 from datawinners.dataextraction.helper import  convert_to_json_response
@@ -9,6 +10,8 @@ DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
 
 @httpdigest
 def feed_entries(request, form_code):
+    if not settings.FEEDS_ENABLED:
+        return HttpResponse(404)
     if _invalid_form_code(form_code):
         return HttpResponse(content='Invalid form code provided', status=400)
     if invalid_date(request.GET.get('start_date')):
