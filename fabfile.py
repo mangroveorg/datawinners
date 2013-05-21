@@ -24,7 +24,7 @@ ENVIRONMENT_CONFIGURATIONS = {
 }
 
 ENVIRONMENT_VES = {
-    "showcase": "/home/mangrover/virtual_env",
+    "showcase": "/home/mangrover/virtual_env/datawinner",
     "production": "/home/mangrover/ve",
     "ec2": "/home/mangrover/.virtualenvs/datawinners",
     "qa": "/home/twer/virtual_env/datawinner",
