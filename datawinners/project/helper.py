@@ -12,7 +12,6 @@ from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCod
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
 from mangrove.utils.types import  is_sequence, sequence_to_str
-from datawinners.enhancer import field_enhancer
 import models
 from datetime import datetime
 from models import Reminder
@@ -24,8 +23,6 @@ from mangrove.transport.contract.request import Request
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION = "%b. %d, %Y, %I:%M %p"
 
 DEFAULT_DATE_FORMAT = 'dd.MM.yyyy'
-
-field_enhancer.enhance()
 
 NOT_AVAILABLE = "N/A"
 NOT_AVAILABLE_DS = "Deleted Data Sender"

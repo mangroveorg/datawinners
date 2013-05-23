@@ -2,7 +2,6 @@ from collections import OrderedDict, defaultdict
 from datetime import datetime
 import abc
 from django.utils.translation import ugettext
-from datawinners.enhancer import field_enhancer
 from datawinners.main.utils import timebox
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.project.data_sender_helper import  combine_channels_for_tuple, get_data_sender
@@ -12,8 +11,6 @@ from datawinners.project.submission_utils.submission_filter import SurveyRespons
 from mangrove.form_model.field import SelectField, ExcelDate
 from mangrove.utils.types import is_sequence
 from datawinners.project.survey_response_router import SurveyResponseRouter
-
-field_enhancer.enhance()
 
 def _override_value_if_not_present(value):
     return value if value or value == 0 else "--"
@@ -57,11 +54,13 @@ class SurveyResponseData(object):
         return data_sender, rp, subject, submission_date
 
     def get_survey_response_details_for_excel(self, filtered_survey_response):
-        data_sender, reporting_date, subject, submission_date = self._get_survey_response_details(filtered_survey_response)
+        data_sender, reporting_date, subject, submission_date = self._get_survey_response_details(
+            filtered_survey_response)
         if reporting_date is not None:
             reporting_date = self.form_model.get_field_by_code_and_rev(self.form_model.event_time_question.code,
                 filtered_survey_response.form_model_revision).formatted_field_values_for_excel(reporting_date)
-        submission_date = ExcelDate(datetime.strptime(submission_date,SUBMISSION_DATE_FORMAT_FOR_SUBMISSION), 'submission_date')
+        submission_date = ExcelDate(datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION),
+            'submission_date')
         return data_sender, reporting_date, subject, submission_date
 
     def _get_data_sender(self, survey_response):
