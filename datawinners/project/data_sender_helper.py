@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext
-from accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.messageprovider.messages import SMS
 from datawinners.project.data_sender import DataSender
 from datawinners.project.helper import NOT_AVAILABLE_DS

@@ -16,4 +16,3 @@ class TestDataExtraction(TestCase):
         response = self.client.get('/api/registereddata/clinic/')
         self.assertEquals(response.status_code, 401)
 
-

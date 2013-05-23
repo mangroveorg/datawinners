@@ -2,7 +2,7 @@ from django.http import HttpResponse
 
 
 import datawinners.utils as utils
-from project.survey_response_router import SurveyResponseRouter
+from datawinners.project.survey_response_router import SurveyResponseRouter
 
 def _create_excel_response(raw_data_list, file_name):
     response = HttpResponse(mimetype="application/vnd.ms-excel")

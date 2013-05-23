@@ -12,14 +12,13 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language
-from accountmanagement.views import session_not_expired
 from datawinners import utils
 from datawinners.project.view_models import ReporterEntity
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
-from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired
+from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired, session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_data_sender_form,\
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project,\

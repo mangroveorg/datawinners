@@ -1,7 +1,7 @@
 from django.forms.forms import Form
 from datawinners.entity.helper import get_country_appended_location
 from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_fields_question_code
-from project.questionnaire_fields import SubjectCodeField, SubjectField, FormField, FormCodeField
+from datawinners.project.questionnaire_fields import SubjectCodeField, SubjectField, FormField, FormCodeField
 from datawinners.questionnaire.helper import make_clean_geocode_method
 
 class SubmissionForm(Form):

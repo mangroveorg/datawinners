@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext
 from mangrove.form_model.field import DateField, GeoCodeField
-from project.Header import Header
+from datawinners.project.Header import Header
 
 class ExcelFileAnalysisHeader(Header):
     def _prefix(self):

@@ -3,10 +3,12 @@ import urllib2
 from django.http import HttpRequest
 from mock import Mock, patch
 
-patch('django_digest.decorators.httpdigest', lambda x: x).start()
+http_digest_patch = patch('django_digest.decorators.httpdigest', lambda x: x)
+http_digest_patch.start()
 from datawinners.feeds.views import feed_entries
 
 class TestFeedView(TestCase):
+
     def test_error_when_form_code_is_not_present(self):
         request = Mock(spec=HttpRequest)
         response = feed_entries(request, None)
@@ -68,3 +70,4 @@ class TestFeedView(TestCase):
         self.assertEqual('Invalid End Date provided', response.content)
 
 
+http_digest_patch.stop()

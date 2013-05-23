@@ -12,7 +12,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
-from alldata.helper import get_visibility_settings_for
+from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.views import session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
@@ -23,23 +23,23 @@ from mangrove.utils.json_codecs import encode_json
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
 from datawinners.accountmanagement.views import is_not_expired
-from project import helper
-from project.ExcelHeader import  ExcelFileSubmissionHeader
-from project.data_sender_helper import get_data_sender
-from project.export_to_excel import _prepare_export_data, _create_excel_response
-from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
-from project.models import Project
-from project.survey_response_list import SurveyResponseList
-from project.submission_list_for_excel import SurveyResponseForExcel
-from project.utils import    project_info
-from project.Header import SubmissionsPageHeader
-from project.analysis_result import AnalysisResult
+from datawinners.project import helper
+from datawinners.project.ExcelHeader import  ExcelFileSubmissionHeader
+from datawinners.project.data_sender_helper import get_data_sender
+from datawinners.project.export_to_excel import _prepare_export_data, _create_excel_response
+from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
+from datawinners.project.models import Project
+from datawinners.project.survey_response_list import SurveyResponseList
+from datawinners.project.submission_list_for_excel import SurveyResponseForExcel
+from datawinners.project.utils import    project_info
+from datawinners.project.Header import SubmissionsPageHeader
+from datawinners.project.analysis_result import AnalysisResult
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.project.views.views import XLS_TUPLE_FORMAT
 from datawinners.common.constant import   DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from datawinners.project.views.utils import get_form_context
-from project.submission_form import SubmissionForm
+from datawinners.project.submission_form import SubmissionForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.transport.contract.survey_response import SurveyResponse
 from django.core.urlresolvers import reverse

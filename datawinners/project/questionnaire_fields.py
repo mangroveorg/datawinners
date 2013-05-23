@@ -1,8 +1,8 @@
 from django.forms import HiddenInput, ChoiceField, FloatField, TextInput
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext
-from entity.fields import PhoneNumberField, DjangoDateField
-from entity.import_data import load_all_subjects_of_type, get_entity_type_fields
+from datawinners.entity.fields import PhoneNumberField, DjangoDateField
+from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REPORTER
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField, DateField
 from django import forms

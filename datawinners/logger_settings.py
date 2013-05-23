@@ -97,6 +97,11 @@ LOGGING = {
             'handlers': ['performance-log-file'],
             'propagate': True,
         },
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['log-file'],
+            'propagate': True,
+        },
         'django.request': {
             'handlers': ['mail_admins', 'log-file'],
             'level': 'ERROR',

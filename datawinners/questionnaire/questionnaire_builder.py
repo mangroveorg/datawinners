@@ -7,7 +7,6 @@ from mangrove.form_model.validation import NumericRangeConstraint, TextLengthCon
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_not_empty, is_empty
 from datawinners.entity.helper import question_code_generator
-from project.filters import exists
 
 class QuestionnaireBuilder( object ):
     def __init__(self, form_model, dbm, question_builder=None):

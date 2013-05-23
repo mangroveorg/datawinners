@@ -10,13 +10,13 @@ from mangrove.utils.json_codecs import encode_json
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager, timebox
 from datawinners.accountmanagement.views import is_not_expired
-from project import header_helper, helper
-from project.ExcelHeader import ExcelFileAnalysisHeader
-from project.analysis import Analysis
-from project.analysis_for_excel import AnalysisForExcel
-from project.export_to_excel import _prepare_export_data, _create_excel_response
-from project.utils import    project_info
-from project.views.views import XLS_TUPLE_FORMAT
+from datawinners.project import header_helper, helper
+from datawinners.project.ExcelHeader import ExcelFileAnalysisHeader
+from datawinners.project.analysis import Analysis
+from datawinners.project.analysis_for_excel import AnalysisForExcel
+from datawinners.project.export_to_excel import _prepare_export_data, _create_excel_response
+from datawinners.project.utils import    project_info
+from datawinners.project.views.views import XLS_TUPLE_FORMAT
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 
 performance_logger = logging.getLogger("performance")

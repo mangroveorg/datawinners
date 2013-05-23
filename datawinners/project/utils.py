@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.utils import translation
 from datawinners.utils import get_organization
 
-from project.models import ProjectState, Project
+from datawinners.project.models import ProjectState, Project
 
 def make_subject_links(project_id):
     subject_links = {'subjects_link': reverse('subjects', args=[project_id]),

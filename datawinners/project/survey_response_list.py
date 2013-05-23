@@ -1,7 +1,7 @@
 from datawinners.project.Header import SubmissionsPageHeader
-from main.utils import timebox
-from project.helper import case_insensitive_lookup
-from survey_response_data import SurveyResponseData
+from datawinners.main.utils import timebox
+from datawinners.project.helper import case_insensitive_lookup
+from datawinners.project.survey_response_data import SurveyResponseData
 from mangrove.form_model.field import SelectField
 
 class SurveyResponseList(SurveyResponseData):
