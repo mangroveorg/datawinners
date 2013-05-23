@@ -214,6 +214,9 @@ DW.isRegistrationQuestionnaire = function () {
 };
 
 DW.next_question_name_generator = function () {
+    if (!DW.isRegistrationQuestionnaire()) {
+        return 'Question ' + ($('div.question_list ol li').length +1 );
+    }
     var questionPattern = /^Question \d+$/;
     var max = 1;
     var questionName = "";
