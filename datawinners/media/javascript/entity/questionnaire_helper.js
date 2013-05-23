@@ -214,7 +214,18 @@ DW.isRegistrationQuestionnaire = function () {
 };
 
 DW.next_question_name_generator = function () {
-    return 'Question ' + ($('div.question_list ol li').length + 1);
+    var questionPattern = /^Question \d+$/;
+    var max = 1;
+    var questionName = "";
+    var current = 1;
+    for (var i = 0; i < questionnaireViewModel.questions().length; i++) {
+        questionName = questionnaireViewModel.questions()[i].name();
+        current = parseInt(questionName.substring(9));
+        if (questionPattern.test(questionName) && max <  current){
+            max = current;
+        }
+    }
+    return 'Question ' + (Math.max(max, $('div.question_list ol li').length) + 1);
 };
 
 DW.next_option_value = function (lastChoice) {

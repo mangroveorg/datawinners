@@ -92,12 +92,12 @@ var questionnaireViewModel =
         questionnaireViewModel.checkForQuestionnaireChange(choice)
         var choices = questionnaireViewModel.selectedQuestion().choices();
         var indexOfChoice = $.inArray(choice, choices);
-        var lastChoiceValue = choice['val'];//.charCodeAt(0);
+        var lastChoiceValue = choice['val'];
         var i = indexOfChoice + 1;
         for(i; i < choices.length; i=i+1){
             choices[i]['val'] = lastChoiceValue;
             $("span.bullet", $("#options_list li").eq(i)).html(lastChoiceValue + ".");
-            lastChoiceValue = DW.next_option_value(lastChoiceValue);//lastChoiceValue + 1;
+            lastChoiceValue = DW.next_option_value(lastChoiceValue);
         }
         questionnaireViewModel.selectedQuestion().choices.remove(choice);
         questionnaireViewModel.selectedQuestion().choices.valueHasMutated();
