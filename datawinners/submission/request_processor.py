@@ -1,6 +1,7 @@
 import json
 import logging
 from django.conf import settings
+from datawinners.feeds.database import get_feeds_db_for_org
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER, OrganizationSetting
 from datawinners.messageprovider.messages import SMS
@@ -11,6 +12,7 @@ logger = logging.getLogger("django")
 class WebSMSDBMRequestProcessor(object):
     def process(self, http_request, mangrove_request):
         mangrove_request['dbm']=get_database_manager_for_org(mangrove_request['organization'])
+        mangrove_request['feeds_dbm'] = get_feeds_db_for_org(mangrove_request['organization'])
 
 
 class WebSMSTransportInfoRequestProcessor(object):
