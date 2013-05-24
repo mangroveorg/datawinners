@@ -164,6 +164,12 @@ $(document).ready(function () {
                     nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';
                 }
             },
+            "fnDrawCallback": function(oSettings){
+                submissions_action_dropdown.update_edit_action();
+            },
+            "fnPreDrawCallback": function( oSettings ) {
+                submissions_action_dropdown.uncheck_all();
+            },
             "oLanguage":{
                 "sProcessing":gettext("Processing..."),
                 "sLengthMenu":gettext("Show _MENU_ Submissions"),

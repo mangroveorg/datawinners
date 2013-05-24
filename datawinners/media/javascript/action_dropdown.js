@@ -40,7 +40,7 @@ DW.action_dropdown.prototype = {
                 this.is_on_trial = true;
             }
 
-            $(this.checkbox_locator, this.container).bind("click", {self:this}, function(event){
+            $(this.container).on('click', this.checkbox_locator, {self:this}, function(event){
                 var self = event.data.self;
                 var checked = $(this).attr("checked") == "checked";
                 if (checked && !self.action_enabled) {
@@ -54,7 +54,7 @@ DW.action_dropdown.prototype = {
                     self.update_edit_action();
                 }
             });
-
+            
             this.deactivate_action();
         };
 
@@ -72,6 +72,11 @@ DW.action_dropdown.prototype = {
 
         this.update_edit_action = function(){
             var link = $(this.edit_link_locator, this.container);
+            if ($(this.check_single_checked_locator, this.container).length == 0) {
+                this.deactivate_action();
+                return true;
+            }
+            
             if ($(this.check_single_checked_locator, this.container).length > 1){
                 link.parent().addClass("disabled");
                 link.attr("disabled", "disabled");
@@ -81,6 +86,10 @@ DW.action_dropdown.prototype = {
                 link.removeAttr("title");
             }
         };
+
+        this.uncheck_all = function(){
+            $(this.checkbox_locator).removeAttr('checked');
+        }
 
         this.init_dropdown();
     }
