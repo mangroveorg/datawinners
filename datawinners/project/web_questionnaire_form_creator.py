@@ -184,7 +184,7 @@ class WebQuestionnaireFormCreator(object):
 
             return ChoiceField(choices=self._create_choices(field), required=field.is_required(),
                 label=field.label,
-                initial=field.value, help_text=field.instruction)
+                initial=field.value, help_text=_("Choose 1 answer from the list."))
         else:
             field_values = []
             if field.value is not None:
@@ -195,7 +195,7 @@ class WebQuestionnaireFormCreator(object):
 
         return forms.MultipleChoiceField(label=field.label, widget=forms.CheckboxSelectMultiple,
             choices=self._create_choices(field),
-            initial=field_values, required=field.is_required(), help_text=field.instruction)
+            initial=field_values, required=field.is_required(), help_text=_("Choose 1 or more answers from the list."))
 
     def _create_choices(self, field):
         choice_list = [('', '--None--')] if field.single_select_flag else []

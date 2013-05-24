@@ -4198,3 +4198,6 @@ msgstr "Ne pas envoyer"
 
 msgid "Send a Message"
 msgstr "Envoyer un message"
+
+msgid "Choose 1 answer from the list."
+msgstr "Choisissez une réponse de la liste."

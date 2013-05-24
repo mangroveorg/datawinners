@@ -4119,3 +4119,6 @@ msgstr ""
 
 msgid "Don't Send"
 msgstr ""
+
+msgid "Choose 1 answer from the list."
+msgstr ""
