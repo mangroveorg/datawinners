@@ -66,7 +66,7 @@ DW.questionnaire_code.prototype={
     },
 
     appendError:function(errorText){
-        $(this.questionnaireErrorCode).html("<label class='error_message'> " + gettext(errorText) + ".</label>");
+        $(this.questionnaireErrorCode).html("<label class='error'> " + gettext(errorText) + ".</label>");
     },
 
     processValidation:function(){

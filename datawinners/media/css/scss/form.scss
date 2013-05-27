@@ -54,12 +54,6 @@ form{
               width:auto;
             }
         }
-         #questionnaire-code-error{
-            background: url(/media/images/arrow_error.png) no-repeat left 7px;
-            label{
-                margin-left:11px;
-            }
-         }
         ul
         {
             float:left;
@@ -104,12 +98,12 @@ div.error_arrow
             background: url(/media/images/arrow_error.png) no-repeat left 3px;
             display: inline;
 }
-span.error_arrow,#questionnaire-code-error, label.error_arrow{
+span.error_arrow, label.error_arrow{
             background: url(/media/images/arrow_error.png) no-repeat left 3px;
             display: inline;
             float: left!important;
 }
-span .error_arrow,div.error_arrow,#questionnaire-code-error, label.error_arrow{
+span .error_arrow,div.error_arrow, label.error_arrow{
             label{
                 float:none;
                 color:#FFFFFF;
