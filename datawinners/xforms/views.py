@@ -87,7 +87,7 @@ def submission(request):
             ))
 
         response = player.add_survey_response(mangrove_request, logger=sp_submission_logger)
-        mail_feed_errors(response)
+        mail_feed_errors(response, manager.database_name)
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
             return HttpResponseBadRequest()

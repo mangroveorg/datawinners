@@ -121,7 +121,7 @@ def submit_to_player(incoming_request):
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
-        mail_feed_errors(response)
+        mail_feed_errors(response, dbm.database_name)
         message = SMSResponse(response).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
