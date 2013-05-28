@@ -19,6 +19,7 @@ from datawinners.submission.submission_utils import PostSMSProcessorLanguageActi
 from datawinners.utils import  get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.feeds.database import get_feeds_database, get_feeds_db_for_org
+from feeds.mail_client import mail_feed_errors
 from mangrove.transport.contract.request import Request
 from datawinners.messageprovider.exception_handler import handle
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -120,6 +121,7 @@ def submit_to_player(incoming_request):
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
+        mail_feed_errors(response)
         message = SMSResponse(response).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:

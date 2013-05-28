@@ -17,6 +17,7 @@ from datawinners.accountmanagement.views import session_not_expired
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.view_models import ReporterEntity
 from datawinners.feeds.database import get_feeds_database
+from feeds.mail_client import mail_feed_errors
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
 from django.utils.translation import ugettext_lazy as _, get_language, activate
@@ -794,10 +795,10 @@ class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
                    'status': self.project.state}
         additional_feed_dictionary.update({'project': project})
 
-        return WebPlayerV2(self.manager, self.feeds_dbm).add_survey_response(created_request,
-                                                                             user_profile.reporter_id,
-                                                                             additional_feed_dictionary,
-                                                                             websubmission_logger)
+        response = WebPlayerV2(self.manager, self.feeds_dbm).add_survey_response(created_request,
+            user_profile.reporter_id, additional_feed_dictionary, websubmission_logger)
+        mail_feed_errors(response)
+        return response
 
     def success_message(self, response_short_code):
         return _("Successfully submitted")
