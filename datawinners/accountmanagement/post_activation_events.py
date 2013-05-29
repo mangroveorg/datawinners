@@ -2,6 +2,8 @@
 import datetime
 from django.conf import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
+from feeds.database import feeds_db_for
+from main.utils import sync_feed_views
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import create_entity
@@ -9,9 +11,22 @@ from mangrove.datastore.datadict import   get_or_create_data_dict
 from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.datastore.queries import get_entity_count_for_type
 
-def create_org_database(sender, user, request, **kwargs):
+def create_feed_database(db_name):
+    feed_manager = feeds_db_for('feed_'+db_name)
+    assert feed_manager, "Could not create feed database manager for %s " % (db_name,)
+    sync_feed_views(feed_manager)
+
+
+def create_org_database(db_name):
     from datawinners.initializer import run
 
+    manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=db_name)
+    assert manager, "Could not create database manager for %s " % (db_name,)
+    run(manager)
+    return manager
+
+
+def create_org_and_feed_database(sender, user, request, **kwargs):
     profile = user.get_profile()
     org = Organization.objects.get(org_id=profile.org_id)
     active_organization(org)
@@ -19,9 +34,8 @@ def create_org_database(sender, user, request, **kwargs):
     org_settings = OrganizationSetting.objects.get(organization=org)
     db_name = org_settings.document_store
     #    Explicitly create the new database. Should fail it db already exists.
-    manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=db_name)
-    assert manager, "Could not create database manager for %s " % (db_name,)
-    run(manager)
+    manager = create_org_database(db_name)
+    create_feed_database(db_name)
 
     profile.reporter_id = make_user_as_a_datasender(manager, org, user.get_full_name(), profile.mobile_phone)
     profile.save()
