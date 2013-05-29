@@ -772,9 +772,8 @@ msgid "Please select only 1 Data Sender"
 msgstr "Veuillez choisir un seul expéditeur"
 
 #: media/javascript/project/registered_subjects.js:36
-#, fuzzy, perl-format
 msgid "Please select 1 %s only"
-msgstr "Veuillez choisir une seule Soumission."
+msgstr "Sélectionnez seulement 1 %s"
 
 #: media/javascript/project/reminders.js:14
 msgid "Hello. We have not received your data for "

@@ -93,12 +93,8 @@ $(document).ready(function () {
     });
 
     $("#associated_data_senders tbody input").bind("click", function(){
-        var checked = $(this).attr("checked") == "checked";
-        if (!checked){
-            $("#checkall-datasenders").attr("checked", false);
-        } else if ($("#associated_data_senders tbody input:checkbox").length == $("#associated_data_senders tbody input:checkbox[checked]").length) {
-            $("#checkall-datasenders").attr("checked", true);
-        }
+        var checked = $("#associated_data_senders tbody input:checkbox").length == $("#associated_data_senders tbody input:checkbox[checked]").length;
+        $("#checkall-datasenders").attr("checked", checked);
     });
 
     if ($("#associated_data_senders tbody input:checkbox").length == 0) {

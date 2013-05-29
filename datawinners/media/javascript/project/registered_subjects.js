@@ -65,7 +65,7 @@ $(document).ready(function () {
 // Can remove action_element
 function getEntityIdsToBeDeleted(action_element) {
     var allIds = [];
-    $('input:checked').each(function () {
+    $('tbody input:checked').each(function () {
         allIds.push($(this).val());
     });
     return allIds;
