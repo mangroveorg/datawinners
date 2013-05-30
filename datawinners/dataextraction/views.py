@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django_digest.decorators import httpdigest
 from dataextraction.helper import  encapsulate_data_for_subject, encapsulate_data_for_form, convert_to_json_file_download_response, generate_filename
-from main.utils import get_database_manager
+from datawinners.main.utils import get_database_manager
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 
 @httpdigest

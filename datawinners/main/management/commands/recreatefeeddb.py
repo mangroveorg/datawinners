@@ -1,8 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.core.management.base import BaseCommand
 from datawinners.main.initial_couch_fixtures import  load_all_feed_managers, load_test_feed_managers
-from feeds.database import feeds_db_for
-from main.utils import sync_feed_views
+from datawinners.feeds.database import feeds_db_for
+from datawinners.main.utils import sync_feed_views
 from mangrove.datastore.database import _delete_db_and_remove_db_manager
 
 

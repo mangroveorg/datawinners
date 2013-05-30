@@ -3,7 +3,7 @@ import datetime
 from django.conf import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from datawinners.feeds.database import feeds_db_for
-from main.utils import sync_feed_views
+from datawinners.main.utils import sync_feed_views
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import create_entity

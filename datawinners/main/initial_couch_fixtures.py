@@ -8,7 +8,7 @@ from datawinners.location.LocationTree import get_location_hierarchy, get_locati
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
-from feeds.database import get_feeds_database
+from datawinners.feeds.database import get_feeds_database
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
