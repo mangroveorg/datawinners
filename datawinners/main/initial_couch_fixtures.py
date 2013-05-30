@@ -8,6 +8,7 @@ from datawinners.location.LocationTree import get_location_hierarchy, get_locati
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
+from feeds.database import get_feeds_database
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
@@ -1651,6 +1652,20 @@ def load_all_managers():
         managers.append(manager)
     return managers
 
+
+def load_all_feed_managers():
+    managers = []
+    for org in OrganizationSetting.objects.all():
+        db = 'feed_' + org.document_store
+        manager = get_db_manager(server=settings.FEEDS_COUCH_SERVER, database=db,
+            credentials=settings.COUCHDBFEED_CREDENTIALS)
+        managers.append(manager)
+    return managers
+
+
+def load_test_feed_managers():
+    test_emails = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'gerard@mailinator.com']
+    return [get_feeds_database(User.objects.get(username=email)) for email in test_emails]
 
 def create_project_for_nigeria_test_orgnization():
     manager = get_database_manager(User.objects.get(username="gerard@mailinator.com"))

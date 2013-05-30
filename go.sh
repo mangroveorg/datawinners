@@ -48,7 +48,8 @@ function prepare_env {
 
 function restore_couchdb_and_postgres {
   	restore_postgresql_database && \
-	recreate_couch_db
+	recreate_couch_db && \
+	recreate_feed_db
 }
 
 function unit_test {
@@ -59,6 +60,10 @@ function unit_test {
 
 function recreate_couch_db {
 	(cd "$DWROOT_DIR/datawinners" && python manage.py recreatedb)
+}
+
+function recreate_feed_db {
+	(cd "$DWROOT_DIR/datawinners" && python manage.py recreatefeeddb)
 }
 
 function function_test {
