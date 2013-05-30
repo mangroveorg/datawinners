@@ -35,8 +35,8 @@ def create_org_and_feed_database(sender, user, request, **kwargs):
     db_name = org_settings.document_store
     #    Explicitly create the new database. Should fail it db already exists.
     manager = create_org_database(db_name)
-    create_feed_database(db_name)
-
+    if settings.FEEDS_ENABLED :
+        create_feed_database(db_name)
     profile.reporter_id = make_user_as_a_datasender(manager, org, user.get_full_name(), profile.mobile_phone)
     profile.save()
 
