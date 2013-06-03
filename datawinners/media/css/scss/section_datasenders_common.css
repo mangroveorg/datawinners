@@ -44,7 +44,13 @@ li.instruction_text {
   margin-top: -15px;
   width: 350px; }
 
-#registration_form fieldset > ul > li:last-child {
-  text-align: right;
-  margin-right: 377px;
-  width: 534px; }
+#registration_form fieldset > ul {
+  width: 918px; }
+  #registration_form fieldset > ul > li:last-child {
+    text-align: right;
+    margin-right: 377px;
+    width: 534px; }
+  #registration_form fieldset > ul li .find_gps_en {
+    padding-left: 101px; }
+  #registration_form fieldset > ul li .find_gps_fr {
+    padding-left: 54px; }
