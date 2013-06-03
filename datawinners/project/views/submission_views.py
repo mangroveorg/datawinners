@@ -10,6 +10,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
+from accountmanagement.models import NGOUserProfile
+from feeds.database import get_feeds_database
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -193,7 +195,14 @@ def edit(request, project_id, survey_response_id, tab=0):
         form_ui_model.update({'success_message': success_message})
         if len(survey_response_form.changed_data) or is_errored_before_edit:
             created_request = helper.create_request(survey_response_form, request.user.username)
-            response = WebPlayerV2(manager).edit_survey_response(created_request, survey_response, websubmission_logger)
+
+            additional_feed_dictionary = {}
+            project_details = {'id': project.id, 'name': project.name, 'type': project.entity_type,
+                       'status': project.state}
+            additional_feed_dictionary.update({'project': project_details})
+            feeds_dbm = get_feeds_database(request.user)
+            user_profile = NGOUserProfile.objects.get(user=request.user)
+            response = WebPlayerV2(manager,feeds_dbm).edit_survey_response(created_request, survey_response,user_profile.reporter_id, additional_feed_dictionary,websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
                 _update_static_info_block_status(form_ui_model, is_errored_before_edit)
