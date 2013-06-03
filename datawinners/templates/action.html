@@ -8,9 +8,14 @@
             </button>
         </div>
     </div>
-    <div id="action" class="dropdown-menu">
-        <ul>
+    <div id="action" class="dropdown">
+        <ul class="dropdown-menu">
             <li><a id="delete" action-dropdown = "delete">{% trans "Delete" %}</a></li>
         </ul>
+    </div>
+    <div id="none-selected" class="dropdown">
+        <div class="dropdown-panel">
+            {% trans "Select a user" %}
+        </div>
     </div>
 </div>

@@ -67,3 +67,7 @@ table.styled_table {
 
 table.error_table td {
   color: #FF0000; }
+
+#users_list table thead th:first-child {
+  padding: 6px;
+  width: 21px; }

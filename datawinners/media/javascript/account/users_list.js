@@ -1,7 +1,12 @@
 $(document).ready(function () {
     $('#error').css("display", "none");
     $("#check_all_users").bind("click", function () {
-        $(".user_entry").attr("checked", $(this).attr("checked"));
+        $(".user_entry").attr("checked", $(this).attr("checked") == "checked");
+    });
+
+    $(".user_entry").bind("click", function(){
+        var checked = $(".user_entry:checked").length == $(".user_entry").length;
+        $("#check_all_users").attr("checked", checked)
     });
 
     $("#action li a").each(function (i, action) {
@@ -52,4 +57,14 @@ $(document).ready(function () {
     }
 
     DW.delete_user_warning_dialog = new DW.warning_dialog(kwargs);
+
+    var opts = {
+        checkbox_locator:"#users_list table input:checkbox",
+        data_locator:"#action",
+        none_selected_locator:"#none-selected",
+        check_single_checked_locator:"#users_list table tbody input:checkbox[checked=checked]",
+        no_cb_checked_locator:"#users_list table input:checkbox[checked=checked]",
+        checkall:"#check_all_users"
+    }
+    var users_action_dropdown = new DW.action_dropdown(opts);
 });

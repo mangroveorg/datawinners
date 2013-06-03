@@ -4201,3 +4201,6 @@ msgstr "Envoyer un message"
 
 msgid "Choose 1 answer from the list."
 msgstr "Choisissez une réponse de la liste."
+
+msgid "Select a user"
+msgstr "Selectionnez un utilisateur"
