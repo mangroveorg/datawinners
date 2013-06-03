@@ -95,8 +95,8 @@
   margin-left: 20px;
 }
 
-.margin_left_170 {
-  margin-left: 170px;
+.margin_left_180 {
+  margin-left: 180px;
 }
 
 .margin_right_20 {
@@ -109,7 +109,7 @@
 }
 
 .float_right {
-  float: right;
+  float: right !important;
 }
 
 /* Border Styles */
@@ -409,6 +409,10 @@ span.tooltip {
     font-size: 12px;
   }
 
+}
+
+#subject_warning_message a.cancel_link{
+    margin-left: 197px;
 }
 
 .ui-dialog-titlebar-close {

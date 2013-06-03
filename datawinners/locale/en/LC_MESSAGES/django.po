@@ -4123,5 +4123,8 @@ msgstr ""
 msgid "Choose 1 answer from the list."
 msgstr ""
 
+msgid "Find GPS coordinates"
+msgstr ""
+
 msgid "Select a user"
 msgstr ""

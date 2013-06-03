@@ -104,7 +104,7 @@ msgid "Data Senders use their Android Smartphone to send in data."
 msgstr "Les Expéditeurs de Données utilisent n’importe quel ordinateur pour soumettre des données par Internet."
 
 msgid "Back to Data Sender List"
-msgstr "Retourner à la Liste des Expéditeurs de Données"
+msgstr "Retourner à la Liste des Expéditeurs de Données"
 
 
 msgid "Subjects"
@@ -3822,10 +3822,10 @@ msgid "Reports"
 msgstr "Rapports"
 
 msgid "You are editing the Data Senderʼs Details"
-msgstr "Vous êtes en train de modifier les détails sur votre Expéditeur de Données"
+msgstr "Vous êtes en train de modifier les détails sur votre Expéditeur de Données"
 
 msgid "Your changes have been saved."
-msgstr "Vos changements ont été enregistrés"
+msgstr "Vos changements ont été enregistrés"
 
 
 msgid "There should not be any space at the beginning and the end of the password."
@@ -4201,6 +4201,9 @@ msgstr "Envoyer un message"
 
 msgid "Choose 1 answer from the list."
 msgstr "Choisissez une réponse de la liste."
+
+msgid "Find GPS coordinates"
+msgstr "Trouver les coordonnées GPS"
 
 msgid "Select a user"
 msgstr "Selectionnez un utilisateur"

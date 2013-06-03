@@ -34,10 +34,10 @@
                 {{ form.telephone_number }}
                 {{ form.telephone_number.errors }}
             </li>
-            <li class="margin_top_null margin_left_170 italic_grey clear-left instruction_text">
+            <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text">
                 {% trans "phone_number_example" %}
             </li>
-            <li class="margin_top_null margin_left_170 italic_grey clear-left instruction_text"
+            <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text"
                 id="email_field_help_text">
                 {% trans "email_example" %}
             </li>
@@ -57,7 +57,7 @@
                     <li class="{{ form.geo_code.css_classes }} form-row-10px">
                         <div class="clearfix">
                             <label for="id_{{ form.geo_code.name }}" style="float: left;">{{ form.geo_code.label  }}</label>
-                            <a href="http://itouchmap.com/latlong.html" style="padding-left: 109px;" target="_blank">Find GPS coordinates</a>
+                            <a href="http://itouchmap.com/latlong.html" class="find_gps_{% trans "en" %}" target="_blank">{% trans "Find GPS coordinates" %}</a>
                         </div>
                         {{ form.geo_code }}
                         {{ form.geo_code.errors }}
