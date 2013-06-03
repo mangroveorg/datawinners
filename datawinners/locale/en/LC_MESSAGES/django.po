@@ -1856,7 +1856,7 @@ msgstr ""
 msgid "Sunday"
 msgstr ""
 
-msgid "Warning: Changing the subject type will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?"
+msgid "Changing the <span id=\"changed\">subject type</span> will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?"
 msgstr ""
 
 msgid "Warning: Changing the Date Format will remove all your collected data. Are you sure you want to continue?"

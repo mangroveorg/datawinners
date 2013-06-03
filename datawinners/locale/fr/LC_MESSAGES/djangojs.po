@@ -1127,3 +1127,9 @@ msgstr "destinataire(s)"
 
 msgid "Send Message?"
 msgstr "Envoyer un message ?"
+
+msgid "project type"
+msgstr "type de projet"
+
+msgid "subject type"
+msgstr "type de sujet"

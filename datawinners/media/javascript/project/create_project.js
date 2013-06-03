@@ -185,6 +185,7 @@ $(document).ready(function () {
 
     $('#id_entity_type').change(function () {
         if (is_edit || questionnaireViewModel.hasAddedNewQuestions) {
+            $("#changed").html(gettext("subject type"));
             $("#subject_warning_message").dialog("open");
         } else {
             DW.continue_flip();
@@ -193,6 +194,7 @@ $(document).ready(function () {
 
     $('input[name="activity_report"]').change(function () {
         if (is_edit || questionnaireViewModel.hasAddedNewQuestions) {
+            $("#changed").html(gettext("project type"));
             $("#subject_warning_message").dialog("open");
         } else {
             DW.continue_flip();

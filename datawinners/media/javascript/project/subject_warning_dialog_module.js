@@ -40,12 +40,13 @@ DW.subject_warning_dialog_module={
 
 
     init_subject_warning_dialog:function(){
+        var width = gettext("en") == "en" ? 400 : 420;
         $("#subject_warning_message").dialog({
             title: gettext("Warning !!"),
             modal: true,
             autoOpen: false,
             height: 225,
-            width: 400,
+            width: width,
             closeText: 'hide'
         });
     },

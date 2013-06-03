@@ -896,3 +896,9 @@ msgstr ""
 
 msgid "Send Message?"
 msgstr ""
+
+msgid "project type"
+msgstr ""
+
+msgid "subject type"
+msgstr ""
