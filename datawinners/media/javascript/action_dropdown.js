@@ -84,6 +84,7 @@ DW.action_dropdown.prototype = {
             } else {
                 link.parent().removeClass("disabled");
                 link.removeAttr("title");
+                link.removeAttr("disabled");
             }
         };
 
