@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from datawinners.main.initial_couch_fixtures import  load_all_feed_managers, load_test_feed_managers
 from datawinners.feeds.database import feeds_db_for
-from datawinners.main.utils import sync_feed_views
+from datawinners.initializer import sync_feed
 from mangrove.datastore.database import _delete_db_and_remove_db_manager
 
 
@@ -21,7 +21,7 @@ class Command(BaseCommand):
                 _delete_db_and_remove_db_manager(manager)
                 recreated_manager = feeds_db_for(manager.database_name)
                 print "Syncing Feed Views....."
-                sync_feed_views(recreated_manager)
+                sync_feed(recreated_manager)
 
             print "Feed databases done."
             return

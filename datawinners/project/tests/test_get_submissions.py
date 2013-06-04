@@ -1,12 +1,12 @@
 from mangrove.form_model.form_model import FORM_CODE
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from datawinners.project.survey_response_router import successful_survey_responses, undeleted_survey_responses
-from mangrove.utils.test_utils.survey_response_builder import SurveyResponseBuilder
+from mangrove.utils.test_utils.survey_response_builder import TestSurveyResponseBuilder
 
 class TestGetSubmissions(MangroveTestCase):
     def setUp(self):
         super(TestGetSubmissions, self).setUp()
-        self.survey_response_builder = SurveyResponseBuilder(self.manager)
+        self.survey_response_builder = TestSurveyResponseBuilder(self.manager)
 
     def test_should_get_successful_submissions(self):
         submissions = self.survey_response_builder.build_two_successful_survey_responses()

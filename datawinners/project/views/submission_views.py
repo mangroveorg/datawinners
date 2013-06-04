@@ -198,11 +198,12 @@ def edit(request, project_id, survey_response_id, tab=0):
 
             additional_feed_dictionary = {}
             project_details = {'id': project.id, 'name': project.name, 'type': project.entity_type,
-                       'status': project.state}
+                               'status': project.state}
             additional_feed_dictionary.update({'project': project_details})
             feeds_dbm = get_feeds_database(request.user)
             user_profile = NGOUserProfile.objects.get(user=request.user)
-            response = WebPlayerV2(manager,feeds_dbm).edit_survey_response(created_request, survey_response,user_profile.reporter_id, additional_feed_dictionary,websubmission_logger)
+            response = WebPlayerV2(manager, feeds_dbm).edit_survey_response(created_request, survey_response,
+                user_profile.reporter_id, additional_feed_dictionary, websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
                 _update_static_info_block_status(form_ui_model, is_errored_before_edit)

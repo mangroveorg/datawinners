@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from datawinners.initializer import sync_feed
 from main.initial_couch_fixtures import load_all_feed_managers, load_test_feed_managers
-from datawinners.main.utils import  sync_feed_views
-
 
 
 class Command(BaseCommand):
@@ -16,7 +15,7 @@ class Command(BaseCommand):
             for manager in managers:
                 print ("Database %s") % (manager.database_name,)
                 print "Syncing Feeds db....."
-                sync_feed_views(manager)
+                sync_feed(manager)
                 print "Done."
             return
 

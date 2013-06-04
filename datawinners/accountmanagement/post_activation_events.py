@@ -10,11 +10,13 @@ from mangrove.datastore.entity import create_entity
 from mangrove.datastore.datadict import   get_or_create_data_dict
 from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.datastore.queries import get_entity_count_for_type
+from mangrove.bootstrap.initializer import sync_feed_views as mangrove_sync_views
 
 def create_feed_database(db_name):
     feed_manager = get_feed_db_from_main_db_name(db_name)
     assert feed_manager, "Could not create feed database manager for %s " % (db_name,)
     sync_feed_views(feed_manager)
+    mangrove_sync_views(feed_manager)
 
 
 def create_org_database(db_name):
