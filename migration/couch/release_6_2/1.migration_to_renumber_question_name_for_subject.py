@@ -9,9 +9,9 @@ from migration.couch.utils import init_migrations, should_not_skip, mark_start_o
 from mangrove.datastore.entity import entity_by_short_code
 
 SERVER = 'http://localhost:5984'
-log_file = open('migration_release_7_3.log', 'a')
+log_file = open('/var/log/datawinners/migration_release_6_2_1.log', 'a')
 
-init_migrations('dbs_migrated_release_7_3.csv')
+init_migrations('/var/log/datawinners/dbs_migrated_release_6_2_1.csv')
 
 def all_db_names(server):
     all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
