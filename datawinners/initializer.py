@@ -37,4 +37,3 @@ def run(manager):
 
 def sync_feed(manager):
     sync_feed_views(manager)
-    mangrove_intializer.sync_feed_views(manager)
