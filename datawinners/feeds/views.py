@@ -18,6 +18,9 @@ def feed_entries(request, form_code):
         return HttpResponse(content='Invalid Start Date provided', status=400)
     if invalid_date(request.GET.get('end_date')):
         return HttpResponse(content='Invalid End Date provided', status=400)
+    if lesser_end_date(request.GET.get('end_date'),request.GET.get('start_date')):
+        return HttpResponse(content='End Date provided is less than Start Date', status=400)
+
     feed_dbm = get_feeds_database(request.user)
     start_date = _parse_date(request.GET['start_date'])
     end_date = _parse_date(request.GET['end_date'])
@@ -49,3 +52,8 @@ def invalid_date(date_string):
     except ValueError:
         return True
     return False
+
+def lesser_end_date(end_date,start_date):
+    end_date = _parse_date(end_date)
+    start_date = _parse_date(start_date)
+    return end_date < start_date

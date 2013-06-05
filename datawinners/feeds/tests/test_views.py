@@ -69,5 +69,14 @@ class TestFeedView(TestCase):
         self.assertEqual(400, response.status_code)
         self.assertEqual('Invalid End Date provided', response.content)
 
+    def test_error_when_end_date_is_less_than_start_date(self):
+            request = HttpRequest()
+            request.GET['start_date'] = urllib2.quote("21-12-2001 12:12:57".encode("utf-8"))
+            request.GET['end_date'] = urllib2.quote("21-12-2001 12:12:56".encode("utf-8"))
+
+            response = feed_entries(request, "cli001")
+            self.assertEqual(400, response.status_code)
+            self.assertEqual('End Date provided is less than Start Date', response.content)
+
 
 http_digest_patch.stop()
