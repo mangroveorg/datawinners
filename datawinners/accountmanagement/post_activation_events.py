@@ -2,6 +2,7 @@
 import datetime
 from django.conf import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
+from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.utils import sync_feed_views
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
@@ -11,7 +12,6 @@ from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_F
 from mangrove.datastore.queries import get_entity_count_for_type
 
 def create_feed_database(db_name):
-    from datawinners.feeds.database import get_feed_db_from_main_db_name
     feed_manager = get_feed_db_from_main_db_name(db_name)
     assert feed_manager, "Could not create feed database manager for %s " % (db_name,)
     sync_feed_views(feed_manager)
