@@ -1,11 +1,12 @@
 from django.conf import settings
 from mangrove.datastore.database import get_db_manager
-from datawinners.main.utils import get_database_name
-from datawinners.accountmanagement.models import OrganizationSetting
 
 def get_feed_database_name(user):
+    from datawinners.main.utils import get_database_name
     return 'feed_' + get_database_name(user)
 
+def get_feed_db_from_main_db_name(db_name):
+    return feeds_db_for(get_feed_db_from_main_db_name(db_name))
 
 def feeds_db_for(db_name):
     return get_db_manager(server=settings.FEEDS_COUCH_SERVER, database=db_name,
@@ -20,6 +21,7 @@ def get_feeds_database(user):
 
 
 def get_feeds_db_for_org(organization):
+    from datawinners.accountmanagement.models import OrganizationSetting
     if settings.FEEDS_ENABLED:
         organization_settings = OrganizationSetting.objects.get(organization=organization)
         db = 'feed_' + organization_settings.document_store
