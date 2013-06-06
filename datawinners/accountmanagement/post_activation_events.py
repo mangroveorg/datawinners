@@ -15,6 +15,7 @@ def create_feed_database(db_name):
     feed_manager = get_feed_db_from_main_db_name(db_name)
     assert feed_manager, "Could not create feed database manager for %s " % (db_name,)
     sync_feed_views(feed_manager)
+    return feed_manager
 
 
 def create_org_database(db_name):
