@@ -123,3 +123,6 @@ class AddSubjectPage(Page):
     def navigate_to_smart_phone_instruction(self):
         self.driver.find(SMARTPHONE_NAV).click()
         return SmartPhoneInstructionPage(self.driver)
+
+    def get_cancel_url(self):
+        return self.driver.find(CANCEL_LINK).get_attribute("href")

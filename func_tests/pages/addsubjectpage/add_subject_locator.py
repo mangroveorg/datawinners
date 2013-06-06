@@ -39,3 +39,4 @@ ERROR_MESSAGE_LABEL = by_css("ul.errorlist>li") #by_xpath("//div[@class='error_m
 ERROR_MESSAGE_BOX = by_css("div.message-box")
 FLASH_MESSAGE_LABEL = by_xpath("//div[@class='success-message-box' and not(contains(@id,'none'))]")
 SUBJECT_TYPE = by_css(".subject-type")
+CANCEL_LINK = by_id("cancel")

@@ -7,16 +7,17 @@ from pages.addsubjectpage.add_subject_locator import UNIQUE_ID_TB
 from pages.loginpage.login_page import LoginPage
 from pages.addsubjectpage.add_subject_page import AddSubjectPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ADD_SUBJECT
-from tests.logintests.login_data import VALID_CREDENTIALS
+from tests.logintests.login_data import VALID_CREDENTIALS, DATA_SENDER_CREDENTIALS
 from tests.addsubjecttests.add_subject_data import *
 
 @attr('suit_1')
 class TestAddSubject(BaseTest):
-    def prerequisites_of_add_subject(self, subject_data):
+    def prerequisites_of_add_subject(self, subject_data, credentials=VALID_CREDENTIALS, login_method="do_successful_login_with"):
         # doing successful login with valid credentials
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
-        login_page.do_successful_login_with(VALID_CREDENTIALS)
+        login_func = getattr(login_page, login_method)
+        login_func(credentials)
         entity_type = fetch_(ENTITY_TYPE, from_(subject_data))
         self.driver.go_to(DATA_WINNER_ADD_SUBJECT + entity_type)
         return AddSubjectPage(self.driver)
@@ -115,3 +116,8 @@ class TestAddSubject(BaseTest):
         add_subject_page.submit_subject()
         message = fetch_(ERROR_MSG, from_(CLINIC_WITH_INVALID_UID))
         self.assertRegexpMatches(message, add_subject_page.get_error_message())
+
+    @attr('functional_test')
+    def test_cancel_link_with_datasender_credentials(self):
+        add_subject_page = self.prerequisites_of_add_subject(VALID_DATA, credentials=DATA_SENDER_CREDENTIALS, login_method="login_with")
+        self.assertRegexpMatches(add_subject_page.get_cancel_url(), "/alldata/")
