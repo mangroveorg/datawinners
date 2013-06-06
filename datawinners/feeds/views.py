@@ -2,13 +2,13 @@ from datetime import datetime
 import urllib2
 from django.conf import settings
 from django.http import HttpResponse
-from django_digest.decorators import httpdigest
 from datawinners.dataextraction.helper import  convert_to_json_response
 from datawinners.feeds.database import get_feeds_database
+from datawinners.feeds.basic_auth import httpbasic
 
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
 
-@httpdigest
+@httpbasic
 def feed_entries(request, form_code):
     if not settings.FEEDS_ENABLED:
         return HttpResponse(404)
