@@ -3,8 +3,8 @@ import urllib2
 from django.http import HttpRequest
 from mock import Mock, patch
 
-http_digest_patch = patch('django_digest.decorators.httpdigest', lambda x: x)
-http_digest_patch.start()
+http_basic_patch = patch('datawinners.feeds.basic_auth.httpbasic', lambda x: x)
+http_basic_patch.start()
 from datawinners.feeds.views import feed_entries
 
 class TestFeedView(TestCase):
@@ -79,4 +79,4 @@ class TestFeedView(TestCase):
             self.assertEqual('End Date provided is less than Start Date', response.content)
 
 
-http_digest_patch.stop()
+http_basic_patch.stop()
