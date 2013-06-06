@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from copy import deepcopy
 from django.utils.translation import ugettext_lazy as _
-import json
+import json, re
 import datetime
 import logging
 from string import capitalize
@@ -137,7 +137,8 @@ def construct_request_dict(survey_response, questionnaire_form_model):
             field.code) else survey_response.values.get(field.code.lower())
         if isinstance(field, SelectField) and field.type == 'select':
             #check if select field answer is present in survey response
-            value = [character for character in value] if value else value
+            value = re.findall(r'[1-9]?[a-z]', value)
+            #value = [character for character in value] if value else value
         result_dict.update({field.code: value})
     result_dict.update({'form_code': questionnaire_form_model.form_code})
     return result_dict

@@ -52,17 +52,3 @@ class SubmissionForm(Form):
 
         return self.cleaned_data
 
-    """
-    @staticmethod
-    def clean_geocode(self):
-        geo_code_field_code = get_geo_code_field_question_code(self.form_model)
-        lat_long_string = self.cleaned_data[geo_code_field_code]
-        lat_long = lat_long_string.replace(",", " ").strip().split()
-        try:
-            if len(lat_long) < 2:
-                raise Exception
-            GeoCodeConstraint().validate(latitude=lat_long[0], longitude=lat_long[1])
-        except Exception:
-            raise ValidationError(_(
-                "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"))
-        return self.cleaned_data[geo_code_field_code]"""
