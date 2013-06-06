@@ -14,7 +14,7 @@
             <h6 xmlns="http://www.w3.org/1999/html"
                 xmlns="http://www.w3.org/1999/html">{% trans "You are editing the Submission Details" %}</h6>
         </div>
-        <div class="action-section">
+        <div class="action-section float_right">
             <span>
                 <a href="{{ back_link }}" class="cancel-editing-link"> {% trans "Cancel Editing" %}</a> &nbsp;
             </span>
@@ -29,7 +29,7 @@
     <input type="hidden" id="discard" name="discard" value=""/>
     {% include "project/questionnaire_fields.html" %}
     {% block action_section_block %}
-        <div class="action-section">
+        <div class="action-section full_width">
             {% block cancel_block %}{% endblock %}
             <span>
                 <a href="{{ back_link }}" class="cancel-editing-link"> {% trans "Cancel Editing" %}</a> &nbsp;

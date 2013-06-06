@@ -457,7 +457,7 @@ ul.bulleted li {
   color: #0070AC; }
 
 .full_width {
-  width: 100%; }
+  width: 100% !important; }
 
 .grey, .small_grey {
   color: #888888; }
