@@ -45,9 +45,8 @@ class TestAllUsers(unittest.TestCase):
     def test_should_not_delete_if_any_users_selected(self):
         all_users_page = self.prerequisites_for_all_users()
         all_users_page.click_check_all_users(check=False)
-        all_users_page.select_delete_action()
-        error_message = all_users_page.get_error_message()
-        self.assertEqual(error_message, SELECT_ATLEAST_1_USER_MSG)
+        all_users_page.click_action_button()
+        self.assertFalse(all_users_page.actions_menu_shown())
 
     @attr('functional_test')
     def test_should_not_delete_super_admin_user(self):

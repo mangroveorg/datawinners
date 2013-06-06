@@ -8,3 +8,4 @@ CANCEL_DELETE_BUTTON = by_css("#delete_user_warning_dialog a.no_button")
 MESSAGES_CONTAINER = by_css("span.message-span")
 CHECK_NTH_USER_LOCATOR = "#users_list table tbody tr:nth-child(%s) td:nth-child(1) input"
 ADD_USER_LINK = by_css("a[href='/account/user/new/']")
+ACTION_MENU = by_id("action")

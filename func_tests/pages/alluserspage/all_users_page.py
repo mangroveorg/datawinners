@@ -26,7 +26,7 @@ class AllUsersPage(Page):
             self.cancel_delete()
 
     def perform_user_action(self, action_to_be_performed):
-        self.driver.find(ALL_USERS_ACTION_SELECT).click()
+        self.click_action_button()
         option = self.driver.find_visible_element(by_id(action_to_be_performed))
         option.click()
 
@@ -52,4 +52,10 @@ class AllUsersPage(Page):
     def navigate_to_add_user(self):
         self.driver.find(ADD_USER_LINK).click()
         return AddUserPage(self.driver)
+
+    def actions_menu_shown(self):
+        return self.driver.find(ACTION_MENU).is_displayed()
+
+    def click_action_button(self):
+        self.driver.find(ALL_USERS_ACTION_SELECT).click()
   
