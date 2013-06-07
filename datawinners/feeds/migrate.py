@@ -61,17 +61,20 @@ class FeedBuilder:
         existing_enriched_response.update(document)
         self.feed_dbm._save_document(existing_enriched_response)
 
-    def migrate(self, survey_response):
+    def _migrate(self, survey_response):
         raw_doc = self.feed_dbm.database.get(survey_response.id)
         if raw_doc is None:
             self._new_feed(survey_response)
         elif raw_doc['survey_response_modified_time'] != survey_response.modified:
             self._update_feed(raw_doc, survey_response)
 
-    def create_feed_doc(self, survey_response):
+    def _log_success_message(self, survey_response):
+        self.logger.info('Successfully migrated survey_reponse_id : %s' % survey_response.id)
+
+    def _create_feed_doc(self, survey_response):
         try:
-            self.migrate(survey_response)
-            self.logger.info('Successfully migrated survey_reponse_id : %s' % survey_response.id)
+            self._migrate(survey_response)
+            self._log_success_message(survey_response)
         except (ProjectNotFoundException, FormModelDoesNotExistsException) as exception:
             self.logger.error('db_name: %s , failed survey_response_id : %s, error : %s' % (
                 self.dbm.database_name, survey_response.id, exception.message))
@@ -84,4 +87,9 @@ class FeedBuilder:
         for row in rows:
             survey_response_doc = SurveyResponse.__document_class__.wrap(row['value'])
             survey_response = SurveyResponse.new_from_doc(dbm=self.dbm, doc=survey_response_doc)
-            self.create_feed_doc(survey_response)
+            self._create_feed_doc(survey_response)
+
+    def migrate_document(self, survey_response_id):
+        survey_response = SurveyResponse.get(self.dbm, survey_response_id)
+        self._migrate(survey_response)
+        self._log_success_message(survey_response)

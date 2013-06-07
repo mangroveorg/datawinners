@@ -5,7 +5,7 @@ from datawinners.feeds.migrate import FeedBuilder
 logger = logging.getLogger(__name__)
 
 def create_feed_for_survey_response(database_name, survey_response_id):
-    pass
+     FeedBuilder(database_name, logger).migrate_document(survey_response_id)
 
 
 def create_feeds_for_database(database_name):
