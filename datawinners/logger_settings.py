@@ -14,6 +14,7 @@ XFORM_LOG_FILE_NAME = "datawinners_xform.log"
 PERFORMANCE_LOG_FILE_NAME = "datawinners-performance.log"
 WEB_SUBMISSION_LOG_FILE_NAME = "websubmission.log"
 SP_SUBMISSION_LOG_FILE_NAME = "sp-submission.log"
+COMMANDS_LOG_FILE = "commands.log"
 
 LOGGING = {
     'version': 1,
@@ -85,6 +86,15 @@ LOGGING = {
             'maxBytes': MAX_LOG_BYTES,
             'backupCount': BACK_UP_COUNT
         },
+        'commands': {
+            'level': 'INFO',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, COMMANDS_LOG_FILE),
+            'mode': 'a', #append+create
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
+        },
     },
     'loggers': {
         'django': {
@@ -135,6 +145,11 @@ LOGGING = {
         'spsubmission': {
             'level': 'INFO',
             'handlers': ['sp-submission'],
+            'propagate': True,
+        },
+        'datawinners.main.management.commands': {
+            'level': 'INFO',
+            'handlers': ['commands'],
             'propagate': True,
         },
     }
