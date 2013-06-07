@@ -1,13 +1,13 @@
 function (doc) {
     if (doc.document_type == 'EnrichedSurveyResponse') {
-        var result = {'id':doc.survey_response_id, 'data_sender_id':doc.data_sender['id'], 'survey_response_modified_time':doc.survey_response_modified_time};
+        var result = {'id':doc._id, 'data_sender_id':doc.data_sender['id'], 'submission_modified_time':doc.survey_response_modified_time,'feed_modified_time':doc.modified};
         var output_values = doc.values;
         if (doc.status == 'success') {
             output_values = success_values(doc.values)
         }
         result['values'] = output_values;
         result['status'] = status(doc);
-        emit([doc.form_code, doc.survey_response_modified_time], result)
+        emit([doc.form_code, doc.modified], result)
     }
 
     function success_values(values) {
