@@ -67,7 +67,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from datawinners.project.views.utils import get_form_context
+from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
 from mangrove.transport.player.new_players import WebPlayerV2
 from mangrove.transport.repository.survey_responses import survey_response_count, get_survey_responses
 
@@ -406,8 +406,10 @@ def activate_project(request, project_id=None):
         to_time=int(mktime(tomorrow.timetuple())) * 1000, page_size=None)
     feeds_dbm = get_feeds_database(request.user)
     service = SurveyResponseService(manager, logger,feeds_dbm)
+    additional_feed_dictionary = get_project_details_dict_for_feed(project)
+    user_profile = NGOUserProfile.objects.get(user=request.user)
     for survey_response in survey_responses:
-        service.delete_survey(None,survey_response)
+        service.delete_survey(survey_response,user_profile.reporter_id,additional_feed_dictionary)
     UserActivityLog().log(request, action=ACTIVATED_PROJECT, project=project.name)
     return HttpResponseRedirect(reverse('project-overview', args=[project_id]))
 

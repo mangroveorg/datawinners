@@ -41,7 +41,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.project.views.views import XLS_TUPLE_FORMAT
 from datawinners.common.constant import   DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
-from datawinners.project.views.utils import get_form_context
+from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
 from datawinners.project.submission_form import SubmissionForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.transport.contract.survey_response import SurveyResponse
@@ -97,7 +97,9 @@ def delete(request, project_id):
         survey_response = SurveyResponse.get(manager, survey_response_id)
         received_times.append(datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
         feeds_dbm = get_feeds_database(request.user)
-        delete_response = WebPlayerV2(manager,feeds_dbm).delete_survey_response(survey_response, websubmission_logger)
+        additional_feed_dictionary = get_project_details_dict_for_feed(project)
+        user_profile = NGOUserProfile.objects.get(user=request.user)
+        delete_response = WebPlayerV2(manager,feeds_dbm).delete_survey_response(survey_response, user_profile.reporter_id,additional_feed_dictionary,websubmission_logger)
         mail_feed_errors(delete_response,manager.database_name)
         if survey_response.data_record:
             ReportRouter().delete(get_organization(request).org_id, survey_response.form_code,
@@ -198,12 +200,9 @@ def edit(request, project_id, survey_response_id, tab=0):
         if len(survey_response_form.changed_data) or is_errored_before_edit:
             created_request = helper.create_request(survey_response_form, request.user.username)
 
-            additional_feed_dictionary = {}
-            project_details = {'id': project.id, 'name': project.name, 'type': project.entity_type,
-                               'status': project.state}
-            additional_feed_dictionary.update({'project': project_details})
-            feeds_dbm = get_feeds_database(request.user)
+            additional_feed_dictionary = get_project_details_dict_for_feed(project)
             user_profile = NGOUserProfile.objects.get(user=request.user)
+            feeds_dbm = get_feeds_database(request.user)
             response = WebPlayerV2(manager, feeds_dbm).edit_survey_response(created_request, survey_response,
                 user_profile.reporter_id, additional_feed_dictionary, websubmission_logger)
             mail_feed_errors(response, manager.database_name)

@@ -40,3 +40,12 @@ def _get_subject_info(manager, project):
                     'add_link': add_link(project),
                     "entity_type": project.entity_type}
     return subject_info
+
+def get_project_details_dict_for_feed(project):
+    additional_feed_dictionary = {}
+    project_details = {'id': project.id, 'name': project.name, 'type': project.entity_type,
+                       'status': project.state}
+    additional_feed_dictionary.update({'project': project_details})
+    return additional_feed_dictionary
+
+
