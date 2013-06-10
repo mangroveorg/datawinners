@@ -8,6 +8,7 @@ from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumb
 from django import forms
 from mangrove.utils.types import is_empty
 from django.utils.translation import ugettext_lazy as _
+from datawinners.utils import translate, get_text_language_by_instruction
 
 class FormField(object):
     def create(self, field):
@@ -205,7 +206,7 @@ class SubjectField(object):
     def _get_choice_field(self, data_sender_choices, subject_field, help_text):
         subject_choice_field = ChoiceField(required=subject_field.is_required(), choices=data_sender_choices,
             label=subject_field.name,
-            initial=subject_field.value, help_text=_(help_text))
+            initial=subject_field.value, help_text=help_text)
         subject_choice_field.widget.attrs['class'] = 'subject_field'
         return subject_choice_field
 
@@ -227,7 +228,8 @@ class SubjectField(object):
     def _subject_choice_fields(self, entity_type, subject_field):
         subjects, fields, label = load_all_subjects_of_type(self.dbm, type=entity_type)
         subjects = self._build_subject_choice_data(subjects, fields)
-        instruction_for_subject_field = ugettext("Choose Subject from this list.")
+        language = get_text_language_by_instruction(subject_field.instruction)
+        instruction_for_subject_field = translate("Choose Subject from this list.", language=language, func=ugettext)
         all_subject_choices = map(self.choice, subjects)
         choice_fields = self._get_choice_field(all_subject_choices, subject_field,
             help_text=instruction_for_subject_field)

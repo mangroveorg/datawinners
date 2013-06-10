@@ -13,6 +13,7 @@ from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumb
 from datawinners.entity.fields import PhoneNumberField, DjangoDateField
 from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_fields_question_code, make_clean_geocode_method
 from mangrove.utils.types import is_empty
+from datawinners.utils import translate, get_text_language_by_instruction
 
 def question_form_init__(self, country=None, *args, **kwargs):
     self.country = country
@@ -276,7 +277,8 @@ class SubjectQuestionFieldCreator(object):
         subjects, fields, label = self.project_subject_loader(self.dbm, type=self.project.entity_type)
         subject_data = self._build_subject_choice_data(subjects, fields)
         all_subject_choices = map(self._data_to_choice, subject_data)
-        instruction_for_subject_field = ugettext("Choose Subject from this list.")
+        language = get_text_language_by_instruction(subject_field.instruction)
+        instruction_for_subject_field = translate("Choose Subject from this list.", func=ugettext, language=language)
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
 
     def get_key(self, subject):

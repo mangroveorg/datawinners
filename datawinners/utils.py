@@ -1,9 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.template.defaultfilters import slugify
-import xlwt
+import xlwt, re
 from datetime import datetime
 from mangrove.datastore.database import get_db_manager
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, activate, get_language
 from datawinners import settings
 from django.contrib.auth.forms import PasswordResetForm
 from mangrove.form_model.field import ExcelDate
@@ -211,3 +211,17 @@ def generate_project_name(project_names):
 
 def _get_email_template_name_for_created_user(language):
     return 'registration/created_user_email_' + unicode(language) + '.html'
+
+def translate(message, language="en", func=_):
+    current_language = get_language()
+    activate(language)
+    translated = func(message)
+    activate(current_language)
+    return translated
+
+
+def get_text_language_by_instruction(instruction):
+    if re.match(r'^La r.ponse doit.+$', instruction):
+        return "fr"
+    return "en"
+    
