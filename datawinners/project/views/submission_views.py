@@ -12,6 +12,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from accountmanagement.models import NGOUserProfile
 from feeds.database import get_feeds_database
+from feeds.mail_client import mail_feed_errors
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -95,8 +96,9 @@ def delete(request, project_id):
     for survey_response_id in survey_response_ids:
         survey_response = SurveyResponse.get(manager, survey_response_id)
         received_times.append(datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
-        WebPlayerV2(manager).delete_survey_response(survey_response, websubmission_logger)
-
+        feeds_dbm = get_feeds_database(request.user)
+        delete_response = WebPlayerV2(manager,feeds_dbm).delete_survey_response(survey_response, websubmission_logger)
+        mail_feed_errors(delete_response,manager.database_name)
         if survey_response.data_record:
             ReportRouter().delete(get_organization(request).org_id, survey_response.form_code,
                 survey_response.data_record.id)
@@ -204,6 +206,7 @@ def edit(request, project_id, survey_response_id, tab=0):
             user_profile = NGOUserProfile.objects.get(user=request.user)
             response = WebPlayerV2(manager, feeds_dbm).edit_survey_response(created_request, survey_response,
                 user_profile.reporter_id, additional_feed_dictionary, websubmission_logger)
+            mail_feed_errors(response, manager.database_name)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
                 _update_static_info_block_status(form_ui_model, is_errored_before_edit)
