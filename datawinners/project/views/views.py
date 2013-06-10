@@ -34,6 +34,7 @@ from mangrove.form_model.form_model import get_form_model_by_code, FormModel, RE
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.request import Request
 from mangrove.transport.player.player import WebPlayer
+from mangrove.transport.services.survey_response_service import SurveyResponseService
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
 from mangrove.transport.contract.transport_info import Channel
@@ -403,8 +404,10 @@ def activate_project(request, project_id=None):
     tomorrow = datetime.datetime.now() + oneDay
     survey_responses = get_survey_responses(manager, form_model.form_code, from_time=0,
         to_time=int(mktime(tomorrow.timetuple())) * 1000, page_size=None)
-    for submission in survey_responses:
-        submission.void()
+    feeds_dbm = get_feeds_database(request.user)
+    service = SurveyResponseService(manager, logger,feeds_dbm)
+    for survey_response in survey_responses:
+        service.delete_survey(None,survey_response)
     UserActivityLog().log(request, action=ACTIVATED_PROJECT, project=project.name)
     return HttpResponseRedirect(reverse('project-overview', args=[project_id]))
 
