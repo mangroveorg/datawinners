@@ -27,7 +27,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
         project_overview_page = all_project_page.navigate_to_project_overview_page(project_name)
         return project_overview_page.navigate_to_review_and_test()
 
-    @attr("functional_test")
+    @attr("functional_test21")
     def test_should_get_disabled_as_reminder_status(self):
         project_review = self.go_to_project_review_and_test_page()
         self.assertEqual(project_review.get_reminder_status(), "enabled")
