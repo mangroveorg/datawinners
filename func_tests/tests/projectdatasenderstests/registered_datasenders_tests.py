@@ -72,7 +72,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
         registered_ds_page.select_a_data_sender_by_id("rep3")
         self.assertTrue(registered_ds_page.is_checkall_checked())
 
-    @attr("functional_test21")
+    @attr("functional_test")
     def test_should_disable_checkall_cb_if_there_is_no_ds(self):
         registered_ds_page = self.go_to_registered_datasenders_page("project having people as subject")
         if registered_ds_page.is_checkall_enabled():
