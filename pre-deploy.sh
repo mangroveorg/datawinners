@@ -2,7 +2,7 @@
 
 today=$(date -u +"%Y-%b-%d")
 production_server=54.243.31.50
-production_couch_path=/opt/couchbase-server/var/lib/
+production_couch_path=/opt/apache-couchdb/var/lib/
 ssh_str=mangrover@$production_server
 local_db_backup_dir=~/workspace/db_backup/prod_db/$production_server
 
@@ -15,7 +15,7 @@ function backup_db(){
         couch_backup=~/mangrove_couchdb_backup_$today
         echo $couch_backup
         echo "################backup couchdb...################"
-        production_couch_path=/opt/couchbase-server/var/lib/
+        production_couch_path=/opt/apache-couchdb/var/lib/
         cd $production_couch_path
         echo $production_couch_path
         tar -czvPf  $couch_backup.tar.gz  couchdb
@@ -75,8 +75,8 @@ function apply_psql(){
 
     dropdb mangrove
     createdb -T template_postgis mangrove
-    psql –d mangrove –c "create role mangrover login createdb createrole"
-    psql –d mangrove –c "create role crs_reporting login creatdb createrole"
+    psql -d mangrove -c "create role mangrover login createdb createrole"
+    psql -d mangrove -c "create role crs_reporting login createdb createrole"
 
     psql mangrove < "mangrove_postgres_dump_$today"
     echo "################${FUNCNAME[0]} done ################"

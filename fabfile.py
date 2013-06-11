@@ -192,7 +192,8 @@ def showcase():
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
     env.warn_only = True
-    env.couch_db_service_name = 'couchdb'
+    env.couch_db_main_service_name = 'couchdbmain'
+    env.couch_db_feed_service_name = 'couchdbfeed'
 
 
 def qa():
@@ -207,7 +208,8 @@ def qa_supreme():
     env.hosts = ["172.18.9.1"]
     env.key_filename = ["/home/datawinners/.ssh/id_rsa"]
     env.warn_only = True
-    env.couch_db_service_name = 'couchdb'
+    env.couch_db_main_service_name = 'couchdbmain'
+    env.couch_db_feed_service_name = 'couchdbfeed'
 
 
 def test():
@@ -235,7 +237,8 @@ def ec2():
     env.hosts = ["54.243.31.50"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
     env.warn_only = True
-    env.couch_db_service_name = 'couchbase-server'
+    env.couch_db_main_service_name = 'couchdbmain'
+    env.couch_db_feed_service_name = 'couchdbfeed'
 
 
 def beta():
@@ -243,7 +246,8 @@ def beta():
     env.hosts = ["localhost"]
     env.key_filename = ["%s/.ssh/id_rsa" % os.getenv("HOME")]
     env.warn_only = True
-    env.couch_db_service_name = 'couchdb'
+    env.couch_db_main_service_name = 'couchdbmain'
+    env.couch_db_feed_service_name = 'couchdbfeed'
 
 
 def anonymous():
@@ -322,7 +326,8 @@ def replace_setting_file_for_environment(environment):
 
 
 def restart_couchdb():
-    sudo("/etc/init.d/%s restart" % env.couch_db_service_name , pty=False)
+    sudo("/etc/init.d/%s restart" % env.couch_db_main_service_name , pty=False)
+    sudo("/etc/init.d/%s restart" % env.couch_db_feed_service_name , pty=False)
 
 
 def migrate_couchdb(context):

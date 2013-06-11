@@ -44,7 +44,7 @@ def _get_doc_count():
 
 def send_mail(doc_count_before, doc_count_after):
     msg = MIMEText("Got it! %s before:%s after:%s" % (str(datetime.now()), doc_count_before, doc_count_after))
-    msg['Subject'] = 'Couchbase down, couchbase down.'
+    msg['Subject'] = 'Couchdb is down, couchdb down.'
     msg['From'] = "iamnobody250@gmail.com"
     msg['To'] = "edfeng@thoughtworks.com;qszhuan@thoughtworks.com"
     s = smtplib.SMTP()
@@ -59,7 +59,7 @@ def send_mail(doc_count_before, doc_count_after):
 def verify():
     doc_count_before = _get_doc_count()
     print str(datetime.utcnow()) + 'doc count before restart: %d' % doc_count_before
-    print os.system("/etc/init.d/couchbase-server restart")
+    print os.system("/etc/init.d/couchdbmain restart")
     sleep(10)
     doc_count_after = _get_doc_count()
     print str(datetime.utcnow()) + 'doc count after restart: %d' % doc_count_after
