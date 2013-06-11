@@ -2,6 +2,7 @@ import logging
 import requests
 from datawinners.feeds.migrate import FeedBuilder
 from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration
+from datawinners import settings
 
 COUCHDBMAIN_SERVER = 'http://localhost:5984'
 log_file = open('/var/log/datawinners/migration_release_7_0_1.log', 'a')
@@ -27,7 +28,5 @@ def all_db_names(server, credentials):
     return filter(lambda x: x.startswith('hni_'), all_dbs.json())
 
 
-FeedBuilder('hni_psi-madagascar_qmx864597', logging.getLogger(__name__)).migrate_db()
-# db_names = all_db_names(COUCHDBMAIN_SERVER, (settings.COUCHDBMAIN_USERNAME, settings.COUCHDBMAIN_PASSWORD))
-
-# print db_names
+db_names = all_db_names(COUCHDBMAIN_SERVER, (settings.COUCHDBMAIN_USERNAME, settings.COUCHDBMAIN_PASSWORD))
+migrate_survey_response_to_feed(db_names)
