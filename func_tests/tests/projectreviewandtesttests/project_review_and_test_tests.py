@@ -5,9 +5,9 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from framework.base_test import setup_driver, teardown_driver
 from pages.loginpage.login_page import LoginPage
 from tests.projectreviewandtesttests.project_review_and_test_data import *
-
+#TODO : test is dependent on other test data
 @attr('suit_1')
-class TestRegisteredDataSenders(unittest.TestCase):
+class TestReminderStatus(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
@@ -28,12 +28,12 @@ class TestRegisteredDataSenders(unittest.TestCase):
         return project_overview_page.navigate_to_review_and_test()
 
     @attr("functional_test")
-    def test_should_get_disabled_as_reminder_status(self):
+    def test_should_get_enabled_as_reminder_status(self):
         project_review = self.go_to_project_review_and_test_page()
         self.assertEqual(project_review.get_reminder_status(), "enabled")
 
     @attr("functional_test")
-    def test_should_get_enabled_as_reminder_status(self):
+    def test_should_get_disabled_as_reminder_status(self):
         project_review = self.go_to_project_review_and_test_page(project_name=CLINIC_PROJECT2_NAME)
         self.assertEqual(project_review.get_reminder_status(), "disabled")
 
