@@ -57,9 +57,9 @@ def sync_feed_views(dbm):
 def sync_views_functions(dbm, view_js):
     for v in view_js.keys():
         funcs = view_js[v]
-        map = (funcs['map'] if 'map' in funcs else None)
-        reduce = (funcs['reduce'] if 'reduce' in funcs else None)
-        dbm.create_view(v, map, reduce)
+        map_function = (funcs['map'] if 'map' in funcs else None)
+        reduce_function = (funcs['reduce'] if 'reduce' in funcs else None)
+        dbm.create_view(v, map_function, reduce_function)
 
 
 def exists_view(aggregation, database_manager):

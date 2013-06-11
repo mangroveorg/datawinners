@@ -152,5 +152,10 @@ LOGGING = {
             'handlers': ['commands'],
             'propagate': True,
         },
+        'south': {
+            'level': 'ERROR',
+            'handlers': ['log-file'],
+            'propagate': True,
+        },
     }
 }
