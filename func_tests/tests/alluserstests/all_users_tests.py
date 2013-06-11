@@ -42,7 +42,7 @@ class TestAllUsers(unittest.TestCase):
         login_page.do_successful_login_with(credential)
 
     @attr('functional_test')
-    def test_should_not_delete_if_any_users_selected(self):
+    def test_should_not_show_delete_if_any_users_selected(self):
         all_users_page = self.prerequisites_for_all_users()
         all_users_page.click_check_all_users(check=False)
         all_users_page.click_action_button()
