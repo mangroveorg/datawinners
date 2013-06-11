@@ -33,7 +33,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
         self.assertEqual(project_review.get_reminder_status(), "enabled")
 
     @attr("functional_test")
-    def test_should_get_enbled_as_reminder_status(self):
+    def test_should_get_enabled_as_reminder_status(self):
         project_review = self.go_to_project_review_and_test_page(project_name=CLINIC_PROJECT2_NAME)
         self.assertEqual(project_review.get_reminder_status(), "disabled")
 
