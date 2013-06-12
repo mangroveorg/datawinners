@@ -12,15 +12,19 @@ function backup_db(){
     echo "################${FUNCNAME[0]} start################"
      ssh $ssh_str -tt  '
         today=$(date -u +"%Y-%b-%d");
-        couch_backup=~/mangrove_couchdb_backup_$today
-        echo $couch_backup
+        couch_main_backup=~/mangrove_couchdb_main_backup_$today
+        couch_feed_backup=~/mangrove_couchdb_feed_backup_$today
+        echo $couch_main_backup and $couch_feed_backup
         echo "################backup couchdb...################"
         production_couch_path=/opt/apache-couchdb/var/lib/
         cd $production_couch_path
         echo $production_couch_path
-        tar -czvPf  $couch_backup.tar.gz  couchdb
-        md5=`md5sum $couch_backup.tar.gz|cut -d " " -f 1`
-        mv ${couch_backup}{,_${md5}}.tar.gz
+        tar -czvPf  $couch_main_backup.tar.gz  couchdb
+        md5=`md5sum $couch_main_backup.tar.gz|cut -d " " -f 1`
+        mv ${couch_main_backup}{,_${md5}}.tar.gz
+        tar -czvPf  $couch_feed_backup.tar.gz  feed
+        md5=`md5sum $couch_feed_backup.tar.gz|cut -d " " -f 1`
+        mv ${couch_feed_backup}{,_${md5}}.tar.gz
         cd
         echo "################backup couchdb done.################"
 
@@ -37,14 +41,17 @@ function backup_db(){
 
 function copy_db(){
     echo "################${FUNCNAME[0]}################"
-    scp $ssh_str:"~/mangrove_couchdb_backup_$today*.tar.gz ~/mangrove_postgres_dump_$today*.gz" $local_db_backup_dir
+    scp $ssh_str:"~/mangrove_couchdb_main_backup_$today*.tar.gz ~/mangrove_couchdb_feed_backup_$today*.tar.gz ~/mangrove_postgres_dump_$today*.gz" $local_db_backup_dir
     cd $local_db_backup_dir
-    couchdb_backup=`ls -t|grep mangrove_couchdb_backup_$today|sed -n 1p`
+    couchdb_backup=`ls -t|grep mangrove_couchdb_main_backup_$today|sed -n 1p`
+    couchdb_feed_backup=`ls -t|grep mangrove_couchdb_feed_backup_$today|sed -n 1p`
     psql_backup=`ls -t|grep mangrove_postgres_dump_$today|sed -n 1p`
     #Mac use md5 instead of md5sum
     md5_of_couchdb=`md5sum $couchdb_backup|awk '{print $NF}'`
+    md5_of_couchdb_feed=`md5sum $couchdb_feed_backup|awk '{print $NF}'`
     md5_of_psql=`md5sum $psql_backup|awk '{print $NF}'`
     verify_md5 $couchdb_backup $md5_of_couchdb
+    verify_md5 $couchdb_feed_backup $md5_of_couchdb_feed
     verify_md5 $psql_backup $md5_of_psql
     echo "################${FUNCNAME[0]} done.################"
 }
@@ -62,8 +69,11 @@ function apply_couch(){
     echo -e "!!!Doesn't support yet. Please change the database dir of couchdb by yourself on configuration page of it."
     echo "################${FUNCNAME[0]}################"
     cd $local_db_backup_dir
-    couchdb_backup=`ls -t|grep mangrove_couchdb_backup_$today|sed -n 1p`
+    couchdb_backup=`ls -t|grep mangrove_couchdb_main_backup_$today|sed -n 1p`
     tar -xvzf $couchdb_backup
+
+    couchdb_feed_backup=`ls -t|grep mangrove_couchdb_feed_backup_$today|sed -n 1p`
+    tar -xvzf $couchdb_feed_backup
     echo "################${FUNCNAME[0]}################"
 }
 
