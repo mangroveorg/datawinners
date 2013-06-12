@@ -13,19 +13,17 @@ MANGROVE = 'mangrove'
 TODAY_IN_UTC = str(datetime.utcnow().date()).replace('-', '')
 
 ENVIRONMENT_CONFIGURATIONS = {
-    "showcase": "showcase_local_settings.py",
-    "test": "test_local_settings.py",
-    "master": "showcase_local_settings.py",
-    "beta": "local_settings.py",
-    "production": "prod_local_settings.py",
-    "ec2": "ec2_local_settings.py",
-    "qa": "local_settings_qa.py",
-    "qa_supreme": "local_settings_qa_supreme.py"
+    "showcase": "config/local_settings_showcase.py",
+    "test": "config/local_settings_test.py",
+    "master": "config/local_settings_showcase.py",
+    "beta": "config/local_settings_beta.py",
+    "ec2": "config/local_settings_ec2.py",
+    "qa": "config/local_settings_qa.py",
+    "qa_supreme": "config/local_settings_qa_supreme.py"
 }
 
 ENVIRONMENT_VES = {
     "showcase": "/home/mangrover/virtual_env/datawinner",
-    "production": "/home/mangrover/ve",
     "ec2": "/home/mangrover/.virtualenvs/datawinners",
     "qa": "/home/twer/virtual_env/datawinner",
     "test": "/home/twer/virtual_env/datawinner",
@@ -35,7 +33,6 @@ ENVIRONMENT_VES = {
 
 ENVIRONMENT_TOMCAT = {
     "showcase": "/home/mangrover/tomcat",
-    "production": "/home/mangrover/tomcat7",
     "ec2": "/home/mangrover/tomcat7",
 }
 
@@ -225,13 +222,6 @@ def local():
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
 
 
-def production():
-    env.user = "mangrover"
-    env.hosts = ["178.79.185.34"]
-    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
-    env.warn_only = True
-
-
 def ec2():
     env.user = "mangrover"
     env.hosts = ["54.243.31.50"]
@@ -417,14 +407,6 @@ def custom_reports_deploy(code_dir, environment='showcase'):
 
     with cd('%s/bin/' % ENVIRONMENT_TOMCAT[environment]):
         run('./catalina.sh start')
-
-
-def deploy_to_qa():
-    production_deploy(code_dir="/home/twer/workspace", environment="qa")
-
-
-def test_deploy_against_qa_machine():
-    production_deploy(code_dir="/home/twer/workspace_for_script_test", branch_name="origin/release", environment="test")
 
 
 def remove_cache(context):

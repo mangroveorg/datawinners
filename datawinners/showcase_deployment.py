@@ -57,9 +57,9 @@ def deploy(build_number, home_dir, virtual_env, environment="test", branch="mast
         build_number = run("curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
     
     ENVIRONMENT_CONFIGURATIONS = {
-        "showcase": "showcase_local_settings.py",
-        "test": "test_local_settings.py",
-        "master": "showcase_local_settings.py",
+        "showcase": "local_settings_showcase.py",
+        "test": "local_settings_test.py",
+        "master": "local_settings_showcase.py",
         "beta": "local_settings.py"
     }
 
