@@ -1,4 +1,3 @@
-import logging
 from django.conf import settings
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.accountmanagement.post_activation_events import create_feed_database
@@ -83,11 +82,15 @@ class FeedBuilder:
                 self.dbm.database_name, survey_response.id, exception.message))
 
     def migrate_db(self):
+        self.logger.info('\n ============================================= Start =============================================\n')
+        self.logger.info('Start  db  : %s' % self.dbm.database_name)
         rows = self.dbm.database.iterview(UNDELETED_SURVEY_RESPONSE, BATCH_SIZE, reduce=False)
         for row in rows:
             survey_response_doc = SurveyResponse.__document_class__.wrap(row['value'])
             survey_response = SurveyResponse.new_from_doc(dbm=self.dbm, doc=survey_response_doc)
             self._create_feed_doc(survey_response)
+        self.logger.info('\n ========================================= End ==================================================\n')
+
 
     def migrate_document(self, survey_response_id):
         survey_response = SurveyResponse.get(self.dbm, survey_response_id)

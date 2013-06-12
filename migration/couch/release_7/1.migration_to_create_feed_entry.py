@@ -17,7 +17,6 @@ logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_1.log',
 
 
 def migrate_survey_response_to_feed(all_db_names):
-    logging.info('\nStart ==========================================================================================\n')
     for database in all_db_names:
         try:
             if should_not_skip(database):
@@ -25,7 +24,6 @@ def migrate_survey_response_to_feed(all_db_names):
                 FeedBuilder(database, logging.getLogger(__name__)).migrate_db()
         except Exception as e:
             logging.exception("Failed Database: %s Error %s" % (database, e.message))
-    logging.info('\n End ===========================================================================================\n')
 
 
 def all_db_names(server, credentials):
