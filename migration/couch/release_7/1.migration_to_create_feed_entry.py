@@ -1,3 +1,8 @@
+import sys
+
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0, ".")
+
 import logging
 import requests
 from datawinners.feeds.migrate import FeedBuilder
@@ -25,7 +30,7 @@ def migrate_survey_response_to_feed(all_db_names):
 
 def all_db_names(server, credentials):
     all_dbs = requests.get(server + "/_all_dbs", auth=credentials)
-    return filter(lambda x: x.startswith('hni_'), all_dbs.json())
+    return filter(lambda x: x.startswith('hni_'), all_dbs.json)
 
 
 db_names = all_db_names(COUCHDBMAIN_SERVER, (settings.COUCHDBMAIN_USERNAME, settings.COUCHDBMAIN_PASSWORD))
