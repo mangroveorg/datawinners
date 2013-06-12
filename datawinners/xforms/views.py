@@ -5,13 +5,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django_digest.decorators import httpdigest
 from datawinners.feeds.database import get_feeds_database
 from feeds.mail_client import mail_feed_errors
+from datawinners.main.database import get_database_manager
 from mangrove.transport.contract.request import Request
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
 from mangrove.transport.xforms.xform import list_all_forms, xform_for
 from datawinners.accountmanagement.models import Organization
 from datawinners.alldata.helper import get_all_project_for_user
-from datawinners.main.utils import get_database_manager
 from django.contrib.gis.utils import GeoIP
 from messageprovider.messages import SMART_PHONE
 

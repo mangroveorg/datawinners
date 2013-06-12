@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from datawinners.accountmanagement.models import Organization
 from datawinners.location.LocationTree import   get_location_groups_for_country
 from datawinners.location.utils import map_location_groups_to_categories
-from datawinners.main.utils import get_database_manager
+from main.database import get_database_manager
 
 
 @csrf_response_exempt

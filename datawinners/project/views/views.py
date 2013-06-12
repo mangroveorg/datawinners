@@ -14,10 +14,10 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from datawinners.accountmanagement.views import session_not_expired
-from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.view_models import ReporterEntity
 from datawinners.feeds.database import get_feeds_database
 from feeds.mail_client import mail_feed_errors
+from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
 from django.utils.translation import ugettext_lazy as _, get_language, activate
@@ -44,7 +44,6 @@ import datawinners.utils as utils
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_info
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm

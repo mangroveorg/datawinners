@@ -5,10 +5,10 @@ from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
-from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
+from main.database import get_database_manager
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes

@@ -1,8 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners.settings import CRS_ORG_ID
-from datawinners.main.utils import get_database_manager
 from datawinners.project import models
 from django.utils.translation import ugettext_lazy as _
+from datawinners.main.database import get_database_manager
 
 def get_all_project_for_user(user):
     if user.get_profile().reporter:

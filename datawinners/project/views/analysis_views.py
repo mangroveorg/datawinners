@@ -4,11 +4,12 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.accountmanagement.views import session_not_expired
+from main.database import get_database_manager
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.json_codecs import encode_json
 
 from datawinners.accountmanagement.views import is_datasender
-from datawinners.main.utils import get_database_manager, timebox
+from datawinners.main.utils import  timebox
 from datawinners.accountmanagement.views import is_not_expired
 from datawinners.project import header_helper, helper
 from datawinners.project.ExcelHeader import ExcelFileAnalysisHeader

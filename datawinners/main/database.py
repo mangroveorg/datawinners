@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from accountmanagement.models import OrganizationSetting
 from main.utils import get_database_name
+from mangrove.datastore.database import  get_db_manager as mangrove_db_manager
+from datawinners import settings
 
 def test_document_stores():
     document_stores = []
@@ -12,3 +14,12 @@ def test_document_stores():
 
 def document_stores():
     return [org.document_store for org in OrganizationSetting.objects.all()]
+
+
+def get_db_manager(database_name):
+    return mangrove_db_manager(server=settings.COUCH_DB_SERVER, database=database_name,
+        credentials=settings.COUCHDBMAIN_CREDENTIALS)
+
+
+def get_database_manager(user):
+    return get_db_manager(get_database_name(user))

@@ -14,6 +14,7 @@ from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language
 from datawinners import utils
 from datawinners.project.view_models import ReporterEntity
+from datawinners.main.database import get_database_manager
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -25,7 +26,7 @@ from datawinners.entity.helper import create_registration_form, process_create_d
     delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
-from datawinners.main.utils import get_database_manager, include_of_type
+from datawinners.main.utils import  include_of_type
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
 
 from datawinners.messageprovider.messages import exception_messages, WEB

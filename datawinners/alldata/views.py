@@ -8,8 +8,8 @@ from dataextraction.helper import convert_to_json_response
 from datawinners.accountmanagement.views import is_new_user, is_allowed_to_view_reports
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
 from datawinners.settings import CRS_ORG_ID
-from datawinners.main.utils import get_database_manager
 from datawinners.project.models import ProjectState, Project
+from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_all_entities
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.form_model.form_model import FormModel

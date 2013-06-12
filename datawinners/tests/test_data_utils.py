@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.contrib.auth.models import User, Group
-from datawinners.main.utils import get_database_manager
+from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity_type import define_type
 from datawinners.entity.helper import create_registration_form
 from datawinners.common.constant import DEFAULT_LANGUAGE

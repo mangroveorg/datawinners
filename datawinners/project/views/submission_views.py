@@ -13,6 +13,7 @@ from django.utils.translation import ugettext
 from accountmanagement.models import NGOUserProfile
 from feeds.database import get_feeds_database
 from feeds.mail_client import mail_feed_errors
+from main.database import get_database_manager
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -24,7 +25,6 @@ from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.utils.json_codecs import encode_json
 
 from datawinners.accountmanagement.views import is_datasender
-from datawinners.main.utils import get_database_manager
 from datawinners.accountmanagement.views import is_not_expired
 from datawinners.project import helper
 from datawinners.project.ExcelHeader import  ExcelFileSubmissionHeader
