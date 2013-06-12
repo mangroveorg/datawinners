@@ -8,7 +8,7 @@ class ProjectReviewTestPage(Page):
 
     def get_reminder_status(self):
         wait = ui.WebDriverWait(self.driver,15)
-        wait.until(lambda driver: driver.find(REMINDER_STATUS))
+        wait.until(lambda driver: driver.find(REMINDER_SECTION))
         self.driver.find(REMINDER_SECTION).click()
         wait.until(lambda driver: driver.find(REMINDER_STATUS).text)
         return self.driver.find(REMINDER_STATUS).text
