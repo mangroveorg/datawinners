@@ -1,17 +1,21 @@
 from django.core.management.base import BaseCommand
 from datawinners import  initializer
-from datawinners.main.initial_couch_fixtures import load_test_managers, load_all_managers
+from datawinners.main.datastore import document_stores, test_document_stores
+from mangrove.datastore.database import get_db_manager
+from datawinners import settings
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         if "syncall" in args:
-            managers = load_all_managers()
+            db_names = document_stores()
         else:
-            managers = load_test_managers()
+            db_names = test_document_stores()
 
-        for manager in managers:
-            print ("Database %s") % (manager.database_name,)
+        for database_name in db_names:
+            manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=database_name,
+                credentials=settings.COUCHDBMAIN_CREDENTIALS)
+            print ("Database %s") % (database_name)
             print "Syncing....."
             initializer.run(manager)
             print "Done."
