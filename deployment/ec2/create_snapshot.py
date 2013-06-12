@@ -34,7 +34,7 @@ def date_compare(snap1, snap2):
     return 1
 
 snapshots.sort(date_compare)
-snapshots = [s for s in snapshots if s.description.index("Created automatically at ") == 0]
+snapshots = [s for s in snapshots if s.description.find("Created automatically at ") == 0]
 delta = len(snapshots) - keep
 for i in range(delta):
     print 'Deleting snapshot ' + snapshots[i].description
