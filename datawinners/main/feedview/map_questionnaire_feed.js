@@ -1,9 +1,9 @@
 function (doc) {
     if (doc.document_type == 'EnrichedSurveyResponse') {
-        var result = {'id':doc._id, 'data_sender_id':doc.data_sender['id'], 'submission_modified_time':doc.survey_response_modified_time,'feed_modified_time':doc.modified};
+        var result = {'id': doc._id, 'data_sender_id': doc.data_sender['id'], 'submission_modified_time': doc.survey_response_modified_time, 'feed_modified_time': doc.modified};
         var output_values = doc.values;
         if (doc.status == 'success') {
-            output_values = success_values(doc.values)
+            output_values = success_values(doc.values);
         }
         result['values'] = output_values;
         result['status'] = status(doc);
@@ -14,8 +14,7 @@ function (doc) {
         var result = {};
         for (key in values) {
             if (values[key].is_entity_question) {
-                for (answer_key in values[key].answer)
-                    result[key] = answer_key
+                result[key] = values[key].answer.id
             } else if (values[key].type == 'select1' || values[key].type == 'select') {
                 var choices = []
                 for (choice in values[key].answer) {

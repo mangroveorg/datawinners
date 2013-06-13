@@ -76,24 +76,3 @@ def httpbasic(view, realm = "dw"):
                                      lambda u: u.is_authenticated(),
                                      realm, *args, **kwargs)
     return view_decorator
-
-def has_perm_or_basicauth(perm, realm = ""):
-    """
-    This is similar to the above decorator 'logged_in_or_basicauth'
-    except that it requires the logged in user to have a specific
-    permission.
-
-    Use:
-
-    @logged_in_or_basicauth('asforums.view_forumcollection')
-    def your_view:
-        ...
-
-    """
-    def view_decorator(func):
-        def wrapper(request, *args, **kwargs):
-            return view_or_basicauth(func, request,
-                                     lambda u: u.has_perm(perm),
-                                     realm, *args, **kwargs)
-        return wrapper
-    return view_decorator
