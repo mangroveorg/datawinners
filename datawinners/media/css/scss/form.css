@@ -174,6 +174,8 @@ input[type=text], textarea {
 
 input[type=button] {
   border: 0px; }
+input.button {
+  height: 33px; }
 
 a {
   color: #0070ac;
@@ -225,7 +227,9 @@ select {
   padding: 6px 23px 5px 22px;
   cursor: pointer;
   cursor: hand;
-  opacity: 0.9; }
+  opacity: 0.9;
+  font-size: 15px;
+  height: 20px; }
   .button:hover {
     -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
     box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
@@ -445,8 +449,13 @@ select {
     #delete_project_block .cancel_link.cancel_en {
       margin-left: 100px !important; }
 
-#activate_project_block .cancel_link {
+#all_project_block .cancel_link, #activate_project_block .cancel_link {
   margin-left: 100px; }
+
+#web_user_block a.cancel_link {
+  margin-left: 631px; }
+  #web_user_block a.cancel_link.cancel_en {
+    margin-left: 670px; }
 
 .right_aligned_button {
   float: right;

@@ -228,6 +228,7 @@ table.no_border {
 .cancel_link {
   color: #0070AC !important ;
   margin-right: 10px;
+  margin-top: 6px;
 }
 
 /* Titles */
@@ -412,7 +413,11 @@ span.tooltip {
 }
 
 #subject_warning_message a.cancel_link{
-    margin-left: 197px;
+    margin-left: 194px;
+}
+
+#questionnaire_code_change a.cancel_link{
+    margin-left: 130px;
 }
 
 .ui-dialog-titlebar-close {

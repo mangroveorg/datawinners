@@ -31,6 +31,8 @@
   .edit_submission_heading .static-text {
     display: inline-block;
     margin-top: 6px; }
+  .edit_submission_heading + div.message-box {
+    margin: 10px 0; }
 
 .action-section {
   display: inline-block;
