@@ -75,21 +75,23 @@ class FeedBuilder:
             self._migrate(survey_response)
             self._log_success_message(survey_response)
         except (ProjectNotFoundException, FormModelDoesNotExistsException) as exception:
-            self.logger.error('db_name: %s , failed survey_response_id : %s, error : %s' % (
-                self.dbm.database_name, survey_response.id, exception.message))
+            self.logger.error('db_name: %s , exception: %s failed survey_response_id : %s, error : %s' % (
+                self.dbm.database_name, exception.__name__, survey_response.id, exception.message))
         except Exception as exception:
             self.logger.exception('db_name: %s , failed survey_response_id : %s, error : %s' % (
                 self.dbm.database_name, survey_response.id, exception.message))
 
     def migrate_db(self):
-        self.logger.info('\n ============================================= Start =============================================\n')
+        self.logger.info(
+            '\n ============================================= Start =============================================\n')
         self.logger.info('Start  db  : %s' % self.dbm.database_name)
         rows = self.dbm.database.iterview(UNDELETED_SURVEY_RESPONSE, BATCH_SIZE, reduce=False)
         for row in rows:
             survey_response_doc = SurveyResponse.__document_class__.wrap(row['value'])
             survey_response = SurveyResponse.new_from_doc(dbm=self.dbm, doc=survey_response_doc)
             self._create_feed_doc(survey_response)
-        self.logger.info('\n ========================================= End ==================================================\n')
+        self.logger.info(
+            '\n ========================================= End ==================================================\n')
 
 
     def migrate_document(self, survey_response_id):
