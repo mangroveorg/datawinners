@@ -2,13 +2,13 @@
 from django.core.management.base import BaseCommand
 from datawinners.main.initial_couch_fixtures import load_data
 from datawinners.main.database import   get_db_manager
-from main.management.commands.utils import document_stores_to_process
+from main.management.sync_changed_views import SyncOnlyChangedViews
+from datawinners.main.management.commands.utils import document_stores_to_process
 from mangrove.datastore.database import _delete_db_and_remove_db_manager
-from mangrove.bootstrap import initializer
 
 
 class Command(BaseCommand):
-    def handle(self, *args, **options):
+     def handle(self, *args, **options):
         for database_name in document_stores_to_process(args):
             print ("Database %s") % (database_name,)
             print 'Deleting...'
@@ -16,9 +16,7 @@ class Command(BaseCommand):
             _delete_db_and_remove_db_manager(manager)
             recreated_manager = get_db_manager(database_name)
             print "Syncing Views....."
-            initializer.sync_views(recreated_manager)
-
+            SyncOnlyChangedViews().sync_view(recreated_manager)
         print "Loading data....."
         load_data()
         print "Done."
-

@@ -11,6 +11,7 @@ class Command(BaseCommand):
             print ("Database %s") % (database_name,)
             print "Syncing Views....."
             manager = get_db_manager(database_name)
+            #force sync all views
             initializer.sync_views(manager)
             sync_views(manager)
             print "Done."

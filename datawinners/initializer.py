@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
-from datawinners.main.utils import  sync_views, sync_feed_views
+from datawinners.main.utils import  sync_views
 
 from mangrove.bootstrap import initializer as mangrove_intializer
 from mangrove.datastore.datadict import get_or_create_data_dict
@@ -35,5 +35,3 @@ def run(manager):
     mangrove_intializer.run(manager)
     create_default_reporter(manager)
 
-def sync_feed(manager):
-    sync_feed_views(manager)

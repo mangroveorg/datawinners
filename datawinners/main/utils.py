@@ -43,11 +43,6 @@ def sync_views(dbm):
     sync_views_functions(dbm, view_js)
 
 
-def sync_feed_views(dbm):
-    """Updates or Creates a standard set of views in the feeds database"""
-    view_js = find_views('feedview')
-    sync_views_functions(dbm, view_js)
-
 def sync_views_functions(dbm, view_js):
     for v in view_js.keys():
         funcs = view_js[v]
