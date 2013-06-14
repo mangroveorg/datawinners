@@ -86,7 +86,7 @@ class TestCreateProject(BaseTest):
         self.assertEqual(warning_message, fetch_(WARNING_MESSAGE, from_(VALID_DATA)))
 
     @attr('functional_test', 'smoke')
-    def test_should_not_create_project_if_description_longer_than_130_chars(self):
+    def test_should_not_create_project_if_description_longer_than_300_chars(self):
         create_project_page = self.prerequisites_of_create_project()
         self.assertFalse(create_project_page.description_has_error())
         time.sleep(1)
