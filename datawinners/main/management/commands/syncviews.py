@@ -13,7 +13,7 @@ class Command(BaseCommand):
             try:
                 SyncOnlyChangedViews().sync_view(manager)
             except Exception as e:
-                print "ERROR " + e.message
+#                print "ERROR " + e.message
                 traceback.print_exc(file=sys.stdout)
             print "Done."
 
