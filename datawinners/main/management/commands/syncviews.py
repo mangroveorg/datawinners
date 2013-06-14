@@ -5,8 +5,6 @@ from main.management.sync_changed_views import SyncOnlyChangedViews
 from main.management.commands.utils import document_stores_to_process
 import traceback
 
-
-
 class Command(BaseCommand):
     def handle(self, *args, **options):
         for database_name in document_stores_to_process(args):
@@ -15,7 +13,7 @@ class Command(BaseCommand):
             try:
                 SyncOnlyChangedViews().sync_view(manager)
             except Exception as e:
-                print "ERROR %s" %e.message
+                print ("ERROR %s" % e.message)
                 traceback.print_exc(file=sys.stdout)
             print "Done."
 
