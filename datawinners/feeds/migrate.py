@@ -75,10 +75,10 @@ class FeedBuilder:
             self._migrate(survey_response)
             self._log_success_message(survey_response)
         except (ProjectNotFoundException, FormModelDoesNotExistsException) as exception:
-            self.logger.error('db_name: %s , exception: %s failed survey_response_id : %s, error : %s' % (
-                self.dbm.database_name, exception.__name__, survey_response.id, exception.message))
+            self.logger.error('db_name: %s , exception: %s, failed survey_response_id : %s, error : %s' % (
+                self.dbm.database_name, exception.__class__.__name__, survey_response.id, exception.message))
         except Exception as exception:
-            self.logger.exception('db_name: %s , failed survey_response_id : %s, error : %s' % (
+            self.logger.exception('db_name: %s , exception: Other, failed survey_response_id : %s, error : %s' % (
                 self.dbm.database_name, survey_response.id, exception.message))
 
     def migrate_db(self):
