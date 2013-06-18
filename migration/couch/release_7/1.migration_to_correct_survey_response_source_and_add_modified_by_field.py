@@ -56,24 +56,23 @@ def migrate(database_name):
             survey_response = SurveyResponse.new_from_doc(dbm, doc)
             remove_attr_source_from_survey_response(survey_response)
 
-            form_model = _get_form_model(dbm, form_model_dict, survey_response)
+            #form_model = _get_form_model(dbm, form_model_dict, survey_response)
             data_sender = get_data_sender_by_source(dbm, org_id, original_source,survey_response.channel)
 
             survey_response.modified_by = data_sender[1]
 
-            if form_model.entity_type[0] == 'reporter':
+            #if form_model.entity_type[0] == 'reporter':
+            try:
                 rep_id = survey_response.values['eid']
-                try:
-                    if not data_sender_dict.get(rep_id):
-                        data_sender_dict.update({rep_id:get_by_short_code_include_voided(dbm,rep_id,['reporter'])})
-                    if data_sender[1] != rep_id:
-                        survey_response.origin = data_sender_dict.get(rep_id).data['mobile_number']['value']
-                        survey_response.channel = 'sms'
-                    else:
-                        survey_response.origin = data_sender[2]
-                except DataObjectNotFound as e:
-                    logging.exception("Failed Database: %s Error %s" % (database_name, e.message))
-            else:
+                if not data_sender_dict.get(rep_id):
+                    data_sender_dict.update({rep_id:get_by_short_code_include_voided(dbm,rep_id,['reporter'])})
+                if data_sender[1] != rep_id:
+                    survey_response.origin = data_sender_dict.get(rep_id).data['mobile_number']['value']
+                    survey_response.channel = 'sms'
+                else:
+                    survey_response.origin = data_sender[2]
+            except (DataObjectNotFound, KeyError) as e:
+                logging.info("rep info not found for subject(ignored): %s " % (survey_response.uuid))
                 survey_response.origin = data_sender[2]
             survey_response.save()
     logging.info('Completed Migration: %s' % database_name )
@@ -94,5 +93,4 @@ def migrate_survey_response_origin(all_db_names):
         except Exception as e:
             logging.exception("Failed Database: %s Error %s" % (database, e.message))
 
-db_names = all_db_names()
-migrate_survey_response_origin(db_names)
+migrate_survey_response_origin(all_db_names())
