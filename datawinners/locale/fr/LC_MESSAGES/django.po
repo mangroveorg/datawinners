@@ -4233,3 +4233,41 @@ msgstr "Le numéro d’identification unique %s est déjà utilisé pour le/la %
 
 msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
 msgstr "Erreur. Réponse incorrecte pour %s. Veuillez revoir le Formulaire d’enregistrement et renvoyez tout le SMS corrigé"
+
+
+
+msgid "Activate Your DataWinners Account"
+msgstr "Activer votre compte DataWinners"
+
+msgid "Enter a password and click on Activate to activate your DataWinners account."
+msgstr "Tapez un mot de passe et cliquez sur Activer pour activer votre compte DataWinners."
+
+msgid "Confirm Password"
+msgstr "Confirmer le mot de passe"
+
+msgid "How to Send Data"
+msgstr "Comment Envoyez des Données"
+
+msgid "DataWinners allows you to send your data 3 different ways. Choose the channel most convenient for you."
+msgstr "DataWinners vous permet d’envoyer vos données de 3 différentes manières. Choisissez le canal qui vous convient le mieux."
+
+msgid "Use any computer connected to the Internet to send in data. Log in to your DataWinners account to fill out the Questionnaire online."
+msgstr "Utilisez n’importe quel ordinateur connecté à Internet pour envoyer des données. Connectez-vous à votre compte DataWinners pour remplir le Questionnaire en ligne."
+
+msgid "Android Smartphone"
+msgstr "Smartphone Android"
+
+msgid "Use any Android Smartphone to send data. Download the Questionnaires directly onto your phone. Log in to your DataWinners account for further instructions."
+msgstr "Utilisez un Smartphone Android pour envoyer des données. Téléchargez les Questionnaires directement sur votre téléphone. Connectez-vous à votre compte DataWinners pour plus d’instructions."
+
+msgid "Use any simple mobile phone to send data using a single SMS. Ask your project manager for the SMS Questionnaire."
+msgstr "Utilisez un simple téléphone mobile pour envoyer des données en utilisant un seul SMS. Demandez le Questionnaire SMS à votre gestionnaire de projet."
+
+msgid "Need Help?"
+msgstr "Besoin d’Aide?"
+
+msgid "If you need help contact your project manager or send us an Email at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>. We're here to help!"
+msgstr "Si vous avez besoin d’aide, contactez votre gestionnaire de projet ou envoyez-nous un email à l’adresse <a href='mailto:support@datawinners.com'>support@datawinners.com</a>. Nous sommes là pour vous aider!"
+
+msgid "Example: Minimum of 6 characters in length"
+msgstr "Exemple: Au minimum 6 caratères"

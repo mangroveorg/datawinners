@@ -1,0 +1,71 @@
+{% extends 'layout_registration.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Activate Your DataWinners Account" %}{% endblock %}
+{% block section_title %}{% trans "Activate Your DataWinners Account" %}{% endblock %}
+{% block content %}
+{% if validlink %}
+    <div>
+            <fieldset>
+                <h6 class="section_description">{% trans "Enter a password and click on Activate to activate your DataWinners account." %}</h6>
+                <form id="activate_datasender_form_{% trans "en" %}" action="" method="POST" action="">
+                    {% csrf_token %}
+                        <ul class="margin_top_20">
+                            <li id="newPassword1" class="{{ form.new_password1.css_classes }} form-row-10px">
+                                {{ form.new_password1.label_tag }}
+                                {{ form.new_password1 }}
+                                <p class="italic_grey clear_both margin_left_180">{% trans "Example: Minimum of 6 characters in length" %}</p>
+                                {{ form.new_password1.errors }}
+                            </li>
+                            <li class="{{ form.new_password2.css_classes  }} form-row-10px">
+                                <label for="id_new_password2">{% trans "Confirm Password" %}</label>
+                                {{ form.new_password2 }}
+                                {{ form.new_password2.errors }}
+                            </li>
+                            <li class="span-8"><input id="passwordResetSubmit" type="submit" value="{% trans 'Activate' %}" class="button"/></li>
+                        </ul>
+                </form>
+            </fieldset>
+        </div>
+
+{% else %}
+
+    <div>
+        <div>
+            <p class="message-box">{% trans "Account activation failed" %}</p>
+        </div>
+    </div>
+
+{% endif %}
+{% endblock %}
+{% block right_hand_section %}
+    <div class="grid_7 right_hand_section alpha omega about_datawinners margin_top_10">
+        <p class="margin_top_null"><b>{% trans "How to Send Data" %}</b><br>
+                {% trans "DataWinners allows you to send your data 3 different ways. Choose the channel most convenient for you." %}
+            <ol class="margin_left_20">
+                <li>
+                    <b>{% trans "Web" %}</b>
+
+                    <span>{% trans "Use any computer connected to the Internet to send in data. Log in to your DataWinners account to fill out the Questionnaire online." %}</span>
+                </li>
+                <li>
+                    <b>{% trans "Android Smartphone" %}</b>
+
+                    <span>{% trans "Use any Android Smartphone to send data. Download the Questionnaires directly onto your phone. Log in to your DataWinners account for further instructions." %}</span>
+                </li>
+                <li>
+                    <b>{% trans "SMS" %}</b>
+
+                    <span>{% trans "Use any simple mobile phone to send data using a single SMS. Ask your project manager for the SMS Questionnaire." %}</span>
+                </li>
+            </ol>
+            </p>
+    </div>
+{% endblock %}
+{% block right_second_hand_section %}
+    <div class="grid_7 right_hand_section alpha omega subscription_details" style="min-height: 50px!important;">
+        <p class="margin_top_null min_height_50"><b>{% trans "Need Help?" %}</b><br>
+            {% trans "If you need help contact your project manager or send us an Email at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>. We're here to help!" %}
+        </p>
+    </div>
+{% endblock  %}
+

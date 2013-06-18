@@ -72,7 +72,7 @@
   margin-left: 20px; }
 
 .margin_left_180 {
-  margin-left: 180px; }
+  margin-left: 180px !important; }
 
 .margin_right_20 {
   margin-right: 20px; }

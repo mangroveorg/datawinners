@@ -4155,3 +4155,39 @@ msgstr ""
 
 msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
 msgstr ""
+
+msgid "Activate Your DataWinners Account"
+msgstr ""
+
+msgid "Enter a password and click on Activate to activate your DataWinners account."
+msgstr ""
+
+msgid "Confirm Password"
+msgstr ""
+
+msgid "How to Send Data"
+msgstr ""
+
+msgid "DataWinners allows you to send your data 3 different ways. Choose the channel most convenient for you."
+msgstr ""
+
+msgid "Use any computer connected to the Internet to send in data. Log in to your DataWinners account to fill out the Questionnaire online."
+msgstr ""
+
+msgid "Android Smartphone"
+msgstr ""
+
+msgid "Use any Android Smartphone to send data. Download the Questionnaires directly onto your phone. Log in to your DataWinners account for further instructions."
+msgstr ""
+
+msgid "Use any simple mobile phone to send data using a single SMS. Ask your project manager for the SMS Questionnaire."
+msgstr ""
+
+msgid "Need Help?"
+msgstr ""
+
+msgid "If you need help contact your project manager or send us an Email at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>. We're here to help!"
+msgstr ""
+
+msgid "Example: Minimum of 6 characters in length"
+msgstr ""
