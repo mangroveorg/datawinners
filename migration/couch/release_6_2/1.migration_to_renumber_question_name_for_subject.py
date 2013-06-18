@@ -6,7 +6,7 @@ from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.submission import Submission, SubmissionLogDocument
 from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration
-from mangrove.datastore.entity import entity_by_short_code
+from mangrove.datastore.entity import  get_by_short_code_include_voided
 
 SERVER = 'http://localhost:5984'
 log_file = open('/var/log/datawinners/migration_release_6_2_1.log', 'a')
@@ -88,7 +88,7 @@ def migrate_entity(manager, form_model, datarecord_doc, data_to_restore):
     if len(submission_log_doc.rows):
         submission_log = get_instance_from_doc(manager, submission_log_doc.rows[0]['value'], classname=Submission, documentclassname=SubmissionLogDocument)
         entity_uid = datarecord_doc['value']['data']['short_code']['value']
-        entity = entity_by_short_code(manager, entity_uid, form_model.entity_type)
+        entity = get_by_short_code_include_voided(manager, entity_uid, form_model.entity_type)
         cleaned_data, errors = form_model.validate_submission(values=submission_log.values)
         data = [(form_model._get_field_by_code(code).name, cleaned_data.get(code), form_model._get_field_by_code(code).ddtype)
             for code in data_to_restore]

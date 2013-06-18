@@ -37,9 +37,6 @@ class DataSenderHelper(object):
             DataSender(data_sender_info[2], ugettext(NOT_AVAILABLE_DS), None)) for data_sender_info in
                 data_sender_info_list}
 
-    def _get_data_sender_for_sms(self, submission):
-        return tuple(self._data_sender_by_mobile(submission.origin) + [submission.origin])
-
     def _get_data_sender_for_not_sms(self, submission, org_id):
         try:
             data_sender = data_sender_by_email(org_id, submission.origin)
