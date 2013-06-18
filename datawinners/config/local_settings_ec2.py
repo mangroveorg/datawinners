@@ -47,3 +47,4 @@ HNI_BLOG_FEED = 'http://datawinners.wordpress.com/feed/'
 COMPRESS_ENABLED = True
 
 FEEDS_ENABLED=False
+MAX_FEED_ENTRIES=10000

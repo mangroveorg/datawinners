@@ -37,3 +37,4 @@ HNI_BLOG_FEED = 'http://datawinners.wordpress.com/feed/'
 CRS_ORG_ID = 'TVZ184210'
 
 FEEDS_ENABLED=True
+MAX_FEED_ENTRIES=10000
