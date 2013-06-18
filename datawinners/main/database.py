@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from accountmanagement.models import OrganizationSetting
-from main.utils import get_database_name
+from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.main.utils import get_database_name
 from mangrove.datastore.database import  get_db_manager as mangrove_db_manager
 from datawinners import settings
 
