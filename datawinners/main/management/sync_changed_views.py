@@ -1,10 +1,16 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
 class SyncOnlyChangedViews():
     def update_views(self, current_views, new_views, manager):
         for key, value in new_views.iteritems():
             if key not in current_views or current_views[key] != new_views[key]:
                 map_function = (value['map'] if 'map' in value else None)
                 reduce_function = (value['reduce'] if 'reduce' in value else None)
-                print "Syncing view ..... %s" % key
+                msg = "Syncing view ..... %s" % key
+                logger.info(msg)
+                print msg
                 manager.create_view(key, map_function, reduce_function)
 
     def sync_view(self, manager):
