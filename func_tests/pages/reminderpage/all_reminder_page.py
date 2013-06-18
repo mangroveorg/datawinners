@@ -1,6 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from framework.utils.common_utils import CommonUtilities
-from pages.broadcastSMSpage.broadcast_sms_page import BroadcastSmsPage
 from pages.page import Page
 from pages.reminderpage.all_reminder_locator import *
 from pages.reminderpage.reminder_settings_page import ReminderSettingsPage

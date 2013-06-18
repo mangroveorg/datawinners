@@ -6,7 +6,6 @@ from django.db import models
 from django.utils.translation import ugettext
 from django_countries import CountryField
 from datawinners.tests.data import LIMIT_TRIAL_ORG_MESSAGE_COUNT
-from datawinners.utils import generate_document_store_name
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from django.contrib.auth.models import User
 from django.utils.translation import get_language
@@ -89,6 +88,8 @@ class Organization(models.Model):
 
     #TODO Should be removed??
     def _configure_organization_settings(self):
+        from datawinners.utils import generate_document_store_name
+
         organization_setting = OrganizationSetting()
         organization_setting.organization = self
         self.organization_setting = organization_setting

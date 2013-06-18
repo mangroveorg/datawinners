@@ -4,12 +4,12 @@ from django.conf import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
-from mangrove.datastore.database import get_db_manager
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import create_entity
-from mangrove.datastore.datadict import   get_or_create_data_dict
+from mangrove.datastore.datadict import get_or_create_data_dict
 from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.datastore.queries import get_entity_count_for_type
+
 
 def create_feed_database(db_name):
     feed_manager = get_feed_db_from_main_db_name(db_name)
@@ -20,8 +20,9 @@ def create_feed_database(db_name):
 
 def create_org_database(db_name):
     from datawinners.initializer import run
+    from datawinners.main.database import get_db_manager
 
-    manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=db_name)
+    manager = get_db_manager(db_name)
     assert manager, "Could not create database manager for %s " % (db_name,)
     run(manager)
     return manager
@@ -57,16 +58,16 @@ def make_user_as_a_datasender(manager, organization, current_user_name, mobile_n
     total_entity = get_entity_count_for_type(manager, [REPORTER])
     reporter_short_code = 'rep' + str(total_entity + 1)
     entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=reporter_short_code,
-        location=[organization.country_name()])
+                           location=[organization.country_name()])
     mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
-        primitive_type='string')
+                                                 primitive_type='string')
     name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
     data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type)]
     entity.add_data(data=data)
 
     if organization.in_trial_mode:
         data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
-            organization=organization)
+                                                             organization=organization)
         data_sender.save()
     return entity.short_code
 

@@ -4,7 +4,6 @@ from framework.utils.data_fetcher import *
 from framework.utils.global_constant import WAIT_FOR_TITLE
 from pages.createdatasenderquestionnairepage.create_data_sender_questionnaire_page import CreateDataSenderQuestionnairePage
 from pages.createquestionnairepage.create_questionnaire_locator import *
-from pages.page import Page
 from tests.createquestionnairetests.create_questionnaire_data import *
 from framework.utils.common_utils import generateId, CommonUtilities
 from pages.createprojectpage.create_project_page import CreateProjectPage

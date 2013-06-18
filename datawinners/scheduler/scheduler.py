@@ -1,15 +1,16 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from _collections import defaultdict
 from datetime import date, datetime
-from datawinners import  settings
+import logging
+
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
 from datawinners.project.models import Project, get_reminder_repository
 from datawinners.scheduler.smsclient import SMSClient
+from datawinners.main.database import get_db_manager
 
-import logging
-from mangrove.datastore.database import get_db_manager
 
 logger = logging.getLogger("datawinners.reminders")
+
 
 def send_reminders():
     """
@@ -35,10 +36,9 @@ def send_reminders_scheduled_on(on_date, sms_client):
         for org in paid_organization:
             logger.info("Organization %s" % org.name)
             org_setting = OrganizationSetting.objects.filter(organization=org)[0]
-            manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=org_setting.document_store,
-                credentials=settings.COUCHDBMAIN_CREDENTIALS)
+            manager = get_db_manager(org_setting.document_store)
             send_reminders_for_an_organization(org, on_date, sms_client, from_number=org_setting.sms_tel_number,
-                dbm=manager)
+                                               dbm=manager)
         logger.info("Done sending reminders.")
     except Exception as e:
         logger.exception("Exception while sending reminders")

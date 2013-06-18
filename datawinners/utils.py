@@ -1,12 +1,14 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.template.defaultfilters import slugify
-import xlwt, re
+import re
 from datetime import datetime
-from mangrove.datastore.database import get_db_manager
+
+from django.template.defaultfilters import slugify
+import xlwt
 from django.utils.translation import ugettext_lazy as _, activate, get_language
-from datawinners import settings
 from django.contrib.auth.forms import PasswordResetForm
+from datawinners.main.database import get_db_manager
 from mangrove.form_model.field import ExcelDate
+
 
 VAR = "HNI"
 SUBMISSION_DATE_QUESTION = u'Submission Date'
@@ -34,8 +36,7 @@ def get_database_manager_for_org(organization):
     from datawinners.accountmanagement.models import OrganizationSetting
 
     organization_settings = OrganizationSetting.objects.get(organization=organization)
-    db = organization_settings.document_store
-    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db, credentials = settings.COUCHDBMAIN_CREDENTIALS)
+    return get_db_manager(organization_settings.document_store)
 
 
 def get_organization(request):

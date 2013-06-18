@@ -1,7 +1,7 @@
 from datetime import datetime
 import traceback
 import urllib2
-from mangrove.datastore.database import get_db_manager
+from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.submission import Submission, SubmissionLogDocument
@@ -17,6 +17,7 @@ def all_db_names(server):
     all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
     dbs = eval(all_dbs)
     return filter(lambda x: x.startswith('hni_'), dbs)
+
 
 db_names = all_db_names(SERVER)
 
@@ -37,7 +38,6 @@ function(doc) {
         }
     }
 }"""
-
 
 map_submission_log_datarecord_id = """
 function(doc){
@@ -60,13 +60,15 @@ function(doc){
     }
 }"""
 
+
 def get_instance_from_doc(manager, value, classname=FormModel, documentclassname=FormModelDocument):
     doc = documentclassname.wrap(value)
     instance = classname.new_from_doc(manager, doc)
     return instance
 
+
 def renumber_fields_name(form_model):
-    data_to_restore, max_question_names, existing_names = [],[],{}
+    data_to_restore, max_question_names, existing_names = [], [], {}
     data_length = 0
     for field in form_model.fields:
         if field.name.startswith("Question "):
@@ -79,27 +81,31 @@ def renumber_fields_name(form_model):
             data_to_restore.extend([field.code, current_code])
         else:
             data_length += 1
-        existing_names.update({field.name:field.code})
+        existing_names.update({field.name: field.code})
     return data_to_restore, data_length
 
 
 def migrate_entity(manager, form_model, datarecord_doc, data_to_restore):
-    submission_log_doc = manager.database.query(map_submission_log_datarecord_id, key=[datarecord_doc['value']['_id'], form_model.revision ])
+    submission_log_doc = manager.database.query(map_submission_log_datarecord_id,
+                                                key=[datarecord_doc['value']['_id'], form_model.revision])
     if len(submission_log_doc.rows):
-        submission_log = get_instance_from_doc(manager, submission_log_doc.rows[0]['value'], classname=Submission, documentclassname=SubmissionLogDocument)
+        submission_log = get_instance_from_doc(manager, submission_log_doc.rows[0]['value'], classname=Submission,
+                                               documentclassname=SubmissionLogDocument)
         entity_uid = datarecord_doc['value']['data']['short_code']['value']
         entity = get_by_short_code_include_voided(manager, entity_uid, form_model.entity_type)
         cleaned_data, errors = form_model.validate_submission(values=submission_log.values)
-        data = [(form_model._get_field_by_code(code).name, cleaned_data.get(code), form_model._get_field_by_code(code).ddtype)
-            for code in data_to_restore]
+        data = [(form_model._get_field_by_code(code).name, cleaned_data.get(code),
+                 form_model._get_field_by_code(code).ddtype)
+                for code in data_to_restore]
         entity.update_latest_data(data)
         entity.save()
+
 
 def migrate_db(database):
     log_statement(
         '\nStart migration on database : %s \n' % database)
     try:
-        manager = get_db_manager(server=SERVER, database=database)
+        manager = get_db_manager(database)
         subject_form_model_docs = manager.database.query(map_form_model_for_subject_questionnaires)
         mark_start_of_migration(database)
         for form_model_doc in subject_form_model_docs:
@@ -107,11 +113,12 @@ def migrate_db(database):
             log_statement(
                 "Process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
             data_to_restore, current_data_length = renumber_fields_name(form_model)
-            datarecord_docs = manager.database.query(map_datarecord_by_form_code, key=[form_model.form_code, current_data_length])
-            
-            for datarecord_doc in datarecord_docs :
+            datarecord_docs = manager.database.query(map_datarecord_by_form_code,
+                                                     key=[form_model.form_code, current_data_length])
+
+            for datarecord_doc in datarecord_docs:
                 migrate_entity(manager, form_model, datarecord_doc, data_to_restore)
-            
+
             form_model.save()
             log_statement(
                 "End process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
@@ -120,6 +127,7 @@ def migrate_db(database):
     except Exception as e:
         log_statement('error:%s:%s\n' % (e.message, database))
         traceback.print_exc(file=log_file)
+
 
 def migrate_story_2099(all_db_names):
     global skip_dbs
@@ -141,5 +149,6 @@ def migrate_story_2099(all_db_names):
 def log_statement(statement):
     print '%s : %s\n' % (datetime.utcnow(), statement)
     log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
+
 
 migrate_story_2099(db_names)

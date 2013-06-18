@@ -1,9 +1,9 @@
-from django.conf import settings
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.accountmanagement.post_activation_events import create_feed_database
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.models import Project
-from mangrove.datastore.database import DatabaseManager, get_db_manager
+from datawinners.main.database import get_db_manager
+from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.documents import EnrichedSurveyResponseDocument
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.feeds.enriched_survey_response import EnrichedSurveyResponseBuilder
@@ -31,7 +31,7 @@ def project_by_form_model_id(dbm, form_model_id):
 
 class FeedBuilder:
     def __init__(self, db_name, logger):
-        self.dbm = get_db_manager(settings.COUCH_DB_SERVER, db_name)
+        self.dbm = get_db_manager(db_name)
         self.feed_dbm = create_feed_database(db_name)
         self.logger = logger
 

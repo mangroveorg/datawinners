@@ -1,18 +1,19 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import datetime, timedelta
+
 from django.contrib.auth.models import User
 from mock import patch
-from datawinners import initializer, settings
+from pytz import UTC
+
+from datawinners import initializer
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
-from main.database import get_database_manager
-from mangrove.datastore.database import get_db_manager
+from datawinners.main.database import get_database_manager, get_db_manager
 from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
-from pytz import UTC
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
@@ -1647,8 +1648,7 @@ def load_test_managers():
 def load_all_managers():
     managers = []
     for org in OrganizationSetting.objects.all():
-        db = org.document_store
-        manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=db,credentials=settings.COUCHDBMAIN_CREDENTIALS)
+        manager = get_db_manager(org.document_store)
         managers.append(manager)
     return managers
 
@@ -1656,9 +1656,7 @@ def load_all_managers():
 def load_all_feed_managers():
     managers = []
     for org in OrganizationSetting.objects.all():
-        db = 'feed_' + org.document_store
-        manager = get_db_manager(server=settings.FEEDS_COUCH_SERVER, database=db,
-            credentials=settings.COUCHDBFEED_CREDENTIALS)
+        manager = get_db_manager('feed_' + org.document_store)
         managers.append(manager)
     return managers
 
