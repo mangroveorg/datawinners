@@ -19,7 +19,7 @@ class TestSubmissionViews(unittest.TestCase):
     def test_should_get_static_info_from_submission(self):
         with patch("datawinners.project.views.submission_views.get_data_sender") as get_data_sender:
             get_data_sender.return_value = ('Psub', 'rep2', 'tester@gmail.com')
-            survey_response_document = SurveyResponseDocument(source='tester@gmail.com', channel='web', status=False,
+            survey_response_document = SurveyResponseDocument(origin='tester@gmail.com', channel='web', status=False,
                 error_message="Some Error in submission")
             submission_date = datetime(2012, 02, 20, 12, 15, 44)
             survey_response_document.submitted_on = submission_date

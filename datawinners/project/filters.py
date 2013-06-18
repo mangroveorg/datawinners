@@ -54,7 +54,7 @@ class DataSenderFilter(object):
         return filter(lambda x: self._with_source(x), survey_responses)
 
     def _with_source(self, survey_response):
-        source = 'TEST' if survey_response.source == TEST_REPORTER_MOBILE_NUMBER else survey_response.source
+        source = 'TEST' if survey_response.origin == TEST_REPORTER_MOBILE_NUMBER else survey_response.origin
         return source in self.survey_response_sources
 
 

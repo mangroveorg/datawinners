@@ -10,19 +10,6 @@ class DataSenderHelper(object):
         self.manager = dbm
         self.form_code = form_code
 
-    def get_all_data_senders_ever_submitted(self, org_id):
-        submission_data_sender_info_list = self._get_all_submission_data_sender_info()
-
-        sms_data_sender_list = self._get_all_sms_data_senders()
-        non_sms_data_sender_list = list_data_sender(org_id)
-
-        sms_data_senders = self._get_all_data_senders_with_submission(sms_data_sender_list,
-            submission_data_sender_info_list, filter_function=self._is_submitted_via_sms)
-        non_sms_data_senders = self._get_all_data_senders_with_submission(non_sms_data_sender_list,
-            submission_data_sender_info_list, filter_function=self._is_not_submitted_via_sms)
-
-        return self._combine_channels(non_sms_data_senders.union(sms_data_senders))
-
     def _combine_channels(self, data_senders):
         keys = {x.name for x in data_senders}
         grouped_data_senders = [filter(lambda x: x.name == key, data_senders) for key in keys]
@@ -51,13 +38,13 @@ class DataSenderHelper(object):
                 data_sender_info_list}
 
     def _get_data_sender_for_sms(self, submission):
-        return tuple(self._data_sender_by_mobile(submission.source) + [submission.source])
+        return tuple(self._data_sender_by_mobile(submission.origin) + [submission.origin])
 
     def _get_data_sender_for_not_sms(self, submission, org_id):
         try:
-            data_sender = data_sender_by_email(org_id, submission.source)
+            data_sender = data_sender_by_email(org_id, submission.origin)
         except:
-            data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission.source)
+            data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission.origin)
 
         return data_sender
 
@@ -95,13 +82,13 @@ def get_data_sender(manager, org_id, submission):
     return data_sender if data_sender[0] != "TEST" else ("TEST", "n/a", "TEST")
 
 def get_data_sender_for_sms(manager, submission):
-    return tuple(data_sender_by_mobile(manager, submission.source) + [submission.source])
+    return tuple(data_sender_by_mobile(manager, submission.origin) + [submission.origin])
 
 def get_data_sender_for_not_sms(submission, org_id):
     try:
-        data_sender = data_sender_by_email(org_id, submission.source)
+        data_sender = data_sender_by_email(org_id, submission.origin)
     except:
-        data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission.source)
+        data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission.origin)
     return data_sender
 
 def data_sender_by_mobile(manager, mobile):
