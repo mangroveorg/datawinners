@@ -1797,8 +1797,8 @@ msgstr "Diso ny  kaodin'ny lisitry ny fanontaniana %s. Jereo eo amin'ny lisitry 
 msgid "This %s is not yet registered in the system. Please check the %s's unique ID number and resubmit."
 msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny kaody ID ho an'i %s ary avereno alefa ny SMS-nao"
 
-msgid "This %s %s is not registered in our system.Please register this %s or contact your supervisor."
-msgstr "Nia %s %s dia tsy tafiditra anaty solosaina. Ampidiro ny %s na antsoy ny tompon'andraikitra"
+msgid "Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
+msgstr "Diso. Ny %s %s dia mbola tsy ao anaty solosaina. Ampidiro ny %s na antsoy ny tompon’andraikitra."
 
 msgid "This telephone number is not registered in our system."
 msgstr "Tsy mbola tafiditra ao anatin'ny lisitra io nomerao telefaoninao io."
@@ -1823,8 +1823,8 @@ msgstr "Diso ny valin'ny fanontaniana t. Avereno alefa manontolo indray ny torom
 msgid "Invalid message format."
 msgstr "Tsy manara-penitra ny firafitry ny SMS-nao."
 
-msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
-msgstr "Diso ny SMS-nao. Avereno jerena ilay lisitry ny fanontaniana ary avereno alefa  indray  ny SMS."
+msgid "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."
+msgstr "Diso ny SMS. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina."
 
 msgid "The system is experiencing a problem right now. Please try again in a few minutes"
 msgstr "Mbola misy olana kely. Avereno indray azafady rehefa afaka minitra vitsy."
@@ -1853,8 +1853,8 @@ msgstr ""
 msgid "Which subject are you reporting on?"
 msgstr ""
 
-msgid "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
-msgstr "Diso ny SMS-nao. Tsy ampy na mihoatra ny isan'ny valiny nalefanao. Jereo ilay lisitry ny fanontaniana ary avereno alefa  indray  ny SMS."
+msgid "Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
+msgstr "Diso. Tsy ampy na mihoatra ny isan’ny valiny nalefanao. Jereo ilay lisitry ny fanontaniana azafady dia avereno alefa ny SMS manontolo."
 
 msgid "Privacy Policy"
 msgstr ""
@@ -2885,3 +2885,27 @@ msgstr ""
 
 msgid "Enter a word"
 msgstr ""
+
+msgid "and"
+msgstr "sy"
+
+msgid "ending_and"
+msgstr "ary"
+
+msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
+msgstr "Diso ny valin’ny %s. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina."
+
+msgid "sms_glue"
+msgstr " sy "
+
+msgid "question_prefix%s"
+msgstr "faha-%s"
+
+msgid "singular_question"
+msgstr "fanontaniana"
+
+msgid "plural_question"
+msgstr "fanontaniana"
+
+msgid "Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
+msgstr "Diso ny kaodin’ny lisitry ny fanontaniana %s. Jereo ny kaody marina eo amin’ilay lisitra ary avereno alefa manontolo ny SMS-nao manomboka eo amin’ilay kaody."

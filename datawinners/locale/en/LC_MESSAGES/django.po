@@ -1886,7 +1886,7 @@ msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
 msgstr ""
 
-msgid "This %s %s is not registered in our system.Please register this %s or contact your supervisor."
+msgid "Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
 msgstr ""
 
 msgid "This telephone number is not registered in our system."
@@ -1913,7 +1913,7 @@ msgstr ""
 msgid "Invalid message format."
 msgstr ""
 
-msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
+msgid "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."
 msgstr ""
 
 msgid "The system is experiencing a problem right now. Please try again in a few minutes"
@@ -2176,7 +2176,7 @@ msgstr ""
 msgid"Questionnaire ID %s doesnt exist."
 msgstr ""
 
-msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend SMS starting with this questionnaire code."
+msgid "Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
 msgstr ""
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
@@ -2333,7 +2333,7 @@ msgstr "Your Data Senders can submit data using SMS and the Internet."
 "<br/>SMS is an efficient data collection channel for questionnaires with less than 20 questions and where Data Senders have no Internet access. "
 "<br/>If any of your Data Senders have (or will have) access to the Internet, we recommened leaving the WEB box checked."
 
-msgid "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
+msgid "Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
 msgstr ""
 
 msgid "Privacy Policy"
@@ -4127,4 +4127,31 @@ msgid "Find GPS coordinates"
 msgstr ""
 
 msgid "Select a user"
+msgstr ""
+
+msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
+msgstr ""
+
+msgid "sms_glue"
+msgstr ", "
+
+msgid "question_prefix%s"
+msgstr "%s"
+
+msgid "and"
+msgstr "and"
+
+msgid "ending_and"
+msgstr "and"
+
+msgid "singular_question"
+msgstr "question"
+
+msgid "plural_question"
+msgstr "question"
+
+msgid "The Unique ID Number %s is already used for the %s %s. Register your %s with a different ID."
+msgstr ""
+
+msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
 msgstr ""

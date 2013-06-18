@@ -124,7 +124,8 @@ def submit_to_player(incoming_request):
         message = SMSResponse(response).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
-        message = ugettext("%s with %s = %s already exists.") % (ugettext(e.data[2]), ugettext(e.data[0]), e.data[1])
+        message = ugettext("The Unique ID Number %s is already used for the %s %s. Register your %s with a different ID.") % \
+                  (e.data[1], e.data[2], e.data[3], e.data[2])
     except Exception as exception:
         message = handle(exception, incoming_request)
 

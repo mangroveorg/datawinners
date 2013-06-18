@@ -46,7 +46,7 @@ EXTRA_PLUS_IN_BTW = {SENDER: "1234567890",
 PLUS_IN_THE_BEGINNING = {SENDER: "1234567890",
                          RECEIVER: "919880734937",
                          SMS: ". .cli002 .EID CID005 .NA Mr. Fessy .FA 58 .RD 17.05.2011 .BG b .SY ade .RM ac",
-                         ERROR_MSG: "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."}
+                         ERROR_MSG: "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."}
 
 UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
                             RECEIVER: "919880734937",
@@ -86,12 +86,12 @@ WITH_INVALID_GEO_CODE_FORMAT = {SENDER: "1234567890",
 ONLY_QUESTIONNAIRE_CODE = {SENDER: "1234567890",
                              RECEIVER: "919880734937",
                              SMS: "cli009",
-                             ERROR_MSG: "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."}
+                             ERROR_MSG: "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."}
 
 WRONG_NUMBER_OF_ARGS = {SENDER: "1234567890",
               RECEIVER: "919880734937",
               SMS: "cli009 cid003  Mr.Tessy  58  17.05.2011  b  ade ",
-              ERROR_MSG: "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."}
+              ERROR_MSG: "Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."}
 
 VALID_DATA_FOR_ORDERED_SMS = {SENDER: "1234567890",
               RECEIVER: "919880734937",
@@ -106,7 +106,7 @@ EXCEED_NAME_LENGTH_FOR_ORDERED_SMS = {SENDER: "1234567890",
 DOT_IN_THE_BEGINNING_FOR_ORDERED_SMS = {SENDER: "1234567890",
                          RECEIVER: "919880734937",
                          SMS: " cli011  cid003  Mr.Tessy  58  17.05.2011  b  ade  27.178057,-78.007789 a",
-                         ERROR_MSG: "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."}
+                         ERROR_MSG: "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."}
 
 UNREGISTERED_FROM_NUMBER_FOR_ORDERED_SMS = {SENDER: "123445567",
                             RECEIVER: "919880734937",

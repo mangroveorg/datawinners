@@ -1941,9 +1941,8 @@ msgid "This %s is not yet registered in the system. Please check the %s’s uniq
 msgstr "Ce/cette %s n'est pas enregistré(e) dans notre système. Vérifiez le numéro ID unique de %s et envoyez "
 "de nouveau le SMS"
 
-msgid "This %s %s is not registered in our system.Please register this %s or contact your supervisor."
-msgstr "Ce/cette %s %s n'est pas enregistre(e) dans notre systeme. Veuillez enregistrer ce/cette %s "
-"ou contacter votre superviseur."
+msgid "Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
+msgstr "Le/la %s %s n’est pas enregistré(e) dans notre système. Veuillez enregistrer ce/cette %s ou contactez votre superviseur."
 
 msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
@@ -1971,8 +1970,8 @@ msgstr "Réponse incorrecte pour la t. Veuillez envoyer de nouveau la totalité 
 msgid "Invalid message format."
 msgstr "Format de message non valide."
 
-msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
-msgstr "Erreur. SMS incorrect. Revoyez le questionnaire imprimé et envoyez de nouveau le SMS."
+msgid "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."
+msgstr "Erreur: SMS Incorrect. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrigé."
 
 msgid "The system is experiencing a problem right now. Please try again in a few minutes"
 msgstr "Le système est confronté à un problème. Veuillez essayer à nouveau dans quelques minutes."
@@ -2251,8 +2250,8 @@ msgstr "Réponse incorrecte pour la question %s. Veuillez envoyer de nouveau la 
 msgid"Questionnaire ID %s doesnt exist."
 msgstr "Le ID Questionnaire %s n'existe pas."
 
-msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend SMS starting with this questionnaire code."
-msgstr "Erreur sur le code Questionnaire %s. Cherchez le code sur le questionnaire imprime et envoyez de nouveau le SMS en commençant par ce code questionnaire"
+msgid "Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
+msgstr "Erreur. Le Code Questionnaire %s est incorrect. Veuillez trouver le Code Questionnaire sur le Questionnaire imprimé et renvoyez votre SMS en commençant par ce Code Questionnaire."
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
 msgstr "Cet entité pour laquelle vous avez envoyé un rapport n'existe pas sur notre système. Veuillez enregistrer cette entité ou appelez-nous au 033 20 426 89"
@@ -2409,8 +2408,8 @@ msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou v
 "Données n’ont pas accès à Internet. "
 "<br/>Si certains de vos Expéditeurs de Données ont (ou auront) accès à Internet, nous vous recommandons de laisser la case 'WEB' cochée."
 
-msgid "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
-msgstr "Erreur. SMS incorrect. Le nombre de donnees est insuffisant ou en surnombre. Revoyez le questionnaire imprime et envoyez de nouveau le  SMS."
+msgid "Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
+msgstr "Erreur. Nombre de réponses incorrect. Veuillez revoir le Questionnaire imprimé et renvoyez le SMS complet."
 
 msgid "Privacy Policy"
 msgstr "Politique de Confidentialité"
@@ -4207,3 +4206,30 @@ msgstr "Trouver les coordonnées GPS"
 
 msgid "Select a user"
 msgstr "Selectionnez un utilisateur"
+
+msgid "Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS."
+msgstr "Erreur. Réponse incorrecte pour %s. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrigé."
+
+msgid "sms_glue"
+msgstr ", "
+
+msgid "question_prefix%s"
+msgstr "%s"
+
+msgid "and"
+msgstr "et"
+
+msgid "ending_and"
+msgstr "et"
+
+msgid "singular_question"
+msgstr "la question"
+
+msgid "plural_question"
+msgstr "les questions"
+
+msgid "The Unique ID Number %s is already used for the %s %s. Register your %s with a different ID."
+msgstr "Le numéro d’identification unique %s est déjà utilisé pour le/la %s %s. Veuillez enregistrer votre %s sous un autre numéro."
+
+msgid "Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS."
+msgstr "Erreur. Réponse incorrecte pour %s. Veuillez revoir le Formulaire d’enregistrement et renvoyez tout le SMS corrigé"

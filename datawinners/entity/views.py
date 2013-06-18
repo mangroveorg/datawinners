@@ -88,7 +88,7 @@ def submit(request):
         if response.success:
             message = get_success_msg_for_registration_using(response, "web")
         else:
-            message = get_submission_error_message_for(response.errors)
+            message = get_submission_error_message_for(response)
         entity_id = response.datarecord_id
     except DataObjectAlreadyExists as exception:
         message = _("Entity with Unique Identification Number (ID) = %s already exists.") % exception.data[1]

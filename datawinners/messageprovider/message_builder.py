@@ -5,7 +5,9 @@ class ResponseBuilder(object):
 
     def get_expanded_response(self):
         new_dict = self.form_model.stringify(self.processed_data)
-        return " ".join([": ".join(each) for each in new_dict.items()])
+        if self.form_model.entity_defaults_to_reporter():
+            new_dict.pop(self.form_model.entity_question.code)
+        return "; ".join([each for each in new_dict.values()])
 
     def get_expanded_response_with_ordered_question_code(self):
         new_dict = self.form_model.stringify(self.processed_data)

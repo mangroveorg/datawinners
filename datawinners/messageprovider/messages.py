@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.utils.translation import ugettext as _
 import mangrove.errors.MangroveException as ex
+import string
 
 
 DEFAULT = u"default"
@@ -25,15 +26,15 @@ exception_messages = {
 
     ex.FormModelDoesNotExistsException: {
         DEFAULT: u"Questionnaire ID %s doesnt exist.",
-        WEB: u"Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend SMS starting with this questionnaire code."
+        WEB: u"Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
         ,
-        SMS: u"Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend SMS starting with this questionnaire code."
+        SMS: u"Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
     },
 
     ex.DataObjectNotFound: {
         DEFAULT: u"This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89",
         WEB: u"This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit.",
-        SMS: u"This %s %s is not registered in our system.Please register this %s or contact your supervisor."
+        SMS: u"Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
     },
 
     ex.NumberNotRegisteredException: {
@@ -61,11 +62,11 @@ exception_messages = {
 
     ex.SMSParserInvalidFormatException: {
         DEFAULT: u"Invalid message format.",
-        SMS: u"Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
+        SMS: u"Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."
     },
     ex.SMSParserWrongNumberOfAnswersException: {
-        DEFAULT: u"Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS.",
-        SMS: u"Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
+        DEFAULT: u"Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.",
+        SMS: u"Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS."
     },
     ex.SubmissionParseException: {
         DEFAULT: u"Invalid message format.",
@@ -89,14 +90,42 @@ exception_messages = {
     }
 }
 
-def get_validation_failure_error_message():
-    return _("Error. Incorrect answer for %s. Please resend entire message.")
+def get_validation_failure_error_message(response):
+    if response.is_registration:
+        return _("Error. Incorrect answer for %s. Please review the Registration Form and resend entire SMS.")
+    else:
+        return _("Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS.")
 
-def get_submission_success_message():
-    return _("Thank you. We received your message.")
+def get_submission_success_message(response, form_model):
+    datasender = response.reporters[0].get('name').split()[0].capitalize()
 
-def get_registration_success_message():
-    return _("Registration successful.") + " %s. "
+    if response.entity_type[0] == 'reporter':
+        return _("Thank you %(datasender)s. We received your SMS") % {'datasender': datasender}
+
+    subject_info = get_subject_info(response, form_model)
+    return _("Thank you %(datasender)s. We received your message for %(subject_info)s")\
+        % {'datasender': datasender, 'subject_info': subject_info}
+
+def get_registration_success_message(response):
+    datasender = response.reporters[0].get('name').split()[0].capitalize() if len(response.reporters) else ''
+    subject_type = response.entity_type[0]
+    return _("Thank you %(datasender)s, We registered your %(subject_type)s") % \
+           {'datasender':datasender, 'subject_type':subject_type}
 
 def get_wrong_number_of_answer_error_message():
-    return _("Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS.")
+    return _("Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.")
+
+def get_subject_info(response, form_model):
+    subject_name = ''
+    if form_model:
+        if response.is_registration:
+            subject_name = get_response_by_question_name(response, form_model, 'name')
+            subject_name = "%s %s" % (get_response_by_question_name(response, form_model, 'firstname'), subject_name)
+        elif 'firstname' in response.subject.data:
+            subject_name = "%s %s" % (response.entity_type[0], response.subject.data.get('firstname')['value'])
+    return "%s (%s)" % (string.capwords(subject_name), response.short_code)
+
+def get_response_by_question_name(response, form_model, question_name):
+    field = form_model.get_field_by_name(question_name)
+    if not field: return ''
+    return response.processed_data.get(field.code)
