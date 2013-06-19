@@ -6,6 +6,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.contract.survey_response import SurveyResponse
 from datawinners.project.data_sender_helper import   data_sender_by_mobile, data_sender_by_email
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 import settings
 
 if __name__ == "__main__" and __package__ is None:
@@ -32,6 +33,10 @@ def remove_attr_source_from_survey_response(survey_response):
         survey_response._doc._data.pop('source')
     except KeyError:
         pass
+
+
+def get_reporter_uid(dbm, reporter_id):
+    return get_by_short_code_include_voided(dbm, reporter_id, REPORTER_ENTITY_TYPE).id
 
 
 def migrate(database_name):
@@ -67,13 +72,12 @@ def migrate(database_name):
                 if not data_sender_dict.get(rep_id):
                     data_sender_dict.update({rep_id:get_by_short_code_include_voided(dbm,rep_id,['reporter'])})
                 if data_sender[1] != rep_id:
-                    survey_response.origin = data_sender_dict.get(rep_id).data['mobile_number']['value']
                     survey_response.channel = 'sms'
-                else:
-                    survey_response.origin = data_sender[2]
+                reporter_id = rep_id
             except (DataObjectNotFound, KeyError) as e:
                 logging.info("rep info not found for subject(ignored): %s " % (survey_response.uuid))
-                survey_response.origin = data_sender[2]
+                reporter_id = data_sender[1]
+            survey_response.owner_uid = get_reporter_uid(dbm, reporter_id)
             survey_response.save()
     logging.info('Completed Migration: %s' % database_name )
 
@@ -93,4 +97,4 @@ def migrate_survey_response_origin(all_db_names):
         except Exception as e:
             logging.exception("Failed Database: %s Error %s" % (database, e.message))
 
-migrate_survey_response_origin(all_db_names())
+migrate_survey_response_origin(["hni_ademas_qtl183506"])#all_db_names())

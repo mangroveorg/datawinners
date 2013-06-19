@@ -1,3 +1,4 @@
+from copy import copy
 from datetime import datetime
 import sys
 import traceback
@@ -5,7 +6,9 @@ import urllib2
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.database import get_db_manager
+from mangrove.transport import TransportInfo
 from mangrove.transport.contract.submission import Submission
+from mangrove.transport.contract.survey_response import SurveyResponse
 from migration.couch.utils import init_migrations, mark_start_of_migration, should_not_skip
 
 MAX_NUMBER_DOCS = 50
@@ -41,13 +44,20 @@ def create_survey_response(dbm, form_codes, row):
     submission = Submission.new_from_doc(dbm=dbm, doc=Submission.__document_class__.wrap(row['value']))
     log_statement('Submission id : %s' % submission.uuid)
     if submission.form_code not in form_codes:
-        survey_response = submission.create_survey_response(dbm)
+        survey_response = create_survey_response(submission, dbm)
         log_statement('Created survey response id : %s' % survey_response.uuid)
         return True
     else:
         log_statement('Skipping Creation of Survey Response.')
         return False
 
+def create_survey_response(submission, dbm):
+    response = SurveyResponse(dbm, TransportInfo(submission.channel, submission.source,
+        submission.destination), form_code=submission.form_code, form_model_revision=submission.form_model_revision,
+        values=copy(submission.values))
+    response.create_migrated_response(submission.status, submission.errors, submission.is_void(), submission._doc.submitted_on,
+    submission.test, submission.event_time, submission._doc.data_record_id)
+    return response
 
 def registration_form_model_codes(dbm):
     rows = dbm.view.registration_form_model_by_entity_type(include_docs=True)

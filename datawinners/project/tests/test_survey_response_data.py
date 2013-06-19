@@ -1,6 +1,8 @@
 from datetime import datetime
-from mangrove.transport.player.new_players import WebPlayerV2
+
 from mock import patch, Mock
+
+from mangrove.transport.player.new_players import WebPlayerV2
 from mangrove.form_model.field import field_attributes, TextField, SelectField, DateField, IntegerField, GeoCodeField, ExcelDate
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, FormModel
 from mangrove.transport.contract.transport_info import TransportInfo
@@ -15,6 +17,8 @@ from datawinners.project.survey_response_list import SurveyResponseList
 from datawinners.project.survey_response_router import successful_survey_responses
 from datawinners.project.tests.form_model_generator import FormModelGenerator
 from mangrove.transport.contract.survey_response import SurveyResponse
+from project.tests.test_data_sender_helper import register_datasender
+
 
 today = datetime.utcnow().strftime("%d.%m.%Y")
 
@@ -28,6 +32,7 @@ class TestSurveyResponseData(MangroveTestCase):
         self.transport = TransportInfo(transport="web", source="1234", destination="5678")
         self.form_model_generator = FormModelGenerator(self.manager)
         self.form_model = self.form_model_generator.form_model()
+        self.ds_uid = register_datasender(self.manager)
 
     def _prepare_submission_list_with_one_submission(self, form_model):
         submission_list = SurveyResponseList(form_model, self.manager, self.org_id, "all", [])
@@ -49,7 +54,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             try:
                 statistics = submission_list.get_analysis_statistics()
@@ -82,11 +87,11 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             raw_field_values = submission_list.get_raw_values()
-            expected = [[self.submission_id, ('Tester Pune', 'rep12', 'tester150411@gmail.com'), u'Error',
-                         '-', ('Clinic-One', 'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'],
+            expected = [[self.submission_id, ('Tester 150411', u'rep12'), u'Error',
+                         '-', ('Clinic-One', u'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'],
                          ['B+']]]
             submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(2))
             self.assertEqual(today, submission_date)
@@ -100,10 +105,10 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             raw_field_values = submission_list.get_raw_values()
-            expected = [[self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), u'Error',
+            expected = [[self.submission_id, ('Tester 150411', u'rep12'), u'Error',
                          '-', ('Clinic-One', u'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'],
                          ['B+']]]
             submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(2))
@@ -118,10 +123,10 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
 
-            expected = [[self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), u'Error',
+            expected = [[self.submission_id, ('Tester 150411', u'rep12'), u'Error',
                          '-', ('Clinic-One', u'cli14'), '01.01.2012']]
             result = submission_list.get_leading_part()
             submission_date = self.get_submission_date_in_old_format(result[0].pop(2))
@@ -138,11 +143,11 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(
                 self.form_model_generator.summary_form_model_without_rp())
 
-            expected = [[self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), u'Error', '-']]
+            expected = [[self.submission_id, ('Tester 150411', u'rep12'), u'Error', '-']]
             result = submission_list.get_leading_part()
             submission_date = self.get_submission_date_in_old_format(result[0].pop(2))
             self.assertEqual(today, submission_date)
@@ -157,11 +162,11 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             raw_field_values = submission_list.get_raw_values()
-            expected = [[self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), u'Error', '-',
-                         ('Clinic-One', 'cli14'), '01.01.2012',
+            expected = [[self.submission_id, ('Tester 150411', u'rep12'), u'Error', '-',
+                         ('Clinic-One', u'cli14'), '01.01.2012',
                          ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(2))
             self.assertEqual(today, submission_date)
@@ -175,20 +180,15 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             submission_date = datetime.utcnow().strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
             raw_field_values = submission_list.get_raw_values()
             expected = [
-                [self.submission_id, (u'Tester Pune', 'rep12', u'tester150411@gmail.com'), submission_date, 'Error',
+                [self.submission_id, ('Tester 150411', u'rep12'), submission_date, u'Error',
                  '-',
-                 ('Clinic-One', 'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
+                 ('Clinic-One', u'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
-
-    def _prepare_submission_list(self, form_model, keywords=None):
-        submission_list = SurveyResponseList(form_model, self.manager, self.org_id, "all", [], keywords)
-        self.submission_id = submission_list.filtered_survey_responses[0].id
-        return submission_list
 
     def _prepare_analysis_list(self, form_model, keywords=None):
         analysis_list = Analysis(form_model, self.manager, self.org_id, [], keywords)
@@ -206,7 +206,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                             transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                          'destination'),
                                             form_code=self.form_model.form_code,
-                                            values=values)
+                                            values=values, owner_uid=self.ds_uid)
                 submissions.append(submission)
             get_submissions.return_value = submissions
 
@@ -231,7 +231,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                             transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                          'destination'),
                                             form_code=self.form_model.form_code,
-                                            values=values)
+                                            values=values, owner_uid=self.ds_uid)
                 submissions.append(submission)
             get_submissions.return_value = submissions
 
@@ -240,19 +240,23 @@ class TestSurveyResponseData(MangroveTestCase):
             expected = [('Clinic-One', u'cli14'), ('Clinic-Two', u'cli15'), (NOT_AVAILABLE, str(None))]
             self.assertEqual(expected, subject_list)
 
+
+
     def test_should_get_datasender_list(self):
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             data = {"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"}
+
             get_submissions.return_value = [SurveyResponse(self.manager,
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             data_sender_list = submission_list.get_data_senders()
-            expected = [('Tester Pune', 'rep12', 'tester150411@gmail.com')]
-            self.assertEqual(expected, data_sender_list)
+            expected = [('Tester 150411', u'rep12')]
+        self.assertEqual(expected, data_sender_list)
+
 
     def test_should_get_statistic_result_for_analysis_page(self):
         """
@@ -272,7 +276,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                             transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                          'destination'),
                                             form_code=self.form_model.form_code,
-                                            values=values)
+                                            values=values, owner_uid=self.ds_uid)
                 submissions.append(submission)
             get_submissions.return_value = submissions
             analysis_list = self._prepare_analysis_list(self.form_model)
@@ -292,6 +296,11 @@ class TestSurveyResponseData(MangroveTestCase):
     def submit_survey_response(self, post_data, reporter_id='rep12'):
         WebPlayerV2(self.manager).add_survey_response(Request(message=post_data, transportInfo=self.transport),
                                                       reporter_id)
+
+    def _prepare_submission_list(self, form_model, keywords=None):
+        submission_list = SurveyResponseList(form_model, self.manager, self.org_id, "all", [], keywords)
+        self.submission_id = submission_list.filtered_survey_responses[0].id
+        return submission_list
 
     def _edit_fields(self, form_model, *updated_fields):
         fields = []
@@ -375,7 +384,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             analyzer = self._prepare_analysis_list(self.form_model)
             default_sort_order = analyzer.get_default_sort_order()
             self.assertEqual([[3, 'desc']], default_sort_order)
@@ -389,7 +398,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             analyzer = self._prepare_analysis_list(self.form_model)
             default_sort_order = analyzer.get_default_sort_order()
             self.assertEqual([[2, 'desc']], default_sort_order)
@@ -551,13 +560,13 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=form_model.form_code,
-                                                           values=post_data)]
+                                                           values=post_data, owner_uid=self.ds_uid)]
             analyzer = AnalysisForExcel(form_model, self.manager, self.org_id, [])
             excel_values = analyzer.get_raw_values()
             self.assertEqual(excel_values[0][1], 'Ritesh')
             self.assertEqual(excel_values[0][2], u'cid001')
             self.assertEqual(excel_values[0][3], ExcelDate(datetime.strptime('12.11.2013', '%d.%m.%Y'), 'dd.mm.yyyy'))
-            self.assertEqual(excel_values[0][5], u'Tester Pune')
+            self.assertEqual(excel_values[0][5], 'Tester 150411')
             self.assertEqual(excel_values[0][6], 'rep12')
             self.assertEqual(excel_values[0][8], 45.0)
             self.assertEqual(excel_values[0][9], 12.74)
@@ -571,7 +580,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
                                                            form_code=self.form_model.form_code,
-                                                           values=data)]
+                                                           values=data, owner_uid=self.ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
         return submission_list
 
@@ -664,7 +673,7 @@ class TestSurveyResponseData(MangroveTestCase):
             valid_submission = SurveyResponse(self.manager,
                                               transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                            'destination'),
-                                              form_code=self.form_model.form_code, values=data)
+                                              form_code=self.form_model.form_code, values=data, owner_uid=self.ds_uid)
             get_submissions.return_value = [valid_submission]
             response_data = SurveyResponseList(self.form_model, self.manager, self.org_id, None, filters, None)
             data_sender, rp, subject, submission_date = response_data._get_survey_response_details(
@@ -679,7 +688,7 @@ class TestSurveyResponseData(MangroveTestCase):
             valid_submission = SurveyResponse(self.manager,
                                               transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                            'destination'),
-                                              form_code=self.form_model.form_code, values=data)
+                                              form_code=self.form_model.form_code, values=data, owner_uid=self.ds_uid)
             valid_submission._doc.created = datetime.strptime('Apr. 12, 2013, 09:27 AM',
                                                               SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
             valid_submission._doc.submitted_on = datetime.strptime('Apr. 12, 2013, 09:30 AM',

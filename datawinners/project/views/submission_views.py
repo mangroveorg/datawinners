@@ -118,7 +118,7 @@ def delete(request, project_id):
 
 def build_static_info_context(manager, org_id, survey_response):
     form_ui_model = OrderedDict()
-    static_content = {'Data Sender': get_data_sender(manager, org_id, survey_response),
+    static_content = {'Data Sender': get_data_sender(manager, survey_response),
                       'Source': capitalize(
                           survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
                       'Submission Date': survey_response.submitted_on.strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)

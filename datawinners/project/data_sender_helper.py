@@ -4,11 +4,12 @@ from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.messageprovider.messages import SMS
 from datawinners.project.data_sender import DataSender
 from datawinners.project.helper import NOT_AVAILABLE_DS
+from mangrove.datastore.entity import Entity
 
 
 def combine_channels_for_tuple(data_senders_tuple_list):
     data_senders = [DataSender.from_tuple(data_sender_tuple) for data_sender_tuple in data_senders_tuple_list]
-    return map(lambda d: d.to_tuple(), combine_channels(data_senders))
+    return map(lambda d: (d.name, d.reporter_id), combine_channels(data_senders))
 
 def combine_channels(data_senders):
     keys = {x.name for x in data_senders}
@@ -17,22 +18,25 @@ def combine_channels(data_senders):
     return sorted([DataSender(map(lambda x: x.source, a), a[0].name, a[0].reporter_id) for a in grouped_data_senders],
         key=lambda ds: ds.name)
 
-def get_data_sender(manager, org_id, submission):
-    if submission.channel == 'sms':
-        data_sender = get_data_sender_for_sms(manager, submission)
+def get_data_sender(manager, submission):
+    data_sender_entity = Entity.get(manager, submission.owner_uid)
+    return data_sender_entity.value("name"), data_sender_entity.short_code
+
+
+def get_data_sender_by_source(manager, org_id, channel, source):
+    if channel == 'sms':
+        return get_data_sender_for_sms(manager, source)
     else:
-        data_sender = get_data_sender_for_not_sms(submission, org_id)
+       return get_data_sender_for_not_sms(org_id, email=source)
 
-    return data_sender if data_sender[0] != "TEST" else ("TEST", "n/a", "TEST")
+def get_data_sender_for_sms(manager, source):
+    return tuple(data_sender_by_mobile(manager, source))
 
-def get_data_sender_for_sms(manager, submission):
-    return tuple(data_sender_by_mobile(manager, submission.origin) + [submission.origin])
-
-def get_data_sender_for_not_sms(submission, org_id):
+def get_data_sender_for_not_sms(org_id, email):
     try:
-        data_sender = data_sender_by_email(org_id, submission.origin)
+        data_sender = data_sender_by_email(org_id, email)
     except:
-        data_sender = (ugettext(NOT_AVAILABLE_DS), None, submission.origin)
+        data_sender = (ugettext(NOT_AVAILABLE_DS), None, email)
     return data_sender
 
 def data_sender_by_mobile(manager, mobile):

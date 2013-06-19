@@ -22,11 +22,6 @@ class DataSender(object):
     def reporter_id(self):
         return self._reporter_id
 
-    def to_tuple(self):
-        if self._name == 'TEST':
-            return "TEST", "n/a", "TEST"
-
-        return self._name, self._reporter_id, ','.join(self._source)
 
     def __eq__(self, other):
         instance_equal = isinstance(other, DataSender)

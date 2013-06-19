@@ -10,7 +10,7 @@ from mangrove.transport.contract.request import Request
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
 from mangrove.transport.xforms.xform import list_all_forms, xform_for
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.alldata.helper import get_all_project_for_user
 from django.contrib.gis.utils import GeoIP
 from messageprovider.messages import SMART_PHONE
@@ -79,6 +79,7 @@ def submission(request):
     manager = get_database_manager(request_user)
     player = XFormPlayerV2(manager, get_feeds_database(request_user))
     try:
+        user_profile = NGOUserProfile.objects.get(user=request_user)
         mangrove_request = Request(message=submission_file,
             transportInfo=
             TransportInfo(transport=SMART_PHONE,
@@ -86,7 +87,7 @@ def submission(request):
                 destination=''
             ))
 
-        response = player.add_survey_response(mangrove_request, logger=sp_submission_logger)
+        response = player.add_survey_response(mangrove_request, user_profile.reporter_id ,logger=sp_submission_logger)
         mail_feed_errors(response, manager.database_name)
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
