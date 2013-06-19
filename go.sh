@@ -27,7 +27,7 @@ function patch_postgresql {
 }
 
 function prepare_datawinner_env {
-        cp "$DWROOT_DIR/datawinners/local_settings_example.py" "$DWROOT_DIR/datawinners/local_settings.py"
+        cp "$DWROOT_DIR/datawinners/config/local_settings_example.py" "$DWROOT_DIR/datawinners/local_settings.py"
  	pip install -r requirements.pip
 }
 
@@ -68,7 +68,7 @@ function recreate_feed_db {
 
 function function_test {
 	echo "running function test"
-	cp "$DWROOT_DIR/datawinners/local_settings_example.py" "$DWROOT_DIR/func_tests/resources/local_settings.py"
+	cp "$DWROOT_DIR/datawinners/config/local_settings_example.py" "$DWROOT_DIR/func_tests/resources/local_settings.py"
 	restore_postgresql_database && \
 	recreate_couch_db && \
 	compile_messages && \
