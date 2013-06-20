@@ -1,54 +1,26 @@
+from django.forms import CharField, HiddenInput
 from django.forms.forms import Form
-from datawinners.entity.helper import get_country_appended_location
-from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_fields_question_code
-from datawinners.project.questionnaire_fields import SubjectCodeField, SubjectField, FormField, FormCodeField
-from datawinners.questionnaire.helper import make_clean_geocode_method
+from datawinners.project.questionnaire_fields import SubjectField, FormField
 
-class SubmissionForm(Form):
 
-    @staticmethod
-    def create(manager, project, questionnaire_form_model):
-        properties = dict()
-        properties.update({'form_model': questionnaire_form_model})
+class EditSubmissionForm(Form):
+    def __init__(self, manager, project, questionnaire_form_model, data):
+        super(EditSubmissionForm, self).__init__(data=data)
+        self.form_model = questionnaire_form_model
+        self.fields['form_code'] = CharField(widget=HiddenInput, initial=questionnaire_form_model.form_code)
+        if questionnaire_form_model.entity_question is not None:
+            subject_question = questionnaire_form_model.entity_question
+            choices = SubjectField(manager, project).create(subject_question, project.entity_type)
+            self.fields[subject_question.code] = choices.get(subject_question.code)
+        for field in questionnaire_form_model.fields:
+            if not field.is_entity_field:
+                form_field = FormField().create(field)
+                form_field.initial = data.get(field.code) if data.get(field.code) is not None else data.get(
+                    field.code.lower())
+                self.fields[field.code] = form_field
+        self.short_code_question_code = questionnaire_form_model.entity_question.code
 
-        geo_code_fields_code = get_geo_code_fields_question_code(questionnaire_form_model)
-        for geo_code_field_code in geo_code_fields_code:
-            properties.update({'clean_' + geo_code_field_code: make_clean_geocode_method(geo_code_field_code)})
 
-        subject_question = questionnaire_form_model.entity_question
-        if subject_question is not None:
-            properties.update(SubjectField(manager,project).create(subject_question, project.entity_type))
-            properties.update(SubjectCodeField().create(subject_question.code))
-            properties.update({u'short_code_question_code': questionnaire_form_model.entity_question.code})
-
-        properties.update({field.code: FormField().create(field) for field in questionnaire_form_model.fields if
-                           not field.is_entity_field})
-        properties.update(FormCodeField().create(questionnaire_form_model.form_code))
-        return type('BoundSubmissionForm', (SubmissionForm,), properties)
-
-    def __init__(self, country=None, *args, **kwargs):
-        self.country = country
-        super(SubmissionForm, self).__init__(*args, **kwargs)
-
-    def initial_values(self, initial):
-        for field_name, field in self.fields.iteritems():
-            if not field.widget.is_hidden:
-                field.initial = initial.get(field_name) if initial.get(field_name) is not None else initial.get(field_name.lower())
-
-    def bind(self, data):
-        if data:
-            self.data = data
-            self.is_bound = True
-
-    def clean(self):
-        location_field_code = get_location_field_code(self.form_model)
-        self.cleaned_data.pop('entity_question_code', '')
-        if location_field_code is None:
-            return self.cleaned_data
-
-        for question_code, values in self.cleaned_data.items():
-            if question_code == location_field_code:
-                self.cleaned_data[question_code] = get_country_appended_location(values, self.country)
-
-        return self.cleaned_data
-
+    def populate(self, fields):
+        for code, form_field in fields.iteritems():
+            self.fields[code] = form_field

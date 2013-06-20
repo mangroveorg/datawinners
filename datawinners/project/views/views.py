@@ -16,7 +16,7 @@ from django.contrib import messages
 from datawinners.accountmanagement.views import session_not_expired
 from datawinners.project.view_models import ReporterEntity
 from datawinners.feeds.database import get_feeds_database
-from feeds.mail_client import mail_feed_errors
+from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for

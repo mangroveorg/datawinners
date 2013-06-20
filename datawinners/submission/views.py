@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.conf import settings
+import logging
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.translation import ugettext
@@ -7,10 +8,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 
 from datawinners.custom_report_router.report_router import ReportRouter
-
 from datawinners.submission.models import  SMSResponse
-
-import logging
 from datawinners.utils import get_organization
 from datawinners.messageprovider.handlers import create_failure_log
 from datawinners.submission.organization_finder import OrganizationFinder
@@ -18,14 +16,15 @@ from datawinners.submission.request_processor import    MangroveWebSMSRequestPro
 from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
 from datawinners.utils import  get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
-from datawinners.feeds.database import get_feeds_database, get_feeds_db_for_org
-from feeds.mail_client import mail_feed_errors
+from datawinners.feeds.database import get_feeds_db_for_org
+from datawinners.feeds.mail_client import mail_feed_errors
 from mangrove.transport.contract.request import Request
 from datawinners.messageprovider.exception_handler import handle
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.player import SMSPlayer
 from datawinners.submission.location import LocationBridge
+
 
 logger = logging.getLogger("django")
 

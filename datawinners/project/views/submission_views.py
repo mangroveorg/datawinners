@@ -1,18 +1,22 @@
 from collections import OrderedDict
 from copy import deepcopy
-from django.utils.translation import ugettext_lazy as _
-import json, re
+import json
+import re
 import datetime
 import logging
 from string import capitalize
+
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
+from django.core.urlresolvers import reverse
+
 from accountmanagement.models import NGOUserProfile
-from feeds.database import get_feeds_database
-from feeds.mail_client import mail_feed_errors
+from datawinners.feeds.database import get_feeds_database
+from datawinners.feeds.mail_client import mail_feed_errors
 from main.database import get_database_manager
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -21,9 +25,7 @@ from datawinners.accountmanagement.views import session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
-
 from mangrove.utils.json_codecs import encode_json
-
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.accountmanagement.views import is_not_expired
 from datawinners.project import helper
@@ -42,10 +44,10 @@ from datawinners.project.views.views import XLS_TUPLE_FORMAT
 from datawinners.common.constant import   DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
-from datawinners.project.submission_form import SubmissionForm
+from datawinners.project.submission_form import EditSubmissionForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
 from mangrove.transport.contract.survey_response import SurveyResponse
-from django.core.urlresolvers import reverse
+
 
 performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
@@ -150,7 +152,6 @@ def edit(request, project_id, survey_response_id, tab=0):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     questionnaire_form_model = FormModel.get(manager, project.qid)
-    SurveyResponseForm = SubmissionForm.create(manager, project, questionnaire_form_model)
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     survey_response = get_survey_response_by_id(manager, survey_response_id)
@@ -160,7 +161,7 @@ def edit(request, project_id, survey_response_id, tab=0):
     form_ui_model.update({"back_link": back_link})
     if request.method == 'GET':
         form_initial_values = construct_request_dict(survey_response, questionnaire_form_model)
-        survey_response_form = SurveyResponseForm(data=form_initial_values)
+        survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model, form_initial_values)
 
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
@@ -178,15 +179,15 @@ def edit(request, project_id, survey_response_id, tab=0):
         form_ui_model.update({"redirect_url": request.POST.get("redirect_url")})
         form_ui_model.update({"click_after_reload": request.POST.get("click_after_reload")})
         if request.POST.get("discard"):
-            survey_response_form = SurveyResponseForm()
-            survey_response_form.initial_values(survey_response.values)
+            survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model, survey_response.values)
+
             form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
                 manager, hide_link_class, disable_link_class))
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                 context_instance=RequestContext(request))
         else:
-            survey_response_form = SurveyResponseForm(data=request.POST,
-                initial=construct_request_dict(survey_response, questionnaire_form_model))
+            survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model, request.POST)
+
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
             manager, hide_link_class, disable_link_class))
         if not survey_response_form.is_valid():

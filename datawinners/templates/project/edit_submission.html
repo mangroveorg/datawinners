@@ -1,10 +1,5 @@
 {% load i18n %}
 {% load field_tags %}
-{% for field in questionnaire_form %}
-    {% if field.is_hidden and field.name == 'entity_question_code' %}
-        <input id='code' type="hidden" value="{{ field.label }}"/>
-    {% endif %}
-{% endfor %}
 <form method="POST">
     <div >
         <a href="{{ back_link }}" class="back-to-list"> « {% trans "Back to Submission Log" %}</a>
