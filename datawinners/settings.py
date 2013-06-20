@@ -122,6 +122,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'datawinners.middleware.exception_middleware.ExceptionMiddleware',
     )
 
 ROOT_URLCONF = 'datawinners.urls'

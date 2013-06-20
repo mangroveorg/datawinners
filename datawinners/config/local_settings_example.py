@@ -93,6 +93,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'datawinners.middleware.exception_middleware.ExceptionMiddleware',
     )
 
 DEBUG_TOOLBAR_CONFIG = {
