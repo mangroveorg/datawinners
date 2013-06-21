@@ -21,4 +21,3 @@ class Command(BaseCommand):
                 traceback.print_exc(file=sys.stdout)
             print "Done."
 
-
