@@ -75,7 +75,7 @@ class TestSubmissionLog(unittest.TestCase):
         time.sleep(3)
         submission_log_page.click_on_nth_header(8)
         submission_log_page.click_on_success_tab()
-        time.sleep(1)
+        time.sleep(5)
         self.assertEqual(submission_log_page.get_all_data_on_nth_column(7), EXPECTED_FA_SORTED)
 
     @attr('functional_test')

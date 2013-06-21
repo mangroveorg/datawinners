@@ -3,7 +3,7 @@ from django.utils.translation import ugettext
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.messageprovider.messages import SMS
 from datawinners.project.data_sender import DataSender
-from datawinners.project.helper import NOT_AVAILABLE_DS
+from datawinners.project.helper import NOT_AVAILABLE_DS, NOT_AVAILABLE
 from mangrove.datastore.entity import Entity
 
 
@@ -20,6 +20,8 @@ def combine_channels(data_senders):
 
 def get_data_sender(manager, submission):
     data_sender_entity = Entity.get(manager, submission.owner_uid)
+    if data_sender_entity.is_void():
+        return NOT_AVAILABLE_DS, None
     return data_sender_entity.value("name"), data_sender_entity.short_code
 
 

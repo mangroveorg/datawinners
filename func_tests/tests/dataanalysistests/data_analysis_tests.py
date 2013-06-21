@@ -155,7 +155,7 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_admin(self):
-        self.verify_filter_by_data_sender(('Tester Pune', 'rep12', 'tester150411@gmail.com'))
+        self.verify_filter_by_data_sender(('Tester Pune', 'rep12'))
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_sms_or_web_data_sender(self):
