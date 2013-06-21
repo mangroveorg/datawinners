@@ -14,10 +14,10 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
 
-from accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
-from main.database import get_database_manager
+from datawinners.main.database import get_database_manager
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -29,19 +29,19 @@ from mangrove.utils.json_codecs import encode_json
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.accountmanagement.views import is_not_expired
 from datawinners.project import helper
-from datawinners.project.ExcelHeader import  ExcelFileSubmissionHeader
+from datawinners.project.ExcelHeader import ExcelFileSubmissionHeader
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.export_to_excel import _prepare_export_data, _create_excel_response
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from datawinners.project.models import Project
 from datawinners.project.survey_response_list import SurveyResponseList
 from datawinners.project.submission_list_for_excel import SurveyResponseForExcel
-from datawinners.project.utils import    project_info
+from datawinners.project.utils import project_info
 from datawinners.project.Header import SubmissionsPageHeader
 from datawinners.project.analysis_result import AnalysisResult
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.project.views.views import XLS_TUPLE_FORMAT
-from datawinners.common.constant import   DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
+from datawinners.common.constant import DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
 from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
 from datawinners.project.submission_form import EditSubmissionForm
@@ -51,6 +51,7 @@ from mangrove.transport.contract.survey_response import SurveyResponse
 
 performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
+
 
 @login_required(login_url='/login')
 @session_not_expired
@@ -82,8 +83,8 @@ def index(request, project_id=None, questionnaire_code=None, tab="0"):
     if request.method == 'POST':
         field_values = SubmissionFormatter().get_formatted_values_for_list(survey_responses.get_raw_values())
         analysis_result = AnalysisResult(field_values, survey_responses.get_analysis_statistics(),
-            survey_responses.get_data_senders(), survey_responses.get_subjects(),
-            survey_responses.get_default_sort_order())
+                                         survey_responses.get_data_senders(), survey_responses.get_subjects(),
+                                         survey_responses.get_default_sort_order())
         performance_logger.info("Fetch %d survey_responses from couchdb." % len(analysis_result.field_values))
         return HttpResponse(encode_json({'data_list': analysis_result.field_values,
                                          "statistics_result": analysis_result.statistics_result}))
@@ -101,17 +102,21 @@ def delete(request, project_id):
         feeds_dbm = get_feeds_database(request.user)
         additional_feed_dictionary = get_project_details_dict_for_feed(project)
         user_profile = NGOUserProfile.objects.get(user=request.user)
-        delete_response = WebPlayerV2(manager,feeds_dbm).delete_survey_response(survey_response, user_profile.reporter_id,additional_feed_dictionary,websubmission_logger)
-        mail_feed_errors(delete_response,manager.database_name)
+        delete_response = WebPlayerV2(manager, feeds_dbm).delete_survey_response(survey_response,
+                                                                                 user_profile.reporter_id,
+                                                                                 additional_feed_dictionary,
+                                                                                 websubmission_logger)
+        mail_feed_errors(delete_response, manager.database_name)
         if survey_response.data_record:
             ReportRouter().delete(get_organization(request).org_id, survey_response.form_code,
-                survey_response.data_record.id)
+                                  survey_response.data_record.id)
 
     if len(received_times):
         UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=project.name,
-            detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
+                              detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
         response = encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
-    else: response = encode_json({'error_message': ugettext("No records deleted"), 'success': False})
+    else:
+        response = encode_json({'error_message': ugettext("No records deleted"), 'success': False})
 
     return HttpResponse(response)
 
@@ -156,7 +161,8 @@ def edit(request, project_id, survey_response_id, tab=0):
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     survey_response = get_survey_response_by_id(manager, survey_response_id)
     back_link = reverse(index,
-        kwargs={"project_id": project_id, "questionnaire_code": questionnaire_form_model.form_code, "tab": tab})
+                        kwargs={"project_id": project_id, "questionnaire_code": questionnaire_form_model.form_code,
+                                "tab": tab})
     form_ui_model = build_static_info_context(manager, get_organization(request).org_id, survey_response)
     form_ui_model.update({"back_link": back_link})
     if request.method == 'GET':
@@ -164,14 +170,14 @@ def edit(request, project_id, survey_response_id, tab=0):
         survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model, form_initial_values)
 
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
-            manager, hide_link_class, disable_link_class))
+                                              manager, hide_link_class, disable_link_class))
         form_ui_model.update({"redirect_url": ""})
 
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
             form_ui_model.update({'error_message': error_message})
         return render_to_response("project/web_questionnaire.html", form_ui_model,
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
     if request.method == 'POST':
         original_survey_response = survey_response.copy()
@@ -179,22 +185,23 @@ def edit(request, project_id, survey_response_id, tab=0):
         form_ui_model.update({"redirect_url": request.POST.get("redirect_url")})
         form_ui_model.update({"click_after_reload": request.POST.get("click_after_reload")})
         if request.POST.get("discard"):
-            survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model, survey_response.values)
+            survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model,
+                                                      survey_response.values)
 
             form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
-                manager, hide_link_class, disable_link_class))
+                                                  manager, hide_link_class, disable_link_class))
             return render_to_response("project/web_questionnaire.html", form_ui_model,
-                context_instance=RequestContext(request))
+                                      context_instance=RequestContext(request))
         else:
             survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model, request.POST)
 
         form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
-            manager, hide_link_class, disable_link_class))
+                                              manager, hide_link_class, disable_link_class))
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
             form_ui_model.update({'error_message': error_message})
             return render_to_response("project/web_questionnaire.html", form_ui_model,
-                context_instance=RequestContext(request))
+                                      context_instance=RequestContext(request))
 
         success_message = _("Your changes have been saved.")
         form_ui_model.update({'success_message': success_message})
@@ -204,21 +211,26 @@ def edit(request, project_id, survey_response_id, tab=0):
             additional_feed_dictionary = get_project_details_dict_for_feed(project)
             user_profile = NGOUserProfile.objects.get(user=request.user)
             feeds_dbm = get_feeds_database(request.user)
-            response = WebPlayerV2(manager, feeds_dbm).edit_survey_response(created_request, survey_response,
-                user_profile.reporter_id, additional_feed_dictionary, websubmission_logger)
+            if questionnaire_form_model.entity_type == ["reporter"]:
+                reporter_id = request.POST["eid"]
+            else:
+                reporter_id = user_profile.reporter_id
+            response = WebPlayerV2(manager, feeds_dbm, user_profile.reporter_id)\
+                            .edit_survey_response(created_request, survey_response, reporter_id,
+                                                  additional_feed_dictionary,websubmission_logger)
             mail_feed_errors(response, manager.database_name)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
                 _update_static_info_block_status(form_ui_model, is_errored_before_edit)
                 log_edit_action(original_survey_response, survey_response, request, project.name,
-                    questionnaire_form_model)
+                                questionnaire_form_model)
                 if request.POST.get("redirect_url"):
                     return HttpResponseRedirect(request.POST.get("redirect_url"))
             else:
                 del form_ui_model["success_message"]
                 survey_response_form._errors = helper.errors_to_list(response.errors, questionnaire_form_model.fields)
         return render_to_response("project/web_questionnaire.html", form_ui_model,
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
 
 def log_edit_action(old_survey_response, new_survey_response, request, project_name, form_model):
@@ -275,7 +287,7 @@ def export(request):
 
     submission_list = SurveyResponseForExcel(form_model, manager, user, submission_type, filters, keyword)
     formatted_values = SubmissionFormatter().get_formatted_values_for_list(submission_list.get_raw_values(),
-        tuple_format=XLS_TUPLE_FORMAT)
+                                                                           tuple_format=XLS_TUPLE_FORMAT)
     header_list = ExcelFileSubmissionHeader(form_model).header_list
     exported_data, file_name = _prepare_export_data(submission_type, project_name, header_list, formatted_values)
     return _create_excel_response(exported_data, file_name)

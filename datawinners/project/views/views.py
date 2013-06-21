@@ -63,7 +63,7 @@ from datawinners.project.utils import make_project_links
 from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import is_project_exist
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS,\
+from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, IMPORTED_DATA_SENDERS, \
     REMOVED_DATA_SENDER_TO_PROJECTS, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, EDITED_PROJECT
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
@@ -138,11 +138,11 @@ def index(request):
         activate_link = reverse('activate_project', args=[project_id])
         delete_link = reverse('delete_project', args=[project_id])
         project = dict(delete_link=delete_link, name=row['value']['name'], created=row['value']['created'],
-            type=row['value']['project_type'],
-            link=link, activate_link=activate_link, state=row['value']['state'])
+                       type=row['value']['project_type'],
+                       link=link, activate_link=activate_link, state=row['value']['state'])
         project_list.append(project)
     return render_to_response('project/index.html', {'projects': project_list},
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -190,7 +190,7 @@ def project_overview(request, project_id=None):
         "Register Data Senders to see them on this map") if number_data_sender == 0 else ""
     add_subjects_to_see_on_map_msg = _(
         "Register %s to see them on this map") % project.entity_type if get_entity_count_for_type(manager,
-        project.entity_type) == 0 else ""
+                                                                                                  project.entity_type) == 0 else ""
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': project,
@@ -242,9 +242,9 @@ def _make_reminder_mode(reminder_mode, day):
 
 def _format_reminder(reminder, project_id):
     return dict(message=reminder.message, id=reminder.id,
-        to=_format_string_for_reminder_table(reminder.remind_to),
-        when=_make_reminder_mode(reminder.reminder_mode, reminder.day),
-        delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
+                to=_format_string_for_reminder_table(reminder.remind_to),
+                when=_make_reminder_mode(reminder.reminder_mode, reminder.day),
+                delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
 
 
 def _format_reminders(reminders, project_id):
@@ -258,8 +258,8 @@ def _format_reminders(reminders, project_id):
 def create_reminder(request, project_id):
     if is_empty(request.POST['id']):
         Reminder(project_id=project_id, day=request.POST.get('day', 0), message=request.POST['message'],
-            reminder_mode=request.POST['reminder_mode'], remind_to=request.POST['remind_to'],
-            organization=utils.get_organization(request)).save()
+                 reminder_mode=request.POST['reminder_mode'], remind_to=request.POST['remind_to'],
+                 organization=utils.get_organization(request)).save()
         messages.success(request, 'Reminder added successfully')
     else:
         reminder = Reminder.objects.filter(project_id=project_id, id=request.POST['id'])[0]
@@ -305,8 +305,8 @@ def manage_reminders(request, project_id):
         Reminder.objects.filter(project_id=project_id).delete()
         for reminder in reminders:
             Reminder(project_id=project_id, day=reminder['day'], message=reminder['message'],
-                reminder_mode=reminder['reminderMode'], organization=utils.get_organization(request),
-                remind_to=reminder['targetDataSenders']).save()
+                     reminder_mode=reminder['reminderMode'], organization=utils.get_organization(request),
+                     remind_to=reminder['targetDataSenders']).save()
         return HttpResponse("Reminders has been saved")
 
 
@@ -322,12 +322,12 @@ def sent_reminders(request, project_id):
     is_trial_account = organization.in_trial_mode
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/sent_reminders.html'
     return render_to_response(html,
-        {'project': project,
-         "project_links": make_project_links(project, questionnaire.form_code),
-         'reminders': get_all_reminder_logs_for_project(project_id, dbm),
-         'in_trial_mode': is_trial_account,
-         'create_reminder_link': reverse(create_reminder, args=[project_id])},
-        context_instance=RequestContext(request))
+                              {'project': project,
+                               "project_links": make_project_links(project, questionnaire.form_code),
+                               'reminders': get_all_reminder_logs_for_project(project_id, dbm),
+                               'in_trial_mode': is_trial_account,
+                               'create_reminder_link': reverse(create_reminder, args=[project_id])},
+                              context_instance=RequestContext(request))
 
 
 def _get_data_senders(dbm, form, project):
@@ -357,7 +357,7 @@ def broadcast_message(request, project_id):
                                          "project_links": make_project_links(project, questionnaire.form_code),
                                          "form": form, "ong_country": organization.country,
                                          "success": None},
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
         form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
         if form.is_valid():
@@ -367,22 +367,22 @@ def broadcast_message(request, project_id):
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
             sms_sent = helper.broadcast_message(data_senders, form.cleaned_data['text'],
-                organization_setting.get_organisation_sms_number()[0], other_numbers,
-                message_tracker,
-                country_code=organization.get_phone_country_code())
+                                                organization_setting.get_organisation_sms_number()[0], other_numbers,
+                                                message_tracker,
+                                                country_code=organization.get_phone_country_code())
             form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
             return render_to_response('project/broadcast_message.html',
-                {'project': project,
-                 "project_links": make_project_links(project, questionnaire.form_code),
-                 "form": form,
-                 "ong_country": organization.country, 'success': sms_sent},
-                context_instance=RequestContext(request))
+                                      {'project': project,
+                                       "project_links": make_project_links(project, questionnaire.form_code),
+                                       "form": form,
+                                       "ong_country": organization.country, 'success': sms_sent},
+                                      context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',
-            {'project': project,
-             "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-             'success': None, "ong_country": organization.country},
-            context_instance=RequestContext(request))
+                                  {'project': project,
+                                   "project_links": make_project_links(project, questionnaire.form_code), "form": form,
+                                   'success': None, "ong_country": organization.country},
+                                  context_instance=RequestContext(request))
 
 
 def _get_all_data_senders(dbm):
@@ -402,13 +402,13 @@ def activate_project(request, project_id=None):
     oneDay = datetime.timedelta(days=1)
     tomorrow = datetime.datetime.now() + oneDay
     survey_responses = get_survey_responses(manager, form_model.form_code, from_time=0,
-        to_time=int(mktime(tomorrow.timetuple())) * 1000, page_size=None)
+                                            to_time=int(mktime(tomorrow.timetuple())) * 1000, page_size=None)
     feeds_dbm = get_feeds_database(request.user)
-    service = SurveyResponseService(manager, logger,feeds_dbm)
+    service = SurveyResponseService(manager, logger, feeds_dbm)
     additional_feed_dictionary = get_project_details_dict_for_feed(project)
     user_profile = NGOUserProfile.objects.get(user=request.user)
     for survey_response in survey_responses:
-        service.delete_survey(survey_response,user_profile.reporter_id,additional_feed_dictionary)
+        service.delete_survey(survey_response, user_profile.reporter_id, additional_feed_dictionary)
     UserActivityLog().log(request, action=ACTIVATED_PROJECT, project=project.name)
     return HttpResponseRedirect(reverse('project-overview', args=[project_id]))
 
@@ -430,19 +430,19 @@ def review_and_test(request, project_id=None):
 
         project_devices = project.devices
         devices = ", ".join(project_devices).replace('sms', 'SMS').replace('web', 'Web').replace('smartPhone',
-            'Smartphone')
+                                                                                                 'Smartphone')
 
         in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': make_project_links(project,
-                                                                       form_model.form_code),
+                                                                                                       form_model.form_code),
                                                                    'number_of_datasenders': number_of_registered_data_senders
             ,
                                                                    'number_of_subjects': number_of_registered_subjects,
                                                                    "is_reminder": is_reminder,
                                                                    "in_trial_mode": in_trial_mode,
                                                                    "devices": devices},
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
 
 def _get_project_and_project_link(manager, project_id, reporter_id=None):
@@ -459,19 +459,19 @@ def subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     fields, project_links_with_subject_questionnaire, questions, reg_form = _get_registration_form(manager, project,
-        type_of_subject='subject')
+                                                                                                   type_of_subject='subject')
     example_sms = get_example_sms_message(fields, reg_form)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     return render_to_response('project/subjects.html',
-        {'project': project,
-         'project_links': project_links,
-         'questions': questions,
-         'questionnaire_code': reg_form.form_code,
-         'example_sms': example_sms,
-         'org_number': get_organization_telephone_number(request),
-         'current_language': translation.get_language(),
-         'subject': subject},
-        context_instance=RequestContext(request))
+                              {'project': project,
+                               'project_links': project_links,
+                               'questions': questions,
+                               'questionnaire_code': reg_form.form_code,
+                               'example_sms': example_sms,
+                               'org_number': get_organization_telephone_number(request),
+                               'current_language': translation.get_language(),
+                               'subject': subject},
+                              context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -484,11 +484,11 @@ def registered_subjects(request, project_id=None):
     subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/registered_subjects.html',
-        {'project': project, 'project_links': project_links, 'all_data': all_data,
-         "labels": labels,
-         "subject": subject, 'in_trial_mode': in_trial_mode,
-         'edit_url': '/project/subject/edit/%s/' % project_id},
-        context_instance=RequestContext(request))
+                              {'project': project, 'project_links': project_links, 'all_data': all_data,
+                               "labels": labels,
+                               "subject": subject, 'in_trial_mode': in_trial_mode,
+                               'edit_url': '/project/subject/edit/%s/' % project_id},
+                              context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -521,8 +521,8 @@ def registered_datasenders(request, project_id=None):
             sender["is_user"] = False
             if len(user_profile) > 0:
                 data_sender_user_groups = list(user_profile[0].user.groups.values_list('name', flat=True))
-                if "NGO Admins" in data_sender_user_groups or "Project Managers" in data_sender_user_groups\
-                or "Read Only Users" in data_sender_user_groups:
+                if "NGO Admins" in data_sender_user_groups or "Project Managers" in data_sender_user_groups \
+                    or "Read Only Users" in data_sender_user_groups:
                     sender["is_user"] = True
                 sender['email'] = user_profile[0].user.email
                 sender['devices'] = "SMS,Web,Smartphone"
@@ -533,24 +533,24 @@ def registered_datasenders(request, project_id=None):
             sender['project'] = project.name
 
         return render_to_response('project/registered_datasenders.html',
-            {'project': project, 'project_links': project_links, 'all_data': (
-                senders), 'grant_web_access': grant_web_access, "labels": labels,
-             'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
-            context_instance=RequestContext(request))
+                                  {'project': project, 'project_links': project_links, 'all_data': (
+                                      senders), 'grant_web_access': grant_web_access, "labels": labels,
+                                   'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
-            default_parser=XlsDatasenderParser)
+                                                                                                       default_parser=XlsDatasenderParser)
         all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
         project.data_senders.extend([id for id in imported_entities.keys()])
         project.save(manager)
 
         if len(imported_entities.keys()):
             UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
-                detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_entities.keys())})),
-                project=project.name)
+                                  detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_entities.keys())})),
+                                  project=project.name)
         mobile_number_index = fields.index('mobile_number')
         add_imported_data_sender_to_trial_organization(request, imported_entities,
-            all_data_senders=all_data_senders, index=mobile_number_index)
+                                                       all_data_senders=all_data_senders, index=mobile_number_index)
         return HttpResponse(json.dumps(
             {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
              'error_message': error_message,
@@ -570,7 +570,7 @@ def disassociate_datasenders(request):
     ids = request.POST["ids"].split(";")
     if len(ids):
         UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS, project=project.name,
-            detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(ids)})))
+                              detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(ids)})))
     return HttpResponse(reverse(registered_datasenders, args=(project.id,)))
 
 
@@ -595,14 +595,14 @@ def datasenders(request, project_id=None):
     questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
     example_sms = get_example_sms_message(questions, reg_form)
     return render_to_response('project/datasenders.html',
-        {'project': project,
-         'project_links': project_links,
-         'questions': questions,
-         'questionnaire_code': reg_form.form_code,
-         'example_sms': example_sms,
-         'org_number': get_organization_telephone_number(request),
-         'current_language': translation.get_language()},
-        context_instance=RequestContext(request))
+                              {'project': project,
+                               'project_links': project_links,
+                               'questions': questions,
+                               'questionnaire_code': reg_form.form_code,
+                               'example_sms': example_sms,
+                               'org_number': get_organization_telephone_number(request),
+                               'current_language': translation.get_language()},
+                              context_instance=RequestContext(request))
 
 
 def get_preview_and_instruction_links_for_questionnaire():
@@ -627,19 +627,19 @@ def questionnaire(request, project_id=None):
         project_links = make_project_links(project, form_model.form_code)
         in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/questionnaire.html',
-            {"existing_questions": repr(existing_questions),
-             'questionnaire_code': form_model.form_code,
-             'project': project,
-             'project_links': project_links,
-             'in_trial_mode': in_trial_mode,
-             'preview_links': get_preview_and_instruction_links_for_questionnaire()},
-            context_instance=RequestContext(request))
+                                  {"existing_questions": repr(existing_questions),
+                                   'questionnaire_code': form_model.form_code,
+                                   'project': project,
+                                   'project_links': project_links,
+                                   'in_trial_mode': in_trial_mode,
+                                   'preview_links': get_preview_and_instruction_links_for_questionnaire()},
+                                  context_instance=RequestContext(request))
 
 
 def _make_project_context(form_model, project):
     return {'form_model': form_model, 'project': project,
             'project_links': make_project_links(project,
-                form_model.form_code)}
+                                                form_model.form_code)}
 
 
 def _create_submission_request(form_model, request):
@@ -670,7 +670,7 @@ class WebQuestionnaireRequest:
         self.project = Project.load(self.manager.database, project_id)
         self.is_data_sender = self.request.user.get_profile().reporter
         self.QuestionnaireForm = WebQuestionnaireFormCreator(SubjectQuestionFieldCreator(self.manager, self.project),
-            form_model=self.form_model).create()
+                                                             form_model=self.form_model).create()
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
 
     @abc.abstractproperty
@@ -696,18 +696,18 @@ class WebQuestionnaireRequest:
     def response_for_get_request(self):
         questionnaire_form = self.QuestionnaireForm()
         form_context = get_form_context(self.form_code, self.project, questionnaire_form,
-            self.manager, self.hide_link_class, self.disable_link_class)
+                                        self.manager, self.hide_link_class, self.disable_link_class)
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
     def response_for_post_request(self):
         questionnaire_form = self.QuestionnaireForm(country=utils.get_organization_country(self.request),
-            data=self.request.POST)
+                                                    data=self.request.POST)
         if not questionnaire_form.is_valid():
             form_context = get_form_context(self.form_code, self.project, questionnaire_form,
-                self.manager, self.hide_link_class, self.disable_link_class)
+                                            self.manager, self.hide_link_class, self.disable_link_class)
 
             return render_to_response(self.template, form_context,
-                context_instance=RequestContext(self.request))
+                                      context_instance=RequestContext(self.request))
 
         success_message = None
         error_message = None
@@ -729,12 +729,12 @@ class WebQuestionnaireRequest:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         _project_context = get_form_context(self.form_code, self.project, questionnaire_form,
-            self.manager, self.hide_link_class, self.disable_link_class)
+                                            self.manager, self.hide_link_class, self.disable_link_class)
 
         _project_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(self.template, _project_context,
-            context_instance=RequestContext(self.request))
+                                  context_instance=RequestContext(self.request))
 
 
 class SubjectWebQuestionnaireRequest(WebQuestionnaireRequest):
@@ -766,7 +766,7 @@ class SubjectWebQuestionnaireRequest(WebQuestionnaireRequest):
     def success_message(self, response_short_code):
         detail_dict = dict({"Subject Type": self.project.entity_type.capitalize(), "Unique ID": response_short_code})
         UserActivityLog().log(self.request, action=REGISTERED_SUBJECT, project=self.project.name,
-            detail=json.dumps(detail_dict))
+                              detail=json.dumps(detail_dict))
         return (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (response_short_code,)
 
 
@@ -794,13 +794,17 @@ class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
     def player_response(self, created_request, logger):
         user_profile = NGOUserProfile.objects.get(user=self.request.user)
         additional_feed_dictionary = {}
+        if self.project.entity_type == u"reporter":
+            reporter_id = created_request.message.get('eid')
+        else:
+            reporter_id = user_profile.reporter_id
 
         project = {'id': self.project.id, 'name': self.project.name, 'type': self.project.entity_type,
                    'status': self.project.state}
         additional_feed_dictionary.update({'project': project})
 
-        response = WebPlayerV2(self.manager, self.feeds_dbm).add_survey_response(created_request,
-            user_profile.reporter_id, additional_feed_dictionary, websubmission_logger)
+        response = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id) \
+                    .add_survey_response(created_request, reporter_id, additional_feed_dictionary, websubmission_logger)
         mail_feed_errors(response, self.manager.database_name)
         return response
 
@@ -867,17 +871,17 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
 
     template = 'project/questionnaire_preview.html' if sms_preview else 'project/questionnaire_preview_list.html'
     return render_to_response(template,
-        {"questions": questions, 'questionnaire_code': form_model.form_code,
-         'project': project, 'project_links': project_links,
-         'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
-        context_instance=RequestContext(request))
+                              {"questions": questions, 'questionnaire_code': form_model.form_code,
+                               'project': project, 'project_links': project_links,
+                               'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
+                              context_instance=RequestContext(request))
 
 
 def _get_preview_for_field_in_registration_questionnaire(field, language):
     preview = {"description": field.label, "code": field.code, "type": field.type,
                "instruction": field.instruction}
-    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else\
-    [(option["text"], option["val"]) for option in field.options]
+    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
+        [(option["text"], option["val"]) for option in field.options]
     preview.update({"constraints": constraints})
     return preview
 
@@ -895,7 +899,7 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
     questions = []
     for field in fields:
         question = _get_preview_for_field_in_registration_questionnaire(field,
-            registration_questionnaire.activeLanguages[0])
+                                                                        registration_questionnaire.activeLanguages[0])
         questions.append(question)
     return fields, project_links, questions, registration_questionnaire
 
@@ -913,15 +917,15 @@ def subject_registration_form_preview(request, project_id=None):
     project = Project.load(manager.database, project_id)
     if request.method == "GET":
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
-            project,
-            project.entity_type)
+                                                                                              project,
+                                                                                              project.entity_type)
         example_sms = get_example_sms_message(fields, registration_questionnaire)
         return render_to_response('project/questionnaire_preview_list.html',
-            {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
-             'project': project, 'project_links': project_links,
-             'example_sms': example_sms,
-             'org_number': get_organization_telephone_number(request)},
-            context_instance=RequestContext(request))
+                                  {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
+                                   'project': project, 'project_links': project_links,
+                                   'example_sms': example_sms,
+                                   'org_number': get_organization_telephone_number(request)},
+                                  context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -932,17 +936,17 @@ def sender_registration_form_preview(request, project_id=None):
     project = Project.load(manager.database, project_id)
     if request.method == "GET":
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
-            project,
-            type_of_subject='reporter')
+                                                                                              project,
+                                                                                              type_of_subject='reporter')
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
         example_sms = get_example_sms_message(datasender_questions, registration_questionnaire)
         return render_to_response('project/questionnaire_preview_list.html',
-            {"questions": datasender_questions,
-             'questionnaire_code': registration_questionnaire.form_code,
-             'project': project, 'project_links': project_links,
-             'example_sms': example_sms,
-             'org_number': get_organization_telephone_number(request)},
-            context_instance=RequestContext(request))
+                                  {"questions": datasender_questions,
+                                   'questionnaire_code': registration_questionnaire.form_code,
+                                   'project': project, 'project_links': project_links,
+                                   'example_sms': example_sms,
+                                   'org_number': get_organization_telephone_number(request)},
+                                  context_instance=RequestContext(request))
 
 
 def get_organization_telephone_number(request):
@@ -950,7 +954,7 @@ def get_organization_telephone_number(request):
     organisation_sms_numbers = organization_settings.get_organisation_sms_number()
     if organization_settings.organization.in_trial_mode:
         return organisation_sms_numbers
-    return organisation_sms_numbers[0] if not organisation_sms_numbers[0] or organisation_sms_numbers[0][0]\
+    return organisation_sms_numbers[0] if not organisation_sms_numbers[0] or organisation_sms_numbers[0][0] \
                                           == "+" else "+%s" % organisation_sms_numbers[0]
 
 
@@ -974,15 +978,15 @@ def edit_subject_questionaire(request, project_id=None):
     existing_questions = json.dumps(fields, default=field_to_json)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     return render_to_response('project/subject_questionnaire.html',
-        {'project': project,
-         'project_links': project_links,
-         'existing_questions': repr(existing_questions),
-         'questionnaire_code': reg_form.form_code,
-         'language': reg_form.activeLanguages[0],
-         'entity_type': project.entity_type,
-         'subject': subject,
-         'post_url': reverse(subject_save_questionnaire)},
-        context_instance=RequestContext(request))
+                              {'project': project,
+                               'project_links': project_links,
+                               'existing_questions': repr(existing_questions),
+                               'questionnaire_code': reg_form.form_code,
+                               'language': reg_form.activeLanguages[0],
+                               'entity_type': project.entity_type,
+                               'subject': subject,
+                               'post_url': reverse(subject_save_questionnaire)},
+                              context_instance=RequestContext(request))
 
 
 def append_success_to_context(context, form):
@@ -1008,7 +1012,7 @@ def create_data_sender_and_web_user(request, project_id=None):
         return render_to_response('project/register_datasender.html', {
             'project': project, 'project_links': project_links, 'form': form,
             'in_trial_mode': in_trial_mode, 'current_language': translation.get_language()},
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
@@ -1025,15 +1029,15 @@ def create_data_sender_and_web_user(request, project_id=None):
             if form.requires_web_access():
                 email_id = request.POST['email']
                 create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
-                    language_code=request.LANGUAGE_CODE)
+                                       language_code=request.LANGUAGE_CODE)
             UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
-                detail=json.dumps(dict({"Unique ID": reporter_id})), project=project.name)
+                                  detail=json.dumps(dict({"Unique ID": reporter_id})), project=project.name)
         if message is not None and success:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         context = {'form': form, 'message': message, 'in_trial_mode': in_trial_mode, 'success': success}
         return render_to_response('datasender_form.html',
-            context,
-            context_instance=RequestContext(request))
+                                  context,
+                                  context_instance=RequestContext(request))
 
 
 def edit_data_sender(request, project_id, reporter_id):
@@ -1048,8 +1052,8 @@ def edit_data_sender(request, project_id, reporter_id):
                                                  'telephone_number': reporter_entity.mobile_number, 'location': location
             , 'geo_code': geo_code})
         return render_to_response('project/edit_datasender.html',
-            {'project': project, 'reporter_id': reporter_id, 'form': form, 'project_links': links,
-             'in_trial_mode': _in_trial_mode(request)}, context_instance=RequestContext(request))
+                                  {'project': project, 'reporter_id': reporter_id, 'form': form, 'project_links': links,
+                                   'in_trial_mode': _in_trial_mode(request)}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
@@ -1061,16 +1065,16 @@ def edit_data_sender(request, project_id, reporter_id):
                 organization = Organization.objects.get(org_id=org_id)
                 current_telephone_number = reporter_entity.mobile_number
                 web_player = WebPlayer(manager,
-                    LocationBridge(location_tree=get_location_tree(),
-                        get_loc_hierarchy=get_location_hierarchy))
+                                       LocationBridge(location_tree=get_location_tree(),
+                                                      get_loc_hierarchy=get_location_hierarchy))
                 response = web_player.accept(
                     Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
-                        transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
-                        is_update=True))
+                            transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
+                            is_update=True))
                 if response.success:
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
-                            form.cleaned_data["telephone_number"], org_id)
+                                                                   form.cleaned_data["telephone_number"], org_id)
                     message = _("Your changes have been saved.")
 
                     detail_dict = {"Unique ID": reporter_id}
@@ -1085,16 +1089,16 @@ def edit_data_sender(request, project_id, reporter_id):
                     if len(detail_dict) > 1:
                         detail_as_string = json.dumps(detail_dict)
                         UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string,
-                            project=project.name)
+                                              project=project.name)
                 else:
                     form.update_errors(response.errors)
             except MangroveException as exception:
                 message = exception.message
 
         return render_to_response('edit_datasender_form.html',
-            {'project': project, 'form': form, 'reporter_id': reporter_id, 'message': message,
-             'project_links': links, 'in_trial_mode': _in_trial_mode(request)},
-            context_instance=RequestContext(request))
+                                  {'project': project, 'form': form, 'reporter_id': reporter_id, 'message': message,
+                                   'project_links': links, 'in_trial_mode': _in_trial_mode(request)},
+                                  context_instance=RequestContext(request))
 
 
 def _in_trial_mode(request):
