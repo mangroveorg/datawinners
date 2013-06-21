@@ -8,7 +8,7 @@ from pages.loginpage.login_page import LoginPage
 from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, LOGOUT
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.activitylogtests.show_activity_log_data import *
 from pages.dashboardpage.dashboard_page import DashboardPage
@@ -71,7 +71,6 @@ class TestShowActivityLog(BaseTest):
         dbmanager = DatabaseManager()
         activation_code = dbmanager.get_activation_code(email.lower())
         account_activate_page.activate_account(activation_code)
-        self.login(credential={USERNAME: email, PASSWORD: "ngo001"})
 
     def assert_there_is_no_entry(self, activity_log_page):
         entries_number = activity_log_page.get_number_of_entries_found()

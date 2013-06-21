@@ -3,14 +3,17 @@
 ACTIVATE = "activate"
 CANCEL = "cancel"
 
+
 def url(path):
     full_path = "http://localhost:8000" + path
     if not full_path.endswith("/"):
         full_path += "/"
     return full_path
 
+
 DATA_WINNER_HOME_PAGE = "/home"
 DATA_WINNER_LOGIN_PAGE = url("/login")
+LOGOUT = url('/logout')
 DATA_WINNER_DASHBOARD_PAGE = url("/dashboard")
 DATA_WINNER_REGISTER_PAGE = url("/register")
 DATA_WINNER_REGISTER_TRIAL_PAGE = url("/register/trial")

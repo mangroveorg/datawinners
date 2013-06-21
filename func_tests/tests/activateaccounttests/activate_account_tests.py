@@ -1,20 +1,19 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from nose.plugins.attrib import attr
 from framework.base_test import BaseTest
+from framework.utils.common_utils import by_css
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
-from framework.utils.data_fetcher import fetch_, from_
-from tests.activateaccounttests.activate_account_data import *
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from framework.utils.database_manager_postgres import DatabaseManager
 from tests.registrationtests.registration_data import REGISTRATION_SUCCESS_MESSAGE
 from tests.registrationtests.registration_tests import register_and_get_email
 from pages.loginpage.login_page import LoginPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, LOGOUT
 from tests.logintests.login_data import USERNAME, PASSWORD
+
 
 @attr('suit_1')
 class TestActivateAccount(BaseTest):
-
     def setUp(self):
         super(TestActivateAccount, self).setUp()
         registration_confirmation_page, self.email = register_and_get_email(self.driver)
@@ -35,15 +34,14 @@ class TestActivateAccount(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_successful_activation_of_account(self):
-
-        self.assertRegexpMatches(self.account_activate_page.get_message(),
-                                 fetch_(SUCCESS_MESSAGE, from_(VALID_ACTIVATION_DETAILS)))
+        self.assertEqual('Dashboard', self.driver.find(by_css('title')).text)
 
     @attr('functional_test')
     def test_successful_login_with_uppercased_email(self):
+        self.driver.go_to(LOGOUT)
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
-        dashboard_page = login_page.do_successful_login_with({USERNAME: self.email.upper(), PASSWORD:u"ngo001"})
+        dashboard_page = login_page.do_successful_login_with({USERNAME: self.email.upper(), PASSWORD: u"ngo001"})
         self.assertEqual(dashboard_page.welcome_message(), u"Welcome Mickey!")
 
 
