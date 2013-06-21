@@ -199,7 +199,7 @@ class CharFormField(object):
         return constraints
 
 
-class SubjectField(object):
+class EntityField(object):
     def __init__(self, dbm, project):
         self.dbm = dbm
         self.project = project

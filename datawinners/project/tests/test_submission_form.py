@@ -1,11 +1,12 @@
 import unittest
-from mock import Mock, PropertyMock
+from django.forms import ChoiceField
+from mock import Mock, PropertyMock, patch
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import IntegerField, DateField, GeoCodeField, TextField
 from mangrove.form_model.form_model import FormModel
-from project.models import Project
-from project.submission_form import EditSubmissionForm
+from datawinners.project.models import Project
+from datawinners.project.submission_form import EditSubmissionForm
 
 
 class TestSubmissionForm(unittest.TestCase):
@@ -51,3 +52,17 @@ class TestSubmissionForm(unittest.TestCase):
                                'text_field_code']
         self.assertListEqual(submission_form_create.fields.keys(), expected_field_keys)
 
+    def test_entity_question_form_field_created(self):
+        form_model = Mock(spec=FormModel)
+        fields = [
+            TextField("entity question", "eid", "what are you reporting on?", self.ddtype, entity_question_flag=True)]
+        type(form_model).form_code = PropertyMock(return_value='001')
+        type(form_model).fields = PropertyMock(return_value=fields)
+        type(form_model).entity_question = PropertyMock(return_value=fields[0])
+
+        with patch('datawinners.project.questionnaire_fields.EntityField.create') as create_entity_field:
+            choice_field = ChoiceField(('sub1', 'sub2', 'sub3'))
+            create_entity_field.return_value = {'eid': choice_field}
+            submission_form = EditSubmissionForm(self.manager, self.project, form_model, {})
+            self.assertEqual('eid', submission_form.short_code_question_code)
+            self.assertEqual(choice_field, submission_form.fields['eid'])
