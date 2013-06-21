@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
 
-from django.contrib.auth.decorators import  login_required
+from django.contrib.auth.decorators import login_required
 from django.conf import settings as django_settings
 from django.contrib import messages
 from django.contrib.auth.models import User, Group
@@ -32,10 +32,12 @@ from datawinners.entity.helper import delete_datasender_for_trial_mode, \
 from datawinners.entity.import_data import send_email_to_data_sender
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from mangrove.form_model.form_model import REPORTER
-from mangrove.transport import  TransportInfo
+from mangrove.transport import TransportInfo
 from django.http import Http404
 
 logger = logging.getLogger("django")
+
+
 def is_admin(f):
     def wrapper(*args, **kw):
         user = args[0].user
@@ -94,12 +96,13 @@ def is_new_user(f):
     def wrapper(*args, **kw):
         user = args[0].user
         if not len(get_all_projects(get_database_manager(args[0].user))) and not user.groups.filter(
-            name="Data Senders").count() > 0:
+                name="Data Senders").count() > 0:
             return HttpResponseRedirect("/start?page=" + args[0].path)
 
         return f(*args, **kw)
 
     return wrapper
+
 
 def session_not_expired(f):
     def wrapper(*args, **kw):
@@ -129,6 +132,7 @@ def is_not_expired(f):
 
     return wrapper
 
+
 def is_allowed_to_view_reports(f, redirect_to='/alldata'):
     def wrapper(*args, **kw):
         request = args[0]
@@ -139,6 +143,7 @@ def is_allowed_to_view_reports(f, redirect_to='/alldata'):
         return f(*args, **kw)
 
     return wrapper
+
 
 def is_trial(f):
     def wrapper(*args, **kw):
@@ -156,6 +161,10 @@ def registration_complete(request):
     return render_to_response('registration/registration_complete.html')
 
 
+def registration_activation_complete(request):
+    return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
+
+
 def custom_login(request, template_name, authentication_form):
     if request.user.is_authenticated():
         return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
@@ -168,8 +177,8 @@ def custom_login(request, template_name, authentication_form):
 
 def custom_reset_password(request):
     return password_reset(request,
-        email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE),
-        password_reset_form=ResetPasswordForm)
+                          email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE),
+                          password_reset_form=ResetPasswordForm)
 
 
 @login_required(login_url='/login')
@@ -182,7 +191,7 @@ def settings(request):
         organization_form = OrganizationForm(instance=organization)
 
         return render_to_response("accountmanagement/account/org_settings.html",
-                {'organization_form': organization_form}, context_instance=RequestContext(request))
+                                  {'organization_form': organization_form}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
@@ -204,7 +213,8 @@ def settings(request):
                 UserActivityLog().log(request, action=CHANGED_ACCOUNT_INFO, detail=detail_as_string)
 
         return render_to_response("accountmanagement/account/org_settings.html",
-                {'organization_form': organization_form, 'message': message}, context_instance=RequestContext(request))
+                                  {'organization_form': organization_form, 'message': message},
+                                  context_instance=RequestContext(request))
 
 
 def _associate_user_with_existing_project(manager, reporter_id):
@@ -225,7 +235,7 @@ def new_user(request):
     if request.method == 'GET':
         profile_form = UserProfileForm()
         return render_to_response("accountmanagement/account/add_user.html", {'profile_form': profile_form},
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
     if request.method == 'POST':
         manager = get_database_manager(request.user)
@@ -243,10 +253,11 @@ def new_user(request):
                 user.save()
                 mobile_number = form.cleaned_data['mobile_phone']
                 ngo_user_profile = NGOUserProfile(user=user, title=form.cleaned_data['title'],
-                    mobile_phone=mobile_number,
-                    org_id=org.org_id)
+                                                  mobile_phone=mobile_number,
+                                                  org_id=org.org_id)
                 ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
-                    current_user_name=user.get_full_name(), mobile_number=mobile_number)
+                                                                         current_user_name=user.get_full_name(),
+                                                                         mobile_number=mobile_number)
                 ngo_user_profile.save()
                 _associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
                 reset_form = PasswordResetForm({"email": username})
@@ -261,8 +272,8 @@ def new_user(request):
                     UserActivityLog().log(request, action=ADDED_USER, detail=json.dumps(detail_dict))
 
         return render_to_response("accountmanagement/account/add_user.html",
-                {'profile_form': form, 'add_user_success': add_user_success},
-            context_instance=RequestContext(request))
+                                  {'profile_form': form, 'add_user_success': add_user_success},
+                                  context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -275,7 +286,7 @@ def users(request):
         not_datasenders = User.objects.exclude(groups__name='Data Senders').values_list('id', flat=True)
         users = NGOUserProfile.objects.filter(org_id=org_id, user__in=not_datasenders)
         return render_to_response("accountmanagement/account/users_list.html", {'users': users},
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -287,11 +298,11 @@ def edit_user(request):
         if profile.mobile_phone == 'Not Assigned':
             profile.mobile_phone = ''
         form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
-            last_name=profile.user.last_name,
-            username=profile.user.username,
-            mobile_phone=profile.mobile_phone))
+                                             last_name=profile.user.last_name,
+                                             username=profile.user.username,
+                                             mobile_phone=profile.mobile_phone))
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form},
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
         form = EditUserProfileForm(request.POST)
         message = ""
@@ -307,7 +318,7 @@ def edit_user(request):
             ngo_user_profile.save()
             message = _('Profile has been updated successfully')
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
 
 def trial_expired(request):
@@ -332,7 +343,7 @@ def upgrade(request):
             invoice_period = form.cleaned_data['invoice_period']
             preferred_payment = form.cleaned_data['preferred_payment']
             payment_details = PaymentDetails.objects.model(organization=organization, invoice_period=invoice_period,
-                preferred_payment=preferred_payment)
+                                                           preferred_payment=preferred_payment)
             payment_details.save()
             message_tracker = MessageTracker.objects.filter(organization=organization)
             if message_tracker.count() > 0:
@@ -357,7 +368,9 @@ def _send_upgrade_email(user, language):
 
 
 def user_activity_log_details(users_to_be_deleted):
-    return "<br><br>".join(("Name: " + user.get_full_name() + "<br>" + "Email: " + user.email) for user in users_to_be_deleted)
+    return "<br><br>".join(
+        ("Name: " + user.get_full_name() + "<br>" + "Email: " + user.email) for user in users_to_be_deleted)
+
 
 @login_required(login_url='/login')
 @csrf_view_exempt
@@ -374,7 +387,7 @@ def delete_users(request):
     organization = get_organization(request)
     transport_info = TransportInfo("web", request.user.username, "")
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
-    
+
     if ngo_admin_user_profile.reporter_id in all_ids:
         admin_full_name = ngo_admin_user_profile.user.first_name + ' ' + ngo_admin_user_profile.user.last_name
         messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
@@ -390,5 +403,5 @@ def delete_users(request):
         action = DELETED_USERS
         UserActivityLog().log(request, action=action, detail=detail)
         messages.success(request, _("User(s) successfully deleted."))
-        
+
     return HttpResponse(json.dumps({'success': True}))

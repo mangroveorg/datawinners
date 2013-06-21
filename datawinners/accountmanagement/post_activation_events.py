@@ -1,6 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
+
 from django.conf import settings
+from django.contrib.auth import login
+
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
@@ -41,6 +44,8 @@ def create_org_and_feed_database(sender, user, request, **kwargs):
         create_feed_database(db_name)
     profile.reporter_id = make_user_as_a_datasender(manager, org, user.get_full_name(), profile.mobile_phone)
     profile.save()
+    user.backend ='django.contrib.auth.backends.ModelBackend'
+    login(request, user)
 
 
 def active_organization(org):
