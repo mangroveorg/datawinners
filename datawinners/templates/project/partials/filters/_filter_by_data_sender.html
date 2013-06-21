@@ -5,8 +5,8 @@
     </div>
     <div class="float_left ">
         <select multiple="multiple" id="dataSenderSelect">
-            {%  for name, id in datasender_list %}
-                <option value="{{ name }}" code="{{ id }}" data="{{ id }}">{{ name }}</option>
+            {%  for name, id, uid in datasender_list %}
+                <option value="{{ name }}" code="{{ id }}" data="{{ uid }}">{{ name }}</option>
             {% endfor %}
         </select>
     </div>

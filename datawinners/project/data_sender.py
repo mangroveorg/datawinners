@@ -5,8 +5,8 @@ class DataSender(object):
         return DataSender(data_sender_tuple[-1], data_sender_tuple[0], data_sender_tuple[1])
 
 
-    def __init__(self, source, name, reporter_id):
-        self._source = source
+    def __init__(self, uid, name, reporter_id):
+        self._uid = uid
         self._name = name
         self._reporter_id = reporter_id or '-'
 
@@ -15,8 +15,8 @@ class DataSender(object):
         return self._name
 
     @property
-    def source(self):
-        return self._source
+    def uid(self):
+        return self._uid
 
     @property
     def reporter_id(self):
@@ -27,17 +27,17 @@ class DataSender(object):
         instance_equal = isinstance(other, DataSender)
         if not instance_equal: return False
 
-        if isinstance(self.source, list):
-            source_equal = set(self.source) == set(other._source)
+        if isinstance(self.uid, list):
+            source_equal = set(self.uid) == set(other._uid)
         else:
-            source_equal = self.source == other._source
+            source_equal = self.uid == other._uid
 
         return self._name == other._name and source_equal and self._reporter_id == other._reporter_id
 
     def __hash__(self):
         result = 17
         result = 31 * result + hash(self._name)
-        result = 31 * result + hash(self._source)
+        result = 31 * result + hash(self._uid)
         result = 31 * result + hash(self._reporter_id)
 
         return result
