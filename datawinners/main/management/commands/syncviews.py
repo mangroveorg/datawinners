@@ -22,4 +22,3 @@ class Command(BaseCommand):
             print "Done."
 
 
-Command().handle()
