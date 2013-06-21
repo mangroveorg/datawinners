@@ -3,10 +3,10 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from datawinners.main.database import get_db_manager
-from project.helper import NOT_AVAILABLE_DS
-from submission.organization_finder import OrganizationFinder
+from datawinners.project.helper import NOT_AVAILABLE_DS
+from datawinners.submission.organization_finder import OrganizationFinder
 from datawinners.project.data_sender_helper import data_sender_by_mobile
-from submission.views import sms, _get_from_and_to_numbers
+from datawinners.submission.views import sms, _get_from_and_to_numbers
 
 logger = logging.getLogger("django")
 

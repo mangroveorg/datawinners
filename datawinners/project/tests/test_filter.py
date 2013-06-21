@@ -1,6 +1,6 @@
 import unittest
 from mock import Mock
-from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
+from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.datastore.database import DatabaseManager
 from mangrove.transport.contract.transport_info import TransportInfo
 from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SurveyResponseDateFilter

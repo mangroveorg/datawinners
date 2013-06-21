@@ -4,7 +4,7 @@ import os
 os.environ['DJANGO_SETTINGS_MODULE'] = "datawinners.settings"
 
 import settings
-from accountmanagement.models import OrganizationSetting
+from datawinners.accountmanagement.models import OrganizationSetting
 from find_all_db_managers import all_db_names
 from mangrove.datastore.database import get_db_manager, remove_db_manager
 

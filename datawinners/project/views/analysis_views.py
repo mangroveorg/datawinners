@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.accountmanagement.views import session_not_expired
-from main.database import get_database_manager
+from datawinners.main.database import get_database_manager
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.json_codecs import encode_json
 

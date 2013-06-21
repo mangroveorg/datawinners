@@ -1,10 +1,13 @@
 from unittest import TestCase
+
 from django.contrib.auth.models import User
-from mangrove.datastore.database import DatabaseManager
 from mock import Mock, patch
-from accountmanagement.models import NGOUserProfile
-from alldata.views import  get_project_info
-from project.models import Project, ProjectState
+
+from mangrove.datastore.database import DatabaseManager
+from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.alldata.views import  get_project_info
+from datawinners.project.models import Project, ProjectState
+
 
 class TestViews(TestCase):
     def test_get_correct_web_submission_link(self):

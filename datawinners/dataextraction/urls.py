@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns
-from dataextraction.views import get_for_subject, get_for_form, get_registered_data
+from datawinners.dataextraction.views import get_for_subject, get_for_form, get_registered_data
 
 urlpatterns = patterns('',
     (r'^api/get_for_subject/(?P<subject_type>\w+?)/(?P<subject_short_code>\w+?)/$', get_for_subject),

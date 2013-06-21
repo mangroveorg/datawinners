@@ -2,8 +2,8 @@ from unittest.case import TestCase
 from mangrove.datastore.database import DatabaseManager
 from mock import Mock
 from mock import patch
-from dataextraction.models import DataExtractionResult
-from dataextraction.helper import get_data_for_subject, encapsulate_data_for_subject, get_data_for_form, encapsulate_data_for_form, generate_filename
+from datawinners.dataextraction.models import DataExtractionResult
+from datawinners.dataextraction.helper import get_data_for_subject, encapsulate_data_for_subject, get_data_for_form, encapsulate_data_for_form, generate_filename
 
 DATA_FROM_DB = [{"id": "1", "key": [["clinic"], "cid001", 1],
                  "value": {"submission_time": "2012-08-08 03:21:23.469462+00:00",

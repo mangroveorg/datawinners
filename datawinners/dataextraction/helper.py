@@ -8,7 +8,7 @@ from mangrove.datastore.entity_type import entity_type_already_defined
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
-from dataextraction.models import DataExtractionResult
+from datawinners.dataextraction.models import DataExtractionResult
 
 def get_data_for_subject(dbm, subject_type, subject_short_code, start_date=None, end_date=None):
     start = convert_date_string_to_UTC(start_date)

@@ -3,7 +3,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = "datawinners.settings"
 
 from django.contrib.auth.models import User
 import sys
-from accountmanagement.models import OrganizationSetting, Organization, NGOUserProfile
+from datawinners.accountmanagement.models import OrganizationSetting, Organization, NGOUserProfile
 
 email = "rhmino@gmail.com"
 users = User.objects.filter(email=email)

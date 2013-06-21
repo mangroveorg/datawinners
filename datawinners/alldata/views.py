@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
-from accountmanagement.views import session_not_expired
-from dataextraction.helper import convert_to_json_response
+from datawinners.accountmanagement.views import session_not_expired
+from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.accountmanagement.views import is_new_user, is_allowed_to_view_reports
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
 from datawinners.settings import CRS_ORG_ID

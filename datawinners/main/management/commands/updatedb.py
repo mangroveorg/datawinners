@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from datawinners import  initializer
-from main.database import get_db_manager
+from datawinners.main.database import get_db_manager
 from main.management.commands.utils import document_stores_to_process
 
 

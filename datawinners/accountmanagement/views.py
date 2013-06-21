@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from django.contrib.auth.forms import PasswordResetForm
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER, CRS_ORG_ID
-from main.database import get_database_manager
+from datawinners.main.database import get_database_manager
 
 from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm

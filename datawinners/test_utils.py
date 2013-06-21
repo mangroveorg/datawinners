@@ -4,7 +4,7 @@ import datetime
 from django.test.client import RequestFactory
 from mock import Mock, call, PropertyMock
 from xlwt import Worksheet, Column
-from accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME, RAW_DATA, HEADER_LIST, DEFAULT_TEST_ORG_TEL_NO
 from entity.views import add_codes_sheet
 from mangrove.form_model.field import ExcelDate

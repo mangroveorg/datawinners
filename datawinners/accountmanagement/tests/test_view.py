@@ -1,6 +1,6 @@
 import unittest
 from django.contrib.auth.models import User
-from accountmanagement.views import user_activity_log_details
+from datawinners.accountmanagement.views import user_activity_log_details
 
 class TestUserActivityLogDetails(unittest.TestCase):
     def test_should_render_user_activity_log_details_when_deleting_multiple_users(self):

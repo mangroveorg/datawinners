@@ -5,7 +5,7 @@ import cPickle
 import datetime
 import os
 import re
-from accountmanagement.models import OrganizationSetting
+from datawinners.accountmanagement.models import OrganizationSetting
 from mangrove.datastore.database import get_db_manager
 
 IN_COMMING_PATTERN = r"^(.+)\+0000.+INCOMING.+<<<<(.+short_message.+)$"

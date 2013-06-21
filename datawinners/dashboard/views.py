@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.queries import get_entities_by_type
-from accountmanagement.views import session_not_expired
+from datawinners.accountmanagement.views import session_not_expired
 from datawinners import settings
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.accountmanagement.views import is_datasender, is_not_expired
