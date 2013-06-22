@@ -2,16 +2,17 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class SyncOnlyChangedViews():
     def update_views(self, current_views, new_views, manager):
-        for key, value in new_views.iteritems():
-            if key not in current_views or current_views[key] != new_views[key]:
-                map_function = (value['map'] if 'map' in value else None)
-                reduce_function = (value['reduce'] if 'reduce' in value else None)
-                msg = "Syncing view ..... %s" % key
+        for view_name, view_def in new_views.iteritems():
+            if view_name not in current_views or current_views[view_name] != new_views[view_name]:
+                map_function = (view_def['map'] if 'map' in view_def else None)
+                reduce_function = (view_def['reduce'] if 'reduce' in view_def else None)
+                msg = "Syncing view ..... %s" % view_name
                 logger.info(msg)
                 print msg
-                manager.create_view(key, map_function, reduce_function)
+                manager.create_view(view_name, map_function, reduce_function)
 
     def sync_view(self, manager):
         from datawinners.main.utils import find_views
@@ -30,10 +31,17 @@ class SyncOnlyChangedViews():
         self.update_views(current_views, find_views('feedview'), manager)
 
     def current_view_dictionary(self, manager):
-        design_docs = manager._get_design_docs()
+        design_docs = manager.database.view('_all_docs', startkey='_design', endkey='_design0', include_docs=True)
         view_dict = {}
-        for design_doc in design_docs:
-            for view in design_doc['views']:
-                view_dict.update({view: design_doc['views'][view]})
+        for design_doc in design_docs.rows:
+            view_dict.update(design_doc.doc['views'])
         return view_dict
 
+        # def current_view_dictionary(self, manager):
+        #     design_docs = manager._get_design_docs()
+        #     view_dict = {}
+        #     for design_doc in design_docs:
+        #         for view in design_doc['views']:
+        #             view_dict.update({view: design_doc['views'][view]})
+        #     return view_dict
+        #
