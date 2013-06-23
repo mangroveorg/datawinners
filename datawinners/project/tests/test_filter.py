@@ -93,7 +93,7 @@ class TestSubmissionFilters(unittest.TestCase):
         test_submission1._doc.test = True
 
         test_submission2 = SurveyResponse(self.dbm, transport_info=TransportInfo('web', TEST_REPORTER_MOBILE_NUMBER, 'destination'),
-            form_code='test', values=self.values[2])
+            form_code='test', values=self.values[2], owner_uid="0000001")
         test_submission2._doc.test = False
 
         submission_logs = [
@@ -101,8 +101,7 @@ class TestSubmissionFilters(unittest.TestCase):
             test_submission1,
             test_submission2
         ]
-
-        filtered_submissions = DataSenderFilter('TEST').filter(submission_logs)
+        filtered_submissions = DataSenderFilter("0000001").filter(submission_logs)
         self.assertEqual(1, len(filtered_submissions))
         self.assertEqual(test_submission2.id ,filtered_submissions[0].id)
 
