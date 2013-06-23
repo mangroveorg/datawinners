@@ -65,7 +65,7 @@ class SurveyResponseData(object):
 
     def _get_data_sender(self, survey_response):
         for each in self._data_senders:
-            if each[-1] == survey_response.origin:
+            if each[-1] == survey_response.owner_uid:
                 return each
         else:
             data_sender = get_data_sender(self.manager, survey_response)

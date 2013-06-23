@@ -69,7 +69,7 @@ def adapt_submissions_for_template(questions, submissions):
     for each in submissions:
         case_insensitive_dict = {key.lower(): value for key, value in each.values.items()}
         formatted_list.append(
-            [each.uuid, each.destination, each.origin, each.created, each.errors,
+            [each.uuid, each.destination, each.owner_uid, each.created, each.errors,
              "Success" if each.status else "Error"] +
             ["Yes" if is_submission_deleted(each.data_record) else "No"] + [
             get_according_value(case_insensitive_dict, q) for q in questions])
