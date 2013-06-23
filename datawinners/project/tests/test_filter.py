@@ -3,8 +3,8 @@ from mock import Mock
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.datastore.database import DatabaseManager
 from mangrove.transport.contract.transport_info import TransportInfo
-from project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SurveyResponseDateFilter
-from project.views.views import *
+from datawinners.project.filters import ReportPeriodFilter, SubjectFilter, DataSenderFilter, SurveyResponseDateFilter
+from datawinners.project.views.views import *
 from mangrove.transport.contract.survey_response import SurveyResponse
 
 
@@ -69,12 +69,12 @@ class TestSubmissionFilters(unittest.TestCase):
 
     def test_should_return_submissions_filter_by_datasender(self):
         submission_logs = [
-            SurveyResponse(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0]),
-            SurveyResponse(self.dbm, transport_info=TransportInfo('web', '127359085', 'destination'), form_code='test',values=self.values[1]),
+            SurveyResponse(self.dbm,transport_info=TransportInfo('web', 'tester150411@gmail.com', 'destination'), form_code='test',values=self.values[0], owner_uid="123"),
+            SurveyResponse(self.dbm, transport_info=TransportInfo('web', '127359085', 'destination'), form_code='test',values=self.values[1], owner_uid="121"),
             SurveyResponse(self.dbm, transport_info=TransportInfo('web', '0000000000', 'destination'), form_code='test',values=self.values[2])
         ]
 
-        filtered_submissions = DataSenderFilter('tester150411@gmail.com').filter(submission_logs)
+        filtered_submissions = DataSenderFilter('123').filter(submission_logs)
         self.assertEqual(1, len(filtered_submissions))
 
     def test_should_return_empty_submission_list_when_no_matching_datasender_found(self):

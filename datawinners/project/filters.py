@@ -47,15 +47,15 @@ class SubjectFilter(object):
 
 
 class DataSenderFilter(object):
-    def __init__(self, survey_response_sources):
-        self.survey_response_sources = survey_response_sources.split(',')
+    def __init__(self, survey_response_owner_uids):
+        self.survey_response_owner_uids = survey_response_owner_uids.split(',')
 
     def filter(self, survey_responses):
         return filter(lambda x: self._with_reporter_uid(x), survey_responses)
 
     def _with_reporter_uid(self, survey_response):
         reporter_uid = 'TEST' if survey_response.origin == TEST_REPORTER_MOBILE_NUMBER else survey_response.owner_uid
-        return reporter_uid in self.survey_response_sources
+        return reporter_uid in self.survey_response_owner_uids
 
 
 class SurveyResponseDateFilter(object):

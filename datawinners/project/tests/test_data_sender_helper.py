@@ -30,20 +30,21 @@ class TestDataSenderHelper(TestCase):
         beany_tester_id = get_by_short_code_include_voided(TestDataSenderHelper.manager, "rep1", REPORTER_ENTITY_TYPE).id
         survey_response = SurveyResponse(TestDataSenderHelper.manager, TransportInfo("web", "tester150411@gmail.com", "destination"), owner_uid=beany_tester_id)
         data_sender = get_data_sender(TestDataSenderHelper.manager, survey_response)
-        self.assertEqual(("Beany", "rep1"), data_sender)
+        self.assertEqual(("Beany", "rep1",data_sender[2]), data_sender)
 
 
     def test_should_return_N_A_when_the_data_sender_was_deleted_and_send_from_smart_phone(self):
         survey_response = SurveyResponse(TestDataSenderHelper.manager, TransportInfo("smartPhone", "nobody@gmail.com", "destination"), owner_uid=self.deleted_ds_id)
         data_sender = get_data_sender(TestDataSenderHelper.manager, survey_response)
 
-        self.assertEqual(("M K Gandhi", "del1"), data_sender)
+        #self.assertEqual(("M K Gandhi", "del1"), data_sender) #show_deleted_ds
+        self.assertEqual(("Deleted Data Sender", None), data_sender)
 
     def test_should_return_data_sender_TESTER_when_send_from_TEST_REPORTER_MOBILE_NUMBER(self):
         survey_response = SurveyResponse(TestDataSenderHelper.manager, TransportInfo("sms", TEST_REPORTER_MOBILE_NUMBER, "destination"),owner_uid=self.test_ds_id)
         data_sender = get_data_sender(TestDataSenderHelper.manager, survey_response)
 
-        self.assertEqual(('TEST', 'test'), data_sender)
+        self.assertEqual(('TEST', 'test', data_sender[2]), data_sender)
 
     @classmethod
     def _prepare_sms_data_senders(cls):

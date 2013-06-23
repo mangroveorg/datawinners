@@ -47,11 +47,11 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_success_status_and_value_for_subject(self):
         dbm = Mock()
-        with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:
+        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
             get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
+            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
                 entity_type_already_defined.return_value = True
-                with patch("dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
+                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
                     check_if_subject_exists.return_value = True
                     data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001")
                     self.assertIsInstance(data_for_subject, DataExtractionResult)
@@ -60,11 +60,11 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_success_status_and_no_data_message_for_subject_when_no_data(self):
         dbm = Mock()
-        with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:
+        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
             get_data_for_subject.return_value = []
-            with patch("dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
+            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
                 entity_type_already_defined.return_value = True
-                with patch("dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
+                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
                     check_if_subject_exists.return_value = True
                     data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001")
                     self.assertIsInstance(data_for_subject, DataExtractionResult)
@@ -75,9 +75,9 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_subject_type(self):
         dbm = Mock()
-        with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:
+        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
             get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
+            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
                 entity_type_already_defined.return_value = False
                 not_defined_entity = "clinic"
                 data_for_subject = encapsulate_data_for_subject(dbm, not_defined_entity, "cid001")
@@ -88,11 +88,11 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_subject_id(self):
         dbm = Mock()
-        with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:
+        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
             get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
+            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
                 entity_type_already_defined.return_value = True
-                with patch("dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
+                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
                     check_if_subject_exists.return_value = False
                     not_registered_subject = "cid001"
                     data_for_subject = encapsulate_data_for_subject(dbm, "clinic", not_registered_subject)
@@ -105,11 +105,11 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_date_format(self):
         dbm = Mock()
-        with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:
+        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
             get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
+            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
                 entity_type_already_defined.return_value = True
-                with patch("dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
+                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
                     check_if_subject_exists.return_value = True
                     data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001", "03082012", "06082012")
                     self.assertIsInstance(data_for_subject, DataExtractionResult)
@@ -120,11 +120,11 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_date(self):
         dbm = Mock()
-        with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:
+        with patch("datawinners.dataextraction.helper.get_data_for_subject") as get_data_for_subject:
             get_data_for_subject.return_value = TRANSFORMED_DATA
-            with patch("dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
+            with patch("datawinners.dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
                 entity_type_already_defined.return_value = True
-                with patch("dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
+                with patch("datawinners.dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
                     check_if_subject_exists.return_value = True
                     data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001", "06-08-2012", "03-08-2012")
                     self.assertIsInstance(data_for_subject, DataExtractionResult)
@@ -134,7 +134,7 @@ class TestHelper(TestCase):
 
     def test_should_return_data_of_form_by_form_code(self):
         dbm = Mock(spec=DatabaseManager)
-        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+        with patch("datawinners.dataextraction.helper.check_if_form_exists") as check_if_form_exists:
             check_if_form_exists.return_value = True
             with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
                 load_all_rows_in_view.return_value = DATA_FROM_DB
@@ -144,9 +144,9 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_success_status_and_value_for_form(self):
         dbm = Mock()
-        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+        with patch("datawinners.dataextraction.helper.check_if_form_exists") as check_if_form_exists:
             check_if_form_exists.return_value = True
-            with patch("dataextraction.helper.get_data_for_form") as get_data_for_form:
+            with patch("datawinners.dataextraction.helper.get_data_for_form") as get_data_for_form:
                 get_data_for_form.return_value = TRANSFORMED_DATA
                 data_for_form = encapsulate_data_for_form(dbm, "cli")
                 self.assertIsInstance(data_for_form, DataExtractionResult)
@@ -155,7 +155,7 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_failed_status_for_form_when_pass_not_exist_form_code(self):
         dbm = Mock()
-        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+        with patch("datawinners.dataextraction.helper.check_if_form_exists") as check_if_form_exists:
             check_if_form_exists.return_value = False
             not_exist_form_code = "cli"
             data_for_form = encapsulate_data_for_form(dbm, not_exist_form_code)
@@ -166,7 +166,7 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_failed_status_for_form_when_pass_wrong_date_format(self):
         dbm = Mock()
-        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+        with patch("datawinners.dataextraction.helper.check_if_form_exists") as check_if_form_exists:
             check_if_form_exists.return_value = True
             data_for_form = encapsulate_data_for_form(dbm, "cli", "03082012", "06082012")
             self.assertIsInstance(data_for_form, DataExtractionResult)
@@ -176,7 +176,7 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_failed_status_for_form_when_end_date_before_start_date(self):
         dbm = Mock()
-        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+        with patch("datawinners.dataextraction.helper.check_if_form_exists") as check_if_form_exists:
             check_if_form_exists.return_value = True
             data_for_form = encapsulate_data_for_form(dbm, "cli", "09-08-2012", "03-08-2012")
             self.assertIsInstance(data_for_form, DataExtractionResult)
@@ -186,9 +186,9 @@ class TestHelper(TestCase):
 
     def test_should_return_data_with_success_status_and_no_data_message_for_form_when_no_data(self):
         dbm = Mock()
-        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+        with patch("datawinners.dataextraction.helper.check_if_form_exists") as check_if_form_exists:
             check_if_form_exists.return_value = True
-            with patch("dataextraction.helper.get_data_for_form") as get_data_for_form:
+            with patch("datawinners.dataextraction.helper.get_data_for_form") as get_data_for_form:
                 get_data_for_form.return_value = []
                 data_for_form = encapsulate_data_for_form(dbm, "cli", "01-08-2012", "03-08-2012")
                 self.assertIsInstance(data_for_form, DataExtractionResult)
