@@ -2,7 +2,7 @@
 from django.core.management.base import BaseCommand
 from datawinners.main.initial_couch_fixtures import load_data
 from datawinners.main.database import   get_db_manager
-from main.management.sync_changed_views import SyncOnlyChangedViews
+from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
 from datawinners.main.management.commands.utils import document_stores_to_process
 from mangrove.datastore.database import _delete_db_and_remove_db_manager
 

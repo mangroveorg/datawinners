@@ -54,8 +54,7 @@ class DataSenderFilter(object):
         return filter(lambda x: self._with_reporter_uid(x), survey_responses)
 
     def _with_reporter_uid(self, survey_response):
-        reporter_uid = 'TEST' if survey_response.origin == TEST_REPORTER_MOBILE_NUMBER else survey_response.owner_uid
-        return reporter_uid in self.survey_response_owner_uids
+        return survey_response.owner_uid in self.survey_response_owner_uids
 
 
 class SurveyResponseDateFilter(object):

@@ -4,6 +4,8 @@ from nose.plugins.attrib import attr
 import time
 from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.utils.data_fetcher import from_, fetch_
+from mangrove.datastore.entity import get_by_short_code_include_voided
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import *
@@ -159,11 +161,11 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_sms_or_web_data_sender(self):
-        self.verify_filter_by_data_sender(('Shweta', 'rep1', '1234567890'))
+        self.verify_filter_by_data_sender(('Shweta', 'rep1'))
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_test_data_sender(self):
-        self.verify_filter_by_data_sender(('TEST', 'n/a', 'TEST'),
+        self.verify_filter_by_data_sender(('TEST', 'test'),
             'Clinic Test Project With Monthly Reporting Period'.lower())
 
     @attr('functional_test')

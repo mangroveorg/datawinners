@@ -246,7 +246,7 @@ class DataAnalysisPage(Page):
 
     def select_for_data_sender(self, data_sender):
         self.open_data_sender_drop_down()
-        self.driver.wait_for_element(20, by_xpath('//input[@data="%s"]' % data_sender)).click()
+        self.driver.wait_for_element(20, by_xpath('//input[@id="%s"]' % data_sender)).click()
         self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/..//button')).click()
 
     def open_data_sender_drop_down(self):
