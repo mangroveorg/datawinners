@@ -1,3 +1,8 @@
+import sys
+
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0,".")
+
 from datetime import datetime
 import traceback
 import urllib2
@@ -71,8 +76,8 @@ def renumber_fields_name(form_model):
     data_to_restore, max_question_names, existing_names = [], [], {}
     data_length = 0
     for field in form_model.fields:
-        if field.name.startswith("Question "):
-            max_question_names.append(int(field.name[9:]))
+        if field.name.startswith("Question"):
+            max_question_names.append(int(field.name[8:]))
         if field.name in existing_names:
             current_code = existing_names.get(field.name)
             question_number = max(max_question_names) + 1
@@ -94,11 +99,18 @@ def migrate_entity(manager, form_model, datarecord_doc, data_to_restore):
         entity_uid = datarecord_doc['value']['data']['short_code']['value']
         entity = get_by_short_code_include_voided(manager, entity_uid, form_model.entity_type)
         cleaned_data, errors = form_model.validate_submission(values=submission_log.values)
+
+        if len(errors):
+            log_statement('Error on sumbission: %s \n' % submission_log.id)
+            return
+
         data = [(form_model._get_field_by_code(code).name, cleaned_data.get(code),
                  form_model._get_field_by_code(code).ddtype)
                 for code in data_to_restore]
+        
         entity.update_latest_data(data)
         entity.save()
+            
 
 
 def migrate_db(database):
@@ -108,8 +120,14 @@ def migrate_db(database):
         manager = get_db_manager(database)
         subject_form_model_docs = manager.database.query(map_form_model_for_subject_questionnaires)
         mark_start_of_migration(database)
+        processed = []
         for form_model_doc in subject_form_model_docs:
             form_model = get_instance_from_doc(manager, form_model_doc['value'])
+
+            if form_model.form_code in processed:
+                continue
+
+            processed.append(form_model.form_code)
             log_statement(
                 "Process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
             data_to_restore, current_data_length = renumber_fields_name(form_model)
