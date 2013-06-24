@@ -42,7 +42,7 @@ def view_or_basicauth(view, request, test_func, realm = "", *args, **kwargs):
     response['WWW-Authenticate'] = 'Basic realm="%s"' % realm
     return response
 
-def httpbasic(view, realm = "dw"):
+def httpbasic(view, realm = "Datawinners"):
     """
     A simple decorator that requires a user to be logged in. If they are not
     logged in the request is examined for a 'authorization' header.
@@ -76,3 +76,6 @@ def httpbasic(view, realm = "dw"):
                                      lambda u: u.is_authenticated(),
                                      realm, *args, **kwargs)
     return view_decorator
+
+
+

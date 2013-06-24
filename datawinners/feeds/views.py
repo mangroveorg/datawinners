@@ -5,11 +5,13 @@ from django.http import HttpResponse
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.basic_auth import httpbasic
+from datawinners.feeds.utils import is_not_datasender
 
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
 
 
 @httpbasic
+@is_not_datasender
 def feed_entries(request, form_code):
     if not settings.FEEDS_ENABLED:
         return HttpResponse(404)

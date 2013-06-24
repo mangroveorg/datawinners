@@ -1,4 +1,3 @@
-from datetime import datetime
 from unittest import TestCase
 import urllib2
 from django.http import HttpRequest
@@ -7,8 +6,9 @@ from mangrove.datastore.database import DatabaseManager, View
 
 http_basic_patch = patch('datawinners.feeds.basic_auth.httpbasic', lambda x: x)
 http_basic_patch.start()
+datasender_patch = patch('datawinners.feeds.utils.is_not_datasender', lambda x: x)
+datasender_patch.start()
 from datawinners.feeds.views import feed_entries, _parse_date
-
 
 class TestFeedView(TestCase):
     def test_error_when_form_code_is_not_present(self):
@@ -101,3 +101,4 @@ class TestFeedView(TestCase):
 
 
 http_basic_patch.stop()
+datasender_patch.stop()
