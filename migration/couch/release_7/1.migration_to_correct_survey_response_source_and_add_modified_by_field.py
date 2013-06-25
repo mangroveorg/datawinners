@@ -1,13 +1,12 @@
 import sys
+from datawinners import settings
 from datawinners.accountmanagement.models import OrganizationSetting
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.contract.survey_response import SurveyResponse
-from datawinners.project.data_sender_helper import data_sender_by_mobile, data_sender_by_email
-from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
-import settings
+from datawinners.project.data_sender_helper import data_sender_by_mobile, data_sender_by_email, get_data_sender_by_reporter_id
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
@@ -35,10 +34,6 @@ def remove_attr_source_from_survey_response(survey_response):
         pass
 
 
-def get_reporter_uid(dbm, reporter_id):
-    return get_by_short_code_include_voided(dbm, reporter_id, REPORTER_ENTITY_TYPE).id
-
-
 def migrate(database_name):
     logging.info('Starting Migration for: %s' % database_name)
     dbm = get_db_manager(server=settings.COUCH_DB_SERVER, database=database_name)
@@ -48,36 +43,41 @@ def migrate(database_name):
     except Exception as e:
         logging.exception("Organization for : %s does not exist." % database_name)
         return database_name
-    form_model_dict = dict()
     data_sender_dict = dict()
     if len(rows):
         for row in rows:
             try:
                 original_source = row['doc']['source']
-
-                doc = SurveyResponseDocument.wrap(row['doc'])
-                survey_response = SurveyResponse.new_from_doc(dbm, doc)
-                remove_attr_source_from_survey_response(survey_response)
-
-                #form_model = _get_form_model(dbm, form_model_dict, survey_response)
-                data_sender = get_data_sender_by_source(dbm, org_id, original_source, survey_response.channel)
-
-                survey_response.modified_by = data_sender[1]
             except KeyError as e:
-                pass #ignore error
-                #if form_model.entity_type[0] == 'reporter':
+                #logging.info("Already migrated %s" % row['doc']['_id']) #ignore, document already migrated
+                continue
+
+            doc = SurveyResponseDocument.wrap(row['doc'])
+            survey_response = SurveyResponse.new_from_doc(dbm, doc)
+            remove_attr_source_from_survey_response(survey_response)
+            try:
+                data_sender = get_data_sender_by_source(dbm, org_id, original_source, survey_response.channel)
+            except Exception:
+                logging.info("Data sender doesn't exists for survey response: %s" % row['doc']['_id'])
+                continue
+            survey_response.created_by = data_sender[1]
+            survey_response.modified_by = data_sender[1]
             try:
                 rep_id = survey_response.values['eid']
                 if not data_sender_dict.get(rep_id):
                     data_sender_dict.update({rep_id: get_by_short_code_include_voided(dbm, rep_id, ['reporter'])})
-                if data_sender[1] != rep_id:
-                    survey_response.channel = 'sms'
                 reporter_id = rep_id
             except (DataObjectNotFound, KeyError) as e:
                 logging.info("rep info not found for subject(ignored): %s " % (survey_response.uuid))
                 reporter_id = data_sender[1]
-            survey_response.owner_uid = get_reporter_uid(dbm, reporter_id)
+            try:
+                survey_response.owner_uid = get_data_sender_by_reporter_id(dbm, reporter_id).id
+            except Exception as e:
+                pass
+
             survey_response.save()
+
+
     logging.info('Completed Migration: %s' % database_name)
 
 
@@ -88,7 +88,7 @@ def get_data_sender_by_source(dbm, org_id, original_source, channel):
         return data_sender_by_email(org_id, original_source)
 
 
-def migrate_survey_response_origin(all_db_names):
+def migrate_survey_response_to_add_owner(all_db_names):
     for database in all_db_names:
         try:
             if should_not_skip(database):
@@ -98,4 +98,4 @@ def migrate_survey_response_origin(all_db_names):
             logging.exception("Failed Database: %s Error %s" % (database, e.message))
 
 
-migrate_survey_response_origin(["hni_ademas_qtl183506"])#all_db_names())
+migrate_survey_response_to_add_owner(all_db_names())

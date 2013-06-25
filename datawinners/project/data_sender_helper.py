@@ -4,8 +4,9 @@ from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.messageprovider.messages import SMS
 from datawinners.project.data_sender import DataSender
 from datawinners.project.helper import NOT_AVAILABLE_DS, NOT_AVAILABLE
-from mangrove.datastore.entity import Entity
+from mangrove.datastore.entity import Entity, get_by_short_code_include_voided
 from mangrove.errors.MangroveException import DataObjectNotFound
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
 def combine_channels_for_tuple(data_senders_tuple_list):
@@ -23,6 +24,8 @@ def get_data_sender(manager, submission):
             pass #ignore and sending deleted datasender for backward compatibility.
     return NOT_AVAILABLE_DS, None
 
+def get_data_sender_by_reporter_id(dbm, reporter_id):
+    return get_by_short_code_include_voided(dbm, reporter_id, REPORTER_ENTITY_TYPE)
 
 def get_data_sender_by_source(manager, org_id, channel, source):
     if channel == 'sms':
