@@ -37,46 +37,45 @@ def remove_attr_source_from_survey_response(survey_response):
 def migrate(database_name):
     logging.info('Starting Migration for: %s' % database_name)
     dbm = get_db_manager(server=settings.COUCH_DB_SERVER, database=database_name)
-    rows = dbm.view.surveyresponse(reduce=False, include_docs=True)
+    rows = dbm.database.iterview("surveyresponse/surveyresponse", 100, reduce=False, include_docs=True)
     try:
         org_id = OrganizationSetting.objects.get(document_store=dbm.database_name).organization_id
     except Exception as e:
         logging.exception("Organization for : %s does not exist." % database_name)
         return database_name
     data_sender_dict = dict()
-    if len(rows):
-        for row in rows:
-            try:
-                original_source = row['doc']['source']
-            except KeyError as e:
-                #logging.info("Already migrated %s" % row['doc']['_id']) #ignore, document already migrated
-                continue
+    for row in rows:
+        try:
+            original_source = row['value']['source']
+        except KeyError as e:
+            logging.info("Already migrated %s" % row['value']['_id']) #ignore, document already migrated
+            continue
 
-            doc = SurveyResponseDocument.wrap(row['doc'])
-            survey_response = SurveyResponse.new_from_doc(dbm, doc)
-            remove_attr_source_from_survey_response(survey_response)
-            try:
-                data_sender = get_data_sender_by_source(dbm, org_id, original_source, survey_response.channel)
-            except Exception:
-                logging.info("Data sender doesn't exists for survey response: %s" % row['doc']['_id'])
-                continue
-            survey_response.created_by = data_sender[1]
-            survey_response.modified_by = data_sender[1]
-            try:
-                rep_id = survey_response.values['eid']
-                if not data_sender_dict.get(rep_id):
-                    data_sender_dict.update({rep_id: get_by_short_code_include_voided(dbm, rep_id, ['reporter'])})
-                reporter_id = rep_id
-            except (DataObjectNotFound, KeyError) as e:
-                logging.info("rep info not found for subject(ignored): %s " % (survey_response.uuid))
-                reporter_id = data_sender[1]
-            try:
-                survey_response.owner_uid = get_data_sender_by_reporter_id(dbm, reporter_id).id
-            except Exception as e:
-                pass
+        doc = SurveyResponseDocument.wrap(row['value'])
+        survey_response = SurveyResponse.new_from_doc(dbm, doc)
+        remove_attr_source_from_survey_response(survey_response)
+        try:
+            data_sender = get_data_sender_by_source(dbm, org_id, original_source, survey_response.channel)
+        except Exception:
+            logging.info("Data sender doesn't exists for survey response: %s" % row['value']['_id'])
+            continue
+        survey_response.created_by = data_sender[1]
+        survey_response.modified_by = data_sender[1]
+        try:
+            rep_id = survey_response.values['eid']
+            if not data_sender_dict.get(rep_id):
+                data_sender_dict.update({rep_id: get_by_short_code_include_voided(dbm, rep_id, ['reporter'])})
+            reporter_id = rep_id
+        except (DataObjectNotFound, KeyError) as e:
+            logging.info("rep info not found for subject(ignored): %s " % (survey_response.uuid))
+            reporter_id = data_sender[1]
+        try:
+            survey_response.owner_uid = get_data_sender_by_reporter_id(dbm, reporter_id).id
+        except Exception as e:
+            pass
 
-            survey_response.save()
-
+        survey_response.save()
+        logging.info("Migrated %s" %survey_response.id)
 
     logging.info('Completed Migration: %s' % database_name)
 
