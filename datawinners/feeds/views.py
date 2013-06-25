@@ -4,8 +4,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.feeds.database import get_feeds_database
-from datawinners.feeds.basic_auth import httpbasic
-from datawinners.feeds.utils import is_not_datasender
+from datawinners.feeds.authorization import httpbasic, is_not_datasender
 
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
 

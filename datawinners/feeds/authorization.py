@@ -78,4 +78,12 @@ def httpbasic(view, realm = "Datawinners"):
     return view_decorator
 
 
+def is_not_datasender(func):
+    def inner(*args, **kwargs):
+        request = args[0]
+        if request.user.get_profile().reporter:
+            return HttpResponse(content="You are not authorized to view this content", status=400)
+        return func(*args, **kwargs)
+
+    return inner
 
