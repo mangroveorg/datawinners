@@ -18,8 +18,6 @@ class Command(BaseCommand):
                 recreated_manager = feeds_db_for(database_name)
                 print "Syncing Feed Views....."
                 SyncOnlyChangedViews().sync_feed_views(recreated_manager)
-
-        print "Feed databases done."
-        return
-
-    print "Feeds not enabled"
+            print "Feed database view sync done."
+        else:
+            print "Feeds not enabled"
