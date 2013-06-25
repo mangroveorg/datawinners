@@ -5,6 +5,7 @@ from datawinners.messageprovider.messages import SMS
 from datawinners.project.data_sender import DataSender
 from datawinners.project.helper import NOT_AVAILABLE_DS, NOT_AVAILABLE
 from mangrove.datastore.entity import Entity
+from mangrove.errors.MangroveException import DataObjectNotFound
 
 
 def combine_channels_for_tuple(data_senders_tuple_list):
@@ -13,10 +14,14 @@ def combine_channels_for_tuple(data_senders_tuple_list):
 
 
 def get_data_sender(manager, submission):
-    data_sender_entity = Entity.get(manager, submission.owner_uid)
-    if data_sender_entity.is_void():
-        return NOT_AVAILABLE_DS, None
-    return data_sender_entity.value("name"), data_sender_entity.short_code, data_sender_entity.id
+    if submission.owner_uid:
+        try:
+            data_sender_entity = Entity.get(manager, submission.owner_uid)
+            if not data_sender_entity.is_void():
+                return data_sender_entity.value("name"), data_sender_entity.short_code, data_sender_entity.id
+        except DataObjectNotFound as e:
+            pass #ignore and sending deleted datasender for backward compatibility.
+    return NOT_AVAILABLE_DS, None
 
 
 def get_data_sender_by_source(manager, org_id, channel, source):

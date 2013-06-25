@@ -2,6 +2,7 @@ from datetime import datetime
 import glob
 from pprint import pprint
 from xlrd import open_workbook
+from datawinners import settings
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport import TransportInfo, Request
 from mangrove.transport.player.player import SMSPlayer
@@ -9,7 +10,6 @@ from mangrove.transport.contract.submission import Submission
 
 #submission date,       source,     destination, messages,
 #2012-11-24 13:48:22	24535435348	26134535750	 009 MCHTDV07 22.11.2012 ABE0000369 72.15 0 0 0 0
-import settings
 
 data_folder = "/Users/twer/Downloads/lost_data_folder/*.xlsx"
 
