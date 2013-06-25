@@ -171,6 +171,7 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
             activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             activate_and_run(virtual_env, "python manage.py migrate")
             activate_and_run(virtual_env, "python manage.py recreatedb")
+            activate_and_run(virtual_env, "python manage.py recreatefeeddb")
             activate_and_run(virtual_env, "python manage.py compilemessages")
             activate_and_run(virtual_env, "python manage.py loadshapes")
             if environment == "test":
