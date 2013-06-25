@@ -11,11 +11,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if settings.FEEDS_ENABLED:
             for database_name in document_stores_to_process(args):
-                print ("Database %s") % (database_name,)
-                print 'Deleting Feed DB...'
                 manager = get_feed_db_from_main_db_name(database_name)
+                print ("Database %s") % (manager.database.name,)
+                print 'Deleting Feed DB...'
                 _delete_db_and_remove_db_manager(manager)
-                recreated_manager = feeds_db_for(database_name)
+                recreated_manager = get_feed_db_from_main_db_name(database_name)
                 print "Syncing Feed Views....."
                 SyncOnlyChangedViews().sync_feed_views(recreated_manager)
             print "Feed database view sync done."
