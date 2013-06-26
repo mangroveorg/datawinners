@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 
 #############################################################################
 #
-def view_or_basicauth(view, request, test_func, realm = "", *args, **kwargs):
+def view_or_basicauth(view, request, test_func, realm="", *args, **kwargs):
     """
     This is a helper function used by both 'logged_in_or_basicauth' and
     'has_perm_or_basicauth' that does the nitty of determining if they
@@ -42,7 +42,8 @@ def view_or_basicauth(view, request, test_func, realm = "", *args, **kwargs):
     response['WWW-Authenticate'] = 'Basic realm="%s"' % realm
     return response
 
-def httpbasic(view, realm = "Datawinners"):
+
+def httpbasic(view, realm="Datawinners"):
     """
     A simple decorator that requires a user to be logged in. If they are not
     logged in the request is examined for a 'authorization' header.
@@ -71,10 +72,12 @@ def httpbasic(view, realm = "Datawinners"):
 
     You can provide the name of the realm to ask for authentication within.
     """
+
     def view_decorator(request, *args, **kwargs):
         return view_or_basicauth(view, request,
-                                     lambda u: u.is_authenticated(),
-                                     realm, *args, **kwargs)
+                                 lambda u: u.is_authenticated(),
+                                 realm, *args, **kwargs)
+
     return view_decorator
 
 
@@ -82,7 +85,10 @@ def is_not_datasender(func):
     def inner(*args, **kwargs):
         request = args[0]
         if request.user.get_profile().reporter:
-            return HttpResponse(content="You are not authorized to view this content", status=400)
+            return HttpResponse(
+                content="You do not have the required permissions to access "
+                        "this information. Please contact your system administrator",
+                status=400)
         return func(*args, **kwargs)
 
     return inner
