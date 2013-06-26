@@ -121,8 +121,7 @@ def delete(request, project_id):
     return HttpResponse(response)
 
 
-def build_static_info_context(manager, org_id, survey_response):
-    form_ui_model = OrderedDict()
+def build_static_info_context(manager, org_id, survey_response, form_ui_model=OrderedDict()):
     static_content = {'Data Sender': get_data_sender(manager, survey_response),
                       'Source': capitalize(
                           survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
@@ -218,6 +217,7 @@ def edit(request, project_id, survey_response_id, tab=0):
                                                   additional_feed_dictionary,websubmission_logger)
             mail_feed_errors(response, manager.database_name)
             if response.success:
+                build_static_info_context(manager, get_organization(request).org_id, survey_response, form_ui_model)
                 ReportRouter().route(get_organization(request).org_id, response)
                 _update_static_info_block_status(form_ui_model, is_errored_before_edit)
                 log_edit_action(original_survey_response, survey_response, request, project.name,
