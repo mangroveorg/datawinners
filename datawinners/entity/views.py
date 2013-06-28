@@ -381,12 +381,7 @@ def all_datasenders(request):
     projects = get_all_projects(manager)
     fields, old_labels, codes = get_entity_type_fields(manager)
     in_trial_mode = utils.get_organization(request).in_trial_mode
-    labels = []
-    for label in old_labels:
-        if label != "What is the mobile number associated with the subject?":
-            labels.append(_(label.replace('subject', 'Data Sender')))
-        else:
-            labels.append(_("What is the Data Sender's mobile number?"))
+    labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number")]
     grant_web_access = False
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
@@ -688,7 +683,7 @@ def _get_all_datasenders(manager, projects, user):
             datasender['devices'] = "SMS"
 
         association = project_association.get(datasender['short_code'])
-        datasender['projects'] = ' ,'.join(association) if association is not None else '--'
+        datasender['projects'] = ', '.join(association) if association is not None else '--'
 
     return all_data_senders
 

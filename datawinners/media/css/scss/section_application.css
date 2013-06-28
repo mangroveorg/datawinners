@@ -71,3 +71,7 @@ table.error_table td {
 #users_list table thead th:first-child {
   padding: 6px;
   width: 21px; }
+
+#main_message > div {
+  width: 900px !important;
+  margin-left: 5px; }

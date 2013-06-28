@@ -503,13 +503,7 @@ def registered_datasenders(request, project_id=None):
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
     if request.method == 'GET':
-        fields, old_labels, codes = get_entity_type_fields(manager)
-        labels = []
-        for label in old_labels:
-            if label != "What is the mobile number associated with the subject?":
-                labels.append(_(label.replace('subject', 'Data Sender')))
-            else:
-                labels.append(_("What is the Data Sender's mobile number?"))
+        labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number")]
         in_trial_mode = _in_trial_mode(request)
         senders = project.get_data_senders(manager)
         for sender in senders:
