@@ -1604,6 +1604,10 @@ def load_data():
         (NAME_FIELD, "Tester Pune", first_name_type)],
         location=[u'Bangalore', u'Karnatka', u'India', u'Asia'],
         short_code="rep12", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "37287364782", phone_number_type),
+        (NAME_FIELD, "Datasender test", first_name_type)],
+        location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+        short_code="rep13", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
     load_sms_data_for_cli001(manager)
     load_web_data_for_cli001(manager)

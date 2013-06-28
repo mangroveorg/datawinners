@@ -1838,7 +1838,7 @@ msgstr "Diso: Tsy manara-penitra ny firafitry ny SMS-nao. Amarino ao amin'ny lis
 "ary avereno alefa sy SMS-nao"
 
 msgid "Error. This project is not yet active. Submissions can be made only for an active project."
-msgstr "Diso. Tsy mbola misokatra ny momba io tetikasa io.  Izay tetikasa efa voasokatra ihany no azo iasàna."
+msgstr "Diso. Tsy mbola afaka iasàna io lisitry ny fanontaniana io. Ho an’ireo izay efa misokatra ihany no azo andefasana SMS."
 
 msgid "Error. Internal error. Please call technical support"
 msgstr "Diso. Misy olana ara teknika. Azafady antsoy fangalana torohevitra"
@@ -2909,3 +2909,9 @@ msgstr "fanontaniana"
 
 msgid "Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
 msgstr "Diso ny kaodin’ny lisitry ny fanontaniana %s. Jereo ny kaody marina eo amin’ilay lisitra ary avereno alefa manontolo ny SMS-nao manomboka eo amin’ilay kaody."
+
+msgid "Thank you %(datasender)s. We received your SMS for %(subject_info)s"
+msgstr "Misaotra %(datasender)s. Voarainay ny SMS-nao momba ny %(subject_info)s"
+
+msgid "Thank you %(datasender)s. We received your SMS"
+msgstr "Misaotra %(datasender)s. Voarainay ny SMS-nao"

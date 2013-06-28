@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER, CRS_ORG_ID
 from datawinners.main.database import get_database_manager
@@ -19,7 +19,7 @@ from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, \
     DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for
-from django.contrib.auth.views import login, password_reset
+from django.contrib.auth.views import login, password_reset, password_reset_confirm
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _, get_language, activate
 from datawinners.project.models import Project
@@ -34,6 +34,8 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import TransportInfo
 from django.http import Http404
+from django.contrib.auth import login as sign_in
+from django.utils.http import base36_to_int
 
 logger = logging.getLogger("django")
 
@@ -405,3 +407,20 @@ def delete_users(request):
         messages.success(request, _("User(s) successfully deleted."))
 
     return HttpResponse(json.dumps({'success': True}))
+
+
+def custom_password_reset_confirm(request, uidb36=None, token=None, set_password_form=SetPasswordForm):
+    response = password_reset_confirm(request, uidb36=uidb36, token=token, set_password_form=set_password_form,
+                                      template_name='registration/datasender_activate.html')
+    if request.method == 'POST' and type(response) == HttpResponseRedirect:
+        try:
+            uid_int = base36_to_int(uidb36)
+            user = User.objects.get(id=uid_int)
+        except (ValueError, User.DoesNotExist):
+            return response
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        sign_in(request, user)
+        redirect_url = django_settings.DATASENDER_DASHBOARD + '?activation=1' \
+            if user.get_profile().reporter else django_settings.DASHBOARD
+        return HttpResponseRedirect(redirect_url)
+    return response

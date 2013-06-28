@@ -4,7 +4,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 
 from datawinners.accountmanagement.forms import FullRegistrationForm, LoginForm, PasswordSetForm, MinimalRegistrationForm
-from datawinners.accountmanagement.views import custom_reset_password
+from datawinners.accountmanagement.views import custom_reset_password, custom_password_reset_confirm
 from views import settings, new_user, edit_user, users, custom_login, registration_complete, trial_expired, upgrade, delete_users, registration_activation_complete
 
 
@@ -24,13 +24,12 @@ urlpatterns = patterns('',
                            name='auth_login'),
                        url(r'^activate/complete/$',registration_activation_complete),
                            url(r'^password/reset/$', custom_reset_password, name='auth_password_reset'),
-                       url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
+                       url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z])-(?P<token>.+)/$',
                            auth_views.password_reset_confirm, {'set_password_form': PasswordSetForm},
                            name='auth_password_reset_confirm'),
-                       url(r'^datasender/activate/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
-                           auth_views.password_reset_confirm, {'set_password_form': PasswordSetForm,
-                                                               'template_name':'registration/datasender_activate.html'},
-                           name='activate_datasender_account'), 
+                       url(r'^datasender/activate/(?P<uidb36>[0-9A-Za-z]{1,13})-(?P<token>.+)/$',
+                           custom_password_reset_confirm, {'set_password_form': PasswordSetForm},
+                           name='activate_datasender_account'),
                        ('', include('registration.backends.default.urls')),
                        (r'^registration_complete$', registration_complete),
                        url(r'^admin/', include(admin.site.urls)),

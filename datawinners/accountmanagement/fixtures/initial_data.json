@@ -209,6 +209,17 @@
         }
     },
     {
+        "pk": 5,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep13",
+            "mobile_phone": "",
+            "org_id": "SLX364903",
+            "user": 6,
+            "title": "Mr"
+        }
+    },
+    {
         "pk": -3,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
@@ -471,6 +482,26 @@
             "password": "sha1$9f237$4380fa83adb58f7d0b0b944cf1d5be80dea66aab",
             "email": "mamy@mailinator.com",
             "date_joined": "2012-11-08 17:00:48"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "auth.user",
+        "fields": {
+            "username": "dstest@mailinator.com",
+            "first_name": "datasender test",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-06-26 09:33:08",
+            "groups": [
+                4
+            ],
+            "user_permissions": [],
+            "password": "sha1$76ba7$93a943f860574d93d80e0405ff2d555db105e0e2",
+            "email": "dstest@mailinator.com",
+            "date_joined": "2013-06-26 09:33:08"
         }
     },
     {

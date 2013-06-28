@@ -125,17 +125,20 @@ def index(request):
 
     smart_phone_instruction_link = reverse("smart_phone_instruction")
 
+    activation_success = request.GET.get('activation',False)
+
     if is_crs_admin(request):
         return render_to_response('alldata/index.html',
                 {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
-                 'hide_link_class': hide_link_class, 'is_crs_admin': True, 'project_links': get_alldata_project_links()},
+                 'hide_link_class': hide_link_class, 'is_crs_admin': True, 'project_links': get_alldata_project_links(),
+                 'activation_success': activation_success},
             context_instance=RequestContext(request))
     else:
         return render_to_response('alldata/index.html',
                 {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
                  'hide_link_class': hide_link_class, 'is_crs_admin': False,
                  "smart_phone_instruction_link": smart_phone_instruction_link,
-                 'project_links': get_alldata_project_links()},
+                 'project_links': get_alldata_project_links(), 'activation_success': activation_success},
             context_instance=RequestContext(request))
 
 

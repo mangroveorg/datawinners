@@ -4189,5 +4189,17 @@ msgstr ""
 msgid "If you need help contact your project manager or send us an Email at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>. We're here to help!"
 msgstr ""
 
-msgid "Example: Minimum of 6 characters in length"
+msgid "Minimum of 6 characters in length"
+msgstr ""
+
+msgid "Thank you %(datasender)s. We received your SMS for %(subject_info)s"
+msgstr ""
+
+msgid "Thank you %(datasender)s, We registered your %(subject_type)s"
+msgstr ""
+
+msgid "Thank you %(datasender)s. We received your SMS"
+msgstr ""
+
+msgid "You have successfully activated your account. Happy data submission!"
 msgstr ""

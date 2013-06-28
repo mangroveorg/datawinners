@@ -1942,7 +1942,7 @@ msgstr "Ce/cette %s n'est pas enregistré(e) dans notre système. Vérifiez le n
 "de nouveau le SMS"
 
 msgid "Error. The %s %s is not registered in our system. Please register this %s or contact your supervisor."
-msgstr "Le/la %s %s n’est pas enregistré(e) dans notre système. Veuillez enregistrer ce/cette %s ou contactez votre superviseur."
+msgstr "Erreur, le/la %s %s n’est pas enregistré(e) dans notre système. Veuillez enregistrer ce/cette %s ou contactez votre superviseur."
 
 msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
@@ -1984,7 +1984,7 @@ msgid "Error: Invalid Submission. No valid question found. Check the Question Co
 msgstr "Erreur. Trouvez le code questionnaire sur le questionnaire imprimé et envoyez de nouveau le SMS en commençant par ce code questionnaire."
 
 msgid "Error. This project is not yet active. Submissions can be made only for an active project."
-msgstr "Erreur. Ce projet n'est pas encore actif. Les soumissions ne peuvent etre effectuees  que pour un projet actif."
+msgstr "Erreur. Ce projet n'est pas encore actif. Les soumissions ne peuvent être effectuées uniquement pour un projet actif."
 
 msgid "Error. Internal error. Please call technical support"
 msgstr "Erreur. Erreur interne. Veuillez contacter le support technique"
@@ -2121,7 +2121,7 @@ msgid "Support"
 msgstr "Assistance"
 
 msgid "About us"
-msgstr "Qui somme-nous"
+msgstr "Qui sommes-nous"
 
 msgid "Our Partners &amp; Clients"
 msgstr "Nos Partenaires &amp; Clients"
@@ -2662,8 +2662,8 @@ msgstr "Exemple: Directeur de programme"
 msgid "phone_number_example"
 msgstr "Entrez le code pays et le  numéro de téléphone. Exemple:261333745269"
 
-msgid "Example: Minimum	of 6 characters in length"
-msgstr "Exemple: Au minimum 6 caratères"
+msgid "Minimum	of 6 characters in length"
+msgstr "Au minimum 6 caratères"
 
 msgid "Just one more step..."
 msgstr "Juste une étape de plus ..."
@@ -4269,5 +4269,17 @@ msgstr "Besoin d’Aide?"
 msgid "If you need help contact your project manager or send us an Email at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>. We're here to help!"
 msgstr "Si vous avez besoin d’aide, contactez votre gestionnaire de projet ou envoyez-nous un email à l’adresse <a href='mailto:support@datawinners.com'>support@datawinners.com</a>. Nous sommes là pour vous aider!"
 
-msgid "Example: Minimum of 6 characters in length"
-msgstr "Exemple: Au minimum 6 caratères"
+msgid "Minimum of 6 characters in length"
+msgstr "Au minimum 6 caratères"
+
+msgid "Thank you %(datasender)s. We received your SMS for %(subject_info)s"
+msgstr "Merci %(datasender)s. Nous avons reçu votre SMS concernant %(subject_info)s"
+
+msgid "Thank you %(datasender)s, We registered your %(subject_type)s"
+msgstr "Merci %(datasender)s. Nous avons enregistré votre %(subject_type)s"
+
+msgid "Thank you %(datasender)s. We received your SMS"
+msgstr "Merci %(datasender)s. Nous avons reçu votre SMS"
+
+msgid "You have successfully activated your account. Happy data submission!"
+msgstr "Vous avez activé votre compte avec succès. Bonne soumission de données!"
