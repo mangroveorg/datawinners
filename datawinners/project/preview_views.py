@@ -10,8 +10,9 @@ from datawinners.accountmanagement.views import is_not_expired
 from datawinners.project.helper import  get_preview_for_field, hide_entity_question
 from datawinners.project.models import Project
 from datawinners.project.views.views import get_example_sms, get_organization_telephone_number
-from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
+from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project.wizard_view import create_questionnaire
+from project.web_questionnaire_form import SurveyResponseForm
 
 
 def get_questions(form_model):
@@ -65,9 +66,7 @@ def get_web_preview_context(manager, post, project_info):
                       state=post['project_state'], devices=[u'sms', u'web', u'smartPhone'],
                       language=unicode(project_info['language']))
 
-    QuestionnaireForm = WebQuestionnaireFormCreator(SubjectQuestionFieldCreator(manager, project),
-                                                    form_model=form_model).create()
-    questionnaire_form = QuestionnaireForm()
+    questionnaire_form = SurveyResponseForm(form_model,SubjectQuestionFieldCreator(manager, project))
     return {'project': project_info,
             'questionnaire_form': questionnaire_form,
             'add_link': add_link_context(project), }

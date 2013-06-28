@@ -1,17 +1,19 @@
 import re
 from string import strip
+
 from django.core.exceptions import ValidationError
-from django.forms import HiddenInput, ChoiceField, FloatField, TextInput
+from django.forms import ChoiceField, FloatField, TextInput
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext
-from datawinners.entity.fields import PhoneNumberField, DjangoDateField
-from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
-from mangrove.form_model.validation import GeoCodeConstraint
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REPORTER
-from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField, DateField
 from django import forms
-from mangrove.utils.types import is_empty
 from django.utils.translation import ugettext_lazy as _
+
+from datawinners.entity.fields import PhoneNumberField, DjangoDateField
+from datawinners.entity.import_data import load_all_subjects_of_type
+from mangrove.form_model.validation import GeoCodeConstraint
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
+from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField, DateField
+from mangrove.utils.types import is_empty
 from datawinners.utils import translate, get_text_language_by_instruction
 
 
@@ -62,27 +64,11 @@ class PhoneNumberFormField(object):
     def create(self, field):
         telephone_number_field = PhoneNumberField(label=field.label, initial=field.value, required=field.is_required(),
                                                   help_text=field.instruction)
-        telephone_number_field.widget.attrs["watermark"] = self.get_text_field_constraint_text(field)
+        telephone_number_field.widget.attrs["watermark"] = get_text_field_constraint_text(field)
         telephone_number_field.widget.attrs['style'] = 'padding-top: 7px;'
         if field.name == LOCATION_TYPE_FIELD_NAME and isinstance(field, HierarchyField):
             telephone_number_field.widget.attrs['class'] = 'location_field'
         return telephone_number_field
-
-    def get_text_field_constraint_text(self, field):
-        if not is_empty(field.constraints):
-            length_constraint = field.constraints[0]
-            min = length_constraint.min
-            max = length_constraint.max
-            if min is not None and max is None:
-                constraint_text = _("Minimum %s characters") % min
-                return constraint_text
-            if min is None and max is not None:
-                constraint_text = _("Upto %s characters") % max
-                return constraint_text
-            elif min is not None and max is not None:
-                constraint_text = _("Between %s -- %s characters") % (min, max)
-                return constraint_text
-        return ""
 
 
 class TextInputForFloat(TextInput):
@@ -167,28 +153,14 @@ class GeoCodeValidator(object):
 class CharFormField(object):
     def create(self, field):
         constraints = self._get_chars_constraints(field)
+        validators = [GeoCodeValidator()] if type(field) == GeoCodeField else []
         char_field = forms.CharField(label=field.label, initial=field.value, required=field.is_required(),
-                                     help_text=field.instruction, **constraints)
-        if type(field) == GeoCodeField:
-            char_field.widget.attrs["watermark"] = "xx.xxxx,yy.yyyy"
-            char_field.validators.append(GeoCodeValidator())
-        else:
-            char_field.widget.attrs["watermark"] = get_text_field_constraint_text(field)
+                                     help_text=field.instruction, validators=validators, **constraints)
+        char_field.widget.attrs["watermark"] = "xx.xxxx,yy.yyyy" if type(
+            field) == GeoCodeField else get_text_field_constraint_text(field)
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
-        self._create_field_type_class(char_field, field)
+        char_field.widget.attrs['class'] = css_class(field)
         return char_field
-
-    def _insert_location_field_class_attributes(self, char_field, field):
-        if field.name == LOCATION_TYPE_FIELD_NAME and isinstance(field, HierarchyField):
-            char_field.widget.attrs['class'] = 'location_field'
-
-    def _put_subject_field_class_attributes(self, char_field, field):
-        if field.is_entity_field:
-            char_field.widget.attrs['class'] = 'subject_field'
-
-    def _create_field_type_class(self, char_field, field):
-        self._insert_location_field_class_attributes(char_field, field)
-        self._put_subject_field_class_attributes(char_field, field)
 
     def _get_chars_constraints(self, field):
         constraints = {}
@@ -266,3 +238,11 @@ def get_text_field_constraint_text(field):
             constraint_text = _("Between %s -- %s characters") % (min, max)
             return constraint_text
     return ""
+
+
+def css_class(field):
+    if field.is_entity_field:
+        return 'subject_field'
+    if field.name == LOCATION_TYPE_FIELD_NAME and isinstance(field, HierarchyField):
+        return 'location_field'
+    return None

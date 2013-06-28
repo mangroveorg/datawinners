@@ -121,7 +121,8 @@ def delete(request, project_id):
     return HttpResponse(response)
 
 
-def build_static_info_context(manager, org_id, survey_response, form_ui_model=OrderedDict()):
+def build_static_info_context(manager, survey_response, ui_model=None):
+    form_ui_model = OrderedDict() if ui_model is None else ui_model
     static_content = {'Data Sender': get_data_sender(manager, survey_response),
                       'Source': capitalize(
                           survey_response.channel) if survey_response.channel == 'web' else survey_response.channel.upper(),
@@ -162,7 +163,7 @@ def edit(request, project_id, survey_response_id, tab=0):
     back_link = reverse(index,
                         kwargs={"project_id": project_id, "questionnaire_code": questionnaire_form_model.form_code,
                                 "tab": tab})
-    form_ui_model = build_static_info_context(manager, get_organization(request).org_id, survey_response)
+    form_ui_model = build_static_info_context(manager, survey_response)
     form_ui_model.update({"back_link": back_link})
     if request.method == 'GET':
         form_initial_values = construct_request_dict(survey_response, questionnaire_form_model)
@@ -214,12 +215,12 @@ def edit(request, project_id, survey_response_id, tab=0):
                 owner_id = request.POST["eid"]
             else:
                 owner_id = None
-            response = WebPlayerV2(manager, feeds_dbm, user_profile.reporter_id)\
-                            .edit_survey_response(created_request, survey_response, owner_id,
-                                                  additional_feed_dictionary,websubmission_logger)
+            response = WebPlayerV2(manager, feeds_dbm, user_profile.reporter_id) \
+                .edit_survey_response(created_request, survey_response, owner_id,
+                                      additional_feed_dictionary, websubmission_logger)
             mail_feed_errors(response, manager.database_name)
             if response.success:
-                build_static_info_context(manager, get_organization(request).org_id, survey_response, form_ui_model)
+                build_static_info_context(manager, survey_response, form_ui_model)
                 ReportRouter().route(get_organization(request).org_id, response)
                 _update_static_info_block_status(form_ui_model, is_errored_before_edit)
                 log_edit_action(original_survey_response, survey_response, request, project.name,

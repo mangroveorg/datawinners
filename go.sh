@@ -55,7 +55,7 @@ function restore_couchdb_and_postgres {
 function unit_test {
 	echo "running unit test"
 	compile_messages && \
-	(cd "$DWROOT_DIR/datawinners" && python manage.py test --verbosity=2)
+	(cd "$DWROOT_DIR/datawinners" && python manage.py test --verbosity=2 --with-xunit --xunit-file=/tmp/nosetests.xml)
 }
 
 function recreate_couch_db {

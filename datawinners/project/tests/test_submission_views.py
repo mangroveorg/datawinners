@@ -28,7 +28,7 @@ class TestSubmissionViews(unittest.TestCase):
             survey_response = SurveyResponse(Mock())
 
             survey_response._doc = survey_response_document
-            static_info = build_static_info_context(Mock(), Mock(spec=HttpRequest), survey_response)
+            static_info = build_static_info_context(Mock(), survey_response)
 
             expected_values = OrderedDict({'static_content': {
                 'Data Sender': ('Psub', 'rep2', 'tester@gmail.com'),

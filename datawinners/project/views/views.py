@@ -4,6 +4,7 @@ import json
 import datetime
 import logging
 from time import mktime
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
@@ -13,6 +14,8 @@ from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _, get_language, activate
+
 from datawinners.accountmanagement.views import session_not_expired
 from datawinners.project.view_models import ReporterEntity
 from datawinners.feeds.database import get_feeds_database
@@ -20,7 +23,6 @@ from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
-from django.utils.translation import ugettext_lazy as _, get_language, activate
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_data_sender_form, add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization
 from datawinners.entity import import_data as import_module
@@ -38,9 +40,7 @@ from mangrove.transport.services.survey_response_service import SurveyResponseSe
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
 from mangrove.transport.contract.transport_info import Channel
-
 import datawinners.utils as utils
-
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_info
 from datawinners.location.LocationTree import get_location_tree
@@ -54,7 +54,7 @@ from datawinners.entity.views import import_subjects_from_project_wizard, save_q
 from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
-from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
+from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.project import helper
@@ -69,6 +69,8 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
 from mangrove.transport.player.new_players import WebPlayerV2
 from mangrove.transport.repository.survey_responses import survey_response_count, get_survey_responses
+from project.web_questionnaire_form import SubjectRegistrationForm, SurveyResponseForm
+
 
 logger = logging.getLogger("django")
 performance_logger = logging.getLogger("performance")
@@ -669,9 +671,11 @@ class WebQuestionnaireRequest:
         self.manager = get_database_manager(self.request.user)
         self.project = Project.load(self.manager.database, project_id)
         self.is_data_sender = self.request.user.get_profile().reporter
-        self.QuestionnaireForm = WebQuestionnaireFormCreator(SubjectQuestionFieldCreator(self.manager, self.project),
-                                                             form_model=self.form_model).create()
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
+
+    @abc.abstractmethod
+    def form(self, initial_data=None, country=None):
+        pass
 
     @abc.abstractproperty
     def template(self):
@@ -694,14 +698,13 @@ class WebQuestionnaireRequest:
         pass
 
     def response_for_get_request(self):
-        questionnaire_form = self.QuestionnaireForm()
+        questionnaire_form = self.form()
         form_context = get_form_context(self.form_code, self.project, questionnaire_form,
                                         self.manager, self.hide_link_class, self.disable_link_class)
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
     def response_for_post_request(self):
-        questionnaire_form = self.QuestionnaireForm(country=utils.get_organization_country(self.request),
-                                                    data=self.request.POST)
+        questionnaire_form = self.form(self.request.POST, utils.get_organization_country(self.request))
         if not questionnaire_form.is_valid():
             form_context = get_form_context(self.form_code, self.project, questionnaire_form,
                                             self.manager, self.hide_link_class, self.disable_link_class)
@@ -717,7 +720,7 @@ class WebQuestionnaireRequest:
             if response.success:
                 ReportRouter().route(get_organization(self.request).org_id, response)
                 success_message = self.success_message(response.short_code)
-                questionnaire_form = self.QuestionnaireForm()
+                questionnaire_form = self.form()
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, self.form_model.fields)
         except DataObjectNotFound as exception:
@@ -739,9 +742,13 @@ class WebQuestionnaireRequest:
 
 class SubjectWebQuestionnaireRequest(WebQuestionnaireRequest):
     def __init__(self, request, project_id=None):
+        WebQuestionnaireRequest.__init__(self, request, project_id)
         self.subject_form_model = None
         self.subject_form_code = None
-        WebQuestionnaireRequest.__init__(self, request, project_id)
+
+    def form(self, initial_value=None, country=None):
+        return SubjectRegistrationForm(self.form_model, data=initial_value, country=country)
+
 
     @property
     def template(self):
@@ -772,10 +779,15 @@ class SubjectWebQuestionnaireRequest(WebQuestionnaireRequest):
 
 class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
     def __init__(self, request, project_id=None):
+        WebQuestionnaireRequest.__init__(self, request, project_id)
         self.survey_form_model = None
         self.survey_form_code = None
         self.feeds_dbm = get_feeds_database(request.user)
-        WebQuestionnaireRequest.__init__(self, request, project_id)
+        self.subject_field_creator = SubjectQuestionFieldCreator(self.manager, self.project)
+
+    def form(self, initial_value=None, country=None):
+        return SurveyResponseForm(self.form_model, self.subject_field_creator,
+                                  data=initial_value)
 
     @property
     def template(self):
@@ -804,7 +816,7 @@ class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
         additional_feed_dictionary.update({'project': project})
 
         response = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id) \
-                    .add_survey_response(created_request, reporter_id, additional_feed_dictionary, websubmission_logger)
+            .add_survey_response(created_request, reporter_id, additional_feed_dictionary, websubmission_logger)
         mail_feed_errors(response, self.manager.database_name)
         return response
 

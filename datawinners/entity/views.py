@@ -1,17 +1,22 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import defaultdict
 import json
+import logging
+
 from django.contrib.auth.decorators import login_required
 from django.utils import translation
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect,\
+from django.http import HttpResponse, HttpResponseRedirect, \
     HttpResponseServerError, QueryDict
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language
+import xlwt
+from django.contrib import messages
+
 from datawinners import utils
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
@@ -21,17 +26,16 @@ from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
 from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired, session_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, process_create_data_sender_form,\
-    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project,\
+from datawinners.entity.helper import create_registration_form, process_create_data_sender_form, \
+    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project, \
     delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
-from datawinners.main.utils import  include_of_type
+from datawinners.main.utils import include_of_type
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
-
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.models import Project, get_all_projects
-from mangrove.datastore.entity_type import  define_type
+from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD
@@ -39,14 +43,11 @@ from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
-from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator
 from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country,\
+from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
     get_database_manager_for_org, get_changed_questions
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-import xlwt
-from django.contrib import messages
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
@@ -54,11 +55,11 @@ from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SEND
     DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
     ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM
 from datawinners.entity.import_data import send_email_to_data_sender
-import logging
 from datawinners.project.helper import create_request
+from project.web_questionnaire_form import SubjectRegistrationForm
+
 
 websubmission_logger = logging.getLogger("websubmission")
-
 
 COUNTRY = ',MADAGASCAR'
 
@@ -75,13 +76,14 @@ def submit(request):
     success = True
     try:
         web_player = WebPlayer(dbm,
-            LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+                               LocationBridge(location_tree=get_location_tree(),
+                                              get_loc_hierarchy=get_location_hierarchy))
         message = post['message']
         message[LOCATION_TYPE_FIELD_CODE] = get_country_appended_location(message.get(LOCATION_TYPE_FIELD_CODE),
-            get_organization_country(request))
+                                                                          get_organization_country(request))
         request = Request(message=message,
-            transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
-                destination=post.get('destination')))
+                          transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
+                                                      destination=post.get('destination')))
         response = web_player.accept(request)
         if response.success:
             message = get_success_msg_for_registration_using(response, "web")
@@ -112,7 +114,7 @@ def create_data_sender(request):
         return render_to_response('entity/create_or_edit_data_sender.html', {'form': form,
                                                                              'create_data_sender': create_data_sender,
                                                                              'project_links': entity_links},
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
         org_id = request.user.get_profile().org_id
@@ -126,7 +128,7 @@ def create_data_sender(request):
         if len(form.errors) == 0 and form.requires_web_access() and success:
             email_id = request.POST['email']
             create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
-                language_code=request.LANGUAGE_CODE)
+                                   language_code=request.LANGUAGE_CODE)
 
         if message is not None and success:
             if form.cleaned_data['project_id'] != "":
@@ -139,8 +141,8 @@ def create_data_sender(request):
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
-                {'form': form, 'message': message, 'success': success,'project_inks': entity_links},
-            context_instance=RequestContext(request))
+                                  {'form': form, 'message': message, 'success': success, 'project_inks': entity_links},
+                                  context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -161,8 +163,9 @@ def edit_data_sender(request, reporter_id):
                                                  'telephone_number': phone_number, 'location': location,
                                                  'geo_code': geo_code})
         return render_to_response('entity/create_or_edit_data_sender.html',
-                {'reporter_id': reporter_id, 'form': form, 'project_links': entity_links
-                , 'create_data_sender': create_data_sender}, context_instance=RequestContext(request))
+                                  {'reporter_id': reporter_id, 'form': form, 'project_links': entity_links
+                                      , 'create_data_sender': create_data_sender},
+                                  context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
@@ -174,15 +177,16 @@ def edit_data_sender(request, reporter_id):
                 current_telephone_number = reporter_entity.mobile_number
                 organization = Organization.objects.get(org_id=org_id)
                 web_player = WebPlayer(manager,
-                    LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+                                       LocationBridge(location_tree=get_location_tree(),
+                                                      get_loc_hierarchy=get_location_hierarchy))
                 response = web_player.accept(
                     Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
-                        transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
-                        is_update=True))
+                            transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
+                            is_update=True))
                 if response.success:
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
-                            form.cleaned_data["telephone_number"], org_id)
+                                                                   form.cleaned_data["telephone_number"], org_id)
 
                     message = _("Your changes have been saved.")
 
@@ -195,7 +199,7 @@ def edit_data_sender(request, reporter_id):
                             label = u"%s" % form.fields[field_mapping.get(field, field)].label
                             detail_dict.update({label: form.cleaned_data.get(field_mapping.get(field, field))})
                     activate(current_lang)
-                    if len(detail_dict) > 1 :
+                    if len(detail_dict) > 1:
                         detail_as_string = json.dumps(detail_dict)
                         UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string)
 
@@ -203,8 +207,9 @@ def edit_data_sender(request, reporter_id):
                 message = exception.message
 
         return render_to_response('edit_datasender_form.html',
-                {'form': form, 'message': message, 'reporter_id': reporter_id, 'project_links': entity_links},
-            context_instance=RequestContext(request))
+                                  {'form': form, 'message': message, 'reporter_id': reporter_id,
+                                   'project_links': entity_links},
+                                  context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -244,28 +249,29 @@ def all_subjects(request, form_code=None):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
-            default_parser=XlsOrderedParser,form_code=form_code)
-        if len(imported_entities) !=0 :
+                                                                                                       default_parser=XlsOrderedParser,
+                                                                                                       form_code=form_code)
+        if len(imported_entities) != 0:
             detail_dict = dict()
-            for short_code,entity_type in imported_entities.items():
+            for short_code, entity_type in imported_entities.items():
                 entity_type = entity_type.capitalize()
                 if detail_dict.get(entity_type) is not None:
                     detail_dict.get(entity_type).append(short_code)
                 else:
                     detail_dict.update({entity_type: [short_code]})
-            for key,detail in detail_dict.items():
+            for key, detail in detail_dict.items():
                 detail_dict.update({key: "[%s]" % ", ".join(detail)})
             UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
         subjects_data = import_module.load_all_subjects(manager)
         return HttpResponse(json.dumps(
-                {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
-                 'error_message': error_message,
-                 'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
+            {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+             'error_message': error_message,
+             'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
     subjects_data = import_module.load_all_subjects(manager)
     return render_to_response('entity/all_subjects.html',
-            {'all_data': subjects_data, 'current_language': translation.get_language(),
-             'edit_url': '/entity/subject/edit/'},
-        context_instance=RequestContext(request))
+                              {'all_data': subjects_data, 'current_language': translation.get_language(),
+                               'edit_url': '/entity/subject/edit/'},
+                              context_instance=RequestContext(request))
 
 
 def get_success_message(entity_type):
@@ -304,7 +310,8 @@ def delete_entity(request):
             action = DELETED_DATA_SENDERS
         else:
             action = DELETED_SUBJECTS
-        UserActivityLog().log(request, action=action, detail="%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)),
+        UserActivityLog().log(request, action=action,
+                              detail="%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)),
                               project=project.capitalize())
         messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
@@ -316,6 +323,7 @@ def _get_project_association(projects):
         for datasender in project['value']['data_senders']:
             project_association[datasender].append(project['value']['name'])
     return project_association
+
 
 def __create_web_users(org_id, reporter_details, language_code):
     duplicate_email_ids = User.objects.filter(email__in=[x['email'].lower() for x in reporter_details]).values('email')
@@ -334,7 +342,7 @@ def __create_web_users(org_id, reporter_details, language_code):
             user.first_name = reporter_entity.value(NAME_FIELD)
             user.save()
             profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
-                reporter_id=reporter['reporter_id'])
+                                     reporter_id=reporter['reporter_id'])
             profile.save()
 
             send_email_to_data_sender(user, language_code)
@@ -347,8 +355,6 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
     """Create single web user from My Data Senders page"""
     return HttpResponse(
         __create_web_users(org_id, [{'email': email_address, 'reporter_id': reporter_id}], language_code))
-
-
 
 
 @login_required(login_url='/login')
@@ -386,26 +392,29 @@ def all_datasenders(request):
         grant_web_access = True
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
-            manager, default_parser=XlsDatasenderParser)
+                                                                                                          manager,
+                                                                                                          default_parser=XlsDatasenderParser)
         if len(imported_datasenders.keys()):
             UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
-                detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
+                                  detail=json.dumps(
+                                      dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         mobile_number_index = fields.index('mobile_number')
         add_imported_data_sender_to_trial_organization(request, imported_datasenders,
-            all_data_senders=all_data_senders, index=mobile_number_index)
+                                                       all_data_senders=all_data_senders, index=mobile_number_index)
 
         return HttpResponse(json.dumps(
-                {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
-                 'error_message': error_message,
-                 'failure_imports': failure_imports, 'all_data': all_data_senders,
-                 'imported_datasenders': imported_datasenders}))
+            {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+             'error_message': error_message,
+             'failure_imports': failure_imports, 'all_data': all_data_senders,
+             'imported_datasenders': imported_datasenders}))
 
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html',
-            {'all_data': all_data_senders, 'projects': projects, 'grant_web_access': grant_web_access, "labels": labels,
-             'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
-        context_instance=RequestContext(request))
+                              {'all_data': all_data_senders, 'projects': projects, 'grant_web_access': grant_web_access,
+                               "labels": labels,
+                               'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
+                              context_instance=RequestContext(request))
 
 
 @csrf_view_exempt
@@ -425,7 +434,8 @@ def disassociate_datasenders(request):
     ids = request.POST["ids"].split(";")
     if len(ids):
         UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
-            detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids), "Projects": "[%s]" % ", ".join(projects_name)}))
+                              detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
+                                                 "Projects": "[%s]" % ", ".join(projects_name)}))
     return HttpResponse(reverse(all_datasenders))
 
 
@@ -456,7 +466,8 @@ def associate_datasenders(request):
     ids = request.POST["ids"].split(';')
     if len(ids):
         UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
-            detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids), "Projects": "[%s]" % ", ".join(projects_name)}))
+                              detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
+                                                 "Projects": "[%s]" % ", ".join(projects_name)}))
     return HttpResponse(reverse(all_datasenders))
 
 
@@ -479,9 +490,9 @@ def import_subjects_from_project_wizard(request):
     if project_id is not None:
         _associate_data_senders_to_project(imported_entities, manager, project_id)
     return HttpResponse(json.dumps(
-            {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
-             'error_message': error_message,
-             'failure_imports': failure_imports}))
+        {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+         'error_message': error_message,
+         'failure_imports': failure_imports}))
 
 
 def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False,
@@ -501,6 +512,21 @@ def get_template(user):
     return 'entity/register_subject.html' if user.get_profile().reporter else 'entity/web_questionnaire.html'
 
 
+def initial_values(form_model, subject):
+    result = {}
+    for field in form_model.fields:
+        if field.name == LOCATION_TYPE_FIELD_NAME:
+            field.value = ','.join(subject.location_path)
+        elif field.name == GEO_CODE_FIELD_NAME:
+            field.value = ','.join(map(str, subject.geometry['coordinates']))
+        elif field.name == SHORT_CODE_FIELD:
+            field.value = subject.short_code
+        else:
+            field.value = subject.data[field.name]['value'] if field.name in subject.data.keys() else None
+        field.value = field._to_str()
+        result.update({field.code: field.value})
+
+
 @login_required(login_url='/login')
 @session_not_expired
 @is_not_expired
@@ -513,37 +539,26 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
     else:
         back_link = reverse(all_subjects)
 
-    for field in form_model.fields:
-        if field.name == LOCATION_TYPE_FIELD_NAME:
-            field.value = ','.join(subject.location_path)
-        elif field.name == GEO_CODE_FIELD_NAME:
-            field.value = ','.join(map(str, subject.geometry['coordinates']))
-        elif field.name == SHORT_CODE_FIELD:
-            field.value = subject.short_code
-        else:
-            field.value = subject.data[field.name]['value'] if field.name in subject.data.keys() else None
-        field.value = field._to_str()
-
-    QuestionnaireForm = WebQuestionnaireFormCreator(None, form_model=form_model, is_update=True).create()
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     if request.method == 'GET':
-        questionnaire_form = QuestionnaireForm()
+        questionnaire_form = SubjectRegistrationForm(form_model, data=initial_values(form_model, subject))
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
-            back_link)
+                                          back_link)
         return render_to_response(web_questionnaire_template,
-            form_context,
-            context_instance=RequestContext(request))
+                                  form_context,
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
         post_data = QueryDict(request.raw_post_data, mutable=True)
-        post_data[QuestionnaireForm.short_code_question_code] = subject.short_code
-        questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=post_data)
+        post_data[form_model.entity_question.code] = subject.short_code
+        questionnaire_form = SubjectRegistrationForm(form_model, data=post_data,
+                                                     country=get_organization_country(request))
         if not questionnaire_form.is_valid():
             form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True
                 , back_link)
             return render_to_response(web_questionnaire_template,
-                form_context,
-                context_instance=RequestContext(request))
+                                      form_context,
+                                      context_instance=RequestContext(request))
 
         success_message = None
         error_message = None
@@ -551,21 +566,23 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
 
             response = WebPlayer(manager,
-                LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
+                                 LocationBridge(location_tree=get_location_tree(),
+                                                get_loc_hierarchy=get_location_hierarchy)).accept(
                 create_request(questionnaire_form, request.user.username, is_update=True))
 
             if response.success:
                 success_message = _("Your changes have been saved.")
-                questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=post_data)
+                questionnaire_form = SubjectRegistrationForm(form_model, data=post_data,
+                                                                  country=get_organization_country(request))
             else:
                 from datawinners.project.helper import errors_to_list
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                    True, back_link)
+                                                  True, back_link)
                 return render_to_response(web_questionnaire_template,
-                    form_context,
-                    context_instance=RequestContext(request))
+                                          form_context,
+                                          context_instance=RequestContext(request))
 
         except DataObjectNotFound:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
@@ -574,11 +591,11 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
-            back_link)
+                                             back_link)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -587,26 +604,24 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-
-    QuestionnaireForm = WebQuestionnaireFormCreator(None, form_model=form_model).create()
-
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
 
     if request.method == 'GET':
-        questionnaire_form = QuestionnaireForm()
+        questionnaire_form = SubjectRegistrationForm(form_model)
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
         return render_to_response(web_questionnaire_template,
-            form_context,
-            context_instance=RequestContext(request))
+                                  form_context,
+                                  context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=request.POST)
+        questionnaire_form = SubjectRegistrationForm(form_model, data=request.POST,
+                                                     country=get_organization_country(request))
         if not questionnaire_form.is_valid():
             form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
             return render_to_response(web_questionnaire_template,
-                form_context,
-                context_instance=RequestContext(request))
+                                      form_context,
+                                      context_instance=RequestContext(request))
 
         success_message = None
         error_message = None
@@ -614,23 +629,24 @@ def create_subject(request, entity_type=None):
             from datawinners.project.helper import create_request
 
             response = WebPlayer(manager,
-                LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
+                                 LocationBridge(location_tree=get_location_tree(),
+                                                get_loc_hierarchy=get_location_hierarchy)).accept(
                 create_request(questionnaire_form, request.user.username), logger=websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
                 success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
                     response.short_code,)
-                detail_dict = dict({"Subject Type":entity_type.capitalize(), "Unique ID": response.short_code})
+                detail_dict = dict({"Subject Type": entity_type.capitalize(), "Unique ID": response.short_code})
                 UserActivityLog().log(request, action=REGISTERED_SUBJECT, detail=json.dumps(detail_dict))
-                questionnaire_form = QuestionnaireForm()
+                questionnaire_form = SubjectRegistrationForm(form_model)
             else:
                 from datawinners.project.helper import errors_to_list
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
                 return render_to_response(web_questionnaire_template,
-                    form_context,
-                    context_instance=RequestContext(request))
+                                          form_context,
+                                          context_instance=RequestContext(request))
 
         except DataObjectNotFound:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
@@ -644,7 +660,7 @@ def create_subject(request, entity_type=None):
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,
-            context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
 
 def _get_all_datasenders(manager, projects, user):
@@ -692,12 +708,12 @@ def edit_subject_questionnaire(request, entity_type=None):
 
     existing_questions = json.dumps(fields, default=field_to_json)
     return render_to_response('entity/questionnaire.html',
-            {'existing_questions': repr(existing_questions),
-             'questionnaire_code': form_model.form_code,
-             'language': form_model.activeLanguages[0],
-             'entity_type': entity_type,
-             'post_url': reverse(save_questionnaire)},
-        context_instance=RequestContext(request))
+                              {'existing_questions': repr(existing_questions),
+                               'questionnaire_code': form_model.form_code,
+                               'language': form_model.activeLanguages[0],
+                               'entity_type': entity_type,
+                               'post_url': reverse(save_questionnaire)},
+                              context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -802,7 +818,7 @@ def export_template(request, entity_type=None):
     gps_col = ws.col(index_geocode)
     gps_col.set_style(style)
 
-    uid_col = ws.col(len(fields)-1)
+    uid_col = ws.col(len(fields) - 1)
     uid_col.set_style(style)
 
     wb.save(response)
