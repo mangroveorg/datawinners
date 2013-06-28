@@ -8,9 +8,9 @@ from datawinners.feeds.migrate import FeedBuilder
 from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, all_db_names
 
 COUCHDBMAIN_SERVER = 'http://localhost:5984'
-log_file = open('/var/log/datawinners/migration_release_7_0_1.log', 'a')
-init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_1.csv')
-logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_1.log', level=logging.DEBUG,
+log_file = open('/var/log/datawinners/migration_release_7_0_2.log', 'a')
+init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_2.csv')
+logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_2.log', level=logging.DEBUG,
                     format="%(asctime)s;%(levelname)s;%(message)s")
 
 

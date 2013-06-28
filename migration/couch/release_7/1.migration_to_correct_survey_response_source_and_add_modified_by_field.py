@@ -15,8 +15,8 @@ import logging
 from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, all_db_names
 from mangrove.datastore.database import get_db_manager
 
-init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_2.csv')
-logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_2.log', level=logging.DEBUG,
+init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_1.csv')
+logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_1.log', level=logging.DEBUG,
                     format="%(asctime)s;%(levelname)s;%(message)s")
 
 
@@ -36,7 +36,7 @@ def remove_attr_source_from_survey_response(survey_response):
 
 def migrate(database_name):
     logging.info('Starting Migration for: %s' % database_name)
-    dbm = get_db_manager(server=settings.COUCH_DB_SERVER, database=database_name)
+    dbm = get_db_manager(server="http://localhost:5984", database=database_name)
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 100, reduce=False, include_docs=True)
     try:
         org_id = OrganizationSetting.objects.get(document_store=dbm.database_name).organization_id
@@ -53,7 +53,6 @@ def migrate(database_name):
 
         doc = SurveyResponseDocument.wrap(row['value'])
         survey_response = SurveyResponse.new_from_doc(dbm, doc)
-        remove_attr_source_from_survey_response(survey_response)
         try:
             data_sender = get_data_sender_by_source(dbm, org_id, original_source, survey_response.channel)
         except Exception:
@@ -69,10 +68,13 @@ def migrate(database_name):
         except (DataObjectNotFound, KeyError) as e:
             logging.info("rep info not found for subject(ignored): %s " % (survey_response.uuid))
             reporter_id = data_sender[1]
+        owner_uid = None
         try:
-            survey_response.owner_uid = get_data_sender_by_reporter_id(dbm, reporter_id).id
+            owner_uid = get_data_sender_by_reporter_id(dbm, reporter_id).id
+            remove_attr_source_from_survey_response(survey_response)
         except Exception as e:
-            pass
+            logging.exception("Unable to set owner_uid " + e.message)
+        survey_response.owner_uid = owner_uid
 
         survey_response.save()
         logging.info("Migrated %s" %survey_response.id)

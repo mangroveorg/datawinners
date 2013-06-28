@@ -1,6 +1,6 @@
-import base64
 import csv
-import urllib2
+import logging
+from apscheduler.threadpool import ThreadPool
 import requests
 from datawinners import  settings
 
@@ -34,3 +34,20 @@ def should_not_skip(db_name):
 def all_db_names(server=settings.COUCH_DB_SERVER):
     all_dbs = requests.get(server + "/_all_dbs", auth=settings.COUCHDBMAIN_CREDENTIALS)
     return filter(lambda x: x.startswith('hni_'), all_dbs.json())
+
+
+
+class DWThreadPool(ThreadPool):
+    def submit(self, func, *args, **kwargs):
+        def callback_wrapper(*args, **kwargs):
+            try:
+            #logging.info("Invoking " + str(func) + ":" + str(args))
+                func(*args, **kwargs)
+            except Exception as e:
+                logging.exception(e.message)
+            self._queue.task_done()
+        return super(DWThreadPool, self).submit(callback_wrapper, *args, **kwargs)
+
+    def wait_for_completion(self):
+        self._queue.join()
+
