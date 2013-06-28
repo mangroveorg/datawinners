@@ -7,12 +7,12 @@
             {% for title in labels %}
                 <th>{{ title }}</th>
             {% endfor %}
-            <th>{% trans "Projects" %}</th>
             <th>{% trans "Email" %}</th>
             <th class="devices" colspan="3">
                 <span>{% trans "Devices" %}</span>
                 {% include "alldata/device_icons.html" %}
             </th>
+            <th>{% trans "Projects" %}</th>
         </thead>
         <tbody id='all_data_senders' class="datasenders_list">
         {% for row in all_data %}
@@ -21,7 +21,6 @@
                 {% for col in row.cols %}
                     <td>{{ col }}</td>
                 {% endfor %}
-                <td>{{ row.projects }}</td>
                 <td>{{ row.email }}</td>
                 <td class="device-icon"><img src="/media/images/right_icon.png" alt="Yes"></td>
                 <td class="device-icon">
@@ -38,6 +37,7 @@
                         <span>--</span>
                     {% endif %}
                 </td>
+                <td>{{ row.projects }}</td>
             </tr>
         {% endfor %}
         </tbody>
