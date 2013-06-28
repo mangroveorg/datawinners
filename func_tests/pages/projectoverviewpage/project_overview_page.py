@@ -10,6 +10,7 @@ from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPa
 from pages.reminderpage.all_reminder_page import AllReminderPage
 from pages.smstesterlightbox.sms_tester_light_box_page import SMSTesterLightBoxPage
 from pages.projectreviewandtest.project_review_and_test_page import ProjectReviewTestPage
+from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 
 
 class ProjectOverviewPage(Page):
@@ -39,6 +40,7 @@ class ProjectOverviewPage(Page):
     def navigate_to_edit_project_page(self):
         self.driver.find(PROJECT_EDIT_LINK).click()
         from pages.createprojectpage.create_project_page import CreateProjectPage
+
         return CreateProjectPage(self.driver)
 
     def click_activate_project_link(self):
@@ -78,3 +80,7 @@ class ProjectOverviewPage(Page):
     def navigate_to_review_and_test(self):
         self.driver.find(REVIEW_AND_TEST_TAB).click()
         return ProjectReviewTestPage(self.driver)
+
+    def navigate_to_web_questionnaire_page(self):
+        self.driver.find(WEB_QUESTIONNAIRE_PAGE).click()
+        return WebSubmissionPage(self.driver)

@@ -82,3 +82,6 @@ class WebSubmissionPage(Page):
     def navigate_to_submission_log(self):
         self.driver.find_elements_by_css_selector('.secondary_tab .inactive>a')[1].click()
         return SubmissionLogPage(self.driver)
+
+    # def is_success(self):
+    #     return self.driver.is_element_present(SUCCESS_MESSAGE)

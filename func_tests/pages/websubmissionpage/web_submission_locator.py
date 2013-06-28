@@ -15,3 +15,5 @@ BACK_TO_PROJECT_LINK = by_css(".back-to-list")
 WEB_NAVIGATION = by_css(".device-navigation .web")
 
 CANCEL = by_id("cancel")
+
+# SUCCESS_MESSAGE = by_css(".success-message-box")
