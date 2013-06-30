@@ -103,7 +103,7 @@ def get_submission_success_message(response, form_model):
         return _("Thank you %(datasender)s. We received your SMS") % {'datasender': datasender}
 
     subject_info = get_subject_info(response, form_model)
-    return _("Thank you %(datasender)s. We received your message for %(subject_info)s")\
+    return _("Thank you %(datasender)s. We received your SMS for %(subject_info)s")\
         % {'datasender': datasender, 'subject_info': subject_info}
 
 def get_registration_success_message(response):

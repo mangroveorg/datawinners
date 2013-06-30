@@ -10,7 +10,7 @@ from mangrove.transport.contract.response import create_response_from_form_submi
 from datawinners.messageprovider.message_builder import ResponseBuilder
 from django.utils.translation import get_language, activate
 
-THANKS = "Thank you Mino. We received your SMS"
+THANKS = "Thank you %s. We received your SMS"
 
 
 class TestGetExceptionMessageHandler(unittest.TestCase):

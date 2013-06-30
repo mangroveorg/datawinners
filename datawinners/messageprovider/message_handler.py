@@ -51,7 +51,7 @@ def get_success_msg_for_submission_using(response, form_model):
     response_text = ResponseBuilder(form_model=form_model, processed_data=response.processed_data).get_expanded_response()
     message_with_response_text = message + ": " + response_text
 
-    return message_with_response_text if len(message_with_response_text) <= 160 else message
+    return message_with_response_text if len(message_with_response_text) <= 160 else message + "."
 
 
 def get_success_msg_for_registration_using(response, source, form_model=None):
