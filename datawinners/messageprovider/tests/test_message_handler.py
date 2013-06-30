@@ -84,7 +84,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         return form_submission_mock
 
     def test_should_format_success_message_for_submission_with_reporter_name(self):
-        expected_message = THANKS + ": 12; tester; red"
+        expected_message = (THANKS % "Mino") + ": 12; tester; red"
         form_submission_mock = self.create_form_submission_mock()
         form_submission_mock.entity_type = ['reporter']
         response = create_response_from_form_submission(reporters=[{"name": "Mino"}], submission_id=123,
@@ -96,11 +96,11 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_with_thanks_only_if_greater_than_160_characters(self):
-        expected_message = THANKS
+        expected_message = (THANKS % "Mino") + "."
         response = Mock()
         response.reporters = [{'name':'mino rakoto'}]
         response.entity_type = ['reporter']
-        response_text = "1" * 125
+        response_text = "1" * 124
 
         self.assertEqual(161, len(expected_message + response_text))
         with patch.object(ResponseBuilder, "get_expanded_response") as get_expanded_response:
@@ -112,7 +112,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
     def test_should_format_success_message_with_thanks_and_response_text_if_total_length_of_success_message_is_no_more_than_160_characters(
             self):
         response_text = ": rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
-        expected_message = THANKS + response_text
+        expected_message = (THANKS % "Mino")+ response_text
         response = Mock()
         response.reporters = [{'name':'mino rakoto'}]
         response.entity_type = ['reporter']
@@ -127,7 +127,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         self.assertTrue(160, len(message))
 
     def test_should_format_success_message_for_submission_with_blank_if_no_reporter(self):
-        expected_message = THANKS + ": tester"
+        expected_message = (THANKS % "Mino") + ": tester"
         form_submission_mock = self.create_form_submission_mock()
         form_submission_mock.entity_type = ['reporter']
         response = create_response_from_form_submission(reporters=[{'name':'mino rakoto'}], submission_id=123,
