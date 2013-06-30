@@ -17,13 +17,13 @@ VALID_DATA = {SMS: "cli005 .EID cid003 .NA Mr. Tessy .FA 58 .RD 17.05.2011 .BG b
 
 EXCEED_NAME_LENGTH = {
     SMS: "cli009 .EID CID003 .NA Mr. O'brain .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
-    RESPONSE_MESSAGE: "Error. Incorrect answer for q2. Please resend entire message."}
+    RESPONSE_MESSAGE: "Error. Incorrect answer for question 2. Please review printed Questionnaire and resend entire SMS."}
 
 VALID_DATA2 = {SMS: "cli005 .EID cid004 .NA Mr. O'man .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789",
-               RESPONSE_MESSAGE:THANKS }#+ " EID: cid004 NA: Mr. O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057, -78.007789"}
+               RESPONSE_MESSAGE:(THANKS % "Test") + " for Clinic Khandwa Clinic (cid004)." }#+ " EID: cid004 NA: Mr. O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057, -78.007789"}
 
 VALID_ORDERED_SMS_DATA = {SMS: "cli005 cid004 O'man 58 17.05.2011 b ade 27.178057,-78.007789",
-               RESPONSE_MESSAGE: THANKS }#+ " EID: cid004 NA: O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057, -78.007789"}
+               RESPONSE_MESSAGE: (THANKS % "Test") + " for Clinic Khandwa Clinic (cid004)." }#+ " EID: cid004 NA: O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057, -78.007789"}
 
 VALID_ORDERED_SMS_DATA_WITH_ACTIVITY_REPORT = {SMS: "cli017 O'man 58 17.05.2011 b ade",
                RESPONSE_MESSAGE: THANKS + " NA: O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders"}

@@ -138,13 +138,13 @@ class AllDataSendersPage(Page):
         self.driver.is_element_present(ADD_A_DATA_SENDER_LINK)
 
     def check_sms_device_by_id(self, data_sender_id):
-        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 9)))
+        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 8)))
 
     def check_web_device_by_id(self, data_sender_id):
-        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 10)))
+        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 9)))
 
     def check_smart_phone_device_by_id(self, data_sender_id):
-        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 11)))
+        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 10)))
 
     def open_import_lightbox(self):
         from pages.adddatasenderspage.add_data_senders_locator import OPEN_IMPORT_DIALOG_LINK

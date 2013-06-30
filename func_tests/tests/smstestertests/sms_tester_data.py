@@ -16,7 +16,7 @@ SUCCESS_MESSAGE_TEXT = "Thank you Shweta for your data record. We successfully r
 VALID_DATA = {SENDER: "1234567890",
               RECEIVER: "919880734937",
               SMS: "cli009 .EID cid003 .NA Mr. Tessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM ac",
-              SUCCESS_MESSAGE: THANKS }#+ " EID: cid003 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
+              SUCCESS_MESSAGE: (THANKS % "Shweta") + " for Clinic Jabalpur Clinic (cid003)."}
 
 VALID_DATA2 = {SENDER: "1234567890",
                RECEIVER: "919880734937",
@@ -26,7 +26,7 @@ VALID_DATA2 = {SENDER: "1234567890",
 EXCEED_NAME_LENGTH = {SENDER: "1234567890",
                       RECEIVER: "919880734937",
                       SMS: "cli009 .EID CID003 .NA Mr. O'brain .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM bc",
-                      ERROR_MSG: "Error. Incorrect answer for q2. Please resend entire message."}
+                      ERROR_MSG: "Error. Incorrect answer for question 2. Please review printed Questionnaire and resend entire SMS."}
 
 EXCEED_NAME_LENGTH2 = {SENDER: "1234567890",
                        RECEIVER: "919880734937",
@@ -56,7 +56,7 @@ UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
 REGISTER_DATA_SENDER = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
                         SMS: "REG .t Reporter .m 0123456789 .L  Jaipur .g 26.917 75.817 .N Donald Duck",
-                        ERROR_MSG: u"Registration successful. ID is: rep\d+. t: Reporter n: Donald Duck s: rep\d+ l: Jaipur g: 26.917, 75.817 m: 0123456789"}
+                        ERROR_MSG: u"Thank you Shweta, We registered your reporter: Reporter; "}
 
 REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
                                             RECEIVER: "919880734937",
@@ -66,17 +66,17 @@ REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
 REGISTER_NEW_SUBJECT = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
                         SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur .S clijpr . ",
-                        SUCCESS_MESSAGE: "Registration successful. ID is: clijpr. t: Clinic n: Clinic Jaipur s: clijpr l: Jaipur g: 26.917, 75.817 m: 123456"}
+                        SUCCESS_MESSAGE: "Thank you Shweta, We registered your clinic: Clinic; Clinic Jaipur; clijpr; Jaipur; 26.917, 75.817; 123456"}
 
 REGISTER_EXISTING_SUBJECT_SHORT_CODE = {SENDER: "1234567890",
                                         RECEIVER: "919880734937",
                                         SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur .S cid001 . ",
-                                        ERROR_MSG: "Entity with Unique Identification Number (ID) = cid001 already exists."}
+                                        ERROR_MSG: "The Unique ID Number cid001 is already used for the clinic Test. Register your clinic with a different ID."}
 
 REGISTER_INVALID_GEO_CODE = {SENDER: "1234567890",
                              RECEIVER: "919880734937",
                              SMS: "REG .T Clinic .m   123456 .l Agra .G 127.178057 -78.007789 .n Clinic Agra .S CLIAGRA",
-                             ERROR_MSG: "Error. Incorrect answer for q5. Please resend entire message."}
+                             ERROR_MSG: "Error. Incorrect answer for question 5. Please review the Registration Form and resend entire SMS."}
 
 WITH_INVALID_GEO_CODE_FORMAT = {SENDER: "1234567890",
                                 RECEIVER: "919880734937",

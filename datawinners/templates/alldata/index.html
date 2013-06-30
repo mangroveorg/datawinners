@@ -8,6 +8,16 @@
     {{ block.super }}
 {% endblock %}
 
+{% block main_message %}
+    {% if activation_success %}
+        <div class="container_24" id="main_message">
+            <div id="flash-message" class="success-message-box">
+                {% trans "You have successfully activated your account. Happy data submission!" %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     {% block device_navigation %}
         {% if user|is_datasender %}
@@ -16,6 +26,7 @@
         {% endif %}
     {% endblock %}
     <div>
+        
         <table class="styled_table">
             <thead>
             <th> {% trans "Project" %}</th>

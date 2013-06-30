@@ -12,6 +12,5 @@ VALID_ACTIVATION_DETAILS = {ACTIVATION_CODE: "",
 
 INVALID_ACTIVATION_CODE = {ACTIVATION_CODE: "8ff48d7a0fc70919c5d0812283d021dbac660",
                            ERROR_MESSAGE: "Account activation failed"}
-DS_ACTIVATION_URL = "/datasender/activate/%s"
-DS_ACTIVATION_UID_N_TOKEN = "6-3in-d251db7e5f481200ebce"
+DS_ACTIVATION_URL = "/datasender/activate/%s-%s"
 NEW_PASSWORD = "dstest!123"

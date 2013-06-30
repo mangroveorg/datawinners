@@ -78,7 +78,7 @@ class TestAllUsers(unittest.TestCase):
             SMS: "%s 10.10.2010" % questionnaire_code}
         sms_tester_page.send_sms_with(valid_sms)
         response = sms_tester_page.get_response_message()
-        self.assertRegexpMatches(response, THANKS)
+        self.assertRegexpMatches(response, THANKS % "Mamy")
         self.driver.close()
         self.driver.switch_to_window(first_tab)
 

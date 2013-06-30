@@ -25,5 +25,5 @@ def get_sms_data_with_questionnaire_code(questionnaire_code):
     return {SENDER: "919049008976",
             RECEIVER: '919880734937',
             SMS: questionnaire_code+" wp01 25.12.2010 5 24.12.2010 a admin c 12,12",
-            'message': THANKS + u" q1: wp01 q2: 25.12.2010 q3: 5 q4: 24.12.2010 q5: LIGHT RED q6: admin q7: Chlorobia q8: 12.0, 12.0"}
+            'message': (THANKS % "Ashwini") + u" for Waterpoint Ahmedabad Waterpoint (wp01): wp01; 25.12.2010; 5; 24.12.2010; LIGHT RED; admin; Chlorobia; 12.0, 12.0"}
 

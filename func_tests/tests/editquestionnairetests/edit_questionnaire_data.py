@@ -65,7 +65,7 @@ LIGHT_BOX_DATA = {TITLE: "Warning !!",
 VALID_SMS = {SENDER: "919049008976",
                 RECEIVER: '919880734937',
                 SMS: "cli005 cid001 mino 90 25.12.2010 a d -18.1324,27.6547",
-                SUCCESS_MESSAGE: THANKS + u" q1: cid001 q2: mino q3: 90 q4: 25.12.2010 q5: O+ q6: Memory loss q7: -18.1324, 27.6547"}
+                SUCCESS_MESSAGE: (THANKS % "Ashwini") + u" for Clinic Bhopal Clinic (cid001): cid001; mino; 90; 25.12.2010; O+; Memory loss; -18.1324, 27.6547"}
 
 DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING = u'If you delete this question, any previously collected data will be lost.\nDo you want to delete this question?'
 SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING = u'If you modify this questionnaire, any previously collected data will be lost.\n\nDo you want to modify this questionnaire?'
@@ -73,7 +73,7 @@ SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING = u'If you modify this ques
 VALID_SMS_SUBJECT_DATA = {SENDER: "919049008976",
                 RECEIVER: '919880734937',
                 SMS: "sub prenom anarana harbin 12,19 033143333 reg001",
-                SUCCESS_MESSAGE: u"Registration successful. ID is: reg001. q1: prenom q2: anarana q3: harbin q4: 12.0, 19.0 q5: 033143333 q6: reg001"}
+                SUCCESS_MESSAGE: u"Thank you Ashwini, We registered your subject type: prenom; anarana; harbin; 12.0, 19.0; 033143333; reg001"}
 SUBJECT_TYPE = "subject type"
 
 CHANGE_QUESTION_TYPE_MSG = u'You have changed the Answer Type.\nIf you have previously collected data, it may be rendered incorrect.\n\nAre you sure you want to continue?'
