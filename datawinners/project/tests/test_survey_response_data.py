@@ -1,6 +1,9 @@
 from datetime import datetime
+import random
+from unittest import TestCase
 
 from mock import patch, Mock
+from datawinners.main.database import get_db_manager
 
 from mangrove.transport.player.new_players import WebPlayerV2
 from mangrove.form_model.field import field_attributes, TextField, SelectField, DateField, IntegerField, GeoCodeField, ExcelDate
@@ -9,7 +12,6 @@ from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.request import Request
 from mangrove.utils.entity_builder import EntityBuilder
 from mangrove.utils.form_model_builder import create_default_ddtype, FormModelBuilder
-from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from datawinners.project.analysis import Analysis
 from datawinners.project.analysis_for_excel import AnalysisForExcel
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, NOT_AVAILABLE
@@ -23,15 +25,21 @@ from datawinners.project.tests.test_data_sender_helper import register_datasende
 today = datetime.utcnow().strftime("%d.%m.%Y")
 
 
-class TestSurveyResponseData(MangroveTestCase):
+def random_string(length=5):
+    return ''.join(random.sample('abcdefghijklmnopqrstuvwxyz1234567890', length))
+
+
+class TestSurveyResponseData(TestCase):
     def setUp(self):
-        super(TestSurveyResponseData, self).setUp()
         self.org_id = 'SLX364903'
+
+        self.manager = get_db_manager('hni_testorg_slx364903')
+
         self._prepare_subjects()
 
         self.transport = TransportInfo(transport="web", source="1234", destination="5678")
         self.form_model_generator = FormModelGenerator(self.manager)
-        self.form_model = self.form_model_generator.form_model()
+        self.form_model = self.form_model_generator.form_model(random_string())
         self.test_ds_uid = register_datasender(self.manager)
 
     def _prepare_submission_list_with_one_submission(self, form_model):
@@ -241,7 +249,6 @@ class TestSurveyResponseData(MangroveTestCase):
             self.assertEqual(expected, subject_list)
 
 
-
     def test_should_get_datasender_list(self):
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
@@ -268,8 +275,9 @@ class TestSurveyResponseData(MangroveTestCase):
         submissions = []
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
-            data = [{"eid": "cli14", "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
-                    {"eid": "cli14", "RD": "01.01.2012", "BG": "c"}
+            entity_id = random_string()
+            data = [{"eid": entity_id, "RD": "01.01.2012", "SY": "a2bc", "BG": "d"},
+                    {"eid": entity_id, "RD": "01.01.2012", "BG": "c"}
             ]
             for values in data:
                 submission = SurveyResponse(self.manager,
@@ -324,15 +332,15 @@ class TestSurveyResponseData(MangroveTestCase):
         blood_type_field = TextField(label="What is your blood group?", code="BG", name="What is your blood group?",
                                      ddtype=self.ddtype)
 
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field,
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
                                                                                                blood_type_field).build()
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'unknown'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'BG': 'unknown'})
 
         blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
                                        options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")],
                                        single_select_flag=False, ddtype=self.ddtype)
         self._edit_fields(form_model, blood_type_field)
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'ab'})
+        self.submit_survey_response({'form_code':form_model.form_code, 'EID': 'cid001', 'BG': 'ab'})
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
@@ -356,16 +364,16 @@ class TestSurveyResponseData(MangroveTestCase):
                                        options=[("Type 1", "a"), ("Type 2", "b")], single_select_flag=True,
                                        ddtype=self.ddtype)
 
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field,
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
                                                                                                blood_type_field).build()
 
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'BG': 'a'})
 
         blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
                                        options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")],
                                        single_select_flag=True, ddtype=self.ddtype)
         self._edit_fields(form_model, blood_type_field)
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'BG': 'a'})
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
@@ -420,11 +428,11 @@ class TestSurveyResponseData(MangroveTestCase):
                                        options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")],
                                        single_select_flag=True, ddtype=self.ddtype)
 
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=(random_string())).add_fields(eid_field, rp_field,
                                                                                                symptoms_field,
                                                                                                blood_type_field).build()
 
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
         self._edit_fields(form_model,
                           IntegerField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
                                        ddtype=self.ddtype))
@@ -451,11 +459,11 @@ class TestSurveyResponseData(MangroveTestCase):
                                        options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")],
                                        single_select_flag=True, ddtype=self.ddtype)
 
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field, rp_field,
                                                                                                symptoms_field,
                                                                                                blood_type_field).build()
         self.submit_survey_response(
-            {'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'BG': 'b'})
+            {'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'BG': 'b'})
 
         symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
                                      options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
@@ -463,7 +471,7 @@ class TestSurveyResponseData(MangroveTestCase):
                                      single_select_flag=False,
                                      ddtype=self.ddtype)
         self._edit_fields(form_model, symptoms_field)
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
@@ -479,20 +487,20 @@ class TestSurveyResponseData(MangroveTestCase):
         rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="dd.mm.yyyy",
                              event_time_field_flag=True, ddtype=self.ddtype)
 
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field,
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
                                                                                                rp_field).build()
 
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012'})
 
         rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="mm.yyyy",
                              event_time_field_flag=True, ddtype=self.ddtype)
         self._edit_fields(form_model, rp_field)
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '08.2012'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '08.2012'})
 
         rp_field = DateField(label="Report date", code="RD", name="What is reporting date?", date_format="mm.dd.yyyy",
                              event_time_field_flag=True, ddtype=self.ddtype)
         self._edit_fields(form_model, rp_field)
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.24.2012'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.24.2012'})
 
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
@@ -512,18 +520,18 @@ class TestSurveyResponseData(MangroveTestCase):
                              event_time_field_flag=True, ddtype=self.ddtype)
         symptoms_field = TextField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=self.ddtype)
         gps = TextField(label="What is your blood group?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field, rp_field,
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field, rp_field,
                                                                                                symptoms_field,
                                                                                                gps).build()
 
         self.submit_survey_response(
-            {'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'GPS': 'NewYork'})
+            {'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'GPS': 'NewYork'})
 
         form_model.create_snapshot()
         form_model.delete_field("SY")
         form_model.save()
 
-        self.submit_survey_response({'form_code': 'cli001', 'EID': 'cid001', 'RD': '12.12.2012', 'GPS': '1,1'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'GPS': '1,1'})
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
@@ -545,12 +553,12 @@ class TestSurveyResponseData(MangroveTestCase):
                                  ddtype=self.ddtype)
         gps_field = GeoCodeField(label="What is your gps?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
 
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code='cli001').add_fields(eid_field,
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
                                                                                                blood_type_field,
                                                                                                rp_field, age_field,
                                                                                                gps_field).build()
 
-        post_data = {'form_code': 'cli001', 'EID': 'cid001', 'BG': 'a', 'RD': '12.11.2013', 'FA': '45',
+        post_data = {'form_code': form_model.form_code, 'EID': 'cid001', 'BG': 'a', 'RD': '12.11.2013', 'FA': '45',
                      'GPS': '12.74,77.45'}
         self.submit_survey_response(post_data)
 
@@ -575,7 +583,7 @@ class TestSurveyResponseData(MangroveTestCase):
     def create_submission_list_instance(self):
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
-            data = {"eid": "cli14", "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
+            data = {"eid": random_string(), "RD": "01.01.2012", "SY": "A2bCZ", "BG": "D"}
             get_submissions.return_value = [SurveyResponse(self.manager,
                                                            transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                                         'destination'),
@@ -673,7 +681,8 @@ class TestSurveyResponseData(MangroveTestCase):
             valid_submission = SurveyResponse(self.manager,
                                               transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                            'destination'),
-                                              form_code=self.form_model.form_code, values=data, owner_uid=self.test_ds_uid)
+                                              form_code=self.form_model.form_code, values=data,
+                                              owner_uid=self.test_ds_uid)
             get_submissions.return_value = [valid_submission]
             response_data = SurveyResponseList(self.form_model, self.manager, self.org_id, None, filters, None)
             data_sender, rp, subject, submission_date = response_data._get_survey_response_details(
@@ -688,7 +697,8 @@ class TestSurveyResponseData(MangroveTestCase):
             valid_submission = SurveyResponse(self.manager,
                                               transport_info=TransportInfo('web', 'tester150411@gmail.com',
                                                                            'destination'),
-                                              form_code=self.form_model.form_code, values=data, owner_uid=self.test_ds_uid)
+                                              form_code=self.form_model.form_code, values=data,
+                                              owner_uid=self.test_ds_uid)
             valid_submission._doc.created = datetime.strptime('Apr. 12, 2013, 09:27 AM',
                                                               SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
             valid_submission._doc.submitted_on = datetime.strptime('Apr. 12, 2013, 09:30 AM',
