@@ -85,7 +85,7 @@ class TestFeeds(unittest.TestCase):
         page = SMSTesterPage(self.driver)
         sms_data = get_errorred_sms_data_with_questionnaire_code(questionnaire_code)
         page.send_sms_with(sms_data)
-        self.assertEqual(page.get_response_message(), fetch_(MESSAGE, from_(sms_data)))
+        self.assertTrue(fetch_(MESSAGE, from_(sms_data)) in page.get_response_message())
 
 
     def delete_submission(self):
