@@ -11,6 +11,6 @@ def _get_formatted_country_name(country, language):
 
 
 def get_trial_numbers():
-    networks = Network.objects.values_list('trial_sms_number', flat=True).distinct()
-    return [network for network in networks if network != 'None']
+    trial_numbers = Network.objects.values_list('trial_sms_number', flat=True).distinct()
+    return [trial_number.replace("+","") for trial_number in trial_numbers if trial_number != 'None']
 

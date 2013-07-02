@@ -408,9 +408,8 @@ def activate_project(request, project_id=None):
     feeds_dbm = get_feeds_database(request.user)
     service = SurveyResponseService(manager, logger, feeds_dbm)
     additional_feed_dictionary = get_project_details_dict_for_feed(project)
-    user_profile = NGOUserProfile.objects.get(user=request.user)
     for survey_response in survey_responses:
-        service.delete_survey(survey_response, user_profile.reporter_id, additional_feed_dictionary)
+        service.delete_survey(survey_response, additional_feed_dictionary)
     UserActivityLog().log(request, action=ACTIVATED_PROJECT, project=project.name)
     return HttpResponseRedirect(reverse('project-overview', args=[project_id]))
 

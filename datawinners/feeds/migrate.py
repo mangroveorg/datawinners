@@ -44,9 +44,7 @@ class FeedBuilder:
 
     def enriched_dbm(self, survey_response):
         form_model = get_form_model_by_code(self.dbm, survey_response.form_code)
-        org_id = OrganizationSetting.objects.get(document_store=self.dbm.database_name).organization_id
-        data_sender = get_data_sender(self.dbm, survey_response)
-        builder = EnrichedSurveyResponseBuilder(self.dbm, survey_response, form_model, data_sender[1],
+        builder = EnrichedSurveyResponseBuilder(self.dbm, survey_response, form_model,
                                                 self.project_info(survey_response.form_code), self.logger)
         return builder.feed_document()
 

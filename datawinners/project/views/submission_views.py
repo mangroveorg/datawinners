@@ -101,9 +101,7 @@ def delete(request, project_id):
         received_times.append(datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
         feeds_dbm = get_feeds_database(request.user)
         additional_feed_dictionary = get_project_details_dict_for_feed(project)
-        user_profile = NGOUserProfile.objects.get(user=request.user)
         delete_response = WebPlayerV2(manager, feeds_dbm).delete_survey_response(survey_response,
-                                                                                 user_profile.reporter_id,
                                                                                  additional_feed_dictionary,
                                                                                  websubmission_logger)
         mail_feed_errors(delete_response, manager.database_name)
