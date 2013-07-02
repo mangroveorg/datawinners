@@ -31,7 +31,7 @@ def fix_db(db_name):
         dbm = get_db_manager(db_name)
         logger.info("starting data fix for " + db_name)
         all_data_senders = set(get_all_active_data_senders(dbm))
-        for project_doc in dbm.database.iterview("project_names/project_names", include_docs=True):
+        for project_doc in dbm.database.view("project_names/project_names", include_docs=True):
             try:
                 project_data_senders = set(project_doc["doc"]["data_senders"])
 
