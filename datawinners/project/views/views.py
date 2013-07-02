@@ -21,6 +21,7 @@ from datawinners.project.view_models import ReporterEntity
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
+from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, SurveyResponseForm
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
