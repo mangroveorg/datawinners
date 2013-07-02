@@ -1,6 +1,6 @@
 import sys
-from datawinners import settings
 from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors.MangroveException import DataObjectNotFound
@@ -12,12 +12,13 @@ if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
 import logging
-from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, all_db_names
-from mangrove.datastore.database import get_db_manager
+from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, all_db_names, DWThreadPool
+
+NUMBER_OF_THREADS = 12
 
 init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_1.csv')
 logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_1.log', level=logging.DEBUG,
-                    format="%(asctime)s;%(levelname)s;%(message)s")
+                    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
 
 
 def _get_form_model(dbm, form_model_dict, survey_response):
@@ -34,52 +35,57 @@ def remove_attr_source_from_survey_response(survey_response):
         pass
 
 
-def migrate(database_name):
-    logging.info('Starting Migration for: %s' % database_name)
-    dbm = get_db_manager(server="http://localhost:5984", database=database_name)
-    rows = dbm.database.iterview("surveyresponse/surveyresponse", 100, reduce=False, include_docs=True)
+def migrate(db_name):
     try:
-        org_id = OrganizationSetting.objects.get(document_store=dbm.database_name).organization_id
-    except Exception as e:
-        logging.exception("Organization for : %s does not exist." % database_name)
-        return database_name
-    data_sender_dict = dict()
-    for row in rows:
+        logger = logging.getLogger(db_name)
+        logger.info('Starting Migration')
+        mark_start_of_migration(db_name)
+        dbm = get_db_manager(db_name)
+        rows = dbm.database.iterview("surveyresponse/surveyresponse", 100, reduce=False, include_docs=True)
         try:
-            original_source = row['value']['source']
-        except KeyError as e:
-            logging.info("Already migrated %s" % row['value']['_id']) #ignore, document already migrated
-            continue
-
-        doc = SurveyResponseDocument.wrap(row['value'])
-        survey_response = SurveyResponse.new_from_doc(dbm, doc)
-        try:
-            data_sender = get_data_sender_by_source(dbm, org_id, original_source, survey_response.channel)
-        except Exception:
-            logging.info("Data sender doesn't exists for survey response: %s" % row['value']['_id'])
-            continue
-        survey_response.created_by = data_sender[1]
-        survey_response.modified_by = data_sender[1]
-        try:
-            rep_id = survey_response.values['eid']
-            if not data_sender_dict.get(rep_id):
-                data_sender_dict.update({rep_id: get_by_short_code_include_voided(dbm, rep_id, ['reporter'])})
-            reporter_id = rep_id
-        except (DataObjectNotFound, KeyError) as e:
-            logging.info("rep info not found for subject(ignored): %s " % (survey_response.uuid))
-            reporter_id = data_sender[1]
-        owner_uid = None
-        try:
-            owner_uid = get_data_sender_by_reporter_id(dbm, reporter_id).id
-            remove_attr_source_from_survey_response(survey_response)
+            org_id = OrganizationSetting.objects.get(document_store=dbm.database_name).organization_id
         except Exception as e:
-            logging.exception("Unable to set owner_uid " + e.message)
-        survey_response.owner_uid = owner_uid
+            logging.exception("Organization for : %s does not exist.")
+            return db_name
+        data_sender_dict = dict()
+        for row in rows:
+            try:
+                original_source = row['value']['source']
+            except KeyError as e:
+                logger.info("Already migrated %s" % row['value']['_id']) #ignore, document already migrated
+                continue
 
-        survey_response.save()
-        logging.info("Migrated %s" %survey_response.id)
+            doc = SurveyResponseDocument.wrap(row['value'])
+            survey_response = SurveyResponse.new_from_doc(dbm, doc)
+            try:
+                data_sender = get_data_sender_by_source(dbm, org_id, original_source, survey_response.channel)
+            except Exception:
+                logger.info("Data sender doesn't exists for survey response: %s" % row['value']['_id'])
+                continue
+            survey_response.created_by = data_sender[1]
+            survey_response.modified_by = data_sender[1]
+            try:
+                rep_id = survey_response.values['eid']
+                if not data_sender_dict.get(rep_id):
+                    data_sender_dict.update({rep_id: get_by_short_code_include_voided(dbm, rep_id, ['reporter'])})
+                reporter_id = rep_id
+            except (DataObjectNotFound, KeyError) as e:
+                logger.info("rep info not found for subject(ignored): %s " % (survey_response.uuid))
+                reporter_id = data_sender[1]
+            owner_uid = None
+            try:
+                owner_uid = get_data_sender_by_reporter_id(dbm, reporter_id).id
+                remove_attr_source_from_survey_response(survey_response)
+            except Exception as e:
+                logging.exception("Unable to set owner_uid " + e.message)
+            survey_response.owner_uid = owner_uid
 
-    logging.info('Completed Migration: %s' % database_name)
+            survey_response.save()
+            logger.info("Migrated %s" % survey_response.id)
+
+        logger.info('Completed Migration')
+    except Exception as e:
+        logging.exception("FAILED")
 
 
 def get_data_sender_by_source(dbm, org_id, original_source, channel):
@@ -90,13 +96,13 @@ def get_data_sender_by_source(dbm, org_id, original_source, channel):
 
 
 def migrate_survey_response_to_add_owner(all_db_names):
-    for database in all_db_names:
-        try:
-            if should_not_skip(database):
-                mark_start_of_migration(database)
-                migrate(database)
-        except Exception as e:
-            logging.exception("Failed Database: %s Error %s" % (database, e.message))
+    pool = DWThreadPool(NUMBER_OF_THREADS, NUMBER_OF_THREADS)
+    for db_name in all_db_names:
+        if should_not_skip(db_name):
+            pool.submit(migrate, db_name)
+
+    pool.wait_for_completion()
+    print "Completed!"
 
 
 migrate_survey_response_to_add_owner(all_db_names())
