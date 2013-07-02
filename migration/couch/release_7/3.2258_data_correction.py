@@ -33,7 +33,6 @@ def fix_db(db_name):
         all_data_senders = set(get_all_active_data_senders(dbm))
         for project_doc in dbm.database.iterview("project_names/project_names", include_docs=True):
             try:
-                invalid_ds = []
                 project_data_senders = set(project_doc["doc"]["data_senders"])
 
                 invalid_ds = project_data_senders.difference(all_data_senders)
