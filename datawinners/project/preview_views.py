@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.main.database import get_database_manager
+from datawinners.project.web_questionnaire_form import SurveyResponseForm
 from mangrove.form_model.form_model import REPORTER
 from datawinners.accountmanagement.views import  session_not_expired
 from datawinners.accountmanagement.views import is_not_expired
@@ -12,7 +13,6 @@ from datawinners.project.models import Project
 from datawinners.project.views.views import get_example_sms, get_organization_telephone_number
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project.wizard_view import create_questionnaire
-from project.web_questionnaire_form import SurveyResponseForm
 
 
 def get_questions(form_model):

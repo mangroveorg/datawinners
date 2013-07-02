@@ -42,7 +42,7 @@ from mangrove.utils.types import is_empty, is_string
 from mangrove.transport.contract.transport_info import Channel
 import datawinners.utils as utils
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
-from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_info
+from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_info
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
@@ -69,7 +69,6 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
 from mangrove.transport.player.new_players import WebPlayerV2
 from mangrove.transport.repository.survey_responses import survey_response_count, get_survey_responses
-from project.web_questionnaire_form import SubjectRegistrationForm, SurveyResponseForm
 
 
 logger = logging.getLogger("django")

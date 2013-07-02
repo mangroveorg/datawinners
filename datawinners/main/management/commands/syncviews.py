@@ -2,8 +2,8 @@ import logging
 from django.core.management.base import BaseCommand
 import sys
 from datawinners.main.database import  get_db_manager
-from main.management.sync_changed_views import SyncOnlyChangedViews
-from main.management.commands.utils import document_stores_to_process
+from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
+from datawinners.main.management.commands.utils import document_stores_to_process
 import traceback
 
 logger = logging.getLogger(__name__)
