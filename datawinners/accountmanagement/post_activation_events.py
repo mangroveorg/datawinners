@@ -42,7 +42,7 @@ def create_org_and_feed_database(sender, user, request, **kwargs):
     manager = create_org_database(db_name)
     if settings.FEEDS_ENABLED:
         create_feed_database(db_name)
-    profile.reporter_id = make_user_as_a_datasender(manager, org, user.get_full_name(), profile.mobile_phone)
+    profile.reporter_id = make_user_as_a_datasender(manager, org, user.get_full_name(), profile.mobile_phone or '')
     profile.save()
     user.backend ='django.contrib.auth.backends.ModelBackend'
     login(request, user)
