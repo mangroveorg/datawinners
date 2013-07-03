@@ -10,16 +10,19 @@ from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from datawinners.dataextraction.models import DataExtractionResult
 
+
 def get_data_for_subject(dbm, subject_type, subject_short_code, start_date=None, end_date=None):
     start = convert_date_string_to_UTC(start_date)
     end = convert_date_string_to_UTC(end_date)
 
-    start_key = [[subject_type], subject_short_code, start] if start is not None else [[subject_type], subject_short_code]
+    start_key = [[subject_type], subject_short_code, start] if start is not None else [[subject_type],
+                                                                                       subject_short_code]
     end_key = [[subject_type], subject_short_code, end] if end is not None else [[subject_type], subject_short_code, {}]
 
     rows = dbm.load_all_rows_in_view('by_entity_type_and_entity_id', startkey=start_key, endkey=end_key)
 
     return [row["value"] for row in rows]
+
 
 def get_data_for_form(dbm, form_code, start_date=None, end_date=None):
     start = convert_date_string_to_UTC(start_date)
@@ -32,12 +35,14 @@ def get_data_for_form(dbm, form_code, start_date=None, end_date=None):
 
     return [row["value"] for row in rows]
 
+
 def generate_filename(main, start_date=None, end_date=None):
     if start_date is None:
         return main
     elif end_date is None:
         return '%s_%s' % (main, start_date)
     return '%s_%s_%s' % (main, start_date, end_date)
+
 
 def encapsulate_data_for_subject(dbm, subject_type, subject_short_code, start_date=None, end_date=None):
     result = validate_for_subject(dbm, subject_type, subject_short_code, start_date, end_date)
@@ -48,6 +53,7 @@ def encapsulate_data_for_subject(dbm, subject_type, subject_short_code, start_da
         result.message = _("No submission under this subject during this period.")
     return result
 
+
 def encapsulate_data_for_form(dbm, form_code, start_date=None, end_date=None):
     result = validate_for_form(dbm, form_code, start_date, end_date)
     if not result.success:
@@ -56,6 +62,7 @@ def encapsulate_data_for_form(dbm, form_code, start_date=None, end_date=None):
     if not result.submissions:
         result.message = _("No submission under this questionnaire during this period.")
     return result
+
 
 def validate_for_form(dbm, form_code, start_date=None, end_date=None):
     result = DataExtractionResult()
@@ -67,6 +74,7 @@ def validate_for_form(dbm, form_code, start_date=None, end_date=None):
     if not result.success:
         return result
     return result
+
 
 def validate_for_subject(dbm, subject_type, subject_short_code, start_date=None, end_date=None):
     result = DataExtractionResult()
@@ -83,6 +91,7 @@ def validate_for_subject(dbm, subject_type, subject_short_code, start_date=None,
         return result
     return result
 
+
 def validate_date(result, start_date, end_date):
     if not check_start_and_end_date_format(start_date, end_date):
         result.success = False
@@ -94,6 +103,7 @@ def validate_date(result, start_date, end_date):
         return result
     return result
 
+
 def check_start_before_end(start_date, end_date):
     if start_date is None:
         return True
@@ -101,8 +111,10 @@ def check_start_before_end(start_date, end_date):
         return True
     return convert_date_string_to_UTC(start_date) <= convert_date_string_to_UTC(end_date)
 
+
 def check_start_and_end_date_format(start_date, end_date):
     return check_date_format(start_date) & check_date_format(end_date)
+
 
 def check_date_format(date):
     if date is None:
@@ -113,12 +125,14 @@ def check_date_format(date):
         return False
     return True
 
+
 def check_if_subject_exists(dbm, subject_short_code, subject_type):
     try:
         get_by_short_code_include_voided(dbm, subject_short_code, subject_type)
         return True
     except DataObjectNotFound:
         return False
+
 
 def check_if_form_exists(dbm, form_code):
     try:
@@ -127,8 +141,11 @@ def check_if_form_exists(dbm, form_code):
     except FormModelDoesNotExistsException:
         return False
 
-def convert_to_json_response(result):
-    return HttpResponse(jsonpickle.encode(result, unpicklable=False), content_type='application/json; charset=utf-8')
+
+def convert_to_json_response(result, status_code=200):
+    return HttpResponse(jsonpickle.encode(result, unpicklable=False), content_type='application/json; charset=utf-8',
+                        status=status_code)
+
 
 def convert_to_json_file_download_response(result, file_name):
     json_str = jsonpickle.encode(result, unpicklable=False)
@@ -139,6 +156,7 @@ def convert_to_json_file_download_response(result, file_name):
     response['Content-Disposition'] = 'attachment; filename=%s.json' % file_name
     json_file.close()
     return response
+
 
 def convert_date_string_to_UTC(date_string):
     if date_string is None:
