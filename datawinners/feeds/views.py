@@ -3,9 +3,12 @@ import logging
 import urllib2
 from django.conf import settings
 from django.http import HttpResponse
+from datawinners.main.database import get_db_manager
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.authorization import httpbasic, is_not_datasender
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException
+from mangrove.form_model.form_model import get_form_model_by_code
 
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
 
@@ -16,8 +19,6 @@ def feed_entries(request, form_code):
     try:
         if not settings.FEEDS_ENABLED:
             return HttpResponse(404)
-        if _invalid_form_code(form_code):
-            return convert_to_json_response({"ERROR_CODE": 101, "ERROR_MESSAGE": 'Invalid form code provided'}, 400)
         if invalid_date(request.GET.get('start_date')):
             return convert_to_json_response({"ERROR_CODE": 102, "ERROR_MESSAGE": 'Invalid Start Date provided'}, 400)
         if invalid_date(request.GET.get('end_date')):
@@ -25,6 +26,8 @@ def feed_entries(request, form_code):
         if lesser_end_date(request.GET.get('end_date'), request.GET.get('start_date')):
             return convert_to_json_response(
                 {"ERROR_CODE": 103, "ERROR_MESSAGE": 'End Date provided is less than Start Date'}, 400)
+        if _invalid_form_code(request, form_code):
+            return convert_to_json_response({"ERROR_CODE": 101, "ERROR_MESSAGE": 'Invalid form code provided'}, 400)
 
         feed_dbm = get_feeds_database(request.user)
         start_date = _parse_date(request.GET['start_date'])
@@ -43,11 +46,13 @@ def _is_empty_string(value):
     return value is None or value.strip() == ''
 
 
-def _invalid_form_code(form_code):
-    if _is_empty_string(form_code):
+def _invalid_form_code(request, form_code):
+    try:
+        dbm = get_db_manager(request.user)
+        get_form_model_by_code(dbm, form_code)
+        return False
+    except FormModelDoesNotExistsException as e:
         return True
-    return False
-
 
 def _parse_date(date):
     date_string = urllib2.unquote(date.strip())

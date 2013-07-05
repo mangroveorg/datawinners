@@ -3,6 +3,7 @@ import urllib2
 from django.http import HttpRequest
 import jsonpickle
 from mock import Mock, patch, PropertyMock
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.datastore.database import DatabaseManager, View
 
 http_basic_patch = patch('datawinners.feeds.authorization.httpbasic', lambda x: x)
@@ -14,20 +15,52 @@ from datawinners.feeds.views import feed_entries, _parse_date
 
 class TestFeedView(TestCase):
     def test_error_when_form_code_is_not_present(self):
-        request = Mock(spec=HttpRequest)
-        response = feed_entries(request, None)
-        self.assertEqual(400, response.status_code)
-        response_content = jsonpickle.decode(response.content)
-        self.assertEquals(response_content.get('ERROR_CODE'), 101)
-        self.assertEquals(response_content.get('ERROR_MESSAGE'), 'Invalid form code provided')
+        request = HttpRequest()
+        request.GET['start_date'] = urllib2.quote("21-12-2001 12:12:57".encode("utf-8"))
+        request.GET['end_date'] = urllib2.quote("21-12-2002 12:12:57".encode("utf-8"))
+        request.user = 'someuser'
+
+        with patch('datawinners.feeds.views.get_form_model_by_code') as get_form_model_by_code:
+            with patch('datawinners.feeds.views.get_db_manager') as get_db_manager:
+                get_db_manager.return_value = Mock(spec=DatabaseManager)
+                get_form_model_by_code.side_effect = FormModelDoesNotExistsException(None)
+                response = feed_entries(request, None)
+                self.assertEqual(400, response.status_code)
+                response_content = jsonpickle.decode(response.content)
+                self.assertEquals(response_content.get('ERROR_CODE'), 101)
+                self.assertEquals(response_content.get('ERROR_MESSAGE'), 'Invalid form code provided')
 
     def test_error_when_form_code_is_empty(self):
-        request = Mock(spec=HttpRequest)
-        response = feed_entries(request, "     ")
-        self.assertEqual(400, response.status_code)
-        response_content = jsonpickle.decode(response.content)
-        self.assertEquals(response_content.get('ERROR_CODE'), 101)
-        self.assertEquals(response_content.get('ERROR_MESSAGE'), 'Invalid form code provided')
+        request = HttpRequest()
+        request.GET['start_date'] = urllib2.quote("21-12-2001 12:12:57".encode("utf-8"))
+        request.GET['end_date'] = urllib2.quote("21-12-2002 12:12:57".encode("utf-8"))
+        request.user = 'someuser'
+        with patch('datawinners.feeds.views.get_form_model_by_code') as get_form_model_by_code:
+            with patch('datawinners.feeds.views.get_db_manager') as get_db_manager:
+                get_db_manager.return_value = Mock(spec=DatabaseManager)
+                get_form_model_by_code.side_effect = FormModelDoesNotExistsException('  ')
+                response = feed_entries(request, "     ")
+                self.assertEqual(400, response.status_code)
+                response_content = jsonpickle.decode(response.content)
+                self.assertEquals(response_content.get('ERROR_CODE'), 101)
+                self.assertEquals(response_content.get('ERROR_MESSAGE'), 'Invalid form code provided')
+
+
+    def test_error_when_form_code_invalid(self):
+        request = HttpRequest()
+        request.GET['start_date'] = urllib2.quote("21-12-2001 12:12:57".encode("utf-8"))
+        request.GET['end_date'] = urllib2.quote("21-12-2002 12:12:57".encode("utf-8"))
+        request.user = 'someuser'
+        with patch('datawinners.feeds.views.get_form_model_by_code') as get_form_model_by_code:
+            with patch('datawinners.feeds.views.get_db_manager') as get_db_manager:
+                get_db_manager.return_value = Mock(spec=DatabaseManager)
+                get_form_model_by_code.side_effect = FormModelDoesNotExistsException('non-existent-form-code')
+                response = feed_entries(request, "non-existent-form-code")
+                self.assertEqual(400, response.status_code)
+                response_content = jsonpickle.decode(response.content)
+                self.assertEquals(response_content.get('ERROR_CODE'), 101)
+                self.assertEquals(response_content.get('ERROR_MESSAGE'), 'Invalid form code provided')
+
 
     def test_error_when_start_date_not_provided(self):
         request = HttpRequest()
@@ -108,18 +141,22 @@ class TestFeedView(TestCase):
         request.GET['end_date'] = urllib2.quote("31-12-2001 12:12:56".encode("utf-8"))
         request.user = 'someuser'
         with patch('datawinners.feeds.views.get_feeds_database') as get_feeds_database:
-            dbm = Mock(spec=DatabaseManager)
-            get_feeds_database.return_value = dbm
-            view = Mock(spec=View)
-            type(dbm).view = PropertyMock(return_value=view)
-            mock_view = Mock(spec=View)
-            type(view).questionnaire_feed = PropertyMock(return_value=mock_view)
-            mock_view.return_value = []
-            feed_entries(request, 'cli001')
+            with patch('datawinners.feeds.views.get_form_model_by_code') as get_form_model_by_code:
+                with patch('datawinners.feeds.views.get_db_manager') as get_db_manager:
+                    get_db_manager.return_value = Mock(spec=DatabaseManager)
+                    get_form_model_by_code.return_value = []
+                    dbm = Mock(spec=DatabaseManager)
+                    get_feeds_database.return_value = dbm
+                    view = Mock(spec=View)
+                    type(dbm).view = PropertyMock(return_value=view)
+                    mock_view = Mock(spec=View)
+                    type(view).questionnaire_feed = PropertyMock(return_value=mock_view)
+                    mock_view.return_value = []
+                    feed_entries(request, 'cli001')
 
-            mock_view.assert_called_once_with(startkey=['cli001', _parse_date('21-12-2001 12:12:57')],
-                                              endkey=['cli001', _parse_date('31-12-2001 12:12:56')],
-                                              limit=10000)
+                    mock_view.assert_called_once_with(startkey=['cli001', _parse_date('21-12-2001 12:12:57')],
+                                                      endkey=['cli001', _parse_date('31-12-2001 12:12:56')],
+                                                      limit=10000)
 
 
 http_basic_patch.stop()
