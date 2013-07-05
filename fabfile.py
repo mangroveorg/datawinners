@@ -116,13 +116,13 @@ def set_mangrove_commit_sha(branch, mangrove_build_number):
     run("echo MANGROVE_COMMIT_SHA=$MANGROVE_COMMIT_SHA")
 
 
-def set_datawinner_commit_sha(datawinner_build_number):
+def set_datawinner_commit_sha(branch,datawinner_build_number):
     if datawinner_build_number == 'lastSuccessfulBuild':
-        datawinner_build_number = run("curl http://178.79.163.33:8080/job/Datawinners/lastSuccessfulBuild/buildNumber")
+        datawinner_build_number = run("curl http://178.79.163.33:8080/job/Datawinners-%s/lastSuccessfulBuild/buildNumber")
     run("echo 'Checking the datawinner commit sha for build number %s'" % datawinner_build_number)
     run(
-        "export DATAWINNER_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Datawinners/%s/artifact/last_successful_commit_sha`" % (
-            datawinner_build_number))
+        "export DATAWINNER_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Datawinners-%s/%s/artifact/last_successful_commit_sha`" % (
+            branch, datawinner_build_number))
     run("echo DATAWINNER_COMMIT_SHA=$DATAWINNER_COMMIT_SHA")
 
 
@@ -158,7 +158,7 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
        virtual_env : path to your virtual_env folder
     """
     set_mangrove_commit_sha(branch, mangrove_build_number)
-    set_datawinner_commit_sha(datawinner_build_number)
+    set_datawinner_commit_sha(branch, datawinner_build_number)
 
     mangrove_code_dir = home_dir + '/mangrove'
     datawinners_code_dir = home_dir + '/datawinners'
