@@ -13,8 +13,8 @@ from migration.couch.utils import init_migrations, should_not_skip, mark_start_o
 
 NUMBER_OF_THREADS = 5
 
-init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_1.csv')
-logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_1.log', level=logging.DEBUG,
+init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_2.csv')
+logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_2.log', level=logging.DEBUG,
                     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
 
 
