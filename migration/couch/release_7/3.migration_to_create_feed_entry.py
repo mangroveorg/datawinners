@@ -8,8 +8,8 @@ from datawinners.feeds.migrate import FeedBuilder
 from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, all_db_names, DWThreadPool
 
 NUMBER_OF_THREADS = 12
-init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_2.csv')
-logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_2.log', level=logging.DEBUG,
+init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_3.csv')
+logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_3.log', level=logging.DEBUG,
                     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
 
 def create_feed_docs(db_name):

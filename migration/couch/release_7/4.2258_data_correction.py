@@ -1,18 +1,15 @@
 import logging
 import traceback
 import sys
-import requests
 from datawinners.main.database import get_db_manager
 
 from datawinners.project.models import Project
-from mangrove.datastore.database import DatabaseManager
 from migration.couch.utils import DWThreadPool, init_migrations, mark_start_of_migration, should_not_skip, all_db_names
-from datawinners import settings
 
 NUMBER_OF_THREADS = 12
 
-init_migrations('/var/log/datawinners/3.2258_data_correction_7_0_3.csv')
-logging.basicConfig(filename='/var/log/datawinners/3.2258_data_correction_7_0_3.log', level=logging.DEBUG,
+init_migrations('/var/log/datawinners/3.2258_data_correction_7_0_4.csv')
+logging.basicConfig(filename='/var/log/datawinners/3.2258_data_correction_7_0_4.log', level=logging.DEBUG,
                     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
 
 def is_void(d, ds):
