@@ -1,3 +1,4 @@
+import logging
 import sys
 
 if __name__ == "__main__" and __package__ is None:
@@ -5,26 +6,18 @@ if __name__ == "__main__" and __package__ is None:
 
 from datetime import datetime
 import traceback
-import urllib2
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.submission import Submission, SubmissionLogDocument
-from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration
+from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, all_db_names
 from mangrove.datastore.entity import  get_by_short_code_include_voided
 
-SERVER = 'http://localhost:5984'
-log_file = open('/var/log/datawinners/migration_release_7_0_5.log', 'a')
+logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_5.log', level=logging.DEBUG,
+                    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
+
 
 init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_5.csv')
-
-def all_db_names(server):
-    all_dbs = urllib2.urlopen(server + "/_all_dbs").read()
-    dbs = eval(all_dbs)
-    return filter(lambda x: x.startswith('hni_'), dbs)
-
-
-db_names = all_db_names(SERVER)
 
 # excluding the following
 # doc.form_code != 'reg' - to ignore the registration form model
@@ -101,7 +94,7 @@ def migrate_entity(manager, form_model, datarecord_doc, data_to_restore):
         cleaned_data, errors = form_model.validate_submission(values=submission_log.values)
 
         if len(errors):
-            log_statement('Error on sumbission: %s \n' % submission_log.id)
+            logging.info('Error on sumbission: %s \n' % submission_log.id)
             return
 
         data = [(form_model._get_field_by_code(code).name, cleaned_data.get(code),
@@ -114,7 +107,7 @@ def migrate_entity(manager, form_model, datarecord_doc, data_to_restore):
 
 
 def migrate_db(database):
-    log_statement(
+    logging.info(
         '\nStart migration on database : %s \n' % database)
     try:
         manager = get_db_manager(database)
@@ -128,7 +121,7 @@ def migrate_db(database):
                 continue
 
             processed.append(form_model.form_code)
-            log_statement(
+            logging.info(
                 "Process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
             data_to_restore, current_data_length = renumber_fields_name(form_model)
             datarecord_docs = manager.database.query(map_datarecord_by_form_code,
@@ -138,35 +131,30 @@ def migrate_db(database):
                 migrate_entity(manager, form_model, datarecord_doc, data_to_restore)
 
             form_model.save()
-            log_statement(
+            logging.info(
                 "End process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
-        log_statement(
+        logging.info(
             '\nEnd migration on database : %s\n' % database)
     except Exception as e:
-        log_statement('error:%s:%s\n' % (e.message, database))
-        traceback.print_exc(file=log_file)
+        logging.info('error:%s:%s\n' % (e.message, database))
+        logging.exception(e.message)
 
 
 def migrate_story_2099(all_db_names):
     global skip_dbs
     print "start ...."
-    log_statement(
+    logging.info(
         '\nStart ===================================================================================================\n')
     for database in all_db_names:
         try:
             if should_not_skip(database):
                 migrate_db(database)
         except Exception as e:
-            log_statement(":Error" + e.message)
-            traceback.print_exc(file=log_file)
-    log_statement(
+            logging.info(":Error" + e.message)
+            logging.exception(e.message)
+    logging.info(
         '\n End ====================================================================================================\n')
     print "Completed migration"
 
 
-def log_statement(statement):
-    print '%s : %s\n' % (datetime.utcnow(), statement)
-    log_file.writelines('%s : %s\n' % (datetime.utcnow(), statement))
-
-
-migrate_story_2099(db_names)
+migrate_story_2099(all_db_names())
