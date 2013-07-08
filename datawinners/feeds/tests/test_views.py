@@ -21,7 +21,7 @@ class TestFeedView(TestCase):
         request.user = 'someuser'
 
         with patch('datawinners.feeds.views.get_form_model_by_code') as get_form_model_by_code:
-            with patch('datawinners.feeds.views.get_db_manager') as get_db_manager:
+            with patch('datawinners.feeds.views.get_database_manager') as get_db_manager:
                 get_db_manager.return_value = Mock(spec=DatabaseManager)
                 get_form_model_by_code.side_effect = FormModelDoesNotExistsException(None)
                 response = feed_entries(request, None)
@@ -36,7 +36,7 @@ class TestFeedView(TestCase):
         request.GET['end_date'] = urllib2.quote("21-12-2002 12:12:57".encode("utf-8"))
         request.user = 'someuser'
         with patch('datawinners.feeds.views.get_form_model_by_code') as get_form_model_by_code:
-            with patch('datawinners.feeds.views.get_db_manager') as get_db_manager:
+            with patch('datawinners.feeds.views.get_database_manager') as get_db_manager:
                 get_db_manager.return_value = Mock(spec=DatabaseManager)
                 get_form_model_by_code.side_effect = FormModelDoesNotExistsException('  ')
                 response = feed_entries(request, "     ")
@@ -52,7 +52,7 @@ class TestFeedView(TestCase):
         request.GET['end_date'] = urllib2.quote("21-12-2002 12:12:57".encode("utf-8"))
         request.user = 'someuser'
         with patch('datawinners.feeds.views.get_form_model_by_code') as get_form_model_by_code:
-            with patch('datawinners.feeds.views.get_db_manager') as get_db_manager:
+            with patch('datawinners.feeds.views.get_database_manager') as get_db_manager:
                 get_db_manager.return_value = Mock(spec=DatabaseManager)
                 get_form_model_by_code.side_effect = FormModelDoesNotExistsException('non-existent-form-code')
                 response = feed_entries(request, "non-existent-form-code")
@@ -142,7 +142,7 @@ class TestFeedView(TestCase):
         request.user = 'someuser'
         with patch('datawinners.feeds.views.get_feeds_database') as get_feeds_database:
             with patch('datawinners.feeds.views.get_form_model_by_code') as get_form_model_by_code:
-                with patch('datawinners.feeds.views.get_db_manager') as get_db_manager:
+                with patch('datawinners.feeds.views.get_database_manager') as get_db_manager:
                     get_db_manager.return_value = Mock(spec=DatabaseManager)
                     get_form_model_by_code.return_value = []
                     dbm = Mock(spec=DatabaseManager)
