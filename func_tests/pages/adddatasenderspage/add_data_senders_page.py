@@ -70,6 +70,7 @@ class AddDataSenderPage(Page):
 
         self.driver.find(OPEN_IMPORT_DIALOG_LINK).click()
         from pages.lightbox.import_datasender_light_box_page import ImportDatasenderLightBox
+
         return ImportDatasenderLightBox(self.driver)
 
 
