@@ -1,12 +1,14 @@
 import sys
+
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0, ".")
+
 from datawinners.accountmanagement.models import OrganizationSetting, NGOUserProfile
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.contract.survey_response import SurveyResponse
 
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
 
 import logging
 from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, DWThreadPool, all_db_names

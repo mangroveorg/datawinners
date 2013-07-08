@@ -4,8 +4,6 @@ import sys
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0,".")
 
-from datetime import datetime
-import traceback
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
