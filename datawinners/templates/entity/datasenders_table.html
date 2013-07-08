@@ -19,9 +19,9 @@
             <tr>
                 <td><input type="checkbox" id="{{ row.short_code }}" value="{{ row.short_code }}" {% if row.is_user %}class="is_user"{% endif %}/></td>
                 {% for col in row.cols %}
-                    <td>{{ col }}</td>
+                    <td class="{{ col }}">{{ col }}</td>
                 {% endfor %}
-                <td>{{ row.email }}</td>
+                <td class="email">{{ row.email }}</td>
                 <td class="device-icon"><img src="/media/images/right_icon.png" alt="Yes"></td>
                 <td class="device-icon">
                     {% if "Web" in row.devices %}
@@ -37,7 +37,7 @@
                         <span>--</span>
                     {% endif %}
                 </td>
-                <td>{{ row.projects }}</td>
+                <td class="project">{{ row.projects }}</td>
             </tr>
         {% endfor %}
         </tbody>
