@@ -1,3 +1,4 @@
+import abc
 from django.forms import Form, CharField, HiddenInput, RegexField
 from django.utils.translation import ugettext_lazy as _
 from datawinners.entity.helper import get_country_appended_location
@@ -111,7 +112,6 @@ class SubjectRegistrationForm(WebForm):
         regex_field.widget.attrs['class'] = css_class(field)
         return regex_field
 
-
     def clean(self):
         location_field_code = get_location_field_code(self.form_model)
 
@@ -135,3 +135,7 @@ class SurveyResponseForm(WebForm):
                 self.fields[field.code] = subject_question_creator.create(field)
                 self.fields['entity_question_code'] = CharField(required=False, widget=HiddenInput,
                                                                 label=field.code)
+
+    def clean(self):
+        self.cleaned_data.pop('entity_question_code', '')
+        return self.cleaned_data
