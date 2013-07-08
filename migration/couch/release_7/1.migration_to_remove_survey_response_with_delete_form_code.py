@@ -1,3 +1,8 @@
+import sys
+
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0, ".")
+
 import logging
 from mangrove.datastore.documents import SurveyResponseDocument
 from datawinners.main.database import get_db_manager

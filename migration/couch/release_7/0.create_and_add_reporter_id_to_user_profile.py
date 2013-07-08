@@ -1,7 +1,10 @@
 import logging
 import sys
+
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0, ".")
+
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, OrganizationSetting
-from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.datadict import get_or_create_data_dict
 from mangrove.datastore.entity import create_entity
@@ -12,8 +15,6 @@ from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_F
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from migration.couch.utils import init_migrations
 
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
 
 init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_0.csv')
 logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_0.log', level=logging.DEBUG,
@@ -33,12 +34,12 @@ def _create_couchdb_datasender(manager, organization, current_user_name, mobile_
     return reporter_short_code
 
 
-
 def create_reporter_id_for_profile(dbm, org, profile):
     phone = profile.mobile_phone if profile.mobile_phone and profile.mobile_phone != "Not Assigned" else None
     if profile.reporter_id is None and entity_type_already_defined(dbm, REPORTER_ENTITY_TYPE):
         profile.reporter_id = _create_couchdb_datasender(dbm, org, profile.user.get_full_name(), phone)
         profile.save()
+
 
 def process_all():
     for profile in NGOUserProfile.objects.filter(reporter_id=None):
