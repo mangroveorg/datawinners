@@ -3,7 +3,7 @@ import logging
 import urllib2
 from django.conf import settings
 from django.http import HttpResponse
-from datawinners.main.database import get_db_manager
+from datawinners.main.database import get_db_manager, get_database_manager
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.authorization import httpbasic, is_not_datasender
@@ -48,7 +48,7 @@ def _is_empty_string(value):
 
 def _invalid_form_code(request, form_code):
     try:
-        dbm = get_db_manager(request.user)
+        dbm = get_database_manager(request.user)
         get_form_model_by_code(dbm, form_code)
         return False
     except FormModelDoesNotExistsException as e:
