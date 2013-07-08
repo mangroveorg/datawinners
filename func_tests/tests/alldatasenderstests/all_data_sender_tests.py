@@ -1,10 +1,14 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+import time
+
 from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
+
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
+from pages.alldatasenderspage.all_data_senders_locator import WEB_USER_BLOCK_EMAIL, GIVE_ACCESS_LINK
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
@@ -13,8 +17,8 @@ from tests.alldatasenderstests.all_data_sender_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.projectdatasenderstests.registered_datasenders_data import IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR
-import time
 from pages.warningdialog.warning_dialog_page import WarningDialog
+
 
 @attr('suit_1')
 class TestAllDataSender(unittest.TestCase):
@@ -70,7 +74,7 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page = self.page
         self.associate(all_data_sender_page)
         self.assertEqual(all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))),
-                                    fetch_(PROJECT_NAME, from_(ASSOCIATE_DATA_SENDER)))
+                         fetch_(PROJECT_NAME, from_(ASSOCIATE_DATA_SENDER)))
 
 
     @attr('functional_test', 'smoke')
@@ -87,7 +91,8 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(DISSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
         all_data_sender_page.dissociate_data_sender()
         all_data_sender_page.click_confirm()
-        self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(DISSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
+        self.assertEqual(all_data_sender_page.get_error_message(),
+                         fetch_(ERROR_MSG, from_(DISSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
 
     @attr('functional_test')
     def test_associate_ds_without_selecting_project(self):
@@ -95,7 +100,8 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
         all_data_sender_page.associate_data_sender()
         all_data_sender_page.click_confirm()
-        self.assertEqual(all_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
+        self.assertEqual(all_data_sender_page.get_error_message(),
+                         fetch_(ERROR_MSG, from_(ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
 
     @SkipTest #TODO only failing on ci. need to investigate.
     @attr('functional_test')
@@ -237,5 +243,30 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.select_a_data_sender_by_id("rep4")
         self.assertTrue(all_data_sender_page.is_checkall_checked())
 
+    def give_web_and_smartphone_access(self, all_data_senders_page):
+        all_data_senders_page.give_web_access()
+        email_text_box = self.driver.find_text_box(WEB_USER_BLOCK_EMAIL)
+        email_text_box.enter_text(DATA_SENDER_EMAIL_ID)
+        self.driver.find(GIVE_ACCESS_LINK).click()
+
+    @attr("functional_test")
+    def test_should_able_to_give_web_and_smartphone_access(self):
+        add_data_sender_page = self.page.navigate_to_add_a_data_sender_page()
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATASENDER_WITHOUT_WEB_ACCESS)
+
+        message = add_data_sender_page.get_success_message()
+        self.assertRegexpMatches(message, fetch_(SUCCESS_MSG, from_(VALID_DATASENDER_WITHOUT_WEB_ACCESS)))
+        data_sender_id = _parse(message)
+
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        self.page.select_a_data_sender_by_id(data_sender_id)
+        self.give_web_and_smartphone_access(self.page)
+        self.driver.wait_for_page_with_title(10, 'All Data Senders')
+        self.driver.refresh()
+        self.assertTrue(self.page.check_sms_device_by_id(data_sender_id))
+        self.assertTrue(self.page.check_web_device_by_id(data_sender_id))
+        self.assertTrue(self.page.check_smart_phone_device_by_id(data_sender_id))
 
 
+def _parse(message):
+    return message.split(' ')[-1]

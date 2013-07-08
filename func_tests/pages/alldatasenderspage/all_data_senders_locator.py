@@ -26,6 +26,8 @@ ACTION_DROP_DOWN = by_css(".action")
 PROJECT_NAME_LABEL_XPATH = "//tr/td/input[@id='%s']/../../td[11]"
 UID_LABEL_BY_MOBILE_XPATH = "//tr/td[7][text()='%s']/../td[2]"
 DATA_SENDER_DEVICES = "//tr/td/input[@id='%s']/../../td[%d]/img"
+WEB_USER_BLOCK_EMAIL = by_css("div#web_user_block input.ds-email")
+GIVE_ACCESS_LINK = by_id('web_user_button')
 
 CANCEL_LINK = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[@id='cancel_link']")
 CONFIRM_BUTTON = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[text()='Confirm']")

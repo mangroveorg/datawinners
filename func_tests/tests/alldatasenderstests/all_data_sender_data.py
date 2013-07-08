@@ -2,7 +2,17 @@
 
 
 ##Variables
+import random
 from datawinners.messageprovider.tests.test_message_handler import THANKS
+
+
+def random_string(length=6):
+    return ''.join(random.sample('abcdefghijklmnopqrs', length))
+
+
+def random_number(length=6):
+    return ''.join(random.sample('1234567890', length))
+
 
 NAME = "name"
 MOBILE_NUMBER = "mobile_number"
@@ -13,6 +23,7 @@ ERROR_MSG = "message"
 PROJECT_NAME = "project_name"
 ASSOCIATE = "associate"
 DISSOCIATE = "disassociate"
+WEB_ACCESS = 'makewebuser'
 UID = "uid"
 DELETE = "delete"
 EDIT = "edit"
@@ -34,12 +45,12 @@ ASSOCIATE_DATA_SENDER = {PROJECT_NAME: "clinic test project",
                          MOBILE_NUMBER: "1234567890"}
 
 DISSOCIATE_DATA_SENDER = {PROJECT_NAME: "clinic test project",
-                         UID: "rep1",
-                         MOBILE_NUMBER: "1234567890"}
+                          UID: "rep1",
+                          MOBILE_NUMBER: "1234567890"}
 
 DELETE_DATA_SENDER = {PROJECT_NAME: "clinic test project",
-                    UID: u"rep8",
-                    MOBILE_NUMBER: "919049008976"}
+                      UID: u"rep8",
+                      MOBILE_NUMBER: "919049008976"}
 
 DISSOCIATE_DS_WITHOUT_SELECTING_PROJECT = {UID: "rep1", ERROR_MSG: "Please select atleast 1 Project"}
 
@@ -52,12 +63,9 @@ ASSOCIATE_DS_WITHOUT_SELECTING_DS = {PROJECT_NAME: "clinic test project", ERROR_
 DELETE_DS_WITHOUT_SELECTING_DS = {PROJECT_NAME: "clinic test project", ERROR_MSG: ERROR_MSG_WITHOUT_SELECTING_DS}
 
 VALID_SMS = {SENDER: "919049008976",
-                RECEIVER: '919880734937',
-                SMS: "cli001 .EID cid003 .NA Mr. Pitt .FA 77 .RD 12.03.2007 .BG b .SY ade .GPS 27.178057 -78.007789 .RM ac",
-                SUCCESS_MESSAGE: THANKS }#+ u" EID: cid003 NA: Mr. Pitt FA: 77 RD: 12.03.2007 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
-
-
-
+             RECEIVER: '919880734937',
+             SMS: "cli001 .EID cid003 .NA Mr. Pitt .FA 77 .RD 12.03.2007 .BG b .SY ade .GPS 27.178057 -78.007789 .RM ac",
+             SUCCESS_MESSAGE: THANKS}#+ u" EID: cid003 NA: Mr. Pitt FA: 77 RD: 12.03.2007 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057, -78.007789 RM: Hivid,Vidéx EC"}
 
 VALID_DATA = {NAME: "ReRegistered",
               MOBILE_NUMBER: "919049008976",
@@ -65,13 +73,20 @@ VALID_DATA = {NAME: "ReRegistered",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 
+VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "Kimi",
+                                       MOBILE_NUMBER: random_number(6),
+                                       COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                                       GPS: "-21.7622088847 48.0690991394",
+                                       SUCCESS_MSG: "Registration successful. ID is: rep"}
+
 INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
-              MOBILE_NUMBER: "abcdefgh",
-              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-              GPS: "-21.7622088847 48.0690991394"}
+                              MOBILE_NUMBER: "abcdefgh",
+                              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                              GPS: "-21.7622088847 48.0690991394"}
 
 DATA_SENDER_ID_WITH_WEB_ACCESS = "rep3"
 DATA_SENDER_ID_WITHOUT_WEB_ACCESS = "rep5"
+DATA_SENDER_EMAIL_ID = random_string(3) + '@' + random_string(3) + '.com'
 
 ALL_DS_TO_DELETE_ARE_USER_MSG = u'You cannot delete the following Data Senders as they are DataWinners users:'
 NOTE_FOR_DELETE_SOME_DS_USER = "Note, the following Data Senders will not be deleted as they are DataWinners users"

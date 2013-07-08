@@ -71,18 +71,25 @@ class AllDataSendersPage(Page):
 
 
     def associate_data_sender(self):
-            """
-            Function to associate data sender with project
-             """
-            option_to_select = ASSOCIATE
-            self.perform_datasender_action(option_to_select)
+        """
+        Function to associate data sender with project
+         """
+        option_to_select = ASSOCIATE
+        self.perform_datasender_action(option_to_select)
+
+    def give_web_access(self):
+        """
+        Function to give data sender web and smartphone access
+         """
+        option_to_select = WEB_ACCESS
+        self.perform_datasender_action(option_to_select)
 
     def select_edit_action(self):
-            """
-            Function to associate data sender with project
-             """
-            option_to_select = EDIT
-            self.perform_datasender_action(option_to_select)
+        """
+        Function to associate data sender with project
+         """
+        option_to_select = EDIT
+        self.perform_datasender_action(option_to_select)
 
     def perform_datasender_action(self, action_to_be_performed):
         self.driver.find(ACTION_DROP_DOWN).click()
@@ -149,6 +156,7 @@ class AllDataSendersPage(Page):
     def open_import_lightbox(self):
         from pages.adddatasenderspage.add_data_senders_locator import OPEN_IMPORT_DIALOG_LINK
         from pages.lightbox.import_datasender_light_box_page import ImportDatasenderLightBox
+
         self.driver.find(OPEN_IMPORT_DIALOG_LINK).click()
         return ImportDatasenderLightBox(self.driver)
 
@@ -165,7 +173,8 @@ class AllDataSendersPage(Page):
         return len(self.driver.find(ALL_DS_ROWS).find_elements(by="tag name", value="tr"))
 
     def get_checked_datasenders_count(self):
-        return len(self.driver.find(ALL_DS_ROWS).find_elements(by="css selector", value="tr td:first-child input[checked]"))
+        return len(
+            self.driver.find(ALL_DS_ROWS).find_elements(by="css selector", value="tr td:first-child input[checked]"))
 
     def click_action_button(self):
         self.driver.find(ACTION_DROP_DOWN).click()
