@@ -221,3 +221,8 @@ ul.organization li:last-child{
 #activate_datasender_form_en > ul > li:last-child{
     padding-left: 273px;
 }
+#activate_datasender_form_en, #activate_datasender_form_fr{
+    ul > li > label{
+        text-align: right;
+    }
+}
