@@ -36,10 +36,10 @@ def feed_entries(request, form_code):
             return HttpResponse(404)
         if invalid_date(request.GET.get('start_date')):
             return convert_to_json_response(
-                {"ERROR_CODE": 102, "ERROR_MESSAGE": 'Invalid Start Date provided expected ' + DATE_FORMAT}, 400)
+                {"ERROR_CODE": 102, "ERROR_MESSAGE": 'Invalid Start Date provided'}, 400)
         if invalid_date(request.GET.get('end_date')):
             return convert_to_json_response(
-                {"ERROR_CODE": 102, "ERROR_MESSAGE": 'Invalid End Date provided expected ' + DATE_FORMAT}, 400)
+                {"ERROR_CODE": 102, "ERROR_MESSAGE": 'Invalid End Date provided'}, 400)
         if lesser_end_date(request.GET.get('end_date'), request.GET.get('start_date')):
             return convert_to_json_response(
                 {"ERROR_CODE": 103, "ERROR_MESSAGE": 'End Date provided is less than Start Date'}, 400)
