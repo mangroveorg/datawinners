@@ -5,6 +5,7 @@ import logging
 from datawinners.scheduler.vumiclient import VumiClient, Connection
 from datawinners.submission.organization_finder import OrganizationFinder
 from mangrove.utils.types import is_not_empty
+from datawinners.utils import strip_accents
 import socket
 
 logger = logging.getLogger("datawinners.reminders")
@@ -13,6 +14,7 @@ logger = logging.getLogger("datawinners.reminders")
 class SMSClient(object):
 
     def send_sms(self,from_tel,to_tel, message):
+        message = strip_accents(message)
         if is_not_empty(from_tel):
             organization_setting = OrganizationFinder().find_organization_setting(from_tel)
             smsc = None

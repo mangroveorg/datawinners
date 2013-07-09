@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _, activate, get_language
 from django.contrib.auth.forms import PasswordResetForm
 from datawinners.main.database import get_db_manager
 from mangrove.form_model.field import ExcelDate
+import unicodedata
 
 
 VAR = "HNI"
@@ -225,4 +226,7 @@ def get_text_language_by_instruction(instruction):
     if re.match(r'^La r.ponse doit.+$', instruction):
         return "fr"
     return "en"
-    
+
+def strip_accents(s):
+   return ''.join(c for c in unicodedata.normalize('NFD', s)
+                  if unicodedata.category(c) != 'Mn')
