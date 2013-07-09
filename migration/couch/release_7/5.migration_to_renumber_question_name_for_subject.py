@@ -8,17 +8,9 @@ from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.submission import Submission, SubmissionLogDocument
-from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, all_db_names
+from migration.couch.utils import mark_start_of_migration, all_db_names, migrate
 from mangrove.datastore.entity import get_by_short_code_include_voided
 
-logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_5.log', level=logging.DEBUG,
-                    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
-
-init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_5.csv')
-
-# excluding the following
-# doc.form_code != 'reg' - to ignore the registration form model
-# doc.is_registration_model - to ignore programmatic questionnaire
 map_form_model_for_subject_questionnaires = """
 function(doc) {
     if (doc.document_type == 'FormModel' && doc.form_code != 'reg'
@@ -91,7 +83,7 @@ def migrate_entity(manager, form_model, datarecord_doc, data_to_restore):
         cleaned_data, errors = form_model.validate_submission(values=submission_log.values)
 
         if len(errors):
-            logging.info('Error on sumbission: %s \n' % submission_log.id)
+            logging.info('Error on submission: %s' % submission_log.id)
             return
 
         data = [(form_model._get_field_by_code(code).name, cleaned_data.get(code),
@@ -102,11 +94,10 @@ def migrate_entity(manager, form_model, datarecord_doc, data_to_restore):
         entity.save()
 
 
-def migrate_db(db_name):
+def migrate_story_2099(db_name):
     logger = logging.getLogger(db_name)
 
-    logger.info(
-        '\nStart migration on database : %s \n' % db_name)
+    logger.info('Start migration on database')
     try:
         manager = get_db_manager(db_name)
         subject_form_model_docs = manager.database.query(map_form_model_for_subject_questionnaires)
@@ -119,8 +110,7 @@ def migrate_db(db_name):
                 continue
 
             processed.append(form_model.form_code)
-            logger.info(
-                "Process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
+            logger.info("Process on :form_model: %s, form code : %s" % (form_model.id, form_model.form_code))
             data_to_restore, current_data_length = renumber_fields_name(form_model)
             datarecord_docs = manager.database.query(map_datarecord_by_form_code,
                                                      key=[form_model.form_code, current_data_length])
@@ -129,25 +119,10 @@ def migrate_db(db_name):
                 migrate_entity(manager, form_model, datarecord_doc, data_to_restore)
 
             form_model.save()
-            logger.info(
-                "End process on :form_model document_id : %s , form code : %s" % (form_model.id, form_model.form_code))
-        logger.info(
-            '\nEnd migration on database : %s\n' % db_name)
+            logger.info("End process on :form_model: %s , form code : %s" % (form_model.id, form_model.form_code))
+        logger.info('End migration on database')
     except Exception as e:
         logger.exception(e.message)
 
 
-def migrate_story_2099(all_db_names):
-    global skip_dbs
-    print "starting migration"
-    for database in all_db_names:
-        try:
-            if should_not_skip(database):
-                migrate_db(database)
-        except Exception as e:
-            logging.info(":Error" + e.message)
-            logging.exception(e.message)
-    print "Completed migration"
-
-
-migrate_story_2099(all_db_names())
+migrate(all_db_names(), migrate_story_2099, version=(7, 0, 5))
