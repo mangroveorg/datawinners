@@ -12,6 +12,7 @@ init_migrations('/var/log/datawinners/dbs_migrated_release_7_0_3.csv')
 logging.basicConfig(filename='/var/log/datawinners/migration_release_7_0_3.log', level=logging.DEBUG,
                     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
 
+
 def create_feed_docs(db_name):
     logger = logging.getLogger(db_name)
     try:
@@ -19,7 +20,8 @@ def create_feed_docs(db_name):
         mark_start_of_migration(db_name)
         FeedBuilder(db_name, logger).migrate_db()
     except Exception as e:
-            logger.exception("FAILED")
+        logger.exception("FAILED")
+
 
 def migrate_survey_response_to_feed(all_db_names):
     pool = DWThreadPool(NUMBER_OF_THREADS, NUMBER_OF_THREADS)
@@ -29,6 +31,7 @@ def migrate_survey_response_to_feed(all_db_names):
 
     pool.wait_for_completion()
     print "Completed!"
+
 
 migrate_survey_response_to_feed(all_db_names())
 
