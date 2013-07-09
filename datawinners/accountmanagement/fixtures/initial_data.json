@@ -683,6 +683,14 @@
         }
     },
     {
+        "pk": 5,
+        "model": "auth.group",
+        "fields":{
+            "name": "SMS API Users",
+            "permissions": []
+        }
+    },
+    {
         "pk": "1234567890",
         "model": "accountmanagement.datasenderontrialaccount",
         "fields":{
