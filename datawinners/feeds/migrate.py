@@ -1,6 +1,4 @@
-from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.accountmanagement.post_activation_events import create_feed_database
-from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.models import Project
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.database import DatabaseManager
@@ -73,7 +71,7 @@ class FeedBuilder:
             self._migrate(survey_response)
             self._log_success_message(survey_response)
         except (ProjectNotFoundException, FormModelDoesNotExistsException) as exception:
-            self.logger.error('db_name: %s , exception: %s, failed survey_response_id : %s, error : %s' % (
+            self.logger.warning('db_name: %s , exception: %s, failed survey_response_id : %s, error : %s' % (
                 self.dbm.database_name, exception.__class__.__name__, survey_response.id, exception.message))
         except Exception as exception:
             self.logger.exception('db_name: %s , exception: Other, failed survey_response_id : %s, error : %s' % (
