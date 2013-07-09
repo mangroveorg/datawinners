@@ -1,16 +1,31 @@
 from datetime import datetime
 import logging
 import urllib2
+
 from django.conf import settings
 from django.http import HttpResponse
-from datawinners.main.database import get_db_manager, get_database_manager
+import jsonpickle
+
+from datawinners.main.database import get_database_manager
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.authorization import httpbasic, is_not_datasender
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.form_model import get_form_model_by_code
 
+
 DATE_FORMAT = '%d-%m-%Y %H:%M:%S'
+
+
+def stream_feeds(feed_dbm, startkey, endkey):
+    rows = feed_dbm.database.iterview("questionnaire_feed/questionnaire_feed", 1000, startkey=startkey, endkey=endkey)
+    first = True
+    yield "["
+    for row in rows:
+        yield '' if first else ","
+        yield jsonpickle.encode(row['value'], unpicklable=False)
+        first = False
+    yield "]"
 
 
 @httpbasic
@@ -20,9 +35,11 @@ def feed_entries(request, form_code):
         if not settings.FEEDS_ENABLED:
             return HttpResponse(404)
         if invalid_date(request.GET.get('start_date')):
-            return convert_to_json_response({"ERROR_CODE": 102, "ERROR_MESSAGE": 'Invalid Start Date provided'}, 400)
+            return convert_to_json_response(
+                {"ERROR_CODE": 102, "ERROR_MESSAGE": 'Invalid Start Date provided expected ' + DATE_FORMAT}, 400)
         if invalid_date(request.GET.get('end_date')):
-            return convert_to_json_response({"ERROR_CODE": 102, "ERROR_MESSAGE": 'Invalid End Date provided'}, 400)
+            return convert_to_json_response(
+                {"ERROR_CODE": 102, "ERROR_MESSAGE": 'Invalid End Date provided expected ' + DATE_FORMAT}, 400)
         if lesser_end_date(request.GET.get('end_date'), request.GET.get('start_date')):
             return convert_to_json_response(
                 {"ERROR_CODE": 103, "ERROR_MESSAGE": 'End Date provided is less than Start Date'}, 400)
@@ -32,10 +49,8 @@ def feed_entries(request, form_code):
         feed_dbm = get_feeds_database(request.user)
         start_date = _parse_date(request.GET['start_date'])
         end_date = _parse_date(request.GET['end_date'])
-        rows = feed_dbm.view.questionnaire_feed(startkey=[form_code, start_date], endkey=[form_code, end_date],
-                                                limit=settings.MAX_FEED_ENTRIES)
-        result = [row['value'] for row in rows]
-        return convert_to_json_response(result)
+        return HttpResponse(stream_feeds(feed_dbm, startkey=[form_code, start_date], endkey=[form_code, end_date]),
+                            content_type='application/json; charset=utf-8')
     except Exception as e:
         logger = logging.getLogger('datawinners')
         logger.exception(e)
@@ -53,6 +68,7 @@ def _invalid_form_code(request, form_code):
         return False
     except FormModelDoesNotExistsException as e:
         return True
+
 
 def _parse_date(date):
     date_string = urllib2.unquote(date.strip())
