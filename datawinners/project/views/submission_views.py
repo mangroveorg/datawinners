@@ -62,7 +62,7 @@ def index(request, project_id=None, questionnaire_code=None, tab="0"):
     manager = get_database_manager(request.user)
 
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    submission_type = request.GET.get('type')
+    submission_type = request.GET.get('type', 'all')
     filters = request.POST
     keyword = request.POST.get('keyword', '')
     org_id = helper.get_org_id_by_user(request.user)

@@ -118,3 +118,10 @@ class TestSubmissionLog(unittest.TestCase):
     def test_should_disable_checkall_cb_if_there_is_no_submission(self):
         submission_log_page = self.navigate_to_submission_log_page_from_project_dashboard(project_name="project having people as subject")
         self.assertFalse(submission_log_page.is_checkall_enabled())
+
+    @attr("functional_test")
+    def test_should_activate_filters_if_there_is_a_submission(self):
+        submission_log_page = self.navigate_to_submission_log_page_from_project_dashboard(project_name="clinic2 test project")
+        self.assertTrue(submission_log_page.is_filter_enabled())
+        
+

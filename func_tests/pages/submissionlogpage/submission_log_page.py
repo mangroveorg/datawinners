@@ -94,3 +94,6 @@ class SubmissionLogPage(Page):
 
     def is_checkall_enabled(self):
         return self.driver.find(CHECKALL_CB_CSS_LOCATOR).is_enabled()
+
+    def is_filter_enabled(self):
+        return self.driver.find(SUBMISSION_DATE_FILTER).is_enabled()

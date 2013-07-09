@@ -117,3 +117,8 @@ UNREGISTER_ENTITY_ID = {SENDER: "123445567",
                             RECEIVER: "919880734937",
                             SMS: "cli002  cid0090   Mr.Dessy  58   17.05.2011  b  ade    27.178057,-78.007789 a",
                             ERROR_MSG: "This clinic cid0090 is not registered in our system.Please register this clinic or contact your supervisor."}
+
+UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA = {SENDER: "1234123413",
+                            RECEIVER: "919880734937",
+                            SMS: "cli002  cid0090   Mr.Dessy  120   17.17.2011  b  ade    27.178057,-78.007789 a",
+                            ERROR_MSG: "Error. The clinic cid0090 is not registered in our system. Please register this clinic or contact your supervisor."}

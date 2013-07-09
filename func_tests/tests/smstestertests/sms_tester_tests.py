@@ -98,4 +98,11 @@ class TestSMSTester(BaseTest):
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_page.send_sms_with(WRONG_NUMBER_OF_ARGS)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(ERROR_MSG, from_(WRONG_NUMBER_OF_ARGS)))
+
+    @attr('functional_test')
+    def test_sms_player_for_unregistered_subject_and_invalid_geo_code(self):
+        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
+        sms_tester_page = SMSTesterPage(self.driver)
+        sms_tester_page.send_sms_with(UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA)
+        self.assertEqual(sms_tester_page.get_response_message(), fetch_(ERROR_MSG, from_(UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA)))
    

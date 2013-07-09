@@ -205,6 +205,9 @@ $(document).ready(function () {
         submissions_action_dropdown.init_dropdown();
         if (data.length == 0) {
             $("#master_checkbox").attr("disabled", "disabled");
+            DW.disable_filter();
+        } else {
+            DW.enable_filter();
         }
     }
 

@@ -98,8 +98,22 @@ DW.disable_filter_section_if_no_data = function() {
     if ($('#dataSenderSelect>option').size() != 0) {
         return false;
     }
-    var $filters = $(".ui-dropdownchecklist, .ui-dropdownchecklist-selector, .ui-dropdownchecklist-text, #keyword, #reportingPeriodPicker, #submissionDatePicker").add($('#go').removeClass('button_blue').addClass('button_disabled'));
-    $filters.attr('disabled', 'disabled').addClass('disabled').filter('span').find('>span').addClass('disabled').end().unbind('click');
 
-    $('.filter_label').addClass('grey')
+    DW.disable_filter();
 };
+
+DW.disable_filter = function() {
+    var $filters = $(".ui-dropdownchecklist, .ui-dropdownchecklist-selector, .ui-dropdownchecklist-text, #keyword, #reportingPeriodPicker, #submissionDatePicker").add($('#go').removeClass('button_blue').addClass('button_disabled'));
+    $filters.attr('disabled', 'disabled').addClass('disabled').filter('span').find('>span').addClass('disabled');
+
+    $('.filter_label').addClass('grey');
+    $('#ddcl-dataSenderSelect-ddw').addClass('none');
+}
+
+DW.enable_filter = function(){
+    var $filters = $(".ui-dropdownchecklist, .ui-dropdownchecklist-selector, .ui-dropdownchecklist-text, #keyword, #reportingPeriodPicker, #submissionDatePicker").add($('#go').removeClass('button_blue').addClass('button_disabled'));
+    $filters.removeAttr('disabled', 'disabled').removeClass('disabled').filter('span').find('>span').removeClass('disabled');
+
+    $('.filter_label').removeClass('grey');
+    $('#ddcl-dataSenderSelect-ddw').removeClass('none');
+}
