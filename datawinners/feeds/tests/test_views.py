@@ -1,5 +1,7 @@
+import types
 from unittest import TestCase
 import urllib2
+from couchdb.client import Database
 from django.http import HttpRequest
 import jsonpickle
 from mock import Mock, patch
@@ -10,7 +12,7 @@ http_basic_patch = patch('datawinners.feeds.authorization.httpbasic', lambda x: 
 http_basic_patch.start()
 datasender_patch = patch('datawinners.feeds.authorization.is_not_datasender', lambda x: x)
 datasender_patch.start()
-from datawinners.feeds.views import feed_entries
+from datawinners.feeds.views import feed_entries, stream_feeds
 
 
 class TestFeedView(TestCase):
@@ -134,6 +136,18 @@ class TestFeedView(TestCase):
         response_content = jsonpickle.decode(response.content)
         self.assertEquals(response_content.get('ERROR_CODE'), 103)
         self.assertEquals(response_content.get('ERROR_MESSAGE'), 'End Date provided is less than Start Date')
+
+    def test_stream_in_feeds(self):
+        feed_db = Mock(spec=DatabaseManager)
+        feed_db.database = Mock(Database)
+        feed_db.database.iterview.return_value = [{'value': {'first': 'first'}}, {'value': {'second': 'second'}}]
+        response = stream_feeds(feed_db, '', '')
+        expected = '[{"first": "first"},{"second": "second"}]'
+        response_str = ''
+        for r in list(response):
+            response_str += r
+        self.assertEquals(response_str, expected)
+        self.assertTrue(isinstance(response, types.GeneratorType))
 
 
 http_basic_patch.stop()
