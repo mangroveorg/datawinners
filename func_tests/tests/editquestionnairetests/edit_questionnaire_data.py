@@ -38,22 +38,36 @@ SENDER = "from"
 RECEIVER = "to"
 SMS = "sms"
 SUCCESS_MESSAGE = "success_message"
+PROJECT_BACKGROUND = "project_background"
+PROJECT_TYPE = "project_type"
+REPORT_TYPE = "report_type"
+SUBJECT = "subject"
+DEVICES = "devices"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 
-QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: u"cli005",
+VALID_NEW_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project project ", GEN_RANDOM: True,
+                          PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                          PROJECT_TYPE: "survey",
+                          SUBJECT: "clinic",
+                          REPORT_TYPE: "other subject",
+                          DEVICES: "sms",
+                          PAGE_TITLE: "Projects - Overview"}
+
+QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: u"cli005", GEN_RANDOM: True,
                       DEFAULT_QUESTION: {QUESTION: u"What is associatéd entity?", CODE: u"EID"},
-                      QUESTIONS: [{QUESTION: u"What is your namé?", CODE: u"NA", TYPE: WORD, LIMIT: LIMITED, MAX: u"10"},
-                              {QUESTION: u"What is age öf father?", CODE: u"FA", TYPE: NUMBER, MIN: u"18", MAX: u"100"},
-                              {QUESTION: u"What is réporting date?", CODE: u"RD", TYPE: DATE, DATE_FORMAT: DD_MM_YYYY},
-                              {QUESTION: u"What is your blood group?", CODE: u"BG", TYPE: LIST_OF_CHOICES,
-                               CHOICE: [u"O+", u"O-", u"AB", u"B+"],
-                               ALLOWED_CHOICE: ONLY_ONE_ANSWER},
-                              {QUESTION: u"What aré symptoms?", CODE: u"SY", TYPE: LIST_OF_CHOICES,
-                               CHOICE: [u"Rapid weight loss", u"Dry cough", u"Pneumonia", u"Memory loss",
-                                        u"Neurological disorders "],
-                               ALLOWED_CHOICE: MULTIPLE_ANSWERS},
-                              {QUESTION: u"What is the GPS codé for clinic", CODE: u"GPS", TYPE: GEO}],
+                      QUESTIONS: [
+                          {QUESTION: u"What is your namé?", CODE: u"q3", TYPE: WORD, LIMIT: LIMITED, MAX: u"10"},
+                          {QUESTION: u"What is age öf father?", CODE: u"q4", TYPE: NUMBER, MIN: u"18", MAX: u"100"},
+                          {QUESTION: u"What is réporting date?", CODE: u"q5", TYPE: DATE, DATE_FORMAT: DD_MM_YYYY},
+                          {QUESTION: u"What is your blood group?", CODE: u"q6", TYPE: LIST_OF_CHOICES,
+                           CHOICE: [u"O+", u"O-", u"AB", u"B+"],
+                           ALLOWED_CHOICE: ONLY_ONE_ANSWER},
+                          {QUESTION: u"What aré symptoms?", CODE: u"q7", TYPE: LIST_OF_CHOICES,
+                           CHOICE: [u"Rapid weight loss", u"Dry cough", u"Pneumonia", u"Memory loss",
+                                    u"Neurological disorders "],
+                           ALLOWED_CHOICE: MULTIPLE_ANSWERS},
+                          {QUESTION: u"What is the GPS codé for clinic", CODE: u"q8", TYPE: GEO}],
                       CHARACTER_REMAINING: u"84 / 160 characters used"}
 
 TITLE = "title"
@@ -63,17 +77,17 @@ LIGHT_BOX_DATA = {TITLE: "Warning !!",
                   MESSAGE: "Warning: Changing the date format of report period will remove all your collected data. Are you sure you want to continue?"}
 
 VALID_SMS = {SENDER: "919049008976",
-                RECEIVER: '919880734937',
-                SMS: "cli005 cid001 mino 90 25.12.2010 a d -18.1324,27.6547",
-                SUCCESS_MESSAGE: (THANKS % "Ashwini") + u" for Clinic Bhopal Clinic (cid001): cid001; mino; 90; 25.12.2010; O+; Memory loss; -18.1324, 27.6547"}
+             RECEIVER: '919880734937',
+             SMS: "cli005 cid001 mino 90 25.12.2010 a d -18.1324,27.6547",
+             SUCCESS_MESSAGE: THANKS % "Ashwini"}
 
 DELETE_QUESTIONNAIRE_WITH_COLLECTED_DATA_WARNING = u'If you delete this question, any previously collected data will be lost.\nDo you want to delete this question?'
 SAVE_QUESTIONNAIRE_WITH_NEWLY_COLLECTED_DATA_WARNING = u'If you modify this questionnaire, any previously collected data will be lost.\n\nDo you want to modify this questionnaire?'
 
 VALID_SMS_SUBJECT_DATA = {SENDER: "919049008976",
-                RECEIVER: '919880734937',
-                SMS: "sub prenom anarana harbin 12,19 033143333 reg001",
-                SUCCESS_MESSAGE: u"Thank you Ashwini, We registered your subject type: prenom; anarana; harbin; 12.0, 19.0; 033143333; reg001"}
+                          RECEIVER: '919880734937',
+                          SMS: "sub prenom anarana harbin 12,19 033143333 reg001",
+                          SUCCESS_MESSAGE: u"Thank you Ashwini, We registered your subject type: prenom; anarana; harbin; 12.0, 19.0; 033143333; reg001"}
 SUBJECT_TYPE = "subject type"
 
 CHANGE_QUESTION_TYPE_MSG = u'You have changed the Answer Type.\nIf you have previously collected data, it may be rendered incorrect.\n\nAre you sure you want to continue?'
