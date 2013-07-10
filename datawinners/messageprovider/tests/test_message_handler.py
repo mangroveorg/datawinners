@@ -50,6 +50,9 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
 
 class TestShouldTemplatizeMessage(unittest.TestCase):
 
+    def setUp(self):
+        activate('en')
+
     def test_should_format_error_message(self):
         test_data_list = [{"expected_reply": [("en", u"Error. Incorrect answer for question 1. Please review printed Questionnaire and resend entire SMS."),
                                               ("fr", u"Erreur. Réponse incorrecte pour la question 1. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrigé."),
