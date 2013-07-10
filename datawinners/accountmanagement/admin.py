@@ -191,6 +191,13 @@ class NgoUserAdmin(DatawinnerAdmin):
 class DWUserChangeForm(UserChangeForm):
     organization_id = CharField(label="Organization ID")
 
+    def __init__(self, *args, **kwargs):
+        super(DWUserChangeForm, self).__init__(*args, **kwargs)
+        self.fields['organization_id'] = CharField(label="Organization ID")
+        if self.instance:
+            self.organization_id_field()
+            self.fields['password'].widget.attrs['readonly'] = 'readonly'
+
     class Meta:
         model = User
 
@@ -203,12 +210,6 @@ class DWUserChangeForm(UserChangeForm):
             pass
         self.fields['organization_id'] = CharField(label="Organization ID", initial=org_id)
 
-    def __init__(self, *args, **kwargs):
-        super(DWUserChangeForm, self).__init__(*args, **kwargs)
-        self.fields['organization_id'] = CharField(label="Organization ID")
-        if self.instance:
-            self.organization_id_field()
-            self.fields['password'].widget.attrs['readonly'] = 'readonly'
 
     def clean_organization_id(self):
         org_id = self.cleaned_data.get('organization_id', '')
