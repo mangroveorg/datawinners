@@ -3,8 +3,8 @@ from unittest import TestCase
 from mock import Mock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.utils.json_codecs import encode_json
-from project.Header import Header, SubmissionsPageHeader
-from project.tests.form_model_generator import FormModelGenerator
+from datawinners.project.Header import Header, SubmissionsPageHeader
+from datawinners.project.tests.form_model_generator import FormModelGenerator
 
 class TestHeader(TestCase):
     def setUp(self):
