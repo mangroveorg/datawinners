@@ -1,9 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.contrib.admin.filterspecs import FilterSpec, ChoicesFilterSpec
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ValidationError
-from django.forms import ChoiceField, CharField
+from django.forms import CharField
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
@@ -72,10 +71,14 @@ class MessageTrackerAdmin(DatawinnerAdmin):
 class OrganizationAdmin(DatawinnerAdmin):
     list_display = (
         'organization_name', 'complete_address', 'office_phone', 'website', 'paid', 'active_date', 'admin_name',
-        'admin_email', 'admin_mobile_number', 'admin_office_phone')
+        'admin_email', 'admin_mobile_number', 'admin_office_phone', 'sms_api_users')
 
     def organization_name(self, obj):
         return obj.name
+
+    def sms_api_users(self, organization):
+        user_profiles = NGOUserProfile.objects.filter(org_id=organization.org_id)
+        return " , ".join([x.user.username for x in user_profiles if x.user.groups.filter(name="SMS API Users")])
 
     def paid(self, obj):
         return "No" if obj.in_trial_mode else "Yes"
@@ -205,7 +208,7 @@ class DWUserChangeForm(UserChangeForm):
         self.fields['organization_id'] = CharField(label="Organization ID")
         if self.instance:
             self.organization_id_field()
-            self.fields['password'].widget.attrs['readonly'] ='readonly'
+            self.fields['password'].widget.attrs['readonly'] = 'readonly'
 
     def clean_organization_id(self):
         org_id = self.cleaned_data.get('organization_id', '')
@@ -250,6 +253,7 @@ class DWUserAdmin(UserAdmin):
                 user_profile.title = 'Title'
                 user_profile.user = obj
                 user_profile.save()
+
 
 admin.site.unregister(Group)
 admin.site.unregister(User)
