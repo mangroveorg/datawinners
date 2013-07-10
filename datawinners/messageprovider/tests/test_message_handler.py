@@ -55,15 +55,15 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
 
     def test_should_format_error_message(self):
         test_data_list = [{"expected_reply": [("en", u"Error. Incorrect answer for question 1. Please review printed Questionnaire and resend entire SMS."),
-                                              ("fr", u"Erreur. Réponse incorrecte pour la question 1. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrigé."),
+                                              ("fr", u"Erreur. Reponse incorrecte pour la question 1. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."),
                                               ("mg", u"Diso ny valin’ny fanontaniana faha-1. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina.")],
                            "errors":{"q1": "Some error"}},
                           {"expected_reply": [("en", u"Error. Incorrect answer for question 1 and 2. Please review printed Questionnaire and resend entire SMS."),
-                                              ("fr", u"Erreur. Réponse incorrecte pour les questions 1 et 2. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrigé."),
+                                              ("fr", u"Erreur. Reponse incorrecte pour les questions 1 et 2. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."),
                                               ("mg", u"Diso ny valin’ny fanontaniana faha-1 sy faha-2. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina.")],
                            "errors":{"q1": "Some error", "q2": "Some other error"}},
                           {"expected_reply": [("en", u"Error. Incorrect answer for question 1, 2 and 3. Please review printed Questionnaire and resend entire SMS."),
-                                              ("fr", u"Erreur. Réponse incorrecte pour les questions 1, 2 et 3. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrigé."),
+                                              ("fr", u"Erreur. Reponse incorrecte pour les questions 1, 2 et 3. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."),
                                               ("mg", u"Diso ny valin’ny fanontaniana faha-1 sy faha-2 ary faha-3. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina.")],
                            "errors": {"q1": "Some error", "q2": "Some other error", "q3":"Sp"}}]
 
