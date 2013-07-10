@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.contrib.admin.filterspecs import FilterSpec, ChoicesFilterSpec
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ValidationError
@@ -190,17 +191,21 @@ class DWUserChangeForm(UserChangeForm):
     class Meta:
         model = User
 
+    def organization_id_field(self):
+        org_id = ''
+        try:
+            user_profile = NGOUserProfile.objects.get(user=self.instance)
+            org_id = user_profile.org_id
+        except:
+            pass
+        self.fields['organization_id'] = CharField(label="Organization ID", initial=org_id)
+
     def __init__(self, *args, **kwargs):
         super(DWUserChangeForm, self).__init__(*args, **kwargs)
         self.fields['organization_id'] = CharField(label="Organization ID")
         if self.instance:
-            org_id = ''
-            try:
-                user_profile = NGOUserProfile.objects.get(user=self.instance)
-                org_id = user_profile.org_id
-            except:
-                pass
-            self.fields['organization_id'] = CharField(label="Organization ID", initial=org_id)
+            self.organization_id_field()
+            self.fields['password'].widget.attrs['readonly'] ='readonly'
 
     def clean_organization_id(self):
         org_id = self.cleaned_data.get('organization_id', '')
@@ -245,7 +250,6 @@ class DWUserAdmin(UserAdmin):
                 user_profile.title = 'Title'
                 user_profile.user = obj
                 user_profile.save()
-
 
 admin.site.unregister(Group)
 admin.site.unregister(User)
