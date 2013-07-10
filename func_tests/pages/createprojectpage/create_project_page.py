@@ -78,7 +78,6 @@ class CreateProjectPage(Page):
 
     def continue_create_project(self):
         return self.driver.find(CONTINUE_BTN).click()
-        return self
 
     def set_subject(self, project_data):
         subject = fetch_(SUBJECT, from_(project_data))
@@ -103,12 +102,12 @@ class CreateProjectPage(Page):
         locator = comm_utils.is_element_present(PROJECT_NAME_ERROR_MSG_LABEL)
         if locator:
             error_message = error_message + "Name  " + locator.text
-#        locator = comm_utils.is_element_present(PROJECT_TYPE_ERROR_MSG_LABEL)
-#        if locator:
-#            error_message = error_message + "Project Type  " + locator.text
-#        locator = comm_utils.is_element_present(QUESTIONNAIRE_ABOUT_MSG_LABEL)
-#        if locator:
-#            error_message = error_message + "Activity Report Type  " + locator.text
+        #        locator = comm_utils.is_element_present(PROJECT_TYPE_ERROR_MSG_LABEL)
+        #        if locator:
+        #            error_message = error_message + "Project Type  " + locator.text
+        #        locator = comm_utils.is_element_present(QUESTIONNAIRE_ABOUT_MSG_LABEL)
+        #        if locator:
+        #            error_message = error_message + "Activity Report Type  " + locator.text
         return error_message == "" and "No error message on the page" or error_message
 
     def get_selected_subject(self):
@@ -184,7 +183,7 @@ class CreateProjectPage(Page):
             project_details[SUBJECT] = self.get_selected_subject()
         else:
             project_details[SUBJECT] = ""
-        #project_details[DEVICES] = self.get_devices()
+            #project_details[DEVICES] = self.get_devices()
         return project_details
 
     def select_predefined_periodicity_question_text(self):
