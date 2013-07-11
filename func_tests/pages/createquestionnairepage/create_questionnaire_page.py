@@ -4,7 +4,7 @@ from framework.utils.data_fetcher import *
 from framework.utils.global_constant import WAIT_FOR_TITLE
 from pages.createdatasenderquestionnairepage.create_data_sender_questionnaire_page import CreateDataSenderQuestionnairePage
 from pages.createquestionnairepage.create_questionnaire_locator import *
-from tests.createquestionnairetests.create_questionnaire_data import *
+from tests.projectquestionnairetests.project_questionnaire_data import *
 from framework.utils.common_utils import generateId, CommonUtilities
 from pages.createprojectpage.create_project_page import CreateProjectPage
 
@@ -396,7 +396,8 @@ class CreateQuestionnairePage(CreateProjectPage):
 
     def get_option_by_index_for_multiple_choice_question(self, index):
         code = self.driver.find(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_S_XPATH_LOCATOR)).text
-        text = self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR)).get_attribute("value")
+        text = self.driver.find_text_box(
+            by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR)).get_attribute("value")
         return {'code': code, 'text': text}
 
     def delete_option_for_multiple_choice_question(self, index):
@@ -470,7 +471,9 @@ class CreateQuestionnairePage(CreateProjectPage):
         self.driver.find(ADD_CHOICE_LINK).click()
         question = self.get_list_of_choices_type_question()
         index = len(question[CHOICE])
-        self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR)).enter_text(new_choice_text)
+        self.driver.find_text_box(
+            by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR)).enter_text(
+            new_choice_text)
 
     def change_list_of_choice_answer_type(self, choice_type):
         if ONLY_ONE_ANSWER == choice_type:

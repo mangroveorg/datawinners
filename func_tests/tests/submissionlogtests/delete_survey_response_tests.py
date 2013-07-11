@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import  setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.dashboardpage.dashboard_page import DashboardPage
@@ -9,15 +9,15 @@ from pages.loginpage.login_page import LoginPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON
-from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_LOGIN_PAGE, DATA_WINNER_DASHBOARD_PAGE
-from tests.createquestionnairetests.create_questionnaire_data import QUESTIONNAIRE_DATA
+from tests.projectquestionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
-from tests.submissionlogtests.edit_survey_response_data import  get_sms_data_with_questionnaire_code
+from tests.submissionlogtests.edit_survey_response_data import get_sms_data_with_questionnaire_code
 from tests.submissionlogtests.submission_log_data import *
-from tests.createprojecttests.create_project_data import  CREATE_NEW_PROJECT_DATA
+from tests.createprojecttests.create_project_data import CREATE_NEW_PROJECT_DATA
+
 
 @attr('suit_3')
 class TestDeleteSurveyResponse(unittest.TestCase):
@@ -42,7 +42,7 @@ class TestDeleteSurveyResponse(unittest.TestCase):
         create_project_page = cls.dashboard_page.navigate_to_create_project_page()
         create_project_page.create_project_with(CREATE_NEW_PROJECT_DATA)
         create_project_page.continue_create_project()
-        CreateQuestionnairePage(cls.driver).create_questionnaire_with(QUESTIONNAIRE_DATA)
+        CreateQuestionnairePage(cls.driver).create_questionnaire_with(WATERPOINT_QUESTIONNAIRE_DATA)
         create_project_page.save_and_create_project_successfully()
 
     @attr('functional_test')

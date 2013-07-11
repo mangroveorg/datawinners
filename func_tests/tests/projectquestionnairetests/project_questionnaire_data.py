@@ -1,7 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
-
-##Variables
 from datawinners.messageprovider.tests.test_message_handler import THANKS
 
 PROJECT_NAME = "project_name"
@@ -67,7 +64,21 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: u"cli005", GEN_RANDOM: True,
                            CHOICE: [u"Rapid weight loss", u"Dry cough", u"Pneumonia", u"Memory loss",
                                     u"Neurological disorders "],
                            ALLOWED_CHOICE: MULTIPLE_ANSWERS},
-                          {QUESTION: u"What is the GPS codé for clinic", CODE: u"q8", TYPE: GEO}],
+                          {QUESTION: u"What is the GPS codé for clinic", CODE: u"q8", TYPE: GEO},
+                          {QUESTION: "What kink of car to you want?", CODE: "WB", TYPE: LIST_OF_CHOICES,
+                           CHOICE: ["Alpha romeo", "BMW", "Citroen", "DAF", "EXCALIBUR", "FIAT", "GMC", "Hummer",
+                                    "INFINITI", "JAGUAR", "KIA", "LEXUS", "MAHINDRA", "NISSAN", "OPEL", "PORSCHE",
+                                    "Q5 audi", "ROVER", "SEAT", "TALBOT", "UMM", "VOLVO", "WESTFIELD", "X5 BM",
+                                    "Yaris toyota", "Z06 Corvette", "1 Audi", "1 BUGATTI", "1 Cadillac", "1 DATSUN",
+                                    "1 Eclipse Mazda", "1 Ford", "1 GUMPERT", "1 HONDA", "1 ISUZU", "1 JEEP",
+                                    "1 KTM",
+                                    "1 LANCIA", "1 Mercedes", "1 Navigator LINCOLN", "1 OLDSMOBILE", "1 Peugeot",
+                                    "1 Quattro audi", "1 Renault", "1 Smart", "1 Toyota", "1 Uno fiat",
+                                    "1 VolksWagen", "1 Willys", "1 Xantia citroen", "1 Yeti Skoda", "1 Zeta Lancia",
+                                    "2 Austin", "2 Bellier", "2 Chevrolet", "2 Datsun", "2 Elandra hyundai",
+                                    "2 Fisker", "2 Grecav", "2 Hyundai"],
+                           ALLOWED_CHOICE: MULTIPLE_ANSWERS}
+                      ],
                       CHARACTER_REMAINING: u"84 / 160 characters used"}
 
 TITLE = "title"
@@ -92,3 +103,22 @@ SUBJECT_TYPE = "subject type"
 
 CHANGE_QUESTION_TYPE_MSG = u'You have changed the Answer Type.\nIf you have previously collected data, it may be rendered incorrect.\n\nAre you sure you want to continue?'
 REDISTRIBUTE_QUESTIONNAIRE_MSG = u'You have made changes to your Questionnaire.\n\nPlease make sure your Data Senders have the latest version:\nSMS: Print and distribute the updated SMS Questionnaire\nSmartphone: Remind them to download the updated version of the Questionnaire\nWeb: No action needed. We will display the updated version of the Registration Form automatically'
+
+WATERPOINT_QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
+                                 DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "WID"},
+                                 QUESTIONS: [{QUESTION: "Water Level", CODE: "WL", TYPE: NUMBER, MIN: "1", MAX: "10"},
+                                             {QUESTION: "Date of report", CODE: "DR", TYPE: DATE,
+                                              DATE_FORMAT: DD_MM_YYYY},
+                                             {QUESTION: "Color of Water", CODE: "WC", TYPE: LIST_OF_CHOICES,
+                                              CHOICE: ["LIGHT RED", "LIGHT YELLOW", "DARK YELLOW"],
+                                              ALLOWED_CHOICE: ONLY_ONE_ANSWER},
+                                             {QUESTION: "Water point admin name", CODE: "WAN", TYPE: WORD,
+                                              LIMIT: LIMITED, MAX: "10"},
+                                             {QUESTION: "Bacterias in water", CODE: "WB", TYPE: LIST_OF_CHOICES,
+                                              CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
+                                              ALLOWED_CHOICE: MULTIPLE_ANSWERS},
+                                             {QUESTION: "Geo points of water point", CODE: "GPS", TYPE: GEO}],
+                                 CHARACTER_REMAINING: "73 / 160 characters used (1 SMS)",
+                                 SUCCESS_MSG: "Your questionnaire has been saved",
+                                 PAGE_TITLE: "Data Senders"}
+

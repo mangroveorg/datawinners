@@ -1,9 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import time
 
 from nose.plugins.attrib import attr
 
-from framework.base_test import BaseTest
+from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.loginpage.login_page import LoginPage
@@ -12,7 +11,7 @@ from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE
 from tests.alldatasenderstests.all_data_sender_data import random_string
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.editquestionnairetests.edit_questionnaire_data import *
+from tests.projectquestionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from framework.utils.common_utils import by_id, by_css
@@ -28,23 +27,32 @@ def verify_on_edit_project_page(verify_edit_page_functionality):
 
 
 @attr('suit_2')
-class TestEditQuestionnaire(BaseTest):
+class TestProjectQuestionnaire(BaseTest):
+    @classmethod
+    def setUpClass(cls):
+        cls.project_name = None
+        cls.driver = setup_driver()
+        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(cls.driver)
+        cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown_driver(cls.driver)
+
     def setUp(self):
-        super(TestEditQuestionnaire, self).setUp()
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(self.driver)
-        time.sleep(1)
-        self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        pass
 
     def tearDown(self):
-        super(TestEditQuestionnaire, self).tearDown()
+        pass
 
     @attr('functional_test', 'smoke')
     def test_successful_questionnaire_editing(self):
         """
         Function to test the successful editing of a Questionnaire with given details
         """
-        create_questionnaire_page, project_name = self.prerequisites_of_edit_questionnaire()
+        create_questionnaire_page = self.create_or_navigate_to_project_questionnaire_page()
+
         new_questionnaire_code = "code" + random_string(3)
         self.verify_questions(create_questionnaire_page)
 
@@ -101,7 +109,7 @@ class TestEditQuestionnaire(BaseTest):
         verify_on_edit_project_page(verify_warning_for_change_in_questionnaire_code)
         verify_on_edit_project_page(verify_warning_for_change_in_question_text)
 
-        self.sms_preview_of_questionnaire_on_the_questionnaire_tab(project_name)
+        self.sms_preview_of_questionnaire_on_the_questionnaire_tab(self.project_name)
         self.web_preview_of_questionnaire_on_the_questionnaire_tab()
         self.smart_phone_preview_of_questionnaire_on_the_questionnaire_tab()
 
@@ -162,27 +170,6 @@ class TestEditQuestionnaire(BaseTest):
         warning_dialog = WarningDialog(self.driver, confirm_link=confirm_locator)
         warning_dialog.confirm()
 
-    def create_project_and_add_one_question(self, question_type="word"):
-        time.sleep(2)
-        create_questionnaire_page, project_name = self.create_new_project()
-        number_question = {"question": "number", "code": "grades", "type": "number",
-                           "min": "1", "max": "100"}
-        word_question = {"question": "word", "code": "word", "type": "word",
-                         "limit": "10"}
-        multiple_choice_question = {"question": "MC question", "code": "mc", "type": "list_of_choices",
-                                    "allowed_choice": "only_one_answer", "choice": ["first", "second", "third"]}
-        date_question = {"question": "Date question", "code": "d", "type": "date",
-                         "date_format": "mm.yyyy"}
-
-        questions = {"word": word_question,
-                     "number": number_question,
-                     "choice": multiple_choice_question,
-                     "date": date_question}
-        question = questions.get(question_type, None)
-        if question: create_questionnaire_page.add_question(question)
-
-        return create_questionnaire_page, project_name
-
     def expect_redistribute_dialog_to_be_shown(self, create_questionnaire_page):
         create_questionnaire_page.save_and_create_project(click_ok=False)
         warning_dialog = WarningDialog(self.driver)
@@ -192,25 +179,57 @@ class TestEditQuestionnaire(BaseTest):
         self.driver.wait_for_page_with_title(20, 'Projects - Overview')
         return ProjectOverviewPage(self.driver)
 
-    def prerequisites_of_edit_questionnaire(self):
+    def create_or_navigate_to_project_questionnaire_page(self):
         project_overview_page = self.create_new_project()
         edit_project_page = project_overview_page.navigate_to_edit_project_page()
         edit_project_page.continue_create_project()
-        return CreateQuestionnairePage(self.driver), project_overview_page.get_project_title()
+        return CreateQuestionnairePage(self.driver)
 
-    def create_new_project(self):
-        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+    @classmethod
+    def create_new_project(cls, verify_function=None):
+        if cls.project_name:
+            all_project_page = cls.global_navigation.navigate_to_view_all_project_page()
+            overview_page = all_project_page.navigate_to_project_overview_page(cls.project_name)
+            return overview_page
+
+        dashboard_page = cls.global_navigation.navigate_to_dashboard_page()
         create_project_page = dashboard_page.navigate_to_create_project_page()
         create_project_page.create_project_with(VALID_NEW_PROJECT_DATA)
         create_project_page.continue_create_project()
-        CreateQuestionnairePage(self.driver).create_questionnaire_with(QUESTIONNAIRE_DATA)
-        return create_project_page.save_and_create_project_successfully()
+        create_questionnaire_page = CreateQuestionnairePage(cls.driver)
+        create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
+        if verify_function:
+            verify_function(create_questionnaire_page)
+        overview_page = create_questionnaire_page.save_and_create_project_successfully()
+        cls.project_name = overview_page.get_project_title()
+        return overview_page
 
     def verify_sms_submission_after_edit(self, new_questionnaire_code):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
-        VALID_SMS[SMS] = new_questionnaire_code + ' cid001 12.12.2012 mino 25 05.12.2010 a d -18.1324,27.6547 45'
+        VALID_SMS[SMS] = new_questionnaire_code + ' cid001 12.12.2012 mino 25 05.12.2010 a d -18.1324,27.6547 d 45'
         sms_tester_page.send_sms_with(VALID_SMS)
         message = sms_tester_page.get_response_message()
         self.assertTrue(fetch_(SUCCESS_MESSAGE, VALID_SMS) in message, "message:" + message)
 
+
+    def verify_questionnaire_page(self, create_questionnaire_page):
+        index = 3
+        for question in fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA)):
+            question_link_text = fetch_(QUESTION, from_(question))
+            self.assertEquals(create_questionnaire_page.get_question_link_text(index), question_link_text)
+            index += 1
+            # self.assertEquals(create_questionnaire_page.get_remaining_character_count(),
+        #                   fetch_(CHARACTER_REMAINING, from_(QUESTIONNAIRE_DATA)))
+        self.assertEqual(create_questionnaire_page.get_option_by_index_for_multiple_choice_question(60).get("text"),
+                         "2 Hyundai")
+        self.assertEqual(create_questionnaire_page.get_option_by_index_for_multiple_choice_question(57).get("text"),
+                         "2 Elandra hyundai")
+        create_questionnaire_page.delete_option_for_multiple_choice_question(57)
+        self.assertEqual(create_questionnaire_page.get_option_by_index_for_multiple_choice_question(57).get("text"),
+                         "2 Fisker")
+
+    @attr('already_covered')
+    def test_successful_questionnaire_creation(self):
+        self.create_new_project(self.verify_questionnaire_page)
+        self.driver.wait_for_page_with_title(20, fetch_(PAGE_TITLE, from_(VALID_NEW_PROJECT_DATA)))

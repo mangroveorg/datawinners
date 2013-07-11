@@ -14,7 +14,7 @@ from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_LOGIN_PAGE, DATA_WINNER_DASHBOARD_PAGE
-from tests.createquestionnairetests.create_questionnaire_data import QUESTIONNAIRE_DATA
+from tests.projectquestionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.edit_survey_response_data import EDITED_ANSWERS, get_sms_data_with_questionnaire_code
@@ -45,7 +45,7 @@ class TestEditSurveyResponse(unittest.TestCase):
         create_project_page = cls.dashboard_page.navigate_to_create_project_page()
         create_project_page.create_project_with(CREATE_NEW_PROJECT_DATA)
         create_project_page.continue_create_project()
-        CreateQuestionnairePage(cls.driver).create_questionnaire_with(QUESTIONNAIRE_DATA)
+        CreateQuestionnairePage(cls.driver).create_questionnaire_with(WATERPOINT_QUESTIONNAIRE_DATA)
         create_project_page.save_and_create_project_successfully()
 
     @attr('functional_test')

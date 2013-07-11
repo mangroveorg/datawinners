@@ -43,13 +43,13 @@ VALID_DATA2 = {PROJECT_NAME: "Water Point2 Morondava ", GEN_RANDOM: True,
                DEVICES: "sms",
                PAGE_TITLE: "Projects - Overview"}
 
-MC_VALID_DATA = {PROJECT_NAME: "Cars and WP", GEN_RANDOM: False,
-               PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-               PROJECT_TYPE: "survey",
-               SUBJECT: "waterpoint",
-               REPORT_TYPE: "other subject",
-               DEVICES: "sms",
-               PAGE_TITLE: "Projects - Overview"}
+MC_VALID_DATA = {PROJECT_NAME: "Cars and WP", GEN_RANDOM: True,
+                 PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                 PROJECT_TYPE: "survey",
+                 SUBJECT: "waterpoint",
+                 REPORT_TYPE: "other subject",
+                 DEVICES: "sms",
+                 PAGE_TITLE: "Projects - Overview"}
 
 BLANK_FIELDS = {PROJECT_NAME: "",
                 PROJECT_BACKGROUND: "",
@@ -60,11 +60,11 @@ BLANK_FIELDS = {PROJECT_NAME: "",
                 ERROR_MSG: "Name  This field is required."}
 
 LONG_DESCRIPTION_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
-              PROJECT_BACKGROUND: u"Exemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignantsExemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignants12345",
-              PROJECT_TYPE: SURVEY,
-              SUBJECT: "",
-              REPORT_TYPE: "data sender work",
-              DEVICES: "sms",
-              PAGE_TITLE: "Projects - Overview",
-              WARNING_MESSAGE:
-                  u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
+                         PROJECT_BACKGROUND: u"Exemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignantsExemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignants12345",
+                         PROJECT_TYPE: SURVEY,
+                         SUBJECT: "",
+                         REPORT_TYPE: "data sender work",
+                         DEVICES: "sms",
+                         PAGE_TITLE: "Projects - Overview",
+                         WARNING_MESSAGE:
+                             u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}

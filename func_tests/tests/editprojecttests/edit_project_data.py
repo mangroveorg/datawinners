@@ -2,7 +2,7 @@
 
 
 ##Variables
-from tests.createquestionnairetests.create_questionnaire_data import QUESTIONS
+from tests.projectquestionnairetests.project_questionnaire_data import QUESTIONS
 
 TITLE = "title"
 MESSAGE = "message"
@@ -26,15 +26,15 @@ VALID_DATA = {PROJECT_NAME: u"clinic3 test project",
               SUBJECT: u"clinic",
               REPORT_TYPE: OTHER_SUBJECT,
               #DEVICES: "sms"
-              }
+}
 
 ACTIVATED_PROJECT_DATA = {PROJECT_NAME: u"clinic test project",
-              PROJECT_BACKGROUND: u"This project is for automation",
-              #PROJECT_TYPE: "survey",
-              SUBJECT: u"clinic",
-              REPORT_TYPE: OTHER_SUBJECT,
-              #DEVICES: "sms"
-              }
+                          PROJECT_BACKGROUND: u"This project is for automation",
+                          #PROJECT_TYPE: "survey",
+                          SUBJECT: u"clinic",
+                          REPORT_TYPE: OTHER_SUBJECT,
+                          #DEVICES: "sms"
+}
 
 WATER_POINT_DATA = {PROJECT_NAME: u"water point morondova",
                     PROJECT_BACKGROUND: u"This project is for automation",
@@ -42,9 +42,10 @@ WATER_POINT_DATA = {PROJECT_NAME: u"water point morondova",
                     SUBJECT: u"waterpoint",
                     REPORT_TYPE: OTHER_SUBJECT,
                     #DEVICES: "sms"
-                    }
+}
 
-QUESTIONNAIRE_DATA_FOR_WATER_POINT = {QUESTIONS: ["Which waterpoint are you reporting on?", "What is the reporting period for the activity?"]}
+QUESTIONNAIRE_DATA_FOR_WATER_POINT = {
+QUESTIONS: ["Which waterpoint are you reporting on?", "What is the reporting period for the activity?"]}
 
 VALID_DATA2 = {PROJECT_NAME: u"clinic4 test project",
                PROJECT_BACKGROUND: u"This project is for automation",
@@ -52,7 +53,7 @@ VALID_DATA2 = {PROJECT_NAME: u"clinic4 test project",
                SUBJECT: u"clinic",
                REPORT_TYPE: OTHER_SUBJECT,
                #DEVICES: "sms"
-               }
+}
 
 REPORTER_ACTIVITIES_DATA = {PROJECT_NAME: u"reporter activities",
                             PROJECT_BACKGROUND: u"This project is for automation",
@@ -60,7 +61,7 @@ REPORTER_ACTIVITIES_DATA = {PROJECT_NAME: u"reporter activities",
                             SUBJECT: "",
                             REPORT_TYPE: DATA_SENDER_WORK,
                             #DEVICES: "sms"
-                            }
+}
 
 QUESTIONNAIRE_DATA_FOR_REPORTER_ACTIVITIES = {QUESTIONS: ["What is the reporting period for the activity?"]}
 
