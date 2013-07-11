@@ -1,25 +1,29 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import copy
-from nose.plugins.attrib import attr
 import time
+
+from nose.plugins.attrib import attr
+
 from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.utils.data_fetcher import from_, fetch_
-from mangrove.datastore.entity import get_by_short_code_include_voided
-from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
+from pages.dataanalysispage.data_analysis_page import DataAnalysisPage
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
+
 
 SUBMISSION_DATE_FORMAT = "%b. %d, %Y, %I:%M %p"
 DD_MM_YYYY_FORMAT = '%d.%m.%Y'
 
 MONTHLY_REPORTING_PERIOD_FORMAT = "%m.%Y"
 
+
 @attr('suit_1')
 class TestDataAnalysis(BaseTest):
     @classmethod
     def setUpClass(cls):
+        cls.URL = None
         cls.driver = setup_driver()
         cls.global_navigation = cls.prerequisites_of_data_analysis()
 
@@ -27,14 +31,20 @@ class TestDataAnalysis(BaseTest):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    def setUp(self): pass
+    def setUp(self):
+        pass
 
-    def tearDown(self): pass
+    def tearDown(self):
+        pass
 
     @classmethod
     def go_to_analysis_page(cls, project_name=fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
         all_data_page = cls.global_navigation.navigate_to_all_data_page()
-        return all_data_page.navigate_to_data_analysis_page(project_name)
+        analysis_page = all_data_page.navigate_to_data_analysis_page(project_name)
+        if not cls.URL:
+            cls.URL = cls.driver.current_url
+        return analysis_page
+
 
     @classmethod
     def prerequisites_of_data_analysis(cls):
@@ -43,39 +53,37 @@ class TestDataAnalysis(BaseTest):
         global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
         return global_navigation
 
+    def get_analysis_page(self):
+        if self.URL:
+            self.driver.go_to(self.URL)
+            self.driver.wait_for_page_with_title(time_out_in_seconds=10, title='Data Analysis')
+            analysis_page = DataAnalysisPage(self.driver)
+        else:
+            analysis_page = self.go_to_analysis_page()
+        return analysis_page
+
     @attr('functional_test', 'smoke')
-    def test_questions_in_table_header(self):
-        analysis_page = self.go_to_analysis_page()
+    def test_data_analysis_page(self):
+        analysis_page = self.get_analysis_page()
         questions = fetch_(HEADERS, from_(DEFAULT_DATA_FOR_ANALYSIS))
         self.assertEquals(questions, analysis_page.get_all_questions())
-
-    @attr('functional_test', 'smoke')
-    def test_should_return_data_records_in_table(self):
-        analysis_page = self.go_to_analysis_page()
         analysis_page.select_page_size()
-        records = analysis_page.get_all_data_records()
-        self.assertIsNotNone(records)
+        self.assertIsNotNone(analysis_page.get_all_data_records())
+
 
     @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_current_month(self):
-        self.verify_reporting_period_filter(FILTER_BY_CURRENT_MONTH, self.go_to_analysis_page())
+    def test_filter_data_records(self):
+        data_analysis_page = self.get_analysis_page()
+        self.verify_reporting_period_filter(data_analysis_page, FILTER_BY_CURRENT_MONTH)
+        self.verify_reporting_period_filter(data_analysis_page, FILTER_BY_LAST_MONTH)
+        self.verify_reporting_period_filter(data_analysis_page, FILTER_BY_YEAR_TO_DATE)
 
-    @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_last_month(self):
-        self.verify_reporting_period_filter(FILTER_BY_LAST_MONTH, self.go_to_analysis_page())
+        self.verify_submission_date_filter(data_analysis_page, CURRENT_MONTH)
+        self.verify_submission_date_filter(data_analysis_page, LAST_MONTH)
+        self.verify_submission_date_filter(data_analysis_page, YEAR_TO_DATE)
 
-    @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_year_to_date(self):
-        self.verify_reporting_period_filter(FILTER_BY_YEAR_TO_DATE, self.go_to_analysis_page())
+        self.verify_filter_data_records_by_subject_filter(data_analysis_page)
 
-    def _to_date_list(self, data_records, date_format):
-        return [datetime.strptime(record, date_format) for record in data_records]
-
-    def assert_in_date_range(self, range, data_records, range_format=DD_MM_YYYY_FORMAT, date_format=DD_MM_YYYY_FORMAT):
-        range = self._to_date_list(range, range_format)
-        if date_format == SUBMISSION_DATE_FORMAT and range_format == DD_MM_YYYY_FORMAT:
-            range[-1] = range[-1].replace(hour=23, minute=59)
-        self.assertTrue(all([range[0] <= each <= range[-1] for each in self._to_date_list(data_records, date_format)]))
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_monthly_reporting_period(self):
@@ -92,11 +100,11 @@ class TestDataAnalysis(BaseTest):
         report_period = data_analysis_page.get_all_data_records_by_column(1)
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
         self.assert_in_date_range(current_month_period, report_period, range_format=MONTHLY_REPORTING_PERIOD_FORMAT,
-            date_format=MONTHLY_REPORTING_PERIOD_FORMAT)
+                                  date_format=MONTHLY_REPORTING_PERIOD_FORMAT)
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_daily_reporting_period(self):
-        data_analysis_page = self.go_to_analysis_page()
+        data_analysis_page = self.get_analysis_page()
         data_analysis_page.open_reporting_period_drop_down()
         data_analysis_page.date_range_dict[DAILY_DATE_RANGE]()
         start_year = datetime.today().year - 1
@@ -111,31 +119,19 @@ class TestDataAnalysis(BaseTest):
         current_month_period = data_analysis_page.get_reporting_period().split(' - ')
         self.assert_in_date_range(current_month_period, report_period)
 
-    def verify_reporting_period_filter(self, period, data_analysis_page):
-        data_analysis_page.open_reporting_period_drop_down()
-        data_analysis_page.date_range_dict[fetch_(DAILY_DATE_RANGE, from_(period))]()
-        time.sleep(1)
-        data_analysis_page.click_go_button()
-        report_period = data_analysis_page.get_all_data_records_by_column(1)
-        period = data_analysis_page.get_reporting_period().split(' - ')
-        self.assert_in_date_range(period, report_period)
+    @attr('functional_test')
+    def test_should_update_text_when_selecting_subjects(self):
+        data_analysis_page = self.get_analysis_page()
+        subjects = ['ANALAMANGA', 'Andapa', "Antsirabe"]
+        data_analysis_page.select_for_subject_type(subjects[0])
+        data_analysis_page.select_for_subject_type(subjects[1])
+        subject_text = data_analysis_page.get_subject_filter_caption()
+        self.assertEqual(subject_text, 'ANALAMANGA, Andapa')
+        data_analysis_page.select_for_subject_type(subjects[2])
+        subject_text = data_analysis_page.get_subject_filter_caption()
+        self.assertEqual(subject_text, 'ANALAMANGA, Andapa, Antsirabe')
 
-    def verify_submission_date_filter(self, period, data_analysis_page):
-        data_analysis_page.open_submission_date_drop_down()
-        data_analysis_page.date_range_dict[period]()
-        time.sleep(1)
-        data_analysis_page.click_go_button()
-        submission_date = data_analysis_page.get_all_data_records_by_column(2)
-        period = data_analysis_page.get_submission_date().split(' - ')
-        #This is specifically put in here as on the 1st of a month when we choose 'Current Month' we dont get date as
-        # date1-date2 it comes as just date1
-        if len(period) == 1:
-            period.append(copy.deepcopy(period[0]))
-        self.assert_in_date_range(period, submission_date, date_format=SUBMISSION_DATE_FORMAT)
-
-    @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_subject_filter(self):
-        data_analysis_page = self.go_to_analysis_page()
+    def verify_filter_data_records_by_subject_filter(self, data_analysis_page):
         subject = ('ANALAMANGA', 'cli11')
         data_analysis_page.select_for_subject_type(subject[0])
         data_analysis_page.click_go_button()
@@ -144,9 +140,7 @@ class TestDataAnalysis(BaseTest):
         self.assertEqual(1, len(subject_sets))
         self.assertEqual(subject[0] + subject[1], subject_names[0])
 
-    def verify_filter_by_data_sender(self, data_sender,
-                                     project_name=fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
-        data_analysis_page = self.go_to_analysis_page(project_name)
+    def verify_filter_by_data_sender(self, data_analysis_page, data_sender):
         data_analysis_page.select_for_data_sender(data_sender[-1])
         data_analysis_page.click_go_button()
         data_records = data_analysis_page.get_all_data_records_by_column(3)
@@ -156,55 +150,32 @@ class TestDataAnalysis(BaseTest):
         self.assertEqual(str_data_sender.strip(), data_records[0])
 
     @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_admin(self):
-        self.verify_filter_by_data_sender(('Tester Pune', 'rep12'))
-
-    @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_sms_or_web_data_sender(self):
-        self.verify_filter_by_data_sender(('Shweta', 'rep1'))
-
-    @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_test_data_sender(self):
-        self.verify_filter_by_data_sender(('TEST', 'test'),
-            'Clinic Test Project With Monthly Reporting Period'.lower())
+    def test_filter_data_records_by_datasender(self):
+        data_analysis_page = self.go_to_analysis_page(fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)))
+        self.verify_filter_by_data_sender(data_analysis_page, ('Tester Pune', 'rep12'))
+        self.verify_filter_by_data_sender(data_analysis_page, ('Shweta', 'rep1'))
 
     @attr('functional_test')
-    def test_should_close_daterange_dropdown_when_opening_subject_dropdown(self):
-        data_analysis_page = self.go_to_analysis_page()
-        data_analysis_page.open_reporting_period_drop_down()
-        time.sleep(1)
-        self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
-        data_analysis_page.open_subject_type_drop_down()
-        time.sleep(1)
-        self.assertFalse(data_analysis_page.daterange_drop_down_is_opened())
+    def test_daterange_dropdown_and_subject_dropdown_should_toggle_when_opened(self):
+        data_analysis_page = self.get_analysis_page()
 
-    @attr('functional_test')
-    def test_should_close_subject_dropdown_when_opening_daterange_dropdown(self):
-        data_analysis_page = self.go_to_analysis_page('Clinic Test Project With Monthly Reporting Period'.lower())
-        self.assertFalse(data_analysis_page.dropdown_checklist_is_opened())
         data_analysis_page.open_subject_type_drop_down()
         self.assertTrue(data_analysis_page.dropdown_checklist_is_opened())
-        time.sleep(1)
+        self.assertFalse(data_analysis_page.daterange_drop_down_is_opened())
+
         data_analysis_page.open_reporting_period_drop_down()
         time.sleep(1)
         self.assertTrue(data_analysis_page.daterange_drop_down_is_opened())
         self.assertFalse(data_analysis_page.dropdown_checklist_is_opened())
 
-    @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_submission_date_within_current_month(self):
-        self.verify_submission_date_filter(CURRENT_MONTH, self.go_to_analysis_page())
-
-    @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_submission_date_within_last_month(self):
-        self.verify_submission_date_filter(LAST_MONTH, self.go_to_analysis_page())
-
-    @attr('functional_test', 'smoke')
-    def test_filter_data_records_by_submission_date_within_year_to_date(self):
-        self.verify_submission_date_filter(YEAR_TO_DATE, self.go_to_analysis_page())
+        data_analysis_page.open_subject_type_drop_down()
+        time.sleep(1)
+        self.assertTrue(data_analysis_page.dropdown_checklist_is_opened())
+        self.assertFalse(data_analysis_page.daterange_drop_down_is_opened())
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_keyword(self):
-        analysis_page = self.go_to_analysis_page()
+        analysis_page = self.get_analysis_page()
         keyword = "Neurological "
         analysis_page.input_keyword(keyword)
         analysis_page.click_go_button()
@@ -212,28 +183,6 @@ class TestDataAnalysis(BaseTest):
         self.assertEqual(len(filtered_data), 10)
         self.assertTrue(all([keyword in item for item in filtered_data]))
 
-    @attr('functional_test', 'smoke')
-    def test_should_clear_checked_item_in_drodown_list_when_click_clear_link(self):
-        subject_names = ["ANALAMANGA", "Analalava"]
-        analysis_page = self.go_to_analysis_page()
-        default_text = analysis_page.get_dropdown_control_text()
-        [analysis_page.select_for_subject_type(name) for name in subject_names]
-        analysis_page.open_subject_type_drop_down()
-
-        self.assertEquals(', '.join(subject_names), analysis_page.get_dropdown_control_text())
-
-        analysis_page.clear_dropdown()
-
-        self.assertEquals(default_text, analysis_page.get_dropdown_control_text())
-
-
-    @attr('functional_test', 'smoke')
-    def test_should_keep_dropdown_list_opened_when_click_clear_link(self):
-        analysis_page = self.go_to_analysis_page()
-        analysis_page.open_subject_type_drop_down()
-        analysis_page.clear_dropdown()
-
-        self.assertTrue(analysis_page.dropdown_checklist_is_opened())
 
     @attr('functional_test')
     def test_should_sort_data_in_alphanumerical_order_except_for_submission_date(self):
@@ -247,6 +196,37 @@ class TestDataAnalysis(BaseTest):
         self.sort_data_by_gps_question(analysis_page)
         self.sort_data_by_date_question(analysis_page)
         self.sort_data_by_submission_date(analysis_page)
+
+    def verify_reporting_period_filter(self, data_analysis_page, period):
+        data_analysis_page.open_reporting_period_drop_down()
+        data_analysis_page.date_range_dict[fetch_(DAILY_DATE_RANGE, from_(period))]()
+        time.sleep(1)
+        data_analysis_page.click_go_button()
+        report_period = data_analysis_page.get_all_data_records_by_column(1)
+        period = data_analysis_page.get_reporting_period().split(' - ')
+        self.assert_in_date_range(period, report_period)
+
+    def verify_submission_date_filter(self, data_analysis_page, period):
+        data_analysis_page.open_submission_date_drop_down()
+        data_analysis_page.date_range_dict[period]()
+        time.sleep(1)
+        data_analysis_page.click_go_button()
+        submission_date = data_analysis_page.get_all_data_records_by_column(2)
+        period = data_analysis_page.get_submission_date().split(' - ')
+        #This is specifically put in here as on the 1st of a month when we choose 'Current Month' we dont get date as
+        # date1-date2 it comes as just date1
+        if len(period) == 1:
+            period.append(copy.deepcopy(period[0]))
+        self.assert_in_date_range(period, submission_date, date_format=SUBMISSION_DATE_FORMAT)
+
+    def assert_in_date_range(self, range, data_records, range_format=DD_MM_YYYY_FORMAT, date_format=DD_MM_YYYY_FORMAT):
+        range = self._to_date_list(range, range_format)
+        if date_format == SUBMISSION_DATE_FORMAT and range_format == DD_MM_YYYY_FORMAT:
+            range[-1] = range[-1].replace(hour=23, minute=59)
+        self.assertTrue(all([range[0] <= each <= range[-1] for each in self._to_date_list(data_records, date_format)]))
+
+    def _to_date_list(self, data_records, date_format):
+        return [datetime.strptime(record, date_format) for record in data_records]
 
 
     def sort_data_by_word_question(self, analysis_page):
@@ -282,15 +262,3 @@ class TestDataAnalysis(BaseTest):
                             "12.2012", "12, 34", "20, 34"]
         ordered = analysis_page.get_all_data_records_by_column(4)
         self.assertEqual(', '.join(ordered), ', '.join(expected_ordered))
-
-    @attr('functional_test', 'smoke')
-    def test_should_update_text_when_selecting_subjects(self):
-        data_analysis_page = self.go_to_analysis_page()
-        subjects = ['ANALAMANGA', 'Andapa', "Antsirabe"]
-        data_analysis_page.select_for_subject_type(subjects[0])
-        data_analysis_page.select_for_subject_type(subjects[1])
-        subject_text = data_analysis_page.get_subject_filter_caption()
-        self.assertEqual(subject_text, 'ANALAMANGA, Andapa')
-        data_analysis_page.select_for_subject_type(subjects[2])
-        subject_text = data_analysis_page.get_subject_filter_caption()
-        self.assertEqual(subject_text, 'ANALAMANGA, Andapa, Antsirabe')

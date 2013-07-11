@@ -1,23 +1,26 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import time
+import datetime
+
 from pages.dataanalysispage.data_analysis_locator import *
 from pages.page import Page
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from tests.dataanalysistests.data_analysis_data import CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE, DAILY_DATE_RANGE, MONTHLY_DATE_RANGE
-import datetime
+
 
 MINUS = '-'
 BTN_DONE_ = '//div[contains(@class, "ui-daterangepickercontain")]//button[contains(@class, "btnDone")]'
+
 
 class DataAnalysisPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
         self.date_range_dict = {CURRENT_MONTH: self.select_current_month,
-                           LAST_MONTH: self.select_last_month,
-                           YEAR_TO_DATE: self.select_year_to_date,
-                           DAILY_DATE_RANGE: self.select_daily_date_range,
-                           MONTHLY_DATE_RANGE: self.select_monthly_date_range}
+                                LAST_MONTH: self.select_last_month,
+                                YEAR_TO_DATE: self.select_year_to_date,
+                                DAILY_DATE_RANGE: self.select_daily_date_range,
+                                MONTHLY_DATE_RANGE: self.select_monthly_date_range}
 
     def go_to_chart_view(self):
         """
@@ -43,16 +46,19 @@ class DataAnalysisPage(Page):
         return self.driver.find(by_css(table_css))
 
     def get_multiple_choice_question_explanation(self, select_question_index):
-        explanationCss = "#chart-" + str(select_question_index) + " #table-" + str(select_question_index) + " .mcExplaination"
+        explanationCss = "#chart-" + str(select_question_index) + " #table-" + str(
+            select_question_index) + " .mcExplaination"
         return self.driver.find(by_css(explanationCss))
 
     def show_bar_chart(self, select_question_index):
-        self.driver.wait_for_element(20, by_css("#bar-li-"+str(select_question_index)+" a"), want_visible=True).click()
+        self.driver.wait_for_element(20, by_css("#bar-li-" + str(select_question_index) + " a"),
+                                     want_visible=True).click()
         bar_chart_css = "#chart-" + str(select_question_index) + " #bar-" + str(select_question_index)
         self.driver.wait_for_element(20, by_css(bar_chart_css), want_visible=True)
 
     def show_pie_chart(self, select_question_index):
-        self.driver.wait_for_element(20, by_css("#pie-li-"+str(select_question_index)+" a"), want_visible=True).click()
+        self.driver.wait_for_element(20, by_css("#pie-li-" + str(select_question_index) + " a"),
+                                     want_visible=True).click()
         pie_chart_css = "#chart-" + str(select_question_index) + " #pie-" + str(select_question_index)
         self.driver.wait_for_element(20, by_css(pie_chart_css), want_visible=True)
 
@@ -125,7 +131,7 @@ class DataAnalysisPage(Page):
         data_record_list = []
         while True:
             data_record_list.extend(self.get_all_data_records())
-            if self.driver.is_element_present(NEXT_BUTTON_DISABLED) :
+            if self.driver.is_element_present(NEXT_BUTTON_DISABLED):
                 break
             self.go_to_next_page()
         return data_record_list
@@ -153,7 +159,7 @@ class DataAnalysisPage(Page):
         Return number of questions
         """
         return self.get_data_rows().__len__()
-    
+
     def get_all_questions(self):
         """
         Function to get all the questions
@@ -214,28 +220,40 @@ class DataAnalysisPage(Page):
 
     def select_month_range(self, start_year, start_month, end_year, end_month):
         curr_year = datetime.datetime.today().year
-        for i in range(curr_year-start_year):
-            self.driver.wait_for_element(20, by_xpath('//span[contains(@class,"prev_year") and position()=1]'), want_visible=True).click()
-        for i in range(curr_year-end_year):
-            self.driver.wait_for_element(20, by_xpath('//span[contains(@class,"next_year") and position()=2]'), want_visible=True).click()
+        for i in range(curr_year - start_year):
+            self.driver.wait_for_element(20, by_xpath('//span[contains(@class,"prev_year") and position()=1]'),
+                                         want_visible=True).click()
+        for i in range(curr_year - end_year):
+            self.driver.wait_for_element(20, by_xpath('//span[contains(@class,"next_year") and position()=2]'),
+                                         want_visible=True).click()
 
-        self.driver.wait_for_element(20, by_xpath('//div[@id="monthpicker_start"]//td[@data-month="%d"]' % start_month), want_visible=True).click()
-        self.driver.wait_for_element(20, by_xpath('//div[@id="monthpicker_end"]//td[@data-month="%d"]' % end_month)).click()
+        self.driver.wait_for_element(20, by_xpath('//div[@id="monthpicker_start"]//td[@data-month="%d"]' % start_month),
+                                     want_visible=True).click()
+        self.driver.wait_for_element(20,
+                                     by_xpath('//div[@id="monthpicker_end"]//td[@data-month="%d"]' % end_month)).click()
 
         self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
 
-    def select_date_range(self,start_year, start_month, start_day, end_year, end_month, end_day, click=True):
+    def select_date_range(self, start_year, start_month, start_day, end_year, end_month, end_day, click=True):
         curr_year = datetime.datetime.today().year
         curr_month = datetime.datetime.today().month
-        for i in range((curr_year-start_year)*12 + (curr_month-start_month)):
-            self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-start")]//a[contains(@class,"ui-datepicker-prev")]'), want_visible=True).click()
+        for i in range((curr_year - start_year) * 12 + (curr_month - start_month)):
+            self.driver.wait_for_element(20, by_xpath(
+                '//div[contains(@class,"range-start")]//a[contains(@class,"ui-datepicker-prev")]'),
+                                         want_visible=True).click()
             time.sleep(0.01)
-        for i in range((curr_year-end_year)*12 + (curr_month-end_month)):
-            self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-end")]//a[contains(@class,"ui-datepicker-prev")]'), want_visible=True).click()
+        for i in range((curr_year - end_year) * 12 + (curr_month - end_month)):
+            self.driver.wait_for_element(20, by_xpath(
+                '//div[contains(@class,"range-end")]//a[contains(@class,"ui-datepicker-prev")]'),
+                                         want_visible=True).click()
             time.sleep(0.01)
 
-        self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-start")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % start_day), want_visible=True).click()
-        self.driver.wait_for_element(20, by_xpath('//div[contains(@class,"range-end")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % end_day), want_visible=True).click()
+        self.driver.wait_for_element(20, by_xpath(
+            '//div[contains(@class,"range-start")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % start_day),
+                                     want_visible=True).click()
+        self.driver.wait_for_element(20, by_xpath(
+            '//div[contains(@class,"range-end")]//a[contains(@class, "ui-state-default") and text()="%d"]/..' % end_day),
+                                     want_visible=True).click()
         if click:
             self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
 
@@ -246,6 +264,7 @@ class DataAnalysisPage(Page):
 
     def select_for_data_sender(self, data_sender):
         self.open_data_sender_drop_down()
+        self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/..//a')).click()
         self.driver.wait_for_element(20, by_xpath('//input[@id="%s"]' % data_sender)).click()
         self.driver.wait_for_element(20, by_xpath('//select[@id="dataSenderSelect"]/..//button')).click()
 
