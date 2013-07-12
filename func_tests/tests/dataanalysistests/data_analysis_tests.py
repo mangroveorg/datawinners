@@ -38,10 +38,11 @@ class TestDataAnalysis(BaseTest):
         pass
 
     @classmethod
-    def go_to_analysis_page(cls, project_name=fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))):
+    def go_to_analysis_page(cls, project_name=fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)),
+                            cache_url=True):
         all_data_page = cls.global_navigation.navigate_to_all_data_page()
         analysis_page = all_data_page.navigate_to_data_analysis_page(project_name)
-        if not cls.URL:
+        if not cls.URL and cache_url:
             cls.URL = cls.driver.current_url
         return analysis_page
 
@@ -87,7 +88,8 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_date_range_with_monthly_reporting_period(self):
-        data_analysis_page = self.go_to_analysis_page("Clinic Test Project With Monthly Reporting Period".lower())
+        data_analysis_page = self.go_to_analysis_page("Clinic Test Project With Monthly Reporting Period".lower(),
+                                                      cache_url=False)
         data_analysis_page.open_reporting_period_drop_down()
         data_analysis_page.date_range_dict[MONTHLY_DATE_RANGE]()
         start_year = datetime.today().year - 1
@@ -151,7 +153,8 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test', 'smoke')
     def test_filter_data_records_by_datasender(self):
-        data_analysis_page = self.go_to_analysis_page(fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)))
+        data_analysis_page = self.go_to_analysis_page(fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)),
+                                                      cache_url=False)
         self.verify_filter_by_data_sender(data_analysis_page, ('Tester Pune', 'rep12'))
         self.verify_filter_by_data_sender(data_analysis_page, ('Shweta', 'rep1'))
 
@@ -186,7 +189,7 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test')
     def test_should_sort_data_in_alphanumerical_order_except_for_submission_date(self):
-        analysis_page = self.go_to_analysis_page(project_name="test data sorting")
+        analysis_page = self.go_to_analysis_page(project_name="test data sorting", cache_url=False)
         default = analysis_page.get_all_data_records_by_column(4)
         expected_default = ["12.2012", "20, 34", "-12, 34", "12, 34", "cat, dog", "2012.01.14", "cat", "456", "123",
                             "12.23.2011", "2011.12.12"]
