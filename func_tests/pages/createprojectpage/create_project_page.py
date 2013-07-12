@@ -5,9 +5,20 @@ from pages.lightbox.light_box_page import LightBox
 from framework.utils.data_fetcher import *
 from pages.createprojectpage.create_project_locator import *
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from tests.createprojecttests.create_project_data import *
 from pages.page import Page
 from framework.utils.common_utils import generateId, CommonUtilities
+
+OTHER_SUBJECT = "other subject"
+PROJECT_NAME = "project_name"
+PROJECT_BACKGROUND = "project_background"
+PROJECT_TYPE = "project_type"
+REPORT_TYPE = "report_type"
+SUBJECT = "subject"
+DEVICES = "devices"
+GEN_RANDOM = "gen_random"
+SURVEY = "survey"
+PUBLIC_INFO = "public information"
+DATA_SENDER_WORK = "data sender work"
 
 
 class CreateProjectPage(Page):
@@ -102,7 +113,7 @@ class CreateProjectPage(Page):
         locator = comm_utils.is_element_present(PROJECT_NAME_ERROR_MSG_LABEL)
         if locator:
             error_message = error_message + "Name  " + locator.text
-        #        locator = comm_utils.is_element_present(PROJECT_TYPE_ERROR_MSG_LABEL)
+            #        locator = comm_utils.is_element_present(PROJECT_TYPE_ERROR_MSG_LABEL)
         #        if locator:
         #            error_message = error_message + "Project Type  " + locator.text
         #        locator = comm_utils.is_element_present(QUESTIONNAIRE_ABOUT_MSG_LABEL)

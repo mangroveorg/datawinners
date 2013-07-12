@@ -15,12 +15,11 @@ from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_LOGIN_PAGE, DATA_WINNER_DASHBOARD_PAGE
-from tests.projectquestionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA
+from tests.projectquestionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, WATERPOINT_PROJECT_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.edit_survey_response_data import get_sms_data_with_questionnaire_code
 from tests.submissionlogtests.submission_log_data import *
-from tests.createprojecttests.create_project_data import CREATE_NEW_PROJECT_DATA
 
 
 @attr('suit_3')
@@ -44,7 +43,7 @@ class TestDeleteSurveyResponse(unittest.TestCase):
     def _create_project(cls):
         cls.dashboard_page = DashboardPage(cls.driver)
         create_project_page = cls.dashboard_page.navigate_to_create_project_page()
-        create_project_page.create_project_with(CREATE_NEW_PROJECT_DATA)
+        create_project_page.create_project_with(WATERPOINT_PROJECT_DATA)
         create_project_page.continue_create_project()
         CreateQuestionnairePage(cls.driver).create_questionnaire_with(WATERPOINT_QUESTIONNAIRE_DATA)
         create_project_page.save_and_create_project_successfully()

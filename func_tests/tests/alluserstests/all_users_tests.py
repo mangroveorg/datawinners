@@ -11,9 +11,8 @@ from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPa
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.alluserstests.all_users_data import *
 from pages.dashboardpage.dashboard_page import DashboardPage
-from tests.createprojecttests.create_project_data import VALID_DATA
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from tests.projectquestionnairetests.project_questionnaire_data import SENDER, RECEIVER, SMS
+from tests.projectquestionnairetests.project_questionnaire_data import SENDER, RECEIVER, SMS, VALID_SUMMARY_REPORT_DATA
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
 
@@ -88,7 +87,7 @@ class TestAllUsers(unittest.TestCase):
     def create_project(self):
         dashboard_page = DashboardPage(self.driver)
         create_project_page = dashboard_page.navigate_to_create_project_page()
-        create_project_page.create_project_with(VALID_DATA)
+        create_project_page.create_project_with(VALID_SUMMARY_REPORT_DATA)
         create_project_page.continue_create_project()
         create_project_page.save_and_create_project()
         overview_page = ProjectOverviewPage(self.driver)

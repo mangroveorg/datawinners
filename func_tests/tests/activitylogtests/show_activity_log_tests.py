@@ -1,22 +1,24 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from nose.plugins.attrib import attr
 import time
+
+from nose.plugins.attrib import attr
+
 from framework.base_test import BaseTest
-from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.loginpage.login_page import LoginPage
 from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, LOGOUT
-from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE
+from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.activitylogtests.show_activity_log_data import *
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from tests.createprojecttests.create_project_data import VALID_DATA, PAGE_TITLE as PROJECT_OVERVIEW_PAGE_TITLE
+from tests.projectquestionnairetests.project_questionnaire_data import VALID_SUMMARY_REPORT_DATA
 from tests.registrationtests.registration_tests import register_and_get_email
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from framework.utils.database_manager_postgres import DatabaseManager
+
 
 @attr('suit_1')
 class TestShowActivityLog(BaseTest):
@@ -31,10 +33,10 @@ class TestShowActivityLog(BaseTest):
     def create_a_project_and_navigate_to_activity_log_page(self):
         dashboard = self.login()
         create_project_page = dashboard.navigate_to_create_project_page()
-        create_project_page.create_project_with(VALID_DATA)
+        create_project_page.create_project_with(VALID_SUMMARY_REPORT_DATA)
         create_project_page.continue_create_project()
         create_project_page.save_and_create_project_successfully()
-        self.driver.wait_for_page_with_title(15, VALID_DATA.get(PROJECT_OVERVIEW_PAGE_TITLE))
+        self.driver.wait_for_page_with_title(15, 'Projects - Overview')
         overview_page = ProjectOverviewPage(self.driver)
         self.project_title = overview_page.get_project_title()
         return self.navigate_to_activity_log_page()

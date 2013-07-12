@@ -40,16 +40,45 @@ PROJECT_TYPE = "project_type"
 REPORT_TYPE = "report_type"
 SUBJECT = "subject"
 DEVICES = "devices"
+SURVEY = "survey"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 
-VALID_NEW_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project project ", GEN_RANDOM: True,
-                          PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                          PROJECT_TYPE: "survey",
-                          SUBJECT: "clinic",
-                          REPORT_TYPE: "other subject",
-                          DEVICES: "sms",
-                          PAGE_TITLE: "Projects - Overview"}
+CLINIC_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project project ", GEN_RANDOM: True,
+                       PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                       PROJECT_TYPE: "survey",
+                       SUBJECT: "clinic",
+                       REPORT_TYPE: "other subject",
+                       DEVICES: "sms",
+                       PAGE_TITLE: "Projects - Overview"}
+
+WATERPOINT_PROJECT_DATA = {PROJECT_NAME: "new project ", GEN_RANDOM: True,
+                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                           PROJECT_TYPE: "survey",
+                           SUBJECT: "waterpoint",
+                           REPORT_TYPE: "other subject",
+                           DEVICES: "sms",
+                           PAGE_TITLE: "Projects - Overview"}
+
+VALID_SUMMARY_REPORT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
+                             PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                             PROJECT_TYPE: SURVEY,
+                             SUBJECT: "",
+                             REPORT_TYPE: "data sender work",
+                             DEVICES: "sms",
+                             PAGE_TITLE: "Projects - Overview",
+                             "warning_message":
+                                 u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
+
+LONG_DESCRIPTION_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
+                         PROJECT_BACKGROUND: u"Exemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignantsExemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignants12345",
+                         PROJECT_TYPE: "survey",
+                         SUBJECT: "",
+                         REPORT_TYPE: "data sender work",
+                         DEVICES: "sms",
+                         PAGE_TITLE: "Projects - Overview",
+                         "warning_message":
+                             u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
 
 QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: u"cli005", GEN_RANDOM: True,
                       DEFAULT_QUESTION: {QUESTION: u"What is associatéd entity?", CODE: u"EID"},

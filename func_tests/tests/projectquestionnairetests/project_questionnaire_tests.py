@@ -194,7 +194,7 @@ class TestProjectQuestionnaire(BaseTest):
 
         dashboard_page = cls.global_navigation.navigate_to_dashboard_page()
         create_project_page = dashboard_page.navigate_to_create_project_page()
-        create_project_page.create_project_with(VALID_NEW_PROJECT_DATA)
+        create_project_page.create_project_with(CLINIC_PROJECT_DATA)
         create_project_page.continue_create_project()
         create_questionnaire_page = CreateQuestionnairePage(cls.driver)
         create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
@@ -229,7 +229,14 @@ class TestProjectQuestionnaire(BaseTest):
         self.assertEqual(create_questionnaire_page.get_option_by_index_for_multiple_choice_question(57).get("text"),
                          "2 Fisker")
 
-    @attr('already_covered')
+    @attr('functional_test')
     def test_successful_questionnaire_creation(self):
         self.create_new_project(self.verify_questionnaire_page)
-        self.driver.wait_for_page_with_title(20, fetch_(PAGE_TITLE, from_(VALID_NEW_PROJECT_DATA)))
+        self.driver.wait_for_page_with_title(20, fetch_(PAGE_TITLE, from_(CLINIC_PROJECT_DATA)))
+
+    @attr('functional_test')
+    def test_should_not_create_project_if_description_longer_than_300_chars(self):
+        create_project_page = self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
+        create_project_page.create_project_with(LONG_DESCRIPTION_DATA)
+        create_project_page.continue_create_project()
+        self.assertTrue(create_project_page.description_has_error())
