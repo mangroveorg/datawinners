@@ -1,7 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+import time
+
 from nose.plugins.attrib import attr
+
 from framework.base_test import setup_driver, teardown_driver
+from framework.utils.common_utils import by_id
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.dashboardpage.dashboard_page import DashboardPage
@@ -48,18 +52,18 @@ class TestDeleteSurveyResponse(unittest.TestCase):
     @attr('functional_test')
     def test_should_delete_a_submission(self):
         project_name, questionnaire_code = self._get_project_details()
+
         self._submit_sms_data(get_sms_data_with_questionnaire_code(questionnaire_code))
 
         submission_log_page = self._navigate_to_submission_log_page_from_project_dashboard(project_name=project_name)
-
         total_records = submission_log_page.get_total_count_of_records()
-
         submission_log_page.check_submission_by_row_number(1)
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
-
-        submission_log_page = self._navigate_to_submission_log_page_from_project_dashboard()
+        time.sleep(2)
+        self.assertEquals(self.driver.find_visible_element(by_id('message_text')).text,
+                          'The selected records have been deleted')
         self.assertEquals(int(total_records) - 1, int(submission_log_page.get_shown_records_count()))
 
     def _navigate_to_submission_log_page_from_project_dashboard(self, project_name=PROJECT_NAME):
@@ -79,5 +83,4 @@ class TestDeleteSurveyResponse(unittest.TestCase):
         page = SMSTesterPage(self.driver)
         page.send_sms_with(sms_data)
         self.assertEqual(page.get_response_message(), fetch_(MESSAGE, from_(sms_data)))
-        return self._navigate_to_submission_log_page_from_project_dashboard()
 
