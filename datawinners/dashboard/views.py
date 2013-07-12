@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.queries import get_entities_by_type
-from datawinners.accountmanagement.views import session_not_expired
+from datawinners.accountmanagement.views import session_not_expired, valid_web_user
 from datawinners import settings
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.accountmanagement.views import is_datasender, is_not_expired
@@ -81,10 +81,8 @@ def get_submissions_about_project(request, project_id):
 def is_project_inactive(row):
     return row['value']['state'] == ProjectState.INACTIVE
 
-@login_required(login_url='/login')
-@session_not_expired
+@valid_web_user
 @is_datasender
-@is_not_expired
 def dashboard(request):
     manager = get_database_manager(request.user)
     user_profile = NGOUserProfile.objects.get(user=request.user)
@@ -99,12 +97,10 @@ def dashboard(request):
         project_list.append(project)
     language = request.session.get("django_language", "en")
     return render_to_response('dashboard/home.html',
-            {"projects": project_list, 'trial_account': organization.in_trial_mode, 'language':language}, context_instance=RequestContext(request))
+                              {"projects": project_list, 'trial_account': organization.in_trial_mode, 'language':language}, context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def start(request):
     text_dict = {'project': _('Projects'), 'datasenders': _('Data Senders'),
                  'subjects': _('Subjects'), 'alldata': _('Data Records')}

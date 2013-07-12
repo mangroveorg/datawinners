@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
-from datawinners.accountmanagement.views import session_not_expired
+from datawinners.accountmanagement.views import session_not_expired, valid_web_user
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.accountmanagement.views import is_new_user, is_allowed_to_view_reports
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
@@ -91,9 +91,7 @@ def get_subject_type_list(request):
         result.extend(each)
     return sorted(result)
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def data_export(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
     project_list = sorted(get_project_list(request), key=lambda x:x['name'])
@@ -142,9 +140,7 @@ def index(request):
             context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def failed_submissions(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
     logs = DatawinnerLog.objects.all()
@@ -158,9 +154,7 @@ def failed_submissions(request):
         context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 @is_allowed_to_view_reports
 def reports(request):
     report_list = get_reports_list(get_organization(request).org_id, request.session.get('django_language', 'en'))
@@ -175,9 +169,7 @@ def reports(request):
     return response
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def smart_phone_instruction(request):
     language_code = request.LANGUAGE_CODE
     instruction_template = "alldata/smart_phone_instruction_" + language_code + ".html"
@@ -192,9 +184,7 @@ def smart_phone_instruction(request):
     return render_to_response("alldata/smart_phone_instruction.html", context,
         context_instance=RequestContext(request))
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def get_entity_list_by_type(request, entity_type):
     entity_type_list = [entity_type]
     if entity_type is None:

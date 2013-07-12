@@ -29,5 +29,6 @@ urlpatterns = patterns('',
                        (r'', include('datawinners.xforms.urls')),
                        (r'', include('datawinners.dataextraction.urls')),
                        (r'', include('datawinners.feeds.urls')),
+                       (r'', include('datawinners.smsapi.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        )

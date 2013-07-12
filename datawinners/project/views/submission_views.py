@@ -21,7 +21,7 @@ from datawinners.main.database import get_database_manager
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
-from datawinners.accountmanagement.views import session_not_expired
+from datawinners.accountmanagement.views import session_not_expired, valid_web_user
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
@@ -148,9 +148,7 @@ def construct_request_dict(survey_response, questionnaire_form_model):
     return result_dict
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def edit(request, project_id, survey_response_id, tab=0):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)

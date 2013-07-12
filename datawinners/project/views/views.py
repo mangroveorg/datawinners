@@ -16,7 +16,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, get_language, activate
 
-from datawinners.accountmanagement.views import session_not_expired
+from datawinners.accountmanagement.views import session_not_expired, valid_web_user
 from datawinners.project.view_models import ReporterEntity
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
@@ -414,9 +414,7 @@ def activate_project(request, project_id=None):
     return HttpResponseRedirect(reverse('project-overview', args=[project_id]))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def review_and_test(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -453,9 +451,7 @@ def _get_project_and_project_link(manager, project_id, reporter_id=None):
     return project, project_links
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
@@ -475,9 +471,7 @@ def subjects(request, project_id=None):
                               context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
@@ -606,9 +600,7 @@ def get_preview_and_instruction_links_for_questionnaire():
             'smart_phone_preview': reverse("smart_phone_preview"), }
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 @is_project_exist
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -852,9 +844,7 @@ def get_example_sms(fields):
     return example_sms
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 @is_project_exist
 # TODO : TW_BLR : what happens in case of POST?
 def questionnaire_preview(request, project_id=None, sms_preview=False):
@@ -914,9 +904,7 @@ def get_example_sms_message(fields, registration_questionnaire):
     return example_sms
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -933,9 +921,7 @@ def subject_registration_form_preview(request, project_id=None):
                                   context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def sender_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -969,9 +955,7 @@ def _get_subject_form_model(manager, entity_type):
     return get_form_model_by_entity_type(manager, entity_type)
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def edit_subject_questionaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)

@@ -24,7 +24,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
-from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired, session_not_expired
+from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired, session_not_expired, valid_web_user
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_data_sender_form, \
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project, \
@@ -102,9 +102,7 @@ def submit(request):
     return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': entity_id}))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def create_data_sender(request):
     create_data_sender = True
     entity_links = {'registered_datasenders_link': reverse(all_datasenders)}
@@ -145,9 +143,7 @@ def create_data_sender(request):
                                   context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def edit_data_sender(request, reporter_id):
     create_data_sender = False
     manager = get_database_manager(request.user)
@@ -475,9 +471,7 @@ def _associate_data_senders_to_project(imported_entities, manager, project_id):
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def import_subjects_from_project_wizard(request):
     manager = get_database_manager(request.user)
     project_id = request.GET.get('project_id')
@@ -522,9 +516,7 @@ def initial_values(form_model, subject):
         result.update({field.code: field.value})
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def edit_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
@@ -593,9 +585,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
                                   context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
@@ -688,9 +678,7 @@ def _get_all_datasenders(manager, projects, user):
     return all_data_senders
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def edit_subject_questionnaire(request, entity_type=None):
     manager = get_database_manager(request.user)
     if entity_type is None:
@@ -711,9 +699,7 @@ def edit_subject_questionnaire(request, entity_type=None):
                               context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def save_questionnaire(request):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
@@ -755,9 +741,7 @@ def save_questionnaire(request):
             return HttpResponse(json.dumps({'success': False, 'error_message': _(e.message)}))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def export_subject(request):
     entity_type = request.POST["entity_type"]
     entity_list = request.POST.getlist("checked")
@@ -785,9 +769,7 @@ def add_codes_sheet(wb, form_code, field_codes):
     ws.visibility = 1
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def export_template(request, entity_type=None):
     manager = get_database_manager(request.user)
     if entity_type is None:

@@ -5,14 +5,14 @@ from django.contrib.auth import authenticate, login
 
 #############################################################################
 #
-def view_or_basicauth(view, request, test_func, realm="", *args, **kwargs):
+def view_or_basicauth(view, request, is_authenticated_func, authenticate_func, realm="", *args, **kwargs):
     """
     This is a helper function used by both 'logged_in_or_basicauth' and
     'has_perm_or_basicauth' that does the nitty of determining if they
     are already logged in or if they have provided proper http-authorization
     and returning the view if all goes well, otherwise responding with a 401.
     """
-    if test_func(request.user):
+    if is_authenticated_func(request.user):
         # Already logged in, just return the view.
         #
         return view(request, *args, **kwargs)
@@ -26,7 +26,7 @@ def view_or_basicauth(view, request, test_func, realm="", *args, **kwargs):
             #
             if auth[0].lower() == "basic":
                 uname, passwd = base64.b64decode(auth[1]).split(':')
-                user = authenticate(username=uname, password=passwd)
+                user = authenticate_func(username=uname, password=passwd)
                 if user is not None:
                     if user.is_active:
                         login(request, user)
@@ -76,6 +76,7 @@ def httpbasic(view, realm="Datawinners"):
     def view_decorator(request, *args, **kwargs):
         return view_or_basicauth(view, request,
                                  lambda u: u.is_authenticated(),
+                                 authenticate,
                                  realm, *args, **kwargs)
 
     return view_decorator

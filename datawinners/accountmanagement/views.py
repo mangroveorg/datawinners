@@ -34,7 +34,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import TransportInfo
 from django.http import Http404
-from django.contrib.auth import login as sign_in
+from django.contrib.auth import login as sign_in, logout
 from django.utils.http import base36_to_int
 
 logger = logging.getLogger("django")
@@ -63,6 +63,25 @@ def project_has_web_device(f):
             return HttpResponseRedirect(referer)
         return f(*args, **kw)
 
+    return wrapper
+
+
+def is_api_user(user):
+    return user.groups.filter(name="SMS API Users").count() > 0
+
+
+def not_api_user(f):
+    def wrapper(*args, **kw):
+        user = args[0].user
+        if is_api_user(user):
+            return HttpResponseRedirect(django_settings.INDEX_PAGE)
+        return f(*args, **kw)
+
+    return wrapper
+
+
+def valid_web_user(f):
+    wrapper = login_required(not_api_user(session_not_expired(is_not_expired(f))), login_url="/login")
     return wrapper
 
 
@@ -172,7 +191,10 @@ def custom_login(request, template_name, authentication_form):
         return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
     else:
         try:
-            return login(request, template_name=template_name, authentication_form=authentication_form)
+            response = login(request, template_name=template_name, authentication_form=authentication_form)
+            if is_api_user(request.user):
+                logout(request)
+            return response
         except AccountExpiredException:
             return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
 
@@ -291,9 +313,7 @@ def users(request):
                                   context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def edit_user(request):
     if request.method == 'GET':
         profile = request.user.get_profile()

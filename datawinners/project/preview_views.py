@@ -1,13 +1,11 @@
 import json
-from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.main.database import get_database_manager
 from datawinners.project.web_questionnaire_form import SurveyResponseForm
 from mangrove.form_model.form_model import REPORTER
-from datawinners.accountmanagement.views import  session_not_expired
-from datawinners.accountmanagement.views import is_not_expired
+from datawinners.accountmanagement.views import valid_web_user
 from datawinners.project.helper import  get_preview_for_field, hide_entity_question
 from datawinners.project.models import Project
 from datawinners.project.views.views import get_example_sms, get_organization_telephone_number
@@ -37,9 +35,7 @@ def get_sms_preview_context(manager, post, project_info):
             "example_sms": example_sms}
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def sms_preview(request):
     manager = get_database_manager(request.user)
     context = {'org_number': get_organization_telephone_number(request)}
@@ -72,9 +68,7 @@ def get_web_preview_context(manager, post, project_info):
             'add_link': add_link_context(project), }
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def web_preview(request):
     project_info = json.loads(request.POST['profile_form'])
     manager = get_database_manager(request.user)
@@ -84,9 +78,7 @@ def web_preview(request):
                               context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def smart_phone_preview(request):
     language_code = request.LANGUAGE_CODE
     instruction_template = "alldata/smart_phone_instruction_" + language_code + ".html"
@@ -96,9 +88,7 @@ def smart_phone_preview(request):
                               context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def questionnaire_sms_preview(request):
     manager = get_database_manager(request.user)
     context = {'org_number': get_organization_telephone_number(request)}
@@ -109,9 +99,7 @@ def questionnaire_sms_preview(request):
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@is_not_expired
+@valid_web_user
 def questionnaire_web_preview(request):
     manager = get_database_manager(request.user)
     project_info = Project.load(manager.database, request.POST["project_id"])
