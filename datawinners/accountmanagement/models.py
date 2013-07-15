@@ -30,6 +30,9 @@ class Organization(models.Model):
     active_date = models.DateTimeField(blank=True, null=True)
     is_deactivate_email_sent = models.BooleanField(False)
 
+    def __unicode__(self):
+        return unicode(self.name + "(" + self.org_id + ")")
+
     def country_name(self):
         return ugettext(self.country.name)
 

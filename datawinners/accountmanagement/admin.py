@@ -52,6 +52,7 @@ class OrganizationSettingAdmin(DatawinnerAdmin):
 class MessageTrackerAdmin(DatawinnerAdmin):
     list_display = ("organization_name", "month", "outgoing_messages", "sms_api_usage_count", "total_outgoing_messages",
                     "incoming_messages", "total_messages")
+    list_filter = ("organization__name",)
 
     def organization_name(self, obj):
         return obj.organization.name
