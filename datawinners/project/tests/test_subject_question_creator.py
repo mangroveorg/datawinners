@@ -43,7 +43,6 @@ class TestSubjectQuestionCreator(unittest.TestCase):
         expected_code = "expected_code"
         subject_field = self._get_text_field(True, True, expected_code)
         project = self._get_mock_project()
-        project_subject_loader_mock = Mock()
         option_list = [('clinic1', 'Clinic One  (clinic1)'), ('clinic2', 'Clinic Two  (clinic2)')]
         project.entity_type.return_value = ["Clinic"]
         project.is_on_type.return_value = False

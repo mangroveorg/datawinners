@@ -183,7 +183,7 @@ def project_overview(request, project_id=None):
     questionnaire_code = questionnaire.form_code
     project_links = make_project_links(project, questionnaire_code)
     map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
-    number_data_sender = len(project.get_data_senders(manager))
+    number_data_sender = len(project.data_senders)
     number_records = survey_response_count(manager, questionnaire_code, None, None)
     number_reminders = Reminder.objects.filter(project_id=project.id).count()
     links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id]),
