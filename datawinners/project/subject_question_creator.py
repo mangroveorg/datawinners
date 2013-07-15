@@ -40,10 +40,13 @@ class SubjectQuestionFieldCreator(object):
 
         return [dict(zip(key_list, value_list)) for value_list in values]
 
+    def _get_all_options(self):
+        rows = self.dbm.database.view("entity_name_by_short_code/entity_name_by_short_code").rows
+        all_subject_choices = [(item["key"][1], item["value"] + "("+ item["key"][1] + ")") for item in rows]
+        return all_subject_choices # [(u'cid001', u'Test (cid001)'),(u'cid002', u'Test(cid002')..]
+
     def _subjects_choice_fields(self, subject_field):
-        subjects, fields, label = self.project_subject_loader(self.dbm, type=self.project.entity_type)
-        subject_data = self._build_subject_choice_data(subjects, fields)
-        all_subject_choices = map(self._data_to_choice, subject_data)
+        all_subject_choices = self._get_all_options()
         language = get_text_language_by_instruction(subject_field.instruction)
         instruction_for_subject_field = translate("Choose Subject from this list.", func=ugettext, language=language)
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
