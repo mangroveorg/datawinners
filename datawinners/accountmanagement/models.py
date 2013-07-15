@@ -113,7 +113,7 @@ class Organization(models.Model):
 
     def _get_total_message_count(self):
         message_trackers = self._get_all_message_trackers()
-        return sum([message_tracker.outgoing_message_count() for message_tracker in message_trackers])
+        return sum([message_tracker.total_messages() for message_tracker in message_trackers])
 
     def _has_exceeded_limit_for_trial_account(self):
         return self._get_total_message_count() > LIMIT_TRIAL_ORG_MESSAGE_COUNT
