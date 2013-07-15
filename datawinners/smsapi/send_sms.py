@@ -3,14 +3,14 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from datawinners import utils
 from datawinners.accountmanagement.models import OrganizationSetting
-from datawinners.accountmanagement.views import is_api_user
+from datawinners.accountmanagement.views import is_sms_api_user
 from datawinners.feeds.authorization import httpbasic, view_or_basicauth
 from datawinners.scheduler.smsclient import SMSClient
 
 
 def authenticate_api_user(username, password):
     user = authenticate(username=username, password=password)
-    if is_api_user(user):
+    if is_sms_api_user(user):
         return user
     return None
 

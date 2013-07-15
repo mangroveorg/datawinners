@@ -66,14 +66,14 @@ def project_has_web_device(f):
     return wrapper
 
 
-def is_api_user(user):
+def is_sms_api_user(user):
     return user.groups.filter(name="SMS API Users").count() > 0
 
 
 def not_api_user(f):
     def wrapper(*args, **kw):
         user = args[0].user
-        if is_api_user(user):
+        if is_sms_api_user(user):
             return HttpResponseRedirect(django_settings.INDEX_PAGE)
         return f(*args, **kw)
 
@@ -192,7 +192,7 @@ def custom_login(request, template_name, authentication_form):
     else:
         try:
             response = login(request, template_name=template_name, authentication_form=authentication_form)
-            if is_api_user(request.user):
+            if is_sms_api_user(request.user):
                 logout(request)
             return response
         except AccountExpiredException:
