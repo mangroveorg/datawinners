@@ -1,18 +1,20 @@
 # vim: ai ts=4 sts=4 et sw= encoding=utf-8
 from datetime import timedelta, date
-from couchdb.mapping import  TextField, ListField, DictField
+
+from couchdb.mapping import TextField, ListField, DictField
 from django.db.models.fields import IntegerField, CharField
 from django.db.models.fields.related import ForeignKey
+from django.db import models
+
 from datawinners.accountmanagement.models import Organization
-from datawinners.entity.import_data import load_all_subjects_of_type
+from datawinners.entity.import_data import load_all_subjects_of_type, load_data_senders
 from datawinners.scheduler.deadline import Deadline, Month, Week
-from mangrove.datastore.database import  DatabaseManager, DataObject
+from mangrove.datastore.database import DatabaseManager, DataObject
 from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.transport.repository.reporters import get_reporters_who_submitted_data_for_frequency_period
-from mangrove.utils.types import  is_string, is_empty
-from django.db import models
+from mangrove.utils.types import is_string, is_empty
 
 
 def get_all_reminder_logs_for_project(project_id, dbm):
@@ -20,12 +22,15 @@ def get_all_reminder_logs_for_project(project_id, dbm):
     rows = dbm.view.reminder_log(startkey=project_id, endkey=project_id, include_docs=True)
     return [ReminderLog.new_from_doc(dbm=dbm, doc=ReminderLog.__document_class__.wrap(row['doc'])) for row in rows]
 
+
 class ReminderRepository(object):
     def get_all_reminders_for(self, organization_id):
         return Reminder.objects.filter(organization=organization_id)
 
+
 def get_reminder_repository():
     return ReminderRepository()
+
 
 class ReminderMode(object):
     BEFORE_DEADLINE = 'before_deadline'
@@ -79,7 +84,7 @@ class Reminder(models.Model):
 
     def log(self, dbm, project_id, date, to_number, sent_status='sent', number_of_sms=0):
         log = ReminderLog(dbm=dbm, reminder=self, project_id=project_id, date=date, sent_status=sent_status,
-            number_of_sms=number_of_sms, to_number=to_number)
+                          number_of_sms=number_of_sms, to_number=to_number)
         log.save()
         return log
 
@@ -119,9 +124,9 @@ class ReminderLog(DataObject):
             else:
                 reminder_mode = str(reminder.day) + ' days ' + self._format_string_before_saving(reminder.reminder_mode)
             doc = ReminderLogDocument(reminder_id=reminder.id, project_id=project_id, sent_status=sent_status,
-                number_of_sms=number_of_sms, date=date, message=reminder.message,
-                remind_to=self._format_string_before_saving(to_number),
-                reminder_mode=reminder_mode)
+                                      number_of_sms=number_of_sms, date=date, message=reminder.message,
+                                      remind_to=self._format_string_before_saving(to_number),
+                                      reminder_mode=reminder_mode)
             DataObject._set_document(self, doc)
 
     @property
@@ -141,7 +146,7 @@ class ReminderLog(DataObject):
         return self._doc.date
 
     def _format_string_before_saving(self, value):
-        return  (' '.join(value.split('_'))).title()
+        return (' '.join(value.split('_'))).title()
 
 
 # TODO : TW_BLR : mpve this out of models
@@ -189,20 +194,20 @@ class Project(DocumentBase):
         return self.activity_report == "yes"
 
     def get_data_senders(self, dbm):
-        all_data, fields, label = load_all_subjects_of_type(dbm, type=REPORTER)
-        return [dict(zip(fields, data["cols"])) for data in all_data if data['short_code'] in self.data_senders]
+        all_data, fields, label = load_data_senders(dbm, self.data_senders)
+        return [dict(zip(fields, data["cols"])) for data in all_data]
 
     def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):
         start_date, end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
         form_code = self._load_form(dbm).form_code
         data_senders_with_submission = get_reporters_who_submitted_data_for_frequency_period(dbm, form_code, start_date,
-            end_date)
+                                                                                             end_date)
         return [ds.short_code for ds in data_senders_with_submission]
 
     def get_data_senders_without_submissions_for(self, deadline_date, dbm):
         data_sender_ids_with_submission = self._get_data_senders_ids_who_made_submission_for(dbm, deadline_date)
         all_data_senders = self.get_data_senders(dbm)
-        data_senders_without_submission = [data_sender for data_sender in all_data_senders  if
+        data_senders_without_submission = [data_sender for data_sender in all_data_senders if
                                            data_sender['short_code'] not in data_sender_ids_with_submission]
         return data_senders_without_submission
 
@@ -251,7 +256,7 @@ class Project(DocumentBase):
         for key in value_dict:
             if key in attribute_list:
                 setattr(self, key, value_dict.get(key).lower()) if key == 'name' else setattr(self, key,
-                    value_dict.get(key))
+                                                                                              value_dict.get(key))
 
     def update_questionnaire(self, dbm):
         form_model = self._load_form(dbm)
