@@ -5,11 +5,11 @@ import urllib2
 from django.conf import settings
 from django.http import HttpResponse
 import jsonpickle
+from datawinners.common.authorization import httpbasic, is_not_datasender
 
 from datawinners.main.database import get_database_manager
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.feeds.database import get_feeds_database
-from datawinners.feeds.authorization import httpbasic, is_not_datasender
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.form_model import get_form_model_by_code
 

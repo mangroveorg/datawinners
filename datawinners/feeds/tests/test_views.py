@@ -8,9 +8,9 @@ from mock import Mock, patch
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.datastore.database import DatabaseManager
 
-http_basic_patch = patch('datawinners.feeds.authorization.httpbasic', lambda x: x)
+http_basic_patch = patch('datawinners.common.authorization.httpbasic', lambda x: x)
 http_basic_patch.start()
-datasender_patch = patch('datawinners.feeds.authorization.is_not_datasender', lambda x: x)
+datasender_patch = patch('datawinners.common.authorization.is_not_datasender', lambda x: x)
 datasender_patch.start()
 from datawinners.feeds.views import feed_entries, stream_feeds
 

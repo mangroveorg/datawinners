@@ -1,8 +1,8 @@
 from unittest import TestCase
 from django.http import HttpResponse
 from mock import Mock, PropertyMock
-from accountmanagement.models import NGOUserProfile
-from datawinners.feeds.authorization import is_not_datasender
+from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.common.authorization import is_not_datasender
 
 
 class TestAuthorization(TestCase):

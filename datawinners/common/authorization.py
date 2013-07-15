@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, login
 
 #############################################################################
 #
+from datawinners.accountmanagement.views import is_sms_api_user
+
+
 def view_or_basicauth(view, request, is_authenticated_func, authenticate_func, realm="", *args, **kwargs):
     """
     This is a helper function used by both 'logged_in_or_basicauth' and
@@ -94,3 +97,21 @@ def is_not_datasender(func):
 
     return inner
 
+
+
+
+def authenticate_api_user(username, password):
+    user = authenticate(username=username, password=password)
+    if is_sms_api_user(user):
+        return user
+    return None
+
+
+def api_http_basic(view, realm="Datawinners"):
+    def view_decorator(request, *args, **kwargs):
+        return view_or_basicauth(view, request,
+                                 lambda u: u.is_authenticated(),
+                                 authenticate_api_user,
+                                 realm, *args, **kwargs)
+
+    return view_decorator
