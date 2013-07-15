@@ -89,4 +89,4 @@ DATA_SENDER_ID_WITHOUT_WEB_ACCESS = "rep5"
 DATA_SENDER_EMAIL_ID = random_string(3) + '@' + random_string(3) + '.com'
 
 ALL_DS_TO_DELETE_ARE_USER_MSG = u'You cannot delete the following Data Senders as they are DataWinners users:'
-NOTE_FOR_DELETE_SOME_DS_USER = "Note, the following Data Senders will not be deleted as they are DataWinners users"
+NOTIFICATION_WHILE_DELETING_USER = "Note, the following Data Senders will not be deleted as they are DataWinners users"

@@ -128,7 +128,6 @@ class TestAllDataSender(unittest.TestCase):
 
         self.send_sms(VALID_SMS, sms_tester_page)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_SMS)))
-        self.login()
 
     @attr('functional_test')
     def test_data_sender_devices(self):
@@ -179,7 +178,7 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.delete_data_sender()
         warning = WarningDialog(self.driver)
         message = warning.get_message()
-        self.assertRegexpMatches(message, NOTE_FOR_DELETE_SOME_DS_USER)
+        self.assertRegexpMatches(message, NOTIFICATION_WHILE_DELETING_USER)
 
     @attr('functional_test')
     def test_should_warn_delete_ds_without_note_if_ther_is_no_ds_user(self):
@@ -188,8 +187,7 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.delete_data_sender()
         warning = WarningDialog(self.driver)
         message = warning.get_message()
-        time.sleep(10)
-        self.assertNotRegexpMatches(message, NOTE_FOR_DELETE_SOME_DS_USER)
+        self.assertNotRegexpMatches(message, NOTIFICATION_WHILE_DELETING_USER)
 
     @attr('functional_test')
     def test_should_check_all_checkboxes_when_checking_checkall(self):
