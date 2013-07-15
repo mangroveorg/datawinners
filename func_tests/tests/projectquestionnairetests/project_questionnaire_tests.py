@@ -116,7 +116,7 @@ class TestProjectQuestionnaire(BaseTest):
         self.verify_sms_submission_after_edit(new_questionnaire_code)
 
     def verify_questions(self, create_questionnaire_page):
-        questions = fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA))
+        questions = fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA_CLINIC_PROJECT))
         create_questionnaire_page.select_question_link(2)
         self.driver.find(by_css("#question_title")).click()
         assert self.driver.find_visible_element(by_id("periode_green_message"))
@@ -186,7 +186,7 @@ class TestProjectQuestionnaire(BaseTest):
         return CreateQuestionnairePage(self.driver)
 
     @classmethod
-    def create_new_project(cls, verify_function=None):
+    def create_new_project(cls):
         if cls.project_name:
             all_project_page = cls.global_navigation.navigate_to_view_all_project_page()
             overview_page = all_project_page.navigate_to_project_overview_page(cls.project_name)
@@ -197,9 +197,7 @@ class TestProjectQuestionnaire(BaseTest):
         create_project_page.create_project_with(CLINIC_PROJECT_DATA)
         create_project_page.continue_create_project()
         create_questionnaire_page = CreateQuestionnairePage(cls.driver)
-        create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
-        if verify_function:
-            verify_function(create_questionnaire_page)
+        create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA_CLINIC_PROJECT)
         overview_page = create_questionnaire_page.save_and_create_project_successfully()
         cls.project_name = overview_page.get_project_title()
         return overview_page
@@ -207,15 +205,23 @@ class TestProjectQuestionnaire(BaseTest):
     def verify_sms_submission_after_edit(self, new_questionnaire_code):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
-        VALID_SMS[SMS] = new_questionnaire_code + ' cid001 12.12.2012 mino 25 05.12.2010 a d -18.1324,27.6547 d 45'
+        VALID_SMS[SMS] = new_questionnaire_code + ' cid001 12.12.2012 mino 25 05.12.2010 a d -18.1324,27.6547 45'
         sms_tester_page.send_sms_with(VALID_SMS)
         message = sms_tester_page.get_response_message()
         self.assertTrue(fetch_(SUCCESS_MESSAGE, VALID_SMS) in message, "message:" + message)
 
 
-    def verify_questionnaire_page(self, create_questionnaire_page):
+    @attr('functional_test')
+    def test_successful_questionnaire_creation(self):
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        create_project_page = dashboard_page.navigate_to_create_project_page()
+        create_project_page.create_project_with(CLINIC_PROJECT_DATA)
+        create_project_page.continue_create_project()
+        create_questionnaire_page = CreateQuestionnairePage(self.driver)
+        create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA_WITH_MANY_MC_QUSTIONS)
+
         index = 3
-        for question in fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA)):
+        for question in fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA_WITH_MANY_MC_QUSTIONS)):
             question_link_text = fetch_(QUESTION, from_(question))
             self.assertEquals(create_questionnaire_page.get_question_link_text(index), question_link_text)
             index += 1
@@ -229,10 +235,9 @@ class TestProjectQuestionnaire(BaseTest):
         self.assertEqual(create_questionnaire_page.get_option_by_index_for_multiple_choice_question(57).get("text"),
                          "2 Fisker")
 
-    @attr('functional_test')
-    def test_successful_questionnaire_creation(self):
-        self.create_new_project(self.verify_questionnaire_page)
-        self.driver.wait_for_page_with_title(20, fetch_(PAGE_TITLE, from_(CLINIC_PROJECT_DATA)))
+        overview_page = create_questionnaire_page.save_and_create_project_successfully()
+        project_name = overview_page.get_project_title()
+        self.assertTrue(fetch_(PROJECT_NAME, from_(CLINIC_PROJECT_DATA)) in project_name)
 
     @attr('functional_test')
     def test_should_not_create_project_if_description_longer_than_300_chars(self):
