@@ -1,7 +1,7 @@
 from unittest import TestCase
 from django.http import HttpRequest, HttpResponse
 import jsonpickle
-from mock import Mock, patch, call
+from mock import Mock, patch, call, PropertyMock
 from datawinners.accountmanagement.models import Organization
 
 
@@ -12,7 +12,9 @@ def mock_auth(view, request, is_authenticated_func, authenticate_func, realm="",
 class TestSendSMSApi(TestCase):
     def test_send_sms(self):
         request = Mock(HttpRequest)
-        request.POST = {"number": "1212,34334", "message": "Hello world!"}
+        type(request).raw_post_data = PropertyMock(
+            return_value=jsonpickle.encode({"numbers": ["1212", "34334"], "message": "Hello world!"},
+                                           unpicklable=False))
         with patch("datawinners.feeds.authorization.view_or_basicauth", mock_auth):
             with patch("datawinners.smsapi.send_sms.get_organization") as get_organization:
                 mock_org = Mock(spec=Organization)

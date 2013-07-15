@@ -28,14 +28,13 @@ def api_http_basic(view, realm="Datawinners"):
 @csrf_exempt
 @api_http_basic
 def send_sms(request):
-    numbers = request.POST["number"].split(',')
-    message = request.POST["message"]
+    input_request = jsonpickle.decode(request.raw_post_data)
     organization = get_organization(request)
     client = SMSClient()
     result = {}
     org_tel_number = organization.tel_number()
-    for number in numbers:
-        if client.send_sms(org_tel_number, number, message):
+    for number in input_request['numbers']:
+        if client.send_sms(org_tel_number, number, input_request['message']):
             result.update({number: "success"})
             organization.increment_sms_api_usage_count()
         else:
