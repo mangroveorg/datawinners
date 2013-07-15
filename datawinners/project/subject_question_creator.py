@@ -7,9 +7,7 @@ from datawinners.utils import translate, get_text_language_by_instruction
 
 
 class SubjectQuestionFieldCreator(object):
-    def __init__(self, dbm, project, project_subject_loader=None):
-        #for testing
-        self.project_subject_loader = load_all_subjects_of_type if project_subject_loader is None else project_subject_loader
+    def __init__(self, dbm, project):
         self.project = project
         self.dbm = dbm
 
@@ -21,6 +19,12 @@ class SubjectQuestionFieldCreator(object):
 
     def create_code_hidden_field(self, subject_field):
         return {'entity_question_code': forms.CharField(required=False, widget=HiddenInput, label=subject_field.code)}
+
+    def get_key(self, subject):
+        return subject['unique_id']
+
+    def get_value(self, subject):
+        return subject['name'] + '  (' + subject['short_code'] + ')'
 
     def _get_choice_field(self, data_sender_choices, subject_field, help_text):
         subject_choice_field = ChoiceField(required=subject_field.is_required(), choices=data_sender_choices,
@@ -34,15 +38,12 @@ class SubjectQuestionFieldCreator(object):
         data_sender_choices = self._get_all_choices(data_senders)
         return self._get_choice_field(data_sender_choices, subject_field, help_text=subject_field.instruction)
 
-    def _build_subject_choice_data(self, subjects, key_list):
-        values = map(lambda x: x["cols"] + [x["short_code"]], subjects)
-        key_list.append('unique_id')
-
-        return [dict(zip(key_list, value_list)) for value_list in values]
-
     def _get_all_options(self):
-        rows = self.dbm.database.view("entity_name_by_short_code/entity_name_by_short_code").rows
-        all_subject_choices = [(item["key"][1], item["value"] + "("+ item["key"][1] + ")") for item in rows]
+        entity_type = self.project.entity_type
+        start_key = [[entity_type]]
+        end_key = [[entity_type], {}, {}]
+        rows = self.dbm.database.view("entity_name_by_short_code/entity_name_by_short_code", start_key=start_key, end_key=end_key).rows
+        all_subject_choices = [(item["key"][1], item["value"] + "(" + item["key"][1] + ")") for item in rows]
         return all_subject_choices # [(u'cid001', u'Test (cid001)'),(u'cid002', u'Test(cid002')..]
 
     def _subjects_choice_fields(self, subject_field):
@@ -51,11 +52,6 @@ class SubjectQuestionFieldCreator(object):
         instruction_for_subject_field = translate("Choose Subject from this list.", func=ugettext, language=language)
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
 
-    def get_key(self, subject):
-        return subject['unique_id']
-
-    def get_value(self, subject):
-        return subject['name'] + '  (' + subject['short_code'] + ')'
 
     def _data_to_choice(self, subject):
         return self.get_key(subject), self.get_value(subject)

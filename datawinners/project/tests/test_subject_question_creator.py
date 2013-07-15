@@ -1,4 +1,5 @@
 import unittest
+from couchdb.client import Database
 
 from django.forms.fields import ChoiceField
 from mock import Mock
@@ -14,8 +15,8 @@ from datawinners.project.subject_question_creator import SubjectQuestionFieldCre
 class TestSubjectQuestionCreator(unittest.TestCase):
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
+        self.dbm.database = Mock(spec=Database)
         self.form_code = "form_code"
-        self._get_form_model()
         self.field_name = "test"
         self.short_code_question_code = "short_code_question_field_name"
         self.instruction = "some instruction"
@@ -43,22 +44,17 @@ class TestSubjectQuestionCreator(unittest.TestCase):
         subject_field = self._get_text_field(True, True, expected_code)
         project = self._get_mock_project()
         project_subject_loader_mock = Mock()
-        fields = ['name', 'short_code']
-        label = None
-        project_subject_loader_mock.return_value = [{'short_code': 'a', 'cols': ['clinic1', 'a']},
-                                                    {'short_code': 'b', 'cols': ['clinic2', 'b']},
-                                                   ], fields, label
+        option_list = [('clinic1', 'Clinic One  (clinic1)'), ('clinic2', 'Clinic Two  (clinic2)')]
         project.entity_type.return_value = ["Clinic"]
         project.is_on_type.return_value = False
-        expected_choices = [('a', 'clinic1  (a)'), ('b', 'clinic2  (b)')]
-        display_subject_field = SubjectQuestionFieldCreator(self.dbm, project,
-                                                            project_subject_loader=project_subject_loader_mock).create(
-            subject_field)
+        expected_choices = [('clinic1', 'Clinic One  (clinic1)'), ('clinic2', 'Clinic Two  (clinic2)')]
+        subject_question_field_creator = SubjectQuestionFieldCreator(self.dbm, project)
+        subject_question_field_creator._get_all_options = Mock(return_value=option_list)
+        display_subject_field = subject_question_field_creator.create(subject_field)
 
         self.assertEqual(expected_choices, display_subject_field.choices)
 
-        subject_question_code_hidden_field_dict = SubjectQuestionFieldCreator(self.dbm, project,
-                                                                              project_subject_loader=project_subject_loader_mock) \
+        subject_question_code_hidden_field_dict = SubjectQuestionFieldCreator(self.dbm, project) \
             .create_code_hidden_field(subject_field)
 
         self.assertEqual(expected_code, subject_question_code_hidden_field_dict['entity_question_code'].label)
@@ -82,18 +78,6 @@ class TestSubjectQuestionCreator(unittest.TestCase):
         project.get_data_senders.return_value = data_senders
         return project
 
-
-    def _get_form_model(self, is_registration_form=False):
-        return FormModel(dbm=self.dbm, form_code=self.form_code, name="abc", fields=[],
-                         is_registration_model=is_registration_form, entity_type=["entity_type"])
-
-
-    def test_build_subject_choice_data(self):
-        creator = SubjectQuestionFieldCreator(None, None)
-
-        data = creator._build_subject_choice_data(self.subject_data, self.fields)[0]
-        self.assertEqual(u'123abc', data['unique_id'])
-        self.assertEqual(u'lastlast', data['name'])
 
     def test_should_build_choice_from_subject(self):
         creator = SubjectQuestionFieldCreator(None, None)
