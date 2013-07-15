@@ -3,7 +3,6 @@ import unittest
 import time
 
 from nose.plugins.attrib import attr
-
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.common_utils import by_id
 from framework.utils.data_fetcher import fetch_, from_

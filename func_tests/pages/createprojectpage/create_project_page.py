@@ -113,7 +113,7 @@ class CreateProjectPage(Page):
         locator = comm_utils.is_element_present(PROJECT_NAME_ERROR_MSG_LABEL)
         if locator:
             error_message = error_message + "Name  " + locator.text
-            #        locator = comm_utils.is_element_present(PROJECT_TYPE_ERROR_MSG_LABEL)
+        #        locator = comm_utils.is_element_present(PROJECT_TYPE_ERROR_MSG_LABEL)
         #        if locator:
         #            error_message = error_message + "Project Type  " + locator.text
         #        locator = comm_utils.is_element_present(QUESTIONNAIRE_ABOUT_MSG_LABEL)

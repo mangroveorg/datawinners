@@ -59,6 +59,8 @@ def override_owner_with_on_behalf_user(rep_id_to_uid_map, reporter_id, survey_re
         rep_id = survey_response.values['eid']
         if rep_id_to_uid_map.get(rep_id):
             return rep_id
+        elif rep_id_to_uid_map.get(rep_id.lower()):
+            return rep_id.lower()
     except KeyError as e:
         pass
     return reporter_id
