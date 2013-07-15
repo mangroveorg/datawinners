@@ -55,20 +55,20 @@ DEADLINE_ELEVENTH_DAY_OF_FOLLOWING_MONTH = {DEADLINE: {FREQUENCY: MONTH, DAY: MO
 
 REMINDER_DATA_WEEKLY = {PROJECT_NAME: "clinic13 test project",
                         DEADLINE: {FREQUENCY: WEEK, DAY: WEEK_DAY[7], TYPE: SAME_WEEK,
-                                    EXAMPLE_TEXT: "Example: Sunday of the reporting week"},
-                         REMINDERS: {DAY:1, MESSAGE: u"One day remaining, please submit the data", REMINDER_DEADLINE: BEFORE_DEADLINE},
-                         WHOM_TO_SEND: ALL}
+                                   EXAMPLE_TEXT: "Example: Sunday of the reporting week"},
+                        REMINDERS: {DAY: 1, MESSAGE: u"One day remaining, please submit the data",
+                                    REMINDER_DEADLINE: BEFORE_DEADLINE},
+                        WHOM_TO_SEND: ALL}
 
 REMINDER_DATA_MONTHLY = {PROJECT_NAME: "clinic13 test project",
                          DEADLINE: {FREQUENCY: MONTH, DAY: MONTH_DAY[31], TYPE: FOLLOWING_MONTH,
                                     EXAMPLE_TEXT: "Example: Last Day of October for September report"},
-                         REMINDERS: [{DAY: 10, MESSAGE:u"10 days remaining, please submit the data",
+                         REMINDERS: [{DAY: 10, MESSAGE: u"10 days remaining, please submit the data",
                                       REMINDER_DEADLINE: BEFORE_DEADLINE},
-                                 {DAY: 0, MESSAGE: u"Today is the deadline, please submit the data",
-                                  REMINDER_DEADLINE: ON_DEADLINE},
-                                 {DAY: 5, MESSAGE: u"5 days overdue, please submit the data",
-                                  REMINDER_DEADLINE: AFTER_DEADLINE}],
+                                     {DAY: 0, MESSAGE: u"Today is the deadline, please submit the data",
+                                      REMINDER_DEADLINE: ON_DEADLINE},
+                                     {DAY: 5, MESSAGE: u"5 days overdue, please submit the data",
+                                      REMINDER_DEADLINE: AFTER_DEADLINE}],
                          WHOM_TO_SEND: DEFAULTERS}
-
 
 MESSAGE_LONGER_THAN_160 = "2 day(s) are remainning to deadline. Please send your data for Clinic Test Project. 2 day(s) are remainning to deadline. Please send your data for Clinic Test Project."

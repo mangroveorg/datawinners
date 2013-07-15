@@ -4,7 +4,6 @@ from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDENTIALS
 from tests.remindertests.reminder_data import *
-from nose.plugins.skip import SkipTest
 from framework.utils.data_fetcher import fetch_, from_
 
 @attr('suit_3')
@@ -40,13 +39,6 @@ class TestReminderSend(BaseTest):
     def test_trial_account_should_see_reminder_not_work_message_at_reminder_tab_in_active_project(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DISABLED_REMINDER)), TRIAL_CREDENTIALS_VALIDATES)
         self.assertEqual(DISABLED_REMINDER[WARNING_MESSAGE], all_reminder_pages.get_warning_message())
-        all_reminder_pages.click_sent_reminder_tab()
-        self.assertEqual(fetch_(WARNING_MESSAGE, from_(DISABLED_REMINDER)), all_reminder_pages.get_warning_message())
-
-    #@attr("functional_test")
-    @SkipTest
-    def test_trial_account_should_see_reminder_not_work_message_at_sent_tab_in_active_project(self):
-        all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DISABLED_REMINDER)), TRIAL_CREDENTIALS_VALIDATES)
         all_reminder_pages.click_sent_reminder_tab()
         self.assertEqual(fetch_(WARNING_MESSAGE, from_(DISABLED_REMINDER)), all_reminder_pages.get_warning_message())
 
@@ -96,40 +88,29 @@ class TestReminderSend(BaseTest):
         self.assertEqual(fetch_(REMINDERS, from_(REMINDER_DATA_WEEKLY)), reminders[0])
 
     @attr("functional_test")
-    def test_should_display_sms_length_for_before_deadline(self):
-        self.display_sms_length_for_a_reminder_type("before")
-
-    @attr("functional_test")
-    def test_should_display_sms_length_for_on_deadline(self):
-        self.display_sms_length_for_a_reminder_type("on")
-
-    @attr("functional_test")
-    def test_should_display_sms_length_for_after_deadline(self):
-        self.display_sms_length_for_a_reminder_type("after")
-
-    @attr('functional_test')
-    def test_should_limit_sms_length_for_before_reminder_deadline(self):
-        self.limit_sms_length_for_a_reminder_type("before")
-
-    @attr('functional_test')
-    def test_should_limit_sms_length_for_on_reminder_deadline(self):
-        self.limit_sms_length_for_a_reminder_type("on")
-
-    @attr('functional_test')
-    def test_should_limit_sms_length_for_after_reminder_deadline(self):
-        self.limit_sms_length_for_a_reminder_type("after")
-
-    def limit_sms_length_for_a_reminder_type(self, reminder_type):
+    def test_should_display_sms_character_length_for_various_reminder_types(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
+        self.display_sms_length_for_a_reminder_type(all_reminder_pages, "before")
+        self.display_sms_length_for_a_reminder_type(all_reminder_pages, "on")
+        self.display_sms_length_for_a_reminder_type(all_reminder_pages, "after")
+
+
+    @attr('functional_test')
+    def test_should_limit_sms_character_length_to_160_for_all_reminder_types(self):
+        all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
+        self.limit_sms_length_for_a_reminder_type(all_reminder_pages, "before")
+        self.limit_sms_length_for_a_reminder_type(all_reminder_pages, "on")
+        self.limit_sms_length_for_a_reminder_type(all_reminder_pages, "after")
+
+    def limit_sms_length_for_a_reminder_type(self, all_reminder_pages, reminder_type):
         reminder_settings = all_reminder_pages.click_reminder_settings_tab()
         getattr(reminder_settings, "enable_%s_deadline_reminder" % reminder_type)()
         getattr(reminder_settings, "set_message_for_%s_deadline_reminder" % reminder_type)(MESSAGE_LONGER_THAN_160)
         length = reminder_settings.get_sms_text_length_for_a_reminder_type(reminder_type)
         self.assertEqual(length, 160)
 
-    def display_sms_length_for_a_reminder_type(self, reminder_type):
-        all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
-        reminder_settings = all_reminder_pages.click_reminder_settings_tab()
+    def display_sms_length_for_a_reminder_type(self, all_reminder_page, reminder_type):
+        reminder_settings = all_reminder_page.click_reminder_settings_tab()
         getattr(reminder_settings, "enable_%s_deadline_reminder" % reminder_type)()
         getattr(reminder_settings, "set_message_for_%s_deadline_reminder" % reminder_type)("1234567890")
         length = reminder_settings.get_sms_text_length_for_a_reminder_type(reminder_type)
