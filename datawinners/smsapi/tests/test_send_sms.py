@@ -1,0 +1,34 @@
+from unittest import TestCase
+from django.http import HttpRequest, HttpResponse
+import jsonpickle
+from mock import Mock, patch, call
+from datawinners.accountmanagement.models import Organization
+
+
+def mock_auth(view, request, is_authenticated_func, authenticate_func, realm="", *args, **kwargs):
+    return view(request, *args, **kwargs)
+
+
+class TestSendSMSApi(TestCase):
+    def test_send_sms(self):
+        request = Mock(HttpRequest)
+        request.POST = {"number": "1212,34334", "message": "Hello world!"}
+        with patch("datawinners.feeds.authorization.view_or_basicauth", mock_auth):
+            with patch("datawinners.smsapi.send_sms.get_organization") as get_organization:
+                mock_org = Mock(spec=Organization)
+                mock_org.tel_number.return_value = "2222"
+                mock_org.increment_sms_api_usage_count = Mock(return_value=None)
+                get_organization.return_value = mock_org
+                with patch("datawinners.scheduler.smsclient.SMSClient.send_sms") as send_sms_patch:
+                    send_sms_patch.side_effect = [True, False]
+                    from datawinners.smsapi.send_sms import send_sms
+
+                    response = send_sms(request)
+                    self.assertTrue(isinstance(response, HttpResponse))
+                    self.assertEqual(200, response.status_code)
+                    self.assertDictEqual({"34334": "failure", "1212": "success"},
+                                         jsonpickle.decode(response.content))
+                    calls = [call("2222", '1212', "Hello world!"), call("2222", '34334', "Hello world!")]
+                    self.assertEqual(send_sms_patch.call_args_list, calls)
+                    mock_org.increment_sms_api_usage_count.assert_called_once_with()
+

@@ -2,10 +2,9 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import jsonpickle
-from datawinners import utils
-from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.utils import get_organization
 from datawinners.accountmanagement.views import is_sms_api_user
-from datawinners.feeds.authorization import httpbasic, view_or_basicauth
+from datawinners.feeds.authorization import view_or_basicauth
 from datawinners.scheduler.smsclient import SMSClient
 
 
@@ -26,24 +25,19 @@ def api_http_basic(view, realm="Datawinners"):
     return view_decorator
 
 
-def _get_org_number(request):
-    organization = utils.get_organization(request)
-    organization_setting = OrganizationSetting.objects.get(organization=organization)
-    organization_tel_number = organization_setting.get_organisation_sms_number()[0]
-    return organization_tel_number
-
-
 @csrf_exempt
 @api_http_basic
 def send_sms(request):
     numbers = request.POST["number"].split(',')
     message = request.POST["message"]
-    organization_tel_number = _get_org_number(request)
+    organization = get_organization(request)
     client = SMSClient()
     result = {}
+    org_tel_number = organization.tel_number()
     for number in numbers:
-        if client.send_sms(organization_tel_number, number, message):
-            result.update({number:"success"})
+        if client.send_sms(org_tel_number, number, message):
+            result.update({number: "success"})
+            organization.increment_sms_api_usage_count()
         else:
-            result.update({number:"failure"})
+            result.update({number: "failure"})
     return HttpResponse(jsonpickle.encode(result, unpicklable=False), content_type="application/javascript")

@@ -2,21 +2,25 @@ import unittest
 import datetime
 from datawinners.accountmanagement.models import Organization
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
-from django_countries.countries import  COUNTRIES
+
 
 class TestOrganization(unittest.TestCase):
-    
     def setUp(self):
         self.organization = self._prepare_organization()
 
     def tearDown(self):
         self.organization.delete()
 
+    def test_should_increment_sms_api_usage_count(self):
+        self.organization.increment_sms_api_usage_count()
+        message_tracker = self._get_current_message_tracker_of_organization()
+        self.assertEquals(1, message_tracker.sms_api_usage_count)
+
     def test_should_increment_message_count(self):
         self.organization.increment_all_message_count()
         message_tracker = self._get_current_message_tracker_of_organization()
-        self.assertEquals(1,message_tracker.incoming_sms_count)
-        self.assertEquals(1,message_tracker.outgoing_sms_count)
+        self.assertEquals(1, message_tracker.incoming_sms_count)
+        self.assertEquals(1, message_tracker.outgoing_sms_count)
 
         message_tracker = self._get_current_message_tracker_of_organization()
         message_tracker.incoming_sms_count = 3
@@ -25,8 +29,8 @@ class TestOrganization(unittest.TestCase):
 
         self.organization.increment_all_message_count()
         message_tracker = self._get_current_message_tracker_of_organization()
-        self.assertEquals(4,message_tracker.incoming_sms_count)
-        self.assertEquals(4,message_tracker.outgoing_sms_count)
+        self.assertEquals(4, message_tracker.incoming_sms_count)
+        self.assertEquals(4, message_tracker.outgoing_sms_count)
 
     def test_should_check_trial_org_message_count(self):
         self.assertFalse(self.organization.has_exceeded_message_limit())
@@ -38,10 +42,10 @@ class TestOrganization(unittest.TestCase):
 
     def _prepare_organization(self):
         trial_organization = Organization(name='test_org_for_trial_account',
-                                                            sector='PublicHealth', address='add',
-                                                            city='Pune', country='IN',
-                                                            zipcode='411006', in_trial_mode=True,
-                                                            org_id=OrganizationIdCreator().generateId())
+                                          sector='PublicHealth', address='add',
+                                          city='Pune', country='IN',
+                                          zipcode='411006', in_trial_mode=True,
+                                          org_id=OrganizationIdCreator().generateId())
         trial_organization.save()
         return trial_organization
 

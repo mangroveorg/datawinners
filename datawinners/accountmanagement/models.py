@@ -13,6 +13,7 @@ from datawinners.countrytotrialnumbermapping.models import Country
 
 TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
+
 class Organization(models.Model):
     name = models.TextField()
     sector = models.TextField()
@@ -43,16 +44,16 @@ class Organization(models.Model):
     @classmethod
     def create_organization(cls, org_details):
         organization = Organization(name=org_details.get('organization_name'),
-            sector=org_details.get('organization_sector'),
-            address=org_details.get('organization_address'),
-            addressline2=org_details.get('organization_addressline2'),
-            city=org_details.get('organization_city'),
-            state=org_details.get('organization_state'),
-            country=org_details.get('organization_country'),
-            zipcode=org_details.get('organization_zipcode'),
-            office_phone=org_details.get('organization_office_phone'),
-            website=org_details.get('organization_website'),
-            org_id=OrganizationIdCreator().generateId()
+                                    sector=org_details.get('organization_sector'),
+                                    address=org_details.get('organization_address'),
+                                    addressline2=org_details.get('organization_addressline2'),
+                                    city=org_details.get('organization_city'),
+                                    state=org_details.get('organization_state'),
+                                    country=org_details.get('organization_country'),
+                                    zipcode=org_details.get('organization_zipcode'),
+                                    office_phone=org_details.get('organization_office_phone'),
+                                    website=org_details.get('organization_website'),
+                                    org_id=OrganizationIdCreator().generateId()
         )
         organization._configure_organization_settings()
         return organization
@@ -60,11 +61,11 @@ class Organization(models.Model):
     @classmethod
     def create_trial_organization(cls, org_details):
         organization = Organization(name=org_details.get('organization_name'),
-            sector=org_details.get('organization_sector'),
-            city=org_details.get('organization_city'),
-            country=org_details.get('organization_country'),
-            org_id=OrganizationIdCreator().generateId(),
-            in_trial_mode=True
+                                    sector=org_details.get('organization_sector'),
+                                    city=org_details.get('organization_city'),
+                                    country=org_details.get('organization_country'),
+                                    org_id=OrganizationIdCreator().generateId(),
+                                    in_trial_mode=True
         )
         organization._configure_organization_settings()
         return organization
@@ -73,6 +74,11 @@ class Organization(models.Model):
         if self.in_trial_mode and self._has_exceeded_limit_for_trial_account():
             return True
         return False
+
+    def increment_sms_api_usage_count(self):
+        current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
+        message_tracker = self._get_message_tracker(current_month)
+        message_tracker.increment_sms_api_usage_count()
 
     def increment_all_message_count(self):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
@@ -104,7 +110,7 @@ class Organization(models.Model):
 
     def _get_total_message_count(self):
         message_trackers = self._get_all_message_trackers()
-        return sum([message_tracker.get_total_message_count() for message_tracker in message_trackers])
+        return sum([message_tracker.outgoing_message_count() for message_tracker in message_trackers])
 
     def _has_exceeded_limit_for_trial_account(self):
         return self._get_total_message_count() > LIMIT_TRIAL_ORG_MESSAGE_COUNT
@@ -117,6 +123,11 @@ class Organization(models.Model):
         except Exception:
             return None
 
+    def tel_number(self):
+        organization_setting = OrganizationSetting.objects.get(organization=self)
+        return organization_setting.get_organisation_sms_number()[0]
+
+
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)
 
@@ -125,10 +136,12 @@ class DataSenderOnTrialAccount(models.Model):
     mobile_number = models.TextField(unique=True, primary_key=True)
     organization = models.ForeignKey(Organization)
 
+
 def get_ngo_admin_user_profiles_for(organization):
     user_profiles = NGOUserProfile.objects.filter(org_id=organization.org_id)
     return [user_profile for user_profile in user_profiles if
             user_profile.user.groups.filter(name="NGO Admins")]
+
 
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -155,23 +168,30 @@ class SMSC(models.Model):
     def __unicode__(self):
         return self.vumi_username
 
+
 class OutgoingNumberSetting(models.Model):
-    phone_number = models.CharField(unique=True, max_length=30, help_text='Number to be used for sms originating in DataWinners, like broadcasts and reminders')
-    smsc = models.ForeignKey(SMSC, null=True,on_delete=models.SET_NULL, help_text='SMS Center to be used to for sending outgoing message.')
+    phone_number = models.CharField(unique=True, max_length=30,
+                                    help_text='Number to be used for sms originating in DataWinners, like broadcasts and reminders')
+    smsc = models.ForeignKey(SMSC, null=True, on_delete=models.SET_NULL,
+                             help_text='SMS Center to be used to for sending outgoing message.')
 
     def __unicode__(self):
         return "%s: %s" % (self.phone_number, self.smsc.vumi_username)
 
+
 class OrganizationSetting(models.Model):
     organization = models.ForeignKey(Organization, unique=True)
     document_store = models.TextField()
-    sms_tel_number = models.TextField(unique=True, null=True, help_text='Phone numbers registered to the organization for sending in messages.')
-    outgoing_number = models.ForeignKey(OutgoingNumberSetting,null=True,on_delete=models.SET_NULL, help_text='Number to be used for outgoing messages.')
+    sms_tel_number = models.TextField(unique=True, null=True,
+                                      help_text='Phone numbers registered to the organization for sending in messages.')
+    outgoing_number = models.ForeignKey(OutgoingNumberSetting, null=True, on_delete=models.SET_NULL,
+                                        help_text='Number to be used for outgoing messages.')
 
     def get_organisation_sms_number(self):
         if self._get_organization().in_trial_mode:
             return settings.TRIAL_ACCOUNT_PHONE_NUMBER
-        return [number.strip() for number in self.sms_tel_number.split(',')] if self.sms_tel_number is not None else ['']
+        return [number.strip() for number in self.sms_tel_number.split(',')] if self.sms_tel_number is not None else [
+            '']
 
     def _get_organization(self):
         return self.organization
@@ -183,6 +203,7 @@ class OrganizationSetting(models.Model):
 class MessageTracker(models.Model):
     organization = models.ForeignKey(Organization)
     month = models.DateField()
+    sms_api_usage_count = models.IntegerField(default=0)
     incoming_sms_count = models.IntegerField(default=0)
     outgoing_sms_count = models.IntegerField(default=0)
 
@@ -194,8 +215,15 @@ class MessageTracker(models.Model):
         self.outgoing_sms_count += count
         self.save()
 
-    def get_total_message_count(self):
-        return self.incoming_sms_count + self.outgoing_sms_count
+    def increment_sms_api_usage_count(self):
+        self.sms_api_usage_count += 1
+        self.save()
+
+    def outgoing_message_count(self):
+        return self.sms_api_usage_count + self.outgoing_sms_count
+
+    def total_messages(self):
+        return self.outgoing_message_count() + self.incoming_sms_count
 
     def reset(self):
         self.incoming_sms_count = 0
