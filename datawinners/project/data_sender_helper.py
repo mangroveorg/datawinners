@@ -20,7 +20,7 @@ def get_data_sender(manager, submission):
             data_sender_entity = Entity.get(manager, submission.owner_uid)
             if not data_sender_entity.is_void():
                 return data_sender_entity.value("name"), data_sender_entity.short_code, data_sender_entity.id
-        except DataObjectNotFound as e:
+        except Exception as e:
             pass #ignore and sending deleted datasender for backward compatibility.
     return NOT_AVAILABLE_DS, None
 
