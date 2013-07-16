@@ -20,12 +20,12 @@ class TestDataSenderAssociationWithTrialAccount(BaseTest):
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_trial_org_is_saved_in_right_trial_org(self):
         self.send_sms(VALID_DATA)
         analysis_page = self.go_to_analysis_page(TRIAL_CREDENTIALS_VALIDATES)
-        first_submission = analysis_page.get_data_rows()[1]
+        first_submission = analysis_page.get_data_rows()[0]
         self.assertRegexpMatches(first_submission.text, RE_TRIAL_SMS_DATA)
         self.driver.go_to(LOGOUT)
 
         analysis_page = self.go_to_analysis_page(VALID_CREDENTIALS)
-        first_submission = analysis_page.get_data_rows()[1]
+        first_submission = analysis_page.get_data_rows()[0]
         self.assertNotRegexpMatches(first_submission.text, RE_TRIAL_SMS_DATA)
         self.driver.go_to(LOGOUT)
 
@@ -33,12 +33,12 @@ class TestDataSenderAssociationWithTrialAccount(BaseTest):
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_paid_org_is_saved_in_paid_org(self):
         self.send_sms(VALID_PAID_DATA)
         analysis_page = self.go_to_analysis_page(VALID_CREDENTIALS)
-        first_submission = analysis_page.get_data_rows()[1]
+        first_submission = analysis_page.get_data_rows()[0]
         self.assertRegexpMatches(first_submission.text, RE_PAID_SMS_DATA)
         self.driver.go_to(LOGOUT)
 
         analysis_page = self.go_to_analysis_page(TRIAL_CREDENTIALS_VALIDATES)
-        first_submission = analysis_page.get_data_rows()[1]
+        first_submission = analysis_page.get_data_rows()[0]
         self.assertNotRegexpMatches(first_submission.text, RE_PAID_SMS_DATA)
 
     def send_sms(self, sms_content):
