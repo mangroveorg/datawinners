@@ -60,7 +60,7 @@ WATERPOINT_PROJECT_DATA = {PROJECT_NAME: "new project ", GEN_RANDOM: True,
                            DEVICES: "sms",
                            PAGE_TITLE: "Projects - Overview"}
 
-VALID_SUMMARY_REPORT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
+VALID_SUMMARY_REPORT_DATA = {PROJECT_NAME: "Proj Reporter Activities ", GEN_RANDOM: True,
                              PROJECT_BACKGROUND: "This project is created by functional automation suite.",
                              PROJECT_TYPE: SURVEY,
                              SUBJECT: "",
@@ -70,7 +70,7 @@ VALID_SUMMARY_REPORT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: T
                              "warning_message":
                                  u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
 
-LONG_DESCRIPTION_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
+LONG_DESCRIPTION_DATA = {PROJECT_NAME: "Proj Reporter Activities ", GEN_RANDOM: True,
                          PROJECT_BACKGROUND: u"Exemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignantsExemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignants12345",
                          PROJECT_TYPE: "survey",
                          SUBJECT: "",
