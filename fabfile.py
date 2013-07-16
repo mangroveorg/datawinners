@@ -38,7 +38,7 @@ ENVIRONMENT_TOMCAT = {
 
 ENVIRONMENT_JENKINS_JOB = {
     MANGROVE: 'Mangrove-develop',
-    DATAWINNERS: 'Datawinners'
+    DATAWINNERS: 'Datawinners-develop'
 }
 
 
