@@ -3,14 +3,14 @@ from collections import OrderedDict
 from copy import copy
 from datawinners.exceptions import InvalidEmailException
 from mangrove.data_cleaner import TelephoneNumber
-from mangrove.datastore.documents import  FormModelDocument
+from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.entity_type import get_all_entity_types
 import os
 from django.conf import settings
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import  include_of_type, exclude_of_type, timebox
+from datawinners.main.utils import include_of_type, exclude_of_type, timebox
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
-from mangrove.datastore.entity import get_all_entities, Entity
+from mangrove.datastore.entity import get_all_entities, Entity, _from_row_to_entity
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, get_form_model_by_entity_type, \
@@ -19,7 +19,7 @@ from mangrove.transport.player.parser import CsvParser, XlsParser, XlsDatasender
 from mangrove.transport.contract.transport_info import Channel, TransportInfo
 from mangrove.transport.contract.response import Response
 from mangrove.transport.player.player import Player
-from mangrove.utils.types import   is_sequence
+from mangrove.utils.types import is_sequence
 from mangrove.datastore import entity
 from mangrove.transport.work_flow import RegistrationWorkFlow, GeneralWorkFlow, ActivityReportWorkFlow
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
@@ -34,12 +34,13 @@ from django.contrib.auth.models import User, Group
 from datawinners.accountmanagement.models import NGOUserProfile
 from django.core.validators import email_re
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import  get_current_site
+from django.contrib.sites.models import get_current_site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 import logging, xlwt
+
 
 class FormCodeDoesNotMatchException(Exception):
     def __init__(self, message, form_code=None):
@@ -48,6 +49,7 @@ class FormCodeDoesNotMatchException(Exception):
 
     def __str__(self):
         return self.message
+
 
 class FilePlayer(Player):
     def __init__(self, dbm, parser, channel_name, location_tree=None):
@@ -59,7 +61,7 @@ class FilePlayer(Player):
 
     @classmethod
     def build(cls, manager, extension, default_parser=None, form_code=None):
-        channels = dict({".xls":Channel.XLS,".csv":Channel.CSV})
+        channels = dict({".xls": Channel.XLS, ".csv": Channel.CSV})
         try:
             channel = channels[extension]
         except KeyError:
@@ -72,85 +74,89 @@ class FilePlayer(Player):
             parser = XlsParser()
         else:
             raise InvalidFileFormatException()
-        player = FilePlayer( manager, parser, channel, location_tree=LocationBridge( get_location_tree( ),
-                                                                                     get_loc_hierarchy=get_location_hierarchy ) )
+        player = FilePlayer(manager, parser, channel, location_tree=LocationBridge(get_location_tree(),
+                                                                                   get_loc_hierarchy=get_location_hierarchy))
         player.form_code = form_code
         return player
 
-    def _process(self,form_code, values):
+    def _process(self, form_code, values):
         form_model = get_form_model_by_code(self.dbm, form_code)
         values = GeneralWorkFlow().process(values)
         if form_model.is_entity_registration_form():
             values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree).process(values)
         if form_model.entity_defaults_to_reporter():
-            reporter_entity = entity.get_by_short_code(self.dbm, values.get(form_model.entity_question.code.lower()), form_model.entity_type)
+            reporter_entity = entity.get_by_short_code(self.dbm, values.get(form_model.entity_question.code.lower()),
+                                                       form_model.entity_type)
             values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)
         return form_model, values
 
-    def appendFailedResponse(self, responses, message, values = None):
-        response = Response( reporters=[], survey_response_id=None)
+    def appendFailedResponse(self, responses, message, values=None):
+        response = Response(reporters=[], survey_response_id=None)
         response.success = False
-        response.errors = dict( error=ugettext( message ), row=values )
-        responses.append( response )
+        response.errors = dict(error=ugettext(message), row=values)
+        responses.append(response)
 
     def import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
                            values):
-        phone_number = TelephoneNumber( ).clean( case_insensitive_lookup( values, MOBILE_NUMBER_FIELD_CODE ) )
+        phone_number = TelephoneNumber().clean(case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE))
         if phone_number in registered_phone_numbers:
-            raise DataObjectAlreadyExists( _( "Data Sender" ), _( "Mobile Number" ), phone_number )
-        email = case_insensitive_lookup( values, "email" )
+            raise DataObjectAlreadyExists(_("Data Sender"), _("Mobile Number"), phone_number)
+        email = case_insensitive_lookup(values, "email")
         if email:
             if email in registered_emails:
-                raise DataObjectAlreadyExists( _( "User" ), _( "email address" ), email )
+                raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
-            if not email_re.match( email ):
-                raise InvalidEmailException( message="Invalid email address." )
+            if not email_re.match(email):
+                raise InvalidEmailException(message="Invalid email address.")
 
-            response = self.submit( form_model, values, submission, [] )
-            user = User.objects.create_user( email, email, 'password' )
-            group = Group.objects.filter( name="Data Senders" )[0]
-            user.groups.add( group )
-            user.first_name = case_insensitive_lookup( response.processed_data, NAME_FIELD_CODE )
-            user.save( )
-            profile = NGOUserProfile( user=user, org_id=organization.org_id, title="Mr",
-                                      reporter_id=case_insensitive_lookup( response.processed_data,
-                                                                           SHORT_CODE ) )
-            profile.save( )
-            send_email_to_data_sender( user, _( "en" ) )
+            response = self.submit(form_model, values, submission, [])
+            user = User.objects.create_user(email, email, 'password')
+            group = Group.objects.filter(name="Data Senders")[0]
+            user.groups.add(group)
+            user.first_name = case_insensitive_lookup(response.processed_data, NAME_FIELD_CODE)
+            user.save()
+            profile = NGOUserProfile(user=user, org_id=organization.org_id, title="Mr",
+                                     reporter_id=case_insensitive_lookup(response.processed_data,
+                                                                         SHORT_CODE))
+            profile.save()
+            send_email_to_data_sender(user, _("en"))
         else:
-            response = self.submit( form_model, values, submission, [] )
+            response = self.submit(form_model, values, submission, [])
         return response
 
-    def import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, responses, values):
-        transport_info = TransportInfo( transport=self.channel_name, source=self.channel_name, destination="" )
-        submission = self._create_submission( transport_info, form_code, copy( values ) )
+    def import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, responses,
+                          values):
+        transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
+        submission = self._create_submission(transport_info, form_code, copy(values))
         try:
-            form_model, values = self._process( form_code, values )
+            form_model, values = self._process(form_code, values)
             log_entry = "message: " + str(values) + "|source: web|"
-            if case_insensitive_lookup( values, ENTITY_TYPE_FIELD_CODE ) == REPORTER:
-                response = self.import_data_sender( form_model, organization, registered_emails,
-                                                    registered_phone_numbers, submission, values )
+            if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
+                response = self.import_data_sender(form_model, organization, registered_emails,
+                                                   registered_phone_numbers, submission, values)
             else:
-                response = self.submit( form_model, values, submission, [] )
+                response = self.submit(form_model, values, submission, [])
 
             if not response.success:
-                response.errors = dict( error=response.errors, row=values )
+                response.errors = dict(error=response.errors, row=values)
                 log_entry += "Status: False"
             else:
                 log_entry += "Status: True"
             self.logger.info(log_entry)
-            responses.append( response )
+            responses.append(response)
         except DataObjectAlreadyExists as e:
             if self.logger is not None:
                 log_entry += "Status: False"
                 self.logger.info(log_entry)
-            self.appendFailedResponse( responses, "%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]), values=values )
+            self.appendFailedResponse(responses, "%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
+                                      values=values)
         except (InvalidEmailException, MangroveException) as e:
-            self.appendFailedResponse( responses, e.message, values=values )
+            self.appendFailedResponse(responses, e.message, values=values)
 
     def accept(self, file_contents):
         responses = []
         from datawinners.utils import get_organization_from_manager
+
         organization = get_organization_from_manager(self.dbm)
         registered_phone_numbers = get_all_registered_phone_numbers_on_trial_account() \
             if organization.in_trial_mode else get_datasenders_mobile(self.dbm)
@@ -162,11 +168,13 @@ class FilePlayer(Player):
         if len(rows) > 0:
             (form_code, values) = rows[0]
             if self.form_code is not None and form_code != self.form_code:
-                form_model = get_form_model_by_code(self.dbm, self.form_code )
-                raise FormCodeDoesNotMatchException(ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') % form_model.entity_type[0], form_code=form_code)
+                form_model = get_form_model_by_code(self.dbm, self.form_code)
+                raise FormCodeDoesNotMatchException(
+                    ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') %
+                    form_model.entity_type[0], form_code=form_code)
         for (form_code, values) in rows:
-            self.import_submission( form_code, organization, registered_emails, registered_phone_numbers, responses,
-                                   values )
+            self.import_submission(form_code, organization, registered_emails, registered_phone_numbers, responses,
+                                   values)
         return responses
 
 #TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
@@ -177,12 +185,13 @@ def tabulate_failures(rows):
 
         if isinstance(row[1].errors['error'], dict):
             errors = ''
-            for key,value in row[1].errors['error'].items():
+            for key, value in row[1].errors['error'].items():
                 if 'is required' in value:
                     code = value.split(' ')[3]
-                    errors = errors + "\n" + _('Answer for question %s is required')% (code, )
+                    errors = errors + "\n" + _('Answer for question %s is required') % (code, )
                 elif 'xx.xxxx yy.yyyy' in value:
-                    errors = errors + "\n" + _('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315')
+                    errors = errors + "\n" + _(
+                        'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315')
                 elif 'longer' in value:
                     text = value.split(' ')[1]
                     errors = errors + "\n" + _("Answer %s for question %s is longer than allowed.") % (text, key)
@@ -192,7 +201,7 @@ def tabulate_failures(rows):
                     high = value.split(' ')[8]
                     errors = errors + "\n" + _("The answer %s must be between %s and %s") % (text, low, high)
                 else:
-                    errors = errors + "\n" +_(value)
+                    errors = errors + "\n" + _(value)
         else:
             errors = _(row[1].errors['error'])
 
@@ -205,43 +214,42 @@ def _tabulate_data(entity, form_model, field_codes):
     data = {'id': entity.id, 'short_code': entity.short_code}
 
     dict = OrderedDict()
-    tuples = [(field.code, field.name) for field in form_model.fields]
-    for (code, name) in tuples :
-        if name in entity.data:
-            dict[code] = _get_field_value(name, entity)
+    for field in form_model.fields:
+        if field.name in entity.data:
+            dict[field.code] = _get_field_value(field.name, entity)
         else:
-            dict[code] = _get_field_default_value(name, entity)
+            dict[field.code] = _get_field_default_value(field.name, entity)
 
     stringified_dict = form_model.stringify(dict)
 
     data['cols'] = [stringified_dict[field_code] for field_code in field_codes]
     return data
 
+
 def _get_entity_type_from_row(row):
     type = row['doc']['aggregation_paths']['_type']
     return type
 
+
 def load_subject_registration_data(manager,
-                                   filter_entities=exclude_of_type,
                                    type=REPORTER, tabulate_function=_tabulate_data):
-    if type==REPORTER :
-        form_model = get_form_model_by_code(manager, 'reg')
-    else:
-        form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(type))
+    entity_type = _entity_type_as_sequence('registration' if type == REPORTER else type)
+    form_model = get_form_model_by_entity_type(manager, entity_type)
 
     fields, labels, codes = get_entity_type_fields(manager, type)
-    entities = get_all_entities(dbm=manager)
+    entities = get_all_entities(dbm=manager, entity_type=entity_type)
     data = []
     for entity in entities:
-        if filter_entities(entity, type):
-            data.append(tabulate_function(entity, form_model, codes))
+        data.append(tabulate_function(entity, form_model, codes))
     return data, fields, labels
+
 
 @timebox
 def _get_entity_types(manager):
     entity_types = get_all_entity_types(manager)
     entity_list = [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
     return sorted(entity_list)
+
 
 def get_json_field_infos(fields, for_export=False):
     fields_names, labels, codes = [], [], []
@@ -261,6 +269,7 @@ def get_json_field_infos(fields, for_export=False):
             codes.append(field['code'])
     return fields_names, labels, codes
 
+
 def get_field_infos(fields):
     fields_names, labels, codes = [], [], []
     for field in fields:
@@ -270,10 +279,11 @@ def get_field_infos(fields):
             codes.append(field.code)
     return fields_names, labels, codes
 
-def get_entity_type_info(entity_type, manager = None):
+
+def get_entity_type_info(entity_type, manager=None):
     if entity_type == 'reporter':
         form_code = 'reg'
-        form_model = manager.load_all_rows_in_view("questionnaire", key = form_code)[0]
+        form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)[0]
         names, labels, codes = get_json_field_infos(form_model.value['json_fields'])
     else:
         form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(entity_type))
@@ -282,8 +292,10 @@ def get_entity_type_info(entity_type, manager = None):
 
     return dict(entity=entity_type, code=form_code, names=names, labels=labels, codes=codes, data=[])
 
+
 def _from_row_to_subject(dbm, row):
     return Entity.new_from_doc(dbm=dbm, doc=Entity.__document_class__.wrap(row.get('value')))
+
 
 def _get_subject_type_infos(subject_types, form_models_grouped_by_subject_type):
     subject_types_dict = {}
@@ -292,13 +304,14 @@ def _get_subject_type_infos(subject_types, form_models_grouped_by_subject_type):
     for subject_type in subject_types:
         form_model = form_models_grouped_by_subject_type.get(subject_type, default_form_model)
         names, labels, codes = zip(*[(field.name, field.label, field.code) for field in form_model.fields])
-        subject_types_dict[subject_type] = dict(entity = subject_type,
-                                                code = form_model.form_code,
-                                                names = names,
-                                                labels = labels,
-                                                codes = codes,
-                                                data = [],)
+        subject_types_dict[subject_type] = dict(entity=subject_type,
+                                                code=form_model.form_code,
+                                                names=names,
+                                                labels=labels,
+                                                codes=codes,
+                                                data=[], )
     return subject_types_dict
+
 
 @timebox
 def get_subject_form_models(manager):
@@ -310,10 +323,12 @@ def get_subject_form_models(manager):
             form_models[form_model.entity_type[0]] = form_model
     return form_models
 
+
 @timebox
 def get_all_subjects(manager):
     rows = manager.view.all_subjects()
     return [_from_row_to_subject(manager, row) for row in rows]
+
 
 def _get_all_subject_data(form_models, subject_types, subjects):
     subject_type_infos_dict = _get_subject_type_infos(subject_types, form_models)
@@ -326,6 +341,7 @@ def _get_all_subject_data(form_models, subject_types, subjects):
 
     return [subject_type_infos_dict[subject_type] for subject_type in subject_types]
 
+
 @timebox
 def load_all_subjects(manager):
     subject_types = _get_entity_types(manager)
@@ -334,14 +350,26 @@ def load_all_subjects(manager):
 
     return _get_all_subject_data(form_models, subject_types, subjects)
 
-def load_all_subjects_of_type(manager, filter_entities=include_of_type, type=REPORTER):
-    return load_subject_registration_data(manager, filter_entities, type)
+
+def load_all_subjects_of_type(manager, type=REPORTER):
+    return load_subject_registration_data(manager, type)
+
+
+def load_data_senders(manager, short_codes):
+    form_model = get_form_model_by_code(manager, 'reg')
+    fields, labels, codes = get_entity_type_fields(manager, REPORTER)
+    keys = [([REPORTER], short_code) for short_code in short_codes]
+    rows = manager.view.by_short_codes(reduce=False, include_docs=True, keys=keys)
+    data = [_tabulate_data(_from_row_to_entity(manager, row), form_model, codes) for row in rows]
+    return data, fields, labels
+
 
 def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None):
     base_name, extension = os.path.splitext(file_name)
     player = FilePlayer.build(manager, extension, default_parser=default_parser, form_code=form_code)
     response = player.accept(file)
     return response
+
 
 def _get_imported_entities(responses):
     short_codes = dict()
@@ -353,13 +381,14 @@ def _get_imported_entities(responses):
             datarecords_id.append(response.datarecord_id)
             if response.form_code not in form_code:
                 form_code.append(response.form_code)
-    return {"short_codes":short_codes, "datarecords_id": datarecords_id , "form_code": form_code}
+    return {"short_codes": short_codes, "datarecords_id": datarecords_id, "form_code": form_code}
 
 
 def _get_failed_responses(responses):
     return [i for i in enumerate(responses) if not i[1].success]
 
-def import_data(request, manager, default_parser=None, form_code=None   ):
+
+def import_data(request, manager, default_parser=None, form_code=None):
     response_message = ''
     error_message = None
     failure_imports = None
@@ -367,13 +396,16 @@ def import_data(request, manager, default_parser=None, form_code=None   ):
     try:
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
         file_name, file = _file_and_name(request) if 'qqfile' in request.GET else _file_and_name_for_ie(request)
-        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, default_parser=default_parser, form_code=form_code)
+        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager,
+                                          default_parser=default_parser, form_code=form_code)
         imported_entities = _get_imported_entities(responses)
         form_code = imported_entities.get("form_code")[0] if len(imported_entities.get("form_code")) == 1 else None
 
         if form_code is not None and \
-           len(imported_entities.get("datarecords_id")) and settings.CRS_ORG_ID==get_organization(request).org_id:
+                len(imported_entities.get("datarecords_id")) and settings.CRS_ORG_ID == get_organization(
+                request).org_id:
             from django.core.management import call_command
+
             datarecords_id = imported_entities.get("datarecords_id")
             call_command('crs_datamigration', form_code, *datarecords_id)
 
@@ -388,7 +420,8 @@ def import_data(request, manager, default_parser=None, form_code=None   ):
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
-        error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use the import template file!")
+        error_message = _(
+            u"We could not import your data ! You are using a document format we canʼt import. Please use the import template file!")
     except FormCodeDoesNotMatchException as e:
         error_message = e.message
     except Exception:
@@ -397,10 +430,12 @@ def import_data(request, manager, default_parser=None, form_code=None   ):
             raise
     return error_message, failure_imports, response_message, imported_entities
 
+
 def _file_and_name_for_ie(request):
     file_name = request.FILES.get('qqfile').name
     file = request.FILES.get('qqfile').read()
     return file_name, file
+
 
 def _file_and_name(request):
     file_name = request.GET.get('qqfile')
@@ -435,14 +470,16 @@ def _get_field_value(key, entity):
 
     return value
 
+
 def _get_field_default_value(key, entity):
     if key == 'geo_code':
         return entity.geometry.get('coordinates')
     if key == 'location':
-        return  entity.location_path
+        return entity.location_path
     if key == 'short_code':
         return entity.short_code
     return None
+
 
 def get_datasenders_mobile(manager):
     all_data_senders, fields, labels = load_all_subjects_of_type(manager)
@@ -459,14 +496,14 @@ def send_email_to_data_sender(user, language_code, request=None, type="activatio
         'token': default_token_generator.make_token(user),
         'protocol': 'http',
         'site': site,
-        }
+    }
     types = dict({"activation":
-                      dict({"subject":'activatedatasenderemail/activation_email_subject_for_data_sender_account_',
-                            "subject_param":False,
+                      dict({"subject": 'activatedatasenderemail/activation_email_subject_for_data_sender_account_',
+                            "subject_param": False,
                             "template": 'activatedatasenderemail/activation_email_for_data_sender_account_'}),
                   "created_user":
                       dict({"subject": 'registration/created_user_email_subject_',
-                            "subject_param":site.domain,
+                            "subject_param": site.domain,
                             "template": 'registration/created_user_email_'})})
     if type not in types:
         return
@@ -484,9 +521,11 @@ def send_email_to_data_sender(user, language_code, request=None, type="activatio
     email.content_subtype = "html"
     email.send()
 
+
 def _get_json_field_instruction_example(field):
     if field.get("entity_question_flag", False):
-        return _("Assign a unique ID for each Subject."), _("Leave this column blank if you want DataWinners to assign an ID for you.")
+        return _("Assign a unique ID for each Subject."), _(
+            "Leave this column blank if you want DataWinners to assign an ID for you.")
 
     if field["type"] == "text":
         if "constraints" in field and field["constraints"][0][0] == "length" and "max" in field["constraints"][0][1]:
@@ -498,7 +537,7 @@ def _get_json_field_instruction_example(field):
             max = field["constraints"][0][1].get("max")
             min = field["constraints"][0][1].get("min")
             if max and min:
-                return _("Enter a number between %s-%s.") % (min,max), ""
+                return _("Enter a number between %s-%s.") % (min, max), ""
             if max and not min:
                 return _("Enter a number. The maximum is %s") % max, ""
             if not max and min:
@@ -521,10 +560,10 @@ def _get_json_field_instruction_example(field):
         return _("Enter a telephone number along with the country code."), _("Example: 261333745269")
 
     date_format_mapping = {
-            "mm.yyyy": (_("Enter the date in the following format: month.year"), _("Example: 12.2011")),
-            "dd.mm.yyyy": (_("Enter the date in the following format: day.month.year"), _("Example: 25.12.2011")),
-            "mm.dd.yyyy": (_("Enter the date in the following format: month.day.year"), _("Example: 12.25.2011"))
-        }
+        "mm.yyyy": (_("Enter the date in the following format: month.year"), _("Example: 12.2011")),
+        "dd.mm.yyyy": (_("Enter the date in the following format: day.month.year"), _("Example: 25.12.2011")),
+        "mm.dd.yyyy": (_("Enter the date in the following format: month.day.year"), _("Example: 12.25.2011"))
+    }
 
     if field["type"] == "date":
         return date_format_mapping.get(field["date_format"])
