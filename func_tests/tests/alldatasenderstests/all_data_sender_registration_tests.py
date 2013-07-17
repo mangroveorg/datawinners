@@ -4,7 +4,7 @@ import unittest
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
 from framework.utils.data_fetcher import fetch_, from_
-from framework.base_test import  setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
@@ -12,6 +12,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_S
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
+
 
 @attr('suit_1')
 class TestAllDataSender(unittest.TestCase):
@@ -33,9 +34,11 @@ class TestAllDataSender(unittest.TestCase):
         exception_info = sys.exc_info()
         if exception_info != (None, None, None):
             import os
+
             if not os.path.exists("screenshots"):
                 os.mkdir("screenshots")
-            self.driver.get_screenshot_as_file("screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
+            self.driver.get_screenshot_as_file(
+                "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
 
     @classmethod
     def tearDownClass(cls):
@@ -44,7 +47,8 @@ class TestAllDataSender(unittest.TestCase):
     def login_with_created_datasenders_account(self):
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_data_senders_page = AllDataSendersPage(self.driver)
-        email = all_data_senders_page.get_data_sender_email_by_mobile_number(VALID_DATA_WITH_EMAIL[MOBILE_NUMBER_WITHOUT_HYPHENS])
+        email = all_data_senders_page.get_data_sender_email_by_mobile_number(
+            VALID_DATA_WITH_EMAIL[MOBILE_NUMBER_WITHOUT_HYPHENS])
         global_navigation = GlobalNavigationPage(self.driver)
         global_navigation.sign_out()
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
@@ -67,7 +71,7 @@ class TestAllDataSender(unittest.TestCase):
         all_data_senders_page.select_edit_action()
         self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
         self.assertRegexpMatches(self.current_page.get_success_message(),
-            fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATA)))
+                                 fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATA)))
 
     @attr('functional_test', 'smoke')
     def test_successful_addition_of_data_sender_with_email_address(self):
@@ -98,6 +102,9 @@ class TestAllDataSender(unittest.TestCase):
         add_data_sender_page.enter_data_sender_details_from(BLANK_FIELDS)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(BLANK_FIELDS)))
+        a = self.driver.switch_to_active_element()
+        self.assertEqual(a.get_attribute("id"), u"id_name")
+
 
     @attr('functional_test')
     def test_addition_of_data_sender_with_existing_data(self):
@@ -107,7 +114,6 @@ class TestAllDataSender(unittest.TestCase):
         sleep(1)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(EXISTING_DATA)))
-
 
     @attr('functional_test')
     def test_addition_of_data_sender_without_location_name(self):

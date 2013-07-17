@@ -1,9 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import time
+import re
+
 from framework.utils.common_utils import by_css
 from pages.page import Page
 from pages.activitylogpage.show_activity_log_locator import *
-import re
 
 
 class ShowActivityLogPage(Page):
@@ -23,3 +23,12 @@ class ShowActivityLogPage(Page):
         self.driver.find(FILTER_BUTTON).click()
 
 
+    def click_on_edited_submission_filter(self):
+        self.driver.find(by_id("id_action")).click()
+        self.driver.find_visible_element(
+            by_name('Edited Data Submission(s)')).click()
+
+    def select_filter(self, filter_heading, option_value):
+        self.driver.find(by_xpath(
+            "//select[@id='id_action']/optgroup[@label='" + filter_heading + "']/option[@value='" + option_value + "']")).click()
+        self.driver.find(FILTER_BUTTON).click()

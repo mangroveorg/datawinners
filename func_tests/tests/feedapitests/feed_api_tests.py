@@ -69,6 +69,7 @@ class TestFeeds(unittest.TestCase):
         self.assertFalse(submission_page.get_errors())
 
     def _get_encoded_date(self):
+        time.sleep(1)
         date = datetime.utcnow()
         date = urllib2.quote(date.strftime(DATE_FORMAT).encode("utf-8"))
         return date

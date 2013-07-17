@@ -17,9 +17,13 @@ def prettyPrint(s):
 class CouchHttpWrapper(object):
     """Basic wrapper class for operations on a couchDB"""
 
-    def __init__(self, host, port=5984, options=None):
+    def __init__(self, host='localhost', port=5984, credentials=settings.COUCHDBMAIN_CREDENTIALS):
         self.host = host
         self.port = port
+        base64_couchdbmain_credentials = base64.encodestring('%s:%s' % credentials)[:-1]
+        self.headers = {
+            "Accept": "application/json",
+            "Authorization": "Basic %s" % base64_couchdbmain_credentials}
 
     def connect(self):
         return httplib.HTTPConnection(self.host, self.port)  # No close()
@@ -86,11 +90,7 @@ class CouchHttpWrapper(object):
 
     def get(self, uri):
         c = self.connect()
-        base64_couchdbmain_credentials = base64.encodestring('%s:%s' %settings.COUCHDBMAIN_CREDENTIALS)[:-1]
-        headers = {
-            "Accept": "application/json",
-            "Authorization": "Basic %s" % base64_couchdbmain_credentials}
-        c.request("GET", uri, None, headers)
+        c.request("GET", uri, None, self.headers)
         return c.getresponse()
 
     def post(self, uri, body):
@@ -110,5 +110,5 @@ class CouchHttpWrapper(object):
 
     def delete(self, uri):
         c = self.connect()
-        c.request("DELETE", uri)
+        c.request("DELETE", uri, headers=self.headers)
         return c.getresponse()

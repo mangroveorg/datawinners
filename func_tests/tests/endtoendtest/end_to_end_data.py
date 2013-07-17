@@ -135,10 +135,10 @@ VALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
                               SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}
 
 VALID_DATA_FOR_DATA_SENDER1 = {DATA_SENDER_NAME: "Donald Mouse",
-                              MOBILE_NUMBER: "12345678901",
-                              COMMUNE: "urbaine",
-                              GPS: "48.955267  1.816013",
-                              SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}
+                               MOBILE_NUMBER: "12345678901",
+                               COMMUNE: "urbaine",
+                               GPS: "48.955267  1.816013",
+                               SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}
 
 # valid entity data
 VALID_SUBJECT_TYPE1 = {ENTITY_TYPE: "Waterpoint", SUCCESS_MESSAGE: "Entity definition successful"}
@@ -153,12 +153,12 @@ VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "waterpoint",
                           MOBILE_NUMBER: "3456789012",
                           SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: wat1"}
 
-VALID_DATA_FOR_PROJECT = {PROJECT_NAME: "Waterpoint morondava", GEN_RANDOM: False,
+VALID_DATA_FOR_PROJECT = {PROJECT_NAME: "Waterpoint morondava", GEN_RANDOM: True,
                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                          #PROJECT_TYPE: "survey",
+                          PROJECT_TYPE: "survey",
                           SUBJECT: "waterpoint",
-                          REPORT_TYPE: "other subject",
-                          #DEVICES: "sms",
+                          REPORT_TYPE: 'data sender work',
+                          DEVICES: "sms",
                           PAGE_TITLE: "Subjects"}
 
 VALID_DATA_FOR_SUBJECT_QUESTIONNAIRE = {PAGE_TITLE: "Questionnaire"}
@@ -170,25 +170,27 @@ VALID_DATA_FOR_REMINDER = {PAGE_TITLE: "Review & Test"}
 QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                       DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
                       QUESTIONS: [{QUESTION: u"Water Level", CODE: u"q3", TYPE: NUMBER, MIN: u"1", MAX: u"1000"},
-                              {QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q4", TYPE: DATE,
-                               DATE_FORMAT: DD_MM_YYYY},
-                              {QUESTION: u"Date of report in MM.YYY format", CODE: u"q5", TYPE: DATE,
-                               DATE_FORMAT: MM_YYYY},
-                              {QUESTION: u"Date of report in MM.DD.YYY format", CODE: u"q6", TYPE: DATE,
-                               DATE_FORMAT: MM_DD_YYYY},
-                              {QUESTION: u"Color of Water", CODE: u"q7", TYPE: LIST_OF_CHOICES,
-                               CHOICE: ["LIGHT RED", "LIGHT YELLOW", "DARK YELLOW"],
-                               ALLOWED_CHOICE: ONLY_ONE_ANSWER},
-                              {QUESTION: u"Water point admin name", CODE: u"q8", TYPE: WORD, LIMIT: LIMITED, MAX: u"10"},
-                              {QUESTION: u"Bacterias in water", CODE: u"q9", TYPE: LIST_OF_CHOICES,
-                               CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
-                               ALLOWED_CHOICE: MULTIPLE_ANSWERS},
-                              {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO}],
+                                  {QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q4", TYPE: DATE,
+                                   DATE_FORMAT: DD_MM_YYYY},
+                                  {QUESTION: u"Date of report in MM.YYY format", CODE: u"q5", TYPE: DATE,
+                                   DATE_FORMAT: MM_YYYY},
+                                  {QUESTION: u"Date of report in MM.DD.YYY format", CODE: u"q6", TYPE: DATE,
+                                   DATE_FORMAT: MM_DD_YYYY},
+                                  {QUESTION: u"Color of Water", CODE: u"q7", TYPE: LIST_OF_CHOICES,
+                                   CHOICE: ["LIGHT RED", "LIGHT YELLOW", "DARK YELLOW"],
+                                   ALLOWED_CHOICE: ONLY_ONE_ANSWER},
+                                  {QUESTION: u"Water point admin name", CODE: u"q8", TYPE: WORD, LIMIT: LIMITED,
+                                   MAX: u"10"},
+                                  {QUESTION: u"Bacterias in water", CODE: u"q9", TYPE: LIST_OF_CHOICES,
+                                   CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
+                                   ALLOWED_CHOICE: MULTIPLE_ANSWERS},
+                                  {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO}],
                       CHARACTER_REMAINING: "82 / 160 characters used (1 SMS)",
                       PAGE_TITLE: "Data Senders"}
 
 NEW_QUESTIONNAIRE_DATA = {QUESTIONS: [{QUESTION: "Water Level", CODE: "q3", TYPE: NUMBER, MIN: "100", MAX: "1000"},
-        {QUESTION: "What is water point name?", CODE: "q11", TYPE: WORD, LIMIT: LIMITED, MAX: ""}],
+                                      {QUESTION: "What is water point name?", CODE: "q11", TYPE: WORD, LIMIT: LIMITED,
+                                       MAX: ""}],
                           CHARACTER_REMAINING: "83 / 160 characters used (1 SMS)",
                           PAGE_TITLE: "Data Senders"}
 
@@ -196,10 +198,11 @@ VALID_DATA_REVIEW_AND_TEST = {PROJECT_PROFILE: {PROJECT_NAME: "waterpoint morond
                                                 PROJECT_BACKGROUND: "This project is created by functional automation suite.",
                                                 #PROJECT_TYPE: "survey",
                                                 #DEVICES: "sms,web"
-                                                },
+},
                               SUBJECT_DETAILS: {SUBJECT: "waterpoint"},
                               DATA_SENDER_COUNT: "1",
-                              QUESTIONNAIRE: [u'What are you reporting on?', u'What is the reporting period for the activity?', u'Water Level',
+                              QUESTIONNAIRE: [u'What are you reporting on?',
+                                              u'What is the reporting period for the activity?', u'Water Level',
                                               u'Date of report in DD.MM.YYY format', u'Date of report in MM.YYY format',
                                               u'Date of report in MM.DD.YYY format', u'Color of Water',
                                               u'Water point admin name', u'Bacterias in water', u'Geo points of Well'],
@@ -213,10 +216,11 @@ VALID_DATA_FOR_SMS_LIGHT_BOX = {
 VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                       RECEIVER: "",
                       SMS: "WPS01 wat1 11.10.2011  98  12.04.2011  04.2011  04.12.2011   c  Mr.Tessy  ab  27.178057,-78.007789",
-SUCCESS_MESSAGE: SUCCESS_MESSAGE_TEXT}
+                      SUCCESS_MESSAGE: SUCCESS_MESSAGE_TEXT}
 
-SMS_DATA_LOG = {SMS_SUBMISSION: "Success No wat1 11.10.2011 98 12.04.2011 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae, Bacteroids 27.178057,-78.007789",
-                UNIQUE_VALUE: "Mr.Tessy"}
+SMS_DATA_LOG = {
+SMS_SUBMISSION: "Success No wat1 11.10.2011 98 12.04.2011 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae, Bacteroids 27.178057,-78.007789",
+UNIQUE_VALUE: "Mr.Tessy"}
 
 NEW_VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                           RECEIVER: "",
@@ -228,7 +232,7 @@ NEW_SMS_DATA_LOG = {
     UNIQUE_VALUE: "Mr.Jessy"}
 
 INVALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
-                              MOBILE_NUMBER: "",
-                              COMMUNE: "urbaine",
-                              GPS: "48.955267  1.816013",
-                              SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}
+                                MOBILE_NUMBER: "",
+                                COMMUNE: "urbaine",
+                                GPS: "48.955267  1.816013",
+                                SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}

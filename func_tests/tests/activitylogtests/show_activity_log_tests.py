@@ -1,27 +1,40 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import time
+import unittest
 
 from nose.plugins.attrib import attr
 
-from framework.base_test import BaseTest
+from framework.base_test import setup_driver, teardown_driver
+from framework.utils.common_utils import by_css
+from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.activitylogtests.show_activity_log_data import *
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from tests.projectquestionnairetests.project_questionnaire_data import VALID_SUMMARY_REPORT_DATA
 from tests.registrationtests.registration_tests import register_and_get_email
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from framework.utils.database_manager_postgres import DatabaseManager
 
 
 @attr('suit_1')
-class TestShowActivityLog(BaseTest):
+class TestShowActivityLog(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = setup_driver()
+        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(cls.driver)
+        login_page.do_successful_login_with(VALID_CREDENTIALS)
+        cls.global_navigation_page = GlobalNavigationPage(cls.driver)
+        cls.project_title = cls.create_new_project()
+        cls.email = None
+
     def login(self, credential=VALID_CREDENTIALS):
         # doing successful login with valid credentials
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
@@ -29,25 +42,28 @@ class TestShowActivityLog(BaseTest):
         login_page.do_successful_login_with(credential)
         return DashboardPage(self.driver)
 
-
-    def create_a_project_and_navigate_to_activity_log_page(self):
-        dashboard = self.login()
+    @classmethod
+    def create_new_project(cls):
+        dashboard = cls.global_navigation_page.navigate_to_dashboard_page()
         create_project_page = dashboard.navigate_to_create_project_page()
-        create_project_page.create_project_with(VALID_SUMMARY_REPORT_DATA)
+        create_project_page.create_project_with(NEW_PROJECT_DATA)
         create_project_page.continue_create_project()
-        create_project_page.save_and_create_project_successfully()
-        self.driver.wait_for_page_with_title(15, 'Projects - Overview')
-        overview_page = ProjectOverviewPage(self.driver)
-        self.project_title = overview_page.get_project_title()
-        return self.navigate_to_activity_log_page()
+        questionnaire_page = CreateQuestionnairePage(cls.driver)
+        questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
+        questionnaire_page.save_and_create_project_successfully()
+        cls.driver.wait_for_page_with_title(5, 'Projects - Overview')
+        return ProjectOverviewPage(cls.driver).get_project_title()
 
     @attr('functional_test', 'smoke')
     def test_should_match_created_project_entry_in_user_activity_log_page(self):
         """
         This function will create a project and will check the user activity log entry for that action
         """
-        activity_log_page = self.create_a_project_and_navigate_to_activity_log_page()
+
+        activity_log_page = self.navigate_to_activity_log_page()
         self.assertEqual(ACTIVITY_LOG_PAGE_TITLE, self.driver.get_title())
+        activity_log_page.select_filter("Project", "Created Project")
+        time.sleep(3)
         project_title = activity_log_page.get_data_on_cell(1, 3)
         self.assertEqual(project_title.lower(), self.project_title)
         self.assertEqual(activity_log_page.get_data_on_cell(1, 1), TESTER_NAME)
@@ -67,11 +83,12 @@ class TestShowActivityLog(BaseTest):
         self.driver.go_to(DATA_WINNER_USER_ACTIVITY_LOG_PAGE)
         return ShowActivityLogPage(self.driver)
 
-    def prepare_data_for_showing_only_logs_for_current_organization(self):
-        confirmation_page, email = register_and_get_email(self.driver)
-        account_activate_page = ActivateAccountPage(self.driver)
+    @classmethod
+    def prepare_data_for_showing_only_logs_for_current_organization(cls):
+        confirmation_page, cls.email = register_and_get_email(cls.driver)
+        account_activate_page = ActivateAccountPage(cls.driver)
         dbmanager = DatabaseManager()
-        activation_code = dbmanager.get_activation_code(email.lower())
+        activation_code = dbmanager.get_activation_code(cls.email.lower())
         account_activate_page.activate_account(activation_code)
 
     def assert_there_is_no_entry(self, activity_log_page):
@@ -79,31 +96,27 @@ class TestShowActivityLog(BaseTest):
         self.assertEqual(0, entries_number)
 
     def assert_there_is_entries_for_tester150411_organization(self):
-        self.driver.go_to('http://localhost:8000/logout/')
+        self.driver.go_to(LOGOUT)
         self.login()
         activity_log_page = self.navigate_to_activity_log_page()
         entries_number = activity_log_page.get_number_of_entries_found()
         self.assertTrue(entries_number != 0)
 
+    @attr('functional_test')
     def test_edit_submissions_are_logged(self):
-        dashboard = self.login()
-        create_project_page = dashboard.navigate_to_create_project_page()
-        create_project_page.create_project_with(NEW_PROJECT_DATA)
-        create_project_page.continue_create_project()
-        questionnaire_page = CreateQuestionnairePage(self.driver)
-        questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
-        questionnaire_page.save_and_create_project()
-        project_overview = ProjectOverviewPage(self.driver)
-
-        web_submission_page = project_overview.navigate_to_data_page().navigate_to_web_submission_tab()
+        project_overview = self.global_navigation_page.navigate_to_view_all_project_page().navigate_to_project_overview_page(
+            self.project_title)
+        web_submission_page = project_overview.navigate_to_web_questionnaire_page()
         web_submission_page.fill_and_submit_answer(VALID_ANSWERS)
         submission_log_page = web_submission_page.navigate_to_submission_log()
         submission_log_page.check_submission_by_row_number(1)
         submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
         edit_submission_page = WebSubmissionPage(self.driver)
         edit_submission_page.fill_and_submit_answer(EDITED_ANSWERS)
-        time.sleep(3)
+        self.driver.wait_for_element(5, by_css('.success-message-box'), want_visible=True)
         activity_log_page = self.navigate_to_activity_log_page()
+        activity_log_page.select_filter('Data Submissions', 'Edited Data Submission(s)')
+        time.sleep(3)
         self.assertEqual("Edited Data Submission(s)", activity_log_page.get_data_on_cell(row=1, column=2))
         self.assertTrue(activity_log_page.get_data_on_cell(row=1, column=3).startswith("Reporter activities"))
         details_data = activity_log_page.get_data_on_cell(row=1, column=4)
@@ -116,3 +129,13 @@ class TestShowActivityLog(BaseTest):
         self.assertTrue('Clinic admin name: "something" to "nothing"' in details_data)
         self.assertTrue('Bacterias in water: "Bacteroids" to "Aquificae, Bacteroids, Chlorobia"' in details_data)
         self.assertTrue('Geo points of Clinic: "-1,-1" to "1,1"' in details_data)
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls.email is not None:
+            dbmanager = DatabaseManager()
+            dbname = dbmanager.delete_organization_all_details(cls.email.lower())
+            couchwrapper = CouchHttpWrapper()
+            couchwrapper.deleteDb(dbname)
+        teardown_driver(cls.driver)
+

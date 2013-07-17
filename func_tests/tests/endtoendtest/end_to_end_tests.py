@@ -10,7 +10,6 @@ from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from pages.addsubjectpage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
-from pages.lightbox.light_box_page import LightBox
 from pages.loginpage.login_page import LoginPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE
@@ -25,10 +24,12 @@ def activate_account(driver, email):
     account_activate_page.activate_account(activation_code)
     return account_activate_page
 
+
 def do_login(driver, email, password):
     driver.go_to(DATA_WINNER_LOGIN_PAGE)
     login_page = LoginPage(driver)
-    return login_page.do_successful_login_with({USERNAME:email, PASSWORD:password})
+    return login_page.do_successful_login_with({USERNAME: email, PASSWORD: password})
+
 
 @attr('suit_2')
 class TestApplicationEndToEnd(BaseTest):
@@ -38,9 +39,11 @@ class TestApplicationEndToEnd(BaseTest):
         exception_info = sys.exc_info()
         if exception_info != (None, None, None):
             import os
+
             if not os.path.exists("screenshots"):
                 os.mkdir("screenshots")
-            self.driver.get_screenshot_as_file("screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
+            self.driver.get_screenshot_as_file(
+                "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
 
         try:
             self.driver.quit()
@@ -48,7 +51,7 @@ class TestApplicationEndToEnd(BaseTest):
                 email = self.email
                 dbmanager = DatabaseManager()
                 dbname = dbmanager.delete_organization_all_details(email.lower())
-                couchwrapper = CouchHttpWrapper("localhost")
+                couchwrapper = CouchHttpWrapper()
                 couchwrapper.deleteDb(dbname)
         except TypeError as e:
             pass
@@ -144,9 +147,9 @@ class TestApplicationEndToEnd(BaseTest):
         review_page.open_subject_accordion()
         self.assertEqual(fetch_(SUBJECT_DETAILS, from_(VALID_DATA_REVIEW_AND_TEST)), review_page.get_subject_details())
         # unreliable in firefox in CI, works fine locally
-#        review_page.open_data_sender_accordion()
-#        self.assertEqual(fetch_(DATA_SENDER_COUNT, from_(VALID_DATA_REVIEW_AND_TEST)),
-#                         review_page.get_data_sender_count())
+        #        review_page.open_data_sender_accordion()
+        #        self.assertEqual(fetch_(DATA_SENDER_COUNT, from_(VALID_DATA_REVIEW_AND_TEST)),
+        #                         review_page.get_data_sender_count())
         review_page.open_questionnaire_accordion()
         self.assertEqual(fetch_(QUESTIONNAIRE, from_(VALID_DATA_REVIEW_AND_TEST)), review_page.get_questionnaire())
 
