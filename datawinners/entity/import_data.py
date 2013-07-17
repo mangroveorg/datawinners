@@ -237,7 +237,7 @@ def load_subject_registration_data(manager,
     form_model = get_form_model_by_entity_type(manager, entity_type)
 
     fields, labels, codes = get_entity_type_fields(manager, type)
-    entities = get_all_entities(dbm=manager, entity_type=entity_type)
+    entities = get_all_entities(dbm=manager, entity_type=_entity_type_as_sequence(type))
     data = []
     for entity in entities:
         data.append(tabulate_function(entity, form_model, codes))
