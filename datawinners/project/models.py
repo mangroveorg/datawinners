@@ -7,7 +7,8 @@ from django.db.models.fields.related import ForeignKey
 from django.db import models
 
 from datawinners.accountmanagement.models import Organization
-from datawinners.entity.import_data import load_all_subjects_of_type, load_data_senders
+from datawinners.entity.data_sender import load_data_senders
+from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.scheduler.deadline import Deadline, Month, Week
 from mangrove.datastore.database import DatabaseManager, DataObject
 from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField

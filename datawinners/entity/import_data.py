@@ -355,13 +355,6 @@ def load_all_subjects_of_type(manager, type=REPORTER):
     return load_subject_registration_data(manager, type)
 
 
-def load_data_senders(manager, short_codes):
-    form_model = get_form_model_by_code(manager, 'reg')
-    fields, labels, codes = get_entity_type_fields(manager, REPORTER)
-    keys = [([REPORTER], short_code) for short_code in short_codes]
-    rows = manager.view.by_short_codes(reduce=False, include_docs=True, keys=keys)
-    data = [_tabulate_data(_from_row_to_entity(manager, row), form_model, codes) for row in rows]
-    return data, fields, labels
 
 
 def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None):

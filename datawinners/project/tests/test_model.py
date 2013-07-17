@@ -156,13 +156,10 @@ class TestProjectModel(MangroveTestCase):
         project.data_senders = ["rep1", "rep2", "rep3", "rep4", "rep5"]
         dbm = Mock(spec=DatabaseManager)
 
-        with patch(
-            "datawinners.project.models.get_reporters_who_submitted_data_for_frequency_period") as get_reporters_who_submitted_data_for_frequency_period_mock:
-            with patch("datawinners.project.models.load_all_subjects_of_type") as load_all_subjects_of_type_mock:
-                load_all_subjects_of_type_mock.return_value = (
-                [{"cols": ["rep%s" % i, i], "short_code": "rep%s" % i}  for i in
-                                                                        range(
-                                                                            10)], ["short_code", "mobile_number"],
+        with patch("datawinners.project.models.get_reporters_who_submitted_data_for_frequency_period") as get_reporters_who_submitted_data_for_frequency_period_mock:
+            with patch("datawinners.project.models.load_data_senders") as load_data_senders_mock:
+                load_data_senders_mock.return_value = (
+                [{"cols": ["%s" % rep, rep], "short_code": "%s" % rep}  for rep in project.data_senders], ["short_code", "mobile_number"],
                 ["What is DS Unique ID", "What is DS phone number"])
                 get_reporters_who_submitted_data_for_frequency_period_mock.return_value = [
                     self._create_reporter_entity("rep1"), self._create_reporter_entity("rep3")]
@@ -170,17 +167,17 @@ class TestProjectModel(MangroveTestCase):
                 data_senders = project.get_data_senders_without_submissions_for(date(2011, 11, 5), dbm)
 
         self.assertEqual(3, len(data_senders))
-        self.assertIn("rep2", [ds["short_code"]  for ds in data_senders])
-        self.assertIn("rep4", [ds["short_code"]  for ds in data_senders])
-        self.assertIn("rep5", [ds["short_code"]  for ds in data_senders])
+        self.assertIn("rep2", [ds["short_code"] for ds in data_senders])
+        self.assertIn("rep4", [ds["short_code"] for ds in data_senders])
+        self.assertIn("rep5", [ds["short_code"] for ds in data_senders])
 
     def test_should_delete_datasender_from_project(self):
         self.project1.data_senders = ['rep1', 'rep2']
         datasender_to_be_deleted = 'rep1'
         self.project1.delete_datasender(self.manager, datasender_to_be_deleted)
         self.project1 = Project.load(self.manager.database, self.project1_id)
-        expected_datasenders = ['rep2']
-        self.assertEqual(self.project1.data_senders, expected_datasenders)
+        expected_data_senders = ['rep2']
+        self.assertEqual(self.project1.data_senders, expected_data_senders)
 
 
 
