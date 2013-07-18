@@ -2,9 +2,11 @@
 from couchdb.client import Row
 from django.utils import unittest
 from django.test import Client
-from mock import Mock
-from dashboard.views import _find_reporter_name
+from mock import Mock, call
+from datawinners.dashboard.views import _find_reporter_name
 from mangrove.datastore.database import DatabaseManager
+from mangrove.datastore.entity import Entity
+
 
 class TestDashboard(unittest.TestCase):
 
@@ -23,19 +25,13 @@ class TestDashboard(unittest.TestCase):
 
     def test_should_get_return_reporter_name(self):
         row = Row()
-        nw_row = Row()
-        nw_row.update({"value" : "ashwin"})
-        row.update({"value":{"channel" : "sms", "source" : "5648"}})
-        dbm = Mock(wraps=DatabaseManager)
-        dbm.load_all_rows_in_view.return_value = [nw_row]
+        dbm = Mock(DatabaseManager)
+        entity = Mock(Entity)
+        entity.value.return_value = "ashwin"
+        row.update({"value":{"owner_uid" : "123"}})
+        dbm.get.return_value = entity
         reporter = _find_reporter_name(dbm, row)
+        dbm.get.assert_called_once_with("123", Entity, False)
         self.assertEquals(reporter,"ashwin")
 
-    def test_should_return_telephone_no_if_reporter_has_updated_his_mobile_no(self):
-        row = Row()
-        row.update({"value": {"channel": "sms", "source": "5648"}})
-        dbm = Mock(wraps=DatabaseManager)
-        dbm.load_all_rows_in_view.return_value = []
-        reporter = _find_reporter_name(dbm, row)
-        self.assertEquals(reporter, "5648")
 
