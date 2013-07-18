@@ -25,7 +25,7 @@ SUBMISSION_DATE_FORMAT_FOR_SUBMISSION = "%b. %d, %Y, %I:%M %p"
 DEFAULT_DATE_FORMAT = 'dd.MM.yyyy'
 
 NOT_AVAILABLE = "N/A"
-NOT_AVAILABLE_DS = "Deleted Data Sender"
+NOT_AVAILABLE_DS = "Unknown"
 
 logger = logging.getLogger("datawinners.reminders")
 

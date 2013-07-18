@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from dateutil.parser import parse
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
+from datawinners.project.helper import NOT_AVAILABLE
 from mangrove.form_model.field import DateField, ExcelDate
 from mangrove.utils.types import is_sequence
 
@@ -54,6 +55,8 @@ class DataSenderFilter(object):
         return filter(lambda x: self._with_reporter_uid(x), survey_responses)
 
     def _with_reporter_uid(self, survey_response):
+        if not survey_response.owner_uid:
+            return NOT_AVAILABLE in self.survey_response_owner_uids
         return survey_response.owner_uid in self.survey_response_owner_uids
 
 
