@@ -23,25 +23,27 @@ def get_all_active_data_senders(dbm):
 
 def remove_deleted_ds_from_project(db_name):
     logger = logging.getLogger(db_name)
-    dbm = get_db_manager(db_name)
-    logger.info("starting data fix for " + db_name)
-    all_data_senders = set(get_all_active_data_senders(dbm))
-    for project_doc in dbm.database.view("project_names/project_names", include_docs=True):
-        try:
-            project_data_senders = set(project_doc["doc"]["data_senders"])
+    try:
+        dbm = get_db_manager(db_name)
+        logger.info("starting data fix for " + db_name)
+        all_data_senders = set(get_all_active_data_senders(dbm))
+        for project_doc in dbm.database.view("project_names/project_names", include_docs=True):
+            try:
+                project_data_senders = set(project_doc["doc"]["data_senders"])
 
-            invalid_ds = project_data_senders.difference(all_data_senders)
+                invalid_ds = project_data_senders.difference(all_data_senders)
 
-            project_doc = Project._wrap_row(project_doc)
-            for ds in invalid_ds:
-                logger.info("Found invalid data senders in project : " + str(project_doc) + " " + str(invalid_ds))
-                project_doc.delete_datasender(dbm, ds)
+                project_doc = Project._wrap_row(project_doc)
+                for ds in invalid_ds:
+                    logger.info("Found invalid data senders in project : " + str(project_doc) + " " + str(invalid_ds))
+                    project_doc.delete_datasender(dbm, ds)
 
-        except Exception as e:
-            print "Error : " + db_name + " : " + str(project_doc) + e.message
-            traceback.print_exc(file=sys.stdout)
-    logger.info("done:" + db_name)
-    mark_start_of_migration(db_name)
-
+            except Exception as e:
+                print "Error : " + db_name + " : " + str(project_doc) + e.message
+                traceback.print_exc(file=sys.stdout)
+        logger.info("done:" + db_name)
+        mark_start_of_migration(db_name)
+    except Exception as e :
+        logger.exception("Failed Database : %s , with error :%s " % (db_name, e.message))
 
 migrate(all_db_names(), remove_deleted_ds_from_project, version=(7, 0, 4))
