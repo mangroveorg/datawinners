@@ -709,7 +709,7 @@ msgstr ""
 msgid "All Subjects"
 msgstr ""
 
-msgid "Add A Data Sender"
+msgid "Add a Data Sender"
 msgstr ""
 
 msgid "Add a Subject"
@@ -3737,7 +3737,7 @@ msgid "Your changes have been saved."
 msgstr ""
 msgid "Edit a"
 msgstr ""
-msgid "Edit A Data Sender"
+msgid "Edit a Data Sender"
 msgstr ""
 
 msgid "There should not be any space at the beginning and the end of the password."

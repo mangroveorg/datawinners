@@ -191,3 +191,9 @@ class AllDataSendersPage(Page):
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_DS_CB).get_attribute("checked") == "true"
+
+    def edit_datasender(self, uid=None):
+        if not uid: return False
+        self.select_a_data_sender_by_id(uid)
+        self.select_edit_action()
+        return AddDataSenderPage(self.driver)

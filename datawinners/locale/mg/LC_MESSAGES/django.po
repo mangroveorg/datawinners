@@ -655,10 +655,10 @@ msgstr ""
 msgid "All Subjects"
 msgstr "Tous les sujets"
 
-msgid "Add A Data Sender"
+msgid "Add a Data Sender"
 msgstr "Ajoutez un Envoyeur"
 
-msgid "Add A Subject"
+msgid "Add a Subject"
 msgstr "Ajoutez un sujet"
 
 msgid "Add a new subject type"

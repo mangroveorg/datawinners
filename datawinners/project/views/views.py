@@ -51,7 +51,8 @@ from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import import_subjects_from_project_wizard, save_questionnaire as subject_save_questionnaire, create_single_web_user
+from datawinners.entity.views import import_subjects_from_project_wizard, get_datasender_user_detail, \
+    save_questionnaire as subject_save_questionnaire, create_single_web_user
 from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -1033,6 +1034,9 @@ def edit_data_sender(request, project_id, reporter_id):
     manager = get_database_manager(request.user)
     reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
     project, links = _get_project_and_project_link(manager, project_id, reporter_id)
+    datasender = {'short_code':reporter_id}
+    get_datasender_user_detail(datasender, request.user)
+    email = datasender.get('email') if datasender.get('is_user', False) else False
 
     if request.method == 'GET':
         location = reporter_entity.location
@@ -1042,7 +1046,8 @@ def edit_data_sender(request, project_id, reporter_id):
             , 'geo_code': geo_code})
         return render_to_response('project/edit_datasender.html',
                                   {'project': project, 'reporter_id': reporter_id, 'form': form, 'project_links': links,
-                                   'in_trial_mode': _in_trial_mode(request)}, context_instance=RequestContext(request))
+                                   'in_trial_mode': _in_trial_mode(request), 'email': email},
+                                  context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
@@ -1086,7 +1091,7 @@ def edit_data_sender(request, project_id, reporter_id):
 
         return render_to_response('edit_datasender_form.html',
                                   {'project': project, 'form': form, 'reporter_id': reporter_id, 'message': message,
-                                   'project_links': links, 'in_trial_mode': _in_trial_mode(request)},
+                                   'project_links': links, 'in_trial_mode': _in_trial_mode(request),'email': email},
                                   context_instance=RequestContext(request))
 
 

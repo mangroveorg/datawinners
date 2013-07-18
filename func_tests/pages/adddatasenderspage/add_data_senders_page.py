@@ -89,3 +89,5 @@ class AddDataSenderPage(Page):
     def unique_id_field_is_enabled(self):
         return self.driver.find_text_box(UNIQUE_ID_TB_LOCATOR).is_enabled
 
+    def datasender_has_web_access(self):
+        return self.driver.is_element_present(by_id("email-li"))

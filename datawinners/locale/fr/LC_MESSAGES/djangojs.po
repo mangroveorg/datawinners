@@ -649,7 +649,7 @@ msgid "You don't have any submissions for this question yet"
 msgstr "Vous n'avez encore aucune soumission pour cette question"
 
 #: media/javascript/project/datasender.js:7
-msgid "Add A Data Sender"
+msgid "Add a Data Sender"
 msgstr "Ajouter un expéditeur"
 
 #: media/javascript/project/datasenders_registration_questionnaire_preview.js:3

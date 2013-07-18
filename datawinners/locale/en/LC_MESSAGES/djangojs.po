@@ -632,7 +632,7 @@ msgid "You don't have any submissions for this question yet"
 msgstr ""
 
 #: media/javascript/project/datasender.js:7
-msgid "Add A Data Sender"
+msgid "Add a Data Sender"
 msgstr ""
 
 #: media/javascript/project/datasenders_registration_questionnaire_preview.js:3

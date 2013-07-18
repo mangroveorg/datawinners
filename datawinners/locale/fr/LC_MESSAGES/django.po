@@ -750,7 +750,7 @@ msgstr ""
 "4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
 "\"Importez la liste\" et suivez les instructions."
 
-msgid "Add A Data Sender"
+msgid "Add a Data Sender"
 msgstr "Ajouter un Expéditeur"
 
 msgid "Add a Subject"
@@ -3832,7 +3832,7 @@ msgstr "Il ne doit pas y avoir d'espace au début et à la fin du mot de passe."
 
 msgid "Edit a"
 msgstr "Modifier un(e)"
-msgid "Edit A Data Sender"
+msgid "Edit a Data Sender"
 msgstr "Modifier un Expéditeur de Données"
 
 msgid "Some unexpected error happened. Please check the excel file and import again."

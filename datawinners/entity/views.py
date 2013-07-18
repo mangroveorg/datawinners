@@ -149,6 +149,9 @@ def edit_data_sender(request, reporter_id):
     manager = get_database_manager(request.user)
     reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
     entity_links = {'registered_datasenders_link': reverse(all_datasenders)}
+    datasender = {'short_code':reporter_id}
+    get_datasender_user_detail(datasender, request.user)
+    email = datasender.get('email') if datasender.get('is_user', False) else False
 
     if request.method == 'GET':
         name = reporter_entity.name
@@ -159,8 +162,8 @@ def edit_data_sender(request, reporter_id):
                                                  'telephone_number': phone_number, 'location': location,
                                                  'geo_code': geo_code})
         return render_to_response('entity/create_or_edit_data_sender.html',
-                                  {'reporter_id': reporter_id, 'form': form, 'project_links': entity_links
-                                      , 'create_data_sender': create_data_sender},
+                                  {'reporter_id': reporter_id, 'form': form, 'project_links': entity_links,
+                                   'email': email, 'create_data_sender': create_data_sender},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -203,7 +206,7 @@ def edit_data_sender(request, reporter_id):
                 message = exception.message
 
         return render_to_response('edit_datasender_form.html',
-                                  {'form': form, 'message': message, 'reporter_id': reporter_id,
+                                  {'form': form, 'message': message, 'reporter_id': reporter_id,'email':email,
                                    'project_links': entity_links},
                                   context_instance=RequestContext(request))
 
@@ -369,7 +372,7 @@ def create_multiple_web_users(request):
 @csrf_response_exempt
 @login_required(login_url='/login')
 @session_not_expired
-@is_new_user
+#@is_new_user
 @is_datasender
 @is_not_expired
 def all_datasenders(request):
@@ -657,20 +660,7 @@ def _get_all_datasenders(manager, projects, user):
             del all_data_senders[index]
             continue
 
-        org_id = NGOUserProfile.objects.get(user=user).org_id
-        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_code'], org_id=org_id)
-
-        datasender["is_user"] = False
-        if len(user_profile) > 0:
-            datasender_user_groups = list(user_profile[0].user.groups.values_list('name', flat=True))
-            if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
-                or "Read Only Users" in datasender_user_groups:
-                datasender["is_user"] = True
-            datasender['email'] = user_profile[0].user.email
-            datasender['devices'] = "SMS,Web,Smartphone"
-        else:
-            datasender['email'] = "--"
-            datasender['devices'] = "SMS"
+        get_datasender_user_detail(datasender, user)
 
         association = project_association.get(datasender['short_code'])
         datasender['projects'] = ', '.join(association) if association is not None else '--'
@@ -678,7 +668,26 @@ def _get_all_datasenders(manager, projects, user):
     return all_data_senders
 
 
+def get_datasender_user_detail(datasender, user):
+    org_id = NGOUserProfile.objects.get(user=user).org_id
+    user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_code'], org_id=org_id)
+
+    datasender["is_user"] = False
+    if len(user_profile) > 0:
+        datasender_user_groups = list(user_profile[0].user.groups.values_list('name', flat=True))
+        if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
+            or "Read Only Users" in datasender_user_groups:
+            datasender["is_user"] = True
+        datasender['email'] = user_profile[0].user.email
+        datasender['devices'] = "SMS,Web,Smartphone"
+    else:
+        datasender['email'] = "--"
+        datasender['devices'] = "SMS"
+
 @valid_web_user
+@login_required(login_url='/login')
+@session_not_expired
+@is_not_expired
 def edit_subject_questionnaire(request, entity_type=None):
     manager = get_database_manager(request.user)
     if entity_type is None:

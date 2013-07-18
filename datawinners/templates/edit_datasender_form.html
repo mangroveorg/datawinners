@@ -37,6 +37,12 @@
             <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text">
                 {% trans "phone_number_example" %}
             </li>
+            {% if email %}
+            <li class="{{ form.name.css_classes }} form-row-10px" id="email-li">
+                <label>{% trans "Email address" %}</label>
+                {{ email }}
+            </li>
+            {% endif %}
             <li class="margin_top_null margin_left_180 italic_grey clear-left instruction_text"
                 id="email_field_help_text">
                 {% trans "email_example" %}

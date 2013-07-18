@@ -2,16 +2,16 @@
 {% load i18n %}
 {% block page_title %}
     {% if create_data_sender %}
-        {% trans "Add A Data Sender" %}
+        {% trans "Add a Data Sender" %}
     {% else %}
-        {% trans "Edit A Data Sender" %}
+        {% trans "Edit a Data Sender" %}
     {% endif %}
 {% endblock %}
 {% block section_title %}
     {% if create_data_sender %}
-        {% trans "Add A Data Sender" %}
+        {% trans "Add a Data Sender" %}
     {% else %}
-        {% trans "Edit A Data Sender" %}
+        {% trans "Edit a Data Sender" %}
     {% endif %}
 {% endblock %}
 
@@ -62,7 +62,7 @@
 {% endblock %}
 
 {% block content %}
-    <div >
+    <div class="margin_bottom_10">
         <a href="{{ project_links.registered_datasenders_link }}" class="back-to-list"> « {% trans "Back to Data Sender List" %}</a>
     </div>
     <div id="add_data_sender_form" class="">

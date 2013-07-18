@@ -114,7 +114,7 @@ msgstr "Mois dernier"
 msgid "Year to date"
 msgstr "Du début de l'année à la date"
 
-msgid "Add A Data Sender"
+msgid "Add a Data Sender"
 msgstr "Ajouter un envoyeur"
 
 msgid "Data Sender Registration Preview"
