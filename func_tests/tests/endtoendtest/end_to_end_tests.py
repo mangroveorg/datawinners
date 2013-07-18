@@ -1,7 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
-from unittest import SkipTest
+import time
+
 from nose.plugins.attrib import attr
-from framework.base_test import BaseTest
+
+from framework.base_test import BaseTest, teardown_driver
 from framework.utils.common_utils import get_epoch_last_ten_digit
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from framework.utils.data_fetcher import from_, fetch_
@@ -10,9 +12,10 @@ from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from pages.addsubjectpage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, DATA_WINNER_ADD_SUBJECT_WATERPOINT
 from tests.endtoendtest.end_to_end_data import *
 from tests.registrationtests.registration_tests import register_and_get_email
 
@@ -46,7 +49,6 @@ class TestApplicationEndToEnd(BaseTest):
                 "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
 
         try:
-            self.driver.quit()
             if self.email is not None:
                 email = self.email
                 dbmanager = DatabaseManager()
@@ -56,10 +58,8 @@ class TestApplicationEndToEnd(BaseTest):
         except TypeError as e:
             pass
 
-    def activate_account(self):
-        account_activate_page = activate_account(self.driver, self.email.lower())
-        self.assertRegexpMatches(account_activate_page.get_message(),
-                                 fetch_(SUCCESS_MESSAGE, from_(VALID_ACTIVATION_DETAILS)))
+        teardown_driver(self.driver)
+
 
     def set_organization_number(self):
         dbmanager = DatabaseManager()
@@ -111,23 +111,22 @@ class TestApplicationEndToEnd(BaseTest):
             question_link_text = fetch_(QUESTION, from_(question))
             self.assertEquals(create_questionnaire_page.get_question_link_text(index), question_link_text)
             index += 1
-        self.assertEquals(create_questionnaire_page.get_remaining_character_count(),
-                          fetch_(CHARACTER_REMAINING, from_(QUESTIONNAIRE_DATA)))
+            # self.assertEquals(create_questionnaire_page.get_remaining_character_count(),
+        #                   fetch_(CHARACTER_REMAINING, from_(QUESTIONNAIRE_DATA)))
         project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
-        return project_overview_page
+        return project_overview_page.get_project_title()
 
     def send_sms(self, organization_sms_tel_number, sms):
         sms_tester_page = SMSTesterPage(self.driver)
         sms_tester_data = sms
         sms_tester_data[RECEIVER] = str(organization_sms_tel_number)
         sms_tester_page.send_sms_with(sms_tester_data)
-        self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, from_(sms_tester_data)))
+        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(sms_tester_data)), sms_tester_page.get_response_message())
         return sms_tester_page
 
-    def verify_submission1(self, global_navigation, sms_log):
+    def verify_submission1(self, global_navigation, project_name, sms_log):
         view_all_project_page = global_navigation.navigate_to_view_all_project_page()
-        project_overview_project = view_all_project_page.navigate_to_project_overview_page(
-            fetch_(PROJECT_NAME, VALID_DATA_FOR_PROJECT).lower())
+        project_overview_project = view_all_project_page.navigate_to_project_overview_page(project_name)
         data_page = project_overview_project.navigate_to_data_page()
         submission_log_page = data_page.navigate_to_all_data_record_page()
         self.assertRegexpMatches(submission_log_page.get_submission_message(sms_log),
@@ -147,9 +146,9 @@ class TestApplicationEndToEnd(BaseTest):
         review_page.open_subject_accordion()
         self.assertEqual(fetch_(SUBJECT_DETAILS, from_(VALID_DATA_REVIEW_AND_TEST)), review_page.get_subject_details())
         # unreliable in firefox in CI, works fine locally
-        #        review_page.open_data_sender_accordion()
-        #        self.assertEqual(fetch_(DATA_SENDER_COUNT, from_(VALID_DATA_REVIEW_AND_TEST)),
-        #                         review_page.get_data_sender_count())
+        review_page.open_data_sender_accordion()
+        self.assertEqual(fetch_(DATA_SENDER_COUNT, from_(VALID_DATA_REVIEW_AND_TEST)),
+                         review_page.get_data_sender_count())
         review_page.open_questionnaire_accordion()
         self.assertEqual(fetch_(QUESTIONNAIRE, from_(VALID_DATA_REVIEW_AND_TEST)), review_page.get_questionnaire())
 
@@ -162,9 +161,9 @@ class TestApplicationEndToEnd(BaseTest):
     def verify_questionnaire(self, edit_questionnaire_page):
         questions = fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA))
         edit_questionnaire_page.select_question_link(3)
-        self.assertEqual(questions[0], edit_questionnaire_page.get_number_type_question())
+        self.assertEqual(questions[0], edit_questionnaire_page.get_date_type_question())
         edit_questionnaire_page.select_question_link(4)
-        self.assertEqual(questions[1], edit_questionnaire_page.get_date_type_question())
+        self.assertEqual(questions[1], edit_questionnaire_page.get_number_type_question())
         edit_questionnaire_page.select_question_link(5)
         self.assertEqual(questions[2], edit_questionnaire_page.get_date_type_question())
         edit_questionnaire_page.select_question_link(6)
@@ -181,23 +180,19 @@ class TestApplicationEndToEnd(BaseTest):
 
     def edit_questionnaire(self, edit_questionnaire_page):
         questions = fetch_(QUESTIONS, from_(NEW_QUESTIONNAIRE_DATA))
-        edit_questionnaire_page.select_question_link(3)
+        edit_questionnaire_page.select_question_link(4)
         edit_questionnaire_page.configure_number_type_question(questions[0])
         edit_questionnaire_page.add_question(questions[1])
-        self.assertEquals(edit_questionnaire_page.get_remaining_character_count(),
-                          fetch_(CHARACTER_REMAINING, from_(NEW_QUESTIONNAIRE_DATA)))
-        edit_questionnaire_page.save_and_create_project_successfully()
+        return edit_questionnaire_page.save_and_create_project_successfully()
 
-    @SkipTest
-    @attr('functional_test', 'smoke', "intregation")
+    @attr('end_to_end_test', 'smoke', "intregation")
     def test_end_to_end(self):
-        """todo: failed randomly when run ft"""
         self.email = None
         self.do_org_registartion()
 
         organization_sms_tel_number = self.set_organization_number()
-        self.activate_account()
-        global_navigation = self.do_login()
+        activate_account(self.driver, self.email.lower())
+        global_navigation = GlobalNavigationPage(self.driver)
 
         dashboard_page = global_navigation.navigate_to_dashboard_page()
         create_project_page = dashboard_page.navigate_to_create_project_page()
@@ -205,11 +200,11 @@ class TestApplicationEndToEnd(BaseTest):
         self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE2[ENTITY_TYPE])
         self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE1[ENTITY_TYPE])
         create_questionnaire_page = self.create_project(create_project_page)
-        self.create_questionnaire(create_questionnaire_page)
+        self.project_name = self.create_questionnaire(create_questionnaire_page)
 
         global_navigation.navigate_to_all_subject_page()
         add_subject_page = AddSubjectPage(self.driver)
-        self.driver.go_to("http://localhost:8000/entity/subject/create/waterpoint/")
+        self.driver.go_to(DATA_WINNER_ADD_SUBJECT_WATERPOINT)
         self.add_a_subject(add_subject_page)
 
         all_data_senders_page = global_navigation.navigate_to_all_data_sender_page()
@@ -220,26 +215,22 @@ class TestApplicationEndToEnd(BaseTest):
         self.send_sms(organization_sms_tel_number, VALID_DATA_FOR_SMS)
 
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
-        self.verify_submission1(global_navigation, SMS_DATA_LOG)
+        self.verify_submission1(global_navigation, self.project_name, SMS_DATA_LOG)
 
         all_projects_page = global_navigation.navigate_to_view_all_project_page()
-        project_overview_page = all_projects_page.navigate_to_project_overview_page(
-            fetch_(PROJECT_NAME, from_(VALID_DATA_FOR_PROJECT)))
+        project_overview_page = all_projects_page.navigate_to_project_overview_page(self.project_name)
         edit_project_page = project_overview_page.navigate_to_edit_project_page()
         edit_project_page.continue_create_project()
-        edit_questionnaire_page = create_questionnaire_page
+        edit_questionnaire_page = CreateQuestionnairePage(self.driver)
+        time.sleep(2)
         self.verify_questionnaire(edit_questionnaire_page)
-        self.edit_questionnaire(edit_questionnaire_page)
+        project_overview_page = self.edit_questionnaire(edit_questionnaire_page)
 
-        all_projects_page = global_navigation.navigate_to_view_all_project_page()
-        project_name = fetch_(PROJECT_NAME, from_(VALID_DATA_FOR_PROJECT))
-        activate_project_light_box = all_projects_page.open_activate_project_light_box(project_name)
-        self.assertEqual(activate_project_light_box.get_title_of_light_box(), "Activate this Project?")
-        project_overview_page = activate_project_light_box.activate_project()
+        project_overview_page.activate_project()
         self.assertEqual(project_overview_page.get_status_of_the_project(), "Active")
 
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         self.send_sms(organization_sms_tel_number, NEW_VALID_DATA_FOR_SMS)
-
+        #
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
-        self.verify_submission2(global_navigation, NEW_SMS_DATA_LOG)
+        self.verify_submission1(global_navigation, self.project_name, NEW_SMS_DATA_LOG)

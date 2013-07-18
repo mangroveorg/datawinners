@@ -123,7 +123,12 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION = {ORGANIZATION_NAME: "Automation 
                                                  ADMIN_SKYPE_ID: "tty01",
                                                  REGISTRATION_PASSWORD: REGISTRATION_PASSWORD,
                                                  REGISTRATION_CONFIRM_PASSWORD: REGISTRATION_PASSWORD,
-                                                 SUCCESS_MESSAGE: "You have successfully registered!!\nAn activation email has been sent to your email address. Please activate before login."}
+                                                 SUCCESS_MESSAGE: "You have successfully signed up with DataWinners!!"
+                                                                  "\n\nLast Step: Activate your account\nWe've sent you"
+                                                                  " an activation email. Please check your Spam folder"
+                                                                  " if you haven't received it.\n\nContact "
+                                                                  "support@datawinners.com if you need help."
+}
 
 VALID_ACTIVATION_DETAILS = {ACTIVATION_CODE: "",
                             SUCCESS_MESSAGE: "You have successfully activated your account"}
@@ -132,13 +137,13 @@ VALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
                               MOBILE_NUMBER: "1234567890",
                               COMMUNE: "urbaine",
                               GPS: "48.955267  1.816013",
-                              SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}
+                              SUCCESS_MESSAGE: u"Registration successful. ID is: rep3"}
 
 VALID_DATA_FOR_DATA_SENDER1 = {DATA_SENDER_NAME: "Donald Mouse",
                                MOBILE_NUMBER: "12345678901",
                                COMMUNE: "urbaine",
                                GPS: "48.955267  1.816013",
-                               SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}
+                               SUCCESS_MESSAGE: u"Registration successful. ID is: rep3"}
 
 # valid entity data
 VALID_SUBJECT_TYPE1 = {ENTITY_TYPE: "Waterpoint", SUCCESS_MESSAGE: "Entity definition successful"}
@@ -157,7 +162,7 @@ VALID_DATA_FOR_PROJECT = {PROJECT_NAME: "Waterpoint morondava", GEN_RANDOM: True
                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
                           PROJECT_TYPE: "survey",
                           SUBJECT: "waterpoint",
-                          REPORT_TYPE: 'data sender work',
+                          REPORT_TYPE: 'other subject',
                           DEVICES: "sms",
                           PAGE_TITLE: "Subjects"}
 
@@ -168,10 +173,10 @@ VALID_DATA_FOR_DATA_SENDER_QUESTIONNAIRE = {PAGE_TITLE: "Reminders"}
 VALID_DATA_FOR_REMINDER = {PAGE_TITLE: "Review & Test"}
 
 QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
-                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
-                      QUESTIONS: [{QUESTION: u"Water Level", CODE: u"q3", TYPE: NUMBER, MIN: u"1", MAX: u"1000"},
-                                  {QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q4", TYPE: DATE,
+                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "EID"},
+                      QUESTIONS: [{QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
                                    DATE_FORMAT: DD_MM_YYYY},
+                                  {QUESTION: u"Water Level", CODE: u"q4", TYPE: NUMBER, MIN: u"1", MAX: u"1000"},
                                   {QUESTION: u"Date of report in MM.YYY format", CODE: u"q5", TYPE: DATE,
                                    DATE_FORMAT: MM_YYYY},
                                   {QUESTION: u"Date of report in MM.DD.YYY format", CODE: u"q6", TYPE: DATE,
@@ -185,10 +190,19 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                                    CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
                                    ALLOWED_CHOICE: MULTIPLE_ANSWERS},
                                   {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO}],
-                      CHARACTER_REMAINING: "82 / 160 characters used (1 SMS)",
+                      CHARACTER_REMAINING: "69 / 160 characters used (1 SMS)",
                       PAGE_TITLE: "Data Senders"}
 
-NEW_QUESTIONNAIRE_DATA = {QUESTIONS: [{QUESTION: "Water Level", CODE: "q3", TYPE: NUMBER, MIN: "100", MAX: "1000"},
+VALID_DATA_FOR_SMS = {SENDER: "1234567890",
+                      RECEIVER: "",
+                      SMS: "WPS01 wat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 c Mr.Tessy ab 27.178057,-78.007789",
+                      SUCCESS_MESSAGE: 'Thank you'}
+
+VALID_DATA_FOR_SMS_LIGHT_BOX = {
+    SMS: "WPS01  wat1  11.10.2011 11.10.2011 98 04.2011  04.12.2011 c  Mr.Tessy  ab  27.178057,-78.007789",
+    RESPONSE_MESSAGE: THANKS}# + " q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"}
+
+NEW_QUESTIONNAIRE_DATA = {QUESTIONS: [{QUESTION: "Water Level", CODE: "q4", TYPE: NUMBER, MIN: "100", MAX: "1000"},
                                       {QUESTION: "What is water point name?", CODE: "q11", TYPE: WORD, LIMIT: LIMITED,
                                        MAX: ""}],
                           CHARACTER_REMAINING: "83 / 160 characters used (1 SMS)",
@@ -202,33 +216,27 @@ VALID_DATA_REVIEW_AND_TEST = {PROJECT_PROFILE: {PROJECT_NAME: "waterpoint morond
                               SUBJECT_DETAILS: {SUBJECT: "waterpoint"},
                               DATA_SENDER_COUNT: "1",
                               QUESTIONNAIRE: [u'What are you reporting on?',
-                                              u'What is the reporting period for the activity?', u'Water Level',
-                                              u'Date of report in DD.MM.YYY format', u'Date of report in MM.YYY format',
+                                              u'What is the reporting period for the activity?',
+                                              u'Date of report in DD.MM.YYY format',
+                                              u'Water Level',
+                                              u'Date of report in MM.YYY format',
                                               u'Date of report in MM.DD.YYY format', u'Color of Water',
                                               u'Water point admin name', u'Bacterias in water', u'Geo points of Well'],
                               REMINDERS: "disabled"
 }
 
-VALID_DATA_FOR_SMS_LIGHT_BOX = {
-    SMS: "WPS01  wat1  11.10.2011  98  12.04.2011  04.2011  04.12.2011   c  Mr.Tessy  ab  27.178057,-78.007789",
-    RESPONSE_MESSAGE: THANKS}# + " q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"}
-
-VALID_DATA_FOR_SMS = {SENDER: "1234567890",
-                      RECEIVER: "",
-                      SMS: "WPS01 wat1 11.10.2011  98  12.04.2011  04.2011  04.12.2011   c  Mr.Tessy  ab  27.178057,-78.007789",
-                      SUCCESS_MESSAGE: SUCCESS_MESSAGE_TEXT}
-
+regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}\W\S{2}'
 SMS_DATA_LOG = {
-SMS_SUBMISSION: "Success No wat1 11.10.2011 98 12.04.2011 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae, Bacteroids 27.178057,-78.007789",
+SMS_SUBMISSION: "Donald Mouserep3 " + regex_date_match + " Success watwat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae, Bacteroids 27.178057,-78.007789",
 UNIQUE_VALUE: "Mr.Tessy"}
 
 NEW_VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                           RECEIVER: "",
-                          SMS: "WPS01  wat1  12.10.2011  98  12.04.2011  04.2011  04.12.2011   c  Mr.Jessy  ab  27.178057,-78.007789  Water_Point_1",
-                          ERROR_MESSAGE: "Error. Incorrect answer for q3. Please resend entire message."}
+                          SMS: "WPS01  wat1  12.10.2011 12.10.2011  198  04.2011  04.12.2011   c  Mr.Jessy  ab  27.178057,-78.007789  Water_Point_1",
+                          SUCCESS_MESSAGE: 'Thank you'}
 
 NEW_SMS_DATA_LOG = {
-    SMS_SUBMISSION: "Error Yes wat1 12.10.2011 98 12.04.2011 04.2011 04.12.2011 DARK YELLOW Mr.Jessy Aquificae, Bacteroids 27.178057,-78.007789 Water_Point_1",
+    SMS_SUBMISSION: "Donald Mouserep3 " + regex_date_match + " Success watwat1 12.10.2011 12.10.2011 198 04.2011 04.12.2011 DARK YELLOW Mr.Jessy Aquificae, Bacteroids 27.178057,-78.007789 Water_Point_1",
     UNIQUE_VALUE: "Mr.Jessy"}
 
 INVALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
