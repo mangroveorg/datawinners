@@ -37,8 +37,7 @@ class TestDataSenderHelper(TestCase):
         survey_response = SurveyResponse(TestDataSenderHelper.manager, TransportInfo("smartPhone", "nobody@gmail.com", "destination"), owner_uid=self.deleted_ds_id)
         data_sender = get_data_sender(TestDataSenderHelper.manager, survey_response)
 
-        #self.assertEqual(("M K Gandhi", "del1"), data_sender) #show_deleted_ds
-        self.assertEqual(("Deleted Data Sender", None), data_sender)
+        self.assertEqual(("M K Gandhi", u"del1"), data_sender[:2])
 
     def test_should_return_data_sender_TESTER_when_send_from_TEST_REPORTER_MOBILE_NUMBER(self):
         survey_response = SurveyResponse(TestDataSenderHelper.manager, TransportInfo("sms", TEST_REPORTER_MOBILE_NUMBER, "destination"),owner_uid=self.test_ds_id)

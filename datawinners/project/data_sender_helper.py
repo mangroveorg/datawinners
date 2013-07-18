@@ -1,11 +1,9 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext
 from datawinners.accountmanagement.models import NGOUserProfile
-from datawinners.messageprovider.messages import SMS
 from datawinners.project.data_sender import DataSender
 from datawinners.project.helper import NOT_AVAILABLE_DS, NOT_AVAILABLE
 from mangrove.datastore.entity import Entity, get_by_short_code_include_voided
-from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
@@ -18,11 +16,10 @@ def get_data_sender(manager, submission):
     if submission.owner_uid:
         try:
             data_sender_entity = Entity.get(manager, submission.owner_uid)
-            if not data_sender_entity.is_void():
-                return data_sender_entity.value("name"), data_sender_entity.short_code, data_sender_entity.id
+            return data_sender_entity.value("name"), data_sender_entity.short_code, data_sender_entity.id
         except Exception as e:
-            pass #ignore and sending deleted datasender for backward compatibility.
-    return NOT_AVAILABLE_DS, None
+            pass #ignore and sending unknown datasender for backward compatibility.
+    return NOT_AVAILABLE_DS, NOT_AVAILABLE
 
 def get_data_sender_by_reporter_id(dbm, reporter_id):
     return get_by_short_code_include_voided(dbm, reporter_id, REPORTER_ENTITY_TYPE)
