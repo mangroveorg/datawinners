@@ -8,4 +8,8 @@
         $(".block_support").bind("mouseout", function(){
            $(this).removeClass("block_support_hover");
         });
+
+        $(".block_support_hover").live("click", function(){
+            location.href = $(".read_more", $(this)).attr("href");
+        });
     });

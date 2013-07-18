@@ -42,25 +42,88 @@
     border-top:  1px solid #CCC;
     border-bottom:  1px solid #CCC;
     padding:  10px 0;
-    width: 350px;
+    width: 345px!important;
     display: inline;
     float: left;
-    margin-right: 5px;
+    margin-right: 10px;
     height: 98px;
-    .read_more{
-        position: absolute;
-        top: 82px;
-        right: 5px;
-    }
     h3{
         font-size: 14px;
+        margin-top: 10px !important;
     }
     .grid_5{
         position: relative;
+    }
+    .grid_4{
+        width: 135px;
+        img{
+            margin-left: 22px;
+
+        }
     }
 }
 .block_support_hover{
     -moz-box-shadow: 0 0 3px 3px #DDD;
     -webkit-box-shadow: 0 0 3px 3px#DDD;
     box-shadow: 0 0 3px 3px #DDD;
+    cursor: pointer;
+}
+
+#popbox {
+    font-family: fontHelvetica,Arial,sans-serif;
+    #budget_logo_container{
+        height: 30px;
+        margin-top: 20px;
+    }
+    .padding_top_10 td{
+        padding-top:10px;
+    }
+    .padding_top_20 td{
+        padding-top:20px;
+    }
+    .margin_top_10 td{
+        margin-top:10px;
+    }
+    .margin_top_20 td{
+        margin-top:20px;
+    }
+    #budget_table {
+        .border_bottom{
+            border-bottom:  2px solid black;
+        }
+        .border_top{
+            border-top:  2px solid #CCCCCC;
+        }
+    }
+    .margin_top_50{
+        width: 793px;
+        span.float_right{
+            font-size: 12px;
+        }
+    }
+    img{
+        margin-left: 10px;
+    }
+}
+h2#pricing_h2{
+    margin-top: 13px !important;
+}
+
+.quick_start_left p{
+    width: 480px !important;
+}
+
+#about-us-container{
+    div.block_support{
+        height: 126px;
+        .grid_4 {
+            margin-top: 24px;
+            img{
+                margin-left: 0;
+            }
+            &.img_en{
+                margin-top: 18px;
+            }
+        }
+    }
 }

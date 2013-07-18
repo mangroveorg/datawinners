@@ -1,0 +1,279 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Services de d&eacute;marrage{% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "support" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_public_support.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_video.css" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script language="javascript">
+        $(document).ready(function(){
+            $('#popbox').dialog({
+                autoOpen: false,
+                modal: true,
+                width: 825,
+                height: "auto",
+                title: "Example de budget",
+                position: ["center", "top"],
+                open: function(){
+                    $(".ui-dialog").css("top", $(window).scrollTop());
+                }
+            });
+            $('.popbox').bind("click", function(){
+                $("#popbox").dialog("open");
+                return false;
+            });
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; Services de d&eacute;marrage
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+        <h1><a href="/fr/support/">Assistance</a></h1>
+        <ul>
+            <li class="active"><a href="/fr/support/quick-start-services/">Services de d&eacute;marrage</a></li>
+            <li><a href="/fr/support/get-started/">Guides et tutoriels</a></li>
+            <li><a href="/fr/support/find-answers/">Trouvez des reponses</a></li>
+            <li><a href="/fr/support/ask-us/">Demandez-nous</a></li>
+        </ul>
+    </div>
+    <div id="main_content">
+        <div class="margin_left_20">
+            <div class="left_content quick_start_left">
+
+                <img width="480" src="/media/images/support/senegal_training.jpg"/>
+                <br/>
+                <p>Le DataWinners <i>Quick Start Solution</i> est conçue pour les utilisateurs débutants et pour les projets de collecte de données sophistiqués qui nécessitent un soutien supplémentaire.</p>
+                <p>Les experts de DataWinners fournissent un soutien sur place afin d'assurer que tout soit pr&ecirc;t:
+                    <ul class="bulleted">
+                        <li>Encadrer les membres du personnel pour créer des questionnaires numériques</li>
+                        <li>Encadrer les administrateurs syst&egrave;me sur la gestion de la collecte des donn&eacute;es</li>
+                        <li>Former le personnel du Si&egrave;ge pour qu’ils puissent former le personnel sur le terrain sur la  soumission de donn&eacute;es en utilisant la technologie mobile</li>
+                        <li>Montrer aux gestionnaires comment utiliser les puissants outils d'analyse de donn&eacute;es</li>
+                    </ul>
+                </p>
+                <p>A la fin du DataWinners <i>Quick Start Solution</i>, les membres de votre personnel pourront collecter des données en utilisant la technologie mobile, avec assurance !</p>
+
+                <h2 id="pricing_h2">Tarification</h2>
+                <p>Notre <i>Quick Start Solution</i> prend généralement 2 à 3 semaines pour sa mise en place et coûte moins de $25,000. Pour obtenir un aperçu général, veuillez cliquer sur cet <a href="#" class="popbox">example de budget</a>.</p>
+                <p>Pour plus d’informations, veuillez nous contacter à l'adresse <a href="mailto:info@datawinners.com">info@datawinners.com</a> ou veuillez utiliser <a href="/fr/about-us/contact-us/">le formulaire de contact</a>.</p>
+            </div>
+            <div class="right_content">
+                <div class="block_1">
+                    <h1>Rapports et visualisations personnalis&eacute;s</h1>
+                    <p>
+                        Voyez comment nous pouvons répondre à vos besoins spécifiques en collecte de donnée.
+                        <br/><br/>
+
+                        Voir <a href="/fr/what-is-datawinners/customized-reports/">des rapports et visualisations personnalisés</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="popbox" class="none">
+        <div id="budget_logo_container">
+            <img src="/media/images/logo.gif" class="float_right"/>
+            <br class="clear-both"/>
+        </div>
+
+        <h6 style="font-weight: normal;">Human Network International</h6>
+        <h5 style="">DataWinners Quick Start Solution</h5>
+        <br/>
+        <table id="budget_table">
+            <tr class="border_bottom">
+                <td colspan="3">&nbsp;</td>
+                <td width="81"></td>
+                <td width="109">Co&ucirc;ts Unitaires</td>
+                <td width="80" class="text_align_right">Montant</td>
+                <td width="128" class="text_align_right">&nbsp;&nbsp;&nbsp;Total en Dollars</td>
+            </tr>
+            <tr class="padding_top_10">
+                <td colspan="7"><b>Honoraires</b></td>
+            </tr>
+            <tr  class="padding_top_20">
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td colspan="6"><span>1. Pr&eacute;paratifs de la formation des formateurs</span></td>
+            </tr>
+            <tr  class="padding_top_20">
+                <td>&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td width="370">Project Director</td>
+                <td>1 journ&eacute;e </td>
+                <td>&agrave; 500</td>
+                <td class="text_align_right">500</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td>DataWinners Experts</td>
+                <td>1 journ&eacute;e </td>
+                <td>&agrave; 350</td>
+                <td class="text_align_right">350</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td class="border_bottom"><b>Sub-total</b></td>
+                <td class="border_bottom" colspan="2">&nbsp;</td>
+                <td class="border_bottom text_align_right">850</td>
+                <td></td>
+            </tr>
+
+
+
+            <tr class="padding_top_20">
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td colspan="6"><span>2. On-site training</span></td>
+            </tr>
+            <tr class="padding_top_20">
+                <td>&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td>Project Director</td>
+                <td>10 journ&eacute;e</td>
+                <td>&agrave; 500</td>
+                <td class="text_align_right">5000</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td>DataWinners Experts</td>
+                <td>10 journ&eacute;e </td>
+                <td>&agrave; 350</td>
+                <td class="text_align_right">3500</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td class="border_bottom"><b>Sub-total</b></td>
+                <td class="border_bottom" colspan="2">&nbsp;</td>
+                <td class="border_bottom text_align_right">8500</td>
+                <td></td>
+            </tr>
+
+
+            <tr class="padding_top_20">
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td colspan="6"><span>3. Development of Final Report</span></td>
+            </tr>
+            <tr class="padding_top_20">
+                <td>&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td>Project Director</td>
+                <td>1 journ&eacute;e</td>
+                <td>&agrave; 500</td>
+                <td class="text_align_right">500</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td>DataWinners Experts</td>
+                <td>1 journ&eacute;e</td>
+                <td>&agrave; 350</td>
+                <td class="text_align_right">350</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td class="border_bottom"><b>Sub-total</b></td>
+                <td class="border_bottom" colspan="2">&nbsp;</td>
+                <td class="border_bottom text_align_right">850</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td colspan="6">&nbsp;</td>
+                <td class="text_align_right">10,200</td>
+            </tr>
+
+
+            <tr class="border_top padding_top_10">
+                <td colspan="7"><b>Transport</b></td>
+            </tr>
+
+            <tr class="padding_top_20">
+                <td>&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td>Billet d'avion international</td>
+                <td>2 AR </td>
+                <td>&agrave; 2,000</td>
+                <td class="text_align_right">4000</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td>H&eacute;bergement</td>
+                <td>28 nuit&eacute;e </td>
+                <td>&agrave; 158</td>
+                <td class="text_align_right">4424</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td>Per diem</td>
+                <td>28 journ&eacute;e</td>
+                <td>&agrave; 79</td>
+                <td class="text_align_right">2212</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6">&nbsp;</td>
+                <td class="text_align_right">10,636</td>
+            </tr>
+
+
+
+            <tr class="border_top padding_top_10" >
+                <td colspan="7" ><b>Autres co&ucirc;ts Directs</b></td>
+            </tr>
+
+            <tr class="padding_top_20">
+                <td>&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td>Training materials</td>
+                <td>2 semaines </td>
+                <td>&agrave; 300</td>
+                <td class="text_align_right">600</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6">&nbsp;</td>
+                <td class="text_align_right">600</td>
+            </tr>
+            <tr class="border_top padding_top_10">
+                <td colspan="6" ><b>SOUS-TOTAL</b></td>
+                <td class="text_align_right"><b>21,436</b></td>
+            </tr>
+            <tr class="border_top border_bottom padding_top_10">
+                <td colspan="6">12&#37; Frais Administratifs</td>
+                <td class="text_align_right">2,572</td>
+            </tr>
+
+            <tr class="padding_top_10">
+                <td colspan="6"><b>Total final</b> en Dollars</td>
+                <td class="text_align_right"><b>24,008</b></td>
+            </tr>
+
+        </table>
+        <div class="margin_top_50">
+            <span>&copy; 2013 by HNI</span><span class="float_right">info@datawinners.com | www.hni.org</span>
+        </div>
+
+    </div>
+{% endblock %}

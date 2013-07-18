@@ -944,3 +944,85 @@ ol{
 .margin_top_12{
   margin-top: 12px !important;
 }
+
+#anim1{
+    overflow: hidden;
+    height: 307px;
+    position: relative;
+    .anim{
+        img {
+            cursor: pointer;
+            display:none;
+            position: absolute;
+            z-index: 1;
+        }
+        > div{
+            height: 307px;
+            width: 452px;
+            overflow: hidden;
+            position: relative;
+            left:23px;
+        }
+    }
+    span.navigation{
+        z-index: 10;
+        text-decoration:none;
+        height: 26px;
+        top :140px;;
+        position: absolute;
+        color: white!important;
+        img{
+            cursor: pointer;
+        }
+    }
+    .pagin > ul > li img{
+        cursor: pointer;
+    }
+    #anim_title{
+        width: 488px;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 5px;
+        text-align: center;
+    }
+}
+
+.carousel_title{
+    margin-left: -9px;
+    > span > img{
+        width: 510px;
+    }
+
+    &.bottom{
+        position: relative;
+    }
+    .pagin {
+        position:absolute;
+        left:200px;
+        width: 105px;
+        z-index: 10;
+        background-color: white;
+        padding-left:22px;
+        top: 1px;
+        ul {
+            margin:0;
+            padding:0;
+            li {
+                margin:0;
+                padding:0;
+                float:left;
+                width:18px;
+                height:16px;
+                overflow:hidden;
+                float:left;
+                a {
+                    display:block;
+                    margin:0;
+                    &:hover, &.on {
+                        margin-top:-16px;
+                    }
+                }
+            }
+        }
+    }
+}

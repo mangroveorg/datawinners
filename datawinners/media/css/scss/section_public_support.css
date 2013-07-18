@@ -29,21 +29,62 @@
   border-top: 1px solid #CCC;
   border-bottom: 1px solid #CCC;
   padding: 10px 0;
-  width: 350px;
+  width: 345px !important;
   display: inline;
   float: left;
-  margin-right: 5px;
+  margin-right: 10px;
   height: 98px; }
-  .block_support .read_more {
-    position: absolute;
-    top: 82px;
-    right: 5px; }
   .block_support h3 {
-    font-size: 14px; }
+    font-size: 14px;
+    margin-top: 10px !important; }
   .block_support .grid_5 {
     position: relative; }
+  .block_support .grid_4 {
+    width: 135px; }
+    .block_support .grid_4 img {
+      margin-left: 22px; }
 
 .block_support_hover {
   -moz-box-shadow: 0 0 3px 3px #DDD;
-  -webkit-box-shadow: 0 0 3px 3px#DDD;
-  box-shadow: 0 0 3px 3px #DDD; }
+  -webkit-box-shadow: 0 0 3px 3px #dddddd;
+  box-shadow: 0 0 3px 3px #DDD;
+  cursor: pointer; }
+
+#popbox {
+  font-family: fontHelvetica,Arial,sans-serif; }
+  #popbox #budget_logo_container {
+    height: 30px;
+    margin-top: 20px; }
+  #popbox .padding_top_10 td {
+    padding-top: 10px; }
+  #popbox .padding_top_20 td {
+    padding-top: 20px; }
+  #popbox .margin_top_10 td {
+    margin-top: 10px; }
+  #popbox .margin_top_20 td {
+    margin-top: 20px; }
+  #popbox #budget_table .border_bottom {
+    border-bottom: 2px solid black; }
+  #popbox #budget_table .border_top {
+    border-top: 2px solid #CCCCCC; }
+  #popbox .margin_top_50 {
+    width: 793px; }
+    #popbox .margin_top_50 span.float_right {
+      font-size: 12px; }
+  #popbox img {
+    margin-left: 10px; }
+
+h2#pricing_h2 {
+  margin-top: 13px !important; }
+
+.quick_start_left p {
+  width: 480px !important; }
+
+#about-us-container div.block_support {
+  height: 126px; }
+  #about-us-container div.block_support .grid_4 {
+    margin-top: 24px; }
+    #about-us-container div.block_support .grid_4 img {
+      margin-left: 0; }
+    #about-us-container div.block_support .grid_4.img_en {
+      margin-top: 18px; }

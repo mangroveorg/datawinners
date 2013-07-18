@@ -16,9 +16,15 @@
 .padding_top_20 {
   padding-top: 20px !important; }
 
+.padding_top_10 {
+  padding-top: 10px !important; }
+
 /* Margin Null */
 .margin_right_null {
   margin-right: 0 !important; }
+
+.margin_right_10 {
+  margin-right: 10px !important; }
 
 .margin_left_null {
   margin-left: 0 !important; }
@@ -43,6 +49,9 @@
 
 .margin_bottom_10 {
   margin-bottom: 10px !important; }
+
+.margin_top_50 {
+  margin-top: 50px !important; }
 
 .margin_bottom_5 {
   margin-bottom: 5px !important; }

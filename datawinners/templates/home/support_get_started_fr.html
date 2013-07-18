@@ -3,14 +3,14 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "support" %}
-{{ block.super }}
+    {% activetab "main_nav" "support" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_public_support.css" rel="stylesheet" />
-    <link href="/media/css/scss/section_public_video.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_video.scss" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
@@ -32,35 +32,39 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; Commencez
+    <a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; Commencez
 {% endblock %}
 
 {% block main_content %}
     <div id="nav_content">
         <h1><a href="/fr/support/">Assistance</a></h1>
-         <ul>
-            <li><a href="/fr/support/case-studies/">Etude de cas</a></li>
-            <li class="active"><a href="/fr/support/get-started/">Commencez</a></li>
-            <li><a href="/fr/support/find-answers/">Trouvez des reponses (FAQs)</a></li>
+        <ul>
+            <li><a href="/fr/support/quick-start-services/">Services de d&eacute;marrage</a></li>
+            <li class="active"><a href="/fr/support/get-started/">Guides et tutoriels</a></li>
+            <li><a href="/fr/support/find-answers/">Trouvez des reponses</a></li>
             <li><a href="/fr/support/ask-us/">Demandez-nous</a></li>
         </ul>
     </div>
     <div id="main_content">
         <div class="margin_left_20">
             <div class="left_content">
+                <h2>Introduction à DataWinners</h2>
+                <!-- Embedded Video -->
+                <iframe width="480" height="270" src="http://www.youtube.com/embed/SWCGbIFkifI?rel=0" frameborder="0" allowfullscreen></iframe>
+                <br/>
                 <h2>Tutoriel</h2>
-              <p>Ce tutoriel va vous aider à démarrer avec DataWinners.</p>
-              <p><a href="/media/files/DataWinnersTutorial_CreateAProject.fr.pdf" target="_blank">Créer un nouveau projet</a> &nbsp;(PDF, 14 pages, 1.4MB)<br/>
-              <em>Vous voulez créer un nouveau projet. Laissez-nous vous montrer les procédures à suivre étape par étape.</em></p>
-<h2>Vous avez une idée ?</h2>
-Si vous avez une idée sur un tutoriel que vous voulez avoir, <a href="/fr/about-us/contact-us/">faites-nous savoir</a>.
+                <p>Ce tutoriel va vous aider à démarrer avec DataWinners.</p>
+                <p><a href="/media/files/DataWinnersTutorial_CreateAProject.fr.pdf" target="_blank">Créer un nouveau projet</a> &nbsp;(PDF, 14 pages, 1.4MB)<br/>
+                    <em>Vous voulez créer un nouveau projet. Laissez-nous vous montrer les procédures à suivre étape par étape.</em></p>
+                <h2>Vous avez une idée ?</h2>
+                Si vous avez une idée sur un tutoriel que vous voulez avoir, <a href="/fr/about-us/contact-us/">faites-nous savoir</a>.
 
             </div>
             <div class="right_content">
                 <div class="block_1">
                     <h1>Laissez-nous vous aider</h1>
                     <p>
-Si vous avez besoin d'aide pour débuter ou avez un ambitieux projet de collecte de données qui nécessite une personnalisation de DataWinners,
+                        Si vous avez besoin d'aide pour débuter ou avez un ambitieux projet de collecte de données qui nécessite une personnalisation de DataWinners,
                         <a href="/fr/about-us/contact-us/">contactez-nous</a>.
                     </p>
                 </div>
@@ -72,21 +76,6 @@ Si vous avez besoin d'aide pour débuter ou avez un ambitieux projet de collecte
                     Voir <a href="/fr/support/find-answers/">Trouvez des réponses</a>.
                 </div>
 
-                <div class="block_1">
-                    <h1>Etudes de cas</h1>
-                    <p>
-                        Obtenez un aperçu rapide du processus de la collecte des données.
-                    </p>
-                    Voir les <a href="/fr/support/case-studies/">Etudes de Cas</a>.
-                </div>
-
-                <div class="block_1">
-                    <h1>Comment ça Marche ?</h1>
-                    <p>
-                        Obtenez un aperçu rapide du processus de la collecte des données.
-                    </p>
-                    Voir <a href="/fr/what-is-datawinners/how-it-works/">Comment ça Marche</a>.
-                </div>
             </div>
         </div>
     </div>

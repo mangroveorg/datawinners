@@ -747,3 +747,67 @@ ol .lower_i {
 
 .margin_top_12 {
   margin-top: 12px !important; }
+
+#anim1 {
+  overflow: hidden;
+  height: 307px;
+  position: relative; }
+  #anim1 .anim img {
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    z-index: 1; }
+  #anim1 .anim > div {
+    height: 307px;
+    width: 452px;
+    overflow: hidden;
+    position: relative;
+    left: 23px; }
+  #anim1 span.navigation {
+    z-index: 10;
+    text-decoration: none;
+    height: 26px;
+    top: 140px;
+    position: absolute;
+    color: white !important; }
+    #anim1 span.navigation img {
+      cursor: pointer; }
+  #anim1 .pagin > ul > li img {
+    cursor: pointer; }
+  #anim1 #anim_title {
+    width: 488px;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 5px;
+    text-align: center; }
+
+.carousel_title {
+  margin-left: -9px; }
+  .carousel_title > span > img {
+    width: 510px; }
+  .carousel_title.bottom {
+    position: relative; }
+  .carousel_title .pagin {
+    position: absolute;
+    left: 200px;
+    width: 105px;
+    z-index: 10;
+    background-color: white;
+    padding-left: 22px;
+    top: 1px; }
+    .carousel_title .pagin ul {
+      margin: 0;
+      padding: 0; }
+      .carousel_title .pagin ul li {
+        margin: 0;
+        padding: 0;
+        float: left;
+        width: 18px;
+        height: 16px;
+        overflow: hidden;
+        float: left; }
+        .carousel_title .pagin ul li a {
+          display: block;
+          margin: 0; }
+          .carousel_title .pagin ul li a:hover, .carousel_title .pagin ul li a.on {
+            margin-top: -16px; }
