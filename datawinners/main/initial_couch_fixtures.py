@@ -11,7 +11,7 @@ from datawinners.location.LocationTree import get_location_hierarchy, get_locati
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
-from datawinners.main.database import get_database_manager, get_db_manager
+from datawinners.main.database import get_database_manager, get_db_manager, TEST_EMAILS
 from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -1621,6 +1621,17 @@ def load_data():
     create_trial_test_organization('chinatwu3@gmail.com', 'COJ00002', False)
     create_trial_test_organization('chinatwu4@gmail.com', 'COJ00003', False)
     create_project_for_nigeria_test_orgnization()
+    create_datasender_for_newly_created_organization([phone_number_type, first_name_type])
+
+def create_datasender_for_newly_created_organization(data_types_for_datasender):
+    user = User.objects.get(username="samuel@mailinator.com")
+    manager = get_database_manager(user)
+    initializer.run(manager)
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+                 data=[(MOBILE_NUMBER_FIELD, "26112345", data_types_for_datasender[0]),
+                       (NAME_FIELD, "Rasefo", data_types_for_datasender[1])],
+                 location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+                 short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
 
 def create_trial_test_organization(email, org_id, register_a_data_sender, data_types_for_datasender=None):
@@ -1645,8 +1656,7 @@ def create_trial_test_organization(email, org_id, register_a_data_sender, data_t
 
 
 def load_test_managers():
-    test_emails = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'gerard@mailinator.com']
-    return [get_database_manager(User.objects.get(username=email)) for email in test_emails]
+    return [get_database_manager(User.objects.get(username=email)) for email in TEST_EMAILS]
 
 
 def load_all_managers():
@@ -1666,8 +1676,7 @@ def load_all_feed_managers():
 
 
 def load_test_feed_managers():
-    test_emails = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'gerard@mailinator.com']
-    return [get_feeds_database(User.objects.get(username=email)) for email in test_emails]
+    return [get_feeds_database(User.objects.get(username=email)) for email in TEST_EMAILS]
 
 def create_project_for_nigeria_test_orgnization():
     manager = get_database_manager(User.objects.get(username="gerard@mailinator.com"))

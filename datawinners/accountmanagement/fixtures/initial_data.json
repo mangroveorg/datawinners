@@ -166,6 +166,25 @@
         }
     },
     {
+        "pk": "JNA912070",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "Education",
+            "city": "Tana",
+            "name": "New Organization",
+            "active_date": "2013-07-12 11:53:08",
+            "is_deactivate_email_sent": false,
+            "country": "MG",
+            "zipcode": "65212",
+            "in_trial_mode": false,
+            "website": "",
+            "office_phone": "2614787329",
+            "state": "",
+            "addressline2": "",
+            "address": "Ambato"
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
@@ -217,6 +236,17 @@
             "org_id": "SLX364903",
             "user": 6,
             "title": "Mr"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep2",
+            "mobile_phone": "261123456",
+            "org_id": "JNA912070",
+            "user": 7,
+            "title": "Quick Start Services en"
         }
     },
     {
@@ -301,6 +331,15 @@
         }
     },
     {
+        "pk": 2,
+        "model": "accountmanagement.paymentdetails",
+        "fields": {
+            "organization": "JNA912070",
+            "preferred_payment": "wire_transfer",
+            "invoice_period": "pay_monthly"
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.organizationsetting",
         "fields": {
@@ -316,6 +355,16 @@
             "organization": "COJ409579",
             "document_store": "hni_testorg_coj409579",
             "sms_tel_number": "0123498765"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "JNA912070",
+            "outgoing_number": null,
+            "sms_tel_number": null,
+            "document_store": "hni_new-organization_jna912070"
         }
     },
     {
@@ -502,6 +551,26 @@
             "password": "sha1$76ba7$93a943f860574d93d80e0405ff2d555db105e0e2",
             "email": "dstest@mailinator.com",
             "date_joined": "2013-06-26 09:33:08"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "auth.user",
+        "fields": {
+            "username": "samuel@mailinator.com",
+            "first_name": "Rasefo",
+            "last_name": "dragnaly",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-07-12 11:53:09",
+            "groups": [
+                1
+            ],
+            "user_permissions": [],
+            "password": "sha1$398fd$f15eb2447126f6f99749d3f7ec5873794419f1cb",
+            "email": "samuel@mailinator.com",
+            "date_joined": "2013-07-12 11:52:00"
         }
     },
     {
