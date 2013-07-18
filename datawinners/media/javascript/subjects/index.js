@@ -54,7 +54,7 @@ function getEntityIdsToBeDeleted(action_element) {
     var entity_code = $(action_element).attr('data-entity').split('-')[1];
     var allIds = [];
     var tbody_id = entity_code + "-table";
-    $('#' + tbody_id + ' :checked').each(function () {
+    $('#' + tbody_id + ' :checked').not(".checkall-subjects").each(function () {
         allIds.push($(this).val());
     });
     return allIds;
