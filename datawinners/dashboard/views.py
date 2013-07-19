@@ -9,7 +9,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.main.database import get_database_manager
-from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity import get_by_short_code, Entity
 from mangrove.datastore.queries import get_entities_by_type
 from datawinners.accountmanagement.views import session_not_expired, valid_web_user
 from datawinners import settings
@@ -23,18 +23,14 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport import Channel
 
 def _find_reporter_name(dbm, row):
-
-    channel = row.value.get("channel")
-    if channel == Channel.SMS:
-        mobile_number = row.value["source"]
-        reporters = dbm.load_all_rows_in_view('reporters_by_number_and_name',key=(mobile_number))
-        if len(reporters) != 0:
-            reporter = reporters[0].value
-        else:
-            reporter = mobile_number
-    else:
-        reporter = ""
-    return reporter
+    try:
+       if row.value["owner_uid"]:
+           data_sender_entity = Entity.get(dbm, row.value["owner_uid"])
+           name = data_sender_entity.value('name')
+           return name
+    except Exception:
+        pass
+    return ""
 
 
 def _make_message(row):

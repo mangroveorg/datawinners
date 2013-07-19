@@ -223,7 +223,7 @@
             "reporter_id": "rep11",
             "mobile_phone": "2619875",
             "org_id": "SLX364903",
-            "user": 5,
+            "user": 366,
             "title": "Tester"
         }
     },
@@ -514,7 +514,7 @@
         }
     },
     {
-        "pk": 5,
+        "pk": 366,
         "model": "auth.user",
         "fields": {
             "username": "mamy@mailinator.com",

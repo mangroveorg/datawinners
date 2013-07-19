@@ -332,7 +332,7 @@ def migrate_couchdb(context):
             with cd('%s/datawinners' % context.code_dir):
                 for migration in migration_files:
                     if not (migration.__contains__('.log') or migration.__eq__('__init__.py')):
-                        restart_couchdb()
+                        #restart_couchdb()
                         print 'Running migration: %s' % migration
                         activate_and_run(context.virtual_env,
                             "python %s/%s" % (context.couch_migrations_folder, migration))
@@ -393,7 +393,7 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
     _deploy_datawinners(context)
 
     remove_cache(context)
-    start_servers()
+    # start_servers()
 
 
 def custom_reports_deploy(code_dir, environment='showcase'):

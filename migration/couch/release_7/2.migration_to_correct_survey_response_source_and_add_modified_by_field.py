@@ -68,43 +68,45 @@ def override_owner_with_on_behalf_user(rep_id_to_uid_map, reporter_id, survey_re
 
 def migrate_survey_response_to_add_owner(db_name):
     logger = logging.getLogger(db_name)
-    logger.info('Starting Migration')
-    mark_start_of_migration(db_name)
-    dbm = get_db_manager(db_name)
+    try:
+        logger.info('Starting Migration')
+        mark_start_of_migration(db_name)
+        dbm = get_db_manager(db_name)
 
-    phone_to_rep_id_map, rep_id_to_uid_map = create_datasender_map(dbm)
-    org_id = OrganizationSetting.objects.get(document_store=dbm.database_name).organization_id
-    source_to_rep_id_map = add_email_info_to_datasender_map(phone_to_rep_id_map, org_id)
+        phone_to_rep_id_map, rep_id_to_uid_map = create_datasender_map(dbm)
+        org_id = OrganizationSetting.objects.get(document_store=dbm.database_name).organization_id
+        source_to_rep_id_map = add_email_info_to_datasender_map(phone_to_rep_id_map, org_id)
 
-    rows = dbm.database.view("surveyresponse/surveyresponse", reduce=False, include_docs=True)
-    for row in rows:
-        doc_id = row['value']['_id']
-        try:
-            original_source = row['value']['source']
-        except KeyError as e:
-            logger.info("Already migrated %s" % row['value']['_id']) #ignore, document already migrated
-            continue
+        rows = dbm.database.view("surveyresponse/surveyresponse", reduce=False, include_docs=True)
+        for row in rows:
+            doc_id = row['value']['_id']
+            try:
+                original_source = row['value']['source']
+            except KeyError as e:
+                logger.info("Already migrated %s" % row['value']['_id']) #ignore, document already migrated
+                continue
 
-        doc = SurveyResponseDocument.wrap(row['value'])
-        survey_response = SurveyResponse.new_from_doc(dbm, doc)
+            doc = SurveyResponseDocument.wrap(row['value'])
+            survey_response = SurveyResponse.new_from_doc(dbm, doc)
 
-        data_sender_id = source_to_rep_id_map.get(original_source)
+            data_sender_id = source_to_rep_id_map.get(original_source)
 
-        survey_response.created_by = data_sender_id
-        survey_response.modified_by = data_sender_id
+            survey_response.created_by = data_sender_id
+            survey_response.modified_by = data_sender_id
 
-        owner_short_code = override_owner_with_on_behalf_user(rep_id_to_uid_map, data_sender_id, survey_response)
+            owner_short_code = override_owner_with_on_behalf_user(rep_id_to_uid_map, data_sender_id, survey_response)
 
-        owner_uid = rep_id_to_uid_map.get(owner_short_code)
-        if owner_uid:
-            remove_attr_source_from_survey_response(survey_response)
-        else:
-            logger.warn("Unable to set owner_uid for source :" + original_source + " doc: " + doc_id)
-        survey_response.owner_uid = owner_uid
+            owner_uid = rep_id_to_uid_map.get(owner_short_code)
+            if owner_uid:
+                remove_attr_source_from_survey_response(survey_response)
+            else:
+                logger.warn("Unable to set owner_uid for source :" + original_source + " doc: " + doc_id)
+            survey_response.owner_uid = owner_uid
 
-        survey_response.save()
-        logger.info("Migrated %s" % survey_response.id)
-
+            survey_response.save()
+            logger.info("Migrated %s" % survey_response.id)
+    except Exception  as e:
+        logger.exception("Failed DB: %s with message %s" % (db_name, e.message))
     logger.info('Completed Migration')
 
 
