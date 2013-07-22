@@ -57,3 +57,5 @@ class TestAddSubjectType(unittest.TestCase):
         add_subject_type_page.click_on_accordian_link()
         add_subject_type_page.add_entity_type_with(INVALID_ENTITY[ENTITY_TYPE], wait=False)
         self.assertEqual(add_subject_type_page.get_error_message(), fetch_(ERROR_MESSAGE, from_(INVALID_ENTITY)))
+
+ 
