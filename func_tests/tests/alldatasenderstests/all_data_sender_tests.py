@@ -22,27 +22,20 @@ from pages.warningdialog.warning_dialog_page import WarningDialog
 
 @attr('suit_1')
 class TestAllDataSender(unittest.TestCase):
-    _multiprocess_can_split_ = True
-    # @classmethod
-    # def setUpClass(cls):
-    #     cls.driver = setup_driver()
-    #     cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-    #     login_page = LoginPage(cls.driver)
-    #     login_page.do_successful_login_with(VALID_CREDENTIALS)
-    #     cls.page = AllDataSendersPage(cls.driver)
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = setup_driver()
+        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(cls.driver)
+        login_page.do_successful_login_with(VALID_CREDENTIALS)
+        cls.page = AllDataSendersPage(cls.driver)
 
     def setUp(self):
-        self.driver = setup_driver()
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        LoginPage(self.driver).do_successful_login_with(VALID_CREDENTIALS)
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
-        self.page = AllDataSendersPage(self.driver)
 
-    def tearDown(self):
-        teardown_driver(self.driver)
-    # @classmethod
-    # def tearDownClass(cls):
-    #     teardown_driver(cls.driver)
+    @classmethod
+    def tearDownClass(cls):
+        teardown_driver(cls.driver)
 
     def login(self):
         login_page = LoginPage(self.driver)
