@@ -1,9 +1,10 @@
 import sys
+from datawinners.main.couchdb.utils import all_db_names
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0,".")
 
-from migration.couch.utils import should_not_skip, mark_start_of_migration, init_migrations, all_db_names
+from migration.couch.utils import should_not_skip, mark_start_of_migration, init_migrations
 from datetime import datetime
 import traceback
 from mangrove.datastore.database import get_db_manager

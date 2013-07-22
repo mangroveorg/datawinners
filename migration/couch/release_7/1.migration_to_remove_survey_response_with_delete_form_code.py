@@ -1,4 +1,5 @@
 import sys
+from datawinners.main.couchdb.utils import all_db_names
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
@@ -6,7 +7,7 @@ if __name__ == "__main__" and __package__ is None:
 import logging
 from mangrove.datastore.documents import SurveyResponseDocument
 from datawinners.main.database import get_db_manager
-from migration.couch.utils import all_db_names, migrate
+from migration.couch.utils import migrate
 from mangrove.transport.contract.survey_response import SurveyResponse
 
 

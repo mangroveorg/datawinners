@@ -1,7 +1,6 @@
 import csv
 import logging
 from apscheduler.threadpool import ThreadPool
-import requests
 from datawinners import settings
 
 skip_dbs = []
@@ -33,11 +32,6 @@ def set_skip_dbs():
 
 def should_not_skip(db_name):
     return not skip_dbs.__contains__(db_name)
-
-
-def all_db_names(server=settings.COUCH_DB_SERVER):
-    all_dbs = requests.get(server + "/_all_dbs", auth=settings.COUCHDBMAIN_CREDENTIALS)
-    return filter(lambda x: x.startswith('hni_'), all_dbs.json())
 
 
 def migration_tag(version): # version = (7,0,1)

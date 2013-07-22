@@ -1,6 +1,7 @@
 import logging
 import traceback
 import sys
+from datawinners.main.couchdb.utils import all_db_names
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
@@ -8,7 +9,7 @@ if __name__ == "__main__" and __package__ is None:
 from datawinners.main.database import get_db_manager
 
 from datawinners.project.models import Project
-from migration.couch.utils import mark_start_of_migration, all_db_names, migrate
+from migration.couch.utils import mark_start_of_migration, migrate
 
 
 def is_void(d, ds):
