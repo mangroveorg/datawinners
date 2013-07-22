@@ -115,7 +115,4 @@ class TestAllUsers(unittest.TestCase):
         username = activity_log_page.get_data_on_cell(2, 1)
         project_name_on_log_page = activity_log_page.get_data_on_cell(2, 4)
         self.assertEqual(project_name_on_log_page, project_name)
-        self.assertTrue("Mamy" in username)
-        
-
-  
+        self.assertTrue("Deleted User" in username, username)
