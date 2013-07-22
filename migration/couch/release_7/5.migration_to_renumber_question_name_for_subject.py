@@ -1,5 +1,6 @@
 import logging
 import sys
+from datawinners.main.couchdb.utils import all_db_names
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
@@ -8,7 +9,7 @@ from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.submission import Submission, SubmissionLogDocument
-from migration.couch.utils import mark_start_of_migration, all_db_names, migrate
+from migration.couch.utils import mark_start_of_migration, migrate
 from mangrove.datastore.entity import get_by_short_code_include_voided
 
 map_form_model_for_subject_questionnaires = """

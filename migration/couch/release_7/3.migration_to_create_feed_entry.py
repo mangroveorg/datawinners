@@ -1,11 +1,12 @@
 import sys
+from datawinners.main.couchdb.utils import all_db_names
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
 import logging
 from datawinners.feeds.migrate import FeedBuilder
-from migration.couch.utils import mark_start_of_migration, all_db_names, migrate
+from migration.couch.utils import mark_start_of_migration, migrate
 
 
 def migrate_survey_response_to_feed(db_name):

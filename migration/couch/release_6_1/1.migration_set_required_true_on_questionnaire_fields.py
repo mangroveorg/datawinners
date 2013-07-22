@@ -1,6 +1,7 @@
 #Change the unique id in the older entity registration form model. Change the instruction
 import sys
 import traceback
+from datawinners.main.couchdb.utils import all_db_names
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
@@ -9,7 +10,7 @@ from datetime import datetime
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
-from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration, all_db_names
+from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration
 from datawinners import  settings
 
 SERVER = 'http://localhost:5984'
