@@ -14,6 +14,7 @@ from tests.logintests.login_data import USERNAME, PASSWORD
 
 @attr('suit_1')
 class TestActivateAccount(unittest.TestCase):
+    _multiprocess_shared_ = True
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()

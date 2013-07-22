@@ -25,6 +25,8 @@ from framework.utils.database_manager_postgres import DatabaseManager
 
 @attr('suit_1')
 class TestShowActivityLog(unittest.TestCase):
+    _multiprocess_shared_ = True
+
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
@@ -34,6 +36,7 @@ class TestShowActivityLog(unittest.TestCase):
         cls.global_navigation_page = GlobalNavigationPage(cls.driver)
         cls.project_title = cls.create_new_project()
         cls.email = None
+        teardown_driver(cls.driver)
 
     def login(self, credential=VALID_CREDENTIALS):
         # doing successful login with valid credentials
@@ -54,12 +57,18 @@ class TestShowActivityLog(unittest.TestCase):
         cls.driver.wait_for_page_with_title(5, 'Projects - Overview')
         return ProjectOverviewPage(cls.driver).get_project_title()
 
+    def setUp(self):
+        self.driver = setup_driver()
+        self.login()
+
+    def tearDown(self):
+        teardown_driver(self.driver)
+
     @attr('functional_test', 'smoke')
     def test_should_match_created_project_entry_in_user_activity_log_page(self):
         """
         This function will create a project and will check the user activity log entry for that action
         """
-
         activity_log_page = self.navigate_to_activity_log_page()
         self.assertEqual(ACTIVITY_LOG_PAGE_TITLE, self.driver.get_title())
         activity_log_page.select_filter("Project", "Created Project")
@@ -71,25 +80,24 @@ class TestShowActivityLog(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_only_show_logs_for_current_organization(self):
-        self.prepare_data_for_showing_only_logs_for_current_organization()
+        confirmation_page, email = register_and_get_email(self.driver)
+        account_activate_page = ActivateAccountPage(self.driver)
+        dbmanager = DatabaseManager()
+        activation_code = dbmanager.get_activation_code(email.lower())
+        account_activate_page.activate_account(activation_code)
         activity_log_page = self.navigate_to_activity_log_page()
         self.assert_there_is_no_entry(activity_log_page)
         activity_log_page.click_on_filter_button()
         self.assert_there_is_no_entry(activity_log_page)
         self.assert_there_is_entries_for_tester150411_organization()
+        dbname = dbmanager.delete_organization_all_details(email.lower())
+        couchwrapper = CouchHttpWrapper()
+        couchwrapper.deleteDb(dbname)
 
 
     def navigate_to_activity_log_page(self):
         self.driver.go_to(DATA_WINNER_USER_ACTIVITY_LOG_PAGE)
         return ShowActivityLogPage(self.driver)
-
-    @classmethod
-    def prepare_data_for_showing_only_logs_for_current_organization(cls):
-        confirmation_page, cls.email = register_and_get_email(cls.driver)
-        account_activate_page = ActivateAccountPage(cls.driver)
-        dbmanager = DatabaseManager()
-        activation_code = dbmanager.get_activation_code(cls.email.lower())
-        account_activate_page.activate_account(activation_code)
 
     def assert_there_is_no_entry(self, activity_log_page):
         entries_number = activity_log_page.get_number_of_entries_found()
@@ -104,7 +112,8 @@ class TestShowActivityLog(unittest.TestCase):
 
     @attr('functional_test')
     def test_edit_submissions_are_logged(self):
-        project_overview = self.global_navigation_page.navigate_to_view_all_project_page().navigate_to_project_overview_page(
+        global_navigation_page = GlobalNavigationPage(self.driver)
+        project_overview = global_navigation_page.navigate_to_view_all_project_page().navigate_to_project_overview_page(
             self.project_title)
         web_submission_page = project_overview.navigate_to_web_questionnaire_page()
         web_submission_page.fill_and_submit_answer(VALID_ANSWERS)
@@ -129,13 +138,3 @@ class TestShowActivityLog(unittest.TestCase):
         self.assertTrue('Clinic admin name: "something" to "nothing"' in details_data)
         self.assertTrue('Bacterias in water: "Bacteroids" to "Aquificae, Bacteroids, Chlorobia"' in details_data)
         self.assertTrue('Geo points of Clinic: "-1,-1" to "1,1"' in details_data)
-
-    @classmethod
-    def tearDownClass(cls):
-        if cls.email is not None:
-            dbmanager = DatabaseManager()
-            dbname = dbmanager.delete_organization_all_details(cls.email.lower())
-            couchwrapper = CouchHttpWrapper()
-            couchwrapper.deleteDb(dbname)
-        teardown_driver(cls.driver)
-
