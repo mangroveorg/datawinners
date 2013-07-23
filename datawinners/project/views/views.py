@@ -1036,7 +1036,7 @@ def edit_data_sender(request, project_id, reporter_id):
     project, links = _get_project_and_project_link(manager, project_id, reporter_id)
     datasender = {'short_code':reporter_id}
     get_datasender_user_detail(datasender, request.user)
-    email = datasender.get('email') if datasender.get('is_user', False) else False
+    email = datasender.get('email') if datasender.get('email') != '--' else False
 
     if request.method == 'GET':
         location = reporter_entity.location

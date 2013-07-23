@@ -151,7 +151,7 @@ def edit_data_sender(request, reporter_id):
     entity_links = {'registered_datasenders_link': reverse(all_datasenders)}
     datasender = {'short_code':reporter_id}
     get_datasender_user_detail(datasender, request.user)
-    email = datasender.get('email') if datasender.get('is_user', False) else False
+    email = datasender.get('email') if datasender.get('email') != '--' else False
 
     if request.method == 'GET':
         name = reporter_entity.name
