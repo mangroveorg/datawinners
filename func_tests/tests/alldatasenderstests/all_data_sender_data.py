@@ -79,6 +79,15 @@ VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "Kimi",
                                        GPS: "-21.7622088847 48.0690991394",
                                        SUCCESS_MSG: "Registration successful. ID is: rep"}
 
+EMAIL_ADDRESS = "email"
+
+VALID_DATASENDER_WITH_EMAIL = {NAME: "Mickey Duck",
+                               MOBILE_NUMBER: random_number(6),
+                               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                               EMAIL_ADDRESS: "mIcKeY",
+                               GPS: "-21.7622088847 48.0690991394",
+                               SUCCESS_MSG: "Registration successful. ID is: rep"}
+
 INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
                               MOBILE_NUMBER: "abcdefgh",
                               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
@@ -86,7 +95,11 @@ INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
 
 DATA_SENDER_ID_WITH_WEB_ACCESS = "rep3"
 DATA_SENDER_ID_WITHOUT_WEB_ACCESS = "rep5"
-DATA_SENDER_EMAIL_ID = random_string(3) + '@' + random_string(3) + '.com'
+
+
+def generate_random_email_id():
+    return random_string(5) + '@' + random_string(3) + '.com'
+
 
 ALL_DS_TO_DELETE_ARE_USER_MSG = u'You cannot delete the following Data Senders as they are DataWinners users:'
 NOTIFICATION_WHILE_DELETING_USER = "Note, the following Data Senders will not be deleted as they are DataWinners users"

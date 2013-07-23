@@ -1,6 +1,6 @@
 import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import  setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.loginpage.login_page import LoginPage
@@ -10,6 +10,7 @@ from tests.addsubjecttests.add_subject_data import VALID_DATA, SUCCESS_MSG
 from tests.datasendertests.data_sender_data import PAGE_TITLE, SECTION_TITLE, SUBJECT_TYPE
 from tests.logintests.login_data import DATA_SENDER_CREDENTIALS
 from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA, PROJECT_NAME, VALID_ANSWERS
+
 
 class DataSenderTest(unittest.TestCase):
     @classmethod
@@ -27,7 +28,7 @@ class DataSenderTest(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    @attr("functional_test")
+    @attr("functional_test", 'smoke')
     def test_send_in_data_to_a_project(self):
         web_submission_page = self.data_sender_page.send_in_data()
         self.assertEquals(web_submission_page.get_title(), PAGE_TITLE)
@@ -68,7 +69,7 @@ class DataSenderTest(unittest.TestCase):
         add_subject_page.add_subject_with(VALID_DATA)
         add_subject_page.submit_subject()
         message = fetch_(SUCCESS_MSG, from_(VALID_DATA))
-        self.assertRegexpMatches(add_subject_page.get_flash_message(), message)
+        self.assertIn(message, add_subject_page.get_flash_message())
 
     @attr("functional_test")
     def test_go_back_to_project_list_from_register_subject_page(self):

@@ -244,7 +244,8 @@ class TestAllDataSender(unittest.TestCase):
     def give_web_and_smartphone_access(self, all_data_senders_page):
         all_data_senders_page.give_web_access()
         email_text_box = self.driver.find_text_box(WEB_USER_BLOCK_EMAIL)
-        email_text_box.enter_text(DATA_SENDER_EMAIL_ID)
+        email = generate_random_email_id()
+        email_text_box.enter_text(email)
         self.driver.find(GIVE_ACCESS_LINK).click()
 
     @attr("functional_test")

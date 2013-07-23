@@ -2,6 +2,8 @@
 
 
 ##Variables
+from tests.alldatasenderstests.all_data_sender_data import random_number
+
 NAME = "name"
 MOBILE_NUMBER = "mobile_number"
 MOBILE_NUMBER_WITHOUT_HYPHENS = "mobile_number_without_hyphens"
@@ -25,24 +27,24 @@ VALID_DATA = {NAME: "Mickey Duck",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 VALID_EDIT_DATA = {NAME: "EDIT Mickey Duck",
-              MOBILE_NUMBER: "9876-543-2107",
-              COMMUNE: "PUNE",
-              GPS: "",
-              SUCCESS_MSG: "Your changes have been saved."}
+                   MOBILE_NUMBER: "9876-543-2107",
+                   COMMUNE: "PUNE",
+                   GPS: "",
+                   SUCCESS_MSG: "Your changes have been saved."}
 
 VALID_DATA_WITH_EMAIL = {NAME: "Mickey Duck",
-              MOBILE_NUMBER: "9876-544-2103",
-              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-              EMAIL_ADDRESS: "mIcKeY",
-              GPS: "-21.7622088847 48.0690991394",
-              MOBILE_NUMBER_WITHOUT_HYPHENS: "98765442103",
-              SUCCESS_MSG: "Registration successful. ID is: rep"}
+                         MOBILE_NUMBER: random_number(6),
+                         COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                         EMAIL_ADDRESS: "mIcKeY",
+                         GPS: "-21.7622088847 48.0690991394",
+                         MOBILE_NUMBER_WITHOUT_HYPHENS: "98765442103",
+                         SUCCESS_MSG: "Registration successful. ID is: rep"}
 VALID_DATA_WITHOUT_EMAIL = {NAME: "Mickey Duck",
-              MOBILE_NUMBER: "9876-544-2102",
-              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-              EMAIL_ADDRESS: "",
-              GPS: "-21.7622088847 48.0690991394",
-              ERROR_MSG: "Email address This field is required."}
+                            MOBILE_NUMBER: "9876-544-2102",
+                            COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                            EMAIL_ADDRESS: "",
+                            GPS: "-21.7622088847 48.0690991394",
+                            ERROR_MSG: "Email address This field is required."}
 
 EXISTING_DATA = {NAME: "Mickey Mouse",
                  MOBILE_NUMBER: "123-4567-890",
@@ -93,8 +95,8 @@ WITH_UNICODE_IN_GPS = {NAME: "Unicode in GPS",
                        ERROR_MSG: "Mobile Number Please enter a valid phone number.GPS Coordinates Find GPS coordinates Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
 
 VALID_DATA_FOR_LONG_UID = {NAME: "Donald Duck",
-              MOBILE_NUMBER: "261336231",
-              MOBILE_NUMBER_WITHOUT_HYPHENS: "261336231",
-              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-              GPS: "-21.7622088847 48.0690991394",
-              ERROR_MSG: u'Unique ID Unique ID should be less than 12 characters    Let us generate an ID for you'}
+                           MOBILE_NUMBER: "261336231",
+                           MOBILE_NUMBER_WITHOUT_HYPHENS: "261336231",
+                           COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                           GPS: "-21.7622088847 48.0690991394",
+                           ERROR_MSG: u'Unique ID Unique ID should be less than 12 characters    Let us generate an ID for you'}

@@ -9,6 +9,7 @@ from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
+from tests.alldatasenderstests.all_data_sender_data import generate_random_email_id
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
@@ -44,19 +45,15 @@ class TestAllDataSender(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    def login_with_created_datasenders_account(self):
-        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
-        all_data_senders_page = AllDataSendersPage(self.driver)
-        email = all_data_senders_page.get_data_sender_email_by_mobile_number(
-            VALID_DATA_WITH_EMAIL[MOBILE_NUMBER_WITHOUT_HYPHENS])
+    def login_with_created_datasenders_account(self, email):
         global_navigation = GlobalNavigationPage(self.driver)
         global_navigation.sign_out()
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        data_sender_crendentials = {USERNAME: email, PASSWORD: "test123"}
+        data_sender_credentials = {USERNAME: email, PASSWORD: "test123"}
         login_page = LoginPage(self.driver)
-        login_page.login_with(data_sender_crendentials)
+        login_page.login_with(data_sender_credentials)
         message = global_navigation.welcome_message()
-        return email, message
+        return message
 
     @attr('functional_test', 'smoke')
     def test_successful_addition_editing_of_data_sender(self):
@@ -77,14 +74,14 @@ class TestAllDataSender(unittest.TestCase):
     def test_successful_addition_of_data_sender_with_email_address(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.select_web_device()
-        add_data_sender_page.enter_email(VALID_DATA_WITH_EMAIL)
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL)
+
+        email = generate_random_email_id()
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL, email=email)
 
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL)))
 
-        email, message = self.login_with_created_datasenders_account()
-        self.assertEqual(email.lower(), email)
+        message = self.login_with_created_datasenders_account(email)
         self.assertEqual(message, "Welcome Mickey Duck!")
 
     @attr('functional_test', 'smoke')

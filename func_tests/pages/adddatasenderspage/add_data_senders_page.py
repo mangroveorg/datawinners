@@ -18,7 +18,7 @@ class AddDataSenderPage(Page):
         generated_email_address = email_address_prefix + generateId() + "@abc.com"
         self.driver.find_text_box(EMAIL_TB).enter_text(generated_email_address)
 
-    def enter_data_sender_details_from(self, registration_data, unique_id=None):
+    def enter_data_sender_details_from(self, registration_data, unique_id=None, email=None):
         """
         Function to enter and submit the data on add data sender page
 
@@ -36,6 +36,11 @@ class AddDataSenderPage(Page):
             fetch_(COMMUNE, from_(registration_data)))
         self.driver.find_text_box(GPS_TB).enter_text(
             fetch_(GPS, from_(registration_data)))
+
+        if email is not None:
+            self.driver.find(by_css("#id_devices_1")).click()
+            self.driver.find_text_box(EMAIL_TB).enter_text(email)
+
         if unique_id is not None:
             self.set_unique_id(unique_id)
         self.driver.find(REGISTER_BTN).click()
