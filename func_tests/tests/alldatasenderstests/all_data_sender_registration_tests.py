@@ -73,7 +73,6 @@ class TestAllDataSender(unittest.TestCase):
     @attr('functional_test', 'smoke')
     def test_successful_addition_of_data_sender_with_email_address(self):
         add_data_sender_page = self.current_page
-        add_data_sender_page.select_web_device()
 
         email = generate_random_email_id()
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL, email=email)
