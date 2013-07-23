@@ -1,10 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import re
+import time
+
 from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.submissionlogpage.submission_log_locator import *
 from tests.submissionlogtests.submission_log_data import UNIQUE_VALUE
-import re
-import time
 
 
 class SubmissionLogPage(Page):
@@ -33,7 +34,7 @@ class SubmissionLogPage(Page):
     def get_active_tab_text(self):
         return self.driver.find(ACTIVE_TAB_LOCATOR).text
 
-    def choose_on_dropdown_action(self,action_button):
+    def choose_on_dropdown_action(self, action_button):
         self.driver.find(ACTION_SELECT_CSS_LOCATOR).click()
         self.driver.find(action_button).click()
 
@@ -48,11 +49,11 @@ class SubmissionLogPage(Page):
             index += 1
         return column_data
 
-    def get_all_data_on_nth_row(self,row,header_count):
+    def get_all_data_on_nth_row(self, row, header_count):
         row_data = []
         time.sleep(2)
-        for col in range(2, header_count+1):
-            row_data.append(self.get_cell_data(row,col))
+        for col in range(2, header_count + 1):
+            row_data.append(self.get_cell_data(row, col))
         return row_data
 
     def get_shown_records_count(self):
@@ -97,3 +98,6 @@ class SubmissionLogPage(Page):
 
     def is_filter_enabled(self):
         return self.driver.find(SUBMISSION_DATE_FILTER).is_enabled()
+
+    def empty_help_text(self):
+        return self.driver.find(by_css('.submission_table .help_accordion')).text
