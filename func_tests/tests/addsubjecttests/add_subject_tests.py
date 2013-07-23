@@ -1,14 +1,17 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import  setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.addsubjectpage.add_subject_locator import UNIQUE_ID_TB
+from pages.alldatasenderspage.all_data_senders_locator import DELETE_BUTTON
+from pages.allsubjectspage.all_subjects_page import AllSubjectsPage
 from pages.loginpage.login_page import LoginPage
 from pages.addsubjectpage.add_subject_page import AddSubjectPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ADD_SUBJECT, LOGOUT
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ADD_SUBJECT, LOGOUT, DATA_WINNER_ALL_SUBJECT
 from tests.logintests.login_data import VALID_CREDENTIALS, DATA_SENDER_CREDENTIALS
 from tests.addsubjecttests.add_subject_data import *
+
 
 @attr('suit_1')
 class TestAddSubject(unittest.TestCase):
@@ -25,13 +28,32 @@ class TestAddSubject(unittest.TestCase):
         teardown_driver(cls.driver)
 
     @attr('functional_test', 'smoke')
-    def test_successful_addition_of_subject(self):
+    def test_add_edit_delete_subject(self):
         self.driver.go_to(self.add_subjects_url)
         add_subject_page = AddSubjectPage(self.driver)
         add_subject_page.add_subject_with(VALID_DATA)
         add_subject_page.submit_subject()
         message = fetch_(SUCCESS_MSG, from_(VALID_DATA))
-        self.assertRegexpMatches(add_subject_page.get_flash_message(), message)
+        flash_message = add_subject_page.get_flash_message()
+        self.assertIn(message, flash_message)
+        subject_short_code = flash_message.replace(message, '')
+        self.driver.go_to(DATA_WINNER_ALL_SUBJECT)
+        all_subjects_page = AllSubjectsPage(self.driver)
+        all_subjects_page.open_subjects_table_for_entity_type('clinic')
+        all_subjects_page.select_a_subject_by_type_and_id('clinic', subject_short_code)
+        all_subjects_page.click_action_button_for('clinic', 'edit')
+        add_subject_page = AddSubjectPage(self.driver)
+        add_subject_page.add_subject_with(VALID_DATA_FOR_EDIT)
+        add_subject_page.submit_subject()
+        self.assertEquals(add_subject_page.get_flash_message(), VALID_DATA_FOR_EDIT[SUCCESS_MSG])
+        add_subject_page.navigate_to_all_subjects()
+        all_subjects_page.open_subjects_table_for_entity_type('clinic')
+        all_subjects_page.select_a_subject_by_type_and_id('clinic', subject_short_code)
+        all_subjects_page.click_action_button_for('clinic', 'delete')
+        self.driver.find(DELETE_BUTTON).click()
+        self.assertEquals(all_subjects_page.message(), 'Subject(s) successfully deleted.')
+        self.assertFalse(all_subjects_page.is_subject_present('clinic', subject_short_code))
+
 
     @attr('functional_test')
     def test_addition_of_subject_with_existing_data(self):

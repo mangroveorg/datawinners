@@ -40,35 +40,6 @@ class AddSubjectPage(Page):
         self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(
             fetch_(MOBILE_NUMBER, from_(addition_data)))
 
-#    def add_subject_with(self, addition_data):
-#        """
-#        Function to fill and submit data on add a subject page
-#
-#        Args:
-#        addition_data is data to fill in the different fields like short name, location, Geo Code,
-#        description and mobile number
-#
-#        Return self
-#        """
-#        entity_type = fetch_(ENTITY_TYPE, from_(addition_data))
-#        self.driver.find_drop_down(ENTITY_TYPE_DD).set_selected(entity_type)
-#        self.driver.find_text_box(NAME_TB).enter_text(
-#            fetch_(NAME, from_(addition_data)))
-#        short_name = fetch_(SHORT_NAME, from_(addition_data))
-#        if not fetch_(AUTO_GENERATE, from_(addition_data)):
-#            self.driver.find(AUTO_GENERATE_CB).click()
-#            self.driver.find_text_box(SHORT_NAME_ENABLED_TB).enter_text(short_name)
-#        self.driver.find_text_box(LOCATION_TB).enter_text(
-#            fetch_(LOCATION, from_(addition_data)))
-#        self.driver.find_text_box(GEO_CODE_TB).enter_text(
-#            fetch_(GPS, from_(addition_data)))
-#        self.driver.find_text_box(DESCRIPTION_TB).enter_text(
-#            fetch_(DESCRIPTION, from_(addition_data)))
-#        self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(
-#            fetch_(MOBILE_NUMBER, from_(addition_data)))
-#        self.driver.find(ADD_BTN).click()
-#        return fetch_(ERROR_MSG, from_(addition_data))
-
     def submit_subject(self):
         self.driver.find(SUBMIT_BTN).click()
         time.sleep(2)
@@ -126,3 +97,9 @@ class AddSubjectPage(Page):
 
     def get_cancel_url(self):
         return self.driver.find(CANCEL_LINK).get_attribute("href")
+
+    def navigate_to_all_subjects(self):
+        self.driver.find(by_css('.back-to-list')).click()
+
+    def get_first_name(self):
+        self.driver.find()

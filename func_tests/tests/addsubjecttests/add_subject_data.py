@@ -25,16 +25,24 @@ VALID_DATA = {ENTITY_TYPE: "clinic",
               GPS: "47.411631 28.369885",
               MOBILE_NUMBER: "345-678-90",
               SUB_UNIQUE_ID: None,
-              SUCCESS_MSG: SUCCESSFUL_MESSAGE}
-
-SUBJECT_DATA_WITHOUT_UNIQUE_ID = {ENTITY_TYPE: "clinic",
-                       SUB_FIRST_NAME: "Clinic Monodova",
+              SUCCESS_MSG: "Successfully submitted. Unique identification number(ID) is: "}
+VALID_DATA_FOR_EDIT = {ENTITY_TYPE: "clinic",
+                       SUB_FIRST_NAME: "Clinic Monodova editted",
                        SUB_LAST_NAME: "wat",
                        LOCATION: "Monodova",
-                       GPS: "47.411631 28.369885",
-                       MOBILE_NUMBER: "34-567-890",
+                       GPS: "47,28",
+                       MOBILE_NUMBER: "001-345-678-90",
                        SUB_UNIQUE_ID: None,
-                       SUCCESS_MSG: SUCCESSFUL_MESSAGE}
+                       SUCCESS_MSG: "Your changes have been saved."}
+
+SUBJECT_DATA_WITHOUT_UNIQUE_ID = {ENTITY_TYPE: "clinic",
+                                  SUB_FIRST_NAME: "Clinic Monodova",
+                                  SUB_LAST_NAME: "wat",
+                                  LOCATION: "Monodova",
+                                  GPS: "47.411631 28.369885",
+                                  MOBILE_NUMBER: "34-567-890",
+                                  SUB_UNIQUE_ID: None,
+                                  SUCCESS_MSG: SUCCESSFUL_MESSAGE}
 
 EXISTING_SHORT_CODE = {ENTITY_TYPE: "clinic",
                        SUB_FIRST_NAME: "Clinic Amparaky",
@@ -82,31 +90,31 @@ INVALID_LONGITUDE_GPS = {ENTITY_TYPE: "clinic",
                          ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"}
 
 INVALID_GPS_AND_PHONE_NUMBER = {ENTITY_TYPE: "clinic",
-               SUB_FIRST_NAME: "Invalid GPS with Semi-Colon",
-               SUB_LAST_NAME: "Invalid GPS with Semi-Colon",
-               LOCATION: "DIANA",
-               GPS: "23; 10",
-               MOBILE_NUMBER: "734!@#$456",
-               SUB_UNIQUE_ID: None,
-               ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315Please enter a valid phone number."}
+                                SUB_FIRST_NAME: "Invalid GPS with Semi-Colon",
+                                SUB_LAST_NAME: "Invalid GPS with Semi-Colon",
+                                LOCATION: "DIANA",
+                                GPS: "23; 10",
+                                MOBILE_NUMBER: "734!@#$456",
+                                SUB_UNIQUE_ID: None,
+                                ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315Please enter a valid phone number."}
 
 WITH_UNICODE_IN_GPS_AND_INVALID_PHONE_NUMBER = {ENTITY_TYPE: "clinic",
-                       SUB_FIRST_NAME: "Unicode in GPS",
-                       SUB_LAST_NAME: "cli",
-                       MOBILE_NUMBER: "567ABCD834",
-                       LOCATION: "DIANA",
-                       GPS: u"23º aa",
-                       SUB_UNIQUE_ID: None,
-                       ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315Please enter a valid phone number."}
+                                                SUB_FIRST_NAME: "Unicode in GPS",
+                                                SUB_LAST_NAME: "cli",
+                                                MOBILE_NUMBER: "567ABCD834",
+                                                LOCATION: "DIANA",
+                                                GPS: u"23º aa",
+                                                SUB_UNIQUE_ID: None,
+                                                ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315Please enter a valid phone number."}
 
 CLINIC_WITH_INVALID_UID = {ENTITY_TYPE: "clinic",
-                        SUB_FIRST_NAME: "Clinic Monodova",
-                        SUB_LAST_NAME: "wat",
-                        LOCATION: "Monodova",
-                        GPS: "47.411631 28.369885",
-                        MOBILE_NUMBER: "34-567-890",
-                        SUB_UNIQUE_ID: "12345678-=323223",
-                        ERROR_MSG: "Only letters and numbers are valid"}
+                           SUB_FIRST_NAME: "Clinic Monodova",
+                           SUB_LAST_NAME: "wat",
+                           LOCATION: "Monodova",
+                           GPS: "47.411631 28.369885",
+                           MOBILE_NUMBER: "34-567-890",
+                           SUB_UNIQUE_ID: "12345678-=323223",
+                           ERROR_MSG: "Only letters and numbers are valid"}
 
 PROJECT_NAME = "project_name"
 PROJECT_BACKGROUND = "project_background"
@@ -134,10 +142,10 @@ VALID_PROJECT_DATA = {PROJECT_NAME: "Subject reg Activities ", GEN_RANDOM: True,
                           u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
 
 VALID_SUBJECT_REGISTRATION_DATA = {ENTITY_TYPE: "clinic",
-              SUB_FIRST_NAME: "Clinic BANGALORE",
-              SUB_LAST_NAME: "something",
-              LOCATION: "Monodova",
-              GPS: "47.411631 28.369885",
-              MOBILE_NUMBER: "990099000",
-              SUB_UNIQUE_ID: None,
-              SUCCESS_MSG: SUCCESSFUL_MESSAGE}
+                                   SUB_FIRST_NAME: "Clinic BANGALORE",
+                                   SUB_LAST_NAME: "something",
+                                   LOCATION: "Monodova",
+                                   GPS: "47.411631 28.369885",
+                                   MOBILE_NUMBER: "990099000",
+                                   SUB_UNIQUE_ID: None,
+                                   SUCCESS_MSG: SUCCESSFUL_MESSAGE}

@@ -8,94 +8,106 @@
 
         </div>
     </form>
-{% for subject in all_data %}
-    <div class="list_header">
-        <span class="header">{{ subject.entity|capfirst }}</span>
-        <span class="success_error">{{ subject.data|length }} {% trans "Registered Subjects" %}</span>
-    </div>
-    <div class="subject-container">
-        <div class="subjects_links">
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
-               class="edit-form-link margin_right_20" id="link-to-edit-form-{{ subject.entity }}">{% trans "Edit Registration Form" %}</a>
-            <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Register a" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
-            <a class="import-subject" id="import-{{ subject.entity }}">{% trans "Import a list" %}</a>&nbsp;|&nbsp;
-            <a href="javascript:void(0);" class="export-entity-link"  id="export-{{ subject.entity }}">Export</a>
+    {% for subject in all_data %}
+        <div class="list_header">
+            <span class="header">{{ subject.entity|capfirst }}</span>
+            <span class="success_error">{{ subject.data|length }} {% trans "Registered Subjects" %}</span>
         </div>
-        
-        {% include 'popup-import.html' %}
+        <div class="subject-container">
+            <div class="subjects_links">
+                <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
+                   class="edit-form-link margin_right_20"
+                   id="link-to-edit-form-{{ subject.entity }}">{% trans "Edit Registration Form" %}</a>
+                <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Register a" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
+                <a class="import-subject" id="import-{{ subject.entity }}">{% trans "Import a list" %}</a>&nbsp;|&nbsp;
+                <a href="javascript:void(0);" class="export-entity-link" id="export-{{ subject.entity }}">Export</a>
+            </div>
 
-        <div class="action_dropdown">
-            <div class="action_button action_bar clear-both" style="margin-bottom: 20px">
-                <div class="btn-group">
-                    <button class="btn dropdown-toggle action" href="#" data-dropdown="#none-selected{{forloop.counter}}">{% trans "Actions" %}
-                        <span class="caret"></span>
-                    </button>
+            {% include 'popup-import.html' %}
+
+            <div class="action_dropdown">
+                <div class="action_button action_bar clear-both" style="margin-bottom: 20px">
+                    <div class="btn-group">
+                        <button class="btn dropdown-toggle action" href="#"
+                                data-dropdown="#none-selected{{ forloop.counter }}">{% trans "Actions" %}
+                            <span class="caret"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="action{{ forloop.counter }}" class="dropdown action">
+                    <ul class="dropdown-menu">
+                        <li><a data-entity="{{ subject.entity }}-{{ subject.code }}-delete"
+                               class="delete">{% trans "Delete" %}</a></li>
+                        {% if EDIT_SUBJECT_ENABLED %}
+                            <li><a data-entity="{{ subject.entity }}-{{ subject.code }}-edit"
+                                   class="edit">{% trans "Edit" %}</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <div class="none_selected dropdown" id="none-selected{{ forloop.counter }}">
+                    <div class="dropdown-panel">
+                        {% blocktrans with subject.entity as subject_type %}Select a
+                            {{ subject_type }}{% endblocktrans %}
+                    </div>
                 </div>
             </div>
 
-            <div id="action{{forloop.counter}}" class="dropdown action" >
-                <ul class="dropdown-menu">
-                    <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-delete">{% trans "Delete" %}</a></li>
-                    {% if EDIT_SUBJECT_ENABLED %}
-                    <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-edit" class="edit">{% trans "Edit" %}</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-
-            <div class="none_selected dropdown" id="none-selected{{ forloop.counter }}">
-                <div class="dropdown-panel">
-                    {% blocktrans with subject.entity as subject_type %}Select a {{ subject_type }}{% endblocktrans %}
-                </div>
-            </div>
-        </div>
-
-        {% if subject.data|length > 0 %}
-            <table class="styled_table" id="{{ subject.entity }}-table">
-                <thead>
+            {% if subject.data|length > 0 %}
+                <table class="styled_table" id="{{ subject.entity }}-table">
+                    <thead>
                     <th><input type="checkbox" class="checkall-subjects" id="checkall-{{ subject.code }}"/></th>
                     {% for title in subject.labels %}
                         <th>{{ title }}</th>
                     {% endfor %}
-                </thead>
-                <tbody id="{{ subject.code }}-table">
-                {% for row in subject.data %}
-                    <tr>
-                        <td>
-                            <input type="checkbox" value="{{ row.short_code }}" id="{{ row.short_code }}">
-                        </td>
-                        {% for col in row.cols %}
-                            <td>{{ col }}</td>
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <table class="styled_table" >
-                <thead>
+                    </thead>
+                    <tbody id="{{ subject.code }}-table">
+                    {% for row in subject.data %}
+                        <tr>
+                            <td>
+                                <input type="checkbox" value="{{ row.short_code }}" id="{{ row.short_code }}">
+                            </td>
+                            {% for col in row.cols %}
+                                <td>{{ col }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <table class="styled_table">
+                    <thead>
                     {% for title in subject.labels %}
                         <th>{{ title }}</th>
                     {% endfor %}
-                </thead>
-                <tbody id="{{ subject.code }}-table">
+                    </thead>
+                    <tbody id="{{ subject.code }}-table">
 
-                </tbody>
-            </table>
-            <div class="no_registered_subjects" id="{{ subject.code }}-no-data">
-                <p>
-                    {% blocktrans with subject.entity|capfirst as entity_type %}Once you have registered a {{ entity_type }}, it will appear here.{% endblocktrans %}
-                </p>
-                <p>
-                    {% trans "To get started" %}
+                    </tbody>
+                </table>
+                <div class="no_registered_subjects" id="{{ subject.code }}-no-data">
+                    <p>
+                        {% blocktrans with subject.entity|capfirst as entity_type %}Once you have registered a
+                            {{ entity_type }}, it will appear here.{% endblocktrans %}
+                    </p>
+
+                    <p>
+                        {% trans "To get started" %}
                     <ul>
                         <li>{% trans "Register a" %} {{ subject.entity|capfirst }}:
                             <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a new" %} {{ subject.entity|capfirst }}</a>
-                            {% trans "or" %} <a href="javascript:void(0);" id="import-{{ subject.entity }}" class="import-subject">{% blocktrans with subject.entity|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a></li>
-                        <li><a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}">{% blocktrans with subject.entity|capfirst as entity_type %}Customize the {{ entity_type }} registration form{% endblocktrans %}</a></li>
+                            {% trans "or" %} <a href="javascript:void(0);" id="import-{{ subject.entity }}"
+                                                class="import-subject">
+                                {% blocktrans with subject.entity|capfirst as entity_type %}Import a list of
+                                    {{ entity_type }}{% endblocktrans %}</a></li>
+                        <li><a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}">
+                            {% blocktrans with subject.entity|capfirst as entity_type %}Customize the {{ entity_type }}
+                                registration form{% endblocktrans %}</a></li>
                     </ul>
-                </p>
-            </div>
-        {% endif %}
-    </div>
-{% endfor %}
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
 </div>

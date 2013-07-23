@@ -1,11 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import re
+
 from framework.utils.common_utils import CommonUtilities
 from pages.addsubjectpage.add_subject_page import AddSubjectPage
 from pages.allsubjectspage.all_subjects_locator import *
 from pages.page import Page
 from testdata.test_data import url
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
-import re
 
 
 class AllSubjectsPage(Page):
@@ -52,7 +53,8 @@ class AllSubjectsPage(Page):
         return False
 
     def get_checked_subjects_for_entity_type(self, entity_type):
-        return len(self.driver.find(by_css(SUBJECT_TABLE_TBODY % entity_type)).find_elements(by="css selector", value="tr td:first-child input[checked]"))
+        return len(self.driver.find(by_css(SUBJECT_TABLE_TBODY % entity_type)).find_elements(by="css selector",
+                                                                                             value="tr td:first-child input[checked]"))
 
     def get_number_of_subject_for_entity_type(self, entity_type):
         commUtils = CommonUtilities(self.driver)
@@ -70,21 +72,28 @@ class AllSubjectsPage(Page):
             return False
 
     def get_subject_type_number(self, subject_type):
-        for i, type in enumerate(self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector", value="div.list_header span.header")):
+        for i, type in enumerate(self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector",
+                                                                                             value="div.list_header span.header")):
             if type.text.lower() == subject_type.lower():
                 return i + 1
 
         return -1
 
-    def click_action_button_for(self, subject_type):
+    def click_action_button_for(self, subject_type, action=None):
         subject_number = self.get_subject_type_number(subject_type)
-        buttons = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector", value="div.subject-container button.action")
+        buttons = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector",
+                                                                              value="div.subject-container button.action")
         if subject_number > 0:
-            buttons[subject_number -1].click()
+            buttons[subject_number - 1].click()
+        if action:
+            self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector", value="." + action)[
+                0].click()
+
 
     def is_edit_enabled_for(self, subject_type):
         subject_number = self.get_subject_type_number(subject_type)
-        edit_links = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="xpath", value="//a[@class='edit']/parent::li")
+        edit_links = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="xpath",
+                                                                                 value="//a[@class='edit']/parent::li")
         css_class = edit_links[subject_number - 1].get_attribute("class")
         return css_class.find("disabled") < 0
 
@@ -97,9 +106,16 @@ class AllSubjectsPage(Page):
         return self.driver.find(by_id("action%s" % str(subject_number))).is_displayed()
 
     def select_a_subject_by_type_and_id(self, subject_type, uid):
-        subject_number = self.get_subject_type_number(subject_type)
-        container = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector", value="div.subject-container")
-        container[subject_number - 1].find_elements(by="css selector", value="input#%s" %uid)[0].click()
+        self.is_subject_present(subject_type, uid)[0].click()
 
     def is_checkall_checked_for_entity_type(self, entity_type):
         return self.driver.find(by_css(CHECKALL_CB % entity_type)).get_attribute("checked") == "true"
+
+    def message(self):
+        return self.driver.find(by_css('ul.messages > li.success')).text
+
+    def is_subject_present(self, subject_type, subject_short_code):
+        subject_number = self.get_subject_type_number(subject_type)
+        container = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector",
+                                                                                value="div.subject-container")
+        return container[subject_number - 1].find_elements(by="css selector", value="input#%s" % subject_short_code)
