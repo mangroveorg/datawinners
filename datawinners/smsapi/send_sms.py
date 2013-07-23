@@ -16,7 +16,7 @@ def send_sms(request):
     result = {}
     org_tel_number = organization.tel_number()
     for number in input_request['numbers']:
-        if client.send_sms(org_tel_number, number, input_request['message']):
+        if client.send_sms(org_tel_number, number, unicode(input_request['message'])):
             result.update({number: "success"})
             organization.increment_sms_api_usage_count()
         else:
