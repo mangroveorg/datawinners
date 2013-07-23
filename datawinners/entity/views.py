@@ -4,6 +4,7 @@ import json
 import logging
 
 from django.contrib.auth.decorators import login_required
+from django.template.defaultfilters import register
 from django.utils import translation
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
@@ -18,6 +19,7 @@ import xlwt
 from django.contrib import messages
 
 from datawinners import utils
+from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
 from mangrove.form_model.field import field_to_json
@@ -149,7 +151,7 @@ def edit_data_sender(request, reporter_id):
     manager = get_database_manager(request.user)
     reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
     entity_links = {'registered_datasenders_link': reverse(all_datasenders)}
-    datasender = {'short_code':reporter_id}
+    datasender = {'short_code': reporter_id}
     get_datasender_user_detail(datasender, request.user)
     email = datasender.get('email') if datasender.get('is_user', False) else False
 
@@ -206,7 +208,7 @@ def edit_data_sender(request, reporter_id):
                 message = exception.message
 
         return render_to_response('edit_datasender_form.html',
-                                  {'form': form, 'message': message, 'reporter_id': reporter_id,'email':email,
+                                  {'form': form, 'message': message, 'reporter_id': reporter_id, 'email': email,
                                    'project_links': entity_links},
                                   context_instance=RequestContext(request))
 
@@ -236,6 +238,9 @@ def create_type(request):
         message = form.fields['entity_type_regex'].error_messages['invalid']
     return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
 
+@register.filter
+def get_count(h, key):
+    return h.get(key) or "0"
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -244,32 +249,14 @@ def create_type(request):
 @is_new_user
 @is_datasender
 @is_not_expired
-def all_subjects(request, form_code=None):
+def all_subjects(request):
     manager = get_database_manager(request.user)
-    if request.method == 'POST':
-        error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
-                                                                                                       default_parser=XlsOrderedParser,
-                                                                                                       form_code=form_code)
-        if len(imported_entities) != 0:
-            detail_dict = dict()
-            for short_code, entity_type in imported_entities.items():
-                entity_type = entity_type.capitalize()
-                if detail_dict.get(entity_type) is not None:
-                    detail_dict.get(entity_type).append(short_code)
-                else:
-                    detail_dict.update({entity_type: [short_code]})
-            for key, detail in detail_dict.items():
-                detail_dict.update({key: "[%s]" % ", ".join(detail)})
-            UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
-        subjects_data = import_module.load_all_subjects(manager)
-        return HttpResponse(json.dumps(
-            {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
-             'error_message': error_message,
-             'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
-    subjects_data = import_module.load_all_subjects(manager)
+    subjects_data = load_subject_type_with_projects(manager)
+    subjects_count = get_subjects_count(manager)
     return render_to_response('entity/all_subjects.html',
                               {'all_data': subjects_data, 'current_language': translation.get_language(),
-                               'edit_url': '/entity/subject/edit/'},
+                               'subjects_count':subjects_count,
+                              },
                               context_instance=RequestContext(request))
 
 
@@ -563,7 +550,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
             if response.success:
                 success_message = _("Your changes have been saved.")
                 questionnaire_form = SubjectRegistrationForm(form_model, data=post_data,
-                                                                  country=get_organization_country(request))
+                                                             country=get_organization_country(request))
             else:
                 from datawinners.project.helper import errors_to_list
 
@@ -683,6 +670,7 @@ def get_datasender_user_detail(datasender, user):
     else:
         datasender['email'] = "--"
         datasender['devices'] = "SMS"
+
 
 @valid_web_user
 @login_required(login_url='/login')

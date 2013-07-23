@@ -22,7 +22,7 @@ ADD_SUBJECT_TYPE_LINK = by_css("#subject_create_type_link > a")
 NEW_SUBJECT_TYPE_TB = by_css("#id_entity_type_text")
 ADD_SUBJECT_TYPE_SUBMIT_BUTTON = by_css("#add_type")
 CONTINUE_EDITING_BUTTON = by_css("#edit_warning > div > a")
-SUBJECT_ACCORDION_LINK = '//div[@id="all_subjects"]/div/span[@class="header" and text()="%s"]'
+SUBJECT_TYPE_LINK = '//a[@class="header" and text()="%s"]'
 SUBJECTS_INFO = '//div[@id="all_subjects"]/div/span[@class="header" and text()="%s"]/following-sibling::span[1]'
 CHECKALL_CB = 'table#%s-table thead tr th:first-child input'
 SUBJECT_TABLE_TBODY = 'table#%s-table tbody'

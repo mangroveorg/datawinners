@@ -43,7 +43,7 @@ class AddSubjectTypePage(Page):
 
     def get_error_message(self):
         """
-        Function to fetch the error message from error label of the Add a new subject type
+        Function to fetch the error message from error label of the Add a  Subject Type
         page
 
         Return error message

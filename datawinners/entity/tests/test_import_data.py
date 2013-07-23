@@ -3,7 +3,7 @@ from collections import OrderedDict
 from mangrove.utils.form_model_builder import FormModelBuilder
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from datawinners.entity.import_data import load_all_subjects, get_json_field_infos, get_entity_type_info
+from datawinners.entity.import_data import get_json_field_infos, get_entity_type_info
 from datawinners.entity.import_data import FilePlayer
 from datawinners.location.LocationTree import get_location_tree
 from mangrove.bootstrap import initializer
@@ -35,32 +35,6 @@ class TestImportData(MangroveTestCase):
 
     def tearDown(self):
         MangroveTestCase.tearDown(self)
-
-    def test_should_load_all_subjects(self):
-        self._register_entities()
-
-        subjects = load_all_subjects(self.manager)
-
-        self.assertEqual(2, len(subjects))
-        self.assertEqual(subjects[0]["entity"], "clinic")
-        self.assertEqual(subjects[1]["entity"], "waterpoint")
-        self.assertEqual(subjects[0]["code"], "cli")
-        self.assertEqual(subjects[1]["code"], "wat")
-        self.assertEqual(6, len(subjects[0]["names"]))
-        self.assertEqual(6, len(subjects[0]["labels"]))
-
-        self.assertEqual(subjects[0]['data'][0]['cols'][0], 'Bhopal')
-        self.assertEqual(subjects[0]['data'][0]['cols'][2], 'India')
-        self.assertEqual(subjects[0]['data'][0]['cols'][5], 'clb')
-
-        self.assertEqual(subjects[0]['data'][1]['cols'][0], 'Satna')
-        self.assertEqual(subjects[0]['data'][1]['cols'][3], '-10.66, 13.1')
-        self.assertEqual(subjects[0]['data'][1]['cols'][5], 'cli2')
-
-        self.assertEqual(subjects[1]['data'][0]['cols'][0], 'Ambovombe')
-        self.assertEqual(subjects[1]['data'][0]['cols'][3], '-18.16, 14.1')
-        self.assertEqual(subjects[1]['data'][0]['cols'][4], '123444')
-        self.assertEqual(subjects[1]['data'][0]['cols'][5], 'wat1')
 
     def _create_entities(self):
         self.entity_type = ['clinic']

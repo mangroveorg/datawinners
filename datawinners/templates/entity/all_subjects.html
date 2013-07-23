@@ -1,8 +1,8 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Subjects" %}{% endblock %}
+{% block page_title %}{% trans "All Subjects" %}{% endblock %}
 
-{% block section_title %}{% trans "Subjects" %}
+{% block section_title %}{% trans "All Subjects" %}
 {% endblock %}
 
 {% load dw_tabs %}
@@ -28,18 +28,10 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
-    <script type="text/javascript">var edit_url = "{{ edit_url }}"</script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
-    <script type="text/javascript" src="/media/javascript/subjects/index.js"></script>
     <script type="text/javascript" src="/media/javascript/action_dropdown.js"></script>
-    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/all_subjects.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/entity_actions_all_subjects.js"></script>
-    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript">
         var upload_url = window.location.pathname;
     </script>
@@ -47,6 +39,10 @@
 
 {% load i18n %}
 {% block content %}
+
+        <div id="subject_create_type_link">
+            <a id="add_new_subject_type" href="javascript:void(0);">{% trans "Add a  Subject Type" %}</a>
+        </div>
     <div>
         {% include 'project/all_subjects_help.html' %}
         {% if messages %}
@@ -56,43 +52,12 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <div class="import_subject_form none">
-            <div id="file-uploader">
-                <noscript>
-                    <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
-                    <!-- or put a simple form for upload here -->
-                </noscript>
-                <h6>{% trans "Upload a CSV or a XL file" %}</h6>
 
-                <div id="file_uploader" class="float_left"></div><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:6px;">
-                <div class="tooltip"><p>
-                    {% trans "tooltip_subject_import" %}
-                </p></div>
-                <div class="clear"></div>
-            </div>
-             <div class="error">{% trans "Use this "%}<a href="/media/files/{% if current_language == 'en' %}DataWinners_ImportSubjects.xls {% else %}DataWinners_ImporterLesSujets.xls{% endif %}">{% trans "Import Template"%}</a></div>
-        </div>
-        <div class="import_subject_form">
-            <div id='error_table'>
-                <table class="styled_table">
-                    <thead>
-                    <th>{% trans "Row Number" %}</th>
-                    <th>{% trans "Row" %}</th>
-                    <th>{% trans "Error" %}</th>
-                    </thead>
-                    <tbody id='error_tbody'>
 
-                    </tbody>
-                </table>
-            </div>
-        </div>
         {% if all_data %}
             {% include 'subject_table.html' %}
         {% endif %}
-    
-        <div id="subject_create_type_link">
-            <a id="add_new_subject_type" href="javascript:void(0);">{% trans "Add a new subject type" %}</a>
-        </div>
+
 
         <div id="subjects_create_type">
             {% trans "Enter the Name of your specific Subject Type" %}
@@ -108,11 +73,6 @@
                 <input id="add_type" type="button" value="{% trans 'Add' %}" class="button"/>
             </div>
         </div>
-    </div>
-    <div id="delete_entity_block">
-        <p class="warning_message">{% trans "entity delete error text" %}</p>
-        <a href="{% url datawinners.entity.views.all_subjects %}" class="button" id="ok_button">{% trans "Yes, Delete" %}</a>
-        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
     </div>
 
 {% endblock %}

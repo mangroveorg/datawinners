@@ -29,7 +29,7 @@ class AllSubjectsPage(Page):
         Return true or false
          """
         commUtils = CommonUtilities(self.driver)
-        if commUtils.is_element_present(by_xpath(SUBJECT_ACCORDION_LINK % subject)):
+        if commUtils.is_element_present(by_xpath(SUBJECT_TYPE_LINK % subject)):
             return True
         else:
             return False
@@ -66,8 +66,8 @@ class AllSubjectsPage(Page):
 
     def open_subjects_table_for_entity_type(self, entity_type):
         commUtils = CommonUtilities(self.driver)
-        if commUtils.is_element_present(by_xpath(SUBJECT_ACCORDION_LINK % entity_type.capitalize())):
-            self.driver.find(by_xpath(SUBJECT_ACCORDION_LINK % entity_type.capitalize())).click()
+        if commUtils.is_element_present(by_xpath(SUBJECT_TYPE_LINK % entity_type.capitalize())):
+            self.driver.find(by_xpath(SUBJECT_TYPE_LINK % entity_type.capitalize())).click()
         else:
             return False
 

@@ -756,8 +756,8 @@ msgstr "Ajouter un Expéditeur"
 msgid "Add a Subject"
 msgstr "Ajouter un sujet"
 
-msgid "Add a new subject type"
-msgstr "Ajouter un nouveau type de sujet"
+msgid "Add a  Subject Type"
+msgstr "Ajouter un type de sujet"
 
 msgid "New Subject(eg clinic, waterpoint etc)"
 msgstr "Nouveau sujet (ex : clinique, pompe publique, etc...)"

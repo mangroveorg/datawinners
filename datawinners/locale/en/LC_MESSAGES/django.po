@@ -715,7 +715,7 @@ msgstr ""
 msgid "Add a Subject"
 msgstr ""
 
-msgid "Add a new subject type"
+msgid "Add a  Subject Type"
 msgstr ""
 
 msgid "New Subject(eg clinic, waterpoint etc)"
@@ -2872,7 +2872,7 @@ msgid "register_subject_question"
 msgstr "How do I register my Subjects?"
 
 msgid "register_subject_answer"
-msgstr "<ol><li><a id='add_new_subject_type' href='javascript:void(0);'>Add a new Subject Type</a></li>"
+msgstr "<ol><li><a id='add_new_subject_type' href='javascript:void(0);'>Add a  Subject Type</a></li>"
 "<li>Decide what information you want to collect about your Subjects: Click on your new Subject type"
 "(Example: Baby) and then on 'Edit registration form'.</li>"
 "<li>Register your Subjects: Add them one-by-one via “Add a Baby” or click on “Import a List” if you"

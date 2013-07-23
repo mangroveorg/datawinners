@@ -2,43 +2,43 @@
   width: 910px !important;
   border-top: 1px solid #CCCCCC !important;
   margin-top: 20px; }
-  #all_subjects .list_header {
+  #all_subjects table.all_subject_type_table td, #all_subjects table.all_subject_type_table th {
+    border: 0px;
+    text-align: left; }
+  #all_subjects .all_subject_type_table .list_header {
     border-bottom: 1px solid #CCCCCC !important;
     padding: 10px; }
-    #all_subjects .list_header .header {
-      font-weight: normal;
-      background: url(/media/images/accordion_arrows.png) no-repeat left -34px;
-      padding-left: 15px; }
-    #all_subjects .list_header .success_error {
+    #all_subjects .all_subject_type_table .list_header .header {
+      font-weight: normal; }
+    #all_subjects .all_subject_type_table .list_header .success_error {
       font-size: 12px;
       font-weight: normal;
-      color: #666666;
-      float: right; }
-  #all_subjects .list_header {
+      color: #666666; }
+  #all_subjects .all_subject_type_table .list_header {
     cursor: pointer; }
-  #all_subjects .list_header:hover {
+  #all_subjects .all_subject_type_table .list_header:hover {
     background: #ccdfed; }
-  #all_subjects .list_header.highlight {
+  #all_subjects .all_subject_type_table .list_header.highlight {
     background-color: #525252 !important;
     border: 0;
     background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;
     background: -moz-linear-gradient(top, #525252, #262626) !important; }
-    #all_subjects .list_header.highlight .header {
+    #all_subjects .all_subject_type_table .list_header.highlight .header {
       color: #FFFFFF;
       background: url(/media/images/accordion_arrows.png) no-repeat left 5px;
       padding-left: 15px; }
-    #all_subjects .list_header.highlight .success_error {
+    #all_subjects .all_subject_type_table .list_header.highlight .success_error {
       color: #FFFFFF; }
-  #all_subjects .list_header.ui-state-active {
+  #all_subjects .all_subject_type_table .list_header.ui-state-active {
     background-color: #525252 !important;
     border: 0;
     background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;
     background: -moz-linear-gradient(top, #525252, #262626) !important; }
-    #all_subjects .list_header.ui-state-active .header {
+    #all_subjects .all_subject_type_table .list_header.ui-state-active .header {
       color: #FFFFFF;
       background: url(/media/images/accordion_arrows.png) no-repeat left 5px;
       padding-left: 15px; }
-    #all_subjects .list_header.ui-state-active .success_error {
+    #all_subjects .all_subject_type_table .list_header.ui-state-active .success_error {
       color: #FFFFFF; }
   #all_subjects .subject-container {
     overflow-y: auto;
@@ -73,7 +73,7 @@
         left: 0px; }
   #all_subjects .no_registered_subjects {
     margin: 10px 0;
-    font-size: 12px!important;
+    font-size: 12px !important;
     color: #666666;
     font-style: italic; }
     #all_subjects .no_registered_subjects ul {
@@ -93,9 +93,10 @@
   margin: 10px 0 !important; }
 
 #subject_create_type_link {
-  margin: 10px 0; }
+  margin: 10px 0;
+  width: 100%;
+  text-align: right; }
   #subject_create_type_link #add_new_subject_type {
-    background: url("/media/images/icons.png") left top no-repeat !important;
     padding: 5px 0 5px 30px; }
 
 #delete_entity_block a {

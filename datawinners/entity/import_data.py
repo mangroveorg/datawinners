@@ -245,10 +245,9 @@ def load_subject_registration_data(manager,
 
 
 @timebox
-def _get_entity_types(manager):
+def get_entity_types(manager):
     entity_types = get_all_entity_types(manager)
-    entity_list = [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
-    return sorted(entity_list)
+    return [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
 
 
 def get_json_field_infos(fields, for_export=False):
@@ -342,19 +341,8 @@ def _get_all_subject_data(form_models, subject_types, subjects):
     return [subject_type_infos_dict[subject_type] for subject_type in subject_types]
 
 
-@timebox
-def load_all_subjects(manager):
-    subject_types = _get_entity_types(manager)
-    form_models = get_subject_form_models(manager)
-    subjects = get_all_subjects(manager)
-
-    return _get_all_subject_data(form_models, subject_types, subjects)
-
-
 def load_all_subjects_of_type(manager, type=REPORTER):
     return load_subject_registration_data(manager, type)
-
-
 
 
 def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None):
