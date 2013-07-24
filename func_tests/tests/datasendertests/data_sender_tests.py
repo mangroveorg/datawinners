@@ -28,16 +28,6 @@ class DataSenderTest(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    @attr("functional_test", 'smoke')
-    def test_send_in_data_to_a_project(self):
-        web_submission_page = self.data_sender_page.send_in_data()
-        self.assertEquals(web_submission_page.get_title(), PAGE_TITLE)
-        self.assertEquals(web_submission_page.get_section_title(), SECTION_TITLE)
-        self.assertEquals(web_submission_page.get_project_name(), fetch_(PROJECT_NAME, from_(DEFAULT_ORG_DATA)))
-        web_submission_page.fill_questionnaire_with(VALID_ANSWERS)
-        web_submission_page.submit_answers()
-        self.assertEqual(web_submission_page.get_errors(), [])
-
     @attr("functional_test")
     def test_go_back_to_project_list_from_data_submission_page(self):
         web_submission_page = self.data_sender_page.send_in_data()

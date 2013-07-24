@@ -19,7 +19,7 @@ class TestProjectOverview(BaseTest):
         # going on all project page
         return global_navigation.navigate_to_view_all_project_page()
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_project_overview_sms_questionnaire(self):
         all_project_page = self.prerequisites_of_project_overview()
         project_overview_page = all_project_page.navigate_to_project_overview_page(PROJECT_NAME)

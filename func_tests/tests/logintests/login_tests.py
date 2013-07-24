@@ -1,5 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
+import time
+
 from nose.plugins.attrib import attr
+
 from framework.base_test import BaseTest
 from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.database_manager_postgres import DatabaseManager
@@ -7,18 +10,10 @@ from pages.expiredtrialpage.expired_trial_page import ExpiredTrialPage
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import *
-import time
+
 
 @attr('suit_2')
 class TestLoginPage(BaseTest):
-    @attr('functional_test', 'smoke')
-    def test_login_with_valid_credentials(self):
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(self.driver)
-        dashboard_page = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        self.assertEqual(dashboard_page.welcome_message(),
-                         fetch_(WELCOME_MESSAGE, from_(VALID_CREDENTIALS)))
-
     @attr('functional_test')
     def test_login_with_unactivated_account_credentials(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)

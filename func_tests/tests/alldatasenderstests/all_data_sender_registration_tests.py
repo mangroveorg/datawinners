@@ -9,7 +9,6 @@ from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
-from tests.alldatasenderstests.all_data_sender_data import generate_random_email_id
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
@@ -69,19 +68,6 @@ class TestAllDataSender(unittest.TestCase):
         self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
         self.assertRegexpMatches(self.current_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATA)))
-
-    @attr('functional_test', 'smoke')
-    def test_successful_addition_of_data_sender_with_email_address(self):
-        add_data_sender_page = self.current_page
-
-        email = generate_random_email_id()
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL, email=email)
-
-        self.assertRegexpMatches(add_data_sender_page.get_success_message(),
-                                 fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL)))
-
-        message = self.login_with_created_datasenders_account(email)
-        self.assertEqual(message, "Welcome Mickey Duck!")
 
     @attr('functional_test')
     def test_addition_of_data_sender_without_email_address(self):
@@ -160,7 +146,7 @@ class TestAllDataSender(unittest.TestCase):
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(INVALID_GPS_WITH_COMMA)))
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_add_datasender_with_long_uid(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_LONG_UID, "rep012345678901234567891")

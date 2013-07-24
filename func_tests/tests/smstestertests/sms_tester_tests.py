@@ -20,11 +20,6 @@ class TestSMSTester(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    @attr('functional_test', 'smoke')
-    def test_successful_sms_submission(self):
-        self.sms_tester_page.send_sms_with(VALID_DATA)
-        self.assertEqual(self.sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_DATA)))
-
     @attr('functional_test')
     def test_sms_player_without_entering_data(self):
         self.sms_tester_page.send_sms_with(BLANK_FIELDS)

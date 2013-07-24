@@ -1,15 +1,15 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
 import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import  setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.common_utils import generateId
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.loginpage.login_page import LoginPage
-from pages.addsubjectpage.add_subject_page import AddSubjectPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT
 from tests.addsubjecttypetests.add_subject_type_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
+
 
 @attr('suit_1')
 class TestAddSubjectType(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestAddSubjectType(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_add_new_subject_type(self):
         add_subject_type_page = self.page
         add_subject_type_page.click_on_accordian_link()

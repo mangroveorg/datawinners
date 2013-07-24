@@ -84,6 +84,7 @@ class TestApplicationEndToEnd(BaseTest):
         registration_confirmation_page, self.email = register_and_get_email(self.driver)
         self.assertEquals(registration_confirmation_page.registration_success_message(),
                           fetch_(SUCCESS_MESSAGE, from_(REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION)))
+        return self.set_organization_number()
 
     def do_login(self):
         global_navigation = do_login(self.driver, self.email, REGISTRATION_PASSWORD)
@@ -140,8 +141,7 @@ class TestApplicationEndToEnd(BaseTest):
         review_page.open_questionnaire_accordion()
         self.assertEqual(fetch_(QUESTIONNAIRE, from_(VALID_DATA_REVIEW_AND_TEST)), review_page.get_questionnaire())
 
-    def verify_project_creation(self):
-        organization_sms_tel_number = self.set_organization_number()
+    def verify_individual_report_project_creation(self):
         activate_account(self.driver, self.email.lower())
         global_navigation = GlobalNavigationPage(self.driver)
         dashboard_page = global_navigation.navigate_to_dashboard_page()
@@ -151,9 +151,9 @@ class TestApplicationEndToEnd(BaseTest):
         self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE1[ENTITY_TYPE])
         create_questionnaire_page = self.create_project(create_project_page)
         self.project_name = self.create_questionnaire(create_questionnaire_page)
-        return global_navigation, organization_sms_tel_number
 
-    def add_subject(self, global_navigation):
+    def add_subject(self):
+        global_navigation = GlobalNavigationPage(self.driver)
         global_navigation.navigate_to_all_subject_page()
         add_subject_page = AddSubjectPage(self.driver)
         self.driver.go_to(DATA_WINNER_ADD_SUBJECT_WATERPOINT)
@@ -161,7 +161,8 @@ class TestApplicationEndToEnd(BaseTest):
         add_subject_page.submit_subject()
         self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT)), add_subject_page.get_flash_message())
 
-    def add_datasender(self, global_navigation):
+    def add_datasender(self):
+        global_navigation = GlobalNavigationPage(self.driver)
         all_data_sender_page = global_navigation.navigate_to_all_data_sender_page()
         add_data_sender_page = all_data_sender_page.navigate_to_add_a_data_sender_page()
         email = generate_random_email_id()
@@ -185,7 +186,8 @@ class TestApplicationEndToEnd(BaseTest):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
         self.verify_submission(SMS_DATA_LOG)
 
-    def verify_project_activation(self, global_navigation):
+    def verify_project_activation(self):
+        global_navigation = GlobalNavigationPage(self.driver)
         all_projects_page = global_navigation.navigate_to_view_all_project_page()
         project_overview_page = all_projects_page.navigate_to_project_overview_page(self.project_name)
         project_overview_page.activate_project()
@@ -261,14 +263,15 @@ class TestApplicationEndToEnd(BaseTest):
     @attr('smoke')
     def test_end_to_end(self):
         self.email = None
-        self.do_org_registartion()
+        organization_sms_tel_number = self.do_org_registartion()
+        self.verify_individual_report_project_creation()
 
-        global_navigation, organization_sms_tel_number = self.verify_project_creation()
-        self.add_subject(global_navigation)
+        self.add_subject()
         self.add_edit_delete_subject()
-        ds_email = self.add_datasender(global_navigation)
+        ds_email = self.add_datasender()
         self.verify_submission_via_sms(organization_sms_tel_number)
-        self.verify_project_activation(global_navigation)
+        self.verify_project_activation()
 
         self.verify_submission_via_web(ds_email)
         self.admin_edit_delete_submissions()
+

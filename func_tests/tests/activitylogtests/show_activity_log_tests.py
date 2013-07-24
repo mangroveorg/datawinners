@@ -54,7 +54,7 @@ class TestShowActivityLog(unittest.TestCase):
         cls.driver.wait_for_page_with_title(5, 'Projects - Overview')
         return ProjectOverviewPage(cls.driver).get_project_title()
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_should_match_created_project_entry_in_user_activity_log_page(self):
         """
         This function will create a project and will check the user activity log entry for that action

@@ -63,7 +63,7 @@ class TestDataAnalysis(BaseTest):
             analysis_page = self.go_to_analysis_page()
         return analysis_page
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_data_analysis_page(self):
         analysis_page = self.get_analysis_page()
         questions = fetch_(HEADERS, from_(DEFAULT_DATA_FOR_ANALYSIS))
@@ -72,7 +72,7 @@ class TestDataAnalysis(BaseTest):
         self.assertIsNotNone(analysis_page.get_all_data_records())
 
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_filter_data_records(self):
         data_analysis_page = self.get_analysis_page()
         self.verify_reporting_period_filter(data_analysis_page, FILTER_BY_CURRENT_MONTH)
@@ -86,7 +86,7 @@ class TestDataAnalysis(BaseTest):
         self.verify_filter_data_records_by_subject_filter(data_analysis_page)
 
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_filter_data_records_by_date_range_with_monthly_reporting_period(self):
         data_analysis_page = self.go_to_analysis_page("Clinic Test Project With Monthly Reporting Period".lower(),
                                                       cache_url=False)
@@ -104,7 +104,7 @@ class TestDataAnalysis(BaseTest):
         self.assert_in_date_range(current_month_period, report_period, range_format=MONTHLY_REPORTING_PERIOD_FORMAT,
                                   date_format=MONTHLY_REPORTING_PERIOD_FORMAT)
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_filter_data_records_by_date_range_with_daily_reporting_period(self):
         data_analysis_page = self.get_analysis_page()
         data_analysis_page.open_reporting_period_drop_down()
@@ -151,7 +151,7 @@ class TestDataAnalysis(BaseTest):
         str_data_sender = data_sender[0] + data_sender[1]
         self.assertEqual(str_data_sender.strip(), data_records[0])
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_filter_data_records_by_datasender(self):
         data_analysis_page = self.go_to_analysis_page(fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)),
                                                       cache_url=False)
@@ -176,7 +176,7 @@ class TestDataAnalysis(BaseTest):
         self.assertTrue(data_analysis_page.dropdown_checklist_is_opened())
         self.assertFalse(data_analysis_page.daterange_drop_down_is_opened())
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_filter_data_records_by_keyword(self):
         analysis_page = self.get_analysis_page()
         keyword = "Neurological "

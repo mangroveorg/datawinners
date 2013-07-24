@@ -1,5 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from nose.plugins.attrib import attr
+from nose.plugins.skip import SkipTest
+
 from framework.base_test import BaseTest
 from framework.utils.common_utils import by_css
 from framework.utils.data_fetcher import fetch_, from_
@@ -12,21 +14,21 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_DASHBOARD_PAG
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.reviewandtests.review_data import *
 from tests.testsettings import CLOSE_BROWSER_AFTER_TEST
-from nose.plugins.skip import SkipTest
 
 
 class TestReviewProject(BaseTest):
-
     def tearDown(self):
         import sys
 
         exception_info = sys.exc_info()
         if exception_info != (None, None, None):
             import os
+
             if not os.path.exists("screenshots"):
                 os.mkdir("screenshots")
-            self.driver.get_screenshot_as_file("screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
-        
+            self.driver.get_screenshot_as_file(
+                "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
+
         try:
             if CLOSE_BROWSER_AFTER_TEST:
                 self.driver.quit()
@@ -51,7 +53,7 @@ class TestReviewProject(BaseTest):
         return reminder_page.save_reminder_successfully()
 
     @SkipTest
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_successful_review_of_project(self):
         review_page = self.prerequisites_of_create_project()
         self.assertEqual(fetch_(PROJECT_PROFILE, from_(VALID_DATA)), review_page.get_project_profile_details())
@@ -61,7 +63,6 @@ class TestReviewProject(BaseTest):
         self.assertEqual(fetch_(QUESTIONNAIRE, from_(VALID_DATA)), review_page.get_questionnaire())
 
 
-    
     def login(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
@@ -89,13 +90,13 @@ class TestReviewProject(BaseTest):
 
 
     def prepare_data_senders(self):
-        self.login( )
-        self.create_project( )
-        self.register_data_sender( )
-        self.driver.find( by_css( "#review_tab" ) ).click( )
-        return ReviewPage( self.driver )
+        self.login()
+        self.create_project()
+        self.register_data_sender()
+        self.driver.find(by_css("#review_tab")).click()
+        return ReviewPage(self.driver)
 
     def test_number_of_data_senders_should_show_in_current_project(self):
-        review_page = self.prepare_data_senders( )
+        review_page = self.prepare_data_senders()
         review_page.open_data_sender_accordion()
         self.assertEqual('1', review_page.get_data_sender_count())

@@ -7,8 +7,9 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.addsubjecttests.add_subject_data import VALID_PROJECT_DATA, PAGE_TITLE, VALID_SUBJECT_REGISTRATION_DATA, SUCCESS_MSG
 from tests.logintests.login_data import VALID_CREDENTIALS
 
+
 class TestRegisterSubjectFromProject(BaseTest):
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_successful_subject_registration(self):
         """
         Function to test the successful addition of a subject from "My Subjects" page
@@ -27,10 +28,10 @@ class TestRegisterSubjectFromProject(BaseTest):
         project_overview_page = create_project_page.save_and_create_project_successfully()
         self.driver.wait_for_page_with_title(15, fetch_(PAGE_TITLE, from_(VALID_PROJECT_DATA)))
         self.assertEqual(self.driver.get_title(),
-            fetch_(PAGE_TITLE, from_(VALID_PROJECT_DATA)))
+                         fetch_(PAGE_TITLE, from_(VALID_PROJECT_DATA)))
         project_subject_page = project_overview_page.navigate_to_subjects_page()
         project_subject_registration_page = project_subject_page.click_register_subject()
         project_subject_registration_page.add_subject_with(VALID_SUBJECT_REGISTRATION_DATA)
         project_subject_registration_page.submit_subject()
         success_message = project_subject_registration_page.get_flash_message()
-        self.assertRegexpMatches(success_message,fetch_(SUCCESS_MSG, from_(VALID_SUBJECT_REGISTRATION_DATA)))
+        self.assertRegexpMatches(success_message, fetch_(SUCCESS_MSG, from_(VALID_SUBJECT_REGISTRATION_DATA)))

@@ -8,6 +8,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.editprojecttests.edit_project_data import *
 
+
 @attr('suit_2')
 class TestEditProject(BaseTest):
     def prerequisites_of_edit_project(self):
@@ -19,7 +20,7 @@ class TestEditProject(BaseTest):
         # going on all project page
         return global_navigation.navigate_to_view_all_project_page()
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_successful_project_editing_with_subject_change(self):
         all_project_page = self.prerequisites_of_edit_project()
         project_overview_page = all_project_page.navigate_to_project_overview_page(
@@ -40,7 +41,7 @@ class TestEditProject(BaseTest):
         create_questionnaire_page.go_back()
         self.assertEqual(WATER_POINT_DATA, edit_project_page.get_project_details())
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_successful_project_editing_with_report_type_change(self):
         all_project_page = self.prerequisites_of_edit_project()
         project_overview_page = all_project_page.navigate_to_project_overview_page(

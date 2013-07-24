@@ -63,21 +63,13 @@ class TestAllDataSender(unittest.TestCase):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page.send_sms_with(sms_data)
 
-    @attr('functional_tests', 'smoke')
+    @attr('functional_tests')
     def test_all_data_senders_page(self):
         all_data_sender_page = self.page
         all_data_sender_page.check_links()
 
 
-    @attr('functional_test', 'smoke')
-    def test_successful_association_of_data_sender(self):
-        all_data_sender_page = self.page
-        self.associate(all_data_sender_page)
-        self.assertEqual(all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))),
-                         fetch_(PROJECT_NAME, from_(ASSOCIATE_DATA_SENDER)))
-
-
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_successful_dissociation_of_data_sender(self):
         all_data_sender_page = self.page
         if all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))) == "--":

@@ -33,10 +33,6 @@ class TestActivateAccount(unittest.TestCase):
             couchwrapper.deleteDb(dbname)
         teardown_driver(cls.driver)
 
-    @attr('functional_test', 'smoke')
-    def test_go_to_dashboard_page_after_successful_activation_of_account(self):
-        self.assertEqual('Dashboard', self.driver.get_title())
-
     @attr('functional_test')
     def test_successful_login_with_uppercased_email(self):
         self.driver.go_to(LOGOUT)
