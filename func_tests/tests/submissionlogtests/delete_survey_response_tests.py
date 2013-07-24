@@ -14,7 +14,7 @@ from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_LOGIN_PAGE, DATA_WINNER_DASHBOARD_PAGE
-from tests.projectquestionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, WATERPOINT_PROJECT_DATA
+from tests.projects.questionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, WATERPOINT_PROJECT_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.edit_survey_response_data import get_sms_data_with_questionnaire_code

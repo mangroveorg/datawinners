@@ -2,7 +2,7 @@
 
 
 ##Variables
-from tests.projectquestionnairetests.project_questionnaire_data import QUESTIONS
+from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS
 
 TITLE = "title"
 MESSAGE = "message"
@@ -45,7 +45,7 @@ WATER_POINT_DATA = {PROJECT_NAME: u"water point morondova",
 }
 
 QUESTIONNAIRE_DATA_FOR_WATER_POINT = {
-QUESTIONS: ["Which waterpoint are you reporting on?", "What is the reporting period for the activity?"]}
+    QUESTIONS: ["Which waterpoint are you reporting on?", "What is the reporting period for the activity?"]}
 
 VALID_DATA2 = {PROJECT_NAME: u"clinic4 test project",
                PROJECT_BACKGROUND: u"This project is for automation",

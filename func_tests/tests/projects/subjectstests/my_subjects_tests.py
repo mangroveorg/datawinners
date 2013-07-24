@@ -5,7 +5,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from framework.base_test import setup_driver, teardown_driver
 from pages.loginpage.login_page import LoginPage
-from tests.projectsubjectstests.my_subjects_data import *
+from tests.projects.subjectstests.my_subjects_data import *
 
 
 class TestMySubjects(unittest.TestCase):

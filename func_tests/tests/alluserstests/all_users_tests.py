@@ -12,7 +12,7 @@ from pages.alluserspage.all_users_page import AllUsersPage
 from tests.alluserstests.all_users_data import *
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from tests.projectquestionnairetests.project_questionnaire_data import SENDER, RECEIVER, SMS, VALID_SUMMARY_REPORT_DATA
+from tests.projects.questionnairetests.project_questionnaire_data import SENDER, RECEIVER, SMS, VALID_SUMMARY_REPORT_DATA
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
 

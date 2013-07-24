@@ -28,11 +28,10 @@ DEFAULT_QUESTION = "default_question"
 GIVE_WEB_ACCESS = "makewebuser"
 
 VALID_DATA_FOR_ADDING_DATASENDER = {NAME: "Mickey Duck",
-              MOBILE_NUMBER: "98865432101",
-              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-              GPS: "-21.7622088847 48.0690991394",
-              SUCCESS_MSG: "Registration successful. ID is: rep"}
-
+                                    MOBILE_NUMBER: "98865432101",
+                                    COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                                    GPS: "-21.7622088847 48.0690991394",
+                                    SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 VALID_DATA = {PROJECT_NAME: u"clinic test project",
               PROJECT_BACKGROUND: u"This project is for automation",
@@ -51,20 +50,20 @@ SUCCESS_MSG_ADDED_DS = u"Registration successful. ID is: abcd93843."
 UNIQUE_ID = "abcd93843"
 
 VALID_DATASENDER_DATA = {NAME: "Donald Duck",
-              MOBILE_NUMBER: "9876-543-2102",
-              MOBILE_NUMBER_WITHOUT_HYPHENS: "98765432102",
-              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-              GPS: "-21.7622088847 48.0690991394",
-              SUCCESS_MSG: "Registration successful. ID is: rep"}
+                         MOBILE_NUMBER: "9876-543-2102",
+                         MOBILE_NUMBER_WITHOUT_HYPHENS: "98765432102",
+                         COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                         GPS: "-21.7622088847 48.0690991394",
+                         SUCCESS_MSG: "Registration successful. ID is: rep"}
 VALID_EDIT_DATASENDER_DATA = {NAME: "EDIT Mickey Duck",
-              MOBILE_NUMBER: "9876-543-2108",
-              COMMUNE: "PUNE",
-              GPS: "",
-              SUCCESS_MSG: "Your changes have been saved."}
+                              MOBILE_NUMBER: "9876-543-2108",
+                              COMMUNE: "PUNE",
+                              GPS: "",
+                              SUCCESS_MSG: "Your changes have been saved."}
 VALID_DATASENDER_DATA_FOR_DUPLICATE_UNIQUE_ID = {NAME: "Mickey Mouse",
-              MOBILE_NUMBER: "9876-543-2103",
-              MOBILE_NUMBER_WITHOUT_HYPHENS: "98765432103",
-              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-              GPS: "-21.7622088847 48.0690991394",
-              ERROR_MSG: "Data Sender with Unique Identification Number"}
+                                                 MOBILE_NUMBER: "9876-543-2103",
+                                                 MOBILE_NUMBER_WITHOUT_HYPHENS: "98765432103",
+                                                 COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                                                 GPS: "-21.7622088847 48.0690991394",
+                                                 ERROR_MSG: "Data Sender with Unique Identification Number"}
 CLINIC_PROJECT1_NAME = "clinic test project"

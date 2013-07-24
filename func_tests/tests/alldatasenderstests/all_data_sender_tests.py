@@ -16,7 +16,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.alldatasenderstests.all_data_sender_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
-from tests.projectdatasenderstests.registered_datasenders_data import IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR
+from tests.projects.datasenderstests.registered_datasenders_data import IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR
 from pages.warningdialog.warning_dialog_page import WarningDialog
 
 

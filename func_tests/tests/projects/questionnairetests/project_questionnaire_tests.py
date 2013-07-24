@@ -11,7 +11,7 @@ from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE
 from tests.alldatasenderstests.all_data_sender_data import random_string
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.projectquestionnairetests.project_questionnaire_data import *
+from tests.projects.questionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from framework.utils.common_utils import by_id, by_css
@@ -245,3 +245,4 @@ class TestProjectQuestionnaire(BaseTest):
         create_project_page.create_project_with(LONG_DESCRIPTION_DATA)
         create_project_page.continue_create_project()
         self.assertTrue(create_project_page.description_has_error())
+

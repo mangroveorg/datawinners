@@ -4,7 +4,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from framework.base_test import setup_driver, teardown_driver
 from pages.loginpage.login_page import LoginPage
-from tests.projectreviewandtesttests.project_review_and_test_data import *
+from tests.projects.reviewandtesttests.project_review_and_test_data import *
 #TODO : test is dependent on other test data
 @attr('suit_1')
 class TestReminderStatus(unittest.TestCase):

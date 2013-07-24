@@ -5,7 +5,7 @@ from pages.loginpage.login_page import LoginPage
 from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_page import SmsQuestionnairePreviewPage
 from testdata.test_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.projectsoverview.project_overview_data import PROJECT_NAME, PREVIEW_TITLE, MC_QUESTION_CONTENT
+from tests.projects.overview.project_overview_data import PROJECT_NAME, PREVIEW_TITLE, MC_QUESTION_CONTENT
 
 
 @attr('suit_1')

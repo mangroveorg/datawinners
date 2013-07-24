@@ -72,3 +72,4 @@ class GlobalNavigationPage(Page):
         Function to sign out from any account
         """
         self.driver.find(SIGN_OUT_LINK).click()
+

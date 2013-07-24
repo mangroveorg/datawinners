@@ -3,10 +3,10 @@ from framework.utils.common_utils import by_xpath
 from pages.accountpage.account_page import AccountPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import DATA_SENDER_DEVICES
-from pages.page import Page
 from pages.projectdatasenderspage.project_data_senders_locator import *
-from tests.projectdatasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
+from tests.projects.datasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+
 
 class ProjectDataSendersPage(AllDataSendersPage):
     def __init__(self, driver):
@@ -87,6 +87,7 @@ class ProjectDataSendersPage(AllDataSendersPage):
     def open_import_lightbox(self):
         from pages.adddatasenderspage.add_data_senders_locator import OPEN_IMPORT_DIALOG_LINK
         from pages.lightbox.import_datasender_light_box_page import ImportDatasenderLightBox
+
         self.driver.find(OPEN_IMPORT_DIALOG_LINK).click()
         return ImportDatasenderLightBox(self.driver)
 
@@ -113,7 +114,8 @@ class ProjectDataSendersPage(AllDataSendersPage):
         return len(self.get_inputs_webelement())
 
     def get_inputs_webelement(self):
-        return self.driver.find(by_id("associated_data_senders")).find_elements(by="css selector", value="tbody tr td input")
+        return self.driver.find(by_id("associated_data_senders")).find_elements(by="css selector",
+                                                                                value="tbody tr td input")
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_CB).get_attribute("checked") == "true"
