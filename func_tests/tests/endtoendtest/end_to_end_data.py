@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners.messageprovider.tests.test_message_handler import THANKS
+from tests.websubmissiontests.web_submission_data import QCODE, ANSWER, TEXT, SELECT, CHECKBOX
 
 WELCOME_MESSAGE = 'message'
 SUCCESS_MESSAGE = 'message'
@@ -96,7 +97,7 @@ RESPONSE_MESSAGE = "message"
 
 SUCCESS_MESSAGE_TEXT = THANKS #+ " q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057, -78.007789"
 
-SMS_SUBMISSION = "sms"
+SUBMISSION = "sms"
 UNIQUE_VALUE = "unique_value"
 
 REGISTRATION_PASSWORD = "ngo001"
@@ -133,12 +134,6 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION = {ORGANIZATION_NAME: "Automation 
 VALID_ACTIVATION_DETAILS = {ACTIVATION_CODE: "",
                             SUCCESS_MESSAGE: "You have successfully activated your account"}
 
-VALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
-                              MOBILE_NUMBER: "1234567890",
-                              COMMUNE: "urbaine",
-                              GPS: "48.955267  1.816013",
-                              SUCCESS_MESSAGE: u"Registration successful. ID is: rep3"}
-
 VALID_DATA_FOR_DATA_SENDER1 = {DATA_SENDER_NAME: "Donald Mouse",
                                MOBILE_NUMBER: "12345678901",
                                COMMUNE: "urbaine",
@@ -146,7 +141,7 @@ VALID_DATA_FOR_DATA_SENDER1 = {DATA_SENDER_NAME: "Donald Mouse",
                                SUCCESS_MESSAGE: u"Registration successful. ID is: rep3"}
 
 # valid entity data
-VALID_SUBJECT_TYPE1 = {ENTITY_TYPE: "Waterpoint", SUCCESS_MESSAGE: "Entity definition successful"}
+VALID_SUBJECT_TYPE1 = {ENTITY_TYPE: "waterpoint", SUCCESS_MESSAGE: "Entity definition successful"}
 VALID_SUBJECT_TYPE2 = {ENTITY_TYPE: "Well", SUCCESS_MESSAGE: "Entity definition successful"}
 
 VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "waterpoint",
@@ -156,7 +151,16 @@ VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "waterpoint",
                           LOCATION: "Monodova",
                           GEO_CODE: "47.411631 28.369885",
                           MOBILE_NUMBER: "3456789012",
-                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: wat1"}
+                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
+
+VALID_DATA_FOR_EDIT = {ENTITY_TYPE: "waterpoint",
+                       SUB_UNIQUE_ID: None,
+                       SUB_FIRST_NAME: "Waterpoint Monodova",
+                       SUB_LAST_NAME: "wat",
+                       LOCATION: "Monodovas",
+                       GEO_CODE: "47.0 28.0",
+                       MOBILE_NUMBER: "3456789012",
+                       SUCCESS_MESSAGE: "Your changes have been saved."}
 
 VALID_DATA_FOR_PROJECT = {PROJECT_NAME: "Waterpoint morondava", GEN_RANDOM: True,
                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
@@ -173,7 +177,7 @@ VALID_DATA_FOR_DATA_SENDER_QUESTIONNAIRE = {PAGE_TITLE: "Reminders"}
 VALID_DATA_FOR_REMINDER = {PAGE_TITLE: "Review & Test"}
 
 QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
-                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "EID"},
+                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
                       QUESTIONS: [{QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
                                    DATE_FORMAT: DD_MM_YYYY},
                                   {QUESTION: u"Water Level", CODE: u"q4", TYPE: NUMBER, MIN: u"1", MAX: u"1000"},
@@ -193,6 +197,46 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                       CHARACTER_REMAINING: "69 / 160 characters used (1 SMS)",
                       PAGE_TITLE: "Data Senders"}
 
+WEB_ANSWERS = [
+    {QCODE: 'q1', ANSWER: 'Test (wp01)', TYPE: SELECT},
+    {QCODE: 'q2', ANSWER: '25.12.2010', TYPE: TEXT},
+    {QCODE: 'q3', ANSWER: '25.12.2010', TYPE: TEXT},
+    {QCODE: 'q4', ANSWER: '5', TYPE: TEXT},
+    {QCODE: 'q5', ANSWER: '12.2010', TYPE: TEXT},
+    {QCODE: 'q6', ANSWER: '02.12.2010', TYPE: TEXT},
+    {QCODE: 'q7', ANSWER: 'LIGHT RED', TYPE: SELECT},
+    {QCODE: 'q8', ANSWER: 'web admin', TYPE: TEXT},
+    {QCODE: 'q9', ANSWER: ['b'], TYPE: CHECKBOX},
+    {QCODE: 'q10', ANSWER: '12.0,12.0', TYPE: TEXT},
+]
+EDITED_WEB_ANSWERS = [
+    {QCODE: 'q1', ANSWER: 'Test (wp01)', TYPE: SELECT},
+    {QCODE: 'q2', ANSWER: '25.12.2010', TYPE: TEXT},
+    {QCODE: 'q3', ANSWER: '25.12.2010', TYPE: TEXT},
+    {QCODE: 'q4', ANSWER: '5', TYPE: TEXT},
+    {QCODE: 'q5', ANSWER: '10.2010', TYPE: TEXT},
+    {QCODE: 'q6', ANSWER: '10.12.2010', TYPE: TEXT},
+    {QCODE: 'q7', ANSWER: 'LIGHT RED', TYPE: SELECT},
+    {QCODE: 'q8', ANSWER: 'edited admin', TYPE: TEXT},
+    {QCODE: 'q9', ANSWER: ['b', 'c'], TYPE: CHECKBOX},
+    {QCODE: 'q10', ANSWER: '12.0,12.0', TYPE: TEXT},
+]
+
+regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}\W\S{2}'
+SMS_DATA_LOG = {
+    SUBMISSION: "Mickey Duckrep3 " + regex_date_match + " Success watwat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae, Bacteroids 27.178057,-78.007789",
+    UNIQUE_VALUE: "Mr.Tessy"}
+
+WEB_ANSWER_LOG = {
+    SUBMISSION: "Mickey Duckrep3 " + regex_date_match + " Success watwat1 25.12.2010 25.12.2010 5.0 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0",
+    UNIQUE_VALUE: 'web admin'
+}
+
+EDITED_WEB_ANSWER_LOG = {
+    SUBMISSION: "Mickey Duckrep3 " + regex_date_match + " Success watwat1 25.12.2010 25.12.2010 5.0 10.2010 10.12.2010 LIGHT RED edited adm Chlorobia 12.0,12.0",
+    UNIQUE_VALUE: 'edited adm'
+}
+
 VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                       RECEIVER: "",
                       SMS: "WPS01 wat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 c Mr.Tessy ab 27.178057,-78.007789",
@@ -200,7 +244,7 @@ VALID_DATA_FOR_SMS = {SENDER: "1234567890",
 
 VALID_DATA_FOR_SMS_LIGHT_BOX = {
     SMS: "WPS01  wat1  11.10.2011 11.10.2011 98 04.2011  04.12.2011 c  Mr.Tessy  ab  27.178057,-78.007789",
-    RESPONSE_MESSAGE: THANKS}# + " q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"}
+    RESPONSE_MESSAGE: THANKS}
 
 NEW_QUESTIONNAIRE_DATA = {QUESTIONS: [{QUESTION: "Water Level", CODE: "q4", TYPE: NUMBER, MIN: "100", MAX: "1000"},
                                       {QUESTION: "What is water point name?", CODE: "q11", TYPE: WORD, LIMIT: LIMITED,
@@ -225,18 +269,13 @@ VALID_DATA_REVIEW_AND_TEST = {PROJECT_PROFILE: {PROJECT_NAME: "waterpoint morond
                               REMINDERS: "disabled"
 }
 
-regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}\W\S{2}'
-SMS_DATA_LOG = {
-SMS_SUBMISSION: "Donald Mouserep3 " + regex_date_match + " Success watwat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae, Bacteroids 27.178057,-78.007789",
-UNIQUE_VALUE: "Mr.Tessy"}
-
 NEW_VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                           RECEIVER: "",
                           SMS: "WPS01  wat1  12.10.2011 12.10.2011  198  04.2011  04.12.2011   c  Mr.Jessy  ab  27.178057,-78.007789  Water_Point_1",
                           SUCCESS_MESSAGE: 'Thank you'}
 
 NEW_SMS_DATA_LOG = {
-    SMS_SUBMISSION: "Donald Mouserep3 " + regex_date_match + " Success watwat1 12.10.2011 12.10.2011 198 04.2011 04.12.2011 DARK YELLOW Mr.Jessy Aquificae, Bacteroids 27.178057,-78.007789 Water_Point_1",
+    SUBMISSION: "Donald Mouserep3 " + regex_date_match + " Success watwat1 12.10.2011 12.10.2011 198 04.2011 04.12.2011 DARK YELLOW Mr.Jessy Aquificae, Bacteroids 27.178057,-78.007789 Water_Point_1",
     UNIQUE_VALUE: "Mr.Jessy"}
 
 INVALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",

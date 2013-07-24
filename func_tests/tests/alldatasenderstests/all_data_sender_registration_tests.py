@@ -83,7 +83,7 @@ class TestAllDataSender(unittest.TestCase):
         message = self.login_with_created_datasenders_account(email)
         self.assertEqual(message, "Welcome Mickey Duck!")
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_addition_of_data_sender_without_email_address(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.select_web_device()

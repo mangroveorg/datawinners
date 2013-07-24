@@ -1,5 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
-import time
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import int_to_base36
 
 from nose.plugins.attrib import attr
 
@@ -11,13 +13,24 @@ from framework.utils.database_manager_postgres import DatabaseManager
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from pages.addsubjectpage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
+from pages.allsubjectspage.all_subjects_page import AllSubjectsPage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
+from pages.resetpasswordpage.reset_password_page import ResetPasswordPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, DATA_WINNER_ADD_SUBJECT_WATERPOINT
+from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON, DELETE_BUTTON
+from pages.submissionlogpage.submission_log_page import SubmissionLogPage
+from pages.warningdialog.warning_dialog_page import WarningDialog
+from pages.websubmissionpage.web_submission_page import WebSubmissionPage
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, DATA_WINNER_ADD_SUBJECT_WATERPOINT, LOGOUT, url, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT
+from tests.activateaccounttests.activate_account_data import DS_ACTIVATION_URL, NEW_PASSWORD
+from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL
+from tests.alldatasenderstests.all_data_sender_data import generate_random_email_id
 from tests.endtoendtest.end_to_end_data import *
 from tests.registrationtests.registration_tests import register_and_get_email
+from pages.alldatasenderspage.all_data_senders_locator import DELETE_BUTTON as CONFIRM_DELETE
 
 
 def activate_account(driver, email):
@@ -77,27 +90,11 @@ class TestApplicationEndToEnd(BaseTest):
         self.assertEqual(global_navigation.welcome_message(), "Welcome Mickey!")
         return global_navigation
 
-    def add_a_data_sender(self, dashboard_page):
-        add_data_sender_page = dashboard_page.navigate_to_add_data_sender_page()
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_DATA_SENDER)
-        self.assertRegexpMatches(add_data_sender_page.get_success_message(),
-                                 fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_DATA_SENDER)))
-
     def add_subject_type(self, create_project_page, entity_type):
         add_subject_type_page = AddSubjectTypePage(self.driver)
         add_subject_type_page.click_on_accordian_link()
         add_subject_type_page.add_entity_type_with(entity_type)
         self.assertEqual(create_project_page.get_selected_subject(), entity_type.lower())
-
-    def add_a_subject(self, add_subject_page):
-        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
-        add_subject_page.submit_subject()
-        self.assertEqual(add_subject_page.get_flash_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT)))
-
-    def add_a_data_sender(self, add_data_sender_page):
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_DATA_SENDER)
-        self.assertEqual(add_data_sender_page.get_success_message(),
-                         fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_DATA_SENDER)))
 
     def create_project(self, create_project_page):
         create_project_page.create_project_with(VALID_DATA_FOR_PROJECT)
@@ -111,8 +108,6 @@ class TestApplicationEndToEnd(BaseTest):
             question_link_text = fetch_(QUESTION, from_(question))
             self.assertEquals(create_questionnaire_page.get_question_link_text(index), question_link_text)
             index += 1
-            # self.assertEquals(create_questionnaire_page.get_remaining_character_count(),
-        #                   fetch_(CHARACTER_REMAINING, from_(QUESTIONNAIRE_DATA)))
         project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
         return project_overview_page.get_project_title()
 
@@ -124,21 +119,14 @@ class TestApplicationEndToEnd(BaseTest):
         self.assertIn(fetch_(SUCCESS_MESSAGE, from_(sms_tester_data)), sms_tester_page.get_response_message())
         return sms_tester_page
 
-    def verify_submission1(self, global_navigation, project_name, sms_log):
+    def verify_submission(self, sms_log):
+        global_navigation = GlobalNavigationPage(self.driver)
         view_all_project_page = global_navigation.navigate_to_view_all_project_page()
-        project_overview_project = view_all_project_page.navigate_to_project_overview_page(project_name)
+        project_overview_project = view_all_project_page.navigate_to_project_overview_page(self.project_name)
         data_page = project_overview_project.navigate_to_data_page()
         submission_log_page = data_page.navigate_to_all_data_record_page()
         self.assertRegexpMatches(submission_log_page.get_submission_message(sms_log),
-                                 fetch_(SMS_SUBMISSION, from_(sms_log)))
-
-    def verify_submission2(self, global_navigation, sms_log):
-        view_all_data_page = global_navigation.navigate_to_all_data_page()
-        submission_log_page = view_all_data_page.navigate_to_submission_log_page_from_project_dashboard(
-            fetch_(PROJECT_NAME, VALID_DATA_FOR_PROJECT).lower())
-        self.assertRegexpMatches(submission_log_page.get_submission_message(sms_log),
-                                 fetch_(SMS_SUBMISSION, from_(sms_log)))
-        self.assertEqual(self.driver.get_title(), "Submission Log")
+                                 fetch_(SUBMISSION, from_(sms_log)))
 
     def review_project_summary(self, review_page):
         self.assertEqual(fetch_(PROJECT_PROFILE, from_(VALID_DATA_REVIEW_AND_TEST)),
@@ -152,48 +140,10 @@ class TestApplicationEndToEnd(BaseTest):
         review_page.open_questionnaire_accordion()
         self.assertEqual(fetch_(QUESTIONNAIRE, from_(VALID_DATA_REVIEW_AND_TEST)), review_page.get_questionnaire())
 
-    def sms_light_box_verification(self, sms_tester_light_box):
-        sms_tester_light_box.send_sms_with(VALID_DATA_FOR_SMS_LIGHT_BOX)
-        self.assertEqual(sms_tester_light_box.get_response_message(),
-                         fetch_(RESPONSE_MESSAGE, from_(VALID_DATA_FOR_SMS_LIGHT_BOX)))
-        sms_tester_light_box.close_light_box()
-
-    def verify_questionnaire(self, edit_questionnaire_page):
-        questions = fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA))
-        edit_questionnaire_page.select_question_link(3)
-        self.assertEqual(questions[0], edit_questionnaire_page.get_date_type_question())
-        edit_questionnaire_page.select_question_link(4)
-        self.assertEqual(questions[1], edit_questionnaire_page.get_number_type_question())
-        edit_questionnaire_page.select_question_link(5)
-        self.assertEqual(questions[2], edit_questionnaire_page.get_date_type_question())
-        edit_questionnaire_page.select_question_link(6)
-        self.assertEqual(questions[3], edit_questionnaire_page.get_date_type_question())
-        edit_questionnaire_page.select_question_link(7)
-        self.assertEqual(questions[4], edit_questionnaire_page.get_list_of_choices_type_question())
-        edit_questionnaire_page.select_question_link(8)
-        self.assertEqual(questions[5], edit_questionnaire_page.get_word_type_question())
-        edit_questionnaire_page.select_question_link(9)
-        self.assertEqual(questions[6], edit_questionnaire_page.get_list_of_choices_type_question())
-        edit_questionnaire_page.select_question_link(10)
-        edit_questionnaire_page.select_question_link(10)
-        self.assertEqual(questions[7], edit_questionnaire_page.get_geo_type_question())
-
-    def edit_questionnaire(self, edit_questionnaire_page):
-        questions = fetch_(QUESTIONS, from_(NEW_QUESTIONNAIRE_DATA))
-        edit_questionnaire_page.select_question_link(4)
-        edit_questionnaire_page.configure_number_type_question(questions[0])
-        edit_questionnaire_page.add_question(questions[1])
-        return edit_questionnaire_page.save_and_create_project_successfully()
-
-    @attr('end_to_end_test', 'smoke', "intregation")
-    def test_end_to_end(self):
-        self.email = None
-        self.do_org_registartion()
-
+    def verify_project_creation(self):
         organization_sms_tel_number = self.set_organization_number()
         activate_account(self.driver, self.email.lower())
         global_navigation = GlobalNavigationPage(self.driver)
-
         dashboard_page = global_navigation.navigate_to_dashboard_page()
         create_project_page = dashboard_page.navigate_to_create_project_page()
         create_project_page.select_report_type(VALID_DATA_FOR_PROJECT)
@@ -201,36 +151,124 @@ class TestApplicationEndToEnd(BaseTest):
         self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE1[ENTITY_TYPE])
         create_questionnaire_page = self.create_project(create_project_page)
         self.project_name = self.create_questionnaire(create_questionnaire_page)
+        return global_navigation, organization_sms_tel_number
 
+    def add_subject(self, global_navigation):
         global_navigation.navigate_to_all_subject_page()
         add_subject_page = AddSubjectPage(self.driver)
         self.driver.go_to(DATA_WINNER_ADD_SUBJECT_WATERPOINT)
-        self.add_a_subject(add_subject_page)
+        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
+        add_subject_page.submit_subject()
+        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT)), add_subject_page.get_flash_message())
 
-        all_data_senders_page = global_navigation.navigate_to_all_data_sender_page()
-        add_data_sender_page = all_data_senders_page.navigate_to_add_a_data_sender_page()
-        self.add_a_data_sender(add_data_sender_page)
+    def add_datasender(self, global_navigation):
+        all_data_sender_page = global_navigation.navigate_to_all_data_sender_page()
+        add_data_sender_page = all_data_sender_page.navigate_to_add_a_data_sender_page()
+        email = generate_random_email_id()
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL, email=email)
+        success_msg = add_data_sender_page.get_success_message()
+        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_WITH_EMAIL)), success_msg)
+        all_data_sender_page = global_navigation.navigate_to_all_data_sender_page()
 
+        rep_id = success_msg.replace(VALID_DATA_WITH_EMAIL[SUCCESS_MESSAGE], '')
+        all_data_sender_page.select_a_data_sender_by_id(rep_id)
+        all_data_sender_page.associate_data_sender()
+        all_data_sender_page.select_project(self.project_name)
+        all_data_sender_page.click_confirm(wait=True)
+        return email
+
+
+    def verify_submission_via_sms(self, organization_sms_tel_number):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
+        VALID_DATA_FOR_SMS[SENDER] = VALID_DATA_WITH_EMAIL[MOBILE_NUMBER]
         self.send_sms(organization_sms_tel_number, VALID_DATA_FOR_SMS)
-
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
-        self.verify_submission1(global_navigation, self.project_name, SMS_DATA_LOG)
+        self.verify_submission(SMS_DATA_LOG)
 
+    def verify_project_activation(self, global_navigation):
         all_projects_page = global_navigation.navigate_to_view_all_project_page()
         project_overview_page = all_projects_page.navigate_to_project_overview_page(self.project_name)
-        edit_project_page = project_overview_page.navigate_to_edit_project_page()
-        edit_project_page.continue_create_project()
-        edit_questionnaire_page = CreateQuestionnairePage(self.driver)
-        time.sleep(2)
-        self.verify_questionnaire(edit_questionnaire_page)
-        project_overview_page = self.edit_questionnaire(edit_questionnaire_page)
-
         project_overview_page.activate_project()
         self.assertEqual(project_overview_page.get_status_of_the_project(), "Active")
+        analysis_page = project_overview_page.navigate_to_data_page()
+        msg = u"Your Data Senders\u2019 successful submissions will appear here"
+        self.assertIn(msg, analysis_page.get_all_data_records()[0])
+        submission_log_page = analysis_page.navigate_to_all_data_record_page()
+        msg = "Once your Data Senders have sent in Submissions, they will appear here."
+        self.assertIn(msg, submission_log_page.empty_help_text())
 
-        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
-        self.send_sms(organization_sms_tel_number, NEW_VALID_DATA_FOR_SMS)
-        #
-        self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
-        self.verify_submission1(global_navigation, self.project_name, NEW_SMS_DATA_LOG)
+    def verify_submission_via_web(self, ds_email):
+        self.driver.go_to(LOGOUT)
+        user = User.objects.get(username=ds_email)
+        token = default_token_generator.make_token(user)
+        self.driver.go_to(url(DS_ACTIVATION_URL % (int_to_base36(user.id), token)))
+        activation_page = ResetPasswordPage(self.driver)
+        activation_page.type_same_password(NEW_PASSWORD)
+        activation_page.click_submit()
+        self.assertEqual(self.driver.get_title(), "Data Submission")
+        self.driver.go_to(LOGOUT)
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        login_page.login_with({USERNAME: ds_email, PASSWORD: NEW_PASSWORD})
+        data_sender_page = DataSenderPage(self.driver)
+        submission_page = data_sender_page.send_in_data()
+        submission_page.fill_and_submit_answer(WEB_ANSWERS)
+        self.driver.go_to(LOGOUT)
+        self.do_login()
+        self.verify_submission(WEB_ANSWER_LOG)
+
+    def admin_edit_delete_submissions(self):
+        submission_log_page = SubmissionLogPage(self.driver)
+        submission_log_page.check_submission_by_row_number(1)
+        submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
+
+        submission_page = WebSubmissionPage(self.driver)
+        submission_page.fill_and_submit_answer(EDITED_WEB_ANSWERS)
+        self.verify_submission(EDITED_WEB_ANSWER_LOG)
+
+        submission_log_page.check_submission_by_row_number(1)
+        submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
+        warning_dialog = WarningDialog(self.driver)
+        warning_dialog.confirm()
+        self.assertTrue(submission_log_page.empty_help_text())
+
+    def add_edit_delete_subject(self):
+        self.driver.go_to(DATA_WINNER_ADD_SUBJECT + "waterpoint")
+        add_subject_page = AddSubjectPage(self.driver)
+        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
+        add_subject_page.submit_subject()
+        message = fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT))
+        flash_message = add_subject_page.get_flash_message()
+        self.assertIn(message, flash_message)
+        subject_short_code = flash_message.replace(message, '')
+        self.driver.go_to(DATA_WINNER_ALL_SUBJECT)
+        all_subjects_page = AllSubjectsPage(self.driver)
+        all_subjects_page.open_subjects_table_for_entity_type('waterpoint')
+        all_subjects_page.select_a_subject_by_type_and_id('waterpoint', subject_short_code)
+        all_subjects_page.click_action_button_for('waterpoint', 'edit')
+        add_subject_page = AddSubjectPage(self.driver)
+        add_subject_page.add_subject_with(VALID_DATA_FOR_EDIT)
+        add_subject_page.submit_subject()
+        self.assertEquals(add_subject_page.get_flash_message(), VALID_DATA_FOR_EDIT[SUCCESS_MESSAGE])
+        add_subject_page.navigate_to_all_subjects()
+        all_subjects_page.open_subjects_table_for_entity_type('waterpoint')
+        all_subjects_page.select_a_subject_by_type_and_id('waterpoint', subject_short_code)
+        all_subjects_page.click_action_button_for('waterpoint', 'delete')
+        self.driver.find(CONFIRM_DELETE).click()
+        self.assertEquals(all_subjects_page.message(), 'Subject(s) successfully deleted.')
+        self.assertFalse(all_subjects_page.is_subject_present('waterpoint', subject_short_code))
+
+    @attr('smoke')
+    def test_end_to_end(self):
+        self.email = None
+        self.do_org_registartion()
+
+        global_navigation, organization_sms_tel_number = self.verify_project_creation()
+        self.add_subject(global_navigation)
+        self.add_edit_delete_subject()
+        ds_email = self.add_datasender(global_navigation)
+        self.verify_submission_via_sms(organization_sms_tel_number)
+        self.verify_project_activation(global_navigation)
+
+        self.verify_submission_via_web(ds_email)
+        self.admin_edit_delete_submissions()

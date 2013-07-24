@@ -15,7 +15,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 
 @attr('suit_1')
 class TestActivateDSAccount(BaseTest):
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_create_and_activate_datasender(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)

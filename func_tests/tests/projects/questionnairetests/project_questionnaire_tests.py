@@ -46,7 +46,7 @@ class TestProjectQuestionnaire(BaseTest):
     def tearDown(self):
         pass
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_successful_questionnaire_editing(self):
         """
         Function to test the successful editing of a Questionnaire with given details

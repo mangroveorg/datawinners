@@ -37,8 +37,8 @@ VALID_DATA_WITH_EMAIL = {NAME: "Mickey Duck",
                          COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                          EMAIL_ADDRESS: "mIcKeY",
                          GPS: "-21.7622088847 48.0690991394",
-                         MOBILE_NUMBER_WITHOUT_HYPHENS: "98765442103",
-                         SUCCESS_MSG: "Registration successful. ID is: rep"}
+                         SUCCESS_MSG: "Registration successful. ID is: "}
+
 VALID_DATA_WITHOUT_EMAIL = {NAME: "Mickey Duck",
                             MOBILE_NUMBER: "9876-544-2102",
                             COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
