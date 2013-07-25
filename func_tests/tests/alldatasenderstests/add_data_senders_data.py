@@ -39,6 +39,12 @@ VALID_DATA_WITH_EMAIL = {NAME: "Mickey Duck",
                          GPS: "-21.7622088847 48.0690991394",
                          SUCCESS_MSG: "Registration successful. ID is: "}
 
+VALID_DATA_WITH_EMAIL_FOR_EDIT = {NAME: "Mickey Duck",
+                                  MOBILE_NUMBER: VALID_DATA_WITH_EMAIL[MOBILE_NUMBER],
+                                  COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                                  GPS: "65.34, 17.21",
+                                  SUCCESS_MSG: "Your changes have been saved."}
+
 VALID_DATA_WITHOUT_EMAIL = {NAME: "Mickey Duck",
                             MOBILE_NUMBER: "9876-544-2102",
                             COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",

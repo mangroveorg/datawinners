@@ -217,12 +217,21 @@ EDITED_WEB_ANSWERS = [
     {QCODE: 'q5', ANSWER: '10.2010', TYPE: TEXT},
     {QCODE: 'q6', ANSWER: '10.12.2010', TYPE: TEXT},
     {QCODE: 'q7', ANSWER: 'LIGHT RED', TYPE: SELECT},
-    {QCODE: 'q8', ANSWER: 'edited admin', TYPE: TEXT},
+    {QCODE: 'q8', ANSWER: 'edited adm', TYPE: TEXT},
     {QCODE: 'q9', ANSWER: ['b', 'c'], TYPE: CHECKBOX},
     {QCODE: 'q10', ANSWER: '12.0,12.0', TYPE: TEXT},
 ]
 
+ANSWER_FOR_SUMMARY_PROJECT = [
+    {QCODE: 'q1', ANSWER: '25.09.1999', TYPE: TEXT}
+]
+
 regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}\W\S{2}'
+
+SUMMARY_DATA_LOG = {
+    SUBMISSION: u"Mickey G\xf6rep2 " + regex_date_match + " Success 25.09.1999",
+    UNIQUE_VALUE: "25.09.1999"
+}
 SMS_DATA_LOG = {
     SUBMISSION: "Mickey Duckrep3 " + regex_date_match + " Success watwat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae, Bacteroids 27.178057,-78.007789",
     UNIQUE_VALUE: "Mr.Tessy"}

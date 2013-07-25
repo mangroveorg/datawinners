@@ -54,7 +54,7 @@ class TestAllDataSender(unittest.TestCase):
         message = global_navigation.welcome_message()
         return message
 
-    @attr('functional_test', 'smoke')
+    @attr('functional_test')
     def test_successful_addition_editing_of_data_sender(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
