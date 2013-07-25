@@ -15,6 +15,7 @@ function main {
 		pc) pre_commit;;
 		ut) unit_test;;
 		ft) function_test;;
+		st) smoke_test;;
 		couch) recreate_couch_db;;
 		feed) recreate_feed_db;;
 		rd) restore_postgresql_database;;

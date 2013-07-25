@@ -75,6 +75,12 @@ function function_test {
 	(cd "$DWROOT_DIR/func_tests" && nosetests --rednose -v -a functional_test)
 }
 
+function smoke_test {
+	echo "running smoke test"
+	cp "$DWROOT_DIR/datawinners/config/local_settings_example.py" "$DWROOT_DIR/func_tests/resources/local_settings.py"
+	(cd "$DWROOT_DIR/func_tests" && nosetests --rednose -v -a smoke)
+}
+
 function restore_postgresql_database {
 	echo "recreating database"
 	dropdb geodjango && createdb -T template_postgis geodjango && \
