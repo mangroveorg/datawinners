@@ -27,3 +27,9 @@ class TestProcessSMSCounter(unittest.TestCase):
         message_tracker = self.incoming_request['organization']._get_message_tracker(current_month)
         return message_tracker
 
+    def test_should_return_outgoing_message_when_organization_is_deactivated(self):
+        self.incoming_request['organization'].status = 'Deactivated'
+        self.assertEqual(self.incoming_request['organization'].status, 'Deactivated')
+        self.incoming_request = process_sms_counter(self.incoming_request)
+        self.assertEquals(self.incoming_request['outgoing_message'], '')
+

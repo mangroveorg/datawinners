@@ -902,3 +902,9 @@ msgstr ""
 
 msgid "subject type"
 msgstr ""
+
+msgid "Do you want to deactivate the account(s)?"
+msgstr ""
+
+msgid "Do you want to activate the account(s)?"
+msgstr ""

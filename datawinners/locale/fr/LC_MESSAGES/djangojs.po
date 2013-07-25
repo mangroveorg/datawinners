@@ -1133,3 +1133,9 @@ msgstr "type de projet"
 
 msgid "subject type"
 msgstr "type de sujet"
+
+msgid "Do you want to deactivate the account(s)?"
+msgstr "Voulez-vous désactiver le(s) compte(s)?"
+
+msgid "Do you want to activate the account(s)?"
+msgstr "Voulez-vous activer le(s) compte(s)?"

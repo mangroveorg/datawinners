@@ -85,3 +85,9 @@ class TestLoginPage(BaseTest):
         subscribe_button = expired_trail_account_page.get_subscribe_button()
         self.assertEqual("Subscribe Now", subscribe_button[0].text)
 
+    @attr('functional_test')
+    def test_login_with_deactivated_account(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        login_page.login_with(DEACTIVATED_ACCOUNT_CREDENTIALS)
+        self.assertEqual(login_page.get_error_message(), fetch_(ERROR_MESSAGE,from_(DEACTIVATED_ACCOUNT_CREDENTIALS)))

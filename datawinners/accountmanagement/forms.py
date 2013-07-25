@@ -213,6 +213,11 @@ class LoginForm(AuthenticationForm):
             self.user_cache = authenticate(username=username, password=password)
             if self.user_cache is None:
                 raise forms.ValidationError(_("Please enter a correct email and password."))
+            
+            profile = self.user_cache.get_profile()
+            organization = Organization.objects.get(org_id=profile.org_id)
+            if organization.status == 'Deactivated':
+                raise forms.ValidationError(_(mark_safe("Your account has been deactivated. Please contact the datawinners support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a> for reactivation of the account.")))
             elif not self.user_cache.is_active:
                 raise forms.ValidationError(_("This account is inactive."))
 

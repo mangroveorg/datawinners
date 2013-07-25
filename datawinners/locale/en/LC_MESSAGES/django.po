@@ -4203,3 +4203,6 @@ msgstr ""
 
 msgid "You have successfully activated your account. Happy data submission!"
 msgstr ""
+
+msgid "Your account has been deactivated. Please contact the datawinners support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a> for reactivation of the account."
+msgstr "Your account has been deactivated. Please contact the datawinners support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a> for reactivation of the account."

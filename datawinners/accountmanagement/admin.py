@@ -11,6 +11,8 @@ from forms import forms
 from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization, NGOUserProfile, OutgoingNumberSetting
 from mangrove.utils.types import is_empty, is_not_empty
 from datawinners.countrytotrialnumbermapping.models import Country, Network
+from django.contrib import messages
+import datetime
 
 
 admin.site.disable_action('delete_selected')
@@ -76,7 +78,26 @@ class MessageTrackerAdmin(DatawinnerAdmin):
 class OrganizationAdmin(DatawinnerAdmin):
     list_display = (
         'organization_name', 'complete_address', 'office_phone', 'website', 'paid', 'active_date', 'admin_name',
-        'admin_email', 'admin_mobile_number', 'admin_office_phone', 'sms_api_users')
+        'admin_email', 'admin_mobile_number', 'admin_office_phone', 'sms_api_users','ngo_status')
+    actions = ['deactivate_organizations', 'activate_organizations']
+
+    def deactivate_organizations(modeladmin, request, queryset):
+        queryset.exclude(status='Deactivated').update(status='Deactivated', status_changed_datetime=datetime.datetime.now())
+        messages.success(request, _('The accounts selected have been deactivated successfully.'))
+        selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+        related_users = User.objects.filter(ngouserprofile__org_id__in=selected).update(is_active=False)
+    deactivate_organizations.short_description = "Deactivate accounts"
+
+    def activate_organizations(modeladmin, request, queryset):
+        queryset.exclude(status='Activated').update(status='Activated', status_changed_datetime=datetime.datetime.now())
+        messages.success(request, _('The accounts selected have been activated successfully.'))
+        selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+        related_users = User.objects.filter(ngouserprofile__org_id__in=selected).update(is_active=True)
+    activate_organizations.short_description = "Activate accounts"
+
+    class Media:
+        css = {"all": ("/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css",)}
+        js = ("/media/javascript/jquery.js", "/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js",)
 
     def organization_name(self, obj):
         return obj.name
@@ -87,6 +108,9 @@ class OrganizationAdmin(DatawinnerAdmin):
 
     def paid(self, obj):
         return "No" if obj.in_trial_mode else "Yes"
+
+    def ngo_status(self, obj):
+        return obj.status if obj.status is not None else "Activated"
 
     def _get_ngo_admin(self, organization):
         user_profiles = NGOUserProfile.objects.filter(org_id=organization.org_id)

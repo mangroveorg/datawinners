@@ -185,6 +185,27 @@
         }
     },
     {
+        "pk": "RVZ704148",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "Education",
+            "city": "Ivandry",
+            "name": "Deactivated NGO",
+            "active_date": "2013-07-22 12:58:04",
+            "is_deactivate_email_sent": false,
+            "country": "MG",
+            "status": "Deactivated",
+            "zipcode": "65212",
+            "in_trial_mode": false,
+            "website": "",
+            "office_phone": "",
+            "state": "",
+            "addressline2": "",
+            "address": "Ambato",
+            "status_changed_datetime": "2013-07-22 12:58:56"
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
@@ -247,6 +268,17 @@
             "org_id": "JNA912070",
             "user": 7,
             "title": "Quick Start Services en"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep2",
+            "mobile_phone": "2611234",
+            "org_id": "RVZ704148",
+            "user": 8,
+            "title": ""
         }
     },
     {
@@ -571,6 +603,26 @@
             "password": "sha1$398fd$f15eb2447126f6f99749d3f7ec5873794419f1cb",
             "email": "samuel@mailinator.com",
             "date_joined": "2013-07-12 11:52:00"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "auth.user",
+        "fields": {
+            "username": "deactivated@mailinator.com",
+            "first_name": "deactivated",
+            "last_name": "ra",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-07-22 12:58:30",
+            "groups": [
+                1
+            ],
+            "user_permissions": [],
+            "password": "sha1$07bf1$f40c0cdbba7d76ad7488e4ed50e6d319c4894d25",
+            "email": "deactivated@mailinator.com",
+            "date_joined": "2013-07-22 12:57:21"
         }
     },
     {

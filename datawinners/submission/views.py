@@ -24,6 +24,7 @@ from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.player import SMSPlayer
 from datawinners.submission.location import LocationBridge
+from mangrove.transport.repository.reporters import find_reporter_entity
 
 
 logger = logging.getLogger("django")
@@ -34,7 +35,7 @@ logger = logging.getLogger("django")
 def sms(request):
     message = Responder().respond(request)
     response = HttpResponse(message)
-    response['X-Vumi-HTTPRelay-Reply'] = 'true'
+    response['X-Vumi-HTTPRelay-Reply'] = 'true' if message else 'false'
     response['Content-Length'] = len(response.content)
     return response
 
@@ -97,6 +98,10 @@ def find_dbm_for_web_sms(request):
 def process_sms_counter(incoming_request):
     organization = incoming_request['organization']
     organization.increment_all_message_count()
+    if organization.status == 'Deactivated':
+        incoming_request['outgoing_message'] = ''
+        return incoming_request
+
     if organization.has_exceeded_message_limit():
         incoming_request['outgoing_message'] = ugettext(
             "You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")

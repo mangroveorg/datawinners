@@ -57,3 +57,7 @@ EXPIRED_TRIAL_ACCOUNT = {USERNAME: "chinatwu@gmail.com",
 NIGERIA_ACCOUNT_CREDENTIAL = {USERNAME: "gerard@mailinator.com",
                      PASSWORD: "gerard",
                      WELCOME_MESSAGE: "Welcome Gerard!"}
+
+DEACTIVATED_ACCOUNT_CREDENTIALS = {USERNAME: "deactivated@mailinator.com",
+                                   PASSWORD: "deactivated",
+                                   ERROR_MESSAGE: "Your account has been deactivated. Please contact the datawinners support at support@datawinners.com for reactivation of the account."}
