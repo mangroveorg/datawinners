@@ -23,34 +23,34 @@ $.fn.datePicker = function (options) {
         }
 
         function getSettings(config, header, ismonthly) {
-            var year_to_date_setting = {text:gettext('Year to date'), dateStart:function () {
+            var year_to_date_setting = {text: gettext('Year to date'), dateStart: function () {
                 var x = Date.parse('today');
                 x.setMonth(0);
                 x.setDate(1);
                 return x;
-            }, dateEnd:'today' };
+            }, dateEnd: 'today' };
             var settings = {
-                presetRanges:[
-                    {text:header, dateStart:function () {
+                presetRanges: [
+                    {text: header, dateStart: function () {
                         return Date.parse('1900.01.01')
-                    }, dateEnd:'today', is_for_all_period:true },
-                    {text:gettext('Current month'), dateStart:function () {
+                    }, dateEnd: 'today', is_for_all_period: true },
+                    {text: gettext('Current month'), dateStart: function () {
                         return Date.parse('today').moveToFirstDayOfMonth();
-                    }, dateEnd:'today' },
-                    {text:gettext('Last Month'), dateStart:function () {
+                    }, dateEnd: 'today' },
+                    {text: gettext('Last Month'), dateStart: function () {
                         return Date.parse('last month').moveToFirstDayOfMonth();
-                    }, dateEnd:function () {
+                    }, dateEnd: function () {
                         return Date.parse('last month').moveToLastDayOfMonth();
                     } }
                 ],
-                presets:{dateRange:gettext('Choose Date(s)')},
-                earliestDate:'1/1/2011',
-                latestDate:'21/12/2012',
-                dateFormat:getDateFormat(date_format),
-                rangeSplitter:'-'
+                presets: {dateRange: gettext('Choose Date(s)')},
+                earliestDate: '1/1/2011',
+                latestDate: '21/12/2012',
+                dateFormat: getDateFormat(date_format),
+                rangeSplitter: '-'
             };
             if (ismonthly) {
-                settings.presets = {dateRange:gettext('Choose Month(s)')}
+                settings.presets = {dateRange: gettext('Choose Month(s)')}
             } else {
                 settings.presetRanges = settings.presetRanges.concat(year_to_date_setting);
                 if (typeof(ismonthly) == "undefined") {
@@ -63,7 +63,7 @@ $.fn.datePicker = function (options) {
     })
 }
 
-DW.get_criteria = function() {
+DW.get_criteria = function () {
     var reporting_period = DW.get_datepicker_value($('#reportingPeriodPicker'), gettext("All Periods"));
     var submission_date = DW.get_datepicker_value($('#submissionDatePicker'), gettext("All Dates"));
     var subject_ids = $('#subjectSelect').attr('ids');
@@ -71,17 +71,17 @@ DW.get_criteria = function() {
     var keyword = $('#keyword').val();
     $(".dateErrorDiv").hide();
     return {
-        'start_time':$.trim(reporting_period.start_time),
-        'end_time':$.trim(reporting_period.end_time),
-        'submission_date_start':$.trim(submission_date.start_time),
-        'submission_date_end':$.trim(submission_date.end_time),
-        'subject_ids':subject_ids,
-        'submission_sources':submission_sources,
-        'keyword':keyword
+        'start_time': $.trim(reporting_period.start_time),
+        'end_time': $.trim(reporting_period.end_time),
+        'submission_date_start': $.trim(submission_date.start_time),
+        'submission_date_end': $.trim(submission_date.end_time),
+        'subject_ids': subject_ids,
+        'submission_sources': submission_sources,
+        'keyword': keyword
     };
 }
 
-DW.get_datepicker_value = function($datePicker, default_text) {
+DW.get_datepicker_value = function ($datePicker, default_text) {
     var data = $datePicker.val().split("-");
     if (data[0] == "" || data[0] == default_text) {
         data = ['', ''];
@@ -91,29 +91,15 @@ DW.get_datepicker_value = function($datePicker, default_text) {
     } else if (data.length == 1) {
         data[1] = data[0];
     }
-    return {start_time:data[0], end_time:data[1]};
+    return {start_time: data[0], end_time: data[1]};
 }
 
-DW.disable_filter_section_if_no_data = function() {
+DW.disable_filter_section_if_no_data = function () {
     if ($('#dataSenderSelect>option').size() != 0) {
         return false;
     }
+    var $filters = $(".ui-dropdownchecklist, .ui-dropdownchecklist-selector, .ui-dropdownchecklist-text, #keyword, #reportingPeriodPicker, #submissionDatePicker").add($('#go').removeClass('button_blue').addClass('button_disabled'));
+    $filters.attr('disabled', 'disabled').addClass('disabled').filter('span').find('>span').addClass('disabled').end().unbind('click');
 
-    DW.disable_filter();
+    $('.filter_label').addClass('grey')
 };
-
-DW.disable_filter = function() {
-    var $filters = $(".ui-dropdownchecklist, .ui-dropdownchecklist-selector, .ui-dropdownchecklist-text, #keyword, #reportingPeriodPicker, #submissionDatePicker").add($('#go').removeClass('button_blue').addClass('button_disabled'));
-    $filters.attr('disabled', 'disabled').addClass('disabled').filter('span').find('>span').addClass('disabled');
-
-    $('.filter_label').addClass('grey');
-    $('#ddcl-dataSenderSelect-ddw').addClass('none');
-}
-
-DW.enable_filter = function(){
-    var $filters = $(".ui-dropdownchecklist, .ui-dropdownchecklist-selector, .ui-dropdownchecklist-text, #keyword, #reportingPeriodPicker, #submissionDatePicker").add($('#go').removeClass('button_blue').addClass('button_disabled'));
-    $filters.removeAttr('disabled', 'disabled').removeClass('disabled').filter('span').find('>span').removeClass('disabled');
-
-    $('.filter_label').removeClass('grey');
-    $('#ddcl-dataSenderSelect-ddw').removeClass('none');
-}
