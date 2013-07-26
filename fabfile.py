@@ -152,7 +152,7 @@ def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, br
 
 
 def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env, branch="develop",
-           environment="showcase"):
+           environment="showcase",recreate_db=True):
     """build_number : hudson build number to be deployed
        home_dir: directory where you want to deploy the source code
        virtual_env : path to your virtual_env folder
@@ -168,12 +168,13 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
         with cd(datawinners_code_dir + '/datawinners'):
             run("cd %s/datawinners" % datawinners_code_dir)
             run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS[environment],))
-            activate_and_run(virtual_env, "python manage.py syncdb --noinput")
-            activate_and_run(virtual_env, "python manage.py migrate")
-            activate_and_run(virtual_env, "python manage.py recreatedb")
-            activate_and_run(virtual_env, "python manage.py recreatefeeddb")
-            activate_and_run(virtual_env, "python manage.py compilemessages")
-            activate_and_run(virtual_env, "python manage.py loadshapes")
+            if recreate_db:
+                activate_and_run(virtual_env, "python manage.py syncdb --noinput")
+                activate_and_run(virtual_env, "python manage.py migrate")
+                activate_and_run(virtual_env, "python manage.py recreatedb")
+                activate_and_run(virtual_env, "python manage.py recreatefeeddb")
+                activate_and_run(virtual_env, "python manage.py compilemessages")
+                activate_and_run(virtual_env, "python manage.py loadshapes")
             if environment == "test":
                 restart_gunicorn(virtual_env)
             else:
