@@ -152,7 +152,7 @@ def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, br
 
 
 def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env, branch="develop",
-           environment="showcase",recreate_db=True):
+           environment="showcase",recreate_db=None):
     """build_number : hudson build number to be deployed
        home_dir: directory where you want to deploy the source code
        virtual_env : path to your virtual_env folder
