@@ -49,7 +49,8 @@ function prepare_env {
 function restore_couchdb_and_postgres {
   	restore_postgresql_database && \
 	recreate_couch_db && \
-	recreate_feed_db
+	recreate_feed_db && \
+    recreate_search_index
 }
 
 function unit_test {
@@ -114,4 +115,8 @@ function show_help {
 	echo "cm: \tcimpile the django.po"
 	echo "init: \t initialize environment for the first time"
 	echo "rs: \t run server on the 127.0.0.1:8000"
+}
+
+function recreate_search_index {
+  cd "$DWROOT_DIR/datawinners" && python manage.py recreate_search_indexes
 }

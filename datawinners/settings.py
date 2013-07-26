@@ -253,6 +253,7 @@ GOOGLE_ANALYTICS_ENABLED = True
 TRIAL_REGISTRATION_ENABLED = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+ELASTIC_SEARCH_URL='http://localhost:9200/'
 
 try:
     from local_settings import *

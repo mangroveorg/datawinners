@@ -3,10 +3,12 @@ import datetime
 
 from django.conf import settings
 from django.contrib.auth import login
+import elasticutils
 
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
+from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import create_entity
 from mangrove.datastore.datadict import get_or_create_data_dict
@@ -31,7 +33,7 @@ def create_org_database(db_name):
     return manager
 
 
-def create_org_and_feed_database(sender, user, request, **kwargs):
+def initialize_organization(sender, user, request, **kwargs):
     profile = user.get_profile()
     org = Organization.objects.get(org_id=profile.org_id)
     active_organization(org)
@@ -44,8 +46,20 @@ def create_org_and_feed_database(sender, user, request, **kwargs):
         create_feed_database(db_name)
     profile.reporter_id = make_user_as_a_datasender(manager, org, user.get_full_name(), profile.mobile_phone)
     profile.save()
-    user.backend ='django.contrib.auth.backends.ModelBackend'
+    user.backend = 'django.contrib.auth.backends.ModelBackend'
     login(request, user)
+    create_search_index(db_name)
+
+
+def create_search_index(db_name):
+    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    index_settings = {
+        "settings": {
+            "index": {
+                "number_of_shards": 1,
+                "number_of_replicas": 0,
+            }}}
+    es.create_index(db_name, index_settings)
 
 
 def active_organization(org):
