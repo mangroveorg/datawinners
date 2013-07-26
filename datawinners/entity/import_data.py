@@ -1,16 +1,28 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import OrderedDict
 from copy import copy
-from datawinners.exceptions import InvalidEmailException
+import os
+import logging
+
+from django.conf import settings
+from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
+from django.contrib.auth.models import User, Group
+from django.core.validators import email_re
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.models import get_current_site
+from django.core.mail.message import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.http import int_to_base36
+import xlwt
+
+from datawinners.exceptions import InvalidEmailException, NameNotFoundException
 from mangrove.data_cleaner import TelephoneNumber
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.entity_type import get_all_entity_types
-import os
-from django.conf import settings
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import include_of_type, exclude_of_type, timebox
+from datawinners.main.utils import timebox
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
-from mangrove.datastore.entity import get_all_entities, Entity, _from_row_to_entity
+from mangrove.datastore.entity import get_all_entities, Entity
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, get_form_model_by_entity_type, \
@@ -22,24 +34,14 @@ from mangrove.transport.player.player import Player
 from mangrove.utils.types import is_sequence
 from mangrove.datastore import entity
 from mangrove.transport.work_flow import RegistrationWorkFlow, GeneralWorkFlow, ActivityReportWorkFlow
-from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
-
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.submission.location import LocationBridge
 from mangrove.contrib.registration_validators import case_insensitive_lookup
 from datawinners.accountmanagement.helper import get_all_registered_phone_numbers_on_trial_account
 from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, MOBILE_NUMBER_FIELD_CODE
 from datawinners.utils import get_organization
-from django.contrib.auth.models import User, Group
 from datawinners.accountmanagement.models import NGOUserProfile
-from django.core.validators import email_re
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import get_current_site
-from django.core.mail.message import EmailMessage
-from django.template.loader import render_to_string
-from django.utils.http import int_to_base36
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
-import logging, xlwt
 
 
 class FormCodeDoesNotMatchException(Exception):
@@ -114,7 +116,10 @@ class FilePlayer(Player):
             group = Group.objects.filter(name="Data Senders")[0]
             user.groups.add(group)
             user.first_name = case_insensitive_lookup(response.processed_data, NAME_FIELD_CODE)
+            if user.first_name is None:
+                raise NameNotFoundException(message='Answer for name field is missing.')
             user.save()
+
             profile = NGOUserProfile(user=user, org_id=organization.org_id, title="Mr",
                                      reporter_id=case_insensitive_lookup(response.processed_data,
                                                                          SHORT_CODE))
@@ -150,7 +155,7 @@ class FilePlayer(Player):
                 self.logger.info(log_entry)
             self.appendFailedResponse(responses, "%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
                                       values=values)
-        except (InvalidEmailException, MangroveException) as e:
+        except (InvalidEmailException, MangroveException, NameNotFoundException) as e:
             self.appendFailedResponse(responses, e.message, values=values)
 
     def accept(self, file_contents):
