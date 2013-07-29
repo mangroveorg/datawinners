@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import os
 
 SITE_ID = 1
 DATABASES = {
@@ -15,7 +14,15 @@ DATABASES = {
 
 TRIAL_REGISTRATION_ENABLED = True
 
-HNI_SUPPORT_EMAIL_ID = 'dummy@dummy.com'
+DEBUG=False
+TEMPLATE_DEBUG=DEBUG
+
+ADMINS = (
+    ('Sai Ramya', 'sairama@thoughtworks.com'),
+    ('Ramya Ramesh', 'ramyar@thoughtworks.com'),
+    )
+
+HNI_SUPPORT_EMAIL_ID = 'sairama@thoughtworks.com'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
