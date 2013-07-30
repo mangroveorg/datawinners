@@ -46,10 +46,21 @@
                 {% endfor %}
             </ul>
         {% endif %}
+    </div>
+    <div id="all_subjects">
+        <form method="post" action="{% url datawinners.entity.views.export_subject %}" id="subject-export-form">
+            <input type="hidden" name="entity_type" id="type_to_export"/>
+            {% csrf_token %}
+            <div id="checked_subjects">
 
 
-        {% if subjects %}
-            {% include 'subject_table.html' %}
-        {% endif %}
+            </div>
+        </form>
+        <form method="post" action="{{ search_url }}">
+            <input type="text" name="search_text" value="{{ search_text }}" id="search_text"/><input type="submit"
+                                                                                                     value="search"
+                                                                                                     id="search">
+        </form>
+        {% include 'subject_table.html' %}
     </div>
 {% endblock %}

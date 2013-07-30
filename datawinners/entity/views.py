@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
 import json
 import logging
 
@@ -272,25 +272,32 @@ def all_subject_types(request):
 @is_not_expired
 def all_subjects(request, subject_type):
     manager = get_database_manager(request.user)
-    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL) \
-        .indexes(manager.database_name). \
-        doctypes(subject_type).query()
+    header_dict = header_fields(manager, subject_type)
+    search = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes(subject_type)
+    search_text = request.POST.get('search_text', '')
+    query = search.query()
+    if search_text:
+        raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
+        query = search.query_raw(raw_query)
 
-    form_model = get_form_model_by_entity_type(manager, [subject_type])
-    header_dict = {}
-    fields_required = []
-    for field in form_model.fields:
-        header_dict.update({field.name: field.label})
-        fields_required.append(field.name)
-
-    subjects = [result for result in query.values_dict(tuple(fields_required))]
+    subjects = [result for result in query.values_dict(tuple(header_dict.keys())).all()]
 
     return render_to_response('entity/all_subjects.html',
                               {'subjects': subjects, 'subject_headers': header_dict,
                                'current_language': translation.get_language(),
+                               'search_url': request.path,
                                'subjects_count': len(query),
+                               'search_text': search_text
                               },
                               context_instance=RequestContext(request))
+
+
+def header_fields(manager, subject_type):
+    header_dict = {}
+    form_model = get_form_model_by_entity_type(manager, [subject_type])
+    for field in form_model.fields:
+        header_dict.update({field.name: field.label})
+    return header_dict
 
 
 @register.filter

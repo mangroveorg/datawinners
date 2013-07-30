@@ -1,14 +1,5 @@
 {% load i18n %}
 
-<div id="all_subjects">
-    <form method="post" action="{% url datawinners.entity.views.export_subject %}" id="subject-export-form">
-        <input type="hidden" name="entity_type" id="type_to_export"/>
-        {% csrf_token %}
-        <div id="checked_subjects">
-
-        </div>
-    </form>
-
     <table class="all_subject_type_table styled_table">
         <thead>
         <tr class="list_header">
@@ -25,4 +16,3 @@
             </tr>
         {% endfor %}
     </table>
-</div>
