@@ -16,10 +16,10 @@ function backup_db(){
         couch_feed_backup=~/mangrove_couchdb_feed_backup_$today
         echo $couch_main_backup and $couch_feed_backup
         echo "################backup couchdb...################"
-        production_couch_path=/opt/apache-couchdb/var/lib/
+        production_couch_path=/dwdata/couchdb-data/
         cd $production_couch_path
         echo $production_couch_path
-        tar -czvPf  $couch_main_backup.tar.gz  couchdb
+        tar -czvPf  $couch_main_backup.tar.gz  main
         md5=`md5sum $couch_main_backup.tar.gz|cut -d " " -f 1`
         mv ${couch_main_backup}{,_${md5}}.tar.gz
         tar -czvPf  $couch_feed_backup.tar.gz  feed
