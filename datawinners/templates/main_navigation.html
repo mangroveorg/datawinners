@@ -16,7 +16,7 @@
                 <a id="global_datasenders_link" href="{% url datawinners.entity.views.all_datasenders %}" class="{{ disable_link_class }}">{% trans "All Data Senders" %}</a>
             </li>
             <li class ="{% ifactivetab 'main_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-                <a id="global_subjects_link" href="{% url datawinners.entity.views.all_subjects %}" class="{{ disable_link_class }}">{% trans "All Subjects" %}</a>
+                <a id="global_subjects_link" href="{% url datawinners.entity.views.all_subject_types %}" class="{{ disable_link_class }}">{% trans "All Subjects" %}</a>
             </li>
             <li class ="{% ifactivetab 'main_nav' 'all_data' %}active{% else %}inactive{% endifactivetab %} padding_right_null">
                 <a id="global_all_data_link" href="/alldata">{% trans "All Data" %}</a>

@@ -12,25 +12,17 @@
     <table class="all_subject_type_table styled_table">
         <thead>
         <tr class="list_header">
-            <th class="header_subject_type">{% trans "Subject Type" %}</th>
-            <th class="registered_subjects"> {% trans "Registered Subjects" %}</th>
-            <th>{% trans "Projects" %}</th>
+            {% for header_name, header_label in subject_headers.items %}
+                <th>{{ header_label }} </th>
+            {% endfor %}
         </tr>
         </thead>
-        {% for entity,projects in all_data.items %}
+        {% for subject in subjects %}
             <tr class="list_header">
-                <td><a class="header" href="#">{{ entity|capfirst }}</a></td>
-                <td><span class="success_error">{{ subjects_count|get_count:entity }}</span></td>
-{#                <td><span class="success_error">0</span></td>#}
-                <td><span class="success_error">
-                    {% for project in projects %}
-                        {{ project }}
-                        {% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </span>
-                </td>
+                {% for header_name, header_label in subject_headers.items %}
+                    <td>{{ subject|get_element:header_name }}</td>
+                {% endfor %}
             </tr>
-
         {% endfor %}
     </table>
 </div>

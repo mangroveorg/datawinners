@@ -1,8 +1,8 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "All Subjects" %}{% endblock %}
+{% block page_title %}{% trans "All Subject Types" %}{% endblock %}
 
-{% block section_title %}{% trans "All Subjects" %}
+{% block section_title %}{% trans "All Subject Types" %}
 {% endblock %}
 
 {% load dw_tabs %}
@@ -30,6 +30,7 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/action_dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript">
         var upload_url = window.location.pathname;
@@ -38,7 +39,11 @@
 
 {% load i18n %}
 {% block content %}
+    <div id="subject_create_type_link">
+        <a id="add_new_subject_type" href="javascript:void(0);">{% trans "Add a  Subject Type" %}</a>
+    </div>
     <div>
+        {% include 'project/all_subjects_help.html' %}
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -47,9 +52,25 @@
             </ul>
         {% endif %}
 
-
-        {% if subjects %}
-            {% include 'subject_table.html' %}
+        {% if all_data %}
+            {% include 'subject_type_table.html' %}
         {% endif %}
+
+
+        <div id="subjects_create_type">
+            {% trans "Enter the Name of your specific Subject Type" %}
+            <div class="required form-row-10px" id="add_subject_type_content">
+                <input type="text" maxlength="20" name="entity_type_regex" id="id_entity_type_text">
+                <div id="type_message"></div>
+            </div>
+            <p class="instruction">
+                {% trans "Example: Person (Patient, Farmer), Place (Region, Village), Thing (Health center, School, Water pump, Retail shop), Event (Training, Public gathering)" %}
+            </p>
+            <div class="text_align_right">
+                <a id="cancel_add_type" href="javascript:void(0)" class="padding_left_right_10">{% trans "Cancel" %}</a>
+                <input id="add_type" type="button" value="{% trans 'Add' %}" class="button"/>
+            </div>
+        </div>
     </div>
+
 {% endblock %}

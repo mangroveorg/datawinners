@@ -1,0 +1,36 @@
+{% load i18n %}
+
+<div id="all_subjects">
+    <form method="post" action="{% url datawinners.entity.views.export_subject %}" id="subject-export-form">
+        <input type="hidden" name="entity_type" id="type_to_export"/>
+        {% csrf_token %}
+        <div id="checked_subjects">
+
+        </div>
+    </form>
+
+    <table class="all_subject_type_table styled_table">
+        <thead>
+        <tr class="list_header">
+            <th class="header_subject_type">{% trans "Subject Type" %}</th>
+            <th class="registered_subjects"> {% trans "Registered Subjects" %}</th>
+            <th>{% trans "Projects" %}</th>
+        </tr>
+        </thead>
+        {% for entity,projects in all_data.items %}
+            <tr class="list_header">
+                <td><a class="header" href="/entity/subjects/{{ entity}}">{{ entity|capfirst }}</a></td>
+                <td><span class="success_error">{{ subjects_count|get_count:entity }}</span></td>
+{#                <td><span class="success_error">0</span></td>#}
+                <td><span class="success_error">
+                    {% for project in projects %}
+                        {{ project }}
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </span>
+                </td>
+            </tr>
+
+        {% endfor %}
+    </table>
+</div>

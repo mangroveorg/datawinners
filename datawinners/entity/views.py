@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import json
 import logging
 
@@ -15,6 +15,7 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language
+import elasticutils
 import xlwt
 from django.contrib import messages
 
@@ -22,6 +23,7 @@ from datawinners import utils
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
+from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -51,10 +53,9 @@ from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organizat
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
-from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
+from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, IMPORTED_SUBJECTS, \
-    DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
+from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
     ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
@@ -238,9 +239,11 @@ def create_type(request):
         message = form.fields['entity_type_regex'].error_messages['invalid']
     return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
 
+
 @register.filter
 def get_count(h, key):
     return h.get(key) or "0"
+
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -249,15 +252,50 @@ def get_count(h, key):
 @is_new_user
 @is_datasender
 @is_not_expired
-def all_subjects(request):
+def all_subject_types(request):
     manager = get_database_manager(request.user)
     subjects_data = load_subject_type_with_projects(manager)
     subjects_count = get_subjects_count(manager)
-    return render_to_response('entity/all_subjects.html',
+    return render_to_response('entity/all_subject_types.html',
                               {'all_data': subjects_data, 'current_language': translation.get_language(),
-                               'subjects_count':subjects_count,
+                               'subjects_count': subjects_count,
                               },
                               context_instance=RequestContext(request))
+
+
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required(login_url='/login')
+@session_not_expired
+@is_new_user
+@is_datasender
+@is_not_expired
+def all_subjects(request, subject_type):
+    manager = get_database_manager(request.user)
+    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL) \
+        .indexes(manager.database_name). \
+        doctypes(subject_type).query()
+
+    form_model = get_form_model_by_entity_type(manager, [subject_type])
+    header_dict = {}
+    fields_required = []
+    for field in form_model.fields:
+        header_dict.update({field.name: field.label})
+        fields_required.append(field.name)
+
+    subjects = [result for result in query.values_dict(tuple(fields_required))]
+
+    return render_to_response('entity/all_subjects.html',
+                              {'subjects': subjects, 'subject_headers': header_dict,
+                               'current_language': translation.get_language(),
+                               'subjects_count': len(query),
+                              },
+                              context_instance=RequestContext(request))
+
+
+@register.filter
+def get_element(h, key):
+    return h.get(key) or '--'
 
 
 def get_success_message(entity_type):
@@ -514,7 +552,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
     if project_id is not None:
         back_link = '/project/registered_subjects/%s/' % project_id
     else:
-        back_link = reverse(all_subjects)
+        back_link = reverse(all_subject_types)
 
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
@@ -684,7 +722,7 @@ def get_datasender_user_detail(datasender, user):
 def edit_subject_questionnaire(request, entity_type=None):
     manager = get_database_manager(request.user)
     if entity_type is None:
-        return HttpResponseRedirect(reverse(all_subjects))
+        return HttpResponseRedirect(reverse(all_subject_types))
 
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     if form_model is None:
@@ -775,7 +813,7 @@ def add_codes_sheet(wb, form_code, field_codes):
 def export_template(request, entity_type=None):
     manager = get_database_manager(request.user)
     if entity_type is None:
-        return HttpResponseRedirect(reverse(all_subjects))
+        return HttpResponseRedirect(reverse(all_subject_types))
 
     fields, labels, field_codes = import_module.get_entity_type_fields(manager, entity_type, for_export=True)
     response = HttpResponse(mimetype='application/vnd.ms-excel')

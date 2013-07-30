@@ -10,13 +10,14 @@ def add_date_field_mapping(mapping_fields, field):
     mapping_fields.update(
         {field.name: {"type": "multi_field", "fields": {
             field.name: {"type": "string"},
-            field.name + "_value": {"type": "date", "format": DateField.FORMAT_DATE_DICTIONARY.get(field.date_format)}
+            field.name + "_value": {"type": "date", "format": DateField.FORMAT_DATE_DICTIONARY.get(field.date_format),
+                                    "ignore_malformed": True}
         }}})
 
 
 def get_subject_mapping(form_model):
     mapping_fields = {}
-    mapping = {"properties": mapping_fields}
+    mapping = {"date_detection": False, "properties": mapping_fields}
     for field in form_model.fields:
         if isinstance(field, DateField):
             add_date_field_mapping(mapping_fields, field)
