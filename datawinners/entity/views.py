@@ -153,7 +153,7 @@ def edit_data_sender(request, reporter_id):
     entity_links = {'registered_datasenders_link': reverse(all_datasenders)}
     datasender = {'short_code': reporter_id}
     get_datasender_user_detail(datasender, request.user)
-    email = datasender.get('email') if datasender.get('is_user', False) else False
+    email = datasender.get('email') if datasender.get('email') != '--' else False
 
     if request.method == 'GET':
         name = reporter_entity.name
@@ -655,17 +655,22 @@ def _get_all_datasenders(manager, projects, user):
     return all_data_senders
 
 
-def get_datasender_user_detail(datasender, user):
+def get_user_profile_by_reporter_id(datasender, user):
     org_id = NGOUserProfile.objects.get(user=user).org_id
     user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_code'], org_id=org_id)
+    return user_profile[0] if len(user_profile) else None
+
+
+def get_datasender_user_detail(datasender, user):
+    user_profile = get_user_profile_by_reporter_id(datasender, user)
 
     datasender["is_user"] = False
-    if len(user_profile) > 0:
-        datasender_user_groups = list(user_profile[0].user.groups.values_list('name', flat=True))
+    if user_profile:
+        datasender_user_groups = list(user_profile.user.groups.values_list('name', flat=True))
         if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
             or "Read Only Users" in datasender_user_groups:
             datasender["is_user"] = True
-        datasender['email'] = user_profile[0].user.email
+        datasender['email'] = user_profile.user.email
         datasender['devices'] = "SMS,Web,Smartphone"
     else:
         datasender['email'] = "--"

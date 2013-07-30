@@ -52,7 +52,7 @@ from datawinners.project.models import Project, Reminder, ReminderMode, get_all_
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import import_subjects_from_project_wizard, get_datasender_user_detail, \
-    save_questionnaire as subject_save_questionnaire, create_single_web_user
+    save_questionnaire as subject_save_questionnaire, create_single_web_user, get_user_profile_by_reporter_id
 from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -1034,9 +1034,8 @@ def edit_data_sender(request, project_id, reporter_id):
     manager = get_database_manager(request.user)
     reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
     project, links = _get_project_and_project_link(manager, project_id, reporter_id)
-    datasender = {'short_code':reporter_id}
-    get_datasender_user_detail(datasender, request.user)
-    email = datasender.get('email') if datasender.get('is_user', False) else False
+    user_profile = get_user_profile_by_reporter_id(reporter_id, request.user)
+    email = user_profile.user.email if user_profile else None
 
     if request.method == 'GET':
         location = reporter_entity.location

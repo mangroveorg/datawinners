@@ -394,7 +394,7 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
     _deploy_datawinners(context)
 
     remove_cache(context)
-    # start_servers()
+    start_servers()
 
 
 def custom_reports_deploy(code_dir, environment='showcase'):
