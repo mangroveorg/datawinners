@@ -12,6 +12,8 @@ from datawinners.accountmanagement.models import OrganizationSetting, SMSC, Paym
 from mangrove.utils.types import is_empty, is_not_empty
 from datawinners.countrytotrialnumbermapping.models import Country, Network
 from django.contrib import messages
+from datawinners.utils import get_database_manager_for_org
+from datawinners.feeds.database import feeds_db_for
 import datetime
 
 
@@ -79,7 +81,7 @@ class OrganizationAdmin(DatawinnerAdmin):
     list_display = (
         'organization_name', 'complete_address', 'office_phone', 'website', 'paid', 'active_date', 'admin_name',
         'admin_email', 'admin_mobile_number', 'admin_office_phone', 'sms_api_users','ngo_status')
-    actions = ['deactivate_organizations', 'activate_organizations']
+    actions = ['deactivate_organizations', 'activate_organizations', 'delete_organizations']
 
     def deactivate_organizations(modeladmin, request, queryset):
         queryset.exclude(status='Deactivated').update(status='Deactivated', status_changed_datetime=datetime.datetime.now())
@@ -94,6 +96,17 @@ class OrganizationAdmin(DatawinnerAdmin):
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
         related_users = User.objects.filter(ngouserprofile__org_id__in=selected).update(is_active=True)
     activate_organizations.short_description = "Activate accounts"
+
+    def delete_organizations(modeladmin, request, queryset):
+        orgs = queryset.filter(status='Deactivated')
+        for organization in orgs:
+            dbm = get_database_manager_for_org(organization)
+            organization.purge_all_data()
+            del dbm.server[dbm.database_name]
+            feed_database_name = "feed_" + dbm.database_name
+            feed_dbm = feeds_db_for(feed_database_name)
+            del feed_dbm.server[feed_database_name]
+    delete_organizations.short_description = "Delete accounts"
 
     class Media:
         css = {"all": ("/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css",)}

@@ -132,6 +132,11 @@ class Organization(models.Model):
         organization_setting = OrganizationSetting.objects.get(organization=self)
         return organization_setting.get_organisation_sms_number()[0]
 
+    def purge_all_data(self):
+        User.objects.filter(ngouserprofile__org_id=self.org_id).delete()
+        NGOUserProfile.objects.filter(org_id=self.org_id).delete()
+        self.delete()
+
 
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)

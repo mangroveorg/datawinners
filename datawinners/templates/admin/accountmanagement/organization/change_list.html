@@ -24,56 +24,7 @@
 {{ media.js }}
 {% if action_form %}{% if actions_on_top or actions_on_bottom %}
 
-
-
-<script type="text/javascript">
-    
-(function($) {
-    $(document).ready(function($) {
-        $("tr input.action-select").actions();
-
-        var submit_button = jQuery("#changelist-form button[type=submit]");
-
-        var action = '';
-
-        var warning_messages_by_actions = {"activate_organizations":gettext("Do you want to activate the account(s)?"),
-                                           "deactivate_organizations":gettext("Do you want to deactivate the account(s)?")}
-
-        var confirm_caption = {"activate_organizations":gettext("Activate"),"deactivate_organizations":gettext("Deactivate")}
-        
-        jQuery("#warning_popup").dialog({autoOpen:false, width:'auto', close:close_dialog, modal:true});
-
-        $("select[name=action]").change(function(){
-            var action_selected = jQuery(this).attr("value");
-
-            if (action_selected){
-                submit_button.attr("disabled","disabled");
-                $("#warning_message").html(warning_messages_by_actions[action_selected]);
-                $("#perform_action").html(confirm_caption[action_selected]);
-                jQuery("#warning_popup").dialog("open");
-            }
-        });
-
-        $("#perform_action").bind("click", function(){
-            action = $("select[name=action]").val();
-            jQuery("#warning_popup").dialog("close");
-        });
-
-        $("#cancel_action").bind("click", function(){
-            action = '';
-            jQuery("#warning_popup").dialog("close");
-        });
-
-        function close_dialog(){
-            submit_button.removeAttr("disabled");
-            if (action) {
-                submit_button.trigger("click");
-            }
-            $("select[name=action]").val("");
-        }
-    });
-})(django.jQuery);
-</script>
+<script type="text/javascript" src="/media/javascript/admin/organization.js"></script>
 {% endif %}{% endif %}
 {% endblock %}
 
