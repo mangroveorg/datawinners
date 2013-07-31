@@ -289,7 +289,7 @@ def all_subjects(request, subject_type):
 @is_new_user
 @is_datasender
 @is_not_expired
-def ajax(request, subject_type):
+def all_subjects_ajax(request, subject_type):
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
     search_text = request.POST.get('sSearch', '')
@@ -308,11 +308,11 @@ def ajax(request, subject_type):
         for key in header_dict:
             subject.append(res.get(key))
         subjects.append(subject)
-    query.count()
+
     return HttpResponse(
         jsonpickle.encode(
-            {'subjects': subjects, 'iTotalDisplayRecords': len(subjects), 'iDisplayStart': start_result_number,
-             "iTotalRecords": search.count()},
+            {'subjects': subjects, 'iTotalDisplayRecords': query.count(), 'iDisplayStart': start_result_number,
+             "iTotalRecords": search.count(), 'iDisplayLength': number_of_results},
             unpicklable=False),
         content_type='application/json')
 

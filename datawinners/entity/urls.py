@@ -5,7 +5,7 @@ from datawinners.entity.views import create_data_sender, disassociate_datasender
 from datawinners.entity.views import create_subject
 from datawinners.entity.views import create_type
 from datawinners.entity.views import submit
-from datawinners.entity.views import all_subject_types, delete_entity, all_subjects, ajax
+from datawinners.entity.views import all_subject_types, delete_entity, all_subjects, all_subjects_ajax
 from datawinners.entity.views import all_datasenders
 from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.entity.views import export_subject
@@ -19,7 +19,7 @@ urlpatterns = patterns('',
                        (r'^entity/subject/edit/(?P<entity_type>.+?)/(?P<entity_id>.+?)/$', edit_subject),
                        (r'^entity/type/create', create_type),
                        (r'^entity/subjects/$', all_subject_types),
-                       (r'^entity/subjects/(?P<subject_type>.+?)/ajax/$', ajax),
+                       (r'^entity/subjects/(?P<subject_type>.+?)/ajax/$', all_subjects_ajax),
                        (r'^entity/subjects/(?P<subject_type>.+?)/$', all_subjects),
                        (r'^entity/delete/$', delete_entity),
                        url(r'^entity/datasenders/$', all_datasenders, name='all_datasenders'),
