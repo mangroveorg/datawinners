@@ -1,18 +1,15 @@
 {% load i18n %}
 
-    <table class="all_subject_type_table styled_table">
-        <thead>
-        <tr class="list_header">
-            {% for header_name, header_label in subject_headers.items %}
-                <th>{{ header_label }} </th>
-            {% endfor %}
-        </tr>
-        </thead>
-        {% for subject in subjects %}
-            <tr class="list_header">
-                {% for header_name, header_label in subject_headers.items %}
-                    <td>{{ subject|get_element:header_name }}</td>
-                {% endfor %}
-            </tr>
+<script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/media/javascript/data_tables/js/four_button_pagination_plugin.js"></script>
+<script type="text/javascript" src="/media/javascript/subjects/subjects_table.js"></script>
+
+<table id="subjects_table" class="styled_table">
+    <thead>
+    <tr class="list_header">
+        {% for header_name, header_label in subject_headers.items %}
+            <th>{{ header_label }} </th>
         {% endfor %}
-    </table>
+    </tr>
+    </thead>
+</table>

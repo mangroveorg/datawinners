@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language
 import elasticutils
+import jsonpickle
 import xlwt
 from django.contrib import messages
 
@@ -273,23 +274,47 @@ def all_subject_types(request):
 def all_subjects(request, subject_type):
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
-    search = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes(subject_type)
-    search_text = request.POST.get('search_text', '')
+    return render_to_response('entity/all_subjects.html',
+                              {'subject_headers': header_dict,
+                               'current_language': translation.get_language(),
+                               'search_url': request.path,
+                              },
+                              context_instance=RequestContext(request))
+
+
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required(login_url='/login')
+@session_not_expired
+@is_new_user
+@is_datasender
+@is_not_expired
+def ajax(request, subject_type):
+    manager = get_database_manager(request.user)
+    header_dict = header_fields(manager, subject_type)
+    search_text = request.POST.get('sSearch', '')
+    start_result_number = int(request.POST.get('iDisplayStart'))
+    number_of_results = int(request.POST.get('iDisplayLength'))
+    search = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes(subject_type)[
+             start_result_number:start_result_number + number_of_results]
     query = search.query()
     if search_text:
         raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
         query = search.query_raw(raw_query)
 
-    subjects = [result for result in query.values_dict(tuple(header_dict.keys())).all()]
-
-    return render_to_response('entity/all_subjects.html',
-                              {'subjects': subjects, 'subject_headers': header_dict,
-                               'current_language': translation.get_language(),
-                               'search_url': request.path,
-                               'subjects_count': len(query),
-                               'search_text': search_text
-                              },
-                              context_instance=RequestContext(request))
+    subjects = []
+    for res in query.values_dict(tuple(header_dict.keys())):
+        subject = []
+        for key in header_dict:
+            subject.append(res.get(key))
+        subjects.append(subject)
+    query.count()
+    return HttpResponse(
+        jsonpickle.encode(
+            {'subjects': subjects, 'iTotalDisplayRecords': len(subjects), 'iDisplayStart': start_result_number,
+             "iTotalRecords": search.count()},
+            unpicklable=False),
+        content_type='application/json')
 
 
 def header_fields(manager, subject_type):

@@ -22,7 +22,7 @@
     <link href="/media/css/scss/section_all_subjects.css" rel="stylesheet"/>
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
-    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet"/>
 {% endblock %}
 
 
@@ -55,11 +55,6 @@
 
 
             </div>
-        </form>
-        <form method="post" action="{{ search_url }}">
-            <input type="text" name="search_text" value="{{ search_text }}" id="search_text"/><input type="submit"
-                                                                                                     value="search"
-                                                                                                     id="search">
         </form>
         {% include 'subject_table.html' %}
     </div>
