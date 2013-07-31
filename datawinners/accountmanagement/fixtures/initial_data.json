@@ -243,8 +243,8 @@
         "fields": {
             "reporter_id": "rep11",
             "mobile_phone": "",
-            "org_id": "TIP938359",
-            "user": 366,
+            "org_id": "SLX364903",
+            "user": 5,
             "title": "Mr"
         }
     },
@@ -546,10 +546,10 @@
         }
     },
     {
-        "pk": 366,
+        "pk": 5,
         "model": "auth.user",
         "fields": {
-            "username": "mamy@mailinator.com",
+            "username": "mamytest@mailinator.com",
             "first_name": "mamy",
             "last_name": "rasamoel",
             "is_active": true,
@@ -561,7 +561,7 @@
             ],
             "user_permissions": [],
             "password": "sha1$9f237$4380fa83adb58f7d0b0b944cf1d5be80dea66aab",
-            "email": "mamy@mailinator.com",
+            "email": "mamytest@mailinator.com",
             "date_joined": "2012-11-08 17:00:48"
         }
     },
