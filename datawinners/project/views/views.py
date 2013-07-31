@@ -51,8 +51,7 @@ from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import import_subjects_from_project_wizard, get_datasender_user_detail, \
-    save_questionnaire as subject_save_questionnaire, create_single_web_user, get_user_profile_by_reporter_id
+from datawinners.entity.views import import_subjects_from_project_wizard, save_questionnaire as subject_save_questionnaire, create_single_web_user, get_user_profile_by_reporter_id, viewable_questionnaire
 from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -873,15 +872,6 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
                               context_instance=RequestContext(request))
 
 
-def _get_preview_for_field_in_registration_questionnaire(field, language):
-    preview = {"description": field.label, "code": field.code, "type": field.type,
-               "instruction": field.instruction}
-    constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
-        [(option["text"], option["val"]) for option in field.options]
-    preview.update({"constraints": constraints})
-    return preview
-
-
 def _get_registration_form(manager, project, type_of_subject='reporter'):
     if type_of_subject == 'reporter':
         registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
@@ -890,14 +880,9 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
         registration_questionnaire = get_form_model_by_entity_type(manager, entity_type)
         if registration_questionnaire is None:
             registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
-    fields = registration_questionnaire.fields
+    questions = viewable_questionnaire(registration_questionnaire)
     project_links = make_project_links(project, registration_questionnaire.form_code)
-    questions = []
-    for field in fields:
-        question = _get_preview_for_field_in_registration_questionnaire(field,
-                                                                        registration_questionnaire.activeLanguages[0])
-        questions.append(question)
-    return fields, project_links, questions, registration_questionnaire
+    return registration_questionnaire.fields, project_links, questions, registration_questionnaire
 
 
 def get_example_sms_message(fields, registration_questionnaire):

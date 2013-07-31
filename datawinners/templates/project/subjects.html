@@ -108,35 +108,7 @@
             </li>
         </ul>
         <div class="clear"></div>
-        <ol class="olpreview">
-            {% for question in questions %}
-                <li>
-                    <h6>{{ question.description }}</h6>
-                    {% if  question.instruction %}
-                        <p class="instructions italic">
-                            {{ question.instruction }}
-                        </p>
-                        <input class="displayText" disabled="disabled" type="text">
-                    {% endif %}
-                    <div class="answer">
-                        {% if question.type == "select1" %}
-                            <ol class="multiple_select">
-                                {% for option in question.constraints %}
-                                    <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
-                                {% endfor %}
-                            </ol>
-                        {% endif %}
-                        {% if question.type == "select" %}
-                            <ol class="multiple_select">
-                                {% for option in question.constraints %}
-                                     <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
-                                {% endfor %}
-                            </ol>
-                        {% endif %}
-                    </div>
-                </li>
-            {% endfor %}
-        </ol>
+        {% include 'project/subject_registration_webpreview.html' %}
     </div>
     <div class="subject_registration_preview">
         {% trans "Generating the questionnaire preview." %}

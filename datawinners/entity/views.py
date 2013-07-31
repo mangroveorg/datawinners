@@ -277,9 +277,28 @@ def all_subjects(request, subject_type):
     return render_to_response('entity/all_subjects.html',
                               {'subject_headers': header_dict,
                                'current_language': translation.get_language(),
-                               'search_url': request.path,
+                               'entity_links': all_subject_links(request),
+                               'subject_type': subject_type,
+                               'questions': viewable_questionnaire(
+                                   get_form_model_by_entity_type(manager, [subject_type]))
                               },
                               context_instance=RequestContext(request))
+
+
+def viewable_questionnaire(form_model):
+    questions = []
+    for field in form_model.fields:
+        preview = {"description": field.label, "code": field.code, "type": field.type,
+                   "instruction": field.instruction}
+        constraints = field.get_constraint_text() if field.type not in ["select", "select1"] else \
+            [(option["text"], option["val"]) for option in field.options]
+        preview.update({"constraints": constraints})
+        questions.append(preview)
+    return questions
+
+
+def all_subject_links(request):
+    return {"subjects": request.path}
 
 
 @csrf_view_exempt
