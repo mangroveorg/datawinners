@@ -14,7 +14,10 @@ $(document).ready(function () {
                 "type": "POST",
                 "url": sSource,
                 "data": aoData,
-                "success": fnCallback
+                "success": fnCallback,
+                "error": function () {
+                },
+                "global": false
             });
         }
     });

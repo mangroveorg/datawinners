@@ -2,6 +2,7 @@
 from collections import defaultdict
 import json
 import logging
+import re
 
 from django.contrib.auth.decorators import login_required
 from django.template.defaultfilters import register
@@ -312,8 +313,10 @@ def all_subject_links(request, subject_type):
 def all_subjects_ajax(request, subject_type):
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
-    search_text = request.POST.get('sSearch', '')
-    start_result_number = int(request.POST.get('iDisplayStart'))
+    search_text = request.POST.get('sSearch', '').strip()
+    search_text = re.escape(search_text)
+    start_result_number = int(request.POscaping
+    ST.get('iDisplayStart'))
     number_of_results = int(request.POST.get('iDisplayLength'))
     search = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes(subject_type)[
              start_result_number:start_result_number + number_of_results]
