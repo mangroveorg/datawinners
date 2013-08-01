@@ -6,6 +6,7 @@ from framework.base_test import setup_driver, teardown_driver
 from datawinners.messageprovider.tests.test_message_handler import THANKS
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE
+from tests.addusertests.add_user_data import ADD_USER_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.alluserspage.all_users_page import AllUsersPage
@@ -62,7 +63,9 @@ class TestAllUsers(unittest.TestCase):
     def test_should_create_activity_log_and_submit_data(self):
         new_user_credential = {USERNAME: "mamy@mailinator.com", PASSWORD: "test123"}
         self.login(credential=new_user_credential)
-
+        self.driver.go_to(ALL_USERS_URL)
+        all_users_page =  AllUsersPage(self.driver)
+        all_users_page.add_user_with(ADD_USER_DATA)
         project_name, questionnaire_code = self.create_project()
         self.send_submission(questionnaire_code)
         self.delete_user()
@@ -75,7 +78,7 @@ class TestAllUsers(unittest.TestCase):
         first_tab = self.driver.window_handles[0]
         self.driver.switch_to_window(new_tab)
         sms_tester_page = SMSTesterPage(self.driver)
-        valid_sms = {SENDER: "1234567890",
+        valid_sms = {SENDER: "261331234567",
                      RECEIVER: '919880734938',
                      SMS: "%s 10.10.2010" % questionnaire_code}
         sms_tester_page.send_sms_with(valid_sms)
