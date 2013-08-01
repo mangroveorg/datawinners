@@ -1620,6 +1620,7 @@ def load_data():
     create_trial_test_organization('chinatwu2@gmail.com', 'COJ00001', True, [phone_number_type, first_name_type])
     create_trial_test_organization('chinatwu3@gmail.com', 'COJ00002', False)
     create_trial_test_organization('chinatwu4@gmail.com', 'COJ00003', False)
+    create_trial_test_organization('mamy@mailinator.com', 'TIP938359', False)
     create_project_for_nigeria_test_orgnization()
     create_datasender_for_newly_created_organization([phone_number_type, first_name_type])
 
