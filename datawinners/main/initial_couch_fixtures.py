@@ -961,7 +961,7 @@ def load_sms_data_for_cli001(manager):
     NOV_2010 = datetime(2010, 11, 26, hour=23, minute=59, second=59, tzinfo=UTC)
     today = datetime.today()
     LAST_WEEK = today - timedelta(days=7)
-    THIS_MONTH = datetime(today.year, today.month, 2, 12, 45, 58)
+    THIS_MONTH = datetime(today.year, today.month, 1, 12, 45, 58)
     PREV_MONTH = THIS_MONTH - timedelta(days=6)
     sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
 
@@ -1620,7 +1620,7 @@ def load_data():
     create_trial_test_organization('chinatwu2@gmail.com', 'COJ00001', True, [phone_number_type, first_name_type])
     create_trial_test_organization('chinatwu3@gmail.com', 'COJ00002', False)
     create_trial_test_organization('chinatwu4@gmail.com', 'COJ00003', False)
-    create_trial_test_organization('mamy@mailinator.com', 'TIP938359', False)
+    create_trial_test_organization('mamy@mailinator.com', 'TIP938359', True, [phone_number_type, first_name_type])
     create_project_for_nigeria_test_orgnization()
     create_datasender_for_newly_created_organization([phone_number_type, first_name_type])
 
