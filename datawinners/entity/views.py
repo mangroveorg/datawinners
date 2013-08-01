@@ -277,7 +277,7 @@ def all_subjects(request, subject_type):
     return render_to_response('entity/all_subjects.html',
                               {'subject_headers': header_dict,
                                'current_language': translation.get_language(),
-                               'entity_links': all_subject_links(request),
+                               'entity_links': all_subject_links(request, subject_type),
                                'subject_type': subject_type,
                                'questions': viewable_questionnaire(
                                    get_form_model_by_entity_type(manager, [subject_type]))
@@ -297,8 +297,9 @@ def viewable_questionnaire(form_model):
     return questions
 
 
-def all_subject_links(request):
-    return {"subjects": request.path}
+def all_subject_links(request, subject_type):
+    return {"subjects": request.path,
+            "subjects_edit_link": "/entity/subject/edit/" + subject_type + "/"}
 
 
 @csrf_view_exempt
