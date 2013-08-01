@@ -106,10 +106,10 @@ class TestAllUsers(unittest.TestCase):
         project_name = overview_page.get_project_title()
         return project_name, questionnaire_code
 
-    def delete_user(self, username):
-        self.global_navigation.sign_out()
-        all_users_page = self.prerequisites_for_all_users()
-        all_users_page.check_user_by_username(username)
+    def delete_user(self):
+        self.driver.go_to(ALL_USERS_URL)
+        all_users_page = AllUsersPage(self.driver)
+        all_users_page.check_nth_user(2)
         all_users_page.select_delete_action(confirm=True)
         message = all_users_page.get_message()
         self.assertEqual(message, SUCCESSFULLY_DELETED_USER_MSG)
