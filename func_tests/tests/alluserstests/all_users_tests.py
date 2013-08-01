@@ -65,7 +65,9 @@ class TestAllUsers(unittest.TestCase):
         self.login(credential=new_user_credential)
         self.driver.go_to(ALL_USERS_URL)
         all_users_page =  AllUsersPage(self.driver)
-        all_users_page.add_user_with(ADD_USER_DATA)
+        add_user_page = all_users_page.navigate_to_add_user()
+        add_user_page.add_user_with(ADD_USER_DATA)
+        self.driver.go_to(url("/project/"))
         project_name, questionnaire_code = self.create_project()
         self.send_submission(questionnaire_code)
         self.delete_user()
@@ -83,7 +85,7 @@ class TestAllUsers(unittest.TestCase):
                      SMS: "%s 10.10.2010" % questionnaire_code}
         sms_tester_page.send_sms_with(valid_sms)
         response = sms_tester_page.get_response_message()
-        self.assertRegexpMatches(response, THANKS % "Shweta")
+        self.assertRegexpMatches(response, THANKS % "Mino")
         self.driver.close()
         self.driver.switch_to_window(first_tab)
 
