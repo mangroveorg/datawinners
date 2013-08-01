@@ -547,11 +547,11 @@
             "first_name": "mamy",
             "last_name": "rasamoel",
             "is_active": true,
-            "is_superuser": false,
-            "is_staff": false,
+            "is_superuser": true,
+            "is_staff": true,
             "last_login": "2012-11-08 17:00:48",
             "groups": [
-                2
+                1
             ],
             "user_permissions": [],
             "password": "sha1$9f237$4380fa83adb58f7d0b0b944cf1d5be80dea66aab",
