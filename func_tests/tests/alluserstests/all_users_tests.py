@@ -103,7 +103,7 @@ class TestAllUsers(unittest.TestCase):
     def delete_user(self):
         self.driver.go_to(ALL_USERS_URL)
         all_users_page = AllUsersPage(self.driver)
-        all_users_page.check_nth_user(1)
+        all_users_page.check_nth_user(2)
         all_users_page.select_delete_action(confirm=True)
         message = all_users_page.get_message()
         self.assertEqual(message, SUCCESSFULLY_DELETED_USER_MSG)
