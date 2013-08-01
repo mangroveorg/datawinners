@@ -668,14 +668,14 @@ def _get_all_datasenders(manager, projects, user):
     return all_data_senders
 
 
-def get_user_profile_by_reporter_id(datasender, user):
+def get_user_profile_by_reporter_id(reporter_id, user):
     org_id = NGOUserProfile.objects.get(user=user).org_id
-    user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_code'], org_id=org_id)
+    user_profile = NGOUserProfile.objects.filter(reporter_id=reporter_id, org_id=org_id)
     return user_profile[0] if len(user_profile) else None
 
 
 def get_datasender_user_detail(datasender, user):
-    user_profile = get_user_profile_by_reporter_id(datasender, user)
+    user_profile = get_user_profile_by_reporter_id(datasender['short_code'], user)
 
     datasender["is_user"] = False
     if user_profile:
