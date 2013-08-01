@@ -26,4 +26,4 @@ def get_subjects_count(manager):
     subject_count = {}
     for row in rows:
         subject_count[row.key[0]] = row.value
-        return subject_count
+    return subject_count
