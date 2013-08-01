@@ -124,6 +124,7 @@ class TestAllUsers(unittest.TestCase):
         self.driver.go_to(DATA_WINNER_USER_ACTIVITY_LOG_PAGE)
         activity_log_page = ShowActivityLogPage(self.driver)
         username = activity_log_page.get_data_on_cell(2, 1)
+        action = activity_log_page.get_data_on_cell(2, 2)
         project_name_on_log_page = activity_log_page.get_data_on_cell(2, 4)
         self.assertEqual(project_name_on_log_page, project_name)
         self.assertTrue("Deleted User" in username, username)
