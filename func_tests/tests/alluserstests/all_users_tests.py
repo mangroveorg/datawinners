@@ -112,7 +112,7 @@ class TestAllUsers(unittest.TestCase):
         all_data_page = self.global_navigation.navigate_to_all_data_page()
         data_analysis_page = all_data_page.navigate_to_data_analysis_page(project_name)
         data_sender_name = data_analysis_page.get_all_data_records_by_column(2)
-        self.assertTrue("mamy" in data_sender_name[0])
+        self.assertTrue("Mino" in data_sender_name[0], data_sender_name[0])
 
     def check_deleted_user_name_on_activity_log_page(self, project_name):
         self.driver.go_to(DATA_WINNER_USER_ACTIVITY_LOG_PAGE)
