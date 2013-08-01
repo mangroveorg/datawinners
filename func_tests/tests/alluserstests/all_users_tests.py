@@ -7,6 +7,7 @@ from framework.base_test import setup_driver, teardown_driver
 from datawinners.messageprovider.tests.test_message_handler import THANKS
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT
+from tests.addusertests.add_user_data import ADD_USER_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.alluserspage.all_users_page import AllUsersPage
@@ -67,7 +68,9 @@ class TestAllUsers(unittest.TestCase):
         self.driver.go_to(LOGOUT)
         new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
         self.login(credential=new_user_credential)
-
+        self.driver.go_to(ALL_USERS_URL)
+        all_users_page =  AllUsersPage(self.driver)
+        all_users_page.add_user_with(ADD_USER_DATA)
         project_name, questionnaire_code = self.create_project()
         self.send_submission(questionnaire_code)
         self.delete_user(NEW_USER_DATA[USERNAME])
