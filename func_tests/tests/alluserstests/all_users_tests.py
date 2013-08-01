@@ -75,12 +75,12 @@ class TestAllUsers(unittest.TestCase):
         first_tab = self.driver.window_handles[0]
         self.driver.switch_to_window(new_tab)
         sms_tester_page = SMSTesterPage(self.driver)
-        valid_sms = {SENDER: "2619875",
-                     RECEIVER: '919880734937',
+        valid_sms = {SENDER: "1234567890",
+                     RECEIVER: '919880734938',
                      SMS: "%s 10.10.2010" % questionnaire_code}
         sms_tester_page.send_sms_with(valid_sms)
         response = sms_tester_page.get_response_message()
-        self.assertRegexpMatches(response, THANKS % "Mamy")
+        self.assertRegexpMatches(response, THANKS % "Shweta")
         self.driver.close()
         self.driver.switch_to_window(first_tab)
 
