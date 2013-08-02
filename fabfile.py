@@ -176,9 +176,7 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
                 activate_and_run(virtual_env, "python manage.py compilemessages")
                 activate_and_run(virtual_env, "python manage.py loadshapes")
             if environment == "test":
-                run("pkill -f 'python manage.py runserver'")
-                activate_and_run(virtual_env, "python manage.py runserver")
-                # restart_gunicorn(virtual_env)
+                restart_gunicorn(virtual_env)
             else:
                 restart_servers()
 
