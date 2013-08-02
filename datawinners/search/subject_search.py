@@ -50,6 +50,11 @@ def entity_dict(entity_type, entity_doc, dbm):
     return dictionary
 
 
+def S(index_name, mapping_name, start_index, number_of_results):
+    return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(index_name).doctypes(mapping_name)[
+           start_index:start_index + number_of_results]
+
+
 def search(request, subject_type):
     search_text = request.POST.get('sSearch', '').strip()
     start_result_number = int(request.POST.get('iDisplayStart'))
@@ -57,8 +62,7 @@ def search(request, subject_type):
 
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
-    search = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes(subject_type)[
-             start_result_number:start_result_number + number_of_results]
+    search = S(manager.database_name, subject_type, start_result_number, number_of_results)
     query = search.query()
     if search_text:
         raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
