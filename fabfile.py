@@ -169,6 +169,7 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
             run("cd %s/datawinners" % datawinners_code_dir)
             run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS[environment],))
             if recreate_db == "true":
+                activate_and_run(virtual_env, "python manage.py recreate_search_indexes")
                 activate_and_run(virtual_env, "python manage.py syncdb --noinput")
                 activate_and_run(virtual_env, "python manage.py migrate")
                 activate_and_run(virtual_env, "python manage.py recreatedb")
