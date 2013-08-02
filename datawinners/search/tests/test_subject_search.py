@@ -2,7 +2,7 @@ from unittest import TestCase
 from django.http import HttpRequest
 from elasticutils import S
 from mock import patch, Mock
-from datawinners.search.subject_search import search
+from datawinners.search.subject_search import search, replace_special_chars
 
 
 class TestSubjectSearch(TestCase):
@@ -58,3 +58,9 @@ class TestSubjectSearch(TestCase):
                     self.assertFalse(mock_query.count.called)
                     self.assertTrue(mock_query_raw.count.called)
                     self.assertTrue(mock_search.count.called)
+
+    def test_replace_special_chars(self):
+        text = 'sho\uld_change_+-!^(){}[]~*?:"should_not_change__e#$__change_this&&that||thus'
+        result = replace_special_chars(text)
+        expected = 'sho\\\\uld_change_\\+\\-\\!\\^\\(\\)\\{\\}\\[\\]\\~\\*\\?\\:\\"should_not_change__e#$__change_this\\&&that\\||thus'
+        self.assertEquals(result, expected)

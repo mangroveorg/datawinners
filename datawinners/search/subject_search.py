@@ -59,7 +59,7 @@ def search(request, subject_type):
     search_text = request.POST.get('sSearch', '').strip()
     start_result_number = int(request.POST.get('iDisplayStart'))
     number_of_results = int(request.POST.get('iDisplayLength'))
-
+    search_text = replace_special_chars(search_text)
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
     search = S(manager.database_name, subject_type, start_result_number, number_of_results)
@@ -82,3 +82,10 @@ def header_fields(manager, subject_type):
     for field in form_model.fields:
         header_dict.update({field.name: field.label})
     return header_dict
+
+
+def replace_special_chars(search_text):
+    lucene_special_chars = ['\\', '+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':']
+    for char in lucene_special_chars:
+        search_text = search_text.replace(char, '\\' + char)
+    return search_text
