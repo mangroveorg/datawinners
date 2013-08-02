@@ -1,8 +1,9 @@
 import elasticutils
+from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import Entity
 from datawinners.entity.import_data import get_entity_type_fields, _tabulate_data
 from mangrove.form_model.field import DateField
-from mangrove.form_model.form_model import get_form_model_by_entity_type, REGISTRATION_FORM_CODE, FormModel
+from mangrove.form_model.form_model import get_form_model_by_entity_type
 from datawinners.settings import ELASTIC_SEARCH_URL
 
 
@@ -15,7 +16,7 @@ def add_date_field_mapping(mapping_fields, field):
         }}})
 
 
-def get_subject_mapping(form_model):
+def mapping(form_model):
     mapping_fields = {}
     mapping = {"date_detection": False, "properties": mapping_fields}
     for field in form_model.fields:
@@ -24,21 +25,12 @@ def get_subject_mapping(form_model):
     return {form_model.form_code: mapping}
 
 
-def update_subject_index(form_model_doc, dbm):
-    form_model = FormModel.new_from_doc(dbm, form_model_doc)
-    if form_model.is_entity_registration_form() and form_model.form_code != REGISTRATION_FORM_CODE:
-        es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
-        es.put_mapping(dbm.database_name, form_model.form_code, get_subject_mapping(form_model))
+def update_mapping(dbm, form_model):
+    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    es.put_mapping(dbm.database_name, form_model.form_code, mapping(form_model))
 
 
-def entity_search_update(entity_doc, dbm):
-    if (entity_doc.aggregation_paths['_type'] != ['reporter']):
-        subject_search_update(entity_doc, dbm)
-    else:
-        datasender_search_update(entity_doc, dbm)
-
-
-def subject_search_update(entity_doc, dbm):
+def update_search(entity_doc, dbm):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     if entity_doc.data:
         entity_type = entity_doc.aggregation_paths['_type'][0].lower()
@@ -58,6 +50,31 @@ def entity_dict(entity_type, entity_doc, dbm):
     return dictionary
 
 
-def datasender_search_update(entity, dbm):
-    pass
+def search(request, subject_type):
+    search_text = request.POST.get('sSearch', '').strip()
+    start_result_number = int(request.POST.get('iDisplayStart'))
+    number_of_results = int(request.POST.get('iDisplayLength'))
 
+    manager = get_database_manager(request.user)
+    header_dict = header_fields(manager, subject_type)
+    search = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes(subject_type)[
+             start_result_number:start_result_number + number_of_results]
+    query = search.query()
+    if search_text:
+        raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
+        query = search.query_raw(raw_query)
+    subjects = []
+    for res in query.values_dict(tuple(header_dict.keys())):
+        subject = []
+        for key in header_dict:
+            subject.append(res.get(key))
+        subjects.append(subject)
+    return query.count(), search.count(), subjects
+
+
+def header_fields(manager, subject_type):
+    header_dict = {}
+    form_model = get_form_model_by_entity_type(manager, [subject_type])
+    for field in form_model.fields:
+        header_dict.update({field.name: field.label})
+    return header_dict

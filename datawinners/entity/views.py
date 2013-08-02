@@ -2,7 +2,6 @@
 from collections import defaultdict
 import json
 import logging
-import re
 
 from django.contrib.auth.decorators import login_required
 from django.template.defaultfilters import register
@@ -16,7 +15,6 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language
-import elasticutils
 import jsonpickle
 import xlwt
 from django.contrib import messages
@@ -25,7 +23,7 @@ from datawinners import utils
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
-from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.search.subject_search import search, header_fields
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -278,7 +276,7 @@ def all_subjects(request, subject_type):
     return render_to_response('entity/all_subjects.html',
                               {'subject_headers': header_dict,
                                'current_language': translation.get_language(),
-                               'entity_links': all_subject_links(request, subject_type),
+                               'entity_links': all_subject_links(request),
                                'subject_type': subject_type,
                                'questions': viewable_questionnaire(
                                    get_form_model_by_entity_type(manager, [subject_type]))
@@ -298,9 +296,8 @@ def viewable_questionnaire(form_model):
     return questions
 
 
-def all_subject_links(request, subject_type):
-    return {"subjects": request.path,
-            "subjects_edit_link": "/entity/subject/edit/" + subject_type + "/"}
+def all_subject_links(request):
+    return {"subjects": request.path}
 
 
 @csrf_view_exempt
@@ -311,41 +308,15 @@ def all_subject_links(request, subject_type):
 @is_datasender
 @is_not_expired
 def all_subjects_ajax(request, subject_type):
-    manager = get_database_manager(request.user)
-    header_dict = header_fields(manager, subject_type)
-    search_text = request.POST.get('sSearch', '').strip()
-    search_text = re.escape(search_text)
-    start_result_number = int(request.POscaping
-    ST.get('iDisplayStart'))
-    number_of_results = int(request.POST.get('iDisplayLength'))
-    search = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes(subject_type)[
-             start_result_number:start_result_number + number_of_results]
-    query = search.query()
-    if search_text:
-        raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
-        query = search.query_raw(raw_query)
-
-    subjects = []
-    for res in query.values_dict(tuple(header_dict.keys())):
-        subject = []
-        for key in header_dict:
-            subject.append(res.get(key))
-        subjects.append(subject)
+    query_count, search_count, subjects = search(request, subject_type)
 
     return HttpResponse(
         jsonpickle.encode(
-            {'subjects': subjects, 'iTotalDisplayRecords': query.count(), 'iDisplayStart': start_result_number,
-             "iTotalRecords": search.count(), 'iDisplayLength': number_of_results},
+            {'subjects': subjects, 'iTotalDisplayRecords': query_count,
+             'iDisplayStart': int(request.POST.get('iDisplayStart')),
+             "iTotalRecords": search_count, 'iDisplayLength': int(request.POST.get('iDisplayLength'))},
             unpicklable=False),
         content_type='application/json')
-
-
-def header_fields(manager, subject_type):
-    header_dict = {}
-    form_model = get_form_model_by_entity_type(manager, [subject_type])
-    for field in form_model.fields:
-        header_dict.update({field.name: field.label})
-    return header_dict
 
 
 @register.filter
