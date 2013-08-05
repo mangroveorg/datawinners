@@ -16,7 +16,7 @@ DW.post_subject_data = function(){
             $("#message-label").removeClass("none");
             $("#message-label").removeClass("message-box");
             $("#message-label").addClass("success-message-box");
-            $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
+            $("#message-label").show().html("<label class='success'>" + gettext("Your changes have been saved.") + "</label");
             $("#saved-questionnaire-code").val(responseJson.form_code);
 
             questionnaireViewModel.set_all_questions_as_old_questions();

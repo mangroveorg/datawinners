@@ -146,7 +146,7 @@ $(document).ready(function() {
                     $("#message-label").removeClass("none");
                     $("#message-label").removeClass("message-box");
                     $("#message-label").addClass("success-message-box");
-                    $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
+                    $("#message-label").show().html("<label class='success'>" + gettext("Your changes have been saved.") + "</label");
                     var has_newly_added_question = questionnaireViewModel.has_newly_added_question();
 
                     questionnaireViewModel.set_all_questions_as_old_questions();

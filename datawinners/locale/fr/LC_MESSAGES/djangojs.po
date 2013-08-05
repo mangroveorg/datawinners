@@ -1139,3 +1139,6 @@ msgstr "Voulez-vous désactiver le(s) compte(s)?"
 
 msgid "Do you want to activate the account(s)?"
 msgstr "Voulez-vous activer le(s) compte(s)?"
+
+msgid "Your changes have been saved."
+msgstr "Vos changements ont été enregistrés"
