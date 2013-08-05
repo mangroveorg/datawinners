@@ -1,4 +1,5 @@
 import unittest
+from django.utils.unittest.case import SkipTest
 
 from nose.plugins.attrib import attr
 
@@ -60,6 +61,7 @@ class TestAllUsers(unittest.TestCase):
         self.assertEqual(message, ADMIN_CANT_BE_DELETED)
 
     @attr('functional_test')
+    @SkipTest
     def test_should_create_activity_log_and_submit_data(self):
         new_user_credential = {USERNAME: "mamy@mailinator.com", PASSWORD: "test123"}
         self.login(credential=new_user_credential)
