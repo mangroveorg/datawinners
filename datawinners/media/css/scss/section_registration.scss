@@ -227,4 +227,8 @@ ul.organization li:last-child{
     ul > li > label{
         text-align: right;
     }
+    ul.errorlist{
+        max-width: 212px;
+        position: absolute;
+    }
 }

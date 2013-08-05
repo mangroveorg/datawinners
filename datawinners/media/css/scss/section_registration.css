@@ -157,3 +157,6 @@ ul.organization li:last-child {
 
 #activate_datasender_form_en ul > li > label, #activate_datasender_form_fr ul > li > label {
   text-align: right; }
+#activate_datasender_form_en ul.errorlist, #activate_datasender_form_fr ul.errorlist {
+  max-width: 212px;
+  position: absolute; }
