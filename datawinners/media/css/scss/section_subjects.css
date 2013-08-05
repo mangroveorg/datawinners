@@ -759,13 +759,14 @@ form div.action-section {
   border: 1px solid #AACCF4 !important;
   color: #999999;
   padding: 4px 10px;
-  margin: 0; }
+  margin: 0;
+  cursor: default; }
 
 .paginate_more {
   padding: 4px; }
 
 span.paginate_more_disabled {
-  background: none repeat scroll 0 0 #CCCCCC;
+  background: none repeat scroll 0 0 #DFEDF4;
   padding: 4px; }
 
 #all_subjects #subjects_table.styled_table {
