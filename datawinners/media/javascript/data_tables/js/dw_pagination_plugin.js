@@ -1,29 +1,25 @@
-$.fn.dataTableExt.oPagination.four_button = {
+$.fn.dataTableExt.oPagination.dw_pagination = {
     "fnInit": function (oSettings, nPaging, fnCallbackDraw) {
-        nFirst = document.createElement('span');
         nPrevious = document.createElement('span');
         nNext = document.createElement('span');
-        nLast = document.createElement('span');
+        nMore = document.createElement('span');
 
-        nFirst.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sFirst));
         nPrevious.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sPrevious));
         nNext.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sNext));
-        nLast.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sLast));
+        nMore.appendChild(document.createTextNode("▾"));
 
-        nFirst.className = "paginate_button first";
         nPrevious.className = "paginate_button previous";
         nNext.className = "paginate_button next";
-        nLast.className = "paginate_button last";
+        nMore.className = "paginate_more"
 
-        nPaging.appendChild(nFirst);
         nPaging.appendChild(nPrevious);
         nPaging.appendChild(nNext);
-        nPaging.appendChild(nLast);
+        nPaging.appendChild(nMore);
 
-        $(nFirst).click(function () {
-            oSettings.oApi._fnPageChange(oSettings, "first");
-            fnCallbackDraw(oSettings);
-        });
+//        $(nFirst).click(function () {
+//            oSettings.oApi._fnPageChange(oSettings, "first");
+//            fnCallbackDraw(oSettings);
+//        });
 
         $(nPrevious).click(function () {
             oSettings.oApi._fnPageChange(oSettings, "previous");
@@ -35,22 +31,16 @@ $.fn.dataTableExt.oPagination.four_button = {
             fnCallbackDraw(oSettings);
         });
 
-        $(nLast).click(function () {
-            oSettings.oApi._fnPageChange(oSettings, "last");
-            fnCallbackDraw(oSettings);
-        });
+//        $(nLast).click(function () {
+//            oSettings.oApi._fnPageChange(oSettings, "last");
+//            fnCallbackDraw(oSettings);
+//        });
 
         /* Disallow text selection */
-        $(nFirst).bind('selectstart', function () {
-            return false;
-        });
         $(nPrevious).bind('selectstart', function () {
             return false;
         });
         $(nNext).bind('selectstart', function () {
-            return false;
-        });
-        $(nLast).bind('selectstart', function () {
             return false;
         });
     },
@@ -67,20 +57,22 @@ $.fn.dataTableExt.oPagination.four_button = {
             var buttons = an[i].getElementsByTagName('span');
             if (oSettings._iDisplayStart === 0) {
                 buttons[0].className = "paginate_disabled_previous";
-                buttons[1].className = "paginate_disabled_previous";
             }
             else {
                 buttons[0].className = "paginate_enabled_previous";
-                buttons[1].className = "paginate_enabled_previous";
             }
 
             if (oSettings.fnDisplayEnd() == oSettings.fnRecordsDisplay()) {
-                buttons[2].className = "paginate_disabled_next";
-                buttons[3].className = "paginate_disabled_next";
+                buttons[1].className = "paginate_disabled_next";
             }
             else {
-                buttons[2].className = "paginate_enabled_next";
-                buttons[3].className = "paginate_enabled_next";
+                buttons[1].className = "paginate_enabled_next";
+            }
+
+            if (oSettings._iDisplayStart === 0 && oSettings.fnDisplayEnd() == oSettings.fnRecordsDisplay()){
+                buttons[2].className = "paginate_more_disabled";
+            } else {
+                buttons[2].className = "paginate_more";
             }
         }
     }
