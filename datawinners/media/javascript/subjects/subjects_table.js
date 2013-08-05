@@ -8,6 +8,7 @@ $(document).ready(function () {
         "sAjaxSource": window.location.pathname + 'ajax/',
         "sAjaxDataProp": "subjects",
         "sServerMethod": "POST",
+        "aaSorting": [ [1, "asc", 0] ],
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
             oSettings.jqXHR = $.ajax({
                 "dataType": 'json',

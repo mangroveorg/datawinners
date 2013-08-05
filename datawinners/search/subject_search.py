@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import elasticutils
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import Entity
@@ -15,6 +16,13 @@ def add_date_field_mapping(mapping_fields, field):
                                     "ignore_malformed": True}
         }}})
 
+def add_text_field_mapping(mapping_fields, field):
+    mapping_fields.update(
+        {field.name: {"type": "multi_field", "fields": {
+            field.name: {"type": "string"},
+            field.name + "_value": {"type": "string", "index": "not_analyzed","include_in_all": False}
+        }}})
+
 
 def mapping(form_model):
     mapping_fields = {}
@@ -22,12 +30,14 @@ def mapping(form_model):
     for field in form_model.fields:
         if isinstance(field, DateField):
             add_date_field_mapping(mapping_fields, field)
+        else:
+            add_text_field_mapping(mapping_fields, field)
     return {form_model.form_code: mapping}
 
 
 def update_mapping(dbm, form_model):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
-    es.put_mapping(dbm.database_name, form_model.form_code, mapping(form_model))
+    es.put_mapping(dbm.database_name, form_model.entity_type[0], mapping(form_model))
 
 
 def update_search(entity_doc, dbm):
@@ -43,7 +53,7 @@ def entity_dict(entity_type, entity_doc, dbm):
     fields, labels, codes = get_entity_type_fields(dbm, type=entity_type)
     form_model = get_form_model_by_entity_type(dbm, [entity_type])
     data = _tabulate_data(entity, form_model, codes)
-    dictionary = {}
+    dictionary = OrderedDict()
     for index in range(0, len(fields)):
         dictionary.update({fields[index]: data['cols'][index]})
     dictionary.update({"entity_type": entity_type})
@@ -59,10 +69,11 @@ def search(request, subject_type):
     search_text = request.POST.get('sSearch', '').strip()
     start_result_number = int(request.POST.get('iDisplayStart'))
     number_of_results = int(request.POST.get('iDisplayLength'))
+    order_by = int(request.POST.get('iSortCol_0'))
     search_text = replace_special_chars(search_text)
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
-    search = S(manager.database_name, subject_type, start_result_number, number_of_results)
+    search = S(manager.database_name, subject_type, start_result_number, number_of_results).order_by(header_dict.keys()[order_by] + "_value")
     query = search.query()
     if search_text:
         raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
@@ -77,7 +88,7 @@ def search(request, subject_type):
 
 
 def header_fields(manager, subject_type):
-    header_dict = {}
+    header_dict = OrderedDict()
     form_model = get_form_model_by_entity_type(manager, [subject_type])
     for field in form_model.fields:
         header_dict.update({field.name: field.label})
