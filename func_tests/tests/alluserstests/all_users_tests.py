@@ -61,6 +61,7 @@ class TestAllUsers(unittest.TestCase):
         self.assertEqual(message, ADMIN_CANT_BE_DELETED)
 
     @attr('functional_test')
+    @SkipTest
     def test_should_create_activity_log_and_submit_data(self):
         all_users_page = self.prerequisites_for_all_users()
         add_user_page = all_users_page.navigate_to_add_user()
