@@ -11,6 +11,7 @@ class TestSubjectSearch(TestCase):
         request.POST['sSearch'] = ''
         request.POST['iDisplayStart'] = '0'
         request.POST['iDisplayLength'] = '10'
+        request.POST['iSortCol_0'] = '1'
         request.user = 'teste'
         with patch("datawinners.search.subject_search.get_database_manager") as get_manager:
             with patch("datawinners.search.subject_search.header_fields") as header_fields:
@@ -34,6 +35,7 @@ class TestSubjectSearch(TestCase):
         request.POST['sSearch'] = 'search string'
         request.POST['iDisplayStart'] = '0'
         request.POST['iDisplayLength'] = '10'
+        request.POST['iSortCol_0'] = '1'
         request.user = 'teste'
         with patch("datawinners.search.subject_search.get_database_manager") as get_manager:
             with patch("datawinners.search.subject_search.header_fields") as header_fields:
