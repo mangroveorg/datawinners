@@ -1,11 +1,12 @@
 import unittest
+from django.utils.unittest.case import SkipTest
 
 from nose.plugins.attrib import attr
 
 from framework.base_test import setup_driver, teardown_driver
 from datawinners.messageprovider.tests.test_message_handler import THANKS
 from pages.loginpage.login_page import LoginPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.alluserspage.all_users_page import AllUsersPage
@@ -60,12 +61,16 @@ class TestAllUsers(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_create_activity_log_and_submit_data(self):
-        new_user_credential = {USERNAME: "mamy@mailinator.com", PASSWORD: "test123"}
+        all_users_page = self.prerequisites_for_all_users()
+        add_user_page = all_users_page.navigate_to_add_user()
+        add_user_page.add_user_with(NEW_USER_DATA)
+        self.driver.go_to(LOGOUT)
+        new_user_credential = {USERNAME: NEW_USER_DATA[USERNAME], PASSWORD: "test123"}
         self.login(credential=new_user_credential)
 
         project_name, questionnaire_code = self.create_project()
         self.send_submission(questionnaire_code)
-        self.delete_user()
+        self.delete_user(NEW_USER_DATA[USERNAME])
         self.check_sent_submission(project_name)
         self.check_deleted_user_name_on_activity_log_page(project_name)
 
@@ -75,12 +80,13 @@ class TestAllUsers(unittest.TestCase):
         first_tab = self.driver.window_handles[0]
         self.driver.switch_to_window(new_tab)
         sms_tester_page = SMSTesterPage(self.driver)
-        valid_sms = {SENDER: "2619875",
+        valid_sms = {SENDER: NEW_USER_DATA[MOBILE_PHONE],
                      RECEIVER: '919880734937',
                      SMS: "%s 10.10.2010" % questionnaire_code}
         sms_tester_page.send_sms_with(valid_sms)
         response = sms_tester_page.get_response_message()
-        self.assertRegexpMatches(response, THANKS % "Mamy")
+        self.assertIn("Thank you", response)
+        # self.assertRegexpMatches(response, THANKS % "Mamy")
         self.driver.close()
         self.driver.switch_to_window(first_tab)
 
@@ -95,10 +101,10 @@ class TestAllUsers(unittest.TestCase):
         project_name = overview_page.get_project_title()
         return project_name, questionnaire_code
 
-    def delete_user(self):
+    def delete_user(self, username):
         self.global_navigation.sign_out()
         all_users_page = self.prerequisites_for_all_users()
-        all_users_page.check_nth_user(3)
+        all_users_page.check_user_by_username(username)
         all_users_page.select_delete_action(confirm=True)
         message = all_users_page.get_message()
         self.assertEqual(message, SUCCESSFULLY_DELETED_USER_MSG)
@@ -107,7 +113,7 @@ class TestAllUsers(unittest.TestCase):
         all_data_page = self.global_navigation.navigate_to_all_data_page()
         data_analysis_page = all_data_page.navigate_to_data_analysis_page(project_name)
         data_sender_name = data_analysis_page.get_all_data_records_by_column(2)
-        self.assertTrue("mamy" in data_sender_name[0])
+        self.assertTrue("kimi" in data_sender_name[0])
 
     def check_deleted_user_name_on_activity_log_page(self, project_name):
         self.driver.go_to(DATA_WINNER_USER_ACTIVITY_LOG_PAGE)

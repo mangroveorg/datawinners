@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.contrib.auth.models import User
 
 from pages.page import Page
 from framework.utils.data_fetcher import from_, fetch_
@@ -7,6 +8,7 @@ from tests.alluserstests.all_users_data import DELETE
 from framework.utils.common_utils import by_css
 from pages.adduserpage.add_user_page import AddUserPage
 
+
 class AllUsersPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
@@ -14,7 +16,7 @@ class AllUsersPage(Page):
     def click_check_all_users(self, check=True):
         checkbox = self.driver.find(CHECK_ALL_USERS_LOCATOR)
         if (checkbox.get_attribute("checked") != "true" and check) or \
-           (checkbox.get_attribute("checked") == "true" and not check):
+                (checkbox.get_attribute("checked") == "true" and not check):
             checkbox.click()
 
     def select_delete_action(self, confirm=False, cancel=False):
@@ -34,7 +36,7 @@ class AllUsersPage(Page):
         self.driver.find(by_css(CHECK_NTH_USER_LOCATOR % str(number))).click()
 
     def get_error_message(self):
-        if self.driver.is_element_present(ERROR_CONTAINER) :
+        if self.driver.is_element_present(ERROR_CONTAINER):
             return self.driver.find(ERROR_CONTAINER).text
         return False
 
@@ -45,7 +47,7 @@ class AllUsersPage(Page):
         self.driver.find(CANCEL_DELETE_BUTTON).click()
 
     def get_message(self):
-        if self.driver.is_element_present(MESSAGES_CONTAINER) :
+        if self.driver.is_element_present(MESSAGES_CONTAINER):
             return self.driver.find(MESSAGES_CONTAINER).text
         return False
 
@@ -58,4 +60,7 @@ class AllUsersPage(Page):
 
     def click_action_button(self):
         self.driver.find(ALL_USERS_ACTION_SELECT).click()
-  
+
+    def check_user_by_username(self, username):
+        user_id = User.objects.get(username=username).id
+        self.driver.find_element_by_css_selector('input[value="%s"]' % user_id).click()
