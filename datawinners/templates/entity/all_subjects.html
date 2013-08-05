@@ -1,8 +1,8 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "All Subjects" %}{% endblock %}
+{% block page_title %}{{ subject_type|capfirst }}{% endblock %}
 
-{% block section_title %}{% trans "All Subjects" %}
+{% block section_title %}{{ subject_type|capfirst }}
 {% endblock %}
 
 {% load dw_tabs %}

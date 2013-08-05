@@ -302,15 +302,17 @@
 
 .pagination_button{
   @extend .button_blue;
+  border: 1px solid #AACCF4 !important;;
   padding: 4px 10px;
   margin: 0;
 }
 
 .disabled_button{
-  @extend .pagination_button;
-  background: none repeat scroll 0 0 #CCCCCC;
-  border: 1px solid #777777 !important;;
+  background: none repeat scroll 0 0 #DFEDF4;
+  border: 1px solid #AACCF4 !important;;
   color: #999999;
+  padding: 4px 10px;
+  margin: 0;
 }
 
 .paginate_enabled_next{
@@ -327,9 +329,9 @@
 }
 
 span.paginate_more_disabled{
-  @extend .paginate_more;
   @extend .disabled_button;
   background: none repeat scroll 0 0 #CCCCCC;
+  padding: 4px;
 }
 
 .paginate_disabled_previous{
@@ -370,3 +372,23 @@ span.paginate_more_disabled{
 #subjects_table{
   clear:both;
 }
+
+
+#all_subjects .secondary_tab {
+  top: 0;
+  left: -20px;
+  float: none;
+  margin: 10px 0;
+  border-bottom: 3px solid #2A2A2A;
+  background: none; }
+  #all_subjects .secondary_tab li {
+    height: 40px;
+    margin: 0;
+    padding: 0 20px;
+    line-height: 45px; }
+  #all_subjects .secondary_tab .active {
+    background-color: #525252;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+    background: -moz-linear-gradient(top, #525252, #262626); }
+    #all_subjects .secondary_tab .active a {
+      color: #ffffff !important; }

@@ -1,7 +1,5 @@
 #all_subjects {
-  width: 910px !important;
-  border-top: 1px solid #CCCCCC !important;
-  margin-top: 20px; }
+  width: 910px !important; }
   #all_subjects table.all_subject_type_table td, #all_subjects table.all_subject_type_table th {
     border: 0px;
     text-align: left; }

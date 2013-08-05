@@ -543,7 +543,7 @@ select {
       opacity: 0.9;
     }*/ }
 
-.button_blue, .pagination_button, .disabled_button, span.paginate_more_disabled, .paginate_disabled_previous, .paginate_disabled_next, .paginate_enabled_next, .paginate_enabled_previous, .paginate_more {
+.button_blue, .pagination_button, .paginate_enabled_next, .paginate_enabled_previous, .paginate_more {
   margin: 5px;
   border: 1px solid #5087b4 !important;
   color: #5087b4;
@@ -560,12 +560,12 @@ select {
   cursor: pointer;
   cursor: hand;
   opacity: 0.9; }
-  .button_blue:hover, .pagination_button:hover, .disabled_button:hover, span.paginate_more_disabled:hover, .paginate_disabled_previous:hover, .paginate_disabled_next:hover, .paginate_enabled_next:hover, .paginate_enabled_previous:hover, .paginate_more:hover {
+  .button_blue:hover, .pagination_button:hover, .paginate_enabled_next:hover, .paginate_enabled_previous:hover, .paginate_more:hover {
     -webkit-box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
     box-shadow: 0px 0px 2px 2px rgba(33, 33, 33, 0.3);
     opacity: 1;
     text-decoration: none; }
-  .button_blue:active, .pagination_button:active, .disabled_button:active, span.paginate_more_disabled:active, .paginate_disabled_previous:active, .paginate_disabled_next:active, .paginate_enabled_next:active, .paginate_enabled_previous:active, .paginate_more:active {
+  .button_blue:active, .pagination_button:active, .paginate_enabled_next:active, .paginate_enabled_previous:active, .paginate_more:active {
     -webkit-box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
     box-shadow: 0px 0px 0px 0px rgba(33, 33, 33, 0.3);
     opacity: 0.9; }
@@ -619,7 +619,7 @@ select {
     color: #666666;
     font-style: italic;
     font-size: 11px; }
-  .ui-accordion .button_blue, .ui-accordion .pagination_button, .ui-accordion .disabled_button, .ui-accordion span.paginate_more_disabled, .ui-accordion .paginate_disabled_previous, .ui-accordion .paginate_disabled_next, .ui-accordion .paginate_enabled_next, .ui-accordion .paginate_enabled_previous, .ui-accordion .paginate_more {
+  .ui-accordion .button_blue, .ui-accordion .pagination_button, .ui-accordion .paginate_enabled_next, .ui-accordion .paginate_enabled_previous, .ui-accordion .paginate_more {
     margin-left: 10px; }
 
 .ui-accordion-header.ui-state-default {
@@ -749,20 +749,24 @@ form div.action-section {
   float: left;
   padding-right: 2em; }
 
-.pagination_button, .disabled_button, span.paginate_more_disabled, .paginate_disabled_previous, .paginate_disabled_next, .paginate_enabled_next, .paginate_enabled_previous, .paginate_more {
+.pagination_button, .paginate_enabled_next, .paginate_enabled_previous, .paginate_more {
+  border: 1px solid #AACCF4 !important;
   padding: 4px 10px;
   margin: 0; }
 
 .disabled_button, span.paginate_more_disabled, .paginate_disabled_previous, .paginate_disabled_next {
-  background: none repeat scroll 0 0 #CCCCCC;
-  border: 1px solid #777777 !important;
-  color: #999999; }
+  background: none repeat scroll 0 0 #DFEDF4;
+  border: 1px solid #AACCF4 !important;
+  color: #999999;
+  padding: 4px 10px;
+  margin: 0; }
 
-.paginate_more, span.paginate_more_disabled {
+.paginate_more {
   padding: 4px; }
 
 span.paginate_more_disabled {
-  background: none repeat scroll 0 0 #CCCCCC; }
+  background: none repeat scroll 0 0 #CCCCCC;
+  padding: 4px; }
 
 #all_subjects #subjects_table.styled_table {
   margin-bottom: 2em; }
@@ -790,3 +794,25 @@ span.paginate_more_disabled {
 
 #subjects_table {
   clear: both; }
+
+#all_subjects .secondary_tab {
+  top: 0;
+  left: -20px;
+  float: none;
+  margin: 10px 0;
+  border-bottom: 3px solid #2A2A2A;
+  background: none; }
+
+#all_subjects .secondary_tab li {
+  height: 40px;
+  margin: 0;
+  padding: 0 20px;
+  line-height: 45px; }
+
+#all_subjects .secondary_tab .active {
+  background-color: #525252;
+  background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+  background: -moz-linear-gradient(top, #525252, #262626); }
+
+#all_subjects .secondary_tab .active a {
+  color: #ffffff !important; }
