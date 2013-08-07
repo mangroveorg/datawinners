@@ -9,7 +9,7 @@ from testdata.test_data import url
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 
 
-class AllSubjectsPage(Page):
+class AllSubjectTypePage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 

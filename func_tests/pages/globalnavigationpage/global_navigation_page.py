@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from pages.alldatapage.all_data_page import AllDataPage
-from pages.allsubjectspage.all_subjects_page import AllSubjectsPage
+from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.globalnavigationpage.global_navigation_locator import *
 from pages.page import Page
@@ -47,7 +47,7 @@ class GlobalNavigationPage(Page):
         Return add subject page
          """
         self.driver.find(SUBJECTS_LINK).click()
-        return AllSubjectsPage(self.driver)
+        return AllSubjectTypePage(self.driver)
 
     def navigate_to_dashboard_page(self):
         """

@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 from framework.utils.common_utils import generateId
-from pages.allsubjectspage.all_subjects_page import AllSubjectsPage
+from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.page import Page
 from framework.utils.data_fetcher import from_, fetch_
 from pages.addsubjecttypepage.add_subject_type_locator import *
@@ -24,7 +24,7 @@ class AddSubjectTypePage(Page):
         self.driver.find_text_box(NEW_SUBJECT_TB).enter_text(entity_type)
         self.driver.find(ADD_BTN).click()
         self.driver.wait_until_element_is_not_present(5, by_css("#type_message .ajax_loader"))
-        return AllSubjectsPage(self.driver)
+        return AllSubjectTypePage(self.driver)
 
     def add_entity_type_with(self, entity_type, wait=True):
         """

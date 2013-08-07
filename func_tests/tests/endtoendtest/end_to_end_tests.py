@@ -14,7 +14,7 @@ from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.addsubjectpage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
-from pages.allsubjectspage.all_subjects_page import AllSubjectsPage
+from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
@@ -255,7 +255,7 @@ class TestApplicationEndToEnd(BaseTest):
         self.assertIn(message, flash_message)
         subject_short_code = flash_message.replace(message, '')
         self.driver.go_to(DATA_WINNER_ALL_SUBJECT)
-        all_subjects_page = AllSubjectsPage(self.driver)
+        all_subjects_page = AllSubjectTypePage(self.driver)
         all_subjects_page.open_subjects_table_for_entity_type('waterpoint')
         all_subjects_page.select_a_subject_by_type_and_id('waterpoint', subject_short_code)
         all_subjects_page.click_action_button_for('waterpoint', 'edit')
