@@ -9,7 +9,7 @@ from datawinners.settings import ELASTIC_SEARCH_URL
 
 
 def subject_search_update(entity_doc, dbm):
-    if (entity_doc.aggregation_paths['_type'] == ['reporter']):
+    if entity_doc.aggregation_paths['_type'] == ['reporter']:
         return
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     if entity_doc.data:
