@@ -4,8 +4,24 @@ from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import Entity
 from datawinners.entity.import_data import get_entity_type_fields, _tabulate_data
 from mangrove.form_model.field import DateField
-from mangrove.form_model.form_model import get_form_model_by_entity_type
+from mangrove.form_model.form_model import get_form_model_by_entity_type, FormModel, REGISTRATION_FORM_CODE
 from datawinners.settings import ELASTIC_SEARCH_URL
+
+
+def subject_search_update(entity_doc, dbm):
+    if (entity_doc.aggregation_paths['_type'] == ['reporter']):
+        return
+    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    if entity_doc.data:
+        entity_type = entity_doc.aggregation_paths['_type'][0].lower()
+        es.index(dbm.database_name, entity_type, entity_dict(entity_type, entity_doc, dbm), id=entity_doc.id)
+    es.refresh(dbm.database_name)
+
+
+def subject_model_change_handler(form_model_doc, dbm):
+    form_model = FormModel.new_from_doc(dbm, form_model_doc)
+    if form_model.is_entity_registration_form() and form_model.form_code != REGISTRATION_FORM_CODE:
+        update_mapping(dbm, form_model)
 
 
 def add_date_field_mapping(mapping_fields, field):
@@ -40,12 +56,6 @@ def update_mapping(dbm, form_model):
     es.put_mapping(dbm.database_name, form_model.entity_type[0], mapping(form_model))
 
 
-def update_search(entity_doc, dbm):
-    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
-    if entity_doc.data:
-        entity_type = entity_doc.aggregation_paths['_type'][0].lower()
-        es.index(dbm.database_name, entity_type, entity_dict(entity_type, entity_doc, dbm), id=entity_doc.id)
-    es.refresh(dbm.database_name)
 
 
 def entity_dict(entity_type, entity_doc, dbm):
@@ -74,10 +84,12 @@ def search(request, subject_type):
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
     search = S(manager.database_name, subject_type, start_result_number, number_of_results).order_by(header_dict.keys()[order_by] + "_value")
-    query = search.query()
+
     if search_text:
         raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
         query = search.query_raw(raw_query)
+    else:
+        query = search.query()
     subjects = []
     for res in query.values_dict(tuple(header_dict.keys())):
         subject = []

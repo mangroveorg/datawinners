@@ -1,0 +1,8 @@
+from datawinners.search.subject_search import subject_search_update, subject_model_change_handler
+from mangrove.datastore.documents import EntityDocument, FormModelDocument
+
+
+#Registering search update methods
+EntityDocument.register_post_update(subject_search_update)
+#EntityDocument.register_post_update(datasender_search_update)
+FormModelDocument.register_post_update(subject_model_change_handler)
