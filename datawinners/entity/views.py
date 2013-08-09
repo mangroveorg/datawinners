@@ -338,7 +338,6 @@ def _get_full_name(user):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
-@is_new_user
 @is_datasender
 def delete_entity(request):
     manager = get_database_manager(request.user)
