@@ -9,6 +9,7 @@ from datawinners.accountmanagement.models import Organization, OrganizationSetti
 from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
 from datawinners.settings import ELASTIC_SEARCH_URL
+from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import create_entity
 from mangrove.datastore.datadict import get_or_create_data_dict
@@ -75,9 +76,17 @@ def active_organization(org):
 
 def make_user_as_a_datasender(manager, organization, current_user_name, mobile_number):
     total_entity = get_entity_count_for_type(manager, [REPORTER])
-    reporter_short_code = 'rep' + str(total_entity + 1)
-    entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=reporter_short_code,
+    reporter_id = None
+    offset = 1
+    while not reporter_id:
+        reporter_short_code = 'rep' + str(total_entity + offset)
+        try:
+            entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=reporter_short_code,
                            location=[organization.country_name()])
+            reporter_id = entity.short_code
+        except DataObjectAlreadyExists as ignore:
+            offset += 1
+
     mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
                                                  primitive_type='string')
     name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
