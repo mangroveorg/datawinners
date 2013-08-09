@@ -817,3 +817,10 @@ span.paginate_more_disabled {
 
 #all_subjects .secondary_tab .active a {
   color: #ffffff !important; }
+
+#action_dropdown {
+  float: left;
+  margin-top: -6px; }
+
+#wrapper_div_for_table {
+  margin-top: 22px; }

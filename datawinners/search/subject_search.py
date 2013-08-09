@@ -79,11 +79,12 @@ def search(request, subject_type):
     search_text = request.POST.get('sSearch', '').strip()
     start_result_number = int(request.POST.get('iDisplayStart'))
     number_of_results = int(request.POST.get('iDisplayLength'))
-    order_by = int(request.POST.get('iSortCol_0'))
+    order_by = int(request.POST.get('iSortCol_0'))-1
+    order = "-" if request.POST.get('sSortDir_0') == "desc" else ""
     search_text = replace_special_chars(search_text)
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
-    search = S(manager.database_name, subject_type, start_result_number, number_of_results).order_by(header_dict.keys()[order_by] + "_value")
+    search = S(manager.database_name, subject_type, start_result_number, number_of_results).order_by(order + header_dict.keys()[order_by] + "_value")
 
     if search_text:
         raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
@@ -92,7 +93,7 @@ def search(request, subject_type):
         query = search.query()
     subjects = []
     for res in query.values_dict(tuple(header_dict.keys())):
-        subject = []
+        subject = ['<input type = "checkbox" value="'+ res.get('short_code')+'">']
         for key in header_dict:
             subject.append(res.get(key))
         subjects.append(subject)

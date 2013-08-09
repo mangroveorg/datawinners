@@ -3,10 +3,16 @@
 <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
 <script type="text/javascript" src="/media/javascript/subjects/subjects_table.js"></script>
+<script type="text/javascript" src="/media/javascript/action_dropdown.js"></script>
+
+
 <div id="wrapper_div_for_table">
+    {% include 'subjects_actions.html' %}
     <table id="subjects_table" class="styled_table">
         <thead>
         <tr class="list_header">
+            <th class="checkall"><input type="checkbox" id="checkall-checkbox"/></th>
+
             {% for header_name, header_label in subject_headers.items %}
                 <th>{{ header_label }} </th>
             {% endfor %}
@@ -14,3 +20,5 @@
         </thead>
     </table>
 </div>
+
+{% include 'subjects_actions.html' %}
