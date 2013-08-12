@@ -96,3 +96,9 @@ class AddDataSenderPage(Page):
 
     def datasender_has_web_access(self):
         return self.driver.is_element_present(by_id("email-li"))
+
+    def enter_datasender_mobile_number(self, mobile_number):
+        self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(mobile_number)
+
+    def click_submit_button(self):
+        self.driver.find(REGISTER_BTN).click()

@@ -204,6 +204,8 @@ def edit_data_sender(request, reporter_id):
                     if len(detail_dict) > 1:
                         detail_as_string = json.dumps(detail_dict)
                         UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string)
+                else:
+                    form.update_errors(response.errors)
 
             except MangroveException as exception:
                 message = exception.message
