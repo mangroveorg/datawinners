@@ -8,7 +8,8 @@
     padding-top: 7px !important; }
 
 .data-sender-table-wrapper {
-  overflow-x: scroll; }
+  overflow-x: scroll;
+  float: left; }
   .data-sender-table-wrapper table thead th:first-child input#checkall-datasenders {
     margin-left: 0px !important; }
 

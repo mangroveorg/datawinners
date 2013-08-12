@@ -14,6 +14,7 @@
 
 .data-sender-table-wrapper {
   overflow-x: scroll;
+  float:left;
   table thead th:first-child input#checkall-datasenders{
      margin-left: 0px !important;
   }
