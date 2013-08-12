@@ -1,4 +1,5 @@
 #all_subjects {
+  margin-top: 18px;
   width: 910px !important; }
   #all_subjects table.all_subject_type_table td, #all_subjects table.all_subject_type_table th {
     border: 0px;
