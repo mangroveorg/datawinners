@@ -229,7 +229,7 @@ form ul li {
     width: 350px;
     height: 100px;
     border-color: #cccccc;
-    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
+    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
   form ul li label {
     font-size: 14px;
     display: block;
@@ -239,7 +239,7 @@ form ul li {
     font-weight: bold; }
   form ul li input {
     float: left;
-    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
+    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
   form ul li span[wmwrap=true] {
     float: left;
     top: 3px; }
@@ -286,7 +286,7 @@ div.error_arrow {
 span.error_arrow, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 3px;
   display: inline;
-  float: left !important; }
+  float: left!important; }
 
 span .error_arrow label, div.error_arrow label, label.error_arrow label {
   float: none;
@@ -800,9 +800,10 @@ span.paginate_more_disabled {
   top: 0;
   left: -20px;
   float: none;
-  margin: 10px 0;
+  margin: 10px 18px;
   border-bottom: 3px solid #2A2A2A;
-  background: none; }
+  background: none;
+  width: 100%; }
 
 #all_subjects .secondary_tab li {
   height: 40px;

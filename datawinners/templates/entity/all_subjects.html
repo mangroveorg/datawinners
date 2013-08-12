@@ -74,6 +74,9 @@
             </div>
             {% include 'project/subject_registration_webpreview.html' %}
         </div>
+        <div class="help_accordion">
+            {% blocktrans %}View your registered {{ subject_type }} in detail.{% endblocktrans %}
+        </div>
         {% include 'subject_table.html' %}
     </div>
 {% endblock %}
