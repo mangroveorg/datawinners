@@ -6,7 +6,7 @@ from datawinners.main.utils import timebox
 @timebox
 def load_subject_type_with_projects(manager):
     result = OrderedDict()
-    subject_types = get_entity_types(manager)
+    subject_types = sorted(get_entity_types(manager))
     for subject_type in subject_types:
         result.update({subject_type: []})
     rows = manager.view.projects_by_subject_type()
