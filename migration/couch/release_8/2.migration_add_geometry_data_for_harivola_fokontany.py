@@ -8,6 +8,7 @@ from datawinners.main.database import get_db_manager
 from migration.couch.utils import mark_start_of_migration, migrate
 from mangrove.datastore.entity import get_by_short_code
 
+
 def add_geometry_data(db_name):
     logger = logging.getLogger(db_name)
 
@@ -19,10 +20,10 @@ def add_geometry_data(db_name):
         entity = get_by_short_code(manager, "110701001", ["fokontany"])
 
         if not "coordinates" in entity.geometry:
-            geometry = {'type':'Point', 'coordinates':[0,0]}
+            geometry = {'type': 'Point', 'coordinates': [0, 0]}
             entity.set_location_and_geo_code(entity.location_path, geometry)
             entity.save()
-            
+
         logger.info('End migration on database')
     except Exception as e:
         logger.exception(e.message)
