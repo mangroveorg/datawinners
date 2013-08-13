@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var $actionBar = $(".action_bar");
 
     var dt = $('#subjects_table').dataTable({
         "bProcessing": true,
@@ -18,6 +19,9 @@ $(document).ready(function () {
         "sAjaxSource": '/entity/subjects/' + subject_type.toLowerCase() + '/ajax/',
         "sAjaxDataProp": "subjects",
         "sServerMethod": "POST",
+        "fnInitComplete":function(oSettings){
+            $actionBar.clone(true).insertBefore(".dataTables_info").addClass('margin_top_10').show();
+        },
         "aaSorting": [ [2, ["asc","desc"]] ],
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
             oSettings.jqXHR = $.ajax({
@@ -32,7 +36,6 @@ $(document).ready(function () {
             });
         }
     });
-
     $("select[name='subjects_table_length']").change(function(){
         $('#subjects_table').dataTable({"bRetrieve":true}).fnPageChange("first")
     });
