@@ -1,4 +1,20 @@
 $(document).ready(function () {
+    var subjects_action_dropdown;
+    $("#all_subjects .list_header").each(function (i) {
+        var container = document;
+        var data_locator_id = $("div.action", container).attr("id");
+        var kwargs = {
+            container:container,
+            checkbox_locator:"table.styled_table input:checkbox",
+            check_single_checked_locator:".styled_table tbody input:checkbox[checked=checked]",
+            no_cb_checked_locator:".styled_table input:checkbox[checked=checked]",
+            edit_link_locator:"div.action ul li a.edit",
+            checkall:".styled_table thead input:checkbox",
+            is_on_trial:true
+        };
+        subjects_action_dropdown = new DW.action_dropdown(kwargs);
+    });
+
     var $actionBar = $(".action_bar");
 
     var dt = $('#subjects_table').dataTable({
@@ -25,9 +41,13 @@ $(document).ready(function () {
         "fnInitComplete": function (oSettings) {
             $actionBar.clone(true).insertBefore(".dataTables_info").addClass('margin_top_10').show();
         },
-        "aaSorting": [
-            [2, ["asc", "desc"]]
-        ],
+        "fnPreDrawCallback": function (oSettings) {
+            subjects_action_dropdown.uncheck_all();
+        },
+        "fnDrawCallback": function (oSettings) {
+            subjects_action_dropdown.update_edit_action();
+        },
+        "aaSorting": [ [2, ["asc","desc"]] ],
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
             oSettings.jqXHR = $.ajax({
                 "dataType": 'json',
@@ -45,6 +65,6 @@ $(document).ready(function () {
         $('#subjects_table').dataTable({"bRetrieve": true}).fnPageChange("first")
     });
 
-    $("#subjects_table_filter").find("input").attr('placeholder', 'Enter any information you want to find')
+    $("#subjects_table_filter").find("input").attr('placeholder','Enter any information you want to find');
 });
 

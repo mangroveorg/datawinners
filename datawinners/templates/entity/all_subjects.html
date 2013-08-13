@@ -33,6 +33,7 @@
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript" src="/media/javascript/subjects/all_subjects.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
     <script type="text/javascript">
         var upload_url = window.location.pathname;
         var subject_type = "{{ subject_type|capfirst }}";
@@ -79,4 +80,10 @@
         </div>
         {% include 'subject_table.html' %}
     </div>
+    <div id="delete_entity_block">
+        <p class="warning_message">{% trans "entity delete error text" %}</p>
+        <a href="{{ project_links.registered_subjects_link }}" class="button" id="ok_button">{% trans "Yes, Delete" %}</a>
+        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+    </div>
+
 {% endblock %}
