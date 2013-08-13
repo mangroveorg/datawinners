@@ -10,7 +10,7 @@ ipython
 mock
 selenium==2.32
 iso8601
-pytz
+pytz==2013b
 django-registration==0.8
 gdata
 BeautifulSoup
@@ -26,7 +26,7 @@ python-dateutil==1.5
 http://github.com/jbalogh/django-nose/tarball/master#egg=django-nose
 feedparser
 nose-exclude
-git+git://github.com/jezdez/django_compressor.git@086f05041a28c176994ebc22dc41ce12da74045e#egg=django_compressor-dev
+http://github.com/jezdez/django_compressor/tarball/086f05041a28c176994ebc22dc41ce12da74045e
 python-digest
 decorator
 django-digest
@@ -36,3 +36,4 @@ rednose
 django-debug-toolbar-django13
 requests==1.2.3
 elasticutils
+uWSGI==1.4.9
