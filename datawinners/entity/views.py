@@ -558,7 +558,6 @@ def get_template(user):
 
 
 def initial_values(form_model, subject):
-    result = {}
     for field in form_model.fields:
         if field.name == LOCATION_TYPE_FIELD_NAME:
             field.value = ','.join(subject.location_path)
@@ -568,8 +567,9 @@ def initial_values(form_model, subject):
             field.value = subject.short_code
         else:
             field.value = subject.data[field.name]['value'] if field.name in subject.data.keys() else None
-        field.value = field._to_str()
-        result.update({field.code: field.value})
+
+        if field.value:
+            field.value = field.convert_to_unicode()
 
 
 @valid_web_user
