@@ -32,11 +32,12 @@ def add_date_field_mapping(mapping_fields, field):
                                     "ignore_malformed": True}
         }}})
 
+
 def add_text_field_mapping(mapping_fields, field):
     mapping_fields.update(
         {field.name: {"type": "multi_field", "fields": {
             field.name: {"type": "string"},
-            field.name + "_value": {"type": "string", "index": "not_analyzed","include_in_all": False}
+            field.name + "_value": {"type": "string", "index": "not_analyzed", "include_in_all": False}
         }}})
 
 
@@ -56,8 +57,6 @@ def update_mapping(dbm, form_model):
     es.put_mapping(dbm.database_name, form_model.entity_type[0], mapping(form_model))
 
 
-
-
 def entity_dict(entity_type, entity_doc, dbm):
     entity = Entity.get(dbm, entity_doc.id)
     fields, labels, codes = get_entity_type_fields(dbm, type=entity_type)
@@ -67,6 +66,7 @@ def entity_dict(entity_type, entity_doc, dbm):
     for index in range(0, len(fields)):
         dictionary.update({fields[index]: data['cols'][index]})
     dictionary.update({"entity_type": entity_type})
+    dictionary.update({"void": entity.is_void()})
     return dictionary
 
 
@@ -79,12 +79,13 @@ def search(request, subject_type):
     search_text = request.POST.get('sSearch', '').strip()
     start_result_number = int(request.POST.get('iDisplayStart'))
     number_of_results = int(request.POST.get('iDisplayLength'))
-    order_by = int(request.POST.get('iSortCol_0'))-1
+    order_by = int(request.POST.get('iSortCol_0')) - 1
     order = "-" if request.POST.get('sSortDir_0') == "desc" else ""
     search_text = replace_special_chars(search_text)
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
-    search = S(manager.database_name, subject_type, start_result_number, number_of_results).order_by(order + header_dict.keys()[order_by] + "_value")
+    search = S(manager.database_name, subject_type, start_result_number, number_of_results).order_by(
+        order + header_dict.keys()[order_by] + "_value").filter(void=False)
 
     if search_text:
         raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
@@ -93,7 +94,7 @@ def search(request, subject_type):
         query = search.query()
     subjects = []
     for res in query.values_dict(tuple(header_dict.keys())):
-        subject = ['<input type = "checkbox" value="'+ res.get('short_code')+'">']
+        subject = ['<input type = "checkbox" value="' + res.get('short_code') + '">']
         for key in header_dict:
             subject.append(res.get(key))
         subjects.append(subject)
