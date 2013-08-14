@@ -1,8 +1,7 @@
 from unittest import TestCase
-from django.http import HttpRequest
 import elasticutils
 from mock import patch, Mock
-from datawinners.search.subject_search import search, replace_special_chars, entity_dict
+from datawinners.search.subject_search import paginated_search, replace_special_chars, entity_dict
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.form_model import FormModel
@@ -10,12 +9,12 @@ from mangrove.form_model.form_model import FormModel
 
 class TestSubjectSearch(TestCase):
     def test_default_query_used_when_no_search_text(self):
-        request = HttpRequest()
-        request.POST['sSearch'] = ''
-        request.POST['iDisplayStart'] = '0'
-        request.POST['iDisplayLength'] = '10'
-        request.POST['iSortCol_0'] = '1'
-        request.user = 'teste'
+        search_params = {}
+        search_params.update({'search_text': ''})
+        search_params.update({'start_result_number': '0'})
+        search_params.update({'number_of_results': '10'})
+        search_params.update({'order': ''})
+        search_params.update({'order_by': 1})
         with patch("datawinners.search.subject_search.get_database_manager") as get_manager:
             with patch("datawinners.search.subject_search.header_fields") as header_fields:
                 with patch("datawinners.search.subject_search.S") as search_object:
@@ -35,7 +34,7 @@ class TestSubjectSearch(TestCase):
                     filtered_search_obj.query.return_value = query
                     search_object.return_value = mock_search
 
-                    search(request, 'st')
+                    paginated_search("test", 'st', search_params)
 
                     self.assertTrue(filtered_search_obj.query.called)
                     self.assertTrue(filtered_search_obj.count.called)
@@ -43,12 +42,12 @@ class TestSubjectSearch(TestCase):
                     self.assertTrue(query.count.called)
 
     def test_raw_query_used_when_for_search_text(self):
-        request = HttpRequest()
-        request.POST['sSearch'] = 'search string'
-        request.POST['iDisplayStart'] = '0'
-        request.POST['iDisplayLength'] = '10'
-        request.POST['iSortCol_0'] = '1'
-        request.user = 'teste'
+        search_params = {}
+        search_params.update({'search_text': 'search string'})
+        search_params.update({'start_result_number': '0'})
+        search_params.update({'number_of_results': '10'})
+        search_params.update({'order': ''})
+        search_params.update({'order_by': 1})
         with patch("datawinners.search.subject_search.get_database_manager") as get_manager:
             with patch("datawinners.search.subject_search.header_fields") as header_fields:
                 with patch("datawinners.search.subject_search.S") as search_object:
@@ -68,7 +67,7 @@ class TestSubjectSearch(TestCase):
                     filtered_search_obj.query_raw.return_value = query
                     search_object.return_value = mock_search
 
-                    search(request, 'st')
+                    paginated_search("test", 'st', search_params)
 
                     self.assertTrue(filtered_search_obj.query_raw.called)
                     filtered_search_obj.query_raw.assert_called_once_with(

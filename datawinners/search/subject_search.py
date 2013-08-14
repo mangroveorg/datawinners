@@ -75,18 +75,21 @@ def S(index_name, mapping_name, start_index, number_of_results):
            start_index:start_index + number_of_results]
 
 
-def search(request, subject_type):
-    search_text = request.POST.get('sSearch', '').strip()
-    start_result_number = int(request.POST.get('iDisplayStart'))
-    number_of_results = int(request.POST.get('iDisplayLength'))
-    order_by = int(request.POST.get('iSortCol_0')) - 1
-    order = "-" if request.POST.get('sSortDir_0') == "desc" else ""
-    search_text = replace_special_chars(search_text)
-    manager = get_database_manager(request.user)
+def paginated_search(user, subject_type, search_params):
+    start_result_number = search_params.get("start_result_number")
+    number_of_results = search_params.get("number_of_results")
+    order = search_params.get("order")
+    order_by = search_params.get("order_by")
+    manager = get_database_manager(user)
+
+    search_text = search_params.get("search_text")
+
     header_dict = header_fields(manager, subject_type)
+
     search = S(manager.database_name, subject_type, start_result_number, number_of_results).order_by(
         order + header_dict.keys()[order_by] + "_value").filter(void=False)
 
+    search_text = replace_special_chars(search_text)
     if search_text:
         raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
         query = search.query_raw(raw_query)
@@ -99,6 +102,26 @@ def search(request, subject_type):
             subject.append(res.get(key))
         subjects.append(subject)
     return query.count(), search.count(), subjects
+
+
+def search(user, subject_type, search_text):
+    manager = get_database_manager(user)
+    header_dict = header_fields(manager, subject_type)
+    search = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes(subject_type)
+    search_text = replace_special_chars(search_text)
+
+    if search_text:
+        raw_query = {"query_string": {"fields": header_dict.keys(), "query": search_text}}
+        query = search.query_raw(raw_query)
+    else:
+        query = search.query()
+    subjects = []
+    for res in query.values_dict(tuple(header_dict.keys())):
+        subject = []
+        for key in header_dict:
+            subject.append(res.get(key))
+        subjects.append(subject)
+    return subjects
 
 
 def header_fields(manager, subject_type):

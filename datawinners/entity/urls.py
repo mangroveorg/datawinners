@@ -29,6 +29,6 @@ urlpatterns = patterns('',
                        (r'^submit$', submit),
                        (r'^entity/subject/edit/(?P<entity_type>.+?)/$', edit_subject_questionnaire),
                        (r'^entity/questionnaire/save$', save_questionnaire),
-                       (r'^entity/subject/export/', export_subject),
+                       url(r'^entity/subject/export/', export_subject, name="export_subject"),
                        (r'^entity/subject/template/(?P<entity_type>.+?)/$', export_template),
 )

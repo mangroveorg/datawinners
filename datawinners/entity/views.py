@@ -23,7 +23,7 @@ from datawinners import utils
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
-from datawinners.search.subject_search import search, header_fields
+from datawinners.search.subject_search import paginated_search, header_fields
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -311,13 +311,21 @@ def all_subject_links(request, subject_type):
 @is_datasender
 @is_not_expired
 def all_subjects_ajax(request, subject_type):
-    query_count, search_count, subjects = search(request, subject_type)
+    search_parameters = {}
+    search_parameters.update({"search_text": request.GET.get('sSearch', '').strip()})
+    search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
+    search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
+    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
+    search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
+    user = request.user
+
+    query_count, search_count, subjects = paginated_search(user, subject_type, search_parameters)
 
     return HttpResponse(
         jsonpickle.encode(
             {'subjects': subjects, 'iTotalDisplayRecords': query_count,
-             'iDisplayStart': int(request.POST.get('iDisplayStart')),
-             "iTotalRecords": search_count, 'iDisplayLength': int(request.POST.get('iDisplayLength'))},
+             'iDisplayStart': int(request.GET.get('iDisplayStart')),
+             "iTotalRecords": search_count, 'iDisplayLength': int(request.GET.get('iDisplayLength'))},
             unpicklable=False),
         content_type='application/json')
 
