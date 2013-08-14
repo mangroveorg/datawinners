@@ -24,6 +24,8 @@ $(document).ready(function () {
         post_data = {'all_ids':allIds.join(';'), 'entity_type':entity_type}
         if ($("#project_name").length)
             post_data.project = $("#project_name").val();
+        if($('#select_all_link').attr('class') == 'selected')
+            post_data.all_selected = true;
         $.post("/entity/delete/", post_data,
             function (json_response) {
                 var response = $.parseJSON(json_response);

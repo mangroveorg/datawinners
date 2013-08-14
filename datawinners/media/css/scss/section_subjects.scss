@@ -300,6 +300,25 @@
   padding-right: 2em;
 }
 
+.dataTables_wrapper {
+  table {
+    thead {
+      th {
+        color: #FFF;
+      }
+      .sorting {
+        background: url(/media/images/sort_arrow.png) no-repeat right 0px;
+      }
+      .sorting_desc {
+        background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right 0px;
+      }
+      .sorting_asc {
+        background: url(/media/images/sort_arrow_active_top.png) no-repeat right 0px;
+      }
+    }
+  }
+}
+
 .pagination_button{
   @extend .button_blue;
   border: 1px solid #AACCF4 !important;;
@@ -400,4 +419,10 @@ span.paginate_more_disabled{
 }
 #wrapper_div_for_table{
   margin-top:22px;
+}
+
+#select_all_message{
+  clear: both;
+  margin: 10px 0px;
+  text-align: center;
 }

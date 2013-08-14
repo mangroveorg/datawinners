@@ -8,11 +8,6 @@ $(document).ready(function () {
         eventObject.preventDefault();
     });
 
-    $("table.styled_table thead input:checkbox").click(function (event) {
-        self = event.target;
-        $("table.styled_table tbody input:checkbox").attr('checked', $(self).is(":checked"));
-    });
-
     $('#action li a').click(function (e) {
         if ($(this).parent().hasClass("disabled")) {
             e.preventDefault();

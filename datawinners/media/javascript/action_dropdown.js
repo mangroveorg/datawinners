@@ -31,6 +31,7 @@ DW.action_dropdown.prototype = {
         this.container = opts.container;
         this.checkall = opts.checkall;
         this.is_on_trial = false;
+        this.select_all_link = opts.select_all_link;
 
         this.init_dropdown = function(){
             var edit_link = $(this.edit_link_locator, this.container);
@@ -77,7 +78,7 @@ DW.action_dropdown.prototype = {
                 return true;
             }
             
-            if ($(this.check_single_checked_locator, this.container).length > 1){
+            if ($(this.check_single_checked_locator, this.container).length > 1 || $(this.select_all_link).attr('class') == 'selected'){
                 link.parent().addClass("disabled");
                 link.attr("disabled", "disabled");
                 link.attr("title", this.many_selected_msg);
@@ -92,6 +93,9 @@ DW.action_dropdown.prototype = {
             $(this.checkbox_locator).removeAttr('checked');
         }
 
+        this.check_all = function(){
+            $(this.checkbox_locator).attr('checked',true);
+        }
         this.init_dropdown();
     }
 };

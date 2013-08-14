@@ -74,7 +74,6 @@ def S(index_name, mapping_name, start_index, number_of_results):
     return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(index_name).doctypes(mapping_name)[
            start_index:start_index + number_of_results]
 
-
 def paginated_search(user, subject_type, search_params):
     start_result_number = search_params.get("start_result_number")
     number_of_results = search_params.get("number_of_results")
@@ -97,7 +96,7 @@ def paginated_search(user, subject_type, search_params):
         query = search.query()
     subjects = []
     for res in query.values_dict(tuple(header_dict.keys())):
-        subject = ['<input type = "checkbox" value="' + res.get('short_code') + '">']
+        subject = []
         for key in header_dict:
             subject.append(res.get(key))
         subjects.append(subject)

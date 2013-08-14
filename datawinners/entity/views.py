@@ -52,7 +52,7 @@ from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organizat
     get_database_manager_for_org, get_changed_questions
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity import get_by_short_code, get_all_entities, get_short_codes_by_entity_type
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
@@ -356,6 +356,8 @@ def delete_entity(request):
     entity_type = request.POST['entity_type']
     project = request.POST.get("project", "")
     all_ids = request.POST['all_ids'].split(';')
+    if request.POST.get("all_selected", ""):
+        all_ids = get_short_codes_by_entity_type(manager,[entity_type])
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
     if ngo_admin_user_profile.reporter_id in all_ids:
         messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %

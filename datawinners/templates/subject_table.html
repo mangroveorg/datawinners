@@ -11,8 +11,6 @@
     <table id="subjects_table" class="styled_table">
         <thead>
         <tr class="list_header">
-            <th class="checkall"><input type="checkbox" id="checkall-checkbox"/></th>
-
             {% for header_name, header_label in subject_headers.items %}
                 <th>{{ header_label }} </th>
             {% endfor %}
