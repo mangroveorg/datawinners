@@ -1,6 +1,6 @@
 from unittest import TestCase
 import elasticutils
-from mock import patch, Mock
+from mock import patch, Mock, MagicMock
 from datawinners.search.subject_search import paginated_search, _replace_special_chars, _entity_dict
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
@@ -22,7 +22,7 @@ class TestSubjectSearch(TestCase):
                     header_values = {'name': 'Name', 'place': 'Place'}
                     header_fields.return_value = header_values
 
-                    mock_search = Mock()
+                    mock_search = MagicMock(spec=elasticutils.S)
                     query = Mock()
                     query.values_dict = Mock(return_value=[])
                     search_obj = Mock(spec=elasticutils.S)

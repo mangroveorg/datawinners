@@ -4,7 +4,7 @@ from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import Entity
 from datawinners.entity.import_data import get_entity_type_fields, _tabulate_data
 from mangrove.form_model.field import DateField
-from mangrove.form_model.form_model import get_form_model_by_entity_type, FormModel, REGISTRATION_FORM_CODE
+from mangrove.form_model.form_model import get_form_model_by_entity_type, FormModel, REGISTRATION_FORM_CODE, header_fields
 from datawinners.settings import ELASTIC_SEARCH_URL
 
 
@@ -69,10 +69,13 @@ def _entity_dict(entity_type, entity_doc, dbm):
     dictionary.update({"void": entity.is_void()})
     return dictionary
 
+# Start - to remove
+
+def _create_search(subject_type, index_name):
+    return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(index_name).doctypes(subject_type)
 
 def S(index_name, mapping_name, start_index, number_of_results):
-    return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(index_name).doctypes(mapping_name)[
-           start_index:start_index + number_of_results]
+    return _create_search(mapping_name, index_name)[start_index:start_index + number_of_results]
 
 
 def _create_query(header_dict, search, search_text):
@@ -115,26 +118,88 @@ def paginated_search(user, subject_type, search_params):
     subjects = _populate_subjects_from_query_response(header_dict, query)
     return query.count(), search.count(), subjects
 
-
 def search(user, subject_type, search_text):
     manager = get_database_manager(user)
     header_dict = header_fields(manager, subject_type)
-    search = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes(subject_type)
+    search = _create_search(manager.database_name, subject_type)
     query = _create_query(header_dict, search, search_text)
     subjects = _populate_subjects_from_query_response(header_dict, query)
     return subjects
-
-
-def header_fields(manager, subject_type):
-    header_dict = OrderedDict()
-    form_model = get_form_model_by_entity_type(manager, [subject_type])
-    for field in form_model.fields:
-        header_dict.update({field.name: field.label})
-    return header_dict
-
 
 def _replace_special_chars(search_text):
     lucene_special_chars = ['\\', '+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':']
     for char in lucene_special_chars:
         search_text = search_text.replace(char, '\\' + char)
     return search_text
+
+# End - to remove
+
+class SubjectQuery():
+
+    def _getDatabaseName(self, user):
+        return get_database_manager(user).database_name
+
+    def _create_search(self, subject_type, index_name):
+        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(index_name)\
+               .doctypes(subject_type).filter(void=False)
+
+    def _create_paginated_search(self, subject_type, user, query_params):
+        start_result_number = query_params.get("start_result_number")
+        number_of_results = query_params.get("number_of_results")
+        order = query_params.get("order")
+        order_by = query_params.get("order_by")
+        subject_headers = self._subject_headers(user, subject_type)
+        return self._create_search(subject_type, self._getDatabaseName(user))\
+                   .order_by(order + subject_headers[order_by] + "_value")\
+                   [start_result_number:start_result_number + number_of_results]
+
+    def _subject_headers(self, user, subject_type):
+        return header_fields(get_database_manager(user), subject_type).keys()
+
+    def _replace_special_chars(self, search_text):
+        lucene_special_chars = ['\\', '+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?',
+                                ':']
+        for char in lucene_special_chars:
+            search_text = search_text.replace(char, '\\' + char)
+        return search_text
+
+    def _create_query(self, subject_headers, query_text, search):
+        if query_text:
+            query_text = self._replace_special_chars(query_text)
+            raw_query = {
+                         "query_string": {
+                                            "fields": tuple(subject_headers),
+                                            "query": query_text
+                                         }
+                        }
+            query = search.query_raw(raw_query)
+        else:
+            query = search.query()
+        return query
+
+    def _populate_subjects_from_query_response(self, subject_headers, query):
+        subjects = []
+        for res in query.values_dict(tuple(subject_headers)):
+            subject = []
+            for key in subject_headers:
+                subject.append(res.get(key))
+            subjects.append(subject)
+        return subjects
+
+    def query(self, user, subject_type, query_text):
+        subject_headers = self._subject_headers(user, subject_type)
+        search = self._create_search(self._getDatabaseName(user), subject_type)
+        query = self._create_query(subject_headers, query_text, search)
+        subjects = self._populate_subjects_from_query_response(subject_headers, query)
+        return subjects
+
+    def paginated_query(self, user, subject_type, query_params):
+        subject_headers = self._subject_headers(user, subject_type)
+        search = self._create_paginated_search(subject_type, user, query_params)
+        query_text = query_params.get("search_text")
+        query = self._create_query(subject_headers, query_text, search)
+        subjects = self._populate_subjects_from_query_response(subject_headers, query)
+        return query.count(), search.count(), subjects
+
+
+

@@ -23,7 +23,7 @@ from datawinners import utils
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
-from datawinners.search.subject_search import paginated_search, header_fields, search
+from datawinners.search.subject_search import paginated_search, SubjectQuery
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -41,7 +41,7 @@ from datawinners.project.models import Project, get_all_projects
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -262,8 +262,6 @@ def all_subject_types(request):
                                'subjects_count': subjects_count,
                               },
                               context_instance=RequestContext(request))
-
-
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
@@ -284,6 +282,8 @@ def all_subjects(request, subject_type):
                                    get_form_model_by_entity_type(manager, [subject_type]))
                               },
                               context_instance=RequestContext(request))
+
+
 
 
 def viewable_questionnaire(form_model):
@@ -320,7 +320,7 @@ def all_subjects_ajax(request, subject_type):
     search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
     user = request.user
 
-    query_count, search_count, subjects = paginated_search(user, subject_type, search_parameters)
+    query_count, search_count, subjects = SubjectQuery().paginated_query(user, subject_type, search_parameters)
 
     return HttpResponse(
         jsonpickle.encode(
