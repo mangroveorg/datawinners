@@ -324,11 +324,13 @@ def all_subjects_ajax(request, subject_type):
 
     return HttpResponse(
         jsonpickle.encode(
-            {'subjects': subjects, 'iTotalDisplayRecords': query_count,
+            {
+             'subjects': subjects,
+             'iTotalDisplayRecords': query_count,
              'iDisplayStart': int(request.GET.get('iDisplayStart')),
-             "iTotalRecords": search_count, 'iDisplayLength': int(request.GET.get('iDisplayLength'))},
-            unpicklable=False),
-        content_type='application/json')
+             "iTotalRecords": search_count,
+             'iDisplayLength': int(request.GET.get('iDisplayLength'))
+            }, unpicklable=False), content_type='application/json')
 
 
 @register.filter

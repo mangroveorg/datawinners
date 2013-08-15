@@ -1,7 +1,7 @@
 from unittest import TestCase
 import elasticutils
 from mock import patch, Mock
-from datawinners.search.subject_search import paginated_search, replace_special_chars, entity_dict
+from datawinners.search.subject_search import paginated_search, _replace_special_chars, _entity_dict
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.form_model import FormModel
@@ -78,7 +78,7 @@ class TestSubjectSearch(TestCase):
 
     def test_replace_special_chars(self):
         text = 'sho\uld_change_+-!^(){}[]~*?:"should_not_change__e#$__change_this&&that||thus'
-        result = replace_special_chars(text)
+        result = _replace_special_chars(text)
         expected = 'sho\\\\uld_change_\\+\\-\\!\\^\\(\\)\\{\\}\\[\\]\\~\\*\\?\\:\\"should_not_change__e#$__change_this\\&&that\\||thus'
         self.assertEquals(result, expected)
 
@@ -98,7 +98,7 @@ class TestSubjectSearch(TestCase):
 
                         moc_entity_doc = Mock()
                         moc_entity_doc.id.return_value = 1
-                        result = entity_dict("some_subject", moc_entity_doc, Mock(spec=DatabaseManager))
+                        result = _entity_dict("some_subject", moc_entity_doc, Mock(spec=DatabaseManager))
 
                         self.assertEquals(result["void"], False)
                         self.assertEquals(result["entity_type"], "some_subject")
