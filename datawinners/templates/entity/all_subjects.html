@@ -42,6 +42,12 @@
 
 {% block content %}
     <div>
+        <ul>
+            <li><a id='subject_export_link'href="#">Export</a>
+            </li>
+        </ul>
+    </div>
+    <div>
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -82,8 +88,9 @@
     </div>
     <div id="delete_entity_block">
         <p class="warning_message">{% trans "entity delete error text" %}</p>
-        <a href="{{ project_links.registered_subjects_link }}" class="button" id="ok_button">{% trans "Yes, Delete" %}</a>
-        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+        <a href="{{ project_links.registered_subjects_link }}" class="button"
+           id="ok_button">{% trans "Yes, Delete" %}</a>
+        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
     </div>
 
 {% endblock %}
