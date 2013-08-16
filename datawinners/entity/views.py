@@ -586,14 +586,14 @@ def initial_values(form_model, subject):
 
 
 @valid_web_user
-def edit_subject(request, entity_type, entity_id, project_id=None):
+def     edit_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     subject = get_by_short_code(manager, entity_id, [entity_type.lower()])
     if project_id is not None:
         back_link = '/project/registered_subjects/%s/' % project_id
     else:
-        back_link = reverse(all_subject_types)
+        back_link = reverse(all_subjects,args=[entity_type])
 
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)

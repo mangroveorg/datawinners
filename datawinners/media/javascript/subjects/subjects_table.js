@@ -58,6 +58,13 @@ $(document).ready(function () {
             }
         },
         "fnDrawCallback":function (oSettings) {
+            if(oSettings.fnRecordsDisplay() == 0){
+                $(subjects_action_dropdown.checkall).prop('disabled',true);
+            }else{
+                $(subjects_action_dropdown.checkall).prop('disabled',false);
+            }
+
+
             if (select_across_pages_enabled) {
                 subjects_action_dropdown.check_all();
             }
@@ -85,7 +92,7 @@ $(document).ready(function () {
 
     $("#subjects_table_filter").find("input").attr('placeholder', 'Enter any information you want to find');
 
-    $("#checkall-checkbox").click(function (event) {
+    $(subjects_action_dropdown.checkall).click(function (event) {
         self = event.target;
         $("table.styled_table tbody input:checkbox").attr('checked', $(self).is(":checked"));
         if ($(self).is(":checked")) {
