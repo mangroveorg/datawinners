@@ -136,11 +136,13 @@
 }
 
 #subject_create_type_link {
-    margin: 20px 0;
-    #add_new_subject_type {
-        background: url("/media/images/icons.png") left top no-repeat !important;
-        padding: 5px 0 5px 30px;
-    }
+  margin: 10px 0;
+  width: 100%;
+  text-align: right;
+  #add_new_subject_type {
+    //background: url("/media/images/icons.png") left top no-repeat !important;
+    padding: 5px 0 5px 30px;
+  }
 }
 
 

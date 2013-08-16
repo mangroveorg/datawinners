@@ -92,9 +92,10 @@
   margin: 10px 0 !important; }
 
 #subject_create_type_link {
-  margin: 20px 0; }
+  margin: 10px 0;
+  width: 100%;
+  text-align: right; }
   #subject_create_type_link #add_new_subject_type {
-    background: url("/media/images/icons.png") left top no-repeat !important;
     padding: 5px 0 5px 30px; }
 
 #subjects_table_wrapper #action_button {

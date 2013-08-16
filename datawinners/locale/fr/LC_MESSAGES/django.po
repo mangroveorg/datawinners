@@ -111,7 +111,7 @@ msgid "Subjects"
 msgstr "Sujets"
 
 msgid "All Subjects"
-msgstr "Tous Les Sujets"
+msgstr "Tous les Sujets"
 
 msgid "Data Records"
 msgstr "Enregistrements"
