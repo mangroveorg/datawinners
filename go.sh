@@ -48,9 +48,9 @@ function prepare_env {
 
 function restore_couchdb_and_postgres {
   	restore_postgresql_database && \
-  	recreate_search_index && \
-	recreate_couch_db && \
-	recreate_feed_db
+  	recreate_couch_db && \
+  	recreate_feed_db && \
+  	recreate_search_indexes
 }
 
 function unit_test {
