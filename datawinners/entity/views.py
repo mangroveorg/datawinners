@@ -23,7 +23,7 @@ from datawinners import utils
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
-from datawinners.search.subject_search import paginated_search, SubjectQuery
+from datawinners.search.subject_search import SubjectQuery
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -827,7 +827,7 @@ def export_subject(request):
     manager = get_database_manager(request.user)
     search_text = request.GET.get('search_text', '')
     subject_type = request.GET.get('subject_type', '').lower()
-    subject_list = search(request.user, subject_type, search_text)
+    subject_list = SubjectQuery().query(request.user, subject_type, search_text)
 
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)
