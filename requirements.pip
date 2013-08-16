@@ -23,10 +23,10 @@ apscheduler
 south==0.7.3
 supervisor
 python-dateutil==1.5
-http://github.com/jbalogh/django-nose/tarball/master#egg=django-nose
+https://github.com/jbalogh/django-nose/tarball/master#egg=django-nose
 feedparser
 nose-exclude
-http://github.com/jezdez/django_compressor/tarball/086f05041a28c176994ebc22dc41ce12da74045e
+https://github.com/jezdez/django_compressor/tarball/086f05041a28c176994ebc22dc41ce12da74045e
 python-digest
 decorator
 django-digest
