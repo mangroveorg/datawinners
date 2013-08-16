@@ -122,15 +122,14 @@ def create_data_sender(request):
         success = False
         try:
             reporter_id, message = process_create_data_sender_form(dbm, form, org_id)
-            success = True
         except DataObjectAlreadyExists as e:
             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
-        if len(form.errors) == 0 and form.requires_web_access() and success:
+        if len(form.errors) == 0 and form.requires_web_access() and reporter_id:
             email_id = request.POST['email']
             create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
                                    language_code=request.LANGUAGE_CODE)
 
-        if message is not None and success:
+        if message is not None and reporter_id:
             if form.cleaned_data['project_id'] != "":
                 project = Project.load(dbm.database, form.cleaned_data['project_id'])
                 project = project.name
@@ -141,7 +140,7 @@ def create_data_sender(request):
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
-                                  {'form': form, 'message': message, 'success': success, 'project_inks': entity_links},
+                                  {'form': form, 'message': message, 'success': reporter_id is not None, 'project_inks': entity_links},
                                   context_instance=RequestContext(request))
 
 
