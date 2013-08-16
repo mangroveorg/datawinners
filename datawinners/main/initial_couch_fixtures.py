@@ -1491,7 +1491,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
                             ddtype=select_type,
                             instruction="Choose 1 or more answers from the list.", required=False)
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="cli001", type='survey',
+                           form_code="cli051", type='survey',
                            fields=[question1, question2, question3, question4, question5, question6, question7,
                                    question8],
                            entity_type=CLINIC_ENTITY_TYPE
@@ -1508,7 +1508,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     try:
         qid = form_model.save()
     except DataObjectAlreadyExists as e:
-        get_form_model_by_code(manager, "cli001").delete()
+        get_form_model_by_code(manager, "cli051").delete()
         qid = form_model.save()
     project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
