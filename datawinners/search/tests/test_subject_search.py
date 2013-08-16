@@ -1,106 +1,112 @@
 from unittest import TestCase
-import elasticutils
-from mock import patch, Mock, MagicMock
-# from datawinners.search.subject_search import paginated_search, _replace_special_chars, _entity_dict
-from mangrove.datastore.database import DatabaseManager
-from mangrove.datastore.entity import Entity
-from mangrove.form_model.form_model import FormModel
+from mock import patch, Mock
+from datawinners.search.subject_search import ElasticUtilsHelper, SubjectQueryBuilder
 
 
-# class TestSubjectSearch(TestCase):
-#     def test_default_query_used_when_no_search_text(self):
-#         search_params = {}
-#         search_params.update({'search_text': ''})
-#         search_params.update({'start_result_number': '0'})
-#         search_params.update({'number_of_results': '10'})
-#         search_params.update({'order': ''})
-#         search_params.update({'order_by': 1})
-#         with patch("datawinners.search.subject_search.get_database_manager") as get_manager:
-#             with patch("datawinners.search.subject_search.header_fields") as header_fields:
-#                 with patch("datawinners.search.subject_search.S") as search_object:
-#                     get_manager.return_value = Mock()
-#                     header_values = {'name': 'Name', 'place': 'Place'}
-#                     header_fields.return_value = header_values
-#
-#                     mock_search = MagicMock(spec=elasticutils.S)
-#                     query = Mock()
-#                     query.values_dict = Mock(return_value=[])
-#                     search_obj = Mock(spec=elasticutils.S)
-#                     mock_search.order_by.return_value = search_obj
-#
-#                     filtered_search_obj = Mock(spec=elasticutils.S)
-#                     search_obj.filter.return_value = filtered_search_obj
-#
-#                     filtered_search_obj.query.return_value = query
-#                     search_object.return_value = mock_search
-#
-#                     paginated_search("test", 'st', search_params)
-#
-#                     self.assertTrue(filtered_search_obj.query.called)
-#                     self.assertTrue(filtered_search_obj.count.called)
-#                     search_obj.filter.assert_called_once_with(void=False)
-#                     self.assertTrue(query.count.called)
-#
-#     def test_raw_query_used_when_for_search_text(self):
-#         search_params = {}
-#         search_params.update({'search_text': 'search string'})
-#         search_params.update({'start_result_number': '0'})
-#         search_params.update({'number_of_results': '10'})
-#         search_params.update({'order': ''})
-#         search_params.update({'order_by': 1})
-#         with patch("datawinners.search.subject_search.get_database_manager") as get_manager:
-#             with patch("datawinners.search.subject_search.header_fields") as header_fields:
-#                 with patch("datawinners.search.subject_search.S") as search_object:
-#                     get_manager.return_value = Mock()
-#                     header_values = {'name': 'Name', 'place': 'Place'}
-#                     header_fields.return_value = header_values
-#
-#                     mock_search = Mock()
-#                     query = Mock()
-#                     query.values_dict = Mock(return_value=[])
-#                     search_obj = Mock(spec=elasticutils.S)
-#                     mock_search.order_by.return_value = search_obj
-#
-#                     filtered_search_obj = Mock(spec=elasticutils.S)
-#                     search_obj.filter.return_value = filtered_search_obj
-#
-#                     filtered_search_obj.query_raw.return_value = query
-#                     search_object.return_value = mock_search
-#
-#                     paginated_search("test", 'st', search_params)
-#
-#                     self.assertTrue(filtered_search_obj.query_raw.called)
-#                     filtered_search_obj.query_raw.assert_called_once_with(
-#                         {"query_string": {"fields": ['place', 'name'], "query": "search string"}})
-#                     self.assertTrue(query.count.called)
-#                     self.assertTrue(filtered_search_obj.count.called)
-#                     search_obj.filter.assert_called_once_with(void=False)
-#
-#     def test_replace_special_chars(self):
-#         text = 'sho\uld_change_+-!^(){}[]~*?:"should_not_change__e#$__change_this&&that||thus'
-#         result = _replace_special_chars(text)
-#         expected = 'sho\\\\uld_change_\\+\\-\\!\\^\\(\\)\\{\\}\\[\\]\\~\\*\\?\\:\\"should_not_change__e#$__change_this\\&&that\\||thus'
-#         self.assertEquals(result, expected)
-#
-#
-#     def test_created_subject_index_documents_should_have_void_field(self):
-#         with patch("datawinners.search.subject_search.get_entity_type_fields") as get_entity_type_fields:
-#             with patch(
-#                     "datawinners.search.subject_search.get_form_model_by_entity_type") as get_form_model_by_entity_type:
-#                 with patch("datawinners.search.subject_search._tabulate_data") as _tabulate_data:
-#                     with patch("datawinners.search.subject_search.Entity.get") as entity_get:
-#                         mock_subject = Mock(spec=Entity)
-#                         entity_get.return_value = mock_subject
-#                         _tabulate_data.return_value = {"cols": [{"q1": 'ans1'}]}
-#                         get_form_model_by_entity_type.return_value = Mock(spec=FormModel)
-#                         get_entity_type_fields.return_value = ['field1'], ['label1'], ['q1']
-#                         mock_subject.is_void.return_value = False
-#
-#                         moc_entity_doc = Mock()
-#                         moc_entity_doc.id.return_value = 1
-#                         result = _entity_dict("some_subject", moc_entity_doc, Mock(spec=DatabaseManager))
-#
-#                         self.assertEquals(result["void"], False)
-#                         self.assertEquals(result["entity_type"], "some_subject")
+class TestElasticUtilsHelper(TestCase):
+    def test_should_escape_special_characters(self):
+        text = 'sho\uld_change_+-!^(){}[]~*?:"should_not_change__e#$__change_this&&that||thus'
+        result = ElasticUtilsHelper().replace_special_chars(text)
+        expected = 'sho\\\\uld_change_\\+\\-\\!\\^\\(\\)\\{\\}\\[\\]\\~\\*\\?\\:\\"should_not_change__e#$__change_this\\&&that\\||thus'
+        self.assertEquals(result, expected)
+
+class TestSubjectQueryBuilder(TestCase):
+
+    def test_should_create_query_with_given_search_url(self):
+        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
+            with patch("datawinners.search.subject_search.ELASTIC_SEARCH_URL") as searchUrl:
+                elasticUtilsMock.S.return_value = elasticUtilsMock
+
+                SubjectQueryBuilder().create_query("subject_type","database_name")
+
+                elasticUtilsMock.S.assert_called_with()
+                elasticUtilsMock.es.assert_called_with(urls = searchUrl)
+
+    def test_should_create_query_with_index_as_given_database_name(self):
+        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
+                elasticUtilsMock.S.return_value = elasticUtilsMock
+                elasticUtilsMock.es.return_value = elasticUtilsMock
+
+                SubjectQueryBuilder().create_query("subject_type", "database_name")
+
+                elasticUtilsMock.indexes.assert_called_with("database_name")
+
+    def test_should_create_query_with_document_type_as_given_subject_type(self):
+        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
+            elasticUtilsMock.S.return_value = elasticUtilsMock
+            elasticUtilsMock.es.return_value = elasticUtilsMock
+            elasticUtilsMock.indexes.return_value = elasticUtilsMock
+
+            SubjectQueryBuilder().create_query("subject_type", "database_name")
+
+            elasticUtilsMock.doctypes.assert_called_with("subject_type")
+
+    def test_should_filter_query_with_only_non_void_documents(self):
+        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
+            elasticUtilsMock.S.return_value = elasticUtilsMock
+            elasticUtilsMock.es.return_value = elasticUtilsMock
+            elasticUtilsMock.indexes.return_value = elasticUtilsMock
+            elasticUtilsMock.doctypes.return_value = elasticUtilsMock
+
+            SubjectQueryBuilder().create_query("subject_type", "database_name")
+
+            elasticUtilsMock.filter.assert_called_with(void = False)
+
+    def test_should_create_ordered_query_with_given_order_parameters(self):
+        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
+            with patch("datawinners.search.subject_search.SubjectQueryBuilder.create_query") as query:
+                query.return_value = elasticUtilsMock
+                query_params = {
+                    "start_result_number": 1,
+                    "number_of_results": 10,
+                    "order": "-",
+                    "order_field": "field_name_to_order_by"
+                }
+
+                SubjectQueryBuilder().create_paginated_query("subject_type", "database_name", query_params)
+
+                query.assert_called_with("subject_type", "database_name")
+                elasticUtilsMock.order_by.assert_called_with("-field_name_to_order_by_value")
+
+    def test_should_create_paginated_query_with_given_paginated_parameters(self):
+        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
+            with patch("datawinners.search.subject_search.SubjectQueryBuilder.create_query") as query:
+                query.return_value = elasticUtilsMock
+                elasticUtilsMock.order_by.return_value = elasticUtilsMock
+                query_params = {
+                    "start_result_number": 1,
+                    "number_of_results": 10,
+                    "order": "-",
+                    "order_field": "field_name_to_order_by"
+                }
+
+                SubjectQueryBuilder().create_paginated_query("subject_type", "database_name", query_params)
+
+                elasticUtilsMock.__getitem__.assert_called_with(slice(1, 11, None))
+
+    def test_should_return_match_all_query_when_no_query_text_present(self):
+        searchMock = Mock()
+        query_text = ""
+        SubjectQueryBuilder().add_query_criteria([], query_text, searchMock)
+
+        searchMock.query.assert_called_with()
+
+    def test_should_return_escaped_query_for_given_search_fields_when_query_text_present(self):
+        searchMock = Mock()
+        query_text = "query_text"
+
+        with patch("datawinners.search.subject_search.ElasticUtilsHelper") as elastic_utils_helper:
+            elastic_utils_helper.return_value = elastic_utils_helper
+            elastic_utils_helper.replace_special_chars.return_value = "query_text_escaped"
+
+            SubjectQueryBuilder().add_query_criteria(["query_field1", "query_field2"], query_text, searchMock)
+
+            elastic_utils_helper.replace_special_chars.assert_called_with('query_text')
+            searchMock.query_raw.assert_called_with({
+                "query_string": {
+                    "fields": ("query_field1", "query_field2"),
+                    "query": "query_text_escaped"
+                }
+            })
 
 

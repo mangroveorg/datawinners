@@ -107,8 +107,8 @@ class SubjectQueryBuilder():
         self.elastic_utils_helper = ElasticUtilsHelper()
 
     def create_query(self, subject_type, database_name):
-        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name) \
-            .doctypes(subject_type).filter(void=False)
+        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(subject_type)\
+                .filter(void=False)
 
     def create_paginated_query(self, subject_type, database_name, query_params):
         start_result_number = query_params.get("start_result_number")
@@ -121,11 +121,11 @@ class SubjectQueryBuilder():
 
     def add_query_criteria(self, query_fields, query_text, search):
         if query_text:
-            query_text = self.elastic_utils_helper.replace_special_chars(query_text)
+            query_text_escaped = self.elastic_utils_helper.replace_special_chars(query_text)
             raw_query = {
                 "query_string": {
                     "fields": tuple(query_fields),
-                    "query": query_text
+                    "query": query_text_escaped
                 }
             }
             return search.query_raw(raw_query)
