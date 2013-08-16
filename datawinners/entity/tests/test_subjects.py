@@ -23,3 +23,12 @@ class TestSubjects(unittest.TestCase):
         self.manager.view.count_non_voided_entities_by_type = Mock(return_value=[Row({'key':['clinic'],'value':10})])
         subject_count = get_subjects_count(self.manager)
         self.assertEquals(subject_count.get('clinic'),10)
+
+    def test_should_not_include_reporter_in_subject_types_list(self):
+        self.manager.view.projects_by_subject_type = Mock(return_value=[Row({'key':'clinic','value':'acc'}),Row({'key':'reporter','value':'tester'})])
+        with patch("datawinners.entity.subjects.get_entity_types") as get_entity_types:
+            get_entity_types.return_value = ["clinic"]
+            result = load_subject_type_with_projects(self.manager)
+            self.assertEquals(result.__len__(),1)
+            self.assertDictEqual({'clinic':['acc']},result)
+            self.assertNotIn('reporter',result.keys())
