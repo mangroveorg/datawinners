@@ -50,7 +50,7 @@ function restore_couchdb_and_postgres {
   	restore_postgresql_database && \
   	recreate_couch_db && \
   	recreate_feed_db && \
-  	recreate_search_indexes
+  	recreate_search_index
 }
 
 function unit_test {

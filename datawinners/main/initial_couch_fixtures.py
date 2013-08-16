@@ -206,7 +206,7 @@ def create_project1(entity_type, manager, questions, weekly_reminder_and_deadlin
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
-    project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
+    project1 = Project(name="Clinic Test Project1", goals="This project is for automation", project_type="survey",
                        entity_type=entity_type[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project1.qid = qid
@@ -218,16 +218,16 @@ def create_project1(entity_type, manager, questions, weekly_reminder_and_deadlin
         pass
     reminder = Reminder(project_id=project1.id, day=2, reminder_mode=ReminderMode.BEFORE_DEADLINE,
                         organization_id='SLX364903',
-                        message="2 day(s) are remainning to deadline. Please send your data for Clinic Test Project.")
+                        message="2 day(s) are remainning to deadline. Please send your data for Clinic Test Project1.")
     reminder.save()
     # Create reminders for project1
     reminder = Reminder(project_id=project1.id, day=0, reminder_mode=ReminderMode.ON_DEADLINE,
                         organization_id='SLX364903',
-                        message="Today is the deadline. Please send your data for Clinic Test Project.")
+                        message="Today is the deadline. Please send your data for Clinic Test Project1.")
     reminder.save()
     reminder = Reminder(project_id=project1.id, day=2, reminder_mode=ReminderMode.AFTER_DEADLINE,
                         organization_id='SLX364903',
-                        message="2 days are overdue the deadline. Please send your data for Clinic Test Project.")
+                        message="2 days are overdue the deadline. Please send your data for Clinic Test Project1.")
     reminder.save()
     # Associate datasenders/reporters with project 1
     project1.data_senders.extend(["rep5", "rep6", "rep1", "rep8", "rep9", "rep3"])
@@ -1620,7 +1620,7 @@ def load_data():
     create_trial_test_organization('chinatwu2@gmail.com', 'COJ00001', True, [phone_number_type, first_name_type])
     create_trial_test_organization('chinatwu3@gmail.com', 'COJ00002', False)
     create_trial_test_organization('chinatwu4@gmail.com', 'COJ00003', False)
-    create_trial_test_organization('mamy@mailinator.com', 'TIP938359', True, [phone_number_type, first_name_type])
+    create_trial_test_organization('mamytest@mailinator.com', 'SLX364903', True, [phone_number_type, first_name_type])
     create_project_for_nigeria_test_orgnization()
     create_datasender_for_newly_created_organization([phone_number_type, first_name_type])
 
