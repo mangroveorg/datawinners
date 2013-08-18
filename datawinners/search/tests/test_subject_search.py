@@ -1,6 +1,6 @@
 from unittest import TestCase
 from mock import patch, Mock
-from datawinners.search.subject_search import ElasticUtilsHelper, SubjectQueryBuilder
+from datawinners.search.subject_search import ElasticUtilsHelper, SubjectQueryBuilder, SubjectQueryResponseCreator, SubjectQuery
 
 
 class TestElasticUtilsHelper(TestCase):
@@ -87,9 +87,12 @@ class TestSubjectQueryBuilder(TestCase):
     def test_should_return_match_all_query_when_no_query_text_present(self):
         searchMock = Mock()
         query_text = ""
-        SubjectQueryBuilder().add_query_criteria([], query_text, searchMock)
+        searchMock.query.return_value = searchMock
+
+        actual_query = SubjectQueryBuilder().add_query_criteria([], query_text, searchMock)
 
         searchMock.query.assert_called_with()
+        self.assertEquals(actual_query, searchMock)
 
     def test_should_return_escaped_query_for_given_search_fields_when_query_text_present(self):
         searchMock = Mock()
@@ -103,10 +106,56 @@ class TestSubjectQueryBuilder(TestCase):
 
             elastic_utils_helper.replace_special_chars.assert_called_with('query_text')
             searchMock.query_raw.assert_called_with({
-                "query_string": {
-                    "fields": ("query_field1", "query_field2"),
-                    "query": "query_text_escaped"
-                }
-            })
+                                                       "query_string": {
+                                                                        "fields": ("query_field1", "query_field2"),
+                                                                        "query": "query_text_escaped"
+                                                                       }
+                                                    })
+
+
+class TestSubjectQueryResponseCreator(TestCase):
+
+    def test_should_return_subjects_with_field_values_for_specified_field_names_from_query_response(self):
+        query = Mock()
+
+        query.values_dict.return_value = [{
+            "field_name1":"field_value11",
+            "field_name2":"field_value12"
+        },{
+            "field_name1": "field_value21",
+            "field_name2": "field_value22"
+        }]
+
+        actualSubjects = SubjectQueryResponseCreator().create_response(required_field_names=["field_name1", "field_name2"],query=query)
+
+        query.values_dict.assert_called_with(("field_name1", "field_name2"))
+        self.assertEquals(actualSubjects, [["field_value11", "field_value12"],["field_value21", "field_value22"]])
+
+class TestSubjectQuery(TestCase):
+
+    def test_should_create_query_for_given_subject_type_and_database_name(self):
+        user = Mock()
+        subject_query_builder = Mock()
+        subject_query = SubjectQuery()
+        response_creator = Mock()
+        subject_query.query_builder = subject_query_builder
+        subject_query.response_creator = response_creator
+        with patch("datawinners.search.subject_search.get_database_manager") as database_manager:
+            with patch("datawinners.search.subject_search.header_fields") as header_fields:
+                database_manager.return_value.database_name = "database_name"
+                subject_headers = ["field1", "field2"]
+                header_fields.return_value.keys.return_value = subject_headers
+                query = Mock()
+                subject_query_builder.create_query.return_value = query
+                query_with_criteria = Mock()
+                subject_query_builder.add_query_criteria.return_value = query_with_criteria
+                response_creator.create_response.return_value = "expected subjects"
+
+                actualSubjects = subject_query.query(user, "subject_type", "query_text")
+
+                subject_query_builder.create_query.assert_called_once_with("subject_type", "database_name")
+                subject_query_builder.add_query_criteria.assert_called_with(subject_headers, "query_text", query)
+                response_creator.create_response.assert_called_with(subject_headers, query_with_criteria)
+                self.assertEquals(actualSubjects, "expected subjects")
 
 
