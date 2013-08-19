@@ -31,7 +31,7 @@ $(document).ready(function () {
             { "sClass": "center",
                 "sTitle": "<input type='checkbox'id='checkall-checkbox'></input>",
                 "fnRender": function (data) {
-                    return '<input type="checkbox" value='+ data.aData[5] +' />';
+                    return '<input type="checkbox" value='+ data.aData[data.aData.length - 1] +' />';
                 },
                 "aTargets":[0]
             },
@@ -79,7 +79,12 @@ $(document).ready(function () {
                 "type": "GET",
                 "url": sSource,
                 "data": aoData,
-                "success": fnCallback,
+                "success": function(result){
+                    $.each(result.subjects, function(i, subject){
+                       subject.unshift('')
+                    });
+                    fnCallback(result);
+                },
                 "error": function () {
                 },
                 "global":false
