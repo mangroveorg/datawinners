@@ -1451,7 +1451,6 @@ def load_sms_data_for_cli001(manager):
 
 def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)
-    Reminder.objects.filter(organization=organization).delete()
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
     # Entity id is a default type in the system.
     entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
@@ -1515,7 +1514,10 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
                        sender_group="close")
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
+    Reminder.objects.filter(project_id=project1.id).delete()
+
     project1.reminder_and_deadline = weekly_reminder_and_deadline
+
     try:
         project1.save(manager)
     except Exception:
@@ -1620,7 +1622,7 @@ def load_data():
     create_trial_test_organization('chinatwu2@gmail.com', 'COJ00001', True, [phone_number_type, first_name_type])
     create_trial_test_organization('chinatwu3@gmail.com', 'COJ00002', False)
     create_trial_test_organization('chinatwu4@gmail.com', 'COJ00003', False)
-    create_trial_test_organization('mamytest@mailinator.com', 'SLX364903', True, [phone_number_type, first_name_type])
+    create_trial_test_organization('mamytest@mailinator.com', 'SLX364903', False)
     create_project_for_nigeria_test_orgnization()
     create_datasender_for_newly_created_organization([phone_number_type, first_name_type])
 

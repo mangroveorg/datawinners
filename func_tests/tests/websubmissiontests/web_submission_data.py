@@ -32,7 +32,7 @@ VALID_SMS = {SENDER: "919049008976",
              'message': THANKS + u" q1: cid001 q2: mino q3: 90 q4: 25.12.2010 q5: O+ q6: Memory loss q7: -18.1324, 27.6547 q8: Hivid"}
 
 DEFAULT_ORG_DATA = {
-    PROJECT_NAME: 'clinic test project'
+    PROJECT_NAME: 'clinic test project1'
 }
 
 TRIAL_ORG_DATA = {

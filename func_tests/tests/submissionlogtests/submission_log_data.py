@@ -11,7 +11,7 @@ SMS_DATA_LOG = {SMS_SUBMISSION: "Success No cid005 Mr. Tessy 58 17.05.2011 O- Ra
                 UNIQUE_VALUE: "Mr. Tessy"}
 
 PAGE_TITLE_IN_FRENCH = "Journal de Soumission"
-FIRST_PROJECT_NAME = "clinic test project"
+FIRST_PROJECT_NAME = "clinic test project1"
 DELETE_SUBMISSION_WARNING_MESSAGE = u'Your Submission(s) will be moved to Deleted Submissions.\nThis action cannot be undone.\n\nAre you sure you want to continue?'
 EXPECTED_FA_LIST = ['89.0', '77', '77', '89.0', '77', '58', '27', '58', '98', '37', '28', '78', '28', '45', '56', '89', '88', '88', '36', '69', '45', '91', '43', '32', '35']
 

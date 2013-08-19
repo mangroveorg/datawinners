@@ -72,10 +72,11 @@ class TestAllDataSender(unittest.TestCase):
     @attr('functional_test')
     def test_successful_dissociation_of_data_sender(self):
         all_data_sender_page = self.page
-        if all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))) == "--":
+        project_name = fetch_(PROJECT_NAME, from_(ASSOCIATE_DATA_SENDER))
+        if project_name not in all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))):
             self.associate(all_data_sender_page)
         self.dissociate(all_data_sender_page)
-        self.assertEqual(all_data_sender_page.get_project_names(fetch_(UID, from_(DISSOCIATE_DATA_SENDER))), "--")
+        self.assertNotIn(project_name,all_data_sender_page.get_project_names(fetch_(UID, from_(DISSOCIATE_DATA_SENDER))))
 
     @attr('functional_test')
     def test_dissociate_ds_without_selecting_project(self):

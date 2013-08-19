@@ -69,7 +69,7 @@ DEFAULT_DATA_FOR_ANALYSIS = {PROJECT_NAME: "clinic test project",
                              }
 
 
-DEFAULT_DATA_FOR_QUESTIONNAIRE = {PROJECT_NAME: "clinic test project",
+DEFAULT_DATA_FOR_QUESTIONNAIRE = {PROJECT_NAME: "clinic test project1",
                                   QUESTIONS: [u'What is your namé?',
                                               u'What is age öf father?',
                                               u'What is réporting date?',

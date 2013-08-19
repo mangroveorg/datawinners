@@ -34,7 +34,7 @@ class TestBroadcastSMS(unittest.TestCase):
         self.assertEquals(self.send_message_page.get_sms_content(), SMS_EXACT_ON_LIMIT_DATA)
 
     @classmethod
-    def _navigate_to_send_message_page(cls, project_name="clinic test project", credential=VALID_CREDENTIALS):
+    def _navigate_to_send_message_page(cls, project_name="clinic test project1", credential=VALID_CREDENTIALS):
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         global_navigation = login_page.do_successful_login_with(credential)

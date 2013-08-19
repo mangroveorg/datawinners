@@ -66,4 +66,4 @@ VALID_DATASENDER_DATA_FOR_DUPLICATE_UNIQUE_ID = {NAME: "Mickey Mouse",
                                                  COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                                                  GPS: "-21.7622088847 48.0690991394",
                                                  ERROR_MSG: "Data Sender with Unique Identification Number"}
-CLINIC_PROJECT1_NAME = "clinic test project"
+CLINIC_PROJECT1_NAME = "clinic test project1"
