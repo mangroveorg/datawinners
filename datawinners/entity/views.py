@@ -273,7 +273,6 @@ def all_subjects(request, subject_type):
     header_dict = header_fields(manager, subject_type)
     return render_to_response('entity/all_subjects.html',
                               {'subject_headers': header_dict,
-                               'search_test': "",
                                'current_language': translation.get_language(),
                                'entity_links': all_subject_links(request, subject_type),
                                'subject_type': subject_type,
