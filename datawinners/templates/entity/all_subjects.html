@@ -59,7 +59,7 @@
     <div id="all_subjects">
         <ul class="secondary_tab">
             <li class="active">
-                <a href="{{ entity_link.subjects }}">
+                <a href="{% url all_subjects subject_type %}">
                     {% blocktrans with subject_type|capfirst as subject_type %}My {{ subject_type }}
                         List{% endblocktrans %}</a>
             </li>
@@ -72,7 +72,8 @@
         <div id="web_preivew">
             <div id="my_subjects_links">
                 <ul>
-                    <li><a href="{{ entity_links.subjects_edit_link }}" class="edit-form-link">{% trans "Edit" %}</a>
+                    <li><a href="{% url edit_subject_questionnaire subject_type %}"
+                           class="edit-form-link">{% trans "Edit" %}</a>
                     </li>
                     <li><a href="javascript:void(0)" class="preview_subject_registration_form">{% trans "Print" %}</a>
                     </li>
@@ -94,7 +95,7 @@
     </div>
     <form name="export_subjects" action="{% url export_subject %}" method="post">
         {% csrf_token %}
-        <input type="hidden" name="subject_type" id="subject_type" value="{{ subject_type }}" />
-        <input type="hidden" name="query_text" id="query_text" />
+        <input type="hidden" name="subject_type" id="subject_type" value="{{ subject_type }}"/>
+        <input type="hidden" name="query_text" id="query_text"/>
     </form>
 {% endblock %}

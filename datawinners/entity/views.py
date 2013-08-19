@@ -51,7 +51,7 @@ from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organizat
     get_database_manager_for_org, get_changed_questions
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from mangrove.datastore.entity import get_by_short_code, get_all_entities, get_short_codes_by_entity_type
+from mangrove.datastore.entity import get_by_short_code, get_short_codes_by_entity_type
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
@@ -140,7 +140,8 @@ def create_data_sender(request):
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
-                                  {'form': form, 'message': message, 'success': reporter_id is not None, 'project_inks': entity_links},
+                                  {'form': form, 'message': message, 'success': reporter_id is not None,
+                                   'project_inks': entity_links},
                                   context_instance=RequestContext(request))
 
 
@@ -261,6 +262,8 @@ def all_subject_types(request):
                                'subjects_count': subjects_count,
                               },
                               context_instance=RequestContext(request))
+
+
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
@@ -274,14 +277,11 @@ def all_subjects(request, subject_type):
     return render_to_response('entity/all_subjects.html',
                               {'subject_headers': header_dict,
                                'current_language': translation.get_language(),
-                               'entity_links': all_subject_links(request, subject_type),
                                'subject_type': subject_type,
                                'questions': viewable_questionnaire(
                                    get_form_model_by_entity_type(manager, [subject_type]))
                               },
                               context_instance=RequestContext(request))
-
-
 
 
 def viewable_questionnaire(form_model):
@@ -294,11 +294,6 @@ def viewable_questionnaire(form_model):
         preview.update({"constraints": constraints})
         questions.append(preview)
     return questions
-
-
-def all_subject_links(request, subject_type):
-    return {"subjects": request.path,
-            "subjects_edit_link": "/entity/subject/edit/" + subject_type + "/"}
 
 
 @csrf_view_exempt
@@ -323,11 +318,11 @@ def all_subjects_ajax(request, subject_type):
     return HttpResponse(
         jsonpickle.encode(
             {
-             'subjects': subjects,
-             'iTotalDisplayRecords': query_count,
-             'iDisplayStart': int(request.GET.get('iDisplayStart')),
-             "iTotalRecords": search_count,
-             'iDisplayLength': int(request.GET.get('iDisplayLength'))
+                'subjects': subjects,
+                'iTotalDisplayRecords': query_count,
+                'iDisplayStart': int(request.GET.get('iDisplayStart')),
+                "iTotalRecords": search_count,
+                'iDisplayLength': int(request.GET.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')
 
 
@@ -584,14 +579,14 @@ def initial_values(form_model, subject):
 
 
 @valid_web_user
-def     edit_subject(request, entity_type, entity_id, project_id=None):
+def edit_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     subject = get_by_short_code(manager, entity_id, [entity_type.lower()])
     if project_id is not None:
         back_link = '/project/registered_subjects/%s/' % project_id
     else:
-        back_link = reverse(all_subjects,args=[entity_type])
+        back_link = reverse(all_subjects, args=[entity_type])
 
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
