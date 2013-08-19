@@ -824,9 +824,9 @@ def save_questionnaire(request):
 @valid_web_user
 def export_subject(request):
     manager = get_database_manager(request.user)
-    search_text = request.GET.get('search_text', '')
-    subject_type = request.GET.get('subject_type', '').lower()
-    subject_list = SubjectQuery().query(request.user, subject_type, search_text)
+    query_text = request.POST.get('query_text', '')
+    subject_type = request.POST.get('subject_type', '').lower()
+    subject_list = SubjectQuery().query(request.user, subject_type, query_text)
 
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)

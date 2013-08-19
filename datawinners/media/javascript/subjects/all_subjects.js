@@ -25,12 +25,8 @@ $(document).ready(function () {
 
     });
     $('#subject_export_link').click(function () {
-        var subject_table = $('#subjects_table').dataTable()
-        
-        var search_text = subject_table.fnSettings().oPreviousSearch.sSearch
-        //from http://www.datatables.net/forums/discussion/242/getting-filter-text/p1
-
-        $.get(location.href = "/entity/subject/export?search_text=" + search_text + "&subject_type=" + subject_type);
+        $("#query_text").val(($("#subjects_table_filter").find("input").val()))
+        $("form[name='export_subjects']").submit();
     });
 
 });

@@ -43,7 +43,7 @@
 {% block content %}
     <div>
         <ul>
-            <li><a id='subject_export_link'href="#">Export</a>
+            <li><a id='subject_export_link' href="#">Export</a>
             </li>
         </ul>
     </div>
@@ -92,5 +92,9 @@
            id="ok_button">{% trans "Yes, Delete" %}</a>
         <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
     </div>
-
+    <form name="export_subjects" action="{% url export_subject %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="subject_type" id="subject_type" value="{{ subject_type }}" />
+        <input type="hidden" name="query_text" id="query_text" />
+    </form>
 {% endblock %}
