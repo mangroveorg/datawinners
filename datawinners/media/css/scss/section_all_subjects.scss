@@ -144,7 +144,6 @@
 }
 
 
-
 #subjects_table_wrapper #action_button{
   display: inline;
   float: left;
@@ -159,4 +158,8 @@
       padding-top: 7px;
     }
   }
+}
+
+#subject_export_link {
+  float: right;
 }

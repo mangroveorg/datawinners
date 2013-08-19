@@ -5,7 +5,7 @@
     border: 0px;
     text-align: left; }
   #all_subjects .all_subject_type_table .list_header {
-    border-bottom: 1px solid #CCCCCC !important;
+    border-bottom: 1px solid #cccccc !important;
     padding: 10px; }
     #all_subjects .all_subject_type_table .list_header .header {
       font-weight: normal; }
@@ -50,7 +50,7 @@
       margin-left: 0px !important; }
   #all_subjects .ui-accordion-content {
     border: 0;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid black;
     padding: 10px; }
   #all_subjects .register_subject {
     float: right;
@@ -107,3 +107,6 @@
   #delete_entity_block a .cancel_link {
     padding-left: 5px;
     padding-top: 7px; }
+
+#subject_export_link {
+  float: right; }
