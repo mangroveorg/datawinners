@@ -197,3 +197,14 @@ class AllDataSendersPage(Page):
         self.select_a_data_sender_by_id(uid)
         self.select_edit_action()
         return AddDataSenderPage(self.driver)
+
+    def is_action_available(self, action_to_be_performed):
+        self.driver.find(ACTION_DROP_DOWN).click()
+        class_name = self.driver.find(by_xpath(ACTION_LI_BY_ACTION_ID % action_to_be_performed)).get_attribute("class")
+        return class_name.find('disabled') < 0
+
+    def is_associate_to_project_action_available(self):
+        return self.is_action_available(ASSOCIATE)
+
+    def is_disassociate_to_project_action_available(self):
+        return self.is_action_available(DISSOCIATE)

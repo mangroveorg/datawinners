@@ -244,6 +244,10 @@ $(document).ready(function () {
         } else {
             return DW.all_ds_action_dropdown
         }
+    };
+
+    if ($("#all_projects > li").length == 0) {
+        $("#associate,#disassociate").parent().addClass("disabled");
     }
 });
 
