@@ -1,0 +1,54 @@
+/*
+Syntax error: Inconsistent indentation: 5 spaces were used for indentation, but the rest of the document was indented using 4 spaces.
+        on line 13 of pre-deploy.sh
+
+8: 
+9: mkdir -p $local_db_backup_dir
+10: 
+11: function backup_db(){
+12:     echo "################${FUNCNAME[0]} start################"
+13:      ssh $ssh_str -tt  '
+14:         today=$(date -u +"%Y-%b-%d");
+15:         couch_main_backup=~/mangrove_couchdb_main_backup_$today
+16:         couch_feed_backup=~/mangrove_couchdb_feed_backup_$today
+17:         echo $couch_main_backup and $couch_feed_backup
+18:         echo "################backup couchdb...################"
+
+Backtrace:
+pre-deploy.sh:13
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:424:in `tabulate'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:362:in `each_with_index'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:382:in `each'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:382:in `each_with_index'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:382:in `tabulate'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:345:in `_to_tree'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:315:in `_render'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:262:in `render'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:341:in `update_stylesheet'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:203:in `update_stylesheets'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:201:in `each'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:201:in `update_stylesheets'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:299:in `watch'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/multi_listener.rb:86:in `call'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/multi_listener.rb:86:in `on_change'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/multi_listener.rb:95:in `initialize_adapter'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:55:in `call'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:55:in `poll'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:31:in `start'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:31:in `initialize'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:31:in `new'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:31:in `start'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/multi_listener.rb:44:in `start'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:307:in `watch'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin.rb:107:in `send'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin.rb:107:in `method_missing'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/exec.rb:444:in `watch_or_update'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/exec.rb:307:in `process_result'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/exec.rb:41:in `parse'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/exec.rb:21:in `parse!'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/sass:8
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Inconsistent indentation: 5 spaces were used for indentation, but the rest of the document was indented using 4 spaces.\A         on line 13 of pre-deploy.sh\A \A 8: \A 9: mkdir -p $local_db_backup_dir\A 10: \A 11: function backup_db(){\A 12:     echo \"################${FUNCNAME[0]} start################\"\A 13:      ssh $ssh_str -tt  '\A 14:         today=$(date -u +\"%Y-%b-%d\");\A 15:         couch_main_backup=~/mangrove_couchdb_main_backup_$today\A 16:         couch_feed_backup=~/mangrove_couchdb_feed_backup_$today\A 17:         echo $couch_main_backup and $couch_feed_backup\A 18:         echo \"################backup couchdb...################\""; }

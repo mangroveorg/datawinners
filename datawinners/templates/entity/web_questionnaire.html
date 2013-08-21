@@ -1,32 +1,45 @@
-{% extends 'layout_application.html' %}
+{% extends 'entity/subjects_header.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Subjects" %}{% endblock %}
-
-{% block section_title %}{% if is_update %}{% trans "Edit a" %}{% else %}{% trans "Add a new" %}{% endif %} {{ entity_type|capfirst }}
-{% endblock %}
-
-{% load dw_tabs %}
-{% block body %}
-    {% activetab "main_nav" "subjects" %}
-    {{ block.super }}
-{% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_web_questionnaire.css"
-          rel="stylesheet"/>
+    <link href="/media/css/scss/subject_questionnaire.css" rel="stylesheet"/>
 {% endblock %}
-
 {% block page_js %}
     {{ block.super }}
     {% include "web_questionnaire_questions_js.html" %}
 {% endblock %}
 
-{% block content %}
-    {% if is_update %}
-    <div >
-        <a href="{{ back_link }}" class="back-to-list"> « {% trans "Back to Subject List" %}</a>
+{% block page_content %}
+    <div id="subject_reg_block">
+        <div id="my_subjects_links">
+            <ul>
+                <li><a href="{% url edit_subject_questionnaire entity_type %}"
+                       class="edit-form-link">{% trans "Edit" %}</a>
+                </li>
+                <li><a href="javascript:void(0)" class="preview_subject_registration_form">{% trans "Print" %}</a>
+                </li>
+            </ul>
+            <div class="clear-right"></div>
+        </div>
+        <div id="subject_form_heading">
+            <h2 class="font_size_14">{% blocktrans with entity_type|capfirst as entity_type %}Web {{ entity_type }}
+                Registration Form{% endblocktrans %}</h2>
+
+            <div class="instruction">
+                {% blocktrans with project.entity_type as entity_type %}Define what information you want to collect
+                    about each {{ entity_type }}.{% endblocktrans %}
+            </div>
+        </div>
+        {% include 'entity/subject_questionnaire.html' %}
     </div>
-    {%  endif %}
-    {% include 'entity/subject_questionnaire.html' %}
+{% endblock %}
+{% block secondary_navigation %}
+    <div id="all_subject_links">
+        <ul>
+            <li><a href="{% url all_subject_type_page %}" class="back-to-list">
+                « {% trans "Back to All Subjects List" %}</a>
+            </li>
+        </ul>
+    </div>
 {% endblock %}

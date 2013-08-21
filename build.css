@@ -1,0 +1,54 @@
+/*
+Syntax error: Inconsistent indentation: 1 tab was used for indentation, but the rest of the document was indented using 4 spaces.
+        on line 13 of build.sh
+
+8:     git pull --rebase
+9:     (cd $MGROOT_DIR && git pull --rebase)
+10: }
+11: 
+12: function main {
+13: 	case $1 in
+14: 		init) init_env;;
+15: 		pc) pre_commit;;
+16: 		ut) unit_test;;
+17: 		ft) function_test;;
+18: 		st) smoke_test;;
+
+Backtrace:
+build.sh:13
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:424:in `tabulate'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:362:in `each_with_index'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:382:in `each'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:382:in `each_with_index'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:382:in `tabulate'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:345:in `_to_tree'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:315:in `_render'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/engine.rb:262:in `render'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:341:in `update_stylesheet'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:203:in `update_stylesheets'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:201:in `each'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:201:in `update_stylesheets'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:299:in `watch'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/multi_listener.rb:86:in `call'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/multi_listener.rb:86:in `on_change'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/multi_listener.rb:95:in `initialize_adapter'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:55:in `call'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:55:in `poll'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:31:in `start'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:31:in `initialize'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:31:in `new'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/adapters/polling.rb:31:in `start'
+/var/lib/gems/1.8/gems/sass-3.2.5/vendor/listen/lib/listen/multi_listener.rb:44:in `start'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin/compiler.rb:307:in `watch'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin.rb:107:in `send'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/plugin.rb:107:in `method_missing'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/exec.rb:444:in `watch_or_update'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/exec.rb:307:in `process_result'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/exec.rb:41:in `parse'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/../lib/sass/../sass/exec.rb:21:in `parse!'
+/var/lib/gems/1.8/gems/sass-3.2.5/bin/sass:8
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Inconsistent indentation: 1 tab was used for indentation, but the rest of the document was indented using 4 spaces.\A         on line 13 of build.sh\A \A 8:     git pull --rebase\A 9:     (cd $MGROOT_DIR && git pull --rebase)\A 10: }\A 11: \A 12: function main {\A 13: 	case $1 in\A 14: 		init) init_env;;\A 15: 		pc) pre_commit;;\A 16: 		ut) unit_test;;\A 17: 		ft) function_test;;\A 18: 		st) smoke_test;;"; }

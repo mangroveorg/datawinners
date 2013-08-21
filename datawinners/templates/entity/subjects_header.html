@@ -1,0 +1,85 @@
+{# TODO: Rename this file after my subjects page done #}
+
+{% extends 'layout_application.html' %}
+{% load i18n %}
+{% block page_title %}{{ entity_type|capfirst }}{% endblock %}
+
+{% block section_title %}{{ entity_type|capfirst }}
+{% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+    {% activetab "main_nav" "subjects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_css %}
+    {{ block.super }}
+    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_all_subjects.css" rel="stylesheet"/>
+    <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript" src="/media/javascript/subjects/all_subjects.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
+    <script type="text/javascript" src="/media/javascript/action_dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
+    <script type="text/javascript">
+        var upload_url = window.location.pathname;
+        var subject_type = "{{ entity_type|capfirst }}";
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    {% block secondary_navigation %}{% endblock %}
+    {% include 'project/my_subjects_help.html' %}
+    <div id="all_subjects">
+        <ul class="secondary_tab">
+            <li class="active">
+                <a href="{% url all_subjects entity_type %}">
+                    {% blocktrans with entity_type|capfirst as entity_type %} {{ entity_type }}
+                        List{% endblocktrans %}</a>
+            </li>
+            <li class="inactive">
+                <a href="{% url create_subject entity_type %}" id="subject_registration_preview">
+                    {% blocktrans with entity_type|capfirst as entity_type %}{{ entity_type }} Registration
+                        Form{% endblocktrans %}</a>
+            </li>
+        </ul>
+        <div class="help_accordion">
+            {% blocktrans %}View your registered {{ entity_type }} in detail.{% endblocktrans %}
+        </div>
+        {% block page_content %} {% endblock %}
+    </div>
+
+    {% block actions %}
+        <div id="delete_entity_block">
+            <p class="warning_message">{% trans "entity delete error text" %}</p>
+            <a href="" class="button"
+               id="ok_button">{% trans "Yes, Delete" %}</a>
+            <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
+        </div>
+    {% endblock %}
+{% endblock %}

@@ -3,9 +3,9 @@
   width: 910px !important;
   //border-top: 1px solid #CCCCCC !important;
   //margin-top: 20px;
-  table.all_subject_type_table td,table.all_subject_type_table th {
-      border: 0px;
-      text-align: left;
+  table.all_subject_type_table td, table.all_subject_type_table th {
+    border: 0px;
+    text-align: left;
   }
   .all_subject_type_table {
     .list_header {
@@ -140,13 +140,12 @@
   width: 100%;
   text-align: right;
   #add_new_subject_type {
-    //background: url("/media/images/icons.png") left top no-repeat !important;
+    background: url("/media/images/icons.png") left top no-repeat !important;
     padding: 5px 0 5px 30px;
   }
 }
 
-
-#subjects_table_wrapper #action_button{
+#subjects_table_wrapper #action_button {
   display: inline;
   float: left;
   margin-top: -7px;
@@ -162,6 +161,12 @@
   }
 }
 
-#subject_export_link {
-  float: right;
+#all_subject_links {
+  margin-bottom: 10px;
+  li {
+    display: inline;
+  }
+  li:nth-child(2) {
+    float: right;
+  }
 }

@@ -1,12 +1,4 @@
 $(document).ready(function () {
-    $('#web_preivew').toggle();
-    $('#subject_registration_preview').live('click', function (eventObject) {
-        $('#wrapper_div_for_table').toggle();
-        $('#web_preivew').toggle();
-        $('.secondary_tab li:first').attr('class', 'inactive');
-        $('.secondary_tab li:last').attr('class', 'active');
-        eventObject.preventDefault();
-    });
 
     $('#action li a').click(function (e) {
         if ($(this).parent().hasClass("disabled")) {
@@ -25,7 +17,7 @@ $(document).ready(function () {
 
     });
     $('#subject_export_link').click(function () {
-        $("#query_text").val(($("#subjects_table_filter").find("input").val()))
+        $("#query_text").val(($("#subjects_table_filter").find("input").val()));
         $("form[name='export_subjects']").submit();
     });
 

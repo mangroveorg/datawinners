@@ -277,7 +277,7 @@ def all_subjects(request, subject_type):
     return render_to_response('entity/all_subjects.html',
                               {'subject_headers': header_dict,
                                'current_language': translation.get_language(),
-                               'subject_type': subject_type,
+                               'entity_type': subject_type,
                                'questions': viewable_questionnaire(
                                    get_form_model_by_entity_type(manager, [subject_type]))
                               },

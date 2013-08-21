@@ -1,101 +1,31 @@
-{% extends 'layout_application.html' %}
+{% extends 'entity/subjects_header.html' %}
 {% load i18n %}
-{% block page_title %}{{ subject_type|capfirst }}{% endblock %}
-
-{% block section_title %}{{ subject_type|capfirst }}
+{% block page_content %}
+    {% include 'subject_table.html' %}
 {% endblock %}
-
-{% load dw_tabs %}
-{% block body %}
-    {% activetab "main_nav" "subjects" %}
-    {{ block.super }}
-{% endblock %}
-
-{% block page_css %}
-    {{ block.super }}
-    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block page_scss %}
-    {{ block.super }}
-    <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
-    <link href="/media/css/scss/section_all_subjects.css" rel="stylesheet"/>
-    <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
-    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
-    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet"/>
-{% endblock %}
-
-
-{% block page_js %}
-    {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
-    <script type="text/javascript" src="/media/javascript/action_dropdown.js"></script>
-    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
-    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
-    <script type="text/javascript" src="/media/javascript/subjects/all_subjects.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
-    <script type="text/javascript">
-        var upload_url = window.location.pathname;
-        var subject_type = "{{ subject_type|capfirst }}";
-    </script>
-{% endblock %}
-
-{% block content %}
-    <div>
+{% block secondary_navigation %}
+    <div id="all_subject_links">
+        {#            {% csrf_token %}#}
+        {#            {% include "popup-import.html" %}#}
         <ul>
-            <li><a id='subject_export_link' href="#">Export</a>
+            <li><a href="{% url all_subject_type_page %}" class="back-to-list">
+                « {% trans "Back to All Subjects List" %}</a>
             </li>
+            <li><a href="{% url create_subject entity_type %}">{% trans "Register a" %} {{ entity_type }}</a>&nbsp;|&nbsp;
+                <a href="javascript:void(0);" class="import-subject"
+                   id="import-{{ entity_type }}">{% trans "Import a list" %}</a>&nbsp;|&nbsp;
+                <a id='subject_export_link' href="#">{% trans "Export" %}</a>
+            </li>
+
         </ul>
     </div>
-    <div>
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-    <div id="all_subjects">
-        <ul class="secondary_tab">
-            <li class="active">
-                <a href="{% url all_subjects subject_type %}">
-                    {% blocktrans with subject_type|capfirst as subject_type %}My {{ subject_type }}
-                        List{% endblocktrans %}</a>
-            </li>
-            <li class="inactive">
-                <a href="" id="subject_registration_preview">
-                    {% blocktrans with subject_type|capfirst as subject_type %}{{ subject_type }} Registration
-                        Form{% endblocktrans %}</a>
-            </li>
-        </ul>
-        <div id="web_preivew">
-            <div id="my_subjects_links">
-                <ul>
-                    <li><a href="{% url edit_subject_questionnaire subject_type %}"
-                           class="edit-form-link">{% trans "Edit" %}</a>
-                    </li>
-                    <li><a href="javascript:void(0)" class="preview_subject_registration_form">{% trans "Print" %}</a>
-                    </li>
-                </ul>
-                <div class="clear-right"></div>
-            </div>
-            {% include 'project/subject_registration_webpreview.html' %}
-        </div>
-        <div class="help_accordion">
-            {% blocktrans %}View your registered {{ subject_type }} in detail.{% endblocktrans %}
-        </div>
-        {% include 'subject_table.html' %}
-    </div>
-    <div id="delete_entity_block">
-        <p class="warning_message">{% trans "entity delete error text" %}</p>
-        <a href="" class="button"
-           id="ok_button">{% trans "Yes, Delete" %}</a>
-        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
-    </div>
+{% endblock %}
+
+{% block actions %}
+    {{ block.super }}
     <form name="export_subjects" action="{% url export_subject %}" method="post">
         {% csrf_token %}
-        <input type="hidden" name="subject_type" id="subject_type" value="{{ subject_type }}"/>
+        <input type="hidden" name="subject_type" id="subject_type" value="{{ entity_type }}"/>
         <input type="hidden" name="query_text" id="query_text"/>
     </form>
 {% endblock %}
