@@ -3,10 +3,14 @@
 {% block page_content %}
     {% include 'subject_table.html' %}
 {% endblock %}
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
+{% endblock %}
 {% block secondary_navigation %}
     <div id="all_subject_links">
-        {#            {% csrf_token %}#}
-        {#            {% include "popup-import.html" %}#}
+        {% csrf_token %}
+        {% include "entity/import_subject_popup.html" %}
         <ul>
             <li><a href="{% url all_subject_type_page %}" class="back-to-list">
                 « {% trans "Back to All Subjects List" %}</a>
@@ -16,7 +20,8 @@
                    id="import-{{ entity_type }}">{% trans "Import a list" %}</a>&nbsp;|&nbsp;
                 <a id='subject_export_link' href="#">{% trans "Export" %}</a>
             </li>
-
+            <li><a href="{% url edit_subject_questionnaire entity_type %}" hidden="true"
+                   class="edit-form-link">{% trans "Edit" %}</a>
         </ul>
     </div>
 {% endblock %}

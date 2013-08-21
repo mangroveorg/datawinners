@@ -21,13 +21,13 @@ $(document).ready(function () {
 
         var uploader = new qq.FileUploader({
             // pass the dom node (ex. $(selector)[0] for jQuery users)
-            element:$(this)[0],
+            element: $(this)[0],
             // path to server-side upload script
-            action:upload_url + form_code + "/",
-            onSubmit:function () {
-                $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}})
+            action: upload_url,
+            onSubmit: function () {
+                $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}})
             },
-            onComplete:function (id, fileName, responseJSON) {
+            onComplete: function (id, fileName, responseJSON) {
                 $.unblockUI();
                 $(".blockUI").fadeOut("slow");
                 $('#message').remove();
@@ -78,15 +78,15 @@ $(document).ready(function () {
 
 
     $(".popup-import").dialog({
-        autoOpen:false,
-        modal:true,
-        title:function () {
+        autoOpen: false,
+        modal: true,
+        title: function () {
             var entity_type = $(this).attr("id").substr(22);
-            return interpolate(gettext('Import a list of %(entity)s'), {entity:entity_type}, true);
+            return interpolate(gettext('Import a list of %(entity)s'), {entity: entity_type}, true);
         },
-        zIndex:200,
-        width:1000,
-        close:function () {
+        zIndex: 200,
+        width: 1000,
+        close: function () {
             if ($('#message').length) {
                 window.location.replace(document.location.href);
             }

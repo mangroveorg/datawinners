@@ -1,0 +1,66 @@
+{% load i18n %}
+<div class="popup-import" id="popup-{{ entity_type }}">
+    {% blocktrans with entity_type as entity_type %}To import a list of {{ entity_type }} follow these
+        steps{% endblocktrans %}
+    <ul class="bulleted">
+        <li>{% blocktrans with entity_type as entity_type %}Download the template {{ entity_type }}
+            .xls{% endblocktrans %}</li>
+        <li>{% blocktrans with entity_type as entity_type %}Fill out the template with your {{ entity_type }}'
+            information{% endblocktrans %}</li>
+        <li>{% blocktrans with entity_type as entity_type %}The last question is optional.  If you already have ID
+            numbers for your {{ entity_type }}, fill them in.  If not, DataWinners will generate them for
+            you{% endblocktrans %}</li>
+        <li>{% trans "Save the template on your computer" %}</li>
+        <li>{% trans "Click the gold Upload a file button and select the saved template" %}</li>
+    </ul>
+    <br/>
+
+    <div class="file-uploader float_left" id="import-{{ form_code }}">
+        <noscript>
+            <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+            <!-- or put a simple form for upload here -->
+        </noscript>
+        <div class="clear"></div>
+    </div>
+    <div class="error">{% trans "Download the template:" %} <a
+            href="{% url datawinners.entity.views.export_template entity_type %}">{{ entity_type }}.xls</a></div>
+    <table>
+        <thead>
+        {% for question in questions %}
+            {#            {% for title in question.description %}#}
+            <th>{{ question.description }}</th>
+            {#            {% endfor %}#}
+        {% endfor %}
+        </thead>
+        <tbody id="{{ form_code }}_table">
+        </tbody>
+    </table>
+    <div>
+        Note:
+        <ul class="bulleted">
+            <li>{% blocktrans with entity_type as entity_type and entity_type as form_code %}You cannot add new columns
+                in your Excel file to create new question.
+                <a href='javascript:void(0);' id='to-edit-{{ form_code }}' class='edit-form-code-link'>Edit
+                    the {{ entity_type }} Registration Form</a> to make these changes.{% endblocktrans %}</li>
+        </ul>
+    </div>
+    <div class='error_table none' id="{{ form_code }}_error_table">
+        <br/>
+        <table class="styled_table">
+            <thead>
+            <th>{% trans "Row Number" %}</th>
+            <th>{% trans "Row" %}</th>
+            <th>{% trans "Error" %}</th>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <br/>
+
+    <div style="display: inline;float:right;">
+        <a href="javascript:void(0);" id="close-import-{{ entity_type }}"
+           class="button close_import_dialog">{% trans "Close" %}</a>
+    </div>
+</div>

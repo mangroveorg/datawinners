@@ -51,7 +51,7 @@ from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import import_subjects_from_project_wizard, save_questionnaire as subject_save_questionnaire, create_single_web_user, get_user_profile_by_reporter_id, viewable_questionnaire
+from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, get_user_profile_by_reporter_id, viewable_questionnaire
 from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -225,11 +225,6 @@ def _to_name_id_string(value, delimiter='</br>'):
 
 def formatted_data(field_values, delimiter='</br>'):
     return [[_to_name_id_string(each, delimiter) for each in row] for row in field_values]
-
-
-def _get_imports_subjects_post_url(project_id=None):
-    import_url = reverse(import_subjects_from_project_wizard)
-    return import_url if project_id is None else ("%s?project_id=%s" % (import_url, project_id))
 
 
 def _format_string_for_reminder_table(value):
@@ -1073,7 +1068,7 @@ def edit_data_sender(request, project_id, reporter_id):
 
         return render_to_response('edit_datasender_form.html',
                                   {'project': project, 'form': form, 'reporter_id': reporter_id, 'message': message,
-                                   'project_links': links, 'in_trial_mode': _in_trial_mode(request),'email': email},
+                                   'project_links': links, 'in_trial_mode': _in_trial_mode(request), 'email': email},
                                   context_instance=RequestContext(request))
 
 

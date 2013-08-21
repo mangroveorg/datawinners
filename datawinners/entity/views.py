@@ -52,10 +52,10 @@ from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organizat
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code, get_short_codes_by_entity_type
-from mangrove.transport.player.parser import XlsDatasenderParser
+from mangrove.transport.player.parser import XlsDatasenderParser, XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
-    ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM
+    ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
@@ -274,12 +274,13 @@ def all_subject_types(request):
 def all_subjects(request, subject_type):
     manager = get_database_manager(request.user)
     header_dict = header_fields(manager, subject_type)
+    form_model = get_form_model_by_entity_type(manager, [subject_type])
     return render_to_response('entity/all_subjects.html',
                               {'subject_headers': header_dict,
                                'current_language': translation.get_language(),
                                'entity_type': subject_type,
-                               'questions': viewable_questionnaire(
-                                   get_form_model_by_entity_type(manager, [subject_type]))
+                               'questions': viewable_questionnaire(form_model),
+                               'form_code': form_model.form_code
                               },
                               context_instance=RequestContext(request))
 
@@ -534,20 +535,33 @@ def _associate_data_senders_to_project(imported_entities, manager, project_id):
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @valid_web_user
-def import_subjects_from_project_wizard(request):
+def import_subjects_from_project_wizard(request, form_code):
     manager = get_database_manager(request.user)
-    project_id = request.GET.get('project_id')
-    error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
-    if project_id is not None:
-        _associate_data_senders_to_project(imported_entities, manager, project_id)
+    error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
+                                                                                                   default_parser=XlsOrderedParser,
+                                                                                                   form_code=form_code)
+    if len(imported_entities) != 0:
+        detail_dict = dict()
+        for short_code, entity_type in imported_entities.items():
+            entity_type = entity_type.capitalize()
+            if detail_dict.get(entity_type) is not None:
+                detail_dict.get(entity_type).append(short_code)
+            else:
+                detail_dict.update({entity_type: [short_code]})
+        for key, detail in detail_dict.items():
+            detail_dict.update({key: "[%s]" % ", ".join(detail)})
+        UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
+
+    subjects_data = import_module.load_all_subjects(manager)
+
     return HttpResponse(json.dumps(
         {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
          'error_message': error_message,
-         'failure_imports': failure_imports}))
+         'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
 
 
 def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False,
-                       back_link=None):
+                       back_link=None, form_code=None):
     return {'questionnaire_form': questionnaire_form,
             'entity_type': entity_type,
             "disable_link_class": disable_link_class,
@@ -555,7 +569,8 @@ def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide
             'back_to_project_link': reverse("alldata_index"),
             'smart_phone_instruction_link': reverse("smart_phone_instruction"),
             'is_update': is_update,
-            'back_link': back_link
+            'back_link': back_link,
+            'form_code': form_code
     }
 
 
@@ -593,7 +608,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
     if request.method == 'GET':
         questionnaire_form = SubjectRegistrationForm(form_model, data=initial_values(form_model, subject))
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
-                                          back_link)
+                                          back_link, form_model.form_code)
         return render_to_response(web_questionnaire_template,
                                   form_context,
                                   context_instance=RequestContext(request))
@@ -604,7 +619,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
                                                      country=get_organization_country(request))
         if not questionnaire_form.is_valid():
             form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True
-                , back_link)
+                , back_link, form_model.form_code)
             return render_to_response(web_questionnaire_template,
                                       form_context,
                                       context_instance=RequestContext(request))
@@ -628,7 +643,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                                  True, back_link)
+                                                  True, back_link, form_model.form_code)
                 return render_to_response(web_questionnaire_template,
                                           form_context,
                                           context_instance=RequestContext(request))
@@ -640,7 +655,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
-                                             back_link)
+                                             back_link, form_model.form_code)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,
@@ -656,7 +671,8 @@ def create_subject(request, entity_type=None):
 
     if request.method == 'GET':
         questionnaire_form = SubjectRegistrationForm(form_model)
-        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                          form_code=form_model.form_code)
         return render_to_response(web_questionnaire_template,
                                   form_context,
                                   context_instance=RequestContext(request))
@@ -665,7 +681,8 @@ def create_subject(request, entity_type=None):
         questionnaire_form = SubjectRegistrationForm(form_model, data=request.POST,
                                                      country=get_organization_country(request))
         if not questionnaire_form.is_valid():
-            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                              form_code=form_model.form_code)
             return render_to_response(web_questionnaire_template,
                                       form_context,
                                       context_instance=RequestContext(request))
@@ -690,7 +707,8 @@ def create_subject(request, entity_type=None):
                 from datawinners.project.helper import errors_to_list
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
-                form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+                form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                                  form_code=form_model.form_code)
                 return render_to_response(web_questionnaire_template,
                                           form_context,
                                           context_instance=RequestContext(request))
@@ -703,7 +721,8 @@ def create_subject(request, entity_type=None):
         except Exception as exception:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
-        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                             form_code=form_model.form_code)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,

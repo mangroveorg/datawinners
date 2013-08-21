@@ -374,6 +374,22 @@ def _get_failed_responses(responses):
     return [i for i in enumerate(responses) if not i[1].success]
 
 
+@timebox
+def _get_entity_types(manager):
+    entity_types = get_all_entity_types(manager)
+    entity_list = [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
+    return sorted(entity_list)
+
+
+@timebox
+def load_all_subjects(manager):
+    subject_types = _get_entity_types(manager)
+    form_models = get_subject_form_models(manager)
+    subjects = get_all_subjects(manager)
+
+    return _get_all_subject_data(form_models, subject_types, subjects)
+
+
 def import_data(request, manager, default_parser=None, form_code=None):
     response_message = ''
     error_message = None

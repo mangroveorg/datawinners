@@ -4,16 +4,15 @@ import unittest
 from django.http import Http404
 from mock import Mock, patch
 from datawinners.project import helper
-from datawinners.project.views.views import _get_imports_subjects_post_url
-from mangrove.datastore.database import  DatabaseManager
+from datawinners.project.helper import is_project_exist
+from datawinners.project.tests.submission_log_data import SUBMISSIONS
+from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
 from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
-from project.helper import is_project_exist
-from project.tests.submission_log_data import  SUBMISSIONS
 from datawinners.scheduler.smsclient import SMSClient
 
 
@@ -35,10 +34,10 @@ class TestHelper(unittest.TestCase):
     def test_should_return_code_title_tuple_list(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
-            entity_question_flag=True, ddtype=ddtype)
+                              entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
-            defaultValue="some default value", ddtype=ddtype)
-        code_and_title = [(each_field.code, each_field.name)for each_field in [question1, question2]]
+                              defaultValue="some default value", ddtype=ddtype)
+        code_and_title = [(each_field.code, each_field.name) for each_field in [question1, question2]]
         self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], code_and_title)
 
     def test_should_generate_unique_questionnaire_code(self):
@@ -90,17 +89,22 @@ class TestHelper(unittest.TestCase):
     def test_should_return_according_value_for_select_field_case_insensitively(self):
         ddtype = Mock(spec=DataDictType)
         single_select = SelectField(label="multiple_choice_question", code="q",
-            options=[("red", "a"), ("yellow", "b"), ('green', "c")], name="What is your favourite colour",
-            ddtype=ddtype)
+                                    options=[("red", "a"), ("yellow", "b"), ('green', "c")],
+                                    name="What is your favourite colour",
+                                    ddtype=ddtype)
         multiple_answer = SelectField(label="multiple_choice_question", code="q1", single_select_flag=False,
-            options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ), ("d", "d"), ("e", "e"), ('f', "f"),
-                     ("g", "g"), ("h", "h"),
-                     ('i', "i"), ("j", "j"), ("k", "k"), ('l', "l"), ("m", "m"), ("n", "n"), ('o', "o"),
-                     ("p", "p"), ("q", "q"), ('r', "r"), ("s", "s"), ("t", "t"), ('u', "u"), ("v", "v"), ("w", "w"),
-                     ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'), ("value_of_1b", "1b"),
-                     ("value_of_1c", "1c"), ('1d', "1d")],
-            name="What is your favourite colour",
-            ddtype=ddtype)
+                                      options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ),
+                                               ("d", "d"), ("e", "e"), ('f', "f"),
+                                               ("g", "g"), ("h", "h"),
+                                               ('i', "i"), ("j", "j"), ("k", "k"), ('l', "l"), ("m", "m"), ("n", "n"),
+                                               ('o', "o"),
+                                               ("p", "p"), ("q", "q"), ('r', "r"), ("s", "s"), ("t", "t"), ('u', "u"),
+                                               ("v", "v"), ("w", "w"),
+                                               ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'),
+                                               ("value_of_1b", "1b"),
+                                               ("value_of_1c", "1c"), ('1d', "1d")],
+                                      name="What is your favourite colour",
+                                      ddtype=ddtype)
         values = dict({"q": "B", "q1": "b1A1c"})
         single_value = helper.get_according_value(values, single_select)
         multiple_value = helper.get_according_value(values, multiple_answer)
@@ -110,17 +114,22 @@ class TestHelper(unittest.TestCase):
     def test_should_return_according_value_for_select_field(self):
         ddtype = Mock(spec=DataDictType)
         single_select = SelectField(label="multiple_choice_question", code="q",
-            options=[("red", "a"), ("yellow", "b"), ('green', "c")], name="What is your favourite colour",
-            ddtype=ddtype)
+                                    options=[("red", "a"), ("yellow", "b"), ('green', "c")],
+                                    name="What is your favourite colour",
+                                    ddtype=ddtype)
         multiple_answer = SelectField(label="multiple_choice_question", code="q1", single_select_flag=False,
-            options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ), ("d", "d"), ("e", "e"), ('f', "f"),
-                     ("g", "g"), ("h", "h"),
-                     ('i', "i"), ("j", "j"), ("k", "k"), ('l', "l"), ("m", "m"), ("n", "n"), ('o', "o"),
-                     ("p", "p"), ("q", "q"), ('r', "r"), ("s", "s"), ("t", "t"), ('u', "u"), ("v", "v"), ("w", "w"),
-                     ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'), ("value_of_1b", "1b"),
-                     ("value_of_1c", "1c"), ('1d', "1d")],
-            name="What is your favourite colour",
-            ddtype=ddtype)
+                                      options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ),
+                                               ("d", "d"), ("e", "e"), ('f', "f"),
+                                               ("g", "g"), ("h", "h"),
+                                               ('i', "i"), ("j", "j"), ("k", "k"), ('l', "l"), ("m", "m"), ("n", "n"),
+                                               ('o', "o"),
+                                               ("p", "p"), ("q", "q"), ('r', "r"), ("s", "s"), ("t", "t"), ('u', "u"),
+                                               ("v", "v"), ("w", "w"),
+                                               ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'),
+                                               ("value_of_1b", "1b"),
+                                               ("value_of_1c", "1c"), ('1d', "1d")],
+                                      name="What is your favourite colour",
+                                      ddtype=ddtype)
         values = dict({"q": "b", "q1": "b1a1c"})
         single_value = helper.get_according_value(values, single_select)
         multiple_value = helper.get_according_value(values, multiple_answer)
@@ -207,12 +216,11 @@ class TestHelper(unittest.TestCase):
             mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "03312345678", sms_content)
 
 
-
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type,
-            instruction="please write more tests")
+                          instruction="please write more tests")
         preview = helper.get_preview_for_field(field)
         self.assertEquals("What's in a name?", preview["description"])
         self.assertEquals("nam", preview["code"])
@@ -279,7 +287,7 @@ class TestPreviewCreator(unittest.TestCase):
     def test_should_return_choices(self):
         type = DataDictType(Mock(DatabaseManager), name="color type")
         field = SelectField(name="What's the color?", code="nam", label="naam", ddtype=type,
-            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
+                            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select1", preview["type"])
         self.assertEqual([("Red", "a"), ("Green", "b"), ("Blue", "c")], preview["constraints"])
@@ -287,7 +295,7 @@ class TestPreviewCreator(unittest.TestCase):
     def test_should_return_choices_type_as_select(self):
         type = DataDictType(Mock(DatabaseManager), name="color type")
         field = SelectField(name="What's the color?", code="nam", label="naam", ddtype=type,
-            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")], single_select_flag=False)
+                            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")], single_select_flag=False)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select", preview["type"])
 
@@ -302,12 +310,3 @@ class TestPreviewCreator(unittest.TestCase):
         field = GeoCodeField(name="What is the place?", code="dat", label="naam", ddtype=type)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("xx.xxxx yy.yyyy", preview["constraints"])
-
-    def test_should_make_project_post_url_for_import_subject_project_wizard(self):
-        url = _get_imports_subjects_post_url('123')
-        self.assertEqual("/entity/subject/import/?project_id=123", url)
-
-    def test_should_make_the_post_url_for_import_subject_project_wizard(self):
-        url = _get_imports_subjects_post_url()
-        self.assertEqual("/entity/subject/import/", url)
-
