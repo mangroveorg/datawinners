@@ -141,7 +141,16 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
         email = super(MinimalRegistrationForm, self).clean_email()
         return email.lower()
 
+    def strip_and_validate(self, field_name):
+        if self.cleaned_data.get(field_name):
+            self.cleaned_data[field_name] = self.cleaned_data.get(field_name).strip()
+            if self.cleaned_data.get(field_name) == "":
+                self._errors[field_name] = self.error_class([self.fields[field_name].error_messages['required']])
+
     def clean(self):
+        for field_name in ['first_name', 'last_name', 'organization_name', 'organization_city']:
+            self.strip_and_validate(field_name)
+            
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 msg = _("The two password fields didn't match.")

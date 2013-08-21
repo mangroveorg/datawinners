@@ -188,3 +188,23 @@ BEGIN_END_SPACED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
 
 BEGIN_END_SPACED_PASSWORD_ERROR_MESSAGE = u"Password There should not be any space at the beginning and the end of the password. Example: Minimum of 6 characters in length"
 INVALID_EMAIL_ERROR_MESSAGE = u"Email address Enter a valid email address. Example:name@organization.com"
+
+WHITE_SPACE_IN_SOME_FIELDS = {ORGANIZATION_NAME: u" ",
+                      ORGANIZATION_SECTOR: u"PublicHealth",
+                      ORGANIZATION_ADDRESS: u"Address Line One",
+                      ORGANIZATION_CITY: u" ",
+                      ORGANIZATION_STATE: u"Maharashtra",
+                      ORGANIZATION_COUNTRY: u"MG",
+                      ORGANIZATION_ZIPCODE: u"411028",
+                      ORGANIZATION_OFFICE_PHONE: u"26123456789",
+                      ORGANIZATION_WEBSITE: u"http://www.localhost.com/",
+                      TITLE: u"Mr",
+                      FIRST_NAME: u" ",
+                      LAST_NAME: u" ",
+                      EMAIL: u"whitespace@mailinator.com",
+                      ADMIN_MOBILE_NUMBER: "2618893",
+                      REGISTRATION_PASSWORD: u"password!231",
+                      REGISTRATION_CONFIRM_PASSWORD: u"password!231",
+                      PAY_MONTHLY: PAY_MONTHLY,
+                      WIRE_TRANSFER: WIRE_TRANSFER}
+WHITE_SPACES_ERROR_MESSAGE = u"Organization Name This field is required.City This field is required.First name This field is required.Last name This field is required."
