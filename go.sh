@@ -84,7 +84,7 @@ function smoke_test {
 
 function restore_postgresql_database {
 	echo "recreating database"
-	dropdb geodjango && createdb -T template_postgis geodjango && \
+	dropdb mangrove && createdb -T template_postgis mangrove && \
 	(cd "$DWROOT_DIR/datawinners" && python manage.py syncdb --noinput && python manage.py migrate && python manage.py loadshapes)
 }
 

@@ -6,12 +6,12 @@ function log {
   echo ""
 }
 
-function create_geodjango_db {
- log "create geodjango db"
- createdb -E UTF8 geodjango -T template0
- createlang plpgsql geodjango
- psql -d geodjango -f '/usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql'
- psql -d geodjango -f '/usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql'
+function create_mangrove_db {
+ log "create mangrove db"
+ createdb -E UTF8 mangrove -T template0
+ createlang plpgsql mangrove
+ psql -d mangrove -f '/usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql'
+ psql -d mangrove -f '/usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql'
 }
 
 function create_postgis_template_db {
@@ -28,7 +28,7 @@ function create_postgis_template_db {
 
 function create_db {
  log "create db..."
- create_geodjango_db && \
+ create_mangrove_db && \
  create_postgis_template_db
 }
 
