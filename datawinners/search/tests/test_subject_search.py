@@ -1,5 +1,5 @@
 from unittest import TestCase
-from mock import patch, Mock
+from mock import patch, Mock, MagicMock
 from datawinners.search.subject_search import ElasticUtilsHelper, SubjectQueryBuilder, SubjectQueryResponseCreator, SubjectQuery
 
 
@@ -133,7 +133,38 @@ class TestSubjectQueryResponseCreator(TestCase):
 
 class TestSubjectQuery(TestCase):
 
-    def test_should_create_query_for_given_subject_type_and_database_name(self):
+    def test_should_return_all_subjects_matching_given_subject_type_and_database_name_and_query_text(self):
+        user = Mock()
+        subject_query_builder = Mock()
+        subject_query = SubjectQuery()
+        response_creator = Mock()
+        subject_query.query_builder = subject_query_builder
+        subject_query.response_creator = response_creator
+        with patch("datawinners.search.subject_search.get_database_manager") as database_manager:
+            with patch("datawinners.search.subject_search.header_fields") as header_fields:
+                database_manager.return_value.database_name = "database_name"
+                subject_headers = ["field1", "field2"]
+                count_of_all_matching_results = 100
+                header_fields.return_value.keys.return_value = subject_headers
+                query_all_results = Mock()
+                query = MagicMock()
+                subject_query_builder.create_query.return_value = query
+                query.count.return_value = count_of_all_matching_results
+                query.__getitem__.return_value = query_all_results
+                query_with_criteria = Mock()
+                subject_query_builder.add_query_criteria.return_value = query_with_criteria
+                response_creator.create_response.return_value = "expected subjects"
+
+                actualSubjects = subject_query.query(user, "subject_type", "query_text")
+
+                subject_query_builder.create_query.assert_called_once_with("subject_type", "database_name")
+                query.__getitem__assert_called_with(slice(None, count_of_all_matching_results, None))
+                subject_query_builder.add_query_criteria.assert_called_with(subject_headers, "query_text", query_all_results)
+                response_creator.create_response.assert_called_with(subject_headers, query_with_criteria)
+                self.assertEquals(actualSubjects, "expected subjects")
+
+
+    def test_should_return_subjects_in_a_paginated_fashion_matching_given_subject_type_and_database_name_and_query_text(self):
         user = Mock()
         subject_query_builder = Mock()
         subject_query = SubjectQuery()
@@ -145,17 +176,34 @@ class TestSubjectQuery(TestCase):
                 database_manager.return_value.database_name = "database_name"
                 subject_headers = ["field1", "field2"]
                 header_fields.return_value.keys.return_value = subject_headers
-                query = Mock()
-                subject_query_builder.create_query.return_value = query
+                paginated_query = Mock()
+                expected_total_result_count = 100
+                paginated_query.count.return_value = expected_total_result_count
+                subject_query_builder.create_paginated_query.return_value = paginated_query
                 query_with_criteria = Mock()
+                expected_filtered_result_count = 50
+                query_with_criteria.count.return_value = expected_filtered_result_count
                 subject_query_builder.add_query_criteria.return_value = query_with_criteria
                 response_creator.create_response.return_value = "expected subjects"
+                query_params = {
+                    "start_result_number": 2,
+                    "number_of_results": 10,
+                    "order_by": 1,
+                    "order": "-",
+                    "search_text": "query_text"
+                }
 
-                actualSubjects = subject_query.query(user, "subject_type", "query_text")
+                filtered_count, total_count, actualSubjects = subject_query.paginated_query(user, "subject_type", query_params)
 
-                subject_query_builder.create_query.assert_called_once_with("subject_type", "database_name")
-                subject_query_builder.add_query_criteria.assert_called_with(subject_headers, "query_text", query)
+                subject_query_builder.create_paginated_query.assert_called_once_with("subject_type", "database_name", {
+                    "start_result_number": 2,
+                    "number_of_results": 10,
+                    "order_field": "field2",
+                    "order": "-"
+                })
                 response_creator.create_response.assert_called_with(subject_headers, query_with_criteria)
+                subject_query_builder.add_query_criteria.assert_called_with(subject_headers, "query_text", paginated_query)
                 self.assertEquals(actualSubjects, "expected subjects")
-
+                self.assertEquals(filtered_count, expected_filtered_result_count)
+                self.assertEquals(total_count, expected_total_result_count)
 
