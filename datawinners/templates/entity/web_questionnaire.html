@@ -4,10 +4,16 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/subject_questionnaire.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
     {% include "web_questionnaire_questions_js.html" %}
+    <script type="text/javascript"
+            src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>
+    <script type="text/javascript">
+        var subject_registration_form_preview_link = "{% url subject_web_questionnaire_preview entity_type%}";
+    </script>
 {% endblock %}
 
 {% block page_content %}
@@ -32,6 +38,10 @@
             </div>
         </div>
         {% include 'entity/subject_questionnaire.html' %}
+
+        <div class="subject_registration_preview">
+            {% trans "Generating the questionnaire preview." %}
+        </div>
     </div>
 {% endblock %}
 {% block secondary_navigation %}

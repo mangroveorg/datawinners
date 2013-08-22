@@ -662,6 +662,16 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
                                   context_instance=RequestContext(request))
 
 
+def subject_web_questionnaire_preview(request, entity_type=None):
+    manager = get_database_manager(request.user)
+    entity_type = [entity_type]
+    registration_questionnaire = get_form_model_by_entity_type(manager, entity_type)
+    questions = viewable_questionnaire(registration_questionnaire)
+    return render_to_response("entity/subject_web_preview.html",
+                              {"entity_type": entity_type[0], "questions": questions},
+                              context_instance=RequestContext(request))
+
+
 @valid_web_user
 def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)

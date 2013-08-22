@@ -1,0 +1,37 @@
+{% load i18n %}
+{% load questionnaire_preview_tags %}
+
+<div class="sms-questionnaire">
+    <h3 style="margin-bottom: 20px">{{ entity_type|capfirst }} Registration Form </h3>
+
+    <div class="clear" style="clear: both;"></div>
+    <ol class="olpreview">
+        {% for question in questions %}
+            <li>
+                <h6>{{ question.description }}</h6>
+                {% if  question.instruction %}
+                    <p class="instructions italic">
+                        {% trans question.instruction %}
+                    </p>
+                    <input class="displayText" disabled="disabled" type="text">
+                {% endif %}
+                <div class="answer">
+                    {% if question.type == "select1" %}
+                        <ol class="multiple_select">
+                            {% for option in question.constraints %}
+                                <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                    {% if question.type == "select" %}
+                        <ol class="multiple_select">
+                            {% for option in question.constraints %}
+                                <li><span class="bullet">{{ option.1 }}.</span><span>{{ option.0 }}</span></li>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ol>
+</div>
