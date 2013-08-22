@@ -9,7 +9,7 @@ from django.utils import translation
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, \
-    HttpResponseServerError, QueryDict
+    HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
@@ -579,6 +579,7 @@ def get_template(user):
 
 
 def initial_values(form_model, subject):
+    result = {}
     for field in form_model.fields:
         if field.name == LOCATION_TYPE_FIELD_NAME:
             field.value = ','.join(subject.location_path)
@@ -591,6 +592,10 @@ def initial_values(form_model, subject):
 
         if field.value:
             field.value = field.convert_to_unicode()
+            result.update({field.code: field.value})
+    result.update({'form_code': form_model.form_code})
+    result.update({u't': form_model.entity_type[0]})
+    return result
 
 
 @valid_web_user
@@ -607,15 +612,16 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     if request.method == 'GET':
         questionnaire_form = SubjectRegistrationForm(form_model, data=initial_values(form_model, subject))
+        # questionnaire_form = SubjectRegistrationForm(form_model)
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
                                           back_link, form_model.form_code)
         return render_to_response(web_questionnaire_template,
                                   form_context,
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
-        post_data = QueryDict(request.raw_post_data, mutable=True)
-        post_data[form_model.entity_question.code] = subject.short_code
-        questionnaire_form = SubjectRegistrationForm(form_model, data=post_data,
+        # post_data = QueryDict(request.raw_post_data, mutable=True)
+        # post_data[form_model.entity_question.code] = subject.short_code
+        questionnaire_form = SubjectRegistrationForm(form_model, data=request.POST,
                                                      country=get_organization_country(request))
         if not questionnaire_form.is_valid():
             form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True
@@ -627,8 +633,6 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
         success_message = None
         error_message = None
         try:
-
-
             response = WebPlayer(manager,
                                  LocationBridge(location_tree=get_location_tree(),
                                                 get_loc_hierarchy=get_location_hierarchy)).accept(
@@ -636,7 +640,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
             if response.success:
                 success_message = _("Your changes have been saved.")
-                questionnaire_form = SubjectRegistrationForm(form_model, data=post_data,
+                questionnaire_form = SubjectRegistrationForm(form_model, data=request.POST,
                                                              country=get_organization_country(request))
             else:
                 from datawinners.project.helper import errors_to_list

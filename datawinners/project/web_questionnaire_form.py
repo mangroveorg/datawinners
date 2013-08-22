@@ -1,4 +1,3 @@
-import abc
 from django.forms import Form, CharField, HiddenInput, RegexField
 from django.utils.translation import ugettext_lazy as _
 from datawinners.entity.helper import get_country_appended_location

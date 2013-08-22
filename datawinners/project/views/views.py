@@ -51,7 +51,7 @@ from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, get_user_profile_by_reporter_id, viewable_questionnaire
+from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, get_user_profile_by_reporter_id, viewable_questionnaire, initial_values
 from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -677,13 +677,13 @@ class WebQuestionnaireRequest:
     def success_message(self, response_short_code):
         pass
 
-    def response_for_get_request(self):
-        questionnaire_form = self.form()
+    def response_for_get_request(self, initial_data=None, is_update=False):
+        questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.form_code, self.project, questionnaire_form,
-                                        self.manager, self.hide_link_class, self.disable_link_class)
+                                        self.manager, self.hide_link_class, self.disable_link_class, is_update)
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
-    def response_for_post_request(self):
+    def response_for_post_request(self, is_update=None):
         questionnaire_form = self.form(self.request.POST, utils.get_organization_country(self.request))
         if not questionnaire_form.is_valid():
             form_context = get_form_context(self.form_code, self.project, questionnaire_form,
@@ -695,12 +695,12 @@ class WebQuestionnaireRequest:
         success_message = None
         error_message = None
         try:
-            created_request = helper.create_request(questionnaire_form, self.request.user.username)
+            created_request = helper.create_request(questionnaire_form, self.request.user.username,is_update=is_update)
             response = self.player_response(created_request, websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(self.request).org_id, response)
                 success_message = self.success_message(response.short_code)
-                questionnaire_form = self.form()
+                # questionnaire_form = self.form()
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, self.form_model.fields)
         except DataObjectNotFound as exception:
@@ -712,7 +712,7 @@ class WebQuestionnaireRequest:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         _project_context = get_form_context(self.form_code, self.project, questionnaire_form,
-                                            self.manager, self.hide_link_class, self.disable_link_class)
+                                            self.manager, self.hide_link_class, self.disable_link_class,is_update=is_update)
 
         _project_context.update({'success_message': success_message, 'error_message': error_message})
 
@@ -726,8 +726,8 @@ class SubjectWebQuestionnaireRequest(WebQuestionnaireRequest):
         self.subject_form_model = None
         self.subject_form_code = None
 
-    def form(self, initial_value=None, country=None):
-        return SubjectRegistrationForm(self.form_model, data=initial_value, country=country)
+    def form(self, initial_data=None, country=None):
+        return SubjectRegistrationForm(self.form_model, data=initial_data, country=country)
 
 
     @property
@@ -765,9 +765,9 @@ class SurveyWebQuestionnaireRequest(WebQuestionnaireRequest):
         self.feeds_dbm = get_feeds_database(request.user)
         self.subject_field_creator = SubjectQuestionFieldCreator(self.manager, self.project)
 
-    def form(self, initial_value=None, country=None):
+    def form(self, initial_data=None, country=None):
         return SurveyResponseForm(self.form_model, self.subject_field_creator,
-                                  data=initial_value)
+                                  data=initial_data)
 
     @property
     def template(self):
@@ -1086,3 +1086,15 @@ def project_has_data(request, questionnaire_code=None):
     analyzer = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), request.POST)
     raw_field_values = analyzer.get_raw_values()
     return HttpResponse(encode_json({'has_data': len(raw_field_values) != 0}))
+
+
+def edit_my_subject(request, entity_type, entity_id, project_id=None):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    subject = get_by_short_code(manager, entity_id, [entity_type.lower()])
+    subject_request = SubjectWebQuestionnaireRequest(request, project_id)
+    if request.method == 'GET':
+        return subject_request.response_for_get_request(initial_data=initial_values(form_model, subject),
+                                                        is_update=True)
+    elif request.method == 'POST':
+        return subject_request.response_for_post_request(is_update=True)
