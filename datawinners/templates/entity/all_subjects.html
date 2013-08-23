@@ -25,7 +25,11 @@
         </ul>
     </div>
 {% endblock %}
-
+{% block help_accordian %}
+    <div class="help_accordion margin_bottom_20">
+        {% blocktrans %}View your registered {{ entity_type }} in detail.{% endblocktrans %}
+    </div>
+{% endblock %}
 {% block actions %}
     {{ block.super }}
     <form name="export_subjects" action="{% url export_subject %}" method="post">

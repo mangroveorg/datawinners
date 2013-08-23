@@ -70,7 +70,7 @@ $(document).ready(function () {
     });
 
     $("#subjects_create_type").dialog({
-        title: gettext("Add a New subject type"),
+        title: gettext("Add a New Subject Type"),
         modal: true,
         autoOpen: false,
         width: 500,

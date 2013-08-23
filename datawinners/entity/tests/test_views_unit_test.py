@@ -1,21 +1,23 @@
 from unittest.case import TestCase
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
-from datawinners.entity.views import initial_values
-from mangrove.datastore.database import DatabaseManager
-from mangrove.datastore.documents import FormModelDocument
-from mangrove.datastore.entity import Entity
 from mock import Mock, patch, PropertyMock
+from django.core import mail
+
+from datawinners.entity.views import initialize_values
+from mangrove.datastore.database import DatabaseManager
+from mangrove.datastore.entity import Entity
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.entity.views import create_single_web_user
 from datawinners.entity.import_data import send_email_to_data_sender
-from django.core import mail
 from datawinners.tests.test_email_utils import set_email_settings
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel
+
 
 WEB_USER_TEST_EMAIL = "test_email_for_create_single_web_user@test.com"
 
@@ -210,37 +212,27 @@ class TestView(TestCase):
     def test_should_set_field_initial_value_as_none_if_not_populated(self):
         empty_field = TextField(name="text", code="code", label="what is ur name", ddtype=Mock)
         empty_field.value = None
-        form_model_doc = FormModelDocument()
         form_model = FormModel(Mock(spec=DatabaseManager))
-        form_model._doc = form_model_doc
-        form_model.form_code = 'test_code'
         form_model.add_field(empty_field)
-        form_model.entity_type = ['test_entity']
+
         mock_subject = Mock(spec=Entity)
         type(mock_subject).data = PropertyMock(return_value={})
 
-        result = initial_values(form_model, mock_subject)
-        expected = {'form_code': u'test_code', u't': u'test_entity'}
+        initialize_values(form_model, mock_subject)
+
         self.assertEquals(None, empty_field.value)
-        self.assertEquals(expected, result)
 
     def test_should_convert_field_value_to_unicode_when_field_value_present(self):
         empty_field = TextField(name="text", code="code", label="what is ur name", ddtype=Mock)
         empty_field.value = "FirstName"
-        form_model_doc = FormModelDocument()
         form_model = FormModel(Mock(spec=DatabaseManager))
-        form_model._doc = form_model_doc
-        form_model.form_code = 'test_code'
-        form_model.entity_type = ['test_entity']
-
         form_model.add_field(empty_field)
 
         mock_subject = Mock(spec=Entity)
         type(mock_subject).data = PropertyMock(return_value={"text": {"value": "SomeValue"}})
 
-        result = initial_values(form_model, mock_subject)
-        expected = {'form_code': u'test_code', u't': u'test_entity', 'code': 'SomeValue'}
+        initialize_values(form_model, mock_subject)
+
         self.assertIsInstance(empty_field.value, unicode)
         self.assertEquals(u"SomeValue", empty_field.value)
-        self.assertEquals(expected, result)
 

@@ -51,7 +51,7 @@ from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, get_user_profile_by_reporter_id, viewable_questionnaire, initial_values
+from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, get_user_profile_by_reporter_id, viewable_questionnaire, initialize_values
 from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -695,7 +695,7 @@ class WebQuestionnaireRequest:
         success_message = None
         error_message = None
         try:
-            created_request = helper.create_request(questionnaire_form, self.request.user.username,is_update=is_update)
+            created_request = helper.create_request(questionnaire_form, self.request.user.username, is_update=is_update)
             response = self.player_response(created_request, websubmission_logger)
             if response.success:
                 ReportRouter().route(get_organization(self.request).org_id, response)
@@ -712,7 +712,8 @@ class WebQuestionnaireRequest:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         _project_context = get_form_context(self.form_code, self.project, questionnaire_form,
-                                            self.manager, self.hide_link_class, self.disable_link_class,is_update=is_update)
+                                            self.manager, self.hide_link_class, self.disable_link_class,
+                                            is_update=is_update)
 
         _project_context.update({'success_message': success_message, 'error_message': error_message})
 
@@ -1090,11 +1091,11 @@ def project_has_data(request, questionnaire_code=None):
 
 def edit_my_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
-    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     subject = get_by_short_code(manager, entity_id, [entity_type.lower()])
     subject_request = SubjectWebQuestionnaireRequest(request, project_id)
+    form_model = subject_request.form_model
     if request.method == 'GET':
-        return subject_request.response_for_get_request(initial_data=initial_values(form_model, subject),
-                                                        is_update=True)
+        initialize_values(form_model, subject)
+        return subject_request.response_for_get_request(is_update=True)
     elif request.method == 'POST':
         return subject_request.response_for_post_request(is_update=True)

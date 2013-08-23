@@ -578,8 +578,7 @@ def get_template(user):
     return 'entity/register_subject.html' if user.get_profile().reporter else 'entity/web_questionnaire.html'
 
 
-def initial_values(form_model, subject):
-    result = {}
+def initialize_values(form_model, subject):
     for field in form_model.fields:
         if field.name == LOCATION_TYPE_FIELD_NAME:
             field.value = ','.join(subject.location_path)
@@ -592,10 +591,6 @@ def initial_values(form_model, subject):
 
         if field.value:
             field.value = field.convert_to_unicode()
-            result.update({field.code: field.value})
-    result.update({'form_code': form_model.form_code})
-    result.update({u't': form_model.entity_type[0]})
-    return result
 
 
 @valid_web_user
@@ -611,16 +606,14 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     if request.method == 'GET':
-        questionnaire_form = SubjectRegistrationForm(form_model, data=initial_values(form_model, subject))
-        # questionnaire_form = SubjectRegistrationForm(form_model)
+        initialize_values(form_model, subject)
+        questionnaire_form = SubjectRegistrationForm(form_model)
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
                                           back_link, form_model.form_code)
         return render_to_response(web_questionnaire_template,
                                   form_context,
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
-        # post_data = QueryDict(request.raw_post_data, mutable=True)
-        # post_data[form_model.entity_question.code] = subject.short_code
         questionnaire_form = SubjectRegistrationForm(form_model, data=request.POST,
                                                      country=get_organization_country(request))
         if not questionnaire_form.is_valid():
