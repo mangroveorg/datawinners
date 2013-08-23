@@ -1,27 +1,29 @@
 {% load i18n %}
 
-    <div id = "action_dropdown" >
-        <div id="action_button"  class="action_bar clear-both" style="margin-bottom: 20px" hidden="true">
-            <div class="btn-group">
-                <button class="btn dropdown-toggle action" href="#" data-dropdown="#none-selected">{% trans "Actions" %}
-                    <span class="caret"></span>
-                </button>
-            </div>
-        </div>
-
-        <div id="action" class="dropdown action" >
-            <ul class="dropdown-menu">
-                <li><a class="delete" data-entity = "{{ subject.entity }}-{{ subject.code }}-delete">{% trans "Delete" %}</a></li>
-                {% if EDIT_SUBJECT_ENABLED %}
-                    <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-edit" class="edit" >{% trans "Edit" %}</a></li>
-                {% endif %}
-            </ul>
-        </div>
-
-        <div id="none-selected" class="dropdown">
-            <div class="dropdown-panel">
-                {% trans "Select a "  %}{{ subject_type|capfirst }}
-            </div>
+<div id="action_dropdown">
+    <div id="action_button" class="action_bar clear-both" style="margin-bottom: 20px" hidden="true">
+        <div class="btn-group">
+            <button class="btn dropdown-toggle action" href="#" data-dropdown="#none-selected">{% trans "Actions" %}
+                <span class="caret"></span>
+            </button>
         </div>
     </div>
+
+    <div id="action" class="dropdown action">
+        <ul class="dropdown-menu">
+            <li><a class="delete" data-entity="{{ subject.entity }}-{{ subject.code }}-delete">{% trans "Delete" %}</a>
+            </li>
+            {% if EDIT_SUBJECT_ENABLED %}
+                <li><a data-entity="{{ subject.entity }}-{{ subject.code }}-edit" class="edit">{% trans "Edit" %}</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div id="none-selected" class="dropdown">
+        <div class="dropdown-panel">
+            {% trans "Select a " %}{{ entity_type|capfirst }}
+        </div>
+    </div>
+</div>
 

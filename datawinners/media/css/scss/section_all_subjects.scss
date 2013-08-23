@@ -3,10 +3,7 @@
   width: 910px !important;
   //border-top: 1px solid #CCCCCC !important;
   //margin-top: 20px;
-  table.all_subject_type_table td, table.all_subject_type_table th {
-    border: 0px;
-    text-align: left;
-  }
+
   .all_subject_type_table {
     .list_header {
       border-bottom: 1px solid #CCCCCC !important;
@@ -20,9 +17,7 @@
         color: #666666;
       }
     }
-    .list_header {
-      cursor: pointer;
-    }
+
     .list_header:hover {
       background: #ccdfed;
     }
@@ -62,22 +57,29 @@
       }
     }
   }
-  .subject-container {
-    //max-height: 275px;
+
+  .styled_table {
+    margin-bottom: 0;
+    max-height: 275px;
     overflow-y: auto;
     padding: 10px;
-    .styled_table {
-      tbody tr td:first-child, thead tr th:first-child {
-        width: 21px !important;
-      }
-      tbody tr td:first-child input {
-        margin-left: 6px !important;
-      }
-      thead tr th:first-child input {
-        margin-left: 0px !important;
-      }
+
+    tbody tr td:first-child {
+      //text-align: center;
+      margin-left: 6px !important;
     }
+    tbody tr td:nth-child(2) {
+      margin-left: 6px !important;
+    }
+    .header_subject_type {
+      width: 24% !important;
+    }
+    .registered_subjects {
+      width: 15% !important;
+    }
+
   }
+
   .ui-accordion-content {
     border: 0;
     border-bottom: 1px solid #000000;
@@ -89,9 +91,6 @@
     font-weight: bold;
     font-size: 12px;
     margin-bottom: 10px;
-  }
-  .styled_table {
-    margin-bottom: 0;
   }
   .subjects_links {
     margin-bottom: 15px;

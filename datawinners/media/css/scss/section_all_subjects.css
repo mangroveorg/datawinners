@@ -3,11 +3,6 @@
     width: 910px !important;
 }
 
-#all_subjects table.all_subject_type_table td, #all_subjects table.all_subject_type_table th {
-    border: 0px;
-    text-align: left;
-}
-
 #all_subjects .all_subject_type_table .list_header {
     border-bottom: 1px solid #cccccc !important;
     padding: 10px;
@@ -21,10 +16,6 @@
     font-size: 12px;
     font-weight: normal;
     color: #666666;
-}
-
-#all_subjects .all_subject_type_table .list_header {
-    cursor: pointer;
 }
 
 #all_subjects .all_subject_type_table .list_header:hover {
@@ -65,21 +56,27 @@
     color: #FFFFFF;
 }
 
-#all_subjects .subject-container {
+#all_subjects .styled_table {
+    margin-bottom: 0;
+    max-height: 275px;
     overflow-y: auto;
     padding: 10px;
 }
 
-#all_subjects .subject-container .styled_table tbody tr td:first-child, #all_subjects .subject-container .styled_table thead tr th:first-child {
-    width: 21px !important;
-}
-
-#all_subjects .subject-container .styled_table tbody tr td:first-child input {
+#all_subjects .styled_table tbody tr td:first-child {
     margin-left: 6px !important;
 }
 
-#all_subjects .subject-container .styled_table thead tr th:first-child input {
-    margin-left: 0px !important;
+#all_subjects .styled_table tbody tr td:nth-child(2) {
+    margin-left: 6px !important;
+}
+
+#all_subjects .styled_table .header_subject_type {
+    width: 24% !important;
+}
+
+#all_subjects .styled_table .registered_subjects {
+    width: 15% !important;
 }
 
 #all_subjects .ui-accordion-content {
@@ -94,10 +91,6 @@
     font-weight: bold;
     font-size: 12px;
     margin-bottom: 10px;
-}
-
-#all_subjects .styled_table {
-    margin-bottom: 0;
 }
 
 #all_subjects .subjects_links {

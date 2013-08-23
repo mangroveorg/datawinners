@@ -19,18 +19,10 @@
         </thead>
         {% for entity,projects in all_data.items %}
             <tr class="list_header">
-                <td><a class="header" href="/entity/subjects/{{ entity}}">{{ entity|capfirst }}</a></td>
+                <td><a class="header" href="/entity/subjects/{{ entity }}">{{ entity|capfirst }}</a></td>
                 <td><span class="success_error">{{ subjects_count|get_count:entity }}</span></td>
-{#                <td><span class="success_error">0</span></td>#}
-                <td><span class="success_error">
-                    {% for project in projects %}
-                        {{ project }}
-                        {% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </span>
-                </td>
+                <td><span class="success_error">{{ projects|join:", " }}</span></td>
             </tr>
-
         {% endfor %}
     </table>
 </div>
