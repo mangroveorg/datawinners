@@ -24,10 +24,12 @@ $(document).ready(function () {
         $('#error').remove();
         var action = this.className;
         if (action == 'disassociate') {
+            DW.loading();
             $.post('/project/disassociate/',
                 {'ids':allIds.join(';'), 'project_id':$("#project_id").val()}
             ).success(function (data) {
-                    $('<div class="success-message-box" id="success_message">' + gettext("Data Senders dissociated Successfully") + '. ' + gettext("Please Wait") + '....</div>').insertAfter($('#action_dropdown'));
+                    $("button.action").dropdown("detach");
+                    $('<div class="success-message-box clear-left" id="success_message">' + gettext("Data Senders dissociated Successfully") + '. ' + gettext("Please Wait") + '....</div>').insertAfter($('#action_dropdown'));
                     $('#success_message').delay(4000).fadeOut(1000, function () {
                         $('#success_message').remove();
                     });

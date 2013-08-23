@@ -246,7 +246,7 @@ $(document).ready(function () {
         }
     };
 
-    if ($("#all_projects > li").length == 0) {
+    if ($("#all_projects > li").length == 0 && $("#all_data_senders").length) {
         $("#associate,#disassociate").parent().addClass("disabled");
     }
 });
