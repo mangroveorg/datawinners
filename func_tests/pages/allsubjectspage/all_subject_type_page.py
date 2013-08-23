@@ -79,16 +79,9 @@ class AllSubjectTypePage(Page):
 
         return -1
 
-    def click_action_button_for(self, subject_type, action=None):
-        subject_number = self.get_subject_type_number(subject_type)
-        buttons = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector",
-                                                                              value="div.subject-container button.action")
-        if subject_number > 0:
-            buttons[subject_number - 1].click()
-        if action:
-            self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector", value="." + action)[
-                0].click()
-
+    def click_action_button_for(self, action=None):
+        (self.driver.find_elements(by='xpath', value='//*[@id="action_button"]/div/button')[1]).click()
+        self.driver.find_elements(by='css',value='.'+action)[0].click()
 
     def is_edit_enabled_for(self, subject_type):
         subject_number = self.get_subject_type_number(subject_type)
@@ -106,7 +99,7 @@ class AllSubjectTypePage(Page):
         return self.driver.find(by_id("action%s" % str(subject_number))).is_displayed()
 
     def select_a_subject_by_type_and_id(self, subject_type, uid):
-        self.is_subject_present(subject_type, uid)[0].click()
+        self.is_subject_present(subject_type, uid).click()
 
     def is_checkall_checked_for_entity_type(self, entity_type):
         return self.driver.find(by_css(CHECKALL_CB % entity_type)).get_attribute("checked") == "true"
@@ -115,7 +108,7 @@ class AllSubjectTypePage(Page):
         return self.driver.find(by_css('ul.messages > li.success')).text
 
     def is_subject_present(self, subject_type, subject_short_code):
-        subject_number = self.get_subject_type_number(subject_type)
-        container = self.driver.find(ALL_SUBJECT_TYPES_CONTAINER).find_elements(by="css selector",
-                                                                                value="div.subject-container")
-        return container[subject_number - 1].find_elements(by="css selector", value="input#%s" % subject_short_code)
+        try:
+            return self.driver.find(by_xpath('//input[@value="%s"'%subject_short_code+']'))
+        except:
+            return None

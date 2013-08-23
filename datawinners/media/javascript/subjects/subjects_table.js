@@ -48,7 +48,7 @@ $(document).ready(function () {
         "sAjaxDataProp":"subjects",
         "sServerMethod":"GET",
         "fnInitComplete":function (oSettings) {
-            $actionBar.clone(true).insertBefore(".dataTables_info").addClass('margin_top_10').show();
+            $actionBar.clone(true).insertBefore(".dataTables_info").addClass('margin_top_10').removeAttr('hidden').show();
             select_across_pages_enabled = false;
         },
         "fnPreDrawCallback":function (oSettings) {

@@ -11,7 +11,7 @@
 
         <div id="action" class="dropdown action" >
             <ul class="dropdown-menu">
-                <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-delete">{% trans "Delete" %}</a></li>
+                <li><a class="delete" data-entity = "{{ subject.entity }}-{{ subject.code }}-delete">{% trans "Delete" %}</a></li>
                 {% if EDIT_SUBJECT_ENABLED %}
                     <li><a data-entity = "{{ subject.entity }}-{{ subject.code }}-edit" class="edit" >{% trans "Edit" %}</a></li>
                 {% endif %}
