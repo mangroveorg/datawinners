@@ -31,6 +31,13 @@ def recreate_index_for_db(database_name, es):
 class Command(BaseCommand):
     def handle(self, *args, **options):
         es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
-        for database_name in all_db_names():
+        if len(args) > 0:
+            databases_to_index = args[0:]
+        else:
+            databases_to_index  = all_db_names()
+        for database_name in databases_to_index:
             recreate_index_for_db(database_name, es)
-        print 'Done'
+            print 'Done' + database_name
+
+        print 'Completed!'
+
