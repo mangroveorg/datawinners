@@ -29,7 +29,7 @@ class Organization(models.Model):
     in_trial_mode = models.BooleanField(default=False)
     active_date = models.DateTimeField(blank=True, null=True)
     is_deactivate_email_sent = models.BooleanField(False)
-    status = models.CharField(null=True, max_length=20)
+    status = models.CharField(null=True, max_length=20, default='Activated')
     status_changed_datetime = models.DateTimeField(blank=True, null=True)
 
     def __unicode__(self):

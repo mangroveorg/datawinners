@@ -70,7 +70,10 @@ def active_organization(org):
     active_date = org.active_date
 
     if active_date is None:
-        org.active_date = datetime.datetime.now().replace(microsecond=0)
+        now = datetime.datetime.now().replace(microsecond=0)
+        org.active_date = now
+        org.status_changed_datetime = now
+        org.status = 'Activated'
         org.save()
 
 
