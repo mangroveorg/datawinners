@@ -19,6 +19,7 @@ $(document).ready(function () {
 
     var $actionBar = $(".action_bar");
 
+    var LAST_NAME_COLUMN_INDEX = 2;
     var dt = $('#subjects_table').dataTable({
         "bProcessing":true,
         "bServerSide":true,
@@ -71,7 +72,7 @@ $(document).ready(function () {
             subjects_action_dropdown.update_edit_action();
         },
         "aaSorting":[
-            [1, ["asc", "desc"]]
+            [ LAST_NAME_COLUMN_INDEX, "asc"]
         ],
         "fnServerData":function (sSource, aoData, fnCallback, oSettings) {
             oSettings.jqXHR = $.ajax({
