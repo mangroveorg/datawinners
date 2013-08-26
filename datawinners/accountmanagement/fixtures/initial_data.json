@@ -56,23 +56,6 @@
             "active_date": "2011-10-17 04:54:47"
 
         }
-    },{
-        "pk": "TIP938359",
-        "model": "accountmanagement.organization",
-        "fields": {
-            "sector": "TIP PublicHealth",
-            "city": "Anatanovario",
-            "name": "Testorg",
-            "country": "MG",
-            "org_id": "TIP938359",
-            "zipcode": "445677",
-            "website": "https://tip.help.org/",
-            "office_phone": "919880734938",
-            "state": "MH",
-            "address": "Don Bosco Road, Yerwada",
-            "active_date": "2011-10-18 04:54:47"
-
-        }
     },
     {
         "pk": "COJ409579",
@@ -294,7 +277,7 @@
             "reporter_id": "rep2",
             "mobile_phone": "2611234",
             "org_id": "RVZ704148",
-            "user": 8,
+            "user": -11,
             "title": ""
         }
     },
@@ -395,15 +378,6 @@
             "organization": "SLX364903",
             "document_store": "hni_testorg_slx364903",
             "sms_tel_number": "919880734937"
-        }
-    },
-    {
-        "pk": 4,
-        "model": "accountmanagement.organizationsetting",
-        "fields": {
-            "organization": "TIP938359",
-            "document_store": "hni_testorg_tip938359",
-            "sms_tel_number": "919880734938"
         }
     },
     {
@@ -632,7 +606,7 @@
         }
     },
     {
-        "pk": 8,
+        "pk": -11,
         "model": "auth.user",
         "fields": {
             "username": "deactivated@mailinator.com",
