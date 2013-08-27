@@ -10,13 +10,8 @@ class Migration(DataMigration):
     def forwards(self, orm):
         for org in orm.Organization.objects.all():
             if not org.status:
-                if is_empty(org.active_date):
-                    status = 'Deactivated'
-                    status_changed_datetime = datetime.datetime.now()
-                else:
-                    status = 'Activated'
-                    status_changed_datetime = org.active_date
-                
+                status = 'Activated'
+                status_changed_datetime = datetime.datetime.now() if is_empty(org.active_date) else org.active_date
                 org.status_changed_datetime = status_changed_datetime
                 org.status = status
                 org.save()
