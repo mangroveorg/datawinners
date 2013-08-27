@@ -1,33 +1,3 @@
-{% load i18n %}
-<div class="help_accordion">
-    {% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %}
-    <a href="javascript:void(0)" class="show_link">{% trans "Learn More" %}</a>
-    <div class="details">
-        <div class="dark_grey_text">
-            {% trans "subject_question" %}
-        </div>
-        <div>
-            {% trans "subject_answer" %}
-        </div>
-        <div class="dark_grey_text">
-            {% trans "register_subject_for_project_question" %}
-        </div>
-        <div>
-            {% trans "register_subject_for_projects_answer" %}
-        </div>
-        <div class="dark_grey_text">
-            {% trans "register_subject_question" %}
-        </div>
-        <div>
-            <ol>
-                <li>{% trans "Decide what information you want to use to identify and register each Subject:" %}
-                    <a href='{{ project_links.subjects_edit_link }}' id="link-to-edit-form-{{ subject.entity }}">{% trans "Customize your Registration Form" %}</a></li>
-                <li>{% trans "Register a Subject:" %}<a href='{{ project_links.register_subjects_link }}'> {% trans "Add a new" %} {{ project.entity_type }}</a>
-                    {% trans "or" %}
-                    <a href='javascript:void(0);' class='import-subject' id='import-{{ project.entity_type }}'>{% trans "Import a List" %}</a></li>
-            </ol>
-        </div>
-        <br/>
-        <a href="javascript:void(0)" class="hide_link">{% trans "Hide help" %}</a>
-    </div>
-</div>
+{% with edit_registration_form_link=project_links.subjects_edit_link entity_type=project.entity_type create_entity_link=project_links.register_subjects_link %}
+    {% include 'help/subjects_help.html' %}
+{% endwith %}

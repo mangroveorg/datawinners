@@ -44,7 +44,9 @@
 {% block content %}
 
     {% block secondary_navigation %}{% endblock %}
-    {% include 'project/my_subjects_help.html' %}
+    {% with edit_registration_form_link=links.edit_subject_registration_form create_entity_link=links.create_subject %}
+        {% include 'help/subjects_help.html' %}
+    {% endwith %}
     <div id="all_subjects">
         <ul class="secondary_tab">
             <li class="active">

@@ -280,7 +280,10 @@ def all_subjects(request, subject_type):
                                'current_language': translation.get_language(),
                                'entity_type': subject_type,
                                'questions': viewable_questionnaire(form_model),
-                               'form_code': form_model.form_code
+                               'form_code': form_model.form_code,
+                               'links': {'create_subject': reverse("create_subject", args=(subject_type,)),
+                                         'edit_subject_registration_form': reverse("edit_subject_questionnaire",
+                                                                                   args=(subject_type,))}
                               },
                               context_instance=RequestContext(request))
 
