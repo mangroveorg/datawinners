@@ -9,8 +9,9 @@ DW.SubjectPagination = function () {
 
     this.display_select_across_pages_message = function (no_of_records_on_page, total_number_of_records) {
         if (no_of_records_on_page != total_number_of_records) {
-            var select_all_link = "<a id='select_all_link' class=''> Select all <b>" + total_number_of_records + "</b> subjects</a>"
-            var select_across_pages_message = "All <b>" + no_of_records_on_page + "</b> Subjects on this page are selected." + select_all_link;
+            var select_all_text = interpolate(gettext("Select all <b> %(total_number_of_records)s </b>subjects"), {'total_number_of_records': total_number_of_records }, true);
+            var select_all_link = "<a id='select_all_link' class=''> " + select_all_text + "</a>"
+            var select_across_pages_message = interpolate(gettext("All %(number_of_records)s Subjects on this page are selected."), {'number_of_records': no_of_records_on_page}, true) + select_all_link;
             $("#subjects_table").before("<div id='select_all_message'>" + select_across_pages_message + "</div>");
 
             $('#select_all_link').click(function () {

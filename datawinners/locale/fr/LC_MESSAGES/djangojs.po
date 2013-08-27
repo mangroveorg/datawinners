@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-13 15:49+0530\n"
+"POT-Creation-Date: 2013-08-27 17:13+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,6 +92,7 @@ msgstr ""
 
 #: media/admin/js/admin/DateTimeShortcuts.js:91
 #: media/admin/js/admin/DateTimeShortcuts.js:188
+#: media/javascript/admin/organization.js:28
 #: media/javascript/file_uploader/fileuploader.js:489
 msgid "Cancel"
 msgstr "Annuler"
@@ -122,19 +123,20 @@ msgid "You Have Unsaved Changes"
 msgstr "Vous avez des modifications non sauvegardées"
 
 #: media/javascript/data_modified_warning.js:57
+#: media/javascript/project/subject_warning_dialog_module.js:43
 msgid "en"
 msgstr "fr"
 
 #: media/javascript/datawinners.js:2 media/javascript/entity_import.js:28
-#: media/javascript/account/users_list.js:35
+#: media/javascript/account/users_list.js:40
 #: media/javascript/datasenders/import.js:36
 #: media/javascript/datasenders/index.js:88
 #: media/javascript/datasenders/index.js:187
 #: media/javascript/entity/create_subject_questionnaire.js:51
 #: media/javascript/entity/create_subject_questionnaire.js:67
-#: media/javascript/entity/questionnaire_helper.js:304
+#: media/javascript/entity/questionnaire_helper.js:318
 #: media/javascript/project/create_project.js:18
-#: media/javascript/project/create_project.js:235
+#: media/javascript/project/create_project.js:237
 #: media/javascript/project/data_analysis.js:19
 #: media/javascript/project/register_reporter.js:47
 #: media/javascript/project/sms_tester.js:20
@@ -160,9 +162,54 @@ msgstr "Importer une liste de %(entity)s"
 msgid "Warning"
 msgstr "Attention"
 
-#: media/javascript/account/users_list.js:46
+#: media/javascript/account/users_list.js:51
 msgid "Your User(s) will be deleted"
 msgstr "Votre(vos) utilisateur(s) sera/seront supprimé(s)"
+
+#: media/javascript/admin/organization.js:9
+msgid "Do you want to activate the account(s)?"
+msgstr "Voulez-vous activer le(s) compte(s)?"
+
+#: media/javascript/admin/organization.js:10
+msgid "Do you want to deactivate the account(s)?"
+msgstr "Voulez-vous désactiver le(s) compte(s)?"
+
+#: media/javascript/admin/organization.js:11
+msgid "Deleting accounts cannot be undone"
+msgstr ""
+
+#: media/javascript/admin/organization.js:13
+msgid "You are trying to delete 1 or more active accounts."
+msgstr ""
+
+#: media/javascript/admin/organization.js:16
+msgid "Activate"
+msgstr ""
+
+#: media/javascript/admin/organization.js:17
+msgid "Deactivate"
+msgstr ""
+
+#: media/javascript/admin/organization.js:18
+msgid "Delete"
+msgstr ""
+
+#: media/javascript/admin/organization.js:19
+msgid "Ok"
+msgstr ""
+
+#: media/javascript/admin/organization.js:36
+#, fuzzy
+msgid "The Accounts(s) will be Deleted"
+msgstr "Votre(vos) utilisateur(s) sera/seront supprimé(s)"
+
+#: media/javascript/admin/organization.js:41
+msgid "Activated"
+msgstr ""
+
+#: media/javascript/admin/organization.js:50
+msgid "Active Accounts(s) cannot be Deleted"
+msgstr ""
 
 #: media/javascript/alldata/data_export.js:63
 #: media/javascript/useractivity/log.js:11
@@ -235,10 +282,13 @@ msgstr "Date fin"
 msgid "Done"
 msgstr "Terminé"
 
-#: media/javascript/entity/all_subjects.js:36
-#, perl-format
-msgid "Select 1 %s only"
-msgstr "Sélectionnez seulement 1 %s"
+#: media/javascript/dropdown_check_list/dropdownchecklist.custom.js:266
+msgid "people"
+msgstr ""
+
+#: media/javascript/dropdown_check_list/dropdownchecklist.custom.js:266
+msgid "peoples"
+msgstr ""
 
 #: media/javascript/entity/create_questionnaire.js:125
 #: media/javascript/project/new_questionnaire_wizard.js:16
@@ -271,8 +321,8 @@ msgstr "Veuillez saisir uniquement des nombres positifs"
 
 #: media/javascript/entity/create_subject_questionnaire.js:19
 #: media/javascript/project/questionnaire_wizard.js:150
-msgid "The question has been saved."
-msgstr "Le questionnaire a été enregistré."
+msgid "Your changes have been saved."
+msgstr "Vos changements ont été enregistrés"
 
 #: media/javascript/entity/create_subject_questionnaire.js:42
 #: media/javascript/entity/create_subject_questionnaire.js:49
@@ -287,23 +337,23 @@ msgstr "Attention: Les données que vous avez collecté seront perdues"
 msgid "Shared Registration Form"
 msgstr "Formulaire d'enregistrement partagé"
 
-#: media/javascript/entity/create_type.js:59
+#: media/javascript/entity/create_type.js:61
 msgid "Read More"
 msgstr "En lire plus"
 
-#: media/javascript/entity/create_type.js:71
+#: media/javascript/entity/create_type.js:73
 msgid "Add a New Subject Type"
 msgstr "Ajouter un nouveau type de Sujet"
 
 #: media/javascript/entity/entity_actions.js:5
 #: media/javascript/entity/entity_actions_all_subjects.js:3
-#: media/javascript/entity/questionnaire_helper.js:246
-#: media/javascript/project/create_project.js:254
-#: media/javascript/project/create_project.js:264
-#: media/javascript/project/create_project.js:274
+#: media/javascript/entity/questionnaire_helper.js:260
+#: media/javascript/project/create_project.js:256
+#: media/javascript/project/create_project.js:266
+#: media/javascript/project/create_project.js:276
 #: media/javascript/project/new_questionnaire_wizard.js:95
 #: media/javascript/project/questionnaire_wizard.js:84
-#: media/javascript/project/subject_warning_dialog_module.js:44
+#: media/javascript/project/subject_warning_dialog_module.js:45
 msgid "Warning !!"
 msgstr "Attention !!"
 
@@ -388,7 +438,7 @@ msgstr "mois.année"
 msgid "Answer must be a text"
 msgstr "La réponse doit être un texte"
 
-#: media/javascript/entity/questionnaire_helper.js:330
+#: media/javascript/entity/questionnaire_helper.js:344
 msgid "default"
 msgstr "valeur par défaut"
 
@@ -472,9 +522,27 @@ msgstr "Déc"
 msgid "Activate this Project?"
 msgstr "Activer ce projet ?"
 
+#: media/javascript/project/broadcast_message.js:95
 #: media/javascript/project/broadcast_message.js:103
+#: media/javascript/project/broadcast_message.js:104
+msgid "recipient(s)"
+msgstr "destinataire(s)"
+
+#: media/javascript/project/broadcast_message.js:135
 msgid "Enter local telephone number of %(limit)s digits or less"
 msgstr "Entrez un numéro de téléphone local de %(limit)s chifres ou moins"
+
+#: media/javascript/project/broadcast_message.js:198
+msgid "Send Message?"
+msgstr "Envoyer un message ?"
+
+#: media/javascript/project/create_project.js:188
+msgid "subject type"
+msgstr "type de sujet"
+
+#: media/javascript/project/create_project.js:197
+msgid "project type"
+msgstr "type de projet"
 
 #: media/javascript/project/data_analysis.js:3
 #: media/javascript/project/data_analysis.js:27
@@ -486,24 +554,24 @@ msgstr ""
 "certains de vos filtres."
 
 #: media/javascript/project/data_analysis.js:64
-#: media/javascript/project/results.js:167
+#: media/javascript/project/results.js:173
 #: media/javascript/useractivity/log.js:27
 msgid "Processing..."
 msgstr "Traitement en cours..."
 
 #: media/javascript/project/data_analysis.js:65
-#: media/javascript/project/results.js:168
+#: media/javascript/project/results.js:174
 msgid "Show _MENU_ Submissions"
 msgstr "Afficher _MENU_ Soumissions"
 
 #: media/javascript/project/data_analysis.js:68
-#: media/javascript/project/results.js:171
+#: media/javascript/project/results.js:177
 #: media/javascript/useractivity/log.js:31
 msgid "Loading..."
 msgstr "Chargement..."
 
 #: media/javascript/project/data_analysis.js:69
-#: media/javascript/project/results.js:172
+#: media/javascript/project/results.js:178
 #, fuzzy
 msgid ""
 "<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</"
@@ -511,42 +579,42 @@ msgid ""
 msgstr "<span>_START_ - _END_</span> of _TOTAL_ Soumissions"
 
 #: media/javascript/project/data_analysis.js:70
-#: media/javascript/project/results.js:173
+#: media/javascript/project/results.js:179
 msgid "0 Submissions"
 msgstr "0 Soumissions"
 
 #: media/javascript/project/data_analysis.js:71
-#: media/javascript/project/results.js:174
+#: media/javascript/project/results.js:180
 #: media/javascript/useractivity/log.js:34
 msgid "(filtered from _MAX_ total Data records)"
 msgstr "(filtrée de _MAX_ d'enregistrements)"
 
 #: media/javascript/project/data_analysis.js:73
-#: media/javascript/project/results.js:176
+#: media/javascript/project/results.js:182
 #: media/javascript/useractivity/log.js:36
 msgid "Search:"
 msgstr "Recherche:"
 
 #: media/javascript/project/data_analysis.js:76
-#: media/javascript/project/results.js:179
+#: media/javascript/project/results.js:185
 #: media/javascript/useractivity/log.js:39
 msgid "First"
 msgstr "Premiere"
 
 #: media/javascript/project/data_analysis.js:77
-#: media/javascript/project/results.js:180
+#: media/javascript/project/results.js:186
 #: media/javascript/useractivity/log.js:40
 msgid "Previous"
 msgstr "Préc."
 
 #: media/javascript/project/data_analysis.js:78
-#: media/javascript/project/results.js:181
+#: media/javascript/project/results.js:187
 #: media/javascript/useractivity/log.js:41
 msgid "Next"
 msgstr "Suiv."
 
 #: media/javascript/project/data_analysis.js:79
-#: media/javascript/project/results.js:182
+#: media/javascript/project/results.js:188
 #: media/javascript/useractivity/log.js:42
 msgid "Last"
 msgstr "Dernière"
@@ -758,20 +826,21 @@ msgstr ""
 msgid "Please fill out at least one location field"
 msgstr "Veuillez remplir au moins un champ de localité"
 
-#: media/javascript/project/registered_datasenders.js:30
+#: media/javascript/project/registered_datasenders.js:32
 msgid "Data Senders dissociated Successfully"
 msgstr "Expéditeurs dissociés avec succès"
 
-#: media/javascript/project/registered_datasenders.js:30
+#: media/javascript/project/registered_datasenders.js:32
 msgid "Please Wait"
 msgstr "Veuillez patienter"
 
-#: media/javascript/project/registered_datasenders.js:75
+#: media/javascript/project/registered_datasenders.js:77
 #, fuzzy
 msgid "Please select only 1 Data Sender"
 msgstr "Veuillez choisir un seul expéditeur"
 
 #: media/javascript/project/registered_subjects.js:36
+#, perl-format
 msgid "Please select 1 %s only"
 msgstr "Sélectionnez seulement 1 %s"
 
@@ -799,11 +868,11 @@ msgstr "A propos de la date limite d'envoi"
 msgid "The reminders has been saved"
 msgstr "Le message de rappèl a été enregistré"
 
-#: media/javascript/project/results.js:325
+#: media/javascript/project/results.js:331
 msgid "Your Submission(s) will be deleted"
 msgstr "Votre/vos Soumission(s) sera/seront supprimée(s)"
 
-#: media/javascript/project/results.js:339
+#: media/javascript/project/results.js:345
 msgid "Please select 1 Submission only"
 msgstr "Veuillez choisir une seule Soumission."
 
@@ -887,6 +956,10 @@ msgstr "Termes & Conditions de DataWinners"
 msgid "Terms And Conditions"
 msgstr "Termes et Conditions"
 
+#: media/javascript/subjects/subject_actions.js:15
+msgid "All %(number_of_records)s Subjects on this page are selected."
+msgstr "Tous les %(number_of_records)s Sujets sur cette page sont sélectionnés"
+
 #: media/javascript/useractivity/log.js:28
 #, fuzzy
 msgid "Show _MENU_ Data records"
@@ -909,236 +982,14 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 msgid "Showing 0 to 0 of 0 Data records"
 msgstr "Afficher 0 à 0 de 0 Enregistrements"
 
-#~ msgid "Please select atleast 1 data sender"
-#~ msgstr "Veuillez sélectionner au moins 1 expéditeur des données"
+#~ msgid "Select 1 %s only"
+#~ msgstr "Sélectionnez seulement 1 %s"
 
-#~ msgid "View charts of your multiple choice questions."
-#~ msgstr "Visionnez un schéma de vos questions à choix multiples."
+#~ msgid "The question has been saved."
+#~ msgstr "Le questionnaire a été enregistré."
 
-#~ msgid "%(day)s of the week following the reporting week"
-#~ msgstr "%(day)s de la semaine après la semaine d'envoi du rapport"
+#~ msgid "Not available for trial accounts"
+#~ msgstr "Non disponible pour les comptes essai"
 
-#~ msgid "%(day)s of the reporting week"
-#~ msgstr "%(day)s de la semaine d'envoi du rapport"
-
-#~ msgid "%(day)s of October for September report"
-#~ msgstr "%(day)s d'octobre pour le rapport de septembre"
-
-#~ msgid "%(day)s of October for October report"
-#~ msgstr "%(day)s d'october pour le rapport d'octobre"
-
-#~ msgid ""
-#~ "name));\n"
-#~ "        this"
-#~ msgstr ""
-#~ "nom));\n"
-#~ "        this"
-
-#~ msgid "Answer must be a word or phrase"
-#~ msgstr "La réponse doit être un mot"
-
-#~ msgid "Answer must be a word or phrase %d characters maximum"
-#~ msgstr "La réponse doit être un mot de %d caractères au maximum"
-
-#~ msgid ""
-#~ "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy "
-#~ "Example: -18.1324 27.6547 "
-#~ msgstr ""
-#~ "Format de GPS incorrect. Les coordonnées GPS doivent être de la forme : "
-#~ "xx.xxxx,yy.yyyy. Exemple -18.8665,27.6547"
-
-#~ msgid "number"
-#~ msgstr "nombre"
-
-#~ msgid "text"
-#~ msgstr "texte"
-
-#~ msgid "list of choices"
-#~ msgstr "liste de choix"
-
-#~ msgid "geo code"
-#~ msgstr "code geo"
-
-#~ msgid "Please select at least 1 data sender"
-#~ msgstr "Veuillez remplir au moins un champ de localité"
-
-#~ msgid "Can't be blank."
-#~ msgstr "Ne peut être vide"
-
-#~ msgid "Day Can't be blank."
-#~ msgstr "Le jour doit être saisi"
-
-#~ msgid "Please select at least one undeleted record"
-#~ msgstr "Veuillez sélectionner au moins une soumission non supprimée"
-
-#~ msgid "This data has already been deleted"
-#~ msgstr "Cet enregistrement a déja été supprimé"
-
-#~ msgid "Which subject are you reporting on?"
-#~ msgstr "Votre rapport concerne quel sujet?"
-
-#~ msgid "What is the reporting period for the activity?"
-#~ msgstr "Votre rapport concerne quelle période?"
-
-#~ msgid "What is associated subject type?"
-#~ msgstr "Quel est le type de sujet associé?"
-
-#~ msgid "What is the subject's name?"
-#~ msgstr "Quel est le nom du sujet?"
-
-#~ msgid "What is the subject's Unique ID Number"
-#~ msgstr "Quel est l'ID unique du sujet"
-
-#~ msgid "What is the subject's location?"
-#~ msgstr "Quel est la localité du sujet?"
-
-#~ msgid "What is the subject's GPS co-ordinates?"
-#~ msgstr "Quelles sont les coordonnées GPS de la localité de sujet ?"
-
-#~ msgid "Describe the subject"
-#~ msgstr "Décrivez le sujet"
-
-#~ msgid "What is the mobile number associated with the subject?"
-#~ msgstr "Quel est le numéro de téléphone portable associé au sujet?"
-
-#~ msgid "What is the data sender's name?"
-#~ msgstr "Quel est le nom de l'expéditeur données?"
-
-#~ msgid "What is the data sender's location?"
-#~ msgstr "Quel est la localité de l'expéditeur de données ?"
-
-#~ msgid "What is the data sender's GPS co-ordinates?"
-#~ msgstr "Quel sont les coordonnées GPS de l'expéditeur de données ?"
-
-#~ msgid "What is the mobile number associated with the data sender?"
-#~ msgstr ""
-#~ "Quel est le numéro de téléphone portable associé à l'expéditeur de "
-#~ "données ?"
-
-#~ msgid "Prev"
-#~ msgstr "Préc."
-
-#~ msgid "No data available"
-#~ msgstr "Aucune donnée disponible"
-
-#~ msgid "No submissions yet"
-#~ msgstr ""
-#~ "Une fois que vos Expéditeurs de Données ont soumis leurs données avec "
-#~ "succès, ces données seront affichées ici. <a href='#'>En savoir plus</a>"
-
-#~ msgid "0 Data Records"
-#~ msgstr "0 enregistrements"
-
-#~ msgid "Cancel this Project?"
-#~ msgstr "Annuler ce projet?"
-
-#~ msgid "Agree terms and conditions"
-#~ msgstr "Acceptez les termes et conditions"
-
-#~ msgid "Example: %(day)s of the week following the reporting week"
-#~ msgstr "Exemple: %(day)s de la semaine suivante"
-
-#~ msgid "Example: %(day)s of the reporting week"
-#~ msgstr "Exemple: %(day)s de la même semaine"
-
-#~ msgid "Example: %(day)s of October for September report"
-#~ msgstr "Exemple: Le %(day)s octobre pour le rapport du mois de septembre"
-
-#~ msgid "Example: %(day)s of October for October report"
-#~ msgstr "Exemple: Le %(day)s octobre pour le rapport du mois d'octobre"
-
-#~ msgid "Questionnaire with this code already exists"
-#~ msgstr "Un questionnaire avec ce code existe déjà"
-
-#~ msgid "word"
-#~ msgstr "mot"
-
-#~ msgid "choice"
-#~ msgstr "choix"
-
-#~ msgid "Please select atleast 1 subject"
-#~ msgstr "Veuillez sélectionner au moins 1 Sujet"
-
-#~ msgid "Please select only 1 subject"
-#~ msgstr "Veuillez choisir un seul sujet"
-
-#~ msgid "All"
-#~ msgstr "Toutes"
-
-#~ msgid "Amount"
-#~ msgstr "Montant"
-
-#~ msgid "Close"
-#~ msgstr "Fermer"
-
-#~ msgid ""
-#~ "You have deleted an answer choice.<br>If you have previously collected "
-#~ "data for this choice it will be deleted.<br><br>Are you sure you want to "
-#~ "continue?"
-#~ msgstr ""
-#~ "Vous avez supprimé un choix de réponse.<br>Si vous avez collecté des "
-#~ "données pour ce choix auparavant, elles seront supprimées.<br><br>Etes-"
-#~ "vous sûr de vouloir continuer?"
-
-#~ msgid ""
-#~ "You have deleted an answer choice.<br>If you have previously collected "
-#~ "data for this choice it will be deleted.<br><br>Also, the position of "
-#~ "your answer choices has changed (Example: You have deleted “A. Cat”, so "
-#~ "“B. Dog” is now “A. Dog”).<br>If you have previously collected data it "
-#~ "will be adjusted to the new choice in that position (Example: The choice "
-#~ "“Cat”, it will be replaced with “Dog”).<br><br>Are you sure you want to "
-#~ "continue?"
-#~ msgstr ""
-#~ "Vous avez supprimé un choix de réponse.<br>Si vous avez collecté des "
-#~ "données pour ce choix auparavant, elles seront supprimées.<br><br> Vous "
-#~ "avez également changé la position de vos choix de réponse. (Exemple : "
-#~ "Vous avez supprimé «A. Chat», donc «B. Chien» est maintenant devenu «A. "
-#~ "Chien»).<br>Si vous avez déjà collecté des données, elles seront ajustées "
-#~ "au nouveau choix correspondant à cette position (Exemple : Le choix "
-#~ "«Chat» sera remplacé par «Chien»<br><br>Etes-vous sûr de vouloir "
-#~ "continuer?"
-
-#~ msgid ""
-#~ "You have changed the text of your answer choice.<br>If you have "
-#~ "previously collected data for this choice it will be replaced with the "
-#~ "new text.<br><br>Are you sure you want to continue?"
-#~ msgstr ""
-#~ "Vous avez changé le texte de votre choix de réponse.<br>Si vous avez "
-#~ "collecté des données pour ce choix auparavant, elles seront remplacées "
-#~ "par le nouveau texte.<br><br>Etes-vous sûr de vouloir continuer?"
-
-#~ msgid ""
-#~ "You have changed the Answer Type.<br>If you have previously collected "
-#~ "data, it may be rendered incorrect.<br><br>Are you sure you want to "
-#~ "continue?"
-#~ msgstr ""
-#~ "Vous avez changé le Type de Réponse.<br>Si vous avez déjà collecté des "
-#~ "données auparavant, celles-ci peuvent être considérées incorrectes."
-#~ "<br><br>Etes-vous sûr de vouloir continuer ?"
-
-#~ msgid "Enter local telephone number of 10 digits or less"
-#~ msgstr "Entrez un numéro de téléphone local de 10 chifres ou moins"
-
-msgid "Not available for trial accounts"
-msgstr "Non disponible pour les comptes essai"
-
-msgid "recipient(s)"
-msgstr "destinataire(s)"
-
-msgid "Send Message?"
-msgstr "Envoyer un message ?"
-
-msgid "project type"
-msgstr "type de projet"
-
-msgid "subject type"
-msgstr "type de sujet"
-
-msgid "Do you want to deactivate the account(s)?"
-msgstr "Voulez-vous désactiver le(s) compte(s)?"
-
-msgid "Do you want to activate the account(s)?"
-msgstr "Voulez-vous activer le(s) compte(s)?"
-
-msgid "Your changes have been saved."
-msgstr "Vos changements ont été enregistrés"
+msgid "Select all <b> %(total_number_of_records)s </b>subjects"
+msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>Sujets"
