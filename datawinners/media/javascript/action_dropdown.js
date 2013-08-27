@@ -55,7 +55,7 @@ DW.action_dropdown.prototype = {
                     self.update_edit_action();
                 }
             });
-            
+
             this.deactivate_action();
         };
 
@@ -81,7 +81,7 @@ DW.action_dropdown.prototype = {
             if ($(this.check_single_checked_locator, this.container).length > 1 || $(this.select_all_link).attr('class') == 'selected'){
                 link.parent().addClass("disabled");
                 link.attr("disabled", "disabled");
-                link.attr("title", this.many_selected_msg);
+                link.attr("title",   this.many_selected_msg);
             } else {
                 link.parent().removeClass("disabled");
                 link.removeAttr("title");
