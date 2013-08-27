@@ -14,7 +14,8 @@ from datawinners.countrytotrialnumbermapping.models import Country, Network
 from django.contrib import messages
 from datawinners.utils import get_database_manager_for_org
 from datawinners.feeds.database import feeds_db_for
-import datetime
+from datawinners.settings import ELASTIC_SEARCH_URL
+import datetime, elasticutils
 
 
 admin.site.disable_action('delete_selected')
@@ -106,6 +107,8 @@ class OrganizationAdmin(DatawinnerAdmin):
             feed_database_name = "feed_" + dbm.database_name
             feed_dbm = feeds_db_for(feed_database_name)
             del feed_dbm.server[feed_database_name]
+            es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+            es.delete_index(dbm.database_name)
     delete_organizations.short_description = "Delete accounts"
 
     class Media:
