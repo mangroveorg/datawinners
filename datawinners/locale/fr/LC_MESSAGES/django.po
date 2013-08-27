@@ -4286,3 +4286,6 @@ msgstr "Vous avez activé votre compte avec succès. Bonne soumission de donnée
 
 msgid "Your account has been deactivated. Please contact the datawinners support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a> for reactivation of the account."
 msgstr "Votre compte a été désactivé. Veuillez contacter le support DataWinners à l'adresse <a href='mailto:support@datawinners.com'>support@datawinners.com</a> pour réactiver le compte."
+
+msgid "Back to All Subjects List"
+msgstr "Retour à la page Tous les Sujets"
