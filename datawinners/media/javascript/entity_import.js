@@ -93,7 +93,7 @@ $(document).ready(function () {
         }
     });
 
-    $(".import-subject").unbind().bind("click", function () {
+    $(document).on("click", ".import-subject", function () {
         if ($(this).parent().hasClass("subjects_links")) {
             var index = $(".subjects_links .import-subject").index($(this));
         } else {
