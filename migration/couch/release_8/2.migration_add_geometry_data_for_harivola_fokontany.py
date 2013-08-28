@@ -18,7 +18,7 @@ function(doc) {
         && doc.is_registration_model && !doc.void) {
         for (var i in doc.json_fields){
             var field = doc.json_fields[i];
-            if (field.name != 'geo_code'){
+            if (field.name == 'geo_code'){
 	            emit(doc.form_code, doc);
             }
         }
@@ -57,7 +57,7 @@ def add_geometry_data(db_name):
             for entity_doc in entity_docs:
 
                 entity = get_instance_from_doc(manager, entity_doc['value'], classname=Entity, documentclassname=EntityDocument)
-                logger.info("Database: " + db_name + "   type: " + form_model.entity_type[0] + "  short_code: " + entity.short_code)
+                logger.info("    Database: " + db_name + "   type: " + form_model.entity_type[0] + "  short_code: " + entity.short_code)
         
                 if not "coordinates" in entity.geometry:
                     geometry = {'type': 'Point', 'coordinates': [0, 0]}
