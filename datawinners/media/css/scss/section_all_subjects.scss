@@ -107,13 +107,14 @@
   }
   .no_registered_subjects {
     margin: 10px 0;
-    font-size: 12px !important;
     color: #666666;
     font-style: italic;
     ul {
       margin: 0 10px;
       padding: 0 10px;
-      list-style-type: disc !important;
+      li {
+        list-style-type: disc !important;
+      }
     }
   }
   .export_template_links {

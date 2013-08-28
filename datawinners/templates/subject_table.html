@@ -10,13 +10,26 @@
     <table id="subjects_table" class="styled_table">
         <thead>
         <tr class="list_header">
-{#        empty th for check-all box#}
-        <th></th>
+            {#        empty th for check-all box#}
+            <th></th>
             {% for header_name, header_label in subject_headers.items %}
                 <th>{{ header_label }} </th>
             {% endfor %}
         </tr>
         </thead>
     </table>
+    <div id="no_registered_subject_message" hidden="true">
+        <div class="no_registered_subjects">
+            <p>Once you have registered a {{ entity_type }}, it will appear here. </p>
+
+            <p>To get started </p>
+            <ul id="">
+                <li>Register a Hij: <a href="{{ links.create_subject }}">Add a new {{ entity_type }}</a> or <a
+                        href="javascript:void(0);" class="import-subject">Import a list of {{ entity_type }}</a></li>
+                <li><a href="{{ links.edit_subject_registration_form }}">Customize the {{ entity_type }} registration
+                    form</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 
