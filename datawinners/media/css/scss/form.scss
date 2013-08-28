@@ -121,7 +121,7 @@ span .error_arrow,div.error_arrow, label.error_arrow{
                 max-width:300px;
             }
         }
-.message-box{
+.message-box, div.message-box{
         background:#fdd3d2 url(/media/images/error_alert.png) no-repeat 10px 3px;
         color: black !important;
         margin:10px;
@@ -133,7 +133,7 @@ span .error_arrow,div.error_arrow, label.error_arrow{
         }
 }
 
-.success-message-box, .success-box{
+.success-message-box,div.success-message-box, .success-box{
         background:#E7FED5 url("/media/images/right_icons.png") no-repeat scroll 4px -29px;
         color: black !important;
         margin:10px;

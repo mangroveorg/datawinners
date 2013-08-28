@@ -92,23 +92,23 @@ span .error_arrow label, div.error_arrow label, label.error_arrow label {
   font-weight: normal;
   max-width: 300px; }
 
-.message-box {
+.message-box, div.message-box {
   background: #fdd3d2 url(/media/images/error_alert.png) no-repeat 10px 3px;
   color: black !important;
   margin: 10px;
   padding: 7px 10px 7px 40px;
   border: 1px solid red; }
-  .message-box label {
+  .message-box label, div.message-box label {
     color: #000000;
     font-weight: normal !important; }
 
-.success-message-box, .success-box {
+.success-message-box, div.success-message-box, .success-box {
   background: #e7fed5 url("/media/images/right_icons.png") no-repeat scroll 4px -29px;
   color: black !important;
   margin: 10px;
   padding: 7px 10px 7px 50px;
   border: 1px solid #2a8634; }
-  .success-message-box label, .success-box label {
+  .success-message-box label, div.success-message-box label, .success-box label {
     color: #000000;
     font-weight: normal !important; }
 
