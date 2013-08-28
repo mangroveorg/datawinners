@@ -156,6 +156,11 @@ class OrganizationAdmin(DatawinnerAdmin):
     def _get_full_name(self, user):
         return user.first_name + ' ' + user.last_name
 
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return self.readonly_fields + ('status',)
+        return self.readonly_fields
+
 
 class NullAdmin:
     def __init__(self):
