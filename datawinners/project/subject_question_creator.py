@@ -2,7 +2,6 @@ from django import forms
 from django.forms.fields import ChoiceField
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
-from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.utils import translate, get_text_language_by_instruction
 
 
@@ -42,7 +41,8 @@ class SubjectQuestionFieldCreator(object):
         entity_type = self.project.entity_type
         start_key = [[entity_type]]
         end_key = [[entity_type], {}, {}]
-        rows = self.dbm.database.view("entity_name_by_short_code/entity_name_by_short_code", startkey=start_key, endkey=end_key).rows
+        rows = self.dbm.database.view("entity_name_by_short_code/entity_name_by_short_code", startkey=start_key,
+                                      endkey=end_key).rows
         all_subject_choices = [(item["key"][1], item["value"] + "(" + item["key"][1] + ")") for item in rows]
         return all_subject_choices # [(u'cid001', u'Test (cid001)'),(u'cid002', u'Test(cid002')..]
 

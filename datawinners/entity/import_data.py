@@ -236,8 +236,8 @@ def _get_entity_type_from_row(row):
     return type
 
 
-def load_subject_registration_data(manager,
-                                   type=REPORTER, tabulate_function=_tabulate_data):
+def load_entity_registration_data(manager,
+                                  type=REPORTER, tabulate_function=_tabulate_data):
     entity_type = _entity_type_as_sequence('registration' if type == REPORTER else type)
     form_model = get_form_model_by_entity_type(manager, entity_type)
 
@@ -346,8 +346,8 @@ def _get_all_subject_data(form_models, subject_types, subjects):
     return [subject_type_infos_dict[subject_type] for subject_type in subject_types]
 
 
-def load_all_subjects_of_type(manager, type=REPORTER):
-    return load_subject_registration_data(manager, type)
+def load_all_entities_of_type(manager, type=REPORTER):
+    return load_entity_registration_data(manager, type)
 
 
 def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None):
@@ -484,7 +484,7 @@ def _get_field_default_value(key, entity):
 
 
 def get_datasenders_mobile(manager):
-    all_data_senders, fields, labels = load_all_subjects_of_type(manager)
+    all_data_senders, fields, labels = load_all_entities_of_type(manager)
     index = fields.index(MOBILE_NUMBER_FIELD)
     return [ds["cols"][index] for ds in all_data_senders]
 

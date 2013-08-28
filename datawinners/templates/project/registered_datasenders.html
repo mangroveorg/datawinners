@@ -18,10 +18,10 @@
     <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_all_datasenders.css" rel="stylesheet"/>
     <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
-    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
-    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -50,7 +50,8 @@
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
         <div class="grid_8 float_right omega text_align_right">
-            <a href="{{ project_links.register_datasenders_link }}" class="register_data_sender">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
+            <a href="{{ project_links.register_datasenders_link }}"
+               class="register_data_sender">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a list" %}</a>
         </div>
         <div class="clear-both"></div>
@@ -74,21 +75,23 @@
     {% include 'entity/all_data_senders/web_submission_access_block.html' %}
 
     <div id="action_dropdown">
-        <div id="action_button"  class="action_bar clear-both" style="margin-bottom: 20px">
+        <div id="action_button" class="action_bar clear-both" style="margin-bottom: 20px">
             <div class="btn-group">
-                <button class="btn dropdown-toggle action ds_action" href="#" data-dropdown="#none-selected">{% trans "Actions" %}
+                <button class="btn dropdown-toggle action ds_action" href="#"
+                        data-dropdown="#none-selected">{% trans "Actions" %}
                     <span class="caret"></span>
                 </button>
             </div>
         </div>
 
-        <div id="action" class="dropdown" >
+        <div id="action" class="dropdown">
             <ul class="dropdown-menu">
                 {% if EDIT_DATA_SENDERS_ENABLED and not in_trial_mode %}
                     <li><a class="edit" id="edit">{% trans "Edit" %}</a></li>
                 {% else %}
                     {% if in_trial_mode %}
-                        <li class="disabled on_trial"><a class="edit" id="edit">{% trans "Edit" %} <span class="info">({% trans "not available for trial accounts" %})</span></a></li>
+                        <li class="disabled on_trial"><a class="edit" id="edit">{% trans "Edit" %} <span
+                                class="info">({% trans "not available for trial accounts" %})</span></a></li>
                     {% endif %}
                 {% endif %}
                 <li><a class="disassociate" id="disassociate">{% trans "Remove from project" %}</a></li>
@@ -122,27 +125,24 @@
             <tbody id="tbody" class="datasenders_list">
             {% for data in all_data %}
                 <tr>
-                    <td><input id="{{ data.short_code }}" type="checkbox" value="{{ data.short_code }}" {% if data.is_user %}class="is_user"{% endif %}/>
+                    <td><input id="{{ data.short_code }}" type="checkbox" value="{{ data.short_code }}"
+                               {% if data.is_user %}class="is_user"{% endif %}/>
                     <td>{{ data.name }}</td>
                     <td>{{ data.short_code }}</td>
                     <td>{{ data.location }}</td>
                     <td>{{ data.geo_code }}</td>
                     <td>{{ data.mobile_number }}</td>
                     <td style="display: none">{{ data.project }}</td>
-                    <td class="email">{{ data.email }}</td>
+                    <td class="email">{{ data.email|default_if_none:"" }}</td>
                     <td class="device-icon"><img src="/media/images/right_icon.png" alt="Yes"></td>
                     <td class="device-icon">
                         {% if "Web" in data.devices %}
                             <img src="/media/images/right_icon.png" alt="Yes">
-                        {% else %}
-                            <span>--</span>
                         {% endif %}
                     </td>
                     <td class="device-icon">
                         {% if "Smartphone" in data.devices %}
                             <img src="/media/images/right_icon.png" alt="Yes">
-                        {% else %}
-                            <span>--</span>
                         {% endif %}
                     </td>
                 </tr>

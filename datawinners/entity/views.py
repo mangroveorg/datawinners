@@ -20,6 +20,7 @@ import xlwt
 from django.contrib import messages
 
 from datawinners import utils
+from datawinners.entity.data_sender import remove_test_datasenders, get_datasender_user_detail
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
@@ -740,42 +741,14 @@ def create_subject(request, entity_type=None):
 
 
 def _get_all_datasenders(manager, projects, user):
-    all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
+    all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
     project_association = _get_project_association(projects)
+    remove_test_datasenders(all_data_senders)
     for datasender in all_data_senders:
-        if datasender["short_code"] == "test":
-            index = all_data_senders.index(datasender)
-            del all_data_senders[index]
-            continue
-
         get_datasender_user_detail(datasender, user)
-
-        association = project_association.get(datasender['short_code'])
-        datasender['projects'] = ', '.join(association) if association is not None else '--'
-
+        datasender['projects'] = project_association.get(datasender['short_code'])
     return all_data_senders
 
-
-def get_user_profile_by_reporter_id(reporter_id, user):
-    org_id = NGOUserProfile.objects.get(user=user).org_id
-    user_profile = NGOUserProfile.objects.filter(reporter_id=reporter_id, org_id=org_id)
-    return user_profile[0] if len(user_profile) else None
-
-
-def get_datasender_user_detail(datasender, user):
-    user_profile = get_user_profile_by_reporter_id(datasender['short_code'], user)
-
-    datasender["is_user"] = False
-    if user_profile:
-        datasender_user_groups = list(user_profile.user.groups.values_list('name', flat=True))
-        if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
-            or "Read Only Users" in datasender_user_groups:
-            datasender["is_user"] = True
-        datasender['email'] = user_profile.user.email
-        datasender['devices'] = "SMS,Web,Smartphone"
-    else:
-        datasender['email'] = "--"
-        datasender['devices'] = "SMS"
 
 
 @valid_web_user
