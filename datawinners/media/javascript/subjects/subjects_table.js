@@ -22,7 +22,7 @@ $(document).ready(function () {
             "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
             "sInfo": "<b>_START_ to _END_</b> of _TOTAL_ " + subject_type,
             "sInfoEmpty": "<b> 0 to 0</b> of 0 " + subject_type,
-            "sEmptyTable": $('#no_registered_subject_message').clone().removeAttr("hidden").html(),
+            "sEmptyTable": $('#no_registered_subject_message').clone(true, true).removeAttr("hidden").html(),
             "oPaginate": {"sFirst": "", "sPrevious": "◀", "sNext": "▶", "sLast": ""}},
         "sPaginationType": "dw_pagination",
         "sAjaxSource": '/entity/subjects/' + subject_type.toLowerCase() + '/ajax/',
