@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    var LAST_NAME_COLUMN_INDEX = 2;
     var dt = $('#subjects_table').dataTable({
         "bProcessing": true,
         "bServerSide": true,
@@ -42,7 +41,7 @@ $(document).ready(function () {
             $(".styled_table thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0)
         },
         "aaSorting": [
-            [ LAST_NAME_COLUMN_INDEX, "asc"]
+            [ $('#subjects_table th.name').index('#subjects_table th'), "asc"]
         ],
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
             oSettings.jqXHR = $.ajax({
