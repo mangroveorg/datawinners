@@ -61,10 +61,12 @@
             </a> <span class="padding_left_right_10"> | </span>
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a list" %}</a>
         </div>
+        <div style="display: none;">
         <div id="popup-import">
             {% with project=None %}
                 {% include "import-datasenders.html" %}
             {% endwith %}
+        </div>
         </div>
         <div class="clear-both"></div>
         {% include 'entity/all_data_senders/all_project_blocks.html' %}
