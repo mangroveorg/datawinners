@@ -993,3 +993,6 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 
 msgid "Select all <b> %(total_number_of_records)s </b>subjects"
 msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>Sujets"
+
+msgid "Enter any information you want to find"
+msgstr "Tapez toute information que vous recherchez"

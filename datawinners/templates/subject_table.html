@@ -13,21 +13,24 @@
             {#        empty th for check-all box#}
             <th></th>
             {% for header_name, header_label in subject_headers.items %}
-                <th class="{{header_name}}">{{ header_label }} </th>
+                <th class="{{ header_name }}">{{ header_label }} </th>
             {% endfor %}
         </tr>
         </thead>
     </table>
     <div id="no_registered_subject_message" hidden="true">
         <div class="no_registered_subjects">
-            <p>Once you have registered a {{ entity_type }}, it will appear here. </p>
+            <p>{% blocktrans with entity_type|capfirst as entity_type %}Once you have registered a {{ entity_type }}, it will appear here.{% endblocktrans %} </p>
 
-            <p>To get started </p>
+            <p>{% trans "To get started" %}</p>
             <ul>
-                <li>Register a {{ entity_type }}: <a href="{% url create_subject entity_type %}">Add a new {{ entity_type }}</a> or <a
-                        href="javascript:void(0);" class="import-subject">Import a list of {{ entity_type }}</a></li>
-                <li><a href="{% url edit_subject_questionnaire entity_type %}">Customize the {{ entity_type }} registration
-                    form</a></li>
+                <li>{% trans "Register a" %} {{ entity_type }}: <a
+                        href="{% url create_subject entity_type %}">{% trans "Add a new" %} {{ entity_type }}</a> {% trans "or" %}
+                    <a href="javascript:void(0);" class="import-subject">
+                        {% blocktrans with entity_type|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a></li>
+                <li><a href="{% url edit_subject_questionnaire entity_type %}">
+                    {% blocktrans with entity_type|capfirst as entity_type %}Customize the {{ entity_type }} registration form{% endblocktrans %} </a>
+                </li>
             </ul>
         </div>
     </div>

@@ -66,7 +66,7 @@ $(document).ready(function () {
         $('#subjects_table').dataTable({"bRetrieve": true}).fnPageChange("first")
     });
 
-    $("#subjects_table_filter").find("input").attr('placeholder', 'Enter any information you want to find');
+    $("#subjects_table_filter").find("input").attr('placeholder', gettext('Enter any information you want to find'));
 
     $('#subjects_table_filter').live('change', function () {
             new DW.SubjectPagination(dt).deactivate_select_across_pages();
