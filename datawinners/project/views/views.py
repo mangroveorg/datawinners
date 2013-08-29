@@ -34,7 +34,7 @@ from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException, MangroveException
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER, header_fields
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.request import Request
 from mangrove.transport.player.player import WebPlayer
@@ -474,12 +474,33 @@ def registered_subjects(request, project_id=None):
     all_data, fields, labels = load_all_entities_of_type(manager, type=project.entity_type)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
-    return render_to_response('project/registered_subjects.html',
-                              {'project': project, 'project_links': project_links, 'all_data': all_data,
+    return render_to_response('project/subjects/list.html',
+                              {
+                               'project': project,
+                               'project_links': project_links, 'all_data': all_data,
                                "labels": labels,
-                               "subject": subject, 'in_trial_mode': in_trial_mode,
-                               'edit_url': '/project/subject/edit/%s/' % project_id},
+                               "subject": subject,
+                               'in_trial_mode': in_trial_mode,
+                               'edit_url': '/project/subject/edit/%s/' % project_id,
+                               'entity_type' : subject.get('entity'),
+                               'subject_headers': header_fields(manager, subject.get('entity')),
+                               'form_code':  subject.get('code')},
                               context_instance=RequestContext(request))
+
+ #
+ # return render_to_response('entity/all_subjects.html',
+ #                              {'subject_headers': header_dict,
+ #                               'current_language': translation.get_language(),
+ #                               'entity_type': subject_type,
+ #                               'questions': viewable_questionnaire(form_model),
+ #                               'form_code': form_model.form_code,
+ #                               'links': {'create_subject': reverse("create_subject", args=(subject_type,)),
+ #                                         'edit_subject_registration_form': reverse("edit_subject_questionnaire",
+ #                                                                                   args=(subject_type,))}
+ #                              },
+ #                              context_instance=RequestContext(request))
+ #
+
 
 
 @login_required(login_url='/login')
