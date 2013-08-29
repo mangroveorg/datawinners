@@ -1,7 +1,6 @@
 import logging
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.main.database import get_db_manager
-from mangrove.datastore.documents import SurveyResponseDocument, DocumentBase, EntityDocument
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.contract.survey_response import SurveyResponse
@@ -9,12 +8,11 @@ from migration.couch.utils import migrate
 
 
 def _get_survey_responses_with_no_eid(dbm, logger):
-    rows = dbm.database.view("surveyresponse/surveyresponse", reduce=False, include_docs=True)
+    rows = dbm.database.view("surveyresponse/surveyresponse", reduce=False)
     inconsistent_survey_response_list = []
     for row in rows:
         try:
-            doc = SurveyResponseDocument.wrap(row['value'])
-            survey_response = SurveyResponse.new_from_doc(dbm, doc)
+            survey_response = SurveyResponse.get(dbm, row.id)
             form_model = get_form_model_by_code(dbm, survey_response.form_code)
             if form_model.entity_defaults_to_reporter() and "eid" not in survey_response.values.keys():
                 inconsistent_survey_response_list.append(survey_response)
