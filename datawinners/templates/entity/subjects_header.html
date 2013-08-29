@@ -57,13 +57,11 @@
         <ul class="secondary_tab">
             <li class="active">
                 <a href="{% url all_subjects entity_type %}" id="all_subjects_list">
-                    {% blocktrans with entity_type|capfirst as entity_type %} {{ entity_type }}
-                        List{% endblocktrans %}</a>
+                    {% blocktrans with entity_type|capfirst as entity_type %}My {{ entity_type }} list{% endblocktrans %}</a>
             </li>
             <li class="inactive">
                 <a href="{% url create_subject entity_type %}" id="subject_registration_preview">
-                    {% blocktrans with entity_type|capfirst as entity_type %}{{ entity_type }} Registration
-                        Form{% endblocktrans %}</a>
+                    {% blocktrans with entity_type|capfirst as entity_type %}{{ entity_type }} Registration Form{% endblocktrans %}</a>
             </li>
         </ul>
         {% block help_accordian %}{% endblock %}

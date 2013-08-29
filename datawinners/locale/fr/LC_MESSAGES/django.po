@@ -4289,3 +4289,6 @@ msgstr "Exemple de SMS:"
 
 msgid "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders."
 msgstr "Vos expéditeurs peuvent enregistrer un(e) clinic via SMS. Imprimez ce formulaire et donnez le à vos expéditeurs."
+
+msgid "View your registered %(entity_type)s(s) in detail."
+msgstr "Voir vos %(entity_type)s(s) enregistré(e)s en détail"

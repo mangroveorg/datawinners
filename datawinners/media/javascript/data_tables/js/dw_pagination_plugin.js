@@ -15,7 +15,7 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
         dropdown.setAttribute("class", "dropdown dropdown-tip");
         first_page_id = "first_page" + instance_id;
         last_page_id = "last_page" + instance_id;
-        dropdown.innerHTML = '<ul class="dropdown-menu"> <li> <a href="#" id=' + first_page_id + '>First</a> </li> <li> <a  id=' + last_page_id + '>Last</a></li>';
+        dropdown.innerHTML = '<ul class="dropdown-menu"> <li> <a href="#" id=' + first_page_id + '>' + gettext('First') + '</a> </li> <li> <a  id=' + last_page_id + '>' + gettext('Last') + '</a></li>';
 
         nPrevious.className = "paginate_button previous";
         nNext.className = "paginate_button next";
