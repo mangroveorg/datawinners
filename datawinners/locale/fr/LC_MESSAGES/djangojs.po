@@ -55,7 +55,7 @@ msgstr ""
 #: media/admin/js/collapse.js:9 media/admin/js/collapse.js.py:21
 #: media/admin/js/collapse.min.js:1
 msgid "Show"
-msgstr ""
+msgstr "Afficher"
 
 #: media/admin/js/collapse.js:16 media/admin/js/collapse.min.js:1
 msgid "Hide"
