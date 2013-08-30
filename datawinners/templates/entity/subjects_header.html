@@ -42,12 +42,19 @@
 {% endblock %}
 
 {% block content %}
+    {% csrf_token %}
 
-    {% block secondary_navigation %}{% endblock %}
-    {% with edit_registration_form_link=links.edit_subject_registration_form create_entity_link=links.create_subject questions=questionnaire_form %}
-        {% include 'help/subjects_help.html' %}
-    {% endwith %}
+    <div id="all_subject_links">
+        <ul>
+            {% block secondary_navigation %} {% endblock %}
+        </ul>
+    </div>
+
     <div id="all_subjects">
+        {% with edit_registration_form_link=links.edit_subject_registration_form create_entity_link=links.create_subject questions=questionnaire_form %}
+            {% include 'help/subjects_help.html' %}
+        {% endwith %}
+
         <ul class="secondary_tab">
             <li class="active">
                 <a href="{% url all_subjects entity_type %}">

@@ -1,34 +1,29 @@
 {% extends 'entity/subjects_header.html' %}
 {% load i18n %}
-{% block page_content %}
-    {% include 'subject_table.html' %}
-{% endblock %}
+
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
 {% endblock %}
+
 {% block secondary_navigation %}
-    <div id="all_subject_links">
-        {% csrf_token %}
-        {% include "entity/import_subject_popup.html" %}
-        <ul>
-            <li><a href="{% url all_subject_type_page %}" class="back-to-list">
-                « {% trans "Back to All Subjects List" %}</a>
-            </li>
-            <li><a href="{% url create_subject entity_type %}">{% trans "Register a" %} {{ entity_type|capfirst }}</a>&nbsp;|&nbsp;
-                <a href="javascript:void(0);" class="import-subject">{% trans "Import a List of Subjects" %}</a>&nbsp;|&nbsp;
-                <a id='subject_export_link' href="#">{% trans "Export" %}</a>
-            </li>
-            <li><a href="{% url edit_subject_questionnaire entity_type %}" hidden="true"
-                   class="edit-form-link">{% trans "Edit" %}</a>
-        </ul>
-    </div>
+    <li><a href="{% url all_subject_type_page %}" class="back-to-list">
+        « {% trans "Back to All Subjects List" %}</a>
+    </li>
+    <li><a href="{% url create_subject entity_type %}">{% trans "Register a" %} {{ entity_type|capfirst }}</a>&nbsp;|&nbsp;
+        <a href="javascript:void(0);" class="import-subject">{% trans "Import a List of Subjects" %}</a>&nbsp;|&nbsp;
+        <a id='subject_export_link' href="#">{% trans "Export" %}</a>
+    </li>
+    <li><a href="{% url edit_subject_questionnaire entity_type %}" hidden="true"
+           class="edit-form-link">{% trans "Edit" %}</a>
 {% endblock %}
+
 {% block help_accordian %}
     <div class="help_accordion margin_bottom_20">
         {% blocktrans %}View your registered {{ entity_type }} in detail.{% endblocktrans %}
     </div>
 {% endblock %}
+
 {% block actions %}
     {{ block.super }}
     <form name="export_subjects" action="{% url export_subject %}" method="post">
@@ -36,4 +31,9 @@
         <input type="hidden" name="subject_type" id="subject_type" value="{{ entity_type }}"/>
         <input type="hidden" name="query_text" id="query_text"/>
     </form>
+{% endblock %}
+
+{% block page_content %}
+    {% include "entity/import_subject_popup.html" %}
+    {% include 'subject_table.html' %}
 {% endblock %}

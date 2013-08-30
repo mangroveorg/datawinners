@@ -1,89 +1,21 @@
 {% extends 'entity/subjects_header.html' %}
 {% load i18n %}
-{% load questionnaire_preview_tags %}
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/subject_questionnaire.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
 {% endblock %}
+
 {% block page_js %}
     {{ block.super }}
-    {% include "web_questionnaire_questions_js.html" %}
     <script type="text/javascript">
         var web_view = "{{ web_view }}";
     </script>
+    {% include "web_questionnaire_questions_js.html" %}
 {% endblock %}
 
-{% block page_content %}
-    <div id="subject_reg_block">
-        <div id="my_subjects_links">
-            <ul>
-                <li><a href="{% url edit_subject_questionnaire entity_type %}"
-                       class="edit-form-link">{% trans "Edit" %}</a>
-                </li>
-                <li><a href="javascript:void(0)" class="preview_subject_registration_form">{% trans "Print" %}</a></li>
-                <li class="view_link">{% trans "View Style:" %}</li>
-                <li class="sms_link"><a href="javascript:void(0)" id="sms_preview_btn">SMS</a></li>
-                <li class="sms_link"><a href="javascript:void(0)" class="active" id="web_preview_btn">Web</a></li>
-            </ul>
-            <div class="clear-right"></div>
-        </div>
-        <div id="subject_form_heading">
-            <h2 class="font_size_14">{% blocktrans with entity_type|capfirst as entity_type %}Web {{ entity_type }}
-                Registration Form{% endblocktrans %}</h2>
-
-            <div class="instruction">
-                {% blocktrans with entity_type as entity_type %}All
-                    Data Senders who have access to this form can register a new {{ entity_type }} online. You can give
-                    them web submission access on the <a href="/entity/datasenders/">All Data Senders</a>
-                    page.{% endblocktrans %}
-            </div>
-
-        </div>
-
-
-    </div>
-    {% include 'entity/subject_questionnaire.html' %}
-
-    <div id="sms_preview" class="subject_registration_preview" hidden="true">
-        <a href="#" class="printBtn">{% trans "Print" %}</a>
-        <ul class="questionnaire_title">
-            <li>
-                <p>{% trans "SMS your answers to" %}</p>
-                <h5>{{ org_number|format_organization_number }}</h5>
-            </li>
-            {% if project.name %}
-                <li>
-                    <p>{% trans "Project Name:" %}</p>
-                    <h5>{{ project.name }}</h5>
-                </li>
-            {% endif %}
-            <li>
-                <p>{% trans "Questionnarie Code:" %}</p>
-                <h5>{{ form_code }}</h5>
-            </li>
-            <li class="margin_top_10">
-                <p>{% trans "Example SMS:" %} </p>
-
-                <p class="sms_exemple">{{ example_sms }}</p>
-            </li>
-        </ul>
-        <div id="preview_form"></div>
-    </div>
-
-{% endblock %}
-{% block help_accordian %}
-    <div class="instruction">
-        {% blocktrans with project.entity_type as entity_type %}Define what information you want to collect
-            about each {{ entity_type }}.{% endblocktrans %}
-    </div>
-{% endblock %}
 {% block secondary_navigation %}
-    <div id="all_subject_links">
-        <ul>
-            <li><a href="{% url all_subject_type_page %}" class="back-to-list">
-                « {% trans "Back to All Subjects List" %}</a>
-            </li>
-        </ul>
-    </div>
+    <li><a href="{% url all_subject_type_page %}" class="back-to-list">
+        « {% trans "Back to All Subjects List" %}</a>
+    </li>
 {% endblock %}

@@ -579,11 +579,12 @@ def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide
             'example_sms': get_example_sms_message(form_model_fields, form_code),
             'org_number': org_number,
             "web_view": web_view,
+            'extension_template': "entity/web_questionnaire.html",
     }
 
 
 def get_template(user):
-    return 'entity/register_subject.html' if user.get_profile().reporter else 'entity/web_questionnaire.html'
+    return 'entity/register_subject.html' if user.get_profile().reporter else 'entity/subject/registration.html'
 
 
 def initialize_values(form_model, subject):
@@ -690,6 +691,7 @@ def create_subject(request, entity_type=None):
                                           form_code=form_model.form_code,
                                           org_number=get_organization_telephone_number(request),
                                           form_model_fields=form_model.fields)
+
         return render_to_response(web_questionnaire_template,
                                   form_context,
                                   context_instance=RequestContext(request))
@@ -727,7 +729,7 @@ def create_subject(request, entity_type=None):
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                                  form_code=form_model.form_code)
+                                                  form_code=form_model.form_code, web_view=True)
                 return render_to_response(web_questionnaire_template,
                                           form_context,
                                           context_instance=RequestContext(request))
@@ -741,7 +743,7 @@ def create_subject(request, entity_type=None):
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                             form_code=form_model.form_code)
+                                             form_code=form_model.form_code, web_view=True)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,

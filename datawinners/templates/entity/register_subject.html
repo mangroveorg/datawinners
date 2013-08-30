@@ -8,10 +8,25 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/subjects/definitions.js"></script>
+    <script type="text/javascript" src="/media/javascript/subjects/registration.js"></script>
+{% endblock %}
+
+
 {% block questionnaire %}
     <div class="questionnaire-header">
-        <h3 class="subject-type">{%trans "Register a new " %} {{ entity_type }}</h3>
+        <h3 class="subject-type">{% trans "Register a new " %} {{ entity_type }}</h3>
+
         <p class="instructions italic">{% trans "Fill out the following Registration Form and click on Register." %}</p>
     </div>
-    {% include 'entity/ds_subject_questionnaire.html' %}
+
+    {% include 'entity/subject_questionnaire.html' %}
+
+    {% block cancel_block %}
+        <a id="cancel" href="{{ back_to_project_link }}">{% trans "Cancel" %}</a>
+        {% include "warning_section.html" %}
+    {% endblock %}
+
 {% endblock %}
