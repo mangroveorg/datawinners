@@ -26,10 +26,8 @@
             href="{% url datawinners.entity.views.export_template entity_type %}">{{ entity_type }}.xls</a></div>
     <table>
         <thead>
-        {% for question in questions %}
-            {#            {% for title in question.description %}#}
-            <th>{{ question.description }}</th>
-            {#            {% endfor %}#}
+        {% for field in questions %}
+            <th>{{ field.label }}</th>
         {% endfor %}
         </thead>
         <tbody id="{{ form_code }}_table">

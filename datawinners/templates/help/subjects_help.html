@@ -1,4 +1,5 @@
 {% load i18n %}
+<script type="text/javascript" src="/media/javascript/entity_import.js"></script>
 <div class="help_accordion">
     {% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %}
     <a href="javascript:void(0)" class="show_link">{% trans "Learn More" %}</a>
@@ -35,3 +36,5 @@
         <a href="javascript:void(0)" class="hide_link">{% trans "Hide help" %}</a>
     </div>
 </div>
+
+{% include "entity/import_subject_popup.html" %}

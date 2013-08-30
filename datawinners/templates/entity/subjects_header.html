@@ -44,9 +44,8 @@
 {% block content %}
 
     {% block secondary_navigation %}{% endblock %}
-    {% with edit_registration_form_link=links.edit_subject_registration_form create_entity_link=links.create_subject %}
+    {% with edit_registration_form_link=links.edit_subject_registration_form create_entity_link=links.create_subject questions=questionnaire_form %}
         {% include 'help/subjects_help.html' %}
-        <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     {% endwith %}
     <div id="all_subjects">
         <ul class="secondary_tab">
