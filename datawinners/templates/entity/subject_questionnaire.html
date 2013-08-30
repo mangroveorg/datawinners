@@ -7,20 +7,11 @@
     <div class="message-box">{{ error_message }}</div>
 {% endif %}
 
-{% if 0 %}
-    <div class="warning-message-box">
-        <p> {% trans "You have used up your 10 Web submissions for the trial account. Sign up for a monthly subscription to continue sending in data to your projects." %} </p>
-        <a href="/{% trans "en" %}/pricing/" class="trial_web_learn_more">{% trans "Learn More" %}</a><a
-            href="{% url datawinners.accountmanagement.views.upgrade %}"
-            class="trial_web_limit_button">{% trans "Subscribe Now" %}</a>
-    </div>
-{% endif %}
-
 {% if questionnaire_form.non_fielderrors %}
     <div class="message-box">{{ questionnaire_form.non_field_errors }}</div>
 {% endif %}
 
-<form method="POST">
+<form method="POST" id="subject_registration_form">
     {% csrf_token %}
     {% for field in questionnaire_form %}
         {% if field.is_hidden %}

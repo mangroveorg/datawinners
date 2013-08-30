@@ -32,7 +32,7 @@
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>#}
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
@@ -40,7 +40,6 @@
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript">
-        var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
         var upload_url = "{% url import_subjects questionnaire_code %}";
     </script>
 {% endblock %}

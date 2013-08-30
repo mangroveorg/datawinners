@@ -31,7 +31,7 @@
     {% include "web_questionnaire_questions_js.html" %}
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>#}
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
@@ -65,8 +65,8 @@
             <li><a href="{{ project_links.subjects_edit_link }}">Edit</a></li>
             <li><a href="javascript:void(0)"  class="preview_subject_registration_form">{% trans "Print" %}</a></li>
             <li class="view_link">{% trans "View Style:" %}</li>
-            <li class="sms_link"><a href="{{ project_links.subjects_link }}" id="sms_preview_btn">SMS</a></li>
-            <li class="sms_link"><a href="javascript:void(0)" id="web_preview_btn" class="active">Web</a></li>
+            <li class="sms_link"><a href="javascript:void(0)" class="active" id="sms_preview_btn">SMS</a></li>
+            <li class="sms_link"><a href="javascript:void(0)" id="web_preview_btn">Web</a></li>
         </ul>
         <div class="clear-right"></div>
     </div>

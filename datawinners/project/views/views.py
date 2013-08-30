@@ -52,7 +52,7 @@ from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, viewable_questionnaire, initialize_values, get_datasender_user_detail
+from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, viewable_questionnaire, initialize_values, get_datasender_user_detail, get_organization_telephone_number, get_example_sms_message, get_example_sms
 from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -453,7 +453,7 @@ def subjects(request, project_id=None):
     project, project_links = _get_project_and_project_link(manager, project_id)
     fields, project_links_with_subject_questionnaire, questions, reg_form = _get_registration_form(manager, project,
                                                                                                    type_of_subject='subject')
-    example_sms = get_example_sms_message(fields, reg_form)
+    example_sms = get_example_sms_message(fields, reg_form.form_code)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     return render_to_response('project/subjects.html',
                               {'project': project,
@@ -463,7 +463,7 @@ def subjects(request, project_id=None):
                                'example_sms': example_sms,
                                'org_number': get_organization_telephone_number(request),
                                'current_language': translation.get_language(),
-                               'subject': subject},
+                               'subject': subject, },
                               context_instance=RequestContext(request))
 
 
@@ -475,32 +475,16 @@ def registered_subjects(request, project_id=None):
     subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/subjects/list.html',
-                              {
-                               'project': project,
-                               'project_links': project_links, 'all_data': all_data,
-                               "labels": labels,
-                               "subject": subject,
-                               'in_trial_mode': in_trial_mode,
-                               'edit_url': '/project/subject/edit/%s/' % project_id,
-                               'entity_type' : subject.get('entity'),
-                               'subject_headers': header_fields(manager, subject.get('entity')),
-                               'form_code':  subject.get('code')},
+                              {'project': project,
+                                  'project_links': project_links, 'all_data': all_data,
+                                  "labels": labels,
+                                  "subject": subject,
+                                  'in_trial_mode': in_trial_mode,
+                                  'edit_url': '/project/subject/edit/%s/' % project_id,
+                                  'entity_type': subject.get('entity'),
+                                  'subject_headers': header_fields(manager, subject.get('entity')),
+                                  'form_code': subject.get('code')},
                               context_instance=RequestContext(request))
-
- #
- # return render_to_response('entity/all_subjects.html',
- #                              {'subject_headers': header_dict,
- #                               'current_language': translation.get_language(),
- #                               'entity_type': subject_type,
- #                               'questions': viewable_questionnaire(form_model),
- #                               'form_code': form_model.form_code,
- #                               'links': {'create_subject': reverse("create_subject", args=(subject_type,)),
- #                                         'edit_subject_registration_form': reverse("edit_subject_questionnaire",
- #                                                                                   args=(subject_type,))}
- #                              },
- #                              context_instance=RequestContext(request))
- #
-
 
 
 @login_required(login_url='/login')
@@ -522,7 +506,8 @@ def registered_datasenders(request, project_id=None):
             sender['project'] = project.name
 
         return render_to_response('project/registered_datasenders.html',
-                                  {'project': project, 'project_links': project_links, 'all_data': senders, 'grant_web_access': grant_web_access, "labels": labels,
+                                  {'project': project, 'project_links': project_links, 'all_data': senders,
+                                   'grant_web_access': grant_web_access, "labels": labels,
                                    'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
@@ -581,7 +566,7 @@ def datasenders(request, project_id=None):
     project, project_links = _get_project_and_project_link(manager, project_id)
     fields, project_links, questions, reg_form = _get_registration_form(manager, project)
     questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
-    example_sms = get_example_sms_message(questions, reg_form)
+    example_sms = get_example_sms_message(questions, reg_form.form_code)
     return render_to_response('project/datasenders.html',
                               {'project': project,
                                'project_links': project_links,
@@ -837,13 +822,6 @@ def subject_web_questionnaire(request, project_id=None):
         return subject_request.response_for_post_request()
 
 
-def get_example_sms(fields):
-    example_sms = ""
-    for field in fields:
-        example_sms = example_sms + " " + unicode(_('answer')) + str(fields.index(field) + 1)
-    return example_sms
-
-
 @valid_web_user
 @is_project_exist
 # TODO : TW_BLR : what happens in case of POST?
@@ -885,11 +863,6 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
     return registration_questionnaire.fields, project_links, questions, registration_questionnaire
 
 
-def get_example_sms_message(fields, registration_questionnaire):
-    example_sms = "%s %s" % (registration_questionnaire.form_code, get_example_sms(fields))
-    return example_sms
-
-
 @valid_web_user
 def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -898,7 +871,7 @@ def subject_registration_form_preview(request, project_id=None):
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                               project,
                                                                                               project.entity_type)
-        example_sms = get_example_sms_message(fields, registration_questionnaire)
+        example_sms = get_example_sms_message(fields, registration_questionnaire.form_code)
         return render_to_response('project/questionnaire_preview_list.html',
                                   {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
                                    'project': project, 'project_links': project_links,
@@ -916,7 +889,7 @@ def sender_registration_form_preview(request, project_id=None):
                                                                                               project,
                                                                                               type_of_subject='reporter')
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
-        example_sms = get_example_sms_message(datasender_questions, registration_questionnaire)
+        example_sms = get_example_sms_message(datasender_questions, registration_questionnaire.form_code)
         return render_to_response('project/questionnaire_preview_list.html',
                                   {"questions": datasender_questions,
                                    'questionnaire_code': registration_questionnaire.form_code,
@@ -924,15 +897,6 @@ def sender_registration_form_preview(request, project_id=None):
                                    'example_sms': example_sms,
                                    'org_number': get_organization_telephone_number(request)},
                                   context_instance=RequestContext(request))
-
-
-def get_organization_telephone_number(request):
-    organization_settings = utils.get_organization_settings_from_request(request)
-    organisation_sms_numbers = organization_settings.get_organisation_sms_number()
-    if organization_settings.organization.in_trial_mode:
-        return organisation_sms_numbers
-    return organisation_sms_numbers[0] if not organisation_sms_numbers[0] or organisation_sms_numbers[0][0] \
-                                          == "+" else "+%s" % organisation_sms_numbers[0]
 
 
 def _get_subject_form_model(manager, entity_type):

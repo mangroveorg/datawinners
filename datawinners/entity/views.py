@@ -14,7 +14,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext as _, activate, get_language
+from django.utils.translation import ugettext as _, activate, get_language, ugettext_lazy
 import jsonpickle
 import xlwt
 from django.contrib import messages
@@ -565,7 +565,7 @@ def import_subjects_from_project_wizard(request, form_code):
 
 
 def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False,
-                       back_link=None, form_code=None):
+                       back_link=None, form_code=None, org_number=None, form_model_fields=None, web_view=False):
     return {'questionnaire_form': questionnaire_form,
             'entity_type': entity_type,
             "disable_link_class": disable_link_class,
@@ -574,7 +574,10 @@ def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide
             'smart_phone_instruction_link': reverse("smart_phone_instruction"),
             'is_update': is_update,
             'back_link': back_link,
-            'form_code': form_code
+            'form_code': form_code,
+            'example_sms': get_example_sms_message(form_model_fields, form_code),
+            'org_number': org_number,
+            "web_view": web_view,
     }
 
 
@@ -683,7 +686,9 @@ def create_subject(request, entity_type=None):
     if request.method == 'GET':
         questionnaire_form = SubjectRegistrationForm(form_model)
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                          form_code=form_model.form_code)
+                                          form_code=form_model.form_code,
+                                          org_number=get_organization_telephone_number(request),
+                                          form_model_fields=form_model.fields)
         return render_to_response(web_questionnaire_template,
                                   form_context,
                                   context_instance=RequestContext(request))
@@ -693,7 +698,9 @@ def create_subject(request, entity_type=None):
                                                      country=get_organization_country(request))
         if not questionnaire_form.is_valid():
             form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                              form_code=form_model.form_code)
+                                              form_code=form_model.form_code,
+                                              org_number=get_organization_telephone_number(request),
+                                              form_model_fields=form_model.fields, web_view=True)
             return render_to_response(web_questionnaire_template,
                                       form_context,
                                       context_instance=RequestContext(request))
@@ -748,7 +755,6 @@ def _get_all_datasenders(manager, projects, user):
         get_datasender_user_detail(datasender, user)
         datasender['projects'] = project_association.get(datasender['short_code'])
     return all_data_senders
-
 
 
 @valid_web_user
@@ -877,3 +883,23 @@ def export_template(request, entity_type=None):
 
     wb.save(response)
     return response
+
+
+def get_organization_telephone_number(request):
+    organization_settings = utils.get_organization_settings_from_request(request)
+    organisation_sms_numbers = organization_settings.get_organisation_sms_number()
+    if organization_settings.organization.in_trial_mode:
+        return organisation_sms_numbers
+    return organisation_sms_numbers[0] if not organisation_sms_numbers[0] or organisation_sms_numbers[0][0] \
+                                          == "+" else "+%s" % organisation_sms_numbers[0]
+
+
+def get_example_sms_message(fields, form_code):
+    return "%s %s" % (form_code, get_example_sms(fields))
+
+
+def get_example_sms(fields):
+    example_sms = ""
+    for field in fields:
+        example_sms = example_sms + " " + unicode(_('answer')) + str(fields.index(field) + 1)
+    return example_sms
