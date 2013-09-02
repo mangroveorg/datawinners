@@ -80,8 +80,8 @@ class MessageTrackerAdmin(DatawinnerAdmin):
 
 class OrganizationAdmin(DatawinnerAdmin):
     list_display = (
-        'organization_name', 'complete_address', 'office_phone', 'website', 'paid', 'active_date', 'admin_name',
-        'admin_email', 'admin_mobile_number', 'admin_office_phone', 'sms_api_users','ngo_status')
+        'organization_name', 'complete_address', 'office_phone', 'website', 'paid', 'created_on', 'admin_name',
+        'admin_email', 'admin_mobile_number', 'admin_office_phone', 'sms_api_users','status')
     actions = ['deactivate_organizations', 'activate_organizations', 'delete_organizations']
 
     def deactivate_organizations(modeladmin, request, queryset):
@@ -125,8 +125,8 @@ class OrganizationAdmin(DatawinnerAdmin):
     def paid(self, obj):
         return "No" if obj.in_trial_mode else "Yes"
 
-    def ngo_status(self, obj):
-        return obj.status if obj.status is not None else "Activated"
+    def created_on(self, obj):
+        return obj.active_date
 
     def _get_ngo_admin(self, organization):
         user_profiles = NGOUserProfile.objects.filter(org_id=organization.org_id)
