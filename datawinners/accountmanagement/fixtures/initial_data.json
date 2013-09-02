@@ -209,7 +209,7 @@
         "pk": 1,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
-            "reporter_id": "rep12",
+            "reporter_id": "rep276",
             "org_id": "SLX364903",
             "mobile_phone": "123456",
             "user": 1,
