@@ -18,6 +18,8 @@
             "delete_organizations":gettext("Delete"),
             "delete_active_accounts":gettext("Ok")}
 
+        $("button.button").css('display', 'none');
+
         $("#warning_popup").dialog({autoOpen:false, width:'auto', close:close_dialog, modal:true});
 
         $("select[name=action]").change(function(){
@@ -25,12 +27,12 @@
             var action_selected = $(this).attr("value");
             $("#warning_popup").dialog("option", "title", "");
             $("#perform_action").css("display","inline");
-            $("#cancel_action").html(gettext("Cancel"));
+            $("#cancel_action").val(gettext("Cancel"));
 
             if (action_selected){
                 submit_button.attr("disabled","disabled");
-                $("#warning_message").html(warning_messages_by_actions[action_selected]);
-                $("#perform_action").html(confirm_caption[action_selected]);
+                $("#warning_message").val(warning_messages_by_actions[action_selected]);
+                $("#perform_action").val(confirm_caption[action_selected]);
 
                 if (action_selected == "delete_organizations") {
                     $("#warning_popup").dialog("option", "title", gettext("The Accounts(s) will be Deleted"));
@@ -45,7 +47,7 @@
 
                     if (selected_contains_active) {
                         $("#warning_message").html(warning_messages_by_actions['delete_active_accounts']);
-                        $("#cancel_action").html(confirm_caption['delete_active_accounts']);
+                        $("#cancel_action").val(confirm_caption['delete_active_accounts']);
                         $("#perform_action").css("display","none");
                         $("#warning_popup").dialog("option", "title", gettext("Active Accounts(s) cannot be Deleted"));
                     }

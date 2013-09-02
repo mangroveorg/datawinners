@@ -100,8 +100,8 @@
     <p id="warning_message">{% trans "Are you sure to want to deactivate/the account" %}</p>
     <br/>
     <p style="text-align: right;">
-        <a href="javascript:void(0);" id="perform_action">{% trans "Ok" %}</a>&nbsp;&nbsp;&nbsp;
-        <a href="javascript:void(0);" id="cancel_action">{% trans "Cancel" %}</a>
+        <input type="button" value="{% trans "Ok" %}"  id="perform_action" />&nbsp;&nbsp;&nbsp;
+        <input type="button" id="cancel_action" value="{% trans "Cancel" %}"/>
     </p>
   </div>
 {% endblock %}
