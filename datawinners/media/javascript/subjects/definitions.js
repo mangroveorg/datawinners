@@ -75,7 +75,7 @@ DW.SubjectPrintModalPage = function () {
     });
 
     this.display = function () {
-        $("#dialog_sms_preview").dialog("open");
+        dialog_html.dialog("open");
     };
 
     dialog_html.find(".printBtn").on("click", function (eventObject) {
