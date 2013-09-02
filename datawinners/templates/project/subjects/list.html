@@ -21,7 +21,7 @@
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
-    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -32,7 +32,7 @@
         var subject_type = "{{ entity_type|capfirst }}";
     </script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
-{#    <script type="text/javascript" src="/media/javascript/project/registered_subjects.js"></script>#}
+    {#    <script type="text/javascript" src="/media/javascript/project/registered_subjects.js"></script>#}
     <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
@@ -51,26 +51,33 @@
             <h2>{% trans "My Subjects" %}</h2>
         </div>
         <div class="grid_8 float_right omega text_align_right">
-            <a href="{{ project_links.register_subjects_link }}">{% trans "Register a" %} {{ project.entity_type|capfirst }}</a> &nbsp;|&nbsp;
-            <a href="javascript:void(0);" class="import-subject" id="import-{{ project.entity_type }}">{% trans "Import a list" %}</a>
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit Registration Form</a>
+            <a href="{{ project_links.register_subjects_link }}">{% trans "Register a" %} {{ project.entity_type|capfirst }}</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="import-subject"
+               id="import-{{ project.entity_type }}">{% trans "Import a list" %}</a>
+            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
+               class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit Registration Form</a>
         </div>
         {% csrf_token %}
         {% include "popup-import.html" %}
-    <div class="clear-both"></div>
+        <div class="clear-both"></div>
     </div>
-    {% include 'project/my_subjects_help.html' %}
+    {% with entity_type=project.entity_type create_entity_link=project_links.register_subjects_link %}
+        {% include 'help/subjects_help.html' %}
+    {% endwith %}
+
 
 
 
     <div id="my_subjects">
-    {% block secondary_navigation_subjects %}
-        {% activetab "secondary_tab_nav" "subjects" %}
-        {{ block.super }}
-    {% endblock %}
+        {% block secondary_navigation_subjects %}
+            {% activetab "secondary_tab_nav" "subjects" %}
+            {{ block.super }}
+        {% endblock %}
     </div>
 
-    <div class="help_accordion">{% blocktrans with project.entity_type as entity_type %}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}<br/><br/></div>
+    <div class="help_accordion">{% blocktrans with project.entity_type as entity_type %}View each of your registered
+        {{ entity_type }} in detail.{% endblocktrans %}<br/><br/></div>
     {% if messages %}
         <ul class="messages margin_bottom_20">
             {% for message in messages %}

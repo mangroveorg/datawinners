@@ -66,7 +66,7 @@
     </div>
 
     <div id="my_subjects">
-        {% with edit_registration_form_link=links.edit_subject_registration_form create_entity_link=links.create_subject questions=questionnaire_form %}
+        {% with create_entity_link=links.create_subject questions=questionnaire_form %}
             {% include 'help/subjects_help.html' %}
         {% endwith %}
 

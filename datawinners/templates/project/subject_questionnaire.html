@@ -32,7 +32,7 @@
     <script type="text/javascript" src="/media/javascript/entity/subject_questionnaire_view_model.js"></script>
     <script type="text/javascript">
         var existing_questions = $.parseJSON({{existing_questions|safe}});
-        questionnaireViewModel.language="{{ language }}"
+        questionnaireViewModel.language = "{{ language }}"
     </script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_subject_questionnaire.js"></script>
@@ -45,8 +45,8 @@
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript">
-            var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
-            var upload_url = "{% url datawinners.entity.views.all_subject_types %}";
+        var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
+        var upload_url = "{% url datawinners.entity.views.all_subject_types %}";
     </script>
 
 {% endblock %}
@@ -63,8 +63,10 @@
                 {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
                 <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()} ">
                     <a href="questionnaire.html#" data-bind="text: question.display"></a>
+
                     <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
-                        <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
+                        <a href="questionnaire.html#" class="delete_link"
+                           data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
                     </div>
                  <span class="selected_question_arrow"
                        data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
@@ -75,17 +77,21 @@
     </script>
 
     <h2>{% trans "My Subjects" %}</h2>
-    {% include 'project/my_subjects_help.html' %}
+    {% with entity_type=project.entity_type create_entity_link=project_links.register_subjects_link %}
+        {% include 'help/subjects_help.html' %}
+    {% endwith %}
+
     {% include "popup-import.html" %}
-    
+
     <div id="my_subjects">
-    {% block secondary_navigation_subjects %}
-        {% activetab "secondary_tab_nav" "criteria" %}
-        {{ block.super }}
-    {% endblock %}
+        {% block secondary_navigation_subjects %}
+            {% activetab "secondary_tab_nav" "criteria" %}
+            {{ block.super }}
+        {% endblock %}
     </div>
     <div class="instruction">
-        {% blocktrans with entity_type as entity_type %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
+        {% blocktrans with entity_type as entity_type %}Define what information you want to collect about each
+            {{ entity_type }}.{% endblocktrans %}
     </div>
 
     <div id="my_subjects_links" class="text_align_right">
