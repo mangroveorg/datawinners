@@ -23,7 +23,6 @@
         <div>
             <ol>
                 <li>{% trans "Decide what information you want to use to identify and register each Subject:" %}
-{#                        <a href='{{ edit_registration_form_link }}'#}
                         <a href='{% url edit_subject_questionnaire entity_type%}'
                        id="link-to-edit-form-{{ entity_type }}">{% trans "Customize your Registration Form" %}</a></li>
                 <li>{% trans "Register a Subject:" %}<a

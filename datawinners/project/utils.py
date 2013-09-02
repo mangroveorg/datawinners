@@ -7,7 +7,7 @@ from datawinners.project.models import ProjectState, Project
 def make_subject_links(project_id):
     subject_links = {'subjects_link': reverse('subject_questionnaire', args=[project_id]),
                      'subjects_edit_link': reverse('edit_subject_questionaire', args=[project_id]),
-                     'register_subjects_link': reverse('subject_questionnaire', args=[project_id]),
+                     'register_subjects_link': reverse('subject_questionnaire', args=[project_id]) + "?web_view=True",
                      'registered_subjects_link': reverse('registered_subjects', args=[project_id]),
                      'subject_registration_preview_link': reverse('subject_registration_form_preview',
                          args=[project_id])}

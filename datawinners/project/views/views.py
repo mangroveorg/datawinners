@@ -679,7 +679,7 @@ class SubjectWebQuestionnaireRequest():
                              'form_code': self.form_code,
                              'entity_type': self.project.entity_type,
                              "questionnaire_form": questionnaire_form,
-                             "web_view": False}
+                             "web_view": self.request.GET.get("web_view", False)}
         )
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 

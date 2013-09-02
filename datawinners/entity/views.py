@@ -280,10 +280,9 @@ def all_subjects(request, subject_type):
                               {'subject_headers': header_dict,
                                'current_language': translation.get_language(),
                                'entity_type': subject_type,
-                               # 'questions': viewable_questionnaire(form_model),
                                'questions': form_model.fields,
                                'form_code': form_model.form_code,
-                               'links': {'create_subject': reverse("create_subject", args=(subject_type,)),
+                               'links': {'create_subject': reverse("create_subject", args=(subject_type,)) + "?web_view=True",
                                          'edit_subject_registration_form': reverse("edit_subject_questionnaire",
                                                                                    args=(subject_type,))}
                               },
@@ -690,7 +689,8 @@ def create_subject(request, entity_type=None):
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
                                           form_code=form_model.form_code,
                                           org_number=get_organization_telephone_number(request),
-                                          form_model_fields=form_model.fields)
+                                          form_model_fields=form_model.fields,
+                                          web_view=request.GET.get("web_view", False))
 
         return render_to_response(web_questionnaire_template,
                                   form_context,
