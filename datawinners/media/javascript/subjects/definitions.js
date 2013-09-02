@@ -65,14 +65,20 @@ DW.SubjectPrintModalPage = function () {
         autoOpen: false,
         height: 700,
         width: 800,
-        closeText: 'hide'
+        closeText: 'hide',
+        open: function () {
+            $("body > div").addClass("none_for_print");
+        },
+        close: function () {
+            $("body > div").removeClass("none_for_print");
+        }
     });
 
     this.display = function () {
         $("#dialog_sms_preview").dialog("open");
     };
 
-    $("#dialog_sms_preview").find(".printBtn").attr("hidden", true).on("click", function (eventObject) {
+    dialog_html.find(".printBtn").on("click", function (eventObject) {
         window.print();
         eventObject.preventDefault();
     });
@@ -80,8 +86,8 @@ DW.SubjectPrintModalPage = function () {
 
 
 DW.SubjectRegistrationForm = function (form_selector) {
-    var enabled_visible_elements = $('input:visible:not(.subject_field), select:visible', form_selector);
-    var submit_button = $('input[type="submit"]', form_selector);
+//    var enabled_visible_elements = $('input:visible:not(.subject_field), select:visible', form_selector);
+//    var submit_button = $('input[type="submit"]', form_selector);
     var generate_id = $("#generate_id", form_selector);
     this.enable = function () {
         $("#subject_registration_form").attr("hidden", false);
