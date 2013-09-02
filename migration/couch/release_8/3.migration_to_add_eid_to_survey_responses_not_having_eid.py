@@ -1,7 +1,7 @@
 import logging
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
 from datawinners.main.couchdb.utils import all_db_names
-from datawinners.main.database import get_db_manager
+from mangrove.datastore.database import get_db_manager
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.contract.survey_response import SurveyResponse
 from migration.couch.utils import migrate
@@ -24,7 +24,8 @@ def _get_survey_responses_with_no_eid(dbm, logger):
 def add_eid_field_for_survey_response_with_missing_eid_field(db_name):
     logger = logging.getLogger(db_name)
     logger.info('Starting Migration')
-    dbm = get_db_manager(db_name)
+    # dbm = get_db_manager(db_name)
+    dbm = get_db_manager(server='http://178.79.161.90:5984', database=db_name)
 
     inconsistent_survey_response_list = _get_survey_responses_with_no_eid(dbm, logger)
     for survey_response in inconsistent_survey_response_list:
@@ -38,11 +39,10 @@ def add_eid_field_for_survey_response_with_missing_eid_field(db_name):
             logger.warning("Missing owner id for survey_response: %s, form_code: %s" % (
                 survey_response.uuid, survey_response.form_code))
             # logger.info("Number of survey responses migrated: %s" % len(inconsistent_survey_response_list))
-        length_of_survey_response_with_no_eid = len(inconsistent_survey_response_list)
-        org_id = OrganizationSetting.objects.get(document_store=dbm.database_name).organization_id
-        if length_of_survey_response_with_no_eid:
-            logger.info("Number of incorrect survey responses: %s In trial mode: %s" % (
-                length_of_survey_response_with_no_eid, Organization.objects.get(org_id=org_id).in_trial_mode))
+    length_of_survey_response_with_no_eid = len(inconsistent_survey_response_list)
+    org_id = OrganizationSetting.objects.get(document_store=dbm.database_name).organization_id
+    if length_of_survey_response_with_no_eid:
+        logger.info("Number of incorrect survey responses: %s" % length_of_survey_response_with_no_eid)
 
 
-migrate(all_db_names(), add_eid_field_for_survey_response_with_missing_eid_field, version=(8, 0, 3))
+migrate(all_db_names(server="http://178.79.161.90:5984"), add_eid_field_for_survey_response_with_missing_eid_field, version=(8, 0, 3))
