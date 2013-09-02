@@ -20,7 +20,7 @@ import xlwt
 from django.contrib import messages
 
 from datawinners import utils
-from datawinners.entity.data_sender import remove_test_datasenders, get_datasender_user_detail
+from datawinners.entity.data_sender import remove_system_datasenders, get_datasender_user_detail
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
@@ -753,7 +753,7 @@ def create_subject(request, entity_type=None):
 def _get_all_datasenders(manager, projects, user):
     all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
     project_association = _get_project_association(projects)
-    remove_test_datasenders(all_data_senders)
+    remove_system_datasenders(all_data_senders)
     for datasender in all_data_senders:
         get_datasender_user_detail(datasender, user)
         datasender['projects'] = project_association.get(datasender['short_code'])

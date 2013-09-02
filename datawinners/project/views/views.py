@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, get_language, activate
 
 from datawinners.accountmanagement.views import session_not_expired, valid_web_user
-from datawinners.entity.data_sender import remove_test_datasenders, get_user_profile_by_reporter_id
+from datawinners.entity.data_sender import remove_system_datasenders, get_user_profile_by_reporter_id
 from datawinners.project.view_models import ReporterEntity
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
@@ -500,7 +500,7 @@ def registered_datasenders(request, project_id=None):
         labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number")]
         in_trial_mode = _in_trial_mode(request)
         senders = project.get_data_senders(manager)
-        remove_test_datasenders(senders)
+        remove_system_datasenders(senders)
         for sender in senders:
             get_datasender_user_detail(sender, request.user)
             sender['project'] = project.name

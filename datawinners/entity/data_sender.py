@@ -13,7 +13,7 @@ def load_data_senders(manager, short_codes):
     return data, fields, labels
 
 
-def remove_test_datasenders(datasender_list):
+def remove_system_datasenders(datasender_list):
     for datasender in datasender_list:
         if datasender["short_code"] == "test":
             index = datasender_list.index(datasender)
