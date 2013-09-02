@@ -28,20 +28,23 @@
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript">
+        var upload_url = "{% url import_subjects form_code %}";
+        var web_view = "{{web_view}}"
+    </script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
-{#    <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>#}
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
-    <script type="text/javascript">
-        var upload_url = "{% url import_subjects questionnaire_code %}";
-    </script>
+    <script type="text/javascript" src="/media/javascript/subjects/definitions.js"></script>
+    <script type="text/javascript" src="/media/javascript/subjects/sms_preview.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -50,66 +53,28 @@
             <h2>{% trans "My Subjects" %}</h2>
         </div>
         <div class="grid_8 float_right omega text_align_right">
-            <a id="register_subjects"  href="{{ project_links.register_subjects_link }}">{% trans "Register a" %} {{ project.entity_type|capfirst }}</a> &nbsp;|&nbsp;
-            <a href="javascript:void(0);" class="import-subject" id="import-{{ project.entity_type }}">{% trans "Import a list" %}</a>
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit Registration Form</a>
+            <a id="register_subjects"
+               href="{{ project_links.register_subjects_link }}">{% trans "Register a" %} {{ project.entity_type|capfirst }}</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="import-subject"
+               id="import-{{ project.entity_type }}">{% trans "Import a list" %}</a>
+            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
+               class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit Registration Form</a>
         </div>
         {% csrf_token %}
-        {% include "popup-import.html" %}
         <div class="clear-both"></div>
     </div>
-    {% include "popup-import.html" %}
-    {% include 'project/my_subjects_help.html' %}
 
     <div id="my_subjects">
-    {% block secondary_navigation_subjects %}
-        {% activetab "secondary_tab_nav" "criteria" %}
-        {{ block.super }}
-    {% endblock %}
-    </div>
-    <div class="instruction">
-        {% blocktrans with project.entity_type as entity_type %}With this form you can register a new {{ entity_type }}.  To change this form, click Edit.{% endblocktrans %}
+        {% with edit_registration_form_link=links.edit_subject_registration_form create_entity_link=links.create_subject questions=questionnaire_form %}
+            {% include 'help/subjects_help.html' %}
+        {% endwith %}
+
+        {% block secondary_navigation_subjects %}
+            {% activetab "secondary_tab_nav" "criteria" %}
+            {{ block.super }}
+        {% endblock %}
     </div>
 
-    <div id="my_subjects_links">
-        <ul>
-            <li><a href="{{ project_links.subjects_edit_link }}" class="edit-form-link">{% trans "Edit" %}</a></li>
-            <li><a href="javascript:void(0)"  class="preview_subject_registration_form">{% trans "Print" %}</a></li>
-            <li class="view_link">{% trans "View Style:" %}</li>
-            <li class="sms_link"><a href="javascript:void(0)" id="sms_preview_btn" class="active">SMS</a></li>
-            <li class="sms_link"><a href="{{ project_links.register_subjects_link }}" id="web_preview_btn">Web</a></li>
-        </ul>
-        <div class="clear-right"></div>
-    </div>
-    <div>
-        <h2 style="font-size:18px;">{% blocktrans with project.entity_type as entity_type %}SMS {{ entity_type }} Registration Form{% endblocktrans %}</h2>
-        <div class="instruction">{% blocktrans with project.entity_type as entity_type %}Your Data Senders can register a new {{ entity_type }} via SMS. Print out this form and give it to your Data Senders.{% endblocktrans %}</div>
-        <br/>
-        <br/>
-    </div>
-    <div id="sms_preview">
-        <ul class="questionnaire_title">
-            <li>
-                <p>{% trans "SMS your answers to" %}</p>
-                <h5>{{ org_number|format_organization_number }}</h5>
-            </li>
-            <li>
-                <p>{% trans "Project Name:" %}</p>
-                <h5>{{ project.name }}</h5>
-            </li>
-            <li>
-                <p>{% trans "Questionnarie Code:" %}</p>
-                <h5>{{ questionnaire_code }}</h5>
-            </li>
-            <li class="margin_top_10">
-                <p>{% trans "Example SMS:" %} </p>
-                <p class="sms_exemple">{{ example_sms }}</p>
-            </li>
-        </ul>
-        <div class="clear"></div>
-        {% include 'project/subject_registration_webpreview.html' %}
-    </div>
-    <div class="subject_registration_preview">
-        {% trans "Generating the questionnaire preview." %}
-    </div>
+    {% block page_content %}{% endblock %}
 {% endblock %}

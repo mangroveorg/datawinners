@@ -4,6 +4,7 @@ DW.SubjectSMSPreviewPage = function () {
     var sms_preview_form = $("#preview_form");
     sms_preview_form.html($("#subject_registration_form").clone().html());
     sms_preview_form.find('input[type="submit"]').remove();
+    sms_preview_form.find('input').attr("value", '');
 
     sms_preview_form.find('input,select').each(function (index, element) {
         var query_element_object = $(element);
@@ -86,8 +87,6 @@ DW.SubjectPrintModalPage = function () {
 
 
 DW.SubjectRegistrationForm = function (form_selector) {
-//    var enabled_visible_elements = $('input:visible:not(.subject_field), select:visible', form_selector);
-//    var submit_button = $('input[type="submit"]', form_selector);
     var generate_id = $("#generate_id", form_selector);
     this.enable = function () {
         $("#subject_registration_form").attr("hidden", false);
@@ -97,6 +96,9 @@ DW.SubjectRegistrationForm = function (form_selector) {
     this.disable = function () {
         var visible_elements = $('input:visible:not([type="submit"]), select:visible', form_selector);
         visible_elements.attr("value", "");
+        //This is explicitly called here as otherwise the watermark api does not kick in, that api should have
+        //listened to the change event but currently its attached to blur
+        visible_elements.blur();
         generate_id.attr("checked", "checked");
         //This has to be called last as the above statements will fail if we hide the form first.
         $("#subject_registration_form").attr("hidden", true);
