@@ -86,7 +86,9 @@
         </ul>
     {% endif %}
 
-    {% include 'subject_table.html' %}
+    {% with create_subject_link=project_links.register_subjects_link %}
+        {% include 'subject_table.html' %}
+    {% endwith %}
 
 {% endblock %}
 

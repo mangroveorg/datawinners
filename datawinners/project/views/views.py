@@ -447,33 +447,6 @@ def _get_project_and_project_link(manager, project_id, reporter_id=None):
 
 
 @valid_web_user
-def subjects(request, project_id=None):
-    manager = get_database_manager(request.user)
-    project, project_links = _get_project_and_project_link(manager, project_id)
-    fields, project_links_with_subject_questionnaire, questions, reg_form = _get_registration_form(manager, project,
-                                                                                                   type_of_subject='subject')
-
-    example_sms = get_example_sms_message(fields, reg_form.form_code)
-    subject = get_entity_type_info(project.entity_type, manager=manager)
-    # return render_to_response('project/subjects.html',
-    return render_to_response('entity/subject/registration.html',
-                              {'project': project,
-                               'project_links': project_links,
-                               'questions': questions,
-                               'questionnaire_code': reg_form.form_code,
-                               'example_sms': example_sms,
-                               'org_number': get_organization_telephone_number(request),
-                               'current_language': translation.get_language(),
-                               'subject': subject,
-                               'extension_template': 'project/subjects.html',
-                               'form_code': reg_form.form_code,
-                               'entity_type': subject.get("entity"),
-                               "questionnaire_form": SubjectRegistrationForm(reg_form),
-                               "web_view": False, },
-                              context_instance=RequestContext(request))
-
-
-@valid_web_user
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)

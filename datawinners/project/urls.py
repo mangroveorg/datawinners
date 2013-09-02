@@ -5,7 +5,7 @@ from datawinners.entity.views import disassociate_datasenders
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
 from datawinners.project.views import submission_views, analysis_views
-from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, subjects, registered_subjects, registered_datasenders, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, review_and_test, edit_subject_questionaire, project_has_data, edit_data_sender, save_questionnaire, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject
+from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, registered_subjects, registered_datasenders, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, review_and_test, edit_subject_questionaire, project_has_data, edit_data_sender, save_questionnaire, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -36,7 +36,7 @@ urlpatterns = patterns('',
                        url(r'^project/$', index, name="index"),
                        url(r'^project/overview/(?P<project_id>\w+?)/$', project_overview, name="project-overview"),
 
-                       url(r'^project/subjects/(?P<project_id>.+?)/$', subjects, name="subjects"),
+                       # url(r'^project/subjects/(?P<project_id>.+?)/$', subjects, name="subjects"),
                        url(r'^project/registered_subjects/(?P<project_id>.+?)/$', registered_subjects,
                            name="registered_subjects"),
                        (r'^project/subject/edit/(?P<project_id>.+?)/(?P<entity_type>.+?)/(?P<entity_id>.+?)/$',
