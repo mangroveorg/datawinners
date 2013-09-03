@@ -49,7 +49,7 @@
                     data-bind="checked: selectedQuestion().type, enable: subjectQuestionnaireViewModel.isTypeEnabled()"
                 />{% trans "GPS Coordinates" %}
         </div>
-        <div><input type="radio" name="type" value="list"
+        <div id="location_type_input"><input type="radio" name="type" value="list"
                     data-bind="checked: selectedQuestion().type, enable: subjectQuestionnaireViewModel.isTypeEnabled()"/>{% trans "Location" %}
         </div>
         <div><input type="radio" name="type" value="telephone_number"
