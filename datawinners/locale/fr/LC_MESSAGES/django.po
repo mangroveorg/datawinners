@@ -2727,7 +2727,7 @@ msgid "Enter phone number without the country code. Example: +261 333745269"
 msgstr "Entrez le numéro de téléphone sans le code pays. Exemple : 033 37 452 69, 079-255-10-61"
 
 msgid "Define what information you want to collect about each %(entity_type)s."
-msgstr "Définissez quelle information voulez vous collecter concernant chaque %(entity_type)s."
+msgstr "Définissez quelles informations vous souhaitez collecter sur chaque %(entity_type)s."
 
 msgid "View and manage all of the people, places, things or events that you want to collect data about, such as patients, villages, clinics or trainings."
 msgstr "Voyez et gérez toutes les personnes, places, choses ou événements sur lesquels vous voulez collecter des données, tels que des patients, des villages, des cliniques ou des formations."
@@ -2811,7 +2811,7 @@ msgid "Your Data Senders can register a new %(entity_type)s via SMS. Print out t
 msgstr "Vos expéditeurs peuvent enregistrer un(e) %(entity_type)s via SMS. Imprimez ce formulaire et donnez le à vos expéditeurs."
 
 msgid "All Data Senders who have access to this form can register a new %(entity_type)s online. You can give them web submission access on the <a href=\"%(url)s\">All Data Senders</a> page."
-msgstr "Tous les expéditeurs qui ont accès à ce formulaire peuvent enregistrer un(e) %(entity_type)s en ligne. Vous pouvez les donner l'accès pour envoi web dans la page <a href=\"%(url)s\">Tous les Expéditeurs</a>."
+msgstr "Tous les Expéditeurs de Données qui ont accès à ce formulaire peuvent enregistrer un nouveau %(entity_type)s en ligne.  Vous pouvez leur donner une autorisation de soumission sur la page <a href=\"%(url)s\">Tous les expéditeurs de données</a>."
 
 msgid "Web %(entity_type)s Registration Form"
 msgstr "Formulaire d'enregistrement de %(entity_type)s par internet"

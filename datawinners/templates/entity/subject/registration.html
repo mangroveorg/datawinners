@@ -13,8 +13,8 @@
 {% block page_content %}
 
     <div class="instruction">
-        {% blocktrans %}Define what information you want to collect
-            about each {{ entity_type }}.{% endblocktrans %}
+    {#  Make sure that the block translation is in one single line as otherwise translation lookup fails.      #}
+        {% blocktrans %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
     </div>
 
     <div id="subject_reg_block">

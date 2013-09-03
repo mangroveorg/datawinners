@@ -55,8 +55,9 @@ class TestProjectViews(unittest.TestCase):
         self.assertEqual(reverse('edit_subject_questionaire', args=[project_id]), subject_links['subjects_edit_link'])
         self.assertEqual(reverse('subject_registration_form_preview', args=[project_id]),
                          subject_links['subject_registration_preview_link'])
-        self.assertEqual(reverse('registered_subjects', args=[project_id]), subject_links['registered_subjects_link'])
-        self.assertEqual(reverse('subject_questionnaire', args=[project_id]),
+        self.assertEqual(reverse('registered_subjects', args=[project_id]),
+                         subject_links['registered_subjects_link'])
+        self.assertEqual(reverse('subject_questionnaire', args=[project_id]) + "?web_view=True",
                          subject_links['register_subjects_link'])
 
     def test_should_return_datasender_project_links(self):
@@ -74,7 +75,7 @@ class TestProjectViews(unittest.TestCase):
         project.id = "1"
         project.entity_type = "clinic"
         link = add_link(project)
-        self.assertEqual(reverse('subject_questionnaire', args=[project.id]), link.url)
+        self.assertEqual(reverse('subject_questionnaire', args=[project.id]) + "?web_view=True", link.url)
         self.assertEqual('Register a clinic', link.text)
 
     def test_for_websubmission_on_datasenders_should_provide_add_links(self):
@@ -260,7 +261,8 @@ class TestProjectViews(unittest.TestCase):
         request.POST.get.return_value = 'proj_name'
         data, file_name = _prepare_export_data(SurveyResponseRouter.SUCCESS, 'proj_name',
                                                ["Submission ID", "DS_name", "DS_id", "Submission_date", "Status",
-                                                "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3, 4, '-', 5, 6]])
+                                                "Reply SMS", "Subject_name", "Subject_id"],
+                                               [[0, 1, 2, 3, 4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date', 'Subject_name', 'Subject_id'], [1, 2, 3, 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_success_log', file_name)
@@ -269,7 +271,8 @@ class TestProjectViews(unittest.TestCase):
     def test_should_prepare_export_data_for_all_submission_log_tab(self):
         data, file_name = _prepare_export_data(SurveyResponseRouter.ALL, 'proj_name',
                                                ["Submission ID", "DS_name", "DS_id", "Submission_date", "Status",
-                                                "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3, 4, '-', 5, 6]])
+                                                "Reply SMS", "Subject_name", "Subject_id"],
+                                               [[0, 1, 2, 3, 4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date', 'Status', 'Subject_name', 'Subject_id'], [1, 2, 3, 4, 5, 6]]
 
         self.assertEqual(expected, data)
@@ -279,7 +282,8 @@ class TestProjectViews(unittest.TestCase):
     def test_should_prepare_export_data_for_deleted_submission_log_tab(self):
         data, file_name = _prepare_export_data(SurveyResponseRouter.DELETED, 'proj_name',
                                                ["Submission ID", "DS_name", "DS_id", "Submission_date", "Status",
-                                                "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3, 4, '-', 5, 6]])
+                                                "Reply SMS", "Subject_name", "Subject_id"],
+                                               [[0, 1, 2, 3, 4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date', 'Status', 'Subject_name', 'Subject_id'], [1, 2, 3, 4, 5, 6]]
         self.assertEqual(expected, data)
         self.assertEqual('proj_name_deleted_log', file_name)
@@ -288,7 +292,8 @@ class TestProjectViews(unittest.TestCase):
     def test_should_prepare_export_data_for_error_submission_log_tab(self):
         data, file_name = _prepare_export_data(SurveyResponseRouter.ERROR, 'proj_name',
                                                ["Submission ID", "DS_name", "DS_id", "Submission_date", "Status",
-                                                "Reply SMS", "Subject_name", "Subject_id"], [[0, 1, 2, 3, 4, '-', 5, 6]])
+                                                "Reply SMS", "Subject_name", "Subject_id"],
+                                               [[0, 1, 2, 3, 4, '-', 5, 6]])
         expected = [['DS_name', 'DS_id', 'Submission_date', 'Reply SMS', 'Subject_name', 'Subject_id'],
                     [1, 2, 3, '-', 5, 6]]
         self.assertEqual(expected, data)
