@@ -76,8 +76,11 @@
         {% endblock %}
     </div>
 
-    <div class="help_accordion">{% blocktrans with project.entity_type as entity_type %}View each of your registered
-        {{ entity_type }} in detail.{% endblocktrans %}<br/><br/></div>
+    <div class="help_accordion">
+        {# Make sure that this block translation stays in a single line as otherwise django will not be able to find out that message id#}
+        {% blocktrans with project.entity_type as entity_type %}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}
+        <br/><br/>
+    </div>
     {% if messages %}
         <ul class="messages margin_bottom_20">
             {% for message in messages %}
