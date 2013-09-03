@@ -25,7 +25,7 @@ ENVIRONMENT_CONFIGURATIONS = {
 ENVIRONMENT_VES = {
     "showcase": "/home/mangrover/virtual_env/datawinner",
     "ec2": "/home/mangrover/.virtualenvs/datawinners",
-    "qa": "/home/mangrover/virtual_env/datawinner",
+    "qa": "/home/mangrover/virtual_env/datawinners",
     "test": "/home/twer/virtual_env/datawinner",
     "qa_supreme": "/home/datawinners/virtual_env/datawinner",
     "beta": "/home/administrator/virtual_env/datawinner",
@@ -197,9 +197,9 @@ def showcase():
 
 
 def qa():
-    env.user = "mangrover"
+    env.user = "datawinners"
     env.hosts = ["172.18.9.6"]
-    env.key_filename = ["/home/mangrover/.ssh/id_rsa"]
+    env.key_filename = ["/home/datawinners/.ssh/id_rsa"]
     env.warn_only = True
 
 
