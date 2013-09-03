@@ -5,6 +5,7 @@ DW.SubjectSMSPreviewPage = function () {
     sms_preview_form.html($("#subject_registration_form").clone().html());
     sms_preview_form.find('input[type="submit"]').remove();
     sms_preview_form.find('input').attr("value", '');
+    var sms_form_heading = $("#sms_form_heading");
 
     sms_preview_form.find('input,select').each(function (index, element) {
         var query_element_object = $(element);
@@ -24,9 +25,11 @@ DW.SubjectSMSPreviewPage = function () {
     this.enable = function () {
         $(".errorlist").remove();
         $("#sms_preview").attr("hidden", false);
+        sms_form_heading.show();
     };
     this.disable = function () {
         $("#sms_preview").attr("hidden", true);
+        sms_form_heading.hide();
     };
 };
 
@@ -88,9 +91,13 @@ DW.SubjectPrintModalPage = function () {
 
 DW.SubjectRegistrationForm = function (form_selector) {
     var generate_id = $("#generate_id", form_selector);
+    var registration_form = $("#subject_registration_form");
+    var web_form_heading = $("#web_form_heading");
+
     this.enable = function () {
-        $("#subject_registration_form").attr("hidden", false);
+        registration_form.attr("hidden", false);
         generate_id.attr("checked", "checked");
+        web_form_heading.show();
     };
 
     this.disable = function () {
@@ -101,7 +108,8 @@ DW.SubjectRegistrationForm = function (form_selector) {
         visible_elements.blur();
         generate_id.attr("checked", "checked");
         //This has to be called last as the above statements will fail if we hide the form first.
-        $("#subject_registration_form").attr("hidden", true);
+        registration_form.attr("hidden", true);
+        web_form_heading.hide();
     };
 
     var subject_unique_id = $(".subject_field", form_selector);

@@ -4289,3 +4289,9 @@ msgstr "Votre compte a été désactivé. Veuillez contacter le support DataWinn
 
 msgid "Back to All Subjects List"
 msgstr "Retour à la page Tous les Sujets"
+
+msgid "Example SMS:"
+msgstr "Exemple de SMS:"
+
+msgid "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders."
+msgstr "Vos expéditeurs peuvent enregistrer un(e) clinic via SMS. Imprimez ce formulaire et donnez le à vos expéditeurs."

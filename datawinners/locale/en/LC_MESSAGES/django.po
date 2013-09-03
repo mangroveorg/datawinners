@@ -4209,3 +4209,10 @@ msgstr "Your account has been deactivated. Please contact the datawinners suppor
 
 msgid "Back to All Subjects List"
 msgstr "Back to All Subjects List"
+
+msgid "Example SMS:"
+msgstr ""
+
+msgid "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders."
+msgstr ""
+

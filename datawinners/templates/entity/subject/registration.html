@@ -13,7 +13,7 @@
 {% block page_content %}
 
     <div class="instruction">
-        {% blocktrans%}Define what information you want to collect
+        {% blocktrans %}Define what information you want to collect
             about each {{ entity_type }}.{% endblocktrans %}
     </div>
 
@@ -31,17 +31,28 @@
             </ul>
             <div class="clear-right"></div>
         </div>
-        <div id="subject_form_heading">
-            <h2 class="font_size_14">{% blocktrans with entity_type|capfirst as entity_type %}Web {{ entity_type }}
-                Registration Form{% endblocktrans %}</h2>
+        {#    form heading start   #}
+        <div id="web_form_heading">
+            {#  Make sure that the block translation is in one single line as otherwise translation lookup fails.      #}
+            <h2 class="font_size_14">
+                {% blocktrans with entity_type|capfirst as entity_type %}Web {{ entity_type }} Registration Form{% endblocktrans %}
+            </h2>
 
             <div class="instruction">
-                {% blocktrans with entity_type as entity_type %}All
-                    Data Senders who have access to this form can register a new {{ entity_type }} online. You can
-                    give
-                    them web submission access on the <a href="/entity/datasenders/">All Data Senders</a>
-                    page.{% endblocktrans %}
+            {#  Make sure that the block translation is in one single line as otherwise translation lookup fails.      #}
+                {% blocktrans with "/entity/datasenders/" as url %}All Data Senders who have access to this form can register a new {{ entity_type }} online. You can give them web submission access on the <a href="{{ url }}">All Data Senders</a> page.{% endblocktrans %}
             </div>
+        </div>
+        <div id="sms_form_heading" hidden="true">
+            <h2 class="font_size_14">
+                {#  Make sure that the block translation is in one single line as otherwise translation lookup fails.      #}
+                {% blocktrans  with entity_type|capfirst as entity_type %}SMS {{ entity_type }} Registration Form{% endblocktrans %}
+            </h2>
+
+            <div class="instruction">
+                {% trans "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders." %}
+            </div>
+            {#    form heading end #}
         </div>
     </div>
 
