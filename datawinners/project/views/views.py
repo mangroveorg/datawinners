@@ -648,28 +648,26 @@ class SubjectWebQuestionnaireRequest():
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.form_code, self.project, questionnaire_form,
                                         self.manager, self.hide_link_class, self.disable_link_class, is_update)
+        self._update_form_context(form_context, questionnaire_form,
+                                  web_view_enabled=self.request.GET.get("web_view", False))
+        return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
+
+
+    def _update_form_context(self, form_context, questionnaire_form, web_view_enabled=True):
         form_context.update({'extension_template': 'project/subjects.html',
                              'form_code': self.form_code,
                              'entity_type': self.project.entity_type,
                              "questionnaire_form": questionnaire_form,
                              "org_number": get_organization_telephone_number(self.request),
-                             "web_view": self.request.GET.get("web_view", False)}
+                             "web_view": web_view_enabled}
         )
-        return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
-
 
     def response_for_post_request(self, is_update=None):
         questionnaire_form = self.form(self.request.POST, utils.get_organization_country(self.request))
         if not questionnaire_form.is_valid():
             form_context = get_form_context(self.form_code, self.project, questionnaire_form,
                                             self.manager, self.hide_link_class, self.disable_link_class)
-            form_context.update({'extension_template': 'project/subjects.html',
-                                 'form_code': self.form_code,
-                                 'entity_type': self.project.entity_type,
-                                 "questionnaire_form": questionnaire_form,
-                                 "org_number": get_organization_telephone_number(self.request),
-                                 "web_view": True}
-            )
+            self._update_form_context(form_context, questionnaire_form)
             return render_to_response(self.template, form_context,
                                       context_instance=RequestContext(self.request))
 
@@ -694,16 +692,8 @@ class SubjectWebQuestionnaireRequest():
         _project_context = get_form_context(self.form_code, self.project, questionnaire_form,
                                             self.manager, self.hide_link_class, self.disable_link_class,
                                             is_update=is_update)
-
-        _project_context.update({'success_message': success_message, 'error_message': error_message,
-                                 'extension_template': 'project/subjects.html',
-                                 'form_code': self.form_code,
-                                 'entity_type': self.project.entity_type,
-                                 "questionnaire_form": questionnaire_form,
-                                 "org_number": get_organization_telephone_number(self.request),
-                                 "web_view": True}
-        )
-
+        _project_context.update({'success_message': success_message, 'error_message': error_message})
+        self._update_form_context(_project_context, questionnaire_form)
         return render_to_response(self.template, _project_context,
                                   context_instance=RequestContext(self.request))
 
