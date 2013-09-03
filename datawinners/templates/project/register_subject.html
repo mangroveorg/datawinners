@@ -47,7 +47,10 @@
 
 {% block content %}
     <h2>{% trans "My Subjects" %}</h2>
-    {% include 'project/my_subjects_help.html' %}
+    {% with entity_type=project.entity_type create_entity_link=register_subjects_link %}
+        {% include 'help/subjects_help.html' %}
+    {% endwith %}
+
     {% include "popup-import.html" %}
     <div id="my_subjects">
     {% block secondary_navigation_subjects %}

@@ -5,18 +5,22 @@
 {% block secondary_navigation %}
     {{ block.super }}
     <li>
-        <a href="javascript:void(0);" class="import-subject">{% trans "Import a List of Subjects" %}</a>&nbsp;|&nbsp;
+        <a id="register_subjects"
+           href="{{ register_subjects_link }}">{% trans "Register a" %} {{ entity_type|capfirst }}</a>&nbsp;|&nbsp;
+        <a href="javascript:void(0);" class="import-subject">{% trans "Import a List" %}</a>
+
     </li>
 {% endblock %}
 
 
-{% block page_content %}
-
+{% block help_accordian %}
     <div class="instruction">
-    {#  Make sure that the block translation is in one single line as otherwise translation lookup fails.      #}
+        {#  Make sure that the block translation is in one single line as otherwise translation lookup fails.      #}
         {% blocktrans %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
     </div>
+{% endblock %}
 
+{% block page_content %}
     <div id="subject_reg_block">
         <div id="my_subjects_links">
             <ul>

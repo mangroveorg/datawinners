@@ -53,20 +53,16 @@
             <h2>{% trans "My Subjects" %}</h2>
         </div>
         <div class="grid_8 float_right omega text_align_right">
-            <a id="register_subjects"
-               href="{{ project_links.register_subjects_link }}">{% trans "Register a" %} {{ project.entity_type|capfirst }}</a>
-            &nbsp;|&nbsp;
-            <a href="javascript:void(0);" class="import-subject"
-               id="import-{{ project.entity_type }}">{% trans "Import a list" %}</a>
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
-               class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit Registration Form</a>
+            <ul>
+                {% block secondary_navigation %} {% endblock %}
+            </ul>
         </div>
         {% csrf_token %}
         <div class="clear-both"></div>
     </div>
 
     <div id="my_subjects">
-        {% with create_entity_link=links.create_subject questions=questionnaire_form %}
+        {% with create_entity_link=register_subjects_link questions=questionnaire_form %}
             {% include 'help/subjects_help.html' %}
         {% endwith %}
 

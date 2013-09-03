@@ -1550,8 +1550,8 @@ msgstr "Cliquez sur le bouton bleu 'Ajouter des Sujets Manuellement' et inscrive
 msgid "Enter your Subjects individually"
 msgstr "Entrer les sujets un par un"
 
-msgid "Import a List of Subjects"
-msgstr "Importer la liste des sujets"
+msgid "Import a List"
+msgstr "Importer une liste"
 
 msgid "tooltip_subject_import"
 msgstr ""

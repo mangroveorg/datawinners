@@ -659,7 +659,9 @@ class SubjectWebQuestionnaireRequest():
                              'entity_type': self.project.entity_type,
                              "questionnaire_form": questionnaire_form,
                              "org_number": get_organization_telephone_number(self.request),
-                             "web_view": web_view_enabled}
+                             "example_sms":get_example_sms_message(self.form_model.fields, self.form_code),
+                             "web_view": web_view_enabled,
+                             "register_subjects_link" :reverse('subject_questionnaire', args=[self.project.id]) + "?web_view=True" }
         )
 
     def response_for_post_request(self, is_update=None):
