@@ -105,7 +105,7 @@ $(document).ready(function () {
             data_sender.contactInformation = $(row).find(".project").html();
             data_sender.email = $(row).find(".email").html();
             data_sender.input_field_disabled = "disabled";
-            if ($.trim(data_sender.email) == "--") {
+            if (!$.trim(data_sender.email)) {
                 data_sender.input_field_disabled = "";
                 data_sender.email = "";
             }
