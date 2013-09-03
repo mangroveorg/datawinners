@@ -58,8 +58,6 @@ DW.ActionsMenu = function () {
 //        subject_type is defined in all_subjects.html and
         warnThenDeleteDialogBox(selected_ids(), subject_type.toLowerCase(), this);
     });
-
-
 };
 
 DW.SubjectSelectAllCheckbox = function (drawTable) {
