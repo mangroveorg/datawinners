@@ -181,9 +181,9 @@ def showcase():
 
 
 def qa():
-    env.user = "datawinners"
-    env.hosts = ["10.18.2.237"]
-    env.key_filename = ["/home/dw/.ssh/id_rsa"]
+    env.user = "user"
+    env.hosts = ["172.18.9.6"]
+    env.key_filename = ["/home/user/.ssh/id_rsa"]
     env.warn_only = True
 
 
