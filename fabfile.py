@@ -197,9 +197,9 @@ def showcase():
 
 
 def qa():
-    env.user = "user"
+    env.user = "mangrover"
     env.hosts = ["172.18.9.6"]
-    env.key_filename = ["/home/user/.ssh/id_rsa"]
+    env.key_filename = ["/home/mangrover/.ssh/id_rsa"]
     env.warn_only = True
 
 
