@@ -1365,7 +1365,7 @@ msgstr "Utilisez ce décompte automatique pour déterminer le nombre maximal de 
 msgid "Print"
 msgstr "Imprimer"
 
-msgid "SMS your answers to"
+msgid "SMS your answers to:"
 msgstr "Envoyez vos réponses par SMS à :"
 
 msgid "Project Name:"
