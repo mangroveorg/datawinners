@@ -352,32 +352,46 @@ def _get_full_name(user):
 @csrf_response_exempt
 @login_required(login_url='/login')
 @is_datasender
-def delete_entity(request):
+def delete_subjects(request):
+    manager = get_database_manager(request.user)
+    entity_type = request.POST['entity_type']
+    all_ids = request.POST['all_ids'].split(';')
+    if request.POST.get("all_selected", False):
+        all_ids = get_short_codes_by_entity_type(manager, [entity_type])
+    transport_info = TransportInfo("web", request.user.username, "")
+    delete_entity_instance(manager, all_ids, entity_type, transport_info)
+    log_activity(request, DELETED_SUBJECTS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
+    return HttpResponse(json.dumps({'success': True}))
+
+def log_activity(request, action, detail):
+    UserActivityLog().log(request, action=action, detail=detail, project=request.POST.get("project", "").capitalize())
+
+
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required(login_url='/login')
+@is_datasender
+def delete_data_senders(request):
+    ''' The id's that we get from the front end will always be a subset and we will never have a use case where all elements
+     displayed are selected for delete operation as we can never delete the admin's which are also data senders which is implemented
+     via a validation in javascript.
+    '''
     manager = get_database_manager(request.user)
     organization = get_organization(request)
-    transport_info = TransportInfo("web", request.user.username, "")
     entity_type = request.POST['entity_type']
-    project = request.POST.get("project", "")
     all_ids = request.POST['all_ids'].split(';')
-    if request.POST.get("all_selected", ""):
-        all_ids = get_short_codes_by_entity_type(manager, [entity_type])
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
     if ngo_admin_user_profile.reporter_id in all_ids:
         messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
                                 (_get_full_name(ngo_admin_user_profile.user)), "error_message")
     else:
+        transport_info = TransportInfo("web", request.user.username, "")
         delete_entity_instance(manager, all_ids, entity_type, transport_info)
-        if entity_type == REPORTER:
-            delete_datasender_from_project(manager, all_ids)
-            delete_datasender_users_if_any(all_ids, organization)
-            if organization.in_trial_mode:
-                delete_datasender_for_trial_mode(manager, all_ids, entity_type)
-            action = DELETED_DATA_SENDERS
-        else:
-            action = DELETED_SUBJECTS
-        UserActivityLog().log(request, action=action,
-                              detail="%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)),
-                              project=project.capitalize())
+        delete_datasender_from_project(manager, all_ids)
+        delete_datasender_users_if_any(all_ids, organization)
+        if organization.in_trial_mode:
+            delete_datasender_for_trial_mode(manager, all_ids, entity_type)
+        log_activity(request, DELETED_DATA_SENDERS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)), )
         messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
 
