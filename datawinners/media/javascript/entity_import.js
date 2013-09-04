@@ -80,10 +80,7 @@ $(document).ready(function () {
     $(".popup-import").dialog({
         autoOpen: false,
         modal: true,
-        title: function () {
-            var entity_type = $(this).attr("id").substr(22);
-            return interpolate(gettext('Import a list of %(entity)s'), {entity: entity_type}, true);
-        },
+        title: interpolate(gettext('Import a list of %(entity)s'), {entity: subject_type}, true),
         zIndex: 200,
         width: 1000,
         close: function () {
