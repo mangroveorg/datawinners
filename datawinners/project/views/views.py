@@ -702,13 +702,13 @@ class SubjectWebQuestionnaireRequest():
 
 class SurveyWebQuestionnaireRequest():
     def __init__(self, request, project_id=None):
+        self.request = request
+        self.manager = get_database_manager(self.request.user)
+        self.project = Project.load(self.manager.database, project_id)
         self.form_model = FormModel.get(self.manager, self.project.qid)
         self.form_code = self.form_model.form_code
         self.feeds_dbm = get_feeds_database(request.user)
         self.subject_field_creator = SubjectQuestionFieldCreator(self.manager, self.project)
-        self.request = request
-        self.manager = get_database_manager(self.request.user)
-        self.project = Project.load(self.manager.database, project_id)
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
 

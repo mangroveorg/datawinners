@@ -23,6 +23,8 @@
 {% block page_content %}
     <div id="subject_reg_block">
         {% if not is_update %}
+            <script type="text/javascript" src="/media/javascript/subjects/definitions.js"></script>
+            <script type="text/javascript" src="/media/javascript/subjects/sms_preview.js"></script>
             <div id="my_subjects_links">
                 <ul>
                     <li><a href="{% url edit_subject_questionnaire entity_type %}"
