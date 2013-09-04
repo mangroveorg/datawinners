@@ -459,11 +459,10 @@ def registered_subjects(request, project_id=None):
                                "labels": labels,
                                "subject": subject,
                                'in_trial_mode': in_trial_mode,
-                               'edit_url': '/project/subject/edit/%s/' % project_id,
+                               'project_id': project_id,
                                'entity_type': subject.get('entity'),
                                'subject_headers': header_fields(manager, subject.get('entity')),
-                               'form_code': subject.get('code')},
-                              context_instance=RequestContext(request))
+                               'form_code': subject.get('code')}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -659,9 +658,10 @@ class SubjectWebQuestionnaireRequest():
                              'entity_type': self.project.entity_type,
                              "questionnaire_form": questionnaire_form,
                              "org_number": get_organization_telephone_number(self.request),
-                             "example_sms":get_example_sms_message(self.form_model.fields, self.form_code),
+                             "example_sms": get_example_sms_message(self.form_model.fields, self.form_code),
                              "web_view": web_view_enabled,
-                             "register_subjects_link" :reverse('subject_questionnaire', args=[self.project.id]) + "?web_view=True" }
+                             "register_subjects_link": reverse('subject_questionnaire',
+                                                               args=[self.project.id]) + "?web_view=True"}
         )
 
     def response_for_post_request(self, is_update=None):

@@ -4000,6 +4000,9 @@ msgstr ""
 msgid "You are editing the Submission Details"
 msgstr ""
 
+msgid "You are editing the %(subject_type) Details"
+msgstr ""
+
 msgid "Select a %(subject_type)"
 msgstr ""
 

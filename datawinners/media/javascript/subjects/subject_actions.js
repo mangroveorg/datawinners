@@ -51,7 +51,7 @@ DW.ActionsMenu = function () {
             e.preventDefault();
             return;
         }
-        location.href = '/entity/subject/edit/' + subject_type.toLowerCase() + '/' + selected_ids()[0] + '/';
+        location.href = edit_url_template.replace("entity_id_placeholder", selected_ids()[0]);
     });
 
     $("a.delete").live('click', function (eventObject) {

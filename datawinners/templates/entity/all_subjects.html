@@ -4,6 +4,10 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
+    <script type="text/javascript">
+        var edit_url_template = "{% url edit_subject entity_type "entity_id_placeholder" %}";
+    </script>
 {% endblock %}
 
 {% block secondary_navigation %}
@@ -25,7 +29,12 @@
 {% endblock %}
 
 {% block actions %}
-    {{ block.super }}
+     <div id="delete_entity_block">
+            <p class="warning_message">{% trans "entity delete error text" %}</p>
+            <a href="" class="button"
+               id="ok_button">{% trans "Yes, Delete" %}</a>
+            <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
+        </div>
     <form name="export_subjects" action="{% url export_subject %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="subject_type" id="subject_type" value="{{ entity_type }}"/>

@@ -27,12 +27,11 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
-        var edit_url = "{{ edit_url }}";
+        var edit_url_template = "{% url edit_my_subject project_id entity_type "entity_id_placeholder" %}";
         var upload_url = "{% url import_subjects form_code %}";
         var subject_type = "{{ entity_type|capfirst }}";
     </script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
-    {#    <script type="text/javascript" src="/media/javascript/project/registered_subjects.js"></script>#}
     <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
@@ -92,6 +91,15 @@
     {% with create_subject_link=project_links.register_subjects_link %}
         {% include 'subject_table.html' %}
     {% endwith %}
+
+    {% block actions %}
+        <div id="delete_entity_block">
+            <p class="warning_message">{% trans "entity delete error text" %}</p>
+            <a href="" class="button"
+               id="ok_button">{% trans "Yes, Delete" %}</a>
+            <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
+        </div>
+    {% endblock %}
 
 {% endblock %}
 
