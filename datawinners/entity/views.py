@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language, ugettext_lazy
 import jsonpickle
+from pip import req
 import xlwt
 from django.contrib import messages
 
@@ -565,8 +566,8 @@ def import_subjects_from_project_wizard(request, form_code):
          'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
 
 
-def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False,
-                       back_link=None, form_code=None, org_number=None, form_model_fields=None, web_view=False):
+def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, form_code, org_number,
+                       form_model_fields, is_update=False, back_link=None, web_view=False):
     return {'questionnaire_form': questionnaire_form,
             'entity_type': entity_type,
             "disable_link_class": disable_link_class,
@@ -618,8 +619,10 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
     if request.method == 'GET':
         initialize_values(form_model, subject)
         questionnaire_form = SubjectRegistrationForm(form_model)
-        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
-                                          back_link, form_model.form_code)
+        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                          form_model.form_code, get_organization_telephone_number(request),
+                                          form_model.fields, is_update=True,
+                                          back_link=back_link)
         return render_to_response(web_questionnaire_template,
                                   form_context,
                                   context_instance=RequestContext(request))
@@ -627,8 +630,9 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
         questionnaire_form = SubjectRegistrationForm(form_model, data=request.POST,
                                                      country=get_organization_country(request))
         if not questionnaire_form.is_valid():
-            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True
-                , back_link, form_model.form_code)
+            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                              form_model.form_code, get_organization_telephone_number(request),
+                                              form_model.fields, is_update=True, back_link=back_link)
             return render_to_response(web_questionnaire_template,
                                       form_context,
                                       context_instance=RequestContext(request))
@@ -650,7 +654,8 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                                  True, back_link, form_model.form_code)
+                                                  form_model.form_code, get_organization_telephone_number(request),
+                                                  form_model.fields, is_update=True, back_link=back_link)
                 return render_to_response(web_questionnaire_template,
                                           form_context,
                                           context_instance=RequestContext(request))
@@ -660,9 +665,9 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
             error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
         except Exception as exception:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
-
-        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
-                                             back_link, form_model.form_code)
+        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                             form_model.form_code, get_organization_telephone_number(request),
+                                             form_model.fields, is_update=True, back_link=back_link)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,
@@ -678,11 +683,10 @@ def create_subject(request, entity_type=None):
 
     if request.method == 'GET':
         questionnaire_form = SubjectRegistrationForm(form_model)
+
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                          form_code=form_model.form_code,
-                                          org_number=get_organization_telephone_number(request),
-                                          form_model_fields=form_model.fields,
-                                          web_view=request.GET.get("web_view", False))
+                                          form_model.form_code, get_organization_telephone_number(request),
+                                          form_model.fields, web_view=request.GET.get("web_view", False))
 
         return render_to_response(web_questionnaire_template,
                                   form_context,
@@ -693,9 +697,8 @@ def create_subject(request, entity_type=None):
                                                      country=get_organization_country(request))
         if not questionnaire_form.is_valid():
             form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                              form_code=form_model.form_code,
-                                              org_number=get_organization_telephone_number(request),
-                                              form_model_fields=form_model.fields, web_view=True)
+                                              form_model.form_code, get_organization_telephone_number(request),
+                                              form_model.fields, web_view=True)
             return render_to_response(web_questionnaire_template,
                                       form_context,
                                       context_instance=RequestContext(request))
@@ -721,7 +724,8 @@ def create_subject(request, entity_type=None):
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                                  form_code=form_model.form_code, web_view=True)
+                                                  form_model.form_code, get_organization_telephone_number(request),
+                                                  form_model.fields, web_view=True)
                 return render_to_response(web_questionnaire_template,
                                           form_context,
                                           context_instance=RequestContext(request))
@@ -735,7 +739,8 @@ def create_subject(request, entity_type=None):
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                             form_code=form_model.form_code, web_view=True)
+                                             form_model.form_code, get_organization_telephone_number(request),
+                                             form_model.fields, web_view=True)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,
