@@ -41,14 +41,16 @@ class AllSubjectsListPage(Page):
     def select_subject_by_id(self, subject_id):
         self.driver.find(by_css("input[value=%s]" % subject_id)).click()
 
+    def _select_subject_action(self):
+        action_buttons = self.driver.find_elements_(by_css(".action_bar"))
+        action_buttons[1].click()
+
     def click_edit_action_button(self):
-        action_buttons = self.driver.find_visible_element(by_css(".action_bar"))
-        action_buttons[0].click()
-        self.driver.find_visible_element(".edit").click()
+        self._select_subject_action()
+        self.driver.find_visible_element(by_css(".edit")).click()
         return AddSubjectPage(self.driver)
 
     def click_delete_action_button(self):
-        action_buttons = self.driver.find_visible_element(by_css(".action_bar"))
-        action_buttons[0].click()
-        self.driver.find_visible_element(".delete").click()
+        self._select_subject_action()
+        self.driver.find_visible_element(by_css(".delete")).click()
         return AddSubjectPage(self.driver)
