@@ -1,10 +1,10 @@
 {% load i18n %}
 {% load field_tags %}
 {% if success_message %}
-    <div class="success-message-box">{{ success_message }}</div>
+    <div id="message_box" class="success-message-box">{{ success_message }}</div>
 {% endif %}
 {% if error_message %}
-    <div class="message-box">{{ error_message }}</div>
+    <div id="message_box" class="message-box">{{ error_message }}</div>
 {% endif %}
 
 {% if questionnaire_form.non_fielderrors %}

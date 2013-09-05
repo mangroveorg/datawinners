@@ -23,10 +23,12 @@ DW.SubjectSMSPreviewPage = function () {
     });
 
     this.enable = function () {
+        $("#message_box").remove();
         $(".errorlist").remove();
         $("#sms_preview").attr("hidden", false);
         sms_form_heading.show();
     };
+
     this.disable = function () {
         $("#sms_preview").attr("hidden", true);
         sms_form_heading.hide();
