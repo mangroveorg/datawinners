@@ -26,9 +26,11 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
         if (project_name.length)
             post_data.project = project_name.val();
         post_data.all_selected = $("#select_all_message").data("all_selected");
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
         $.post(delete_end_point, post_data,
             function (json_response) {
                 var response = $.parseJSON(json_response);
+                $.unblockUI();
                 if (response.success) {
                     window.location.reload();
                 }
