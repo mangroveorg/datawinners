@@ -361,6 +361,7 @@ def delete_subjects(request):
     transport_info = TransportInfo("web", request.user.username, "")
     delete_entity_instance(manager, all_ids, entity_type, transport_info)
     log_activity(request, DELETED_SUBJECTS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
+    messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
 
 def log_activity(request, action, detail):

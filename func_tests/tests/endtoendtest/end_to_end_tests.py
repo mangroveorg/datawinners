@@ -74,7 +74,7 @@ class TestApplicationEndToEnd(BaseTest):
         except TypeError as e:
             pass
 
-        # teardown_driver(self.driver)
+        teardown_driver(self.driver)
 
 
     def set_organization_number(self):
@@ -263,12 +263,13 @@ class TestApplicationEndToEnd(BaseTest):
         edit_subject_page.submit_subject()
         self.assertEquals(edit_subject_page.get_flash_message(), VALID_DATA_FOR_EDIT[SUCCESS_MESSAGE])
 
-        all_subjects_page = edit_subject_page.navigate_to_subject_list()
+        edit_subject_page.navigate_to_subject_list()
+        all_subjects_page = AllSubjectsListPage(self.driver)
         all_subjects_page.select_subject_by_id(subject_short_code)
         all_subjects_page.click_delete_action_button()
         self.driver.find(CONFIRM_DELETE).click()
-        self.assertEquals(all_subjects_page.message(), 'Subject(s) successfully deleted.')
-        self.assertFalse(all_subjects_page.is_subject_present('waterpoint', subject_short_code))
+        self.assertEquals(all_subjects_page.get_successfully_deleted_message(), 'Subject(s) successfully deleted.')
+        self.assertFalse(all_subjects_page.is_subject_present(subject_short_code))
 
     def delete_project(self):
         global_navigation = GlobalNavigationPage(self.driver)
