@@ -27,23 +27,20 @@
     </div>
 {% endblock %}
 
-{% block actions %}
-     <div id="delete_entity_block">
-            <p class="warning_message">{% trans "entity delete error text" %}</p>
-            <a href="" class="button"
-               id="ok_button">{% trans "Yes, Delete" %}</a>
-            <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
-        </div>
-    <form name="export_subjects" action="{% url export_subject %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="subject_type" id="subject_type" value="{{ entity_type }}"/>
-        <input type="hidden" name="query_text" id="query_text"/>
-    </form>
-{% endblock %}
-
 {% block page_content %}
     {% include "entity/import_subject_popup.html" %}
     {% with create_subject_link=links.create_subject %}
         {% include 'subject_table.html' %}
     {% endwith %}
+    <div id="delete_entity_block">
+        <p class="warning_message">{% trans "entity delete error text" %}</p>
+        <a href="" class="button"
+           id="ok_button">{% trans "Yes, Delete" %}</a>
+        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
+    </div>
+    <form name="export_subjects" action="{% url export_subject %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="subject_type" id="subject_type" value="{{ entity_type }}"/>
+        <input type="hidden" name="query_text" id="query_text"/>
+    </form>
 {% endblock %}
