@@ -1,5 +1,4 @@
-from framework.utils.common_utils import by_css
-from pages.addsubjectpage.add_subject_page import AddSubjectPage
+from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.datasenderpage.data_sender_locator import SEND_IN_DATA_LINK, PROJECT_LIST, REGISTER_SUBJECT, SMARTPHONE_NAV
 from pages.page import Page
 from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage

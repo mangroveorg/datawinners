@@ -3,9 +3,9 @@ import unittest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
-from pages.addsubjectpage.add_subject_locator import UNIQUE_ID_TB
+from pages.allsubjectspage.add_subject_locator import UNIQUE_ID_TB
 from pages.loginpage.login_page import LoginPage
-from pages.addsubjectpage.add_subject_page import AddSubjectPage
+from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ADD_SUBJECT, LOGOUT
 from tests.logintests.login_data import VALID_CREDENTIALS, DATA_SENDER_CREDENTIALS
 from tests.addsubjecttests.add_subject_data import *

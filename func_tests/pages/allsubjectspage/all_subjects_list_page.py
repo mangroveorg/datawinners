@@ -1,15 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import re
-
-from framework.utils.common_utils import CommonUtilities
-from pages.addsubjectpage.add_subject_page import AddSubjectPage
+from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.allsubjectspage.all_subjects_locator import *
 from pages.page import Page
-from testdata.test_data import url
-from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 
 
-class SubjectsPage(Page):
+class AllSubjectsListPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 
@@ -38,3 +33,22 @@ class SubjectsPage(Page):
 
     def rows(self):
         return self.driver.find_elements_(by_css("#subjects_table tbody tr"))
+
+    def navigate_to_register_subject_page(self):
+        self.driver.find(by_id("register_subjects")).click()
+        return AddSubjectPage(self.driver)
+
+    def select_subject_by_id(self, subject_id):
+        self.driver.find(by_css("input[value=%s]" % subject_id)).click()
+
+    def click_edit_action_button(self):
+        action_buttons = self.driver.find_visible_element(by_css(".action_bar"))
+        action_buttons[0].click()
+        self.driver.find_visible_element(".edit").click()
+        return AddSubjectPage(self.driver)
+
+    def click_delete_action_button(self):
+        action_buttons = self.driver.find_visible_element(by_css(".action_bar"))
+        action_buttons[0].click()
+        self.driver.find_visible_element(".delete").click()
+        return AddSubjectPage(self.driver)

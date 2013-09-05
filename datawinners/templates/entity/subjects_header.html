@@ -56,7 +56,7 @@
 
         <ul class="secondary_tab">
             <li class="active">
-                <a href="{% url all_subjects entity_type %}">
+                <a href="{% url all_subjects entity_type %}" id="all_subjects_list">
                     {% blocktrans with entity_type|capfirst as entity_type %} {{ entity_type }}
                         List{% endblocktrans %}</a>
             </li>
