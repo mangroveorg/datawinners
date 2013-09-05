@@ -2038,9 +2038,6 @@ msgstr ""
 msgid "Add a new"
 msgstr ""
 
-msgid "Import a list"
-msgstr ""
-
 msgid "Enter the Name of your specific Subject Type"
 msgstr ""
 

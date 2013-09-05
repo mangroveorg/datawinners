@@ -2348,9 +2348,6 @@ msgstr "Réviser et tester"
 msgid "Import List"
 msgstr "Importer la Liste"
 
-msgid "Import A List"
-msgstr "Importer Une Liste"
-
 msgid "upgrade success message"
 msgstr "Félicitations pour être passé à un abonnement mensuel ! Nous vous enverrons un email avec les étapes à suivre prochainement. Veuillez noter  que vous ne pourrez, ni envoyer, ni recevoir des SMS jusqu'à la réception de votre paiement. Si vous ne recevez pas un email de notre part dans les prochaines 24 heures, veuillez vérifier dans votre dossier de SPAM."
 
@@ -2359,9 +2356,6 @@ msgstr "Remarque, vos projets dans votre compte d'essai seront toujours accessib
 
 msgid "upgrade edit note"
 msgstr "Editez cette information en cliquant sur les liens 'Votre profil' et 'Votre compte' en haut de cette page."
-
-
-
 
 msgid "Create questionnaire"
 msgstr "Créer un questionnaire"
@@ -2773,9 +2767,6 @@ msgstr ""
 
 msgid "Add a new"
 msgstr "Ajouter un(e)"
-
-msgid "Import a list"
-msgstr "Importer une liste"
 
 msgid "Enter the Name of your specific Subject Type"
 msgstr "Entrez le nom de votre type de sujet spécifique"
