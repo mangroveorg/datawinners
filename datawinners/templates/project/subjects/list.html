@@ -37,6 +37,7 @@
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/subjects/subjects_export.js"></script>
     <script type="text/javascript">
         var upload_url = "{% url datawinners.entity.views.all_subject_types %}";
     </script>
@@ -54,6 +55,8 @@
                id="import-{{ project.entity_type }}">{% trans "Import a List" %}</a>
             <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
                class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit Registration Form</a>
+            &nbsp;|&nbsp;
+            <a id='subject_export_link' href="#">{% trans "Export" %}</a>
         </div>
         {% csrf_token %}
         {% include "popup-import.html" %}
@@ -97,6 +100,11 @@
         <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
     </div>
 
+    <form name="export_subjects" action="{% url export_subject %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="subject_type" id="subject_type" value="{{ entity_type }}"/>
+        <input type="hidden" name="query_text" id="query_text"/>
+    </form>
 {% endblock %}
 
 
