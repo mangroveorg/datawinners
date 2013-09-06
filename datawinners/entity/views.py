@@ -14,9 +14,8 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext as _, activate, get_language, ugettext_lazy
+from django.utils.translation import ugettext as _, activate, get_language
 import jsonpickle
-from pip import req
 import xlwt
 from django.contrib import messages
 
@@ -37,13 +36,13 @@ from datawinners.entity.helper import create_registration_form, process_create_d
     delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization
 from datawinners.entity.import_data import get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
-from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
+from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.models import Project, get_all_projects
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -51,7 +50,7 @@ from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
     get_database_manager_for_org, get_changed_questions
-from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
+from datawinners.entity.helper import add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code, get_short_codes_by_entity_type
 from mangrove.transport.player.parser import XlsDatasenderParser, XlsOrderedParser
@@ -64,47 +63,6 @@ from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 
 
 websubmission_logger = logging.getLogger("websubmission")
-
-COUNTRY = ',MADAGASCAR'
-
-#TODO This method has to be moved into a proper place since this is used for registering entities.
-# TODO : Not sure where this is getting used - Shruthi
-@csrf_view_exempt
-@csrf_response_exempt
-@require_http_methods(['POST'])
-@login_required(login_url='/login')
-@is_not_expired
-def submit(request):
-    dbm = get_database_manager(request.user)
-    post = json.loads(request.POST['data'])
-    success = True
-    try:
-        web_player = WebPlayer(dbm,
-                               LocationBridge(location_tree=get_location_tree(),
-                                              get_loc_hierarchy=get_location_hierarchy))
-        message = post['message']
-        message[LOCATION_TYPE_FIELD_CODE] = get_country_appended_location(message.get(LOCATION_TYPE_FIELD_CODE),
-                                                                          get_organization_country(request))
-        request = Request(message=message,
-                          transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
-                                                      destination=post.get('destination')))
-        response = web_player.accept(request)
-        if response.success:
-            message = get_success_msg_for_registration_using(response, "web")
-        else:
-            message = get_submission_error_message_for(response)
-        entity_id = response.datarecord_id
-    except DataObjectAlreadyExists as exception:
-        message = _("Entity with Unique Identification Number (ID) = %s already exists.") % exception.data[1]
-        success, entity_id = False, None
-    except MangroveException as exception:
-        message = get_exception_message_for(exception=exception, channel="web")
-        message = _("Please add subject type and then add a subject") if message == "t should be present" else message
-        success = False
-        entity_id = None
-
-    return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': entity_id}))
-
 
 @valid_web_user
 def create_data_sender(request):
