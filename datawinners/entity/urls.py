@@ -4,7 +4,6 @@ from django.conf.urls.defaults import patterns, url
 from datawinners.entity.views import create_data_sender, disassociate_datasenders, associate_datasenders, create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_data_sender, edit_subject
 from datawinners.entity.views import create_subject
 from datawinners.entity.views import create_type
-from datawinners.entity.views import submit
 from datawinners.entity.views import all_subject_types, delete_data_senders, delete_subjects, all_subjects, all_subjects_ajax
 from datawinners.entity.views import all_datasenders
 from datawinners.entity.views import import_subjects_from_project_wizard
@@ -27,7 +26,6 @@ urlpatterns = patterns('',
                        (r'associate/$', associate_datasenders),
                        url(r'subject/import/(?P<form_code>.+?)/$', import_subjects_from_project_wizard,
                            name='import_subjects'),
-                       (r'^submit$', submit),
                        url(r'subject/edit/(?P<entity_type>.+?)/$', edit_subject_questionnaire,
                            name="edit_subject_questionnaire"),
                        (r'questionnaire/save$', save_questionnaire),
