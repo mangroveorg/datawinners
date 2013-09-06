@@ -190,7 +190,7 @@ def killfirefox():
 def showcase():
     env.user = "mangrover"
     env.hosts = ["178.79.161.90"]
-    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
     env.couch_db_main_service_name = 'couchdbmain'
     env.couch_db_feed_service_name = 'couchdbfeed'
@@ -222,7 +222,7 @@ def test():
 def local():
     env.user = "mangrover"
     env.hosts = ["127.0.0.1"]
-    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
 
 
 def ec2():
