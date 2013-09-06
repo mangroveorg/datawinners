@@ -318,6 +318,10 @@ def get_all_projects(dbm, data_sender_id=None):
     return dbm.load_all_rows_in_view('all_projects')
 
 
+def get_all_project_names(dbm):
+    return [result['key'] for result in dbm.load_all_rows_in_view("project_names")]
+
+
 def count_projects(dbm, include_voided_projects=True):
     if include_voided_projects:
         rows = dbm.load_all_rows_in_view('count_projects', reduce=True, group_level=0)

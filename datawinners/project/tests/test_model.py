@@ -4,7 +4,7 @@ from datetime import date
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from mock import Mock, patch
 from datawinners.main.utils import create_views
-from datawinners.project.models import Project, get_all_projects, ProjectState
+from datawinners.project.models import Project, get_all_projects, ProjectState, get_all_project_names
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import attributes
@@ -33,6 +33,11 @@ class TestProjectModel(MangroveTestCase):
     def test_get_all_projects(self):
         projects = get_all_projects(self.manager)
         self.assertEquals(len(projects), 2)
+
+    def test_get_all_projects_names(self):
+        projects_names = get_all_project_names(self.manager)
+        self.assertTrue("test1" in projects_names)
+        self.assertTrue("test2" in projects_names)
 
     def test_get_one_project(self):
         self.assertEquals(Project.load(self.manager.database, self.project1_id)['_id'], self.project1_id)
