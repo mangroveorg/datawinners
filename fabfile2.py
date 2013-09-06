@@ -175,34 +175,27 @@ def killfirefox():
 
 
 def showcase():
-    env.user = "datawinners"
+    env.user = "mangrover"
     env.hosts = ["184.72.223.168"]
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
 
 def qa():
-    env.user = "datawinners"
+    env.user = "mangrover"
     env.hosts = ["10.18.2.237"]
     env.key_filename = ["/home/dw/.ssh/id_rsa"]
     env.warn_only = True
 
 
-def qa_supreme():
-    env.user = "datawinners"
-    env.hosts = ["172.18.9.1"]
-    env.key_filename = ["/home/datawinners/.ssh/id_rsa"]
-    env.warn_only = True
-
-
 def local():
-    env.user = "datawinners"
+    env.user = "mangrover"
     env.hosts = ["127.0.0.1"]
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
 
 
 def ec2():
-    env.user = "datawinners"
+    env.user = "mangrover"
     env.hosts = ["54.243.31.50"]
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
