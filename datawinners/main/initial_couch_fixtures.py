@@ -895,20 +895,20 @@ def load_web_data_for_cli001(manager):
     text = {'form_code': 'cli001', 'EID': 'cid001', 'NA': 'Mr. Admin', 'FA': '58', 'RD': '28.02.2011', 'BG': 'c',
             'SY': 'ade', 'GPS': '79.2,20.34567', 'RM': 'a'}
     web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep276')
 
 
 def load_web_data_for_cli018(manager):
     web_player = WebPlayerV2(manager)
     web_transport_info = TransportInfo(transport="web", source="tester150411@gmail.com", destination="")
     text = {'form_code': 'cli018', 'EID': 'cid001', 'NA': 'cat, dog', 'RD': '11.03.2010', 'BG': 'c', 'GPS': '12,14'}
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep276')
     text = {'form_code': 'cli018', 'EID': 'cid001', 'NA': '12, 34', 'RD': '20.02.2011', 'BG': 'd', 'GPS': '39,14'}
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep276')
     text = {'form_code': 'cli018', 'EID': 'cid001', 'NA': '-12, 34', 'RD': '25.12.2010', 'BG': 'a', 'GPS': '5.10,50.12'}
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep276')
     text = {'form_code': 'cli018', 'EID': 'cid001', 'NA': '20, 34', 'RD': '11.06.2012', 'BG': 'b', 'GPS': '21.16,14.3'}
-    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep12')
+    web_player.add_survey_response(Request(message=text, transportInfo=web_transport_info), 'rep276')
 
 
 def load_sms_data_for_cli018(manager):
@@ -1599,17 +1599,17 @@ def load_data():
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep10", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619875", phone_number_type),
-        (NAME_FIELD, "mamy", first_name_type)],
-        location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-        short_code="rep11", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+                                                              (NAME_FIELD, "mamy", first_name_type)],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep11", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234123413", phone_number_type),
-        (NAME_FIELD, "Tester Pune", first_name_type)],
-        location=[u'Bangalore', u'Karnatka', u'India', u'Asia'],
-        short_code="rep12", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+                                                              (NAME_FIELD, "Tester Pune", first_name_type)],
+             location=[u'Bangalore', u'Karnatka', u'India', u'Asia'],
+             short_code="rep276", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "37287364782", phone_number_type),
-        (NAME_FIELD, "Datasender test", first_name_type)],
-        location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-        short_code="rep13", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+                                                              (NAME_FIELD, "Datasender test", first_name_type)],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep13", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
     load_sms_data_for_cli001(manager)
     load_web_data_for_cli001(manager)
@@ -1626,15 +1626,16 @@ def load_data():
     create_project_for_nigeria_test_orgnization()
     create_datasender_for_newly_created_organization([phone_number_type, first_name_type])
 
+
 def create_datasender_for_newly_created_organization(data_types_for_datasender):
     user = User.objects.get(username="samuel@mailinator.com")
     manager = get_database_manager(user)
     initializer.run(manager)
     register(manager, entity_type=REPORTER_ENTITY_TYPE,
-                 data=[(MOBILE_NUMBER_FIELD, "26112345", data_types_for_datasender[0]),
-                       (NAME_FIELD, "Rasefo", data_types_for_datasender[1])],
-                 location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-                 short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+             data=[(MOBILE_NUMBER_FIELD, "26112345", data_types_for_datasender[0]),
+                   (NAME_FIELD, "Rasefo", data_types_for_datasender[1])],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
 
 def create_trial_test_organization(email, org_id, register_a_data_sender, data_types_for_datasender=None):
@@ -1680,6 +1681,7 @@ def load_all_feed_managers():
 
 def load_test_feed_managers():
     return [get_feeds_database(User.objects.get(username=email)) for email in TEST_EMAILS]
+
 
 def create_project_for_nigeria_test_orgnization():
     manager = get_database_manager(User.objects.get(username="gerard@mailinator.com"))
