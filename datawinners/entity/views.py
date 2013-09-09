@@ -195,7 +195,7 @@ def create_type(request):
             else:
                 message = _("%s already registered as a subject type.") % (entity_name[0],)
     else:
-        message = form.fields['entity_type_regex'].error_messages['invalid']
+        message = form.errors['entity_type_regex']
     return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
 
 
