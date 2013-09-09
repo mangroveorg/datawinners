@@ -16,10 +16,15 @@ class EntityTypeForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
-    entity_type_regex = RegexField(regex="^\s*([A-Za-z\d\s]+[A-Za-z\d]+)\s*$", max_length=20,
-        error_message=_("Only letters and numbers are valid and you must provide more than just whitespaces."),
-        required=True,
-        label=_("New Subject(eg clinic, waterpoint etc)"))
+    entity_type_regex = CharField(max_length=20, required=False, label=_("New Subject(eg clinic, waterpoint etc)"))
+
+    def clean_entity_type_regex(self):
+        value = self.cleaned_data['entity_type_regex']
+        if value == '':
+            self._errors['entity_type_regex'] = _("You can't leave this empty.")
+        elif not re.match("^\s*([A-Za-z\d]+(\s[A-Za-z\d]+)*)\s*$", value):
+            self._errors['entity_type_regex'] = _("Please use only letters (a-z), numbers, and spaces.")
+        return value
 
 
 class SubjectForm(Form):
