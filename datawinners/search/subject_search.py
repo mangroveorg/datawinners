@@ -1,8 +1,8 @@
 from collections import OrderedDict
 import elasticutils
+from datawinners.entity.helper import get_entity_type_fields, tabulate_data
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import Entity
-from datawinners.entity.import_data import get_entity_type_fields, _tabulate_data
 from mangrove.form_model.field import DateField
 from mangrove.form_model.form_model import get_form_model_by_entity_type, FormModel, REGISTRATION_FORM_CODE, header_fields
 from datawinners.settings import ELASTIC_SEARCH_URL
@@ -61,7 +61,7 @@ def _entity_dict(entity_type, entity_doc, dbm):
     entity = Entity.get(dbm, entity_doc.id)
     fields, labels, codes = get_entity_type_fields(dbm, type=entity_type)
     form_model = get_form_model_by_entity_type(dbm, [entity_type])
-    data = _tabulate_data(entity, form_model, codes)
+    data = tabulate_data(entity, form_model, codes)
     dictionary = OrderedDict()
     for index in range(0, len(fields)):
         dictionary.update({fields[index]: data['cols'][index]})

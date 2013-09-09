@@ -330,3 +330,10 @@ def count_projects(dbm, include_voided_projects=True):
 
     return rows[0]['value'] if not is_empty(rows) else 0
 
+
+def delete_datasenders_from_project(manager, data_sender_ids):
+    for entity_id in data_sender_ids:
+        associated_projects = get_all_projects(manager, data_sender_id=entity_id)
+        for associated_project in associated_projects:
+            project = Project.load(manager.database, associated_project['value']['_id'])
+            project.delete_datasender(manager, entity_id)

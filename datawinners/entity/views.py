@@ -32,13 +32,11 @@ from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_u
 from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired, session_not_expired, valid_web_user
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_data_sender_form, \
-    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project, \
-    delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization
-from datawinners.entity.import_data import get_entity_type_fields
+    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from datawinners.project.models import Project, get_all_projects
+from datawinners.project.models import Project, get_all_projects, delete_datasenders_from_project
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
@@ -346,7 +344,7 @@ def delete_data_senders(request):
     else:
         transport_info = TransportInfo("web", request.user.username, "")
         delete_entity_instance(manager, all_ids, entity_type, transport_info)
-        delete_datasender_from_project(manager, all_ids)
+        delete_datasenders_from_project(manager, all_ids)
         delete_datasender_users_if_any(all_ids, organization)
         if organization.in_trial_mode:
             delete_datasender_for_trial_mode(manager, all_ids, entity_type)
@@ -514,6 +512,7 @@ def _associate_data_senders_to_project(imported_entities, manager, project_id):
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @valid_web_user
+#todo remove form_code from here, use entity_type instead
 def import_subjects_from_project_wizard(request, form_code):
     manager = get_database_manager(request.user)
     error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
@@ -534,9 +533,13 @@ def import_subjects_from_project_wizard(request, form_code):
     subjects_data = import_module.load_all_subjects(manager)
 
     return HttpResponse(json.dumps(
-        {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+        {'success': error_message is None and is_empty(failure_imports),
+         'message': success_message,
          'error_message': error_message,
-         'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
+         'failure_imports': failure_imports,
+         'all_data': subjects_data,
+         'imported': imported_entities.keys()
+        }))
 
 
 def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, form_code, org_number,
@@ -805,7 +808,7 @@ def export_subject(request):
 
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)
-    fields, labels, field_codes = import_module.get_entity_type_fields(manager, subject_type, for_export=True)
+    fields, labels, field_codes = get_entity_type_fields(manager, subject_type, for_export=True)
     raw_data = [labels]
 
     for subject in subject_list:
@@ -831,7 +834,7 @@ def export_template(request, entity_type=None):
     if entity_type is None:
         return HttpResponseRedirect(reverse(all_subject_types))
 
-    fields, labels, field_codes = import_module.get_entity_type_fields(manager, entity_type, for_export=True)
+    fields, labels, field_codes = get_entity_type_fields(manager, entity_type, for_export=True)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])

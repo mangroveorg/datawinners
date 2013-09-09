@@ -1,6 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
+from collections import OrderedDict
+import re
+import logging
 
+from django.utils.encoding import smart_unicode
+from django.utils.translation import ugettext_lazy as _
+from datawinners.entity.entity_export_helper import get_json_field_infos_for_export
+
+from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.datadict import get_datadict_type_by_slug,\
     create_datadict_type
 from mangrove.datastore.entity import get_by_short_code_include_voided
@@ -10,17 +17,14 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
-    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER
+    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, get_form_model_by_entity_type
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint
 from mangrove.transport.player.player import WebPlayer
 from mangrove.utils.types import  is_sequence, is_not_empty
-import re
 from mangrove.errors.MangroveException import NumberNotRegisteredException,\
     DataObjectNotFound
 from mangrove.transport.repository.reporters import find_reporter_entity
-from django.utils.encoding import smart_unicode
-from django.utils.translation import ugettext_lazy as _, get_language
 from datawinners.accountmanagement.models import Organization,\
     DataSenderOnTrialAccount, NGOUserProfile
 from datawinners.location.LocationTree import get_location_tree
@@ -28,9 +32,7 @@ from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
-from datawinners.project.models import get_all_projects, Project
 from datawinners.submission.location import LocationBridge
-import logging
 
 websubmission_logger = logging.getLogger("websubmission")
 FIRSTNAME_FIELD = "firstname"
@@ -213,12 +215,6 @@ def delete_datasender_for_trial_mode(manager, all_ids, entity_type):
         entity_to_be_deleted = get_by_short_code_include_voided(manager, entity_id, [entity_type])
         DataSenderOnTrialAccount.objects.get(mobile_number=entity_to_be_deleted.value(MOBILE_NUMBER_FIELD)).delete()
 
-def delete_datasender_from_project(manager, all_ids):
-    for entity_id in all_ids:
-        associated_projects = get_all_projects(manager, data_sender_id=entity_id)
-        for associated_project in associated_projects:
-            project = Project.load(manager.database, associated_project['value']['_id'])
-            project.delete_datasender(manager, entity_id)
 
 def add_imported_data_sender_to_trial_organization(request, imported_datasenders, all_data_senders, index=0):
     org_id = request.user.get_profile().org_id
@@ -228,4 +224,72 @@ def add_imported_data_sender_to_trial_organization(request, imported_datasenders
         for ds in all_data_senders:
             if ds['short_code'] in imported_datasenders:
                 add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
+
+
+def get_entity_type_fields(manager, type=REPORTER, for_export=False):
+    form_model = get_form_model_by_entity_type(manager, entity_type_as_sequence(type))
+    form_code = "reg"
+    if form_model is not None:
+        form_code = form_model.form_code
+    form_model_rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
+    if for_export:
+        return get_json_field_infos_for_export(form_model_rows[0].value['json_fields'])
+    return get_json_field_infos(form_model_rows[0].value['json_fields'])
+
+
+def tabulate_data(entity, form_model, field_codes):
+    data = {'id': entity.id, 'short_code': entity.short_code}
+
+    dict = OrderedDict()
+    for field in form_model.fields:
+        if field.name in entity.data:
+            dict[field.code] = _get_field_value(field.name, entity)
+        else:
+            dict[field.code] = _get_field_default_value(field.name, entity)
+
+    stringified_dict = form_model.stringify(dict)
+
+    data['cols'] = [stringified_dict[field_code] for field_code in field_codes]
+    return data
+
+
+def _get_field_value(key, entity):
+    value = entity.value(key)
+    if key == 'geo_code':
+        if value is None:
+            return entity.geometry.get('coordinates')
+    elif key == 'location':
+        if value is None:
+            return entity.location_path
+
+    return value
+
+
+def _get_field_default_value(key, entity):
+    if key == 'geo_code':
+        return entity.geometry.get('coordinates')
+    if key == 'location':
+        return entity.location_path
+    if key == 'short_code':
+        return entity.short_code
+    return None
+
+
+def entity_type_as_sequence(entity_type):
+    if not is_sequence(entity_type):
+        entity_type = [entity_type.lower()]
+    return entity_type
+
+
+def get_json_field_infos(fields):
+    fields_names, labels, codes = [], [], []
+    for field in fields:
+        if field['name'] != 'entity_type':
+            fields_names.append(field['name'])
+            labels.append(field['label'])
+            codes.append(field['code'])
+    return fields_names, labels, codes
+
+
+
 

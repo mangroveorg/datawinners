@@ -5,6 +5,7 @@ from django.http import Http404
 from mock import Mock, patch
 from datawinners.project import helper
 from datawinners.project.helper import is_project_exist
+from datawinners.project.models import delete_datasenders_from_project, Project
 from datawinners.project.tests.submission_log_data import SUBMISSIONS
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
@@ -310,3 +311,17 @@ class TestPreviewCreator(unittest.TestCase):
         field = GeoCodeField(name="What is the place?", code="dat", label="naam", ddtype=type)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("xx.xxxx yy.yyyy", preview["constraints"])
+
+    def test_should_delete_a_datasender_from_associated_projects(self):
+        entity_ids = ['rep1', 'rep2']
+        with patch("datawinners.project.models.Project") as mock_project_class:
+            mock_project = Mock(spec=Project)
+            mock_project_class.load.return_value = mock_project
+            with patch("datawinners.project.models.get_all_projects") as all_projects:
+                all_projects.return_value = [{'value': {'_id': 1}}]
+                dbm = Mock()
+                dbm.database.return_value = ''
+
+                delete_datasenders_from_project(dbm, entity_ids)
+
+                self.assertEqual(mock_project.delete_datasender.call_count, 2)
