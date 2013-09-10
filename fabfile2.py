@@ -163,6 +163,7 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
                 activate_and_run(virtual_env, "python manage.py compilemessages")
                 activate_and_run(virtual_env, "python manage.py loadshapes")
             if environment == "test":
+                run("chmod 775 " + home_dir + '/workspace/')
                 restart_gunicorn(virtual_env)
             else:
                 restart_servers()
@@ -174,9 +175,9 @@ def killfirefox():
 
 
 def showcase():
-    env.user = "datawinners"
-    env.hosts = ["178.79.161.90"]
-    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.user = "mangrover"
+    env.hosts = ["184.72.223.168"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
 
@@ -187,30 +188,16 @@ def qa():
     env.warn_only = True
 
 
-def qa_supreme():
-    env.user = "datawinners"
-    env.hosts = ["172.18.9.1"]
-    env.key_filename = ["/home/datawinners/.ssh/id_rsa"]
-    env.warn_only = True
-
-
-def test():
-    env.user = "datawinners"
-    env.hosts = ["10.18.2.237"]
-    env.key_filename = ["/Users/twer/.ssh/id_rsa"]
-    env.warn_only = True
-
-
 def local():
-    env.user = "datawinners"
+    env.user = "mangrover"
     env.hosts = ["127.0.0.1"]
-    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
 
 
 def ec2():
-    env.user = "datawinners"
+    env.user = "mangrover"
     env.hosts = ["54.243.31.50"]
-    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
 
