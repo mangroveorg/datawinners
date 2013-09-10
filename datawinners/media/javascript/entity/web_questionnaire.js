@@ -15,4 +15,6 @@ $(document).ready(function() {
     $('.secondary_tab li:first-child').attr('class', 'inactive');
     $('.secondary_tab li:nth-child(2)').attr('class', 'active');
 
+    new DW.UniqueIdField("#registration_form");
+
 });
