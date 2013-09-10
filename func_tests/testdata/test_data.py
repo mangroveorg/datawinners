@@ -1,11 +1,16 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datawinners import settings
 
 ACTIVATE = "activate"
 CANCEL = "cancel"
 
 
+def get_test_port():
+    return settings.TEST_SERVER_PORT if hasattr(settings, 'TEST_SERVER_PORT') else "8000"
+
+
 def url(path):
-    full_path = "http://localhost:8000" + path
+    full_path = "http://localhost:"+ get_test_port() + path
     if not full_path.endswith("/"):
         full_path += "/"
     return full_path
