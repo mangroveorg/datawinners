@@ -4,7 +4,7 @@ from mock import Mock
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import IntegerField, GeoCodeField, DateField, SelectField, ExcelDate
 from mangrove.form_model.form_model import FormModel
-from project.export_to_excel import format_field_values_for_excel
+from datawinners.project.export_to_excel import format_field_values_for_excel
 
 class TestExportToExcel(unittest.TestCase):
     def test_error_integer_field_returns_string(self):
