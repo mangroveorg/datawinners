@@ -13,6 +13,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
+from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.feeds.database import get_feeds_database
@@ -21,13 +22,10 @@ from datawinners.main.database import get_database_manager
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
-from datawinners.accountmanagement.views import session_not_expired, valid_web_user
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.utils import get_organization
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.utils.json_codecs import encode_json
-from datawinners.accountmanagement.views import is_datasender
-from datawinners.accountmanagement.views import is_not_expired
 from datawinners.project import helper
 from datawinners.project.ExcelHeader import ExcelFileSubmissionHeader
 from datawinners.project.data_sender_helper import get_data_sender

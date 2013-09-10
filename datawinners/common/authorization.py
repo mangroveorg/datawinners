@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 
 #############################################################################
 #
-from datawinners.accountmanagement.views import is_sms_api_user
+from datawinners.accountmanagement.decorators import is_sms_api_user
 
 
 def view_or_basicauth(view, request, is_authenticated_func, authenticate_func, realm="", *args, **kwargs):

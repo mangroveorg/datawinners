@@ -14,8 +14,8 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, get_language, activate
+from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, is_not_expired, is_new_user, project_has_web_device, valid_web_user
 
-from datawinners.accountmanagement.views import session_not_expired, valid_web_user
 from datawinners.entity.data_sender import remove_system_datasenders, get_user_profile_by_reporter_id
 from datawinners.project.view_models import ReporterEntity
 from datawinners.feeds.database import get_feeds_database
@@ -42,7 +42,6 @@ from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
 from mangrove.transport.contract.transport_info import Channel
 import datawinners.utils as utils
-from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
 from datawinners.entity.import_data import load_all_entities_of_type, get_entity_type_info
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.messageprovider.message_handler import get_exception_message_for
@@ -56,7 +55,6 @@ from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
-from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.project import helper
 from datawinners.project.analysis import Analysis
