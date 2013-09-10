@@ -4,6 +4,7 @@ from nose.plugins.attrib import attr
 
 from framework.base_test import BaseTest
 from pages.registrationpage.registration_page import RegistrationPage
+from testdata.test_data import get_test_port
 from tests.endtoendtest.trial_end_to_end_data import REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION, SUCCESS_MESSAGE
 
 
@@ -19,7 +20,7 @@ from tests.endtoendtest.trial_end_to_end_data import REGISTRATION_DATA_FOR_SUCCE
 @attr('suit_2')
 class TestTrialApplicationEndToEnd(BaseTest):
     def register_trial_account(self):
-        self.driver.go_to("localhost:8000/register/trial")
+        self.driver.go_to("localhost:%s/register/trial" % get_test_port())
         registration_page = RegistrationPage(self.driver)
         registration_confirmation_page, email = registration_page.successful_registration_with(
             REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION)
