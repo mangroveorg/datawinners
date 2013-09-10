@@ -94,4 +94,6 @@ $(document).ready(function () {
         source:"/places"
     });
 
+     new DW.UniqueIdField("#registration_form");
+
 });
