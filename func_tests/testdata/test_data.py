@@ -6,7 +6,7 @@ CANCEL = "cancel"
 
 
 def get_test_port():
-    return settings.TEST_SERVER_PORT if hasattr(settings, 'TEST_SERVER_PORT') else "8000"
+    return str(settings.TEST_SERVER_PORT) if hasattr(settings, 'TEST_SERVER_PORT') else "8000"
 
 
 def url(path):
