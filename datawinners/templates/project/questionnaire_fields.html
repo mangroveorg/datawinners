@@ -75,7 +75,7 @@
                         {% if 'yes' in project.activity_report %}
                             {% trans "You have not registered a reporter yet." %}
                         {% else %}
-                            {% blocktrans with subject.entity as subject %}You have not registered a {{ subject }} yet.
+                            {% blocktrans with project.entity_type as subject %}You have not registered a {{ subject }} yet.
                             {% endblocktrans %}
                         {% endif %}
                     </p>
