@@ -19,7 +19,7 @@ class TestAddSubject(unittest.TestCase):
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        cls.add_subjects_url = DATA_WINNER_ADD_SUBJECT + "clinic"
+        cls.add_subjects_url = DATA_WINNER_ADD_SUBJECT + "clinic/?web_view=True"
 
     @classmethod
     def tearDownClass(cls):
