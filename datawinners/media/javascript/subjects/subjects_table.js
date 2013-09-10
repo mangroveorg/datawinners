@@ -30,7 +30,9 @@ $(document).ready(function () {
         "sAjaxDataProp": "subjects",
         "sServerMethod": "GET",
         "fnInitComplete": function (oSettings) {
-            $(".action_bar").clone(true).insertBefore(".dataTables_info").addClass('margin_top_10').removeClass('none');
+            var cloned_element = $("#action_dropdown").clone(true);
+            $("#action_dropdown").remove();
+            cloned_element.insertBefore(".dataTables_info").addClass('margin_top_10').removeClass('none');
             new DW.ActionsMenu();
             oSettings.select_all_checkbox = new DW.SubjectSelectAllCheckbox(this);
         },
