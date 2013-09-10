@@ -71,16 +71,16 @@ class TestMySubjects(unittest.TestCase):
         self.my_subjects_page.navigate_to_my_subjects_list_tab()
         self.my_subjects_page.click_checkall_checkbox()
         self.assertTrue(self.my_subjects_page.is_checkall_checked())
-        self.my_subjects_page.select_subject_by_uid("cid002")
+        self.my_subjects_page.select_subject_by_row(1)
         self.assertFalse(self.my_subjects_page.is_checkall_checked())
-        self.my_subjects_page.select_subject_by_uid("cid002")
+        self.my_subjects_page.select_subject_by_row(1)
         self.assertTrue(self.my_subjects_page.is_checkall_checked())
 
     @attr("functional_test")
-    def test_should_hide_checkall_cb_if_there_is_no_data(self):
+    def test_should_disable_checkall_cb_if_there_is_no_subjects(self):
         global_navigation_page = GlobalNavigationPage(self.driver)
         all_project_page = global_navigation_page.navigate_to_view_all_project_page()
         my_subjects_page = self.goto_my_subjects_page(all_project_page, "project having people as subject")
         my_subjects_page.navigate_to_my_subjects_list_tab()
-        self.assertFalse(my_subjects_page.is_checkall_shown())
+        self.assertFalse(my_subjects_page.is_checkall_enabled())
 

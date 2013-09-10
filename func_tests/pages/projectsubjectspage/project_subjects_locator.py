@@ -12,7 +12,7 @@ EDIT_LI_LOCATOR = by_xpath("//a[@id='edit']/parent::li")
 NONE_SELECTED_LOCATOR = by_id("none-selected")
 ACTION_MENU = by_id("action")
 MY_SUBJECTS_TAB_LINK = by_css("#my_subjects ul.secondary_tab li:first-child a")
-SUBJECT_CB_LOCATOR = "#subjects-table tbody tr td:first-child input#%s"
-CHECKALL_CB = by_id("checkall-subjects")
+SUBJECT_CB_LOCATOR = "#subjects_table_wrapper tbody tr td:first-child input#%s"
+CHECKALL_CB = by_id("checkall-checkbox")
 SPECIFIC_TYPE_CB_BY_CSS = "[name=type][value=%s]"
 REGISTER_SUBJECT_LINK=by_id('register_subjects')

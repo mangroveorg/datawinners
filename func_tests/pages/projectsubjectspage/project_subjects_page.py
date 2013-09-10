@@ -1,3 +1,4 @@
+from selenium.webdriver.support.wait import WebDriverWait
 from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.page import Page
 from pages.projectsubjectspage.project_subjects_locator import *
@@ -41,11 +42,18 @@ class ProjectSubjectsPage(Page):
     def actions_menu_shown(self):
         return self.driver.find(ACTION_MENU).is_displayed()
 
+    def _wait_for_subject_table_to_load(self):
+        self.driver.wait_for_element(30, by_id("subjects_table_info"))
+
     def navigate_to_my_subjects_list_tab(self):
         self.driver.find(MY_SUBJECTS_TAB_LINK).click()
+        self._wait_for_subject_table_to_load()
 
     def select_subject_by_uid(self, uid):
         self.driver.find(by_css(SUBJECT_CB_LOCATOR % str(uid))).click()
+
+    def select_subject_by_row(self, row_number):
+        self.driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[%d]/td[1]/input" % row_number)).click()
 
     def click_checkall_checkbox(self):
         self.driver.find(CHECKALL_CB).click()
@@ -54,7 +62,7 @@ class ProjectSubjectsPage(Page):
         return len([input_element for input_element in self.get_inputs_webelement() if input_element.get_attribute("checked") == "true"])
 
     def get_inputs_webelement(self):
-        return self.driver.find(by_id("subjects-table")).find_elements(by="css selector", value="tbody tr td input")
+        return self.driver.find(by_id("subjects_table_wrapper")).find_elements(by="css selector", value="tbody tr td input")
 
     def get_all_subjects_count(self):
         return len(self.get_inputs_webelement())
@@ -74,9 +82,5 @@ class ProjectSubjectsPage(Page):
         return AddSubjectPage(self.driver)
 
     def is_checkall_enabled(self):
+        WebDriverWait(self.driver, 1).until(lambda driver : not driver.find(CHECKALL_CB).is_enabled())
         return self.driver.find(CHECKALL_CB).is_enabled()
-
-    def is_checkall_shown(self):
-        return self.driver.is_element_present(CHECKALL_CB)
-
-
