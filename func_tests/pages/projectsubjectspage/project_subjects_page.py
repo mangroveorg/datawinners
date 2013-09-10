@@ -95,3 +95,7 @@ class ProjectSubjectsPage(Page):
     def is_checkall_enabled(self):
         WebDriverWait(self.driver, 1).until(lambda driver: not driver.find(CHECKALL_CB).is_enabled())
         return self.driver.find(CHECKALL_CB).is_enabled()
+
+    def is_checkall_disabled(self):
+        WebDriverWait(self.driver, 1).until_not(lambda driver: not driver.find(CHECKALL_CB).is_enabled())
+        return not self.driver.find(CHECKALL_CB).is_enabled()
