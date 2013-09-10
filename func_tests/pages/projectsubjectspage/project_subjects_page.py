@@ -52,18 +52,17 @@ class ProjectSubjectsPage(Page):
     def is_empty_actions_menu_shown(self):
         return self.driver.find(EMPTY_ACTION_MENU).is_displayed()
 
-    def _wait_for_subject_table_to_load(self):
-        self.driver.wait_for_element(30, by_id("subjects_table_info"))
-
     def navigate_to_my_subjects_list_tab(self):
         self.driver.find(MY_SUBJECTS_TAB_LINK).click()
-        self._wait_for_subject_table_to_load()
 
     def select_subject_by_uid(self, uid):
         self.driver.find(by_css(SUBJECT_CB_LOCATOR % str(uid))).click()
 
     def select_subject_by_row(self, row_number):
         self.driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[%d]/td[1]/input" % row_number)).click()
+
+    def wait_for_subject_table_to_load(self):
+        WebDriverWait(self.driver, 1).until(lambda driver: driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[1]/td[1]/input")).is_displayed())
 
     def click_checkall_checkbox(self):
         self.driver.find(CHECKALL_CB).click()
