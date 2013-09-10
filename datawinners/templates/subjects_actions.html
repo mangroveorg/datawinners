@@ -1,11 +1,9 @@
 {% load i18n %}
 
 <div id="action_dropdown">
-    <div id="action_button" class="action_bar clear-both" style="margin-bottom: 20px" hidden="true">
+    <div class="action_button action_bar clear-both" style="margin-bottom: 20px" hidden="true">
         <div class="btn-group">
-            <button class="btn dropdown-toggle action" href="#" data-dropdown="#none-selected">{% trans "Actions" %}
-                <span class="caret"></span>
-            </button>
+            <button class="btn dropdown-toggle action" href="#" data-dropdown="#none-selected">{% trans "Actions" %}<span class="caret"></span></button>
         </div>
     </div>
 
@@ -17,10 +15,6 @@
                 <li><a data-entity="{{ subject.entity }}-{{ subject.code }}-edit" class="edit">{% trans "Edit" %}</a>
                 </li>
             {% endif %}
-                    <li class="view_link">{% trans "View Style:" %}</li>
-            <li class="sms_link"><a href="javascript:void(0)" id="sms_preview_btn" class="active">SMS</a></li>
-            <li class="web_link"><a href="{{ project_links.register_subjects_link }}" id="web_preview_btn">Web</a></li>
-
         </ul>
     </div>
 

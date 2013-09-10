@@ -12,9 +12,10 @@ from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
-from pages.addsubjectpage.add_subject_page import AddSubjectPage
+from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
+from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
@@ -25,7 +26,7 @@ from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON, DELETE_B
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, DATA_WINNER_ADD_SUBJECT_WATERPOINT, LOGOUT, url, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, LOGOUT, url
 from tests.activateaccounttests.activate_account_data import DS_ACTIVATION_URL, NEW_PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL, VALID_DATA_WITH_EMAIL_FOR_EDIT
 from tests.alldatasenderstests.all_data_sender_data import generate_random_email_id, SUCCESS_MSG
@@ -157,8 +158,8 @@ class TestApplicationEndToEnd(BaseTest):
     def add_subject(self):
         global_navigation = GlobalNavigationPage(self.driver)
         global_navigation.navigate_to_all_subject_page()
-        add_subject_page = AddSubjectPage(self.driver)
-        self.driver.go_to(DATA_WINNER_ADD_SUBJECT_WATERPOINT)
+        all_subject_type_page = AllSubjectTypePage(self.driver)
+        add_subject_page = all_subject_type_page.select_subject_type('Waterpoint').navigate_to_register_subject_page()
         add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
         add_subject_page.submit_subject()
         self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT)), add_subject_page.get_flash_message())
@@ -246,7 +247,6 @@ class TestApplicationEndToEnd(BaseTest):
         self.assertTrue(submission_log_page.empty_help_text())
 
     def add_edit_delete_subject(self):
-        self.driver.go_to(DATA_WINNER_ADD_SUBJECT + "waterpoint")
         add_subject_page = AddSubjectPage(self.driver)
         add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
         add_subject_page.submit_subject()
@@ -254,22 +254,22 @@ class TestApplicationEndToEnd(BaseTest):
         flash_message = add_subject_page.get_flash_message()
         self.assertIn(message, flash_message)
         subject_short_code = flash_message.replace(message, '')
-        self.driver.go_to(DATA_WINNER_ALL_SUBJECT)
-        all_subjects_page = AllSubjectTypePage(self.driver)
-        all_subjects_page.open_subjects_table_for_entity_type('waterpoint')
-        all_subjects_page.select_a_subject_by_type_and_id('waterpoint', subject_short_code)
-        all_subjects_page.click_action_button_for('edit')
-        add_subject_page = AddSubjectPage(self.driver)
-        add_subject_page.add_subject_with(VALID_DATA_FOR_EDIT)
-        add_subject_page.submit_subject()
-        self.assertEquals(add_subject_page.get_flash_message(), VALID_DATA_FOR_EDIT[SUCCESS_MESSAGE])
-        add_subject_page.navigate_to_all_subjects()
-        all_subjects_page.open_subjects_table_for_entity_type('waterpoint')
-        all_subjects_page.select_a_subject_by_type_and_id('waterpoint', subject_short_code)
-        all_subjects_page.click_action_button_for('delete')
+
+        add_subject_page.navigate_to_subject_list()
+        all_subjects_list_page = AllSubjectsListPage(self.driver)
+        all_subjects_list_page.select_subject_by_id(subject_short_code)
+        edit_subject_page = all_subjects_list_page.click_edit_action_button()
+        edit_subject_page.add_subject_with(VALID_DATA_FOR_EDIT)
+        edit_subject_page.submit_subject()
+        self.assertEquals(edit_subject_page.get_flash_message(), VALID_DATA_FOR_EDIT[SUCCESS_MESSAGE])
+
+        edit_subject_page.navigate_to_subject_list()
+        all_subjects_page = AllSubjectsListPage(self.driver)
+        all_subjects_page.select_subject_by_id(subject_short_code)
+        all_subjects_page.click_delete_action_button()
         self.driver.find(CONFIRM_DELETE).click()
-        self.assertEquals(all_subjects_page.message(), 'Subject(s) successfully deleted.')
-        self.assertFalse(all_subjects_page.is_subject_present('waterpoint', subject_short_code))
+        self.assertEquals(all_subjects_page.get_successfully_deleted_message(), 'Subject(s) successfully deleted.')
+        self.assertFalse(all_subjects_page.is_subject_present(subject_short_code))
 
     def delete_project(self):
         global_navigation = GlobalNavigationPage(self.driver)

@@ -5,7 +5,7 @@ from requests.auth import HTTPDigestAuth
 from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.utils.common_utils import generateId
 from framework.utils.data_fetcher import fetch_, from_
-from pages.addsubjectpage.add_subject_page import AddSubjectPage
+from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.dashboardpage.dashboard_page import DashboardPage

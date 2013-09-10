@@ -25,7 +25,7 @@
             <p>{% trans "To get started" %}</p>
             <ul>
                 <li>{% trans "Register a" %} {{ entity_type }}: <a
-                        href="{% url create_subject entity_type %}">{% trans "Add a new" %} {{ entity_type }}</a> {% trans "or" %}
+                        href="{{ create_subject_link }}">{% trans "Add a new" %} {{ entity_type }}</a> {% trans "or" %}
                     <a href="javascript:void(0);" class="import-subject">
                         {% blocktrans with entity_type|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a></li>
                 <li><a href="{% url edit_subject_questionnaire entity_type %}">

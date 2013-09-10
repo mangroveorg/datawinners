@@ -1,4 +1,4 @@
-from pages.addsubjectpage.add_subject_page import AddSubjectPage
+from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.page import Page
 from pages.projectsubjectspage.project_subjects_locator import *
 from framework.utils.common_utils import by_css

@@ -14,7 +14,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext as _, activate, get_language, ugettext_lazy
+from django.utils.translation import ugettext as _, activate, get_language
 import jsonpickle
 import xlwt
 from django.contrib import messages
@@ -32,17 +32,15 @@ from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_u
 from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired, session_not_expired, valid_web_user
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_data_sender_form, \
-    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project, \
-    delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization
-from datawinners.entity.import_data import get_entity_type_fields
+    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
-from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
+from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from datawinners.project.models import Project, get_all_projects
+from datawinners.project.models import Project, get_all_projects, delete_datasenders_from_project
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -50,7 +48,7 @@ from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
     get_database_manager_for_org, get_changed_questions
-from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
+from datawinners.entity.helper import add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code, get_short_codes_by_entity_type
 from mangrove.transport.player.parser import XlsDatasenderParser, XlsOrderedParser
@@ -63,47 +61,6 @@ from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 
 
 websubmission_logger = logging.getLogger("websubmission")
-
-COUNTRY = ',MADAGASCAR'
-
-#TODO This method has to be moved into a proper place since this is used for registering entities.
-# TODO : Not sure where this is getting used - Shruthi
-@csrf_view_exempt
-@csrf_response_exempt
-@require_http_methods(['POST'])
-@login_required(login_url='/login')
-@is_not_expired
-def submit(request):
-    dbm = get_database_manager(request.user)
-    post = json.loads(request.POST['data'])
-    success = True
-    try:
-        web_player = WebPlayer(dbm,
-                               LocationBridge(location_tree=get_location_tree(),
-                                              get_loc_hierarchy=get_location_hierarchy))
-        message = post['message']
-        message[LOCATION_TYPE_FIELD_CODE] = get_country_appended_location(message.get(LOCATION_TYPE_FIELD_CODE),
-                                                                          get_organization_country(request))
-        request = Request(message=message,
-                          transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
-                                                      destination=post.get('destination')))
-        response = web_player.accept(request)
-        if response.success:
-            message = get_success_msg_for_registration_using(response, "web")
-        else:
-            message = get_submission_error_message_for(response)
-        entity_id = response.datarecord_id
-    except DataObjectAlreadyExists as exception:
-        message = _("Entity with Unique Identification Number (ID) = %s already exists.") % exception.data[1]
-        success, entity_id = False, None
-    except MangroveException as exception:
-        message = get_exception_message_for(exception=exception, channel="web")
-        message = _("Please add subject type and then add a subject") if message == "t should be present" else message
-        success = False
-        entity_id = None
-
-    return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': entity_id}))
-
 
 @valid_web_user
 def create_data_sender(request):
@@ -280,12 +237,12 @@ def all_subjects(request, subject_type):
                               {'subject_headers': header_dict,
                                'current_language': translation.get_language(),
                                'entity_type': subject_type,
-                               # 'questions': viewable_questionnaire(form_model),
                                'questions': form_model.fields,
                                'form_code': form_model.form_code,
-                               'links': {'create_subject': reverse("create_subject", args=(subject_type,)),
-                                         'edit_subject_registration_form': reverse("edit_subject_questionnaire",
-                                                                                   args=(subject_type,))}
+                               'links': {
+                                   'create_subject': reverse("create_subject", args=(subject_type,)) + "?web_view=True",
+                                   'edit_subject_registration_form': reverse("edit_subject_questionnaire",
+                                                                             args=(subject_type,))}
                               },
                               context_instance=RequestContext(request))
 
@@ -351,32 +308,47 @@ def _get_full_name(user):
 @csrf_response_exempt
 @login_required(login_url='/login')
 @is_datasender
-def delete_entity(request):
+def delete_subjects(request):
+    manager = get_database_manager(request.user)
+    entity_type = request.POST['entity_type']
+    all_ids = request.POST['all_ids'].split(';')
+    if request.POST.get("all_selected", False):
+        all_ids = get_short_codes_by_entity_type(manager, [entity_type])
+    transport_info = TransportInfo("web", request.user.username, "")
+    delete_entity_instance(manager, all_ids, entity_type, transport_info)
+    log_activity(request, DELETED_SUBJECTS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
+    messages.success(request, get_success_message(entity_type))
+    return HttpResponse(json.dumps({'success': True}))
+
+def log_activity(request, action, detail):
+    UserActivityLog().log(request, action=action, detail=detail, project=request.POST.get("project", "").capitalize())
+
+
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required(login_url='/login')
+@is_datasender
+def delete_data_senders(request):
+    ''' The id's that we get from the front end will always be a subset and we will never have a use case where all elements
+     displayed are selected for delete operation as we can never delete the admin's which are also data senders which is implemented
+     via a validation in javascript.
+    '''
     manager = get_database_manager(request.user)
     organization = get_organization(request)
-    transport_info = TransportInfo("web", request.user.username, "")
     entity_type = request.POST['entity_type']
-    project = request.POST.get("project", "")
     all_ids = request.POST['all_ids'].split(';')
-    if request.POST.get("all_selected", ""):
-        all_ids = get_short_codes_by_entity_type(manager, [entity_type])
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
     if ngo_admin_user_profile.reporter_id in all_ids:
         messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
                                 (_get_full_name(ngo_admin_user_profile.user)), "error_message")
     else:
+        transport_info = TransportInfo("web", request.user.username, "")
         delete_entity_instance(manager, all_ids, entity_type, transport_info)
-        if entity_type == REPORTER:
-            delete_datasender_from_project(manager, all_ids)
-            delete_datasender_users_if_any(all_ids, organization)
-            if organization.in_trial_mode:
-                delete_datasender_for_trial_mode(manager, all_ids, entity_type)
-            action = DELETED_DATA_SENDERS
-        else:
-            action = DELETED_SUBJECTS
-        UserActivityLog().log(request, action=action,
-                              detail="%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)),
-                              project=project.capitalize())
+        delete_datasenders_from_project(manager, all_ids)
+        delete_datasender_users_if_any(all_ids, organization)
+        if organization.in_trial_mode:
+            delete_datasender_for_trial_mode(manager, all_ids, entity_type)
+        log_activity(request, DELETED_DATA_SENDERS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)), )
         messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
 
@@ -540,6 +512,7 @@ def _associate_data_senders_to_project(imported_entities, manager, project_id):
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @valid_web_user
+#todo remove form_code from here, use entity_type instead
 def import_subjects_from_project_wizard(request, form_code):
     manager = get_database_manager(request.user)
     error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
@@ -560,13 +533,17 @@ def import_subjects_from_project_wizard(request, form_code):
     subjects_data = import_module.load_all_subjects(manager)
 
     return HttpResponse(json.dumps(
-        {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+        {'success': error_message is None and is_empty(failure_imports),
+         'message': success_message,
          'error_message': error_message,
-         'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
+         'failure_imports': failure_imports,
+         'all_data': subjects_data,
+         'imported': imported_entities.keys()
+        }))
 
 
-def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False,
-                       back_link=None, form_code=None, org_number=None, form_model_fields=None, web_view=False):
+def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, form_code, org_number,
+                       form_model_fields, is_update=False, back_link=None, web_view=False):
     return {'questionnaire_form': questionnaire_form,
             'entity_type': entity_type,
             "disable_link_class": disable_link_class,
@@ -580,6 +557,7 @@ def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide
             'org_number': org_number,
             "web_view": web_view,
             'extension_template': "entity/web_questionnaire.html",
+            "register_subjects_link": reverse("create_subject", args=[entity_type]) + "?web_view=True",
     }
 
 
@@ -617,8 +595,10 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
     if request.method == 'GET':
         initialize_values(form_model, subject)
         questionnaire_form = SubjectRegistrationForm(form_model)
-        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
-                                          back_link, form_model.form_code)
+        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                          form_model.form_code, get_organization_telephone_number(request),
+                                          form_model.fields, is_update=True,
+                                          back_link=back_link)
         return render_to_response(web_questionnaire_template,
                                   form_context,
                                   context_instance=RequestContext(request))
@@ -626,8 +606,9 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
         questionnaire_form = SubjectRegistrationForm(form_model, data=request.POST,
                                                      country=get_organization_country(request))
         if not questionnaire_form.is_valid():
-            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True
-                , back_link, form_model.form_code)
+            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                              form_model.form_code, get_organization_telephone_number(request),
+                                              form_model.fields, is_update=True, back_link=back_link)
             return render_to_response(web_questionnaire_template,
                                       form_context,
                                       context_instance=RequestContext(request))
@@ -649,7 +630,8 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                                  True, back_link, form_model.form_code)
+                                                  form_model.form_code, get_organization_telephone_number(request),
+                                                  form_model.fields, is_update=True, back_link=back_link)
                 return render_to_response(web_questionnaire_template,
                                           form_context,
                                           context_instance=RequestContext(request))
@@ -659,23 +641,13 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
             error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
         except Exception as exception:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
-
-        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
-                                             back_link, form_model.form_code)
+        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                                             form_model.form_code, get_organization_telephone_number(request),
+                                             form_model.fields, is_update=True, back_link=back_link)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,
                                   context_instance=RequestContext(request))
-
-
-def subject_web_questionnaire_preview(request, entity_type=None):
-    manager = get_database_manager(request.user)
-    entity_type = [entity_type]
-    registration_questionnaire = get_form_model_by_entity_type(manager, entity_type)
-    questions = viewable_questionnaire(registration_questionnaire)
-    return render_to_response("entity/subject_web_preview.html",
-                              {"entity_type": entity_type[0], "questions": questions},
-                              context_instance=RequestContext(request))
 
 
 @valid_web_user
@@ -687,10 +659,10 @@ def create_subject(request, entity_type=None):
 
     if request.method == 'GET':
         questionnaire_form = SubjectRegistrationForm(form_model)
+
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                          form_code=form_model.form_code,
-                                          org_number=get_organization_telephone_number(request),
-                                          form_model_fields=form_model.fields)
+                                          form_model.form_code, get_organization_telephone_number(request),
+                                          form_model.fields, web_view=request.GET.get("web_view", False))
 
         return render_to_response(web_questionnaire_template,
                                   form_context,
@@ -701,9 +673,8 @@ def create_subject(request, entity_type=None):
                                                      country=get_organization_country(request))
         if not questionnaire_form.is_valid():
             form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                              form_code=form_model.form_code,
-                                              org_number=get_organization_telephone_number(request),
-                                              form_model_fields=form_model.fields, web_view=True)
+                                              form_model.form_code, get_organization_telephone_number(request),
+                                              form_model.fields, web_view=True)
             return render_to_response(web_questionnaire_template,
                                       form_context,
                                       context_instance=RequestContext(request))
@@ -729,7 +700,8 @@ def create_subject(request, entity_type=None):
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                                  form_code=form_model.form_code, web_view=True)
+                                                  form_model.form_code, get_organization_telephone_number(request),
+                                                  form_model.fields, web_view=True)
                 return render_to_response(web_questionnaire_template,
                                           form_context,
                                           context_instance=RequestContext(request))
@@ -743,7 +715,8 @@ def create_subject(request, entity_type=None):
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                                             form_code=form_model.form_code, web_view=True)
+                                             form_model.form_code, get_organization_telephone_number(request),
+                                             form_model.fields, web_view=True)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,
@@ -835,7 +808,7 @@ def export_subject(request):
 
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)
-    fields, labels, field_codes = import_module.get_entity_type_fields(manager, subject_type, for_export=True)
+    fields, labels, field_codes = get_entity_type_fields(manager, subject_type, for_export=True)
     raw_data = [labels]
 
     for subject in subject_list:
@@ -861,7 +834,7 @@ def export_template(request, entity_type=None):
     if entity_type is None:
         return HttpResponseRedirect(reverse(all_subject_types))
 
-    fields, labels, field_codes = import_module.get_entity_type_fields(manager, entity_type, for_export=True)
+    fields, labels, field_codes = get_entity_type_fields(manager, entity_type, for_export=True)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])

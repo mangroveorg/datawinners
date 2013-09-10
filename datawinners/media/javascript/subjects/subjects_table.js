@@ -34,7 +34,6 @@ $(document).ready(function () {
             oSettings.select_all_checkbox = new DW.SubjectSelectAllCheckbox(this);
         },
         "fnPreDrawCallback": function (oSettings) {
-            new DW.SubjectPagination().deactivate_select_across_pages();
             if (oSettings.select_all_checkbox) oSettings.select_all_checkbox.un_check();
         },
         "fnDrawCallback": function (oSettings) {
@@ -69,7 +68,7 @@ $(document).ready(function () {
     $("#subjects_table_filter").find("input").attr('placeholder', gettext('Enter any information you want to find'));
 
     $('#subjects_table_filter').live('change', function () {
-            new DW.SubjectPagination(dt).deactivate_select_across_pages();
+            new DW.SubjectPagination().disable();
         }
     );
 });

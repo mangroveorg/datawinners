@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from collections import OrderedDict
 from copy import copy
 import os
 import logging
@@ -13,7 +12,7 @@ from django.contrib.sites.models import get_current_site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
-import xlwt
+from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, entity_type_as_sequence, get_json_field_infos
 
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
 from mangrove.data_cleaner import TelephoneNumber
@@ -31,7 +30,6 @@ from mangrove.transport.player.parser import CsvParser, XlsParser, XlsDatasender
 from mangrove.transport.contract.transport_info import Channel, TransportInfo
 from mangrove.transport.contract.response import Response
 from mangrove.transport.player.player import Player
-from mangrove.utils.types import is_sequence
 from mangrove.datastore import entity
 from mangrove.transport.work_flow import RegistrationWorkFlow, GeneralWorkFlow, ActivityReportWorkFlow
 from datawinners.location.LocationTree import get_location_hierarchy
@@ -42,6 +40,7 @@ from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, MOBILE_NUMBER
 from datawinners.utils import get_organization
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
+from datawinners.questionnaire.helper import get_location_field_code
 
 
 class FormCodeDoesNotMatchException(Exception):
@@ -81,8 +80,7 @@ class FilePlayer(Player):
         player.form_code = form_code
         return player
 
-    def _process(self, form_code, values):
-        form_model = get_form_model_by_code(self.dbm, form_code)
+    def _process(self, form_model, values):
         values = GeneralWorkFlow().process(values)
         if form_model.is_entity_registration_form():
             values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree).process(values)
@@ -90,7 +88,7 @@ class FilePlayer(Player):
             reporter_entity = entity.get_by_short_code(self.dbm, values.get(form_model.entity_question.code.lower()),
                                                        form_model.entity_type)
             values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)
-        return form_model, values
+        return values
 
     def appendFailedResponse(self, responses, message, values=None):
         response = Response(reporters=[], survey_response_id=None)
@@ -129,12 +127,22 @@ class FilePlayer(Player):
             response = self.submit(form_model, values, submission, [])
         return response
 
+    def append_country_for_location_field(self, form_model, values, organization):
+
+        location_field_code = get_location_field_code(form_model)
+        if location_field_code is None:
+            return values
+        if location_field_code in values:
+            values[location_field_code] = get_country_appended_location(values[location_field_code], organization.country_name())
+        return values
+
     def import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, responses,
-                          values):
+                          values, form_model=None):
+        self.append_country_for_location_field(form_model, values, organization)
         transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
         submission = self._create_submission(transport_info, form_code, copy(values))
         try:
-            form_model, values = self._process(form_code, values)
+            values = self._process(form_model, values)
             log_entry = "message: " + str(values) + "|source: web|"
             if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
                 response = self.import_data_sender(form_model, organization, registered_emails,
@@ -170,16 +178,16 @@ class FilePlayer(Player):
         else:
             registered_emails = []
         rows = self.parser.parse(file_contents)
+        form_model = get_form_model_by_code(self.dbm, self.form_code)
         if len(rows) > 0:
             (form_code, values) = rows[0]
             if self.form_code is not None and form_code != self.form_code:
-                form_model = get_form_model_by_code(self.dbm, self.form_code)
                 raise FormCodeDoesNotMatchException(
                     ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') %
                     form_model.entity_type[0], form_code=form_code)
         for (form_code, values) in rows:
             self.import_submission(form_code, organization, registered_emails, registered_phone_numbers, responses,
-                                   values)
+                                   values, form_model)
         return responses
 
 #TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
@@ -215,34 +223,18 @@ def tabulate_failures(rows):
     return tabulated_data
 
 
-def _tabulate_data(entity, form_model, field_codes):
-    data = {'id': entity.id, 'short_code': entity.short_code}
-
-    dict = OrderedDict()
-    for field in form_model.fields:
-        if field.name in entity.data:
-            dict[field.code] = _get_field_value(field.name, entity)
-        else:
-            dict[field.code] = _get_field_default_value(field.name, entity)
-
-    stringified_dict = form_model.stringify(dict)
-
-    data['cols'] = [stringified_dict[field_code] for field_code in field_codes]
-    return data
-
-
 def _get_entity_type_from_row(row):
     type = row['doc']['aggregation_paths']['_type']
     return type
 
 
 def load_entity_registration_data(manager,
-                                  type=REPORTER, tabulate_function=_tabulate_data):
-    entity_type = _entity_type_as_sequence('registration' if type == REPORTER else type)
+                                  type=REPORTER, tabulate_function=tabulate_data):
+    entity_type = entity_type_as_sequence('registration' if type == REPORTER else type)
     form_model = get_form_model_by_entity_type(manager, entity_type)
 
     fields, labels, codes = get_entity_type_fields(manager, type)
-    entities = get_all_entities(dbm=manager, entity_type=_entity_type_as_sequence(type))
+    entities = get_all_entities(dbm=manager, entity_type=entity_type_as_sequence(type))
     data = []
     for entity in entities:
         data.append(tabulate_function(entity, form_model, codes))
@@ -253,25 +245,6 @@ def load_entity_registration_data(manager,
 def get_entity_types(manager):
     entity_types = get_all_entity_types(manager)
     return [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
-
-
-def get_json_field_infos(fields, for_export=False):
-    fields_names, labels, codes = [], [], []
-    if for_export:
-        bold = xlwt.easyfont('bold true, height 220, name Helvetica Neue')
-        brown = xlwt.easyfont('color_index brown, name Helvetica Neue, height 220')
-        italic = xlwt.easyfont('italic true, name Helvetica Neue, height 220')
-
-    for field in fields:
-        if field['name'] != 'entity_type':
-            fields_names.append(field['name'])
-            if for_export:
-                instruction, example = _get_json_field_instruction_example(field)
-                labels.append(((field["label"], bold), ("\n" + instruction, brown), ("\n\n" + example, italic)))
-            else:
-                labels.append(field['label'])
-            codes.append(field['code'])
-    return fields_names, labels, codes
 
 
 def get_field_infos(fields):
@@ -290,7 +263,7 @@ def get_entity_type_info(entity_type, manager=None):
         form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)[0]
         names, labels, codes = get_json_field_infos(form_model.value['json_fields'])
     else:
-        form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(entity_type))
+        form_model = get_form_model_by_entity_type(manager, entity_type_as_sequence(entity_type))
         form_code = form_model.form_code
         names, labels, codes = get_field_infos(form_model.fields)
 
@@ -340,7 +313,7 @@ def _get_all_subject_data(form_models, subject_types, subjects):
         subject_type = subject.type_string
         if subject_type in subject_type_infos_dict.keys():
             form_model = form_models[subject_type]
-            data = _tabulate_data(subject, form_model, subject_type_infos_dict[subject_type]['codes'])
+            data = tabulate_data(subject, form_model, subject_type_infos_dict[subject_type]['codes'])
             subject_type_infos_dict[subject_type]['data'].append(data)
 
     return [subject_type_infos_dict[subject_type] for subject_type in subject_types]
@@ -445,44 +418,6 @@ def _file_and_name(request):
     return file_name, file
 
 
-def _entity_type_as_sequence(entity_type):
-    if not is_sequence(entity_type):
-        entity_type = [entity_type.lower()]
-    return entity_type
-
-
-def get_entity_type_fields(manager, type=REPORTER, for_export=False):
-    form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(type))
-    form_code = "reg"
-    if form_model is not None:
-        form_code = form_model.form_code
-    form_model_rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
-    fields, labels, codes = get_json_field_infos(form_model_rows[0].value['json_fields'], for_export=for_export)
-    return fields, labels, codes
-
-
-def _get_field_value(key, entity):
-    value = entity.value(key)
-    if key == 'geo_code':
-        if value is None:
-            return entity.geometry.get('coordinates')
-    elif key == 'location':
-        if value is None:
-            return entity.location_path
-
-    return value
-
-
-def _get_field_default_value(key, entity):
-    if key == 'geo_code':
-        return entity.geometry.get('coordinates')
-    if key == 'location':
-        return entity.location_path
-    if key == 'short_code':
-        return entity.short_code
-    return None
-
-
 def get_datasenders_mobile(manager):
     all_data_senders, fields, labels = load_all_entities_of_type(manager)
     index = fields.index(MOBILE_NUMBER_FIELD)
@@ -524,49 +459,4 @@ def send_email_to_data_sender(user, language_code, request=None, type="activatio
     email.send()
 
 
-def _get_json_field_instruction_example(field):
-    if field.get("entity_question_flag", False):
-        return _("Assign a unique ID for each Subject."), _(
-            "Leave this column blank if you want DataWinners to assign an ID for you.")
 
-    if field["type"] == "text":
-        if "constraints" in field and field["constraints"][0][0] == "length" and "max" in field["constraints"][0][1]:
-            return _("Enter a Word with a maximum %s of characters.") % field["constraints"][0][1].get("max"), ""
-        return _("Enter a word"), ""
-
-    if field["type"] == "integer":
-        if "constraints" in field and field["constraints"][0][0] == "range":
-            max = field["constraints"][0][1].get("max")
-            min = field["constraints"][0][1].get("min")
-            if max and min:
-                return _("Enter a number between %s-%s.") % (min, max), ""
-            if max and not min:
-                return _("Enter a number. The maximum is %s") % max, ""
-            if not max and min:
-                return _("Enter a number. The minimum is %s") % min, ""
-            return _("Enter a number"), ""
-
-    if field["type"] == "geocode":
-        return _("Enter GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."), _("Example: -18.1324,27.6547")
-
-    if field["type"] == "list":
-        return _("Enter name of the location."), _("Example: Nairobi")
-
-    if field["type"] == "select1":
-        return _("Enter 1 answer from the list."), _("Example: a")
-
-    if field["type"] == "select":
-        return _("Choose 1 or more answers from the list."), _("Example: a or ab")
-
-    if field["type"] == "telephone_number":
-        return _("Enter a telephone number along with the country code."), _("Example: 261333745269")
-
-    date_format_mapping = {
-        "mm.yyyy": (_("Enter the date in the following format: month.year"), _("Example: 12.2011")),
-        "dd.mm.yyyy": (_("Enter the date in the following format: day.month.year"), _("Example: 25.12.2011")),
-        "mm.dd.yyyy": (_("Enter the date in the following format: month.day.year"), _("Example: 12.25.2011"))
-    }
-
-    if field["type"] == "date":
-        return date_format_mapping.get(field["date_format"])
-    return field["instruction"], ""

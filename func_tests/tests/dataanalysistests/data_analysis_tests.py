@@ -155,7 +155,7 @@ class TestDataAnalysis(BaseTest):
     def test_filter_data_records_by_datasender(self):
         data_analysis_page = self.go_to_analysis_page(fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)),
                                                       cache_url=False)
-        self.verify_filter_by_data_sender(data_analysis_page, ('Tester Pune', 'rep12'))
+        self.verify_filter_by_data_sender(data_analysis_page, ('Tester Pune', 'rep276'))
         self.verify_filter_by_data_sender(data_analysis_page, ('Shweta', 'rep1'))
 
     @attr('functional_test')

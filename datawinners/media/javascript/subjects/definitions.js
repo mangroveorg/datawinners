@@ -4,6 +4,8 @@ DW.SubjectSMSPreviewPage = function () {
     var sms_preview_form = $("#preview_form");
     sms_preview_form.html($("#subject_registration_form").clone().html());
     sms_preview_form.find('input[type="submit"]').remove();
+    sms_preview_form.find('input').attr("value", '');
+    var sms_form_heading = $("#sms_form_heading");
 
     sms_preview_form.find('input,select').each(function (index, element) {
         var query_element_object = $(element);
@@ -21,11 +23,15 @@ DW.SubjectSMSPreviewPage = function () {
     });
 
     this.enable = function () {
+        $("#message_box").remove();
         $(".errorlist").remove();
         $("#sms_preview").attr("hidden", false);
+        sms_form_heading.show();
     };
+
     this.disable = function () {
         $("#sms_preview").attr("hidden", true);
+        sms_form_heading.hide();
     };
 };
 
@@ -65,14 +71,20 @@ DW.SubjectPrintModalPage = function () {
         autoOpen: false,
         height: 700,
         width: 800,
-        closeText: 'hide'
+        closeText: 'hide',
+        open: function () {
+            $("body > div").addClass("none_for_print");
+        },
+        close: function () {
+            $("body > div").removeClass("none_for_print");
+        }
     });
 
     this.display = function () {
-        $("#dialog_sms_preview").dialog("open");
+        dialog_html.dialog("open");
     };
 
-    $("#dialog_sms_preview").find(".printBtn").attr("hidden", true).on("click", function (eventObject) {
+    dialog_html.find(".printBtn").on("click", function (eventObject) {
         window.print();
         eventObject.preventDefault();
     });
@@ -80,23 +92,48 @@ DW.SubjectPrintModalPage = function () {
 
 
 DW.SubjectRegistrationForm = function (form_selector) {
-    var enabled_visible_elements = $('input:visible:not(.subject_field), select:visible', form_selector);
-    var submit_button = $('input[type="submit"]', form_selector);
-    var generate_id = $("#generate_id", form_selector);
+    var registration_form = $("#subject_registration_form");
+    var subject_unique_id = new DW.SubjectUniqueIdField(form_selector);
+
+    var web_form_heading = $("#web_form_heading");
     this.enable = function () {
-        $("#subject_registration_form").attr("hidden", false);
-        generate_id.attr("checked", "checked");
+        registration_form.attr("hidden", false);
+        subject_unique_id.enable();
+        web_form_heading.show();
     };
 
     this.disable = function () {
         var visible_elements = $('input:visible:not([type="submit"]), select:visible', form_selector);
         visible_elements.attr("value", "");
-        generate_id.attr("checked", "checked");
+        //This is explicitly called here as otherwise the watermark api does not kick in, that api should have
+        //listened to the change event but currently its attached to blur
+        visible_elements.blur();
+        subject_unique_id.disable();
         //This has to be called last as the above statements will fail if we hide the form first.
-        $("#subject_registration_form").attr("hidden", true);
+        registration_form.attr("hidden", true);
+        web_form_heading.hide();
+    };
+};
+
+
+DW.SubjectUniqueIdField = function (form_selector) {
+    var generate_id = $("#generate_id", form_selector);
+    var subject_unique_id = $(".subject_field", form_selector);
+
+    this.enable = function () {
+        if (subject_unique_id.val() == "") {
+            this.disable();
+        } else {
+            generate_id.removeAttr('checked');
+            subject_unique_id.attr("disabled", false);
+        }
     };
 
-    var subject_unique_id = $(".subject_field", form_selector);
+    this.disable = function () {
+        generate_id.attr("checked", "checked");
+        subject_unique_id.val("");
+        subject_unique_id.attr("disabled", true);
+    };
 
     generate_id.on('click', function () {
         subject_unique_id.attr("disabled", $(this).is(":checked"));
@@ -104,7 +141,5 @@ DW.SubjectRegistrationForm = function (form_selector) {
             subject_unique_id.val('');
         }
     });
-
-    subject_unique_id.attr("disabled", true);
 };
 

@@ -2,7 +2,7 @@ from time import sleep
 import unittest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
-from pages.allsubjectspage.subjects_page import SubjectsPage
+from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, url
 from tests.logintests.login_data import VALID_CREDENTIALS
@@ -26,7 +26,7 @@ class TestSubjectsPage(unittest.TestCase):
     def test_all_subjects_page(self):
         self.login_with(VALID_CREDENTIALS)
         self.driver.go_to(url("/entity/subjects/clinic/"))
-        subjects_page = SubjectsPage(self.driver)
+        subjects_page = AllSubjectsListPage(self.driver)
         self.check_pagination_size(subjects_page, 25)
 
         subjects_page.set_page_size(10)

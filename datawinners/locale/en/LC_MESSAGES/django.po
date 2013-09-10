@@ -1505,7 +1505,7 @@ msgstr "Click the blue 'Add Subjects Manually' button and register subjects indi
 msgid "Enter your Subjects individually"
 msgstr ""
 
-msgid "Import a List of Subjects"
+msgid "Import a List"
 msgstr ""
 
 msgid "tooltip_subject_import"
@@ -2686,9 +2686,6 @@ msgid "some default value"
 msgstr ""
 
 msgid "Add a new"
-msgstr ""
-
-msgid "Import a list"
 msgstr ""
 
 msgid "Enter the Name of your specific Subject Type"
@@ -4000,6 +3997,9 @@ msgstr ""
 msgid "You are editing the Submission Details"
 msgstr ""
 
+msgid "You are editing the %(subject_type) Details"
+msgstr ""
+
 msgid "Select a %(subject_type)"
 msgstr ""
 
@@ -4209,3 +4209,10 @@ msgstr "Your account has been deactivated. Please contact the datawinners suppor
 
 msgid "Back to All Subjects List"
 msgstr "Back to All Subjects List"
+
+msgid "Example SMS:"
+msgstr ""
+
+msgid "Your Data Senders can register a new clinic via SMS. Print out this form and give it to your Data Senders."
+msgstr ""
+

@@ -131,7 +131,7 @@ class TestFeeds(unittest.TestCase):
         feed_entry = response_list[-1]
         expected_data = {'q1': 'wp01', 'q3': '5.0', 'q2': '25.12.2010', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
                          'q6': 'admin', 'q8': '12.0,12.0'}
-        rep_id = "rep12"
+        rep_id = "rep276"
         status = "success"
         self.assert_feed_values(feed_entry, expected_data, rep_id, status)
 

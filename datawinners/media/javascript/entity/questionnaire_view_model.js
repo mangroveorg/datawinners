@@ -11,6 +11,7 @@ var questionnaireViewModel =
             return this.title();
         }, question);
         question.newly_added_question(true);
+        questionnaireViewModel.remove_location_type()
         DW.check_question_type_according_radio_button(question.type());
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.selectedQuestion(question);
@@ -146,5 +147,8 @@ var questionnaireViewModel =
     },
     isTypeEnabled: function(){
         return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag();
+    },
+    remove_location_type: function(){
+        $(".question_type #location_type_input").attr("hidden", "true");
     }
 };

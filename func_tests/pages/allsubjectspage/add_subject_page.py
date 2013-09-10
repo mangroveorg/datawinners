@@ -4,7 +4,7 @@ from framework.utils.common_utils import generateId, CommonUtilities
 from pages.datasenderpage.data_sender_locator import SMARTPHONE_NAV
 from pages.page import Page
 from framework.utils.data_fetcher import *
-from pages.addsubjectpage.add_subject_locator import *
+from pages.allsubjectspage.add_subject_locator import *
 from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage
 from pages.websubmissionpage.web_submission_locator import SECTION_TITLE, BACK_TO_PROJECT_LINK
 from tests.addsubjecttests.add_subject_data import *
@@ -100,6 +100,9 @@ class AddSubjectPage(Page):
 
     def navigate_to_all_subjects(self):
         self.driver.find(by_css('.back-to-list')).click()
+
+    def navigate_to_subject_list(self):
+        self.driver.find(by_id("all_subjects_list")).click()
 
     def get_first_name(self):
         self.driver.find()

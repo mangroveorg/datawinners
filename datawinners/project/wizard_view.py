@@ -11,7 +11,7 @@ from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
-from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_projects
+from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_projects, get_all_project_names
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
@@ -68,8 +68,7 @@ def create_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
-    projects = get_all_projects(get_database_manager(request.user))
-    all_projects_name = [prj["value"]["name"] for prj in projects]
+    all_projects_name = get_all_project_names(get_database_manager(request.user))
     name = generate_project_name(all_projects_name)
     project_summary = dict(name=name)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)

@@ -98,7 +98,7 @@ class TestSurveyResponseData(TestCase):
                                                            values=data, owner_uid=self.test_ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             raw_field_values = submission_list.get_raw_values()
-            expected = [[self.submission_id, ('Tester 150411', u'rep12', self.test_ds_uid), u'Error',
+            expected = [[self.submission_id, ('Tester 150411', u'rep276', self.test_ds_uid), u'Error',
                          '-', ('Clinic-One', u'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'],
                          ['B+']]]
             submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(2))
@@ -116,7 +116,7 @@ class TestSurveyResponseData(TestCase):
                                                            values=data, owner_uid=self.test_ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             raw_field_values = submission_list.get_raw_values()
-            expected = [[self.submission_id, ('Tester 150411', u'rep12', self.test_ds_uid), u'Error',
+            expected = [[self.submission_id, ('Tester 150411', u'rep276', self.test_ds_uid), u'Error',
                          '-', ('Clinic-One', u'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'],
                          ['B+']]]
             submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(2))
@@ -134,7 +134,7 @@ class TestSurveyResponseData(TestCase):
                                                            values=data, owner_uid=self.test_ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
 
-            expected = [[self.submission_id, ('Tester 150411', u'rep12', self.test_ds_uid), u'Error',
+            expected = [[self.submission_id, ('Tester 150411', u'rep276', self.test_ds_uid), u'Error',
                          '-', ('Clinic-One', u'cli14'), '01.01.2012']]
             result = submission_list.get_leading_part()
             submission_date = self.get_submission_date_in_old_format(result[0].pop(2))
@@ -155,7 +155,7 @@ class TestSurveyResponseData(TestCase):
             submission_list = self._prepare_submission_list_with_one_submission(
                 self.form_model_generator.summary_form_model_without_rp())
 
-            expected = [[self.submission_id, ('Tester 150411', u'rep12', self.test_ds_uid), u'Error', '-']]
+            expected = [[self.submission_id, ('Tester 150411', u'rep276', self.test_ds_uid), u'Error', '-']]
             result = submission_list.get_leading_part()
             submission_date = self.get_submission_date_in_old_format(result[0].pop(2))
             self.assertEqual(today, submission_date)
@@ -173,7 +173,7 @@ class TestSurveyResponseData(TestCase):
                                                            values=data, owner_uid=self.test_ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             raw_field_values = submission_list.get_raw_values()
-            expected = [[self.submission_id, ('Tester 150411', u'rep12', self.test_ds_uid), u'Error', '-',
+            expected = [[self.submission_id, ('Tester 150411', u'rep276', self.test_ds_uid), u'Error', '-',
                          ('Clinic-One', u'cli14'), '01.01.2012',
                          ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             submission_date = self.get_submission_date_in_old_format(raw_field_values[0].pop(2))
@@ -193,7 +193,7 @@ class TestSurveyResponseData(TestCase):
             submission_date = datetime.utcnow().strftime(SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
             raw_field_values = submission_list.get_raw_values()
             expected = [
-                [self.submission_id, ('Tester 150411', u'rep12', self.test_ds_uid), submission_date, u'Error',
+                [self.submission_id, ('Tester 150411', u'rep276', self.test_ds_uid), submission_date, u'Error',
                  '-',
                  ('Clinic-One', u'cli14'), '01.01.2012', ['Rapid weight loss', 'Dry cough', 'Pneumonia'], ['B+']]]
             self.assertEqual(expected, raw_field_values)
@@ -261,7 +261,7 @@ class TestSurveyResponseData(TestCase):
                                                            values=data, owner_uid=self.test_ds_uid)]
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             data_sender_list = submission_list.get_data_senders()
-            expected = [('Tester 150411', u'rep12', self.test_ds_uid)]
+            expected = [('Tester 150411', u'rep276', self.test_ds_uid)]
         self.assertEqual(expected, data_sender_list)
 
 
@@ -301,7 +301,7 @@ class TestSurveyResponseData(TestCase):
             expected = [q1, q2]
             self.assertEqual(expected, statistics)
 
-    def submit_survey_response(self, post_data, reporter_id='rep12'):
+    def submit_survey_response(self, post_data, reporter_id='rep276'):
         WebPlayerV2(self.manager).add_survey_response(Request(message=post_data, transportInfo=self.transport),
                                                       reporter_id)
 
@@ -333,14 +333,14 @@ class TestSurveyResponseData(TestCase):
                                      ddtype=self.ddtype)
 
         form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
-                                                                                               blood_type_field).build()
+                                                                                                      blood_type_field).build()
         self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'BG': 'unknown'})
 
         blood_type_field = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
                                        options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")],
                                        single_select_flag=False, ddtype=self.ddtype)
         self._edit_fields(form_model, blood_type_field)
-        self.submit_survey_response({'form_code':form_model.form_code, 'EID': 'cid001', 'BG': 'ab'})
+        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'BG': 'ab'})
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
@@ -365,7 +365,7 @@ class TestSurveyResponseData(TestCase):
                                        ddtype=self.ddtype)
 
         form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
-                                                                                               blood_type_field).build()
+                                                                                                      blood_type_field).build()
 
         self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'BG': 'a'})
 
@@ -428,11 +428,13 @@ class TestSurveyResponseData(TestCase):
                                        options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")],
                                        single_select_flag=True, ddtype=self.ddtype)
 
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=(random_string())).add_fields(eid_field, rp_field,
-                                                                                               symptoms_field,
-                                                                                               blood_type_field).build()
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=(random_string())).add_fields(eid_field,
+                                                                                                        rp_field,
+                                                                                                        symptoms_field,
+                                                                                                        blood_type_field).build()
 
-        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
+        self.submit_survey_response(
+            {'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
         self._edit_fields(form_model,
                           IntegerField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
                                        ddtype=self.ddtype))
@@ -459,9 +461,10 @@ class TestSurveyResponseData(TestCase):
                                        options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")],
                                        single_select_flag=True, ddtype=self.ddtype)
 
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field, rp_field,
-                                                                                               symptoms_field,
-                                                                                               blood_type_field).build()
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
+                                                                                                      rp_field,
+                                                                                                      symptoms_field,
+                                                                                                      blood_type_field).build()
         self.submit_survey_response(
             {'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'BG': 'b'})
 
@@ -471,7 +474,8 @@ class TestSurveyResponseData(TestCase):
                                      single_select_flag=False,
                                      ddtype=self.ddtype)
         self._edit_fields(form_model, symptoms_field)
-        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
+        self.submit_survey_response(
+            {'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'ab', 'BG': 'b'})
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
@@ -488,7 +492,7 @@ class TestSurveyResponseData(TestCase):
                              event_time_field_flag=True, ddtype=self.ddtype)
 
         form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
-                                                                                               rp_field).build()
+                                                                                                      rp_field).build()
 
         self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012'})
 
@@ -520,9 +524,10 @@ class TestSurveyResponseData(TestCase):
                              event_time_field_flag=True, ddtype=self.ddtype)
         symptoms_field = TextField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?", ddtype=self.ddtype)
         gps = TextField(label="What is your blood group?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
-        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field, rp_field,
-                                                                                               symptoms_field,
-                                                                                               gps).build()
+        form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
+                                                                                                      rp_field,
+                                                                                                      symptoms_field,
+                                                                                                      gps).build()
 
         self.submit_survey_response(
             {'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'SY': 'Fever', 'GPS': 'NewYork'})
@@ -531,7 +536,8 @@ class TestSurveyResponseData(TestCase):
         form_model.delete_field("SY")
         form_model.save()
 
-        self.submit_survey_response({'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'GPS': '1,1'})
+        self.submit_survey_response(
+            {'form_code': form_model.form_code, 'EID': 'cid001', 'RD': '12.12.2012', 'GPS': '1,1'})
         with patch(
                 "datawinners.project.survey_response_data.SurveyResponseData._get_survey_responses_by_status") as get_submissions:
             get_submissions.return_value = successful_survey_responses(self.manager, form_model.form_code)
@@ -554,9 +560,10 @@ class TestSurveyResponseData(TestCase):
         gps_field = GeoCodeField(label="What is your gps?", code="GPS", name="What is your gps?", ddtype=self.ddtype)
 
         form_model = FormModelBuilder(self.manager, ['clinic'], form_code=random_string()).add_fields(eid_field,
-                                                                                               blood_type_field,
-                                                                                               rp_field, age_field,
-                                                                                               gps_field).build()
+                                                                                                      blood_type_field,
+                                                                                                      rp_field,
+                                                                                                      age_field,
+                                                                                                      gps_field).build()
 
         post_data = {'form_code': form_model.form_code, 'EID': 'cid001', 'BG': 'a', 'RD': '12.11.2013', 'FA': '45',
                      'GPS': '12.74,77.45'}
@@ -575,7 +582,7 @@ class TestSurveyResponseData(TestCase):
             self.assertEqual(excel_values[0][2], u'cid001')
             self.assertEqual(excel_values[0][3], ExcelDate(datetime.strptime('12.11.2013', '%d.%m.%Y'), 'dd.mm.yyyy'))
             self.assertEqual(excel_values[0][5], 'Tester 150411')
-            self.assertEqual(excel_values[0][6], 'rep12')
+            self.assertEqual(excel_values[0][6], 'rep276')
             self.assertEqual(excel_values[0][8], 45.0)
             self.assertEqual(excel_values[0][9], 12.74)
             self.assertEqual(excel_values[0][10], 77.45)

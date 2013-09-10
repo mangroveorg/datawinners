@@ -20,7 +20,7 @@ from datawinners.accountmanagement.forms import OrganizationForm, UserProfileFor
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, \
     DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for
 from django.contrib.auth.views import login, password_reset, password_reset_confirm
-from datawinners.project.models import get_all_projects
+from datawinners.project.models import get_all_projects, delete_datasenders_from_project
 from django.utils.translation import ugettext as _, get_language, activate
 from datawinners.project.models import Project
 from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
@@ -28,7 +28,7 @@ from datawinners.activitylog.models import UserActivityLog
 import json
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS
 from datawinners.entity.helper import delete_datasender_for_trial_mode, \
-    delete_datasender_from_project, delete_datasender_users_if_any, delete_entity_instance
+    delete_datasender_users_if_any, delete_entity_instance
 from datawinners.entity.import_data import send_email_to_data_sender
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from mangrove.form_model.form_model import REPORTER
@@ -417,7 +417,7 @@ def delete_users(request):
     else:
         detail = user_activity_log_details(User.objects.filter(id__in=django_ids))
         delete_entity_instance(manager, all_ids, REPORTER, transport_info)
-        delete_datasender_from_project(manager, all_ids)
+        delete_datasenders_from_project(manager, all_ids)
         delete_datasender_users_if_any(all_ids, organization)
 
         if organization.in_trial_mode:

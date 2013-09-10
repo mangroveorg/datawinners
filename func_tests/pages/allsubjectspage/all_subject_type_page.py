@@ -2,8 +2,9 @@
 import re
 
 from framework.utils.common_utils import CommonUtilities
-from pages.addsubjectpage.add_subject_page import AddSubjectPage
+from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.allsubjectspage.all_subjects_locator import *
+from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from pages.page import Page
 from testdata.test_data import url
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
@@ -112,3 +113,7 @@ class AllSubjectTypePage(Page):
             return self.driver.find(by_xpath('//input[@value="%s"'%subject_short_code+']'))
         except:
             return None
+
+    def select_subject_type(self, subject_type):
+        self.driver.find_element_by_link_text(subject_type).click()
+        return AllSubjectsListPage(self.driver)

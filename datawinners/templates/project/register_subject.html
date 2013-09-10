@@ -31,7 +31,6 @@
     {% include "web_questionnaire_questions_js.html" %}
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
-{#    <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>#}
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
@@ -48,7 +47,10 @@
 
 {% block content %}
     <h2>{% trans "My Subjects" %}</h2>
-    {% include 'project/my_subjects_help.html' %}
+    {% with entity_type=project.entity_type create_entity_link=register_subjects_link %}
+        {% include 'help/subjects_help.html' %}
+    {% endwith %}
+
     {% include "popup-import.html" %}
     <div id="my_subjects">
     {% block secondary_navigation_subjects %}

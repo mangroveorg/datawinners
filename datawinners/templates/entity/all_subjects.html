@@ -4,14 +4,17 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
+    <script type="text/javascript">
+        var edit_url_template = "{% url edit_subject entity_type "entity_id_placeholder" %}";
+    </script>
 {% endblock %}
 
 {% block secondary_navigation %}
     <li><a href="{% url all_subject_type_page %}" class="back-to-list">
         « {% trans "Back to All Subjects List" %}</a>
     </li>
-    <li><a href="{% url create_subject entity_type %}">{% trans "Register a" %} {{ entity_type|capfirst }}</a>&nbsp;|&nbsp;
-        <a href="javascript:void(0);" class="import-subject">{% trans "Import a List of Subjects" %}</a>&nbsp;|&nbsp;
+    <li><a id="register_subjects" href="{% url create_subject entity_type %}?web_view=True">{% trans "Register a" %} {{ entity_type|capfirst }}</a>&nbsp;|&nbsp;
+        <a href="javascript:void(0);" class="import-subject">{% trans "Import a List" %}</a>&nbsp;|&nbsp;
         <a id='subject_export_link' href="#">{% trans "Export" %}</a>
     </li>
     <li><a href="{% url edit_subject_questionnaire entity_type %}" hidden="true"
@@ -24,16 +27,20 @@
     </div>
 {% endblock %}
 
-{% block actions %}
-    {{ block.super }}
+{% block page_content %}
+    {% include "entity/import_subject_popup.html" %}
+    {% with create_subject_link=links.create_subject %}
+        {% include 'subject_table.html' %}
+    {% endwith %}
+    <div id="delete_entity_block">
+        <p class="warning_message">{% trans "entity delete error text" %}</p>
+        <a href="" class="button"
+           id="ok_button">{% trans "Yes, Delete" %}</a>
+        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
+    </div>
     <form name="export_subjects" action="{% url export_subject %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="subject_type" id="subject_type" value="{{ entity_type }}"/>
         <input type="hidden" name="query_text" id="query_text"/>
     </form>
-{% endblock %}
-
-{% block page_content %}
-    {% include "entity/import_subject_popup.html" %}
-    {% include 'subject_table.html' %}
 {% endblock %}

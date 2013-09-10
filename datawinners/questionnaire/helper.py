@@ -1,10 +1,13 @@
-from mangrove.form_model.field import GeoCodeField
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, GEO_CODE_FIELD_NAME, FormModel
-from mangrove.utils.types import is_empty
-from mangrove.form_model.validation import GeoCodeConstraint
+import re
+
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-import re
+
+from mangrove.form_model.field import GeoCodeField
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
+from mangrove.utils.types import is_empty
+from mangrove.form_model.validation import GeoCodeConstraint
+
 
 def get_location_field_code(form_model):
     location_fields = filter(lambda field: field.name == LOCATION_TYPE_FIELD_NAME, form_model.fields)
