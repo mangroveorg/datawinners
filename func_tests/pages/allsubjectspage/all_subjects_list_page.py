@@ -48,10 +48,20 @@ class AllSubjectsListPage(Page):
         action_buttons[1].click()
 
     def click_edit_action_button(self):
-        self._select_subject_action()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".edit"), True)
+        for i in range(0,3):
+            self._select_subject_action()
+            if self._wait_for_element_visible():
+                break
+
         self.driver.find_visible_element(by_css(".edit")).click()
         return AddSubjectPage(self.driver)
+
+    def _wait_for_element_visible(self):
+        try:
+            self.driver.wait_for_element(1, by_css(".edit"), True)
+            return True
+        except:
+            return False
 
     def click_delete_action_button(self):
         self._select_subject_action()
