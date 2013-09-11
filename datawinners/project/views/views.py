@@ -613,13 +613,15 @@ def _get_form_code(manager, project):
 class SubjectWebQuestionnaireRequest():
     def __init__(self, request, project_id):
         self.request = request
+        self._initialize(project_id)
+
+    def _initialize(self, project_id):
         self.manager = get_database_manager(self.request.user)
         self.project = Project.load(self.manager.database, project_id)
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
         self.form_code = _get_form_code(self.manager, self.project)
         self.form_model = _get_subject_form_model(self.manager, self.project.entity_type)
-
 
     def form(self, initial_data=None, country=None):
         return SubjectRegistrationForm(self.form_model, data=initial_data, country=country)
@@ -662,23 +664,23 @@ class SubjectWebQuestionnaireRequest():
                                                                args=[self.project.id]) + "?web_view=True"}
         )
 
-    def response_for_post_request(self, is_update=None):
-        questionnaire_form = self.form(self.request.POST, utils.get_organization_country(self.request))
-        if not questionnaire_form.is_valid():
-            form_context = get_form_context(self.form_code, self.project, questionnaire_form,
-                                            self.manager, self.hide_link_class, self.disable_link_class)
-            self._update_form_context(form_context, questionnaire_form)
-            return render_to_response(self.template, form_context,
-                                      context_instance=RequestContext(self.request))
+    def invalid_data_response(self, questionnaire_form):
+        form_context = get_form_context(self.form_code, self.project, questionnaire_form,
+                                        self.manager, self.hide_link_class, self.disable_link_class)
+        self._update_form_context(form_context, questionnaire_form)
+        return render_to_response(self.template, form_context,
+                                  context_instance=RequestContext(self.request))
 
+    def success_resposne(self, is_update, organization, questionnaire_form):
         success_message = None
         error_message = None
         try:
             created_request = helper.create_request(questionnaire_form, self.request.user.username, is_update=is_update)
             response = self.player_response(created_request)
             if response.success:
-                ReportRouter().route(get_organization(self.request).org_id, response)
+                ReportRouter().route(organization.org_id, response)
                 success_message = self.success_message(response.short_code)
+                questionnaire_form = self.form(country=organization.country_name())
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, self.form_model.fields)
         except DataObjectNotFound as exception:
@@ -688,7 +690,6 @@ class SubjectWebQuestionnaireRequest():
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
-
         _project_context = get_form_context(self.form_code, self.project, questionnaire_form,
                                             self.manager, self.hide_link_class, self.disable_link_class,
                                             is_update=is_update)
@@ -696,6 +697,14 @@ class SubjectWebQuestionnaireRequest():
         self._update_form_context(_project_context, questionnaire_form)
         return render_to_response(self.template, _project_context,
                                   context_instance=RequestContext(self.request))
+
+    def post(self, is_update=None):
+        organization = get_organization(self.request)
+        questionnaire_form = self.form(self.request.POST, organization.country_name())
+        if not questionnaire_form.is_valid():
+            return self.invalid_data_response(questionnaire_form)
+
+        return self.success_resposne(is_update, organization, questionnaire_form)
 
 
 class SurveyWebQuestionnaireRequest():
@@ -803,7 +812,7 @@ def subject_web_questionnaire(request, project_id=None):
     if request.method == 'GET':
         return subject_request.response_for_get_request()
     elif request.method == 'POST':
-        return subject_request.response_for_post_request()
+        return subject_request.post()
 
 
 @valid_web_user
@@ -1050,4 +1059,4 @@ def edit_my_subject(request, entity_type, entity_id, project_id=None):
         initialize_values(form_model, subject)
         return subject_request.response_for_get_request(is_update=True)
     elif request.method == 'POST':
-        return subject_request.response_for_post_request(is_update=True)
+        return subject_request.post(is_update=True)
