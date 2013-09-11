@@ -2,6 +2,7 @@
 from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.allsubjectspage.all_subjects_locator import *
 from pages.page import Page
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class AllSubjectsListPage(Page):
@@ -44,19 +45,32 @@ class AllSubjectsListPage(Page):
 
     def _select_subject_action(self):
         action_buttons = self.driver.find_elements_(by_css(".action"))
-        action_buttons[1].click()
+        action_buttons[0].click()
 
     def click_edit_action_button(self):
-        self._select_subject_action()
+        for i in range(0,3):
+            self._select_subject_action()
+            if self._wait_for_element_visible():
+                break
+
         self.driver.find_visible_element(by_css(".edit")).click()
         return AddSubjectPage(self.driver)
+
+    def _wait_for_element_visible(self):
+        try:
+            self.driver.wait_for_element(1, by_css(".edit"), True)
+            return True
+        except:
+            return False
 
     def click_delete_action_button(self):
         self._select_subject_action()
         self.driver.find_visible_element(by_css(".delete")).click()
 
     def get_successfully_deleted_message(self):
-        return self.driver.find(by_css('ul.messages > li.success')).text
+        message_element_selector = 'ul.messages > li.success'
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, message_element_selector, True)
+        return self.driver.find(by_css(message_element_selector)).text
 
     def is_subject_present(self, subject_id):
         return self.driver.is_element_present(by_css("input[value=%s]" % subject_id))
