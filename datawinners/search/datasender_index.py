@@ -1,8 +1,10 @@
 import elasticutils
+from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSetting
 from datawinners.main.database import get_db_manager
 from datawinners.project.models import get_all_projects
 from datawinners.search.index_utils import _entity_dict, _mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.utils import get_organization_from_manager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.entity import get_all_entities
@@ -19,10 +21,16 @@ def _get_project_names_by_datasender_id(dbm, entity_id):
     return project_names
 
 
+def _is_web_user(dbm, entity_doc):
+    organization = get_organization_from_manager(dbm)
+    user_profile = NGOUserProfile.objects.filter(reporter_id=entity_doc.short_code, org_id=organization.org_id)
+    return user_profile is not None
+
+
 def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
     datasender_dict = _entity_dict(entity_type, entity_doc, dbm, form_model)
-    project_names = _get_project_names_by_datasender_id(dbm, entity_doc.short_code)
-    datasender_dict.update({"projects": project_names})
+    datasender_dict.update({"projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code)})
+    datasender_dict.update({"is_webuser": _is_web_user(dbm, entity_doc)})
     return datasender_dict
 
 
@@ -35,6 +43,7 @@ def _datasender_search_update(entity_doc, dbm):
         es.index(dbm.database_name, entity_type, datasender_dict, id=entity_doc.id)
     es.refresh(dbm.database_name)
 
+
 def update_datasender_index(database_name):
     dbm = get_db_manager(database_name)
     for row in dbm.load_all_rows_in_view('questionnaire'):
@@ -43,10 +52,12 @@ def update_datasender_index(database_name):
     for entity in get_all_entities(dbm, entity_type=REPORTER_ENTITY_TYPE):
         _datasender_search_update(entity, dbm)
 
+
 def _update_datasender_mapping(form_model_doc, dbm):
     form_model = FormModel.new_from_doc(dbm, form_model_doc)
     if form_model.form_code == REGISTRATION_FORM_CODE:
         _update_ds_mapping(dbm, form_model)
+
 
 def _update_ds_mapping(dbm, form_model):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
