@@ -69,7 +69,7 @@ class AllSubjectsListPage(Page):
 
     def get_successfully_deleted_message(self):
         message_element_selector = 'ul.messages > li.success'
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, message_element_selector, True)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(message_element_selector), True)
         return self.driver.find(by_css(message_element_selector)).text
 
     def is_subject_present(self, subject_id):
