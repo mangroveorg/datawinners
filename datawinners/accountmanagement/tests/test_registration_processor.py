@@ -8,9 +8,9 @@ from datawinners.accountmanagement.organization_id_creator import OrganizationId
 from datawinners.accountmanagement.registration_processors import get_registration_processor, PaidAccountRegistrationProcessor, TrialAccountRegistrationProcessor
 from django.contrib.sites.models import Site
 from django.conf import settings
+from datawinners.tests.email_utils import set_email_settings
 from mangrove.utils.types import is_not_empty
 from django.core import mail
-from tests.test_email_utils import set_email_settings
 
 class TestRegistrationProcessor(unittest.TestCase):
     def prepare_organization(self):

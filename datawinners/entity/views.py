@@ -20,6 +20,7 @@ import xlwt
 from django.contrib import messages
 
 from datawinners import utils
+from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, valid_web_user
 from datawinners.entity.data_sender import remove_system_datasenders, get_datasender_user_detail
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
@@ -29,7 +30,6 @@ from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
-from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired, session_not_expired, valid_web_user
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_data_sender_form, \
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields

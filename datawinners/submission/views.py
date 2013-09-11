@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
+from datawinners.accountmanagement.decorators import is_not_expired
 
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.submission.models import  SMSResponse
@@ -21,7 +22,6 @@ from datawinners.feeds.mail_client import mail_feed_errors
 from mangrove.transport.contract.request import Request
 from datawinners.messageprovider.exception_handler import handle
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
-from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.player import SMSPlayer
 from datawinners.submission.location import LocationBridge
 from mangrove.transport.repository.reporters import find_reporter_entity

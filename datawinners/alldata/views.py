@@ -3,9 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
-from datawinners.accountmanagement.views import session_not_expired, valid_web_user
+from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user
 from datawinners.dataextraction.helper import convert_to_json_response
-from datawinners.accountmanagement.views import is_new_user, is_allowed_to_view_reports
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
 from datawinners.settings import CRS_ORG_ID
 from datawinners.project.models import ProjectState, Project
@@ -16,7 +15,6 @@ from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
-from datawinners.accountmanagement.views import is_not_expired
 from django.http import Http404
 
 REPORTER_ENTITY_TYPE = u'reporter'

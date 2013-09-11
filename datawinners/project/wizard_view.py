@@ -6,9 +6,8 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
-from datawinners.accountmanagement.views import  session_not_expired
+from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
-from datawinners.accountmanagement.views import is_datasender
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_projects, get_all_project_names
@@ -21,7 +20,6 @@ from mangrove.utils.types import is_string
 from django.utils.translation import ugettext as _
 from datawinners.utils import get_organization, generate_project_name
 from mangrove.form_model.form_model import  FormModel
-from datawinners.accountmanagement.views import is_not_expired
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions
 from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, SET_DEADLINE

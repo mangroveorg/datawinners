@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import logging
+import json
 
 from django.contrib.auth.decorators import login_required
 from django.conf import settings as django_settings
@@ -11,171 +11,31 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
-from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
-from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER, CRS_ORG_ID
-from datawinners.main.database import get_database_manager
+from django.contrib.auth.views import login, password_reset, password_reset_confirm
+from django.utils.translation import ugettext as _, get_language, activate
+from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
+from django.http import Http404
+from django.contrib.auth import login as sign_in, logout
+from django.utils.http import base36_to_int
+from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_trial, valid_web_user, is_sms_api_user
 
+from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
+from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
+from datawinners.main.database import get_database_manager
 from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, \
     DataSenderOnTrialAccount, get_ngo_admin_user_profiles_for
-from django.contrib.auth.views import login, password_reset, password_reset_confirm
 from datawinners.project.models import get_all_projects, delete_datasenders_from_project
-from django.utils.translation import ugettext as _, get_language, activate
 from datawinners.project.models import Project
 from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
 from datawinners.activitylog.models import UserActivityLog
-import json
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS
 from datawinners.entity.helper import delete_datasender_for_trial_mode, \
     delete_datasender_users_if_any, delete_entity_instance
 from datawinners.entity.import_data import send_email_to_data_sender
-from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import TransportInfo
-from django.http import Http404
-from django.contrib.auth import login as sign_in, logout
-from django.utils.http import base36_to_int
-
-logger = logging.getLogger("django")
-
-
-def is_admin(f):
-    def wrapper(*args, **kw):
-        user = args[0].user
-        if not user.groups.filter(name="NGO Admins").count() > 0:
-            return HttpResponseRedirect(django_settings.HOME_PAGE)
-
-        return f(*args, **kw)
-
-    return wrapper
-
-
-def project_has_web_device(f):
-    def wrapper(*args, **kw):
-        request = args[0]
-        user = request.user
-        dbm = get_database_manager(user)
-        project_id = kw["project_id"]
-        project = Project.load(dbm.database, project_id)
-        if "web" not in project.devices:
-            referer = django_settings.HOME_PAGE
-            return HttpResponseRedirect(referer)
-        return f(*args, **kw)
-
-    return wrapper
-
-
-def is_sms_api_user(user):
-    return user.groups.filter(name="SMS API Users").count() > 0
-
-
-def not_api_user(f):
-    def wrapper(*args, **kw):
-        user = args[0].user
-        if is_sms_api_user(user):
-            return HttpResponseRedirect(django_settings.INDEX_PAGE)
-        return f(*args, **kw)
-
-    return wrapper
-
-
-def valid_web_user(f):
-    wrapper = login_required(not_api_user(session_not_expired(is_not_expired(f))), login_url="/login")
-    return wrapper
-
-
-def is_datasender(f):
-    def wrapper(*args, **kw):
-        user = args[0].user
-        if user.get_profile().reporter:
-            return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD)
-
-        return f(*args, **kw)
-
-    return wrapper
-
-
-def is_datasender_allowed(f):
-    def wrapper(*args, **kw):
-        user = args[0].user
-        if user.get_profile().reporter:
-            projects = get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
-        else:
-            projects = get_all_projects(get_database_manager(user))
-        project_ids = [project.id for project in projects]
-        project_id = kw['project_id']
-        if not project_id in project_ids:
-            return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD)
-
-        return f(*args, **kw)
-
-    return wrapper
-
-
-def is_new_user(f):
-    def wrapper(*args, **kw):
-        user = args[0].user
-        if not len(get_all_projects(get_database_manager(args[0].user))) and not user.groups.filter(
-                name="Data Senders").count() > 0:
-            return HttpResponseRedirect("/start?page=" + args[0].path)
-
-        return f(*args, **kw)
-
-    return wrapper
-
-
-def session_not_expired(f):
-    def wrapper(*args, **kw):
-        request = args[0]
-        user = request.user
-        try:
-            user.get_profile()
-        except NGOUserProfile.DoesNotExist:
-            logger.exception("The session is expired")
-            return HttpResponseRedirect(django_settings.INDEX_PAGE)
-        except Exception as e:
-            logger.exception("Caught exception when get user profile: " + e.message)
-            return HttpResponseRedirect(django_settings.INDEX_PAGE)
-        return f(*args, **kw)
-
-    return wrapper
-
-
-def is_not_expired(f):
-    def wrapper(*args, **kw):
-        request = args[0]
-        user = request.user
-        org = Organization.objects.get(org_id=user.get_profile().org_id)
-        if org.is_expired():
-            return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
-        return f(*args, **kw)
-
-    return wrapper
-
-
-def is_allowed_to_view_reports(f, redirect_to='/alldata'):
-    def wrapper(*args, **kw):
-        request = args[0]
-        user = request.user
-        profile = user.get_profile()
-        if CRS_ORG_ID != profile.org_id and profile.reporter:
-            return HttpResponseRedirect(redirect_to)
-        return f(*args, **kw)
-
-    return wrapper
-
-
-def is_trial(f):
-    def wrapper(*args, **kw):
-        user = args[0].user
-        profile = user.get_profile()
-        organization = Organization.objects.get(org_id=profile.org_id)
-        if not organization.in_trial_mode:
-            return HttpResponseRedirect(django_settings.HOME_PAGE)
-        return f(*args, **kw)
-
-    return wrapper
 
 
 def registration_complete(request):
@@ -300,15 +160,14 @@ def new_user(request):
                                   context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
-@session_not_expired
+@valid_web_user
 @is_admin
-@is_not_expired
 def users(request):
     if request.method == 'GET':
         org_id = request.user.get_profile().org_id
-        not_datasenders = User.objects.exclude(groups__name='Data Senders').values_list('id', flat=True)
-        users = NGOUserProfile.objects.filter(org_id=org_id, user__in=not_datasenders)
+        viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users']).values_list('id',
+                                                                                                              flat=True)
+        users = NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
         return render_to_response("accountmanagement/account/users_list.html", {'users': users},
                                   context_instance=RequestContext(request))
 

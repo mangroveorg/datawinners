@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from datawinners.accountmanagement.views import is_not_expired, is_datasender, session_not_expired
+from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from django.views.decorators.csrf import csrf_exempt
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response

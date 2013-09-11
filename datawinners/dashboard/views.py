@@ -8,13 +8,12 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
+from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_by_short_code, Entity
 from mangrove.datastore.queries import get_entities_by_type
-from datawinners.accountmanagement.views import session_not_expired, valid_web_user
 from datawinners import settings
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
-from datawinners.accountmanagement.views import is_datasender, is_not_expired
 from datawinners.dashboard import helper
 
 from datawinners.project.models import ProjectState, Project

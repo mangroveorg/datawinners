@@ -14,7 +14,7 @@ from mangrove.datastore.entity import Entity
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.entity.views import create_single_web_user
 from datawinners.entity.import_data import send_email_to_data_sender
-from datawinners.tests.test_email_utils import set_email_settings
+from datawinners.tests.email_utils import set_email_settings
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel
 
