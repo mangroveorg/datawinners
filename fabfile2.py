@@ -18,9 +18,9 @@ ENVIRONMENT_CONFIGURATIONS = {
     "ec2": "../../datawinners-conf/datawinners/local_settings_ec2.py",
 }
 
-ENVIRONMENT_VES = "/home/datawinners/virtual_env/datawinner"
+ENVIRONMENT_VES = "/home/mangrover/virtual_env/datawinners"
 
-ENVIRONMENT_TOMCAT = "/home/datawinners/tomcat7"
+ENVIRONMENT_TOMCAT = "/home/mangrover/tomcat7"
 
 ENVIRONMENT_JENKINS_JOB = {
     MANGROVE: 'Mangrove-develop',
@@ -396,3 +396,4 @@ def run_func_tests(environment="qa_supreme"):
     activate_and_run(virtual_env, "true")
     run("cd workspace/datawinners")
     run("./build.sh ft")
+
