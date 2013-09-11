@@ -1,7 +1,5 @@
 from collections import OrderedDict
-import elasticutils
 from datawinners.entity.helper import get_entity_type_fields, tabulate_data
-from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import DateField
 
@@ -23,25 +21,15 @@ def _add_text_field_mapping(mapping_fields, field):
         }}})
 
 
-def _mapping(form_model):
+def _mapping(key, fields):
     mapping_fields = {}
     mapping = {"date_detection": False, "properties": mapping_fields}
-    for field in form_model.fields:
+    for field in fields:
         if isinstance(field, DateField):
             _add_date_field_mapping(mapping_fields, field)
         else:
             _add_text_field_mapping(mapping_fields, field)
-    return {form_model.form_code: mapping}
-
-
-def _update_mapping(dbm, form_model):
-    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
-    es.put_mapping(dbm.database_name, form_model.entity_type[0], _mapping(form_model))
-
-
-def update_ds_mapping(dbm, form_model):
-    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
-    es.put_mapping(dbm.database_name, form_model.entity_type[0], _mapping(form_model))
+    return {key: mapping}
 
 
 def _entity_dict(entity_type, entity_doc, dbm, form_model):

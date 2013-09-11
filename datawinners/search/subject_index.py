@@ -1,6 +1,6 @@
 import elasticutils
 from datawinners.main.database import get_db_manager
-from datawinners.search.index_utils import _update_mapping, _entity_dict
+from datawinners.search.index_utils import _entity_dict, _mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.entity import get_all_entities
@@ -19,12 +19,6 @@ def subject_search_update(entity_doc, dbm):
     es.refresh(dbm.database_name)
 
 
-def subject_model_change_handler(form_model_doc, dbm):
-    form_model = FormModel.new_from_doc(dbm, form_model_doc)
-    if form_model.is_entity_registration_form() and form_model.form_code != REGISTRATION_FORM_CODE:
-        _update_mapping(dbm, form_model)
-
-
 def update_subject_index(dbname):
     dbm = get_db_manager(dbname)
     for row in dbm.load_all_rows_in_view('questionnaire'):
@@ -32,3 +26,15 @@ def update_subject_index(dbname):
         subject_model_change_handler(form_model_doc, dbm)
     for entity in get_all_entities(dbm):
         subject_search_update(entity, dbm)
+
+
+def subject_model_change_handler(form_model_doc, dbm):
+    form_model = FormModel.new_from_doc(dbm, form_model_doc)
+    if form_model.is_entity_registration_form() and form_model.form_code != REGISTRATION_FORM_CODE:
+        _update_subject_mapping(dbm, form_model)
+
+
+def _update_subject_mapping(dbm, form_model):
+    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    es.put_mapping(dbm.database_name, form_model.entity_type[0], _mapping(form_model.form_code, form_model.fields))
+
