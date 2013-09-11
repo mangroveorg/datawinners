@@ -62,7 +62,8 @@ class ProjectSubjectsPage(Page):
         self.driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[%d]/td[1]/input" % row_number)).click()
 
     def wait_for_subject_table_to_load(self):
-        WebDriverWait(self.driver, 1).until(lambda driver: driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[1]/td[1]/input")).is_displayed())
+        WebDriverWait(self.driver, 1).until(
+            lambda driver: driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[1]/td[1]/input")).is_displayed())
 
     def click_checkall_checkbox(self):
         self.driver.find(CHECKALL_CB).click()
@@ -93,9 +94,10 @@ class ProjectSubjectsPage(Page):
         return AddSubjectPage(self.driver)
 
     def is_checkall_enabled(self):
-        WebDriverWait(self.driver, 1).until(lambda driver: not driver.find(CHECKALL_CB).is_enabled())
+        WebDriverWait(self.driver, 2).until(lambda driver: not driver.find(CHECKALL_CB).is_enabled())
         return self.driver.find(CHECKALL_CB).is_enabled()
 
     def is_checkall_disabled(self):
-        WebDriverWait(self.driver, 1).until_not(lambda driver: not driver.find(CHECKALL_CB).is_enabled())
+        WebDriverWait(self.driver, 2).until_not(lambda driver: driver.find(CHECKALL_CB).is_enabled(),
+                                                message="Check-All box is not disabled")
         return not self.driver.find(CHECKALL_CB).is_enabled()
