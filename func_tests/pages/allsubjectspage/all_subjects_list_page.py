@@ -45,7 +45,7 @@ class AllSubjectsListPage(Page):
 
     def _select_subject_action(self):
         action_buttons = self.driver.find_elements_(by_css(".action"))
-        action_buttons[1].click()
+        action_buttons[0].click()
 
     def click_edit_action_button(self):
         for i in range(0,3):
