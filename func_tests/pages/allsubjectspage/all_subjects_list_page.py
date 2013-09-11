@@ -68,7 +68,9 @@ class AllSubjectsListPage(Page):
         self.driver.find_visible_element(by_css(".delete")).click()
 
     def get_successfully_deleted_message(self):
-        return self.driver.find(by_css('ul.messages > li.success')).text
+        message_element_selector = 'ul.messages > li.success'
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, message_element_selector, True)
+        return self.driver.find(by_css(message_element_selector)).text
 
     def is_subject_present(self, subject_id):
         return self.driver.is_element_present(by_css("input[value=%s]" % subject_id))
