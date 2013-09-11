@@ -2,6 +2,7 @@
 from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.allsubjectspage.all_subjects_locator import *
 from pages.page import Page
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class AllSubjectsListPage(Page):
@@ -48,6 +49,7 @@ class AllSubjectsListPage(Page):
 
     def click_edit_action_button(self):
         self._select_subject_action()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".edit"), True)
         self.driver.find_visible_element(by_css(".edit")).click()
         return AddSubjectPage(self.driver)
 
