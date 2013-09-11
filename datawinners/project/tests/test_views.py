@@ -5,25 +5,23 @@ from django.contrib.auth.models import User
 
 from django.core.urlresolvers import reverse
 from django.http import HttpRequest
-from django_countries.fields import CountryField
 from mock import Mock, patch, call
-from accountmanagement.models import Organization
 
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, DateField
-from entity.forms import ReporterRegistrationForm
+from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
-from project.export_to_excel import _prepare_export_data
-from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
+from datawinners.project.export_to_excel import _prepare_export_data
+from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
 from datawinners.project.survey_response_router import SurveyResponseRouter
-from project.utils import make_subject_links, make_data_sender_links
-from project.views.utils import add_link
-from project.views.views import get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
-from project.web_questionnaire_form import SubjectRegistrationForm
-from project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field
-from questionnaire.questionnaire_builder import get_max_code
-from transport import Response
+from datawinners.project.utils import make_subject_links, make_data_sender_links
+from datawinners.project.views.utils import add_link
+from datawinners.project.views.views import get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
+from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
+from datawinners.project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field
+from datawinners.questionnaire.questionnaire_builder import get_max_code
+from mangrove.transport import Response
 
 
 class TestProjectViews(unittest.TestCase):
@@ -93,7 +91,7 @@ class TestProjectViews(unittest.TestCase):
         self.assertEqual('Add a data sender', link.text)
 
     def test_should_get_preview_and_instruction_links(self):
-        with patch("project.wizard_view.reverse") as reverse:
+        with patch("datawinners.project.wizard_view.reverse") as reverse:
             reverse.side_effect = lambda *args, **kw: "/project/%s" % args[0]
             links = get_preview_and_instruction_links()
             self.assertEqual(links["sms_preview"], "/project/sms_preview")
@@ -118,9 +116,9 @@ class TestProjectViews(unittest.TestCase):
 
         project_info = {"name": "project_name", "entity_type": "clinic", "language": "en"}
 
-        with patch("project.preview_views.create_questionnaire") as questionnaire:
+        with patch("datawinners.project.preview_views.create_questionnaire") as questionnaire:
             questionnaire.return_value = form_model
-            with patch("project.preview_views.get_questions") as get_questions:
+            with patch("datawinners.project.preview_views.get_questions") as get_questions:
                 get_questions.return_value = questions
                 preview_context = get_sms_preview_context(manager, post, project_info)
                 self.assertEquals(preview_context['questionnaire_code'], 'q01')
@@ -134,7 +132,7 @@ class TestProjectViews(unittest.TestCase):
         form_model.fields = [{}]
         form_model.entity_defaults_to_reporter.return_value = False
 
-        with patch("project.preview_views.get_preview_for_field") as preview_of_field:
+        with patch("datawinners.project.preview_views.get_preview_for_field") as preview_of_field:
             preview_of_field.return_value = {"description": "description"}
             questions = get_questions(form_model)
             self.assertEquals(questions[0]["description"], "description")
@@ -144,9 +142,9 @@ class TestProjectViews(unittest.TestCase):
         form_model.fields = [{}]
         form_model.entity_defaults_to_reporter.return_value = True
 
-        with patch("project.preview_views.get_preview_for_field") as preview_of_field:
+        with patch("datawinners.project.preview_views.get_preview_for_field") as preview_of_field:
             preview_of_field.return_value = {"description": "description"}
-            with patch("project.preview_views.hide_entity_question") as hide_entity_question:
+            with patch("datawinners.project.preview_views.hide_entity_question") as hide_entity_question:
                 hide_entity_question.return_value = {"description": "description"}
                 questions = get_questions(form_model)
                 self.assertEquals(len(questions), 1)
@@ -167,12 +165,12 @@ class TestProjectViews(unittest.TestCase):
                         "language": "en"}
         post = {'project_state': 'Test'}
 
-        with patch("project.preview_views.get_questionnaire_form_model") as questionnaire_form_model:
+        with patch("datawinners.project.preview_views.get_questionnaire_form_model") as questionnaire_form_model:
             questionnaire_form_model.return_value = form_model
-            with patch("project.preview_views.SurveyResponseForm") as SurveyResponseForm:
+            with patch("datawinners.project.preview_views.SurveyResponseForm") as SurveyResponseForm:
                 mock_form = Mock(spec=SurveyResponseForm)
                 SurveyResponseForm.return_value = mock_form
-                with patch("project.preview_views.add_link_context") as add_link:
+                with patch("datawinners.project.preview_views.add_link_context") as add_link:
                     add_link.return_value = {'text': 'Add a datasender'}
                     web_preview_context = get_web_preview_context(manager, post, project_info)
                     project = web_preview_context['project']
@@ -183,7 +181,7 @@ class TestProjectViews(unittest.TestCase):
 
 
     def test_should_get_correct_instruction_and_preview_links_for_questionnaire(self):
-        with patch("project.views.views.reverse") as reverse:
+        with patch("datawinners.project.views.views.reverse") as reverse:
             reverse.side_effect = lambda *args, **kw: "/project/%s" % args[0]
             links = get_preview_and_instruction_links_for_questionnaire()
             self.assertEqual(links["sms_preview"], "/project/questionnaire_sms_preview")
