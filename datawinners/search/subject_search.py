@@ -37,7 +37,7 @@ def _add_text_field_mapping(mapping_fields, field):
     mapping_fields.update(
         {field.name: {"type": "multi_field", "fields": {
             field.name: {"type": "string"},
-            field.name + "_value": {"type": "string", "index": "not_analyzed", "include_in_all": False}
+            field.name + "_value": {"type": "string", "index_analyzer": "sort_analyzer", "include_in_all": False}
         }}})
 
 
@@ -98,7 +98,8 @@ class SubjectQuery():
             "order_field": subject_headers[query_params["order_by"]],
             "order": query_params["order"]
         })
-        query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_params["search_text"], paginated_query)
+        query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_params["search_text"],
+                                                                    paginated_query)
         subjects = self.response_creator.create_response(subject_headers, query_with_criteria)
         return query_with_criteria.count(), paginated_query.count(), subjects
 
