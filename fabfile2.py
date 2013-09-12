@@ -324,7 +324,8 @@ def _checkout_datawinners_conf(code_dir):
 
 
 def _deploy_datawinners(context):
-    _checkout_datawinners_conf(context.code_dir)
+    if context.environment == "ec2":
+        _checkout_datawinners_conf(context.code_dir)
     deploy_project(context, DATAWINNERS, post_checkout_datawinners)
 
     with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS)):
