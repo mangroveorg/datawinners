@@ -12,7 +12,7 @@ function reload_tables(responseJSON) {
     });
 }
 $(document).ready(function(){
-    if ($("div.data-sender-table-wrapper table#subject_table").length) {
+    if ($("div.table_container table#subject_table").length) {
         DW.all_ds_action_dropdown = new DW.action_dropdown({checkall: "#checkall-datasenders"});
     }
 });
