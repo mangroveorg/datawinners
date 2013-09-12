@@ -28,7 +28,7 @@ from datawinners.accountmanagement.models import Organization
 from mangrove.transport.contract.submission import Submission
 
 
-@SkipTest
+
 class TestImportData(MangroveTestCase):
     def setUp(self):
         MangroveTestCase.setUp(self)
@@ -76,6 +76,7 @@ class DummyLocationTree(object):
     def get_centroid(self, location_name, level):
         return 60, -12
 
+@SkipTest
 class TestFilePlayer(MangroveTestCase):
 
     def setUp(self):
