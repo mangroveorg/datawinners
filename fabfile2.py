@@ -80,8 +80,8 @@ def restart_servers():
 
 
 def stop_servers():
-    run("sudo /etc/init.d/nginx stop")
-    run("sudo /etc/init.d/uwsgi stop")
+    run("sudo service nginx stop || echo 'nginx already stopped'")
+    run("sudo service uwsgi stop || echo 'uwsgi already stopped'")
     print 'server stopped...'
 
 
