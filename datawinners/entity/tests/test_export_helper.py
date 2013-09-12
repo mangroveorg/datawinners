@@ -1,6 +1,6 @@
-from entity.entity_export_helper import get_json_field_infos_for_export
+from datawinners.entity.entity_export_helper import get_json_field_infos_for_export
 from mangrove.bootstrap import initializer
-from utils.test_utils.mangrove_test_case import MangroveTestCase
+from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 
 
 class TestExport(MangroveTestCase):
