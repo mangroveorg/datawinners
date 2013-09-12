@@ -168,6 +168,7 @@ class FilePlayer(Player):
 
     def accept(self, file_contents):
         responses = []
+        form_model = None
         from datawinners.utils import get_organization_from_manager
 
         organization = get_organization_from_manager(self.dbm)
@@ -178,10 +179,11 @@ class FilePlayer(Player):
         else:
             registered_emails = []
         rows = self.parser.parse(file_contents)
-        form_model = get_form_model_by_code(self.dbm, self.form_code)
         if len(rows) > 0:
             (form_code, values) = rows[0]
+            form_model = get_form_model_by_code(self.dbm, form_code)
             if self.form_code is not None and form_code != self.form_code:
+                form_model = get_form_model_by_code(self.dbm, self.form_code)
                 raise FormCodeDoesNotMatchException(
                     ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') %
                     form_model.entity_type[0], form_code=form_code)
