@@ -965,3 +965,6 @@ msgstr "Select all <b> %(total_number_of_records)s </b>subjects"
 
 msgid "Enter any information you want to find"
 msgstr ""
+
+msgid "All %(total_number_of_records)s Subjects selected."
+msgstr ""
