@@ -11,7 +11,7 @@ def get_json_field_infos_for_export(fields):
         if field['name'] != 'entity_type':
             fields_names.append(field['name'])
             instruction, example = _get_json_field_instruction_example(field)
-            labels.append(((field["label"], bold), ("\n" + instruction, brown), ("\n\n" + example, italic)))
+            labels.append(((field["label"], bold), (u"\n %s" % instruction, brown), (u"\n\n %s" % example, italic)))
             codes.append(field['code'])
     return fields_names, labels, codes
 
