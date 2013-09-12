@@ -50,7 +50,7 @@
     </div>
 
     <div id="all_subjects">
-        {% with create_entity_link=links.create_subject questions=questionnaire_form %}
+        {% with create_entity_link=links.create_subject%}
             {% include 'help/subjects_help.html' %}
         {% endwith %}
 

@@ -545,6 +545,7 @@ def import_subjects_from_project_wizard(request, form_code):
 def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, form_code, org_number,
                        form_model_fields, is_update=False, back_link=None, web_view=False):
     return {'questionnaire_form': questionnaire_form,
+            'questions': form_model_fields,
             'entity_type': entity_type,
             "disable_link_class": disable_link_class,
             "hide_link_class": hide_link_class,
