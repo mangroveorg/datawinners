@@ -97,6 +97,14 @@ class Organization(models.Model):
         message_tracker.increment_incoming_message_count_by(incoming_count)
         message_tracker.increment_outgoing_message_count_by(outgoing_count)
 
+    def increment_message_count_for(self, message_type='sms', count=1):
+        current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
+        message_tracker = self._get_message_tracker(current_month)
+        message_type_dict = {'sms': 'incoming_sms_count', 'web': 'incoming_web_count', 'sp': 'incoming_sp_count'}
+        current_count = getattr(message_tracker, message_type_dict.get(message_type))
+        setattr(message_tracker, message_type_dict.get(message_type), count + current_count)
+        message_tracker.save()
+
     #TODO Should be removed??
     def _configure_organization_settings(self):
         from datawinners.utils import generate_document_store_name
@@ -215,6 +223,8 @@ class MessageTracker(models.Model):
     month = models.DateField()
     sms_api_usage_count = models.IntegerField(default=0)
     incoming_sms_count = models.IntegerField(default=0)
+    incoming_web_count = models.IntegerField(default=0)
+    incoming_sp_count = models.IntegerField(default=0)
     outgoing_sms_count = models.IntegerField(default=0)
 
     def increment_incoming_message_count_by(self, count):
@@ -233,12 +243,26 @@ class MessageTracker(models.Model):
         return self.sms_api_usage_count + self.outgoing_sms_count
 
     def total_messages(self):
-        return self.outgoing_message_count() + self.incoming_sms_count
+        return self.outgoing_message_count() + self.total_monthly_incoming_messages()
+
+    def total_monthly_incoming_messages(self):
+        return self.incoming_sms_count + self.incoming_sp_count + self.incoming_web_count
 
     def reset(self):
         self.incoming_sms_count = 0
         self.outgoing_sms_count = 0
+        self.incoming_web_count = 0
+        self.incoming_sp_count = 0
+        self.sms_api_usage_count = 0
         self.save()
+
+    def total_incoming_in_total(self):
+        msg_trackers = MessageTracker.objects.filter(organization=self.organization_id, month__lt=self.month)
+        total_incoming = self.total_monthly_incoming_messages()
+        for msg_tracker in msg_trackers:
+            total_incoming += msg_tracker.total_monthly_incoming_messages()
+        return total_incoming
+    
 
     def __unicode__(self):
         return "organization : %s incoming messages: %d outgoing messages: %d" % (

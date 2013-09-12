@@ -226,7 +226,7 @@ def upgrade(request):
             payment_details = PaymentDetails.objects.model(organization=organization, invoice_period=invoice_period,
                                                            preferred_payment=preferred_payment)
             payment_details.save()
-            message_tracker = MessageTracker.objects.filter(organization=organization)
+            message_tracker = MessageTracker.objects.filter(organization=organization).order_by('-month')
             if message_tracker.count() > 0:
                 tracker = message_tracker[0]
                 tracker.reset()

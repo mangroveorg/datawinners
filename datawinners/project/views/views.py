@@ -754,6 +754,9 @@ class SurveyWebQuestionnaireRequest():
         response = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id) \
             .add_survey_response(created_request, reporter_id, additional_feed_dictionary, websubmission_logger)
         mail_feed_errors(response, self.manager.database_name)
+        if response.success and not created_request.is_update :
+            organization = Organization.objects.get(org_id=user_profile.org_id)
+            organization.increment_message_count_for('web')
         return response
 
     def response_for_post_request(self, is_update=None):

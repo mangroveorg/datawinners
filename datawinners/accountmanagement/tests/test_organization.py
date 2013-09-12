@@ -57,3 +57,11 @@ class TestOrganization(unittest.TestCase):
     def test_should_return_country_phone_code(self):
         country_code = self.organization.get_phone_country_code()
         self.assertEqual(country_code, "91")
+
+    def test_should_increment_by_submission_type(self):
+        increment_count_by_submission_type_dict = {'sms': 4,'sp':2, 'web':7}
+        for type, count in increment_count_by_submission_type_dict.items() :
+            self.organization.increment_message_count_for(type, count)
+            message_tracker = self._get_current_message_tracker_of_organization()
+            self.assertEqual(getattr(message_tracker, "incoming_" + type + "_count"), count)
+        
