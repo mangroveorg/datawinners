@@ -1,7 +1,11 @@
-# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import os
-
 SITE_ID = 1
+DEBUG=False
+
+
+ADMINS = (
+    ('TW', 'sairama@thoughtworks.com,ramyar@thoughtworks.com'),
+)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
