@@ -3,7 +3,7 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/entity_import.js"></script>#}
     <script type="text/javascript">
         var edit_url_template = "{% url edit_subject entity_type "entity_id_placeholder" %}";
     </script>
@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block page_content %}
-    {% include "entity/import_subject_popup.html" %}
+{#    {% include "entity/import_subject_popup.html" %}#}
     {% with create_subject_link=links.create_subject %}
         {% include 'subject_table.html' %}
     {% endwith %}

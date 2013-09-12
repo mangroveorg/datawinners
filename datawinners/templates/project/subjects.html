@@ -33,7 +33,7 @@
         var web_view = "{{web_view}}"
     </script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/entity_import.js"></script>#}
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
@@ -63,7 +63,7 @@
     </div>
 
     <div id="my_subjects">
-        {% with create_entity_link=register_subjects_link questions=questionnaire_form %}
+        {% with create_entity_link=register_subjects_link%}
             {% include 'help/subjects_help.html' %}
         {% endwith %}
 
