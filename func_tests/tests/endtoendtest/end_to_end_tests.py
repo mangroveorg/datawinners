@@ -34,6 +34,7 @@ from tests.endtoendtest.end_to_end_data import *
 from tests.projects.questionnairetests.project_questionnaire_data import VALID_SUMMARY_REPORT_DATA
 from tests.registrationtests.registration_tests import register_and_get_email
 from pages.alldatasenderspage.all_data_senders_locator import DELETE_BUTTON as CONFIRM_DELETE
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 def activate_account(driver, email):
@@ -219,6 +220,7 @@ class TestApplicationEndToEnd(BaseTest):
         activation_page = ResetPasswordPage(self.driver)
         activation_page.type_same_password(NEW_PASSWORD)
         activation_page.click_submit()
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Submission")
         self.assertEqual(self.driver.get_title(), "Data Submission")
         self.driver.go_to(LOGOUT)
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
