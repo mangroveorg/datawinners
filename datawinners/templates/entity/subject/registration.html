@@ -28,7 +28,7 @@
             <script type="text/javascript" src="/media/javascript/subjects/sms_preview.js"></script>
             <div id="my_subjects_links">
                 <ul>
-                    <li><a href="{% url edit_subject_questionnaire entity_type %}"
+                    <li><a href="{{ edit_subject_questionnaire_link }}"
                            class="edit-form-link">{% trans "Edit" %}</a>
                     </li>
                     <li><a href="javascript:void(0)" class="preview_subject_registration_form">{% trans "Print" %}</a>

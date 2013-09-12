@@ -661,6 +661,8 @@ class SubjectWebQuestionnaireRequest():
                              "org_number": get_organization_telephone_number(self.request),
                              "example_sms": get_example_sms_message(self.form_model.fields, self.form_code),
                              "web_view": web_view_enabled,
+                             "edit_subject_questionnaire_link": reverse('edit_subject_questionaire',
+                                                                        args=[self.project.id]),
                              "register_subjects_link": reverse('subject_questionnaire',
                                                                args=[self.project.id]) + "?web_view=True"}
         )
