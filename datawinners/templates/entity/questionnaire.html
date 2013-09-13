@@ -1,3 +1,4 @@
+{# Rename to edit_subject_type_questionnaire #}
 {% extends 'layout_application.html' %}
 {% load i18n %}
 {% block page_title %}{% trans "Subject - Questionnaire" %} {% endblock %}
@@ -63,5 +64,8 @@
         {% activetab "secondary_tab_nav" "criteria" %}
         {{ block.super }}
     {% endblock %}
+
+    <a href={% url create_subject entity_type %}>{% blocktrans %}Back to Registration Form{% endblocktrans %}</a>
+
     {% include 'entity/questionnaire_form.html' %}
 {% endblock %}

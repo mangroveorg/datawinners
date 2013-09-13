@@ -4292,3 +4292,6 @@ msgstr "Vos expéditeurs peuvent enregistrer un(e) clinic via SMS. Imprimez ce f
 
 msgid "View your registered %(entity_type)s(s) in detail."
 msgstr "Voir vos %(entity_type)s(s) enregistré(e)s en détail"
+
+msgid "Back to Registration Form"
+msgstr "Retour au formulaire d'enregistrement"

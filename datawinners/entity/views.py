@@ -739,6 +739,7 @@ def _get_all_datasenders(manager, projects, user):
 @session_not_expired
 @is_not_expired
 def edit_subject_questionnaire(request, entity_type=None):
+    # edit subject type questionnaire view
     manager = get_database_manager(request.user)
     if entity_type is None:
         return HttpResponseRedirect(reverse(all_subject_types))
