@@ -61,8 +61,10 @@ class TestProjectViews(unittest.TestCase):
                          subject_links['subject_registration_preview_link'])
         self.assertEqual(reverse('registered_subjects', args=[project_id]),
                          subject_links['registered_subjects_link'])
-        self.assertEqual(reverse('subject_questionnaire', args=[project_id]) + "?web_view=True",
+        self.assertEqual(reverse('subject_questionnaire', args=[project_id]),
                          subject_links['register_subjects_link'])
+        self.assertEqual(reverse('subject_questionnaire', args=[project_id]) + "?web_view=True",
+                         subject_links['register_subjects_link_web_view'])
 
     def test_should_return_datasender_project_links(self):
         project_id = "1"
@@ -79,7 +81,7 @@ class TestProjectViews(unittest.TestCase):
         project.id = "1"
         project.entity_type = "clinic"
         link = add_link(project)
-        self.assertEqual(reverse('subject_questionnaire', args=[project.id]) + "?web_view=True", link.url)
+        self.assertEqual(reverse('subject_questionnaire', args=[project.id]), link.url)
         self.assertEqual('Register a clinic', link.text)
 
     def test_for_websubmission_on_datasenders_should_provide_add_links(self):
