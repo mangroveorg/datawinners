@@ -120,11 +120,20 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
     return form_model
 
 
+def _get_form_code_prefix(entity_name):
+    return entity_name.lower().replace(" ", "")[:3]
+
+
+def _get_generated_form_code(entity_name, manager):
+    prefix = _get_form_code_prefix(entity_name)
+    form_code = _generate_form_code(manager, prefix)
+    return form_code
+
+
 def create_registration_form(manager, entity_name):
     if is_sequence(entity_name):
         entity_name = entity_name[0]
-    prefix = entity_name.lower()[:3]
-    form_code = _generate_form_code(manager, prefix)
+    form_code = _get_generated_form_code(entity_name, manager)
     form_model = _create_registration_form(manager, entity_name, form_code, [entity_name])
     form_model.save()
     return form_model
