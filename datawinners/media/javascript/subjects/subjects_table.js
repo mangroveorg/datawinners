@@ -47,6 +47,8 @@ $(document).ready(function () {
             [ $('#subjects_table th.name').index('#subjects_table th'), "asc"]
         ],
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+            lastXHR = oSettings.jqXHR;
+            lastXHR && lastXHR.abort && lastXHR.abort();
             oSettings.jqXHR = $.ajax({
                 "dataType": 'json',
                 "type": "GET",
