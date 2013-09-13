@@ -4295,3 +4295,9 @@ msgstr "Voir vos %(entity_type)s(s) enregistré(e)s en détail"
 
 msgid "Back to Registration Form"
 msgstr "Retour au formulaire d'enregistrement"
+
+msgid "You can't leave this empty."
+msgstr "Vous ne pouvez pas laisser ceci vide."
+
+msgid "Please use only letters (a-z), numbers, and spaces."
+msgstr "Utilisez uniquement des lettres (a-z), des chiffres et des espaces."

@@ -4219,3 +4219,8 @@ msgstr ""
 msgid "Back to Registration Form"
 msgstr ""
 
+msgid "You can't leave this empty."
+msgstr ""
+
+msgid "Please use only letters (a-z), numbers, and spaces."
+msgstr ""
