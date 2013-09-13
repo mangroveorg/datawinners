@@ -668,9 +668,9 @@ class SubjectWebQuestionnaireRequest():
                                                                args=[self.project.id]) + "?web_view=True"}
         )
 
-    def invalid_data_response(self, questionnaire_form):
+    def invalid_data_response(self, questionnaire_form, is_update):
         form_context = get_form_context(self.form_code, self.project, questionnaire_form,
-                                        self.manager, self.hide_link_class, self.disable_link_class)
+                                        self.manager, self.hide_link_class, self.disable_link_class, is_update)
         self._update_form_context(form_context, questionnaire_form)
         return render_to_response(self.template, form_context,
                                   context_instance=RequestContext(self.request))
@@ -705,7 +705,7 @@ class SubjectWebQuestionnaireRequest():
         organization = get_organization(self.request)
         questionnaire_form = self.form(self.request.POST, organization.country_name())
         if not questionnaire_form.is_valid():
-            return self.invalid_data_response(questionnaire_form)
+            return self.invalid_data_response(questionnaire_form, is_update)
 
         return self.success_resposne(is_update, organization, questionnaire_form)
 
