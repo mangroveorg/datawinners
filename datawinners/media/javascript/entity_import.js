@@ -82,7 +82,7 @@ $(document).ready(function () {
         modal: true,
         title: interpolate(gettext('Import a list of %(entity)s'), {entity: subject_type}, true),
         zIndex: 200,
-        width: 1000,
+        width: 940,
         close: function () {
             if ($('#message').length) {
                 window.location.replace(document.location.href);
