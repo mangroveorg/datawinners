@@ -21,7 +21,7 @@
 
     <div id="none-selected" class="dropdown">
         <div class="dropdown-panel">
-            {% trans "Select a " %}{{ entity_type|capfirst }}
+            {%  blocktrans with entity_type|capfirst as subject_type%}Select a {{ subject_type }}{% endblocktrans %}
         </div>
     </div>
 </div>
