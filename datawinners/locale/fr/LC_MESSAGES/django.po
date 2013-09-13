@@ -4072,11 +4072,8 @@ msgstr "Vous êtes en train de modifier les détails relatifs à votre Soumissio
 msgid "You are editing the %(subject_type) Details"
 msgstr "Vous êtes en train de modifier les détails relatifs à votre %(subject_type)"
 
-msgid "Select a %(subject_type)"
-msgstr "Sélectionnez un(e) %(subject_type)"
-
-msgid "Select a %(subject_type)s"
-msgstr "Sélectionnez un(e) %(subject_type)s"
+msgid "Select a "
+msgstr "Sélectionnez un(e) "
 
 msgid "not available for trial accounts"
 msgstr "non disponible pour le comptes essai"

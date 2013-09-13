@@ -2808,7 +2808,7 @@ msgstr ""
 msgid "Select a Submission"
 msgstr ""
 
-msgid "Select a %(subject_type)s"
+msgid "Select a "
 msgstr ""
 
 msgid "Select a Data Sender"
