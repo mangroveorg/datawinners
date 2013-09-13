@@ -2649,7 +2649,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-msgid "My %(entity_type)s list"
+msgid "My %(entity_type)s List"
 msgstr ""
 
 msgid "%(entity_type)s Registration Form"

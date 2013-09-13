@@ -2729,7 +2729,7 @@ msgstr "Voyez et gérez toutes les personnes, places, choses ou événements sur
 msgid "Hide help"
 msgstr "Cacher l'aide"
 
-msgid "My %(entity_type)s list"
+msgid "My %(entity_type)s List"
 msgstr "Ma liste de %(entity_type)s"
 
 msgid "%(entity_type)s Registration Form"
