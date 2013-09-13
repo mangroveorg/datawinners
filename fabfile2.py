@@ -86,8 +86,8 @@ def stop_servers():
 
 
 def start_servers():
-    run("sudo service start")
-    run("sudo service start")
+    run("sudo service uwsgi start")
+    run("sudo service nginx start")
     print 'server started..'
 
 
