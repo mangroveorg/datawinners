@@ -15,7 +15,7 @@ django-registration==0.8
 gdata
 BeautifulSoup
 networkx
-xlwt
+xlwt==0.7.5
 xlrd
 psycopg2==2.4.1
 django-extensions

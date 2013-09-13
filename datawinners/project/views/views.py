@@ -33,7 +33,7 @@ from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException, MangroveException
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER, header_fields
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER, header_fields, get_form_code_by_entity_type
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.request import Request
 from mangrove.transport.player.player import WebPlayer
@@ -622,6 +622,7 @@ class SubjectWebQuestionnaireRequest():
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
         self.form_code = _get_form_code(self.manager, self.project)
         self.form_model = _get_subject_form_model(self.manager, self.project.entity_type)
+        self.subject_registration_code = get_form_code_by_entity_type(self.manager,[self.project.entity_type])
 
     def form(self, initial_data=None, country=None):
         return SubjectRegistrationForm(self.form_model, data=initial_data, country=country)
@@ -654,13 +655,15 @@ class SubjectWebQuestionnaireRequest():
 
     def _update_form_context(self, form_context, questionnaire_form, web_view_enabled=True):
         form_context.update({'extension_template': 'project/subjects.html',
-                             'form_code': self.form_code,
+                             'form_code': self.subject_registration_code,
                              'entity_type': self.project.entity_type,
                              "questionnaire_form": questionnaire_form,
                              "questions": self.form_model.fields,
                              "org_number": get_organization_telephone_number(self.request),
-                             "example_sms": get_example_sms_message(self.form_model.fields, self.form_code),
+                             "example_sms": get_example_sms_message(self.form_model.fields, self.subject_registration_code),
                              "web_view": web_view_enabled,
+                             "edit_subject_questionnaire_link": reverse('edit_subject_questionaire',
+                                                                        args=[self.project.id]),
                              "register_subjects_link": reverse('subject_questionnaire',
                                                                args=[self.project.id]) + "?web_view=True"}
         )

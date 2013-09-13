@@ -23,7 +23,7 @@ $(document).ready(function () {
             "sInfo": gettext("<b>_START_ to _END_</b> of _TOTAL_ " + subject_type),
             "sInfoEmpty": "<b> 0 to 0</b> of 0 " + subject_type,
             "sEmptyTable": $('#no_registered_subject_message').clone(true, true).removeAttr("hidden").html(),
-            "sSearch":gettext("Search:"),
+            "sSearch":"<strong>" + gettext("Search:") + "</strong>",
             "oPaginate": {"sFirst": "", "sPrevious": "◀", "sNext": "▶", "sLast": ""}},
         "sPaginationType": "dw_pagination",
         "sAjaxSource": '/entity/subjects/' + subject_type.toLowerCase() + '/ajax/',
@@ -35,6 +35,7 @@ $(document).ready(function () {
             cloned_element.insertBefore(".dataTables_info").addClass('margin_top_10').removeClass('none');
             new DW.ActionsMenu();
             oSettings.select_all_checkbox = new DW.SubjectSelectAllCheckbox(this);
+            $(".styled_table").wrap('<div class="table_container" />');
         },
         "fnPreDrawCallback": function (oSettings) {
             if (oSettings.select_all_checkbox) oSettings.select_all_checkbox.un_check();
@@ -46,6 +47,8 @@ $(document).ready(function () {
             [ $('#subjects_table th.name').index('#subjects_table th'), "asc"]
         ],
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+            lastXHR = oSettings.jqXHR;
+            lastXHR && lastXHR.abort && lastXHR.abort();
             oSettings.jqXHR = $.ajax({
                 "dataType": 'json',
                 "type": "GET",

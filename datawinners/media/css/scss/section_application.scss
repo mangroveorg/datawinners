@@ -12,6 +12,7 @@
     overflow:hidden;
     min-height:600px;
     background:#e8eff6 url('/media/images/application_bg.gif') repeat-x top left !important;
+    padding-bottom: 30px;
     .content{
         min-height:550px;
         background:#FFFFFF;
@@ -61,6 +62,15 @@
             }
        }
     }
+}
+
+.table_container {
+  width: 910px;
+  overflow-x: auto;
+  margin-bottom: 30px;
+  .styled_table {
+    margin-bottom: 0;
+  }
 }
 
 table.styled_table{

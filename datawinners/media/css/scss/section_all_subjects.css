@@ -8,8 +8,7 @@
       font-weight: normal; }
     #all_subjects .all_subject_type_table .list_header .success_error {
       font-size: 12px;
-      font-weight: normal;
-      color: #666666; }
+      font-weight: normal; }
   #all_subjects .all_subject_type_table .list_header:hover {
     background: #ccdfed; }
   #all_subjects .all_subject_type_table .list_header.highlight {

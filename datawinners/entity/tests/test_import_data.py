@@ -1,6 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import OrderedDict
-from datawinners.entity.entity_export_helper import get_json_field_infos_for_export
+from unittest.case import SkipTest
+
+from mock import Mock, patch
+from django.contrib.auth.models import UserManager
+
 from mangrove.utils.form_model_builder import FormModelBuilder
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
@@ -21,10 +25,9 @@ from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.entity.helper import create_registration_form, get_json_field_infos
 from datawinners.submission.location import LocationBridge
 from datawinners.accountmanagement.models import Organization
-from mock import Mock, patch
-from django.contrib.auth.models import UserManager
 from mangrove.transport.contract.submission import Submission
-from unittest.case import SkipTest
+
+
 
 class TestImportData(MangroveTestCase):
     def setUp(self):
@@ -162,7 +165,9 @@ class TestFilePlayer(MangroveTestCase):
             with patch("datawinners.entity.import_data.get_form_model_by_code") as get_form_model_by_code_mock:
                 with patch("datawinners.entity.import_data.get_location_field_code") as get_location_field_code_mock:
                     get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
-                    get_form_model_by_code_mock.return_value = Mock()
+                    form_model = Mock(spec=FormModel)
+                    get_form_model_by_code_mock.return_value = form_model
+                    form_model.entity_question.code = 'rep987645'
                     get_location_field_code_mock.return_value = Mock()
 
                     responses = self.file_player.accept(self.csv_data_about_reporter)
@@ -333,17 +338,3 @@ class TestFilePlayer(MangroveTestCase):
         eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",entity_question_flag=True, ddtype=self.entity_id_type)
         blood_type_field = TextField(label="What is your blood group?", code="BG", name="What is your blood group?", ddtype=self.entity_id_type)
         return FormModelBuilder(self.manager, ["clinic"]).is_registration_model(True).add_fields(eid_field, blood_type_field).build()
-
-    @SkipTest
-    def test_should_get_field_infos_for_header_in_excel_export(self):
-        registration_form_model = self.manager.load_all_rows_in_view("questionnaire", key="reg")[0].get('value')
-        fields, labels, codes = get_json_field_infos_for_export(registration_form_model.get('json_fields'))
-        header = []
-        for label in labels:
-            self.assertTrue(isinstance(label, tuple))
-            self.assertEqual(len(label), 3)
-            header.append(label[0][0])
-
-        self.assertEqual(['name', 'short_code', 'location', 'geo_code', 'mobile_number'], fields)
-        self.assertEqual(["What is the subject's name?", "What is the subject's Unique ID Number", "What is the subject's location?","What is the subject's GPS co-ordinates?", 'What is the mobile number associated with the subject?'], header)
-        self.assertEqual(['n', 's', 'l', 'g', 'm'], codes)

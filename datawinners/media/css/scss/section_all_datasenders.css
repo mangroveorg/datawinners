@@ -18,7 +18,8 @@
   .devices span {
     display: block; }
   .devices .device-icons {
-    padding-top: 33px; }
+    padding-top: 33px;
+    width: 65px; }
     .devices .device-icons > div {
       float: left; }
     .devices .device-icons .web-icon {

@@ -38,9 +38,6 @@
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript" src="/media/javascript/subjects/subjects_export.js"></script>
-    <script type="text/javascript">
-        var upload_url = "{% url datawinners.entity.views.all_subject_types %}";
-    </script>
 {% endblock %}
 
 {% block content %}
@@ -48,11 +45,11 @@
         <div class="grid_8 alpha">
             <h2>{% trans "My Subjects" %}</h2>
         </div>
-        <div class="grid_8 float_right omega text_align_right">
+        <div class="grid_12 float_right omega text_align_right">
             <a href="{{ project_links.register_subjects_link }}">{% trans "Register a" %} {{ project.entity_type|capfirst }}</a>
             &nbsp;|&nbsp;
             <a href="javascript:void(0);" class="import-subject"
-               id="import-{{ project.entity_type }}">{% trans "Import a List" %}</a>
+               id="import-{{ project.entity_type }}">{% trans "Import a list" %}</a>
             <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}"
                class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit Registration Form</a>
             &nbsp;|&nbsp;

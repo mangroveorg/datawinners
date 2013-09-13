@@ -60,11 +60,10 @@ def add_geometry_data(db_name):
                 logger.info("    Database: " + db_name + "   type: " + form_model.entity_type[0] + "  short_code: " + entity.short_code)
         
                 if not "coordinates" in entity.geometry:
-                    geometry = {'type': 'Point', 'coordinates': [0, 0]}
+                    geometry = {'type': 'Point', 'coordinates': []}
                     entity.set_location_and_geo_code(entity.location_path, geometry)
                     entity.save()
 
-        #logger.info('End migration on database')
     except Exception as e:
         logger.exception(e.message)
 

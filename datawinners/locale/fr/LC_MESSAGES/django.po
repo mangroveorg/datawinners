@@ -2729,7 +2729,7 @@ msgstr "Voyez et gérez toutes les personnes, places, choses ou événements sur
 msgid "Hide help"
 msgstr "Cacher l'aide"
 
-msgid "My %(entity_type)s list"
+msgid "My %(entity_type)s List"
 msgstr "Ma liste de %(entity_type)s"
 
 msgid "%(entity_type)s Registration Form"
@@ -4295,3 +4295,9 @@ msgstr "Voir vos %(entity_type)s(s) enregistré(e)s en détail"
 
 msgid "Back to Registration Form"
 msgstr "Retour au formulaire d'enregistrement"
+
+msgid "You can't leave this empty."
+msgstr "Vous ne pouvez pas laisser ceci vide."
+
+msgid "Please use only letters (a-z), numbers, and spaces."
+msgstr "Utilisez uniquement des lettres (a-z), des chiffres et des espaces."
