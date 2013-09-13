@@ -14,7 +14,7 @@
         « {% trans "Back to All Subjects List" %}</a>
     </li>
     <li><a id="register_subjects" href="{% url create_subject entity_type %}?web_view=True">{% trans "Register a" %} {{ entity_type|capfirst }}</a>&nbsp;|&nbsp;
-        <a href="javascript:void(0);" class="import-subject">{% trans "Import a list" %}</a>&nbsp;|&nbsp;
+        <a href="javascript:void(0);" class="import-subject">{% trans "Import a List" %}</a>&nbsp;|&nbsp;
         <a id='subject_export_link' href="#">{% trans "Export" %}</a>
     </li>
     <li><a href="{% url edit_subject_questionnaire entity_type %}" hidden="true"
