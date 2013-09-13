@@ -4000,10 +4000,7 @@ msgstr ""
 msgid "You are editing the %(subject_type) Details"
 msgstr ""
 
-msgid "Select a %(subject_type)"
-msgstr ""
-
-msgid "Select a %(subject_type)s"
+msgid "Select a "
 msgstr ""
 
 msgid "not available for trial accounts"
