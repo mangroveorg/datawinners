@@ -16,12 +16,15 @@ table {
     .container_24 .content .data_block {
       width: auto; }
       .container_24 .content .data_block .data_table {
-        width: 100%; }
+        width: 100%;
+        margin-bottom: 30px; }
         .container_24 .content .data_block .data_table table {
           min-width: 100%;
           border: 1px solid #FFFFFF; }
           .container_24 .content .data_block .data_table table td {
             min-width: 170px; }
+          .container_24 .content .data_block .data_table table.styled_table {
+            margin-bottom: 0; }
 
 #page_title {
   /*float:left;*/

@@ -19,7 +19,7 @@
     </div>
     <div class="error">{% trans "Download the template:" %} <a
             href="{% url datawinners.entity.views.export_template entity_type %}">{{ entity_type }}.xls</a></div>
-    <table>
+    <table class="styled_table">
         <thead>
         {% for field in questions %}
             <th>{{ field.label }}</th>

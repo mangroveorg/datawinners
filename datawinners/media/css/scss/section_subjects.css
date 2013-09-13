@@ -705,13 +705,16 @@ ol.que_width {
         width: auto;
         font-weight: normal;
         font-size: 12px;
-        margin-top: 5px; }
+        margin-top: 5px;
+        white-space: nowrap; }
       ol.que_width li .answer input {
         float: left; }
       ol.que_width li .answer span {
         padding: 0 !important;
         margin: 0 !important;
         float: left; }
+        ol.que_width li .answer span.generate_id_check {
+          width: 310px; }
     ol.que_width li ul {
       margin: 0;
       float: left; }

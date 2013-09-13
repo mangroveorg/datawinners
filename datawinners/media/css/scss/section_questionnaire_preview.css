@@ -94,14 +94,20 @@
   color: #0070ac;
   outline: none; }
 
+.printBtn {
+  float: right; }
+
 .questionnaire_title {
   margin-bottom: 20px;
   float: left; }
   .questionnaire_title li {
     width: 100%;
     float: left; }
+    .questionnaire_title li p {
+      font-size: 15px; }
     .questionnaire_title li p, .questionnaire_title li h5 {
-      float: left; }
+      float: left;
+      line-height: 31px; }
     .questionnaire_title li p, .questionnaire_title li h5 {
       margin: -5px 0 0 10px; }
     .questionnaire_title li p.content {

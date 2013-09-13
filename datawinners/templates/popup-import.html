@@ -17,7 +17,7 @@
                 <div class="clear"></div>
             </div>
             <div class="error">{% trans "Download the template:"%} <a href="{% url datawinners.entity.views.export_template subject.entity %}">{{ subject.entity }}.xls</a></div>
-            <table>
+            <table class="styled_table">
                 <thead>
                     {% for title in subject.labels %}
                         <th>{{ title }}</th>
