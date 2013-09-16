@@ -1,7 +1,7 @@
 boto 
 Fabric==0.9.4
 django==1.3
-https://github.com/nose-devs/nose/zipball/master
+nose==1.3.0
 CouchDB==0.9
 coverage==3.4
 simplejson
@@ -23,7 +23,7 @@ apscheduler
 south==0.7.3
 supervisor
 python-dateutil==1.5
-https://github.com/jbalogh/django-nose/tarball/master#egg=django-nose
+django-nose==1.2
 feedparser
 nose-exclude
 https://github.com/jezdez/django_compressor/tarball/086f05041a28c176994ebc22dc41ce12da74045e
@@ -37,3 +37,4 @@ django-debug-toolbar-django13
 requests==1.2.3
 elasticutils
 uWSGI==1.4.9
+https://github.com/mangroveorg/mangrove/zipball/8_0_release
