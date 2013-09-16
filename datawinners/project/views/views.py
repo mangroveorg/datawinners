@@ -684,6 +684,8 @@ class SubjectWebQuestionnaireRequest():
             if response.success:
                 ReportRouter().route(organization.org_id, response)
                 success_message = self.success_message(response.short_code)
+            if not is_update:
+                questionnaire_form = self.form(country=organization.country_name())
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, self.form_model.fields)
         except DataObjectNotFound as exception:
