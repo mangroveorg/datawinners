@@ -37,4 +37,4 @@ django-debug-toolbar-django13
 requests==1.2.3
 elasticutils
 uWSGI==1.4.9
-https://github.com/mangroveorg/mangrove/zipball/8_0_release
+git+https://github.com/mangroveorg/mangrove.git@8_0_release#egg=mangrove
