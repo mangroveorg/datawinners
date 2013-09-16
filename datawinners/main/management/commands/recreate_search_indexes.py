@@ -4,7 +4,7 @@ import elasticutils
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.search.datasender_index import create_datasender_index
 from datawinners.search.subject_index import create_subject_index
-from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 
 
 def recreate_index_for_db(database_name, es):
@@ -20,7 +20,7 @@ def recreate_index_for_db(database_name, es):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+        es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT)
         if len(args) > 0:
             databases_to_index = args[0:]
         else:

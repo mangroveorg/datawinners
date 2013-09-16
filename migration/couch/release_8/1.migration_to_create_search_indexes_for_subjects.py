@@ -22,5 +22,5 @@ def create_search_indices_for_subjects(db_name):
     logger.info('Completed Indexing')
 
 
-es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
-migrate(all_db_names(), create_search_indices_for_subjects, version=(8, 0, 1))
+es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=180)
+migrate(all_db_names(), create_search_indices_for_subjects, version=(8, 0, 1), threads=3)

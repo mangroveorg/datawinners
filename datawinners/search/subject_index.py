@@ -3,7 +3,7 @@ from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import _entity_dict, _mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.documents import FormModelDocument
-from mangrove.datastore.entity import get_all_entities
+from mangrove.datastore.entity import Entity
 from mangrove.form_model.form_model import FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type
 
 
@@ -25,8 +25,9 @@ def _create_mappings(dbm):
 
 
 def _populate_index(dbm):
-    for entity in get_all_entities(dbm):
-        subject_search_update(entity, dbm)
+    rows = dbm.database.iterview('by_short_codes/by_short_codes', 100, reduce=False, include_docs=True)
+    for row in rows:
+        subject_search_update(Entity.__document_class__.wrap(row.get('doc')), dbm)
 
 
 def create_subject_index(dbname):
