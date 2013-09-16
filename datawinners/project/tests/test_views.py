@@ -341,6 +341,30 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
                                                                                      country="country")]
                                     , msg="this should be called twice with the arguments as listed above")
 
+    def test_form_should_have_initial_values_when_subject_edit_successful(self):
+        request = HttpRequest()
+        request.POST = {}
+        request.user = User(username="atest")
+        form = Mock(spec=SubjectRegistrationForm)
+        form.is_valid.return_value = True
+        with patch("datawinners.project.views.views.get_organization") as get_org:
+            with patch("datawinners.project.views.views.ReportRouter") as router:
+                with patch("datawinners.project.views.views.SubjectRegistrationForm") as subject_form:
+                    with patch("datawinners.project.views.views.get_form_context"):
+                        with patch("datawinners.project.views.views.RequestContext"):
+                            with patch("datawinners.project.views.views.render_to_response"):
+                                organization = Mock()
+                                organization.country_name.return_value = "country"
+                                get_org.return_value = organization
+                                subject_form.return_value = Mock()
+                                router.return_value = Mock()
+                                subject_web_request = self.StubSubjectWebQuestionnaireRequest(request, "project_id",
+                                                                                              form)
+                                subject_web_request.post(is_update=True)
+
+                                self.assertTrue(subject_form.call_args_list == [call(None, data={}, country="country")]
+                                    , msg="this should be called only once with the arguments as listed above")
+
 
     class StubSubjectWebQuestionnaireRequest(SubjectWebQuestionnaireRequest):
         def __init__(self, request, project_id, form_list):
