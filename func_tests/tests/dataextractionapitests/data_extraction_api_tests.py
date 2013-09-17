@@ -42,7 +42,7 @@ class DataExtractionAPITestCase(BaseTest):
 
     @classmethod
     def prepare_subject(cls):
-        cls.driver.go_to(DATA_WINNER_ADD_SUBJECT + cls.subject_type)
+        cls.driver.go_to(DATA_WINNER_ADD_SUBJECT + cls.subject_type + "?web_view=True")
         add_subject_page = AddSubjectPage(cls.driver)
         add_subject_page.add_subject_with(VALID_DATA)
         add_subject_page.submit_subject()
