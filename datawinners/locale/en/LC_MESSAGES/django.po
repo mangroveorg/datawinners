@@ -3997,7 +3997,7 @@ msgstr ""
 msgid "You are editing the Submission Details"
 msgstr ""
 
-msgid "You are editing the %(subject_type) Details"
+msgid "You are editing the %(entity_type)s Details"
 msgstr ""
 
 msgid "Select a "
