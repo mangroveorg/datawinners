@@ -81,7 +81,7 @@ class TestProjectViews(unittest.TestCase):
         project.id = "1"
         project.entity_type = "clinic"
         link = add_link(project)
-        self.assertEqual(reverse('subject_questionnaire', args=[project.id]), link.url)
+        self.assertEqual(reverse('subject_questionnaire', args=[project.id])+"?web_view=True", link.url)
         self.assertEqual('Register a clinic', link.text)
 
     def test_for_websubmission_on_datasenders_should_provide_add_links(self):
