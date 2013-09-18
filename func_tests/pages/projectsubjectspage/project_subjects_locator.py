@@ -13,8 +13,8 @@ NONE_SELECTED_LOCATOR = by_id("none-selected")
 ACTION_MENU = by_id("action")
 EMPTY_ACTION_MENU = by_id("none-selected")
 MY_SUBJECTS_TAB_LINK = by_css("#my_subjects ul.secondary_tab li:first-child a")
-SUBJECT_REG_FORM_TAB_LINK = by_css("#my_subjects ul.secondary_tab li:nth-child(2)")
+SUBJECT_REG_FORM_TAB_LINK = by_css("#my_subjects ul.secondary_tab li:nth-child(2) a")
 SUBJECT_CB_LOCATOR = "#subjects_table_wrapper tbody tr td:first-child input#%s"
 CHECKALL_CB = by_id("checkall-checkbox")
 SPECIFIC_TYPE_CB_BY_CSS = "[name=type][value=%s]"
-REGISTER_SUBJECT_LINK=by_id('register_subjects')
+REGISTER_SUBJECT_LINK = by_id('register_subjects')
