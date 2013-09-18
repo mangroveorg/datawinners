@@ -28,6 +28,7 @@ class TestEditSubjectRegistrationForm(BaseTest):
     def test_should_check_instruction_for_telephone_number_question(self):
         self.prerequisites_of_edit_subject_registration_form()
         subjects_page = self.project_overview_page.navigate_to_subjects_page()
+        subjects_page.navigate_to_subject_registration_form_tab()
         subjects_page.click_edit_form_link_and_continue()
         subjects_page.click_add_question_link()
         subjects_page.choose_question_type("telephone_number")

@@ -1,70 +1,54 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import OrderedDict
+import unittest
 from unittest.case import SkipTest
 
 from mock import Mock, patch
 from django.contrib.auth.models import UserManager
+from mangrove.datastore.database import DatabaseManager
 
 from mangrove.utils.form_model_builder import FormModelBuilder
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from datawinners.entity.import_data import get_entity_type_info
 from datawinners.entity.import_data import FilePlayer
-from datawinners.location.LocationTree import get_location_tree
 from mangrove.bootstrap import initializer
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import create_entity
-from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
-from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport.player.parser import CsvParser, XlsDatasenderParser
-from mangrove.transport.contract.transport_info import Channel, TransportInfo
-from mangrove.transport.contract.request import Request
+from mangrove.transport.contract.transport_info import Channel
 from mangrove.form_model.form_model import FormModel
-from datawinners.location.LocationTree import get_location_hierarchy
-from datawinners.entity.helper import create_registration_form, get_json_field_infos
+from datawinners.entity.helper import get_json_field_infos
 from datawinners.submission.location import LocationBridge
 from datawinners.accountmanagement.models import Organization
 from mangrove.transport.contract.submission import Submission
 
 
 
-class TestImportData(MangroveTestCase):
-    def setUp(self):
-        MangroveTestCase.setUp(self)
-        self._create_entities()
-        self.player = SMSPlayer(self.manager, location_tree=LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
-        self.transport = TransportInfo(transport="sms", source="1234", destination="5678")
-        initializer.run(self.manager)
+class TestImportData(unittest.TestCase):
 
-    def tearDown(self):
-        MangroveTestCase.tearDown(self)
+    def test_should_not_append_country_to_if_location_field_is_empty_in_imported_excel(self):
+            mock_dbm = Mock(spec=DatabaseManager)
+            file_player = FilePlayer(mock_dbm, Mock, 'csv')
+            form_model = Mock(spec=FormModel)
+            with patch('datawinners.entity.import_data.get_location_field_code') as get_location_field_code:
+                with patch('datawinners.entity.import_data.get_country_appended_location') as get_country_appended_location:
+                    get_location_field_code.return_value = 'q2'
+                    get_country_appended_location.return_value = 'loc,Madagascar'
+                    result = file_player.append_country_for_location_field(form_model, {'q1': 'val1', 'q2': ''},Mock(spec=Organization))
+                    self.assertEquals(result,{'q1': 'val1', 'q2': ''})
 
-    def _create_entities(self):
-        self.entity_type = ['clinic']
-        define_type(self.manager, self.entity_type)
-        create_registration_form(self.manager, self.entity_type)
-        self.entity_type = ['waterpoint']
-        define_type(self.manager, self.entity_type)
-        create_registration_form(self.manager, self.entity_type)
-        define_type(self.manager, ['reporter'])
-        self.name_type = DataDictType(self.manager, name='Name', slug='name', primitive_type='string')
-        self.telephone_number_type = DataDictType(self.manager, name='telephone_number', slug='telephone_number',
-                                                  primitive_type='string')
-        rep1 = create_entity(self.manager, ['reporter'], 'rep1')
-        rep1.add_data(data=[(MOBILE_NUMBER_FIELD, '1234', self.telephone_number_type),
-            (NAME_FIELD, "Test_reporter", self.name_type)], submission=dict(submission_id="2"))
-
-
-    def _register_entity(self, text):
-        self.player.accept(Request(text, self.transport))
-
-    def _register_entities(self):
-        self._register_entity('cli Bhopal Clinic India -12.35,49.3 123444 clb')
-        self._register_entity('cli Satna Clinic India -10.66,13.1 567223')
-        self._register_entity('cli Pune Clinic Yerawada -18.16,14.1 643321')
-        self._register_entity('wat Ambovombe Test Androy -18.16,14.1 123444')
-        self._register_entity('wat Morondava Test Menabe -15.91,12.67 138866')
+    def test_should_append_country_to_if_location_present_in_imported_excel(self):
+            mock_dbm = Mock(spec=DatabaseManager)
+            file_player = FilePlayer(mock_dbm, Mock, 'csv')
+            form_model = Mock(spec=FormModel)
+            with patch('datawinners.entity.import_data.get_location_field_code') as get_location_field_code:
+                with patch('datawinners.entity.import_data.get_country_appended_location') as get_country_appended_location:
+                    get_location_field_code.return_value = 'q2'
+                    get_country_appended_location.return_value = 'loc,Madagascar'
+                    result = file_player.append_country_for_location_field(form_model, {'q1': 'val1', 'q2': 'loc'},Mock(spec=Organization))
+                    self.assertEquals(result,{'q1': 'val1', 'q2': 'loc,Madagascar'})
 
 def dummy_get_location_hierarchy(foo):
     return [u'arantany']

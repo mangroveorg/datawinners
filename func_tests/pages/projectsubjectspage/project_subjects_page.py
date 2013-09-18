@@ -55,6 +55,9 @@ class ProjectSubjectsPage(Page):
     def navigate_to_my_subjects_list_tab(self):
         self.driver.find(MY_SUBJECTS_TAB_LINK).click()
 
+    def navigate_to_subject_registration_form_tab(self):
+        self.driver.find(SUBJECT_REG_FORM_TAB_LINK).click()
+
     def select_subject_by_uid(self, uid):
         self.driver.find(by_css(SUBJECT_CB_LOCATOR % str(uid))).click()
 

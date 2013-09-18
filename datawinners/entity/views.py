@@ -559,6 +559,7 @@ def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide
             "web_view": web_view,
             'extension_template': "entity/web_questionnaire.html",
             "register_subjects_link": reverse("create_subject", args=[entity_type]) + "?web_view=True",
+            "edit_subject_questionnaire_link": reverse("edit_subject_questionnaire", args=[entity_type])
     }
 
 

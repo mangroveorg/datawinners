@@ -11,6 +11,7 @@ from tests.activateaccounttests.activate_account_data import DS_ACTIVATION_URL, 
 from testdata.test_data import url, DATA_WINNER_LOGIN_PAGE, LOGOUT
 from tests.alldatasenderstests.all_data_sender_data import VALID_DATASENDER_WITH_EMAIL, SUCCESS_MSG, generate_random_email_id
 from tests.logintests.login_data import VALID_CREDENTIALS
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 @attr('suit_1')
@@ -32,6 +33,7 @@ class TestActivateDSAccount(BaseTest):
         activation_page = ResetPasswordPage(self.driver)
         activation_page.type_same_password(NEW_PASSWORD)
         activation_page.click_submit()
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Submission")
         self.assertEqual(self.driver.get_title(), "Data Submission")
 
 

@@ -128,11 +128,10 @@ class FilePlayer(Player):
         return response
 
     def append_country_for_location_field(self, form_model, values, organization):
-
         location_field_code = get_location_field_code(form_model)
         if location_field_code is None:
             return values
-        if location_field_code in values:
+        if location_field_code in values and values[location_field_code]:
             values[location_field_code] = get_country_appended_location(values[location_field_code], organization.country_name())
         return values
 
