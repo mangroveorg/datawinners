@@ -56,7 +56,7 @@ class TestProjectViews(unittest.TestCase):
         project_id = "1"
         subject_links = make_subject_links(project_id)
         self.assertEqual(reverse('registered_subjects', args=[project_id]), subject_links['subjects_link'])
-        self.assertEqual(reverse('edit_subject_questionaire', args=[project_id]), subject_links['subjects_edit_link'])
+        self.assertEqual(reverse('edit_my_subject_questionnaire', args=[project_id]), subject_links['subjects_edit_link'])
         self.assertEqual(reverse('subject_registration_form_preview', args=[project_id]),
                          subject_links['subject_registration_preview_link'])
         self.assertEqual(reverse('registered_subjects', args=[project_id]),

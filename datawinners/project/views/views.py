@@ -662,7 +662,7 @@ class SubjectWebQuestionnaireRequest():
                              "org_number": get_organization_telephone_number(self.request),
                              "example_sms": get_example_sms_message(self.form_model.fields, self.subject_registration_code),
                              "web_view": web_view_enabled,
-                             "edit_subject_questionnaire_link": reverse('edit_subject_questionaire',
+                             "edit_subject_questionnaire_link": reverse('edit_my_subject_questionnaire',
                                                                         args=[self.project.id]),
                              "register_subjects_link": reverse('subject_questionnaire',
                                                                args=[self.project.id]) + "?web_view=True"}
@@ -904,7 +904,7 @@ def _get_subject_form_model(manager, entity_type):
 
 
 @valid_web_user
-def edit_subject_questionaire(request, project_id=None):
+def edit_my_subject_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
 
