@@ -622,7 +622,7 @@ class SubjectWebQuestionnaireRequest():
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
         self.form_code = _get_form_code(self.manager, self.project)
         self.form_model = _get_subject_form_model(self.manager, self.project.entity_type)
-        self.subject_registration_code = get_form_code_by_entity_type(self.manager,[self.project.entity_type])
+        self.subject_registration_code = get_form_code_by_entity_type(self.manager, [self.project.entity_type])
 
     def form(self, initial_data=None, country=None):
         return SubjectRegistrationForm(self.form_model, data=initial_data, country=country)
@@ -660,7 +660,8 @@ class SubjectWebQuestionnaireRequest():
                              "questionnaire_form": questionnaire_form,
                              "questions": self.form_model.fields,
                              "org_number": get_organization_telephone_number(self.request),
-                             "example_sms": get_example_sms_message(self.form_model.fields, self.subject_registration_code),
+                             "example_sms": get_example_sms_message(self.form_model.fields,
+                                                                    self.subject_registration_code),
                              "web_view": web_view_enabled,
                              "edit_subject_questionnaire_link": reverse('edit_my_subject_questionnaire',
                                                                         args=[self.project.id]),
@@ -683,7 +684,8 @@ class SubjectWebQuestionnaireRequest():
             response = self.player_response(created_request)
             if response.success:
                 ReportRouter().route(organization.org_id, response)
-                success_message = self.success_message(response.short_code)
+                success_message = _("Your changes have been saved.") if is_update else self.success_message(
+                    response.short_code)
             if not is_update:
                 questionnaire_form = self.form(country=organization.country_name())
             else:

@@ -4070,8 +4070,8 @@ msgstr "La réponse doit être de 20 caractères au maximum"
 msgid "You are editing the Submission Details"
 msgstr "Vous êtes en train de modifier les détails relatifs à votre Soumission"
 
-msgid "You are editing the %(subject_type) Details"
-msgstr "Vous êtes en train de modifier les détails relatifs à votre %(subject_type)"
+msgid "You are editing the %(entity_type)s Details"
+msgstr "Vous êtes en train de modifier les détails relatifs à votre %(entity_type)s"
 
 msgid "Select a "
 msgstr "Sélectionnez un(e) "
