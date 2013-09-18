@@ -65,7 +65,7 @@
         {{ block.super }}
     {% endblock %}
 
-    <a href={% url create_subject entity_type %}>{% blocktrans %}Back to Registration Form{% endblocktrans %}</a>
+    <a class="back-to-list" href={% url create_subject entity_type %}>« {% blocktrans %}Back to Registration Form{% endblocktrans %}</a>
 
     {% include 'entity/questionnaire_form.html' %}
 {% endblock %}
