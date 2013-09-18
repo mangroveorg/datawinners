@@ -25,7 +25,7 @@ def add_link(project):
         return add_link_named_tuple(url=url, text=text)
     else:
         text = _("Register a %(subject)s") % {'subject': project.entity_type}
-        url = make_subject_links(project.id)['register_subjects_link']
+        url = make_subject_links(project.id)['register_subjects_link_web_view']
         return add_link_named_tuple(url=url, text=text)
 
 
