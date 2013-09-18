@@ -49,7 +49,7 @@ class TestShowActivityLog(unittest.TestCase):
         create_project_page.create_project_with(NEW_PROJECT_DATA)
         create_project_page.continue_create_project()
         questionnaire_page = CreateQuestionnairePage(cls.driver)
-        questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
+        questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA_SIMPLE)
         questionnaire_page.save_and_create_project_successfully()
         cls.driver.wait_for_page_with_title(5, 'Projects - Overview')
         return ProjectOverviewPage(cls.driver).get_project_title()
@@ -64,10 +64,11 @@ class TestShowActivityLog(unittest.TestCase):
         self.assertEqual(ACTIVITY_LOG_PAGE_TITLE, self.driver.get_title())
         activity_log_page.select_filter("Project", "Created Project")
         time.sleep(3)
-        project_title = activity_log_page.get_data_on_cell(1, 3)
-        self.assertEqual(project_title.lower(), self.project_title)
-        self.assertEqual(activity_log_page.get_data_on_cell(1, 1), TESTER_NAME)
-        self.assertEqual(activity_log_page.get_data_on_cell(1, 2), CREATED_PROJECT_ACTION)
+        projects = [activity_log_page.get_data_on_cell(i, 3).lower() for i in range(1, 10)]
+        row_index = projects.index(self.project_title)
+        self.assertTrue(row_index>=0, "Project title not found in activity log")
+        self.assertEqual(activity_log_page.get_data_on_cell(row_index+1, 1), TESTER_NAME)
+        self.assertEqual(activity_log_page.get_data_on_cell(row_index+1, 2), CREATED_PROJECT_ACTION)
 
     @attr('functional_test')
     def test_should_only_show_logs_for_current_organization(self):

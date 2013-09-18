@@ -48,6 +48,7 @@ class TestSubmissionLog(unittest.TestCase):
     def test_should_show_warning_when_deleting_records(self):
         submission_log_page = self.get_submission_log_page()
         submission_log_page.check_all_submissions()
+        time.sleep(1) # instead, check for other checkboxes value
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())

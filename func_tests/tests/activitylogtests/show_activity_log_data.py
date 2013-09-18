@@ -65,6 +65,13 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
                       SUCCESS_MSG: "Your questionnaire has been saved",
                       PAGE_TITLE: "Data Senders"}
 
+QUESTIONNAIRE_DATA_SIMPLE = {QUESTIONNAIRE_CODE: "SIM", GEN_RANDOM: True,
+                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?"},
+                      QUESTIONS: [],
+                      CHARACTER_REMAINING: "65 / 160 characters used (1 SMS)",
+                      SUCCESS_MSG: "Your questionnaire has been saved",
+                      PAGE_TITLE: "Data Senders"}
+
 NEW_PROJECT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
                     PROJECT_BACKGROUND: "This project is created by functional automation suite.",
                     PROJECT_TYPE: 'survey',
