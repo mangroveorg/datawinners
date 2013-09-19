@@ -75,8 +75,7 @@
                         {% if 'yes' in project.activity_report %}
                             {% trans "You have not registered a reporter yet." %}
                         {% else %}
-                            {% blocktrans with project.entity_type as subject %}You have not registered a {{ subject }} yet.
-                            {% endblocktrans %}
+                            {% blocktrans with project.entity_type as subject %}You have not registered a {{ subject }} yet.{% endblocktrans %}
                         {% endif %}
                     </p>
                     <a id="datasenders_edit_link" href="{{ add_link.url }}" {% if add_link.url == '#' %}

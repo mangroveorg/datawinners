@@ -2931,7 +2931,7 @@ msgid "subject_question"
 msgstr "Quʼest-ce quʼun Sujet?"
 
 msgid "subject_answer"
-msgstr "Un Sujet est ce que votre questionnaire concerne; une personne précise, un lieu, une chose ou un"
+msgstr "Un Sujet est ce que votre questionnaire concerne; une personne précise, un lieu, une chose ou un "
 "événement à propos duquel les Expéditeurs de Données soumettent un rapport."
 "<br/>Dans de nombreux cas, l'Expéditeur de Données interagit avec un Sujet, puis envoie un rapport individuel portant sur l'interaction:"
 "<ul><li>Un médecin examine un bébé. Dans ce cas, le sujet est le bébé.</li>"
