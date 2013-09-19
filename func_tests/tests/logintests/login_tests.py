@@ -10,6 +10,7 @@ from pages.expiredtrialpage.expired_trial_page import ExpiredTrialPage
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, LOGOUT
 from tests.logintests.login_data import *
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 @attr('suit_2')
@@ -65,10 +66,10 @@ class TestLoginPage(BaseTest):
 
     @attr('functional_test')
     def test_register_link_functionality(self):
-        self.driver.go_to(LOGOUT)
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
         register_page = login_page.navigate_to_registration_page()
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Register")
         self.assertEqual(self.driver.get_title(), "Register")
 
     @attr('functional_test')

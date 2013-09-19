@@ -5,10 +5,11 @@ from nose.plugins.attrib import attr
 from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url
 from tests.alldatasenderstests.all_data_sender_data import random_string
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import *
@@ -211,10 +212,13 @@ class TestProjectQuestionnaire(BaseTest):
         self.assertTrue(fetch_(SUCCESS_MESSAGE, VALID_SMS) in message, "message:" + message)
 
 
+    def goto_dashboard(self):
+        self.driver.go_to(url("/dashboard/"))
+        return DashboardPage(self.driver)
+
     @attr('functional_test')
     def test_successful_questionnaire_creation(self):
-        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
-        create_project_page = dashboard_page.navigate_to_create_project_page()
+        create_project_page = self.goto_dashboard().navigate_to_create_project_page()
         create_project_page.create_project_with(CLINIC_PROJECT_DATA)
         create_project_page.continue_create_project()
         create_questionnaire_page = CreateQuestionnairePage(self.driver)
@@ -241,7 +245,7 @@ class TestProjectQuestionnaire(BaseTest):
 
     @attr('functional_test')
     def test_should_not_create_project_if_description_longer_than_300_chars(self):
-        create_project_page = self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
+        create_project_page = self.goto_dashboard().navigate_to_create_project_page()
         create_project_page.create_project_with(LONG_DESCRIPTION_DATA)
         create_project_page.continue_create_project()
         self.assertTrue(create_project_page.description_has_error())

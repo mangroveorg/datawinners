@@ -4,15 +4,19 @@ from datetime import datetime
 import time
 
 from nose.plugins.attrib import attr
+from selenium.webdriver.support.wait import WebDriverWait
 
 from framework.base_test import setup_driver, teardown_driver
+from framework.exception import CouldNotLocateElementException
+from framework.utils.common_utils import by_css
 from pages.loginpage.login_page import LoginPage
-from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON
+from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, ACTION_SELECT_CSS_LOCATOR
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog_page import WarningDialog
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 @attr('suit_3')
@@ -47,8 +51,11 @@ class TestSubmissionLog(unittest.TestCase):
     @attr('functional_test')
     def test_should_show_warning_when_deleting_records(self):
         submission_log_page = self.get_submission_log_page()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTION_SELECT_CSS_LOCATOR, True)
+
+        time.sleep(5) # instead, check for other checkboxes value
         submission_log_page.check_all_submissions()
-        time.sleep(1) # instead, check for other checkboxes value
+        WebDriverWait(self.driver, UI_TEST_TIMEOUT, 1, (CouldNotLocateElementException)).until(lambda x: x.find(by_css(".selected_submissions")).is_selected())
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
