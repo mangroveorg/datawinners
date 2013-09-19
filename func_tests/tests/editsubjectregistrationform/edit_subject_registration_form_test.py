@@ -13,9 +13,11 @@ class TestEditSubjectRegistrationForm(BaseTest):
         all_project_page = global_navigation.navigate_to_view_all_project_page()
         self.project_overview_page = all_project_page.navigate_to_project_overview_page("Clinic5 Test Project")
 
+    @attr('functional_test')
     def test_should_add_question_successfully(self):
         self.prerequisites_of_edit_subject_registration_form()
         subjects_page = self.project_overview_page.navigate_to_subjects_page()
+        subjects_page.navigate_to_subject_registration_form_tab()
         subjects_page.click_edit_form_link_and_continue()
         subjects_page.click_add_question_link()
 

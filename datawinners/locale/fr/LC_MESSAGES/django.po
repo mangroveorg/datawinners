@@ -4073,8 +4073,8 @@ msgstr "Vous êtes en train de modifier les détails relatifs à votre Soumissio
 msgid "You are editing the %(entity_type)s Details"
 msgstr "Vous êtes en train de modifier les détails relatifs à votre %(entity_type)s"
 
-msgid "Select a "
-msgstr "Sélectionnez un(e) "
+msgid "Select a %(subject_type)s"
+msgstr "Sélectionnez un(e) %(subject_type)s"
 
 msgid "not available for trial accounts"
 msgstr "non disponible pour le comptes essai"
