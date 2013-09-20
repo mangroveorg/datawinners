@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from random import random
 from unittest.case import TestCase
 
 from django.conf import settings
@@ -20,7 +21,6 @@ from datawinners.search.subject_search import SubjectQuery
 from datawinners.tests.email_utils import set_email_settings
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel
-from framework.utils.common_utils import generateId, get_random_three_digit_string
 
 
 WEB_USER_TEST_EMAIL = "test_email_for_create_single_web_user@test.com"
@@ -268,7 +268,7 @@ class TestView(TestCase):
     def test_index_of_key_in_ordered_dict(self):
         d = OrderedDict()
         for index in range(0, 10):
-            value = get_random_three_digit_string() if index != 7 else "short_code"
+            value = str(int(random.random()*1000)) if index != 7 else "short_code"
             d.update({value: value})
         self.assertEquals(_index_ofkey_in_ordered_dict(d, "short_code"), 7, "failed for " + str(d))
 
