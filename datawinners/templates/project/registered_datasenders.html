@@ -127,11 +127,9 @@
                 <tr>
                     <td><input id="{{ data.short_code }}" type="checkbox" value="{{ data.short_code }}"
                                {% if data.is_user %}class="is_user"{% endif %}/>
-                    <td>{{ data.name }}</td>
-                    <td>{{ data.short_code }}</td>
-                    <td>{{ data.location }}</td>
-                    <td>{{ data.geo_code }}</td>
-                    <td>{{ data.mobile_number }}</td>
+                    {% for col in data.cols %}
+                        <td class="{{ col }}">{{ col }}</td>
+                    {% endfor %}
                     <td style="display: none">{{ data.project }}</td>
                     <td class="email">{{ data.email|default_if_none:"" }}</td>
                     <td class="device-icon"><img src="/media/images/right_icon.png" alt="Yes"></td>
