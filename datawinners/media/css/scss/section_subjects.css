@@ -233,7 +233,7 @@ form ul li {
     width: 350px;
     height: 100px;
     border-color: #cccccc;
-    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
+    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
   form ul li label {
     font-size: 14px;
     display: block;
@@ -243,7 +243,7 @@ form ul li {
     font-weight: bold; }
   form ul li input {
     float: left;
-    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
+    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
   form ul li span[wmwrap=true] {
     float: left;
     top: 3px; }
@@ -290,7 +290,7 @@ div.error_arrow {
 span.error_arrow, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 3px;
   display: inline;
-  float: left !important; }
+  float: left!important; }
 
 span .error_arrow label, div.error_arrow label, label.error_arrow label {
   float: none;
@@ -875,7 +875,8 @@ span.paginate_more_disabled {
 #select_all_message {
   clear: both;
   margin: 10px 0px;
-  text-align: center; }
+  text-align: center;
+  height: 1em; }
 
 .padding_right_null {
   padding-right: 0 !important; }
@@ -951,7 +952,7 @@ span.paginate_more_disabled {
   margin-left: 20px; }
 
 .margin_left_180 {
-  margin-left: 180px !important; }
+  margin-left: 180px!important; }
 
 .margin_right_20 {
   margin-right: 20px; }
@@ -1052,7 +1053,7 @@ table.no_border td, table.no_border th {
   padding-left: 25px; }
 
 .cancel_link {
-  color: #0070ac !important;
+  color: #0070AC !important;
   margin-right: 10px;
   margin-top: 6px; }
 
