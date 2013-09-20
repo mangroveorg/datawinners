@@ -192,6 +192,9 @@ $(document).ready(function () {
                 if (json_data.success) {
                     $("#web_user_block").dialog("close");
                     var redirect_url = location.href;
+                    if (redirect_url.indexOf('#') != -1) {
+                        redirect_url = redirect_url.substr(0,redirect_url.indexOf('#'));
+                    }
                     if (redirect_url.indexOf('?web=1') == -1) {
                         redirect_url = redirect_url + '?web=1';
                     }
