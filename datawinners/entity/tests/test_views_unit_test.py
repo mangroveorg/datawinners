@@ -268,7 +268,7 @@ class TestView(TestCase):
     def test_index_of_key_in_ordered_dict(self):
         d = OrderedDict()
         for index in range(0, 10):
-            value = str(int(random.random()*1000)) if index != 7 else "short_code"
+            value = str(int(random()*1000)) if index != 7 else "short_code"
             d.update({value: value})
         self.assertEquals(_index_ofkey_in_ordered_dict(d, "short_code"), 7, "failed for " + str(d))
 
