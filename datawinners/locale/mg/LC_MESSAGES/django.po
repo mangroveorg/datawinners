@@ -1847,8 +1847,8 @@ msgstr "Diso. Misy olana ara teknika. Azafady antsoy fangalana torohevitra"
 msgid "Terms and Conditions"
 msgstr ""
 
-msgid "You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects."
-msgstr ""
+msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+msgstr "Efa tratra ny fetran'ny SMS-nao, 50 farafahabetsany. Azafady, misorata anarana amin'ny tolotra andoavam-bola mba hahafahanao manohy ny fandefasana SMS."
 
 msgid "Which subject are you reporting on?"
 msgstr ""

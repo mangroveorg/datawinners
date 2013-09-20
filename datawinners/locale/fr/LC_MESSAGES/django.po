@@ -2271,8 +2271,8 @@ msgstr "pour ce projet."
 msgid "enabled"
 msgstr "activés"
 
-msgid "You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects."
-msgstr "Vous avez utilisé vos 100 SMS pour le compte d'essai. S'il vous plaît passer à un abonnement mensuel de continuer à envoyer des données à vos projets."
+msgid "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+msgstr "Vous avez atteint la limite de 50 soumissions par SMS. Adoptez la version payante pour vos nouvelles soumissions par SMS."
 
 msgid "Which subject are you reporting on?"
 msgstr "Votre rapport porte sur quel sujet?"

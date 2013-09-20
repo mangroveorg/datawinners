@@ -25,6 +25,9 @@ from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.transport.player.player import SMSPlayer
 from datawinners.submission.location import LocationBridge
 from mangrove.transport.repository.reporters import find_reporter_entity
+from django.utils import translation
+from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.transport.player.parser import SMSParserFactory
 
 
 logger = logging.getLogger("django")
@@ -103,13 +106,22 @@ def process_sms_counter(incoming_request):
         return incoming_request
 
     if organization.has_exceeded_message_limit():
-        incoming_request['outgoing_message'] = ugettext(
-            "You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")
-        return incoming_request
+        return get_translated_response_message(incoming_request,
+            "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects.")
 
     incoming_request['next_state'] = submit_to_player
     return incoming_request
 
+
+def get_translated_response_message(incoming_request, original_message):
+    message = incoming_request.get('incoming_message')
+    dbm = incoming_request.get('dbm')
+    parser = SMSParserFactory().getSMSParser(message, dbm)
+    parsing_result = parser.parse(message)
+    form_model = get_form_model_by_code(dbm, parsing_result[0])
+    translation.activate(form_model.activeLanguages[0])
+    incoming_request['outgoing_message'] = ugettext(original_message)
+    return incoming_request
 
 def send_message(incoming_request, response):
     ReportRouter().route(incoming_request['organization'].org_id, response)
