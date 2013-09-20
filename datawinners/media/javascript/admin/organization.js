@@ -4,6 +4,8 @@
 
         var submit_button = $("#changelist-form button[type=submit]");
 
+        $("select[name=action]").attr('disabled', 'disabled');
+
         var action = '';
 
         var warning_messages_by_actions = {"activate_organizations":gettext("Do you want to activate the account(s)?"),
@@ -12,6 +14,11 @@
                                                    "<br/>Are you sure you want to delete?"),
                                            "delete_active_accounts":gettext("You are trying to delete 1 or more active accounts."+
                                                    "<br/>Only deactivated accounts can be deleted.<br/><br/>Deactivate all account(s) first.")};
+
+        var popup_titles = {"activate_organizations":gettext("Activate Account(s)"),
+            "deactivate_organizations":gettext("Deactivate Account(s)"),
+            "delete_organizations":gettext("The Accounts(s) will be Deleted"),
+            "delete_active_accounts":gettext("Active Accounts(s) cannot be Deleted")}
 
         var confirm_caption = {"activate_organizations":gettext("Activate"),
             "deactivate_organizations":gettext("Deactivate"),
@@ -22,6 +29,15 @@
 
         $("#warning_popup").dialog({autoOpen:false, width:'auto', close:close_dialog, modal:true});
 
+
+        $("tr input.action-select,input#action-toggle").click(function(){
+            if ($("tr input.action-select:checked,input#action-toggle:checked").length) {
+                $("select[name=action]").removeAttr('disabled');
+            } else {
+                $("select[name=action]").attr('disabled','disabled');
+            }
+        });
+
         $("select[name=action]").change(function(){
 
             var action_selected = $(this).attr("value");
@@ -31,12 +47,12 @@
 
             if (action_selected){
                 submit_button.attr("disabled","disabled");
-                $("#warning_message").val(warning_messages_by_actions[action_selected]);
+                $("#warning_message").html(warning_messages_by_actions[action_selected]);
+                $("#warning_popup").dialog("option", "title", popup_titles[action_selected]);
                 $("#perform_action").val(confirm_caption[action_selected]);
 
                 if (action_selected == "delete_organizations") {
-                    $("#warning_popup").dialog("option", "title", gettext("The Accounts(s) will be Deleted"));
-                    var index_of_status = $("#result_list thead th").index($("#result_list thead th:contains('Ngo status')")) +1;
+                    var index_of_status = $("#result_list thead th").index($("#result_list thead th:contains('Status')")) +1;
                     var selected_contains_active = false;
 
                     $("#result_list tbody tr.selected").each(function(index, element){
@@ -49,7 +65,7 @@
                         $("#warning_message").html(warning_messages_by_actions['delete_active_accounts']);
                         $("#cancel_action").val(confirm_caption['delete_active_accounts']);
                         $("#perform_action").css("display","none");
-                        $("#warning_popup").dialog("option", "title", gettext("Active Accounts(s) cannot be Deleted"));
+                        $("#warning_popup").dialog("option", "title", popup_titles['delete_active_accounts']);
                     }
                 }
 
