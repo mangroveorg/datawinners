@@ -160,6 +160,9 @@
     background-position: left 0 !important;
     color: #000000 !important; }
 
+#web_form_heading {
+  margin-bottom: 20px; }
+
 #sms_preview {
   padding: 20px;
   border: 1px solid #dddddd;
@@ -1360,3 +1363,7 @@ div.border_top_bottom {
 
 .display_none {
   display: none; }
+
+.back-to-list {
+  display: inline-block;
+  margin: -15px 0 15px 0; }
