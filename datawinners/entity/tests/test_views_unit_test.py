@@ -1,22 +1,26 @@
+from collections import OrderedDict
 from unittest.case import TestCase
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
+from django.http import HttpRequest
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
 from mock import Mock, patch, PropertyMock
 from django.core import mail
 
-from datawinners.entity.views import initialize_values
+from datawinners.entity.views import initialize_values, subject_short_codes_to_delete, _index_ofkey_in_ordered_dict
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.entity.views import create_single_web_user
 from datawinners.entity.import_data import send_email_to_data_sender
+from datawinners.search.subject_search import SubjectQuery
 from datawinners.tests.email_utils import set_email_settings
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel
+from framework.utils.common_utils import generateId, get_random_three_digit_string
 
 
 WEB_USER_TEST_EMAIL = "test_email_for_create_single_web_user@test.com"
@@ -235,4 +239,38 @@ class TestView(TestCase):
 
         self.assertIsInstance(empty_field.value, unicode)
         self.assertEquals(u"SomeValue", empty_field.value)
+
+    def test_select_short_codes_sent_from_web_when_all_ids_not_selected(self):
+        request = HttpRequest()
+        request.POST = {"all_ids": "1;2;3"}
+        self.assertEquals(subject_short_codes_to_delete(request, Mock(DatabaseManager), "test_type"), ['1', '2', '3'])
+
+    def test_select_short_codes_using_search_query_when_all_selected_on_web(self):
+        request = HttpRequest()
+        request.user = 'test'
+        request.POST = {"all_ids": "1;2;3", "all_selected": "true", "search_query": "something"}
+        with patch("datawinners.entity.views.SubjectQuery")  as mock_subject_query_class:
+            with patch("datawinners.entity.views.header_fields") as header_fields:
+                instance = Mock(spec=SubjectQuery)
+                mock_subject_query_class.return_value = instance
+                instance.query.return_value = [['s', 'x'], ['s', 'y']]
+                header = OrderedDict()
+                header.update({"name":"name"})
+                header.update({"short_code":"unique id"})
+                header_fields.return_value = header
+                manager = Mock(DatabaseManager)
+                self.assertEquals(subject_short_codes_to_delete(request, manager, "test_type"),
+                                  ['x', 'y'])
+                instance.query.assert_called_once_with('test', 'test_type', 'something')
+                header_fields.assert_called_once_with(manager, "test_type")
+
+
+    def test_index_of_key_in_ordered_dict(self):
+        d = OrderedDict()
+        for index in range(0, 10):
+            value = get_random_three_digit_string() if index != 7 else "short_code"
+            d.update({value: value})
+        self.assertEquals(_index_ofkey_in_ordered_dict(d, "short_code"), 7, "failed for " + str(d))
+
+
 

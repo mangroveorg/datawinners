@@ -62,6 +62,7 @@ from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 
 websubmission_logger = logging.getLogger("websubmission")
 
+
 @valid_web_user
 def create_data_sender(request):
     create_data_sender = True
@@ -311,14 +312,28 @@ def _get_full_name(user):
 def delete_subjects(request):
     manager = get_database_manager(request.user)
     entity_type = request.POST['entity_type']
-    all_ids = request.POST['all_ids'].split(';')
-    if request.POST.get("all_selected", False):
-        all_ids = get_short_codes_by_entity_type(manager, [entity_type])
+    all_ids = subject_short_codes_to_delete(request, manager, entity_type)
+
     transport_info = TransportInfo("web", request.user.username, "")
     delete_entity_instance(manager, all_ids, entity_type, transport_info)
     log_activity(request, DELETED_SUBJECTS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)))
     messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
+
+
+def subject_short_codes_to_delete(request, manager, entity_type):
+    if request.POST.get("all_selected", False):
+        search_query = request.POST.get('search_query')
+        subject_list = SubjectQuery().query(request.user, entity_type, search_query)
+        short_code_index = header_fields(manager, entity_type).keys().index("short_code")
+        return [s[short_code_index] for s in subject_list]
+
+    return request.POST['all_ids'].split(';')
+
+
+def _index_ofkey_in_ordered_dict(ordered_dict, key):
+    return ordered_dict.keys().index(key)
+
 
 def log_activity(request, action, detail):
     UserActivityLog().log(request, action=action, detail=detail, project=request.POST.get("project", "").capitalize())
