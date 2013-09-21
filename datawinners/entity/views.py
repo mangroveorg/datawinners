@@ -393,7 +393,7 @@ def __create_web_users(org_id, reporter_details, language_code):
             user.first_name = reporter_entity.value(NAME_FIELD)
             user.save()
             profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
-                                     reporter_id=reporter['reporter_id'])
+                                     reporter_id=reporter['reporter_id'].lower())
             profile.save()
 
             send_email_to_data_sender(user, language_code)
