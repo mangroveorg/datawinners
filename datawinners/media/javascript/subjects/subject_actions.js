@@ -89,7 +89,8 @@ DW.ActionsMenu = function () {
 
 
 DW.SubjectPagination = function () {
-    $("#subjects_table").before("<div id='select_all_message'></div>");
+    if ($("#select_all_message").length == 0)
+        $("#subjects_table").before("<div id='select_all_message'></div>");
     var select_all_message = $("#select_all_message");
 
     this.disable = function () {
