@@ -11,7 +11,7 @@
         "model": "sites.site",
         "pk": 2,
         "fields": {
-            "domain": "178.79.161.90:8000",
+            "domain": "184.72.223.168:8000",
             "name": "datawinners-showcase"
         }
     },

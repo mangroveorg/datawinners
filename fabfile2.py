@@ -94,20 +94,20 @@ def start_servers():
 def set_mangrove_commit_sha(branch, mangrove_build_number):
     if mangrove_build_number == 'lastSuccessfulBuild':
         mangrove_build_number = run(
-            "curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
+            "curl http://184.72.235.230:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
     run("echo 'Checking the mangrove commit sha for build number %s'" % mangrove_build_number)
     run(
-        "export MANGROVE_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
+        "export MANGROVE_COMMIT_SHA=`curl -s http://184.72.235.230:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
             branch, mangrove_build_number))
     run("echo MANGROVE_COMMIT_SHA=$MANGROVE_COMMIT_SHA")
 
 
 def set_datawinner_commit_sha(branch,datawinner_build_number):
     if datawinner_build_number == 'lastSuccessfulBuild':
-        datawinner_build_number = run("curl http://178.79.163.33:8080/job/Datawinners-%s/lastSuccessfulBuild/buildNumber")
+        datawinner_build_number = run("curl http://184.72.235.230:8080/job/Datawinners-%s/lastSuccessfulBuild/buildNumber")
     run("echo 'Checking the datawinner commit sha for build number %s'" % datawinner_build_number)
     run(
-        "export DATAWINNER_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Datawinners-%s/%s/artifact/last_successful_commit_sha`" % (
+        "export DATAWINNER_COMMIT_SHA=`curl -s http://184.72.235.230:8080/job/Datawinners-%s/%s/artifact/last_successful_commit_sha`" % (
             branch, datawinner_build_number))
     run("echo DATAWINNER_COMMIT_SHA=$DATAWINNER_COMMIT_SHA")
 
@@ -200,11 +200,10 @@ def ec2():
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
-
-def beta():
-    env.user = getpass.getuser()
-    env.hosts = ["localhost"]
-    env.key_filename = ["%s/.ssh/id_rsa" % os.getenv("HOME")]
+def pre_prod():
+    env.user = "mangrover"
+    env.hosts = ["174.129.79.79"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
 
@@ -215,9 +214,9 @@ def anonymous():
 def commit_sha_from_build_number(jenkins_job_name, build_number):
     if build_number == 'lastSuccessfulBuild':
         build_number = run(
-            "curl http://178.79.163.33:8080/job/%s/lastSuccessfulBuild/buildNumber" % (jenkins_job_name,))
+            "curl http://184.72.235.230:8080/job/%s/lastSuccessfulBuild/buildNumber" % (jenkins_job_name,))
     print("Retrieving the commit sha for build number %s of jenkins job %s" % (build_number, jenkins_job_name,))
-    commit_sha = run("curl -s http://178.79.163.33:8080/job/%s/%s/artifact/last_successful_commit_sha" % (
+    commit_sha = run("curl -s http://184.72.235.230:8080/job/%s/%s/artifact/last_successful_commit_sha" % (
         jenkins_job_name, build_number))
 
     print("%s_commit_sha: %s" % (jenkins_job_name, commit_sha))
