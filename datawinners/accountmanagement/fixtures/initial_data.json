@@ -271,7 +271,7 @@
         }
     },
     {
-        "pk": 7,
+        "pk": -9,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
             "reporter_id": "rep2",
