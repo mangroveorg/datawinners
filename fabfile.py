@@ -233,6 +233,14 @@ def ec2():
     env.couch_db_main_service_name = 'couchdbmain'
     env.couch_db_feed_service_name = 'couchdbfeed'
 
+def pre_deploy():
+    env.user = "mangrover"
+    env.hosts = ["174.129.79.79"]
+    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.warn_only = True
+    env.couch_db_main_service_name = 'couchdbmain'
+    env.couch_db_feed_service_name = 'couchdbfeed'
+
 
 def beta():
     env.user = getpass.getuser()
