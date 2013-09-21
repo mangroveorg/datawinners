@@ -318,8 +318,8 @@ def _deploy_mangrove(context):
 def _checkout_datawinners_conf(code_dir):
     conf_project_name = "datawinners-conf"
     project_dir = os.path.join(code_dir, conf_project_name)
-    if run("test -d %s" % project_dir).failed:
-       run('git clone git@github.com:hnidev/%s.git %s' % (conf_project_name, project_dir))
+    run("rm -f %s" % project_dir)
+    run('git clone git@github.com:hnidev/%s.git %s' % (conf_project_name, project_dir))
 
 
 def _deploy_datawinners(context):
