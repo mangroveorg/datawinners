@@ -4,21 +4,34 @@ DW.SubjectSMSPreviewPage = function () {
     var sms_preview_form = $("#preview_form");
     sms_preview_form.html($("#subject_registration_form").clone().html());
     sms_preview_form.find('input[type="submit"]').remove();
-    sms_preview_form.find('input').attr("value", '');
     var sms_form_heading = $("#sms_form_heading");
 
     sms_preview_form.find('input,select').each(function (index, element) {
         var query_element_object = $(element);
         query_element_object.attr("disabled", true);
-        var options_html = "<ol class='multiple_select'>";
-        var options = query_element_object.find("option");
-        for (var i = 0; i < options.length; i++) {
-            var option = $(options[i]);
-            if (option.val() != "") {
-                options_html += "<li><span class='bullet'>" + option.val() + ".</span><span>" + option.text() + "</span></li>"
+    });
+
+    var input_elements = $("#preview_form select, #preview_form input[type=checkbox]").not("#generate_id");
+    input_elements.parents(".answer").before('<input type="text" disabled="disabled">');
+    input_elements.each(function (index, element) {
+        var query_element_object = $(element);
+        var options;
+        if (query_element_object.is('select')) {
+            query_element_object.attr("hidden", "hidden");
+            query_element_object.hide();
+            var options_html = "<ul class='multiple_select' style='clear:both'>";
+            options = query_element_object.find("option");
+            for (var i = 0; i < options.length; i++) {
+                var option = $(options[i]);
+                if (option.val() != "") {
+                    options_html += "<li><span class='bullet'>" + option.val() + ".</span><span>" + option.text() + "</span></li>"
+                }
             }
+            options_html += "</ul>";
+
+        } else {
+            query_element_object.replaceWith("<li><span class='bullet'>" + query_element_object.val() + ". &nbsp;&nbsp; </span></li>");
         }
-        options_html += "</ol>";
         query_element_object.after(options_html);
     });
 
