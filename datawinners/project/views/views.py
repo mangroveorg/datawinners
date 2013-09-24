@@ -448,13 +448,11 @@ def _get_project_and_project_link(manager, project_id, reporter_id=None):
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    all_data, fields, labels = load_all_entities_of_type(manager, type=project.entity_type)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/subjects/list.html',
                               {'project': project,
-                               'project_links': project_links, 'all_data': all_data,
-                               "labels": labels,
+                               'project_links': project_links,
                                "subject": subject,
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
