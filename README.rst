@@ -8,6 +8,8 @@ Requirements
 * python 2.7
 * java
 * elasticsearch
+* couchdb
+* prostgres
 
 0. Setting up your environment
 ------------------------------
