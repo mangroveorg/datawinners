@@ -6,6 +6,7 @@ from pages.alldatasenderspage.all_data_senders_locator import DATA_SENDER_DEVICE
 from pages.projectdatasenderspage.project_data_senders_locator import *
 from tests.projects.datasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class ProjectDataSendersPage(AllDataSendersPage):
@@ -105,6 +106,7 @@ class ProjectDataSendersPage(AllDataSendersPage):
         return self.driver.find(ACTION_MENU).is_displayed()
 
     def click_checkall_checkbox(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, CHECKALL_CB, True)
         self.driver.find(CHECKALL_CB).click()
 
     def get_number_of_selected_datasenders(self):

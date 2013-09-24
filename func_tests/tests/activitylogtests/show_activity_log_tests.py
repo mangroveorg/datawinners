@@ -64,10 +64,13 @@ class TestShowActivityLog(unittest.TestCase):
         self.assertEqual(ACTIVITY_LOG_PAGE_TITLE, self.driver.get_title())
         activity_log_page.select_filter("Project", "Created Project")
         time.sleep(3)
-        project_title = activity_log_page.get_data_on_cell(1, 3)
-        self.assertEqual(project_title.lower(), self.project_title)
-        self.assertEqual(activity_log_page.get_data_on_cell(1, 1), TESTER_NAME)
-        self.assertEqual(activity_log_page.get_data_on_cell(1, 2), CREATED_PROJECT_ACTION)
+        for i in range(1,10):
+            if activity_log_page.get_data_on_cell(i, 3).lower() == self.project_title:
+                row_index = i
+                break;
+        self.assertTrue(row_index>=0, "Project title not found in activity log")
+        self.assertEqual(activity_log_page.get_data_on_cell(row_index, 1), TESTER_NAME)
+        self.assertEqual(activity_log_page.get_data_on_cell(row_index, 2), CREATED_PROJECT_ACTION)
 
     @attr('functional_test')
     def test_should_only_show_logs_for_current_organization(self):

@@ -1,4 +1,5 @@
 import json
+from time import sleep
 from nose.plugins.attrib import attr
 import requests
 from requests.auth import HTTPDigestAuth
@@ -185,6 +186,7 @@ class DataExtractionAPITestCase(BaseTest):
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code(self):
+        sleep(2)
         result = self.get_data_by_uri(
             "/api/get_for_form/%s/" % self.__class__.form_code)
         submissions = result['submissions']

@@ -46,6 +46,10 @@ class TestAddSubject(unittest.TestCase):
         message = fetch_(SUCCESS_MSG, from_(SUBJECT_DATA_WITHOUT_UNIQUE_ID))
         self.assertRegexpMatches(add_subject_page.get_flash_message(), message)
 
+    def assertErrorMessage(self, add_subject_page, message):
+        actual_message = add_subject_page.get_error_message()
+        self.assertTrue(message in actual_message, actual_message)
+
     @attr('functional_test')
     def test_addition_of_subject_with_invalid_data(self):
         self.driver.go_to(self.add_subjects_url)
@@ -66,22 +70,22 @@ class TestAddSubject(unittest.TestCase):
         add_subject_page.add_subject_with(INVALID_LATITUDE_GPS)
         add_subject_page.submit_subject()
         message = fetch_(ERROR_MSG, from_(INVALID_LATITUDE_GPS))
-        self.assertEqual(add_subject_page.get_error_message(), message)
+        self.assertErrorMessage(add_subject_page, message)
 
         add_subject_page.add_subject_with(INVALID_LONGITUDE_GPS)
         add_subject_page.submit_subject()
         message = fetch_(ERROR_MSG, from_(INVALID_LONGITUDE_GPS))
-        self.assertEqual(add_subject_page.get_error_message(), message)
+        self.assertErrorMessage(add_subject_page, message)
 
         add_subject_page.add_subject_with(INVALID_GPS_AND_PHONE_NUMBER)
         add_subject_page.submit_subject()
         message = fetch_(ERROR_MSG, from_(INVALID_GPS_AND_PHONE_NUMBER))
-        self.assertEqual(add_subject_page.get_error_message(), message)
+        self.assertErrorMessage(add_subject_page, message)
 
         add_subject_page.add_subject_with(WITH_UNICODE_IN_GPS_AND_INVALID_PHONE_NUMBER)
         add_subject_page.submit_subject()
         message = fetch_(ERROR_MSG, from_(WITH_UNICODE_IN_GPS_AND_INVALID_PHONE_NUMBER))
-        self.assertEqual(add_subject_page.get_error_message(), message)
+        self.assertErrorMessage(add_subject_page, message)
 
         add_subject_page.add_subject_with(CLINIC_WITH_INVALID_UID)
         add_subject_page.submit_subject()

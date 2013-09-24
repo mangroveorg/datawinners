@@ -12,6 +12,8 @@ from framework.utils.text_box_web_element import TextBox
 from framework.utils.radio_button_web_element import RadioButton
 from pages.loginpage.login_locator import *
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+from tests.testsettings import UI_TEST_TIMEOUT
+
 
 def get_default_browser_name():
     import sys
@@ -47,6 +49,7 @@ class DriverWrapper(object):
 
     def __init__(self, browser=get_default_browser_name()):
         self._driver = get_driver_for_browser(browser)
+        self._driver.implicitly_wait(UI_TEST_TIMEOUT)
         self._driver.delete_all_cookies()
 
     def find_drop_down(self, locator_dict):

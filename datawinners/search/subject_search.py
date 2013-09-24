@@ -72,6 +72,7 @@ class SubjectQueryBuilder():
 class ElasticUtilsHelper():
     def replace_special_chars(self, search_text):
         lucene_special_chars = ['\\', '+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?',
+                                '/',
                                 ':']
         for char in lucene_special_chars:
             search_text = search_text.replace(char, '\\' + char)

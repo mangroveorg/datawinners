@@ -26,6 +26,7 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
         if (project_name.length)
             post_data.project = project_name.val();
         post_data.all_selected = $("#select_all_message").data("all_selected");
+        post_data.search_query = $("#subjects_table_filter").find("input").val();
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
         $.post(delete_end_point, post_data,
             function (json_response) {
@@ -88,7 +89,8 @@ DW.ActionsMenu = function () {
 
 
 DW.SubjectPagination = function () {
-    $("#subjects_table").before("<div id='select_all_message'></div>");
+    if ($("#select_all_message").length == 0)
+        $("#subjects_table").before("<div id='select_all_message'></div>");
     var select_all_message = $("#select_all_message");
 
     this.disable = function () {
@@ -121,22 +123,27 @@ DW.SubjectSelectAllCheckbox = function (drawTable) {
         $(".styled_table tbody input:checkbox").attr("checked", eventObject.currentTarget.checked);
     });
 
-    check_all_element.live('change', function (eventObject) {
-        if (eventObject.currentTarget.checked) {
+    function select_all_message(enable) {
+        if (enable) {
             var no_of_records_on_page = drawTable.fnGetData().length;
             var total_number_of_records = drawTable.fnSettings().fnRecordsDisplay();
             if (no_of_records_on_page != total_number_of_records) {
                 subject_select_all.enable(no_of_records_on_page, total_number_of_records);
             }
+
+        } else {
+            subject_select_all.disable()
         }
-        else {
-            subject_select_all.disable();
-        }
+    }
+
+    check_all_element.live('change', function (eventObject) {
+        select_all_message(eventObject.currentTarget.checked);
     });
 
     $(".styled_table tbody input:checkbox").live('click', function (eventObject) {
         var all_selected = $(".styled_table tbody input:checkbox:checked").length == $(".styled_table tbody input:checkbox").length;
-        $(".styled_table thead input:checkbox").attr("checked", all_selected)
+        $(".styled_table thead input:checkbox").attr("checked", all_selected);
+        select_all_message(all_selected);
     });
 
     this.un_check = function () {

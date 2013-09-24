@@ -16,7 +16,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _, get_language, activate
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, is_not_expired, is_new_user, project_has_web_device, valid_web_user
 
-from datawinners.entity.data_sender import remove_system_datasenders, get_user_profile_by_reporter_id
+from datawinners.entity.data_sender import remove_system_datasenders, get_user_profile_by_reporter_id, load_data_senders
 from datawinners.project.view_models import ReporterEntity
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
@@ -473,9 +473,9 @@ def registered_datasenders(request, project_id=None):
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
     if request.method == 'GET':
-        labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number")]
         in_trial_mode = _in_trial_mode(request)
-        senders = project.get_data_senders(manager)
+        senders, fields, default_labels = load_data_senders(manager, project.data_senders)
+        labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number")]
         remove_system_datasenders(senders)
         for sender in senders:
             get_datasender_user_detail(sender, request.user)
@@ -663,6 +663,7 @@ class SubjectWebQuestionnaireRequest():
                              "example_sms": get_example_sms_message(self.form_model.fields,
                                                                     self.subject_registration_code),
                              "web_view": web_view_enabled,
+                             "back_link": reverse("registered_subjects", args=[self.project.id]),
                              "edit_subject_questionnaire_link": reverse('edit_my_subject_questionnaire',
                                                                         args=[self.project.id]),
                              "register_subjects_link": reverse('subject_questionnaire',

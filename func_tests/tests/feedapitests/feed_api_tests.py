@@ -147,6 +147,7 @@ class TestFeeds(unittest.TestCase):
 
         self.delete_submission()
         end_date = self._get_encoded_date()
+        time.sleep(10)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]

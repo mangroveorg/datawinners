@@ -7,6 +7,7 @@ from pages.createprojectpage.create_project_locator import *
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.page import Page
 from framework.utils.common_utils import generateId, CommonUtilities
+from tests.testsettings import UI_TEST_TIMEOUT
 
 OTHER_SUBJECT = "other subject"
 PROJECT_NAME = "project_name"
@@ -88,6 +89,7 @@ class CreateProjectPage(Page):
         return self
 
     def continue_create_project(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, CONTINUE_BTN, True)
         return self.driver.find(CONTINUE_BTN).click()
 
     def set_subject(self, project_data):

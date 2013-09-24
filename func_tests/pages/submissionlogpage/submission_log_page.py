@@ -6,6 +6,7 @@ from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.submissionlogpage.submission_log_locator import *
 from tests.submissionlogtests.submission_log_data import UNIQUE_VALUE
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class SubmissionLogPage(Page):
@@ -35,7 +36,9 @@ class SubmissionLogPage(Page):
         return self.driver.find(ACTIVE_TAB_LOCATOR).text
 
     def choose_on_dropdown_action(self, action_button):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTION_SELECT_CSS_LOCATOR, True)
         self.driver.find(ACTION_SELECT_CSS_LOCATOR).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, action_button, True)
         self.driver.find(action_button).click()
 
     def check_all_submissions(self):

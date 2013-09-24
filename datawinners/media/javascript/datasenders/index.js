@@ -192,6 +192,9 @@ $(document).ready(function () {
                 if (json_data.success) {
                     $("#web_user_block").dialog("close");
                     var redirect_url = location.href;
+                    if (redirect_url.indexOf('#') != -1) {
+                        redirect_url = redirect_url.substr(0,redirect_url.indexOf('#'));
+                    }
                     if (redirect_url.indexOf('?web=1') == -1) {
                         redirect_url = redirect_url + '?web=1';
                     }
@@ -202,6 +205,7 @@ $(document).ready(function () {
                     for (i; i < json_data.errors.length; i = i + 1) {
                         var email_in_error = json_data.errors[i].split(' ')[3];
                         var error_message = gettext('User with email ') + email_in_error + gettext(' already exists');
+
                         html += "<tr><td>" + error_message + "</td></tr>";
                     }
                     if (html != "") {

@@ -18,7 +18,7 @@
             <div class="gray_text">{% trans "Enhance your project..." %} </div>
             <ul>
                 {% if not project.is_activity_report %}
-                <li><a id="subjects_edit_link" href="{{project_links.register_subjects_link}}">{% trans "Add a new" %} {{ project.entity_type }} </a>
+                <li><a id="subjects_edit_link" href="{{project_links.register_subjects_link_web_view}}">{% trans "Add a new" %} {{ project.entity_type }} </a>
 
                     <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
                 </li>

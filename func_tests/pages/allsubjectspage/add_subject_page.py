@@ -8,6 +8,7 @@ from pages.allsubjectspage.add_subject_locator import *
 from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage
 from pages.websubmissionpage.web_submission_locator import SECTION_TITLE, BACK_TO_PROJECT_LINK
 from tests.addsubjecttests.add_subject_data import *
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class AddSubjectPage(Page):
@@ -68,7 +69,7 @@ class AddSubjectPage(Page):
         Return message
         """
         comm_utils = CommonUtilities(self.driver)
-        comm_utils.wait_for_element(5, FLASH_MESSAGE_LABEL)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, FLASH_MESSAGE_LABEL, True)
         return self.driver.find(FLASH_MESSAGE_LABEL).text
 
     def get_selected_subject(self):

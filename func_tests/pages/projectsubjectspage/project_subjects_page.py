@@ -3,6 +3,7 @@ from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.page import Page
 from pages.projectsubjectspage.project_subjects_locator import *
 from framework.utils.common_utils import by_css
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class ProjectSubjectsPage(Page):
@@ -69,6 +70,7 @@ class ProjectSubjectsPage(Page):
             lambda driver: driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[1]/td[1]/input")).is_displayed())
 
     def click_checkall_checkbox(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, CHECKALL_CB, True)
         self.driver.find(CHECKALL_CB).click()
 
     def get_number_of_selected_subjects(self):

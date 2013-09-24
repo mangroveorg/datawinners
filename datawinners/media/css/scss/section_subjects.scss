@@ -231,6 +231,9 @@
   }
 }
 
+#web_form_heading{
+  margin-bottom: 20px;
+}
 #sms_preview {
   padding: 20px;
   border: 1px solid #dddddd;
@@ -475,6 +478,7 @@ span.paginate_more_disabled {
   clear: both;
   margin: 10px 0px;
   text-align: center;
+  height: 1em;
 }
 
 @import "util.scss";
