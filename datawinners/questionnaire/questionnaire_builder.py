@@ -3,7 +3,7 @@ from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
-from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
+from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint, ShortCodeRegexConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_not_empty, is_empty
 from datawinners.entity.helper import question_code_generator
@@ -101,6 +101,9 @@ class QuestionBuilder( object ):
         constraints = []
         if not (max_length is None and min_length is None):
             constraints.append( TextLengthConstraint( min=min_length, max=max_length ) )
+        short_code_constraint = post_dict.get("options").get("short_code")
+        if short_code_constraint:
+            constraints.append(ShortCodeRegexConstraint(short_code_constraint))
         return TextField( name=self._get_name( post_dict ), code=code, label=post_dict["title"],
                           entity_question_flag=post_dict.get( "is_entity_question" ), constraints=constraints,
                           ddtype=ddtype,
