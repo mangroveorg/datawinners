@@ -4,80 +4,36 @@ Installation steps
 Requirements
 ------------
 
-* ubuntu 11.10
+* ubuntu 12.04
 * python 2.7
+* java
+* elasticsearch
 
 0. Setting up your environment
 ------------------------------
-1. Increase your apt-cache size:
+1. Download and install sun java
+    sudo apt-get install -y alien
+    sudo apt-get update && \
+    sudo apt-get install -y git curl alien && \
+    alien -i --scripts <path_to_jdk.rpm downloaded from oracle something like ./jdk-7u25-linux-x64.rpm>
 
-sudo vi /etc/apt/apt.conf.d/70debconf
-
-then add this line:
-
-APT::Cache-Limit "100000000";
-
-2. Make sure your user can sudo without password:
-
-sudo visudo
-
-Make sure you have this line:
-
-%admin ALL=(ALL) NOPASSWD:ALL
-
-Save the file, exit vi.
-
-Make sure your user is in the "admin" group:
-
-| (datawinner)user@host:~/workspace/datawinners$ groups
-| vagrant adm dialout cdrom plugdev lpadmin sambashare admin
-
-1. Clone datawinners from git
+2. Install puppet
 -----------------------------
-| cd /tmp
-| mkdir datawinners
-| cd /tmp/datawinners
-| git clone https://github.com/mangroveorg/datawinners.git
-
-2. Install software, setup database and clone codebase from git
----------------------------------------------------------------
-| cd /tmp/datawinners
-| ./init_env_11.10.sh
-
-If you successfully complete this step, you should see the following directories:
-
-1. ~/virtual_env
-2. ~/workspace
-
-You no longer need /tmp/datawinners so let's get rid of that:
-
-rm -rf /tmp/datawinners
-
-You should also see the alias "dw" appended to your ~/.bashrc. Logout, log back in and type "dw". Your prompt should look like:
-
-(datawinner)user@host:~$
-
-3. Setup environments and run tests
------------------------------------
-| cd ~/workspace/datawinners
-| ./build.sh init
-
-This step sets up some log files, clones more git repos, installs dependencies and runs some tests.
-
-By the end of this step your django server should be listening on port 8000.
-
-If you hit ctrl-c to stop the server, some functional tests would run and fail. TODO: get rid of the functional tests and invoke them separately.
-
+| sudo apt-get install puppet
+| wget -q https://gist.github.com/dileepbapat/6290962/raw/c3596fb5ce050afd7df3323ccf5ddb7f464bdb94/install_datawinners.sh
+| bash ./install_datawinners.sh <env=dwdev|dwqa|dwprod>
+|
 4. Access your server
 ---------------------
-You can now point your browser to http://localhost:8000/
+If you installed env=dwdev you could access server by pointing your browser to https://localhost/
 
 5. Run the server
 -----------------
-To start the server again in the future:
+   By default uwsgi and nginx serves datawinners application it will be started at machine startup. Optionally you could start/stop
+   using service command
+   sudo service nginx stop
+   sudo service uwsgi stop
 
-| cd ~/workspace/datawinners/datawinners
-| python manage.py runserver 0.0.0.0:8000
+   sudo service nginx start
+   sudo service uwsgi start
 
-Happy coding!
-=============
