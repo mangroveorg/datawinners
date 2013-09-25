@@ -55,9 +55,15 @@ class OrganizationSettingAdmin(DatawinnerAdmin):
 
 
 class MessageTrackerAdmin(DatawinnerAdmin):
-    list_display = ("organization_name", "organization_id", "current_month", "combined_total_incoming", "total_incoming_per_month", "outgoing_messages",
-                    "sms_api_usage", "incoming_sms", "incoming_sp", "incoming_web", "total_outgoing_messages", "total_messages")
+    list_display = ("organization_name", "organization_id", "current_month", "combined_total_incoming",
+                    "total_incoming_per_month", "outgoing_messages", "sms_api_usage", "incoming_sms", "incoming_sp",
+                    "incoming_web", "sms_subject_registration", "total_outgoing_messages", "total_messages",
+                    "combined_total_messages")
     list_filter = ("organization__name",)
+
+    def sms_subject_registration(self, obj):
+        return obj.sms_registration_count
+    sms_subject_registration.short_description = mark_safe("SMS<br/>Subject Reg")
 
     def organization_name(self, obj):
         return obj.organization.name
@@ -88,15 +94,19 @@ class MessageTrackerAdmin(DatawinnerAdmin):
 
     def total_outgoing_messages(self, obj):
         return obj.outgoing_message_count()
-    total_outgoing_messages.short_description = mark_safe('Total outgoing<br/>messages')
+    total_outgoing_messages.short_description = mark_safe('Total<br/>outgoing<br/>SMS')
 
 
     def total_messages(self, obj):
         return obj.total_messages()
-    total_messages.short_description = mark_safe('Total<br/>messages')
+    total_messages.short_description = mark_safe('Total<br/>SMS<br/>(per month)')
+
+    def combined_total_messages(self, obj):
+        return obj.combined_total_messages()
+    combined_total_messages.short_description = mark_safe('Total SMS<br/>(in total)')
 
     def incoming_sms(self, obj):
-        return obj.incoming_sms_count
+        return obj.incoming_sms_count - obj.sms_registration_count
     incoming_sms.short_description = mark_safe('SMS<br/>Submissions')
 
     def incoming_sp(self, obj):

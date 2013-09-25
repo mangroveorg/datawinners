@@ -98,7 +98,7 @@ def submission(request):
         return HttpResponseBadRequest()
 
     organization = Organization.objects.get(org_id=user_profile.org_id)
-    organization.increment_message_count_for('sp')
+    organization.increment_message_count_for(**{'incoming_sp_count':1})
 
     response = HttpResponse(status=201)
     response['Location'] = request.build_absolute_uri(request.path)

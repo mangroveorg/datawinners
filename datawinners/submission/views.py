@@ -100,10 +100,13 @@ def find_dbm_for_web_sms(request):
 
 def process_sms_counter(incoming_request):
     organization = incoming_request['organization']
-    organization.increment_all_message_count()
+
     if organization.status == 'Deactivated':
+        organization.increment_message_count_for(**{'incoming_sms_count':1})
         incoming_request['outgoing_message'] = ''
         return incoming_request
+
+    organization.increment_all_message_count()
 
     if organization.has_exceeded_message_limit():
         return get_translated_response_message(incoming_request,

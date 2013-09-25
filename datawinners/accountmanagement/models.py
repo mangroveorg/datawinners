@@ -97,12 +97,12 @@ class Organization(models.Model):
         message_tracker.increment_incoming_message_count_by(incoming_count)
         message_tracker.increment_outgoing_message_count_by(outgoing_count)
 
-    def increment_message_count_for(self, message_type='sms', count=1):
+    def increment_message_count_for(self, **kwargs):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = self._get_message_tracker(current_month)
-        message_type_dict = {'sms': 'incoming_sms_count', 'web': 'incoming_web_count', 'sp': 'incoming_sp_count'}
-        current_count = getattr(message_tracker, message_type_dict.get(message_type))
-        setattr(message_tracker, message_type_dict.get(message_type), count + current_count)
+        for field_name, count in kwargs.items():
+            current_count = getattr(message_tracker, field_name)
+            setattr(message_tracker, field_name, count + current_count)
         message_tracker.save()
 
     #TODO Should be removed??
@@ -223,6 +223,7 @@ class MessageTracker(models.Model):
     month = models.DateField()
     sms_api_usage_count = models.IntegerField(default=0)
     incoming_sms_count = models.IntegerField(default=0)
+    sms_registration_count = models.IntegerField(default=0)
     incoming_web_count = models.IntegerField(default=0)
     incoming_sp_count = models.IntegerField(default=0)
     outgoing_sms_count = models.IntegerField(default=0)
@@ -243,10 +244,17 @@ class MessageTracker(models.Model):
         return self.sms_api_usage_count + self.outgoing_sms_count
 
     def total_messages(self):
-        return self.outgoing_message_count() + self.total_monthly_incoming_messages()
+        return self.outgoing_message_count() + self.incoming_sms_count
+
+    def combined_total_messages(self):
+        msg_trackers = MessageTracker.objects.filter(organization=self.organization_id, month__lt=self.month)
+        total_msg = self.total_messages()
+        for msg_tracker in msg_trackers:
+            total_msg += msg_tracker.total_messages()
+        return total_msg
 
     def total_monthly_incoming_messages(self):
-        return self.incoming_sms_count + self.incoming_sp_count + self.incoming_web_count
+        return self.incoming_sms_count + self.incoming_sp_count + self.incoming_web_count - self.sms_registration_count
 
     def reset(self):
         self.incoming_sms_count = 0

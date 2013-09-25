@@ -59,9 +59,9 @@ class TestOrganization(unittest.TestCase):
         self.assertEqual(country_code, "91")
 
     def test_should_increment_by_submission_type(self):
-        increment_count_by_submission_type_dict = {'sms': 4,'sp':2, 'web':7}
-        for type, count in increment_count_by_submission_type_dict.items() :
-            self.organization.increment_message_count_for(type, count)
-            message_tracker = self._get_current_message_tracker_of_organization()
-            self.assertEqual(getattr(message_tracker, "incoming_" + type + "_count"), count)
+        increment_count_by_submission_type_dict = {'incoming_sms_count': 4,'incoming_sp_count':2, 'incoming_web_count':7}
+        self.organization.increment_message_count_for(**increment_count_by_submission_type_dict)
+        message_tracker = self._get_current_message_tracker_of_organization()
+        for field_name, count in increment_count_by_submission_type_dict.items():
+            self.assertEqual(getattr(message_tracker, field_name), count)
         
