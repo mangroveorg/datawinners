@@ -101,9 +101,11 @@ class QuestionBuilder( object ):
         constraints = []
         if not (max_length is None and min_length is None):
             constraints.append( TextLengthConstraint( min=min_length, max=max_length ) )
-        short_code_constraint = post_dict.get("options").get("short_code")
-        if short_code_constraint:
-            constraints.append(ShortCodeRegexConstraint(short_code_constraint))
+        options = post_dict.get("options")
+        if options:
+            short_code_constraint = options.get("short_code")
+            if short_code_constraint:
+                constraints.append(ShortCodeRegexConstraint(short_code_constraint))
         return TextField( name=self._get_name( post_dict ), code=code, label=post_dict["title"],
                           entity_question_flag=post_dict.get( "is_entity_question" ), constraints=constraints,
                           ddtype=ddtype,
