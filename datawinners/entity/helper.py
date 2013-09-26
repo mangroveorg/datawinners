@@ -19,7 +19,7 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
     ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, get_form_model_by_entity_type
 from mangrove.form_model.validation import TextLengthConstraint,\
-    RegexConstraint
+    RegexConstraint, ShortCodeRegexConstraint
 from mangrove.transport.player.player import WebPlayer
 from mangrove.utils.types import  is_sequence, is_not_empty
 from mangrove.errors.MangroveException import NumberNotRegisteredException,\
@@ -112,7 +112,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
         defaultValue="some default value", ddtype=name_type,
         instruction=unicode(_("Enter an id, or allow us to generate it")),
         entity_question_flag=True,
-        constraints=[TextLengthConstraint(max=20)], required=False)
+        constraints=[TextLengthConstraint(max=20), ShortCodeRegexConstraint("^[a-zA-Z0-9]+$")], required=False)
     questions = [question1, question2, question3, question4, question5, question6]
 
     form_model = FormModel(manager, name=entity_name, form_code=form_code, fields=questions, is_registration_model=True,
