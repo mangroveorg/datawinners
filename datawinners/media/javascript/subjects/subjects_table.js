@@ -50,6 +50,7 @@ $(document).ready(function () {
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
             lastXHR = oSettings.jqXHR;
             lastXHR && lastXHR.abort && lastXHR.abort();
+            aoData.push({"name":"disable_cache","value":new Date().getTime()});
             oSettings.jqXHR = $.ajax({
                 "dataType": 'json',
                 "type": "GET",
