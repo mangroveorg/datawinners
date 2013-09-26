@@ -1,11 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import getpass
+
+import os
+from datetime import  datetime
 
 from fabric.api import run, env
 from fabric.context_managers import cd, settings
 from fabric.operations import sudo
-import os
-from datetime import  datetime
+
 
 DATAWINNERS = 'datawinners'
 MANGROVE = 'mangrove'
@@ -15,7 +16,7 @@ couch_db_feed_service_name = 'couchdbfeed'
 TODAY_IN_UTC = str(datetime.utcnow().date()).replace('-', '')
 
 ENVIRONMENT_CONFIGURATIONS = {
-    "ec2": "../../datawinners-conf/datawinners/local_settings_ec2.py",
+    "prod": "../../datawinners-conf/datawinners/local_settings_ec2.py",
 }
 
 ENVIRONMENT_VES = "/home/mangrover/virtual_env/datawinners"
@@ -194,15 +195,9 @@ def local():
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
 
 
-def ec2():
+def prod():
     env.user = "mangrover"
     env.hosts = ["54.243.31.50"]
-    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
-    env.warn_only = True
-
-def pre_prod():
-    env.user = "mangrover"
-    env.hosts = ["174.129.79.79"]
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
@@ -323,7 +318,7 @@ def _checkout_datawinners_conf(code_dir):
 
 
 def _deploy_datawinners(context):
-    if context.environment == "ec2":
+    if context.environment == "prod":
         _checkout_datawinners_conf(context.code_dir)
     deploy_project(context, DATAWINNERS, post_checkout_datawinners)
 

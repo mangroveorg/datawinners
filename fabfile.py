@@ -1,11 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import getpass
+import os
+from datetime import  datetime
 
 from fabric.api import run, env
 from fabric.context_managers import cd, settings
 from fabric.operations import sudo
-import os
-from datetime import  datetime
 
 DATAWINNERS = 'datawinners'
 MANGROVE = 'mangrove'
@@ -226,15 +226,7 @@ def local():
     env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
 
 
-def ec2():
-    env.user = "mangrover"
-    env.hosts = ["54.243.31.50"]
-    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
-    env.warn_only = True
-    env.couch_db_main_service_name = 'couchdbmain'
-    env.couch_db_feed_service_name = 'couchdbfeed'
-
-def pre_prod():
+def prod():
     env.user = "mangrover"
     env.hosts = ["174.129.79.79"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
