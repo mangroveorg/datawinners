@@ -25,12 +25,12 @@ DW.SubjectSMSPreviewPage = function () {
     this.enable = function () {
         $("#message_box").remove();
         $(".errorlist").remove();
-        $("#sms_preview").attr("hidden", false);
+        $("#sms_preview").show();
         sms_form_heading.show();
     };
 
     this.disable = function () {
-        $("#sms_preview").attr("hidden", true);
+        $("#sms_preview").hide();
         sms_form_heading.hide();
     };
 };
@@ -63,7 +63,7 @@ DW.SubjectViewStyleButtons = function (sms_view_page, registration_form) {
 
 DW.SubjectPrintModalPage = function () {
     var dialog_html = $($("#sms_preview").clone()).attr("id", "dialog_sms_preview");
-    dialog_html.find(".printBtn").attr("hidden", false);
+    dialog_html.find(".printBtn").show();
 
     dialog_html.dialog({
         title: gettext("Subject Registration Preview"),
@@ -97,7 +97,7 @@ DW.SubjectRegistrationForm = function (form_selector) {
 
     var web_form_heading = $("#web_form_heading");
     this.enable = function () {
-        registration_form.attr("hidden", false);
+        registration_form.show();
         subject_unique_id.enable();
         web_form_heading.show();
     };
@@ -110,8 +110,9 @@ DW.SubjectRegistrationForm = function (form_selector) {
         visible_elements.blur();
         subject_unique_id.disable();
         //This has to be called last as the above statements will fail if we hide the form first.
-        registration_form.attr("hidden", true);
+        registration_form.hide();
         web_form_heading.hide();
     };
 };
+
 
