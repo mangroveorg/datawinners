@@ -33,7 +33,7 @@ $(document).ready(function () {
         "fnInitComplete": function (oSettings) {
             var cloned_element = $("#action_dropdown").clone(true);
             $("#action_dropdown").remove();
-            cloned_element.insertBefore(".dataTables_info").addClass('margin_top_10').removeClass('none');
+            cloned_element.insertBefore(".dataTables_info").addClass('margin_top_10').find('.action_button').removeClass('none');
             new DW.ActionsMenu();
             oSettings.select_all_checkbox = new DW.SubjectSelectAllCheckbox(this);
             $(".styled_table").wrap('<div class="table_container" />');
