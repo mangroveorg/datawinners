@@ -5,9 +5,10 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.template.defaultfilters import slugify
 from django_digest.models import PartialDigest
 from mock import Mock, PropertyMock
-from accountmanagement.admin import DWUserAdmin
-from accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
-from accountmanagement.organization_id_creator import OrganizationIdCreator
+from datawinners.accountmanagement.admin import DWUserAdmin
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
+from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
+
 
 class FakeUserAdmin(DWUserAdmin):
     class Meta:
