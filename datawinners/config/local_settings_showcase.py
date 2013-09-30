@@ -24,6 +24,10 @@ DATABASES = {
     }
 }
 
+API_KEYS = {
+    '184.72.223.168': 'AIzaSyCr4DDqoKgR5MzPci7GHWaXms8bYNprY-g'
+}
+
 HNI_SUPPORT_EMAIL_ID = 'yadavr@thoughtworks.com'
 
 EMAIL_USE_TLS = True

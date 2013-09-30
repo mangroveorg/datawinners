@@ -17,6 +17,10 @@ DATABASES = {
     }
 }
 
+API_KEYS = {
+    '172.18.9.6': 'AIzaSyDE7V6tcY34e5uAB7eYS7AcSStty87vulQ'
+}
+
 TRIAL_REGISTRATION_ENABLED = True
 
 HNI_SUPPORT_EMAIL_ID = 'dummy@dummy.com'
