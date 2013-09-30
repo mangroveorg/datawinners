@@ -6,6 +6,7 @@ from django.template.defaultfilters import slugify
 import xlwt
 from django.utils.translation import ugettext_lazy as _, activate, get_language
 from django.contrib.auth.forms import PasswordResetForm
+from datawinners import settings
 from datawinners.main.database import get_db_manager
 from mangrove.form_model.field import ExcelDate
 import unicodedata
@@ -230,3 +231,9 @@ def get_text_language_by_instruction(instruction):
 def strip_accents(s):
    return ''.join(c for c in unicodedata.normalize('NFD', s)
                   if unicodedata.category(c) != 'Mn')
+
+def get_map_key(host):
+    try:
+        return settings.API_KEYS.get(host)
+    except :
+        return ""

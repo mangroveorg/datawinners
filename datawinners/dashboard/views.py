@@ -20,6 +20,8 @@ from datawinners.project.models import ProjectState, Project
 from datawinners.project.wizard_view import edit_project
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport import Channel
+from datawinners.utils import get_map_key
+
 
 def _find_reporter_name(dbm, row):
     try:
@@ -122,5 +124,5 @@ def map_entities(request):
     return HttpResponse(location_geojson)
 
 def render_map(request):
-    map_api_key = settings.API_KEYS[request.META['HTTP_HOST']]
+    map_api_key = get_map_key(request.META['HTTP_HOST'])
     return render_to_response('maps/entity_map.html', {'map_api_key': map_api_key},context_instance=RequestContext(request))
