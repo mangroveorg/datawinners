@@ -465,11 +465,19 @@ def all_datasenders(request):
                               context_instance=RequestContext(request))
 
 
+def add_check_symbol_for_row(datasender, result):
+    check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
+    result.extend([check_img])
+    if "email" in datasender.keys():
+        result.extend([check_img, check_img])
+    else:
+        result.extend(['', ''])
+
 def all_datasenders_ajax(request):
     search_parameters = {}
     search_text = request.GET.get('sSearch', '').strip()
     number_of_results = int(request.GET.get('iDisplayLength'))
-    start_result_number =  int(request.GET.get('iDisplayStart'))
+    start_result_number = int(request.GET.get('iDisplayStart'))
     # search_parameters.update({"search_text": search_text})
     # search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
     # search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
@@ -479,7 +487,7 @@ def all_datasenders_ajax(request):
     user = request.user
     manager = get_database_manager(user)
     fields, old_labels, codes = get_entity_type_fields(manager)
-    fields.append('email')
+    fields.append("devices")
     fields.append('projects')
     fields = tuple(fields)
     query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes("reporter") \
@@ -491,7 +499,8 @@ def all_datasenders_ajax(request):
                 "query": search_text
             }
         }
-        datasenders = query.query_raw(raw_query)[start_result_number:start_result_number + number_of_results].values_dict(fields)
+        datasenders = query.query_raw(raw_query)[
+                      start_result_number:start_result_number + number_of_results].values_dict(fields)
     else:
         datasenders = query.query()[start_result_number:start_result_number + number_of_results].values_dict(fields)
 
@@ -501,7 +510,10 @@ def all_datasenders_ajax(request):
     for datasender in datasenders:
         result = []
         for key in fields:
-            result.append(datasender.get(key))
+            if key is "devices":
+                add_check_symbol_for_row(datasender,result)
+            else:
+                result.append(datasender.get(key))
         results.append(result)
 
     return HttpResponse(
@@ -512,8 +524,7 @@ def all_datasenders_ajax(request):
                 'iDisplayStart': int(request.GET.get('iDisplayStart')),
                 "iTotalRecords": search_count,
                 'iDisplayLength': int(request.GET.get('iDisplayLength'))
-                }, unpicklable=False), content_type='application/json')
-
+            }, unpicklable=False), content_type='application/json')
 
 
 @csrf_view_exempt
