@@ -1001,7 +1001,7 @@ msgid "All %(total_number_of_records)s Subjects selected."
 msgstr "Tous les %(total_number_of_records)s Sujets sont sélectionnés."
 
 msgid "Clear Selection"
-msgstr "Choix clair"
+msgstr "Déselectionner tout"
 
 msgid "<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"
 msgstr "<b>%(start)s à %(end)s</b> de %(total)s %(subject_type)s(s)"
