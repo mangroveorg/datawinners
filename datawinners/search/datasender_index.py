@@ -80,4 +80,4 @@ def _create_ds_mapping(dbm, form_model):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
-    es.put_mapping(dbm.database_name, form_model.entity_type[0], _mapping(form_model.form_code, fields))
+    es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], _mapping(form_model.form_code, fields))
