@@ -10,7 +10,7 @@ DW.SubjectSMSPreviewPage = function () {
         var query_element_object = $(element);
         query_element_object.attr("disabled", true);
     });
-
+    sms_preview_form.find("input").val('');
     var input_elements = $("#preview_form select, #preview_form input[type=checkbox]").not("#generate_id");
     input_elements.parents(".answer").before('<input type="text" disabled="disabled">');
     input_elements.each(function (index, element) {
@@ -77,7 +77,8 @@ DW.SubjectViewStyleButtons = function (sms_view_page, registration_form) {
 DW.SubjectPrintModalPage = function () {
     var dialog_html = $($("#sms_preview").clone()).attr("id", "dialog_sms_preview");
     dialog_html.find(".printBtn").attr("hidden", false);
-
+    dialog_html.find(".errorlist").hide();
+    dialog_html.find("input").val('');
     dialog_html.dialog({
         title: gettext("Subject Registration Preview"),
         modal: true,
