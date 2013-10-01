@@ -10,13 +10,13 @@ from django.utils.http import int_to_base36
 from mock import Mock, patch, PropertyMock
 from django.core import mail
 
-from datawinners.entity.views import initialize_values, subject_short_codes_to_delete, add_check_symbol_for_row
+from datawinners.entity.views import initialize_values, subject_short_codes_to_delete
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.entity.views import create_single_web_user
 from datawinners.entity.import_data import send_email_to_data_sender
-from datawinners.search.subject_search import SubjectQuery
+from datawinners.search.entity_search import SubjectQuery
 from datawinners.tests.email_utils import set_email_settings
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel
@@ -265,16 +265,3 @@ class TestView(TestCase):
 
 
 
-    def test_add_check_symbol_for_datasender_row(self):
-        result = []
-        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
-        datasender = {'email': 'test@test.com'}
-        add_check_symbol_for_row(datasender,result)
-        self.assertListEqual(result, [check_img, check_img, check_img])
-
-    def test_should_not_add_check_symbol_if_no_email_id(self):
-        result = []
-        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
-        datasender = {'name': 'name'}
-        add_check_symbol_for_row(datasender,result)
-        self.assertListEqual(result, [check_img,'',''])

@@ -1,6 +1,6 @@
 import elasticutils
+from datawinners.entity.helper import get_entity_type_fields
 from datawinners.main.database import get_database_manager
-from entity.helper import get_entity_type_fields
 from mangrove.form_model.form_model import header_fields
 from datawinners.settings import ELASTIC_SEARCH_URL
 
