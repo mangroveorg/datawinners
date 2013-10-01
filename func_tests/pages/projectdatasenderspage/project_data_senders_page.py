@@ -13,13 +13,15 @@ class ProjectDataSendersPage(AllDataSendersPage):
     def __init__(self, driver):
         super(ProjectDataSendersPage, self).__init__(driver)
 
-    def navigate_to_add_a_data_sender_page(self):
+    def navigate_to_add_a_data_sender_page(self, wait_for_page_loading=False):
         """
         Function to navigate to add a data sender page of the website
 
         Return create project page
          """
         self.driver.find(ADD_A_DATA_SENDER_LINK).click()
+        if wait_for_page_loading:
+            self.driver.wait_for_element(20, by_id("id_register_button"))
         return AddDataSenderPage(self.driver)
 
     def navigate_to_account_page(self):

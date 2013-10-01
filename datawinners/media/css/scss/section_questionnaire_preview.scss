@@ -114,14 +114,6 @@
           float: right;
           padding-right: 300px;
         }
-        .can-not-submit-link {
-          color: #066B06;
-          text-decoration: none;
-          font-size: 12px;
-        }
-        .can-not-submit-link:hover {
-          color: #066B06;
-        }
       }
     }
   }
@@ -341,3 +333,36 @@ p.instructions {
   text-decoration: none;
   font-size: 12px;
   display: none;}
+
+div.sms_tester_form {
+  div.warning-message-box{
+    p{
+      background: url("/media/images/icons.png") no-repeat scroll left -70px rgba(0, 0, 0, 0)
+    }
+    a{
+      color: #0070ac;
+      &.padding_top_10{
+        font-size: 13px!important;
+      }
+      &.button{
+        font-size:15px!important;
+      }
+    }
+    .float_left{
+      float:left!important;
+    }
+  }
+  div.clear_and_submit{
+    width: 244px;
+    #send_sms{
+      width: 172px;
+    }
+    .can-not-submit-link-quest{
+      text-align: right;
+      float: right;
+      clear: both;
+      width: auto;
+      max-width: 170px;
+    }
+  }
+}

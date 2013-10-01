@@ -11,7 +11,18 @@
     {% block action_section_block %}
         <div class="action-section">
             {% block cancel_block %}{% endblock %}
-            <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
+            {% if is_quota_reached %}
+                <input id="submit " class="disabled_yellow_submit_button" type="submit" value="{% trans 'Submit' %}" disabled="disabled"/>
+                <div class="can-not-submit">
+                    <a class="can-not-submit-link-quest help_icon">{% trans "Why canʼt I submit?" %}</a>
+                    <div class="tooltip">
+                <p>
+                    {% trans 'You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data for your projects.' %}
+                </p>
+                </div>
+            {% else %}
+                <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
+            {% endif %}
         </div>
     {% endblock %}
 </form>

@@ -8,7 +8,8 @@ register = template.Library()
 
 @register.filter(name='is_datasender')
 def is_datasender(user):
-    return True if user.get_profile().reporter_id is not None else False
+    groups = user.groups.all()
+    return len(groups) == 1 and groups[0].name == "Data Senders"
 
 @register.filter
 def in_group(user, group):

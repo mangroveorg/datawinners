@@ -39,11 +39,11 @@
   width: 50%;
   height: 30px; }
 
-.float_left {
+.clear_both_width_100 {
   margin: 8px 0 10px 0;
   clear: both;
   width: 100%; }
-  .float_left b {
+  .clear_both_width_100 b {
     font-size: 14px; }
 
 .quarter {

@@ -15,6 +15,7 @@ from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
+from datawinners.project.utils import is_quota_reached
 from datawinners.entity.views import create_subject
 from django.http import Http404
 
@@ -104,13 +105,13 @@ def data_export(request):
                                'projects': project_list, 'page_heading': page_heading,
                                'disable_link_class': disable_link_class,
                                'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
-                               'project_links': get_alldata_project_links()},
+                               'project_links': get_alldata_project_links(),
+                               'is_quota_reached':is_quota_reached(request)},
                               context_instance=RequestContext(request))
 
 
 def is_crs_admin(request):
     return get_organization(request).org_id == CRS_ORG_ID and not request.user.get_profile().reporter
-
 
 def is_crs_user(request):
     return get_organization(request).org_id == CRS_ORG_ID
@@ -134,6 +135,7 @@ def index(request):
                                    'disable_link_class': disable_link_class,
                                    'hide_link_class': hide_link_class, 'is_crs_admin': True,
                                    'project_links': get_alldata_project_links(),
+                                   'is_quota_reached':is_quota_reached(request),
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
     else:
@@ -143,6 +145,7 @@ def index(request):
                                    'hide_link_class': hide_link_class, 'is_crs_admin': False,
                                    "smart_phone_instruction_link": smart_phone_instruction_link,
                                    'project_links': get_alldata_project_links(),
+                                   'is_quota_reached':is_quota_reached(request),
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
 
@@ -157,7 +160,8 @@ def failed_submissions(request):
                               {'logs': org_logs, 'page_heading': page_heading,
                                'disable_link_class': disable_link_class,
                                'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
-                               'project_links': get_alldata_project_links()},
+                               'project_links': get_alldata_project_links(),
+                               'is_quota_reached':is_quota_reached(request)},
                               context_instance=RequestContext(request))
 
 
@@ -170,7 +174,9 @@ def reports(request):
 
     response = render_to_response('alldata/reports_page.html',
                                   {'reports': report_list, 'page_heading': "All Data",
-                                   'project_links': get_alldata_project_links(), 'is_crs_admin': True},
+                                   'project_links': get_alldata_project_links(),
+                                   'is_quota_reached':is_quota_reached(request),
+                                   'is_crs_admin': True},
                                   context_instance=RequestContext(request))
     response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
 
@@ -201,5 +207,3 @@ def get_entity_list_by_type(request, entity_type):
     manager = get_database_manager(request.user)
     entities = get_all_entities(manager, entity_type_list)
     return convert_to_json_response([entity.short_code for entity in entities])
-
-

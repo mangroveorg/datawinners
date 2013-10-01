@@ -68,6 +68,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
 from mangrove.transport.player.new_players import WebPlayerV2
 from mangrove.transport.repository.survey_responses import survey_response_count, get_survey_responses
+from datawinners.project.utils import is_quota_reached
 
 
 logger = logging.getLogger("django")
@@ -196,6 +197,7 @@ def project_overview(request, project_id=None):
         'project': project,
         'entity_type': project['entity_type'],
         'project_links': project_links,
+        'is_quota_reached':is_quota_reached(request),
         'number_of_questions': number_of_questions,
         'map_api_key': map_api_key,
         'number_data_sender': number_data_sender,
@@ -319,6 +321,7 @@ def sent_reminders(request, project_id):
     return render_to_response(html,
                               {'project': project,
                                "project_links": make_project_links(project, questionnaire.form_code),
+                               'is_quota_reached':is_quota_reached(request),
                                'reminders': get_all_reminder_logs_for_project(project_id, dbm),
                                'in_trial_mode': is_trial_account,
                                'create_reminder_link': reverse(create_reminder, args=[project_id])},
@@ -350,6 +353,7 @@ def broadcast_message(request, project_id):
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': project,
                                          "project_links": make_project_links(project, questionnaire.form_code),
+                                         'is_quota_reached':is_quota_reached(request),
                                          "form": form, "ong_country": organization.country,
                                          "success": None},
                                   context_instance=RequestContext(request))
@@ -369,6 +373,7 @@ def broadcast_message(request, project_id):
             return render_to_response('project/broadcast_message.html',
                                       {'project': project,
                                        "project_links": make_project_links(project, questionnaire.form_code),
+                                       'is_quota_reached':is_quota_reached(request),
                                        "form": form,
                                        "ong_country": organization.country, 'success': sms_sent},
                                       context_instance=RequestContext(request))
@@ -376,6 +381,7 @@ def broadcast_message(request, project_id):
         return render_to_response('project/broadcast_message.html',
                                   {'project': project,
                                    "project_links": make_project_links(project, questionnaire.form_code), "form": form,
+                                   'is_quota_reached':is_quota_reached(request),
                                    'success': None, "ong_country": organization.country},
                                   context_instance=RequestContext(request))
 
@@ -428,6 +434,7 @@ def review_and_test(request, project_id=None):
         return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': make_project_links(project,
                                                                                                        form_model.form_code),
+                                                                   'is_quota_reached':is_quota_reached(request),
                                                                    'number_of_datasenders': number_of_registered_data_senders
             ,
                                                                    'number_of_subjects': number_of_registered_subjects,
@@ -453,6 +460,7 @@ def registered_subjects(request, project_id=None):
     return render_to_response('project/subjects/list.html',
                               {'project': project,
                                'project_links': project_links,
+                               'is_quota_reached':is_quota_reached(request),
                                "subject": subject,
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
@@ -481,6 +489,7 @@ def registered_datasenders(request, project_id=None):
 
         return render_to_response('project/registered_datasenders.html',
                                   {'project': project, 'project_links': project_links, 'all_data': senders,
+                                   'is_quota_reached':is_quota_reached(request),
                                    'grant_web_access': grant_web_access, "labels": labels,
                                    'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
                                   context_instance=RequestContext(request))
@@ -544,6 +553,7 @@ def datasenders(request, project_id=None):
     return render_to_response('project/datasenders.html',
                               {'project': project,
                                'project_links': project_links,
+                               'is_quota_reached':is_quota_reached(request),
                                'questions': questions,
                                'questionnaire_code': reg_form.form_code,
                                'example_sms': example_sms,
@@ -576,6 +586,7 @@ def questionnaire(request, project_id=None):
                                    'questionnaire_code': form_model.form_code,
                                    'project': project,
                                    'project_links': project_links,
+                                   'is_quota_reached':is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,
                                    'preview_links': get_preview_and_instruction_links_for_questionnaire()},
                                   context_instance=RequestContext(request))
@@ -648,6 +659,7 @@ class SubjectWebQuestionnaireRequest():
                                         self.manager, self.hide_link_class, self.disable_link_class, is_update)
         self._update_form_context(form_context, questionnaire_form,
                                   web_view_enabled=self.request.GET.get("web_view", False))
+        form_context.update({'is_quota_reached': is_quota_reached(self.request)})
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
 
@@ -737,6 +749,7 @@ class SurveyWebQuestionnaireRequest():
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.form_model.form_code, self.project, questionnaire_form,
                                         self.manager, self.hide_link_class, self.disable_link_class, is_update)
+        form_context.update({'is_quota_reached': is_quota_reached(self.request)})
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
 
@@ -848,6 +861,7 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
     return render_to_response(template,
                               {"questions": questions, 'questionnaire_code': form_model.form_code,
                                'project': project, 'project_links': project_links,
+                               'is_quota_reached':is_quota_reached(request),
                                'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
                               context_instance=RequestContext(request))
 
@@ -877,6 +891,7 @@ def subject_registration_form_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview_list.html',
                                   {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
                                    'project': project, 'project_links': project_links,
+                                   'is_quota_reached':is_quota_reached(request),
                                    'example_sms': example_sms,
                                    'org_number': get_organization_telephone_number(request)},
                                   context_instance=RequestContext(request))
@@ -896,6 +911,7 @@ def sender_registration_form_preview(request, project_id=None):
                                   {"questions": datasender_questions,
                                    'questionnaire_code': registration_questionnaire.form_code,
                                    'project': project, 'project_links': project_links,
+                                   'is_quota_reached':is_quota_reached(request),
                                    'example_sms': example_sms,
                                    'org_number': get_organization_telephone_number(request)},
                                   context_instance=RequestContext(request))
@@ -921,6 +937,7 @@ def edit_my_subject_questionnaire(request, project_id=None):
     return render_to_response('project/subject_questionnaire.html',
                               {'project': project,
                                'project_links': project_links,
+                               'is_quota_reached':is_quota_reached(request),
                                'existing_questions': repr(existing_questions),
                                'questionnaire_code': reg_form.form_code,
                                'language': reg_form.activeLanguages[0],
@@ -951,7 +968,8 @@ def create_data_sender_and_web_user(request, project_id=None):
     if request.method == 'GET':
         form = ReporterRegistrationForm(initial={'project_id': project_id})
         return render_to_response('project/register_datasender.html', {
-            'project': project, 'project_links': project_links, 'form': form,
+            'project': project, 'project_links': project_links, 'is_quota_reached':is_quota_reached(request),
+            'form': form,
             'in_trial_mode': in_trial_mode, 'current_language': translation.get_language()},
                                   context_instance=RequestContext(request))
 
@@ -994,6 +1012,7 @@ def edit_data_sender(request, project_id, reporter_id):
             , 'geo_code': geo_code})
         return render_to_response('project/edit_datasender.html',
                                   {'project': project, 'reporter_id': reporter_id, 'form': form, 'project_links': links,
+                                   'is_quota_reached':is_quota_reached(request),
                                    'in_trial_mode': _in_trial_mode(request), 'email': email},
                                   context_instance=RequestContext(request))
 
@@ -1039,7 +1058,8 @@ def edit_data_sender(request, project_id, reporter_id):
 
         return render_to_response('edit_datasender_form.html',
                                   {'project': project, 'form': form, 'reporter_id': reporter_id, 'message': message,
-                                   'project_links': links, 'in_trial_mode': _in_trial_mode(request), 'email': email},
+                                   'project_links': links, 'is_quota_reached':is_quota_reached(request),
+                                   'in_trial_mode': _in_trial_mode(request), 'email': email},
                                   context_instance=RequestContext(request))
 
 

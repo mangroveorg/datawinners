@@ -5,7 +5,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext
 from django_countries import CountryField
-from datawinners.tests.data import LIMIT_TRIAL_ORG_MESSAGE_COUNT
+from datawinners.tests.data import LIMIT_TRIAL_ORG_MESSAGE_COUNT, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from django.contrib.auth.models import User
 from django.utils.translation import get_language
@@ -80,6 +80,11 @@ class Organization(models.Model):
             return True
         return False
 
+    def has_exceeded_submission_limit(self):
+        if self.in_trial_mode and self._has_exceeded_submission_limit_for_trial_account():
+            return True
+        return False
+
     def increment_sms_api_usage_count(self):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = self._get_message_tracker(current_month)
@@ -125,8 +130,15 @@ class Organization(models.Model):
         message_trackers = self._get_all_message_trackers()
         return sum([message_tracker.total_messages() for message_tracker in message_trackers])
 
+    def _get_total_submission_count(self):
+        message_trackers = self._get_all_message_trackers()
+        return sum([message_tracker.total_monthly_incoming_messages() for message_tracker in message_trackers])
+
     def _has_exceeded_limit_for_trial_account(self):
         return self._get_total_message_count() > LIMIT_TRIAL_ORG_MESSAGE_COUNT
+
+    def _has_exceeded_submission_limit_for_trial_account(self):
+        return self._get_total_submission_count() >= LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 
     def get_phone_country_code(self):
         criteria = dict({"country_name_%s" % get_language(): self.country_name()})
@@ -270,15 +282,8 @@ class MessageTracker(models.Model):
         for msg_tracker in msg_trackers:
             total_incoming += msg_tracker.total_monthly_incoming_messages()
         return total_incoming
-    
+
 
     def __unicode__(self):
         return "organization : %s incoming messages: %d outgoing messages: %d" % (
             self.organization.name, self.incoming_sms_count, self.outgoing_sms_count)
-
-
-
-
-
-
-

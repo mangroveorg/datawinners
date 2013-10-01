@@ -584,3 +584,38 @@ div.border_top_bottom{
   display: inline-block;
   margin: -15px 0 15px 0;
 }
+.disabled_yellow_submit_button {
+  border: 1px solid #D5B071 !important;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background: #F8EDB8!important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#F8EDB8), to(#FDE8A0))!important;
+  background: -moz-linear-gradient(top, #F8EDB8, #FDE8A0)!important;
+  color: #C29870 !important;
+  font-family: "Arial"!important;
+  font-weight: bold!important;
+  padding: 6px 23px 5px 22px!important;
+  cursor: pointer!important;
+  cursor: hand!important;
+}
+.can-not-submit-link-quest {
+  color: #066B06!important;
+  text-decoration: none;
+  font-size: 12px;
+}
+.can-not-submit-link-quest:hover {
+  color: #066B06;
+}
+.overflow_hidden{
+  overflow: hidden;
+}
+.margin_10{
+  margin: 10px;
+}
+.padding_right_10 {
+  padding-right: 10px !important;
+}
+
+.left_null{
+  left: 0px !important;
+}

@@ -1624,10 +1624,14 @@ def load_data():
     create_trial_test_organization('chinatwu4@gmail.com', 'COJ00003', False)
     create_trial_test_organization('mamytest@mailinator.com', 'SLX364903', False)
     create_project_for_nigeria_test_orgnization()
-    create_datasender_for_newly_created_organization([phone_number_type, first_name_type])
+    create_datasender_for_nigeria_test_organization([phone_number_type, first_name_type])
+
+    create_trial_test_organization('quotareached@mailinator.com', 'YDC120930', False)
+    register_datasender_for_quota_reached_ngo([phone_number_type, first_name_type])
+    create_clinic3_project_for_quota_reached_ngo()
 
 
-def create_datasender_for_newly_created_organization(data_types_for_datasender):
+def create_datasender_for_nigeria_test_organization(data_types_for_datasender):
     user = User.objects.get(username="samuel@mailinator.com")
     manager = get_database_manager(user)
     initializer.run(manager)
@@ -1698,3 +1702,16 @@ def create_project_for_nigeria_test_orgnization():
         "should_send_reminder_to_all_ds": True
     }
     create_project1(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline)
+
+def register_datasender_for_quota_reached_ngo(data_types_for_datasender):
+    manager = get_database_manager(User.objects.get(username="quotareached@mailinator.com"))
+    register(manager, entity_type=REPORTER_ENTITY_TYPE,
+         data=[(MOBILE_NUMBER_FIELD, "261123456", data_types_for_datasender[0]),
+               (NAME_FIELD, "Datasender Quota Reached", data_types_for_datasender[1])],
+         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+         short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+
+def create_clinic3_project_for_quota_reached_ngo():
+    manager = get_database_manager(User.objects.get(username="quotareached@mailinator.com"))
+    questions = create_questions(manager)
+    create_project3([u"clinic"], manager, questions)

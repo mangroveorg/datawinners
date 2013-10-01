@@ -25,6 +25,7 @@ from datawinners.utils import get_changed_questions
 from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, SET_DEADLINE
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.project.helper import is_project_exist
+from datawinners.project.utils import is_quota_reached
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -226,7 +227,7 @@ def reminders(request, project_id):
              'reminders': _format_reminders(reminders, project_id),
              'in_trial_mode': organization.in_trial_mode,
              'create_reminder_link': reverse(create_reminder, args=[project_id]),
-             'project_links': project_links},
+             'project_links': project_links, 'is_quota_reached':is_quota_reached(request)},
             context_instance=RequestContext(request))
 
 
@@ -247,7 +248,7 @@ def reminder_settings(request, project_id):
     if request.method == 'GET':
         form = ReminderForm(data=(_reminder_info_about_project(project)))
         return render_to_response(html,
-            {'project_links': project_links, 'project': project,
+            {'project_links': project_links, 'is_quota_reached':is_quota_reached(request), 'project': project,
              'form': form}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -268,7 +269,7 @@ def reminder_settings(request, project_id):
             return HttpResponseRedirect('')
         else:
             return render_to_response(html,
-                {'project_links': project_links, 'project': project,
+                {'project_links': project_links, 'is_quota_reached':is_quota_reached(request), 'project': project,
                  'form': form}, context_instance=RequestContext(request))
 
 

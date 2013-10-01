@@ -111,6 +111,12 @@ def process_sms_counter(incoming_request):
         return get_translated_response_message(incoming_request,
             "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects.")
 
+    if organization.has_exceeded_submission_limit():
+        return get_translated_response_message(incoming_request,
+            "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data for your projects.")
+
+
+
     incoming_request['next_state'] = submit_to_player
     return incoming_request
 
@@ -142,7 +148,7 @@ def submit_to_player(incoming_request):
 
         if response.is_registration:
             incoming_request.get('organization').increment_message_count_for(**{'sms_registration_count':1})
-            
+
         mail_feed_errors(response, dbm.database_name)
         message = SMSResponse(response).text(dbm)
         send_message(incoming_request, response)
@@ -165,4 +171,3 @@ def _get_organization(request):
 def _get_from_and_to_numbers(request):
     vumi_parameters = get_vumi_parameters(request)
     return vumi_parameters.from_number, vumi_parameters.to_number
-

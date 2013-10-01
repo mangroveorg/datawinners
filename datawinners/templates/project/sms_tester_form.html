@@ -1,5 +1,12 @@
 {% load i18n %}
 <div class="sms_tester_form none">
+    {% if is_quota_reached %}
+        <div class="warning-message-box clear-both overflow_hidden">
+            <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects." %}</p>
+            <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/">{% trans "Learn More" %}</a>
+            <a class="button margin_10 float_left" href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
+        </div>
+    {% endif %}
     <table class="no_border">
         <tr>
             <td width="55%">
@@ -57,9 +64,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="clear-both padding_top_20">
-                    <a id="clear_sms" class="padding_left_right_10 size_1_em" >{% trans 'Clear' %}</a>
-                    <input id="send_sms" type="button" class="button" value="{% trans 'Send SMS' %}"/>
+                <div class="clear-both padding_top_20 clear_and_submit">
+                    {% if is_quota_reached %}
+                        <input id="send_sms" type="button" class="float_right disabled_yellow_submit_button" value="{% trans 'Send SMS' %}" disabled="disabled"/>
+                        <a id="clear_sms" class="padding_left_right_10 size_1_em float_right margin_top_5" >{% trans 'Clear' %}</a>
+                        <div class="can-not-submit">
+                            <a class="can-not-submit-link-quest help_icon">{% trans "Why canʼt I submit?" %}</a>
+                            <div class="tooltip">
+                                <p>
+                                    {% trans 'You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data for your projects.' %}
+                                </p>
+                            </div>
+                    {% else %}
+                        <input id="send_sms" type="button" class="button float_right margin_top_5" value="{% trans 'Send SMS' %}"/>
+                        <a id="clear_sms" class="padding_left_right_10 size_1_em float_right" >{% trans 'Clear' %}</a>
+                    {% endif %}
+
                 </div>
             </td>
         </tr>

@@ -23,6 +23,13 @@
         {% if user|is_datasender %}
             {% activetab "device_tab_nav" "web" %}
             {{ block.super }}
+            {% if is_quota_reached %}
+            <div class="warning-message-box clear-both overflow_hidden left_null">
+                <p>{% trans "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data for your projects." %}</p>
+                <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/">{% trans "Learn More" %}</a>
+                <a class="button margin_10 float_left" href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
+            </div>
+            {% endif %}
         {% endif %}
     {% endblock %}
     <div>

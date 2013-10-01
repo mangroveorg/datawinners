@@ -5,7 +5,7 @@ from mangrove.datastore.database import  get_db_manager as mangrove_db_manager
 from datawinners import settings
 
 TEST_EMAILS = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'gerard@mailinator.com',
-               'samuel@mailinator.com', 'mamytest@mailinator.com']
+               'samuel@mailinator.com', 'mamytest@mailinator.com', 'quotareached@mailinator.com']
 
 def test_document_stores():
     document_stores = []

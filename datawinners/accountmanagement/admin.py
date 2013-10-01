@@ -56,10 +56,10 @@ class OrganizationSettingAdmin(DatawinnerAdmin):
 
 
 class MessageTrackerAdmin(DatawinnerAdmin):
+
     list_display = ("organization_name", "organization_id", "current_month", "combined_total_incoming",
                     "total_incoming_per_month", "outgoing_messages", "sms_api_usage", "incoming_sms", "incoming_sp",
-                    "incoming_web", "sms_subject_registration", "total_outgoing_messages", "total_messages",
-                    "combined_total_messages")
+                    "incoming_web", "total_outgoing_messages", "total_messages")
     list_filter = ("organization__name",)
 
     def sms_subject_registration(self, obj):
@@ -70,18 +70,24 @@ class MessageTrackerAdmin(DatawinnerAdmin):
         return obj.organization.name
     organization_name.short_description = mark_safe('Organisation<br/>name')
 
+
+    def organization_id(self, obj):
+        return obj.organization.org_id
+    organization_id.short_description = mark_safe('Organisation<br/>ID')
+
+
     def organization_id(self, obj):
         return obj.organization.org_id
     organization_id.short_description = mark_safe('Organisation<br/>ID')
 
     def combined_total_incoming(self, obj):
         return obj.total_incoming_in_total()
-    combined_total_incoming.short_description = mark_safe('Total incoming<br/>(In total)')
+    combined_total_incoming.short_description = mark_safe('Total incoming<br/>Submissions<br/>(In total)')
 
     def total_incoming_per_month(self, obj):
         return obj.total_monthly_incoming_messages()
     total_incoming_per_month.short_description = mark_safe('Total Incoming<br/>Submissions<br/>(per month)')
-    
+
     def current_month(self, obj):
         return datetime.datetime.strftime(obj.month, "%m-%Y")
     current_month.short_description = "Month"

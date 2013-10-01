@@ -14,6 +14,7 @@ from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.alldata.helper import get_all_project_for_user
 from django.contrib.gis.utils import GeoIP
 from datawinners.messageprovider.messages import SMART_PHONE
+from datawinners.project.utils import is_quota_reached
 
 logger = logging.getLogger("datawinners.xform")
 sp_submission_logger = logging.getLogger("sp-submission")
@@ -72,7 +73,8 @@ def submission(request):
     request_user = request.user
     submission_file = request.FILES.get("xml_submission_file").read()
 
-    if not __authorized_to_make_submission_on_requested_form(request_user, submission_file):
+    if not __authorized_to_make_submission_on_requested_form(request_user, submission_file) \
+        or is_quota_reached(request):
         response = HttpResponse(status=403)
         return response
 

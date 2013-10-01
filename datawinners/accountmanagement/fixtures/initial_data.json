@@ -206,6 +206,27 @@
         }
     },
     {
+        "pk": "YDC120930",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "Education",
+            "city": "Ivandry",
+            "name": "Quota Reached NGO",
+            "active_date": "2013-09-29 18:58:04",
+            "is_deactivate_email_sent": false,
+            "country": "MG",
+            "status": "Activated",
+            "zipcode": "65212",
+            "in_trial_mode": true,
+            "website": "",
+            "office_phone": "",
+            "state": "",
+            "addressline2": "",
+            "address": "Ambato",
+            "status_changed_datetime": "2013-09-29 12:58:56"
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
@@ -354,6 +375,28 @@
         }
     },
     {
+        "pk": -11,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep2",
+            "mobile_phone": "2614321",
+            "org_id": "YDC120930",
+            "user": -12,
+            "title": ""
+        }
+    },
+    {
+        "pk": -12,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep1",
+            "mobile_phone": "261123456",
+            "org_id": "YDC120930",
+            "user": -13,
+            "title": ""
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.paymentdetails",
         "fields": {
@@ -441,6 +484,16 @@
             "outgoing_number": null,
             "sms_tel_number": null,
             "document_store": "hni_nigeria-ong-test_lsf553279"
+        }
+    },
+    {
+        "pk": -8,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "YDC120930",
+            "outgoing_number": null,
+            "sms_tel_number": null,
+            "document_store": "hni_quota-reached-ngo_ydc120930"
         }
     },
     {
@@ -769,6 +822,46 @@
             "password": "sha1$9cdd3$e4a2d0813edc94ab013c359f0f59d5224899dbfb",
             "email": "datasender@test.com",
             "date_joined": "2012-05-20 07:00:14"
+        }
+    },
+    {
+        "pk": -12,
+        "model": "auth.user",
+        "fields": {
+            "username": "quotareached@mailinator.com",
+            "first_name": "Quota",
+            "last_name": "Reached",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-09-29 19:00:14",
+            "groups": [
+                1
+            ],
+            "user_permissions": [],
+            "password": "sha1$f54c6$5365e0fcafed40733b89a4ab231bb134fd1913ef",
+            "email": "quotareached@mailinator.com",
+            "date_joined": "2012-09-29 19:00:14"
+        }
+    },
+    {
+        "pk": -13,
+        "model": "auth.user",
+        "fields": {
+            "username": "dsquotareached@mailinator.com",
+            "first_name": "Datasender Quota",
+            "last_name": "Reached",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-09-29 19:00:14",
+            "groups": [
+                4
+            ],
+            "user_permissions": [],
+            "password": "sha1$adcc2$9338977a7c86ab6a1a255c661b37c7f29c357409",
+            "email": "dsquotareached@mailinator.com",
+            "date_joined": "2013-09-29 19:00:14"
         }
     },
     {

@@ -4299,3 +4299,9 @@ msgstr "Vous ne pouvez pas laisser ceci vide."
 
 msgid "Please use only letters (a-z), numbers, and spaces."
 msgstr "Utilisez uniquement des lettres (a-z), des chiffres et des espaces."
+
+msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data for your projects."
+msgstr "Vous avez atteint la limite de 1000 soumissions gratuites. Demandez à votre administrateur d'adopter la version payante pour continuer à effectuer des soumissions pour vos projets."
+
+msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects."
+msgstr "Vous avez atteint la limite de 1000 soumissions gratuite. Adoptez la version payante pour continuer à soumettre des donnés pour vos projets"

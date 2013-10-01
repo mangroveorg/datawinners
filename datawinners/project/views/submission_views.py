@@ -34,7 +34,7 @@ from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from datawinners.project.models import Project
 from datawinners.project.survey_response_list import SurveyResponseList
 from datawinners.project.submission_list_for_excel import SurveyResponseForExcel
-from datawinners.project.utils import project_info
+from datawinners.project.utils import project_info, is_quota_reached
 from datawinners.project.Header import SubmissionsPageHeader
 from datawinners.project.analysis_result import AnalysisResult
 from datawinners.activitylog.models import UserActivityLog
@@ -73,7 +73,8 @@ def index(request, project_id=None, questionnaire_code=None, tab="0"):
                        "header_name_list": repr(encode_json(header.header_list)),
                        "datasender_list": survey_responses.get_data_senders(),
                        "subject_list": survey_responses.get_subjects(),
-                       "tab": tab
+                       "tab": tab,
+                       "is_quota_reached": is_quota_reached(request)
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))

@@ -36,10 +36,21 @@
 {% endif %}
 
 {% block content %}
+
     {% block secondary_navigation_data %}
         {% activetab "secondary_tab_nav" "web_questionnaire" %}
         {{ block.super }}
     {% endblock %}
+    <div class="questionnaire-header">
+        <h3>{% trans "Web Submission" %}</h3>
+        {% if is_quota_reached %}
+        <div class="warning-message-box clear-both overflow_hidden">
+            <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects." %}</p>
+            <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/">{% trans "Learn More" %}</a>
+            <a class="button margin_10 float_left" href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
+        </div>
+        {% endif %}
+    </div>
     <div>
         {% if is_edit %}
             {% include 'project/edit_submission.html' %}
@@ -48,5 +59,3 @@
         {% endif %}
     </div>
 {% endblock %}
-
-

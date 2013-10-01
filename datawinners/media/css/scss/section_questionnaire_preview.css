@@ -83,12 +83,6 @@
         margin-left: 30px;
         float: right;
         padding-right: 300px; }
-      #questionnaire_content #questionnaire_preview .web-questionnaire .web-preview-action-section .can-not-submit-link {
-        color: #066B06;
-        text-decoration: none;
-        font-size: 12px; }
-      #questionnaire_content #questionnaire_preview .web-questionnaire .web-preview-action-section .can-not-submit-link:hover {
-        color: #066B06; }
 
 #print_page a {
   color: #0070ac;
@@ -245,3 +239,24 @@ p.instructions {
   text-decoration: none;
   font-size: 12px;
   display: none; }
+
+div.sms_tester_form div.warning-message-box p {
+  background: url("/media/images/icons.png") no-repeat scroll left -70px rgba(0, 0, 0, 0); }
+div.sms_tester_form div.warning-message-box a {
+  color: #0070ac; }
+  div.sms_tester_form div.warning-message-box a.padding_top_10 {
+    font-size: 13px !important; }
+  div.sms_tester_form div.warning-message-box a.button {
+    font-size: 15px !important; }
+div.sms_tester_form div.warning-message-box .float_left {
+  float: left !important; }
+div.sms_tester_form div.clear_and_submit {
+  width: 244px; }
+  div.sms_tester_form div.clear_and_submit #send_sms {
+    width: 172px; }
+  div.sms_tester_form div.clear_and_submit .can-not-submit-link-quest {
+    text-align: right;
+    float: right;
+    clear: both;
+    width: auto;
+    max-width: 170px; }

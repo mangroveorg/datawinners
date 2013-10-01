@@ -32,3 +32,6 @@ class SMSTesterLightBoxPage(LightBox):
         Return success/error message
         """
         return self.driver.find_text_box(SMS_TA).get_attribute("value")
+
+    def get_upgrade_instruction_present(self):
+        return self.driver.is_element_present(UPGRADE_INSTRUCTION_BY_CSS)
