@@ -232,8 +232,8 @@ def _project_dir(code_dir, project_name):
 
 def checkout_project(context, project_name):
     run("git reset --hard HEAD")
-    run("git pull")
     run("git checkout " + context.branch)
+    run("git pull --rebase")
     if context.branch in ['develop', 'origin/develop']:
         start_point = commit_sha_from_build_number(ENVIRONMENT_JENKINS_JOB[project_name],
             context.build_numbers[project_name])
