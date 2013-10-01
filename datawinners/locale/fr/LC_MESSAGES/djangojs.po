@@ -957,8 +957,8 @@ msgid "Terms And Conditions"
 msgstr "Termes et Conditions"
 
 #: media/javascript/subjects/subject_actions.js:15
-msgid "All %(number_of_records)s Subjects on this page are selected."
-msgstr "Tous les %(number_of_records)s Sujets sur cette page sont sélectionnés"
+msgid "You have selected <b>%(number_of_records)s</b> Subjects on this page."
+msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> Sujets sur cette page."
 
 #: media/javascript/useractivity/log.js:28
 #, fuzzy
@@ -999,6 +999,9 @@ msgstr "Tapez toute information que vous recherchez"
 
 msgid "All %(total_number_of_records)s Subjects selected."
 msgstr "Tous les %(total_number_of_records)s Sujets sont sélectionnés."
+
+msgid "Clear Selection"
+msgstr "Déselectionner tout"
 
 msgid "<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"
 msgstr "<b>%(start)s à %(end)s</b> de %(total)s %(subject_type)s(s)"

@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from time import sleep
 
 from framework.utils.data_fetcher import *
 from framework.utils.global_constant import WAIT_FOR_TITLE
@@ -184,6 +185,7 @@ class CreateQuestionnairePage(CreateProjectPage):
             self.driver.find_radio_button(ONLY_ONE_ANSWER_RB).click()
         elif MULTIPLE_ANSWERS == choice_type:
             self.driver.find_radio_button(MULTIPLE_ANSWER_RB).click()
+        sleep(1)
         return self
 
 

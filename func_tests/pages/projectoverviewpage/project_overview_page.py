@@ -71,6 +71,7 @@ class ProjectOverviewPage(Page):
         return QuestionnaireTabPage(self.driver)
 
     def get_project_title(self):
+        self.driver.wait_for_element(60, PROJECT_TITLE_LOCATOR, True)
         return self.driver.find(PROJECT_TITLE_LOCATOR).text.lower()
 
     def get_questionnaire_code(self):

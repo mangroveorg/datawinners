@@ -239,12 +239,6 @@ LOGGING = {
 
 SCHEDULER_HOUR = 21
 SCHEDULER_MINUTES = 30
-API_KEYS = {
-    '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxT_fiQdjwro1eYvjMeDJdedrin3mBQTAv46jB6-4OUJw7ElbW9r5VyzdA',
-    '178.79.161.90': 'AIzaSyA8T3p88UZ-Bqvxmf-L7-6K_eZ4nOYqwcs',
-    'localhost:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxRKHMeFb4p-80hFe4LzzFBo1qJpFxQDEP2BqoZSGz3N6EDjkPlXEH_kZQ',
-    'www.datawinners.com': 'ABQIAAAAbx2AIcJvKRHLcqmBWwtWdxTjvHtTITV0tzqHG1m2R2AKLO2mQxS0MJ8sZ4h-Ihcm6M7VNjodlrQfTg',
-    }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 

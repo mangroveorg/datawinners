@@ -28,7 +28,7 @@ from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_data_sender_form, add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_organization
+from datawinners.utils import get_organization, get_map_key
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException, MangroveException
 from mangrove.form_model import form_model
@@ -180,7 +180,7 @@ def project_overview(request, project_id=None):
     number_of_questions = len(questionnaire.fields)
     questionnaire_code = questionnaire.form_code
     project_links = make_project_links(project, questionnaire_code)
-    map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
+    map_api_key = get_map_key(request.META['HTTP_HOST'])
     number_data_sender = len(project.data_senders)
     number_records = survey_response_count(manager, questionnaire_code, None, None)
     number_reminders = Reminder.objects.filter(project_id=project.id).count()

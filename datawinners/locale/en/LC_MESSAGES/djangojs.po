@@ -930,8 +930,8 @@ msgid "Terms And Conditions"
 msgstr ""
 
 #: media/javascript/subjects/subject_actions.js:15
-msgid "All %(number_of_records)s Subjects on this page are selected."
-msgstr "All %(number_of_records)s Subjects on this page are selected."
+msgid "You have selected <b>%(number_of_records)s</b> Subjects on this page."
+msgstr "You have selected <b>%(number_of_records)s</b> Subjects on this page."
 
 # msgstr "All<b> %(number_of_records)s </b>Subjects on this page are selected."
 #: media/javascript/useractivity/log.js:28

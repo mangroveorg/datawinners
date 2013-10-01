@@ -89,38 +89,45 @@ DW.ActionsMenu = function () {
 
 
 DW.SubjectPagination = function () {
-    if ($("#select_all_message").length == 0)
-        $("#subjects_table").before("<div id='select_all_message'></div>");
-    var select_all_message = $("#select_all_message");
 
     this.disable = function () {
-        select_all_message.html('');
-        select_all_message.removeData("all_selected");
+        $('#select_all_message').parent().parent().hide()
+        $('#select_all_message').html('');
+        $('#select_all_message').removeData("all_selected");
     };
 
     this.enable = function (no_of_records_on_page, total_number_of_records) {
         var select_all_text = interpolate(gettext("Select all <b> %(total_number_of_records)s </b>subjects"),
             {'total_number_of_records': total_number_of_records }, true);
-        var select_all_link = "<a id='select_all_link' class=''> " + select_all_text + "</a>";
-        var select_across_pages_message = interpolate(gettext("All %(number_of_records)s Subjects on this page are selected."),
+        var select_all_link = " <a id='select_all_link' class=''>" + select_all_text + "</a>";
+        var select_across_pages_message = interpolate(gettext("You have selected <b>%(number_of_records)s</b> Subjects on this page."),
             {'number_of_records': no_of_records_on_page}, true) + select_all_link;
-        select_all_message.html(select_across_pages_message);
+        $('#select_all_message').html(select_across_pages_message);
 
         $('#select_all_link').click(function () {
-            select_all_message.html(interpolate(gettext("All %(total_number_of_records)s Subjects selected."),
+            var clear_selection = " <a id='clear_selection'>" + interpolate(gettext("Clear Selection")) + "</a>";
+            $('#select_all_message').html(interpolate(gettext("All %(total_number_of_records)s Subjects selected." + clear_selection),
                 {'total_number_of_records': total_number_of_records }, true));
-            select_all_message.data('all_selected', true);
+            $('#select_all_message').data('all_selected', true);
         });
+        $('#select_all_message').parent().parent().show()
     };
 };
 
 
 DW.SubjectSelectAllCheckbox = function (drawTable) {
+    var subject_select_all_checkbox = this;
     var subject_select_all = new DW.SubjectPagination();
     var check_all_element = $(".styled_table thead input:checkbox");
-
-    check_all_element.live('click', function (eventObject) {
-        $(".styled_table tbody input:checkbox").attr("checked", eventObject.currentTarget.checked);
+    function uncheck_all_rows(){
+        $(".styled_table tbody input:checkbox").attr("checked", check_all_element.is(':checked'));
+    }
+    check_all_element.on('click', function (eventObject) {
+        uncheck_all_rows();
+    });
+    $(document).on("click","#clear_selection",function(){
+        subject_select_all_checkbox.un_check();
+        uncheck_all_rows();
     });
 
     function select_all_message(enable) {

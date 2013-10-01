@@ -13,6 +13,10 @@ DATABASES = {
     }
 }
 
+API_KEYS = {
+    'localhost:8000': 'AIzaSyChwOoz0ZXqQS6EAVcdngeb_17KMLW3eTM'
+}
+
 GOOGLE_MAPS_ENABLED = False
 GOOGLE_ANALYTICS_ENABLED = False
 

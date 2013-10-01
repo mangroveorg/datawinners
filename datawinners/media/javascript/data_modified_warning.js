@@ -53,9 +53,7 @@ DW.data_submission.prototype = {
             title:gettext("You Have Unsaved Changes"),
             modal:true,
             autoOpen:false,
-            width:function(){
-                return (gettext("en") == "en") ? 450 : 550;
-            },
+            width:550,
             closeText:'hide'
         });
     },

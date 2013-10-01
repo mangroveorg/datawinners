@@ -6,6 +6,7 @@ from django.forms import CharField
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
+from django_digest.models import PartialDigest
 
 from forms import forms
 from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization, NGOUserProfile, OutgoingNumberSetting
@@ -125,14 +126,16 @@ class MessageTrackerAdmin(DatawinnerAdmin):
 class OrganizationAdmin(DatawinnerAdmin):
     list_display = (
         'organization_name', 'complete_address', 'office_phone', 'website', 'paid', 'created_on', 'admin_name',
-        'admin_email', 'admin_mobile_number', 'admin_office_phone', 'sms_api_users','status')
+        'admin_email', 'admin_mobile_number', 'admin_office_phone', 'sms_api_users', 'status')
     actions = ['deactivate_organizations', 'activate_organizations', 'delete_organizations']
 
     def deactivate_organizations(modeladmin, request, queryset):
-        queryset.exclude(status='Deactivated').update(status='Deactivated', status_changed_datetime=datetime.datetime.now())
+        queryset.exclude(status='Deactivated').update(status='Deactivated',
+                                                      status_changed_datetime=datetime.datetime.now())
         messages.success(request, _('The accounts selected have been deactivated successfully.'))
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
         related_users = User.objects.filter(ngouserprofile__org_id__in=selected).update(is_active=False)
+
     deactivate_organizations.short_description = "Deactivate accounts"
 
     def activate_organizations(modeladmin, request, queryset):
@@ -140,6 +143,7 @@ class OrganizationAdmin(DatawinnerAdmin):
         messages.success(request, _('The accounts selected have been activated successfully.'))
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
         related_users = User.objects.filter(ngouserprofile__org_id__in=selected).update(is_active=True)
+
     activate_organizations.short_description = "Activate accounts"
 
     def delete_organizations(modeladmin, request, queryset):
@@ -153,6 +157,7 @@ class OrganizationAdmin(DatawinnerAdmin):
             del feed_dbm.server[feed_database_name]
             es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
             es.delete_index(dbm.database_name)
+
     delete_organizations.short_description = "Delete accounts"
 
     class Media:
@@ -337,6 +342,17 @@ class DWUserAdmin(UserAdmin):
 
     def save_model(self, request, obj, form, change):
         super(DWUserAdmin, self).save_model(request, obj, form, change)
+
+        if change:
+            if 'email' in form.changed_data or 'username' in form.changed_data:
+                try:
+                    existing_digests = PartialDigest.objects.filter(user=obj)
+                    if existing_digests:
+                        for existing_digest in existing_digests:
+                            existing_digest.delete()
+                except PartialDigest.DoesNotExist:
+                    pass
+
         if form.cleaned_data.get('organization_id') is not None:
             try:
                 user_profile = NGOUserProfile.objects.get(user=obj)
