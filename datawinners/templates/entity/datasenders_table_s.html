@@ -1,7 +1,6 @@
 {% load i18n %}
 <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/media/javascript/datasenders/datasender_table.js"></script>
-{#<script type="text/javascript" src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>#}
 
 <div class="table_container">
     <table id='datasender_table' class="styled_table">
@@ -11,10 +10,13 @@
             <th>{{ title }}</th>
         {% endfor %}
         <th>{% trans "Email address" %}</th>
-{#        <th>#}
-{#            <span>{% trans "Devices" %}</span>#}
-{#            {% include "alldata/device_icons.html" %}#}
-{#        </th>#}
+        <th>
+            <span>{% trans "Devices" %}</span>
+            {% include "alldata/device_icons.html" %}
+        </th>
+        <th>SMS</th>
+        <th>Web</th>
+        <th>SmartPhone</th>
         <th>{% trans "Projects" %}</th>
         </thead>
     </table>

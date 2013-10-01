@@ -1,5 +1,4 @@
 from collections import OrderedDict
-from random import random
 from unittest.case import TestCase
 
 from django.conf import settings
@@ -11,7 +10,7 @@ from django.utils.http import int_to_base36
 from mock import Mock, patch, PropertyMock
 from django.core import mail
 
-from datawinners.entity.views import initialize_values, subject_short_codes_to_delete, _index_ofkey_in_ordered_dict
+from datawinners.entity.views import initialize_values, subject_short_codes_to_delete, add_check_symbol_for_row
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
@@ -266,4 +265,16 @@ class TestView(TestCase):
 
 
 
+    def test_add_check_symbol_for_datasender_row(self):
+        result = []
+        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
+        datasender = {'email': 'test@test.com'}
+        add_check_symbol_for_row(datasender,result)
+        self.assertListEqual(result, [check_img, check_img, check_img])
 
+    def test_should_not_add_check_symbol_if_no_email_id(self):
+        result = []
+        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
+        datasender = {'name': 'name'}
+        add_check_symbol_for_row(datasender,result)
+        self.assertListEqual(result, [check_img,'',''])
