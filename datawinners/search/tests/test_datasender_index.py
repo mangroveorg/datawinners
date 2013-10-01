@@ -1,9 +1,10 @@
 import unittest
 from mock import Mock, patch
-from datawinners.search.datasender_index import _update_datasender_index
+from datawinners.search.datasender_index import update_datasender_index
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.form_model import FormModel
+from datawinners.project.models import Project
 
 
 class TestDatasenderIndex(unittest.TestCase):
@@ -13,7 +14,7 @@ class TestDatasenderIndex(unittest.TestCase):
 
         with patch("datawinners.search.datasender_index.elasticutils.get_es") as es:
             es.return_value = Mock
-            _update_datasender_index(entity_doc, dbm)
+            update_datasender_index(entity_doc, dbm)
             self.assertFalse(es.index.call_count)
 
     def test_should_create_index_for_datasenders(self):
@@ -34,6 +35,11 @@ class TestDatasenderIndex(unittest.TestCase):
                     mock_es = Mock()
                     es.return_value = mock_es
 
-                    _update_datasender_index(entity_doc, dbm)
+                    update_datasender_index(entity_doc, dbm)
 
                     mock_es.index.assert_called_with('db','reporter', mock_ds_dict,id='some_id')
+
+    def test_should_update_datasender_index_when_project_is_updated(self):
+        project = Project()
+        # update_datasender_for_project_change()
+        pass

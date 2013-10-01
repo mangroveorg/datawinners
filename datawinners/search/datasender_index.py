@@ -41,7 +41,7 @@ def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
     return datasender_dict
 
 
-def _update_datasender_index(entity_doc, dbm):
+def update_datasender_index(entity_doc, dbm):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     if entity_doc.short_code == 'test':
         return
@@ -61,7 +61,7 @@ def _create_mappings(dbm):
 
 def _populate_index(dbm):
     for entity in get_all_entities(dbm, entity_type=REPORTER_ENTITY_TYPE):
-        _update_datasender_index(entity, dbm)
+        update_datasender_index(entity, dbm)
 
 
 def create_datasender_index(database_name):
@@ -81,3 +81,7 @@ def _create_ds_mapping(dbm, form_model):
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], _mapping(form_model.form_code, fields))
+
+def update_datasender_for_project_change(project, dbm):
+    datasenders = project.get_associated_datasenders(dbm)
+    [update_datasender_index(entity_doc, dbm) for entity_doc in datasenders]

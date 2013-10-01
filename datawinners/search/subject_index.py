@@ -5,12 +5,12 @@ from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.form_model import FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type
-from datawinners.search.datasender_index import _update_datasender_index
+from datawinners.search.datasender_index import update_datasender_index
 
 
 def entity_search_update(entity_doc, dbm):
     if entity_doc.aggregation_paths['_type'] == ['reporter']:
-        _update_datasender_index(entity_doc, dbm)
+        update_datasender_index(entity_doc, dbm)
         return
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     if entity_doc.data:

@@ -1,6 +1,7 @@
 from unittest import TestCase
 from mock import patch, Mock, MagicMock
-from datawinners.search.subject_search import ElasticUtilsHelper, EntityQueryBuilder, SubjectQueryResponseCreator, SubjectQuery
+from datawinners.search.entity_search import ElasticUtilsHelper, EntityQueryBuilder, SubjectQueryResponseCreator, SubjectQuery
+from datawinners.search.entity_search import DatasenderQueryResponseCreator
 
 
 class TestElasticUtilsHelper(TestCase):
@@ -11,10 +12,10 @@ class TestElasticUtilsHelper(TestCase):
         self.assertEquals(result, expected)
 
 
-class TestSubjectQueryBuilder(TestCase):
+class TestEntityQueryBuilder(TestCase):
     def test_should_create_query_with_given_search_url(self):
-        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
-            with patch("datawinners.search.subject_search.ELASTIC_SEARCH_URL") as searchUrl:
+        with patch("datawinners.search.entity_search.elasticutils") as elasticUtilsMock:
+            with patch("datawinners.search.entity_search.ELASTIC_SEARCH_URL") as searchUrl:
                 elasticUtilsMock.S.return_value = elasticUtilsMock
 
                 EntityQueryBuilder().create_query("subject_type", "database_name")
@@ -23,7 +24,7 @@ class TestSubjectQueryBuilder(TestCase):
                 elasticUtilsMock.es.assert_called_with(urls=searchUrl)
 
     def test_should_create_query_with_index_as_given_database_name(self):
-        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
+        with patch("datawinners.search.entity_search.elasticutils") as elasticUtilsMock:
             elasticUtilsMock.S.return_value = elasticUtilsMock
             elasticUtilsMock.es.return_value = elasticUtilsMock
 
@@ -32,7 +33,7 @@ class TestSubjectQueryBuilder(TestCase):
             elasticUtilsMock.indexes.assert_called_with("database_name")
 
     def test_should_create_query_with_document_type_as_given_subject_type(self):
-        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
+        with patch("datawinners.search.entity_search.elasticutils") as elasticUtilsMock:
             elasticUtilsMock.S.return_value = elasticUtilsMock
             elasticUtilsMock.es.return_value = elasticUtilsMock
             elasticUtilsMock.indexes.return_value = elasticUtilsMock
@@ -42,7 +43,7 @@ class TestSubjectQueryBuilder(TestCase):
             elasticUtilsMock.doctypes.assert_called_with("subject_type")
 
     def test_should_filter_query_with_only_non_void_documents(self):
-        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
+        with patch("datawinners.search.entity_search.elasticutils") as elasticUtilsMock:
             elasticUtilsMock.S.return_value = elasticUtilsMock
             elasticUtilsMock.es.return_value = elasticUtilsMock
             elasticUtilsMock.indexes.return_value = elasticUtilsMock
@@ -53,8 +54,8 @@ class TestSubjectQueryBuilder(TestCase):
             elasticUtilsMock.filter.assert_called_with(void=False)
 
     def test_should_create_ordered_query_with_given_order_parameters(self):
-        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
-            with patch("datawinners.search.subject_search.SubjectQueryBuilder.create_query") as query:
+        with patch("datawinners.search.entity_search.elasticutils") as elasticUtilsMock:
+            with patch("datawinners.search.entity_search.EntityQueryBuilder.create_query") as query:
                 query.return_value = elasticUtilsMock
                 query_params = {
                     "start_result_number": 1,
@@ -69,8 +70,8 @@ class TestSubjectQueryBuilder(TestCase):
                 elasticUtilsMock.order_by.assert_called_with("-field_name_to_order_by_value")
 
     def test_should_create_paginated_query_with_given_paginated_parameters(self):
-        with patch("datawinners.search.subject_search.elasticutils") as elasticUtilsMock:
-            with patch("datawinners.search.subject_search.SubjectQueryBuilder.create_query") as query:
+        with patch("datawinners.search.entity_search.elasticutils") as elasticUtilsMock:
+            with patch("datawinners.search.entity_search.EntityQueryBuilder.create_query") as query:
                 query.return_value = elasticUtilsMock
                 elasticUtilsMock.order_by.return_value = elasticUtilsMock
                 query_params = {
@@ -98,7 +99,7 @@ class TestSubjectQueryBuilder(TestCase):
         searchMock = Mock()
         query_text = "query_text"
 
-        with patch("datawinners.search.subject_search.ElasticUtilsHelper") as elastic_utils_helper:
+        with patch("datawinners.search.entity_search.ElasticUtilsHelper") as elastic_utils_helper:
             elastic_utils_helper.return_value = elastic_utils_helper
             elastic_utils_helper.replace_special_chars.return_value = "query_text_escaped"
 
@@ -131,6 +132,22 @@ class TestSubjectQueryResponseCreator(TestCase):
         query.values_dict.assert_called_with(("field_name1", "field_name2"))
         self.assertEquals(actualSubjects, [["field_value11", "field_value12"], ["field_value21", "field_value22"]])
 
+class TestDatasenderQueryResponseCreator(TestCase):
+    def test_should_return_datasender_with_field_values_specified(self):
+        required_field_names = ['field_name1', 'field_name2']
+        query = Mock()
+        query.values_dict.return_value = [{
+                                      "field_name1": "field_value11",
+                                      "field_name2": "field_value12"
+                                  }, {
+                                      "field_name1": "field_value21",
+                                      "field_name2": "field_value22"
+                                  }]
+
+
+        datasenders = DatasenderQueryResponseCreator().create_response(required_field_names, query)
+        query.values_dict.assert_called_with(("field_name1", "field_name2"))
+        self.assertEquals(datasenders, [["field_value11", "field_value12"], ["field_value21", "field_value22"]])
 
 class TestSubjectQuery(TestCase):
     def test_should_return_all_subjects_matching_given_subject_type_and_database_name_and_query_text(self):
@@ -140,8 +157,8 @@ class TestSubjectQuery(TestCase):
         response_creator = Mock()
         subject_query.query_builder = subject_query_builder
         subject_query.response_creator = response_creator
-        with patch("datawinners.search.subject_search.get_database_manager") as database_manager:
-            with patch("datawinners.search.subject_search.header_fields") as header_fields:
+        with patch("datawinners.search.entity_search.get_database_manager") as database_manager:
+            with patch("datawinners.search.entity_search.header_fields") as header_fields:
                 database_manager.return_value.database_name = "database_name"
                 subject_headers = ["field1", "field2"]
                 count_of_all_matching_results = 100
@@ -172,8 +189,8 @@ class TestSubjectQuery(TestCase):
         response_creator = Mock()
         subject_query.query_builder = subject_query_builder
         subject_query.response_creator = response_creator
-        with patch("datawinners.search.subject_search.get_database_manager") as database_manager:
-            with patch("datawinners.search.subject_search.header_fields") as header_fields:
+        with patch("datawinners.search.entity_search.get_database_manager") as database_manager:
+            with patch("datawinners.search.entity_search.header_fields") as header_fields:
                 database_manager.return_value.database_name = "database_name"
                 subject_headers = ["field1", "field2"]
                 header_fields.return_value.keys.return_value = subject_headers
@@ -209,3 +226,17 @@ class TestSubjectQuery(TestCase):
                 self.assertEquals(actualSubjects, "expected subjects")
                 self.assertEquals(filtered_count, expected_filtered_result_count)
                 self.assertEquals(total_count, expected_total_result_count)
+
+    def test_add_check_symbol_for_datasender_row(self):
+        result = []
+        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
+        datasender = {'email': 'test@test.com'}
+        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
+        self.assertListEqual(result, [check_img, check_img, check_img])
+
+    def test_should_not_add_check_symbol_if_no_email_id(self):
+        result = []
+        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
+        datasender = {'name': 'name'}
+        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
+        self.assertListEqual(result, [check_img,'',''])
