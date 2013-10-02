@@ -135,7 +135,7 @@ class Organization(models.Model):
         return sum([message_tracker.total_monthly_incoming_messages() for message_tracker in message_trackers])
 
     def _has_exceeded_limit_for_trial_account(self):
-        return self._get_total_message_count() > LIMIT_TRIAL_ORG_MESSAGE_COUNT
+        return self._get_total_message_count() >= LIMIT_TRIAL_ORG_MESSAGE_COUNT
 
     def _has_exceeded_submission_limit_for_trial_account(self):
         return self._get_total_submission_count() >= LIMIT_TRIAL_ORG_SUBMISSION_COUNT

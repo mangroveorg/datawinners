@@ -105,8 +105,6 @@ def process_sms_counter(incoming_request):
         incoming_request['outgoing_message'] = ''
         return incoming_request
 
-    organization.increment_all_message_count()
-
     if organization.has_exceeded_message_limit():
         return get_translated_response_message(incoming_request,
             "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects.")
@@ -116,7 +114,7 @@ def process_sms_counter(incoming_request):
             "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data for your projects.")
 
 
-
+    organization.increment_all_message_count()
     incoming_request['next_state'] = submit_to_player
     return incoming_request
 

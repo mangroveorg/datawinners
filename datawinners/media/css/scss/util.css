@@ -500,13 +500,16 @@ div.border_top_bottom {
   font-family: "Arial" !important;
   font-weight: bold !important;
   padding: 6px 23px 5px 22px !important;
-  cursor: pointer !important;
+  cursor: default !important;
   cursor: hand !important; }
 
 .can-not-submit-link-quest {
   color: #066b06 !important;
   text-decoration: none;
-  font-size: 12px; }
+  font-size: 12px;
+  cursor: default !important; }
+  .can-not-submit-link-quest:hover {
+    text-decoration: none; }
 
 .can-not-submit-link-quest:hover {
   color: #066B06; }

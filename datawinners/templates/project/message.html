@@ -9,8 +9,8 @@
 {% if 0 %}
     <div class="warning-message-box">
         <p> {% trans "You have used up your 10 Web submissions for the trial account. Sign up for a monthly subscription to continue sending in data to your projects." %} </p>
-        <a href="/en/pricing/" class="trial_web_learn_more">{% trans "Learn More" %}</a><a
-            href="{% url datawinners.accountmanagement.views.upgrade %}"
+        <a href="/en/pricing/" class="trial_web_learn_more" target="blank">{% trans "Learn More" %}</a><a
+            href="{% url datawinners.accountmanagement.views.upgrade %}" target="blank"
             class="trial_web_limit_button">{% trans "Subscribe Now" %}</a>
     </div>
 {% endif %}

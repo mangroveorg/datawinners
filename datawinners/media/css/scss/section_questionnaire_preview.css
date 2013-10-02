@@ -260,3 +260,6 @@ div.sms_tester_form div.clear_and_submit {
     clear: both;
     width: auto;
     max-width: 170px; }
+
+.ui-widget div.sms_tester_form div.warning-message-box {
+  font-family: Lucida Grande,Lucida Sans,Arial,sans-serif; }

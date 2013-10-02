@@ -3,8 +3,8 @@
     {% if is_quota_reached %}
         <div class="warning-message-box clear-both overflow_hidden">
             <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects." %}</p>
-            <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/">{% trans "Learn More" %}</a>
-            <a class="button margin_10 float_left" href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
+            <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/" target="blank">{% trans "Learn More" %}</a>
+            <a class="button margin_10 float_left" target="blank" href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
         </div>
     {% endif %}
     <table class="no_border">
@@ -77,7 +77,7 @@
                             </div>
                     {% else %}
                         <input id="send_sms" type="button" class="button float_right margin_top_5" value="{% trans 'Send SMS' %}"/>
-                        <a id="clear_sms" class="padding_left_right_10 size_1_em float_right" >{% trans 'Clear' %}</a>
+                        <a id="clear_sms" class="padding_top_10 padding_left_right_10 size_1_em float_right" >{% trans 'Clear' %}</a>
                     {% endif %}
 
                 </div>

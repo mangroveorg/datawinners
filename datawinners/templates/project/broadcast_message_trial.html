@@ -27,8 +27,8 @@
     <div class="warning-message-box">
         <p>{% trans 'broadcast_trial_warning_message' %}</p>
         {% if user.groups.all.0.name == 'NGO Admins' %}
-            <a href="{% url datawinners.accountmanagement.views.upgrade %}" class="button">{% trans "Subscribe Now" %}</a>
+            <a href="{% url datawinners.accountmanagement.views.upgrade %}" class="button" target="blank">{% trans "Subscribe Now" %}</a>
         {% endif %}
-        <a href="/en/pricing/" class="trial_web_learn_more">{% trans "Learn More" %}</a>
+        <a href="/en/pricing/" class="trial_web_learn_more" target="blank">{% trans "Learn More" %}</a>
     </div>
 {% endblock %}

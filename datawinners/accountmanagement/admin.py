@@ -62,6 +62,10 @@ class MessageTrackerAdmin(DatawinnerAdmin):
                     "incoming_web", "total_outgoing_messages", "total_messages")
     list_filter = ("organization__name",)
 
+    def __init__(self, *args, **kwargs):
+        super(MessageTrackerAdmin, self).__init__(*args, **kwargs)
+        self.list_display_links = (None,)
+
     def sms_subject_registration(self, obj):
         return obj.sms_registration_count
     sms_subject_registration.short_description = mark_safe("SMS<br/>Subject Reg")
