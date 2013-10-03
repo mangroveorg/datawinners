@@ -32,7 +32,7 @@ from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_data_sender_form, \
-    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields
+    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields, put_email_information_to_entity
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
@@ -387,7 +387,9 @@ def __create_web_users(org_id, reporter_details, language_code):
     else:
         for reporter in reporter_details:
             reporter_entity = get_by_short_code(dbm, reporter['reporter_id'], [REPORTER])
-            user = User.objects.create_user(reporter['email'].lower(), reporter['email'].lower(), 'test123')
+            reporter_email = reporter['email'].lower()
+            put_email_information_to_entity(dbm, reporter_entity, email=reporter_email)
+            user = User.objects.create_user(reporter_email, reporter_email, 'test123')
             group = Group.objects.filter(name="Data Senders")[0]
             user.groups.add(group)
             user.first_name = reporter_entity.value(NAME_FIELD)
@@ -456,7 +458,7 @@ def all_datasenders(request):
         #      'imported_datasenders': imported_datasenders}))
 
     # all_data_senders = _get_all_datasenders(manager, projects, request.user)
-    return render_to_response('entity/all_datasenders_s.html',
+    return render_to_response('entity/all_datasenders.html',
                               {'grant_web_access': grant_web_access,
                                "labels": labels,
                                'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
@@ -477,7 +479,7 @@ def all_datasenders_ajax(request):
     search_parameters.update({"search_text": search_text})
     search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
     search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
-    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
+    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0'))})
     search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
 
     user = request.user

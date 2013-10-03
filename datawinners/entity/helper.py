@@ -17,7 +17,7 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
-    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, get_form_model_by_entity_type, EMAIL_FIELD
+    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, get_form_model_by_entity_type, EMAIL_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint, ShortCodeRegexConstraint
 from mangrove.transport.player.player import WebPlayer
@@ -300,6 +300,13 @@ def get_json_field_infos(fields):
             codes.append(field['code'])
     return fields_names, labels, codes
 
+def put_email_information_to_entity(dbm, entity, email):
+    email_field_code = "email"
+    form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
+    email_field_label = form_model._get_field_by_code(email_field_code).name
+    email_ddtype = form_model._get_field_by_code(email_field_code).ddtype
+    data = (email_field_label, email, email_ddtype)
+    entity.update_latest_data([data])
 
 
 
