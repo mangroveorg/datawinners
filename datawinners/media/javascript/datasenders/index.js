@@ -150,6 +150,8 @@ $(document).ready(function () {
         } else if (action == "edit") {
             location.href = '/entity/datasender/edit' + '/' + allIds[0] + '/';
         } else {
+            $("#all_project_block input").attr("checked",false);
+            $("#all_project_block #error").hide();
             $("#all_project_block").dialog("open");
         }
     });
