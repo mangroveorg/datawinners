@@ -1,10 +1,11 @@
 import sys
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0, ".")
+
 from datawinners.main.couchdb.utils import all_db_names
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import ShortCodeRegexConstraint, TextLengthConstraint
 
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
 
 import logging
 from mangrove.datastore.documents import FormModelDocument
