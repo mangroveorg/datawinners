@@ -149,6 +149,20 @@ class TestDatasenderQueryResponseCreator(TestCase):
         query.values_dict.assert_called_with(("field_name1", "field_name2"))
         self.assertEquals(datasenders, [["field_value11", "field_value12"], ["field_value21", "field_value22"]])
 
+    def test_add_check_symbol_for_datasender_row(self):
+        result = []
+        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
+        datasender = {'email': 'test@test.com'}
+        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
+        self.assertListEqual(result, [check_img + "&nbsp;" + check_img + "&nbsp;" + check_img])
+
+    def test_should_not_add_check_symbol_if_no_email_id(self):
+        result = []
+        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
+        datasender = {'name': 'name'}
+        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
+        self.assertListEqual(result, [check_img])
+
 class TestSubjectQuery(TestCase):
     def test_should_return_all_subjects_matching_given_subject_type_and_database_name_and_query_text(self):
         user = Mock()
@@ -227,16 +241,3 @@ class TestSubjectQuery(TestCase):
                 self.assertEquals(filtered_count, expected_filtered_result_count)
                 self.assertEquals(total_count, expected_total_result_count)
 
-    def test_add_check_symbol_for_datasender_row(self):
-        result = []
-        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
-        datasender = {'email': 'test@test.com'}
-        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
-        self.assertListEqual(result, [check_img, check_img, check_img])
-
-    def test_should_not_add_check_symbol_if_no_email_id(self):
-        result = []
-        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
-        datasender = {'name': 'name'}
-        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
-        self.assertListEqual(result, [check_img,'',''])
