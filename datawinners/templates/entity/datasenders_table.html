@@ -1,49 +1,23 @@
 {% load i18n %}
-{% if all_data|length > 0 %}
-    <div class="table_container">
-        <table id='subject_table' class="styled_table">
-            <thead>
-            <th><input type="checkbox" id="checkall-datasenders"/></th>
-            {% for title in labels %}
-                <th>{{ title }}</th>
-            {% endfor %}
-            <th>{% trans "Email address" %}</th>
-            <th class="devices" colspan="3">
-                <span>{% trans "Devices" %}</span>
-                {% include "alldata/device_icons.html" %}
-            </th>
-            <th>{% trans "Projects" %}</th>
-            </thead>
-            <tbody id='all_data_senders' class="datasenders_list">
-            {% for row in all_data %}
-                <tr>
-                    <td><input type="checkbox" id="{{ row.short_code }}" value="{{ row.short_code }}"
-                               {% if row.is_user %}class="is_user"{% endif %}/></td>
-                    {% for col in row.cols %}
-                        <td class="{{ col }}">{{ col }}</td>
-                    {% endfor %}
-                    <td class="email">{{ row.email|default_if_none:"" }}</td>
-                    <td class="device-icon"><img src="/media/images/right_icon.png" alt="Yes"></td>
-                    <td class="device-icon">
-                        {% if "Web" in row.devices %}
-                            <img src="/media/images/right_icon.png" alt="Yes">
-                        {% endif %}
-                    </td>
-                    <td class="device-icon">
-                        {% if "Smartphone" in row.devices %}
-                            <img src="/media/images/right_icon.png" alt="Yes">
-                        {% endif %}
-                    </td>
-                    <td class="project">
-                        {% if row.projects %}
-                            {{ row.projects|join:", " }}
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-{% else %}
-    <strong>{% trans "No datasenders registered" %}</strong><br/>
-{% endif %}
+<script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/media/javascript/datasenders/datasender_table.js"></script>
+
+<div class="table_container">
+    <table id='datasender_table' class="styled_table">
+        <thead>
+        {#        <th><input type="checkbox" id="checkall-datasenders"/></th>#}
+        {% for title in labels %}
+            <th>{{ title }}</th>
+        {% endfor %}
+        <th>{% trans "Email address" %}</th>
+        <th>
+            <span>{% trans "Devices" %}</span>
+            {% include "alldata/device_icons.html" %}
+        </th>
+{#        <th>SMS</th>#}
+{#        <th>Web</th>#}
+{#        <th>SmartPhone</th>#}
+        <th>{% trans "Projects" %}</th>
+        </thead>
+    </table>
+</div>
