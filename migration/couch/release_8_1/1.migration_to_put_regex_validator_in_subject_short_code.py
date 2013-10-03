@@ -45,4 +45,4 @@ def migrate_subject_form_code_to_add_regex_validator_in_short_code(db_name):
     logger.info('Completed Migration')
 
 
-migrate(all_db_names(), migrate_subject_form_code_to_add_regex_validator_in_short_code, version=(8, 0, 1))
+migrate(all_db_names(), migrate_subject_form_code_to_add_regex_validator_in_short_code, version=(8, 1, 0))
