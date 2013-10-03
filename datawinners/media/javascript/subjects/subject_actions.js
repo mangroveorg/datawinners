@@ -105,7 +105,7 @@ DW.SubjectPagination = function () {
         $('#select_all_message').html('<div>' + select_across_pages_message + '</div>');
 
         $('#select_all_link').click(function () {
-            var clear_selection = " <a id='clear_selection'>" + interpolate(gettext("Clear Selection")) + ".</a>";
+            var clear_selection = " <a id='clear_selection'>" + interpolate(gettext("Clear Selection")) + "</a>";
             $('#select_all_message').html('<div>' + interpolate(gettext("You have selected all %(total_number_of_records)s Subjects."),
                 {'total_number_of_records': total_number_of_records }, true)  + clear_selection + '</div>');
             $('#select_all_message').data('all_selected', true);
