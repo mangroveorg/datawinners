@@ -57,7 +57,7 @@ from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SEND
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from search.entity_search import DatasenderQuery
+from datawinners.search.entity_search import DatasenderQuery
 
 
 websubmission_logger = logging.getLogger("websubmission")
