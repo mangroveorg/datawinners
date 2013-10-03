@@ -7,7 +7,7 @@ from datawinners.settings import ELASTIC_SEARCH_URL
 from datawinners.utils import get_organization_from_manager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import FormModelDocument
-from mangrove.datastore.entity import get_all_entities
+from mangrove.datastore.entity import get_all_entities, get_by_short_code
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE, FormModel
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
@@ -25,6 +25,7 @@ def _is_web_user(dbm, entity_doc):
     organization = get_organization_from_manager(dbm)
     user_profile = NGOUserProfile.objects.filter(reporter_id=entity_doc.short_code, org_id=organization.org_id)
     return bool(user_profile)
+
 
 def _get_email_by_datasender_id(dbm, short_code):
     organization = get_organization_from_manager(dbm)
@@ -52,6 +53,9 @@ def update_datasender_index(entity_doc, dbm):
         es.index(dbm.database_name, entity_type, datasender_dict, id=entity_doc.id)
     es.refresh(dbm.database_name)
 
+def update_datasender_index_by_id(short_code, dbm):
+    datasender = get_by_short_code(dbm, short_code, REPORTER_ENTITY_TYPE)
+    update_datasender_index(datasender, dbm)
 
 def _create_mappings(dbm):
     for row in dbm.load_all_rows_in_view('questionnaire'):
@@ -81,6 +85,7 @@ def _create_ds_mapping(dbm, form_model):
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], _mapping(form_model.form_code, fields))
+
 
 def update_datasender_for_project_change(project, dbm):
     datasenders = project.get_associated_datasenders(dbm)
