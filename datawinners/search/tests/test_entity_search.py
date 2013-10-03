@@ -28,7 +28,7 @@ class TestEntityQueryBuilder(TestCase):
             elasticUtilsMock.S.return_value = elasticUtilsMock
             elasticUtilsMock.es.return_value = elasticUtilsMock
 
-            EntityQueryBuilder().create_query("subject_type", "database_name")
+            EntityQueryBuilder().create_query("entity_type", "database_name")
 
             elasticUtilsMock.indexes.assert_called_with("database_name")
 
