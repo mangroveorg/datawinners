@@ -2,7 +2,7 @@
 from urllib2 import URLError
 from django.conf import settings
 import logging
-from datawinners.scheduler.vumiclient import VumiClient, Connection
+from datawinners.scheduler.vumiclient import VumiClient, Connection, VumiInvalidDestinationNumberException
 from datawinners.submission.organization_finder import OrganizationFinder
 from mangrove.utils.types import is_not_empty
 from datawinners.utils import strip_accents
@@ -17,6 +17,8 @@ class SMSClient(object):
         message = strip_accents(message)
         if is_not_empty(from_tel):
             organization_setting = OrganizationFinder().find_organization_setting(from_tel)
+            is_there_orgnization_with_to_number = OrganizationFinder().find_organization_setting(to_tel) != None
+            if (is_there_orgnization_with_to_number): return False
             smsc = None
             if organization_setting is not None and organization_setting.outgoing_number is not None:
                 smsc = organization_setting.outgoing_number.smsc
@@ -34,7 +36,7 @@ class SMSClient(object):
                         client.debug = True
                         client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))
                         return True
-                    except URLError as err:
+                    except (URLError, VumiInvalidDestinationNumberException) as err:
                         logger.exception('Unable to send sms. %s' %err)
                         return False
         return False
