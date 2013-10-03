@@ -505,7 +505,7 @@ def disassociate_datasenders(request):
     projects = _get_projects(manager, request)
     projects_name = []
     for project in projects:
-        [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
+        [project.delete_datasender(manager, id) for id in request.POST['ids'].split(';') if id in project.data_senders]
         project.save(manager)
         projects_name.append(project.name.capitalize())
     ids = request.POST["ids"].split(";")

@@ -11,8 +11,9 @@ from datawinners.entity.data_sender import load_data_senders
 from datawinners.scheduler.deadline import Deadline, Month, Week
 from mangrove.datastore.database import DatabaseManager, DataObject
 from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField
+from mangrove.datastore.entity import Entity, get_by_short_code
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.transport.repository.reporters import get_reporters_who_submitted_data_for_frequency_period
 from mangrove.utils.types import is_string, is_empty
 
@@ -197,6 +198,15 @@ class Project(DocumentBase):
         all_data, fields, label = load_data_senders(dbm, self.data_senders)
         return [dict(zip(fields, data["cols"])) for data in all_data]
 
+    def get_associated_datasenders(self, dbm):
+        keys = [([REPORTER], short_code) for short_code in self.data_senders]
+        rows = dbm.view.by_short_codes(reduce=False, include_docs=True, keys=keys)
+        datasenders_associated = []
+        for row in rows:
+            datasender = Entity.get(dbm, row.id)
+            datasenders_associated.append(datasender)
+        return datasenders_associated
+
     def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):
         start_date, end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
         form_code = self._load_form(dbm).form_code
@@ -304,8 +314,10 @@ class Project(DocumentBase):
         return form_model
 
     def delete_datasender(self, dbm, entity_id):
+        from datawinners.search.datasender_index import update_datasender_index_by_id
         self.data_senders.remove(entity_id)
         self.save(dbm)
+        update_datasender_index_by_id(entity_id,dbm)
 
     def associate_data_sender_to_project(self, dbm, data_sender_code):
         self.data_senders.append(data_sender_code)

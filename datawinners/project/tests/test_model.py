@@ -56,6 +56,18 @@ class TestProjectModel(MangroveTestCase):
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Project with Name = 'test2' already exists.")
 
+    def test_get_associated_data_senders(self):
+        entity = Entity(self.manager,entity_type=["reporter"], short_code="rep1")
+        entity.save()
+        project = Project(name="TestDS", goals="Testing", project_type="Survey", entity_type="reporter", devices=['web'])
+        project.data_senders = ["rep1"]
+        project.save(self.manager)
+
+        result = project.get_associated_datasenders(self.manager)
+
+        self.assertEquals(result[0].short_code, entity.short_code)
+        self.assertEquals(result[0].id, entity.id)
+
     def test_project_name_should_be_case_insensitively_unique(self):
         project = Project(name="tEsT2", goals="Testing", project_type="Survey", entity_type="Clinic", devices=['web'])
         with self.assertRaises(Exception) as cm:
@@ -179,10 +191,12 @@ class TestProjectModel(MangroveTestCase):
     def test_should_delete_datasender_from_project(self):
         self.project1.data_senders = ['rep1', 'rep2']
         datasender_to_be_deleted = 'rep1'
-        self.project1.delete_datasender(self.manager, datasender_to_be_deleted)
-        self.project1 = Project.load(self.manager.database, self.project1_id)
-        expected_data_senders = ['rep2']
-        self.assertEqual(self.project1.data_senders, expected_data_senders)
+        with patch("datawinners.search.datasender_index.update_datasender_index_by_id") as update_datasender_index_by_id:
+            update_datasender_index_by_id.return_value = None
+            self.project1.delete_datasender(self.manager, datasender_to_be_deleted)
+            self.project1 = Project.load(self.manager.database, self.project1_id)
+            expected_data_senders = ['rep2']
+            self.assertEqual(self.project1.data_senders, expected_data_senders)
 
 
 
