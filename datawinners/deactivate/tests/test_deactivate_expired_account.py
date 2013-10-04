@@ -1,11 +1,14 @@
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 import dircache
 import os
+from unittest.case import SkipTest
 from django.conf import settings
 from django.contrib.auth.models import User
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
-from datawinners.deactivate.deactive import get_creator, get_expired_trial_organizations_without_deactivate_email_sent, create_email, get_creators, send_deactivate_email
+from datawinners.deactivate.deactive import get_creator, get_expired_trial_organizations_without_deactivate_email_sent,\
+    create_email, get_creators, send_deactivate_email, get_expired_trial_organizations
 
 
 import unittest
@@ -13,11 +16,13 @@ import unittest
 class TestDeactivateExpiredAccount(unittest.TestCase):
 
     def prepare_organization(self):
-        self.expired_organization_out_of_31_days = Organization(name='test_org_for_expired_organization_out_of_31_days',
+        self.expired_organization_out_of_one_year = Organization(name='test_org_for_expired_organization_out_of_one_year',
                                                                 sector='PublicHealth', address='add',
                                                                 city='xian', country='china',
                                                                 zipcode='10000', in_trial_mode=True,
-                                                                active_date=datetime.today() - timedelta(days=31),
+                                                                active_date=datetime.today() -
+                                                                    relativedelta(years=settings.TRIAL_PERIOD_IN_YEAR,
+                                                                    days=1),
                                                                 org_id=OrganizationIdCreator().generateId())
         self.paid_organization = Organization(name='test_org_for_paid_account',
                                               sector='PublicHealth', address='add',
@@ -29,14 +34,15 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
                                                    city='xian', country='china',
                                                    zipcode='10000', in_trial_mode=True, active_date=datetime.today(),
                                                    org_id=OrganizationIdCreator().generateId())
-        self.expired_organization_of_30_days = Organization(name='test_org_for_expired_organization_of_30_days',
+        self.expired_organization_of_one_year = Organization(name='test_org_for_expired_organization_of_one_year',
                                                             sector='PublicHealth', address='add',
                                                             city='xian', country='china',
                                                             zipcode='10000', in_trial_mode=True,
-                                                            active_date=datetime.today() - timedelta(days=30),
+                                                            active_date=datetime.today() -
+                                                                relativedelta(years=settings.TRIAL_PERIOD_IN_YEAR),
                                                             org_id=OrganizationIdCreator().generateId())
-        self.expired_organization_of_30_days.save()
-        self.expired_organization_out_of_31_days.save()
+        self.expired_organization_of_one_year.save()
+        self.expired_organization_out_of_one_year.save()
         self.unexpired_organization.save()
         self.paid_organization.save()
 
@@ -44,10 +50,10 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
         try:
             User.objects.get(username = 'expired1@mail.com').delete()
             User.objects.get(username = 'expired2@mail.com').delete()
-            Organization.objects.get(name='test_org_for_expired_organization_out_of_31_days').delete()
+            Organization.objects.get(name='test_org_for_expired_organization_out_of_one_years').delete()
             Organization.objects.get(name='test_org_for_paid_account').delete()
             Organization.objects.get(name='test_org_for_unexpired_account').delete()
-            Organization.objects.get(name='test_org_for_expired_organization_of_30_days').delete()
+            Organization.objects.get(name='test_org_for_expired_organization_of_one_year').delete()
         except :
             pass
         self.user1 = User(username='expired1@mail.com', email= 'expired1@mail.com', password='expired',first_name='first_name1',last_name='last_name1')
@@ -59,35 +65,35 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
 
         self.prepare_organization()
 
-        NGOUserProfile(user = self.user1,title = 'Mr.',org_id = self.expired_organization_of_30_days.org_id).save()
-        NGOUserProfile(user = self.user2,title = 'Ms.',org_id = self.expired_organization_of_30_days.org_id).save()
+        NGOUserProfile(user = self.user1,title = 'Mr.',org_id = self.expired_organization_of_one_year.org_id).save()
+        NGOUserProfile(user = self.user2,title = 'Ms.',org_id = self.expired_organization_of_one_year.org_id).save()
 
     def tearDown(self):
         self.user1.delete()
         self.user2.delete()
-        self.expired_organization_of_30_days.delete()
-        self.expired_organization_out_of_31_days.delete()
+        self.expired_organization_of_one_year.delete()
+        self.expired_organization_out_of_one_year.delete()
         self.unexpired_organization.delete()
         self.paid_organization.delete()
 
     def test_get_organization_creator_should_return_first_user_of_organization(self):
-        self.assertEqual(get_creator(self.expired_organization_of_30_days),self.user1)
+        self.assertEqual(get_creator(self.expired_organization_of_one_year),self.user1)
 
     def test_should_not_contain_unexpired_organizations(self):
         organizations = get_expired_trial_organizations_without_deactivate_email_sent()
-        self.assertIn(self.expired_organization_of_30_days,organizations)
+        self.assertIn(self.expired_organization_of_one_year,organizations)
         self.assertNotIn(self.unexpired_organization,organizations)
 
     def test_should_not_contain_paid_organizations(self):
         organizations = get_expired_trial_organizations_without_deactivate_email_sent()
         self.assertNotIn(self.paid_organization, organizations)
 
-    def test_should_not_contain_organization_active_date_out_of_31_days(self):
+    def test_should_not_contain_organization_active_date_out_of_one_year(self):
         organizations = get_expired_trial_organizations_without_deactivate_email_sent()
-        self.assertIn(self.expired_organization_out_of_31_days, organizations)
+        self.assertIn(self.expired_organization_out_of_one_year, organizations)
 
     def test_get_user_list_should_return_organization_creator(self):
-        creators = get_creators([self.expired_organization_of_30_days])
+        creators = get_creators([self.expired_organization_of_one_year])
         self.assertIn(self.user1, creators)
 
     def test_create_email_should_get_email_with_html_content(self):
@@ -114,6 +120,8 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
         self.assertIn(self.user1.email,msg1.to)
         self.assertIn(self.user2.email,msg2.to)
 
+    #not covered in the current story 2520
+    @SkipTest
     def test_deactivate_email_sent(self):
         settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
         settings.EMAIL_FILE_PATH = 'email'
@@ -138,3 +146,19 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
         organisation_list = get_expired_trial_organizations_without_deactivate_email_sent()
         number_after = len(organisation_list)
         self.assertLess(number_after, number_before)
+
+    def test_paid_account_not_in_all_expired_account(self):
+        organizations = get_expired_trial_organizations()
+        self.assertNotIn(self.paid_organization, organizations)
+
+    def test_unexpired_account_not_in_expired_account(self):
+        organizations = get_expired_trial_organizations()
+        self.assertNotIn(self.unexpired_organization, organizations)
+
+    def test_should_deactivate_related_users_when_deactivating_organization(self):
+        organization = self.expired_organization_of_one_year
+        for user in organization.get_related_users():
+            self.assertTrue(user.is_active)
+        organization.deactivate()
+        for user in organization.get_related_users():
+            self.assertFalse(user.is_active)

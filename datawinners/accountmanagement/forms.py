@@ -225,6 +225,9 @@ class LoginForm(AuthenticationForm):
             
             profile = self.user_cache.get_profile()
             organization = Organization.objects.get(org_id=profile.org_id)
+            if organization.is_expired():
+                raise forms.ValidationError("The trial period is expired")
+
             if organization.status == 'Deactivated':
                 raise forms.ValidationError(_(mark_safe("Your account has been deactivated. Please contact the datawinners support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a> for reactivation of the account.")))
             elif not self.user_cache.is_active:

@@ -17,11 +17,19 @@
 
 {% block messages %}
     {% if form.errors and not form.username.errors and not form.password.errors %}
+        {% ifequal form.errors.items.0.1.0 "The trial period is expired" %}
+        <div class="warning-message-box clear-both overflow_hidden">
+            <p>{% trans "Your DataWinners account have been deactivated. Subscribe to a monthly subscription or contact your Project Manager to reactivate the account." %}</p>
+            <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/" target="blank">{% trans "Learn More" %}</a>
+            <a class="button margin_10 float_left" target="blank" href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
+        </div>
+        {% else %}
         <div class=" error span-12 push-6 message-box">
             {% for key,error in form.errors.items %}
                 {{ error }}
             {% endfor %}
         </div>
+        {% endifequal %}
     {% endif %}
 {% endblock %}
 

@@ -76,7 +76,7 @@ class TestLoginPage(BaseTest):
     def test_login_with_expired_trial_account(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         dbmanager = DatabaseManager()
-        dbmanager.update_active_date_to_expired(EXPIRED_TRIAL_ACCOUNT[USERNAME], 31)
+        dbmanager.update_active_date_to_expired(EXPIRED_TRIAL_ACCOUNT[USERNAME], 365)
         login_page = LoginPage(self.driver)
         time.sleep(2)
         login_page.login_with(EXPIRED_TRIAL_ACCOUNT)

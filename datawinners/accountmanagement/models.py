@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
+from dateutil.relativedelta import relativedelta
 
 from django.conf import settings
 from django.db import models
@@ -43,8 +44,9 @@ class Organization(models.Model):
             return False
         if current_time is None:
             current_time = datetime.datetime.now()
-        diff_days = (current_time - self.active_date).days
-        return diff_days >= settings.EXPIRED_DAYS_FOR_TRIAL_ACCOUNT
+        active_date = self.status_changed_datetime if self.status_changed_datetime and self.status == 'Activated'\
+            else self.active_date
+        return (current_time - relativedelta(years=settings.TRIAL_PERIOD_IN_YEAR)) >= active_date
 
     @classmethod
     def create_organization(cls, org_details):
@@ -157,6 +159,19 @@ class Organization(models.Model):
         NGOUserProfile.objects.filter(org_id=self.org_id).delete()
         self.delete()
 
+    def deactivate(self):
+        self.get_related_users().update(is_active=False)
+        self.status = 'Deactivated'
+        self.status_changed_datetime = datetime.datetime.now()
+        self.save()
+
+    def activate(self):
+        self.get_related_users().update(is_active=True)
+        self.status, self.status_changed_datetime = 'Activated', datetime.datetime.now()
+        self.save()
+
+    def get_related_users(self):
+        return User.objects.filter(ngouserprofile__org_id=self.org_id)
 
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)

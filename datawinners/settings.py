@@ -7,6 +7,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 PROJECT_DIR = os.path.dirname(__file__)
 EXPIRED_DAYS_FOR_TRIAL_ACCOUNT = 30
+TRIAL_PERIOD_IN_YEAR = 1
 
 ADMINS = (
 # ('Your Name', 'your_email@example.com'),
