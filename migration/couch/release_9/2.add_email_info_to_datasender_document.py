@@ -13,10 +13,11 @@ from datawinners.main.database import get_db_manager
 from migration.couch.utils import migrate, mark_start_of_migration
 
 
-def add_email_data_to_entity_document(manager, short_code, data):
+def add_email_data_to_entity_document(manager, short_code, data, logger):
     datasender = get_by_short_code(manager, short_code, REPORTER_ENTITY_TYPE)
-    datasender.update_latest_data([data])
-
+    if "email" not in datasender.data.keys():
+        datasender.update_latest_data([data])
+        logger.info('migrated: short_code: %s'%short_code)
 
 def migration_to_add_email_data_for_web_users_in_couch(db_name):
     logger = logging.getLogger(db_name)
@@ -37,10 +38,10 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
             short_code = user_profile.reporter_id
             email_value = user_profile.user.email
             data = (email_field_label, email_value, email_ddtype)
-            add_email_data_to_entity_document(manager, short_code, data)
+            add_email_data_to_entity_document(manager, short_code, data, logger)
 
         except Exception as e:
             logger.exception("FAILED to migrate:%s " % short_code)
 
 
-migrate(all_db_names(), migration_to_add_email_data_for_web_users_in_couch, version=(9, 0, 1))
+migrate(all_db_names(), migration_to_add_email_data_for_web_users_in_couch, version=(9, 0, 2))

@@ -1,36 +1,17 @@
 import elasticutils
-from datawinners.accountmanagement.models import NGOUserProfile
-from datawinners.main.database import get_db_manager
 from datawinners.project.models import get_all_projects
 from datawinners.search.index_utils import _entity_dict, _mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
-from datawinners.utils import get_organization_from_manager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.datastore.documents import FormModelDocument
-from mangrove.datastore.entity import get_all_entities, get_by_short_code
+from mangrove.datastore.entity import get_by_short_code
 from mangrove.form_model.field import TextField
-from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE, FormModel
+from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
-def _get_project_names_by_datasender_id(dbm, entity_id):
-    project_names = []
-    project_list = get_all_projects(dbm, entity_id)
-    for project in project_list:
-        project_names.append(project.value['name'])
-    return project_names
-
-
-def _get_email_by_datasender_id(dbm, short_code):
-    organization = get_organization_from_manager(dbm)
-    user_profile = NGOUserProfile.objects.filter(reporter_id=short_code, org_id=organization.org_id)
-    return user_profile[0].user.email if user_profile else None
-
-
-def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
-    datasender_dict = _entity_dict(entity_type, entity_doc, dbm, form_model)
-    datasender_dict.update({"projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code)})
-    return datasender_dict
+def update_datasender_index_by_id(short_code, dbm):
+    datasender = get_by_short_code(dbm, short_code, REPORTER_ENTITY_TYPE)
+    update_datasender_index(datasender, dbm)
 
 
 def update_datasender_index(entity_doc, dbm):
@@ -45,35 +26,21 @@ def update_datasender_index(entity_doc, dbm):
     es.refresh(dbm.database_name)
 
 
-def update_datasender_index_by_id(short_code, dbm):
-    datasender = get_by_short_code(dbm, short_code, REPORTER_ENTITY_TYPE)
-    update_datasender_index(datasender, dbm)
+def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
+    datasender_dict = _entity_dict(entity_type, entity_doc, dbm, form_model)
+    datasender_dict.update({"projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code)})
+    return datasender_dict
 
 
-def _create_mappings(dbm):
-    for row in dbm.load_all_rows_in_view('questionnaire'):
-        form_model_doc = FormModelDocument.wrap(row["value"])
-        _create_datasender_mapping(form_model_doc, dbm)
+def _get_project_names_by_datasender_id(dbm, entity_id):
+    project_names = []
+    project_list = get_all_projects(dbm, entity_id)
+    for project in project_list:
+        project_names.append(project.value['name'])
+    return project_names
 
 
-def _populate_index(dbm):
-    for entity in get_all_entities(dbm, entity_type=REPORTER_ENTITY_TYPE):
-        update_datasender_index(entity, dbm)
-
-
-def create_datasender_index(database_name):
-    dbm = get_db_manager(database_name)
-    _create_mappings(dbm)
-    _populate_index(dbm)
-
-
-def _create_datasender_mapping(form_model_doc, dbm):
-    form_model = FormModel.new_from_doc(dbm, form_model_doc)
-    if form_model.form_code == REGISTRATION_FORM_CODE:
-        _create_ds_mapping(dbm, form_model)
-
-
-def _create_ds_mapping(dbm, form_model):
+def create_datasender_mapping(dbm, form_model):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
@@ -83,3 +50,32 @@ def _create_ds_mapping(dbm, form_model):
 def update_datasender_for_project_change(project, dbm):
     datasenders = project.get_associated_datasenders(dbm)
     [update_datasender_index(entity_doc, dbm) for entity_doc in datasenders]
+
+# def _create_mappings(dbm):
+#     for row in dbm.load_all_rows_in_view('questionnaire'):
+#         form_model_doc = FormModelDocument.wrap(row["value"])
+#         _create_datasender_mapping(form_model_doc, dbm)
+
+
+# def _populate_index(dbm):
+#     for entity in get_all_entities(dbm, entity_type=REPORTER_ENTITY_TYPE):
+#         update_datasender_index(entity, dbm)
+
+
+# def create_datasender_index(database_name):
+#     dbm = get_db_manager(database_name)
+#     _create_mappings(dbm)
+#     _populate_index(dbm)
+
+
+# def _create_datasender_mapping(form_model_doc, dbm):
+#     form_model = FormModel.new_from_doc(dbm, form_model_doc)
+#     if form_model.form_code == REGISTRATION_FORM_CODE:
+#         _create_ds_mapping(dbm, form_model)
+
+# def _get_email_by_datasender_id(dbm, short_code):
+#     organization = get_organization_from_manager(dbm)
+#     user_profile = NGOUserProfile.objects.filter(reporter_id=short_code, org_id=organization.org_id)
+#     return user_profile[0].user.email if user_profile else None
+
+

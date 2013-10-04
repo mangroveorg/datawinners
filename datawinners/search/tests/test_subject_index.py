@@ -1,7 +1,7 @@
 import unittest
 from mock import Mock, patch
 from datawinners.search.subject_index import entity_form_model_change_handler
-from framework.utils.database_manager_postgres import DatabaseManager
+from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 
 

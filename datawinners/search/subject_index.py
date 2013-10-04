@@ -1,11 +1,12 @@
 import elasticutils
 from datawinners.main.database import get_db_manager
-from datawinners.search.datasender_index import _create_ds_mapping, update_datasender_index
+from datawinners.search.datasender_index import create_datasender_mapping, update_datasender_index
 from datawinners.search.index_utils import _mapping, _entity_dict
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.form_model import FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
 def _create_mappings(dbm):
@@ -34,13 +35,13 @@ def entity_form_model_change_handler(form_model_doc, dbm):
     form_model = FormModel.new_from_doc(dbm, form_model_doc)
     if form_model.is_entity_registration_form():
         if form_model.form_code == REGISTRATION_FORM_CODE:
-            _create_ds_mapping(dbm, form_model)
+            create_datasender_mapping(dbm, form_model)
         else:
             _create_subject_mapping(dbm, form_model)
 
 
 def entity_search_update(entity_doc, dbm):
-    if entity_doc.aggregation_paths['_type'] == ['reporter']:
+    if entity_doc.aggregation_paths['_type'] == REPORTER_ENTITY_TYPE:
         update_datasender_index(entity_doc, dbm)
         return
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
