@@ -161,13 +161,7 @@ class Organization(models.Model):
 
     def deactivate(self):
         self.get_related_users().update(is_active=False)
-        self.status = 'Deactivated'
-        self.status_changed_datetime = datetime.datetime.now()
-        self.save()
-
-    def activate(self):
-        self.get_related_users().update(is_active=True)
-        self.status, self.status_changed_datetime = 'Activated', datetime.datetime.now()
+        self.status = 'Deativated'
         self.save()
 
     def get_related_users(self):
