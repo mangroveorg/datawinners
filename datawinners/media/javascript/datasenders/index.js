@@ -20,7 +20,7 @@ $(document).ready(function () {
     var kwargs = {container:"#delete_all_ds_are_users_warning_dialog",
         cancel_handler:function () {
 //            $("#action").val("");
-            $('#action').removeAttr("clicked");
+            $('#action').removeAttr("data-selected-action");
             $("input.is_user").attr("checked", false);
         },
         height:150,
@@ -59,7 +59,7 @@ $(document).ready(function () {
         width:900,
         beforeClose:function () {
 //            $('#action').val('');
-            $('#action').removeAttr("clicked");
+            $('#action').removeAttr("data-selected-action");
             $('#web_user_error').hide();
         }
     });
@@ -83,7 +83,7 @@ $(document).ready(function () {
             $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project")
                 + '</div>').insertBefore($("#all_projects"));
         } else {
-            var url = '/entity/' + $('#action').attr("clicked") + '/';
+            var url = '/entity/' + $('#action').attr("data-selected-action") + '/';
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
                 + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px', zIndex:1000000}});
             $.post(url,
@@ -122,7 +122,7 @@ $(document).ready(function () {
             return false;
         }
         var action = this.className;
-        $("#action").attr("clicked", action);
+        $("#action").attr("data-selected-action", action);
 
         if (action == 'makewebuser') {
 //            this.removeClass('dropdown-open').parents('.btn-group').removeClass('open');
