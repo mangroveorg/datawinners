@@ -111,7 +111,7 @@ def process_sms_counter(incoming_request):
 
     if organization.has_exceeded_submission_limit():
         return get_translated_response_message(incoming_request,
-            "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data for your projects.")
+            "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data.")
 
 
     organization.increment_all_message_count()

@@ -2913,5 +2913,5 @@ msgstr "Misaotra %(datasender)s. Voarainay ny SMS-nao momba ny %(subject_info)s"
 msgid "Thank you %(datasender)s. We received your SMS"
 msgstr "Misaotra %(datasender)s. Voarainay ny SMS-nao"
 
-msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data for your projects."
-msgstr "Efa tratra ny fetra-ny fandefasana 1000. Ilazao ny tompon'andraikitra mba hisoratra anarana amin'ny tolotra andoavam-bola mba ahafahanao manohy ny fandefasana"
+msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
+msgstr "Nahatratra 1000 ny tatitra maimaimpoana nalefanao.Antsoy ny tompon’andraikitra hisoratra anarana amin’ny tolotra andoavambola hahafahanao manohy mandefa tatitra"

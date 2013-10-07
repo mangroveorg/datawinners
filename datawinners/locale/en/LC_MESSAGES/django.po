@@ -4222,7 +4222,7 @@ msgstr ""
 msgid "Please use only letters (a-z), numbers, and spaces."
 msgstr ""
 
-msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data for your projects."
+msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
 msgstr ""
 
 msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects."
