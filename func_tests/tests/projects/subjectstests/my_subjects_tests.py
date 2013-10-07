@@ -57,7 +57,7 @@ class TestMySubjects(unittest.TestCase):
     @attr("functional_test")
     def test_should_check_all_checkboxes(self):
         self.my_subjects_page.navigate_to_my_subjects_list_tab()
-        self.my_subjects_page.wait_for_subject_table_to_load();
+        self.my_subjects_page.wait_for_subject_table_to_load()
         self.my_subjects_page.click_checkall_checkbox()
 
         checked = self.my_subjects_page.get_number_of_selected_subjects()
@@ -71,12 +71,12 @@ class TestMySubjects(unittest.TestCase):
     @attr("functional_test")
     def test_should_uncheck_checkall_if_one_cb_is_unchecked(self):
         self.my_subjects_page.navigate_to_my_subjects_list_tab()
-        self.my_subjects_page.wait_for_subject_table_to_load();
+        self.my_subjects_page.wait_for_subject_table_to_load()
         self.my_subjects_page.click_checkall_checkbox()
         self.assertTrue(self.my_subjects_page.is_checkall_checked())
-        self.my_subjects_page.select_subject_by_row(1)
+        self.my_subjects_page.select_subject_by_row(2)
         self.assertFalse(self.my_subjects_page.is_checkall_checked())
-        self.my_subjects_page.select_subject_by_row(1)
+        self.my_subjects_page.select_subject_by_row(2)
         self.assertTrue(self.my_subjects_page.is_checkall_checked())
 
     @attr("functional_test")
