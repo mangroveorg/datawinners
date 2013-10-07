@@ -102,8 +102,8 @@ $(document).ready(function () {
             data_sender.short_name = $($(row).children()[2]).html();
             data_sender.name = $($(row).children()[1]).html();
             data_sender.location = $($(row).children()[4]).html();
-            data_sender.contactInformation = $(row).find(".project").html();
-            data_sender.email = $(row).find(".email").html();
+            data_sender.contactInformation = $($(row).children()[8]).html();
+            data_sender.email = $($(row).children()[6]).html();
             data_sender.input_field_disabled = "disabled";
             if (!$.trim(data_sender.email)) {
                 data_sender.input_field_disabled = "";
