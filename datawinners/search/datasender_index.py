@@ -37,7 +37,7 @@ def _get_project_names_by_datasender_id(dbm, entity_id):
     project_list = get_all_projects(dbm, entity_id)
     for project in project_list:
         project_names.append(project.value['name'])
-    return project_names
+    return sorted(project_names)
 
 
 def create_datasender_mapping(dbm, form_model):

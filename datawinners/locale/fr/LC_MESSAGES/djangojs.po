@@ -118,6 +118,9 @@ msgstr ""
 msgid "Select 1 Data Sender only"
 msgstr "Sélectionnez seulement 1 Expéditeur de Données"
 
+msgid "Data Senders"
+msgstr "Expéditeurs de données"
+
 #: media/javascript/data_modified_warning.js:53
 msgid "You Have Unsaved Changes"
 msgstr "Vous avez des modifications non sauvegardées"

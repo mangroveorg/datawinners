@@ -1,6 +1,6 @@
 import unittest
-from mock import Mock, patch
-from datawinners.search.datasender_index import update_datasender_index
+from mock import Mock, patch, PropertyMock
+from datawinners.search.datasender_index import update_datasender_index, _get_project_names_by_datasender_id
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.form_model import FormModel
@@ -36,4 +36,20 @@ class TestDatasenderIndex(unittest.TestCase):
 
                     update_datasender_index(entity_doc, dbm)
 
-                    mock_es.index.assert_called_with('db','reporter', mock_ds_dict,id='some_id')
+                    mock_es.index.assert_called_with('db', 'reporter', mock_ds_dict, id='some_id')
+
+    def test_project_names_should_be_in_alphabetical_order(self):
+        dbm = Mock(spec=DatabaseManager)
+        entity_id = "rep"
+        project1 = Mock()
+        type(project1).value = PropertyMock(return_value={"name": "nameA", "value": "value1"})
+        project2 = Mock()
+        type(project2).value = PropertyMock(return_value={"name": "nameB", "value": "value2"})
+
+        with patch("datawinners.search.datasender_index.get_all_projects") as get_all_projects:
+            get_all_projects.return_value = [project2, project1]
+            result = _get_project_names_by_datasender_id(dbm, entity_id)
+
+            self.assertEquals(["nameA", "nameB"], result)
+
+

@@ -465,30 +465,22 @@ def all_datasenders(request):
                               context_instance=RequestContext(request))
 
 
-def add_check_symbol_for_row(datasender, result):
-    check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
-    result.extend([check_img])
-    if "email" in datasender.keys():
-        result.extend([check_img, check_img])
-    else:
-        result.extend(['', ''])
-
 def all_datasenders_ajax(request):
     search_parameters = {}
     search_text = request.GET.get('sSearch', '').strip()
     search_parameters.update({"search_text": search_text})
     search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
     search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
-    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0'))})
+    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
     search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
 
     user = request.user
-    query_count, search_count, datasenders = DatasenderQuery().paginated_query(user, "reporter", search_parameters)
+    query_count, search_count, datasenders = DatasenderQuery().paginated_query(user, REPORTER, search_parameters)
 
     return HttpResponse(
         jsonpickle.encode(
             {
-                'results': datasenders,
+                'datasenders': datasenders,
                 'iTotalDisplayRecords': query_count,
                 'iDisplayStart': int(request.GET.get('iDisplayStart')),
                 "iTotalRecords": search_count,
