@@ -9,7 +9,7 @@ $(document).ready(function () {
         "sInput": "",
         "aoColumnDefs": [
             { "sClass": "center",
-                "sTitle": "<input type='checkbox'id='checkall-checkbox'></input>",
+//                "sTitle": "<input type='checkbox'id='checkall-datasenders'></input>",
                 "fnRender": function (data) {
                     return '<input type="checkbox" value=' + data.aData[2] + ' />';
                 },

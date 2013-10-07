@@ -227,7 +227,7 @@ $(document).ready(function () {
         "${input_field_disabled}/></td></tr>";
     $.template("webUserTemplate", markup);
 
-    $("#checkall-datasenders").bind("click", function(){
+    $("#checkall-datasenders").on("click", function(){
         var checked = $(this).attr("checked") == "checked";
         $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
 
@@ -239,7 +239,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#all_data_senders tr td:first-child input:checkbox").bind("click", function(){
+    $("#all_data_senders tr td:first-child input:checkbox").live("click", function(){
         $("#checkall-datasenders").attr("checked", $('#all_data_senders input:checkbox').length == $('#all_data_senders input:checkbox[checked]').length);
     });
 
@@ -247,12 +247,14 @@ $(document).ready(function () {
         if ($("#associated_data_senders").length) {
             return DW.registered_ds_action_dropdown;
         } else {
-            return DW.all_ds_action_dropdown
+        return DW.all_ds_action_dropdown
         }
     };
 
     if ($("#all_projects > li").length == 0 && $("#all_data_senders").length) {
         $("#associate,#disassociate").parent().addClass("disabled");
     }
+});
+$("#all_data_senders tr td:first-child input:checkbox").on("click", function(){
 });
 
