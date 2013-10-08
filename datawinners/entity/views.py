@@ -32,7 +32,7 @@ from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_data_sender_form, \
-    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields, put_email_information_to_entity
+    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields, put_email_information_to_entity, add_imported_data_sender_to_trial_organization
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
@@ -50,10 +50,10 @@ from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organizat
     get_database_manager_for_org, get_changed_questions
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
-from mangrove.transport.player.parser import XlsOrderedParser
+from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, DELETED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
-    ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
+    ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS, IMPORTED_DATA_SENDERS
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
@@ -358,8 +358,8 @@ def delete_data_senders(request):
                                 (_get_full_name(ngo_admin_user_profile.user)), "error_message")
     else:
         transport_info = TransportInfo("web", request.user.username, "")
-        delete_entity_instance(manager, all_ids, entity_type, transport_info)
         delete_datasenders_from_project(manager, all_ids)
+        delete_entity_instance(manager, all_ids, entity_type, transport_info)
         delete_datasender_users_if_any(all_ids, organization)
         if organization.in_trial_mode:
             delete_datasender_for_trial_mode(manager, all_ids, entity_type)
@@ -434,30 +434,29 @@ def all_datasenders(request):
     projects = get_all_projects(manager)
     # fields, old_labels, codes = get_entity_type_fields(manager)
     in_trial_mode = utils.get_organization(request).in_trial_mode
-    labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number")]
+    labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number"), _("Email address")]
     grant_web_access = False
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
-    # if request.method == 'POST':
-    #     error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
-    #                                                                                                       manager,
-    #                                                                                                       default_parser=XlsDatasenderParser)
-    #     if len(imported_datasenders.keys()):
-    #         UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
-    #                               detail=json.dumps(
-    #                                   dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
-    #     all_data_senders = _get_all_datasenders(manager, projects, request.user)
-    #     mobile_number_index = fields.index('mobile_number')
-    #     add_imported_data_sender_to_trial_organization(request, imported_datasenders,
-    #                                                    all_data_senders=all_data_senders, index=mobile_number_index)
-        #
-        # return HttpResponse(json.dumps(
-        #     {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
-        #      'error_message': error_message,
-        #      'failure_imports': failure_imports, 'all_data': all_data_senders,
-        #      'imported_datasenders': imported_datasenders}))
+    if request.method == 'POST':
+        error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
+                                                                                                          manager,
+                                                                                                          default_parser=XlsDatasenderParser)
+        if len(imported_datasenders.keys()):
+            UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
+                                  detail=json.dumps(
+                                      dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
+        all_data_senders = _get_all_datasenders(manager, projects, request.user)
+        mobile_number_index = 4
+        add_imported_data_sender_to_trial_organization(request, imported_datasenders,
+                                                       all_data_senders=all_data_senders, index=mobile_number_index)
 
-    # all_data_senders = _get_all_datasenders(manager, projects, request.user)
+        return HttpResponse(json.dumps(
+            {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+             'error_message': error_message,
+             'failure_imports': failure_imports, 'all_data': all_data_senders,
+             'imported_datasenders': imported_datasenders}))
+
     return render_to_response('entity/all_datasenders.html',
                               {'grant_web_access': grant_web_access,
                                "labels": labels,

@@ -3,14 +3,15 @@
 <script type="text/javascript" src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
 <script type="text/javascript" src="/media/javascript/datasenders/datasender_table.js"></script>
 
-<div class="table_container">
+<div class="wrapper_div_for_table">
+    {% include 'entity/all_data_senders/actions.html' %}
+
     <table id='datasender_table' class="styled_table">
         <thead>
         <th><input type="checkbox" id="checkall-datasenders"/></th>
         {% for title in labels %}
             <th>{{ title }}</th>
         {% endfor %}
-        <th>{% trans "Email address" %}</th>
         <th class="devices">
             <span>{% trans "Devices" %}</span>
             {% include "alldata/device_icons.html" %}
