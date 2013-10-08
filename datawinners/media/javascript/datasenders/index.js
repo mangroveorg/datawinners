@@ -229,7 +229,7 @@ $(document).ready(function () {
 
     $("#checkall-datasenders").on("click", function(){
         var checked = $(this).attr("checked") == "checked";
-        $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
+//        $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
 
         var action_dropdown = get_action_dropdown_object();
         if (!checked) {

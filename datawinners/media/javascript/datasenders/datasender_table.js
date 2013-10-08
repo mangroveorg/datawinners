@@ -38,10 +38,18 @@ $(document).ready(function () {
             $("#action_dropdown").remove();
             cloned_element.insertBefore(".dataTables_info").addClass('margin_top_10').find('.action_button').removeClass('none');
 //            new DW.ActionsMenu();
-//            oSettings.select_all_checkbox = new DW.SubjectSelectAllCheckbox(this);
+            oSettings.select_all_checkbox = new DW.SubjectSelectAllCheckbox(this);
             $(".styled_table").wrap('<div class="table_container" />');
         },
 
+        "fnPreDrawCallback": function (oSettings) {
+            if (oSettings.select_all_checkbox) oSettings.select_all_checkbox.un_check();
+        },
+        "fnDrawCallback": function (oSettings) {
+            $(".styled_table thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0);
+            var nCols = $('table#datasender_table>thead>tr').children('th').length;
+            $('table#datasender_table>tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols+ '><div id="select_all_message"></div></td></tr>');
+        },
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
             lastXHR = oSettings.jqXHR;
             lastXHR && lastXHR.abort && lastXHR.abort();
