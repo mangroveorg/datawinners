@@ -211,16 +211,15 @@ class VumiClient(object):
     A client for Vumi's HTTP API.
     """
 
-    def __init__(self, username, password, connection=None):
-        self.connection = connection or Connection(username, password,
-                base_url='http://vumi.praekeltfoundation.org')
+    def __init__(self, username, password, connection):
+        self.connection = connection
 
     @auto_response
     def send_sms(self, **kwargs):
         """
         Send one or more SMS messages::
 
-            >>> client = Client('username', 'password')
+            >>> client = Client('username', 'password', Connection("http://vumi.datawinners.com/")))
             >>> client.send_sms(to_msisdn='27123456789', from_msisdn='27123456789', message='hello world') # doctest: +SKIP
             [SendSmsResponse(...), ...]
             >>>
@@ -230,7 +229,10 @@ class VumiClient(object):
         :keyword message: the message being sent
 
         """
-        return self.connection.post('/api/v1/sms/send.json', kwargs)
+        if kwargs['from_msisdn'] in kwargs.get("to_msisdn",{}):
+            raise VumiInvalidDestinationNumberException()
+        else:
+            return self.connection.post('/api/v1/sms/send.json', kwargs)
 
     @auto_response
     def send_template_sms(self, **kwargs):
@@ -371,3 +373,7 @@ class VumiClient(object):
         if is_successful(resp):
             return make_response('DeleteCallBackResponse', {'success': True})
         raise ClientException('Bad Response: %s' % resp.status_code)
+
+
+class VumiInvalidDestinationNumberException(Exception):
+    pass

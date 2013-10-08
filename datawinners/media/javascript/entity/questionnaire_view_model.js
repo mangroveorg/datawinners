@@ -149,6 +149,6 @@ var questionnaireViewModel =
         return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag();
     },
     remove_location_type: function(){
-        $(".question_type #location_type_input").attr("hidden", "true");
+        $(".question_type #location_type_input").hide();
     }
 };

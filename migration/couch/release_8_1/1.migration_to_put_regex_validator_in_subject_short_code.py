@@ -1,10 +1,11 @@
 import sys
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0, ".")
+
 from datawinners.main.couchdb.utils import all_db_names
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import ShortCodeRegexConstraint, TextLengthConstraint
 
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
 
 import logging
 from mangrove.datastore.documents import FormModelDocument
@@ -44,4 +45,4 @@ def migrate_subject_form_code_to_add_regex_validator_in_short_code(db_name):
     logger.info('Completed Migration')
 
 
-migrate(all_db_names(), migrate_subject_form_code_to_add_regex_validator_in_short_code, version=(8, 0, 1))
+migrate(all_db_names(), migrate_subject_form_code_to_add_regex_validator_in_short_code, version=(8, 1, 0))

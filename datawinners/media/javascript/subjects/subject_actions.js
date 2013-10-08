@@ -97,17 +97,17 @@ DW.SubjectPagination = function () {
     };
 
     this.enable = function (no_of_records_on_page, total_number_of_records) {
-        var select_all_text = interpolate(gettext("Select all <b> %(total_number_of_records)s </b>subjects"),
+        var select_all_text = interpolate(gettext("Select all <b> %(total_number_of_records)s </b>Subjects"),
             {'total_number_of_records': total_number_of_records }, true);
         var select_all_link = " <a id='select_all_link' class=''>" + select_all_text + "</a>";
-        var select_across_pages_message = interpolate(gettext("You have selected <b>%(number_of_records)s</b> Subjects on this page."),
+        var select_across_pages_message = interpolate(gettext("You have selected the <b>%(number_of_records)s</b> Subjects on this page."),
             {'number_of_records': no_of_records_on_page}, true) + select_all_link;
-        $('#select_all_message').html(select_across_pages_message);
+        $('#select_all_message').html('<div>' + select_across_pages_message + '</div>');
 
         $('#select_all_link').click(function () {
             var clear_selection = " <a id='clear_selection'>" + interpolate(gettext("Clear Selection")) + "</a>";
-            $('#select_all_message').html(interpolate(gettext("All %(total_number_of_records)s Subjects selected." + clear_selection),
-                {'total_number_of_records': total_number_of_records }, true));
+            $('#select_all_message').html('<div>' + interpolate(gettext("You have selected all %(total_number_of_records)s Subjects."),
+                {'total_number_of_records': total_number_of_records }, true)  + clear_selection + '</div>');
             $('#select_all_message').data('all_selected', true);
         });
         $('#select_all_message').parent().parent().show()

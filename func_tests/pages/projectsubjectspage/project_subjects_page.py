@@ -67,7 +67,7 @@ class ProjectSubjectsPage(Page):
 
     def wait_for_subject_table_to_load(self):
         WebDriverWait(self.driver, 1).until(
-            lambda driver: driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[1]/td[1]/input")).is_displayed())
+            lambda driver: driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[2]/td[1]/input")).is_displayed())
 
     def click_checkall_checkbox(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CHECKALL_CB, True)
