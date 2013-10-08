@@ -83,6 +83,7 @@ def _project_dir(code_dir, project_name):
 def checkout_project(context):
     run("git fetch")
     run("git checkout -f %s" % context.branch)
+    run("git pull")
 
 
 def post_checkout_datawinners(virtual_env):
