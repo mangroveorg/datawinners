@@ -24,7 +24,7 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         cls.message_tracker.incoming_sms_count = 50
         cls.message_tracker.incoming_sp_count = 160
         cls.message_tracker.incoming_web_count = 800
-        cls.message_tracker.month = datetime.strftime(datetime.today(), "%Y-%m-%01")
+        cls.message_tracker.month = datetime.strftime(datetime.today(), "%Y-%m-01")
         cls.message_tracker.save()
         # doing successful login with valid credentials
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
