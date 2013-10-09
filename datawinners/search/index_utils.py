@@ -4,7 +4,6 @@ from datawinners.entity.helper import get_entity_type_fields, tabulate_data
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import DateField
-from mangrove.form_model.form_model import get_form_model_by_entity_type
 
 
 def _add_date_field_mapping(mapping_fields, field):
@@ -40,10 +39,14 @@ def _update_mapping(dbm, form_model):
     es.put_mapping(dbm.database_name, form_model.entity_type[0], _mapping(form_model))
 
 
-def _entity_dict(entity_type, entity_doc, dbm):
+def update_ds_mapping(dbm, form_model):
+    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    es.put_mapping(dbm.database_name, form_model.entity_type[0], _mapping(form_model))
+
+
+def _entity_dict(entity_type, entity_doc, dbm, form_model):
     entity = Entity.get(dbm, entity_doc.id)
     fields, labels, codes = get_entity_type_fields(dbm, type=entity_type)
-    form_model = get_form_model_by_entity_type(dbm, [entity_type])
     data = tabulate_data(entity, form_model, codes)
     dictionary = OrderedDict()
     for index in range(0, len(fields)):
