@@ -1,19 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import os
-<<<<<<< HEAD
 from datetime import datetime
-=======
-from datetime import  datetime
->>>>>>> 8_0_release
 
 from fabric.api import run, env
 from fabric.context_managers import cd
 from fabric.operations import sudo
-<<<<<<< HEAD
-=======
-
->>>>>>> 8_0_release
 
 DATAWINNERS = 'datawinners'
 MANGROVE = 'mangrove'
