@@ -43,7 +43,7 @@ $(document).ready(function () {
             if (oSettings.select_all_checkbox) oSettings.select_all_checkbox.un_check();
         },
         "fnDrawCallback": function (oSettings) {
-            $(".styled_table thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0)
+            $(".styled_table thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0);
             var nCols = $('table#subjects_table>thead>tr').children('th').length;
             $('table#subjects_table>tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols+ '><div id="select_all_message"></div></td></tr>');
         },

@@ -423,7 +423,19 @@ span.paginate_more_disabled {
   float: right;
 }
 
+#datasender_table_length {
+  float: right;
+}
+
 #subjects_table_filter {
+  float: right;
+  >input {
+    height: 20px;
+    margin-bottom: 6px;
+  }
+}
+
+#datasender_table_filter {
   float: right;
   >input {
     height: 20px;

@@ -33,6 +33,15 @@ $(document).ready(function () {
         "aaSorting": [
             [ 1, "asc"]
         ],
+        "fnInitComplete": function (oSettings) {
+            var cloned_element = $("#action_dropdown").clone(true);
+            $("#action_dropdown").remove();
+            cloned_element.insertBefore(".dataTables_info").addClass('margin_top_10').find('.action_button').removeClass('none');
+//            new DW.ActionsMenu();
+//            oSettings.select_all_checkbox = new DW.SubjectSelectAllCheckbox(this);
+            $(".styled_table").wrap('<div class="table_container" />');
+        },
+
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
             lastXHR = oSettings.jqXHR;
             lastXHR && lastXHR.abort && lastXHR.abort();
@@ -52,5 +61,8 @@ $(document).ready(function () {
                 "global": false
             });
         }
+
     });
+    $("#datasender_table_filter").find("input").attr('placeholder', gettext('Enter any information you want to find'));
+
 });
