@@ -3,7 +3,8 @@ from django.core.management.base import BaseCommand
 import elasticutils
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.main.database import get_db_manager
-from datawinners.search import subject_search_update, subject_model_change_handler
+from datawinners.search import subject_search_update
+from datawinners.search.subject_index import subject_model_change_handler
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.entity import Entity

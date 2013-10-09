@@ -1,4 +1,4 @@
-from datawinners.search.subject_search import subject_search_update, subject_model_change_handler
+from datawinners.search.subject_index import subject_search_update, subject_model_change_handler
 from mangrove.datastore.documents import EntityDocument, FormModelDocument
 
 
