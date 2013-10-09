@@ -963,6 +963,9 @@ msgstr "Termes et Conditions"
 msgid "You have selected the <b>%(number_of_records)s</b> Subjects on this page."
 msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> Sujets sur cette page."
 
+msgid "You have selected <b>%(number_of_records)s</b> Datasenders on this page."
+msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> Expéditeurs sur cette page."
+
 #: media/javascript/useractivity/log.js:28
 #, fuzzy
 msgid "Show _MENU_ Data records"
@@ -997,17 +1000,26 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 msgid "Select all <b> %(total_number_of_records)s </b>Subjects"
 msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>Sujets"
 
+msgid "Select all <b> %(total_number_of_records)s </b>datasenders"
+msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>expéditeurs"
+
 msgid "Enter any information you want to find"
 msgstr "Tapez toute information que vous recherchez"
 
 msgid "You have selected all %(total_number_of_records)s Subjects."
 msgstr "Vous avez sélectionné tous les %(total_number_of_records)s Sujets."
 
+msgid "All %(total_number_of_records)s Datasenders selected."
+msgstr "Tous les %(total_number_of_records)s Expéditeurs sont sélectionnés."
+
 msgid "Clear Selection"
 msgstr "Désélectionner tout"
 
 msgid "<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"
 msgstr "<b>%(start)s à %(end)s</b> de %(total)s %(subject_type)s(s)"
+
+msgid "<b>%(start)s to %(end)s</b> of %(total)s datasenders"
+msgstr "<b>%(start)s à %(end)s</b> de %(total)s expéditeurs"
 
 msgid "<b> 0 to 0</b> of 0"
 msgstr "<b> 0 à 0</b> de 0"

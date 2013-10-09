@@ -20,8 +20,8 @@ $(document).ready(function () {
         "oLanguage": {"sInfoFiltered": "",
             "sLengthMenu": gettext("Show") + " _MENU_ " + gettext("Data Senders"),
             "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
-            "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
-                {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_', 'subject_type': "Data Senders"}, true),
+            "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s datasenders"),
+                {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_'}, true),
             "sInfoEmpty": gettext("<b> 0 to 0</b> of 0") + " " + gettext("Data Senders"),
 //            "sEmptyTable": $('#no_registered_subject_message').clone(true, true).removeAttr("hidden").html(),
             "sSearch": "<strong>" + gettext("Search:") + "</strong>",
@@ -37,8 +37,11 @@ $(document).ready(function () {
             var cloned_element = $("#action_dropdown").clone(true);
             $("#action_dropdown").remove();
             cloned_element.insertBefore(".dataTables_info").addClass('margin_top_10').find('.action_button').removeClass('none');
-//            new DW.ActionsMenu();
-            oSettings.select_all_checkbox = new DW.SubjectSelectAllCheckbox(this);
+            var kwargs = {select_all_text: "Select all <b> %(total_number_of_records)s </b>datasenders",
+                current_selected_text: "You have selected <b>%(number_of_records)s</b> Datasenders on this page.",
+                all_entities_selected_text: "All %(total_number_of_records)s Datasenders selected."};
+
+            oSettings.select_all_checkbox = new DW.EntitySelectAllCheckbox(this, kwargs);
             $(".styled_table").wrap('<div class="table_container" />');
         },
 
