@@ -3,8 +3,8 @@ $(document).ready(function () {
         "bProcessing": true,
         "bServerSide": true,
         "bResetDisplay": true,
-        "aLengthMenu": [5, 25, 50, 100],
-        "iDisplayLength": 5,
+        "aLengthMenu": [10, 25, 50, 100],
+        "iDisplayLength": 25,
         "sDom": "ipfrtipl",
         "sInput": "",
         "aoColumnDefs": [

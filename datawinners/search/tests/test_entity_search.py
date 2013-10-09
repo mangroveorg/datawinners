@@ -149,6 +149,22 @@ class TestDatasenderQueryResponseCreator(TestCase):
         query.values_dict.assert_called_with(("field_name1", "field_name2"))
         self.assertEquals(datasenders, [["field_value11", "field_value12"], ["field_value21", "field_value22"]])
 
+    def test_should_return_datasender_with_space_seperated_projects(self):
+        required_field_names = ['field_name1', 'projects']
+        query = Mock()
+        query.values_dict.return_value = [{
+                                      "field_name1": "field_value11",
+                                      "projects": ["p1","p2"]
+                                  }, {
+                                      "field_name1": "field_value21",
+                                      "projects": ["p1", "p2", "p3"]
+                                  }]
+
+
+        datasenders = DatasenderQueryResponseCreator().create_response(required_field_names, query)
+        query.values_dict.assert_called_with(("field_name1", "projects"))
+        self.assertEquals(datasenders, [["field_value11", "p1, p2"], ["field_value21", "p1, p2, p3"]])
+
     def test_add_check_symbol_for_datasender_row(self):
         result = []
         check_img = '<img alt="Yes" src="/media/images/right_icon.png">'

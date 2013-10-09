@@ -118,6 +118,8 @@ class DatasenderQueryResponseCreator():
             for key in required_field_names:
                 if key is "devices":
                     self.add_check_symbol_for_row(res, result)
+                elif key is "projects":
+                    result.append(", ".join(res.get(key)))
                 else:
                     result.append(res.get(key))
             datasenders.append(result)
