@@ -22,6 +22,7 @@ from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, SurveyResponseForm
+from datawinners.scheduler.smsclient import NoSMSCException
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -356,21 +357,28 @@ def broadcast_message(request, project_id):
     if request.method == 'POST':
         form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
         if form.is_valid():
+            no_smsc = False
             data_senders = _get_data_senders(dbm, form, project)
             organization_setting = OrganizationSetting.objects.get(organization=organization)
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
-            sms_sent = helper.broadcast_message(data_senders, form.cleaned_data['text'],
+            try :
+                failed_numbers = helper.broadcast_message(data_senders, form.cleaned_data['text'],
                                                 organization_setting.get_organisation_sms_number()[0], other_numbers,
                                                 message_tracker,
                                                 country_code=organization.get_phone_country_code())
-            form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
+            except NoSMSCException as e:
+                no_smsc = True
+            if (len(failed_numbers) == 0):
+                form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
+            else:
+                 form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
             return render_to_response('project/broadcast_message.html',
                                       {'project': project,
                                        "project_links": make_project_links(project, questionnaire.form_code),
                                        "form": form,
-                                       "ong_country": organization.country, 'success': sms_sent},
+                                       "ong_country": organization.country, "no_smsc": no_smsc,'failed_numbers': " ".join(failed_numbers), "success":True},
                                       context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',

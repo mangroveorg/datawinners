@@ -11,6 +11,10 @@ import socket
 logger = logging.getLogger("datawinners.reminders")
 
 
+class NoSMSCException(Exception):
+    pass
+
+
 class SMSClient(object):
 
     def send_sms(self,from_tel,to_tel, message):
@@ -22,23 +26,24 @@ class SMSClient(object):
             smsc = None
             if organization_setting is not None and organization_setting.outgoing_number is not None:
                 smsc = organization_setting.outgoing_number.smsc
-            if smsc is not None:
-                socket.setdefaulttimeout(10)
-                logger.debug("Posting sms to %s" % settings.VUMI_API_URL)
-                if settings.USE_NEW_VUMI:
-                    client = VumiApiClient(connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
-                    sms_response = client.send_sms(to_addr=to_tel, from_addr=from_tel, content=message.encode('utf-8'),
-                        transport_name=smsc.vumi_username)
-                    return sms_response[0]
-                else:
-                    try:
-                        client = VumiClient(None, None, connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
-                        client.debug = True
-                        client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))
-                        return True
-                    except (URLError, VumiInvalidDestinationNumberException) as err:
-                        logger.exception('Unable to send sms. %s' %err)
-                        return False
+            if smsc is None:
+                raise NoSMSCException()
+            socket.setdefaulttimeout(10)
+            logger.debug("Posting sms to %s" % settings.VUMI_API_URL)
+            if settings.USE_NEW_VUMI:
+                client = VumiApiClient(connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
+                sms_response = client.send_sms(to_addr=to_tel, from_addr=from_tel, content=message.encode('utf-8'),
+                    transport_name=smsc.vumi_username)
+                return sms_response[0]
+            else:
+                try:
+                    client = VumiClient(None, None, connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
+                    client.debug = True
+                    client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))
+                    return True
+                except (URLError, VumiInvalidDestinationNumberException) as err:
+                    logger.exception('Unable to send sms. %s' %err)
+                    return False
         return False
 
     def send_reminder(self,from_number, on_date, project, reminder, dbm):

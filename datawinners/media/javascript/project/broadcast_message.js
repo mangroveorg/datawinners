@@ -13,7 +13,8 @@ DW.broadcast_sms.prototype={
     init:function(){
         this.createSMSContentValidationRule();
         this.createAdditionalTelephoneValidationRule();
-        this.additional_column.hide();
+        if($('#id_to').val() != 'Additional')
+            this.additional_column.hide();
         this.setMessageCount();
         this.updateToFieldText();
         this.updateToMenuItem();

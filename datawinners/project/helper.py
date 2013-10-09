@@ -181,6 +181,7 @@ def get_subject_report_questions(dbm):
 def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker, country_code=None):
     sms_client = SMSClient()
     sms_sent = None
+    failed_numbers = []
     for data_sender in data_senders:
         phone_number = data_sender.get(
             'mobile_number') #This should not be a dictionary but the API in import_data should be fixed to return entity
@@ -189,6 +190,8 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
             sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message)
         if sms_sent:
             message_tracker.increment_outgoing_message_count_by(1)
+        else:
+            failed_numbers.append(phone_number)
 
     for number in other_numbers:
         number = number.strip()
@@ -199,8 +202,10 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
         sms_sent = sms_client.send_sms(organization_tel_number, number, message)
         if sms_sent:
             message_tracker.increment_outgoing_message_count_by(1)
+        else:
+            failed_numbers.append(number)
 
-    return sms_sent
+    return failed_numbers
 
 
 def create_request(questionnaire_form, username, is_update=None):
