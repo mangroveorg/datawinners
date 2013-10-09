@@ -15,6 +15,7 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _, activate, get_language
+import elasticutils
 import jsonpickle
 import xlwt
 from django.contrib import messages
@@ -50,7 +51,7 @@ from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organizat
     get_database_manager_for_org, get_changed_questions
 from datawinners.entity.helper import add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from mangrove.datastore.entity import get_by_short_code, get_short_codes_by_entity_type
+from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsDatasenderParser, XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, DELETED_DATA_SENDERS, IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
@@ -58,6 +59,7 @@ from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SEND
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
+from settings import ELASTIC_SEARCH_URL
 
 
 websubmission_logger = logging.getLogger("websubmission")
@@ -456,11 +458,62 @@ def all_datasenders(request):
              'imported_datasenders': imported_datasenders}))
 
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
-    return render_to_response('entity/all_datasenders.html',
+    return render_to_response('entity/all_datasenders_s.html',
                               {'all_data': all_data_senders, 'projects': projects, 'grant_web_access': grant_web_access,
                                "labels": labels,
                                'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
                               context_instance=RequestContext(request))
+
+
+def all_datasenders_ajax(request):
+    search_parameters = {}
+    search_text = request.GET.get('sSearch', '').strip()
+    number_of_results = int(request.GET.get('iDisplayLength'))
+    start_result_number =  int(request.GET.get('iDisplayStart'))
+    # search_parameters.update({"search_text": search_text})
+    # search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
+    # search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
+    # search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
+    # search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
+
+    user = request.user
+    manager = get_database_manager(user)
+    fields, old_labels, codes = get_entity_type_fields(manager)
+    fields.append('email')
+    fields.append('projects')
+    fields = tuple(fields)
+    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(manager.database_name).doctypes("reporter") \
+        .filter(void=False)
+    if search_text:
+        raw_query = {
+            "query_string": {
+                "fields": fields,
+                "query": search_text
+            }
+        }
+        datasenders = query.query_raw(raw_query)[start_result_number:start_result_number + number_of_results].values_dict(fields)
+    else:
+        datasenders = query.query()[start_result_number:start_result_number + number_of_results].values_dict(fields)
+
+    query_count = datasenders.count()
+    search_count = query.count()
+    results = []
+    for datasender in datasenders:
+        result = []
+        for key in fields:
+            result.append(datasender.get(key))
+        results.append(result)
+
+    return HttpResponse(
+        jsonpickle.encode(
+            {
+                'results': results,
+                'iTotalDisplayRecords': query_count,
+                'iDisplayStart': int(request.GET.get('iDisplayStart')),
+                "iTotalRecords": search_count,
+                'iDisplayLength': int(request.GET.get('iDisplayLength'))
+                }, unpicklable=False), content_type='application/json')
+
 
 
 @csrf_view_exempt

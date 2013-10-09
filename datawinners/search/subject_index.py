@@ -3,18 +3,21 @@ from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import _entity_dict, _mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.documents import FormModelDocument
-from mangrove.datastore.entity import get_all_entities
+from mangrove.datastore.entity import Entity
 from mangrove.form_model.form_model import FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type
+from datawinners.search.datasender_index import _update_datasender_index
 
 
-def subject_search_update(entity_doc, dbm):
+def entity_search_update(entity_doc, dbm):
     if entity_doc.aggregation_paths['_type'] == ['reporter']:
+        _update_datasender_index(entity_doc, dbm)
         return
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     if entity_doc.data:
         entity_type = entity_doc.aggregation_paths['_type'][0].lower()
         form_model = get_form_model_by_entity_type(dbm, [entity_type])
-        es.index(dbm.database_name, entity_type, _entity_dict(entity_type, entity_doc, dbm, form_model), id=entity_doc.id)
+        es.index(dbm.database_name, entity_type, _entity_dict(entity_type, entity_doc, dbm, form_model),
+                 id=entity_doc.id)
     es.refresh(dbm.database_name)
 
 
@@ -25,9 +28,9 @@ def _create_mappings(dbm):
 
 
 def _populate_index(dbm):
-    for entity in get_all_entities(dbm):
-        subject_search_update(entity, dbm)
-
+    rows = dbm.database.iterview('by_short_codes/by_short_codes', 100, reduce=False, include_docs=True)
+    for row in rows:
+        entity_search_update(Entity.__document_class__.wrap(row.get('doc')), dbm)
 
 def create_subject_index(dbname):
     dbm = get_db_manager(dbname)

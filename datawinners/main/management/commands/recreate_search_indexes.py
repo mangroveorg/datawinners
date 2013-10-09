@@ -15,7 +15,7 @@ def recreate_index_for_db(database_name, es):
     response = es.create_index(database_name, settings={"number_of_shards": 1, "number_of_replicas": 0})
     logging.info('%s search index created : %s' % (database_name, response.get('ok')))
     create_subject_index(database_name)
-    # create_datasender_index(database_name)
+    create_datasender_index(database_name)
 
 
 class Command(BaseCommand):
