@@ -18,14 +18,21 @@ class TestSubjectsPage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
+        cls.login_with(VALID_CREDENTIALS)
+
+    @classmethod
+    def login_with(cls, credential):
+        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        LoginPage(cls.driver).login_with(credential)
 
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
     def check_pagination_size(self, subjects_page, size):
-        self.assertTrue(size >= subjects_page.number_of_rows())
-        self.assertEqual(size, subjects_page.selected_page_size())
+        # +1 for the select all hidden row in the beginning of the table
+        self.assertTrue(size+1 >= subjects_page.number_of_rows())
+        self.assertEqual(size , subjects_page.selected_page_size())
 
 
     def add_subject_type(self, entity_type):
@@ -36,7 +43,6 @@ class TestSubjectsPage(unittest.TestCase):
 
     @attr('functional_test')
     def test_all_subjects_page(self):
-        self.login_with(VALID_CREDENTIALS)
         self.driver.go_to(url("/entity/subjects/clinic/"))
         subjects_page = AllSubjectsListPage(self.driver)
         self.check_pagination_size(subjects_page, 25)
@@ -49,13 +55,12 @@ class TestSubjectsPage(unittest.TestCase):
         self.check_pagination_size(subjects_page, 10)
 
         sleep(1)
-        for row in subjects_page.rows():
+        for row in subjects_page.rows()[1:]:
             self.assertIn("tes", row.text.lower())
 
 
     @attr('functional_test')
     def test_add_duplicate_subjectType(self):
-        self.login_with(VALID_CREDENTIALS)
         self.driver.go_to(url("/entity/subjects/"))
         subject_type_name = SUBJECT_TYPE + random_string(3)
         self.add_subject_type(subject_type_name)
@@ -68,7 +73,6 @@ class TestSubjectsPage(unittest.TestCase):
 
     @attr('functional_test')
     def test_add_invalid_subjectType(self):
-        self.login_with(VALID_CREDENTIALS)
         self.driver.go_to(url("/entity/subjects/"))
         self.add_subject_type(SUBJECT_TYPE_WHITE_SPACES)
         self.validate_error_messages(ERROR_MSG_INVALID_ENTRY)
@@ -84,7 +88,4 @@ class TestSubjectsPage(unittest.TestCase):
         element = self.driver.find_element_by_link_text(subject_type).text
         self.assertEquals(element.lower() , subject_type.lower())
 
-    def login_with(self, credential):
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        LoginPage(self.driver).login_with(credential)
 

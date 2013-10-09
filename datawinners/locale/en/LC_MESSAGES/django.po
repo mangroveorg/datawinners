@@ -3608,7 +3608,7 @@ msgstr "If you delete Data Senders, they can no longer send in data.<br/>"
 msgid "ID is:"
 msgstr ""
 
-msgid "Your 30 Day Test Drive is expired"
+msgid "Your one year Test Drive is expired"
 msgstr ""
 
 msgid "Thank you for trying out DataWinners"
@@ -4226,4 +4226,7 @@ msgid "You have reached your limit of 1000 free Submissions. Ask your Project Ma
 msgstr ""
 
 msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects."
+msgstr ""
+
+msgid "Your DataWinners account have been deactivated. Subscribe to a monthly subscription or contact your Project Manager to reactivate the account."
 msgstr ""

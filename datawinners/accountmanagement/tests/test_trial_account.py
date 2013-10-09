@@ -41,14 +41,14 @@ class TestTrialAccount(unittest.TestCase):
     def tearDown(self):
         self.org.delete()
 
-    def test_organization_is_expired_when_more_than_3_months_has_passed(self):
-        self.assertTrue(self.org.is_expired(current_time=datetime(2011, 11, 11)))
+    def test_organization_is_expired_when_more_than_one_year_has_passed(self):
+        self.assertTrue(self.org.is_expired(current_time=datetime(2013, 11, 11)))
 
     def test_organization_is_not_expired_when_29_days_has_passed(self):
         self.assertFalse(self.org.is_expired(current_time=datetime(2011, 07, 30)))
 
-    def test_organization_is_expired_when_30_days_has_passed(self):
-        self.assertTrue(self.org.is_expired(current_time=datetime(2011, 07, 31)))
+    def test_organization_is_expired_when_one_year_has_passed(self):
+        self.assertTrue(self.org.is_expired(current_time=datetime(2012, 07, 1)))
 
     def _initial_status_code_of(self, response):
         return response.status_code / 100

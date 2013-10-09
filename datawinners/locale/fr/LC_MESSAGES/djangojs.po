@@ -957,7 +957,7 @@ msgid "Terms And Conditions"
 msgstr "Termes et Conditions"
 
 #: media/javascript/subjects/subject_actions.js:15
-msgid "You have selected <b>%(number_of_records)s</b> Subjects on this page."
+msgid "You have selected the <b>%(number_of_records)s</b> Subjects on this page."
 msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> Sujets sur cette page."
 
 #: media/javascript/useractivity/log.js:28
@@ -991,17 +991,17 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 #~ msgid "Not available for trial accounts"
 #~ msgstr "Non disponible pour les comptes essai"
 
-msgid "Select all <b> %(total_number_of_records)s </b>subjects"
+msgid "Select all <b> %(total_number_of_records)s </b>Subjects"
 msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>Sujets"
 
 msgid "Enter any information you want to find"
 msgstr "Tapez toute information que vous recherchez"
 
-msgid "All %(total_number_of_records)s Subjects selected."
-msgstr "Tous les %(total_number_of_records)s Sujets sont sélectionnés."
+msgid "You have selected all %(total_number_of_records)s Subjects."
+msgstr "Vous avez sélectionné tous les %(total_number_of_records)s Sujets."
 
 msgid "Clear Selection"
-msgstr "Déselectionner tout"
+msgstr "Désélectionner tout"
 
 msgid "<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"
 msgstr "<b>%(start)s à %(end)s</b> de %(total)s %(subject_type)s(s)"

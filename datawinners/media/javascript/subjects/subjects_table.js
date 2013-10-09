@@ -23,9 +23,10 @@ $(document).ready(function () {
             "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
                 {'start':'_START_','end':'_END_', 'total':'_TOTAL_', 'subject_type':subject_type}, true),
             "sInfoEmpty": gettext("<b> 0 to 0</b> of 0")+ " " + subject_type,
-            "sEmptyTable": $('#no_registered_subject_message').clone(true, true).removeAttr("hidden").html(),
+            "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html(),
             "sSearch":"<strong>" + gettext("Search:") + "</strong>",
-            "oPaginate": {"sFirst": "", "sPrevious": "◀", "sNext": "▶", "sLast": ""}},
+            "oPaginate": {"sFirst": "", "sPrevious": "◀", "sNext": "▶", "sLast": ""},
+            "sZeroRecords": gettext("No matching records found")},
         "sPaginationType": "dw_pagination",
         "sAjaxSource": '/entity/subjects/' + subject_type.toLowerCase() + '/ajax/',
         "sAjaxDataProp": "subjects",
@@ -52,6 +53,7 @@ $(document).ready(function () {
         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
             lastXHR = oSettings.jqXHR;
             lastXHR && lastXHR.abort && lastXHR.abort();
+            aoData.push({"name":"disable_cache","value":new Date().getTime()});
             oSettings.jqXHR = $.ajax({
                 "dataType": 'json',
                 "type": "GET",

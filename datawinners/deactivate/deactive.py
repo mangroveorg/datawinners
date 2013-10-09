@@ -53,3 +53,14 @@ def get_creators(organizations):
         creators.append(get_creator(organization))
     return creators
 
+def deactivate_expired_trial_account():
+    organizations = get_expired_trial_organizations()
+    if not organizations:
+        pass
+
+    for organization in organizations:
+        organization.deactivate()
+
+def get_expired_trial_organizations():
+    trial_organizations = Organization.objects.filter(in_trial_mode=True)
+    return [organization for organization in trial_organizations if organization.is_expired()]

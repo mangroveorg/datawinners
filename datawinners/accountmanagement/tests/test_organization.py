@@ -2,6 +2,7 @@ import unittest
 import datetime
 from datawinners.accountmanagement.models import Organization
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
+from dateutil.relativedelta import relativedelta
 
 
 class TestOrganization(unittest.TestCase):
@@ -65,3 +66,7 @@ class TestOrganization(unittest.TestCase):
         for field_name, count in increment_count_by_submission_type_dict.items():
             self.assertEqual(getattr(message_tracker, field_name), count)
         
+"""    def test_check_expired_organization(self):
+        organization = self.organization
+        organization.status_changed_datetime = datetime.datetime.now() - relativedelta(years=1)
+        self.assertTrue(organization.is_expired())"""

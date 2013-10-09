@@ -52,7 +52,7 @@ BLANK_CREDENTIALS = {USERNAME: "",
 
 EXPIRED_TRIAL_ACCOUNT = {USERNAME: "chinatwu@gmail.com",
                      PASSWORD: "chinatwu",
-                     ERROR_MESSAGE: "Your 30 Day Test Drive is expired"}
+                     ERROR_MESSAGE: "Your DataWinners account have been deactivated. Subscribe to a monthly subscription or contact your Project Manager to reactivate the account."}
 
 NIGERIA_ACCOUNT_CREDENTIAL = {USERNAME: "gerard@mailinator.com",
                      PASSWORD: "gerard",
