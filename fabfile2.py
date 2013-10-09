@@ -1,11 +1,19 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import os
+<<<<<<< HEAD
 from datetime import datetime
+=======
+from datetime import  datetime
+>>>>>>> 8_0_release
 
 from fabric.api import run, env
 from fabric.context_managers import cd
 from fabric.operations import sudo
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8_0_release
 
 DATAWINNERS = 'datawinners'
 MANGROVE = 'mangrove'
@@ -81,9 +89,8 @@ def _project_dir(code_dir, project_name):
 
 
 def checkout_project(context):
-    run("git fetch")
+    run("git fetch -t")
     run("git checkout -f %s" % context.branch)
-    run("git pull")
 
 
 def post_checkout_datawinners(virtual_env):
