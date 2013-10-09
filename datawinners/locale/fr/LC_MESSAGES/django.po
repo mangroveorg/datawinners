@@ -2316,6 +2316,11 @@ msgstr "Votre message a été envoyé avec succès."
 msgid "Your message could not be sent."
 msgstr "Vous ne pouvez pas envoyer un SMS car votre compte DataWinners n’a pas été configuré pour l’envoi de SMS. Veuillez contacter notre équipe de support : support@datawinners.com"
 
+
+msgid "You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions. For more information contact support@datawinners.com: %(failed_numbers)s."
+msgstr "Vous ne pouvez pas envoyer des messages au numéro suivant car ce numéro est réservé à la réception des Soumissions des Expéditeurs de Données uniquement. Pour plus d'information, contactez support@datawinners.com: %(failed_numbers)s."
+
+
 msgid "Please Select..."
 msgstr "Veuillez Choisir ..."
 msgid "Commercial Business"
