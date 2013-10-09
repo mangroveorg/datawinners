@@ -508,3 +508,9 @@ span.paginate_more_disabled {
 .dataTables_empty {
   @extend .help_accordion;
 }
+
+#wrapper_div_for_table .action_button {
+  display: inline;
+  float: left;
+  margin-top: -7px;
+}

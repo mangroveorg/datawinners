@@ -33,8 +33,8 @@
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/action_dropdown.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
-        <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
-        <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
@@ -62,11 +62,11 @@
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
         </div>
         <div style="display: none;">
-        <div id="popup-import">
-            {% with project=None %}
-                {% include "import-datasenders.html" %}
-            {% endwith %}
-        </div>
+            <div id="popup-import">
+                {% with project=None %}
+                    {% include "import-datasenders.html" %}
+                {% endwith %}
+            </div>
         </div>
 
         <div class="clear-both"></div>
