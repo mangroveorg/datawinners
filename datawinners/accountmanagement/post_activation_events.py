@@ -94,8 +94,9 @@ def make_user_as_a_datasender(manager, organization, current_user_name, mobile_n
     mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
                                                  primitive_type='string')
     name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
-    data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type),
-            (EMAIL_FIELD, email, name_type )]
+    data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type)]
+    if email:
+        data.append((EMAIL_FIELD, email, name_type ))
     entity.add_data(data=data)
     entity.save()
 

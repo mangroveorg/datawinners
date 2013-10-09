@@ -19,7 +19,7 @@ def _populate_index(dbm):
     for row in rows:
         entity_search_update(Entity.__document_class__.wrap(row.get('doc')), dbm)
 
-def create_subject_index(dbname):
+def create_entity_index(dbname):
     dbm = get_db_manager(dbname)
     _create_mappings(dbm)
     _populate_index(dbm)

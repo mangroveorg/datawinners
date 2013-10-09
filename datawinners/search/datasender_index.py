@@ -21,12 +21,6 @@ def _get_project_names_by_datasender_id(dbm, entity_id):
     return project_names
 
 
-def _is_web_user(dbm, entity_doc):
-    organization = get_organization_from_manager(dbm)
-    user_profile = NGOUserProfile.objects.filter(reporter_id=entity_doc.short_code, org_id=organization.org_id)
-    return bool(user_profile)
-
-
 def _get_email_by_datasender_id(dbm, short_code):
     organization = get_organization_from_manager(dbm)
     user_profile = NGOUserProfile.objects.filter(reporter_id=short_code, org_id=organization.org_id)
@@ -35,9 +29,7 @@ def _get_email_by_datasender_id(dbm, short_code):
 
 def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
     datasender_dict = _entity_dict(entity_type, entity_doc, dbm, form_model)
-    # datasender_dict.update({"email": _get_email_by_datasender_id(dbm, entity_doc.short_code)})
     datasender_dict.update({"projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code)})
-    datasender_dict.update({"is_webuser": _is_web_user(dbm, entity_doc)})
     return datasender_dict
 
 
@@ -52,9 +44,11 @@ def update_datasender_index(entity_doc, dbm):
         es.index(dbm.database_name, entity_type, datasender_dict, id=entity_doc.id)
     es.refresh(dbm.database_name)
 
+
 def update_datasender_index_by_id(short_code, dbm):
     datasender = get_by_short_code(dbm, short_code, REPORTER_ENTITY_TYPE)
     update_datasender_index(datasender, dbm)
+
 
 def _create_mappings(dbm):
     for row in dbm.load_all_rows_in_view('questionnaire'):
