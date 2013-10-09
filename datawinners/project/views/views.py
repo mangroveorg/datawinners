@@ -69,6 +69,7 @@ from datawinners.project.views.utils import get_form_context, get_project_detail
 from mangrove.transport.player.new_players import WebPlayerV2
 from mangrove.transport.repository.survey_responses import survey_response_count, get_survey_responses
 from datawinners.project.utils import is_quota_reached
+from datawinners.submission.views import check_quotas_and_update_users
 
 
 logger = logging.getLogger("django")
@@ -771,6 +772,7 @@ class SurveyWebQuestionnaireRequest():
         if response.success and not created_request.is_update :
             organization = Organization.objects.get(org_id=user_profile.org_id)
             organization.increment_message_count_for(**{'incoming_web_count':1})
+            check_quotas_and_update_users(organization)
         return response
 
     def response_for_post_request(self, is_update=None):

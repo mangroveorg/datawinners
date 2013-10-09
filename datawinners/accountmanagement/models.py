@@ -6,11 +6,14 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext
 from django_countries import CountryField
-from datawinners.tests.data import LIMIT_TRIAL_ORG_MESSAGE_COUNT, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
+from datawinners.settings import LIMIT_TRIAL_ORG_MESSAGE_COUNT, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from django.contrib.auth.models import User
 from django.utils.translation import get_language
 from datawinners.countrytotrialnumbermapping.models import Country
+from django.template.context import Context
+from django.core.mail.message import EmailMessage
+from django.template import loader
 
 TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
@@ -128,19 +131,19 @@ class Organization(models.Model):
     def _get_all_message_trackers(self):
         return MessageTracker.objects.filter(organization=self)
 
-    def _get_total_message_count(self):
+    def get_total_message_count(self):
         message_trackers = self._get_all_message_trackers()
         return sum([message_tracker.total_messages() for message_tracker in message_trackers])
 
-    def _get_total_submission_count(self):
+    def get_total_submission_count(self):
         message_trackers = self._get_all_message_trackers()
         return sum([message_tracker.total_monthly_incoming_messages() for message_tracker in message_trackers])
 
     def _has_exceeded_limit_for_trial_account(self):
-        return self._get_total_message_count() >= LIMIT_TRIAL_ORG_MESSAGE_COUNT
+        return self.get_total_message_count() >= LIMIT_TRIAL_ORG_MESSAGE_COUNT
 
     def _has_exceeded_submission_limit_for_trial_account(self):
-        return self._get_total_submission_count() >= LIMIT_TRIAL_ORG_SUBMISSION_COUNT
+        return self.get_total_submission_count() >= LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 
     def get_phone_country_code(self):
         criteria = dict({"country_name_%s" % get_language(): self.country_name()})
@@ -166,6 +169,18 @@ class Organization(models.Model):
 
     def get_related_users(self):
         return User.objects.filter(ngouserprofile__org_id=self.org_id)
+
+    def send_mail_to_organization_creator(self, email_type):
+        for user in self.get_related_users():
+            if not user.groups.filter(name="NGO Admins") and not user.groups.filter(name="Project Managers"): continue
+            c = Context({'username': user.first_name +' '+ user.last_name, 'organization':self})
+
+            email_content = loader.get_template('registration/%s_%s.html' % (email_type, ugettext("en"),))
+            email_subject = email_type.replace('_',' ').capitalize()
+
+            msg = EmailMessage(email_subject, email_content.render(c), settings.EMAIL_HOST_USER, [user.email])
+            msg.content_subtype = "html"
+            msg.send()
 
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)

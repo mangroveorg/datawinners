@@ -46,7 +46,8 @@ class TestOrganization(unittest.TestCase):
                                           sector='PublicHealth', address='add',
                                           city='Pune', country='IN',
                                           zipcode='411006', in_trial_mode=True,
-                                          org_id=OrganizationIdCreator().generateId())
+                                          org_id=OrganizationIdCreator().generateId(),
+                                          status='Activated')
         trial_organization.save()
         return trial_organization
 
@@ -66,7 +67,9 @@ class TestOrganization(unittest.TestCase):
         for field_name, count in increment_count_by_submission_type_dict.items():
             self.assertEqual(getattr(message_tracker, field_name), count)
         
-"""    def test_check_expired_organization(self):
+    def test_check_expired_organization(self):
         organization = self.organization
-        organization.status_changed_datetime = datetime.datetime.now() - relativedelta(years=1)
-        self.assertTrue(organization.is_expired())"""
+        active_date = datetime.datetime.now() - relativedelta(years=1)
+        organization.active_date = active_date
+        organization.status_changed_datetime = active_date
+        self.assertTrue(organization.is_expired())

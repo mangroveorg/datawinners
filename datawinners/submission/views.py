@@ -28,6 +28,7 @@ from mangrove.transport.repository.reporters import find_reporter_entity
 from django.utils import translation
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParserFactory
+from datawinners.settings import NEAR_SUBMISSION_LIMIT_TRIGGER, NEAR_SMS_LIMIT_TRIGGER, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 
 
 logger = logging.getLogger("django")
@@ -105,6 +106,15 @@ def process_sms_counter(incoming_request):
         incoming_request['outgoing_message'] = ''
         return incoming_request
 
+    if organization.in_trial_mode:
+        return check_quotas_for_trial(incoming_request)
+
+    organization.increment_all_message_count()
+    incoming_request['next_state'] = submit_to_player
+    return incoming_request
+
+def check_quotas_for_trial(incoming_request):
+    organization = incoming_request.get('organization')
     if organization.has_exceeded_message_limit():
         return get_translated_response_message(incoming_request,
             "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects.")
@@ -113,11 +123,20 @@ def process_sms_counter(incoming_request):
         return get_translated_response_message(incoming_request,
             "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data.")
 
-
     organization.increment_all_message_count()
+    check_quotas_and_update_users(organization, sms_channel=True)
     incoming_request['next_state'] = submit_to_player
     return incoming_request
 
+def check_quotas_and_update_users(organization, sms_channel=False):
+    if organization.get_total_submission_count() == NEAR_SUBMISSION_LIMIT_TRIGGER:
+        organization.send_mail_to_organization_creator(email_type='about_to_reach_submission_limit')
+
+    if sms_channel and organization.get_total_message_count() == NEAR_SMS_LIMIT_TRIGGER:
+        organization.send_mail_to_organization_creator(email_type='about_to_reach_sms_limit')
+
+    if organization.get_total_submission_count() == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
+        organization.send_mail_to_organization_creator(email_type='reached_submission_limit')
 
 def get_translated_response_message(incoming_request, original_message):
     message = incoming_request.get('incoming_message')

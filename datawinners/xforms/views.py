@@ -15,6 +15,7 @@ from datawinners.alldata.helper import get_all_project_for_user
 from django.contrib.gis.utils import GeoIP
 from datawinners.messageprovider.messages import SMART_PHONE
 from datawinners.project.utils import is_quota_reached
+from datawinners.submission.views import check_quotas_and_update_users
 
 logger = logging.getLogger("datawinners.xform")
 sp_submission_logger = logging.getLogger("sp-submission")
@@ -102,6 +103,7 @@ def submission(request):
     organization = Organization.objects.get(org_id=user_profile.org_id)
     organization.increment_message_count_for(**{'incoming_sp_count':1})
 
+    check_quotas_and_update_users(organization)
     response = HttpResponse(status=201)
     response['Location'] = request.build_absolute_uri(request.path)
     return response
