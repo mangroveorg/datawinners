@@ -1,5 +1,5 @@
 import elasticutils
-from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSetting
+from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_db_manager
 from datawinners.project.models import get_all_projects
 from datawinners.search.index_utils import _entity_dict, _mapping
@@ -24,7 +24,7 @@ def _get_project_names_by_datasender_id(dbm, entity_id):
 def _is_web_user(dbm, entity_doc):
     organization = get_organization_from_manager(dbm)
     user_profile = NGOUserProfile.objects.filter(reporter_id=entity_doc.short_code, org_id=organization.org_id)
-    return user_profile is not None
+    return bool(user_profile)
 
 
 def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
@@ -36,6 +36,8 @@ def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
 
 def _datasender_search_update(entity_doc, dbm):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    if entity_doc.short_code == 'test':
+        return
     if entity_doc.data:
         entity_type = entity_doc.aggregation_paths['_type'][0].lower()
         form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
@@ -44,22 +46,30 @@ def _datasender_search_update(entity_doc, dbm):
     es.refresh(dbm.database_name)
 
 
-def update_datasender_index(database_name):
-    dbm = get_db_manager(database_name)
+def _create_mappings(dbm):
     for row in dbm.load_all_rows_in_view('questionnaire'):
         form_model_doc = FormModelDocument.wrap(row["value"])
-        _update_datasender_mapping(form_model_doc, dbm)
+        _create_datasender_mapping(form_model_doc, dbm)
+
+
+def _populate_index(dbm):
     for entity in get_all_entities(dbm, entity_type=REPORTER_ENTITY_TYPE):
         _datasender_search_update(entity, dbm)
 
 
-def _update_datasender_mapping(form_model_doc, dbm):
+def create_datasender_index(database_name):
+    dbm = get_db_manager(database_name)
+    _create_mappings(dbm)
+    _populate_index(dbm)
+
+
+def _create_datasender_mapping(form_model_doc, dbm):
     form_model = FormModel.new_from_doc(dbm, form_model_doc)
     if form_model.form_code == REGISTRATION_FORM_CODE:
-        _update_ds_mapping(dbm, form_model)
+        _create_ds_mapping(dbm, form_model)
 
 
-def _update_ds_mapping(dbm, form_model):
+def _create_ds_mapping(dbm, form_model):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
