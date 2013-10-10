@@ -1,11 +1,15 @@
 import elasticutils
+from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.main.database import get_db_manager
 from datawinners.project.models import get_all_projects
 from datawinners.search.index_utils import _entity_dict, _mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.utils import get_organization_from_manager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.documents import FormModelDocument
+from mangrove.datastore.entity import get_by_short_code, get_all_entities
 from mangrove.form_model.field import TextField
-from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE
+from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE, FormModel
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
@@ -26,9 +30,25 @@ def update_datasender_index(entity_doc, dbm):
     es.refresh(dbm.database_name)
 
 
+def is_user(dbm, short_code):
+    try:
+        organization = get_organization_from_manager(dbm)
+        user_profiles = NGOUserProfile.objects.filter(reporter_id=short_code, org_id=organization.org_id)
+        user_profile = user_profiles[0] if len(user_profiles) else None
+        if user_profile:
+            datasender_user_groups = list(user_profile.user.groups.values_list('name', flat=True))
+            if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
+                or "Read Only Users" in datasender_user_groups:
+                return True
+    except:
+        pass
+    return False
+
+
 def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
     datasender_dict = _entity_dict(entity_type, entity_doc, dbm, form_model)
     datasender_dict.update({"projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code)})
+    datasender_dict.update({"is_user": is_user(dbm, entity_doc.short_code)})
     return datasender_dict
 
 
@@ -51,31 +71,27 @@ def update_datasender_for_project_change(project, dbm):
     datasenders = project.get_associated_datasenders(dbm)
     [update_datasender_index(entity_doc, dbm) for entity_doc in datasenders]
 
+
 # def _create_mappings(dbm):
 #     for row in dbm.load_all_rows_in_view('questionnaire'):
 #         form_model_doc = FormModelDocument.wrap(row["value"])
 #         _create_datasender_mapping(form_model_doc, dbm)
 
 
-# def _populate_index(dbm):
-#     for entity in get_all_entities(dbm, entity_type=REPORTER_ENTITY_TYPE):
-#         update_datasender_index(entity, dbm)
+def create_datasender_index(database_name):
+    dbm = get_db_manager(database_name)
+    _create_datasender_mapping(dbm)
+    _populate_index(dbm)
 
 
-# def create_datasender_index(database_name):
-#     dbm = get_db_manager(database_name)
-#     _create_mappings(dbm)
-#     _populate_index(dbm)
+def _populate_index(dbm):
+    for entity in get_all_entities(dbm, entity_type=REPORTER_ENTITY_TYPE):
+        update_datasender_index(entity, dbm)
 
 
-# def _create_datasender_mapping(form_model_doc, dbm):
-#     form_model = FormModel.new_from_doc(dbm, form_model_doc)
-#     if form_model.form_code == REGISTRATION_FORM_CODE:
-#         _create_ds_mapping(dbm, form_model)
+def _create_datasender_mapping(dbm):
+    form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
+    create_datasender_mapping(dbm, form_model)
 
-# def _get_email_by_datasender_id(dbm, short_code):
-#     organization = get_organization_from_manager(dbm)
-#     user_profile = NGOUserProfile.objects.filter(reporter_id=short_code, org_id=organization.org_id)
-#     return user_profile[0].user.email if user_profile else None
 
 
