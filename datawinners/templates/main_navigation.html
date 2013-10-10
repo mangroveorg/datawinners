@@ -13,7 +13,7 @@
                 <a id="global_projects_link" href="{% url index %}" class="{{ disable_link_class }}">{% trans "Projects" %}</a>
             </li>
             <li  class ="{% ifactivetab 'main_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
-                <a id="global_datasenders_link" href="{% url all_datasenders %}" class="{{ disable_link_class }}">{% trans "All Data Senders" %}</a>
+                <a id="global_datasenders_link" href="{% url datawinners.entity.views.all_datasenders %}" class="{{ disable_link_class }}">{% trans "All Data Senders" %}</a>
             </li>
             <li class ="{% ifactivetab 'main_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="global_subjects_link" href="{% url datawinners.entity.views.all_subject_types %}" class="{{ disable_link_class }}">{% trans "All Subjects" %}</a>
