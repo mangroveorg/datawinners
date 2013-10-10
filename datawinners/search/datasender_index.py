@@ -30,25 +30,9 @@ def update_datasender_index(entity_doc, dbm):
     es.refresh(dbm.database_name)
 
 
-def is_user(dbm, short_code):
-    try:
-        organization = get_organization_from_manager(dbm)
-        user_profiles = NGOUserProfile.objects.filter(reporter_id=short_code, org_id=organization.org_id)
-        user_profile = user_profiles[0] if len(user_profiles) else None
-        if user_profile:
-            datasender_user_groups = list(user_profile.user.groups.values_list('name', flat=True))
-            if "NGO Admins" in datasender_user_groups or "Project Managers" in datasender_user_groups \
-                or "Read Only Users" in datasender_user_groups:
-                return True
-    except:
-        pass
-    return False
-
-
 def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
     datasender_dict = _entity_dict(entity_type, entity_doc, dbm, form_model)
     datasender_dict.update({"projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code)})
-    datasender_dict.update({"is_user": is_user(dbm, entity_doc.short_code)})
     return datasender_dict
 
 

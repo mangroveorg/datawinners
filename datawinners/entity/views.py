@@ -47,7 +47,7 @@ from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
-    get_database_manager_for_org, get_changed_questions
+    get_database_manager_for_org, get_changed_questions, get_organization_from_manager
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
@@ -422,6 +422,18 @@ def create_multiple_web_users(request):
         return HttpResponse(content)
 
 
+def _reporter_id_list_of_all_users(manager):
+    org_id = get_organization_from_manager(manager).org_id
+    users = NGOUserProfile.objects.filter(org_id=org_id).values_list("user_id", "reporter_id")
+    rep_id_map = {}
+    for u in users:
+        rep_id_map.update({u[0]: u[1]})
+    user_ids = User.objects.filter(groups__name__in=['Project Managers'], id__in=rep_id_map.keys()).values_list(
+        'id', flat=True)
+    user_rep_ids = [str(rep_id_map[user_id]) for user_id in user_ids]
+    return user_rep_ids
+
+
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
@@ -457,8 +469,11 @@ def all_datasenders(request):
              'failure_imports': failure_imports, 'all_data': all_data_senders,
              'imported_datasenders': imported_datasenders}))
 
+    user_rep_ids = _reporter_id_list_of_all_users(manager)
+
     return render_to_response('entity/all_datasenders.html',
                               {'grant_web_access': grant_web_access,
+                               "users_list": user_rep_ids,
                                "labels": labels,
                                "projects": projects,
                                'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},

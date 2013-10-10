@@ -38,6 +38,9 @@
     <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript">
+        var users_list = {{ users_list|safe }};
+    </script>
 {% endblock %}
 
 {% load i18n %}
