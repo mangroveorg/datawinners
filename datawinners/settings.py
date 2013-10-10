@@ -237,8 +237,8 @@ LOGGING = {
         }
 }
 
-SCHEDULER_HOUR = 21
-SCHEDULER_MINUTES = 30
+SCHEDULER_HOUR = 5
+SCHEDULER_MINUTES = 0
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
