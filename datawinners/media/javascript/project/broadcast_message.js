@@ -1,41 +1,43 @@
-DW.broadcast_sms=function(){
-    this.clearElementId='#clear_broadcast_sms_form';
-    this.formElementId="#broadcast_sms_form";
-    this.idToElement="#id_to";
-    this.messageCountElement="#messageCount";
-    this.smsContentElement="#sms_content";
-    this.maxSMSChar=160;
-    this.additional_column=new DW.additional_column();
+DW.broadcast_sms = function () {
+    this.clearElementId = '#clear_broadcast_sms_form';
+    this.formElementId = "#broadcast_sms_form";
+    this.idToElement = "#id_to";
+    this.messageCountElement = "#messageCount";
+    this.smsContentElement = "#sms_content";
+    this.maxSMSChar = 160;
+    this.additional_column = new DW.additional_column();
 
 };
 
-DW.broadcast_sms.prototype={
-    init:function(){
+DW.broadcast_sms.prototype = {
+    init: function () {
         this.createSMSContentValidationRule();
         this.createAdditionalTelephoneValidationRule();
-        if($('#id_to').val() != 'Additional')
-            this.additional_column.hide();
         this.setMessageCount();
         this.updateToFieldText();
         this.updateToMenuItem();
+        if ($('#id_to').val() != 'Additional')
+            this.additional_column.hide();
+        else
+            DW.broadcast_sms_handler.processAddtionalColumnValidation();
     },
 
-    createAdditionalTelephoneValidationRule:function(){
+    createAdditionalTelephoneValidationRule: function () {
         this.additional_column.createAdditionalTelephoneValidationRule();
     },
-    createSMSContentValidationRule:function(){
+    createSMSContentValidationRule: function () {
         var defaults = $(this.formElementId).validate({
             rules: {
-                text:{
-                    required:true
+                text: {
+                    required: true
                 }
             },
             wrapper: "div",
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.insertAfter(element);
                 error.addClass('error_arrow');  // add a class to the wrapper
             },
-            submitHandler: function(form){
+            submitHandler: function (form) {
                 var people_number = DW.broadcast_sms_handler.getPeopleNumber();
                 if (people_number >= 100) {
                     DW.broadcast_warning.form = form;
@@ -50,7 +52,7 @@ DW.broadcast_sms.prototype={
 
     },
 
-    processAddtionalColumnValidation:function(){
+    processAddtionalColumnValidation: function () {
         if (this.isAdditionalSelected()) {
             this.additional_column.processSelected();
         }
@@ -60,38 +62,38 @@ DW.broadcast_sms.prototype={
         this.updateToFieldText();
     },
 
-    isAdditionalSelected:function(){
+    isAdditionalSelected: function () {
         return $(this.idToElement).val() == "Additional";
     },
-    setMessageCount:function(){
-        $(this.messageCountElement).html("<b>"+ this.getSMSLength() + "</b> of "+this.maxSMSChar);
+    setMessageCount: function () {
+        $(this.messageCountElement).html("<b>" + this.getSMSLength() + "</b> of " + this.maxSMSChar);
     },
-    getSMSLength:function(){
+    getSMSLength: function () {
         return $(this.smsContentElement).val().length;
     },
-    clearContent:function(){
+    clearContent: function () {
         $(this.smsContentElement).val("");
         $(this.additional_column.telephoneNumbersElementId).val("");
-        $("#broadcast_sms_form label.error").each(function(){
+        $("#broadcast_sms_form label.error").each(function () {
             $(this).remove();
         });
         this.setMessageCount();
     },
-    getSMSContent:function(){
+    getSMSContent: function () {
         return $(this.smsContentElement).val()
     },
-    limitCount:function () {
-        if (this.getSMSLength() > this.maxSMSChar){
+    limitCount: function () {
+        if (this.getSMSLength() > this.maxSMSChar) {
             $(this.smsContentElement).val(this.getSMSContent().substring(0, this.maxSMSChar));
         }
         this.setMessageCount();
     },
-    getPeopleNumber:function() {
+    getPeopleNumber: function () {
         if (this.isAdditionalSelected())
             return $("#id_others").val().split(',').length;
         return parseInt($(this.idToElement + ' :selected').attr('number'));
     },
-    updateToFieldText:function() {
+    updateToFieldText: function () {
         $("#input_to > span > span:first-child").html($('#id_to option:selected').html());
         $("#input_to > span > span:last-child").html(this.getPeopleNumber() + " " + gettext("recipient(s)"));
         if (this.isAdditionalSelected()) {
@@ -100,63 +102,97 @@ DW.broadcast_sms.prototype={
             $("#input_to > span > span:last-child").show();
         }
     },
-    updateToMenuItem: function() {
+    updateToMenuItem: function () {
         $("#All span").html($("#id_to option[value=All]").attr('number') + " " + gettext("recipient(s)"));
         $("#Associated span").html($("#id_to option[value=Associated]").attr('number') + " " + gettext("recipient(s)"));
     }
 };
 
 
-DW.additional_column=function(){
-    this.additionalPeopleId="#additional_people_column";
-    this.telephoneNumbersElementId='#id_others';
-    this.telephone_number_rule="regexrule";
+DW.additional_column = function () {
+    this.additionalPeopleId = "#additional_people_column";
+    this.telephoneNumbersElementId = '#id_others';
+    this.telephone_number_rule = "regexrule";
+    this.hosted_service_number = "hosted_number_rule";
 };
 
-DW.additional_column.prototype={
-    createAdditionalTelephoneValidationRule:function(){
-        $.validator.addMethod(this.telephone_number_rule, function(value, element) {
+DW.additional_column.prototype = {
+    createAdditionalTelephoneValidationRule: function () {
+        $.validator.addMethod(this.hosted_service_number, function (value, element) {
+            var failed_number_array = [];
+            var invalid = [];
+            var telephone_numbers = value.split(',');
+            if (typeof failed_numbers == "string" && failed_numbers.trim() != "") {
+                failed_number_array = failed_numbers.split(",");
+            }
+             for (each in telephone_numbers) {
+                telephone_number = $.trim(telephone_numbers[each]);
+                for (i in failed_number_array) {
+                    if (telephone_number == failed_number_array[i])
+                        invalid.push("(^|[^0-9])"+ RegExp.escape(telephone_number)+ "([^0-9]|$)");
+                }
+             }
+            if (invalid.length) {
+                try {
+                    $("#id_others").highlightTextarea('setWords', invalid);
+                } catch (e) {
+                    console.log(e.message);
+                }
+                return false;
+            }
+            return true;
+        }, interpolate(gettext("Invalid number")));
+
+        $.validator.addMethod(this.telephone_number_rule, function (value, element) {
             var text = $('#' + element.id).val();
-            var re = new RegExp('^[0-9 ,]+$');
+            var re = new RegExp('^[0-9 ,]*$');
             var telephone_numbers = text.split(',');
             var each;
             var invalid = [];
             var telephone_number = "";
+
             for (each in telephone_numbers) {
                 telephone_number = $.trim(telephone_numbers[each]);
-                if (telephone_number.length > DW.digits_number_limit || !re.test(telephone_number)){
-                    invalid.push(telephone_number);
+                if (telephone_number.length > DW.digits_number_limit || !re.test(telephone_number)) {
+                    invalid.push(RegExp.escape(telephone_number));
                 }
+
             }
             if (invalid.length) {
-                $("#id_others").highlightTextarea('setWords', invalid);
+                try {
+                    $("#id_others").highlightTextarea('setWords', invalid);
+                } catch (e) {
+                    console.log(e.message);
+                }
                 return false;
             }
             return true;
         }, interpolate(gettext("Enter local telephone number of %(limit)s digits or less"), {limit: DW.digits_number_limit}, true));
     },
 
-    addRule:function(){
+    addRule: function () {
+        $(this.telephoneNumbersElementId).rules("add", this.hosted_service_number);
         $(this.telephoneNumbersElementId).rules("add", this.telephone_number_rule);
         $(this.telephoneNumbersElementId).rules("add", "required");
 
     },
-    show:function(){
+    show: function () {
         $(this.additionalPeopleId).removeClass('none');
     },
-    hide:function(){
+    hide: function () {
         $(this.additionalPeopleId).addClass('none');
     },
-    removeRule:function(){
+    removeRule: function () {
         $(this.telephoneNumbersElementId).rules("remove", this.telephone_number_rule);
+        $(this.telephoneNumbersElementId).rules("remove", this.hosted_service_number);
         $(this.telephoneNumbersElementId).rules("remove", "required");
     },
-    processSelected:function(){
+    processSelected: function () {
         this.addRule();
         this.show();
 
     },
-    processUnSelected:function(){
+    processUnSelected: function () {
         this.removeRule();
         this.hide();
         $(this.telephoneNumbersElementId).val("");
@@ -166,31 +202,31 @@ DW.additional_column.prototype={
 };
 
 
-DW.getDigitsNumberLimit = function(){
+DW.getDigitsNumberLimit = function () {
     if (DW.ong_country == "NG") {
         return 11;
     }
     return 10;
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
     DW.digits_number_limit = DW.getDigitsNumberLimit();
-    DW.broadcast_sms_handler=new DW.broadcast_sms();
+    DW.broadcast_sms_handler = new DW.broadcast_sms();
     DW.broadcast_sms_handler.init();
 
-    $(DW.broadcast_sms_handler.smsContentElement).keyup(function() {
+    $(DW.broadcast_sms_handler.smsContentElement).keyup(function () {
         DW.broadcast_sms_handler.limitCount();
     });
 
-    $(DW.broadcast_sms_handler.smsContentElement).keydown(function() {
+    $(DW.broadcast_sms_handler.smsContentElement).keydown(function () {
         DW.broadcast_sms_handler.limitCount();
     });
 
-    $('#clear_broadcast_sms_form').click(function() {
+    $('#clear_broadcast_sms_form').click(function () {
         DW.broadcast_sms_handler.clearContent();
     });
 
-    $("#to_list ul li a").bind("click", function(){
+    $("#to_list ul li a").bind("click", function () {
         $("#id_to").val($(this).attr("id"));
         DW.broadcast_sms_handler.processAddtionalColumnValidation();
     });
@@ -199,7 +235,7 @@ $(document).ready(function() {
         title: gettext('Send Message?'),
         width: 350,
         height: 120,
-        continue_handler: function(){
+        continue_handler: function () {
             this.form.submit();
         }
     }
