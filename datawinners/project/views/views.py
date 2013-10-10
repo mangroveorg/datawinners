@@ -363,6 +363,7 @@ def broadcast_message(request, project_id):
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
+            failed_numbers=[]
             try :
                 failed_numbers = helper.broadcast_message(data_senders, form.cleaned_data['text'],
                                                 organization_setting.get_organisation_sms_number()[0], other_numbers,
@@ -378,7 +379,7 @@ def broadcast_message(request, project_id):
                                       {'project': project,
                                        "project_links": make_project_links(project, questionnaire.form_code),
                                        "form": form,
-                                       "ong_country": organization.country, "no_smsc": no_smsc,'failed_numbers': " ".join(failed_numbers), "success":True},
+                                       "ong_country": organization.country, "no_smsc": no_smsc,'failed_numbers': ",".join(failed_numbers), "success":True},
                                       context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',
