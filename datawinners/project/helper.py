@@ -195,6 +195,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
 
     for number in other_numbers:
         number = number.strip()
+        number_with_country_prefix = number
         if country_code:
             number_with_country_prefix = "%s%s" % (country_code, number[1:])
 
