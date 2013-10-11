@@ -13,35 +13,31 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext as _, activate, get_language
+from django.utils.translation import ugettext as _
 import jsonpickle
 import xlwt
 from django.contrib import messages
 
 from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, valid_web_user
-from datawinners.entity.data_sender import get_datasender_user_detail
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
-from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
 from datawinners.search.entity_search import SubjectQuery
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
-from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
+from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, process_create_data_sender_form, \
-    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields, put_email_information_to_entity
+from datawinners.entity.helper import create_registration_form, delete_entity_instance, get_entity_type_fields, put_email_information_to_entity
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from datawinners.project.models import Project, delete_datasenders_from_project
 from mangrove.datastore.entity_type import define_type
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
-from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
+from datawinners.entity.forms import EntityTypeForm
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport import Request, TransportInfo
+from mangrove.transport import TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
@@ -51,125 +47,13 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, DELETED_DATA_SENDERS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
+from datawinners.common.constant import ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 
 
 websubmission_logger = logging.getLogger("websubmission")
-
-
-@valid_web_user
-def create_data_sender(request):
-    create_data_sender = True
-    entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
-
-    if request.method == 'GET':
-        form = ReporterRegistrationForm()
-        return render_to_response('entity/create_or_edit_data_sender.html', {'form': form,
-                                                                             'create_data_sender': create_data_sender,
-                                                                             'project_links': entity_links},
-                                  context_instance=RequestContext(request))
-    if request.method == 'POST':
-        dbm = get_database_manager(request.user)
-        org_id = request.user.get_profile().org_id
-        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
-        success = False
-        try:
-            reporter_id, message = process_create_data_sender_form(dbm, form, org_id)
-        except DataObjectAlreadyExists as e:
-            message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
-        if len(form.errors) == 0 and form.requires_web_access() and reporter_id:
-            email_id = request.POST['email']
-            create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
-                                   language_code=request.LANGUAGE_CODE)
-
-        if message is not None and reporter_id:
-            if form.cleaned_data['project_id'] != "":
-                project = Project.load(dbm.database, form.cleaned_data['project_id'])
-                project = project.name
-            else:
-                project = ""
-            if not len(form.errors):
-                UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
-                                      detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
-            form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
-        return render_to_response('datasender_form.html',
-                                  {'form': form, 'message': message, 'success': reporter_id is not None,
-                                   'project_inks': entity_links},
-                                  context_instance=RequestContext(request))
-
-
-@valid_web_user
-def edit_data_sender(request, reporter_id):
-    create_data_sender = False
-    manager = get_database_manager(request.user)
-    reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
-    entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
-    datasender = {'short_code': reporter_id}
-    get_datasender_user_detail(datasender, request.user)
-    email = datasender.get('email') if datasender.get('email') != '--' else False
-
-    if request.method == 'GET':
-        name = reporter_entity.name
-        phone_number = reporter_entity.mobile_number
-        location = reporter_entity.location
-        geo_code = reporter_entity.geo_code
-        form = ReporterRegistrationForm(initial={'name': name,
-                                                 'telephone_number': phone_number, 'location': location,
-                                                 'geo_code': geo_code})
-        return render_to_response('entity/create_or_edit_data_sender.html',
-                                  {'reporter_id': reporter_id, 'form': form, 'project_links': entity_links,
-                                   'email': email, 'create_data_sender': create_data_sender},
-                                  context_instance=RequestContext(request))
-
-    if request.method == 'POST':
-        org_id = request.user.get_profile().org_id
-        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
-        message = None
-        if form.is_valid():
-            try:
-                org_id = request.user.get_profile().org_id
-                current_telephone_number = reporter_entity.mobile_number
-                organization = Organization.objects.get(org_id=org_id)
-                web_player = WebPlayer(manager,
-                                       LocationBridge(location_tree=get_location_tree(),
-                                                      get_loc_hierarchy=get_location_hierarchy))
-                response = web_player.accept(
-                    Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
-                            transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
-                            is_update=True))
-                if response.success:
-                    if organization.in_trial_mode:
-                        update_data_sender_from_trial_organization(current_telephone_number,
-                                                                   form.cleaned_data["telephone_number"], org_id)
-
-                    message = _("Your changes have been saved.")
-
-                    detail_dict = {"Unique ID": reporter_id}
-                    current_lang = get_language()
-                    activate("en")
-                    field_mapping = dict(mobile_number="telephone_number")
-                    for field in ["geo_code", "location", "mobile_number", "name"]:
-                        if getattr(reporter_entity, field) != form.cleaned_data.get(field_mapping.get(field, field)):
-                            label = u"%s" % form.fields[field_mapping.get(field, field)].label
-                            detail_dict.update({label: form.cleaned_data.get(field_mapping.get(field, field))})
-                    activate(current_lang)
-                    if len(detail_dict) > 1:
-                        detail_as_string = json.dumps(detail_dict)
-                        UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string)
-                else:
-                    form.update_errors(response.errors)
-
-            except MangroveException as exception:
-                message = exception.message
-
-        return render_to_response('edit_datasender_form.html',
-                                  {'form': form, 'message': message, 'reporter_id': reporter_id, 'email': email,
-                                   'project_links': entity_links},
-                                  context_instance=RequestContext(request))
-
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -335,34 +219,6 @@ def _index_ofkey_in_ordered_dict(ordered_dict, key):
 def log_activity(request, action, detail):
     UserActivityLog().log(request, action=action, detail=detail, project=request.POST.get("project", "").capitalize())
 
-
-@csrf_view_exempt
-@csrf_response_exempt
-@login_required(login_url='/login')
-@is_datasender
-def delete_data_senders(request):
-    ''' The id's that we get from the front end will always be a subset and we will never have a use case where all elements
-     displayed are selected for delete operation as we can never delete the admin's which are also data senders which is implemented
-     via a validation in javascript.
-    '''
-    manager = get_database_manager(request.user)
-    organization = get_organization(request)
-    entity_type = request.POST['entity_type']
-    all_ids = request.POST['all_ids'].split(';')
-    ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
-    if ngo_admin_user_profile.reporter_id in all_ids:
-        messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
-                                (_get_full_name(ngo_admin_user_profile.user)), "error_message")
-    else:
-        transport_info = TransportInfo("web", request.user.username, "")
-        delete_datasenders_from_project(manager, all_ids)
-        delete_entity_instance(manager, all_ids, entity_type, transport_info)
-        delete_datasender_users_if_any(all_ids, organization)
-        if organization.in_trial_mode:
-            delete_datasender_for_trial_mode(manager, all_ids, entity_type)
-        log_activity(request, DELETED_DATA_SENDERS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)), )
-        messages.success(request, get_success_message(entity_type))
-    return HttpResponse(json.dumps({'success': True}))
 
 def __create_web_users(org_id, reporter_details, language_code):
     duplicate_email_ids = User.objects.filter(email__in=[x['email'].lower() for x in reporter_details]).values('email')

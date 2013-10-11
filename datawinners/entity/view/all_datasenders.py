@@ -1,5 +1,6 @@
 from collections import defaultdict
 import json
+from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -8,25 +9,27 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext
 from django.views.generic.base import TemplateView, View, RedirectView
 import jsonpickle
 
 from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user
 from datawinners.entity.data_sender import remove_system_datasenders, get_datasender_user_detail
+from datawinners.entity.views import _get_full_name, log_activity, get_success_message
 from datawinners.main.database import get_database_manager
-from datawinners.accountmanagement.models import NGOUserProfile
-from datawinners.entity.helper import add_imported_data_sender_to_trial_organization
-from datawinners.project.models import get_all_projects, Project
+from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for
+from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode
+from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.search.entity_search import DatasenderQuery
 from mangrove.form_model.form_model import REPORTER
+from mangrove.transport import TransportInfo
 from mangrove.utils.types import is_empty
-from datawinners.utils import get_organization_from_manager
+from datawinners.utils import get_organization_from_manager, get_organization
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_PROJECTS, REMOVED_DATA_SENDER_TO_PROJECTS
+from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_PROJECTS, REMOVED_DATA_SENDER_TO_PROJECTS, DELETED_DATA_SENDERS
 
 
 class AllDataSendersView(TemplateView):
@@ -196,3 +199,32 @@ class DisassociateDataSendersView(DataSenderActionView):
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
         return HttpResponse(reverse("all_datasenders"))
+
+
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required(login_url='/login')
+@is_datasender
+def delete_data_senders(request):
+    ''' The id's that we get from the front end will always be a subset and we will never have a use case where all elements
+     displayed are selected for delete operation as we can never delete the admin's which are also data senders which is implemented
+     via a validation in javascript.
+    '''
+    manager = get_database_manager(request.user)
+    organization = get_organization(request)
+    entity_type = request.POST['entity_type']
+    all_ids = request.POST['all_ids'].split(';')
+    ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
+    if ngo_admin_user_profile.reporter_id in all_ids:
+        messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
+                                (_get_full_name(ngo_admin_user_profile.user)), "error_message")
+    else:
+        transport_info = TransportInfo("web", request.user.username, "")
+        delete_datasenders_from_project(manager, all_ids)
+        delete_entity_instance(manager, all_ids, entity_type, transport_info)
+        delete_datasender_users_if_any(all_ids, organization)
+        if organization.in_trial_mode:
+            delete_datasender_for_trial_mode(manager, all_ids, entity_type)
+        log_activity(request, DELETED_DATA_SENDERS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)), )
+        messages.success(request, get_success_message(entity_type))
+    return HttpResponse(json.dumps({'success': True}))
