@@ -43,6 +43,10 @@ class TestHelper(TestCase):
         country_appended_location = get_country_appended_location('Pune , India', 'India')
         self.assertEqual('Pune,India', country_appended_location)
 
+    def test_should_not_append_country_if_location_hierarchy_is_empty(self):
+        country_appended_location = get_country_appended_location(u'', 'India')
+        self.assertEqual('', country_appended_location)
+
     def get_organization(self, org_id="ABCD"):
         organization = Mock(spec=Organization)
         organization.org_id = org_id

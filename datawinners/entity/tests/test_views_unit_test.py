@@ -47,29 +47,31 @@ class TestView(TestCase):
                 with patch("datawinners.accountmanagement.models.Organization.objects.get") as get_organization_mock:
                     get_organization_mock.return_value = org
                     with patch("datawinners.entity.views.get_by_short_code") as reporter_entity:
-                        reporter_entity.return_value = mock_entity
-                        create_single_web_user(org.org_id, WEB_USER_TEST_EMAIL, "test", "en")
-                        user = User.objects.filter(email=WEB_USER_TEST_EMAIL)[0]
-                        emails = [mail.outbox.pop() for i in range(len(mail.outbox))]
+                        with patch("datawinners.entity.views.put_email_information_to_entity") as put_email_information_to_entity:
+                            put_email_information_to_entity.return_value = None
+                            reporter_entity.return_value = mock_entity
+                            create_single_web_user(org.org_id, WEB_USER_TEST_EMAIL, "test", "en")
+                            user = User.objects.filter(email=WEB_USER_TEST_EMAIL)[0]
+                            emails = [mail.outbox.pop() for i in range(len(mail.outbox))]
 
-                        self.assertEqual(1, len(emails))
-                        sent_email = emails[0]
+                            self.assertEqual(1, len(emails))
+                            sent_email = emails[0]
 
-                        self.assertEqual(settings.EMAIL_HOST_USER, sent_email.from_email)
-                        self.assertEqual([WEB_USER_TEST_EMAIL], sent_email.to)
-                        ctx_dict = {
-                            'domain': "localhost:8000",
-                            'uid': int_to_base36(user.id),
-                            'user': user,
-                            'token': "token",
-                            'protocol': 'http',
-                        }
-                        self.assertEqual(render_to_string(
-                            'activatedatasenderemail/activation_email_subject_for_data_sender_account_en.txt'),
-                                         sent_email.subject)
-                        self.assertEqual(
-                            render_to_string('activatedatasenderemail/activation_email_for_data_sender_account_en.html',
-                                             ctx_dict), sent_email.body)
+                            self.assertEqual(settings.EMAIL_HOST_USER, sent_email.from_email)
+                            self.assertEqual([WEB_USER_TEST_EMAIL], sent_email.to)
+                            ctx_dict = {
+                                'domain': "localhost:8000",
+                                'uid': int_to_base36(user.id),
+                                'user': user,
+                                'token': "token",
+                                'protocol': 'http',
+                            }
+                            self.assertEqual(render_to_string(
+                                'activatedatasenderemail/activation_email_subject_for_data_sender_account_en.txt'),
+                                             sent_email.subject)
+                            self.assertEqual(
+                                render_to_string('activatedatasenderemail/activation_email_for_data_sender_account_en.html',
+                                                 ctx_dict), sent_email.body)
 
 
     def test_should_send_correct_activation_email_in_html_format_in_english(self):

@@ -423,7 +423,19 @@ span.paginate_more_disabled {
   float: right;
 }
 
+#datasender_table_length {
+  float: right;
+}
+
 #subjects_table_filter {
+  float: right;
+  >input {
+    height: 20px;
+    margin-bottom: 6px;
+  }
+}
+
+#datasender_table_filter {
   float: right;
   >input {
     height: 20px;
@@ -482,7 +494,7 @@ span.paginate_more_disabled {
 #select_all_message {
   clear: both;
   height: 2em;
-  text-align: left;
+  text-align: center;
   border: 1px solid #A6C7F2;
   background-color: #E9F6FE;
   padding-top: 5px;
@@ -495,4 +507,10 @@ span.paginate_more_disabled {
 @import "util.scss";
 .dataTables_empty {
   @extend .help_accordion;
+}
+
+#wrapper_div_for_table .action_button {
+  display: inline;
+  float: left;
+  margin-top: -7px;
 }

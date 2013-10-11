@@ -1,9 +1,7 @@
-import random
-import string
 from unittest.case import SkipTest
 from django.test import TestCase
 from django.test import Client
-import json
+
 
 class TestEntityLoggedIn(TestCase):
 
@@ -21,15 +19,6 @@ class TestEntityLoggedIn(TestCase):
 
     def test_should_render_entity_datasenders_view_if_logged_in(self):
         response = self.client.get('/entity/datasenders/')
-        self.assertEquals(response.status_code,200)
-
-    def test_should_add_data_sender_with_appropriate_email(self):
-        email1 = ''.join(random.choice(string.letters) for x in range(10)) + '@gmail.com'
-        email2 = ''.join(random.choice(string.letters) for x in range(10)) + '@gmail.com'
-        response = self.client.post('/entity/webuser/create/',{'post_data' : json.dumps([{"email": email1,"reporter_id":"rep4"},{"email": email2,"reporter_id":"test"}])})
-        self.assertEquals(response.status_code,200)
-
-        response = self.client.post('/entity/webuser/create/',{'post_data' : json.dumps([{"email":email1,"reporter_id":"rep4"}])})
         self.assertEquals(response.status_code,200)
 
     def test_should_render_all_subjects_view_if_logged_in(self):

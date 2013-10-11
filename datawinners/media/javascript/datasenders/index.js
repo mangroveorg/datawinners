@@ -2,14 +2,30 @@ DW.get_is_user = function () {
     var users = new Array();
     users["ids"] = [];
     users["names"] = [];
-    $('.datasenders_list .is_user:checked').each(function () {
-        users["ids"].push($(this).val());
-        users["names"].push($(this).parent().next().html());
+    $('.datasenders_list input:checked').each(function () {
+        var datasender_id = $(this).val();
+        if ($.inArray(datasender_id ,users_list) > 0) {
+            users["ids"].push(datasender_id);
+            users["names"].push($(this).parent().next().html());
+        }
     });
 
     return users;
 }
 
+//DW.get_is_user = function () {
+//    var users = new Array();
+//    users["ids"] = [];
+//    users["names"] = [];
+//    $('.datasenders_list .is_user:checked').each(function () {
+//
+//        users["ids"].push($(this).val());
+//        users["names"].push($(this).parent().next().html());
+//    });
+//
+//    return users;
+//}
+//
 DW.uncheck_all_users = function () {
     $(".datasenders_list .is_user").attr("checked", false);
 }
@@ -17,14 +33,14 @@ DW.uncheck_all_users = function () {
 DW.action_enabled = false;
 
 $(document).ready(function () {
-    var kwargs = {container:"#delete_all_ds_are_users_warning_dialog",
-        cancel_handler:function () {
+    var kwargs = {container: "#delete_all_ds_are_users_warning_dialog",
+        cancel_handler: function () {
 //            $("#action").val("");
-            $('#action').removeAttr("clicked");
+            $('#action').removeAttr("data-selected-action");
             $("input.is_user").attr("checked", false);
         },
-        height:150,
-        width:550
+        height: 150,
+        width: 550
     }
 
     var delete_all_ds_are_users = new DW.warning_dialog(kwargs);
@@ -43,23 +59,23 @@ $(document).ready(function () {
     }
 
     $("#all_project_block").dialog({
-        autoOpen:false,
-        modal:true,
-        title:gettext('Select Projects'),
-        zIndex:1100,
-        beforeClose:function () {
+        autoOpen: false,
+        modal: true,
+        title: gettext('Select Projects'),
+        zIndex: 1100,
+        beforeClose: function () {
             $('#action').at;
         }
     });
     $("#web_user_block").dialog({
-        autoOpen:false,
-        modal:true,
-        title:gettext('Give Web Submission Access'),
-        zIndex:1100,
-        width:900,
-        beforeClose:function () {
+        autoOpen: false,
+        modal: true,
+        title: gettext('Give Web Submission Access'),
+        zIndex: 1100,
+        width: 900,
+        beforeClose: function () {
 //            $('#action').val('');
-            $('#action').removeAttr("clicked");
+            $('#action').removeAttr("data-selected-action");
             $('#web_user_error').hide();
         }
     });
@@ -83,11 +99,14 @@ $(document).ready(function () {
             $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project")
                 + '</div>').insertBefore($("#all_projects"));
         } else {
-            var url = '/entity/' + $('#action').attr("clicked") + '/';
-            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
-                + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px', zIndex:1000000}});
+            var url = '/entity/' + $('#action').attr("data-selected-action") + '/';
+            $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
+                + gettext("Just a moment") + '...</span></h1>', css: { width: '275px', zIndex: 1000000}});
             $.post(url,
-                {'ids':allIds.join(';'), 'project_id':projects.join(';')}
+                {
+                    'ids': allIds.join(';'),
+                    'project_id': projects.join(';')
+                }
             ).success(function (data) {
                     window.location.href = data;
                 });
@@ -102,8 +121,8 @@ $(document).ready(function () {
             data_sender.short_name = $($(row).children()[2]).html();
             data_sender.name = $($(row).children()[1]).html();
             data_sender.location = $($(row).children()[4]).html();
-            data_sender.contactInformation = $(row).find(".project").html();
-            data_sender.email = $(row).find(".email").html();
+            data_sender.contactInformation = $($(row).children()[8]).html();
+            data_sender.email = $($(row).children()[6]).html();
             data_sender.input_field_disabled = "disabled";
             if (!$.trim(data_sender.email)) {
                 data_sender.input_field_disabled = "";
@@ -122,12 +141,12 @@ $(document).ready(function () {
             return false;
         }
         var action = this.className;
-        $("#action").attr("clicked", action);
+        $("#action").attr("data-selected-action", action);
 
         if (action == 'makewebuser') {
 //            this.removeClass('dropdown-open').parents('.btn-group').removeClass('open');
             populate_dialog_box_for_web_users();
-        
+
         } else if (action == "delete") {
             $(this).val('');
             $("#note_for_delete_users").hide();
@@ -150,12 +169,11 @@ $(document).ready(function () {
         } else if (action == "edit") {
             location.href = '/entity/datasender/edit' + '/' + allIds[0] + '/';
         } else {
-            $("#all_project_block input").attr("checked",false);
+            $("#all_project_block input").attr("checked", false);
             $("#all_project_block #error").hide();
             $("#all_project_block").dialog("open");
         }
     });
-
 
 
     $('#web_user_button').click(function () {
@@ -180,14 +198,14 @@ $(document).ready(function () {
                 return false;
             }
             var reporter_id = $($(this).parent().parent().children()[0]).html();
-            post_data.push({email:email, reporter_id:reporter_id});
+            post_data.push({email: email, reporter_id: reporter_id});
         });
         if (!should_post || post_data.length == 0) {
             return;
         }
-        $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
-            + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px', zIndex:1000000}});
-        $.post('/entity/webuser/create', {post_data:JSON.stringify(post_data)},
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
+            + gettext("Just a moment") + '...</span></h1>', css: { width: '275px', zIndex: 1000000}});
+        $.post('/entity/webuser/create', {post_data: JSON.stringify(post_data)},
             function (response) {
                 $.unblockUI();
                 var json_data = JSON.parse(response);
@@ -195,7 +213,7 @@ $(document).ready(function () {
                     $("#web_user_block").dialog("close");
                     var redirect_url = location.href;
                     if (redirect_url.indexOf('#') != -1) {
-                        redirect_url = redirect_url.substr(0,redirect_url.indexOf('#'));
+                        redirect_url = redirect_url.substr(0, redirect_url.indexOf('#'));
                     }
                     if (redirect_url.indexOf('?web=1') == -1) {
                         redirect_url = redirect_url + '?web=1';
@@ -228,9 +246,9 @@ $(document).ready(function () {
         "${input_field_disabled}/></td></tr>";
     $.template("webUserTemplate", markup);
 
-    $("#checkall-datasenders").bind("click", function(){
+    $("#checkall-datasenders").on("click", function () {
         var checked = $(this).attr("checked") == "checked";
-        $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
+//        $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
 
         var action_dropdown = get_action_dropdown_object();
         if (!checked) {
@@ -240,7 +258,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#all_data_senders tr td:first-child input:checkbox").bind("click", function(){
+    $("#all_data_senders tr td:first-child input:checkbox").live("click", function () {
         $("#checkall-datasenders").attr("checked", $('#all_data_senders input:checkbox').length == $('#all_data_senders input:checkbox[checked]').length);
     });
 
@@ -255,5 +273,7 @@ $(document).ready(function () {
     if ($("#all_projects > li").length == 0 && $("#all_data_senders").length) {
         $("#associate,#disassociate").parent().addClass("disabled");
     }
+});
+$("#all_data_senders tr td:first-child input:checkbox").on("click", function () {
 });
 

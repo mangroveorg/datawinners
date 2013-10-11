@@ -19,7 +19,7 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
 
         nPrevious.className = "paginate_button previous";
         nNext.className = "paginate_button next";
-        nMore.className = "paginate_more"
+        nMore.className = "paginate_more";
 
         nPaging.appendChild(nPrevious);
         nPaging.appendChild(nNext);

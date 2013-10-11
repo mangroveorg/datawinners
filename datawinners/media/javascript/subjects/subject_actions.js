@@ -88,26 +88,30 @@ DW.ActionsMenu = function () {
 };
 
 
-DW.SubjectPagination = function () {
+DW.EntityPagination = function (kwargs) {
+    var select_all_text = kwargs.select_all_text;
+    var current_selected_text = kwargs.current_selected_text;
+    var all_entities_selected_text = kwargs.all_entities_selected_text;
 
     this.disable = function () {
-        $('#select_all_message').parent().parent().hide()
+        $('#select_all_message').parent().parent().hide();
         $('#select_all_message').html('');
         $('#select_all_message').removeData("all_selected");
     };
 
     this.enable = function (no_of_records_on_page, total_number_of_records) {
-        var select_all_text = interpolate(gettext("Select all <b> %(total_number_of_records)s </b>Subjects"),
+        var select_all_text_translated = interpolate(gettext(select_all_text),
             {'total_number_of_records': total_number_of_records }, true);
-        var select_all_link = " <a id='select_all_link' class=''>" + select_all_text + "</a>";
-        var select_across_pages_message = interpolate(gettext("You have selected the <b>%(number_of_records)s</b> Subjects on this page."),
+        var select_all_link = " <a id='select_all_link' class=''>" + select_all_text_translated + "</a>";
+
+        var select_across_pages_message = interpolate(gettext(current_selected_text),
             {'number_of_records': no_of_records_on_page}, true) + select_all_link;
         $('#select_all_message').html('<div>' + select_across_pages_message + '</div>');
 
         $('#select_all_link').click(function () {
             var clear_selection = " <a id='clear_selection'>" + interpolate(gettext("Clear Selection")) + "</a>";
-            $('#select_all_message').html('<div>' + interpolate(gettext("You have selected all %(total_number_of_records)s Subjects."),
-                {'total_number_of_records': total_number_of_records }, true)  + clear_selection + '</div>');
+            $('#select_all_message').html(interpolate(gettext(all_entities_selected_text + clear_selection),
+                {'total_number_of_records': total_number_of_records }, true));
             $('#select_all_message').data('all_selected', true);
         });
         $('#select_all_message').parent().parent().show()
@@ -115,9 +119,9 @@ DW.SubjectPagination = function () {
 };
 
 
-DW.SubjectSelectAllCheckbox = function (drawTable) {
-    var subject_select_all_checkbox = this;
-    var subject_select_all = new DW.SubjectPagination();
+DW.EntitySelectAllCheckbox = function (drawTable, kwargs) {
+    var entity_select_all_checkbox = this;
+    var subject_select_all = new DW.EntityPagination(kwargs);
     var check_all_element = $(".styled_table thead input:checkbox");
     function uncheck_all_rows(){
         $(".styled_table tbody input:checkbox").attr("checked", check_all_element.is(':checked'));
@@ -126,7 +130,7 @@ DW.SubjectSelectAllCheckbox = function (drawTable) {
         uncheck_all_rows();
     });
     $(document).on("click","#clear_selection",function(){
-        subject_select_all_checkbox.un_check();
+        entity_select_all_checkbox.un_check();
         uncheck_all_rows();
     });
 

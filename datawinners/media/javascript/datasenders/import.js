@@ -4,7 +4,7 @@ $(document).ready(function () {
         modal:true,
         title:gettext("Import a Data Senders list"),
         zIndex:200,
-        width:1000,
+        width:940,
         close:function () {
             if ($('#message').length) {
                 window.location.replace(document.location.href);

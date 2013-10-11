@@ -141,7 +141,7 @@ def new_user(request):
                                                   org_id=org.org_id)
                 ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
                                                                          current_user_name=user.get_full_name(),
-                                                                         mobile_number=mobile_number)
+                                                                         mobile_number=mobile_number, email=username)
                 ngo_user_profile.save()
                 _associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
                 reset_form = PasswordResetForm({"email": username})

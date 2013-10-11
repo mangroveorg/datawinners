@@ -234,6 +234,7 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.select_a_data_sender_by_id("rep4")
         self.assertTrue(all_data_sender_page.is_checkall_checked())
 
+    @attr("functional_test")
     def give_web_and_smartphone_access(self, all_data_senders_page):
         all_data_senders_page.give_web_access()
         email_text_box = self.driver.find_text_box(WEB_USER_BLOCK_EMAIL)

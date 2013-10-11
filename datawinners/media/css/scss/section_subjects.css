@@ -831,9 +831,18 @@ span.paginate_more_disabled {
 #subjects_table_length {
   float: right; }
 
+#datasender_table_length {
+  float: right; }
+
 #subjects_table_filter {
   float: right; }
   #subjects_table_filter > input {
+    height: 20px;
+    margin-bottom: 6px; }
+
+#datasender_table_filter {
+  float: right; }
+  #datasender_table_filter > input {
     height: 20px;
     margin-bottom: 6px; }
 
@@ -879,7 +888,7 @@ span.paginate_more_disabled {
 #select_all_message {
   clear: both;
   height: 2em;
-  text-align: left;
+  text-align: center;
   border: 1px solid #A6C7F2;
   background-color: #E9F6FE;
   padding-top: 5px; }
@@ -1408,3 +1417,8 @@ div.border_top_bottom {
 
 .padding_right_10 {
   padding-right: 10px !important; }
+
+#wrapper_div_for_table .action_button {
+  display: inline;
+  float: left;
+  margin-top: -7px; }

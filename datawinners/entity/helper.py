@@ -141,7 +141,10 @@ def create_registration_form(manager, entity_name):
 def get_country_appended_location(location_hierarchy, country):
     location_hierarchy_split = location_hierarchy.split(',')
     country_already_appended = (location_hierarchy_split[len(location_hierarchy_split)-1].strip() == country)
-    return ','.join([x.strip() for x in location_hierarchy_split])  if location_hierarchy is None or country_already_appended else ','.join(location_hierarchy_split) + ',' + country
+    if not location_hierarchy or country_already_appended:
+        return ','.join([x.strip() for x in location_hierarchy_split])
+    else:
+        return ','.join(location_hierarchy_split) + ',' + country
 
 def _get_data(form_data, country,reporter_id=None):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form model

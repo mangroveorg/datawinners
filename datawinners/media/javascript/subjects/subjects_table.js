@@ -18,7 +18,7 @@ $(document).ready(function () {
             {"bSortable": false, "aTargets": [0]}
         ],
         "oLanguage": {"sInfoFiltered": "",
-            "sLengthMenu": gettext("Show") + " _MENU_ "  + subject_type,
+            "sLengthMenu": gettext("Show") + " _MENU_ " + subject_type,
             "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
             "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
                 {'start':'_START_','end':'_END_', 'total':'_TOTAL_', 'subject_type':subject_type}, true),
@@ -36,16 +36,21 @@ $(document).ready(function () {
             $("#action_dropdown").remove();
             cloned_element.insertBefore(".dataTables_info").addClass('margin_top_10').find('.action_button').removeClass('none');
             new DW.ActionsMenu();
-            oSettings.select_all_checkbox = new DW.SubjectSelectAllCheckbox(this);
+
+            var kwargs = {select_all_text: "Select all <b> %(total_number_of_records)s </b>subjects",
+                current_selected_text: "You have selected <b>%(number_of_records)s</b> Subjects on this page.",
+                all_entities_selected_text: "All %(total_number_of_records)s Subjects selected."};
+
+            oSettings.select_all_checkbox = new DW.EntitySelectAllCheckbox(this, kwargs);
             $(".styled_table").wrap('<div class="table_container" />');
         },
         "fnPreDrawCallback": function (oSettings) {
             if (oSettings.select_all_checkbox) oSettings.select_all_checkbox.un_check();
         },
         "fnDrawCallback": function (oSettings) {
-            $(".styled_table thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0)
+            $(".styled_table thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0);
             var nCols = $('table#subjects_table>thead>tr').children('th').length;
-            $('table#subjects_table>tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols+ '><div id="select_all_message"></div></td></tr>');
+            $('table#subjects_table>tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols + '><div id="select_all_message"></div></td></tr>');
         },
         "aaSorting": [
             [ $('#subjects_table th.name').index('#subjects_table th'), "asc"]
@@ -79,7 +84,7 @@ $(document).ready(function () {
     $("#subjects_table_filter").find("input").attr('placeholder', gettext('Enter any information you want to find'));
 
     $('#subjects_table_filter').live('change', function () {
-            new DW.SubjectPagination().disable();
+            new DW.EntityPagination().disable();
         }
     );
 });

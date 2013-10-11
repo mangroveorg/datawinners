@@ -117,6 +117,9 @@ msgstr ""
 msgid "Select 1 Data Sender only"
 msgstr ""
 
+msgid "Data Senders"
+msgstr ""
+
 #: media/javascript/data_modified_warning.js:53
 msgid "You Have Unsaved Changes"
 msgstr ""
@@ -933,6 +936,9 @@ msgstr ""
 msgid "You have selected the <b>%(number_of_records)s</b> Subjects on this page."
 msgstr "You have selected the <b>%(number_of_records)s</b> Subjects on this page."
 
+msgid "You have selected <b>%(number_of_records)s</b> Datasenders on this page."
+msgstr "You have selected <b>%(number_of_records)s</b> Datasenders on this page."
+
 # msgstr "All<b> %(number_of_records)s </b>Subjects on this page are selected."
 #: media/javascript/useractivity/log.js:28
 msgid "Show _MENU_ Data records"
@@ -963,13 +969,22 @@ msgstr ""
 msgid "Select all <b> %(total_number_of_records)s </b>Subjects"
 msgstr "Select all <b> %(total_number_of_records)s </b>Subjects"
 
+msgid "Select all <b> %(total_number_of_records)s </b>datasenders"
+msgstr "Select all <b> %(total_number_of_records)s </b>datasenders"
+
 msgid "Enter any information you want to find"
 msgstr ""
 
 msgid "You have selected all %(total_number_of_records)s Subjects."
 msgstr ""
 
+msgid "All %(total_number_of_records)s Datasenders selected."
+msgstr ""
+
 msgid "<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"
+msgstr ""
+
+msgid "<b>%(start)s to %(end)s</b> of %(total)s datasenders"
 msgstr ""
 
 msgid "<b> 0 to 0</b> of 0"

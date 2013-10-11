@@ -4,7 +4,6 @@ from datawinners.main.database import get_database_manager
 from mangrove.form_model.form_model import header_fields
 from datawinners.settings import ELASTIC_SEARCH_URL
 
-
 class EntityQueryBuilder():
     def __init__(self):
         self.elastic_utils_helper = ElasticUtilsHelper()
@@ -119,6 +118,8 @@ class DatasenderQueryResponseCreator():
             for key in required_field_names:
                 if key is "devices":
                     self.add_check_symbol_for_row(res, result)
+                elif key is "projects":
+                    result.append(", ".join(res.get(key)))
                 else:
                     result.append(res.get(key))
             datasenders.append(result)
@@ -127,7 +128,7 @@ class DatasenderQueryResponseCreator():
     def add_check_symbol_for_row(self, datasender, result):
         check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
         # result.extend([check_img])
-        if datasender["email"]:
+        if "email" in datasender.keys() and datasender["email"]:
             result.extend([check_img + "&nbsp;" + check_img + "&nbsp;" + check_img])
         else:
             result.extend([check_img])

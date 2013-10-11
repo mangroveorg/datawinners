@@ -1,7 +1,7 @@
 import unittest
 from mock import Mock, patch
 from datawinners.search.subject_index import entity_form_model_change_handler
-from framework.utils.database_manager_postgres import DatabaseManager
+from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 
 
@@ -12,7 +12,7 @@ class TestEntityIndex(unittest.TestCase):
         form_model.is_entity_registration_form.return_value = True
         form_model.form_code = "reg"
         with patch("mangrove.form_model.form_model.FormModel.new_from_doc") as new_from_doc:
-            with patch("datawinners.search.subject_index._create_ds_mapping") as create_ds_mapping:
+            with patch("datawinners.search.subject_index.create_datasender_mapping") as create_ds_mapping:
                 new_from_doc.return_value = form_model
                 entity_form_model_change_handler(form_model, dbm)
                 assert create_ds_mapping.called
