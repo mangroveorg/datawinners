@@ -1,4 +1,4 @@
-DW.get_is_user = function () {
+DW.get_users_from_selected_datasenders = function () {
     var users = new Array();
     users["ids"] = [];
     users["names"] = [];
@@ -140,7 +140,7 @@ $(document).ready(function () {
         } else if (action == "delete") {
             $(this).val('');
             $("#note_for_delete_users").hide();
-            var users = DW.get_is_user();
+            var users = DW.get_users_from_selected_datasenders();
             if (users["names"].length) {
                 $("#checkall-datasenders").attr("checked", false);
                 var users_list_for_html = "<li>" + users["names"].join("</li><li>") + "</li>";
@@ -262,6 +262,3 @@ $(document).ready(function () {
         $("#associate,#disassociate").parent().addClass("disabled");
     }
 });
-$("#all_data_senders tr td:first-child input:checkbox").on("click", function () {
-});
-
