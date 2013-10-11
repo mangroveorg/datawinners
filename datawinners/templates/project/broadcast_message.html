@@ -44,16 +44,19 @@
 
 {% block content %}
     <div>
-        {% if failed_numbers %}
-            <div class="message-box">{% blocktrans%}You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions. For more information contact support@datawinners.com: {{ failed_numbers }}.{%endblocktrans%}</div>
-        {% else %}
-            {%if success %}
+        {%if success %}
                 <div class="success-message-box">{% trans "Your message has been sent successfully." %}</div>
             {% else %}
                 {% if no_smsc %}
                     <div class="message-box">{% trans "Your message could not be sent." %}</div>
+                {% else %}
+                    {% if failed_numbers %}
+                        <div class="message-box">{% blocktrans%}You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions. For more information contact support@datawinners.com: {{ failed_numbers }}.{%endblocktrans%}</div>
+                    {% else %}
                 {% endif %}
-            {% endif %}
+        {% endif %}
+
+
         {% endif %}
 
         <div id="broadcast-form">

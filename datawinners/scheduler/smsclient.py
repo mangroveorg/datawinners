@@ -27,6 +27,7 @@ class SMSClient(object):
             if organization_setting is not None and organization_setting.outgoing_number is not None:
                 smsc = organization_setting.outgoing_number.smsc
             if smsc is None:
+                logger.error("No SMSC configured for %s" % organization_setting.organization.org_id)
                 raise NoSMSCException()
             socket.setdefaulttimeout(10)
             logger.debug("Posting sms to %s" % settings.VUMI_API_URL)
