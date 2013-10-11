@@ -17,7 +17,8 @@ def _add_text_field_mapping(mapping_fields, field):
     mapping_fields.update(
         {field.name: {"type": "multi_field", "fields": {
             field.name: {"type": "string"},
-            field.name + "_value": {"type": "string", "index": "not_analyzed", "include_in_all": False}
+            field.name + "_value": {"type": "string", "index_analyzer": "sort_analyzer",
+                                    "include_in_all": False}
         }}})
 
 
