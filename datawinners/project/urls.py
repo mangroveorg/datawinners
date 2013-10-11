@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
-from datawinners.entity.view.all_datasenders import disassociate_datasenders
+from datawinners.entity.view.all_datasenders import DisassociateDataSendersView
 
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
@@ -14,7 +14,7 @@ js_info_dict = {
 
 urlpatterns = patterns('',
                        (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-                       (r'^project/disassociate/$', disassociate_datasenders),
+                       (r'^project/disassociate/$', DisassociateDataSendersView.as_view()),
                        url(r'^project/questionnaire/(?P<project_id>\w+?)/$', questionnaire, name='questionnaire'),
                        url(r'^project/register_subjects/(?P<project_id>\w+?)/$', subject_web_questionnaire,
                            name="subject_questionnaire"),

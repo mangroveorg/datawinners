@@ -144,11 +144,29 @@ class AllDataSendersAjaxView(View):
         return super(AllDataSendersAjaxView, self).dispatch(*args, **kwargs)
 
 
-class AssociateDataSendersView(View):
+class DataSenderActionView(View):
+
+    def _get_projects(self, manager, request):
+        project_ids = request.POST.get('project_id').split(';')
+        projects = []
+        for project_id in project_ids:
+            project = Project.load(manager.database, project_id)
+            if project is not None:
+                projects.append(project)
+        return projects
+
+    @method_decorator(login_required)
+    @method_decorator(session_not_expired)
+    @method_decorator(is_not_expired)
+    @method_decorator(is_new_user)
+    def dispatch(self, *args, **kwargs):
+        return super(DataSenderActionView, self).dispatch(*args, **kwargs)
+
+class AssociateDataSendersView(DataSenderActionView):
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        projects = _get_projects(manager, request)
+        projects = self._get_projects(manager, request)
         projects_name = []
         for project in projects:
             project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
@@ -161,40 +179,20 @@ class AssociateDataSendersView(View):
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
         return HttpResponse(reverse("all_datasenders"))
 
-    @method_decorator(login_required)
-    @method_decorator(session_not_expired)
-    @method_decorator(is_not_expired)
-    @method_decorator(is_new_user)
-    def dispatch(self, *args, **kwargs):
-        return super(AssociateDataSendersView, self).dispatch(*args, **kwargs)
 
-@csrf_view_exempt
-@csrf_response_exempt
-@login_required(login_url='/login')
-@session_not_expired
-@is_new_user
-@is_not_expired
-def disassociate_datasenders(request):
-    manager = get_database_manager(request.user)
-    projects = _get_projects(manager, request)
-    projects_name = []
-    for project in projects:
-        [project.delete_datasender(manager, id) for id in request.POST['ids'].split(';') if id in project.data_senders]
-        project.save(manager)
-        projects_name.append(project.name.capitalize())
-    ids = request.POST["ids"].split(";")
-    if len(ids):
-        UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
-                              detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
-                                                 "Projects": "[%s]" % ", ".join(projects_name)}))
-    return HttpResponse(reverse("all_datasenders"))
+class DisassociateDataSendersView(DataSenderActionView):
 
-
-def _get_projects(manager, request):
-    project_ids = request.POST.get('project_id').split(';')
-    projects = []
-    for project_id in project_ids:
-        project = Project.load(manager.database, project_id)
-        if project is not None:
-            projects.append(project)
-    return projects
+    def post(self, request, *args, **kwargs):
+        manager = get_database_manager(request.user)
+        projects = self._get_projects(manager, request)
+        projects_name = []
+        for project in projects:
+            [project.delete_datasender(manager, id) for id in request.POST['ids'].split(';') if id in project.data_senders]
+            project.save(manager)
+            projects_name.append(project.name.capitalize())
+        ids = request.POST["ids"].split(";")
+        if len(ids):
+            UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
+                                  detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
+                                                     "Projects": "[%s]" % ", ".join(projects_name)}))
+        return HttpResponse(reverse("all_datasenders"))

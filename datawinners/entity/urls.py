@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, url
-from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataSendersAjaxView, disassociate_datasenders, AssociateDataSendersView
+from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataSendersAjaxView, AssociateDataSendersView, DisassociateDataSendersView
 from datawinners.entity.views import create_data_sender, create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_data_sender, edit_subject
 from datawinners.entity.views import create_subject
 from datawinners.entity.views import create_type
@@ -22,7 +22,7 @@ urlpatterns = patterns('',
                        (r'delete/$', delete_data_senders),
                        url(r'datasenders/$', AllDataSendersView.as_view(), name='all_datasenders'),
                        (r'datasenders/ajax/$', AllDataSendersAjaxView.as_view()),
-                       (r'disassociate/$', disassociate_datasenders),
+                       (r'disassociate/$', DisassociateDataSendersView.as_view()),
                        (r'associate/$', AssociateDataSendersView.as_view()),
                        url(r'subject/import/(?P<form_code>.+?)/$', import_subjects_from_project_wizard,
                            name='import_subjects'),
