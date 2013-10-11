@@ -71,12 +71,12 @@
         <div class="clear-both"></div>
         {% include 'entity/all_data_senders/all_project_blocks.html' %}
         {% include 'entity/all_data_senders/web_submission_access_block.html' %}
-        {% include 'entity/all_data_senders/actions.html' %}
+        {% include 'entity/all_data_senders/datasender_actions.html' %}
         {% if all_data %}
             <h3 class="margin_top_20" hidden="true">{% trans "All Data Senders " %}</h3>
             {% include 'entity/datasenders_table_old.html' %}
         {% endif %}
-        {% include 'entity/all_data_senders/actions.html' %}
+        {% include 'entity/all_data_senders/datasender_actions.html' %}
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
 
