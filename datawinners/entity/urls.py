@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, url
-from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataSendersAjaxView, associate_datasenders, disassociate_datasenders, AssociateDataSendersView
+from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataSendersAjaxView, disassociate_datasenders, AssociateDataSendersView
 from datawinners.entity.views import create_data_sender, create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_data_sender, edit_subject
 from datawinners.entity.views import create_subject
 from datawinners.entity.views import create_type
@@ -13,7 +13,8 @@ urlpatterns = patterns('',
                        (r'datasender/edit/(?P<reporter_id>.+?)/$', edit_data_sender),
                        (r'webuser/create', create_multiple_web_users),
                        url(r'subject/create/(?P<entity_type>.+?)/$', create_subject, name='create_subject'),
-                       url(r'subject/edit/(?P<entity_type>.+?)/(?P<entity_id>.+?)/$', edit_subject, name="edit_subject"),
+                       url(r'subject/edit/(?P<entity_type>.+?)/(?P<entity_id>.+?)/$', edit_subject,
+                           name="edit_subject"),
                        (r'type/create', create_type),
                        (r'subjects/delete/$', delete_subjects),
                        (r'subjects/(?P<subject_type>.+?)/ajax/$', all_subjects_ajax),
@@ -22,7 +23,6 @@ urlpatterns = patterns('',
                        url(r'datasenders/$', AllDataSendersView.as_view(), name='all_datasenders'),
                        (r'datasenders/ajax/$', AllDataSendersAjaxView.as_view()),
                        (r'disassociate/$', disassociate_datasenders),
-                       # (r'associate/$', associate_datasenders),
                        (r'associate/$', AssociateDataSendersView.as_view()),
                        url(r'subject/import/(?P<form_code>.+?)/$', import_subjects_from_project_wizard,
                            name='import_subjects'),

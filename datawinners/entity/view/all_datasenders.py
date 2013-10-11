@@ -168,29 +168,6 @@ class AssociateDataSendersView(View):
     def dispatch(self, *args, **kwargs):
         return super(AssociateDataSendersView, self).dispatch(*args, **kwargs)
 
-
-@csrf_view_exempt
-@csrf_response_exempt
-@login_required(login_url='/login')
-@session_not_expired
-@is_new_user
-@is_not_expired
-def associate_datasenders(request):
-    manager = get_database_manager(request.user)
-    projects = _get_projects(manager, request)
-    projects_name = []
-    for project in projects:
-        project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
-        projects_name.append(project.name.capitalize())
-        project.save(manager)
-    ids = request.POST["ids"].split(';')
-    if len(ids):
-        UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
-                              detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
-                                                 "Projects": "[%s]" % ", ".join(projects_name)}))
-    return HttpResponse(reverse("all_datasenders"))
-
-
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
