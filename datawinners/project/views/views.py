@@ -364,7 +364,9 @@ def broadcast_message(request, project_id):
                                                 country_code=organization.get_phone_country_code())
             except NoSMSCException as e:
                 no_smsc = True
-            if (len(failed_numbers) == 0):
+            success = not no_smsc and len(failed_numbers) == 0
+
+            if success:
                 form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
             else:
                  form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
@@ -372,7 +374,7 @@ def broadcast_message(request, project_id):
                                       {'project': project,
                                        "project_links": make_project_links(project, questionnaire.form_code),
                                        "form": form,
-                                       "ong_country": organization.country, "no_smsc": no_smsc,'failed_numbers': ",".join(failed_numbers), "success":True},
+                                       "ong_country": organization.country, "no_smsc": no_smsc,'failed_numbers': ",".join(failed_numbers), "success":success},
                                       context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',
