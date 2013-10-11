@@ -102,12 +102,18 @@ $(document).ready(function () {
             var url = '/entity/' + $('#action').attr("data-selected-action") + '/';
             $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
                 + gettext("Just a moment") + '...</span></h1>', css: { width: '275px', zIndex: 1000000}});
-            $.post(url,
-                {
-                    'ids': allIds.join(';'),
-                    'project_id': projects.join(';')
-                }
-            ).success(function (data) {
+            $.ajax({
+                        url: url,
+                        type: "POST",
+                        headers: {
+                            "X-CSRFToken": $.cookie('csrftoken')
+                        },
+                        data: {
+                        'ids': allIds.join(';'),
+                        'project_id': projects.join(';')
+                        }
+                    }
+            ).done(function (data) {
                     window.location.href = data;
                 });
         }
