@@ -4,7 +4,7 @@ DW.get_is_user = function () {
     users["names"] = [];
     $('.datasenders_list input:checked').each(function () {
         var datasender_id = $(this).val();
-        if ($.inArray(datasender_id ,users_list)) {
+        if ($.inArray(datasender_id ,users_list) > 0) {
             users["ids"].push(datasender_id);
             users["names"].push($(this).parent().next().html());
         }

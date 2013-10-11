@@ -1,15 +1,12 @@
 import elasticutils
-from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_db_manager
 from datawinners.project.models import get_all_projects
 from datawinners.search.index_utils import _entity_dict, _mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
-from datawinners.utils import get_organization_from_manager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.entity import get_by_short_code, get_all_entities
 from mangrove.form_model.field import TextField
-from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE, FormModel
+from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
