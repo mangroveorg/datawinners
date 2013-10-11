@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from collections import defaultdict
 import json
 import logging
 
@@ -21,7 +20,7 @@ from django.contrib import messages
 
 from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, valid_web_user
-from datawinners.entity.data_sender import remove_system_datasenders, get_datasender_user_detail
+from datawinners.entity.data_sender import get_datasender_user_detail
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.project.view_models import ReporterEntity
 from datawinners.main.database import get_database_manager
@@ -32,11 +31,11 @@ from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_data_sender_form, \
-    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields, put_email_information_to_entity, add_imported_data_sender_to_trial_organization
+    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization, get_entity_type_fields, put_email_information_to_entity
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from datawinners.project.models import Project, delete_datasenders_from_project, get_all_projects
+from datawinners.project.models import Project, delete_datasenders_from_project
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
@@ -47,17 +46,15 @@ from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
-    get_database_manager_for_org, get_changed_questions, get_organization_from_manager
+    get_database_manager_for_org, get_changed_questions
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
-from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
+from mangrove.transport.player.parser import XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, DELETED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, \
-    ADDED_DATA_SENDERS_TO_PROJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS, IMPORTED_DATA_SENDERS
+from datawinners.common.constant import REGISTERED_DATA_SENDER, EDITED_DATA_SENDER, ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, DELETED_DATA_SENDERS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from datawinners.search.entity_search import DatasenderQuery
 
 
 websubmission_logger = logging.getLogger("websubmission")
@@ -66,7 +63,7 @@ websubmission_logger = logging.getLogger("websubmission")
 @valid_web_user
 def create_data_sender(request):
     create_data_sender = True
-    entity_links = {'registered_datasenders_link': reverse(all_datasenders)}
+    entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
 
     if request.method == 'GET':
         form = ReporterRegistrationForm()
@@ -109,7 +106,7 @@ def edit_data_sender(request, reporter_id):
     create_data_sender = False
     manager = get_database_manager(request.user)
     reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
-    entity_links = {'registered_datasenders_link': reverse(all_datasenders)}
+    entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
     datasender = {'short_code': reporter_id}
     get_datasender_user_detail(datasender, request.user)
     email = datasender.get('email') if datasender.get('email') != '--' else False
@@ -262,7 +259,7 @@ def viewable_questionnaire(form_model):
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required()
 @session_not_expired
 @is_new_user
 @is_datasender
@@ -367,15 +364,6 @@ def delete_data_senders(request):
         messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
 
-
-def _get_project_association(projects):
-    project_association = defaultdict(list)
-    for project in projects:
-        for datasender in project['value']['data_senders']:
-            project_association[datasender].append(project['value']['name'])
-    return project_association
-
-
 def __create_web_users(org_id, reporter_details, language_code):
     duplicate_email_ids = User.objects.filter(email__in=[x['email'].lower() for x in reporter_details]).values('email')
     errors = []
@@ -420,148 +408,6 @@ def create_multiple_web_users(request):
         post_data = json.loads(request.POST['post_data'])
         content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE)
         return HttpResponse(content)
-
-
-def _reporter_id_list_of_all_users(manager):
-    org_id = get_organization_from_manager(manager).org_id
-    users = NGOUserProfile.objects.filter(org_id=org_id).values_list("user_id", "reporter_id")
-    rep_id_map = {}
-    for u in users:
-        rep_id_map.update({u[0]: u[1]})
-    user_ids = User.objects.filter(groups__name__in=['Project Managers'], id__in=rep_id_map.keys()).values_list(
-        'id', flat=True)
-    user_rep_ids = [str(rep_id_map[user_id]) for user_id in user_ids]
-    return user_rep_ids
-
-
-@csrf_view_exempt
-@csrf_response_exempt
-@login_required(login_url='/login')
-@session_not_expired
-#@is_new_user
-@is_datasender
-@is_not_expired
-def all_datasenders(request):
-    manager = get_database_manager(request.user)
-    projects = get_all_projects(manager)
-    # fields, old_labels, codes = get_entity_type_fields(manager)
-    in_trial_mode = utils.get_organization(request).in_trial_mode
-    labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number"), _("Email address")]
-    grant_web_access = False
-    if request.method == 'GET' and int(request.GET.get('web', '0')):
-        grant_web_access = True
-    if request.method == 'POST':
-        error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
-                                                                                                          manager,
-                                                                                                          default_parser=XlsDatasenderParser)
-        if len(imported_datasenders.keys()):
-            UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
-                                  detail=json.dumps(
-                                      dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
-        all_data_senders = _get_all_datasenders(manager, projects, request.user)
-        mobile_number_index = 4
-        add_imported_data_sender_to_trial_organization(request, imported_datasenders,
-                                                       all_data_senders=all_data_senders, index=mobile_number_index)
-
-        return HttpResponse(json.dumps(
-            {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
-             'error_message': error_message,
-             'failure_imports': failure_imports, 'all_data': all_data_senders,
-             'imported_datasenders': imported_datasenders}))
-
-    user_rep_ids = _reporter_id_list_of_all_users(manager)
-
-    return render_to_response('entity/all_datasenders.html',
-                              {'grant_web_access': grant_web_access,
-                               "users_list": user_rep_ids,
-                               "labels": labels,
-                               "projects": projects,
-                               'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
-                              context_instance=RequestContext(request))
-
-
-def all_datasenders_ajax(request):
-    search_parameters = {}
-    search_text = request.GET.get('sSearch', '').strip()
-    search_parameters.update({"search_text": search_text})
-    search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
-    search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
-    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
-    search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
-
-    user = request.user
-    query_count, search_count, datasenders = DatasenderQuery().paginated_query(user, REPORTER, search_parameters)
-
-    return HttpResponse(
-        jsonpickle.encode(
-            {
-                'datasenders': datasenders,
-                'iTotalDisplayRecords': query_count,
-                'iDisplayStart': int(request.GET.get('iDisplayStart')),
-                "iTotalRecords": search_count,
-                'iDisplayLength': int(request.GET.get('iDisplayLength'))
-            }, unpicklable=False), content_type='application/json')
-
-
-@csrf_view_exempt
-@csrf_response_exempt
-@login_required(login_url='/login')
-@session_not_expired
-@is_new_user
-@is_not_expired
-def disassociate_datasenders(request):
-    manager = get_database_manager(request.user)
-    projects = _get_projects(manager, request)
-    projects_name = []
-    for project in projects:
-        [project.delete_datasender(manager, id) for id in request.POST['ids'].split(';') if id in project.data_senders]
-        project.save(manager)
-        projects_name.append(project.name.capitalize())
-    ids = request.POST["ids"].split(";")
-    if len(ids):
-        UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
-                              detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
-                                                 "Projects": "[%s]" % ", ".join(projects_name)}))
-    return HttpResponse(reverse(all_datasenders))
-
-
-def _get_projects(manager, request):
-    project_ids = request.POST.get('project_id').split(';')
-    projects = []
-    for project_id in project_ids:
-        project = Project.load(manager.database, project_id)
-        if project is not None:
-            projects.append(project)
-    return projects
-
-
-@csrf_view_exempt
-@csrf_response_exempt
-@login_required(login_url='/login')
-@session_not_expired
-@is_new_user
-@is_not_expired
-def associate_datasenders(request):
-    manager = get_database_manager(request.user)
-    projects = _get_projects(manager, request)
-    projects_name = []
-    for project in projects:
-        project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
-        projects_name.append(project.name.capitalize())
-        project.save(manager)
-    ids = request.POST["ids"].split(';')
-    if len(ids):
-        UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
-                              detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
-                                                 "Projects": "[%s]" % ", ".join(projects_name)}))
-    return HttpResponse(reverse(all_datasenders))
-
-
-def _associate_data_senders_to_project(imported_entities, manager, project_id):
-    project = Project.load(manager.database, project_id)
-    project.data_senders.extend([k for k, v in imported_entities.items() if v == REPORTER])
-    project.save(manager)
-
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -775,17 +621,6 @@ def create_subject(request, entity_type=None):
 
         return render_to_response(web_questionnaire_template, subject_context,
                                   context_instance=RequestContext(request))
-
-
-def _get_all_datasenders(manager, projects, user):
-    all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
-    project_association = _get_project_association(projects)
-    remove_system_datasenders(all_data_senders)
-    for datasender in all_data_senders:
-        get_datasender_user_detail(datasender, user)
-        datasender['projects'] = project_association.get(datasender['short_code'])
-    return all_data_senders
-
 
 @valid_web_user
 @login_required(login_url='/login')

@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
-from datawinners.entity.views import disassociate_datasenders
+from datawinners.entity.view.all_datasenders import disassociate_datasenders
 
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
