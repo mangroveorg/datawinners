@@ -35,22 +35,22 @@ from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDER
 class AllDataSendersView(TemplateView):
     template_name = 'entity/all_datasenders.html'
 
+    def _is_web_access_allowed(self, request):
+        grant_web_access = False
+        if request.method == 'GET' and int(request.GET.get('web', '0')):
+            grant_web_access = True
+        return grant_web_access
+
     def get(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = get_all_projects(manager)
         in_trial_mode = utils.get_organization(request).in_trial_mode
-        labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number"),
-                  _("Email address")]
-        grant_web_access = False
-        if request.method == 'GET' and int(request.GET.get('web', '0')):
-            grant_web_access = True
-
+        grant_web_access = self._is_web_access_allowed(request)
         user_rep_ids = self._reporter_id_list_of_all_users(manager)
 
         return self.render_to_response({
             "grant_web_access": grant_web_access,
             "users_list": user_rep_ids,
-            "labels": labels,
             "projects": projects,
             'current_language': translation.get_language(),
             'in_trial_mode': in_trial_mode
@@ -67,9 +67,8 @@ class AllDataSendersView(TemplateView):
                                   detail=json.dumps(
                                       dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
         all_data_senders = self._get_all_datasenders(manager, projects, request.user)
-        mobile_number_index = 4
         add_imported_data_sender_to_trial_organization(request, imported_datasenders,
-                                                       all_data_senders=all_data_senders, index=mobile_number_index)
+                                                       all_data_senders=all_data_senders, index=4)
 
         return HttpResponse(json.dumps(
             {
