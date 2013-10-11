@@ -161,8 +161,6 @@ class AssociateDataSendersView(View):
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
         return HttpResponse(reverse("all_datasenders"))
 
-    @method_decorator(csrf_view_exempt)
-    @method_decorator(csrf_response_exempt)
     @method_decorator(login_required)
     @method_decorator(session_not_expired)
     @method_decorator(is_not_expired)
