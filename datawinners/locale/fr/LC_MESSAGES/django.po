@@ -2318,7 +2318,8 @@ msgstr "Vous ne pouvez pas envoyer un SMS car votre compte DataWinners n’a pas
 
 
 msgid "You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions. For more information contact support@datawinners.com: %(failed_numbers)s."
-msgstr "Vous ne pouvez pas envoyer des messages au numéro suivant car ce numéro est réservé à la réception des Soumissions des Expéditeurs de Données uniquement. Pour plus d'information, contactez support@datawinners.com: %(failed_numbers)s."
+msgstr "Vous ne pouvez pas envoyer des messages au numéro suivant %(failed_numbers)s. Ce numéro est réservé à la réception des Soumissions des Expéditeurs de Données uniquement.  \
+        Votre message a été envoyé avec succès vers tous les autres numéros. Pour plus d'information, contactez support@datawinners.com."
 
 
 msgid "Please Select..."
