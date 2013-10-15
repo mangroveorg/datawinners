@@ -126,9 +126,8 @@ class DatasenderQueryResponseCreator():
         return datasenders
 
     def add_check_symbol_for_row(self, datasender, result):
-        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
-        # result.extend([check_img])
+        check_img = '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">'
         if "email" in datasender.keys() and datasender["email"]:
-            result.extend([check_img + "&nbsp;" + check_img + "&nbsp;" + check_img])
+            result.extend([check_img + check_img + check_img])
         else:
             result.extend([check_img])
