@@ -9,6 +9,7 @@ from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import WEB_USER_BLOCK_EMAIL, GIVE_ACCESS_LINK
+from pages.alluserspage.all_users_page import AllUsersPage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
@@ -29,9 +30,12 @@ class TestAllDataSender(unittest.TestCase):
         login_page = LoginPage(cls.driver)
         login_page.do_successful_login_with(VALID_CREDENTIALS)
         cls.page = AllDataSendersPage(cls.driver)
+        cls.datasender_id_with_web_access = cls.register_datasender(VALID_DATASENDER_WITH_WEB_ACCESS)
+        cls.datasender_id_without_web_access = cls.register_datasender(VALID_DATASENDER_WITHOUT_WEB_ACCESS)
 
     def setUp(self):
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        time.sleep(1)
 
     @classmethod
     def tearDownClass(cls):
@@ -42,22 +46,33 @@ class TestAllDataSender(unittest.TestCase):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page.do_successful_login_with(VALID_CREDENTIALS)
 
-    def associate(self, all_data_sender_page):
-        all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(ASSOCIATE_DATA_SENDER)))
+    def associate(self, all_data_sender_page, datasender_id, project_name):
+        all_data_sender_page.select_a_data_sender_by_id(datasender_id)
         all_data_sender_page.associate_data_sender()
-        all_data_sender_page.select_project(fetch_(PROJECT_NAME, from_(ASSOCIATE_DATA_SENDER)))
+        all_data_sender_page.select_project(project_name)
         all_data_sender_page.click_confirm(wait=True)
 
-    def dissociate(self, all_data_sender_page):
-        all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(DISSOCIATE_DATA_SENDER)))
+    def dissociate(self, all_data_sender_page, datasender_id, project_name):
+        all_data_sender_page.select_a_data_sender_by_id(datasender_id)
         all_data_sender_page.dissociate_data_sender()
-        all_data_sender_page.select_project(fetch_(PROJECT_NAME, from_(DISSOCIATE_DATA_SENDER)))
+        all_data_sender_page.select_project(project_name)
         all_data_sender_page.click_confirm(wait=True)
 
     def delete_ds(self, all_data_sender_page):
         all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(DELETE_DATA_SENDER)))
         all_data_sender_page.delete_data_sender()
         all_data_sender_page.click_delete(wait=True)
+
+    @classmethod
+    def register_datasender(cls, datasender_details):
+        cls.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        add_data_sender_page = cls.page.navigate_to_add_a_data_sender_page()
+        add_data_sender_page.enter_data_sender_details_from(datasender_details)
+
+        message = add_data_sender_page.get_success_message()
+        assert REGISTRATION_SUCCESS_MESSAGE_TEXT in message
+        data_sender_id = _parse(message)
+        return data_sender_id
 
     def send_sms(self, sms_data, sms_tester_page):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
@@ -72,29 +87,27 @@ class TestAllDataSender(unittest.TestCase):
     @attr('functional_test')
     def test_successful_dissociation_of_data_sender(self):
         all_data_sender_page = self.page
+
         project_name = fetch_(PROJECT_NAME, from_(ASSOCIATE_DATA_SENDER))
-        if project_name not in all_data_sender_page.get_project_names(fetch_(UID, from_(ASSOCIATE_DATA_SENDER))):
-            self.associate(all_data_sender_page)
-        self.dissociate(all_data_sender_page)
-        self.assertNotIn(project_name,all_data_sender_page.get_project_names(fetch_(UID, from_(DISSOCIATE_DATA_SENDER))))
+        self.associate(all_data_sender_page, self.datasender_id_without_web_access, project_name)
+        self.dissociate(all_data_sender_page, self.datasender_id_without_web_access, project_name)
+        self.assertNotIn(project_name,all_data_sender_page.get_project_names(self.datasender_id_without_web_access))
 
     @attr('functional_test')
     def test_dissociate_ds_without_selecting_project(self):
         all_data_sender_page = self.page
-        all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(DISSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
+        all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
         all_data_sender_page.dissociate_data_sender()
         all_data_sender_page.click_confirm()
-        self.assertEqual(all_data_sender_page.get_error_message(),
-                         fetch_(ERROR_MSG, from_(DISSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
+        self.assertEqual(all_data_sender_page.get_error_message(), ERROR_MSG_FOR_NOT_SELECTING_PROJECT)
 
     @attr('functional_test')
     def test_associate_ds_without_selecting_project(self):
         all_data_sender_page = self.page
-        all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
+        all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
         all_data_sender_page.associate_data_sender()
         all_data_sender_page.click_confirm()
-        self.assertEqual(all_data_sender_page.get_error_message(),
-                         fetch_(ERROR_MSG, from_(ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT)))
+        self.assertEqual(all_data_sender_page.get_error_message(),ERROR_MSG_FOR_NOT_SELECTING_PROJECT)
 
     @SkipTest #TODO only failing on ci. need to investigate.
     @attr('functional_test')
@@ -123,17 +136,6 @@ class TestAllDataSender(unittest.TestCase):
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_SMS)))
 
     @attr('functional_test')
-    def test_data_sender_devices(self):
-        all_data_senders_page = self.page
-        self.assertTrue(all_data_senders_page.check_sms_device_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS))
-        self.assertTrue(all_data_senders_page.check_web_device_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS))
-        self.assertTrue(all_data_senders_page.check_smart_phone_device_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS))
-
-        self.assertTrue(all_data_senders_page.check_sms_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
-        self.assertFalse(all_data_senders_page.check_web_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
-        self.assertFalse(all_data_senders_page.check_smart_phone_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
-
-    @attr('functional_test')
     def test_the_datasender_template_file_downloaded(self):
         all_data_sender_page = self.page
         import_lightbox = all_data_sender_page.open_import_lightbox()
@@ -153,10 +155,22 @@ class TestAllDataSender(unittest.TestCase):
         self.assertFalse(add_data_sender_page.unique_id_check_box_is_checked())
         self.assertTrue(add_data_sender_page.unique_id_field_is_enabled())
 
+    def add_new_user(self, user_data):
+        self.driver.go_to(ALL_USERS_URL)
+        all_users_page = AllUsersPage(self.driver)
+        add_user_page = all_users_page.navigate_to_add_user()
+        add_user_page.add_user_with(user_data)
+        user_mobile_number = fetch_(MOBILE_PHONE, user_data)
+        return user_mobile_number
+
     @attr('functional_test')
     def test_should_warn_and_not_delete_if_all_ds_selected_are_users(self):
+        user_mobile_number = self.add_new_user(NEW_USER_DATA)
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        time.sleep(1)
+
         all_data_sender_page = self.page
-        all_data_sender_page.select_all_datasender_user()
+        all_data_sender_page.select_a_data_sender_by_mobile(user_mobile_number)
         all_data_sender_page.delete_data_sender()
         warning = WarningDialog(self.driver)
         message = warning.get_message()
@@ -165,9 +179,12 @@ class TestAllDataSender(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_warn_that_ds_with_user_credentials_will_not_be_deleted(self):
+        user_mobile_number = self.add_new_user(NEW_USER_DATA)
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        time.sleep(1)
         all_data_sender_page = self.page
-        all_data_sender_page.select_all_datasender_user()
-        all_data_sender_page.select_a_data_sender_by_mobile(fetch_(MOBILE_NUMBER, VALID_DATA))
+        all_data_sender_page.select_a_data_sender_by_mobile(user_mobile_number)
+        all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
         all_data_sender_page.delete_data_sender()
         warning = WarningDialog(self.driver)
         message = warning.get_message()
@@ -176,7 +193,7 @@ class TestAllDataSender(unittest.TestCase):
     @attr('functional_test')
     def test_should_warn_delete_ds_without_note_if_ther_is_no_ds_user(self):
         all_data_sender_page = self.page
-        all_data_sender_page.select_a_data_sender_by_mobile(fetch_(MOBILE_NUMBER, VALID_DATA))
+        all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
         all_data_sender_page.delete_data_sender()
         warning = WarningDialog(self.driver)
         message = warning.get_message()
@@ -200,22 +217,23 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page.click_action_button()
         self.assert_none_selected_shown(all_data_sender_page)
 
-        all_data_sender_page.select_a_data_sender_by_id("rep5")
+        all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
         all_data_sender_page.click_action_button()
         self.assert_action_menu_shown(all_data_sender_page)
 
-        all_data_sender_page.select_a_data_sender_by_id("rep4")
-        self.assertFalse(all_data_sender_page.is_edit_enabled())
+        all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_with_web_access)
+        all_data_sender_page.click_action_button()
+        self.assertTrue(all_data_sender_page.is_edit_disabled())
 
     def assert_none_selected_shown(self, all_data_sender_page):
-        self.assertTrue(all_data_sender_page.is_edit_enabled())
+        self.assertFalse(all_data_sender_page.is_edit_disabled())
         self.assertTrue(all_data_sender_page.is_none_selected_shown())
         self.assertFalse(all_data_sender_page.actions_menu_shown())
 
     def assert_action_menu_shown(self, all_data_sender_page):
         self.assertFalse(all_data_sender_page.is_none_selected_shown())
         self.assertTrue(all_data_sender_page.actions_menu_shown())
-        self.assertTrue(all_data_sender_page.is_edit_enabled())
+        self.assertFalse(all_data_sender_page.is_edit_disabled())
 
     @attr("functional_test")
     def test_should_uncheck_checkall_when_trying_to_delete_ds_user(self):
@@ -229,12 +247,11 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page = self.page
         all_data_sender_page.click_checkall_checkbox()
         self.assertTrue(all_data_sender_page.is_checkall_checked())
-        all_data_sender_page.select_a_data_sender_by_id("rep4")
+        all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
         self.assertFalse(all_data_sender_page.is_checkall_checked())
-        all_data_sender_page.select_a_data_sender_by_id("rep4")
+        all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
         self.assertTrue(all_data_sender_page.is_checkall_checked())
 
-    @attr("functional_test")
     def give_web_and_smartphone_access(self, all_data_senders_page):
         all_data_senders_page.give_web_access()
         email_text_box = self.driver.find_text_box(WEB_USER_BLOCK_EMAIL)
@@ -244,22 +261,13 @@ class TestAllDataSender(unittest.TestCase):
 
     @attr("functional_test")
     def test_should_able_to_give_web_and_smartphone_access(self):
-        add_data_sender_page = self.page.navigate_to_add_a_data_sender_page()
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATASENDER_WITHOUT_WEB_ACCESS)
-
-        message = add_data_sender_page.get_success_message()
-        self.assertRegexpMatches(message, fetch_(SUCCESS_MSG, from_(VALID_DATASENDER_WITHOUT_WEB_ACCESS)))
-        data_sender_id = _parse(message)
-
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
-        self.page.select_a_data_sender_by_id(data_sender_id)
+        self.assertFalse(self.page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
+        self.page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
         self.give_web_and_smartphone_access(self.page)
         self.driver.wait_for_page_with_title(10, 'All Data Senders')
         self.driver.refresh()
-        self.assertTrue(self.page.check_sms_device_by_id(data_sender_id))
-        self.assertTrue(self.page.check_web_device_by_id(data_sender_id))
-        self.assertTrue(self.page.check_smart_phone_device_by_id(data_sender_id))
-
+        self.assertTrue(self.page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
 
 def _parse(message):
     return message.split(' ')[-1]

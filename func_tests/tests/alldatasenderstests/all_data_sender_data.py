@@ -4,6 +4,7 @@
 ##Variables
 import random
 from datawinners.messageprovider.tests.test_message_handler import THANKS
+from testdata.test_data import url
 
 
 def random_string(length=6):
@@ -39,7 +40,7 @@ DISSOCIATE_SUCCESS_TEXT = "Data Senders dissociated Successfully. Please Wait...
 ERROR_MSG_WITHOUT_SELECTING_DS = u"Please select atleast 1 data sender"
 DELETE_SUCCESS_TEXT = "Data Sender(s) successfully deleted."
 SMS_ERROR_MESSAGE = "Your telephone number is not yet registered in our system. Please contact your supervisor."
-
+REGISTRATION_SUCCESS_MESSAGE_TEXT = "Registration successful. ID is: rep"
 ASSOCIATE_DATA_SENDER = {PROJECT_NAME: "clinic test project1",
                          UID: "rep1",
                          MOBILE_NUMBER: "1234567890"}
@@ -52,9 +53,9 @@ DELETE_DATA_SENDER = {PROJECT_NAME: "clinic test project1",
                       UID: u"rep8",
                       MOBILE_NUMBER: "919049008976"}
 
-DISSOCIATE_DS_WITHOUT_SELECTING_PROJECT = {UID: "rep1", ERROR_MSG: "Please select atleast 1 Project"}
+ERROR_MSG_FOR_NOT_SELECTING_PROJECT = "Please select atleast 1 Project"
 
-ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT = {UID: "rep2", ERROR_MSG: "Please select atleast 1 Project"}
+# ASSOCIATE_DS_WITHOUT_SELECTING_PROJECT = {UID: "rep2", ERROR_MSG: "Please select atleast 1 Project"}
 
 DISSOCIATE_DS_WITHOUT_SELECTING_DS = {PROJECT_NAME: "clinic test project1", ERROR_MSG: ERROR_MSG_WITHOUT_SELECTING_DS}
 
@@ -73,7 +74,7 @@ VALID_DATA = {NAME: "ReRegistered",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 
-VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "Kimi",
+VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "aaa Kimi",
                                        MOBILE_NUMBER: random_number(6),
                                        COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                                        GPS: "-21.7622088847 48.0690991394",
@@ -81,7 +82,7 @@ VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "Kimi",
 
 EMAIL_ADDRESS = "email"
 
-VALID_DATASENDER_WITH_EMAIL = {NAME: "Mickey Duck",
+VALID_DATASENDER_WITH_WEB_ACCESS = {NAME: "aaa Mickey Duck",
                                MOBILE_NUMBER: random_number(6),
                                COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                                EMAIL_ADDRESS: "mIcKeY",
@@ -93,8 +94,6 @@ INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
                               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                               GPS: "-21.7622088847 48.0690991394"}
 
-DATA_SENDER_ID_WITH_WEB_ACCESS = "rep3"
-DATA_SENDER_ID_WITHOUT_WEB_ACCESS = "rep5"
 
 
 def generate_random_email_id():
@@ -103,3 +102,20 @@ def generate_random_email_id():
 
 ALL_DS_TO_DELETE_ARE_USER_MSG = u'You cannot delete the following Data Senders as they are DataWinners users:'
 NOTIFICATION_WHILE_DELETING_USER = "Note, the following Data Senders will not be deleted as they are DataWinners users"
+
+
+ALL_USERS_URL = url("/account/users/")
+TITLE = "title"
+FIRST_NAME = "first_name"
+LAST_NAME = "last_name"
+USERNAME = "username"
+MOBILE_PHONE = "mobile_phone"
+
+NEW_USER_DATA = {
+    TITLE: "Developer",
+    FIRST_NAME: "bbb kimi",
+    LAST_NAME: "Raikonan",
+    USERNAME: random_string(4)+"@mailinator.com",
+    MOBILE_PHONE: random_number()
+}
+

@@ -43,7 +43,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
 
         registered_ds_page.select_a_data_sender_by_id("rep5")
         registered_ds_page.click_action_button()
-        self.assertFalse(registered_ds_page.is_edit_enabled())
+        self.assertTrue(registered_ds_page.is_edit_disabled())
 
     def assert_none_selected_shown(self, registered_ds_page):
         self.assertTrue(registered_ds_page.is_none_selected_shown())
@@ -52,7 +52,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
     def assert_action_menu_shown_for(self, registered_ds_page):
         self.assertFalse(registered_ds_page.is_none_selected_shown())
         self.assertTrue(registered_ds_page.actions_menu_shown())
-        self.assertTrue(registered_ds_page.is_edit_enabled())
+        self.assertFalse(registered_ds_page.is_edit_disabled())
 
     @attr("functional_test")
     def test_should_check_all_checkboxes_following_master_cb(self):

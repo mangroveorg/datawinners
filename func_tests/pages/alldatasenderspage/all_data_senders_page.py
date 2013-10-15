@@ -144,14 +144,15 @@ class AllDataSendersPage(Page):
         self.driver.is_element_present(IMPORT_LINK)
         self.driver.is_element_present(ADD_A_DATA_SENDER_LINK)
 
-    def check_sms_device_by_id(self, data_sender_id):
-        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 8)))
+    def is_web_and_smartphone_device_checkmarks_present(self, data_sender_id):
+        checkboxes = self.driver.find_elements_(by_xpath(DATA_SENDER_DEVICES % (data_sender_id)))
+        return len(checkboxes) == 3
 
-    def check_web_device_by_id(self, data_sender_id):
-        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 9)))
-
-    def check_smart_phone_device_by_id(self, data_sender_id):
-        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 10)))
+    # def check_web_device_by_id(self, data_sender_id):
+    #     return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 9)))
+    #
+    # def check_smart_phone_device_by_id(self, data_sender_id):
+    #     return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 10)))
 
     def open_import_lightbox(self):
         from pages.adddatasenderspage.add_data_senders_locator import OPEN_IMPORT_DIALOG_LINK
@@ -170,7 +171,7 @@ class AllDataSendersPage(Page):
         self.driver.find(CHECKALL_DS_CB).click()
 
     def get_datasenders_count(self):
-        return len(self.driver.find(ALL_DS_ROWS).find_elements(by="tag name", value="tr"))
+        return len(self.driver.find(ALL_DS_ROWS).find_elements(by="tag name", value="tr")[1:])
 
     def get_checked_datasenders_count(self):
         return len(
@@ -185,9 +186,9 @@ class AllDataSendersPage(Page):
     def actions_menu_shown(self):
         return self.driver.find(ACTION_MENU).is_displayed()
 
-    def is_edit_enabled(self):
-        css_class = self.driver.find(EDIT_LI_LOCATOR).get_attribute("class")
-        return css_class.find("disabled") < 0
+    def is_edit_disabled(self):
+        css_class = self.driver.find(EDIT_LI_LOCATOR).get_attribute("disabled")
+        return bool(css_class)
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_DS_CB).get_attribute("checked") == "true"
