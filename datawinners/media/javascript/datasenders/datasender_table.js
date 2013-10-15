@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    var checkbox_column_index = 0;
+    var projects_column_index = 8;
     $('#datasender_table').dataTable({
         "bProcessing": true,
         "bServerSide": true,
@@ -12,9 +14,9 @@ $(document).ready(function () {
                 "fnRender": function (data) {
                     return '<input type="checkbox" value=' + data.aData[2] + ' />';
                 },
-                "aTargets": [0]
+                "aTargets": [checkbox_column_index]
             },
-            {"bSortable": false, "aTargets": [0, $('#datasender_table th.devices').index('#datasender_table th')]}
+            {"bSortable": false, "aTargets": [checkbox_column_index, projects_column_index, $('#datasender_table th.devices').index('#datasender_table th')]}
         ],
         "oLanguage": {"sInfoFiltered": "",
             "sLengthMenu": gettext("Show") + " _MENU_ " + gettext("Data Senders"),
