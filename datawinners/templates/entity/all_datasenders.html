@@ -48,11 +48,9 @@
 {% block content %}
     <div>
         {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
+            {% for message in messages %}
+                <div class="success-message-box">{{ message }}</div>
+            {% endfor %}
         {% endif %}
         {% if grant_web_access %}
             <div id="flash-message" class="success-message-box">
