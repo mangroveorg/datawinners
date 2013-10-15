@@ -479,9 +479,14 @@ def registered_datasenders(request, project_id=None):
             sender['project'] = project.name
 
         return render_to_response('project/registered_datasenders.html',
-                                  {'project': project, 'project_links': project_links, 'all_data': senders,
-                                   'grant_web_access': grant_web_access, "labels": labels,
-                                   'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
+                                  {
+                                      'project': project,
+                                      'project_links': project_links,
+                                      'all_data': senders,
+                                      'grant_web_access': grant_web_access,
+                                      "labels": labels,
+                                      'current_language': translation.get_language(),
+                                      'in_trial_mode': in_trial_mode},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,

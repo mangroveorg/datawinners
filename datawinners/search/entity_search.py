@@ -82,6 +82,30 @@ class DatasenderQuery(EntityQuery):
         fields.append('projects')
         return fields
 
+class MyDataSenderQuery(EntityQuery):
+
+    def __init__(self):
+        EntityQuery.__init__(self, MyDatasenderQueryResponseCreator())
+
+    def get_headers(self, user, entity_type=None):
+        fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
+        fields.append("devices")
+        return fields
+
+    def filtered_query(self, user, project_name, query_params):
+        entity_headers = self.get_headers(user, "reporter")
+
+        paginated_query = self.query_builder.create_paginated_query("reporter", self._getDatabaseName(user), {
+            "start_result_number": query_params["start_result_number"],
+            "number_of_results": query_params["number_of_results"],
+            "order_field": entity_headers[query_params["order_by"]],
+            "order": query_params["order"]
+        })
+        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, query_params["search_text"],
+                                                                    paginated_query).filter(projects_value=project_name)
+
+        entities = self.response_creator.create_response(entity_headers, query_with_criteria)
+        return query_with_criteria.count(), paginated_query.count(), entities
 
 class SubjectQuery(EntityQuery):
     def __init__(self):
@@ -131,3 +155,19 @@ class DatasenderQueryResponseCreator():
             result.extend([check_img + check_img + check_img])
         else:
             result.extend([check_img])
+
+class MyDatasenderQueryResponseCreator(DatasenderQueryResponseCreator):
+    def create_response(self, required_field_names, query):
+        datasenders = []
+        for res in query.values_dict(tuple(required_field_names)):
+            result = []
+            for key in required_field_names:
+                if key is "devices":
+                    self.add_check_symbol_for_row(res, result)
+                elif key is "projects":
+                    continue
+                else:
+                    result.append(res.get(key))
+            datasenders.append(result)
+        return datasenders
+

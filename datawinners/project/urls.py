@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
 from datawinners.entity.view.all_datasenders import DisassociateDataSendersView
+from datawinners.project.views.datasenders import MyDataSendersAjaxView
 
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
@@ -44,6 +45,7 @@ urlpatterns = patterns('',
                            name="edit_data_sender"),
                        url(r'^project/registered_datasenders/(?P<project_id>.+?)/$', registered_datasenders,
                            name="registered_datasenders"),
+                       url(r'^project/(?P<project_name>.+?)/registered_datasenders/ajax/$', MyDataSendersAjaxView.as_view()),
                        (r'^project/create_reminder/(?P<project_id>.+?)/$', create_reminder),
                        (r'^project/get_reminder/(?P<project_id>.+?)/$', get_reminder),
                        url(r'^project/delete_reminder/(?P<project_id>.+?)/(?P<reminder_id>.+?)/$', delete_reminder,

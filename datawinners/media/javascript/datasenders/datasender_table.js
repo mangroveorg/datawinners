@@ -9,7 +9,6 @@ $(document).ready(function () {
         "sInput": "",
         "aoColumnDefs": [
             { "sClass": "center",
-//                "sTitle": "<input type='checkbox'id='checkall-datasenders'></input>",
                 "fnRender": function (data) {
                     return '<input type="checkbox" value=' + data.aData[2] + ' />';
                 },
@@ -23,11 +22,10 @@ $(document).ready(function () {
             "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s datasenders"),
                 {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_'}, true),
             "sInfoEmpty": gettext("<b> 0 to 0</b> of 0") + " " + gettext("Data Senders"),
-//            "sEmptyTable": $('#no_registered_subject_message').clone(true, true).removeAttr("hidden").html(),
             "sSearch": "<strong>" + gettext("Search:") + "</strong>",
             "oPaginate": {"sFirst": "", "sPrevious": "◀", "sNext": "▶", "sLast": ""}},
         "sPaginationType": "dw_pagination",
-        "sAjaxSource": '/entity/datasenders/ajax/',
+        "sAjaxSource": datasender_ajax_url,
         "sAjaxDataProp": "datasenders",
         "sServerMethod": "GET",
         "aaSorting": [
@@ -75,5 +73,4 @@ $(document).ready(function () {
 
     });
     $("#datasender_table_filter").find("input").attr('placeholder', gettext('Enter any information you want to find'));
-
 });
