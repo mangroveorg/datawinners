@@ -2244,8 +2244,8 @@ msgstr "You cannot send SMS because your DataWinners account hasn’t been confi
 
 
 msgid "You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions. For more information contact support@datawinners.com: %(failed_numbers)s."
-msgstr "You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions: %(failed_numbers)s\
-We have successfully sent your message to all other numbers. For more information contact support@datawinners.com."
+msgstr "You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions: %(failed_numbers)s. \
+ We have successfully sent your message to all other numbers. For more information contact support@datawinners.com."
 
 
 msgid "Please Select..."
