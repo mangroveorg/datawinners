@@ -471,20 +471,11 @@ def registered_datasenders(request, project_id=None):
         grant_web_access = True
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
-        senders, fields, default_labels = load_data_senders(manager, project.data_senders)
-        labels = [_("Name"), _("Unique ID"), _("Location"), _("GPS Coordinates"), _("Mobile Number")]
-        remove_system_datasenders(senders)
-        for sender in senders:
-            get_datasender_user_detail(sender, request.user)
-            sender['project'] = project.name
-
         return render_to_response('project/registered_datasenders.html',
                                   {
                                       'project': project,
                                       'project_links': project_links,
-                                      'all_data': senders,
                                       'grant_web_access': grant_web_access,
-                                      "labels": labels,
                                       'current_language': translation.get_language(),
                                       'in_trial_mode': in_trial_mode},
                                   context_instance=RequestContext(request))
