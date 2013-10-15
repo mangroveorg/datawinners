@@ -13,7 +13,7 @@ $(document).ready(function () {
         "aoColumnDefs": [
             { "sClass": "center",
                 "fnRender": function (data) {
-                    return '<input type="checkbox" value=' + data.aData[2] + ' />';
+                    return '<input type="checkbox" value=' + data.aData[2].toLowerCase() + ' />';
                 },
                 "aTargets": [checkbox_column_index]
             },
