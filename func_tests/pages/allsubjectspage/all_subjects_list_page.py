@@ -27,8 +27,8 @@ class AllSubjectsListPage(Page):
         self.wait_for_processing()
 
     def wait_for_processing(self):
-        self.driver.wait_for_element(2, by_css(".search-loader"))
-        self.driver.wait_until_element_is_not_present(2, by_css(".search-loader"))
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".search-loader"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".search-loader"))
 
     def get_row_text(self, row_index):
         return self.driver.find_elements_(by_css("#subjects_table tbody tr"))[row_index].text
