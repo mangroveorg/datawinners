@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var checkbox_column_index = 0;
     var projects_column_index = 8;
+    var name_column_index = 1;
     $('#datasender_table').dataTable({
         "bProcessing": true,
         "bServerSide": true,
@@ -31,7 +32,7 @@ $(document).ready(function () {
         "sAjaxDataProp": "datasenders",
         "sServerMethod": "GET",
         "aaSorting": [
-            [ 1, "asc"]
+            [  name_column_index, "asc"]
         ],
         "fnInitComplete": function (oSettings) {
             var cloned_element = $("#action_dropdown").clone(true);
