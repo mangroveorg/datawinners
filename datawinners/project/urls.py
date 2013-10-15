@@ -1,12 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
 from datawinners.entity.view.all_datasenders import DisassociateDataSendersView
-from datawinners.project.views.datasenders import MyDataSendersAjaxView
+from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders, edit_data_sender
 
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
 from datawinners.project.views import submission_views, analysis_views
-from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, registered_subjects, registered_datasenders, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, review_and_test, edit_my_subject_questionnaire, project_has_data, edit_data_sender, save_questionnaire, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject
+from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, registered_subjects, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, review_and_test, edit_my_subject_questionnaire, project_has_data, save_questionnaire, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject
 
 js_info_dict = {
     'domain': 'djangojs',
