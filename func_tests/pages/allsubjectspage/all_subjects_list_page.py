@@ -68,7 +68,7 @@ class AllSubjectsListPage(Page):
         self.driver.find_visible_element(by_css(".delete")).click()
 
     def get_successfully_deleted_message(self):
-        message_element_selector = 'ul.messages > li.success'
+        message_element_selector = 'div.success-message-box'
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(message_element_selector), True)
         return self.driver.find(by_css(message_element_selector)).text
 
