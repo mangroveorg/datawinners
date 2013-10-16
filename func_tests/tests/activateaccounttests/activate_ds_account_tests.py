@@ -9,7 +9,7 @@ from pages.loginpage.login_page import LoginPage
 from pages.resetpasswordpage.reset_password_page import ResetPasswordPage
 from tests.activateaccounttests.activate_account_data import DS_ACTIVATION_URL, NEW_PASSWORD
 from testdata.test_data import url, DATA_WINNER_LOGIN_PAGE, LOGOUT
-from tests.alldatasenderstests.all_data_sender_data import VALID_DATASENDER_WITH_EMAIL, SUCCESS_MSG, generate_random_email_id
+from tests.alldatasenderstests.all_data_sender_data import VALID_DATASENDER_WITH_WEB_ACCESS, SUCCESS_MSG, generate_random_email_id
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.testsettings import UI_TEST_TIMEOUT
 
@@ -23,8 +23,8 @@ class TestActivateDSAccount(BaseTest):
         global_navigation_page = login_page.do_successful_login_with(VALID_CREDENTIALS)
         add_datasender_page = global_navigation_page.navigate_to_all_data_sender_page().navigate_to_add_a_data_sender_page()
         email = generate_random_email_id()
-        add_datasender_page.enter_data_sender_details_from(VALID_DATASENDER_WITH_EMAIL, email=email)
-        self.assertIn(VALID_DATASENDER_WITH_EMAIL[SUCCESS_MSG], add_datasender_page.get_success_message())
+        add_datasender_page.enter_data_sender_details_from(VALID_DATASENDER_WITH_WEB_ACCESS, email=email)
+        self.assertIn(VALID_DATASENDER_WITH_WEB_ACCESS[SUCCESS_MSG], add_datasender_page.get_success_message())
         self.driver.go_to(LOGOUT)
 
         user = User.objects.get(username=email)

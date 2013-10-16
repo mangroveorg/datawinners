@@ -32,7 +32,7 @@ VALID_EDIT_DATA = {NAME: "EDIT Mickey Duck",
                    GPS: "",
                    SUCCESS_MSG: "Your changes have been saved."}
 
-VALID_DATA_WITH_EMAIL = {NAME: "Mickey Duck",
+VALID_DATA_WITH_EMAIL = {NAME: "a Mickey Duck",
                          MOBILE_NUMBER: random_number(6),
                          COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                          EMAIL_ADDRESS: "mIcKeY",
