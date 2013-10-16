@@ -58,12 +58,12 @@ class TestAllDataSender(unittest.TestCase):
     def test_successful_addition_editing_of_data_sender(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
-
+        mobile_number = fetch_(MOBILE_NUMBER, VALID_DATA)
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA)))
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_data_senders_page = AllDataSendersPage(self.driver)
-        all_data_senders_page.select_a_data_sender_by_mobile(VALID_DATA[MOBILE_NUMBER_WITHOUT_HYPHENS])
+        all_data_senders_page.select_a_data_sender_by_mobile(mobile_number)
         all_data_senders_page.select_edit_action()
         self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
         self.assertRegexpMatches(self.current_page.get_success_message(),
