@@ -41,7 +41,7 @@
     <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
     <script>
-        var datasender_ajax_url = "/project/{{ project.name }}/registered_datasenders/ajax/"
+        var datasender_ajax_url = "{% url my_datasenders_ajax project.name %}"
     </script>
 {% endblock %}
 
