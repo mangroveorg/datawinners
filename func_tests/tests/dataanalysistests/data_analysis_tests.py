@@ -201,6 +201,7 @@ class TestDataAnalysis(BaseTest):
 
     def verify_reporting_period_filter(self, data_analysis_page, period):
         data_analysis_page.open_reporting_period_drop_down()
+        time.sleep(1)
         data_analysis_page.date_range_dict[fetch_(DAILY_DATE_RANGE, from_(period))]()
         time.sleep(1)
         data_analysis_page.click_go_button()
