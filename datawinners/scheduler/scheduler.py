@@ -7,6 +7,8 @@ from datawinners.accountmanagement.models import OrganizationSetting, Organizati
 from datawinners.project.models import Project, get_reminder_repository
 from datawinners.scheduler.smsclient import SMSClient
 from datawinners.main.database import get_db_manager
+from dateutil.relativedelta import relativedelta
+from datawinners.accountmanagement.utils import RELATIVE_DELTA_BY_EMAIL_TYPE
 
 
 logger = logging.getLogger("datawinners.reminders")
@@ -94,6 +96,15 @@ def _get_reminders_grouped_by_project_for_organization(organization_id):
         reminders_grouped_project_id[reminder.project_id].append(reminder)
     return reminders_grouped_project_id
 
+def send_time_based_reminder_email():
+    for email_type, delta_dict in RELATIVE_DELTA_BY_EMAIL_TYPE.items():
+        active_date = datetime.strftime(datetime.now() - relativedelta(**delta_dict[0]), "%Y-%m-%d")
+        organizations = Organization.get_all_trial_organizations(active_date__contains=active_date)
+        for organization in organizations:
+            if organization.active_date != organization.status_changed_datetime and not delta_dict[1]: continue
+            organization.send_mail_to_organization_creator(email_type)
+
 if __name__ == "__main__":
-    send_reminders_scheduled_on(date(2011, 10, 20), SMSClient())
+    #send_reminders_scheduled_on(date(2011, 10, 20), SMSClient())
+    send_time_based_reminder_email()
 

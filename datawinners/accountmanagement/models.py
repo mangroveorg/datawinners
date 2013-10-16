@@ -14,6 +14,7 @@ from datawinners.countrytotrialnumbermapping.models import Country
 from django.template.context import Context
 from django.core.mail.message import EmailMessage
 from django.template import loader
+from datawinners.accountmanagement.utils import get_email_detail_by_type
 
 TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
@@ -171,16 +172,22 @@ class Organization(models.Model):
         return User.objects.filter(ngouserprofile__org_id=self.org_id)
 
     def send_mail_to_organization_creator(self, email_type):
-        for user in self.get_related_users():
-            if not user.groups.filter(name="NGO Admins") and not user.groups.filter(name="Project Managers"): continue
-            c = Context({'username': user.first_name +' '+ user.last_name, 'organization':self})
+        users = self.get_related_users().filter(groups__name__in=["NGO Admins", "Project Managers"])
+        for user in users:
+            email_subject, email_template, sender = get_email_detail_by_type(email_type)
 
-            email_content = loader.get_template('registration/%s_%s.html' % (email_type, ugettext("en"),))
-            email_subject = email_type.replace('_',' ').capitalize()
+            c = Context({ 'username': user.first_name +' '+ user.last_name, 'organization':self})
+            email_content = loader.get_template('email/%s_%s.html' % (email_template, ugettext("en"),))
 
-            msg = EmailMessage(email_subject, email_content.render(c), settings.EMAIL_HOST_USER, [user.email])
+            msg = EmailMessage(email_subject, email_content.render(c), sender or settings.EMAIL_HOST_USER, [user.email])
             msg.content_subtype = "html"
             msg.send()
+
+    @classmethod
+    def get_all_trial_organizations(cls, active_date__contains=None):
+        if active_date__contains:
+            return cls.objects.filter(in_trial_mode=True,status_changed_datetime__contains=active_date__contains)
+        return cls.objects.filter(in_trial_mode=True)
 
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)

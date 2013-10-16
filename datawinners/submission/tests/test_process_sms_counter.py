@@ -59,7 +59,7 @@ class TestProcessSMSCounter(unittest.TestCase):
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
             ctx = {'username':'Trial User', 'organization':organization}
-            self.assertEqual(render_to_string('registration/about_to_reach_submission_limit_en.html', ctx), email.body)
+            self.assertEqual(render_to_string('email/basicaccount/about_to_reach_submission_limit_en.html', ctx), email.body)
 
     def test_should_send_mail_to_when_sms_limit_is_about_to_reached(self):
         organization = self.incoming_request.get('organization')
@@ -69,7 +69,7 @@ class TestProcessSMSCounter(unittest.TestCase):
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
             ctx = {'username':'Trial User', 'organization':organization}
-            self.assertEqual(render_to_string('registration/about_to_reach_sms_limit_en.html', ctx), email.body)
+            self.assertEqual(render_to_string('email/basicaccount/about_to_reach_sms_limit_en.html', ctx), email.body)
 
     def test_should_send_all_email_type_when_all_limit_are_about_to_reached(self):
         organization = self.incoming_request.get('organization')
@@ -78,7 +78,7 @@ class TestProcessSMSCounter(unittest.TestCase):
                 patch_get_total_submission_count.return_value = NEAR_SUBMISSION_LIMIT_TRIGGER
                 patch_get_total_message_count.return_value = NEAR_SMS_LIMIT_TRIGGER
                 check_quotas_and_update_users(organization=organization, sms_channel=True)
-                expected_subjects = ["About to reach sms limit", "About to reach submission limit"]
+                expected_subjects = ["Your Datawinners Submission Limit is Approaching!", "We'd like to invite You to Back to Datawinners!"]
                 msgs = [mail.outbox.pop() for i in range(len(mail.outbox))]
                 for msg in msgs:
                     self.assertIn(msg.subject, expected_subjects)

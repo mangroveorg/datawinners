@@ -1,0 +1,45 @@
+import unittest
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from datawinners import settings
+from datawinners.scheduler.scheduler import send_time_based_reminder_email
+from datawinners.accountmanagement.models import Organization, OrganizationIdCreator
+from datawinners.accountmanagement.utils import get_email_detail_by_type, RELATIVE_DELTA_BY_EMAIL_TYPE
+from mock import Mock, patch
+from django.contrib.auth.models import User, Group
+from datawinners.tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID
+from django.template.loader import render_to_string
+from django.core import mail
+
+class TestSendTimeBasedReminder(unittest.TestCase):
+
+    def setUp(self):
+        self.organization = Organization.objects.get(pk=TRIAL_ACCOUNT_ORGANIZATION_ID)
+        users = self.organization.get_related_users()
+        self.user = users[0]
+        self.group = Group.objects.get(name='NGO Admins')
+        self.group.user_set.add(self.user)
+
+    def tearDown(self):
+        self.group.user_set.remove(self.user)
+
+    def test_should_send_timebased_emails(self):
+        for email_type, delta in RELATIVE_DELTA_BY_EMAIL_TYPE.items():
+            active_date = datetime.today() - relativedelta(**delta[0])
+            self.organization.status_changed_datetime = active_date
+            self.organization.active_date = active_date
+            self.organization.save()
+            with patch.object(Organization, "get_all_trial_organizations", side_effect=self.organizations_side_effect):
+                subject, template, sender = get_email_detail_by_type(email_type)
+                send_time_based_reminder_email()
+                
+                email = mail.outbox.pop()
+                self.assertEqual(['chinatwu2@gmail.com'], email.to)
+                ctx = {'username':'Trial User', 'organization':self.organization}
+                self.assertEqual(render_to_string('email/%s_en.html' % template, ctx), email.body)
+                
+    def organizations_side_effect(self, active_date__contains=None):
+        if datetime.strftime(self.organization.status_changed_datetime, "%Y-%m-%d") == active_date__contains:
+            return [self.organization]
+        return []
+    
