@@ -20,7 +20,7 @@ BLANK_FIELDS = {NAME: "",
                 GPS: "",
                 ERROR_MSG: "Name This field is required.Mobile Number This field is required.Name Please fill out at least one location field correctly.GPS Coordinates Find GPS coordinates Please fill out at least one location field correctly."}
 
-VALID_DATA = {NAME: "Mickey Duck",
+VALID_DATA = {NAME: "ab Mickey Duck",
               MOBILE_NUMBER: random_number(),
               MOBILE_NUMBER_WITHOUT_HYPHENS: "98765432101",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
