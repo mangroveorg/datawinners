@@ -80,13 +80,7 @@
         {% blocktrans with project.entity_type as entity_type %}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}
         <br/><br/>
     </div>
-    {% if messages %}
-        <ul class="messages margin_bottom_20">
-            {% for message in messages %}
-                <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    {% include "flash_message.html" %}
 
     {% with create_subject_link=project_links.register_subjects_link_web_view %}
         {% include 'subject_table.html' %}

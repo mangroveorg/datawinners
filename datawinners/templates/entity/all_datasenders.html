@@ -47,13 +47,7 @@
 {% load i18n %}
 {% block content %}
     <div>
-        {% if messages %}
-            {% for message in messages %}
-                <div style="clear: both;" class="{% if 'success' in message.tags %} success-message-box {% else %} message-box {% endif %}"  >
-                    <span class="message-span">{{ message }}</span>
-                </div>
-            {% endfor %}
-        {% endif %}
+        {% include "flash_message.html" %}
         {% if grant_web_access %}
             <div id="flash-message" class="success-message-box">
                 {% trans "Access to Web Submission has been given to your DataSenders" %}
