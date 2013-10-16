@@ -2,7 +2,11 @@
 <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
 <script type="text/javascript" src="/media/javascript/datasenders/datasender_table.js"></script>
+<script type="text/javascript" src="/media/javascript/datasenders/all_datasenders_table.js"></script>
 <script type="text/javascript" src="/media/javascript/subjects/subject_actions.js"></script>
+<script>
+    var datasender_ajax_url = "{% url all_datasenders_ajax %}"
+</script>
 
 <div id="wrapper_div_for_table">
     {% include 'entity/all_data_senders/datasender_actions.html' %}

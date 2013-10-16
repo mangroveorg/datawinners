@@ -1,8 +1,11 @@
 $(document).ready(function () {
-    var checkbox_column_index = 0;
-    var projects_column_index = 8;
-    var name_column_index = 1;
-    $('#datasender_table').dataTable({
+    $("#datasender_table_filter").find("input").attr('placeholder', gettext('Enter any information you want to find'));
+});
+
+DW.DataSenderTable = function (options){
+      var name_column_index = 1;
+      var checkbox_column_index = 0;
+      $('#datasender_table').dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "bResetDisplay": true,
@@ -17,7 +20,7 @@ $(document).ready(function () {
                 },
                 "aTargets": [checkbox_column_index]
             },
-            {"bSortable": false, "aTargets": [checkbox_column_index, projects_column_index, $('#datasender_table th.devices').index('#datasender_table th')]}
+            {"bSortable": false, "aTargets": options.non_sortable_columns}
         ],
         "oLanguage": {"sInfoFiltered": "",
             "sLengthMenu": gettext("Show") + " _MENU_ " + gettext("Data Senders"),
@@ -28,7 +31,7 @@ $(document).ready(function () {
             "sSearch": "<strong>" + gettext("Search:") + "</strong>",
             "oPaginate": {"sFirst": "", "sPrevious": "◀", "sNext": "▶", "sLast": ""}},
         "sPaginationType": "dw_pagination",
-        "sAjaxSource": datasender_ajax_url,
+        "sAjaxSource": options.url,
         "sAjaxDataProp": "datasenders",
         "sServerMethod": "GET",
         "aaSorting": [
@@ -73,7 +76,5 @@ $(document).ready(function () {
                 "global": false
             });
         }
-
-    });
-    $("#datasender_table_filter").find("input").attr('placeholder', gettext('Enter any information you want to find'));
-});
+    })
+};

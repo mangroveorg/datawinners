@@ -40,7 +40,6 @@
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript">
         var users_list = {{ users_list|safe }};
-        var datasender_ajax_url = "{% url all_datasenders_ajax %}"
     </script>
 {% endblock %}
 
@@ -71,7 +70,7 @@
         {% include 'entity/all_data_senders/all_project_blocks.html' %}
         {% include 'entity/all_data_senders/web_submission_access_block.html' %}
         <h3 class="margin_top_20" hidden="true">{% trans "All Data Senders " %}</h3>
-        {% include 'entity/datasenders_table.html' %}
+        {% include 'entity/all_datasenders_table.html' %}
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
 
