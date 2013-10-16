@@ -16,7 +16,7 @@ DW.DataSenderTable = function (options){
         "aoColumnDefs": [
             { "sClass": "center",
                 "fnRender": function (data) {
-                    return '<input type="checkbox" value=' + data.aData[2].toLowerCase() + ' />';
+                    return '<input type="checkbox" value=' + data.aData[2] + ' />';
                 },
                 "aTargets": [checkbox_column_index]
             },
