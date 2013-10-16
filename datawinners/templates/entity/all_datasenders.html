@@ -49,7 +49,9 @@
     <div>
         {% if messages %}
             {% for message in messages %}
-                <div class="success-message-box">{{ message }}</div>
+                <div style="clear: both;" class="{% if 'success' in message.tags %} success-message-box {% else %} message-box {% endif %}"  >
+                    <span class="message-span">{{ message }}</span>
+                </div>
             {% endfor %}
         {% endif %}
         {% if grant_web_access %}

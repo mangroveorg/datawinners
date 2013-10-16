@@ -75,7 +75,8 @@ class AllDataSendersView(TemplateView):
                 'success': error_message is None and is_empty(failure_imports),
                 'message': success_message,
                 'error_message': error_message,
-                'failure_imports': failure_imports, 'all_data': all_data_senders,
+                'failure_imports': failure_imports,
+                'all_data': all_data_senders,
                 'imported_datasenders': imported_datasenders
             }))
 
