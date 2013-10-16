@@ -1,19 +1,16 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import os
-from datetime import  datetime
+from datetime import datetime
 
 from fabric.api import run, env
-from fabric.context_managers import cd, settings
+from fabric.context_managers import cd
 from fabric.operations import sudo
-
 
 DATAWINNERS = 'datawinners'
 MANGROVE = 'mangrove'
 couch_db_main_service_name = 'couchdbmain'
 couch_db_feed_service_name = 'couchdbfeed'
-
-TODAY_IN_UTC = str(datetime.utcnow().date()).replace('-', '')
 
 ENVIRONMENT_CONFIGURATIONS = {
     "prod": "../../datawinners-conf/datawinners/local_settings_ec2.py",
@@ -23,56 +20,9 @@ ENVIRONMENT_VES = "/home/mangrover/virtual_env/datawinners"
 
 ENVIRONMENT_TOMCAT = "/home/mangrover/tomcat7"
 
-ENVIRONMENT_JENKINS_JOB = {
-    MANGROVE: 'Mangrove-develop',
-    DATAWINNERS: 'Datawinners-develop'
-}
-
-
-def git_clone_datawinners_if_not_present(code_dir):
-    if run("test -d %s" % code_dir).failed:
-        run("git clone git://github.com/mangroveorg/datawinners.git %s" % code_dir)
-
-
-def git_clone_mangrove_if_not_present(code_dir):
-    if run("test -d %s" % code_dir).failed:
-        run("git clone git://github.com/mangroveorg/mangrove.git %s" % code_dir)
-
 
 def activate_and_run(virtual_env, command):
     run('source %s/bin/activate && %s' % (virtual_env, command))
-
-
-def branch_exists(branch_name):
-    return not run("git branch -a|grep %s" % branch_name).failed
-
-
-def sync_branch(branch):
-    run("git checkout %s" % branch)
-    run("git pull origin %s" % branch)
-
-
-def delete_if_branch_exists(build_number):
-    if branch_exists(build_number):
-        run("git branch -D %s" % build_number)
-
-
-def restart_gunicorn(virtual_env):
-    if gunicorn_is_running():
-        stop_gunicorn()
-    start_gunicorn(virtual_env)
-
-
-def gunicorn_is_running():
-    return not run("pgrep gunicorn").failed
-
-
-def stop_gunicorn():
-    run("kill -9 `pgrep gunicorn`")
-
-
-def start_gunicorn(virtual_env):
-    activate_and_run(virtual_env, "gunicorn_django -D -b 0.0.0.0:8000 --pid=mangrove_gunicorn")
 
 
 def restart_servers():
@@ -90,89 +40,6 @@ def start_servers():
     run("sudo service uwsgi start")
     run("sudo service nginx start")
     print 'server started..'
-
-
-def set_mangrove_commit_sha(branch, mangrove_build_number):
-    if mangrove_build_number == 'lastSuccessfulBuild':
-        mangrove_build_number = run(
-            "curl http://184.72.235.230:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
-    run("echo 'Checking the mangrove commit sha for build number %s'" % mangrove_build_number)
-    run(
-        "export MANGROVE_COMMIT_SHA=`curl -s http://184.72.235.230:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
-            branch, mangrove_build_number))
-    run("echo MANGROVE_COMMIT_SHA=$MANGROVE_COMMIT_SHA")
-
-
-def set_datawinner_commit_sha(branch,datawinner_build_number):
-    if datawinner_build_number == 'lastSuccessfulBuild':
-        datawinner_build_number = run("curl http://184.72.235.230:8080/job/Datawinners-%s/lastSuccessfulBuild/buildNumber")
-    run("echo 'Checking the datawinner commit sha for build number %s'" % datawinner_build_number)
-    run(
-        "export DATAWINNER_COMMIT_SHA=`curl -s http://184.72.235.230:8080/job/Datawinners-%s/%s/artifact/last_successful_commit_sha`" % (
-            branch, datawinner_build_number))
-    run("echo DATAWINNER_COMMIT_SHA=$DATAWINNER_COMMIT_SHA")
-
-
-def check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env):
-    git_clone_mangrove_if_not_present(mangrove_code_dir)
-    with cd(mangrove_code_dir):
-        run("cd %s" % mangrove_code_dir)
-        run("git reset --hard HEAD")
-        sync_branch(branch)
-        delete_if_branch_exists(mangrove_build_number)
-        run("git checkout -b %s $MANGROVE_COMMIT_SHA" % (mangrove_build_number, ))
-        run("git checkout .")
-        activate_and_run(virtual_env, "pip install -r requirements.pip")
-        activate_and_run(virtual_env, "python setup.py develop")
-
-
-def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, branch, virtual_env):
-    git_clone_datawinners_if_not_present(datawinners_code_dir)
-    with cd(datawinners_code_dir):
-        run("cd %s" % datawinners_code_dir)
-        run("git reset --hard HEAD")
-        sync_branch(branch)
-        delete_if_branch_exists(datawinner_build_number)
-        run("git checkout -b %s $DATAWINNER_COMMIT_SHA" % (datawinner_build_number, ))
-        run("git checkout .")
-        activate_and_run(virtual_env, "pip install -r requirements.pip")
-
-
-def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env, branch="develop",
-           environment="showcase",recreate_db = "true"):
-    """build_number : hudson build number to be deployed
-       home_dir: directory where you want to deploy the source code
-       virtual_env : path to your virtual_env folder
-    """
-    set_mangrove_commit_sha(branch, mangrove_build_number)
-    set_datawinner_commit_sha(branch, datawinner_build_number)
-
-    mangrove_code_dir = home_dir + '/mangrove'
-    datawinners_code_dir = home_dir + '/datawinners'
-    with settings(warn_only=True):
-        check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env)
-        check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, branch, virtual_env)
-        with cd(datawinners_code_dir + '/datawinners'):
-            run("cd %s/datawinners" % datawinners_code_dir)
-            replace_setting_file_for_environment(environment)
-            if recreate_db == "true":
-                activate_and_run(virtual_env, "python manage.py syncdb --noinput")
-                activate_and_run(virtual_env, "python manage.py migrate")
-                activate_and_run(virtual_env, "python manage.py recreatedb")
-                activate_and_run(virtual_env, "python manage.py recreatefeeddb")
-                activate_and_run(virtual_env, "python manage.py recreate_search_indexes")
-                activate_and_run(virtual_env, "python manage.py compilemessages")
-                activate_and_run(virtual_env, "python manage.py loadshapes")
-            if environment == "test":
-                run("chmod 775 " + home_dir + '/workspace/')
-                restart_gunicorn(virtual_env)
-            else:
-                restart_servers()
-
-
-def killfirefox():
-    with settings(warn_only=True):
-        run("killall firefox")
 
 
 def showcase():
@@ -206,18 +73,6 @@ def anonymous():
     run("uname -a")
 
 
-def commit_sha_from_build_number(jenkins_job_name, build_number):
-    if build_number == 'lastSuccessfulBuild':
-        build_number = run(
-            "curl http://184.72.235.230:8080/job/%s/lastSuccessfulBuild/buildNumber" % (jenkins_job_name,))
-    print("Retrieving the commit sha for build number %s of jenkins job %s" % (build_number, jenkins_job_name,))
-    commit_sha = run("curl -s http://184.72.235.230:8080/job/%s/%s/artifact/last_successful_commit_sha" % (
-        jenkins_job_name, build_number))
-
-    print("%s_commit_sha: %s" % (jenkins_job_name, commit_sha))
-    return commit_sha
-
-
 def _project_dir(code_dir, project_name):
     project_dir = os.path.join(code_dir, project_name)
     if run("test -d %s" % project_dir).failed:
@@ -225,39 +80,24 @@ def _project_dir(code_dir, project_name):
     return project_dir
 
 
-def checkout_project(context, project_name):
-    run("git reset --hard HEAD")
-    run("git checkout " + context.branch)
-    run("git pull --rebase")
-    if context.branch in ['develop', 'origin/develop']:
-        start_point = commit_sha_from_build_number(ENVIRONMENT_JENKINS_JOB[project_name],
-            context.build_numbers[project_name])
-    else:
-        start_point = context.branch
-    run("git checkout -B %s %s" % (TODAY_IN_UTC, start_point))
-
-
-def install_requirement(virtual_env):
-    activate_and_run(virtual_env, "pip install -r requirements.pip")
+def checkout_project(context):
+    run("git fetch -t")
+    run("git checkout -f %s" % context.branch)
 
 
 def post_checkout_datawinners(virtual_env):
-    install_requirement(virtual_env)
-
-
-def post_checkout_mangrove(virtual_env):
-    install_requirement(virtual_env)
-    activate_and_run(virtual_env, "python setup.py develop")
+    activate_and_run(virtual_env, "pip install -r requirements.pip")
 
 
 def deploy_project(context, project_name, post_checkout_function):
     with cd(_project_dir(context.code_dir, project_name)):
-        checkout_project(context, project_name)
+        checkout_project(context)
         post_checkout_function(context.virtual_env)
 
 
 def check_out_latest_custom_reports_code_for_production(code_dir):
     custom_reports_dir = _project_dir(code_dir, "custom_reports")
+    TODAY_IN_UTC = str(datetime.utcnow().date()).replace('-', '')
 
     with cd(custom_reports_dir):
         run("git reset --hard HEAD")
@@ -274,7 +114,8 @@ def _make_sure_code_dir_exists(context):
 
 
 def replace_setting_file_for_environment(environment):
-    run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS.get(environment) or ("config/local_settings_" + environment + ".py")))
+    run("cp %s local_settings.py" % (
+    ENVIRONMENT_CONFIGURATIONS.get(environment) or ("config/local_settings_" + environment + ".py")))
 
 
 def restart_couchdb():
@@ -296,18 +137,13 @@ def migrate_couchdb(context):
                         #restart_couchdb()
                         print 'Running migration: %s' % migration
                         activate_and_run(context.virtual_env,
-                            "python %s/%s" % (context.couch_migrations_folder, migration))
+                                         "python %s/%s" % (context.couch_migrations_folder, migration))
                         print 'Migration: %s complete' % migration
 
 
 def _link_repo(context, link_name):
     run('rm -f %s' % link_name)
     run('ln -s %s %s' % (os.path.join(context.code_dir, link_name), link_name))
-
-
-def _deploy_mangrove(context):
-    deploy_project(context, MANGROVE, post_checkout_mangrove)
-    _link_repo(context, MANGROVE)
 
 
 def _checkout_datawinners_conf(code_dir):
@@ -347,19 +183,18 @@ class Context(object):
 
 def production_deploy(mangrove_build_number="lastSuccessfulBuild",
                       datawinner_build_number="lastSuccessfulBuild",
-                      code_dir="/home/twer/workspace",
-                      environment='beta',
+                      code_dir="/home/mangrover/workspace",
+                      environment='showcase',
                       branch_name='develop',
                       couch_migration_file=None,
                       couch_migrations_folder=None):
     stop_servers()
     virtual_env = ENVIRONMENT_VES
     context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env,
-        couch_migration_file, couch_migrations_folder)
+                      couch_migration_file, couch_migrations_folder)
 
     _make_sure_code_dir_exists(context)
 
-    _deploy_mangrove(context)
     _deploy_datawinners(context)
 
     remove_cache(context)
@@ -385,10 +220,4 @@ def remove_cache(context):
         run('rm -rf CACHE/js/*')
         run('rm -rf CACHE/css/*')
 
-
-def run_func_tests(environment="qa_supreme"):
-    virtual_env = ENVIRONMENT_VES
-    activate_and_run(virtual_env, "true")
-    run("cd workspace/datawinners")
-    run("./build.sh ft")
 

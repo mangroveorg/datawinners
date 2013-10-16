@@ -74,16 +74,15 @@ class TestDataAnalysis(BaseTest):
 
     @attr('functional_test')
     def test_filter_data_records(self):
-        data_analysis_page = self.get_analysis_page()
-        self.verify_reporting_period_filter(data_analysis_page, FILTER_BY_CURRENT_MONTH)
-        self.verify_reporting_period_filter(data_analysis_page, FILTER_BY_LAST_MONTH)
-        self.verify_reporting_period_filter(data_analysis_page, FILTER_BY_YEAR_TO_DATE)
+        self.verify_reporting_period_filter(self.get_analysis_page(), FILTER_BY_CURRENT_MONTH)
+        self.verify_reporting_period_filter(self.get_analysis_page(), FILTER_BY_LAST_MONTH)
+        self.verify_reporting_period_filter(self.get_analysis_page(), FILTER_BY_YEAR_TO_DATE)
 
-        self.verify_submission_date_filter(data_analysis_page, CURRENT_MONTH)
-        self.verify_submission_date_filter(data_analysis_page, LAST_MONTH)
-        self.verify_submission_date_filter(data_analysis_page, YEAR_TO_DATE)
+        self.verify_submission_date_filter(self.get_analysis_page(), CURRENT_MONTH)
+        self.verify_submission_date_filter(self.get_analysis_page(), LAST_MONTH)
+        self.verify_submission_date_filter(self.get_analysis_page(), YEAR_TO_DATE)
 
-        self.verify_filter_data_records_by_subject_filter(data_analysis_page)
+        self.verify_filter_data_records_by_subject_filter(self.get_analysis_page())
 
 
     @attr('functional_test')

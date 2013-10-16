@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
+import re
 from babel.dates import format_date
 from django.http import Http404
 from django.utils.translation import gettext as _
@@ -181,6 +182,7 @@ def get_subject_report_questions(dbm):
 def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker, country_code=None):
     sms_client = SMSClient()
     sms_sent = None
+    failed_numbers = []
     for data_sender in data_senders:
         phone_number = data_sender.get(
             'mobile_number') #This should not be a dictionary but the API in import_data should be fixed to return entity
@@ -189,18 +191,23 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
             sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message)
         if sms_sent:
             message_tracker.increment_outgoing_message_count_by(1)
+        else:
+            failed_numbers.append(phone_number)
 
     for number in other_numbers:
         number = number.strip()
+        number_with_country_prefix = number
         if country_code:
-            number = "%s%s" % (country_code, number[1:])
+            number_with_country_prefix = "%s%s" % (country_code, re.sub(r"^[ 0]+", "", number))
 
-        logger.info(("Sending broadcast message to %s from %s") % (number, organization_tel_number))
-        sms_sent = sms_client.send_sms(organization_tel_number, number, message)
+        logger.info(("Sending broadcast message to %s from %s") % (number_with_country_prefix, organization_tel_number))
+        sms_sent = sms_client.send_sms(organization_tel_number, number_with_country_prefix, message)
         if sms_sent:
             message_tracker.increment_outgoing_message_count_by(1)
+        else:
+            failed_numbers.append(number)
 
-    return sms_sent
+    return failed_numbers
 
 
 def create_request(questionnaire_form, username, is_update=None):
