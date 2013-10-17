@@ -15,7 +15,7 @@ from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPa
 
 
 @attr('suit_1')
-class TestAllDataSender(unittest.TestCase):
+class TestAllDataSenderRegistration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
@@ -24,7 +24,7 @@ class TestAllDataSender(unittest.TestCase):
         login_page.do_successful_login_with(VALID_CREDENTIALS)
 
     def setUp(self):
-        TestAllDataSender.driver.refresh()
+        TestAllDataSenderRegistration.driver.refresh()
         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
         self.current_page = AddDataSenderPage(self.driver)
 

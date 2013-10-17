@@ -8,7 +8,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SEND
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 
 @attr('suit_1')
-class TestAllDataSender(unittest.TestCase):
+class TestAllDatasenderBehaviourInTrialOrg(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
