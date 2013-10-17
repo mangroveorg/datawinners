@@ -29,6 +29,7 @@ class AllDataSendersPage(Page):
         """
         Function to select a data sender on all data sender page
          """
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id), True)
         self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
 
     def select_project(self, project_name):

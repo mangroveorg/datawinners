@@ -68,6 +68,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
         self.assertEqual(registered_ds_page.get_number_of_selected_datasenders(), 0)
 
     @attr("functional_test")
+    @SkipTest # In projgess - Ajay/Yogesh
     def test_should_uncheck_checkall_if_one_cb_is_unchecked(self):
         registered_ds_page = self.go_to_registered_datasenders_page()
         registered_ds_page.click_checkall_checkbox()
