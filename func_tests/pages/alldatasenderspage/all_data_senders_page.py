@@ -114,7 +114,8 @@ class AllDataSendersPage(Page):
         """
         Function to fetch the success message from success label
          """
-        return self.driver.find(SUCCESS_MESSAGE_LABEL).text
+        locator = self.driver.wait_for_element(20, SUCCESS_MESSAGE_LABEL, want_visible=True)
+        return locator.text
 
     def get_delete_success_message(self):
 
