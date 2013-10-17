@@ -115,7 +115,7 @@ def _make_sure_code_dir_exists(context):
 
 def replace_setting_file_for_environment(environment):
     run("cp %s local_settings.py" % (
-    ENVIRONMENT_CONFIGURATIONS.get(environment) or ("config/local_settings_" + environment + ".py")))
+        ENVIRONMENT_CONFIGURATIONS.get(environment) or ("config/local_settings_" + environment + ".py")))
 
 
 def restart_couchdb():
@@ -181,20 +181,49 @@ class Context(object):
         self.couch_migrations_folder = couch_migrations_folder
 
 
+def take_psql_dump(name_prefix):
+    backup_name = "psql_backup_" + name_prefix + ".gz"
+    run('pg_dump mangrove | gzip > %s' % backup_name)
+
+
+def take_couchdbmain_dump(couchdb_path, name_prefix):
+    backup = "/home/mangrover/mangrove_couchdb_main_backup_" + name_prefix + ".tar.gz"
+    with cd(couchdb_path):
+        run('tar -czvPf  %s  couchdbmain' % backup)
+
+
+def take_couchdbfeed_dump(couchdb_path, name_prefix):
+    backup = "/home/mangrover/mangrove_couchdb_feed_backup_" + name_prefix + ".tar.gz"
+    with cd(couchdb_path):
+        run('tar -czvPf  %s  couchdbfeed' % backup)
+
+
+def take_database_backup(backup=False):
+    if backup:
+        couchdb_path = '/opt/apache-couchdb/var/lib'
+        today = datetime.now()
+        backup_prefix = today.strftime("%d-%M-%Y")
+        take_psql_dump(backup_prefix)
+        take_couchdbmain_dump(couchdb_path, backup_prefix)
+        take_couchdbfeed_dump(couchdb_path, backup_prefix)
+
+
 def production_deploy(mangrove_build_number="lastSuccessfulBuild",
                       datawinner_build_number="lastSuccessfulBuild",
                       code_dir="/home/mangrover/workspace",
                       environment='showcase',
                       branch_name='develop',
                       couch_migration_file=None,
-                      couch_migrations_folder=None):
+                      couch_migrations_folder=None,
+                      backup=False
+):
     stop_servers()
     virtual_env = ENVIRONMENT_VES
     context = Context(mangrove_build_number, datawinner_build_number, code_dir, environment, branch_name, virtual_env,
                       couch_migration_file, couch_migrations_folder)
 
     _make_sure_code_dir_exists(context)
-
+    take_database_backup(backup)
     _deploy_datawinners(context)
 
     remove_cache(context)
@@ -219,5 +248,3 @@ def remove_cache(context):
     with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS, 'media')):
         run('rm -rf CACHE/js/*')
         run('rm -rf CACHE/css/*')
-
-
