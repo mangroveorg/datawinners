@@ -1,8 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from time import sleep
 import unittest
+import time
+
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
+
 from framework.utils.data_fetcher import fetch_, from_
 from framework.base_test import setup_driver, teardown_driver
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
@@ -65,7 +67,6 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         rep_id = _parse(success_msg)
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_data_senders_page = AllDataSendersPage(self.driver)
-
         all_data_senders_page.select_a_data_sender_by_id(rep_id)
         all_data_senders_page.select_edit_action()
         self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
@@ -96,7 +97,7 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(EXISTING_DATA)
 
-        sleep(1)
+        time.sleep(1)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(EXISTING_DATA)))
 

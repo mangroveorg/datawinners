@@ -29,8 +29,13 @@ class AllDataSendersPage(Page):
         """
         Function to select a data sender on all data sender page
          """
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id), True)
-        self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
+        try:
+            self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id), True)
+            self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
+        except CouldNotLocateElementException:
+            self.select_page_size_of("50")
+            time.sleep(2)
+            self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
 
     def select_project(self, project_name):
         """
@@ -212,3 +217,8 @@ class AllDataSendersPage(Page):
 
     def is_disassociate_to_project_action_available(self):
         return self.is_action_available(DISSOCIATE)
+
+    def select_page_size_of(self, number):
+        dropdown = self.driver.find_drop_down(by_css("#datasender_table_length>select"))
+        dropdown.click()
+        dropdown.set_selected(number)
