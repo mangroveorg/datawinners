@@ -232,7 +232,8 @@ def all_subject_types(request):
 @is_not_expired
 def all_subjects(request, subject_type):
     manager = get_database_manager(request.user)
-    header_dict = header_fields(manager, subject_type)
+    form_model = get_form_model_by_entity_type(manager, [subject_type])
+    header_dict = header_fields(form_model)
     form_model = get_form_model_by_entity_type(manager, [subject_type])
     return render_to_response('entity/all_subjects.html',
                               {'subject_headers': header_dict,
@@ -325,7 +326,8 @@ def subject_short_codes_to_delete(request, manager, entity_type):
     if request.POST.get("all_selected", False):
         search_query = request.POST.get('search_query')
         subject_list = SubjectQuery().query(request.user, entity_type, search_query)
-        short_code_index = header_fields(manager, entity_type).keys().index("short_code")
+        form_model = get_form_model_by_entity_type(manager, [entity_type])
+        short_code_index = header_fields(form_model).keys().index("short_code")
         return [s[short_code_index] for s in subject_list]
 
     return request.POST['all_ids'].split(';')

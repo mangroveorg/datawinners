@@ -2,7 +2,7 @@ import elasticutils
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.main.database import get_db_manager
 from datawinners.project.models import get_all_projects
-from datawinners.search.index_utils import _entity_dict, _mapping
+from datawinners.search.index_utils import _entity_dict, get_fields_mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
 from datawinners.utils import get_organization_from_manager
 from mangrove.datastore.datadict import DataDictType
@@ -76,14 +76,14 @@ def create_datasender_index(database_name):
 def _create_datasender_mapping(form_model_doc, dbm):
     form_model = FormModel.new_from_doc(dbm, form_model_doc)
     if form_model.form_code == REGISTRATION_FORM_CODE:
-        _create_ds_mapping(dbm, form_model)
+        create_ds_mapping(dbm, form_model)
 
 
-def _create_ds_mapping(dbm, form_model):
+def create_ds_mapping(dbm, form_model):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
-    es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], _mapping(form_model.form_code, fields))
+    es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
 
 
 def update_datasender_for_project_change(project, dbm):

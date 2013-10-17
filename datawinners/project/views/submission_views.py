@@ -13,12 +13,14 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
+import jsonpickle
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
+from datawinners.search.entity_search import SubmissionQuery
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -55,7 +57,6 @@ websubmission_logger = logging.getLogger("websubmission")
 @session_not_expired
 @is_datasender
 @is_not_expired
-# TODO : TW_BLR : should have separate view for ui and data
 def index(request, project_id=None, questionnaire_code=None, tab="0"):
     manager = get_database_manager(request.user)
 
@@ -269,7 +270,6 @@ def get_option_value_for_field(diff_value, question_field):
 @session_not_expired
 @is_datasender
 @is_not_expired
-# TODO : no test
 def export(request):
     project_name = request.POST.get(u"project_name")
     submission_type = request.GET.get('type')
@@ -293,3 +293,28 @@ def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
     if is_errored_before_edit:
         form_model_ui.update({'is_error_to_success': is_errored_before_edit})
         form_model_ui['status'] = ugettext('Success')
+
+
+@valid_web_user
+def get_submissions(request, project_id):
+    dbm = get_database_manager(request.user)
+    form_model = get_form_model_by_code(dbm,project_id)
+    search_parameters = {}
+    search_text = request.GET.get('sSearch', '').strip()
+    search_parameters.update({"search_text": search_text})
+    search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
+    search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
+    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
+    search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
+    user = request.user
+    query_count, search_count, submissions= SubmissionQuery(form_model).paginated_query(user, form_model.id, search_parameters)
+
+    return HttpResponse(
+        jsonpickle.encode(
+            {
+                'submissions': submissions,
+                'iTotalDisplayRecords': search_count,
+                'iDisplayStart': int(request.GET.get('iDisplayStart')),
+                "iTotalRecords": query_count,
+                'iDisplayLength': int(request.GET.get('iDisplayLength'))
+            }, unpicklable=False), content_type='application/json')

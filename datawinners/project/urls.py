@@ -83,4 +83,5 @@ urlpatterns = patterns('',
                            name="submissions_delete"),
                        (r'^project/export/data$', analysis_views.export),
                        (r'^project/export/log$', submission_views.export),
+                       (r'^project/submissions/(?P<project_id>.+?)$', submission_views.get_submissions),
 )

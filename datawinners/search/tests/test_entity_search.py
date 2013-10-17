@@ -1,6 +1,6 @@
 from unittest import TestCase
 from mock import patch, Mock, MagicMock
-from datawinners.search.entity_search import ElasticUtilsHelper, EntityQueryBuilder, SubjectQueryResponseCreator, SubjectQuery
+from datawinners.search.entity_search import ElasticUtilsHelper, QueryBuilder, SubjectQueryResponseCreator, SubjectQuery
 from datawinners.search.entity_search import DatasenderQueryResponseCreator
 
 
@@ -18,7 +18,7 @@ class TestEntityQueryBuilder(TestCase):
             with patch("datawinners.search.entity_search.ELASTIC_SEARCH_URL") as searchUrl:
                 elasticUtilsMock.S.return_value = elasticUtilsMock
 
-                EntityQueryBuilder().create_query("subject_type", "database_name")
+                QueryBuilder().create_query("subject_type", "database_name")
 
                 elasticUtilsMock.S.assert_called_with()
                 elasticUtilsMock.es.assert_called_with(urls=searchUrl)
@@ -28,7 +28,7 @@ class TestEntityQueryBuilder(TestCase):
             elasticUtilsMock.S.return_value = elasticUtilsMock
             elasticUtilsMock.es.return_value = elasticUtilsMock
 
-            EntityQueryBuilder().create_query("entity_type", "database_name")
+            QueryBuilder().create_query("entity_type", "database_name")
 
             elasticUtilsMock.indexes.assert_called_with("database_name")
 
@@ -38,7 +38,7 @@ class TestEntityQueryBuilder(TestCase):
             elasticUtilsMock.es.return_value = elasticUtilsMock
             elasticUtilsMock.indexes.return_value = elasticUtilsMock
 
-            EntityQueryBuilder().create_query("subject_type", "database_name")
+            QueryBuilder().create_query("subject_type", "database_name")
 
             elasticUtilsMock.doctypes.assert_called_with("subject_type")
 
@@ -49,7 +49,7 @@ class TestEntityQueryBuilder(TestCase):
             elasticUtilsMock.indexes.return_value = elasticUtilsMock
             elasticUtilsMock.doctypes.return_value = elasticUtilsMock
 
-            EntityQueryBuilder().create_query("subject_type", "database_name")
+            QueryBuilder().create_query("subject_type", "database_name")
 
             elasticUtilsMock.filter.assert_called_with(void=False)
 
@@ -64,7 +64,7 @@ class TestEntityQueryBuilder(TestCase):
                     "order_field": "field_name_to_order_by"
                 }
 
-                EntityQueryBuilder().create_paginated_query("subject_type", "database_name", query_params)
+                QueryBuilder().create_paginated_query("subject_type", "database_name", query_params)
 
                 query.assert_called_with("subject_type", "database_name")
                 elasticUtilsMock.order_by.assert_called_with("-field_name_to_order_by_value")
@@ -81,7 +81,7 @@ class TestEntityQueryBuilder(TestCase):
                     "order_field": "field_name_to_order_by"
                 }
 
-                EntityQueryBuilder().create_paginated_query("subject_type", "database_name", query_params)
+                QueryBuilder().create_paginated_query("subject_type", "database_name", query_params)
 
                 elasticUtilsMock.__getitem__.assert_called_with(slice(1, 11, None))
 
@@ -90,7 +90,7 @@ class TestEntityQueryBuilder(TestCase):
         query_text = ""
         searchMock.query.return_value = searchMock
 
-        actual_query = EntityQueryBuilder().add_query_criteria([], query_text, searchMock)
+        actual_query = QueryBuilder().add_query_criteria([], query_text, searchMock)
 
         searchMock.query.assert_called_with()
         self.assertEquals(actual_query, searchMock)
@@ -103,7 +103,7 @@ class TestEntityQueryBuilder(TestCase):
             elastic_utils_helper.return_value = elastic_utils_helper
             elastic_utils_helper.replace_special_chars.return_value = "query_text_escaped"
 
-            EntityQueryBuilder().add_query_criteria(["query_field1", "query_field2"], query_text, searchMock)
+            QueryBuilder().add_query_criteria(["query_field1", "query_field2"], query_text, searchMock)
 
             elastic_utils_helper.replace_special_chars.assert_called_with('query_text')
             searchMock.query_raw.assert_called_with({

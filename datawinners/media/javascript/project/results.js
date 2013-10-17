@@ -7,6 +7,25 @@ $(document).ready(function () {
     buildFilters();
 
 
+    var dt = $('.submission_table').dataTable({
+        "bProcessing": true,
+        "bServerSide": true,
+        "bResetDisplay": true,
+        "aLengthMenu": [10, 25, 50, 100],
+        "iDisplayLength": 25,
+        "sDom": "ipfrtipl",
+        "sInput": "",
+        "sAjaxSource": '/project/submissions/022',
+        "sAjaxDataProp": "submissions",
+        "sServerMethod": "GET"
+    });
+
+
+
+
+
+
+
     function TabOptions() {
         var defaultOptions = {
             "show_status": true,
@@ -47,16 +66,6 @@ $(document).ready(function () {
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
 
-//    var $data_sender_filter = $('#dataSenderSelect,#subjectSelect');
-//    $data_sender_filter.dropdownchecklist($.extend({firstItemChecksAll:false,
-//        explicitClose:gettext("OK"),
-//        explicitClear:gettext("Clear"),
-//        width:$data_sender_filter.width(),
-//        eventCallback:function () {
-//            $('.ui-daterangepicker:visible').hide();
-//        }, maxDropHeight:200}, {emptyText:gettext("All Data Senders")}));
-//
-
     function buildFilters() {
         var subject_options = {emptyText: interpolate(gettext('All %(entity)s'), {entity: entity_type}, true)};
         var data_sender_options = {emptyText: gettext("All Data Senders")};
@@ -94,7 +103,7 @@ $(document).ready(function () {
         }
         active_tab_index = tab_index;
 
-        fetch_data(tab_index);
+        //fetch_data(tab_index);
     }).eq(default_tab).trigger('click');
 
 
@@ -113,7 +122,7 @@ $(document).ready(function () {
     }
 
     $('#go').click(function () {
-        fetch_data(active_tab_index);
+        //fetch_data(active_tab_index);
     });
 
     $('.export_link').click(function () {
@@ -228,7 +237,6 @@ $(document).ready(function () {
         }).get();
     }
 
-    //Checkbox on/off functionality
     $("#master_checkbox").live("click", function () {
         $(".selected_submissions").attr("checked", $(this).attr('checked') == "checked");
         submissions_action_dropdown.update_edit_action();
