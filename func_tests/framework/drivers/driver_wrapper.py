@@ -198,6 +198,7 @@ class DriverWrapper(object):
             except CouldNotLocateElementException as ne:
                 current_time = datetime.datetime.now()
                 if current_time >= end_time:
+                    self._driver.save_screenshot("/screenshots/error_screen_shot.png")
                     raise ne
 
     def wait_for_page_with_title(self, time_out_in_seconds, title):
