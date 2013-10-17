@@ -95,10 +95,6 @@ class ProjectDataSendersPage(AllDataSendersPage):
     def click_action_button(self):
         self.driver.find(ACTION_DROP_DOWN).click()
 
-    def is_edit_disabled(self):
-        css_class = self.driver.find(EDIT_LI_LOCATOR).get_attribute("class")
-        return css_class.find("disabled") < 0
-
     def is_none_selected_shown(self):
         return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()
 
