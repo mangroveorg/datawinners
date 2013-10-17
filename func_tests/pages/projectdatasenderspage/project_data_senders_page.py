@@ -29,13 +29,6 @@ class ProjectDataSendersPage(AllDataSendersPage):
         self.driver.find(ACCOUNT_LINK).click()
         return AccountPage(self.driver)
 
-    def select_a_data_sender_by_id(self, data_sender_id):
-        """
-        Function to select a data sender on all data sender page
-         """
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id), True)
-        self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
-
     def select_a_data_sender_by_mobile_number(self, mobile_number):
         """
         Function to select a data sender on all data sender page

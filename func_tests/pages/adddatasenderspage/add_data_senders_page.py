@@ -4,6 +4,7 @@ from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.adddatasenderspage.add_data_senders_locator import *
 from tests.alldatasenderstests.add_data_senders_data import *
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class AddDataSenderPage(Page):
@@ -53,6 +54,7 @@ class AddDataSenderPage(Page):
         Return error message
         """
         error_message = ""
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, ERROR_MESSAGE_LABEL, True)
         locators = self.driver.find_elements_(ERROR_MESSAGE_LABEL)
         if locators:
             for locator in locators:
