@@ -33,7 +33,7 @@ class TestRegisteredDataSenders(unittest.TestCase):
         return project_overview_page.navigate_to_datasenders_page()
 
     @attr("functional_test")
-    @SkipTest() # Development in Progress - Ajay
+    @SkipTest # Development in Progress - Ajay
     def test_should_load_actions_dynamically(self):
         registered_ds_page = self.go_to_registered_datasenders_page()
         registered_ds_page.click_action_button()
