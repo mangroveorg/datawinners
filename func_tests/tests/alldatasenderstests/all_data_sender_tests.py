@@ -22,6 +22,7 @@ from pages.warningdialog.warning_dialog_page import WarningDialog
 
 
 @attr('suit_1')
+@SkipTest
 class TestAllDataSender(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
