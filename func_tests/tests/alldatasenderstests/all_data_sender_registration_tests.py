@@ -9,6 +9,7 @@ from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
+from tests.alldatasenderstests.all_data_sender_tests import _parse
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
@@ -58,12 +59,14 @@ class TestAllDataSenderRegistration(unittest.TestCase):
     def test_successful_addition_editing_of_data_sender(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
-        mobile_number = fetch_(MOBILE_NUMBER, VALID_DATA)
-        self.assertRegexpMatches(add_data_sender_page.get_success_message(),
+        success_msg = add_data_sender_page.get_success_message()
+        self.assertRegexpMatches(success_msg,
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA)))
+        rep_id = _parse(success_msg)
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_data_senders_page = AllDataSendersPage(self.driver)
-        all_data_senders_page.select_a_data_sender_by_mobile(mobile_number)
+
+        all_data_senders_page.select_a_data_sender_by_id(rep_id)
         all_data_senders_page.select_edit_action()
         self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
         self.assertRegexpMatches(self.current_page.get_success_message(),
