@@ -3,6 +3,7 @@ from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import *
 from pages.page import Page
 from tests.alldatasenderstests.all_data_sender_data import *
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class AllDataSendersPage(Page):
@@ -171,6 +172,7 @@ class AllDataSendersPage(Page):
         self.driver.find(CHECKALL_DS_CB).click()
 
     def get_datasenders_count(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, ALL_DS_ROWS, True)
         return len(self.driver.find(ALL_DS_ROWS).find_elements(by="tag name", value="tr")[1:])
 
     def get_checked_datasenders_count(self):
