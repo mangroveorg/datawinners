@@ -116,7 +116,7 @@ class ProjectDataSendersPage(AllDataSendersPage):
         return len(self.get_inputs_webelement())
 
     def get_inputs_webelement(self):
-        return self.driver.find(by_id("associated_data_senders")).find_elements(by="css selector",
+        return self.driver.find(by_id("all_data_senders")).find_elements(by="css selector",
                                                                                 value="tbody tr td input")
 
     def is_checkall_checked(self):
