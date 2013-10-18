@@ -6,7 +6,7 @@ if __name__ == "__main__" and __package__ is None:
 from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSetting
 from datawinners.main.couchdb.utils import all_db_names
 from mangrove.datastore.entity import get_by_short_code
-from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 import logging
 from datawinners.main.database import get_db_manager
@@ -18,6 +18,8 @@ def add_email_data_to_entity_document(manager, short_code, data, logger):
     if "email" not in datasender.data.keys():
         datasender.update_latest_data([data])
         logger.info('migrated: short_code: %s'%short_code)
+    else:
+        logger.info('Already migrated')
 
 def migration_to_add_email_data_for_web_users_in_couch(db_name):
     logger = logging.getLogger(db_name)
@@ -26,7 +28,7 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
     manager = get_db_manager(db_name)
 
     email_field_code = "email"
-    form_model = get_form_model_by_code(manager, "reg")
+    form_model = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     email_field_label = form_model._get_field_by_code(email_field_code).name
     email_ddtype = form_model._get_field_by_code(email_field_code).ddtype
 
