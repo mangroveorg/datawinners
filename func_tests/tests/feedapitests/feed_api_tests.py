@@ -154,7 +154,7 @@ class TestFeeds(unittest.TestCase):
         for r in response_list_after_delete:
             print r["status"]
         print "Submission entries stop"
-        self.assertEquals(5, len(response_list_after_delete))
+        self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]
         expected_data_after_delete = {'q1': 'wp02', 'q3': '8.0', 'q2': '25.12.2013', 'q5': ['b'], 'q4': '24.12.2012',
                                       'q7': ['a', 'b'],
