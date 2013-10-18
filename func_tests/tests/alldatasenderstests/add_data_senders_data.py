@@ -2,7 +2,7 @@
 
 
 ##Variables
-from tests.alldatasenderstests.all_data_sender_data import random_number
+from framework.utils.common_utils import random_number
 
 NAME = "name"
 MOBILE_NUMBER = "mobile_number"

@@ -10,12 +10,11 @@ from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url
-from tests.alldatasenderstests.all_data_sender_data import random_string
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
-from framework.utils.common_utils import by_id, by_css
+from framework.utils.common_utils import by_id, by_css, random_string
 
 
 CLOSE_WARNING_DIALOGUE_LINK = by_css(

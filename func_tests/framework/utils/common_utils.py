@@ -112,3 +112,11 @@ def by_name(element_locator):
     Return dictionary of locator e.g. {"locator":element_locator,"by":By.NAME}
     """
     return {"locator": element_locator, "by": By.NAME}
+
+
+def random_number(length=6):
+    return ''.join(random.sample('1234567890', length))
+
+
+def random_string(length=6):
+    return ''.join(random.sample('abcdefghijklmnopqrs', length))

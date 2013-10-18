@@ -2,18 +2,9 @@
 
 
 ##Variables
-import random
 from datawinners.messageprovider.tests.test_message_handler import THANKS
+from framework.utils.common_utils import random_number, random_string
 from testdata.test_data import url
-
-
-def random_string(length=6):
-    return ''.join(random.sample('abcdefghijklmnopqrs', length))
-
-
-def random_number(length=6):
-    return ''.join(random.sample('1234567890', length))
-
 
 NAME = "name"
 MOBILE_NUMBER = "mobile_number"
