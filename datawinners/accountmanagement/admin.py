@@ -18,6 +18,7 @@ from datawinners.feeds.database import feeds_db_for
 from datawinners.settings import ELASTIC_SEARCH_URL
 import datetime, elasticutils
 from django.utils.safestring import mark_safe
+from django.contrib.admin.views.main import ChangeList
 
 admin.site.disable_action('delete_selected')
 
@@ -133,11 +134,57 @@ class MessageTrackerAdmin(DatawinnerAdmin):
     sms_api_usage.short_description = mark_safe('Sms api<br/>usage count')
 
 
+class OrganizationChangeList(ChangeList):
+    def get_query_set(self):
+        if not self.params.get("q", ""):
+            query_set = super(OrganizationChangeList, self).get_query_set()
+            return query_set
+        from django.db import connection
+        cursor = connection.cursor()
+        query = """Select array_agg(DISTINCT o.org_id) from accountmanagement_organization o
+            inner join accountmanagement_ngouserprofile p on p.org_id = o.org_id
+            inner join auth_user u on u.id = p.user_id inner join auth_user_groups ug on ug.user_id = u.id
+            inner join auth_group g on ug.group_id = g.id and g.name = %s  """
+        params = ["NGO Admins"]
+        
+        for index, keyword in enumerate(self.params.get("q").split()):
+            from django_countries.countries import COUNTRIES
+            codes = ["'" + code + "'" for code, name in COUNTRIES if unicode(name).lower().find(keyword.lower()) != -1 ]
+            country_codes = ', '.join(codes) if len(codes) else "''"
+            query += "and " if index else "where"
+            query += " (o.country in (%s) " % country_codes
+            query += """OR  u.email ilike %s OR u.first_name||u.last_name ilike %s OR o.name ilike %s
+                OR p.mobile_phone ilike %s OR o.address||o.addressline2||o.city||o.zipcode||o.state ilike %s
+                OR o.office_phone ilike %s OR o.website ilike %s OR o.org_id ilike %s
+                OR to_char(o.active_date, 'YYYY-MM-DD HH:MI:SS') ilike %s) """
+
+            params.extend(["%" + keyword + "%"] * 9)
+
+        cursor.execute(query, params)
+        org_ids = cursor.fetchone()[0]
+        qs = Organization.objects.filter(org_id__in=org_ids or [])
+
+        if self.order_field:
+            qs = qs.order_by('%s%s' % ((self.order_type == 'desc' and '-' or ''), self.order_field))
+        else:
+            qs = qs.order_by('-active_date')
+        return qs
+
 class OrganizationAdmin(DatawinnerAdmin):
     list_display = (
-        'organization_name', 'complete_address', 'office_phone', 'website', 'paid', 'created_on', 'admin_name',
-        'admin_email', 'admin_mobile_number', 'admin_office_phone', 'sms_api_users', 'status')
+        'name', 'org_id', 'complete_address', 'office_phone', 'website', 'paid', 'active_date', 'admin_name',
+        'admin_email', 'admin_mobile_number', 'sms_api_users', 'status')
     actions = ['deactivate_organizations', 'activate_organizations', 'delete_organizations']
+    search_fields = ['name', 'address', 'addressline2', 'city', 'zipcode', 'state', 'office_phone', 'website']
+
+    def get_changelist(self, request, **kwargs):
+        return OrganizationChangeList
+
+    def get_query_set(self, request, queryset, search_term):
+        queryset, use_distinct = super(OrganizationAdmin, self).get_search_results(request, queryset, search_term)
+        if search_term:
+            queryset = queryset.filter(ngouserprofile__title__icontains=search_term)
+        return queryset, use_distinct
 
     def deactivate_organizations(modeladmin, request, queryset):
         queryset.exclude(status='Deactivated').update(status='Deactivated',
@@ -174,18 +221,12 @@ class OrganizationAdmin(DatawinnerAdmin):
         css = {"all": ("/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css",)}
         js = ("/media/javascript/jquery.js", "/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js",)
 
-    def organization_name(self, obj):
-        return obj.name
-
     def sms_api_users(self, organization):
         user_profiles = NGOUserProfile.objects.filter(org_id=organization.org_id)
         return " , ".join([x.user.username for x in user_profiles if x.user.groups.filter(name="SMS API Users")])
 
     def paid(self, obj):
         return "No" if obj.in_trial_mode else "Yes"
-
-    def created_on(self, obj):
-        return obj.active_date
 
     def _get_ngo_admin(self, organization):
         user_profiles = NGOUserProfile.objects.filter(org_id=organization.org_id)
