@@ -106,6 +106,11 @@ class DriverWrapper(object):
         """
         return RadioButton(self.find(locator_dict))
 
+    def _create_screenshot(self):
+        if not os.path.exists("screenshots"):
+            os.mkdir("screenshots")
+        self._driver.save_screenshot("screenshots/error_screen_shot.png")
+
     def find(self, locator_dict):
         """
         Finds element on the web page using locator dictionary
@@ -119,7 +124,7 @@ class DriverWrapper(object):
         try:
             return self._driver.find_element(by=locator_dict[BY], value=locator_dict[LOCATOR])
         except NoSuchElementException as e:
-            self._driver.save_screenshot("/screenshots/error_screen_shot.png")
+            self._create_screenshot()
             raise CouldNotLocateElementException(selector=locator_dict[BY], locator=locator_dict[LOCATOR])
 
     def find_elements_(self, locator_dict):
@@ -199,7 +204,7 @@ class DriverWrapper(object):
             except CouldNotLocateElementException as ne:
                 current_time = datetime.datetime.now()
                 if current_time >= end_time:
-                    self._driver.save_screenshot("/screenshots/error_screen_shot.png")
+                    self._create_screenshot()
                     raise ne
 
     def wait_for_page_with_title(self, time_out_in_seconds, title):
