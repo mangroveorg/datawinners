@@ -1,5 +1,5 @@
+from framework.utils.common_utils import random_number, random_string
 from testdata.test_data import get_test_port
-from tests.alldatasenderstests.all_data_sender_data import random_number, random_string
 
 
 def url(path):

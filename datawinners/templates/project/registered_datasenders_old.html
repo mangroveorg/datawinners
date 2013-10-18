@@ -37,9 +37,6 @@
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
 
-    <script type="text/javascript" src="/media/javascript/entity/all_datasender_reload_tables.js"></script>
-    <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -76,9 +73,83 @@
     {% endif %}
 
     {% include 'entity/all_data_senders/web_submission_access_block.html' %}
+
+    <div id="action_dropdown">
+        <div id="action_button" class="action_bar clear-both" style="margin-bottom: 20px">
+            <div class="btn-group">
+                <button class="btn dropdown-toggle action ds_action" href="#"
+                        data-dropdown="#none-selected">{% trans "Actions" %}
+                    <span class="caret"></span>
+                </button>
+            </div>
+        </div>
+
+        <div id="action" class="dropdown">
+            <ul class="dropdown-menu">
+                {% if EDIT_DATA_SENDERS_ENABLED and not in_trial_mode %}
+                    <li><a class="edit" id="edit">{% trans "Edit" %}</a></li>
+                {% else %}
+                    {% if in_trial_mode %}
+                        <li class="disabled on_trial"><a class="edit" id="edit">{% trans "Edit" %} <span
+                                class="info">({% trans "not available for trial accounts" %})</span></a></li>
+                    {% endif %}
+                {% endif %}
+                <li><a class="disassociate" id="disassociate">{% trans "Remove from project" %}</a></li>
+                <li><a class="makewebuser" id="makewebuser">{% trans "Give Web Submission Access" %}</a></li>
+                <li><a class="delete" id="delete">{% trans "Delete" %}</a></li>
+            </ul>
+        </div>
+
+        <div id="none-selected" class="dropdown">
+            <div class="dropdown-panel">
+                {% trans "Select a Data Sender" %}
+            </div>
+        </div>
+    </div>
+
+    <div class="table_container">
+        <table id='associated_data_senders' class="styled_table">
+            <thead>
+            <tr>
+                <th><input type="checkbox" id="checkall-datasenders"/></th>
+                {% for title in labels %}
+                    <th>{% trans title %}</th>
+                {% endfor %}
+                <th>{% trans "Email" %}</th>
+                <th class="devices" colspan="3">
+                    <span>{% trans "Devices" %}</span>
+                    {% include "alldata/device_icons.html" %}
+                </th>
+            </tr>
+            </thead>
+            <tbody id="tbody" class="datasenders_list">
+            {% for data in all_data %}
+                <tr>
+                    <td><input id="{{ data.short_code }}" type="checkbox" value="{{ data.short_code }}"
+                               {% if data.is_user %}class="is_user"{% endif %}/>
+                    {% for col in data.cols %}
+                        <td class="{{ col }}">{{ col }}</td>
+                    {% endfor %}
+                    <td style="display: none">{{ data.project }}</td>
+                    <td class="email">{{ data.email|default_if_none:"" }}</td>
+                    <td class="device-icon"><img src="/media/images/right_icon.png" alt="Yes"></td>
+                    <td class="device-icon">
+                        {% if "Web" in data.devices %}
+                            <img src="/media/images/right_icon.png" alt="Yes">
+                        {% endif %}
+                    </td>
+                    <td class="device-icon">
+                        {% if "Smartphone" in data.devices %}
+                            <img src="/media/images/right_icon.png" alt="Yes">
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <input type="text" value="{{ project.id }}" class="none" id="project_id"/>
     <input type="hidden" value="{{ project.name }}" id="project_name"/>
-    {% include 'project/mydatasenders_table.html' %}
     <div id="popup-import">
         {% include "import-datasenders.html" %}
     </div>

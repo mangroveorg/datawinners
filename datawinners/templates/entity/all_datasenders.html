@@ -35,7 +35,7 @@
     <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript">
@@ -46,20 +46,14 @@
 {% load i18n %}
 {% block content %}
     <div>
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+        {% include "flash_message.html" %}
         {% if grant_web_access %}
             <div id="flash-message" class="success-message-box">
                 {% trans "Access to Web Submission has been given to your DataSenders" %}
             </div>
         {% endif %}
         <div class="grid_8 float_right omega text_align_right">
-            <a id="register_link" class="add_subject_link" href="{% url datawinners.entity.views.create_data_sender %}">
+            <a id="register_link" class="add_subject_link" href="{% url create_data_sender %}">
                 {% trans "Register a Data Sender" %}
             </a> <span class="padding_left_right_10"> | </span>
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
@@ -76,7 +70,7 @@
         {% include 'entity/all_data_senders/all_project_blocks.html' %}
         {% include 'entity/all_data_senders/web_submission_access_block.html' %}
         <h3 class="margin_top_20" hidden="true">{% trans "All Data Senders " %}</h3>
-        {% include 'entity/datasenders_table.html' %}
+        {% include 'entity/all_datasenders_table.html' %}
     </div>
         {% include "entity/delete_datasenders_warning_dialog.html" %}
 {% endblock %}

@@ -27,6 +27,7 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
     try:
         form_model.add_field(email_field)
         form_model.save()
+        logger.info("Migrated registration form")
     except Exception as e:
         logger.exception(e.message)
 

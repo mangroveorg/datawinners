@@ -31,12 +31,6 @@ class ProjectDataSendersPage(AllDataSendersPage):
         self.driver.find(ACCOUNT_LINK).click()
         return AccountPage(self.driver)
 
-    def select_a_data_sender_by_id(self, data_sender_id):
-        """
-        Function to select a data sender on all data sender page
-         """
-        self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
-
     def select_a_data_sender_by_mobile_number(self, mobile_number):
         """
         Function to select a data sender on all data sender page
@@ -97,10 +91,6 @@ class ProjectDataSendersPage(AllDataSendersPage):
     def click_action_button(self):
         self.driver.find(ACTION_DROP_DOWN).click()
 
-    def is_edit_enabled(self):
-        css_class = self.driver.find(EDIT_LI_LOCATOR).get_attribute("class")
-        return css_class.find("disabled") < 0
-
     def is_none_selected_shown(self):
         return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()
 
@@ -118,7 +108,7 @@ class ProjectDataSendersPage(AllDataSendersPage):
         return len(self.get_inputs_webelement())
 
     def get_inputs_webelement(self):
-        return self.driver.find(by_id("associated_data_senders")).find_elements(by="css selector",
+        return self.driver.find(by_id("all_data_senders")).find_elements(by="css selector",
                                                                                 value="tbody tr td input")
 
     def is_checkall_checked(self):

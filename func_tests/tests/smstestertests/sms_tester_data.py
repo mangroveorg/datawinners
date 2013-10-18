@@ -3,6 +3,7 @@
 
 ##Variables
 from datawinners.messageprovider.tests.test_message_handler import THANKS
+from framework.utils.common_utils import random_number
 
 SENDER = "from"
 RECEIVER = "to"
@@ -55,7 +56,7 @@ UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
 
 REGISTER_DATA_SENDER = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
-                        SMS: "REG .t Reporter .m 0123456789 .L  Jaipur .g 26.917 75.817 .N Donald Duck",
+                        SMS: "REG .t Reporter .m %s .L  Jaipur .g 26.917 75.817 .N Donald Duck" % random_number(9),
                         ERROR_MSG: u"Thank you Shweta, We registered your reporter: Reporter; "}
 
 REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",

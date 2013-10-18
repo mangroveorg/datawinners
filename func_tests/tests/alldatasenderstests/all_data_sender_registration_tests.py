@@ -1,21 +1,24 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from time import sleep
 import unittest
+import time
+
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
+
 from framework.utils.data_fetcher import fetch_, from_
 from framework.base_test import setup_driver, teardown_driver
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
+from tests.alldatasenderstests.all_data_sender_tests import _parse
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 
 
 @attr('suit_1')
-class TestAllDataSender(unittest.TestCase):
+class TestAllDataSenderRegistration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
@@ -24,7 +27,7 @@ class TestAllDataSender(unittest.TestCase):
         login_page.do_successful_login_with(VALID_CREDENTIALS)
 
     def setUp(self):
-        TestAllDataSender.driver.refresh()
+        TestAllDataSenderRegistration.driver.refresh()
         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
         self.current_page = AddDataSenderPage(self.driver)
 
@@ -58,12 +61,13 @@ class TestAllDataSender(unittest.TestCase):
     def test_successful_addition_editing_of_data_sender(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
-
-        self.assertRegexpMatches(add_data_sender_page.get_success_message(),
+        success_msg = add_data_sender_page.get_success_message()
+        self.assertRegexpMatches(success_msg,
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA)))
+        rep_id = _parse(success_msg)
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_data_senders_page = AllDataSendersPage(self.driver)
-        all_data_senders_page.select_a_data_sender_by_mobile(VALID_DATA[MOBILE_NUMBER_WITHOUT_HYPHENS])
+        all_data_senders_page.select_a_data_sender_by_id(rep_id)
         all_data_senders_page.select_edit_action()
         self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
         self.assertRegexpMatches(self.current_page.get_success_message(),
@@ -93,7 +97,7 @@ class TestAllDataSender(unittest.TestCase):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(EXISTING_DATA)
 
-        sleep(1)
+        time.sleep(1)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(EXISTING_DATA)))
 

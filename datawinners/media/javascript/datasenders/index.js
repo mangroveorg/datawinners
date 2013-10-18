@@ -1,4 +1,4 @@
-DW.get_is_user = function () {
+DW.get_users_from_selected_datasenders = function () {
     var users = new Array();
     users["ids"] = [];
     users["names"] = [];
@@ -13,19 +13,6 @@ DW.get_is_user = function () {
     return users;
 }
 
-//DW.get_is_user = function () {
-//    var users = new Array();
-//    users["ids"] = [];
-//    users["names"] = [];
-//    $('.datasenders_list .is_user:checked').each(function () {
-//
-//        users["ids"].push($(this).val());
-//        users["names"].push($(this).parent().next().html());
-//    });
-//
-//    return users;
-//}
-//
 DW.uncheck_all_users = function () {
     $(".datasenders_list .is_user").attr("checked", false);
 }
@@ -35,7 +22,6 @@ DW.action_enabled = false;
 $(document).ready(function () {
     var kwargs = {container: "#delete_all_ds_are_users_warning_dialog",
         cancel_handler: function () {
-//            $("#action").val("");
             $('#action').removeAttr("data-selected-action");
             $("input.is_user").attr("checked", false);
         },
@@ -74,7 +60,6 @@ $(document).ready(function () {
         zIndex: 1100,
         width: 900,
         beforeClose: function () {
-//            $('#action').val('');
             $('#action').removeAttr("data-selected-action");
             $('#web_user_error').hide();
         }
@@ -109,8 +94,8 @@ $(document).ready(function () {
                             "X-CSRFToken": $.cookie('csrftoken')
                         },
                         data: {
-                        'ids': allIds.join(';'),
-                        'project_id': projects.join(';')
+                            'ids': allIds.join(';'),
+                            'project_id': projects.join(';')
                         }
                     }
             ).done(function (data) {
@@ -150,13 +135,12 @@ $(document).ready(function () {
         $("#action").attr("data-selected-action", action);
 
         if (action == 'makewebuser') {
-//            this.removeClass('dropdown-open').parents('.btn-group').removeClass('open');
             populate_dialog_box_for_web_users();
 
         } else if (action == "delete") {
             $(this).val('');
             $("#note_for_delete_users").hide();
-            var users = DW.get_is_user();
+            var users = DW.get_users_from_selected_datasenders();
             if (users["names"].length) {
                 $("#checkall-datasenders").attr("checked", false);
                 var users_list_for_html = "<li>" + users["names"].join("</li><li>") + "</li>";
@@ -254,7 +238,6 @@ $(document).ready(function () {
 
     $("#checkall-datasenders").on("click", function () {
         var checked = $(this).attr("checked") == "checked";
-//        $("#all_data_senders tr td:first-child input:checkbox").attr("checked", checked);
 
         var action_dropdown = get_action_dropdown_object();
         if (!checked) {
@@ -280,6 +263,3 @@ $(document).ready(function () {
         $("#associate,#disassociate").parent().addClass("disabled");
     }
 });
-$("#all_data_senders tr td:first-child input:checkbox").on("click", function () {
-});
-

@@ -2,7 +2,7 @@
 
 
 ##Variables
-from tests.alldatasenderstests.all_data_sender_data import random_number
+from framework.utils.common_utils import random_number
 
 NAME = "name"
 MOBILE_NUMBER = "mobile_number"
@@ -20,19 +20,19 @@ BLANK_FIELDS = {NAME: "",
                 GPS: "",
                 ERROR_MSG: "Name This field is required.Mobile Number This field is required.Name Please fill out at least one location field correctly.GPS Coordinates Find GPS coordinates Please fill out at least one location field correctly."}
 
-VALID_DATA = {NAME: "Mickey Duck",
-              MOBILE_NUMBER: "9876-543-2101",
+VALID_DATA = {NAME: "ab Mickey Duck",
+              MOBILE_NUMBER: random_number(),
               MOBILE_NUMBER_WITHOUT_HYPHENS: "98765432101",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 VALID_EDIT_DATA = {NAME: "EDIT Mickey Duck",
-                   MOBILE_NUMBER: "9876-543-2107",
+                   MOBILE_NUMBER: random_number(),
                    COMMUNE: "PUNE",
                    GPS: "",
                    SUCCESS_MSG: "Your changes have been saved."}
 
-VALID_DATA_WITH_EMAIL = {NAME: "Mickey Duck",
+VALID_DATA_WITH_EMAIL = {NAME: "a Mickey Duck",
                          MOBILE_NUMBER: random_number(6),
                          COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                          EMAIL_ADDRESS: "mIcKeY",
@@ -58,14 +58,14 @@ EXISTING_DATA = {NAME: "Mickey Mouse",
                  GPS: "-21.7622088847 48.0690991394",
                  ERROR_MSG: "Mobile Number Sorry, the telephone number 1234567890 has already been registered"}
 
-WITHOUT_LOCATION_NAME = {NAME: "Mini Mouse",
-                         MOBILE_NUMBER: "345-673-45681",
+WITHOUT_LOCATION_NAME = {NAME: "a Mini Mouse",
+                         MOBILE_NUMBER: random_number(),
                          COMMUNE: "",
                          GPS: "-20.676646 47.197266",
                          SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 WITHOUT_GPS = {NAME: "Alladin",
-               MOBILE_NUMBER: "45673456821",
+               MOBILE_NUMBER: random_number(),
                COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                GPS: "",
                SUCCESS_MSG: "Registration successful. ID is: rep"}

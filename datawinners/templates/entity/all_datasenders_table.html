@@ -1,0 +1,31 @@
+{% load i18n %}
+<script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+<script type="text/javascript" src="/media/javascript/datasenders/datasender_table.js"></script>
+<script type="text/javascript" src="/media/javascript/datasenders/all_datasenders_table.js"></script>
+<script type="text/javascript" src="/media/javascript/subjects/subject_actions.js"></script>
+<script>
+    var datasender_ajax_url = "{% url all_datasenders_ajax %}"
+</script>
+
+<div id="wrapper_div_for_table">
+    {% include 'entity/all_data_senders/datasender_actions.html' %}
+
+    <table id='datasender_table' class="styled_table">
+        <thead>
+        <th><input type="checkbox" id="checkall-datasenders"/></th>
+        <th>{% trans "Name" %}</th>
+        <th>{% trans "Unique ID" %}</th>
+        <th>{% trans "Location" %}</th>
+        <th>{% trans "GPS Coordinates" %}</th>
+        <th>{% trans "Mobile Number" %}</th>
+        <th>{% trans "Email address" %}</th>
+        <th class="devices">
+            <span>{% trans "Devices" %}</span>
+            {% include "alldata/device_icons.html" %}
+        </th>
+        <th>{% trans "Projects" %}</th>
+        </thead>
+        <tbody id='all_data_senders' class="datasenders_list"></tbody>
+    </table>
+</div>

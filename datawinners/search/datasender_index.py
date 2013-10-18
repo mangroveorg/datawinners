@@ -50,12 +50,6 @@ def update_datasender_for_project_change(project, dbm):
     datasenders = project.get_associated_datasenders(dbm)
     [update_datasender_index(entity_doc, dbm) for entity_doc in datasenders]
 
-
-# def _create_mappings(dbm):
-#     for row in dbm.load_all_rows_in_view('questionnaire'):
-#         form_model_doc = FormModelDocument.wrap(row["value"])
-#         _create_datasender_mapping(form_model_doc, dbm)
-
 def create_datasender_index(database_name):
     dbm = get_db_manager(database_name)
     _create_datasender_mapping(dbm)

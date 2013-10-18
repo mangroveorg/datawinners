@@ -167,14 +167,14 @@ class TestDatasenderQueryResponseCreator(TestCase):
 
     def test_add_check_symbol_for_datasender_row(self):
         result = []
-        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
+        check_img = '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">'
         datasender = {'email': 'test@test.com'}
         DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
-        self.assertListEqual(result, [check_img + "&nbsp;" + check_img + "&nbsp;" + check_img])
+        self.assertListEqual(result, [check_img + check_img + check_img])
 
     def test_should_not_add_check_symbol_if_no_email_id(self):
         result = []
-        check_img = '<img alt="Yes" src="/media/images/right_icon.png">'
+        check_img = '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">'
         datasender = {'name': 'name'}
         DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
         self.assertListEqual(result, [check_img])

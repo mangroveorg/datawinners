@@ -52,4 +52,9 @@ $(document).ready(function() {
 
     $("body").ajaxComplete(move_focus_to_first_error_field);
     move_focus_to_first_error_field();
-})
+});
+
+
+RegExp.escape= function(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+};

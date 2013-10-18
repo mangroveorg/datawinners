@@ -20,7 +20,7 @@ BY = "by"
 ADD_A_DATA_SENDER_LINK = by_css("a.register_data_sender")
 ACCOUNT_LINK = by_css("a.account")
 DATA_SENDER_CHECK_BOX_BY_MOBILE_XPATH = "//tr/td[6][text()='%s']/../td[1]/input"
-DATA_SENDER_CHECK_BOX_BY_UID_XPATH = "//input[@id='%s']"
+DATA_SENDER_CHECK_BOX_BY_UID_XPATH = "//input[@value='%s']"
 DATA_SENDER_ROW_BY_UID_XPATH = "//input[@id='%s']/../.."
 DATA_SENDER_EMAIL_BY_UID_XPATH = "//input[@id='%s']/../../td[8]"
 DATA_SENDER_EMAIL_BY_MOBILE_NUMBER_XPATH = "//tr/td[6][text()='%s']/../td[8]"

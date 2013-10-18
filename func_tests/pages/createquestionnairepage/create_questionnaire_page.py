@@ -173,19 +173,22 @@ class CreateQuestionnairePage(CreateProjectPage):
         return self
         """
         self.driver.find_radio_button(LIST_OF_CHOICE_RB).click()
+        self.driver.find_element_by_id("choice_text").clear()
         index = 1
-        for choice in fetch_(CHOICE, from_(question_data)):
+        choices = fetch_(CHOICE, from_(question_data))
+        for choice in choices:
             if index > 1:
                 self.driver.find(ADD_CHOICE_LINK).click()
-            self.driver.find_text_box(
-                by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR)).enter_text(choice)
+                box = self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR))
+                box.send_keys(choice)
             index += 1
+        box = self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[1]" + CHOICE_TB_XPATH_LOCATOR))
+        box.send_keys(choices[0])
         choice_type = fetch_(ALLOWED_CHOICE, from_(question_data))
         if ONLY_ONE_ANSWER == choice_type:
             self.driver.find_radio_button(ONLY_ONE_ANSWER_RB).click()
         elif MULTIPLE_ANSWERS == choice_type:
             self.driver.find_radio_button(MULTIPLE_ANSWER_RB).click()
-        sleep(1)
         return self
 
 

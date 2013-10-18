@@ -21,6 +21,7 @@ from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from tests.registrationtests.registration_tests import register_and_get_email
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from framework.utils.database_manager_postgres import DatabaseManager
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 @attr('suit_1')
@@ -111,7 +112,10 @@ class TestShowActivityLog(unittest.TestCase):
             self.project_title)
         web_submission_page = project_overview.navigate_to_web_questionnaire_page()
         web_submission_page.fill_and_submit_answer(VALID_ANSWERS)
+        time.sleep(5)
         submission_log_page = web_submission_page.navigate_to_submission_log()
+        # self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".blockUI"), True)
+        # self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".blockUI"))
         submission_log_page.check_submission_by_row_number(1)
         submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
         edit_submission_page = WebSubmissionPage(self.driver)

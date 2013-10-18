@@ -35,6 +35,7 @@
             });
         });
         DW.ong_country = "{{ ong_country }}";
+        var failed_numbers = "{{ failed_numbers }}";
     </script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
@@ -43,14 +44,19 @@
 
 {% block content %}
     <div>
-        {% if success == None %}
-
-        {% else %}
-            {%if success %}
+        {%if success %}
                 <div class="success-message-box">{% trans "Your message has been sent successfully." %}</div>
             {% else %}
-                <div class="message-box">{% trans "Your message could not be sent." %}</div>
-            {% endif %}
+                {% if no_smsc %}
+                    <div class="message-box">{% trans "Your message could not be sent." %}</div>
+                {% else %}
+                    {% if failed_numbers %}
+                        <div class="message-box">{% blocktrans%}You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions. For more information contact support@datawinners.com: {{ failed_numbers }}.{%endblocktrans%}</div>
+                    {% else %}
+                {% endif %}
+        {% endif %}
+
+
         {% endif %}
 
         <div id="broadcast-form">

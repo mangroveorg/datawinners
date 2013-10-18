@@ -99,10 +99,10 @@ class ProjectSubjectsPage(Page):
         return AddSubjectPage(self.driver)
 
     def is_checkall_enabled(self):
-        WebDriverWait(self.driver, 2).until(lambda driver: not driver.find(CHECKALL_CB).is_enabled())
+        WebDriverWait(self.driver, UI_TEST_TIMEOUT).until(lambda driver: not driver.find(CHECKALL_CB).is_enabled())
         return self.driver.find(CHECKALL_CB).is_enabled()
 
     def is_checkall_disabled(self):
-        WebDriverWait(self.driver, 2).until_not(lambda driver: driver.find(CHECKALL_CB).is_enabled(),
+        WebDriverWait(self.driver, UI_TEST_TIMEOUT).until_not(lambda driver: driver.find(CHECKALL_CB).is_enabled(),
                                                 message="Check-All box is not disabled")
         return not self.driver.find(CHECKALL_CB).is_enabled()

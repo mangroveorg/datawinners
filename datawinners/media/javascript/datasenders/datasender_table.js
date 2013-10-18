@@ -1,5 +1,11 @@
 $(document).ready(function () {
-    $('#datasender_table').dataTable({
+    $("#datasender_table_filter").find("input").attr('placeholder', gettext('Enter any information you want to find'));
+});
+
+DW.DataSenderTable = function (options){
+      var name_column_index = 1;
+      var checkbox_column_index = 0;
+      $('#datasender_table').dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "bResetDisplay": true,
@@ -9,29 +15,30 @@ $(document).ready(function () {
         "sInput": "",
         "aoColumnDefs": [
             { "sClass": "center",
-//                "sTitle": "<input type='checkbox'id='checkall-datasenders'></input>",
                 "fnRender": function (data) {
                     return '<input type="checkbox" value=' + data.aData[2] + ' />';
                 },
-                "aTargets": [0]
+                "aTargets": [checkbox_column_index]
             },
-            {"bSortable": false, "aTargets": [0, $('#datasender_table th.devices').index('#datasender_table th')]}
+            {"bSortable": false, "aTargets": options.non_sortable_columns}
         ],
-        "oLanguage": {"sInfoFiltered": "",
-            "sLengthMenu": gettext("Show") + " _MENU_ " + gettext("Data Senders"),
-            "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
-            "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s datasenders"),
-                {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_'}, true),
-            "sInfoEmpty": gettext("<b> 0 to 0</b> of 0") + " " + gettext("Data Senders"),
-//            "sEmptyTable": $('#no_registered_subject_message').clone(true, true).removeAttr("hidden").html(),
-            "sSearch": "<strong>" + gettext("Search:") + "</strong>",
-            "oPaginate": {"sFirst": "", "sPrevious": "◀", "sNext": "▶", "sLast": ""}},
+        "oLanguage": {
+                        "sInfoFiltered": "",
+                        "sLengthMenu": gettext("Show") + " _MENU_ " + gettext("Data Senders"),
+                        "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
+                        "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s datasenders"),
+                            {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_'}, true),
+                        "sInfoEmpty": gettext("<b> 0 to 0</b> of 0") + " " + gettext("Data Senders"),
+                        "sSearch": "<strong>" + gettext("Search:") + "</strong>",
+                        "oPaginate": {"sFirst": "", "sPrevious": "◀", "sNext": "▶", "sLast": ""},
+                        "sZeroRecords": gettext("No matching records found")
+                     },
         "sPaginationType": "dw_pagination",
-        "sAjaxSource": '/entity/datasenders/ajax/',
+        "sAjaxSource": options.url,
         "sAjaxDataProp": "datasenders",
         "sServerMethod": "GET",
         "aaSorting": [
-            [ 1, "asc"]
+            [  name_column_index, "asc"]
         ],
         "fnInitComplete": function (oSettings) {
             var cloned_element = $("#action_dropdown").clone(true);
@@ -72,8 +79,5 @@ $(document).ready(function () {
                 "global": false
             });
         }
-
-    });
-    $("#datasender_table_filter").find("input").attr('placeholder', gettext('Enter any information you want to find'));
-
-});
+    })
+};

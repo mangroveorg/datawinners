@@ -69,11 +69,26 @@ function recreate_feed_db {
 
 function function_test {
 	echo "running function test"
-	cp "$DWROOT_DIR/datawinners/config/local_settings_example.py" "$DWROOT_DIR/func_tests/resources/local_settings.py"
-	restore_postgresql_database && \
-	recreate_couch_db && \
-	compile_messages && \
-	(cd "$DWROOT_DIR/func_tests" && nosetests --rednose -v -a functional_test)
+	export WORKSPACE=~/workspace/datawinners
+    cd $WORKSPACE
+    dropdb ftdb || echo ftdb database is not present
+	createdb -T template_postgis ftdb
+	ps -ef|grep Xvfb |grep -v grep || Xvfb :99 -ac >>/dev/null 2>&1 &
+    export DISPLAY=":99"
+    export PYTHONPATH=$WORKSPACE
+    pip install -r requirements.pip
+    cp datawinners/config/local_settings_ft.py datawinners/local_settings.py
+    cp datawinners/config/local_settings_ft.py func_tests/resources/local_settings.py
+
+	cd datawinners
+    python manage.py syncdb --noinput
+    python manage.py migrate --noinput
+    python manage.py recreatedb
+    python manage.py compilemessages
+
+    gunicorn_django -D -b 0.0.0.0:9000 --pid=/tmp/mangrove_gunicorn_${JOB_NAME} -w 10
+    cd $WORKSPACE/func_tests  && nosetests -vx -a "functional_test" --with-xunit --xunit-file=${WORKSPACE}/xunit.xml --processes=5 --process-timeout=900
+
 }
 
 function smoke_test {

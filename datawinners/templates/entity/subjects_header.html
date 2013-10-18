@@ -65,15 +65,6 @@
             </li>
         </ul>
         {% block help_accordian %}{% endblock %}
-        <div>
-            {% if messages %}
-                <ul class="messages margin_bottom_20">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
 
         {% block page_content %} {% endblock %}
     </div>
