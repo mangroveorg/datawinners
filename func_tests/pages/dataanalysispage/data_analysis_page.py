@@ -92,6 +92,7 @@ class DataAnalysisPage(Page):
 
         return list of web elements
         """
+        self.driver.wait_until_element_is_not_present(20, by_css("loading"))
         return self.driver.find_elements_(DATA_ROWS)
 
     def get_question(self, question_number):
