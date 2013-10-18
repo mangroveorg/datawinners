@@ -108,7 +108,7 @@ class TestFeeds(unittest.TestCase):
         self.assertEquals(feed_entry['status'], status)
 
 
-    @attr('functional_test123')
+    @attr('functional_test')
     def test_feeds(self):
         start_date = self._get_encoded_date()
         questionnaire_code = self.project_overview_page.get_questionnaire_code()
