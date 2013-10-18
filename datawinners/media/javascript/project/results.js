@@ -15,7 +15,7 @@ $(document).ready(function () {
         "iDisplayLength": 25,
         "sDom": "ipfrtipl",
         "sInput": "",
-        "sAjaxSource": '/project/submissions/022',
+        "sAjaxSource": '/project/submissions/cli004',
         "sAjaxDataProp": "submissions",
         "sServerMethod": "GET"
     });

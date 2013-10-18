@@ -6,7 +6,6 @@ from mangrove.datastore.documents import FormModelDocument
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.search import form_model_change_handler, entity_search_update
 from datawinners.search.datasender_index import create_datasender_index
-from datawinners.search.subject_index import create_subject_index
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.entity import Entity
 

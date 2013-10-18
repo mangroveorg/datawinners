@@ -144,8 +144,14 @@ class SubmissionQueryResponseCreator():
         subjects = []
         for res in query.values_dict(tuple(required_field_names)):
             subject = []
+            subject.append([res.get('ds_name'),res.get('ds_id')])
+
             for key in required_field_names:
-                subject.append(res.get(key))
+             if not key  in ['ds_id' ,'ds_name'] :
+                if(isinstance(res.get(key),dict)):
+                    subject.append(res.get(key).values())
+                else:
+                    subject.append(res.get(key))
             subjects.append(subject)
         return subjects
 
@@ -157,7 +163,16 @@ class SubmissionQuery(Query):
 
     def get_headers(self,user, form_code):
         header_dict = OrderedDict()
-        header_dict.update({"status":"Status"})
-        header_dict.update({"status":"Status"})
-        header_dict = header_fields(self.form_model, "code", header_dict)
+        self._update_static_header_info(header_dict)
+        def key_attribute(field): return field.code.lower()
+        header_dict = header_fields(self.form_model, key_attribute, header_dict)
         return header_dict
+
+    def _update_static_header_info(self, header_dict):
+        header_dict.update({"ds_id": "Datasender Id"})
+        header_dict.update({"ds_name": "Datasender Name"})
+        header_dict.update({"date": "Submission Date"})
+        header_dict.update({"status": "Status"})
+        header_dict.update({"eid": "Entity"})
+        header_dict.update({"rd": "Reporting Date"})
+

@@ -10,7 +10,6 @@ from datawinners.project.models import Project
 from datawinners.search.datasender_index import update_datasender_for_project_change, create_ds_mapping
 
 
-
 def form_model_change_handler(form_model_doc, dbm):
     form_model = FormModel.new_from_doc(dbm, form_model_doc)
     if form_model.is_entity_registration_form():
@@ -28,11 +27,18 @@ def update_submission_search_index(submission_doc,feed_dbm):
     form_model = get_form_model_by_code(dbm, submission_doc.form_code)
     search_dict = {}
     search_dict.update({"status": submission_doc.status})
-    search_dict.update({"date": submission_doc.survey_response_modified_time})
+    search_dict.update({"date": submission_doc.survey_response_modified_time.strftime("%b. %d,%Y, %H:%M %p")})
+    search_dict.update({"ds_id": submission_doc.data_sender.get('id')})
+    search_dict.update({"ds_name": submission_doc.data_sender.get('last_name')})
+
     for key in submission_doc.values:
-        value = submission_doc.values[key].get("answer")
+        field = submission_doc.values[key]
+        value = field.get("answer")
         if (isinstance(value,dict)):
-            value = value.get("name")
+            if field.get('is_entity_question'):
+                value = value.get("name")
+            else:
+                value = ','.join(value.values())
         search_dict.update({key: value})
     es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id)
 
