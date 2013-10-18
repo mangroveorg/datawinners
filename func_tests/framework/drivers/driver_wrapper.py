@@ -119,6 +119,7 @@ class DriverWrapper(object):
         try:
             return self._driver.find_element(by=locator_dict[BY], value=locator_dict[LOCATOR])
         except NoSuchElementException as e:
+            self._driver.save_screenshot("/screenshots/error_screen_shot.png")
             raise CouldNotLocateElementException(selector=locator_dict[BY], locator=locator_dict[LOCATOR])
 
     def find_elements_(self, locator_dict):
