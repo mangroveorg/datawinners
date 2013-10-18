@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import copy
 import time
+from unittest import SkipTest
 
 from nose.plugins.attrib import attr
 
@@ -151,6 +152,7 @@ class TestDataAnalysis(BaseTest):
         self.assertEqual(str_data_sender.strip(), data_records[0])
 
     @attr('functional_test')
+    @SkipTest # To be rewritten by explicitly creating submissions rather than depending on initial data - Ajay
     def test_filter_data_records_by_datasender(self):
         data_analysis_page = self.go_to_analysis_page(fetch_(PROJECT_NAME, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)),
                                                       cache_url=False)
