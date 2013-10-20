@@ -102,7 +102,7 @@ class TestFeeds(unittest.TestCase):
         submission_log_page = analysis_page.navigate_to_all_data_record_page()
         self.driver.wait_until_element_is_not_present(20, by_css("loading")) #wait for table to load
         submission_log_page.check_submission_by_row_number(1)
-        self._create_screenshot("api_test_row_to_be_deleted")
+        self._create_screenshot("api_test_row_to_be_deleted.png")
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
