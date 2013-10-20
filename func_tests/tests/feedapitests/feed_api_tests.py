@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 import time
 import unittest
 import urllib2
@@ -6,6 +7,7 @@ import jsonpickle
 from nose.plugins.attrib import attr
 import requests
 from framework.base_test import setup_driver, teardown_driver
+from framework.utils.common_utils import by_css
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.dashboardpage.dashboard_page import DashboardPage
@@ -56,7 +58,13 @@ class TestFeeds(unittest.TestCase):
         submission_page = project_overview_page.navigate_to_web_questionnaire_page()
         time.sleep(2)
         submission_page.fill_and_submit_answer(ANSWERS_TO_BE_SUBMITTED)
-        self.assertFalse(submission_page.get_errors())
+        self._create_screenshot("api_feed_sub_success.png")
+        self.assertEqual(submission_page.get_success_message(), "Successfully submitted", "Web submission failed")
+
+    def _create_screenshot(self, filename):
+        if not os.path.exists("screenshots"):
+            os.mkdir("screenshots")
+        TestFeeds.driver.save_screenshot("screenshots/" + filename)
 
     def _edit_data(self):
         analysis_page = self.project_overview_page.navigate_to_data_page()
@@ -66,7 +74,7 @@ class TestFeeds(unittest.TestCase):
         submission_page = WebSubmissionPage(self.driver)
         time.sleep(2)
         submission_page.fill_and_submit_answer(EDITED_ANSWERS)
-        self.assertFalse(submission_page.get_errors())
+        self.assertEqual(submission_page.get_success_message(), "Your changes have been saved.", "Edit of web submission failed")
 
     def _get_encoded_date(self):
         time.sleep(1)
@@ -92,7 +100,9 @@ class TestFeeds(unittest.TestCase):
     def delete_submission(self):
         analysis_page = self.project_overview_page.navigate_to_data_page()
         submission_log_page = analysis_page.navigate_to_all_data_record_page()
+        self.driver.wait_until_element_is_not_present(20, by_css("loading")) #wait for table to load
         submission_log_page.check_submission_by_row_number(1)
+        self._create_screenshot("api_test_row_to_be_deleted")
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
