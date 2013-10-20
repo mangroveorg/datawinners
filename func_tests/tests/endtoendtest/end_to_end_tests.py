@@ -205,12 +205,6 @@ class TestApplicationEndToEnd(BaseTest):
         project_overview_page = all_projects_page.navigate_to_project_overview_page(self.project_name)
         project_overview_page.activate_project()
         self.assertEqual(project_overview_page.get_status_of_the_project(), "Active")
-        # analysis_page = project_overview_page.navigate_to_data_page()
-        # msg = u"Your Data Senders\u2019 successful submissions will appear here"
-        # self.assertIn(msg, analysis_page.get_all_data_records()[0])
-        # submission_log_page = analysis_page.navigate_to_all_data_record_page()
-        # msg = "Once your Data Senders have sent in Submissions, they will appear here."
-        # self.assertIn(msg, submission_log_page.empty_help_text())
 
     def verify_submission_via_web(self, ds_email):
         self.driver.go_to(LOGOUT)
