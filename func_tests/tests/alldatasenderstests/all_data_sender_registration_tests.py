@@ -31,17 +31,17 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
         self.current_page = AddDataSenderPage(self.driver)
 
-    def tearDown(self):
-        import sys
-
-        exception_info = sys.exc_info()
-        if exception_info != (None, None, None):
-            import os
-
-            if not os.path.exists("screenshots"):
-                os.mkdir("screenshots")
-            self.driver.get_screenshot_as_file(
-                "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
+    # def tearDown(self):
+        # import sys
+        #
+        # exception_info = sys.exc_info()
+        # if exception_info != (None, None, None):
+        #     import os
+        #
+        #     if not os.path.exists("screenshots"):
+        #         os.mkdir("screenshots")
+        #     self.driver.get_screenshot_as_file(
+        #         "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
 
     @classmethod
     def tearDownClass(cls):
