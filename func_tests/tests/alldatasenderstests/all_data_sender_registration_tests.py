@@ -47,16 +47,14 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
         success_msg = add_data_sender_page.get_success_message()
-        self.assertRegexpMatches(success_msg,
-                                 fetch_(SUCCESS_MSG, from_(VALID_DATA)))
+        self.assertRegexpMatches(success_msg, fetch_(SUCCESS_MSG, from_(VALID_DATA)))
         rep_id = self._parse(success_msg)
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_data_senders_page = AllDataSendersPage(self.driver)
         all_data_senders_page.select_a_data_sender_by_id(rep_id)
         all_data_senders_page.select_edit_action()
         self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
-        self.assertRegexpMatches(self.current_page.get_success_message(),
-                                 fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATA)))
+        self.assertRegexpMatches(self.current_page.get_success_message(), fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATA)))
 
     @attr('functional_test')
     def test_addition_of_data_sender_without_email_address(self):

@@ -114,7 +114,7 @@ def by_name(element_locator):
     return {"locator": element_locator, "by": By.NAME}
 
 
-def random_number(length=6):
+def random_number(length=9):
     return ''.join(random.sample('1234567890', length))
 
 
