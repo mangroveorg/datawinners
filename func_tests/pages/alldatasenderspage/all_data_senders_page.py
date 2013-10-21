@@ -211,6 +211,9 @@ class AllDataSendersPage(Page):
     def get_empty_table_result(self):
         return self.driver.find_visible_element(by_css("td.dataTables_empty")).text
 
+    def get_pagination_text(self):
+        return self.driver.find_visible_element(by_id("datasender_table_info")).text
+
     def get_checkbox_selector_for_datasender_row(self, row_number):
         # first row is used to show all rows select message
         return by_xpath(".//*[@id='all_data_senders']/tr[%s]/td[1]/input" % (row_number + 1))

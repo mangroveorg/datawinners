@@ -103,10 +103,12 @@ class TestAllDataSenders(BaseTest):
         self.all_datasenders_page.search_with("non_existent_DS")
         self.assertFalse(self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
         self.assertEqual("No matching records found", self.all_datasenders_page.get_empty_table_result())
+        self.assertEqual("0 to 0 of 0 Data Senders", self.all_datasenders_page.get_pagination_text())
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
-        self.assertTrue(self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
-        self.assertFalse(self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(2)),msg="More than expected number of rows present")
         self.assertEqual(self.datasender_id_without_web_access,self.all_datasenders_page.get_cell_value(row=1,column=3),msg="matching row does not have specified ID")
+        self.assertFalse(self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(2)),msg="More than expected number of rows present")
+        self.assertEqual("1 to 1 of 1 Data Senders", self.all_datasenders_page.get_pagination_text())
+
 
 #
 #     @attr('functional_test')
