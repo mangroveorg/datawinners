@@ -17,13 +17,18 @@ $(document).ready(function () {
         "sInput": "",
         "sAjaxSource": '/project/submissions/cli004',
         "sAjaxDataProp": "submissions",
-        "sServerMethod": "GET"
+        "sServerMethod": "GET",
+        "aoColumnDefs": [
+            { "sClass": "center",
+                "sTitle": "<input type='checkbox'id='checkall-checkbox'></input>",
+                "fnRender": function (data) {
+                    return '<input type="checkbox" value=' + data.aData[0] + ' />';
+                },
+                "aTargets": [0]
+            },
+            {"bSortable": false, "aTargets": [0]}
+        ]
     });
-
-
-
-
-
 
 
     function TabOptions() {

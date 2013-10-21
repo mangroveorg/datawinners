@@ -58,5 +58,5 @@ class SubmissionsPageHeader(Header):
 
 
     def _prefix(self):
-        return [self._data_sender_header(), self._submission_date_header(), self._status(),
+        return [self._id(),self._data_sender_header(), self._submission_date_header(), self._status(),
                 self._subject_header(), self._reporting_period_header()]

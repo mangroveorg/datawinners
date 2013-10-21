@@ -144,6 +144,7 @@ class SubmissionQueryResponseCreator():
         subjects = []
         for res in query.values_dict(tuple(required_field_names)):
             subject = []
+            subject.append(res._id)
             subject.append([res.get('ds_name'),res.get('ds_id')])
 
             for key in required_field_names:
