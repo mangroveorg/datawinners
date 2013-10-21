@@ -63,12 +63,15 @@ class TestAllDataSenders(BaseTest):
     @attr('functional_test')
     def test_successful_association_and_dissociation_of_data_sender(self):
         project_name = "clinic test project1"
-        self.all_datasenders_page.associate_datasender_to_project(self.datasender_id_without_web_access, project_name)
+        self.all_datasenders_page.associate_datasender_to_projects(self.datasender_id_without_web_access, ["clinic test project1", "clinic test project"])
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
-        self.assertIn(project_name, self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
-        self.all_datasenders_page.dissociate_datasender_from_project(self.datasender_id_without_web_access, project_name)
+        self.assertEqual("clinic test project, clinic test project1", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
+        self.all_datasenders_page.dissociate_datasender_from_project(self.datasender_id_without_web_access, "clinic test project1")
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
-        self.assertNotIn(project_name, self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
+        self.assertEqual("clinic test project", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
+        self.all_datasenders_page.dissociate_datasender_from_project(self.datasender_id_without_web_access, "clinic test project")
+        self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
+        self.assertEqual("", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
 
     # @attr('functional_test')
     # def test_dissociate_ds_without_selecting_project(self):
@@ -86,31 +89,15 @@ class TestAllDataSenders(BaseTest):
     #     all_data_sender_page.click_confirm()
     #     self.assertEqual(all_data_sender_page.get_error_message(),ERROR_MSG_FOR_NOT_SELECTING_PROJECT)
 
-#     @SkipTest #TODO only failing on ci. need to investigate.
-#     @attr('functional_test')
-#     def test_delete_data_sender_and_re_register(self):
-#         all_data_sender_page = self.all_datasender_page
-#         self.delete_ds(all_data_sender_page)
-#         self.assertEqual(all_data_sender_page.get_delete_success_message(), DELETE_SUCCESS_TEXT)
-#         global_navigation = GlobalNavigationPage(self.driver)
-#         global_navigation.sign_out()
-#
-#         sms_tester_page = SMSTesterPage(self.driver)
-#         self.send_sms(VALID_SMS, sms_tester_page)
-#         self.assertEqual(sms_tester_page.get_response_message(), SMS_ERROR_MESSAGE)
-#
-#         self.login()
-#         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
-#         add_data_sender_page = AddDataSenderPage(self.driver)
-#         add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
-#         message = add_data_sender_page.get_success_message()
-#         self.assertRegexpMatches(message, fetch_(SUCCESS_MSG, from_(VALID_DATA)))
-#         self.assertNotEqual(message.split()[-1], fetch_(UID, from_(DELETE_DATA_SENDER)))
-#         self.driver.wait_until_modal_dismissed(10)
-#         global_navigation.sign_out()
-#
-#         self.send_sms(VALID_SMS, sms_tester_page)
-#         self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_SMS)))
+    @attr('functional_test')
+    def test_delete_data_sender(self):
+        delete_datasender_id = TestAllDataSenders.register_datasender(DATA_SENDER_TO_DELETE)
+        self.all_datasenders_page.load()
+        self.all_datasenders_page.delete_datasender(delete_datasender_id)
+        self.assertEqual(self.all_datasenders_page.get_delete_success_message(), DELETE_SUCCESS_TEXT)
+        self.all_datasenders_page.search_with(delete_datasender_id)
+        self.assertFalse(self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
+        self.assertEqual("No matching records found", self.all_datasenders_page.get_empty_table_result())
 #
 #     @attr('functional_test')
 #     def test_the_datasender_template_file_downloaded(self):

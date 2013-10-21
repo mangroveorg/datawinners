@@ -86,10 +86,7 @@ class AllDataSendersPage(Page):
         return locator.text
 
     def get_delete_success_message(self):
-
-        """
-        Function to fetch the success message for delete data sender
-        """
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DELETE_SUCCESS_MESSAGE, True)
         return self.driver.find(DELETE_SUCCESS_MESSAGE).text
 
     def get_error_message(self):
@@ -110,12 +107,6 @@ class AllDataSendersPage(Page):
          """
         return self.driver.find(by_xpath(UID_LABEL_BY_MOBILE_XPATH % data_sender_mobile)).text
 
-    def delete_data_sender(self):
-        """"
-        Function to delete datasender """
-        option_to_select = DELETE
-        self.perform_datasender_action(option_to_select)
-
     def check_links(self):
         self.driver.is_element_present(DATASENDERS_IMPORT_LINK)
         self.driver.is_element_present(REGISTER_SENDER_LINK)
@@ -123,6 +114,11 @@ class AllDataSendersPage(Page):
     def is_web_and_smartphone_device_checkmarks_present(self, data_sender_id):
         checkboxes = self.driver.find_elements_(by_xpath(DATA_SENDER_DEVICES % (data_sender_id)))
         return len(checkboxes) == 3
+
+    def delete_datasender(self, data_sender_id):
+        self.select_a_data_sender_by_id(data_sender_id)
+        self.perform_datasender_action(DELETE)
+        self.click_delete(wait=True)
 
     # def check_web_device_by_id(self, data_sender_id):
     #     return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 9)))
@@ -146,10 +142,10 @@ class AllDataSendersPage(Page):
     def click_checkall_checkbox(self):
         self.driver.find(CHECKALL_DS_CB).click()
 
-    def associate_datasender_to_project(self, datasender_id, project_name):
+    def associate_datasender_to_projects(self, datasender_id, project_names):
         self.select_a_data_sender_by_id(datasender_id)
         self.perform_datasender_action(ASSOCIATE)
-        self.select_project(project_name)
+        self.select_projects(project_names)
         self.click_confirm(wait=True)
 
     def dissociate_datasender_from_project(self, datasender_id, project_name):
@@ -211,3 +207,9 @@ class AllDataSendersPage(Page):
     def search_with(self, search_text):
         self.driver.find_text_box(by_css("div#datasender_table_filter > input")).enter_text(search_text)
         self.driver.wait_until_element_is_not_present(20, by_css("loading"))
+
+    def get_empty_table_result(self):
+        return self.driver.find_visible_element(by_css("td.dataTables_empty")).text
+
+    def get_checkbox_selector_for_datasender_row(self, row_number):
+        return by_xpath(".//*[@id='all_data_senders']/tr[%s]/td[1]/input" % row_number)

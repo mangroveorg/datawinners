@@ -66,7 +66,14 @@ VALID_DATA = {NAME: "ReRegistered",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "aaa Kimi",
-                                       MOBILE_NUMBER: random_number(6),
+                                       MOBILE_NUMBER: random_number(9),
+                                       COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                                       GPS: "-21.7622088847 48.0690991394",
+                                       SUCCESS_MSG: "Registration successful. ID is: rep"}
+
+
+DATA_SENDER_TO_DELETE = {NAME: "delete DS",
+                                       MOBILE_NUMBER: random_number(9),
                                        COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                                        GPS: "-21.7622088847 48.0690991394",
                                        SUCCESS_MSG: "Registration successful. ID is: rep"}
@@ -74,7 +81,7 @@ VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "aaa Kimi",
 EMAIL_ADDRESS = "email"
 
 VALID_DATASENDER_WITH_WEB_ACCESS = {NAME: "aaa Mickey Duck",
-                               MOBILE_NUMBER: random_number(6),
+                               MOBILE_NUMBER: random_number(9),
                                COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                                EMAIL_ADDRESS: "mIcKeY",
                                GPS: "-21.7622088847 48.0690991394",

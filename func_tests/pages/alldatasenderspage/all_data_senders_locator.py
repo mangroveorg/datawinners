@@ -33,7 +33,7 @@ DELETE_BUTTON = by_css("a#ok_button")
 
 ERROR_MESSAGE_LABEL = by_css("div#error.message-box")
 SUCCESS_MESSAGE_LABEL = by_xpath("//div[@class='success-message-box' and not(contains(@id,'none'))]")
-DELETE_SUCCESS_MESSAGE = by_xpath("//ul[@class='messages']/li")
+DELETE_SUCCESS_MESSAGE = by_css("div.success-message-box")
 DATASENDERS_IMPORT_LINK = by_id("a#import-datasenders")
 CHECK_ALL_DS_USER = by_css("input.is_user")
 CHECKALL_DS_CB = by_id("checkall-datasenders")

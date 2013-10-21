@@ -1,4 +1,3 @@
-# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 import time
 
@@ -16,8 +15,6 @@ from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 
-
-@attr('suit_1')
 class TestAllDataSenderRegistration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -30,18 +27,6 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         TestAllDataSenderRegistration.driver.refresh()
         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
         self.current_page = AddDataSenderPage(self.driver)
-
-    # def tearDown(self):
-        # import sys
-        #
-        # exception_info = sys.exc_info()
-        # if exception_info != (None, None, None):
-        #     import os
-        #
-        #     if not os.path.exists("screenshots"):
-        #         os.mkdir("screenshots")
-        #     self.driver.get_screenshot_as_file(
-        #         "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
 
     @classmethod
     def tearDownClass(cls):
@@ -64,7 +49,7 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         success_msg = add_data_sender_page.get_success_message()
         self.assertRegexpMatches(success_msg,
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA)))
-        rep_id = _parse(success_msg)
+        rep_id = self._parse(success_msg)
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_data_senders_page = AllDataSendersPage(self.driver)
         all_data_senders_page.select_a_data_sender_by_id(rep_id)
