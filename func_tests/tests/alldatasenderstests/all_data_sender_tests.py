@@ -62,7 +62,6 @@ class TestAllDataSenders(BaseTest):
 
     @attr('functional_test')
     def test_successful_association_and_dissociation_of_data_sender(self):
-        project_name = "clinic test project1"
         self.all_datasenders_page.associate_datasender_to_projects(self.datasender_id_without_web_access, ["clinic test project1", "clinic test project"])
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.assertEqual("clinic test project, clinic test project1", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
@@ -98,6 +97,17 @@ class TestAllDataSenders(BaseTest):
         self.all_datasenders_page.search_with(delete_datasender_id)
         self.assertFalse(self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
         self.assertEqual("No matching records found", self.all_datasenders_page.get_empty_table_result())
+
+    @attr('functional_test')
+    def test_search(self):
+        self.all_datasenders_page.search_with("non_existent_DS")
+        self.assertFalse(self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
+        self.assertEqual("No matching records found", self.all_datasenders_page.get_empty_table_result())
+        self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
+        self.assertTrue(self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
+        self.assertFalse(self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(2)),msg="More than expected number of rows present")
+        self.assertEqual(self.datasender_id_without_web_access,self.all_datasenders_page.get_cell_value(row=1,column=3),msg="matching row does not have specified ID")
+
 #
 #     @attr('functional_test')
 #     def test_the_datasender_template_file_downloaded(self):
@@ -232,6 +242,4 @@ class TestAllDataSenders(BaseTest):
 #         self.driver.wait_for_page_with_title(10, 'All Data Senders')
 #         self.driver.refresh()
 #         self.assertTrue(self.all_datasender_page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
-#
-# def _parse(message):
-#     return message.split(' ')[-1]
+

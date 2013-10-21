@@ -206,10 +206,15 @@ class AllDataSendersPage(Page):
 
     def search_with(self, search_text):
         self.driver.find_text_box(by_css("div#datasender_table_filter > input")).enter_text(search_text)
-        self.driver.wait_until_element_is_not_present(20, by_css("loading"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
 
     def get_empty_table_result(self):
         return self.driver.find_visible_element(by_css("td.dataTables_empty")).text
 
     def get_checkbox_selector_for_datasender_row(self, row_number):
-        return by_xpath(".//*[@id='all_data_senders']/tr[%s]/td[1]/input" % row_number)
+        # first row is used to show all rows select message
+        return by_xpath(".//*[@id='all_data_senders']/tr[%s]/td[1]/input" % (row_number + 1))
+
+    def get_cell_value(self, row, column):
+        # first row is used to show all rows select message
+        return self.driver.find(by_xpath(".//*[@id='all_data_senders']/tr[%s]/td[%s]" % ((row + 1), column))).text
