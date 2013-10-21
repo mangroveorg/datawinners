@@ -137,8 +137,8 @@ class MessageTrackerAdmin(DatawinnerAdmin):
 class OrganizationChangeList(ChangeList):
     def get_query_set(self):
         if not self.params.get("q", ""):
-            query_set = super(OrganizationChangeList, self).get_query_set()
-            return query_set
+            return super(OrganizationChangeList, self).get_query_set()
+            
         from django.db import connection
         cursor = connection.cursor()
         query = """Select array_agg(DISTINCT o.org_id) from accountmanagement_organization o
@@ -176,6 +176,7 @@ class OrganizationAdmin(DatawinnerAdmin):
         'admin_email', 'admin_mobile_number', 'sms_api_users', 'status')
     actions = ['deactivate_organizations', 'activate_organizations', 'delete_organizations']
     search_fields = ['name', 'address', 'addressline2', 'city', 'zipcode', 'state', 'office_phone', 'website']
+    ordering = ('-active_date',)
 
     def get_changelist(self, request, **kwargs):
         return OrganizationChangeList
