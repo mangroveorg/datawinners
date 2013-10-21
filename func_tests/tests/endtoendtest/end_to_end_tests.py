@@ -185,10 +185,7 @@ class TestApplicationEndToEnd(BaseTest):
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL_FOR_EDIT)))
 
         all_data_sender_page = global_navigation.navigate_to_all_data_sender_page()
-        all_data_sender_page.select_a_data_sender_by_id(rep_id)
-        all_data_sender_page.associate_data_sender()
-        all_data_sender_page.select_project(self.project_name)
-        all_data_sender_page.click_confirm(wait=True)
+        all_data_sender_page.associate_datasender_to_project(rep_id, self.project_name)
         return email
 
 

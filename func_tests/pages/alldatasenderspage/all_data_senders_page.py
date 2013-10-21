@@ -2,6 +2,7 @@
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import *
 from pages.page import Page
+from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from tests.alldatasenderstests.all_data_sender_data import *
 from tests.testsettings import UI_TEST_TIMEOUT
 
@@ -16,7 +17,7 @@ class AllDataSendersPage(Page):
 
         Return create project page
          """
-        self.driver.find(ADD_A_DATA_SENDER_LINK).click()
+        self.driver.find(REGISTER_SENDER_LINK).click()
         return AddDataSenderPage(self.driver)
 
     def select_a_data_sender_by_mobile(self, data_sender_mobile):
@@ -26,31 +27,13 @@ class AllDataSendersPage(Page):
         self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_MOBILE_XPATH % data_sender_mobile)).click()
 
     def select_a_data_sender_by_id(self, data_sender_id):
-        """
-        Function to select a data sender on all data sender page
-         """
-        try:
-            self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id), True)
-            self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
-        except CouldNotLocateElementException:
-            self.select_page_size_of("50")
-            time.sleep(2)
-            self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id), True)
+        self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
 
     def select_project(self, project_name):
-        """
-        Function to select a project on all data sender page
-         """
         self.driver.find(by_xpath(PROJECT_CB_XPATH % project_name)).click()
 
     def select_projects(self, project_names):
-        """
-        Function to select multiple projects on all data sender page
-
-        Args:
-        project_names is list of all the projects
-
-         """
         for project_name in project_names:
             self.select_project(project_name)
 
@@ -76,14 +59,6 @@ class AllDataSendersPage(Page):
         if wait:
             self.driver.wait_until_modal_dismissed(7)
 
-
-    def associate_data_sender(self):
-        """
-        Function to associate data sender with project
-         """
-        option_to_select = ASSOCIATE
-        self.perform_datasender_action(option_to_select)
-
     def give_web_access(self):
         """
         Function to give data sender web and smartphone access
@@ -102,13 +77,6 @@ class AllDataSendersPage(Page):
         self.driver.find(ACTION_DROP_DOWN).click()
         option = self.driver.find_visible_element(by_id(action_to_be_performed))
         option.click()
-
-    def dissociate_data_sender(self):
-        """
-        Function to dissociate data sender with project
-         """
-        option_to_select = DISSOCIATE
-        self.perform_datasender_action(option_to_select)
 
     def get_success_message(self):
         """
@@ -149,8 +117,8 @@ class AllDataSendersPage(Page):
         self.perform_datasender_action(option_to_select)
 
     def check_links(self):
-        self.driver.is_element_present(IMPORT_LINK)
-        self.driver.is_element_present(ADD_A_DATA_SENDER_LINK)
+        self.driver.is_element_present(DATASENDERS_IMPORT_LINK)
+        self.driver.is_element_present(REGISTER_SENDER_LINK)
 
     def is_web_and_smartphone_device_checkmarks_present(self, data_sender_id):
         checkboxes = self.driver.find_elements_(by_xpath(DATA_SENDER_DEVICES % (data_sender_id)))
@@ -177,6 +145,18 @@ class AllDataSendersPage(Page):
 
     def click_checkall_checkbox(self):
         self.driver.find(CHECKALL_DS_CB).click()
+
+    def associate_datasender_to_project(self, datasender_id, project_name):
+        self.select_a_data_sender_by_id(datasender_id)
+        self.perform_datasender_action(ASSOCIATE)
+        self.select_project(project_name)
+        self.click_confirm(wait=True)
+
+    def dissociate_datasender_from_project(self, datasender_id, project_name):
+        self.select_a_data_sender_by_id(datasender_id)
+        self.perform_datasender_action(DISSOCIATE)
+        self.select_project(project_name)
+        self.click_confirm(wait=True)
 
     def get_datasenders_count(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ALL_DS_ROWS, True)
@@ -223,3 +203,11 @@ class AllDataSendersPage(Page):
         dropdown = self.driver.find_drop_down(by_css("#datasender_table_length>select"))
         dropdown.click()
         dropdown.set_selected(number)
+
+    def load(self):
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("datasender_table"), True)
+
+    def search_with(self, search_text):
+        self.driver.find_text_box(by_css("div#datasender_table_filter > input")).enter_text(search_text)
+        self.driver.wait_until_element_is_not_present(20, by_css("loading"))

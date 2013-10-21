@@ -1,5 +1,3 @@
-# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
 from framework.utils.common_utils import *
 
 # By default every locator should be CSS
@@ -17,7 +15,7 @@ from framework.utils.common_utils import *
 LOCATOR = "locator"
 BY = "by"
 
-ADD_A_DATA_SENDER_LINK = by_css("a[class~='add_subject_link']")
+REGISTER_SENDER_LINK = by_css("a[class~='add_subject_link']")
 DATA_SENDER_CHECK_BOX_BY_MOBILE_XPATH = "//tr/td[6][text()='%s']/../td[1]/input"
 DATA_SENDER_EMAIL_TD_BY_MOBILE_XPATH = "//tr/td[6][text()='%s']/../td[7]"
 DATA_SENDER_CHECK_BOX_BY_UID_XPATH = "//input[@value='%s']"
@@ -36,7 +34,7 @@ DELETE_BUTTON = by_css("a#ok_button")
 ERROR_MESSAGE_LABEL = by_css("div#error.message-box")
 SUCCESS_MESSAGE_LABEL = by_xpath("//div[@class='success-message-box' and not(contains(@id,'none'))]")
 DELETE_SUCCESS_MESSAGE = by_xpath("//ul[@class='messages']/li")
-IMPORT_LINK = by_css("a#import-datasenders")
+DATASENDERS_IMPORT_LINK = by_id("a#import-datasenders")
 CHECK_ALL_DS_USER = by_css("input.is_user")
 CHECKALL_DS_CB = by_id("checkall-datasenders")
 ALL_DS_ROWS = by_css("#all_data_senders")

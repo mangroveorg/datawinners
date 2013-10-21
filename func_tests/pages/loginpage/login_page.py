@@ -13,6 +13,10 @@ class LoginPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 
+    def load(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        return self
+
     def do_successful_login_with(self, login_credential):
         """ 
         Function to login into the website with valid credentials

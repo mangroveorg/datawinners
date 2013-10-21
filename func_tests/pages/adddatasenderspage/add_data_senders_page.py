@@ -4,6 +4,7 @@ from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.adddatasenderspage.add_data_senders_locator import *
 from tests.alldatasenderstests.add_data_senders_data import *
+from tests.alldatasenderstests.all_data_sender_data import REGISTRATION_SUCCESS_MESSAGE_TEXT
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -46,6 +47,15 @@ class AddDataSenderPage(Page):
             self.set_unique_id(unique_id)
         self.driver.find(REGISTER_BTN).click()
         return self
+
+    def get_registered_datasender_id(self):
+        message = self.get_success_message()
+        assert REGISTRATION_SUCCESS_MESSAGE_TEXT in message
+        data_sender_id = self._parse(message)
+        return data_sender_id
+
+    def _parse(self, message):
+        return message.split(' ')[-1]
 
     def get_error_message(self):
         """
