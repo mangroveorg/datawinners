@@ -12,7 +12,6 @@ from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
-from tests.alldatasenderstests.all_data_sender_tests import _parse
 from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
@@ -194,6 +193,8 @@ class TestAllDataSenderRegistration(unittest.TestCase):
 
         self.assert_fields_are_populated_properly_in_edit_page(VALID_EDIT_DATA)
 
+    def _parse(self, message):
+            return message.split(' ')[-1]
 
 
 
