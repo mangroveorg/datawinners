@@ -7,6 +7,7 @@ from nose.plugins.skip import SkipTest
 
 from framework.utils.data_fetcher import fetch_, from_
 from framework.base_test import setup_driver, teardown_driver
+from pages.adddatasenderspage.add_data_senders_locator import NAME_TB, MOBILE_NUMBER_TB, COMMUNE_TB, GPS_TB
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
@@ -156,3 +157,11 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_LONG_UID, "rep012345678901234567891")
 
         self.assertEqual(add_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(VALID_DATA_FOR_LONG_UID)))
+
+
+
+
+
+
+
+

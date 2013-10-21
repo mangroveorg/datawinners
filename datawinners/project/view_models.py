@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD
+from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, LOCATION_TYPE_FIELD_NAME
+
 
 class ReporterEntity(object):
     def __init__(self, entity):
@@ -11,7 +12,7 @@ class ReporterEntity(object):
 
     @property
     def location(self):
-        return ','.join(self.entity.location_path)
+        return ','.join(self.entity.value(LOCATION_TYPE_FIELD_NAME))
 
     @property
     def geo_code(self):

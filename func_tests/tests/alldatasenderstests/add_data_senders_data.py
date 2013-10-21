@@ -27,16 +27,16 @@ VALID_DATA = {NAME: "ab Mickey Duck",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 VALID_EDIT_DATA = {NAME: "EDIT Mickey Duck",
-                   MOBILE_NUMBER: random_number(),
-                   COMMUNE: "PUNE",
+                   MOBILE_NUMBER: random_number(6),
+                   COMMUNE: "PUNE,Madagascar",
                    GPS: "",
                    SUCCESS_MSG: "Your changes have been saved."}
 
 VALID_DATA_WITH_EMAIL = {NAME: "a Mickey Duck",
                          MOBILE_NUMBER: random_number(6),
-                         COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                         COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY,Madagascar",
                          EMAIL_ADDRESS: "mIcKeY",
-                         GPS: "-21.7622088847 48.0690991394",
+                         GPS: "-21.7622088847,48.0690991394",
                          SUCCESS_MSG: "Registration successful. ID is: "}
 
 VALID_DATA_WITH_EMAIL_FOR_EDIT = {NAME: "Mickey Duck",
