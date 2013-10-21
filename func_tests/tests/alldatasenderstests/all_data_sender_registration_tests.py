@@ -159,7 +159,40 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         self.assertEqual(add_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(VALID_DATA_FOR_LONG_UID)))
 
 
+    def assert_fields_are_populated_properly_in_edit_page(self, valid_registration_data):
+        self.assertEquals(fetch_(NAME, from_(valid_registration_data)),
+                          self.driver.find_text_box(NAME_TB).get_attribute('value'))
+        self.assertEquals(fetch_(MOBILE_NUMBER, from_(valid_registration_data)),
+                          self.driver.find_text_box(MOBILE_NUMBER_TB).get_attribute('value'))
+        self.assertEqual(fetch_(COMMUNE, from_(valid_registration_data)),
+                         self.driver.find_text_box(COMMUNE_TB).get_attribute('value'))
+        self.assertEqual(fetch_(GPS, from_(valid_registration_data)),
+                         self.driver.find_text_box(GPS_TB).get_attribute('value'))
 
+    @attr('functional_test')
+    def test_edit_datasender_should_populate_all_fields_properly(self):
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL)
+        success_msg = self.current_page.get_success_message()
+        rep_id = success_msg.split(' ')[-1]
+        self.assertRegexpMatches(success_msg,
+                                 fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL)))
+
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        all_datasender_page = AllDataSendersPage(self.driver)
+        edit_datasender_page = all_datasender_page.edit_datasender(rep_id)
+
+        self.assert_fields_are_populated_properly_in_edit_page(VALID_DATA_WITH_EMAIL)
+
+        edit_datasender_page.enter_data_sender_details_from(VALID_EDIT_DATA)
+        self.assertRegexpMatches(edit_datasender_page.get_success_message(),
+                                 fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATA)))
+
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        all_datasender_page = AllDataSendersPage(self.driver)
+        all_datasender_page.edit_datasender(rep_id)
+
+        self.assert_fields_are_populated_properly_in_edit_page(VALID_EDIT_DATA)
 
 
 
