@@ -1,10 +1,10 @@
 from datetime import datetime
 import unittest
 from mock import Mock
+from datawinners.project.export_to_excel import format_field_values_for_excel
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import IntegerField, GeoCodeField, DateField, SelectField, ExcelDate
 from mangrove.form_model.form_model import FormModel
-from datawinners.project.export_to_excel import format_field_values_for_excel
 
 class TestExportToExcel(unittest.TestCase):
     def test_error_integer_field_returns_string(self):

@@ -21,23 +21,32 @@ BLANK_FIELDS = {NAME: "",
                 ERROR_MSG: "Name This field is required.Mobile Number This field is required.Name Please fill out at least one location field correctly.GPS Coordinates Find GPS coordinates Please fill out at least one location field correctly."}
 
 VALID_DATA = {NAME: "ab Mickey Duck",
-              MOBILE_NUMBER: random_number(),
+              MOBILE_NUMBER: random_number(9),
               MOBILE_NUMBER_WITHOUT_HYPHENS: "98765432101",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
+
 VALID_EDIT_DATA = {NAME: "EDIT Mickey Duck",
-                   MOBILE_NUMBER: random_number(),
-                   COMMUNE: "PUNE",
+                   MOBILE_NUMBER: random_number(9),
+                   COMMUNE: "PUNE,Madagascar",
                    GPS: "",
                    SUCCESS_MSG: "Your changes have been saved."}
 
 VALID_DATA_WITH_EMAIL = {NAME: "a Mickey Duck",
-                         MOBILE_NUMBER: random_number(6),
-                         COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                         MOBILE_NUMBER: random_number(9),
+                         COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY,Madagascar",
                          EMAIL_ADDRESS: "mIcKeY",
-                         GPS: "-21.7622088847 48.0690991394",
+                         GPS: "-21.7622088847,48.0690991394",
                          SUCCESS_MSG: "Registration successful. ID is: "}
+
+VALID_DATA_WITH_EMAIL_EDITED = {NAME: "a Mickey Duck",
+                         MOBILE_NUMBER: random_number(9),
+                         COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY,Madagascar",
+                         EMAIL_ADDRESS: "mIcKeY_new",
+                         GPS: "-21.7622088847,48.0690991394",
+                         SUCCESS_MSG: "Your changes have been saved."}
+
 
 VALID_DATA_WITH_EMAIL_FOR_EDIT = {NAME: "Mickey Duck",
                                   MOBILE_NUMBER: VALID_DATA_WITH_EMAIL[MOBILE_NUMBER],

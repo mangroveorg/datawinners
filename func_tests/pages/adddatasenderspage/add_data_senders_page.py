@@ -4,6 +4,7 @@ from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.adddatasenderspage.add_data_senders_locator import *
 from tests.alldatasenderstests.add_data_senders_data import *
+from tests.alldatasenderstests.all_data_sender_data import REGISTRATION_SUCCESS_MESSAGE_TEXT
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -45,7 +46,17 @@ class AddDataSenderPage(Page):
         if unique_id is not None:
             self.set_unique_id(unique_id)
         self.driver.find(REGISTER_BTN).click()
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css("span.loading"))
         return self
+
+    def get_registered_datasender_id(self):
+        message = self.get_success_message()
+        assert REGISTRATION_SUCCESS_MESSAGE_TEXT in message
+        data_sender_id = self._parse(message)
+        return data_sender_id
+
+    def _parse(self, message):
+        return message.split(' ')[-1]
 
     def get_error_message(self):
         """
@@ -62,13 +73,7 @@ class AddDataSenderPage(Page):
         return error_message.replace("\n", " ")
 
     def get_success_message(self):
-        """
-        Function to fetch the success message from flash label of the add data sender page
-
-        Return success message
-        """
-        error_message = ""
-        locator = self.driver.wait_for_element(20, FLASH_MESSAGE_LABEL, want_visible=True)
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT, FLASH_MESSAGE_LABEL, want_visible=True)
         return locator.text
 
     def open_import_lightbox(self):
@@ -101,6 +106,9 @@ class AddDataSenderPage(Page):
 
     def enter_datasender_mobile_number(self, mobile_number):
         self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(mobile_number)
+
+    def navigate_to_datasender_page(self):
+        self.driver.find(by_css("a.back-to-list")).click()
 
     def click_submit_button(self):
         self.driver.find(REGISTER_BTN).click()

@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
+
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import int_to_base36
@@ -6,7 +7,7 @@ from django.utils.http import int_to_base36
 from nose.plugins.attrib import attr
 
 from framework.base_test import BaseTest, teardown_driver
-from framework.utils.common_utils import get_epoch_last_ten_digit
+from framework.utils.common_utils import get_epoch_last_ten_digit, generate_random_email_id
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.database_manager_postgres import DatabaseManager
@@ -26,10 +27,10 @@ from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON, DELETE_B
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
+from testdata.constants import SUCCESS_MSG
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, LOGOUT, url
 from tests.activateaccounttests.activate_account_data import DS_ACTIVATION_URL, NEW_PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL, VALID_DATA_WITH_EMAIL_FOR_EDIT
-from tests.alldatasenderstests.all_data_sender_data import generate_random_email_id, SUCCESS_MSG
 from tests.endtoendtest.end_to_end_data import *
 from tests.projects.questionnairetests.project_questionnaire_data import VALID_SUMMARY_REPORT_DATA
 from tests.registrationtests.registration_tests import register_and_get_email
@@ -185,10 +186,7 @@ class TestApplicationEndToEnd(BaseTest):
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL_FOR_EDIT)))
 
         all_data_sender_page = global_navigation.navigate_to_all_data_sender_page()
-        all_data_sender_page.select_a_data_sender_by_id(rep_id)
-        all_data_sender_page.associate_data_sender()
-        all_data_sender_page.select_project(self.project_name)
-        all_data_sender_page.click_confirm(wait=True)
+        all_data_sender_page.associate_datasender_to_projects(rep_id, [self.project_name])
         return email
 
 
@@ -205,12 +203,6 @@ class TestApplicationEndToEnd(BaseTest):
         project_overview_page = all_projects_page.navigate_to_project_overview_page(self.project_name)
         project_overview_page.activate_project()
         self.assertEqual(project_overview_page.get_status_of_the_project(), "Active")
-        # analysis_page = project_overview_page.navigate_to_data_page()
-        # msg = u"Your Data Senders\u2019 successful submissions will appear here"
-        # self.assertIn(msg, analysis_page.get_all_data_records()[0])
-        # submission_log_page = analysis_page.navigate_to_all_data_record_page()
-        # msg = "Once your Data Senders have sent in Submissions, they will appear here."
-        # self.assertIn(msg, submission_log_page.empty_help_text())
 
     def verify_submission_via_web(self, ds_email):
         self.driver.go_to(LOGOUT)

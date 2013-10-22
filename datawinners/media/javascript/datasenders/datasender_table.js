@@ -26,7 +26,7 @@ DW.DataSenderTable = function (options){
                         "sInfoFiltered": "",
                         "sLengthMenu": gettext("Show") + " _MENU_ " + gettext("Data Senders"),
                         "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
-                        "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s datasenders"),
+                        "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s Data Senders"),
                             {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_'}, true),
                         "sInfoEmpty": gettext("<b> 0 to 0</b> of 0") + " " + gettext("Data Senders"),
                         "sSearch": "<strong>" + gettext("Search:") + "</strong>",

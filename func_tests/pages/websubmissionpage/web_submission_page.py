@@ -4,6 +4,7 @@ from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPh
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from pages.websubmissionpage.web_submission_locator import *
+from tests.testsettings import UI_TEST_TIMEOUT
 from tests.websubmissiontests.web_submission_data import *
 
 
@@ -25,6 +26,10 @@ class WebSubmissionPage(Page):
         errors =  self.driver.find_elements_(QUESTIONS_WITH_ERRORS)
         error_messages=[self.describe_error(error_element) for error_element in errors]
         return error_messages
+
+    def get_success_message(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("div.success-message-box"), True)
+        return self.driver.find(by_css("div.success-message-box")).text
 
     def describe_error(self, error_element):
         question = error_element.find_element_by_xpath('../../../h6').text
@@ -66,8 +71,8 @@ class WebSubmissionPage(Page):
         self.driver.find(SMARTPHONE_NAV).click()
         return SmartPhoneInstructionPage(self.driver)
 
-    def fill_and_submit_answer(self, answer):
-        self.fill_questionnaire_with(answer)
+    def fill_and_submit_answer(self, answers):
+        self.fill_questionnaire_with(answers)
         self.submit_answers()
 
     def get_questions_and_instructions(self):
@@ -82,6 +87,3 @@ class WebSubmissionPage(Page):
     def navigate_to_submission_log(self):
         self.driver.find_elements_by_css_selector('.secondary_tab .inactive>a')[1].click()
         return SubmissionLogPage(self.driver)
-
-    # def is_success(self):
-    #     return self.driver.is_element_present(SUCCESS_MESSAGE)

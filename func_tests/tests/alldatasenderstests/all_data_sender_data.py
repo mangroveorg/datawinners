@@ -1,30 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-
-##Variables
 from datawinners.messageprovider.tests.test_message_handler import THANKS
-from framework.utils.common_utils import random_number, random_string
+from framework.utils.common_utils import random_number, random_string, generate_random_email_id
 from testdata.test_data import url
+from testdata.constants import *
 
-NAME = "name"
-MOBILE_NUMBER = "mobile_number"
-LOCATION = "location"
-GPS = "gps"
-SUCCESS_MSG = "message"
-ERROR_MSG = "message"
-PROJECT_NAME = "project_name"
-ASSOCIATE = "associate"
-DISSOCIATE = "disassociate"
-WEB_ACCESS = 'makewebuser'
-UID = "uid"
-DELETE = "delete"
-EDIT = "edit"
-SENDER = "from"
-RECEIVER = "to"
-SMS = "sms"
-MESSAGE = "message"
-COMMUNE = "commune"
-SUCCESS_MESSAGE = "success_message"
+
 
 ASSOCIATE_SUCCESS_TEXT = "Data Senders associated Successfully. Please Wait...."
 DISSOCIATE_SUCCESS_TEXT = "Data Senders dissociated Successfully. Please Wait...."
@@ -66,19 +47,34 @@ VALID_DATA = {NAME: "ReRegistered",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "aaa Kimi",
-                                       MOBILE_NUMBER: random_number(6),
+                                       MOBILE_NUMBER: random_number(9),
+                                       EMAIL_ADDRESS: generate_random_email_id(),
                                        COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                                        GPS: "-21.7622088847 48.0690991394",
                                        SUCCESS_MSG: "Registration successful. ID is: rep"}
 
-EMAIL_ADDRESS = "email"
+
+DATA_SENDER_TO_DELETE = {NAME: "delete DS",
+                                       MOBILE_NUMBER: random_number(9),
+                                       COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                                       GPS: "-21.7622088847 48.0690991394",
+                                       SUCCESS_MSG: "Registration successful. ID is: rep"}
+
 
 VALID_DATASENDER_WITH_WEB_ACCESS = {NAME: "aaa Mickey Duck",
-                               MOBILE_NUMBER: random_number(6),
+                               MOBILE_NUMBER: random_number(9),
                                COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                                EMAIL_ADDRESS: "mIcKeY",
                                GPS: "-21.7622088847 48.0690991394",
                                SUCCESS_MSG: "Registration successful. ID is: rep"}
+
+EDITED_DATA_SENDER = {NAME: "aaa Mickey Goose",
+                               MOBILE_NUMBER: random_number(9),
+                               COMMUNE: "Pakistan",
+                               EMAIL_ADDRESS: "goose",
+                               GPS: "3.33, 1.11",
+                               SUCCESS_MSG: "Your changes have been saved."}
+
 
 INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
                               MOBILE_NUMBER: "abcdefgh",
@@ -87,8 +83,7 @@ INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
 
 
 
-def generate_random_email_id():
-    return random_string(5) + '@' + random_string(3) + '.com'
+
 
 
 ALL_DS_TO_DELETE_ARE_USER_MSG = u'You cannot delete the following Data Senders as they are DataWinners users:'
