@@ -12,7 +12,10 @@ class ReporterEntity(object):
 
     @property
     def location(self):
-        return ','.join(self.entity.value(LOCATION_TYPE_FIELD_NAME))
+        location_value = self.entity.value(LOCATION_TYPE_FIELD_NAME)
+        if location_value is None:
+            return
+        return ','.join(location_value)
 
     @property
     def geo_code(self):
