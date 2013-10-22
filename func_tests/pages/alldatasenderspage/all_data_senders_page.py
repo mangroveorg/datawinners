@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from framework.utils.common_utils import generate_random_email_id
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import *
 from pages.page import Page
@@ -79,9 +80,6 @@ class AllDataSendersPage(Page):
         option.click()
 
     def get_success_message(self):
-        """
-        Function to fetch the success message from success label
-         """
         locator = self.driver.wait_for_element(20, SUCCESS_MESSAGE_LABEL, want_visible=True)
         return locator.text
 
@@ -119,6 +117,12 @@ class AllDataSendersPage(Page):
         self.select_a_data_sender_by_id(data_sender_id)
         self.perform_datasender_action(DELETE)
         self.click_delete(wait=True)
+
+    def give_web_and_smartphone_access(self):
+        self.give_web_access()
+        email_text_box = self.driver.find_text_box(WEB_USER_BLOCK_EMAIL)
+        email_text_box.enter_text(generate_random_email_id())
+        self.driver.find(GIVE_ACCESS_LINK).click()
 
     # def check_web_device_by_id(self, data_sender_id):
     #     return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 9)))
@@ -200,9 +204,12 @@ class AllDataSendersPage(Page):
         dropdown.click()
         dropdown.set_selected(number)
 
+    def wait_for_table_to_load(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("datasender_table"), True)
+
     def load(self):
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("datasender_table"), True)
+        self.wait_for_table_to_load()
 
     def search_with(self, search_text):
         self.driver.find_text_box(by_css("div#datasender_table_filter > input")).enter_text(search_text)

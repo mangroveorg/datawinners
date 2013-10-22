@@ -228,20 +228,15 @@ class TestAllDataSenders(BaseTest):
 #         all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
 #         self.assertTrue(all_data_sender_page.is_checkall_checked())
 #
-#     def give_web_and_smartphone_access(self, all_data_senders_page):
-#         all_data_senders_page.give_web_access()
-#         email_text_box = self.driver.find_text_box(WEB_USER_BLOCK_EMAIL)
-#         email = generate_random_email_id()
-#         email_text_box.enter_text(email)
-#         self.driver.find(GIVE_ACCESS_LINK).click()
-#
-#     @attr("functional_test")
-#     def test_should_able_to_give_web_and_smartphone_access(self):
-#         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
-#         self.assertFalse(self.all_datasender_page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
-#         self.all_datasender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
-#         self.give_web_and_smartphone_access(self.all_datasender_page)
-#         self.driver.wait_for_page_with_title(10, 'All Data Senders')
-#         self.driver.refresh()
-#         self.assertTrue(self.all_datasender_page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
+
+
+    @attr("functional_test")
+    def test_should_give_web_and_smartphone_access(self):
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        self.assertFalse(self.all_datasenders_page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
+        self.all_datasenders_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
+        self.all_datasenders_page.give_web_and_smartphone_access()
+        self.all_datasenders_page.wait_for_table_to_load()
+        self.assertEqual("Access to Web Submission has been given to your DataSenders", self.all_datasenders_page.get_success_message())
+        self.assertTrue(self.all_datasenders_page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
 

@@ -1,4 +1,4 @@
-from framework.utils.common_utils import *
+from framework.utils.common_utils import by_css, by_id, by_xpath
 
 # By default every locator should be CSS
 # Abbr:
@@ -12,6 +12,7 @@ from framework.utils.common_utils import *
 
 
 # variable to access locators
+
 LOCATOR = "locator"
 BY = "by"
 
