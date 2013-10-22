@@ -4237,6 +4237,7 @@ msgstr ""
 msgid "Your DataWinners account have been deactivated. Subscribe to a monthly subscription or contact your Project Manager to reactivate the account."
 msgstr ""
 
+
 msgid "Get the Most out of Datawinners!"
 msgstr ""
 
@@ -4281,3 +4282,16 @@ msgstr ""
 
 msgid "Your DataWinners Submission Limit is Approaching!"
 msgstr ""
+
+msgid " of 160 characters used"
+msgstr ""
+
+msgid "Reminder text before deadline"
+msgstr ""
+
+msgid "Reminder text on deadline "
+msgstr ""
+
+msgid "Reminder text after deadline "
+msgstr ""
+

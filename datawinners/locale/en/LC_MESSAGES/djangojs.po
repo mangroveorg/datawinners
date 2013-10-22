@@ -989,3 +989,15 @@ msgstr ""
 
 msgid "<b> 0 to 0</b> of 0"
 msgstr ""
+
+msgid "Example: %(day)s of October for October report"
+msgstr ""
+
+msgid "Example: %(day)s of October for September report"
+msgstr ""
+
+msgid "Example: %(day)s of the week following the reporting week"
+msgstr ""
+
+msgid "Example: %(day)s of the reporting week"
+msgstr ""

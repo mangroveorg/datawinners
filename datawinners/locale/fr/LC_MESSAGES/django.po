@@ -4359,3 +4359,16 @@ msgstr "DataWinners | Limite de soumission atteintte: Mettre à niveau pour pouv
 
 msgid "Your DataWinners Submission Limit is Approaching!"
 msgstr "La limite de votre abonnement à Datawinners s’approche!"
+
+msgid " of 160 characters used"
+msgstr " caractères utilisés sur les 160"
+
+msgid "Reminder text before deadline"
+msgstr "Message de rappel avant la date d'échéance"
+
+msgid "Reminder text on deadline"
+msgstr "Message de rappel le jour de la date d'échéance"
+
+msgid "Reminder text after deadline"
+msgstr "Message de rappel apres la date d'échéance"
+

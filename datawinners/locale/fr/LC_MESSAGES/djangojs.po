@@ -1023,3 +1023,17 @@ msgstr "<b>%(start)s à %(end)s</b> de %(total)s Expéditeurs de données"
 
 msgid "<b> 0 to 0</b> of 0"
 msgstr "<b> 0 à 0</b> de 0"
+
+msgid "Example: %(day)s of October for October report"
+msgstr "Exemple: le %(day)s Octobre pour le rapport du mois de Septembre"
+
+msgid "Example: %(day)s of October for September report"
+msgstr "Exemple: le %(day)s Octobre pour le rapport du mois de October"
+
+msgid "Example: %(day)s of the week following the reporting week"
+msgstr "Exemple: %(day)s de la semaine suivante"
+
+msgid "Example: %(day)s of the reporting week"
+msgstr "Exemple: %(day)s de la même semaine"
+
+
