@@ -22,7 +22,7 @@ from pages.warningdialog.warning_dialog_page import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
-class TestAllDataSenders(BaseTest):
+class TestAllDataSenders(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -31,6 +31,10 @@ class TestAllDataSenders(BaseTest):
         cls.all_datasenders_page = AllDataSendersPage(TestAllDataSenders.driver)
         cls.datasender_id_with_web_access = cls.register_datasender(VALID_DATASENDER_WITH_WEB_ACCESS)
         cls.datasender_id_without_web_access = cls.register_datasender(VALID_DATASENDER_WITHOUT_WEB_ACCESS)
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown_driver(cls.driver)
 
     def setUp(self):
         self.all_datasenders_page.load()
@@ -92,6 +96,7 @@ class TestAllDataSenders(BaseTest):
     def test_delete_data_sender(self):
         delete_datasender_id = TestAllDataSenders.register_datasender(DATA_SENDER_TO_DELETE)
         self.all_datasenders_page.load()
+        self.all_datasenders_page.search_with(delete_datasender_id)
         self.all_datasenders_page.delete_datasender(delete_datasender_id)
         self.assertEqual(self.all_datasenders_page.get_delete_success_message(), DELETE_SUCCESS_TEXT)
         self.all_datasenders_page.search_with(delete_datasender_id)
@@ -228,7 +233,6 @@ class TestAllDataSenders(BaseTest):
 #         all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
 #         self.assertTrue(all_data_sender_page.is_checkall_checked())
 #
-
 
     @attr("functional_test")
     def test_should_give_web_and_smartphone_access(self):

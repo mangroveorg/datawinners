@@ -206,14 +206,18 @@ class AllDataSendersPage(Page):
 
     def wait_for_table_to_load(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("datasender_table"), True)
+        self._wait_for_table_data_to_load()
 
     def load(self):
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         self.wait_for_table_to_load()
 
+    def _wait_for_table_data_to_load(self):
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
+
     def search_with(self, search_text):
         self.driver.find_text_box(by_css("div#datasender_table_filter > input")).enter_text(search_text)
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
+        self._wait_for_table_data_to_load()
 
     def get_empty_table_result(self):
         return self.driver.find_visible_element(by_css("td.dataTables_empty")).text
