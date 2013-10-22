@@ -133,7 +133,7 @@ class AllDataSendersAjaxView(View):
         return HttpResponse(
             jsonpickle.encode(
                 {
-                    'datasenders': datasenders,
+                    'data': datasenders,
                     'iTotalDisplayRecords': query_count,
                     'iDisplayStart': int(request.GET.get('iDisplayStart')),
                     "iTotalRecords": search_count,

@@ -4,9 +4,11 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
         nNext = document.createElement('span');
         nMore = document.createElement('span');
 
-        nPrevious.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sPrevious));
+        //nPrevious.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sPrevious));
         nNext.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sNext));
-        nMore.appendChild(document.createTextNode("▾"));
+        $(nPrevious).html("&#x25C0;")
+        $(nNext).html("&#x25B6;")
+        $(nMore).html('<span>&#x25BE;</span>')
 
         var instance_id = parseInt(Math.random() * 100);
         dropdown_id = "pagination_more_menu" + instance_id;
@@ -44,7 +46,7 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
         });
 
         $(nPaging).find("#"+first_page_id).click(function(){
-             if ($(nPrevious).attr('class').indexOf("disabled")<0){
+             if (!$(this).parent().hasClass("disabled")){
                 oSettings.oApi._fnPageChange(oSettings, "first");
                 fnCallbackDraw(oSettings);
                  return true;
@@ -53,7 +55,7 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
         });
 
         $(nPaging).find("#"+last_page_id).click(function(){
-             if ($(nNext).attr('class').indexOf("disabled")<0){
+             if (!$(this).parent().hasClass("disabled")){
                 oSettings.oApi._fnPageChange(oSettings, "last");
                 fnCallbackDraw(oSettings);
                 return true;

@@ -1,15 +1,36 @@
 {% load i18n %}
 
-<script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
-<script type="text/javascript" src="/media/javascript/subjects/subjects_table.js"></script>
-<script type="text/javascript" src="/media/javascript/subjects/subject_actions.js"></script>
+<link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
+
+<script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+<script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+<script src="/media/javascript/data_tables/js/dwtable.js"></script>
+
+<script src="/media/javascript/subjects/subject_actions.js"></script>
+<script>
+$(function(){
+    var action_handler = new DW.AllSubjectActions();
+
+    $("#subjects_table").dwTable({
+            "concept":subject_type,
+            "sAjaxSource": "/entity/subjects/clinic/ajax/",
+            "sAjaxDataIdColIndex" : $("#subjects_table thead th.short_code").index(("#subjects_table thead th")),
+            "bServerSide": true,
+            "oLanguage": {
+                "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
+            },
+            "aaSorting": [ [ $('#subjects_table th.name').index('#subjects_table th'), "asc"] ],
+            "actionItems" : [ {"label": "Delete", handler:action_handler.delete, "allow_selection": "multiple"},
+                              {"label":"Edit", handler:action_handler.edit, "allow_selection": "single"}
+            ]
+      });
+    });
+</script>
 
 <div id="wrapper_div_for_table">
-    {% include 'subjects_actions.html' %}
-    <table id="subjects_table" class="styled_table">
+    <table id="subjects_table" >
         <thead>
-        <tr class="list_header">
+        <tr>
             {#        empty th for check-all box#}
             <th></th>
             {% for header_name, header_label in subject_headers.items %}

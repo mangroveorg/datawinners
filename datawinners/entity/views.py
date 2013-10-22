@@ -163,7 +163,7 @@ def all_subjects_ajax(request, subject_type):
     return HttpResponse(
         jsonpickle.encode(
             {
-                'subjects': subjects,
+                'data': subjects,
                 'iTotalDisplayRecords': query_count,
                 'iDisplayStart': int(request.GET.get('iDisplayStart')),
                 "iTotalRecords": search_count,

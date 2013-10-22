@@ -193,11 +193,12 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
-#: media/javascript/admin/organization.js:18
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
-#: media/javascript/admin/organization.js:19
+msgid "Edit"
+msgstr "Modifier"
+
 msgid "Ok"
 msgstr ""
 
@@ -960,8 +961,8 @@ msgid "Terms And Conditions"
 msgstr "Termes et Conditions"
 
 #: media/javascript/subjects/subject_actions.js:15
-msgid "You have selected the <b>%(number_of_records)s</b> Subjects on this page."
-msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> Sujets sur cette page."
+msgid "You have selected <b>%(number_of_records)s</b> %(concept)s(s) on this page."
+msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> %(concept)s sur cette page."
 
 msgid "You have selected <b>%(number_of_records)s</b> Datasenders on this page."
 msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> Expéditeurs sur cette page."
@@ -997,8 +998,8 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 #~ msgid "Not available for trial accounts"
 #~ msgstr "Non disponible pour les comptes essai"
 
-msgid "Select all <b> %(total_number_of_records)s </b>Subjects"
-msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>Sujets"
+msgid "Select all <b> %(total_number_of_records)s </b>%(concept)s(s)"
+msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>%(concept)s(s)"
 
 msgid "Select all <b> %(total_number_of_records)s </b>datasenders"
 msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>expéditeurs"
@@ -1006,8 +1007,8 @@ msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>expéditeurs"
 msgid "Enter any information you want to find"
 msgstr "Tapez toute information que vous recherchez"
 
-msgid "You have selected all %(total_number_of_records)s Subjects."
-msgstr "Vous avez sélectionné tous les %(total_number_of_records)s Sujets."
+msgid "You have selected all %(total_number_of_records)s %(concept)s(s)."
+msgstr "Vous avez sélectionné tous les %(total_number_of_records)s %(concept)s(s)."
 
 msgid "All %(total_number_of_records)s Datasenders selected."
 msgstr "Tous les %(total_number_of_records)s Expéditeurs sont sélectionnés."
@@ -1023,3 +1024,6 @@ msgstr "<b>%(start)s à %(end)s</b> de %(total)s Expéditeurs de données"
 
 msgid "<b> 0 to 0</b> of 0"
 msgstr "<b> 0 à 0</b> de 0"
+
+msgid "Select a %(concept)s"
+msgstr "Sélectionnez un(e) %(concept)s"

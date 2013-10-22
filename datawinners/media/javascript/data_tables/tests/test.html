@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+    function gettext(msgid) {
+        return msgid;
+    }
+
+
+    function interpolate(fmt, obj, named) {
+    if (named) {
+    return fmt.replace(/%\(\w+\)s/g, function(match){return String(obj[match.slice(2,-2)])});
+    } else {
+    return fmt.replace(/%s/g, function(match){return String(obj.shift())});
+    }
+    }
+</script>
+
+
+
+
+
+<link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+<link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+<link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
+
+
+<script src="/media/javascript/jquery.js"></script>
+<script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+<script src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+<script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+<script src="/media/javascript/data_tables/js/dwtable.js"></script>
+
+<script>
+    $(function() {
+        $("#subtable").dwTable({
+            "concept":"Subject",
+            "sAjaxSource": "/entity/subjects/clinic/ajax/",
+            "sAjaxDataIdColIndex": 6,
+            "bServerSide": true
+            ,"actionItems" : [ {"label": "Delete", handler:function(tb){alert('delete' + tb);}, "allow_selection": "multiple"},
+                              {"label":"Edit", handler:function(){alert('edit');}, "allow_selection": "single"}
+            ]
+/*            "aaData": [
+            [ "Trident", "Internet Explorer 4.0", "Win 95+", 4, "X" ],
+            [ "Trident", "Internet Explorer 5.0", "Win 95+", 5, "C" ],
+            [ "Trident", "Internet Explorer 5.5", "Win 95+", 5.5, "A" ],
+            [ "Trident", "Internet Explorer 6.0", "Win 98+", 6, "A" ],
+            [ "Trident", "Internet Explorer 7.0", "Win XP SP2+", 7, "A" ],
+            [ "Gecko", "Firefox 1.5", "Win 98+ / OSX.2+", 1.8, "A" ],
+            [ "Gecko", "Firefox 2", "Win 98+ / OSX.2+", 1.8, "A" ],
+            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+            [ "Webkit", "Safari 1.2", "OSX.3", 125.5, "A" ],
+            [ "Webkit", "Safari 1.3", "OSX.3", 312.8, "A" ],
+            [ "Webkit", "Safari 2.0", "OSX.4+", 419.3, "A" ],
+            [ "Webkit", "Safari 3.0", "OSX.4+", 522.1, "A" ]
+        ], */
+         ,"aoColumns": [
+
+            { "sTitle": "Engine" },
+            { "sTitle": "Browser" },
+            { "sTitle": "Platform" },
+           // { "sTitle": "Version", "sClass": "center" },
+            { "sTitle": "devices", "sClass": "center" },
+            { "sTitle": "devices", "sClass": "center" },
+            { "sTitle": "devices", "sClass": "center" }
+        ]
+            //,        "fnInitComplete":function(){ alert('done with it!');}
+        });
+
+ });
+
+$(function() {
+        $("#dstable").dwTable({
+            "concept":"Data Sender",
+            "sAjaxSource": "/entity/datasenders/ajax/",
+            "sAjaxDataIdColIndex" : 2,
+            "bServerSide": true,
+            "actionItems" : [ {"label": "Delete", handler:function(tb){alert('delete' + tb);}, "allow_selection": "multiple"},
+                              {"label":"Edit", handler:function(){alert('edit');}, "allow_selection": "single"},
+                              {"label":"Add to project", handler:function(){alert('add to project');}, "allow_selection": "single"},
+                              {"label":"Remove to project", handler:function(){alert('remove from project');}, "allow_selection": "single"}
+            ]
+        });
+ });
+
+
+
+</script>
+</head>
+<body>
+
+
+    <div style="width: 900px;">
+        <table id="subtable" >
+            <thead>
+                <tr>
+                    <!-- th></th>
+                    <th>What is clinic's first name</th>
+                    <th>What is the clinic's last name</th>
+                    <th>What is the clinic location</th>
+                    <th>What is the clinic's GPS co-ordinates</th>
+                    <th>What is the clinic's Mobile number</th>
+                    <th>What is the clinic's Unique ID Number</th -->
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+
+<div style="clear: both"></div>
+
+<hr/>
+
+    <div style="width: 900px;">
+        <table id="dstable" >
+            <thead>
+                <tr>
+                    <th>a</th>
+                    <th>a</th>
+                    <th>a</th>
+                    <th>a</th>
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+
+
+</body>
+</html>
