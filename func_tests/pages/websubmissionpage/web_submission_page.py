@@ -2,7 +2,7 @@ from pages.datasenderpage.data_sender_locator import SMARTPHONE_NAV
 from pages.page import Page
 from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
-from pages.warningdialog.warning_dialog_page import WarningDialog
+from pages.warningdialog.warning_dialog import WarningDialog
 from pages.websubmissionpage.web_submission_locator import *
 from tests.testsettings import UI_TEST_TIMEOUT
 from tests.websubmissiontests.web_submission_data import *

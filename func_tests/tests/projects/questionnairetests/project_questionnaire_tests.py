@@ -13,7 +13,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from pages.warningdialog.warning_dialog_page import WarningDialog
+from pages.warningdialog.warning_dialog import WarningDialog
 from framework.utils.common_utils import by_id, by_css, random_string
 
 

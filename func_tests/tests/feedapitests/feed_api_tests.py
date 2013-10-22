@@ -14,7 +14,7 @@ from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import LoginPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON, DELETE_BUTTON
-from pages.warningdialog.warning_dialog_page import WarningDialog
+from pages.warningdialog.warning_dialog import WarningDialog
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, get_test_port
 from tests.projects.questionnairetests.project_questionnaire_data import WATERPOINT_QUESTIONNAIRE_DATA, WATERPOINT_PROJECT_DATA

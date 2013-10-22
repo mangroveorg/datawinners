@@ -102,6 +102,6 @@ NEW_USER_DATA = {
     FIRST_NAME: "bbb kimi",
     LAST_NAME: "Raikonan",
     USERNAME: random_string(4)+"@mailinator.com",
-    MOBILE_PHONE: random_number()
+    MOBILE_PHONE: random_number(9)
 }
 

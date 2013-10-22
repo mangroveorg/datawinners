@@ -25,7 +25,7 @@ from pages.resetpasswordpage.reset_password_page import ResetPasswordPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON, DELETE_BUTTON
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
-from pages.warningdialog.warning_dialog_page import WarningDialog
+from pages.warningdialog.warning_dialog import WarningDialog
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from testdata.constants import SUCCESS_MSG
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, LOGOUT, url

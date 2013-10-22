@@ -51,13 +51,7 @@ class AllDataSendersPage(Page):
          """
         self.driver.find(CANCEL_LINK).click()
 
-    def click_delete(self, wait=False):
-        """
-        Function to cancel the association/dissociation with projects on all data sender page
-        """
-        self.driver.find(DELETE_BUTTON).click()
-        if wait:
-            self.driver.wait_until_modal_dismissed(7)
+
 
     def give_web_access(self):
         """
@@ -111,7 +105,6 @@ class AllDataSendersPage(Page):
     def delete_datasender(self, data_sender_id):
         self.select_a_data_sender_by_id(data_sender_id)
         self.perform_datasender_action(DELETE)
-        self.click_delete(wait=True)
 
     def give_web_and_smartphone_access(self, email):
         self.give_web_access()
