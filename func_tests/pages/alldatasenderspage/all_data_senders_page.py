@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from framework.utils.common_utils import generate_random_email_id
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import *
 from pages.page import Page
@@ -114,10 +113,10 @@ class AllDataSendersPage(Page):
         self.perform_datasender_action(DELETE)
         self.click_delete(wait=True)
 
-    def give_web_and_smartphone_access(self):
+    def give_web_and_smartphone_access(self, email):
         self.give_web_access()
         email_text_box = self.driver.find_text_box(WEB_USER_BLOCK_EMAIL)
-        email_text_box.enter_text(generate_random_email_id())
+        email_text_box.enter_text(email)
         self.driver.find(GIVE_ACCESS_LINK).click()
 
     # def check_web_device_by_id(self, data_sender_id):

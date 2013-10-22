@@ -66,6 +66,8 @@ class TestAllDataSenders(unittest.TestCase):
 
     @attr('functional_test')
     def test_successful_association_and_dissociation_of_data_sender(self):
+        self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
+        self.assertEqual("", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
         self.all_datasenders_page.associate_datasender_to_projects(self.datasender_id_without_web_access, ["clinic test project1", "clinic test project"])
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.assertEqual("clinic test project, clinic test project1", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
@@ -253,10 +255,14 @@ class TestAllDataSenders(unittest.TestCase):
 
     @attr("functional_test")
     def test_should_give_web_and_smartphone_access(self):
+        self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.assertFalse(self.all_datasenders_page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
         self.all_datasenders_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
-        self.all_datasenders_page.give_web_and_smartphone_access()
+        email_address = fetch_(EMAIL_ADDRESS, VALID_DATASENDER_WITHOUT_WEB_ACCESS)
+        self.all_datasenders_page.give_web_and_smartphone_access(email_address)
         self.all_datasenders_page.wait_for_table_to_load()
         self.assertEqual("Access to Web Submission has been given to your DataSenders", self.all_datasenders_page.get_success_message())
+        self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.assertTrue(self.all_datasenders_page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
+        self.assertEqual(email_address, self.all_datasenders_page.get_cell_value(1,7))
 

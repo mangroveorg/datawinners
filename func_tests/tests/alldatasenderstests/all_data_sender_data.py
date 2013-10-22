@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 from datawinners.messageprovider.tests.test_message_handler import THANKS
-from framework.utils.common_utils import random_number, random_string
+from framework.utils.common_utils import random_number, random_string, generate_random_email_id
 from testdata.test_data import url
 from testdata.constants import *
 
@@ -48,6 +48,7 @@ VALID_DATA = {NAME: "ReRegistered",
 
 VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "aaa Kimi",
                                        MOBILE_NUMBER: random_number(9),
+                                       EMAIL_ADDRESS: generate_random_email_id(),
                                        COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                                        GPS: "-21.7622088847 48.0690991394",
                                        SUCCESS_MSG: "Registration successful. ID is: rep"}
