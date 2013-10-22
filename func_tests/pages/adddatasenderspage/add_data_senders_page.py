@@ -72,12 +72,6 @@ class AddDataSenderPage(Page):
         return error_message.replace("\n", " ")
 
     def get_success_message(self):
-        """
-        Function to fetch the success message from flash label of the add data sender page
-
-        Return success message
-        """
-        error_message = ""
         locator = self.driver.wait_for_element(UI_TEST_TIMEOUT, FLASH_MESSAGE_LABEL, want_visible=True)
         return locator.text
 

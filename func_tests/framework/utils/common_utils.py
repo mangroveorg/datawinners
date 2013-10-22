@@ -120,3 +120,6 @@ def random_number(length=9):
 
 def random_string(length=6):
     return ''.join(random.sample('abcdefghijklmnopqrs', length))
+
+def generate_random_email_id():
+    return random_string(5) + '@' + random_string(3) + '.com'

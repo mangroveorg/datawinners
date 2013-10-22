@@ -1,30 +1,9 @@
-# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
-
-##Variables
 from datawinners.messageprovider.tests.test_message_handler import THANKS
 from framework.utils.common_utils import random_number, random_string
 from testdata.test_data import url
+from testdata.constants import *
 
-NAME = "name"
-MOBILE_NUMBER = "mobile_number"
-LOCATION = "location"
-GPS = "gps"
-SUCCESS_MSG = "message"
-ERROR_MSG = "message"
-PROJECT_NAME = "project_name"
-ASSOCIATE = "associate"
-DISSOCIATE = "disassociate"
-WEB_ACCESS = 'makewebuser'
-UID = "uid"
-DELETE = "delete"
-EDIT = "edit"
-SENDER = "from"
-RECEIVER = "to"
-SMS = "sms"
-MESSAGE = "message"
-COMMUNE = "commune"
-SUCCESS_MESSAGE = "success_message"
+
 
 ASSOCIATE_SUCCESS_TEXT = "Data Senders associated Successfully. Please Wait...."
 DISSOCIATE_SUCCESS_TEXT = "Data Senders dissociated Successfully. Please Wait...."
@@ -78,7 +57,6 @@ DATA_SENDER_TO_DELETE = {NAME: "delete DS",
                                        GPS: "-21.7622088847 48.0690991394",
                                        SUCCESS_MSG: "Registration successful. ID is: rep"}
 
-EMAIL_ADDRESS = "email"
 
 VALID_DATASENDER_WITH_WEB_ACCESS = {NAME: "aaa Mickey Duck",
                                MOBILE_NUMBER: random_number(9),
@@ -94,8 +72,7 @@ INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
 
 
 
-def generate_random_email_id():
-    return random_string(5) + '@' + random_string(3) + '.com'
+
 
 
 ALL_DS_TO_DELETE_ARE_USER_MSG = u'You cannot delete the following Data Senders as they are DataWinners users:'
