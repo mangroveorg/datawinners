@@ -1,3 +1,5 @@
+# vim: ai ts=4 sts=4 et sw=4utf-8
+
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import int_to_base36

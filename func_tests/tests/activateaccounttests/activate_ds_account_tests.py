@@ -1,3 +1,5 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
 from nose.plugins.attrib import attr
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User

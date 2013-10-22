@@ -1,3 +1,5 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
 from datawinners.messageprovider.tests.test_message_handler import THANKS
 from framework.utils.common_utils import random_number, random_string
 from testdata.test_data import url
