@@ -3,33 +3,6 @@ $(document).ready(function () {
     var $dataTable = $('.submission_table');
     var tab = ["all", "success", "error", "deleted"];
     var active_tab_index;
-    var $filterSelects = $('#dataSenderSelect, #subjectSelect');
-    buildFilters();
-
-
-    var dt = $('.submission_table').dataTable({
-        "bProcessing": true,
-        "bServerSide": true,
-        "bResetDisplay": true,
-        "aLengthMenu": [10, 25, 50, 100],
-        "iDisplayLength": 25,
-        "sDom": "ipfrtipl",
-        "sInput": "",
-        "sAjaxSource": '/project/submissions/cli004',
-        "sAjaxDataProp": "submissions",
-        "sServerMethod": "GET",
-        "aoColumnDefs": [
-            { "sClass": "center",
-                "sTitle": "<input type='checkbox'id='checkall-checkbox'></input>",
-                "fnRender": function (data) {
-                    return '<input type="checkbox" value=' + data.aData[0] + ' />';
-                },
-                "aTargets": [0]
-            },
-            {"bSortable": false, "aTargets": [0]}
-        ]
-    });
-
 
     function TabOptions() {
         var defaultOptions = {
@@ -47,21 +20,23 @@ $(document).ready(function () {
     }
 
     TabOptions.prototype.show_status = function () {
-        return this._options[tab[active_tab_index]].show_status;
+        return this._options[active_tab].show_status;
     }
 
     TabOptions.prototype.show_actions = function () {
-        return this._options[tab[active_tab_index]].show_actions;
+        return this._options[active_tab].show_actions;
     }
 
     TabOptions.prototype.show_deleting_check_box = function () {
-        return this._options[tab[active_tab_index]].show_deleting_check_box;
+        return this._options[active_tab].show_deleting_check_box;
     }
 
     TabOptions.prototype.show_reply_sms = function () {
-        return this._options[tab[active_tab_index]].show_reply_sms;
+        return this._options[active_tab].show_reply_sms;
     }
+    var tabOptions = new TabOptions();
 
+    bind_data();
     $.ajaxSetup({ cache: false });
 
     var $no_submission_hint = $('.help_no_submissions');
@@ -71,28 +46,6 @@ $(document).ready(function () {
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
 
-    function buildFilters() {
-        var subject_options = {emptyText: interpolate(gettext('All %(entity)s'), {entity: entity_type}, true)};
-        var data_sender_options = {emptyText: gettext("All Data Senders")};
-        var filter_options = [data_sender_options, subject_options];
-
-        $filterSelects.each(function (index, filter) {
-            $(filter).dropdownchecklist($.extend({firstItemChecksAll: false,
-                explicitClose: gettext("OK"),
-                explicitClear: gettext("Clear"),
-                width: $(this).width(),
-                eventCallback: function () {
-                    $('.ui-daterangepicker:visible').hide();
-                },
-                maxDropHeight: 200}, filter_options[index]));
-
-        });
-    };
-
-    buildRangePicker();
-    DW.disable_filter_section_if_no_data();
-
-    var tabOptions = new TabOptions();
     $("#tabs").tabs().find('>ul>li>a[href$=tab_template]').click(function () {
         if ($dataTable.parents('.dataTables_wrapper').length >= 1) {
             DW.current_sort_order = $dataTable.dataTable().fnSettings().aaSorting;
@@ -107,46 +60,27 @@ $(document).ready(function () {
             return;
         }
         active_tab_index = tab_index;
+        window.location.href = window.location.pathname + '?type=' + tab[active_tab_index];
+//        fetch_data(tab_index);
+    });
+    var all_tabs = $("#tabs").tabs().find('>ul>li>a[href$=tab_template]');
+    for (var i=0 ; i <  all_tabs.length;i++) {
+        if (all_tabs[i].text.toLowerCase().indexOf(active_tab) != -1) {
+            $($(all_tabs[i]).parent()).addClass('ui-tabs-selected ui-state-active')
+        } else {
+            $($(all_tabs[i]).parent()).removeClass('ui-tabs-selected ui-state-active')
+        }
 
-        //fetch_data(tab_index);
-    }).eq(default_tab).trigger('click');
-
-
+    }
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
 
-    var $filterSelects = $('#dataSenderSelect');
-
-    function closeFilterSelects() {
-        $filterSelects.dropdownchecklist('close')
-    }
-
-    function buildRangePicker() {
-        $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: closeFilterSelects});
-        $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects});
-    }
-
-    $('#go').click(function () {
-        //fetch_data(active_tab_index);
-    });
 
     $('.export_link').click(function () {
         var url = '/project/export/log' + '?type=' + tab[active_tab_index];
         $('#export_form').appendJson(DW.get_criteria()).attr('action', url).submit();
     });
 
-    function fetch_data(active_tab_index) {
-        var data = DW.get_criteria();
-        DW.loading();
-        $.ajax({
-            type: 'POST',
-            url: window.location.pathname + '?type=' + tab[active_tab_index],
-            data: data,
-            success: function (response) {
-                var response_data = JSON.parse(response);
-                show_data(active_tab_index, response_data.data_list);
-            }});
-    }
 
     function insertActionBar() {
         $actionBar.clone(true).insertBefore(".dataTables_paginate").addClass('margin_top_10').show();
@@ -164,63 +98,86 @@ $(document).ready(function () {
         }
     }
 
-    function dataBinding(data, destroy, retrive, emptyTableText) {
-        $dataTable.dataTable({
-            "aaSorting": DW.current_sort_order,
-            "bDestroy": destroy,
-            "bRetrieve": retrive,
-            "sPaginationType": "full_numbers",
-            "aaData": data,
-            "bSort": true,
-            "aoColumnDefs": getColumnDefinition(),
-            "fnHeaderCallback": function (nHead, aData, iStart, iEnd, aiDisplay) {
-                if (tabOptions.show_deleting_check_box()) {
-                    nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';
+    function bind_data(data) {
+        var dt = $('.submission_table').dataTable({
+//                    "aaData": data,
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "bResetDisplay": true,
+                    "aLengthMenu": [10, 25, 50, 100],
+                    "iDisplayLength": 25,
+                    "sDom": "ipfrtipl",
+                    "sInput": "",
+                    "sAjaxSource": render_table_url,
+                    "sAjaxDataProp": "submissions",
+                    "sServerMethod": "GET",
+                    "aoColumnDefs": getColumnDefinition()
                 }
-            },
-            "fnDrawCallback": function (oSettings) {
-                submissions_action_dropdown.update_edit_action();
-            },
-            "fnPreDrawCallback": function (oSettings) {
-                submissions_action_dropdown.uncheck_all();
-            },
-            "oLanguage": {
-                "sProcessing": gettext("Processing..."),
-                "sLengthMenu": gettext("Show _MENU_ Submissions"),
-                "sZeroRecords": emptyTableText,
-                "sEmptyTable": emptyTableText,
-                "sLoadingRecords": gettext("Loading..."),
-                "sInfo": gettext("<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</span> Submissions"),
-                "sInfoEmpty": gettext("0 Submissions"),
-                "sInfoFiltered": gettext("(filtered from _MAX_ total Data records)"),
-                "sInfoPostFix": "",
-                "sSearch": gettext("Search:"),
-                "sUrl": "",
-                "oPaginate": {
-                    "sFirst": gettext("First"),
-                    "sPrevious": gettext("Previous"),
-                    "sNext": gettext("Next"),
-                    "sLast": gettext("Last")
-                },
-                "fnInfoCallback": null
-            },
-            "sDom": '<"table_information"i>rtpl',
-            "iDisplayLength": 25
-        });
-        insertActionBar();
-        toggleActionBar();
+
+            )
+            ;
+
+
     }
 
-    function show_data(active_tab_index, data) {
-        var index = (active_tab_index || 0) + 1;
-        $page_hint_section.empty().append($page_hint.find('>div:nth-child(' + index + ')').clone())
-        dataBinding(data, true, false, getEmptyTableText());
-        wrap_table();
-        submissions_action_dropdown.init_dropdown();
-        if (data.length == 0) {
-            $("#master_checkbox").attr("disabled", "disabled");
-        }
-    }
+//    function dataBinding(data, destroy, retrive, emptyTableText) {
+//        $dataTable.dataTable({
+//            "aaSorting": DW.current_sort_order,
+//            "bDestroy": destroy,
+//            "bRetrieve": retrive,
+//            "sPaginationType": "full_numbers",
+//            "aaData": data,
+//            "bSort": true,
+//            "aoColumnDefs": getColumnDefinition(),
+//            "fnHeaderCallback": function (nHead, aData, iStart, iEnd, aiDisplay) {
+//                if (tabOptions.show_deleting_check_box()) {
+//                    nHead.getElementsByTagName('th')[0].innerHTML = '<input type="checkbox" id="master_checkbox"/>';
+//                }
+//            },
+//            "fnDrawCallback": function (oSettings) {
+//                submissions_action_dropdown.update_edit_action();
+//            },
+//            "fnPreDrawCallback": function (oSettings) {
+//                submissions_action_dropdown.uncheck_all();
+//            },
+//            "oLanguage": {
+//                "sProcessing": gettext("Processing..."),
+//                "sLengthMenu": gettext("Show _MENU_ Submissions"),
+//                "sZeroRecords": emptyTableText,
+//                "sEmptyTable": emptyTableText,
+//                "sLoadingRecords": gettext("Loading..."),
+//                "sInfo": gettext("<span class='bold'>_START_ - _END_</span> of <span id='total_count'>_TOTAL_</span> Submissions"),
+//                "sInfoEmpty": gettext("0 Submissions"),
+//                "sInfoFiltered": gettext("(filtered from _MAX_ total Data records)"),
+//                "sInfoPostFix": "",
+//                "sSearch": gettext("Search:"),
+//                "sUrl": "",
+//                "oPaginate": {
+//                    "sFirst": gettext("First"),
+//                    "sPrevious": gettext("Previous"),
+//                    "sNext": gettext("Next"),
+//                    "sLast": gettext("Last")
+//                },
+//                "fnInfoCallback": null
+//            },
+//            "sDom": '<"table_information"i>rtpl',
+//            "iDisplayLength": 25
+//        });
+//        insertActionBar();
+//        toggleActionBar();
+//    }
+
+//
+//    function show_data(active_tab_index, data) {
+//        var index = (active_tab_index || 0) + 1;
+//        $page_hint_section.empty().append($page_hint.find('>div:nth-child(' + index + ')').clone())
+//        dataBinding(data, true, false, getEmptyTableText());
+//        wrap_table();
+//        submissions_action_dropdown.init_dropdown();
+//        if (data.length == 0) {
+//            $("#master_checkbox").attr("disabled", "disabled");
+//        }
+//    }
 
     function getEmptyTableText() {
         return isFiltering() ? help_all_data_are_filtered : $no_submission_hint.filter(':eq(' + active_tab_index + ')').html();
@@ -280,21 +237,19 @@ $(document).ready(function () {
 
     function getColumnDefinition() {
         var columns = [
+
             {
-                "fnRender": function (oObj) {
-                    return '<input type="checkbox" value="' + oObj.aData[0] + '" class="selected_submissions"/>';
+                "sClass": "center",
+                "sTitle": "<input type='checkbox'id='checkall-checkbox' class='selected_submissions'></input>",
+                "fnRender": function (data) {
+                    return '<input type="checkbox" value=' + data.aData[0] + ' />';
                 },
-                "aTargets": [0],
-                'bVisible': tabOptions.show_deleting_check_box(),
-                "bSortable": false
+                "bSortable": false,
+                "aTargets": [0]
             },
             {
                 "bVisible": tabOptions.show_status(),
                 "aTargets": [3]
-            },
-            {
-                "bVisible": tabOptions.show_reply_sms(),
-                "aTargets": [4]
             },
             {
                 "sType": "submission_date",
@@ -303,13 +258,13 @@ $(document).ready(function () {
 
         ];
 
-        if (has_reporting_period) {
-            var reporting_period_column = {
-                "aTargets": [(entity_type == "Reporter") ? 5 : 6],
-                "sType": "reporting_period"
-            };
-            columns.push(reporting_period_column);
-        }
+//        if (has_reporting_period) {
+//            var reporting_period_column = {
+//                "aTargets": [(entity_type == "Reporter") ? 5 : 6],
+//                "sType": "reporting_period"
+//            };
+//            columns.push(reporting_period_column);
+//        }
         return columns;
     }
 

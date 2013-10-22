@@ -82,6 +82,8 @@
             var header_name_list = JSON.parse({{header_name_list|safe}});
             var has_reporting_period = {{ has_reporting_period|lower }};
             var default_tab = {{ tab }};
+            var render_table_url = '/project/submissions/{{ questionnaire_code }}'+'?type='+'{{ active_tab }}';
+            var active_tab = '{{ active_tab }}';
         </script>
     {% endcompress %}
     {% block secondary_navigation_data %}
@@ -96,14 +98,6 @@
     {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
     {% include "project/submission_page_hint.html" %}
     <div class="heading_block clearfix margin_bottom_10">
-        <div id="filter_section" class="alpha data_ana float_left">
-            {% include 'project/partials/filters/_filter_by_data_sender.html' %}
-            {% include 'project/partials/filters/_filter_by_submission_date.html' %}
-            {% include 'project/partials/filters/_filter_by_subject.html' %}
-            {% include 'project/partials/filters/_filter_by_reporting_period.html' %}
-            {% include 'project/partials/filters/_filter_by_keyword.html' %}
-            {% include 'project/partials/filters/_filter_button_container.html' %}
-        </div>
 
         <!--[if IE 7]>
             <div class="float_right"></div>

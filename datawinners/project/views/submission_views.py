@@ -20,7 +20,7 @@ from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
-from datawinners.search.entity_search import SubmissionQuery
+from datawinners.search.submission_search import SubmissionQuery
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -75,7 +75,8 @@ def index(request, project_id=None, questionnaire_code=None, tab="0"):
                        "datasender_list": survey_responses.get_data_senders(),
                        "subject_list": survey_responses.get_subjects(),
                        "tab": tab,
-                       "is_quota_reached": is_quota_reached(request)
+                       "is_quota_reached": is_quota_reached(request),
+                       "active_tab":submission_type
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
@@ -306,6 +307,9 @@ def get_submissions(request, project_id):
     search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
     search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
     search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
+    filter_type = request.GET['type']
+    if filter_type.lower() != 'all':
+        search_parameters.update({"filter": filter_type})
     user = request.user
     query_count, search_count, submissions= SubmissionQuery(form_model).paginated_query(user, form_model.id, search_parameters)
 
