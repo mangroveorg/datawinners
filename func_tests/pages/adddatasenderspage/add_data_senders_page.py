@@ -46,6 +46,7 @@ class AddDataSenderPage(Page):
         if unique_id is not None:
             self.set_unique_id(unique_id)
         self.driver.find(REGISTER_BTN).click()
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css("span.loading"))
         return self
 
     def get_registered_datasender_id(self):
@@ -105,6 +106,9 @@ class AddDataSenderPage(Page):
 
     def enter_datasender_mobile_number(self, mobile_number):
         self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(mobile_number)
+
+    def navigate_to_datasender_page(self):
+        self.driver.find(by_css("a.back-to-list")).click()
 
     def click_submit_button(self):
         self.driver.find(REGISTER_BTN).click()

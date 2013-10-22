@@ -68,11 +68,7 @@ class AllDataSendersPage(Page):
         self.perform_datasender_action(option_to_select)
 
     def select_edit_action(self):
-        """
-        Function to associate data sender with project
-         """
-        option_to_select = EDIT
-        self.perform_datasender_action(option_to_select)
+        self.perform_datasender_action(EDIT)
 
     def perform_datasender_action(self, action_to_be_performed):
         self.driver.find(ACTION_DROP_DOWN).click()

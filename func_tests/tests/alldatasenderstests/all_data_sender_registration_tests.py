@@ -43,7 +43,7 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         return message
 
     @attr('functional_test')
-    def test_successful_addition_editing_of_data_sender(self):
+    def test_successful_addition_and_editing_of_data_sender(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
         success_msg = add_data_sender_page.get_success_message()
@@ -55,6 +55,7 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         all_data_senders_page.select_edit_action()
         self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
         self.assertRegexpMatches(self.current_page.get_success_message(), fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATA)))
+
 
     @attr('functional_test')
     def test_addition_of_data_sender_without_email_address(self):

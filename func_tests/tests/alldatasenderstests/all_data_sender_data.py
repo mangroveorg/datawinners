@@ -67,6 +67,14 @@ VALID_DATASENDER_WITH_WEB_ACCESS = {NAME: "aaa Mickey Duck",
                                GPS: "-21.7622088847 48.0690991394",
                                SUCCESS_MSG: "Registration successful. ID is: rep"}
 
+EDITED_DATA_SENDER = {NAME: "aaa Mickey Goose",
+                               MOBILE_NUMBER: random_number(9),
+                               COMMUNE: "Pakistan",
+                               EMAIL_ADDRESS: "goose",
+                               GPS: "3.33, 1.11",
+                               SUCCESS_MSG: "Your changes have been saved."}
+
+
 INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
                               MOBILE_NUMBER: "abcdefgh",
                               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",

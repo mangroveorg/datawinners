@@ -233,10 +233,26 @@ class TestAllDataSenders(unittest.TestCase):
 #         all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
 #         self.assertTrue(all_data_sender_page.is_checkall_checked())
 #
+    @attr("functional_test")
+    def test_should_show_updated_datasender_details_after_edit(self):
+        self.all_datasenders_page.search_with(self.datasender_id_with_web_access)
+        self.all_datasenders_page.select_a_data_sender_by_id(self.datasender_id_with_web_access)
+        self.all_datasenders_page.select_edit_action()
+        AddDataSenderPage(self.driver).enter_data_sender_details_from(EDITED_DATA_SENDER).navigate_to_datasender_page()
+        self.all_datasenders_page.wait_for_table_to_load()
+        self.all_datasenders_page.search_with(self.datasender_id_with_web_access)
+        self.assertEqual(fetch_(NAME, EDITED_DATA_SENDER), self.all_datasenders_page.get_cell_value(1,2))
+        self.assertEqual(self.datasender_id_with_web_access, self.all_datasenders_page.get_cell_value(1,3))
+        location_appended_with_account_location = fetch_(COMMUNE, EDITED_DATA_SENDER) + ",Madagascar"
+        self.assertEqual(location_appended_with_account_location, self.all_datasenders_page.get_cell_value(1,4))
+        self.assertEqual(fetch_(GPS, EDITED_DATA_SENDER), self.all_datasenders_page.get_cell_value(1,5))
+        self.assertEqual(fetch_(MOBILE_NUMBER, EDITED_DATA_SENDER), self.all_datasenders_page.get_cell_value(1,6))
+
+
+
 
     @attr("functional_test")
     def test_should_give_web_and_smartphone_access(self):
-        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         self.assertFalse(self.all_datasenders_page.is_web_and_smartphone_device_checkmarks_present(self.datasender_id_without_web_access))
         self.all_datasenders_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
         self.all_datasenders_page.give_web_and_smartphone_access()
