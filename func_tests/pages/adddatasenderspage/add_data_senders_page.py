@@ -78,7 +78,7 @@ class AddDataSenderPage(Page):
         Return success message
         """
         error_message = ""
-        locator = self.driver.wait_for_element(20, FLASH_MESSAGE_LABEL, want_visible=True)
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT, FLASH_MESSAGE_LABEL, want_visible=True)
         return locator.text
 
     def open_import_lightbox(self):

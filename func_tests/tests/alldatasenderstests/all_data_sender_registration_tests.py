@@ -74,15 +74,13 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         a = self.driver.switch_to_active_element()
         self.assertEqual(a.get_attribute("id"), u"id_name")
 
-
     @attr('functional_test')
     def test_addition_of_data_sender_with_existing_data(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(EXISTING_DATA)
 
         time.sleep(1)
-        self.assertEqual(add_data_sender_page.get_error_message(),
-                         fetch_(ERROR_MSG, from_(EXISTING_DATA)))
+        self.assertEqual(add_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(EXISTING_DATA)))
 
     @attr('functional_test')
     def test_addition_of_data_sender_without_location_name(self):
@@ -102,15 +100,13 @@ class TestAllDataSenderRegistration(unittest.TestCase):
     def test_addition_of_data_sender_with_invalid_gps(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(INVALID_GPS)
-        self.assertEqual(add_data_sender_page.get_error_message(),
-                         fetch_(ERROR_MSG, from_(INVALID_GPS)))
+        self.assertEqual(add_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(INVALID_GPS)))
 
     @attr('functional_test')
     def test_addition_of_data_sender_with_invalid_latitude_gps(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(INVALID_LATITUDE_GPS)
-        self.assertEqual(add_data_sender_page.get_error_message(),
-                         fetch_(ERROR_MSG, from_(INVALID_LATITUDE_GPS)))
+        self.assertEqual(add_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(INVALID_LATITUDE_GPS)))
 
     @attr('functional_test')
     def test_addition_of_data_sender_with_invalid_longitude_gps(self):
@@ -123,8 +119,7 @@ class TestAllDataSenderRegistration(unittest.TestCase):
     def test_addition_of_data_sender_with_unicode_in_gps(self):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(WITH_UNICODE_IN_GPS)
-        self.assertEqual(add_data_sender_page.get_error_message(),
-                         fetch_(ERROR_MSG, from_(WITH_UNICODE_IN_GPS)))
+        self.assertEqual(add_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(WITH_UNICODE_IN_GPS)))
 
     @SkipTest
     def test_addition_of_data_sender_with_invalid_gps_with_comma(self):
@@ -156,7 +151,7 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         add_data_sender_page = self.current_page
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL)
         success_msg = self.current_page.get_success_message()
-        rep_id = success_msg.split(' ')[-1]
+        rep_id = self._parse(success_msg)
         self.assertRegexpMatches(success_msg,
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL)))
 
@@ -166,15 +161,15 @@ class TestAllDataSenderRegistration(unittest.TestCase):
 
         self.assert_fields_are_populated_properly_in_edit_page(VALID_DATA_WITH_EMAIL)
 
-        edit_datasender_page.enter_data_sender_details_from(VALID_EDIT_DATA)
+        edit_datasender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL_EDITED)
         self.assertRegexpMatches(edit_datasender_page.get_success_message(),
-                                 fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATA)))
+                                 fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL_EDITED)))
 
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_datasender_page = AllDataSendersPage(self.driver)
         all_datasender_page.edit_datasender(rep_id)
 
-        self.assert_fields_are_populated_properly_in_edit_page(VALID_EDIT_DATA)
+        self.assert_fields_are_populated_properly_in_edit_page(VALID_DATA_WITH_EMAIL_EDITED)
 
     def _parse(self, message):
             return message.split(' ')[-1]
