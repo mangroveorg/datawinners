@@ -4,10 +4,11 @@ from datawinners.settings import ELASTIC_SEARCH_URL
 
 
 class Query(object):
-    def __init__(self, response_creator, query_builder):
+    def __init__(self, response_creator, query_builder,query_params):
         self.elastic_utils_helper = ElasticUtilsHelper()
         self.query_builder = query_builder
         self.response_creator = response_creator
+        self.query_params = query_params
 
     def _getDatabaseName(self, user):
         return get_database_manager(user).database_name
@@ -16,22 +17,22 @@ class Query(object):
         pass
 
 
-    def populate_query_options(self, query_params):
+    def populate_query_options(self):
         options = {
-            "start_result_number": query_params["start_result_number"],
-            "number_of_results": query_params["number_of_results"],
-            "order": query_params["order"],
+            "start_result_number": self.query_params["start_result_number"],
+            "number_of_results": self.query_params["number_of_results"],
+            "order": self.query_params["order"],
         }
         return options
 
-    def paginated_query(self, user, entity_type, query_params):
+    def paginated_query(self, user, entity_type):
         entity_headers = self.get_headers(user, entity_type)
-        options = self.populate_query_options(query_params)
-        if query_params["order_by"] > 0:
-            options.update({"order_field": entity_headers[query_params["order_by"]]})
+        options = self.populate_query_options()
+        if self.query_params["order_by"] > 0:
+            options.update({"order_field": entity_headers[self.query_params["order_by"]]})
 
         paginated_query = self.query_builder.create_paginated_query(entity_type, self._getDatabaseName(user), options)
-        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, query_params["search_text"],
+        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, self.query_params["search_text"],
                                                                     paginated_query)
         entities = self.response_creator.create_response(entity_headers, query_with_criteria)
         return query_with_criteria.count(), paginated_query.count(), entities

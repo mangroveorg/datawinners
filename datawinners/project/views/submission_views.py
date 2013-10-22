@@ -69,7 +69,7 @@ def index(request, project_id=None, questionnaire_code=None, tab="0"):
     survey_responses = SurveyResponseList(form_model, manager, org_id, submission_type, filters, keyword)
 
     if request.method == 'GET':
-        header = SubmissionsPageHeader(form_model)
+        header = SubmissionsPageHeader(form_model, submission_type)
         result_dict = {"header_list": header.header_list,
                        "header_name_list": repr(encode_json(header.header_list)),
                        "datasender_list": survey_responses.get_data_senders(),
@@ -311,7 +311,7 @@ def get_submissions(request, project_id):
     if filter_type.lower() != 'all':
         search_parameters.update({"filter": filter_type})
     user = request.user
-    query_count, search_count, submissions= SubmissionQuery(form_model).paginated_query(user, form_model.id, search_parameters)
+    query_count, search_count, submissions= SubmissionQuery(form_model,search_parameters).paginated_query(user, form_model.id)
 
     return HttpResponse(
         jsonpickle.encode(

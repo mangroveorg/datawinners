@@ -61,7 +61,6 @@ $(document).ready(function () {
         }
         active_tab_index = tab_index;
         window.location.href = window.location.pathname + '?type=' + tab[active_tab_index];
-//        fetch_data(tab_index);
     });
     var all_tabs = $("#tabs").tabs().find('>ul>li>a[href$=tab_template]');
     for (var i=0 ; i <  all_tabs.length;i++) {
@@ -246,25 +245,7 @@ $(document).ready(function () {
                 },
                 "bSortable": false,
                 "aTargets": [0]
-            },
-            {
-                "bVisible": tabOptions.show_status(),
-                "aTargets": [3]
-            },
-            {
-                "sType": "submission_date",
-                "aTargets": [2]
-            }
-
-        ];
-
-//        if (has_reporting_period) {
-//            var reporting_period_column = {
-//                "aTargets": [(entity_type == "Reporter") ? 5 : 6],
-//                "sType": "reporting_period"
-//            };
-//            columns.push(reporting_period_column);
-//        }
+            }];
         return columns;
     }
 

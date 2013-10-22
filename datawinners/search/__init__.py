@@ -30,10 +30,13 @@ def update_submission_search_index(submission_doc,feed_dbm):
     search_dict.update({"date": submission_doc.survey_response_modified_time.strftime("%b. %d,%Y, %H:%M %p")})
     search_dict.update({"ds_id": submission_doc.data_sender.get('id')})
     search_dict.update({"ds_name": submission_doc.data_sender.get('last_name')})
-
+    search_dict.update({"error_msg":submission_doc.error_message})
     for key in submission_doc.values:
         field = submission_doc.values[key]
-        value = field.get("answer")
+        if submission_doc.status == 'error':
+            value = field
+        else:
+            value = field.get("answer")
         if (isinstance(value,dict)):
             if field.get('is_entity_question'):
                 value = value.get("name")

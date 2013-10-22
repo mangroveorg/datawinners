@@ -34,8 +34,8 @@ class SubmissionQueryResponseCreator():
 
 
 class SubmissionQuery(Query):
-    def __init__(self, form_model):
-        Query.__init__(self, SubmissionQueryResponseCreator(), SubmissionQueryBuilder())
+    def __init__(self, form_model,query_params):
+        Query.__init__(self, SubmissionQueryResponseCreator(), SubmissionQueryBuilder(),query_params)
         self.form_model = form_model
 
     def get_headers(self, user, form_code):
@@ -45,20 +45,28 @@ class SubmissionQuery(Query):
         def key_attribute(field): return field.code.lower()
 
         header_dict = header_fields(self.form_model, key_attribute, header_dict)
+        if "reporter"  in self.form_model.entity_type:
+            header_dict.pop(self.form_model.entity_question.code)
         return header_dict
 
     def _update_static_header_info(self, header_dict):
         header_dict.update({"ds_id": "Datasender Id"})
         header_dict.update({"ds_name": "Datasender Name"})
-        header_dict.update({"date": "Submission Date"})
-        header_dict.update({"status": "Status"})
-        header_dict.update({"eid": "Entity"})
-        header_dict.update({"rd": "Reporting Date"})
+        header_dict.update({"date": "Submission S Date"})
+        submission_type = self.query_params.get('filter')
+        if not submission_type:
+            header_dict.update({"status": "Status"})
+        else:
+            if submission_type is 'error':
+                header_dict.update({"error_msg": "Error Message"})
+        header_dict.update({self.form_model.entity_question.code: "Entity"})
+        header_dict.update({self.form_model.event_time_question.code:"Reporting Date"})
 
-    def populate_query_options(self, query_params):
-        options = super(SubmissionQuery, self).populate_query_options(query_params)
+
+    def populate_query_options(self):
+        options = super(SubmissionQuery, self).populate_query_options()
         try:
-            options.update({'filter': query_params["filter"]})
+            options.update({'filter': self.query_params["filter"]})
         except KeyError:
             pass
         return options

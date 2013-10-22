@@ -5,8 +5,8 @@ from mangrove.form_model.form_model import header_fields, get_form_model_by_enti
 
 
 class DatasenderQuery(Query):
-    def __init__(self):
-        Query.__init__(self, DatasenderQueryResponseCreator(), QueryBuilder())
+    def __init__(self,query_params):
+        Query.__init__(self, DatasenderQueryResponseCreator(), QueryBuilder(),query_params)
 
     def get_headers(self, user, entity_type=None):
         fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
@@ -16,8 +16,8 @@ class DatasenderQuery(Query):
 
 
 class SubjectQuery(Query):
-    def __init__(self):
-        Query.__init__(self, SubjectQueryResponseCreator(), QueryBuilder())
+    def __init__(self,query_params=None):
+        Query.__init__(self, SubjectQueryResponseCreator(), QueryBuilder(),query_params)
 
     def get_headers(self, user, subject_type):
         manager = get_database_manager(user)
