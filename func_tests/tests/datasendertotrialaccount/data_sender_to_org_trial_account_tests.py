@@ -14,7 +14,6 @@ from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDE
  This test tests that submissions made through sms reach the accounts based on the receiver end points'''
 
 
-@attr('suit_2')
 class TestDataSenderAssociationWithTrialAccount(BaseTest):
     @attr('functional_test')
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_trial_org_is_saved_in_right_trial_org(self):
@@ -44,7 +43,7 @@ class TestDataSenderAssociationWithTrialAccount(BaseTest):
     def send_sms(self, sms_content):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
-        sms_tester_page.send_sms_with(sms_content)
+        sms_tester_page.send_valid_sms_with(sms_content)
 
     def go_to_analysis_page(self, credentials):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
