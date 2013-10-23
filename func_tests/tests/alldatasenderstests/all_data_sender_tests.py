@@ -236,6 +236,7 @@ class TestAllDataSenders(unittest.TestCase):
         self.all_datasenders_page.click_checkall_checkbox()
         self.all_datasenders_page.perform_datasender_action(DELETE)
         self.assertFalse(self.all_datasenders_page.is_checkall_checked())
+        self.all_datasenders_page.search_with(data_sender_ID)
         self.all_datasenders_page.delete_datasender(data_sender_ID)
 
 
