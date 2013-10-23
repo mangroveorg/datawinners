@@ -30,8 +30,8 @@ class TestAllDataSenders(unittest.TestCase):
         cls.driver = setup_driver()
         LoginPage(cls.driver).load().do_successful_login_with(VALID_CREDENTIALS)
         cls.all_datasenders_page = AllDataSendersPage(TestAllDataSenders.driver)
-        cls.datasender_id_with_web_access = cls.register_datasender(VALID_DATASENDER_WITH_WEB_ACCESS)
-        cls.datasender_id_without_web_access = cls.register_datasender(VALID_DATASENDER_WITHOUT_WEB_ACCESS)
+        cls.datasender_id_with_web_access = cls.register_datasender(VALID_DATASENDER_WITH_WEB_ACCESS, id=TestAllDataSenders._create_id_for_data_sender())
+        cls.datasender_id_without_web_access = cls.register_datasender(VALID_DATASENDER_WITHOUT_WEB_ACCESS,  id=TestAllDataSenders._create_id_for_data_sender())
 
     @classmethod
     def tearDownClass(cls):
@@ -41,11 +41,18 @@ class TestAllDataSenders(unittest.TestCase):
         self.all_datasenders_page.load()
 
     @classmethod
-    def register_datasender(cls, datasender_details):
+    def _create_id_for_data_sender(cls):
+        return "allds" + random_number(4)
+
+
+    @classmethod
+    def register_datasender(cls, datasender_details, id=None):
         cls.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         add_data_sender_page = cls.all_datasenders_page.navigate_to_add_a_data_sender_page()
         add_data_sender_page.enter_data_sender_details_from(datasender_details)
         return add_data_sender_page.get_registered_datasender_id()
+        add_data_sender_page.enter_data_sender_details_from(datasender_details, unique_id=id)
+        return add_data_sender_page.get_registered_datasender_id() if id is None else id
 
     @attr('functional_tests')
     def test_links(self):
@@ -88,7 +95,7 @@ class TestAllDataSenders(unittest.TestCase):
 
     @attr('functional_test')
     def test_delete_data_sender(self):
-        delete_datasender_id = TestAllDataSenders.register_datasender(DATA_SENDER_TO_DELETE)
+        delete_datasender_id = TestAllDataSenders.register_datasender(DATA_SENDER_TO_DELETE, id=TestAllDataSenders._create_id_for_data_sender())
         self.all_datasenders_page.load()
         self.all_datasenders_page.search_with(delete_datasender_id)
         self.all_datasenders_page.delete_datasender(delete_datasender_id)
