@@ -49,8 +49,6 @@ class TestAllDataSenders(unittest.TestCase):
     def register_datasender(cls, datasender_details, id=None):
         cls.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         add_data_sender_page = cls.all_datasenders_page.navigate_to_add_a_data_sender_page()
-        add_data_sender_page.enter_data_sender_details_from(datasender_details)
-        return add_data_sender_page.get_registered_datasender_id()
         add_data_sender_page.enter_data_sender_details_from(datasender_details, unique_id=id)
         return add_data_sender_page.get_registered_datasender_id() if id is None else id
 
