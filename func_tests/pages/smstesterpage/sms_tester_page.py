@@ -5,6 +5,7 @@ from pages.smstesterpage.sms_tester_locator import *
 from pages.page import Page
 from framework.utils.data_fetcher import *
 from tests.smstestertests.sms_tester_data import *
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class SMSTesterPage(Page):
@@ -24,6 +25,7 @@ class SMSTesterPage(Page):
         self.driver.find_text_box(FROM_TB).enter_text(fetch_(SENDER, from_(sms_data)))
         self.driver.find_text_box(SMS_TA).enter_text(fetch_(SMS, from_(sms_data)))
         self.driver.find(SEND_SMS_BTN).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("flash-message"), True)
         return self
 
     def get_response_message(self):
