@@ -244,9 +244,10 @@ class TestAllDataSenders(unittest.TestCase):
     def test_should_check_checkall_when_all_cb_are_checked(self):
         self.all_datasenders_page.click_checkall_checkbox()
         self.assertTrue(self.all_datasenders_page.is_checkall_checked())
-        self.all_datasenders_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
+        first_row_datasender = self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)
+        self.driver.find(first_row_datasender).click()
         self.assertFalse(self.all_datasenders_page.is_checkall_checked())
-        self.all_datasenders_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
+        self.driver.find(first_row_datasender).click()
         self.assertTrue(self.all_datasenders_page.is_checkall_checked())
 
     @attr("functional_test")
