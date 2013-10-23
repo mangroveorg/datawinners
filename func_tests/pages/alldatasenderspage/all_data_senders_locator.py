@@ -41,6 +41,5 @@ CHECKALL_DS_CB = by_id("checkall-datasenders")
 ALL_DS_ROWS = by_css("#all_data_senders")
 NONE_SELECTED_LOCATOR = by_id("none-selected")
 ACTION_MENU = by_id("action")
-EDIT_LI_LOCATOR = by_id("edit")
 
 ACTION_LI_BY_ACTION_ID = "//ul/li/a[@id='%s']/.."

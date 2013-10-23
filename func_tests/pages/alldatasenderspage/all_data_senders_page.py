@@ -160,11 +160,30 @@ class AllDataSendersPage(Page):
     def is_none_selected_shown(self):
         return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()
 
+    def get_none_selected_text(self):
+        return self.driver.find_visible_element(NONE_SELECTED_LOCATOR).text
+
     def actions_menu_shown(self):
         return self.driver.find(ACTION_MENU).is_displayed()
 
     def is_edit_disabled(self):
-        css_class = self.driver.find(EDIT_LI_LOCATOR).get_attribute("disabled")
+        css_class = self.driver.find(by_id(EDIT)).get_attribute("disabled")
+        return bool(css_class)
+
+    def is_delete_disabled(self):
+        css_class = self.driver.find(by_id(DELETE)).get_attribute("disabled")
+        return bool(css_class)
+
+    def is_associate_disabled(self):
+        css_class = self.driver.find(by_id(ASSOCIATE)).get_attribute("disabled")
+        return bool(css_class)
+
+    def is_dissociate_disabled(self):
+        css_class = self.driver.find(by_id(DISSOCIATE)).get_attribute("disabled")
+        return bool(css_class)
+
+    def is_make_web_user_disabled(self):
+        css_class = self.driver.find(by_id(WEB_ACCESS)).get_attribute("disabled")
         return bool(css_class)
 
     def is_checkall_checked(self):
