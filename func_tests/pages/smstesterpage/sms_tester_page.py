@@ -25,8 +25,11 @@ class SMSTesterPage(Page):
         self.driver.find_text_box(FROM_TB).enter_text(fetch_(SENDER, from_(sms_data)))
         self.driver.find_text_box(SMS_TA).enter_text(fetch_(SMS, from_(sms_data)))
         self.driver.find(SEND_SMS_BTN).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("flash-message"), True)
         return self
+
+    def send_valid_sms_with(self, sms_data):
+        self.send_sms_with(sms_data)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("flash-message"), True)
 
     def get_response_message(self):
         """
