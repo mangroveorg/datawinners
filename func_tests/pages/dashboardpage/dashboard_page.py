@@ -9,10 +9,5 @@ class DashboardPage(Page):
         Page.__init__(self, driver)
 
     def navigate_to_create_project_page(self):
-        """
-        Function to navigate to create project page of the website.
-
-        Return create project page
-         """
         self.driver.find(CREATE_PROJECT_LINK).click()
         return CreateProjectPage(self.driver)

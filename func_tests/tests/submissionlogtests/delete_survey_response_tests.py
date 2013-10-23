@@ -4,7 +4,7 @@ import time
 
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
-from framework.utils.common_utils import by_id
+from framework.utils.common_utils import by_id, by_css
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.dashboardpage.dashboard_page import DashboardPage
@@ -19,6 +19,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.edit_survey_response_data import get_sms_data_with_questionnaire_code
 from tests.submissionlogtests.submission_log_data import *
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 @attr('suit_3')
@@ -59,7 +60,7 @@ class TestDeleteSurveyResponse(unittest.TestCase):
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
-        time.sleep(2)
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css("span.loading"))
         self.assertEquals(self.driver.find_visible_element(by_id('message_text')).text,
                           'The selected records have been deleted')
         self.assertEquals(int(total_records) - 1, int(submission_log_page.get_shown_records_count()))
