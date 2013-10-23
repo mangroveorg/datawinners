@@ -59,8 +59,8 @@ class SubmissionQuery(Query):
         else:
             if submission_type is 'error':
                 header_dict.update({"error_msg": "Error Message"})
-        header_dict.update({self.form_model.entity_question.code: "Entity"})
-        header_dict.update({self.form_model.event_time_question.code:"Reporting Date"})
+        header_dict.update({self.form_model.entity_question.code.lower(): "Entity"})
+        header_dict.update({self.form_model.event_time_question.code.lower():"Reporting Date"})
 
 
     def populate_query_options(self):
