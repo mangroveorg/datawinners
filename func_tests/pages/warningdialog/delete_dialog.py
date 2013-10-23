@@ -23,3 +23,13 @@ class DataSenderDeleteDialog(Page):
     def ok(self):
         self.driver.find(by_id("ok_button")).click()
         self.driver.wait_until_modal_dismissed(7)
+
+
+class DataSenderAndUserDeleteDialog(Page):
+
+    def __init__(self, driver):
+        Page.__init__(self, driver)
+
+    def ok(self):
+        self.driver.find(by_id("ok_button")).click()
+        self.driver.wait_until_modal_dismissed(7)

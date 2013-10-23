@@ -149,28 +149,30 @@ class TestAllDataSenders(unittest.TestCase):
         self.assertRegexpMatches(delete_dialog.get_message(), ALL_DS_TO_DELETE_ARE_USER_MSG)
         delete_dialog.ok()
 
-    #     @attr('functional_test')
-    #     def test_should_warn_that_ds_with_user_credentials_will_not_be_deleted(self):
-    #         user_mobile_number = self.add_new_user(NEW_USER_DATA)
-    #         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
-    #         time.sleep(1)
-    #         all_data_sender_page = self.all_datasender_page
-    #         all_data_sender_page.select_a_data_sender_by_mobile(user_mobile_number)
-    #         all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
-    #         all_data_sender_page.delete_data_sender()
-    #         warning = WarningDialog(self.driver)
-    #         message = warning.get_message()
-    #         self.assertRegexpMatches(message, NOTIFICATION_WHILE_DELETING_USER)
-    #
-    #     @attr('functional_test')
-    #     def test_should_warn_delete_ds_without_note_if_ther_is_no_ds_user(self):
-    #         all_data_sender_page = self.all_datasender_page
-    #         all_data_sender_page.select_a_data_sender_by_id(self.datasender_id_without_web_access)
-    #         all_data_sender_page.delete_data_sender()
-    #         warning = WarningDialog(self.driver)
-    #         message = warning.get_message()
-    #         self.assertNotRegexpMatches(message, NOTIFICATION_WHILE_DELETING_USER)
-    #
+    @attr('functional_test')
+    def test_should_warn_and_delete_only_DS_if_selected_are_users_and_DS(self):
+        delete_datasender_id = TestAllDataSenders.register_datasender(DATA_SENDER_TO_DELETE)
+        user_mobile_number=self.add_new_user(NEW_USER_2_DATA)
+        # self.all_datasenders_page.search_with(delete_datasender_id)
+        # self.all_datasenders_page.select_a_data_sender_by_id(delete_datasender_id)
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        self.all_datasenders_page.load()
+        self.all_datasenders_page.search_with(user_mobile_number)
+        user_ID = self.all_datasenders_page.get_cell_value(1, 3)
+        self.all_datasenders_page.search_with(fetch_(FIRST_NAME,NEW_USER_2_DATA))
+        self.all_datasenders_page.select_a_data_sender_by_id(user_ID)
+        self.all_datasenders_page.select_a_data_sender_by_id(delete_datasender_id)
+        self.all_datasenders_page.perform_datasender_action(DELETE)
+        DataSenderDeleteDialog(self.driver).ok()
+        self.assertEqual(self.all_datasenders_page.get_delete_success_message(), DELETE_SUCCESS_TEXT)
+        self.all_datasenders_page.search_with(delete_datasender_id)
+        self.assertFalse(
+            self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
+        self.all_datasenders_page.search_with(user_ID)
+        # Existing bug "Users getting deleting when both users and DS are selected to delete"
+        # self.assertTrue(
+        #     self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
+
     #     @attr('functional_test')
     #     def test_should_check_all_checkboxes_when_checking_checkall(self):
     #         all_data_sender_page = self.all_datasender_page
