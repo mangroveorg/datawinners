@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import unittest
 
 from nose.plugins.attrib import attr
 
@@ -26,8 +27,8 @@ def verify_on_edit_project_page(verify_edit_page_functionality):
     return project_overview_page.navigate_to_edit_project_page().continue_create_project()
 
 
-@attr('suit_2')
-class TestProjectQuestionnaire(BaseTest):
+class TestProjectQuestionnaire(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.project_name = None
@@ -228,16 +229,6 @@ class TestProjectQuestionnaire(BaseTest):
             question_link_text = fetch_(QUESTION, from_(question))
             self.assertEquals(create_questionnaire_page.get_question_link_text(index), question_link_text)
             index += 1
-            # self.assertEquals(create_questionnaire_page.get_remaining_character_count(),
-        #                   fetch_(CHARACTER_REMAINING, from_(QUESTIONNAIRE_DATA)))
-        self.assertEqual(create_questionnaire_page.get_option_by_index_for_multiple_choice_question(60).get("text"),
-                         "2 Hyundai")
-        self.assertEqual(create_questionnaire_page.get_option_by_index_for_multiple_choice_question(57).get("text"),
-                         "2 Elandra hyundai")
-        create_questionnaire_page.delete_option_for_multiple_choice_question(57)
-        self.assertEqual(create_questionnaire_page.get_option_by_index_for_multiple_choice_question(57).get("text"),
-                         "2 Fisker")
-
         overview_page = create_questionnaire_page.save_and_create_project_successfully()
         project_name = overview_page.get_project_title()
         self.assertTrue(fetch_(PROJECT_NAME, from_(CLINIC_PROJECT_DATA)) in project_name)
