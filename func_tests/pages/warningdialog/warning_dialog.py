@@ -1,6 +1,9 @@
+from framework.utils.common_utils import by_css
 from pages.page import Page
-from pages.warningdialog.warning_dialog_locator import CANCEL_LINK, CONFIRM_LINK, MESSAGE_LINK
 
+CANCEL_LINK = by_css('div.ui-dialog[style*="block"] > div.ui-dialog-content > div > a.no_button')
+CONFIRM_LINK = by_css('div.ui-dialog[style*="block"] > div.ui-dialog-content > div > a.yes_button')
+MESSAGE_LINK = by_css('div.ui-dialog[style*="block"] > div.ui-dialog-content > .warning_message')
 
 class WarningDialog(Page):
     def __init__(self, driver, cancel_link=CANCEL_LINK, confirm_link=CONFIRM_LINK, message_link=MESSAGE_LINK):

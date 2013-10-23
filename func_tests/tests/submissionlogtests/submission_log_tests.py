@@ -15,7 +15,7 @@ from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.submissionlogtests.submission_log_data import *
-from pages.warningdialog.warning_dialog_page import WarningDialog
+from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
 
 

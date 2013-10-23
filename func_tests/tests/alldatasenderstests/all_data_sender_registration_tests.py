@@ -172,6 +172,17 @@ class TestAllDataSenderRegistration(unittest.TestCase):
 
         self.assert_fields_are_populated_properly_in_edit_page(VALID_DATA_WITH_EMAIL_EDITED)
 
+     # @attr('functional_test')
+#     def test_should_uncheck_reporter_id_checkbox_if_user_has_given_id(self):
+#         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
+#         add_data_sender_page = AddDataSenderPage(self.driver)
+#         self.assertTrue(add_data_sender_page.unique_id_check_box_is_checked())
+#         add_data_sender_page.enter_data_sender_details_from(INVALID_MOBILE_NUMBER_DATA, "DS040")
+#         time.sleep(1)
+#         self.assertFalse(add_data_sender_page.unique_id_check_box_is_checked())
+#         self.assertTrue(add_data_sender_page.unique_id_field_is_enabled())
+#
+
     def _parse(self, message):
             return message.split(' ')[-1]
 
