@@ -30,7 +30,7 @@ $(document).ready(function () {
         // pass the dom node (ex. $(selector)[0] for jQuery users)
         element:document.getElementById('file_uploader'),
         // path to server-side upload script
-        action:window.location.href,
+        action: import_datasenders_link,
         params:{},
         onSubmit:function () {
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
@@ -58,7 +58,7 @@ $(document).ready(function () {
                         $('<div id="message" class="error_message message-box clear-left">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
                     }
                     if (responseJSON.failure_imports.length > 0) {
-                        $("#error_table").removeClass('none');
+                        $("#error_table").show();
                     }
                     $.each(responseJSON.failure_imports, function (index, element) {
                         $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"

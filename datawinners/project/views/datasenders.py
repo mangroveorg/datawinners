@@ -98,14 +98,17 @@ def registered_datasenders(request, project_id=None):
                                   detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_entities.keys())})),
                                   project=project.name)
         mobile_number_index = fields.index('mobile_number')
-        add_imported_data_sender_to_trial_organization(request, imported_entities,
-                                                       all_data_senders=all_data_senders, index=mobile_number_index)
+        add_imported_data_sender_to_trial_organization(request, imported_entities, all_data_senders=all_data_senders,
+                                                       index=mobile_number_index)
         return HttpResponse(json.dumps(
-            {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+            {
+             'success': error_message is None and is_empty(failure_imports),
+             'message': success_message,
              'error_message': error_message,
-             'failure_imports': failure_imports, 'all_data_senders': all_data_senders,
-             'imported_entities': imported_entities,
-             'associated_datasenders': project.data_senders}))
+             'failure_imports': failure_imports, 'all_data': all_data_senders,
+             'imported_datasenders': imported_entities,
+             'associated_datasenders': project.data_senders
+            }))
 
 
 @login_required

@@ -29,7 +29,7 @@
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/action_dropdown.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/my_datasenders_reload_tables.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/project/my_datasenders_reload_tables.js"></script>#}
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
@@ -39,7 +39,9 @@
 
     <script type="text/javascript" src="/media/javascript/entity/all_datasender_reload_tables.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
+    <script>
+        var import_datasenders_link = "{% url registered_datasenders project.id %}"
+    </script>
 {% endblock %}
 
 {% block content %}

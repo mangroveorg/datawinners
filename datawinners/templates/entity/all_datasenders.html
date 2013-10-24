@@ -35,6 +35,10 @@
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript">
+        var users_list = {{ users_list|safe }};
+        var import_datasenders_link = "{% url all_datasenders%}"
+    </script>
 {% endblock %}
 
 {% load i18n %}
@@ -66,6 +70,4 @@
         <h3 class="margin_top_20" hidden="true">{% trans "All Data Senders " %}</h3>
         {% include 'entity/all_datasenders_table.html' %}
     </div>
-
-
 {% endblock %}

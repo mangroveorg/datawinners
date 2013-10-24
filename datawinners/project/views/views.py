@@ -870,9 +870,12 @@ def create_data_sender_and_web_user(request, project_id=None):
     if request.method == 'GET':
         form = ReporterRegistrationForm(initial={'project_id': project_id})
         return render_to_response('project/register_datasender.html', {
-            'project': project, 'project_links': project_links, 'form': form,
-            'in_trial_mode': in_trial_mode, 'current_language': translation.get_language()},
-                                  context_instance=RequestContext(request))
+                                                                        'project': project,
+                                                                        'project_links': project_links,
+                                                                        'form': form,
+                                                                        'in_trial_mode': in_trial_mode,
+                                                                        'current_language': translation.get_language()
+                                                                      }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id

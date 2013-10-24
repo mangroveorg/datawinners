@@ -18,17 +18,20 @@
             <div class="error" class="margin_top_15">{% trans "Use this "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
             <div class="clear"></div>
              <br/>
-             <table class="styled_table">
+            <div id="success_table">
+                <table class="styled_table">
                 <thead>
-                    <tr>
-                    {% for title in labels %}
-                        <th>{{ title }}</th>
-                    {% endfor %}
-                    </tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Unique ID" %}</th>
+                    <th>{% trans "Location" %}</th>
+                    <th>{% trans "GPS Coordinates" %}</th>
+                    <th>{% trans "Mobile Number" %}</th>
+                    <th>{% trans "Email address" %}</th>
                 </thead>
                 <tbody id="imported_table">
                 </tbody>
-            </table>
+                </table>
+            </div>
 
             <div id='error_table'>
                 <table class="styled_table">
@@ -38,7 +41,6 @@
                     <th>{% trans "Error" %}</th>
                     </thead>
                     <tbody id='error_tbody'>
-
                     </tbody>
                 </table>
             </div>

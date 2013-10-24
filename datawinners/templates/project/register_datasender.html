@@ -30,16 +30,19 @@
     <script type="text/javascript">
         var sender_registration_link = "{{ project_links.register_datasenders_link }}";
         var sender_registration_form_preview_link = "{{ project_links.sender_registration_preview_link }}";
+        var import_datasenders_link = "{% url registered_datasenders project.id %}"
     </script>
     <script type="text/javascript" src="/media/javascript/common/location_auto_suggest_widget.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
+
     <script type="text/javascript" src="/media/javascript/entity/definitions.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
     <script type="text/javascript" src="/media/javascript/data_submission.js"></script>
     <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
     <script type="text/javascript" src="/media/javascript/project/datasenders_registration_questionnaire_preview.js"></script>
-    <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/web_questionnaire.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/all_datasender_reload_tables.js"></script>
 {% endblock %}
 
 
@@ -62,7 +65,6 @@
 
     <div id="my_subjects_links">
         <ul>
-{#            <li><a href="javascript:void(0)" class="preview_sender_registration_form">Print</a></li>#}
             <li class="view_link">{% trans "View Style:" %}</li>
             <li class="sms_link"><a href="{{ project_links.datasenders_link }}" class="disable_link" id="sms_preview_btn">SMS</a></li>
             <li class="sms_link"><a href="javascript:void(0)" id="web_preview_btn" class="active">Web</a></li>
