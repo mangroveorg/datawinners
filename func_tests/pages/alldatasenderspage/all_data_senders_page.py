@@ -27,7 +27,8 @@ class AllDataSendersPage(Page):
         self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_MOBILE_XPATH % data_sender_mobile)).click()
 
     def select_a_data_sender_by_id(self, data_sender_id):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id), True)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id),
+                                     True)
         self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
 
     def select_project(self, project_name):
@@ -50,7 +51,6 @@ class AllDataSendersPage(Page):
         Function to cancel the association/dissociation with projects on all data sender page
          """
         self.driver.find(CANCEL_LINK).click()
-
 
 
     def give_web_access(self):
@@ -188,6 +188,11 @@ class AllDataSendersPage(Page):
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_DS_CB).get_attribute("checked") == "true"
+
+    def is_datasender_with_ID_checked(self, datasender_ID):
+        return self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % datasender_ID)).get_attribute(
+            "checked") == "true"
+
 
     def edit_datasender(self, uid=None):
         if not uid: return False

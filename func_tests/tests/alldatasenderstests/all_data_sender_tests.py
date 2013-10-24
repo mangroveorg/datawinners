@@ -151,7 +151,7 @@ class TestAllDataSenders(unittest.TestCase):
         return user_mobile_number
 
 
-    @SkipTest #Skipped because of the bug where user is deleted
+    @SkipTest #Skipped because of the bug where user is deleted when selected along with datasender
     @attr('functional_test')
     def test_should_warn_and_not_delete_if_all_ds_selected_are_users(self):
         self.all_datasenders_page.search_with(self.user_ID)
@@ -166,9 +166,11 @@ class TestAllDataSenders(unittest.TestCase):
         self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         self.all_datasenders_page.load()
         self.all_datasenders_page.search_with(fetch_(FIRST_NAME, NEW_USER_DATA))
-        self.all_datasenders_page.select_a_data_sender_by_id(self.user_ID)
-        self.all_datasenders_page.select_a_data_sender_by_id(delete_datasender_id)
+        self.all_datasenders_page.click_checkall_checkbox()
         self.all_datasenders_page.perform_datasender_action(DELETE)
+        self.assertFalse(self.all_datasenders_page.is_checkall_checked())
+        # Existing bug "Users getting deleting when both users and DS are selected to delete"
+        # self.assertFalse(self.all_datasenders_page.is_datasender_with_ID_checked(self.user_ID))
         DataSenderDeleteDialog(self.driver).ok()
         self.assertEqual(self.all_datasenders_page.get_delete_success_message(), DELETE_SUCCESS_TEXT)
         self.all_datasenders_page.search_with(delete_datasender_id)
@@ -223,21 +225,6 @@ class TestAllDataSenders(unittest.TestCase):
     def assert_action_menu_shown(self):
         self.assertFalse(self.all_datasenders_page.is_none_selected_shown())
         self.assertTrue(self.all_datasenders_page.actions_menu_shown())
-
-        #
-
-    @attr("functional_test")
-    def test_should_uncheck_checkall_when_trying_to_delete_ds_user(self):
-        data_sender_ID = TestAllDataSenders.register_datasender(DATA_SENDER_FOR_MULTIPLE_DELETE)
-        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
-        self.all_datasenders_page.load()
-        self.all_datasenders_page.search_with(fetch_(FIRST_NAME, NEW_USER_DATA))
-        self.all_datasenders_page.select_a_data_sender_by_id(self.user_ID)
-        self.all_datasenders_page.click_checkall_checkbox()
-        self.all_datasenders_page.perform_datasender_action(DELETE)
-        self.assertFalse(self.all_datasenders_page.is_checkall_checked())
-        self.all_datasenders_page.search_with(data_sender_ID)
-        self.all_datasenders_page.delete_datasender(data_sender_ID)
 
 
     #

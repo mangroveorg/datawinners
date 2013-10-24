@@ -24,6 +24,10 @@ class DataSenderDeleteDialog(Page):
         self.driver.find(by_id("ok_button")).click()
         self.driver.wait_until_modal_dismissed(7)
 
+    def cancel(self):
+        self.driver.find(by_css("a.cancel_link")).click()
+        self.driver.wait_until_modal_dismissed(7)
+
 
 class DataSenderAndUserDeleteDialog(Page):
 
