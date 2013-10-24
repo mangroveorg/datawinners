@@ -87,7 +87,7 @@ def registered_datasenders(request, project_id=None):
                                       'users_list':user_rep_ids},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
-        error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
+        error_message, failure_imports, success_message, imported_entities, successful_imports = import_module.import_data(request, manager,
                                                                                                        default_parser=XlsDatasenderParser)
         all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
         project.data_senders.extend([id for id in imported_entities.keys()])
@@ -107,7 +107,8 @@ def registered_datasenders(request, project_id=None):
              'error_message': error_message,
              'failure_imports': failure_imports, 'all_data': all_data_senders,
              'imported_datasenders': imported_entities,
-             'associated_datasenders': project.data_senders
+             'associated_datasenders': project.data_senders,
+             'successful_imports': successful_imports
             }))
 
 

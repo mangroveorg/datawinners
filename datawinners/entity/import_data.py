@@ -90,11 +90,11 @@ class FilePlayer(Player):
             values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)
         return values
 
-    def appendFailedResponse(self, responses, message, values=None):
+    def appendFailedResponse(self, message, values=None):
         response = Response(reporters=[], survey_response_id=None)
         response.success = False
         response.errors = dict(error=ugettext(message), row=values)
-        responses.append(response)
+        return response
 
     def import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
                            values):
@@ -135,8 +135,7 @@ class FilePlayer(Player):
             values[location_field_code] = get_country_appended_location(values[location_field_code], organization.country_name())
         return values
 
-    def import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, responses,
-                          values, form_model=None):
+    def import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, values, form_model=None):
         self.append_country_for_location_field(form_model, values, organization)
         transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
         submission = self._create_submission(transport_info, form_code, copy(values))
@@ -155,28 +154,30 @@ class FilePlayer(Player):
             else:
                 log_entry += "Status: True"
             self.logger.info(log_entry)
-            responses.append(response)
+            return response
         except DataObjectAlreadyExists as e:
             if self.logger is not None:
                 log_entry += "Status: False"
                 self.logger.info(log_entry)
-            self.appendFailedResponse(responses, "%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
-                                      values=values)
+            return self.appendFailedResponse("%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
+                                                values=values)
         except (InvalidEmailException, MangroveException, NameNotFoundException) as e:
-            self.appendFailedResponse(responses, e.message, values=values)
+            return self.appendFailedResponse(e.message, values=values)
+
+    def _get_registered_emails(self):
+        if type(self.parser) == XlsDatasenderParser:
+            registered_emails = User.objects.values_list('email', flat=True)
+        else:
+            registered_emails = []
+        return registered_emails
 
     def accept(self, file_contents):
-        responses = []
         form_model = None
         from datawinners.utils import get_organization_from_manager
 
         organization = get_organization_from_manager(self.dbm)
         registered_phone_numbers = get_all_registered_phone_numbers_on_trial_account() \
             if organization.in_trial_mode else get_datasenders_mobile(self.dbm)
-        if type(self.parser) == XlsDatasenderParser:
-            registered_emails = User.objects.values_list('email', flat=True)
-        else:
-            registered_emails = []
         rows = self.parser.parse(file_contents)
         if len(rows) > 0:
             (form_code, values) = rows[0]
@@ -186,9 +187,11 @@ class FilePlayer(Player):
                 raise FormCodeDoesNotMatchException(
                     ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') %
                     form_model.entity_type[0], form_code=form_code)
+        responses = []
+        registered_emails = self._get_registered_emails()
         for (form_code, values) in rows:
-            self.import_submission(form_code, organization, registered_emails, registered_phone_numbers, responses,
-                                   values, form_model)
+            responses.append(
+                self.import_submission(form_code, organization, registered_emails, registered_phone_numbers,values, form_model))
         return responses
 
 #TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
@@ -221,6 +224,12 @@ def tabulate_failures(rows):
 
         row[1].errors['error'] = errors
         tabulated_data.append(row[1].errors)
+    return tabulated_data
+
+def tabulate_success(success_responses):
+    tabulated_data = []
+    for success_response in success_responses:
+        tabulated_data.append(success_response.processed_data)
     return tabulated_data
 
 
@@ -327,8 +336,8 @@ def load_all_entities_of_type(manager, type=REPORTER):
 def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None):
     base_name, extension = os.path.splitext(file_name)
     player = FilePlayer.build(manager, extension, default_parser=default_parser, form_code=form_code)
-    response = player.accept(file)
-    return response
+    responses = player.accept(file)
+    return responses
 
 
 def _get_imported_entities(responses):
@@ -346,6 +355,9 @@ def _get_imported_entities(responses):
 
 def _get_failed_responses(responses):
     return [i for i in enumerate(responses) if not i[1].success]
+
+def _get_successful_responses(responses):
+    return [response for response in responses if response.success]
 
 
 @timebox
@@ -368,6 +380,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
     response_message = ''
     error_message = None
     failure_imports = None
+    successful_imports = None
     imported_entities = {}
     try:
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
@@ -386,13 +399,15 @@ def import_data(request, manager, default_parser=None, form_code=None):
             call_command('crs_datamigration', form_code, *datarecords_id)
 
         imported_entities = imported_entities.get("short_codes")
-        successful_imports = len(imported_entities)
+        successful_import_count = len(imported_entities)
         total = len(responses)
         if total == 0:
             error_message = _("The imported file is empty.")
         failures = _get_failed_responses(responses)
+        successes = _get_successful_responses(responses)
         failure_imports = tabulate_failures(failures)
-        response_message = ugettext_lazy('%s of %s records uploaded') % (successful_imports, total)
+        successful_imports = tabulate_success(successes)
+        response_message = ugettext_lazy('%s of %s records uploaded') % (successful_import_count, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
@@ -404,7 +419,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
         error_message = _(u"Some unexpected error happened. Please check the excel file and import again.")
         if settings.DEBUG:
             raise
-    return error_message, failure_imports, response_message, imported_entities
+    return error_message, failure_imports, response_message, imported_entities , successful_imports
 
 
 def _file_and_name_for_ie(request):
