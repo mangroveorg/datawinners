@@ -13,7 +13,7 @@ $(function(){
 
     $("#subjects_table").dwTable({
             "concept":subject_type,
-            "sAjaxSource": "/entity/subjects/clinic/ajax/",
+            "sAjaxSource": "/entity/subjects/" + subject_type.toLowerCase() + "/ajax/",
             "sAjaxDataIdColIndex" : $("#subjects_table thead th.short_code").index(("#subjects_table thead th")),
             "bServerSide": true,
             "oLanguage": {

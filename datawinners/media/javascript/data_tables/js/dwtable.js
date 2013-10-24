@@ -87,10 +87,12 @@ $.fn.dwTable = function(options){
                                         e.preventDefault();
                                         return false;
                                     }
-                                   return handler(dataTableObject);
+                                   var all_selected =  $(dataTableObject).find(".select_all_message").data('all_selected');
+                                   var selected_ids = $.map($(dataTableObject).find("input:checked"), function(e) {return $(e).val()});
+                                   return handler(dataTableObject, selected_ids, all_selected);
                                 };
                             };
-                            var menu_item = $('<li class="'+ actionItems[item].allow_selection +'"><a >' + gettext(actionItems[item].label) + '</a></li>');
+                            var menu_item = $('<li class="'+ actionItems[item].allow_selection +'"><a class="'  + actionItems[item].label.toLowerCase() + '">' + gettext(actionItems[item].label) + '</a></li>');
                             var a = $("#" + dropdown_id + ">.dropdown-menu").append(menu_item);
                             $(menu_item, 'a').click(item_handler(actionItems[item].handler));
                         }

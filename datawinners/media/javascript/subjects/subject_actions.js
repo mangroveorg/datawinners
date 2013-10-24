@@ -25,7 +25,7 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
         var project_name = $("#project_name");
         if (project_name.length)
             post_data.project = project_name.val();
-        post_data.all_selected = $("#select_all_message").data("all_selected");
+        post_data.all_selected = delete_entity_block.data("all_selected");
         post_data.search_query = $("#subjects_table_filter").find("input").val();
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
         $.post(delete_end_point, post_data,
@@ -41,23 +41,21 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
     });
 
 
-    this.open = function (selected_ids, entity_type) {
+    this.open = function (entity_type, selected_ids, all_selected) {
         delete_entity_block.data("allIds", selected_ids);
+        delete_entity_block.data("all_selected", all_selected);
         delete_entity_block.data("entity_type", entity_type);
         delete_entity_block.dialog("open");
     }
 };
 
 DW.AllSubjectActions = function () {
-
-    this.delete = function(table){
-        var selected_ids = $.map($(table).find("input:checked"), function(e) {return $(e).val()});
+    this.delete = function(table, selected_ids, all_selected){
         var delete_action = new DW.DeleteAction("#delete_entity_block", "/entity/subjects/delete/");
-        delete_action.open(selected_ids, subject_type.toLowerCase());
+        delete_action.open(subject_type.toLowerCase(), selected_ids, all_selected);
     }
 
-    this.edit = function(table){
-        var selected_ids = $.map($(table).find("input:checked"), function(e) {return $(e).val()});
+    this.edit = function(table, selected_ids){
         window.location.href = edit_url_template.replace("entity_id_placeholder", selected_ids[0]);
     }
 };
