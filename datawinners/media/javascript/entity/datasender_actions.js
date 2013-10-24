@@ -63,12 +63,61 @@ DW.DataSenderActionHandler = function(){
     populate_dialog_box_for_web_users(table);
   };
   this.associate = function(table, selected_ids, all_selected){
-
+    add_remove_from_project('associate');
   };
   this.disassociate = function(table, selected_ids, all_selected){
-
+    add_remove_from_project('disassociate');
   };
 };
+
+function add_remove_from_project(action) {
+    $("#all_project_block").dialog({
+        autoOpen: false,
+        modal: true,
+        title: gettext('Select Projects'),
+        zIndex: 1100,
+        beforeClose: function () {
+            $('#action').at;
+        }
+    });
+
+    $("#all_project_block .cancel_link").bind("click", function () {
+        $("#all_project_block").dialog("close");
+    });
+
+    $("#all_project_block .button").bind("click", function () {
+        $('#error').remove();
+        var allIds = $.map($('#datasender_table .row_checkbox:checked'), function(e){return $(e).val();});
+        var projects = [];
+        $('#all_project_block :checked').each(function () {
+            projects.push($(this).val());
+        });
+        if (projects.length == 0) {
+            $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project")
+                + '</div>').insertBefore($("#all_projects"));
+        } else {
+            var url = '/entity/' + action + '/';
+            $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
+                + gettext("Just a moment") + '...</span></h1>', css: { width: '275px', zIndex: 1000000}});
+            $.ajax({
+                        url: url,
+                        type: "POST",
+                        headers: {
+                            "X-CSRFToken": $.cookie('csrftoken')
+                        },
+                        data: {
+                            'ids': allIds.join(';'),
+                            'project_id': projects.join(';')
+                        }
+                    }
+            ).done(function (data) {
+                    window.location.href = data;
+                });
+        }
+    });
+
+    $("#all_project_block").dialog("open");
+}
 
 get_users_from_selected_datasenders = function (table, selected_ids) {
     var users = {};

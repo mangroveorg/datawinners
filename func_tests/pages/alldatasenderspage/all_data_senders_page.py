@@ -65,7 +65,7 @@ class AllDataSendersPage(Page):
 
     def perform_datasender_action(self, action_to_be_performed):
         self.driver.find(ACTION_DROP_DOWN).click()
-        option = self.driver.find_visible_element(by_id(action_to_be_performed))
+        option = self.driver.find_visible_element(by_css("a." + action_to_be_performed))
         option.click()
 
     def get_success_message(self):
@@ -171,19 +171,19 @@ class AllDataSendersPage(Page):
         return bool(css_class)
 
     def is_delete_disabled(self):
-        css_class = self.driver.find(by_id(DELETE)).get_attribute("disabled")
+        css_class = self.driver.find(by_css("." +DELETE)).get_attribute("disabled")
         return bool(css_class)
 
     def is_associate_disabled(self):
-        css_class = self.driver.find(by_id(ASSOCIATE)).get_attribute("disabled")
+        css_class = self.driver.find(by_css("." + ASSOCIATE)).get_attribute("disabled")
         return bool(css_class)
 
     def is_dissociate_disabled(self):
-        css_class = self.driver.find(by_id(DISSOCIATE)).get_attribute("disabled")
+        css_class = self.driver.find(by_css("." + DISSOCIATE)).get_attribute("disabled")
         return bool(css_class)
 
     def is_make_web_user_disabled(self):
-        css_class = self.driver.find(by_id(WEB_ACCESS)).get_attribute("disabled")
+        css_class = self.driver.find(by_css(WEB_ACCESS)).get_attribute("disabled")
         return bool(css_class)
 
     def is_checkall_checked(self):
