@@ -4236,3 +4236,48 @@ msgstr ""
 
 msgid "Your DataWinners account have been deactivated. Subscribe to a monthly subscription or contact your Project Manager to reactivate the account."
 msgstr ""
+
+msgid "Get the Most out of Datawinners!"
+msgstr ""
+
+msgid "Find Out What Datawinners Can Do For You!"
+msgstr ""
+
+msgid "Datawinners | We're here to Help!"
+msgstr ""
+
+msgid "Datawinners | Join our Online Community!"
+msgstr ""
+
+msgid "Datawinners | Send Us Your story!"
+msgstr ""
+
+msgid "Datawinners | Just checking in..."
+msgstr ""
+
+msgid "Datawinners | Why is Data Collection Important to You?"
+msgstr ""
+
+msgid "Datawinners | Share Your Experience!"
+msgstr ""
+
+msgid "Your Datawinners Subscription is About to End!"
+msgstr ""
+
+msgid "Your Free Subscription to Datawinners Ends Tomorrow - Download Your Data!"
+msgstr ""
+
+msgid "Datawinners | Your Account Has Expired!"
+msgstr ""
+
+msgid "We'd like to invite You to Back to Datawinners!"
+msgstr ""
+
+msgid "DataWinners | 50 SMS Submission Limit Almost Reached: Upgrade to Continue Collecting Data via SMS!"
+msgstr ""
+
+msgid "DataWinners | Submission Limit Reached: Upgrade to Continue Collecting Data!"
+msgstr ""
+
+msgid "Your DataWinners Submission Limit is Approaching!"
+msgstr ""

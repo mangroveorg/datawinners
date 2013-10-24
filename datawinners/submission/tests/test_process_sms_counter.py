@@ -58,7 +58,7 @@ class TestProcessSMSCounter(unittest.TestCase):
             check_quotas_and_update_users(organization=organization)
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
-            ctx = {'username':'Trial User', 'organization':organization}
+            ctx = {'username':'Trial User', 'organization':organization, 'current_site':'localhost:8000'}
             self.assertEqual(render_to_string('email/basicaccount/about_to_reach_submission_limit_en.html', ctx), email.body)
 
     def test_should_send_mail_to_when_sms_limit_is_about_to_reached(self):
@@ -68,7 +68,7 @@ class TestProcessSMSCounter(unittest.TestCase):
             check_quotas_and_update_users(organization=organization, sms_channel=True)
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
-            ctx = {'username':'Trial User', 'organization':organization}
+            ctx = {'username':'Trial User', 'organization':organization, 'current_site':'localhost:8000'}
             self.assertEqual(render_to_string('email/basicaccount/about_to_reach_sms_limit_en.html', ctx), email.body)
 
     def test_should_send_all_email_type_when_all_limit_are_about_to_reached(self):
@@ -78,7 +78,8 @@ class TestProcessSMSCounter(unittest.TestCase):
                 patch_get_total_submission_count.return_value = NEAR_SUBMISSION_LIMIT_TRIGGER
                 patch_get_total_message_count.return_value = NEAR_SMS_LIMIT_TRIGGER
                 check_quotas_and_update_users(organization=organization, sms_channel=True)
-                expected_subjects = ["Your Datawinners Submission Limit is Approaching!", "We'd like to invite You to Back to Datawinners!"]
+                expected_subjects = [u'DataWinners | 50 SMS Submission Limit Almost Reached: Upgrade to Continue Collecting Data via SMS!',
+                    u'Your DataWinners Submission Limit is Approaching!']
                 msgs = [mail.outbox.pop() for i in range(len(mail.outbox))]
                 for msg in msgs:
                     self.assertIn(msg.subject, expected_subjects)

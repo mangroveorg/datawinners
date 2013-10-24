@@ -4314,3 +4314,48 @@ msgstr "Vous avez atteint la limite de 1000 soumissions gratuite. Adoptez la ver
 
 msgid "Your DataWinners account have been deactivated. Subscribe to a monthly subscription or contact your Project Manager to reactivate the account."
 msgstr "Votre compte DataWinners à été desactivé. Adoptez la vérsion payante ou contactez votre administrateur to réactivé votre compte."
+
+msgid "Get the Most out of Datawinners!"
+msgstr "Tirer le meilleur parti de Datawinners"
+
+msgid "Find Out What Datawinners Can Do For You!"
+msgstr "Découvrez ce que Datawinners peut faire pour vous!"
+
+msgid "Datawinners | We're here to Help!"
+msgstr "DataWinners | Nous sommes là pour vous aider!"
+
+msgid "Datawinners | Join our Online Community!"
+msgstr "DataWinners | Rejoignez notre communauté en ligne!"
+
+msgid "Datawinners | Send Us Your story!"
+msgstr "DataWinners | Envoyez-nous votre histoire!"
+
+msgid "Datawinners | Just checking in..."
+msgstr "DataWinners | Comment ça avance ..."
+
+msgid "Datawinners | Why is Data Collection Important to You?"
+msgstr "DataWinners | Pourquoi la Collecte de données est importante pour vous?"
+
+msgid "Datawinners | Share Your Experience!"
+msgstr "DataWinners | Partagez Votre Experience!"
+
+msgid "Your Datawinners Subscription is About to End!"
+msgstr "Votre abonnement DataWinners touche à sa fin…"
+
+msgid "Your Free Subscription to Datawinners Ends Tomorrow - Download Your Data!"
+msgstr "Votre abonnement gratuit à DataWinners sera expiré demain - Télécharger vos données!"
+
+msgid "Datawinners | Your Account Has Expired!"
+msgstr "DataWinners | Votre Compte a expiré!"
+
+msgid "We'd like to invite You to Back to Datawinners!"
+msgstr "Nous aimerions vous inviter à retourner sur DataWinners"
+
+msgid "DataWinners | 50 SMS Submission Limit Almost Reached: Upgrade to Continue Collecting Data via SMS!"
+msgstr "DataWinners | Limite de la Soumission des 50 SMS Presque atteinte: Passez à l'offre payante"
+
+msgid "DataWinners | Submission Limit Reached: Upgrade to Continue Collecting Data!"
+msgstr "DataWinners | Limite de soumission atteintte: Mettre à niveau pour pouvoir poursuivre la collecte de données!"
+
+msgid "Your DataWinners Submission Limit is Approaching!"
+msgstr "La limite de votre abonnement à Datawinners s’approche!"

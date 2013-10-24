@@ -84,3 +84,6 @@ def blog(request, language):
     request.session['django_language'] = language
     template = "home/about_blog_%s.html" % (language,)
     return render_to_response(template, {"posts": posts, "rss": rss}, context_instance=RequestContext(request))
+
+def open_skype(request):
+    return HttpResponseRedirect('skype:datawinners?chat')

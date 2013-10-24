@@ -35,7 +35,7 @@ class TestSendTimeBasedReminder(unittest.TestCase):
                 
                 email = mail.outbox.pop()
                 self.assertEqual(['chinatwu2@gmail.com'], email.to)
-                ctx = {'username':'Trial User', 'organization':self.organization}
+                ctx = {'username':'Trial User', 'organization':self.organization, 'current_site':'localhost:8000'}
                 self.assertEqual(render_to_string('email/%s_en.html' % template, ctx), email.body)
                 
     def organizations_side_effect(self, active_date__contains=None):

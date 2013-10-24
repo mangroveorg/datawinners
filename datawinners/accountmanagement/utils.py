@@ -27,16 +27,18 @@ def get_email_detail_by_type(email_type):
                                                "basicaccount/eleven_months_after_activation", None),
                  'seven_days_before_deactivation': ( _("Your Datawinners Subscription is About to End!"),
                                    "basicaccount/seven_days_before_deactivation", None),
-                 'one_day_before_deactivation': ( _("Datawinners | Your Free Subscription to Datawinners Ends Tomorrow - Download Your Data!"),
+                 'one_day_before_deactivation': ( _("Your Free Subscription to Datawinners Ends Tomorrow - Download Your Data!"),
                             "basicaccount/one_day_before_deactivation", None),
                  'deactivation_day': ( _("Datawinners | Your Account Has Expired!"),
                                        "basicaccount/deactivation_day", None),
                  'sixty_days_after_deactivation': ( _("We'd like to invite You to Back to Datawinners!"),
                                                 "basicaccount/sixty_days_after_deactivation", None),
-                 'about_to_reach_sms_limit': ( _("Your Datawinners Submission Limit is Approaching!"),
+                 'about_to_reach_sms_limit': ( _("DataWinners | 50 SMS Submission Limit Almost Reached: Upgrade to Continue Collecting Data via SMS!"),
                                                "basicaccount/about_to_reach_sms_limit", None),
-                 'about_to_reach_submission_limit': ( _("We'd like to invite You to Back to Datawinners!"),
+                 'about_to_reach_submission_limit': ( _("Your DataWinners Submission Limit is Approaching!"),
                                                       "basicaccount/about_to_reach_submission_limit", None),
+                 'reached_submission_limit': ( _("DataWinners | Submission Limit Reached: Upgrade to Continue Collecting Data!"),
+                                                      "basicaccount/reached_submission_limit", None),
                  }
     return mail_dict[email_type]
   

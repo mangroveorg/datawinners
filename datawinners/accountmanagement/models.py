@@ -173,10 +173,13 @@ class Organization(models.Model):
 
     def send_mail_to_organization_creator(self, email_type):
         users = self.get_related_users().filter(groups__name__in=["NGO Admins", "Project Managers"])
+        from django.contrib.sites.models import Site
+        current_site = Site.objects.get_current()
         for user in users:
             email_subject, email_template, sender = get_email_detail_by_type(email_type)
 
-            c = Context({ 'username': user.first_name +' '+ user.last_name, 'organization':self})
+            c = Context({ 'username': user.first_name +' '+ user.last_name,
+                          'organization':self, 'current_site': current_site})
             email_content = loader.get_template('email/%s_%s.html' % (email_template, ugettext("en"),))
 
             msg = EmailMessage(email_subject, email_content.render(c), sender or settings.EMAIL_HOST_USER, [user.email])
