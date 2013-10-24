@@ -25,7 +25,7 @@ $(document).ready(function () {
             $('#action').removeAttr("data-selected-action");
             $("input.is_user").attr("checked", false);
         },
-        height: 150,
+        height: 175,
         width: 550
     }
 

@@ -68,6 +68,23 @@ DW.DataSenderActionHandler = function(){
   this.disassociate = function(table, selected_ids, all_selected){
     add_remove_from_project('disassociate');
   };
+  this.remove_from_project = function(table, selectedIds, all_selected) {
+            DW.loading();
+            $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
+                data: {'ids':selectedIds.join(';'), 'project_id':$("#project_id").val()}
+            }).done(function (data) {
+                    $("button.action").dropdown("detach");
+                    $('<div class="success-message-box clear-left" id="success_message">' + gettext("Data Senders dissociated Successfully") + '. ' + gettext("Please Wait") + '....</div>').insertAfter($('#action_dropdown'));
+                    $('#success_message').delay(4000).fadeOut(1000, function () {
+                        $('#success_message').remove();
+                    });
+                    setTimeout(function () {
+                        window.location.reload(true);
+                    }, 5000);
+                }
+            );
+        };
+
 };
 
 function add_remove_from_project(action) {
@@ -102,15 +119,13 @@ function add_remove_from_project(action) {
             $.ajax({
                         url: url,
                         type: "POST",
-                        headers: {
-                            "X-CSRFToken": $.cookie('csrftoken')
-                        },
-                        data: {
+                        headers: { "X-CSRFToken": $.cookie('csrftoken') },
+                    data: {
                             'ids': allIds.join(';'),
                             'project_id': projects.join(';')
                         }
-                    }
-            ).done(function (data) {
+
+            }).done(function (data) {
                     window.location.href = data;
                 });
         }
@@ -138,16 +153,17 @@ function delete_all_ds_are_users_show_warning(users) {
 
 
     var kwargs = {container: "#delete_all_ds_are_users_warning_dialog",
+        autoOpen: false,
         cancel_handler: function () {
             $('#action').removeAttr("data-selected-action");
             $("input.is_user").attr("checked", false);
         },
-        height: 150,
+        height: 175,
         width: 550
     }
 
+    $(kwargs.container + " .users_list").html(users);
     var delete_all_ds_are_users = new DW.warning_dialog(kwargs);
-    $(delete_all_ds_are_users.container + " .users_list").html(users);
     delete_all_ds_are_users.show_warning();
 }
 

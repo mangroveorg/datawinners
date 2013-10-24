@@ -29,7 +29,8 @@ DW.warning_dialog.prototype = {
     _init:function () {
         var o = this.options;
         this.container = o.container;
-        this.lenght = o.length;
+        this.length = o.length;
+        this.height = o.height;
         this.width = o.width;
         this.is_continue = o.is_continue;
         this.title = o.title;

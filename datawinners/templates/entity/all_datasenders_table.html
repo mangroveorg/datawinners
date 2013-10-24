@@ -1,5 +1,7 @@
 {% load i18n %}
-
+<script type="text/javascript">
+    var users_list = {{ users_list|safe }};
+</script>
 <link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
 
 <script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
@@ -58,3 +60,5 @@ $(function(){
         </thead>
     </table>
 </div>
+{% include 'entity/all_data_senders/all_project_blocks.html' %}
+{% include "entity/delete_datasenders_warning_dialog.html" %}

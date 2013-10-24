@@ -19,7 +19,7 @@ from datawinners.entity.data_sender import remove_system_datasenders, get_datase
 from datawinners.entity.views import _get_full_name, log_activity, get_success_message
 from datawinners.main.database import get_database_manager
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for
-from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode
+from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, reporter_id_list_of_all_users
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.search.entity_search import DatasenderQuery
@@ -46,7 +46,7 @@ class AllDataSendersView(TemplateView):
         projects = get_all_projects(manager)
         in_trial_mode = utils.get_organization(request).in_trial_mode
         grant_web_access = self._is_web_access_allowed(request)
-        user_rep_ids = self._reporter_id_list_of_all_users(manager)
+        user_rep_ids = reporter_id_list_of_all_users(manager)
 
         return self.render_to_response({
             "grant_web_access": grant_web_access,
@@ -88,17 +88,6 @@ class AllDataSendersView(TemplateView):
     @method_decorator(is_not_expired)
     def dispatch(self, *args, **kwargs):
         return super(AllDataSendersView, self).dispatch(*args, **kwargs)
-
-    def _reporter_id_list_of_all_users(self, manager):
-        org_id = get_organization_from_manager(manager).org_id
-        users = NGOUserProfile.objects.filter(org_id=org_id).values_list("user_id", "reporter_id")
-        rep_id_map = {}
-        for u in users:
-            rep_id_map.update({u[0]: u[1]})
-        user_ids = User.objects.filter(groups__name__in=['Project Managers'], id__in=rep_id_map.keys()).values_list(
-            'id', flat=True)
-        user_rep_ids = [str(rep_id_map[user_id]) for user_id in user_ids]
-        return user_rep_ids
 
     def _get_all_datasenders(self, manager, projects, user):
         all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)

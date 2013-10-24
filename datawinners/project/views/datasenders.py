@@ -17,7 +17,7 @@ from datawinners.common.constant import IMPORTED_DATA_SENDERS, REMOVED_DATA_SEND
 from datawinners.entity import import_data as import_module, import_data
 from datawinners.entity.data_sender import get_user_profile_by_reporter_id
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization
+from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization, reporter_id_list_of_all_users
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
 from datawinners.project.models import Project
@@ -76,13 +76,15 @@ def registered_datasenders(request, project_id=None):
         grant_web_access = True
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
+        user_rep_ids = reporter_id_list_of_all_users(manager)
         return render_to_response('project/registered_datasenders.html',
                                   {
                                       'project': project,
                                       'project_links': project_links,
                                       'grant_web_access': grant_web_access,
                                       'current_language': translation.get_language(),
-                                      'in_trial_mode': in_trial_mode},
+                                      'in_trial_mode': in_trial_mode,
+                                      'users_list':user_rep_ids},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
