@@ -251,19 +251,22 @@ class TestView(TestCase):
         request.user = 'test'
         request.POST = {"all_ids": "1;2;3", "all_selected": "true", "search_query": "something"}
         with patch("datawinners.entity.views.SubjectQuery")  as mock_subject_query_class:
-            with patch("datawinners.entity.views.header_fields") as header_fields:
-                instance = Mock(spec=SubjectQuery)
-                mock_subject_query_class.return_value = instance
-                instance.query.return_value = [['s', 'x'], ['s', 'y']]
-                header = OrderedDict()
-                header.update({"name":"name"})
-                header.update({"short_code":"unique id"})
-                header_fields.return_value = header
-                manager = Mock(DatabaseManager)
-                self.assertEquals(subject_short_codes_to_delete(request, manager, "test_type"),
-                                  ['x', 'y'])
-                instance.query.assert_called_once_with('test', 'test_type', 'something')
-                header_fields.assert_called_once_with(manager, "test_type")
+            with patch("datawinners.entity.views.get_form_model_by_entity_type") as get_form_model_by_entity_type:
+                with patch("datawinners.entity.views.header_fields") as header_fields:
+                    instance = Mock(spec=SubjectQuery)
+                    mock_subject_query_class.return_value = instance
+                    mock_form_model = Mock(FormModel)
+                    get_form_model_by_entity_type.return_value = mock_form_model
+                    instance.query.return_value = [['s', 'x'], ['s', 'y']]
+                    header = OrderedDict()
+                    header.update({"name":"name"})
+                    header.update({"short_code":"unique id"})
+                    header_fields.return_value = header
+                    manager = Mock(DatabaseManager)
+                    self.assertEquals(subject_short_codes_to_delete(request, manager, "test_type"),
+                                      ['x', 'y'])
+                    instance.query.assert_called_once_with('test', 'test_type', 'something')
+                    header_fields.assert_called_once_with(mock_form_model)
 
 
 

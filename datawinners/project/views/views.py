@@ -462,6 +462,7 @@ def registered_subjects(request, project_id=None):
     project, project_links = _get_project_and_project_link(manager, project_id)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
+    form_model = get_form_model_by_entity_type(manager, [subject.get('entity')])
     return render_to_response('project/subjects/list.html',
                               {'project': project,
                                'project_links': project_links,
@@ -470,7 +471,7 @@ def registered_subjects(request, project_id=None):
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
                                'entity_type': subject.get('entity'),
-                               'subject_headers': header_fields(manager, subject.get('entity')),
+                               'subject_headers': header_fields(form_model),
                                'form_code': subject.get('code')}, context_instance=RequestContext(request))
 
 

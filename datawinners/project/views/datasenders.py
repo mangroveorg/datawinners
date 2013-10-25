@@ -45,7 +45,7 @@ class MyDataSendersAjaxView(View):
         search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
 
         user = request.user
-        query_count, search_count, datasenders = MyDataSenderQuery().filtered_query(user, project_name,
+        query_count, search_count, datasenders = MyDataSenderQuery(search_parameters).filtered_query(user, project_name,
                                                                                     search_parameters)
 
         return HttpResponse(

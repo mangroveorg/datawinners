@@ -4,32 +4,33 @@ from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import DateField
 
 
-def _add_date_field_mapping(mapping_fields, field):
+def _add_date_field_mapping(mapping_fields, field, key):
+    name = field.__getattribute__(key)
     mapping_fields.update(
-        {field.name: {"type": "multi_field", "fields": {
-            field.name: {"type": "string"},
-            field.name + "_value": {"type": "date", "format": DateField.FORMAT_DATE_DICTIONARY.get(field.date_format),
+        {name: {"type": "multi_field", "fields": {
+            name: {"type": "string"},
+            name + "_value": {"type": "date", "format": DateField.FORMAT_DATE_DICTIONARY.get(field.date_format),
                                     "ignore_malformed": True}
         }}})
 
 
-def _add_text_field_mapping(mapping_fields, field):
+def _add_text_field_mapping(mapping_fields, field, key):
+    name = field.__getattribute__(key)
     mapping_fields.update(
-        {field.name: {"type": "multi_field", "fields": {
-            field.name: {"type": "string"},
-            field.name + "_value": {"type": "string", "index_analyzer": "sort_analyzer",
-                                    "include_in_all": False}
+        {name: {"type": "multi_field", "fields": {
+            name: {"type": "string"},
+            name + "_value": {"type": "string", "index_analyzer": "sort_analyzer", "include_in_all": False}
         }}})
 
 
-def _mapping(key, fields):
+def get_fields_mapping(key, fields, mapping_key="name"):
     mapping_fields = {}
     mapping = {"date_detection": False, "properties": mapping_fields}
     for field in fields:
         if isinstance(field, DateField):
-            _add_date_field_mapping(mapping_fields, field)
+            _add_date_field_mapping(mapping_fields, field, mapping_key)
         else:
-            _add_text_field_mapping(mapping_fields, field)
+            _add_text_field_mapping(mapping_fields, field, mapping_key)
     return {key: mapping}
 
 

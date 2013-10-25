@@ -1,6 +1,6 @@
 from datetime import datetime
 import random
-from unittest import TestCase
+from unittest import TestCase, SkipTest
 
 from mock import patch, Mock
 from datawinners.main.database import get_db_manager
@@ -28,7 +28,7 @@ today = datetime.utcnow().strftime("%d.%m.%Y")
 def random_string(length=5):
     return ''.join(random.sample('abcdefghijklmnopqrstuvwxyz1234567890', length))
 
-
+@SkipTest #This test will not be valid once we start fetching data for analysis page from elastic search
 class TestSurveyResponseData(TestCase):
     def setUp(self):
         self.org_id = 'SLX364903'
@@ -66,7 +66,7 @@ class TestSurveyResponseData(TestCase):
             submission_list = self._prepare_submission_list_with_one_submission(self.form_model)
             try:
                 statistics = submission_list.get_analysis_statistics()
-            except Exception:
+            except Exception as e:
                 self.assertTrue(False)
 
             q1 = ["Zhat are symptoms?", field_attributes.MULTISELECT_FIELD, 1, [

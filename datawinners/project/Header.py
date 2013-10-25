@@ -3,6 +3,7 @@ from mangrove.form_model.field import DateField, GeoCodeField
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.helper import DEFAULT_DATE_FORMAT
 
+
 class Header(object):
     def __init__(self, form_model):
         self._form_model = form_model
@@ -53,6 +54,10 @@ class Header(object):
 
 
 class SubmissionsPageHeader(Header):
+    def __init__(self, form_model, submission_type):
+        self.submission_type = submission_type
+        super(SubmissionsPageHeader, self).__init__(form_model)
+
     def _status(self):
         return ugettext('Status'), ''
 
@@ -60,5 +65,15 @@ class SubmissionsPageHeader(Header):
         return ugettext("Error Messages"), ''
 
     def _prefix(self):
-        return [self._id(),self._data_sender_header(), self._submission_date_header(), self._status(), self._error_msg(),
-                self._subject_header(), self._reporting_period_header()]
+        if self.submission_type == 'all':
+            return [self._id(), self._data_sender_header(), self._submission_date_header(), self._status(),
+                    self._subject_header(), self._reporting_period_header()]
+
+        elif self.submission_type == 'success':
+            return [self._id(), self._data_sender_header(), self._submission_date_header(), self._subject_header(),
+                    self._reporting_period_header()]
+
+        else:
+            return [self._id(), self._data_sender_header(), self._submission_date_header(), self._error_msg(),
+                    self._subject_header(), self._reporting_period_header()]
+

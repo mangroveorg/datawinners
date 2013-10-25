@@ -1,80 +1,12 @@
-import elasticutils
 from datawinners.entity.helper import get_entity_type_fields
 from datawinners.main.database import get_database_manager
-from mangrove.form_model.form_model import header_fields
-from datawinners.settings import ELASTIC_SEARCH_URL
-
-class EntityQueryBuilder():
-    def __init__(self):
-        self.elastic_utils_helper = ElasticUtilsHelper()
-
-    def create_query(self, doc_type, database_name):
-        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type) \
-            .filter(void=False)
-
-    def create_paginated_query(self, doc_type, database_name, query_params):
-        start_result_number = query_params.get("start_result_number")
-        number_of_results = query_params.get("number_of_results")
-        order = query_params.get("order")
-        order_by = query_params.get("order_field")
-
-        return self.create_query(doc_type, database_name).order_by(order + order_by + "_value") \
-            [start_result_number:start_result_number + number_of_results]
-
-    def add_query_criteria(self, query_fields, query_text, search):
-        if query_text:
-            query_text_escaped = self.elastic_utils_helper.replace_special_chars(query_text)
-            raw_query = {
-                "query_string": {
-                    "fields": tuple(query_fields),
-                    "query": query_text_escaped
-                }
-            }
-            return search.query_raw(raw_query)
-
-        return search.query()
+from datawinners.search.query import Query, QueryBuilder
+from mangrove.form_model.form_model import header_fields, get_form_model_by_entity_type
 
 
-class ElasticUtilsHelper():
-    def replace_special_chars(self, search_text):
-        lucene_special_chars = ['\\', '+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?',
-                                '/',
-                                ':']
-        for char in lucene_special_chars:
-            search_text = search_text.replace(char, '\\' + char)
-        return search_text
-
-
-class EntityQuery():
-    def __init__(self, response_creator):
-        self.elastic_utils_helper = ElasticUtilsHelper()
-        self.query_builder = EntityQueryBuilder()
-        self.response_creator = response_creator
-
-    def _getDatabaseName(self, user):
-        return get_database_manager(user).database_name
-
-    def get_headers(self, user, entity_type):
-        pass
-
-    def paginated_query(self, user, entity_type, query_params):
-        entity_headers = self.get_headers(user, entity_type)
-
-        paginated_query = self.query_builder.create_paginated_query(entity_type, self._getDatabaseName(user), {
-            "start_result_number": query_params["start_result_number"],
-            "number_of_results": query_params["number_of_results"],
-            "order_field": entity_headers[query_params["order_by"]],
-            "order": query_params["order"]
-        })
-        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, query_params["search_text"],
-                                                                    paginated_query)
-        entities = self.response_creator.create_response(entity_headers, query_with_criteria)
-        return query_with_criteria.count(), paginated_query.count(), entities
-
-
-class DatasenderQuery(EntityQuery):
-    def __init__(self):
-        EntityQuery.__init__(self, DatasenderQueryResponseCreator())
+class DatasenderQuery(Query):
+    def __init__(self,query_params):
+        Query.__init__(self, DatasenderQueryResponseCreator(), QueryBuilder(),query_params)
 
     def get_headers(self, user, entity_type=None):
         fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
@@ -82,10 +14,10 @@ class DatasenderQuery(EntityQuery):
         fields.append('projects')
         return fields
 
-class MyDataSenderQuery(EntityQuery):
+class MyDataSenderQuery(Query):
 
-    def __init__(self):
-        EntityQuery.__init__(self, MyDatasenderQueryResponseCreator())
+    def __init__(self,query_params):
+        Query.__init__(self, MyDatasenderQueryResponseCreator(),QueryBuilder(),query_params)
 
     def get_headers(self, user, entity_type=None):
         fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
@@ -107,12 +39,14 @@ class MyDataSenderQuery(EntityQuery):
         entities = self.response_creator.create_response(entity_headers, query_with_criteria)
         return query_with_criteria.count(), paginated_query.count(), entities
 
-class SubjectQuery(EntityQuery):
-    def __init__(self):
-        EntityQuery.__init__(self, SubjectQueryResponseCreator())
+class SubjectQuery(Query):
+    def __init__(self,query_params=None):
+        Query.__init__(self, SubjectQueryResponseCreator(), QueryBuilder(),query_params)
 
     def get_headers(self, user, subject_type):
-        return header_fields(get_database_manager(user), subject_type).keys()
+        manager = get_database_manager(user)
+        form_model = get_form_model_by_entity_type(manager, [subject_type])
+        return header_fields(form_model).keys()
 
     def query(self, user, subject_type, query_text):
         subject_headers = self.get_headers(user, subject_type)
@@ -170,4 +104,3 @@ class MyDatasenderQueryResponseCreator(DatasenderQueryResponseCreator):
                     result.append(res.get(key))
             datasenders.append(result)
         return datasenders
-
