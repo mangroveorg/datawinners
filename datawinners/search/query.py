@@ -51,7 +51,8 @@ class QueryBuilder(object):
         order = query_params.get("order")
         order_by = query_params.get("order_field")
         query = self.create_query(doc_type, database_name)
-        if order_by: query.order_by(order + order_by + "_value")
+        if order_by:
+            query = query.order_by(order + order_by + "_value")
         return query[start_result_number:start_result_number + number_of_results]
 
     def add_query_criteria(self, query_fields, query_text, search):

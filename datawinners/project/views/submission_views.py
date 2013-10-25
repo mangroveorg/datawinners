@@ -305,7 +305,7 @@ def get_submissions(request, project_id):
     search_parameters.update({"search_text": search_text})
     search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
     search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
-    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
+    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0'))})
     search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
     filter_type = request.GET['type']
     if filter_type.lower() != 'all':

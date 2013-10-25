@@ -61,6 +61,11 @@ def _create_mappings(dbm):
         form_model_doc = FormModelDocument.wrap(row["value"])
         _create_datasender_mapping(form_model_doc, dbm)
 
+def create_datasender_mapping(dbm, form_model):
+    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    fields = form_model.fields
+    fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
+    es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
 
 def _populate_index(dbm):
     for entity in get_all_entities(dbm, entity_type=REPORTER_ENTITY_TYPE):

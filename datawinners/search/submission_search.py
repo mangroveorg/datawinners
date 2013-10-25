@@ -42,25 +42,29 @@ class SubmissionQuery(Query):
         header_dict = OrderedDict()
         self._update_static_header_info(header_dict)
 
-        def key_attribute(field): return field.code.lower()
+        def key_attribute(field): return self._field_code_in_lowercase(field)
 
-        header_dict = header_fields(self.form_model, key_attribute, header_dict)
-        if "reporter"  in self.form_model.entity_type:
+        header_fields(self.form_model, key_attribute, header_dict)
+        if "reporter" in self.form_model.entity_type:
             header_dict.pop(self.form_model.entity_question.code)
-        return header_dict
+        return header_dict.keys()
 
     def _update_static_header_info(self, header_dict):
         header_dict.update({"ds_id": "Datasender Id"})
         header_dict.update({"ds_name": "Datasender Name"})
-        header_dict.update({"date": "Submission S Date"})
+        header_dict.update({"date": "Submission Date"})
         submission_type = self.query_params.get('filter')
         if not submission_type:
             header_dict.update({"status": "Status"})
-        else:
-            if submission_type is 'error':
-                header_dict.update({"error_msg": "Error Message"})
-        header_dict.update({self.form_model.entity_question.code.lower(): "Entity"})
-        header_dict.update({self.form_model.event_time_question.code.lower():"Reporting Date"})
+        elif submission_type == 'error':
+            header_dict.update({"error_msg": "Error Message"})
+        header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question): "Entity"})
+        if self.form_model.event_time_question:
+            header_dict.update({self._field_code_in_lowercase(self.form_model.event_time_question): "Reporting Date"})
+
+    def _field_code_in_lowercase(self,field):
+        return field.code.lower()
+
 
 
     def populate_query_options(self):

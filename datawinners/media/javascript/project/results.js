@@ -110,7 +110,8 @@ $(document).ready(function () {
                     "sAjaxSource": render_table_url,
                     "sAjaxDataProp": "submissions",
                     "sServerMethod": "GET",
-                    "aoColumnDefs": getColumnDefinition()
+                    "aoColumnDefs": getColumnDefinition(),
+                    "aaSorting":[[2,"desc"]]
                 }
 
             )
@@ -245,7 +246,8 @@ $(document).ready(function () {
                 },
                 "bSortable": false,
                 "aTargets": [0]
-            }];
+            }
+        ];
         return columns;
     }
 
