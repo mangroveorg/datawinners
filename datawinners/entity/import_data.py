@@ -81,7 +81,7 @@ class FilePlayer(Player):
         return player
 
     def _process(self, form_model, values):
-        values = GeneralWorkFlow().process(values)
+        #values = GeneralWorkFlow().process(values)
         if form_model.is_entity_registration_form():
             values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree).process(values)
         if form_model.entity_defaults_to_reporter():
@@ -90,13 +90,13 @@ class FilePlayer(Player):
             values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)
         return values
 
-    def appendFailedResponse(self, message, values=None):
+    def _appendFailedResponse(self, message, values=None):
         response = Response(reporters=[], survey_response_id=None)
         response.success = False
         response.errors = dict(error=ugettext(message), row=values)
         return response
 
-    def import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
+    def _import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
                            values):
         phone_number = TelephoneNumber().clean(case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE))
         if phone_number in registered_phone_numbers:
@@ -127,7 +127,7 @@ class FilePlayer(Player):
             response = self.submit(form_model, values, submission, [])
         return response
 
-    def append_country_for_location_field(self, form_model, values, organization):
+    def _append_country_for_location_field(self, form_model, values, organization):
         location_field_code = get_location_field_code(form_model)
         if location_field_code is None:
             return values
@@ -135,15 +135,15 @@ class FilePlayer(Player):
             values[location_field_code] = get_country_appended_location(values[location_field_code], organization.country_name())
         return values
 
-    def import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, values, form_model=None):
-        self.append_country_for_location_field(form_model, values, organization)
+    def _import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, values, form_model=None):
+        self._append_country_for_location_field(form_model, values, organization)
         transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
         submission = self._create_submission(transport_info, form_code, copy(values))
         try:
             values = self._process(form_model, values)
             log_entry = "message: " + str(values) + "|source: web|"
             if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
-                response = self.import_data_sender(form_model, organization, registered_emails,
+                response = self._import_data_sender(form_model, organization, registered_emails,
                                                    registered_phone_numbers, submission, values)
             else:
                 response = self.submit(form_model, values, submission, [])
@@ -159,10 +159,10 @@ class FilePlayer(Player):
             if self.logger is not None:
                 log_entry += "Status: False"
                 self.logger.info(log_entry)
-            return self.appendFailedResponse("%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
+            return self._appendFailedResponse("%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
                                                 values=values)
         except (InvalidEmailException, MangroveException, NameNotFoundException) as e:
-            return self.appendFailedResponse(e.message, values=values)
+            return self._appendFailedResponse(e.message, values=values)
 
     def _get_registered_emails(self):
         if type(self.parser) == XlsDatasenderParser:
@@ -171,14 +171,8 @@ class FilePlayer(Player):
             registered_emails = []
         return registered_emails
 
-    def accept(self, file_contents):
+    def _get_form_model(self, rows):
         form_model = None
-        from datawinners.utils import get_organization_from_manager
-
-        organization = get_organization_from_manager(self.dbm)
-        registered_phone_numbers = get_all_registered_phone_numbers_on_trial_account() \
-            if organization.in_trial_mode else get_datasenders_mobile(self.dbm)
-        rows = self.parser.parse(file_contents)
         if len(rows) > 0:
             (form_code, values) = rows[0]
             form_model = get_form_model_by_code(self.dbm, form_code)
@@ -187,11 +181,24 @@ class FilePlayer(Player):
                 raise FormCodeDoesNotMatchException(
                     ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') %
                     form_model.entity_type[0], form_code=form_code)
+        return form_model
+
+    def _get_phone_numbers(self, organization):
+        return get_all_registered_phone_numbers_on_trial_account() \
+            if organization.in_trial_mode else get_datasenders_mobile(self.dbm)
+
+    def accept(self, file_contents):
+        from datawinners.utils import get_organization_from_manager
+
+        organization = get_organization_from_manager(self.dbm)
+        registered_phone_numbers = self._get_phone_numbers(organization)
+        rows = self.parser.parse(file_contents)
+        form_model = self._get_form_model(rows)
         responses = []
         registered_emails = self._get_registered_emails()
         for (form_code, values) in rows:
             responses.append(
-                self.import_submission(form_code, organization, registered_emails, registered_phone_numbers,values, form_model))
+                self._import_submission(form_code, organization, registered_emails, registered_phone_numbers,values, form_model))
         return responses
 
 #TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove

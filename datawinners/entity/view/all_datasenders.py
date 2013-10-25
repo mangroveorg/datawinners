@@ -67,7 +67,8 @@ class AllDataSendersView(TemplateView):
                                   detail=json.dumps(
                                       dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
         all_data_senders = self._get_all_datasenders(manager, projects, request.user)
-        add_imported_data_sender_to_trial_organization(request, imported_datasenders,
+        org_id = request.user.get_profile().org_id
+        add_imported_data_sender_to_trial_organization(org_id, imported_datasenders,
                                                        all_data_senders=all_data_senders, index=4)
 
         return HttpResponse(json.dumps(

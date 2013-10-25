@@ -146,6 +146,13 @@ class DataSenderOnTrialAccount(models.Model):
     mobile_number = models.TextField(unique=True, primary_key=True)
     organization = models.ForeignKey(Organization)
 
+    def add_imported_data_sender_to_trial_account(org_id, data_sender_mobile_numbers):
+        organization = Organization.objects.get(org_id=org_id)
+        if organization.in_trial_mode:
+            for mobile_number in data_sender_mobile_numbers:
+                    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,organization=Organization.objects.get(org_id=org_id))
+                    data_sender.save()
+
 
 def get_ngo_admin_user_profiles_for(organization):
     user_profiles = NGOUserProfile.objects.filter(org_id=organization.org_id)

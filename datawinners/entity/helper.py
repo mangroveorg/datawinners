@@ -164,7 +164,7 @@ def _get_data(form_data, country,reporter_id=None):
     return data
 
 
-def add_data_sender_to_trial_organization(telephone_number, org_id):
+def _add_data_sender_to_trial_organization(telephone_number, org_id):
     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=telephone_number,
         organization=Organization.objects.get(org_id=org_id))
     data_sender.save()
@@ -173,7 +173,7 @@ def update_data_sender_from_trial_organization(old_telephone_number,new_telephon
     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=old_telephone_number,
         organization=Organization.objects.get(org_id=org_id))
     data_sender.delete()
-    add_data_sender_to_trial_organization(new_telephone_number,org_id=org_id)
+    _add_data_sender_to_trial_organization(new_telephone_number,org_id=org_id)
 
 def process_create_data_sender_form(dbm, form, org_id):
     message = None
@@ -183,7 +183,7 @@ def process_create_data_sender_form(dbm, form, org_id):
         try:
             organization = Organization.objects.get(org_id=org_id)
             if organization.in_trial_mode:
-                add_data_sender_to_trial_organization(form.cleaned_data["telephone_number"], org_id)
+                _add_data_sender_to_trial_organization(form.cleaned_data["telephone_number"], org_id)
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
             reporter_id = form.cleaned_data["short_code"].lower() if form.cleaned_data != "" else None
             request = Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
@@ -231,14 +231,13 @@ def delete_datasender_for_trial_mode(manager, all_ids, entity_type):
         DataSenderOnTrialAccount.objects.get(mobile_number=entity_to_be_deleted.value(MOBILE_NUMBER_FIELD)).delete()
 
 
-def add_imported_data_sender_to_trial_organization(request, imported_datasenders, all_data_senders, index=0):
-    org_id = request.user.get_profile().org_id
+def add_imported_data_sender_to_trial_organization(org_id, imported_datasenders, all_data_senders, index=0):
     organization = Organization.objects.get(org_id=org_id)
     if organization.in_trial_mode:
         mobile_number_index = index
         for ds in all_data_senders:
             if ds['short_code'] in imported_datasenders:
-                add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
+                _add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
 
 
 def get_entity_type_fields(manager, type=REPORTER, for_export=False):

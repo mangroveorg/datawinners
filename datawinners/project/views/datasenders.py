@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 import jsonpickle
 from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, EDITED_DATA_SENDER
 from datawinners.entity import import_data as import_module, import_data
@@ -65,10 +65,35 @@ class MyDataSendersAjaxView(View):
         return super(MyDataSendersAjaxView, self).dispatch(*args, **kwargs)
 
 
+def _parse_successful_imports(successful_imports):
+    imported_data_senders=[]
+    for successful_import in successful_imports:
+        data_sender={}
+        data_sender['email'] = successful_import["e"] if "e" in successful_import else ""
+        data_sender['location'] = ",".join(successful_import["l"]) if "l" in successful_import else ""
+        data_sender['coordinates'] = ','.join(str(coordinate) for coordinate in successful_import["g"]) if 'g' in successful_import else ""
+        data_sender['name']=successful_import['n']
+        data_sender['mobile_number']=successful_import['m']
+        data_sender['id']=successful_import['s']
+        imported_data_senders.append(data_sender)
+    return imported_data_senders
+
+
+def _add_imported_datasenders_to_project(imported_datasenders_id, manager, project):
+    project.data_senders.extend(imported_datasenders_id)
+    project.save(manager)
+
+
+def _add_imported_datasenders_to_trail_account(imported_data_senders, org_id):
+    imported_datasender_mobile_numbers = [imported_data_sender["mobile_number"] for imported_data_sender in
+                                          imported_data_senders]
+    DataSenderOnTrialAccount.add_imported_data_sender_to_trial_account(org_id, imported_datasender_mobile_numbers)
+
+
 @login_required
 @csrf_exempt
 @is_not_expired
-def registered_datasenders(request, project_id=None):
+def registered_datasenders(request, project_id):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     grant_web_access = False
@@ -88,27 +113,24 @@ def registered_datasenders(request, project_id=None):
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities, successful_imports = import_module.import_data(request, manager,
-                                                                                                       default_parser=XlsDatasenderParser)
-        all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
-        project.data_senders.extend([id for id in imported_entities.keys()])
-        project.save(manager)
+                                                                                                                           default_parser=XlsDatasenderParser)
+        imported_data_senders = _parse_successful_imports(successful_imports)
+        imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
+        _add_imported_datasenders_to_project(imported_datasenders_ids, manager, project)
 
-        if len(imported_entities.keys()):
+        if len(imported_datasenders_ids):
             UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
-                                  detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_entities.keys())})),
+                                  detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})),
                                   project=project.name)
-        mobile_number_index = fields.index('mobile_number')
-        add_imported_data_sender_to_trial_organization(request, imported_entities, all_data_senders=all_data_senders,
-                                                       index=mobile_number_index)
+        org_id = request.user.get_profile().org_id
+        _add_imported_datasenders_to_trail_account(imported_data_senders, org_id)
         return HttpResponse(json.dumps(
             {
-             'success': error_message is None and is_empty(failure_imports),
-             'message': success_message,
-             'error_message': error_message,
-             'failure_imports': failure_imports, 'all_data': all_data_senders,
-             'imported_datasenders': imported_entities,
-             'associated_datasenders': project.data_senders,
-             'successful_imports': successful_imports
+                'success': error_message is None and is_empty(failure_imports),
+                'message': success_message,
+                'error_message': error_message,
+                'failure_imports': failure_imports,
+                'successful_imports': imported_data_senders
             }))
 
 
