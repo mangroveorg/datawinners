@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import elasticutils
+from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.form_model import header_fields
 from datawinners.search.query import QueryBuilder, Query
@@ -15,27 +16,34 @@ class SubmissionQueryBuilder(QueryBuilder):
     def create_query(self, doc_type, database_name):
         return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type)
 
+
 class SubmissionQueryResponseCreator():
+    def __init__(self,form_model):
+        self.form_model = form_model
+
     def create_response(self, required_field_names, query):
         submissions = []
         for res in query.values_dict(tuple(required_field_names)):
-            subject = []
-            subject.append(res._id)
-            subject.append([res.get('ds_name'), res.get('ds_id')])
+            submission = []
+            submission.append(res._id)
+            submission.append([res.get('ds_name'), res.get('ds_id')])
 
             for key in required_field_names:
-                if not key in ['ds_id', 'ds_name']:
-                    if (isinstance(res.get(key), dict)):
-                        subject.append(res.get(key).values())
+                meta_fields = ['ds_id', 'ds_name', 'entity_short_code']
+                if not key in meta_fields:
+                    if key == self.form_model.entity_question.code:
+                        submission.append(','.join([res.get(key),res.get('entity_short_code')]))
+                    elif isinstance(res.get(key), dict):
+                        submission.append(res.get(key).values())
                     else:
-                        subject.append(res.get(key))
-            submissions.append(subject)
+                        submission.append(res.get(key))
+            submissions.append(submission)
         return submissions
 
 
 class SubmissionQuery(Query):
-    def __init__(self, form_model,query_params):
-        Query.__init__(self, SubmissionQueryResponseCreator(), SubmissionQueryBuilder(),query_params)
+    def __init__(self, form_model, query_params):
+        Query.__init__(self, SubmissionQueryResponseCreator(form_model), SubmissionQueryBuilder(), query_params)
         self.form_model = form_model
 
     def get_headers(self, user, form_code):
@@ -56,15 +64,15 @@ class SubmissionQuery(Query):
         submission_type = self.query_params.get('filter')
         if not submission_type:
             header_dict.update({"status": "Status"})
-        elif submission_type == 'error':
+        elif submission_type == 'error':\
             header_dict.update({"error_msg": "Error Message"})
         header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question): "Entity"})
+        header_dict.update({'entity_short_code':"Entity short code"})
         if self.form_model.event_time_question:
             header_dict.update({self._field_code_in_lowercase(self.form_model.event_time_question): "Reporting Date"})
 
-    def _field_code_in_lowercase(self,field):
+    def _field_code_in_lowercase(self, field):
         return field.code.lower()
-
 
 
     def populate_query_options(self):

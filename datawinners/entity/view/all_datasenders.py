@@ -128,7 +128,7 @@ class AllDataSendersAjaxView(View):
         search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
 
         user = request.user
-        query_count, search_count, datasenders = DatasenderQuery().paginated_query(user, REPORTER, search_parameters)
+        query_count, search_count, datasenders = DatasenderQuery(search_parameters).paginated_query(user, REPORTER)
 
         return HttpResponse(
             jsonpickle.encode(

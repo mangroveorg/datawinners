@@ -297,7 +297,7 @@ class TestApplicationEndToEnd(BaseTest):
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_project_activation()
         self.verify_submission_via_web(ds_email)
-        self.admin_edit_delete_submissions()
+        #self.admin_edit_delete_submissions()
         self.delete_project()
 
         project_overview_page = self.verify_summary_report_project_creation()

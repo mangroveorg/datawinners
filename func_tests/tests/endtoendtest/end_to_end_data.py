@@ -229,20 +229,20 @@ ANSWER_FOR_SUMMARY_PROJECT = [
 regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}\W\S{2}'
 
 SUMMARY_DATA_LOG = {
-    SUBMISSION: u"Mickey G\xf6rep2 " + regex_date_match + " Success 25.09.1999",
+    SUBMISSION: u"Mickey G\xf6,rep2 " + regex_date_match + " Success 25.09.1999",
     UNIQUE_VALUE: "25.09.1999"
 }
 SMS_DATA_LOG = {
-    SUBMISSION: "Mickey Duckrep3 " + regex_date_match + " Success watwat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae, Bacteroids 27.178057,-78.007789",
+    SUBMISSION: "Mickey Duck,rep3 " + regex_date_match + " Success wat,wat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae,Bacteroids 27.178057,-78.007789",
     UNIQUE_VALUE: "Mr.Tessy"}
 
 WEB_ANSWER_LOG = {
-    SUBMISSION: "Mickey Duckrep3 " + regex_date_match + " Success watwat1 25.12.2010 25.12.2010 5.0 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0",
+    SUBMISSION: "Mickey Duck,rep3 " + regex_date_match + " Success wat,wat1 25.12.2010 25.12.2010 5.0 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0",
     UNIQUE_VALUE: 'web admin'
 }
 
 EDITED_WEB_ANSWER_LOG = {
-    SUBMISSION: "Mickey Duckrep3 " + regex_date_match + " Success watwat1 25.12.2010 25.12.2010 5.0 10.2010 10.12.2010 LIGHT RED edited adm Chlorobia 12.0,12.0",
+    SUBMISSION: "Mickey Duck,rep3 " + regex_date_match + " Success wat,wat1 25.12.2010 25.12.2010 5.0 10.2010 10.12.2010 LIGHT RED edited adm Chlorobia 12.0,12.0",
     UNIQUE_VALUE: 'edited adm'
 }
 
