@@ -18,7 +18,8 @@
             <div class="error" class="margin_top_15">{% trans "Use this "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
             <div class="clear"></div>
              <br/>
-            <div id="success_table">
+
+            <div id="success_import_section" class="import_table">
                 <table class="styled_table">
                 <thead>
                     <th>{% trans "Name" %}</th>
@@ -33,7 +34,8 @@
                 </table>
             </div>
 
-            <div id='error_table'>
+            <div id='error_import_section' class="import_table">
+
                 <table class="styled_table">
                     <thead>
                     <th>{% trans "Row Number" %}</th>

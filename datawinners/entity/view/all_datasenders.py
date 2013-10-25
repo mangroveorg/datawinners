@@ -22,6 +22,7 @@ from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_u
 from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, reporter_id_list_of_all_users
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
+from datawinners.project.views.datasenders import _parse_successful_imports, _add_imported_datasenders_to_trail_account
 from datawinners.search.entity_search import DatasenderQuery
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import TransportInfo
@@ -58,27 +59,24 @@ class AllDataSendersView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        projects = get_all_projects(manager)
-        error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
+        error_message, failure_imports, success_message, imported_datasenders, successful_imports = import_module.import_data(request,
                                                                                                           manager,
                                                                                                           default_parser=XlsDatasenderParser)
-        if len(imported_datasenders.keys()):
+        imported_data_senders = _parse_successful_imports(successful_imports)
+        imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
+        if len(imported_datasenders_ids):
             UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
                                   detail=json.dumps(
-                                      dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
-        all_data_senders = self._get_all_datasenders(manager, projects, request.user)
+                                      dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})))
         org_id = request.user.get_profile().org_id
-        add_imported_data_sender_to_trial_organization(org_id, imported_datasenders,
-                                                       all_data_senders=all_data_senders, index=4)
-
+        _add_imported_datasenders_to_trail_account(imported_data_senders, org_id)
         return HttpResponse(json.dumps(
             {
                 'success': error_message is None and is_empty(failure_imports),
                 'message': success_message,
                 'error_message': error_message,
                 'failure_imports': failure_imports,
-                'all_data': all_data_senders,
-                'imported_datasenders': imported_datasenders
+                'successful_imports': imported_data_senders
             }))
 
     @method_decorator(csrf_view_exempt)

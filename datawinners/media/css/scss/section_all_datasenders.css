@@ -42,10 +42,7 @@
 .ds_action {
   margin-top: 6px; }
 
-#error_table {
+.import_table{
   overflow-y: auto;
-  height: 200px; }
-
-#success_table {
-  overflow-y: auto;
-  height: 200px; }
+  height: 200px;
+}

@@ -17,8 +17,8 @@ $(document).ready(function () {
         $("#popup-import").dialog("open");
         $('#message').remove();
         $('#error_body').html('');
-        $("#error_table").hide();
-        $("#success_table").hide();
+        $("#error_import_section").hide();
+        $("#success_import_section").hide();
         $('#success_body').html("");
     });
 
@@ -40,12 +40,12 @@ $(document).ready(function () {
             $.unblockUI();
             $('#message').remove();
             $('#error_body').html('');
-            $("#error_table").hide();
+            $("#error_import_section").hide();
             if ($.isEmptyObject(responseJSON)) {
                 $('<div id="message" class="error_message message-box clear-left">' + gettext("Sorry, an error occured - the reason could be connectivity issues or the import taking too long to process.  Please try again.  Limit the number of subjects you import to 200 or less.") + '</div>').insertAfter($('#file-uploader'));
             }
             else {
-                reload_tables(responseJSON);
+                refresh_tables(responseJSON);
                 if (responseJSON.success == true) {
                     $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
                 }
@@ -59,21 +59,20 @@ $(document).ready(function () {
                         $('<div id="message" class="error_message message-box clear-left">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
                     }
                     if (responseJSON.failure_imports.length > 0) {
-                        $("#error_table").show();
+                        $("#error_import_section").show();
                     }
                     $.each(responseJSON.failure_imports, function (index, element) {
-                        $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
+                        $("#error_import_section table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
                             + element.error + "</td></tr>");
                     });
-                    $("#error_table").show();
+                    $("##error_import_section").show();
                 }
             }
         }
     });
 });
 
-function reload_tables(responseJSON) {
-    var markup = "<tr>\
+var markup = "<tr>\
                     <td>${name}</td>\
                     <td>${id}</td>\
                     <td>${location}</td>\
@@ -81,13 +80,15 @@ function reload_tables(responseJSON) {
                     <td>${mobile_number}</td>\
                     <td>${email}</td>\
                   </tr>";
+$.template("created_datasenders", markup);
+
+function refresh_tables(responseJSON) {
     if(responseJSON.successful_imports.length <= 0){
-        $("#success_table").hide();
+        $("#success_import_section").hide();
     }
     else{
-        $("#success_table").show();
+        $("#success_import_section").show();
     }
-    $.template("created_datasenders", markup);
     $("#success_body").html('');
     _.each(responseJSON.successful_imports, function(datasenderjson){
         $("#success_body").append($.tmpl("created_datasenders", datasenderjson));
