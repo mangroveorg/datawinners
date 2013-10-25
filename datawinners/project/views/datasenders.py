@@ -51,7 +51,7 @@ class MyDataSendersAjaxView(View):
         return HttpResponse(
             jsonpickle.encode(
                 {
-                    'datasenders': datasenders,
+                    'data': datasenders,
                     'iTotalDisplayRecords': query_count,
                     'iDisplayStart': int(request.GET.get('iDisplayStart')),
                     "iTotalRecords": search_count,
@@ -103,8 +103,7 @@ def registered_datasenders(request, project_id):
         in_trial_mode = _in_trial_mode(request)
         user_rep_ids = reporter_id_list_of_all_users(manager)
         return render_to_response('project/registered_datasenders.html',
-                                  {
-                                      'project': project,
+                                  {   'project': project,
                                       'project_links': project_links,
                                       'grant_web_access': grant_web_access,
                                       'current_language': translation.get_language(),

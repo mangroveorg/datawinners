@@ -10,6 +10,7 @@
 }
 .dataTables_length{
     float:right;
+    margin-top: 2px;
 }
 .disabled_button, span.paginate_more_disabled, .paginate_disabled_previous, .paginate_disabled_next {
     background: none repeat scroll 0 0 #DFEDF4;
@@ -44,13 +45,18 @@
     clear: both;
     border-spacing:0;
     border-collapse:collapse;
+    margin-bottom: 0px;
+}
+.table_wrapper{
     margin-bottom:8px;
 }
-.dataTables_paginate{ float: left; padding-top:7px;}
+.dataTables_paginate{ float: left; padding-top:5px;}
 ul.dropdown-menu>li.disabled a,ul.dropdown-menu>li.disabled label {
     background-color: #FFFFFF !important;
     color: #AAAAAA !important;
     cursor: default !important;
+    font-weight: normal;
+    line-height: 24px;
 }
 ul.dropdown-menu>li.disabled label{
     color: #8A7F7F;
@@ -100,10 +106,11 @@ ul.dropdown-menu>li.disabled label{
     overflow-x: auto;
     clear:both;
 }
+.dataTables_wrapper table thead th.checkbox_col{padding: 0;}
 .table_action_button .btn {
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
   background: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
   -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
   display: inline-block;  /* IE is so silly */
-    }
+}

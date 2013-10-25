@@ -989,3 +989,9 @@ msgstr ""
 
 msgid "<b> 0 to 0</b> of 0"
 msgstr ""
+
+msgid "Remove from project"
+msgstr ""
+
+msgid "Add to project"
+msgstr ""

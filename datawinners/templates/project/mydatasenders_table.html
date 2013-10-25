@@ -10,7 +10,7 @@
 <script src="/media/javascript/data_tables/js/dwtable.js"></script>
 <script src="/media/javascript/entity/datasender_actions.js"></script>
 <script>
-var datasender_ajax_url = "{% url all_datasenders_ajax %}";
+    var datasender_ajax_url = "{% url my_datasenders_ajax project.name %}";
 
 $(function(){
     function col(header_class_name){

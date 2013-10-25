@@ -1,31 +1,39 @@
-//this file is being used as delete handler in datasenders/index.js and registered datasender
-$(document).ready(function () {
-    $("#delete_entity_block").dialog({
+
+function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_element) {
+   //$("#delete_ds_block").dialog();
+    var delete_dialog = $("#delete_ds_block").dialog({
             title: gettext("Warning !!"),
             modal: true,
-            autoOpen: false,
+            autoOpen: true,
             width: 500,
             closeText: 'hide'
         }
     );
 
-    $("#delete_entity_block .cancel_link").bind("click", function() {
-        $("#delete_entity_block").dialog("close");
-        $('#delete_entity_block').data("action_element").value = "";
+    delete_dialog.data("allIds", allIds);
+    delete_dialog.data("all_selected", all_selected);
+    delete_dialog.data("entity_type", entity_type);
+    delete_dialog.data("action_element", action_element);
+
+     $("#delete_ds_block .cancel_link").click(function() {
+         delete_dialog.dialog("close");
+        $('#delete_ds_block').data("action_element").value = "";
         return false;
     });
 
 
-    $("#ok_button").bind("click", function() {
-        $("#delete_entity_block").dialog("close");
-        var allIds = $('#delete_entity_block').data("allIds");
-        var entity_type = $('#delete_entity_block').data("entity_type");
+    $("#delete_ds_block #ok_button").click(function() {
+        delete_dialog.dialog("close");
+        var allIds = delete_dialog.data("allIds");
+        var all_selected = delete_dialog.data("all_selected");
+        var entity_type = delete_dialog.data("entity_type");
         var path = $(this).attr("href");
         post_data = {'all_ids':allIds.join(';'), 'entity_type':entity_type}
         if ($("#project_name").length)
             post_data.project = $("#project_name").val();
-        if($('#select_all_link').attr('class') == 'selected')
+        if(all_selected)
             post_data.all_selected = true;
+        DW.loading();
         $.post("/entity/delete/", post_data,
             function (json_response) {
                 var response = $.parseJSON(json_response);
@@ -41,20 +49,14 @@ $(document).ready(function () {
         return false;
     });
 
-});
 
-function warnThenDeleteDialogBox(allIds, entity_type, action_element) {
-    $("#delete_entity_block").data("allIds", allIds);
-    $("#delete_entity_block").data("entity_type", entity_type);
-    $("#delete_entity_block").data("action_element", action_element);
-
-    $("#delete_entity_block").dialog("open");
+    delete_dialog.dialog("open");
 }
 
 
 DW.DataSenderActionHandler = function(){
   this.delete = function(table, selected_ids, all_selected){
-        handle_datasender_delete(table, selected_ids);
+        handle_datasender_delete(table, selected_ids, all_selected);
   };
   this.edit = function(table, selected_ids){
     location.href = '/entity/datasender/edit' + '/' + selected_ids[0] + '/';
@@ -73,8 +75,7 @@ DW.DataSenderActionHandler = function(){
             $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
                 data: {'ids':selectedIds.join(';'), 'project_id':$("#project_id").val()}
             }).done(function (data) {
-                    $("button.action").dropdown("detach");
-                    $('<div class="success-message-box clear-left" id="success_message">' + gettext("Data Senders dissociated Successfully") + '. ' + gettext("Please Wait") + '....</div>').insertAfter($('#action_dropdown'));
+                    $(".dataTables_wrapper").prepend('<div class="success-message-box clear-left" id="success_message">' + gettext("Data Senders dissociated Successfully") + '. ' + gettext("Please Wait") + '....</div>')
                     $('#success_message').delay(4000).fadeOut(1000, function () {
                         $('#success_message').remove();
                     });
@@ -97,13 +98,15 @@ function add_remove_from_project(action) {
             $('#action').at;
         }
     });
+    $("#all_project_block").find('#error').remove();
+    $('#all_project_block :checked').attr("checked",false);
 
     $("#all_project_block .cancel_link").bind("click", function () {
         $("#all_project_block").dialog("close");
     });
 
     $("#all_project_block .button").bind("click", function () {
-        $('#error').remove();
+
         var allIds = $.map($('#datasender_table .row_checkbox:checked'), function(e){return $(e).val();});
         var projects = [];
         $('#all_project_block :checked').each(function () {
@@ -158,7 +161,7 @@ function delete_all_ds_are_users_show_warning(users) {
             $('#action').removeAttr("data-selected-action");
             $("input.is_user").attr("checked", false);
         },
-        height: 175,
+        height: 180,
         width: 550
     }
 
@@ -174,7 +177,7 @@ function uncheck_users(table, user_ids){
     return $.map($(table).find(":checked"), function(e){return $(e).val();});
 }
 
-function handle_datasender_delete(table, allIds){
+function handle_datasender_delete(table, allIds, all_selected){
     $("#note_for_delete_users").hide();
     var users = get_users_from_selected_datasenders(table, allIds);
 
@@ -188,10 +191,10 @@ function handle_datasender_delete(table, allIds){
             $("#note_for_delete_users .users_list").html(users_list_for_html);
             $("#note_for_delete_users").show();
             allIds = uncheck_users(table, users["ids"]);
-            warnThenDeleteDialogBox(allIds, "reporter", this);
+            warnThenDeleteDialogBox(allIds, all_selected, "reporter", this);
         }
     } else {
-        warnThenDeleteDialogBox(allIds, "reporter", this);
+        warnThenDeleteDialogBox(allIds, all_selected, "reporter", this);
     }
 }
 

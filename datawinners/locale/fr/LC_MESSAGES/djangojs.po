@@ -1027,3 +1027,9 @@ msgstr "<b> 0 à 0</b> de 0"
 
 msgid "Select a %(concept)s"
 msgstr "Sélectionnez un(e) %(concept)s"
+
+msgid "Remove from project"
+msgstr "Retirer d'un projet"
+
+msgid "Add to project"
+msgstr "Relier à un projet"

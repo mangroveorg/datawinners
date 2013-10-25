@@ -708,9 +708,6 @@ msgstr "Donner un accès"
 msgid "Actions:"
 msgstr "Actions:"
 
-msgid "Add to project"
-msgstr "Relier à un projet"
-
 msgid "Remove from project"
 msgstr "Retirer d'un projet"
 

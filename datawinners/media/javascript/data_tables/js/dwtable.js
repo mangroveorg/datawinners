@@ -4,6 +4,9 @@ $.fn.dwTable = function(options){
             var defaults = {
                 "concept":"Row",
                 "sDom": "ipfrtipl",
+                "aLengthMenu": [10, 25, 50, 100],
+                "iDisplayLength": 25,
+                "bResetDisplay": true,
                 "sAjaxDataProp": "data",
                  "sPaginationType": "dw_pagination",
                 "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
@@ -76,6 +79,8 @@ $.fn.dwTable = function(options){
                         var action_button = $(dataTableObject).parents(".dataTables_wrapper").find(".dataTables_info").before(html)
                         var select_link_text = interpolate(gettext("Select a %(concept)s"), {"concept":concept}, true);
                         $(this).parents(".dataTables_wrapper").append('<div id="'+ dropdown_id + '" class="dropdown"> <ul class="dropdown-menu"><li class="none-selected disabled"><label>' + select_link_text + '</label><li></ul> </div>');
+
+                        $(".checkall-checkbox").parents("th").addClass("checkbox_col");
                         //$(action_button).dropdown();
 
 

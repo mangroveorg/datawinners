@@ -649,9 +649,6 @@ msgstr ""
 msgid "Actions:"
 msgstr ""
 
-msgid "Add to project"
-msgstr ""
-
 msgid "Remove from project"
 msgstr ""
 
