@@ -21,7 +21,7 @@ class TestSubmissionQuery(unittest.TestCase):
 
             headers = SubmissionQuery(form_model, {}).get_headers(Mock, "code")
 
-            expected = ["ds_id", "ds_name", "date", "status", "eid"]
+            expected = ["ds_id", "ds_name", "date", "status", "eid","entity_short_code"]
             self.assertListEqual(expected, headers)
 
     def test_should_have_reporting_date_header_if_form_model_has_reporting_date(self):
@@ -40,7 +40,7 @@ class TestSubmissionQuery(unittest.TestCase):
 
             headers = SubmissionQuery(form_model, {}).get_headers(Mock, "code")
 
-            expected = ["ds_id", "ds_name", "date", "status", "eid", "rp_date"]
+            expected = ["ds_id", "ds_name", "date", "status", "eid","entity_short_code" ,"rp_date"]
             self.assertListEqual(expected, headers)
 
     def test_submission_status_headers_for_success_and_erred_submissions(self):
@@ -56,12 +56,12 @@ class TestSubmissionQuery(unittest.TestCase):
 
             headers = SubmissionQuery(form_model, query_params).get_headers(Mock, "code")
 
-            expected = ["ds_id", "ds_name", "date", "eid"]
+            expected = ["ds_id", "ds_name", "date", "eid","entity_short_code"]
             self.assertListEqual(expected, headers)
 
             query_params = {"filter": "error"}
 
             headers = SubmissionQuery(form_model, query_params).get_headers(Mock, "code")
 
-            expected = ["ds_id", "ds_name", "date", "error_msg", "eid"]
+            expected = ["ds_id", "ds_name", "date", "error_msg", "eid","entity_short_code"]
             self.assertListEqual(expected, headers)
