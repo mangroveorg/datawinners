@@ -24,7 +24,7 @@ class TestHelper(TestCase):
         request = Mock()
         request.user = Mock(spec=User)
         ds_mobile_numbers = ["0333333333", "0333733333"]
-        with patch("datawinners.entity.helper.add_data_sender_to_trial_organization") as add_ds_to_trial:
+        with patch("datawinners.entity.helper._add_data_sender_to_trial_organization") as add_ds_to_trial:
             with patch("datawinners.accountmanagement.models.Organization.objects.get") as get_organization_mock:
                 get_organization_mock.return_value = self.get_organization(org_id=self.org_id)
                 org = Organization.objects.get(org_id="AK29")
