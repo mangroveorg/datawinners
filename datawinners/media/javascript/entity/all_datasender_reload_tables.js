@@ -11,8 +11,8 @@ function reload_tables(responseJSON) {
         $("#success_table").hide();
     }
     $.template("created_datasenders", markup);
-    $("#imported_table").html('');
+    $("#success_body").html('');
     _.each(responseJSON.successful_imports, function(datasenderjson){
-        $("#imported_table").append($.tmpl("created_datasenders", datasenderjson));
+        $("#success_body").append($.tmpl("created_datasenders", datasenderjson));
     });
 }

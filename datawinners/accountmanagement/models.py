@@ -146,7 +146,8 @@ class DataSenderOnTrialAccount(models.Model):
     mobile_number = models.TextField(unique=True, primary_key=True)
     organization = models.ForeignKey(Organization)
 
-    def add_imported_data_sender_to_trial_account(org_id, data_sender_mobile_numbers):
+    @classmethod
+    def add_imported_data_sender_to_trial_account(cls, org_id, data_sender_mobile_numbers):
         organization = Organization.objects.get(org_id=org_id)
         if organization.in_trial_mode:
             for mobile_number in data_sender_mobile_numbers:

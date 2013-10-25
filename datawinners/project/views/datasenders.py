@@ -69,7 +69,7 @@ def _parse_successful_imports(successful_imports):
     imported_data_senders=[]
     for successful_import in successful_imports:
         data_sender={}
-        data_sender['email'] = successful_import["e"] if "e" in successful_import else ""
+        data_sender['email'] = successful_import["email"] if "email" in successful_import else ""
         data_sender['location'] = ",".join(successful_import["l"]) if "l" in successful_import else ""
         data_sender['coordinates'] = ','.join(str(coordinate) for coordinate in successful_import["g"]) if 'g' in successful_import else ""
         data_sender['name']=successful_import['n']

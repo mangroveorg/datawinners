@@ -16,9 +16,10 @@ $(document).ready(function () {
     $("#import-datasenders").bind("click", function () {
         $("#popup-import").dialog("open");
         $('#message').remove();
-        $('#error_tbody').html('');
+        $('#error_body').html('');
         $("#error_table").hide();
-        $('#imported_table').html("");
+        $("#success_table").hide();
+        $('#success_body').html("");
     });
 
     $(".close_import_dialog").bind("click", function () {
@@ -38,7 +39,7 @@ $(document).ready(function () {
         onComplete:function (id, fileName, responseJSON) {
             $.unblockUI();
             $('#message').remove();
-            $('#error_tbody').html('');
+            $('#error_body').html('');
             $("#error_table").hide();
             if ($.isEmptyObject(responseJSON)) {
                 $('<div id="message" class="error_message message-box clear-left">' + gettext("Sorry, an error occured - the reason could be connectivity issues or the import taking too long to process.  Please try again.  Limit the number of subjects you import to 200 or less.") + '</div>').insertAfter($('#file-uploader'));
@@ -70,3 +71,25 @@ $(document).ready(function () {
         }
     });
 });
+
+function reload_tables(responseJSON) {
+    var markup = "<tr>\
+                    <td>${name}</td>\
+                    <td>${id}</td>\
+                    <td>${location}</td>\
+                    <td>${coordinates}</td>\
+                    <td>${mobile_number}</td>\
+                    <td>${email}</td>\
+                  </tr>";
+    if(responseJSON.successful_imports.length <= 0){
+        $("#success_table").hide();
+    }
+    else{
+        $("#success_table").show();
+    }
+    $.template("created_datasenders", markup);
+    $("#success_body").html('');
+    _.each(responseJSON.successful_imports, function(datasenderjson){
+        $("#success_body").append($.tmpl("created_datasenders", datasenderjson));
+    });
+}
