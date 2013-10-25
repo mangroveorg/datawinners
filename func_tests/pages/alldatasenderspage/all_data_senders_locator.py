@@ -37,7 +37,7 @@ SUCCESS_MESSAGE_LABEL = by_xpath("//div[@class='success-message-box' and not(con
 DELETE_SUCCESS_MESSAGE = by_css("div.success-message-box")
 DATASENDERS_IMPORT_LINK = by_id("a#import-datasenders")
 CHECK_ALL_DS_USER = by_css("input.is_user")
-CHECKALL_DS_CB = by_id("checkall-datasenders")
+CHECKALL_DS_CB = by_css(".checkall-datasenders")
 ALL_DS_ROWS = by_css("#all_data_senders")
 NONE_SELECTED_LOCATOR = by_id("none-selected")
 ACTION_MENU = by_id("action")
