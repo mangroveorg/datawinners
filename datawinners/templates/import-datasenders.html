@@ -18,35 +18,37 @@
             <div class="error" class="margin_top_15">{% trans "Use this "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
             <div class="clear"></div>
              <br/>
-
-            <div id="success_import_section" class="import_table">
-                <table class="styled_table">
-                <thead>
-                    <th>{% trans "Name" %}</th>
-                    <th>{% trans "Unique ID" %}</th>
-                    <th>{% trans "Location" %}</th>
-                    <th>{% trans "GPS Coordinates" %}</th>
-                    <th>{% trans "Mobile Number" %}</th>
-                    <th>{% trans "Email address" %}</th>
-                </thead>
-                <tbody id="success_body">
-                </tbody>
-                </table>
-            </div>
-
-            <div id='error_import_section' class="import_table">
-
-                <table class="styled_table">
+            <div id="success_import_section" class="import_section">
+                <div id="success_table_message"></div>
+                <div class="import_table">
+                    <table class="styled_table">
                     <thead>
-                    <th>{% trans "Row Number" %}</th>
-                    <th>{% trans "Row" %}</th>
-                    <th>{% trans "Error" %}</th>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Unique ID" %}</th>
+                        <th>{% trans "Location" %}</th>
+                        <th>{% trans "GPS Coordinates" %}</th>
+                        <th>{% trans "Mobile Number" %}</th>
+                        <th>{% trans "Email address" %}</th>
                     </thead>
-                    <tbody id='error_body'>
+                    <tbody id="success_body">
                     </tbody>
-                </table>
+                    </table>
+                </div>
             </div>
-
+            <div id='error_import_section' class="import_section">
+                <div id="error_table_message"></div>
+                <div class="import_table">
+                    <table class="styled_table">
+                        <thead>
+                        <th>{% trans "Row Number" %}</th>
+                        <th>{% trans "Row" %}</th>
+                        <th>{% trans "Error" %}</th>
+                        </thead>
+                        <tbody id='error_body'>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="float_right">
                 <a href="javascript:void(0);" class="button close_import_dialog">{% trans "Close" %}</a>
             </div>
