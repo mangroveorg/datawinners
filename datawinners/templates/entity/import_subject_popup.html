@@ -21,9 +21,11 @@
             href="{% url datawinners.entity.views.export_template entity_type %}">{{ entity_type }}.xls</a></div>
     <table class="styled_table">
         <thead>
-        {% for field in questions %}
-            <th>{{ field.label }}</th>
-        {% endfor %}
+            <tr>
+            {% for field in questions %}
+                <th>{{ field.label }}</th>
+            {% endfor %}
+            </tr>
         </thead>
         <tbody id="{{ form_code }}_table">
         </tbody>
@@ -38,9 +40,11 @@
         <br/>
         <table class="styled_table">
             <thead>
-            <th>{% trans "Row Number" %}</th>
-            <th>{% trans "Row" %}</th>
-            <th>{% trans "Error" %}</th>
+            <tr>
+                <th>{% trans "Row Number" %}</th>
+                <th>{% trans "Row" %}</th>
+                <th>{% trans "Error" %}</th>
+            </tr>
             </thead>
             <tbody>
 

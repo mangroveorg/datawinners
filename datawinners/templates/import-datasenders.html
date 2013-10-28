@@ -23,12 +23,14 @@
                 <div class="import_table">
                     <table class="styled_table">
                     <thead>
-                        <th>{% trans "Name" %}</th>
-                        <th>{% trans "Unique ID" %}</th>
-                        <th>{% trans "Location" %}</th>
-                        <th>{% trans "GPS Coordinates" %}</th>
-                        <th>{% trans "Mobile Number" %}</th>
-                        <th>{% trans "Email address" %}</th>
+                        <tr>
+                            <th>{% trans "Name" %}</th>
+                            <th>{% trans "Unique ID" %}</th>
+                            <th>{% trans "Location" %}</th>
+                            <th>{% trans "GPS Coordinates" %}</th>
+                            <th>{% trans "Mobile Number" %}</th>
+                            <th>{% trans "Email address" %}</th>
+                        </tr>
                     </thead>
                     <tbody id="success_body">
                     </tbody>
@@ -40,9 +42,11 @@
                 <div class="import_table">
                     <table class="styled_table">
                         <thead>
-                        <th>{% trans "Row Number" %}</th>
-                        <th>{% trans "Row" %}</th>
-                        <th>{% trans "Error" %}</th>
+                        <tr>
+                            <th>{% trans "Row Number" %}</th>
+                            <th>{% trans "Row" %}</th>
+                            <th>{% trans "Error" %}</th>
+                        </tr>
                         </thead>
                         <tbody id='error_body'>
                         </tbody>
