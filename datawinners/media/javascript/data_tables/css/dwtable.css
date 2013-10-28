@@ -113,7 +113,29 @@ ul.dropdown-menu>li.disabled label{
 .table_action_button .btn {
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
   background: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
   display: inline-block;  /* IE is so silly */
+  background-color: #f5f5f5;
+  background-image: -moz-linear-gradient(top, #ccdfed, #B0CFD7);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#B0CFD7));
+  background-image: -webkit-linear-gradient(top, #ccdfed, #B0CFD7);
+  background-image: -o-linear-gradient(top, #ccdfed, #B0CFD7);
+  background-image: linear-gradient(to bottom, #ccdfed, #B0CFD7);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffccdfed', endColorstr='#ffB0CFD7', GradientType=0);
+  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #B0CFD7;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.btn:hover,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+  color: #333333;
+  background-color: #B0CFD7;
+  *background-color: #B0CFD7;
 }

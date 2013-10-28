@@ -76,8 +76,8 @@ $.fn.dwTable = function(options){
                         var dropdown_id = "dropdown-menu" + Math.floor(Math.random() * 10000000000000001);
                         var html = '<div class="table_action_button action_bar clear-both"> <div class="btn-group">' +
                                 '<button class="btn dropdown-toggle action" href="#" data-dropdown="#'+dropdown_id+ '">Actions' +
-                                '<span class="caret"></span> </button> </div></div> </div>';
-                        var action_button = $(dataTableObject).parents(".dataTables_wrapper").find(".dataTables_info").before(html)
+                                '<span class="caret"></span> </button> </div></div>';
+                        var action_button = $(dataTableObject).parents(".dataTables_wrapper").find(".dataTables_info").before($(html));
                         var select_link_text = interpolate(gettext("Select a %(concept)s"), {"concept":concept}, true);
                         $(this).parents(".dataTables_wrapper").append('<div id="'+ dropdown_id + '" class="dropdown"> <ul class="dropdown-menu"><li class="none-selected disabled"><label>' + select_link_text + '</label><li></ul> </div>');
 
