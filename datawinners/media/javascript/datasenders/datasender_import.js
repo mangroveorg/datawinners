@@ -39,7 +39,7 @@ $(document).ready(function () {
     function refresh_error_table(responseJSON) {
         $('#error_tbody').html('');
         if (responseJSON.failure_imports.length > 0) {
-            $("#error_table_message").html(gettext(responseJSON.failure_imports.length + " records failed to import"));
+            $("#error_table_message").html(gettext(responseJSON.failure_imports.length + " Record(s) Failed to Import"));
             $("#error_import_section").show();
         }
         $.each(responseJSON.failure_imports, function (index, element) {
@@ -53,7 +53,7 @@ $(document).ready(function () {
             $("#success_import_section").hide();
         }
         else {
-            $("#success_table_message").html(gettext(responseJSON.successful_imports.length + " records successfully imported"));
+            $("#success_table_message").html(gettext(responseJSON.successful_imports.length + " Record(s) Successfully Imported"));
             $("#success_import_section").show();
         }
         $("#success_body").html('');

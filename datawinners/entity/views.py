@@ -272,7 +272,7 @@ def create_multiple_web_users(request):
 #todo remove form_code from here, use entity_type instead
 def import_subjects_from_project_wizard(request, form_code):
     manager = get_database_manager(request.user)
-    error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
+    error_message, failure_imports, success_message, imported_entities, successful_imports= import_module.import_data(request, manager,
                                                                                                    default_parser=XlsOrderedParser,
                                                                                                    form_code=form_code)
     if len(imported_entities) != 0:

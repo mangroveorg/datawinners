@@ -41,9 +41,23 @@
 
 .import_table{
   overflow-y: auto;
-  height: 200px;
+  max-height: 200px;
 }
 
 .import_section {
-    padding-bottom: 2em;
+  padding-bottom: 2em;
+  padding-left: 10px
+;
+
+}
+
+.import_message {
+  font-weight:bold;
+  font-size: 20px;
+  padding-bottom: 11px;
+}
+
+.popup-import .error {
+  margin-top: 7px !important;
+  padding-left: 10px;
 }
