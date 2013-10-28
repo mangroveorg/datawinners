@@ -50,7 +50,7 @@
 .table_wrapper{
     margin-bottom:8px;
 }
-.dataTables_paginate{ float: left; padding-top:5px;}
+.dataTables_paginate{ float: left; padding-top:5px; padding-bottom: 3px;}
 ul.dropdown-menu>li.disabled a,ul.dropdown-menu>li.disabled label {
     background-color: #FFFFFF !important;
     color: #AAAAAA !important;
@@ -72,16 +72,19 @@ ul.dropdown-menu>li.disabled label{
     padding: 10px 35px 10px 10px;
 }
 .dataTables_wrapper table thead .sorting {
-   background: url("/media/images/sort_arrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
-}
-.dataTables_wrapper table thead .sorting {
-  background: url(/media/images/sort_arrow.png) no-repeat right center;
+   background-image: url("/media/images/sort_arrow.png");
+   background-repeat: no-repeat;
+   background-position: right center;
 }
 .dataTables_wrapper table thead .sorting_desc {
-  background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right center;
+  background-image: url("/media/images/sort_arrow_active_bottom.png");
+  background-repeat: no-repeat;
+  background-position: right center;
 }
 .dataTables_wrapper table thead .sorting_asc {
-  background: url(/media/images/sort_arrow_active_top.png) no-repeat right center;
+  background-image: url("/media/images/sort_arrow_active_top.png");
+  background-repeat: no-repeat;
+  background-position: right center;
 }
 .dataTables_wrapper table thead {
     height: 40px;

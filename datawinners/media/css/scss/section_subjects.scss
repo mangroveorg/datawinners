@@ -313,29 +313,6 @@
   padding-right: 2em;
 }
 
-.dataTables_wrapper {
-  table {
-    thead {
-      th {
-        padding: 10px 35px 10px 10px;
-        color: #FFF;
-      }
-      .sorting {
-        background: url(/media/images/sort_arrow.png) no-repeat right center;
-      }
-      .sorting_desc {
-        background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right center;
-      }
-      .sorting_asc {
-        background: url(/media/images/sort_arrow_active_top.png) no-repeat right center;
-      }
-      .devices{
-        padding: 10px 10px 10px 10px;
-      }
-    }
-  }
-}
-
 .pagination_button {
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
   background: -moz-linear-gradient(top, #ccdfed, #b0cfd7);

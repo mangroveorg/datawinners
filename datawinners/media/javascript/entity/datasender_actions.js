@@ -55,22 +55,22 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
 
 
 DW.DataSenderActionHandler = function(){
-  this.delete = function(table, selected_ids, all_selected){
+  this["delete"] = function(table, selected_ids, all_selected){
         handle_datasender_delete(table, selected_ids, all_selected);
   };
-  this.edit = function(table, selected_ids){
+  this["edit"] = function(table, selected_ids){
     location.href = '/entity/datasender/edit' + '/' + selected_ids[0] + '/';
   };
-  this.makewebuser = function(table, selected_ids, all_selected){
+  this["makewebuser"] = function(table, selected_ids, all_selected){
     populate_dialog_box_for_web_users(table);
   };
-  this.associate = function(table, selected_ids, all_selected){
+  this["associate"] = function(table, selected_ids, all_selected){
     add_remove_from_project('associate');
   };
-  this.disassociate = function(table, selected_ids, all_selected){
+  this["disassociate"] = function(table, selected_ids, all_selected){
     add_remove_from_project('disassociate');
   };
-  this.remove_from_project = function(table, selectedIds, all_selected) {
+  this["remove_from_project"] = function(table, selectedIds, all_selected) {
             DW.loading();
             $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
                 data: {'ids':selectedIds.join(';'), 'project_id':$("#project_id").val()}

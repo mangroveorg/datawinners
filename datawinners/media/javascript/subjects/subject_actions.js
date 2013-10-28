@@ -50,12 +50,12 @@ DW.DeleteAction = function (delete_block_selector, delete_end_point) {
 };
 
 DW.AllSubjectActions = function () {
-    this.delete = function(table, selected_ids, all_selected){
+    this["delete"] = function(table, selected_ids, all_selected){
         var delete_action = new DW.DeleteAction("#delete_entity_block", "/entity/subjects/delete/");
         delete_action.open(subject_type.toLowerCase(), selected_ids, all_selected);
     }
 
-    this.edit = function(table, selected_ids){
+    this["edit"] = function(table, selected_ids){
         window.location.href = edit_url_template.replace("entity_id_placeholder", selected_ids[0]);
     }
 };

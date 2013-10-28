@@ -20,8 +20,8 @@ $(function(){
                 "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
             },
             "aaSorting": [ [ $('#subjects_table th.name').index('#subjects_table th'), "asc"] ],
-            "actionItems" : [ {"label": "Delete", handler:action_handler.delete, "allow_selection": "multiple"},
-                              {"label":"Edit", handler:action_handler.edit, "allow_selection": "single"}
+            "actionItems" : [ {"label": "Delete", "handler":action_handler["delete"], "allow_selection": "multiple"},
+                              {"label":"Edit", "handler":action_handler["edit"], "allow_selection": "single"}
             ]
       });
     });

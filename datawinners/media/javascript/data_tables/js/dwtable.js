@@ -34,6 +34,7 @@ $.fn.dwTable = function(options){
             defaults["oLanguage"] = defaults["oLanguage"] || {};
             $.extend(defaults["oLanguage"],{
                             "sInfoFiltered": "",
+                            "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
                             "sLengthMenu": gettext("Show") + " _MENU_ " + gettext(defaults.concept),
                             "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
                             "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
@@ -85,7 +86,7 @@ $.fn.dwTable = function(options){
 
 
 
-                        for (item in actionItems) {
+                        for (var item = 0; item<actionItems.length; item++) {
                             var item_handler = function(handler){
                                return  function(e) {
                                     if ($(this).hasClass("disabled")){
@@ -171,7 +172,9 @@ $.fn.dwTable = function(options){
 
                     });
 
-                    $(dataTableObject).parents(".dataTables_wrapper").find(".dataTables_filter input").attr('placeholder', gettext(defaults.searchPlaceholderText));
+                    try {
+                        $(dataTableObject).parents(".dataTables_wrapper").find(".dataTables_filter input").attr('placeholder', gettext(defaults.searchPlaceholderText));
+                    } catch(ignore){} //fails on old IEs
 
                     if (typeof original_init_complete_handler == "function") original_init_complete_handler.apply(this, arguments);
                 }

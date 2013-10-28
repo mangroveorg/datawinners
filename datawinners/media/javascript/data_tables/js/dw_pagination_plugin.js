@@ -1,33 +1,21 @@
 $.fn.dataTableExt.oPagination.dw_pagination = {
     "fnInit": function (oSettings, nPaging, fnCallbackDraw) {
-        nPrevious = document.createElement('span');
-        nNext = document.createElement('span');
-        nMore = document.createElement('span');
 
         //nPrevious.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sPrevious));
-        nNext.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sNext));
-        $(nPrevious).html("&#x25C0;")
-        $(nNext).html("&#x25B6;")
-        $(nMore).html('<span>&#x25BE;</span>')
+        //nNext.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sNext));
+        nPrevious = $('<span class="paginate_button previous">&#x25C0;</span>')
+        nNext = $('<span class="paginate_button next">&#x25B6;</span>')
+        nMore=$('<span class="paginate_more">&#x25BE;</span>')
 
         var instance_id = parseInt(Math.random() * 100);
         dropdown_id = "pagination_more_menu" + instance_id;
-        dropdown = document.createElement("div");
-        dropdown.setAttribute("id", dropdown_id);
-        dropdown.setAttribute("class", "dropdown dropdown-tip");
         first_page_id = "first_page" + instance_id;
         last_page_id = "last_page" + instance_id;
-        dropdown.innerHTML = '<ul class="dropdown-menu"> <li> <a href="#" id=' + first_page_id + '>' + gettext('First') + '</a> </li> <li> <a  id=' + last_page_id + '>' + gettext('Last') + '</a></li>';
+        dropdown = $('<div class="dropdown dropdown-tip" style="display:none;" id="' + dropdown_id + '">' +
+                '<ul class="dropdown-menu"> <li> <a href="#" id=' + first_page_id + '>' + gettext('First') +
+                '</a> </li> <li> <a  id=' + last_page_id + '>' + gettext('Last') + '</a></li></div>');
 
-        nPrevious.className = "paginate_button previous";
-        nNext.className = "paginate_button next";
-        nMore.className = "paginate_more";
-
-        nPaging.appendChild(nPrevious);
-        nPaging.appendChild(nNext);
-        nPaging.appendChild(nMore);
-        nPaging.appendChild(dropdown);
-
+        $(nPaging).append(nPrevious).append(nNext).append(nMore).append(dropdown);
 
         $(nMore).dropdown('attach', "#" + dropdown_id);
 
