@@ -759,8 +759,17 @@ form div.action-section {
 .pagination_button, .paginate_enabled_next, .paginate_enabled_previous, .paginate_more {
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
   background: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+  background-color: #f5f5f5;
+  background-image: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
+  background-image: -webkit-linear-gradient(top, #ccdfed, #b0cfd7);
+  background-image: -o-linear-gradient(top, #ccdfed, #b0cfd7);
+  background-image: linear-gradient(to bottom, #ccdfed, #b0cfd7);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffccdfed', endColorstr='#ffB0CFD7', GradientType=0);
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border-width: 1px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);

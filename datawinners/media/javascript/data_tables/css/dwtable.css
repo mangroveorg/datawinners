@@ -50,7 +50,7 @@
 .table_wrapper{
     margin-bottom:8px;
 }
-.dataTables_paginate{ float: left; padding-top:5px; padding-bottom: 3px;}
+.dataTables_paginate{ float: left; padding-top:8px; padding-bottom: 3px;}
 ul.dropdown-menu>li.disabled a,ul.dropdown-menu>li.disabled label {
     background-color: #FFFFFF !important;
     color: #AAAAAA !important;
@@ -123,7 +123,7 @@ ul.dropdown-menu>li.disabled label{
   background-image: linear-gradient(to bottom, #ccdfed, #B0CFD7);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffccdfed', endColorstr='#ffB0CFD7', GradientType=0);
-  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+  border-color: #e6e6e6 #e6e6e6 #B0CFD7;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #B0CFD7;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
