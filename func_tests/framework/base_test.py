@@ -8,7 +8,6 @@ from tests.testsettings import CLOSE_BROWSER_AFTER_TEST, WAIT
 def setup_driver():
     driver = DriverWrapper()
     driver.implicitly_wait(WAIT)
-    driver.execute_script("window.innerWidth = screen.width;window.innerHeight = screen.height;window.screenX = 0;window.screenY = 0;alwaysLowered = false;")
     return driver
 
 def teardown_driver(driver):

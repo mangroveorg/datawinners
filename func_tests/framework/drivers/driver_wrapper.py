@@ -1,9 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
 import os
+
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+
 from framework.exception import ElementStillPresentException, CouldNotLocatePageException, ElementFoundWithoutDesiredVisibility
 from framework.exception import CouldNotLocateElementException
 from framework.utils.drop_down_web_element import DropDown
@@ -11,12 +14,12 @@ from framework.utils.new_drop_down_web_element import NewDropDown
 from framework.utils.text_box_web_element import TextBox
 from framework.utils.radio_button_web_element import RadioButton
 from pages.loginpage.login_locator import *
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
 def get_default_browser_name():
     import sys
+
     if os.system('which chromedriver > /dev/null') == os.EX_OK:
         sys.stderr.write("chromedriver found, using chrome as the browser\n")
         return "chrome"
@@ -24,22 +27,26 @@ def get_default_browser_name():
         sys.stderr.write("chromedriver not found, falling back to firefox\n")
         return "firefox"
 
+
 def get_driver_for_browser(browser):
     print "Getting driver for browser: ", browser
     if browser == "firefox":
         fprofile = FirefoxProfile()
-        return webdriver.Firefox(fprofile)
+        driver = webdriver.Firefox(fprofile)
     elif browser == "ie":
-        return webdriver.Ie()
+        driver = webdriver.Ie()
     elif browser == "chrome":
         capabilities = dict(DesiredCapabilities.CHROME, **{
             'chrome.switches': ["--incognito"]
         })
-        return webdriver.Chrome(desired_capabilities=capabilities)
+        driver = webdriver.Chrome(desired_capabilities=capabilities)
     elif browser == "htmlunit":
-        return webdriver.Remote()
+        driver = webdriver.Remote()
     else:
         raise NotImplemented("Unknown browser " + browser)
+    driver.maximize_window()
+    return driver
+
 
 class DriverWrapper(object):
     """
@@ -138,7 +145,8 @@ class DriverWrapper(object):
         Return list of webelement
         """
         return self._driver.find_elements(by=locator_dict[BY],
-                                         value=locator_dict[LOCATOR])
+                                          value=locator_dict[LOCATOR])
+
     def find_visible_element(self, locator_dict):
         """
         Finds element which are visible on the web page using locator dictionary
