@@ -15,6 +15,7 @@ from django.template.context import Context
 from django.core.mail.message import EmailMessage
 from django.template import loader
 from datawinners.accountmanagement.utils import get_email_detail_by_type
+from rest_framework.authtoken.models import Token
 
 TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
@@ -177,9 +178,10 @@ class Organization(models.Model):
         current_site = Site.objects.get_current()
         for user in users:
             email_subject, email_template, sender = get_email_detail_by_type(email_type)
+            token = Token.objects.get_or_create(user=user)[0]
 
             c = Context({ 'username': user.first_name +' '+ user.last_name,
-                          'organization':self, 'current_site': current_site})
+                          'organization':self, 'current_site': current_site, 'token': token.key})
             email_content = loader.get_template('email/%s_%s.html' % (email_template, ugettext("en"),))
 
             msg = EmailMessage(email_subject, email_content.render(c), sender or settings.EMAIL_HOST_USER, [user.email])

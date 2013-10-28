@@ -6,6 +6,7 @@ from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.local_settings import CRS_ORG_ID
 from datawinners.main.database import get_database_manager
 from datawinners.project.models import get_all_projects, Project
+from django.contrib.auth.models import User
 
 logger = logging.getLogger("django")
 
@@ -40,6 +41,13 @@ def is_datasender(f):
 
 def is_admin(f):
     def wrapper(*args, **kw):
+        from django.core.urlresolvers import resolve
+        current_url = resolve(args[0].path_info).url_name if args[0].path_info else ''
+        if not args[0].user.is_authenticated() and current_url == 'upgrade_from_mail' and kw.get('token'):
+            try:
+                args[0].user = User.objects.get(auth_token__key=kw.get('token'))
+            except Exception:
+                return HttpResponseRedirect(django_settings.HOME_PAGE)
         user = args[0].user
         if not user.groups.filter(name="NGO Admins").count() > 0:
             return HttpResponseRedirect(django_settings.HOME_PAGE)

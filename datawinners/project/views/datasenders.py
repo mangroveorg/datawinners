@@ -32,6 +32,7 @@ from mangrove.transport import Request, TransportInfo
 from mangrove.transport.player.parser import XlsDatasenderParser
 from mangrove.transport.player.player import WebPlayer
 from mangrove.utils.types import is_empty
+from datawinners.project.utils import is_quota_reached
 
 
 class MyDataSendersAjaxView(View):
@@ -82,6 +83,7 @@ def registered_datasenders(request, project_id=None):
                                       'project_links': project_links,
                                       'grant_web_access': grant_web_access,
                                       'current_language': translation.get_language(),
+                                      'is_quota_reached':is_quota_reached(request),
                                       'in_trial_mode': in_trial_mode},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':

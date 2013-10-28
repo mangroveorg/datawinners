@@ -36,6 +36,7 @@ from datawinners.entity.helper import delete_datasender_for_trial_mode, \
 from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import TransportInfo
+from rest_framework.authtoken.models import Token
 
 
 def registration_complete(request):
@@ -208,7 +209,7 @@ def trial_expired(request):
 
 @is_admin
 @is_trial
-def upgrade(request):
+def upgrade(request, token=None):
     profile = request.user.get_profile()
     organization = get_organization(request)
     if request.method == 'GET':
@@ -233,6 +234,10 @@ def upgrade(request):
             DataSenderOnTrialAccount.objects.filter(organization=organization).delete()
             _send_upgrade_email(request.user, request.LANGUAGE_CODE)
             messages.success(request, _("upgrade success message"))
+            if token:
+                request.user.backend = 'django.contrib.auth.backends.ModelBackend'
+                sign_in(request, request.user)
+                Token.objects.get(pk=token).delete()
             return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
 
         return render_to_response("registration/upgrade.html", {'organization': organization, 'profile': profile,

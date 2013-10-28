@@ -9,6 +9,7 @@ from datawinners.settings import NEAR_SUBMISSION_LIMIT_TRIGGER, NEAR_SMS_LIMIT_T
 from django.core import mail
 from django.contrib.auth.models import Group
 from django.template.loader import render_to_string
+from rest_framework.authtoken.models import Token
 
 class TestProcessSMSCounter(unittest.TestCase):
     def setUp(self):
@@ -52,23 +53,27 @@ class TestProcessSMSCounter(unittest.TestCase):
         self.assertEquals(self.incoming_request['outgoing_message'], '')
 
     def test_should_send_mail_when_ngo_about_to_reach_submission_limit(self):
+        token = Token.objects.get_or_create(user=self.user)[0].key
         organization = self.incoming_request.get('organization')
         with patch.object(Organization, "get_total_submission_count") as patch_get_total_submission_count:
             patch_get_total_submission_count.return_value = NEAR_SUBMISSION_LIMIT_TRIGGER
             check_quotas_and_update_users(organization=organization)
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
-            ctx = {'username':'Trial User', 'organization':organization, 'current_site':'localhost:8000'}
+            ctx = {'username':'Trial User', 'organization':organization, 'current_site':'localhost:8000',
+                   'token':token}
             self.assertEqual(render_to_string('email/basicaccount/about_to_reach_submission_limit_en.html', ctx), email.body)
 
     def test_should_send_mail_to_when_sms_limit_is_about_to_reached(self):
+        token = Token.objects.get_or_create(user=self.user)[0].key
         organization = self.incoming_request.get('organization')
         with patch.object(Organization, "get_total_message_count") as patch_get_total_message_count:
             patch_get_total_message_count.return_value = NEAR_SMS_LIMIT_TRIGGER
             check_quotas_and_update_users(organization=organization, sms_channel=True)
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
-            ctx = {'username':'Trial User', 'organization':organization, 'current_site':'localhost:8000'}
+            ctx = {'username':'Trial User', 'organization':organization, 'current_site':'localhost:8000',
+                   'token': token}
             self.assertEqual(render_to_string('email/basicaccount/about_to_reach_sms_limit_en.html', ctx), email.body)
 
     def test_should_send_all_email_type_when_all_limit_are_about_to_reached(self):

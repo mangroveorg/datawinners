@@ -40,4 +40,5 @@ urlpatterns = patterns('',
                        (r'^account/users/delete/$', delete_users),
                        (r'^trial/expired/$', trial_expired),
                        (r'^upgrade/$', upgrade),
+                       url(r'^upgrade/(?P<token>\w+)/$', upgrade, name='upgrade_from_mail'),
 )

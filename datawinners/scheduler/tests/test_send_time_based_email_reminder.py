@@ -10,6 +10,7 @@ from django.contrib.auth.models import User, Group
 from datawinners.tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID
 from django.template.loader import render_to_string
 from django.core import mail
+from rest_framework.authtoken.models import Token
 
 class TestSendTimeBasedReminder(unittest.TestCase):
 
@@ -19,8 +20,10 @@ class TestSendTimeBasedReminder(unittest.TestCase):
         self.user = users[0]
         self.group = Group.objects.get(name='NGO Admins')
         self.group.user_set.add(self.user)
+        self.token = Token.objects.get_or_create(user=self.user)[0].key
 
     def tearDown(self):
+        Token.objects.filter(user=self.user).delete()
         self.group.user_set.remove(self.user)
 
     def test_should_send_timebased_emails(self):
@@ -35,7 +38,8 @@ class TestSendTimeBasedReminder(unittest.TestCase):
                 
                 email = mail.outbox.pop()
                 self.assertEqual(['chinatwu2@gmail.com'], email.to)
-                ctx = {'username':'Trial User', 'organization':self.organization, 'current_site':'localhost:8000'}
+                ctx = {'username':'Trial User', 'organization':self.organization, 'current_site':'localhost:8000',
+                       'token': self.token}
                 self.assertEqual(render_to_string('email/%s_en.html' % template, ctx), email.body)
                 
     def organizations_side_effect(self, active_date__contains=None):
