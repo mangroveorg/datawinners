@@ -57,8 +57,7 @@ class AllDataSendersPage(Page):
         """
         Function to give data sender web and smartphone access
          """
-        option_to_select = WEB_ACCESS
-        self.perform_datasender_action(option_to_select)
+        self.perform_datasender_action(WEB_ACCESS)
 
     def select_edit_action(self):
         self.perform_datasender_action(EDIT)
@@ -148,7 +147,7 @@ class AllDataSendersPage(Page):
 
     def get_datasenders_count(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ALL_DS_ROWS, True)
-        return len(self.driver.find(ALL_DS_ROWS).find_elements(by="tag name", value="tr")[1:])
+        return len(self.driver.find(ALL_DS_ROWS).find_elements(by="tag name", value="tr")[2:])
 
     def get_checked_datasenders_count(self):
         return len(
@@ -158,7 +157,7 @@ class AllDataSendersPage(Page):
         self.driver.find(ACTION_DROP_DOWN).click()
 
     def is_none_selected_shown(self):
-        return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()
+        return self.driver.find_visible_element(NONE_SELECTED_LOCATOR).is_displayed()
 
     def get_none_selected_text(self):
         return self.driver.find_visible_element(NONE_SELECTED_LOCATOR).text
@@ -167,24 +166,24 @@ class AllDataSendersPage(Page):
         return self.driver.find(ACTION_MENU).is_displayed()
 
     def is_edit_disabled(self):
-        css_class = self.driver.find(by_id(EDIT)).get_attribute("disabled")
-        return bool(css_class)
+        class_name = self.driver.find(by_xpath(ACTION_LI_LOCATOR % EDIT)).get_attribute("class")
+        return class_name.find('disabled') > 0
 
     def is_delete_disabled(self):
-        css_class = self.driver.find(by_css("." +DELETE)).get_attribute("disabled")
-        return bool(css_class)
+        class_name = self.driver.find(by_xpath(ACTION_LI_LOCATOR % DELETE)).get_attribute("class")
+        return class_name.find('disabled') > 0
 
     def is_associate_disabled(self):
-        css_class = self.driver.find(by_css("." + ASSOCIATE)).get_attribute("disabled")
-        return bool(css_class)
+        class_name = self.driver.find(by_xpath(ACTION_LI_LOCATOR % ASSOCIATE)).get_attribute("class")
+        return class_name.find('disabled') > 0
 
     def is_dissociate_disabled(self):
-        css_class = self.driver.find(by_css("." + DISSOCIATE)).get_attribute("disabled")
-        return bool(css_class)
+        class_name = self.driver.find(by_xpath(ACTION_LI_LOCATOR % DISSOCIATE)).get_attribute("class")
+        return class_name.find('disabled') > 0
 
     def is_make_web_user_disabled(self):
-        css_class = self.driver.find(by_css(WEB_ACCESS)).get_attribute("disabled")
-        return bool(css_class)
+        class_name = self.driver.find(by_xpath(ACTION_LI_LOCATOR % WEB_ACCESS)).get_attribute("class")
+        return class_name.find('disabled') > 0
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_DS_CB).get_attribute("checked") == "true"
@@ -202,7 +201,7 @@ class AllDataSendersPage(Page):
 
     def is_action_available(self, action_to_be_performed):
         self.driver.find(ACTION_DROP_DOWN).click()
-        class_name = self.driver.find(by_xpath(ACTION_LI_BY_ACTION_ID % action_to_be_performed)).get_attribute("class")
+        class_name = self.driver.find(by_xpath(ACTION_LI_LOCATOR % action_to_be_performed)).get_attribute("class")
         return class_name.find('disabled') < 0
 
     def is_associate_to_project_action_available(self):
@@ -239,8 +238,8 @@ class AllDataSendersPage(Page):
 
     def get_checkbox_selector_for_datasender_row(self, row_number):
         # first row is used to show all rows select message
-        return by_xpath(".//*[@id='all_data_senders']/tr[%s]/td[1]/input" % (row_number + 1))
+        return by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[1]/input" % (row_number + 1))
 
     def get_cell_value(self, row, column):
         # first row is used to show all rows select message
-        return self.driver.find(by_xpath(".//*[@id='all_data_senders']/tr[%s]/td[%s]" % ((row + 1), column))).text
+        return self.driver.find(by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % ((row + 1), column))).text
