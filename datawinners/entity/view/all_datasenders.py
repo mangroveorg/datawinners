@@ -196,8 +196,8 @@ def delete_data_senders(request):
     all_ids = request.POST['all_ids'].split(';')
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
     if ngo_admin_user_profile.reporter_id in all_ids:
-        messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
-                                (_get_full_name(ngo_admin_user_profile.user)), "error_message")
+        messages = _("Your organization's account Administrator %s cannot be deleted") % (_get_full_name(ngo_admin_user_profile.user))
+        return HttpResponse(json.dumps({'success': False, 'message':messages}))
     else:
         transport_info = TransportInfo("web", request.user.username, "")
         delete_datasenders_from_project(manager, all_ids)
@@ -206,5 +206,5 @@ def delete_data_senders(request):
         if organization.in_trial_mode:
             delete_datasender_for_trial_mode(manager, all_ids, entity_type)
         log_activity(request, DELETED_DATA_SENDERS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)), )
-        messages.success(request, get_success_message(entity_type))
-    return HttpResponse(json.dumps({'success': True}))
+        messages = get_success_message(entity_type)
+        return HttpResponse(json.dumps({'success': True, 'message':messages}))

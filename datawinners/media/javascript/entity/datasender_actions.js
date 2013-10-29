@@ -36,9 +36,9 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
         $.post("/entity/delete/", post_data,
             function (json_response) {
                 var response = $.parseJSON(json_response);
+                flash_message(response.message, response.success);
                 if (response.success) {
                     $("#datasender_table").dataTable().fnReloadAjax();
-                    flash_message("Data Sender(s) successfully deleted");
                 }
             }
         );
@@ -82,9 +82,11 @@ DW.DataSenderActionHandler = function(){
 
 };
 
-function flash_message(msg){
+function flash_message(msg, status){
     $('.flash-message').remove();
-    $(".dataTables_wrapper").prepend('<div class="success-message-box clear-left flash-message">' + gettext(msg) + '.' + '</div>')
+    $(".dataTables_wrapper").prepend('<div class="clear-left flash-message">' + gettext(msg) + '.' + '</div>')
+    $('.flash-message').addClass((status === false)?"message-box":"success-message-box");
+
     $('#success_message').delay(4000).fadeOut(1000, function () {
         alert('timeout');
         $('.flash-message').remove();
