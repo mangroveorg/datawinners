@@ -23,6 +23,8 @@
     <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet" />
     <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_datasender_import.css" rel="stylesheet"/>
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
@@ -80,7 +82,7 @@
     <div class="sender_registration_preview">
         {% trans "Generating the questionnaire preview." %}
     </div>
-    <div id="popup-import">
+    <div id="popup-import" class="popup-import">
         {% include "import-datasenders.html" %}
     </div>
 {% endblock %}

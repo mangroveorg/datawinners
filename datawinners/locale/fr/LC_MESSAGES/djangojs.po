@@ -1033,3 +1033,9 @@ msgstr "Retirer d'un projet"
 
 msgid "Add to project"
 msgstr "Relier à un projet"
+
+msgid " Record(s) Failed to Import"
+msgstr " Enregistrements n'ont pas pu être importés"
+
+msgid " Record(s) Successfully Imported"
+msgstr " Enregistrements ont été importés avec succès"

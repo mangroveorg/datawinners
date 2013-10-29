@@ -1,0 +1,18 @@
+.import_table{
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.import_section {
+  padding-bottom: 2em;
+  padding-left: 10px;
+}
+
+.import_message {
+  font-weight:bold;
+}
+
+.popup-import .error {
+  margin-top: 7px !important;
+  padding-left: 10px;
+}

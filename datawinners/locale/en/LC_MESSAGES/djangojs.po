@@ -995,3 +995,10 @@ msgstr ""
 
 msgid "Add to project"
 msgstr ""
+
+msgid " Record(s) Failed to Import"
+msgstr ""
+
+msgid " Record(s) Successfully Imported"
+msgstr ""
+

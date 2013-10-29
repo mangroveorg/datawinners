@@ -17,6 +17,7 @@
     {{ block.super }}
     <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_all_datasenders.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_datasender_import.css" rel="stylesheet"/>
     <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
@@ -68,7 +69,7 @@
     <input type="text" value="{{ project.id }}" class="none" id="project_id"/>
     <input type="hidden" value="{{ project.name }}" id="project_name"/>
     {% include 'project/mydatasenders_table.html' %}
-    <div id="popup-import">
+    <div id="popup-import" class="popup-import">
         {% include "import-datasenders.html" %}
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
