@@ -1,4 +1,6 @@
 import sys
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException
+
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
@@ -17,8 +19,11 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
     logger.info('Starting Migration')
     mark_start_of_migration(db_name)
     manager = get_db_manager(db_name)
-
-    form_model = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
+    try:
+        form_model = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
+    except FormModelDoesNotExistsException as f:
+        logger.warning(f.message)
+        return
     email_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
 
     email_field = TextField(name=EMAIL_FIELD, code=EMAIL_FIELD, label="What is the subject's email",
