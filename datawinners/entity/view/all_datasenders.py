@@ -36,21 +36,13 @@ from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDER
 class AllDataSendersView(TemplateView):
     template_name = 'entity/all_datasenders.html'
 
-    def _is_web_access_allowed(self, request):
-        grant_web_access = False
-        if request.method == 'GET' and int(request.GET.get('web', '0')):
-            grant_web_access = True
-        return grant_web_access
-
     def get(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = get_all_projects(manager)
         in_trial_mode = utils.get_organization(request).in_trial_mode
-        grant_web_access = self._is_web_access_allowed(request)
         user_rep_ids = reporter_id_list_of_all_users(manager)
 
         return self.render_to_response({
-            "grant_web_access": grant_web_access,
             "users_list": user_rep_ids,
             "projects": projects,
             'current_language': translation.get_language(),

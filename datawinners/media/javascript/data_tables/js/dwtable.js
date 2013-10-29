@@ -4,14 +4,16 @@ $.fn.dwTable = function(options){
             var defaults = {
                 "concept":"Row",
                 "sDom": "ipfrtipl",
+                "bProcessing": true,
                 "aLengthMenu": [10, 25, 50, 100],
                 "iDisplayLength": 25,
                 "bResetDisplay": true,
                 "sAjaxDataProp": "data",
-                 "sPaginationType": "dw_pagination",
+                "sPaginationType": "dw_pagination",
                 "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
                     lastXHR = oSettings.jqXHR;
                     lastXHR && lastXHR.abort && lastXHR.abort();
+                    aoData.push({"name":"disable_cache","value":new Date().getTime()});
                     oSettings.jqXHR = $.ajax({
                         "dataType": 'json',
                         "type": "GET",
@@ -34,7 +36,6 @@ $.fn.dwTable = function(options){
             defaults["oLanguage"] = defaults["oLanguage"] || {};
             $.extend(defaults["oLanguage"],{
                             "sInfoFiltered": "",
-                            "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
                             "sLengthMenu": gettext("Show") + " _MENU_ " + gettext(defaults.concept),
                             "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
                             "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
@@ -94,7 +95,7 @@ $.fn.dwTable = function(options){
                                         return false;
                                     }
                                    var all_selected =  $(dataTableObject).find(".select_all_message").data('all_selected');
-                                   var selected_ids = $.map($(dataTableObject).find("input:checked"), function(e) {return $(e).val()});
+                                   var selected_ids = $.map($(dataTableObject).find("input.row_checkbox:checked"), function(e) {return $(e).val()});
                                    return handler(dataTableObject, selected_ids, all_selected);
                                 };
                             };
@@ -199,3 +200,56 @@ $.fn.dwTable = function(options){
          }
     };
 })(jQuery);
+
+$.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallback, bStandingRedraw )
+{
+    if ( sNewSource !== undefined && sNewSource !== null ) {
+        oSettings.sAjaxSource = sNewSource;
+    }
+
+    // Server-side processing should just call fnDraw
+    if ( oSettings.oFeatures.bServerSide ) {
+        this.fnDraw();
+        return;
+    }
+
+    this.oApi._fnProcessingDisplay( oSettings, true );
+    var that = this;
+    var iStart = oSettings._iDisplayStart;
+    var aData = [];
+
+    this.oApi._fnServerParams( oSettings, aData );
+
+    oSettings.fnServerData.call( oSettings.oInstance, oSettings.sAjaxSource, aData, function(json) {
+        /* Clear the old information from the table */
+        that.oApi._fnClearTable( oSettings );
+
+        /* Got the data - add it to the table */
+        var aData =  (oSettings.sAjaxDataProp !== "") ?
+            that.oApi._fnGetObjectDataFn( oSettings.sAjaxDataProp )( json ) : json;
+
+        for ( var i=0 ; i<aData.length ; i++ )
+        {
+            that.oApi._fnAddData( oSettings, aData[i] );
+        }
+
+        oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+
+        that.fnDraw();
+
+        if ( bStandingRedraw === true )
+        {
+            oSettings._iDisplayStart = iStart;
+            that.oApi._fnCalculateEnd( oSettings );
+            that.fnDraw( false );
+        }
+
+        that.oApi._fnProcessingDisplay( oSettings, false );
+
+        /* Callback user function - for event handlers etc */
+        if ( typeof fnCallback == 'function' && fnCallback !== null )
+        {
+            fnCallback( oSettings );
+        }
+    }, oSettings );
+};

@@ -481,3 +481,6 @@ msgstr "Manaraka:"
 
 msgid "Answer must be country code plus telephone number. Example: 261333745269"
 msgstr ""
+
+msgid "Access to Web Submission has been given to your DataSenders"
+msgstr "Un accès à la page d'envoi web a été donné à vos envoyeurs de données"

@@ -96,16 +96,12 @@ def _add_imported_datasenders_to_trail_account(imported_data_senders, org_id):
 def registered_datasenders(request, project_id):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    grant_web_access = False
-    if request.method == 'GET' and int(request.GET.get('web', '0')):
-        grant_web_access = True
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
         user_rep_ids = reporter_id_list_of_all_users(manager)
         return render_to_response('project/registered_datasenders.html',
                                   {   'project': project,
                                       'project_links': project_links,
-                                      'grant_web_access': grant_web_access,
                                       'current_language': translation.get_language(),
                                       'in_trial_mode': in_trial_mode,
                                       'users_list':user_rep_ids},

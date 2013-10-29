@@ -44,12 +44,6 @@
 {% load i18n %}
 {% block content %}
     <div>
-        {% include "flash_message.html" %}
-        {% if grant_web_access %}
-            <div id="flash-message" class="success-message-box">
-                {% trans "Access to Web Submission has been given to your DataSenders" %}
-            </div>
-        {% endif %}
         <div class="float_right">
             <a id="register_link" class="add_subject_link" href="{% url create_data_sender %}">
                 {% trans "Register a Data Sender" %}

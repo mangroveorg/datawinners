@@ -1039,3 +1039,7 @@ msgstr " Enregistrements n'ont pas pu être importés"
 
 msgid " Record(s) Successfully Imported"
 msgstr " Enregistrements ont été importés avec succès"
+
+msgid "Access to Web Submission has been given to your DataSenders"
+msgstr "Un accès à la page d'envoi web a été donné à vos expéditeurs de données"
+

@@ -27,7 +27,6 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
         var allIds = delete_dialog.data("allIds");
         var all_selected = delete_dialog.data("all_selected");
         var entity_type = delete_dialog.data("entity_type");
-        var path = $(this).attr("href");
         post_data = {'all_ids':allIds.join(';'), 'entity_type':entity_type}
         if ($("#project_name").length)
             post_data.project = $("#project_name").val();
@@ -38,11 +37,8 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
             function (json_response) {
                 var response = $.parseJSON(json_response);
                 if (response.success) {
-                    if ($("#project_name").length) {
-                        window.location.reload(true);
-                    } else {
-                        window.location.href = path;
-                    }
+                    $("#datasender_table").dataTable().fnReloadAjax();
+                    flash_message("Data Sender(s) successfully deleted");
                 }
             }
         );
@@ -78,18 +74,22 @@ DW.DataSenderActionHandler = function(){
             $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
                 data: {'ids':selectedIds.join(';'), 'project_id':$("#project_id").val()}
             }).done(function (data) {
-                    $(".dataTables_wrapper").prepend('<div class="success-message-box clear-left" id="success_message">' + gettext("Data Senders dissociated Successfully") + '. ' + gettext("Please Wait") + '....</div>')
-                    $('#success_message').delay(4000).fadeOut(1000, function () {
-                        $('#success_message').remove();
-                    });
-                    setTimeout(function () {
-                        window.location.reload(true);
-                    }, 5000);
+                    table.fnReloadAjax();
+                    flash_message("Data Senders dissociated Successfully");
                 }
             );
         };
 
 };
+
+function flash_message(msg){
+    $('.flash-message').remove();
+    $(".dataTables_wrapper").prepend('<div class="success-message-box clear-left flash-message">' + gettext(msg) + '.' + '</div>')
+    $('#success_message').delay(4000).fadeOut(1000, function () {
+        alert('timeout');
+        $('.flash-message').remove();
+    });
+}
 
 function add_remove_from_project(action) {
     $("#all_project_block").dialog({
@@ -132,7 +132,8 @@ function add_remove_from_project(action) {
                         }
 
             }).done(function (data) {
-                    window.location.href = data;
+                    $("#all_project_block").dialog('close');
+                    $("#datasender_table").dataTable().fnReloadAjax();
                 });
         }
     });
@@ -175,9 +176,9 @@ function delete_all_ds_are_users_show_warning(users) {
 
 function uncheck_users(table, user_ids){
     $.each(user_ids, function(id){
-        $(table).find(":checked").filter("[value=rep25]").attr('checked',false);
+        $(table).find(":checked").filter("[value=" + id + "]").attr('checked',false);
     });
-    return $.map($(table).find(":checked"), function(e){return $(e).val();});
+    return $.map($(table).find("input.row_checkbox:checked"), function(e){return $(e).val();});
 }
 
 function handle_datasender_delete(table, allIds, all_selected){
@@ -204,7 +205,7 @@ function handle_datasender_delete(table, allIds, all_selected){
 
 function populate_dialog_box_for_web_users(table) {
     var data_sender_details = [];
-    $(table).find("input:checked").each(function () {
+    $(table).find("input.row_checkbox:checked").each(function () {
         var row = $(this).parent().parent();
         var data_sender = {};
         data_sender.short_name = $($(row).children()[2]).html();
@@ -275,14 +276,8 @@ function populate_dialog_box_for_web_users(table) {
                 var json_data = JSON.parse(response);
                 if (json_data.success) {
                     $("#web_user_block").dialog("close");
-                    var redirect_url = location.href;
-                    if (redirect_url.indexOf('#') != -1) {
-                        redirect_url = redirect_url.substr(0, redirect_url.indexOf('#'));
-                    }
-                    if (redirect_url.indexOf('?web=1') == -1) {
-                        redirect_url = redirect_url + '?web=1';
-                    }
-                    window.location.href = redirect_url;
+                    table.fnReloadAjax();
+                    flash_message("Access to Web Submission has been given to your DataSenders");
                 } else {
                     var html = "";
                     var i = 0;

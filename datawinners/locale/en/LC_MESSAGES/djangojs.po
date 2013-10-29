@@ -1002,3 +1002,5 @@ msgstr ""
 msgid " Record(s) Successfully Imported"
 msgstr ""
 
+msgid "Access to Web Submission has been given to your DataSenders"
+msgstr ""
