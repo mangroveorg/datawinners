@@ -16,6 +16,7 @@ from django.core.mail.message import EmailMessage
 from django.template import loader
 from datawinners.accountmanagement.utils import get_email_detail_by_type
 from rest_framework.authtoken.models import Token
+from django.utils.safestring import mark_safe
 
 TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
@@ -269,12 +270,12 @@ class OrganizationSetting(models.Model):
 class MessageTracker(models.Model):
     organization = models.ForeignKey(Organization)
     month = models.DateField()
-    sms_api_usage_count = models.IntegerField(default=0)
+    sms_api_usage_count = models.IntegerField("API", default=0)
     incoming_sms_count = models.IntegerField(default=0)
-    sms_registration_count = models.IntegerField(default=0)
-    incoming_web_count = models.IntegerField(default=0)
-    incoming_sp_count = models.IntegerField(default=0)
-    outgoing_sms_count = models.IntegerField(default=0)
+    sms_registration_count = models.IntegerField(mark_safe("SMS<br/>Subject<br/>Registration"), default=0)
+    incoming_web_count = models.IntegerField(mark_safe("Web<br/>Submissions"), default=0)
+    incoming_sp_count = models.IntegerField(mark_safe("SP<br/>Submissions"), default=0)
+    outgoing_sms_count = models.IntegerField(mark_safe("Outgoing<br/>SMS"), default=0)
 
     def increment_incoming_message_count_by(self, count):
         self.incoming_sms_count += count
