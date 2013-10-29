@@ -97,8 +97,7 @@
 
 #message {
   clear: both;
-  margin-bottom: 20px;
-}
+  margin-bottom: 20px; }
 
 #my_subjects .secondary_tab {
   top: 0;
@@ -120,6 +119,7 @@
       color: #ffffff !important; }
 
 #my_subjects_links {
+  float: right;
   margin: 10px 0 20px 0; }
   #my_subjects_links ul {
     margin: 0;

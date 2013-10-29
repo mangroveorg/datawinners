@@ -32,7 +32,6 @@
         var sender_registration_form_preview_link = "{{ project_links.sender_registration_preview_link }}";
     </script>
     <script type="text/javascript" src="/media/javascript/common/location_auto_suggest_widget.js"></script>
-    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/definitions.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
     <script type="text/javascript" src="/media/javascript/project/datasenders_registration_questionnaire_preview.js"></script>
@@ -47,7 +46,6 @@
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
         <div class="grid_8 float_right omega text_align_right">
-            <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
         </div>
         <div class="clear-both"></div>
     </div>
@@ -78,8 +76,5 @@
 
     <div class="sender_registration_preview">
         {% trans "Generating the questionnaire preview." %}
-    </div>
-    <div id="popup-import" class="popup-import">
-        {% include "import-datasenders.html" %}
     </div>
 {% endblock %}
