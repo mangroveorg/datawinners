@@ -70,6 +70,9 @@ DW.DataSenderActionHandler = function(){
   this["disassociate"] = function(table, selected_ids, all_selected){
     add_remove_from_project('disassociate');
   };
+  this["mydsedit"] = function(table, selected_ids){
+    location.href = '/project/datasender/edit/' + $("#project_id").val() + '/' + selected_ids[0] + '/';
+  };
   this["remove_from_project"] = function(table, selectedIds, all_selected) {
             DW.loading();
             $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },

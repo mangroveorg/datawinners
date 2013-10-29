@@ -27,10 +27,10 @@ $(function(){
             },
             "aaSorting": [ [ col("name"), "asc"] ] ,
             "actionItems" : [
-                {"label":"Edit", handler:action_handler.edit, "allow_selection": "single"},
-                {"label":"Remove from project", handler:action_handler.remove_from_project, "allow_selection": "multiple"},
-                {"label":"Give Web Submission Access", handler:action_handler.makewebuser, "allow_selection": "multiple"},
-                {"label": "Delete", handler:action_handler.delete, "allow_selection": "multiple"}
+                {"label":"Edit", handler:action_handler["mydsedit"], "allow_selection": "single"},
+                {"label":"Remove from project", handler:action_handler["remove_from_project"], "allow_selection": "multiple"},
+                {"label":"Give Web Submission Access", handler:action_handler["makewebuser"], "allow_selection": "multiple"},
+                {"label": "Delete", handler:action_handler["delete"], "allow_selection": "multiple"}
             ],
             "aoColumnDefs":[{"bSortable": false, "aTargets":[col("devices")]}]
       });
