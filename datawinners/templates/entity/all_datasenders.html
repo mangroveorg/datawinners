@@ -16,7 +16,7 @@
     {{ block.super }}
     <link href="/media/css/scss/section_all_datasenders.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
-    <link href="/media/css/scss/section_datasender_import.css" rel="stylesheet">
+    <link href="/media/css/scss/import_popup.css" rel="stylesheet">
 
 {% endblock %}
 
@@ -37,7 +37,7 @@
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script type="text/javascript">
         var users_list = {{ users_list|safe }};
-        var import_datasenders_link = "{% url all_datasenders%}"
+        var import_datasenders_link = "{% url all_datasenders%}";
     </script>
 {% endblock %}
 
