@@ -184,6 +184,7 @@ INSTALLED_APPS = (
     'django_nose',
     'django_digest',
     'datawinners.custom_reports.crs',
+    'rest_framework.authtoken',
     )
 
 WAYBILL_SENT_QUESTIONNAIRE_CODE = 'way1'
