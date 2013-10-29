@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'django_digest',
     'datawinners.custom_reports.crs',
     'debug_toolbar',
+    'rest_framework.authtoken',
     )
 
 DEBUG_TOOLBAR_PANELS = (
