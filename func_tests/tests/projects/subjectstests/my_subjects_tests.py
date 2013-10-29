@@ -32,7 +32,7 @@ class TestMySubjects(unittest.TestCase):
     @attr("functional_test")
     def test_should_load_actions_dynamically(self):
         self.my_subjects_page.navigate_to_my_subjects_list_tab()
-        self.my_subjects_page.wait_for_subject_table_to_load();
+        self.my_subjects_page.wait_for_subject_table_to_load()
         self.my_subjects_page.click_action_button()
         self.assert_none_selected_shown()
 
@@ -42,17 +42,15 @@ class TestMySubjects(unittest.TestCase):
 
         self.my_subjects_page.select_subject_by_row(3)
         self.my_subjects_page.click_action_button()
-        self.assertTrue(self.my_subjects_page.is_edit_action_disabled())
+        self.assertFalse(self.my_subjects_page.is_edit_disabled())
 
     def assert_none_selected_shown(self):
-        self.assertFalse(self.my_subjects_page.is_edit_action_displayed())
-        self.assertFalse(self.my_subjects_page.is_delete_action_displayed())
-        self.assertTrue(self.my_subjects_page.is_empty_actions_menu_shown())
+        self.assertTrue(self.my_subjects_page.is_none_selected_shown())
 
     def assert_action_menu_shown_for(self):
-        self.assertTrue(self.my_subjects_page.is_edit_action_displayed())
-        self.assertTrue(self.my_subjects_page.is_delete_action_displayed())
-        self.assertFalse(self.my_subjects_page.is_empty_actions_menu_shown())
+        self.assertFalse(self.my_subjects_page.is_edit_disabled())
+        self.assertFalse(self.my_subjects_page.is_delete_disabled())
+        self.assertFalse(self.my_subjects_page.is_none_selected_shown())
 
     @attr("functional_test")
     def test_should_check_all_checkboxes(self):

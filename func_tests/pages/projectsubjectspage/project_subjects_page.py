@@ -34,24 +34,23 @@ class ProjectSubjectsPage(Page):
     def click_action_button(self):
         self.driver.find(ACTION_DROP_DOWN).click()
 
-    def is_edit_action_disabled(self):
-        return self.driver.find(by_css("#action a.edit")).get_attribute("disabled") == "true"
+    def is_edit_disabled(self):
+        class_name = self.driver.find(by_xpath(".//a[contains(@class,'edit')]/..")).get_attribute("class")
+        return class_name.find('disabled') > 0
 
-    def is_edit_action_displayed(self):
-        # WebDriverWait(self.driver, 1).until(lambda driver: self.driver.find(by_css("#action a.edit")).is_displayed())
-        return self.driver.find(by_css("#action a.edit")).is_displayed()
+    def is_delete_disabled(self):
+        class_name = self.driver.find(by_xpath(".//a[contains(@class,'delete')]/..")).get_attribute("class")
+        return class_name.find('disabled') > 0
 
     def is_delete_action_displayed(self):
-        return self.driver.find(by_css("#action a.delete")).is_displayed()
+        class_name = self.driver.find(by_xpath(".//a[contains(@lass,'delete')]/..")).get_attribute("class");
+        return class_name.find('disabled') > 0
 
     def is_none_selected_shown(self):
         return self.driver.find(NONE_SELECTED_LOCATOR).is_displayed()
 
     def actions_menu_shown(self):
         return self.driver.find(ACTION_MENU).is_displayed()
-
-    def is_empty_actions_menu_shown(self):
-        return self.driver.find(EMPTY_ACTION_MENU).is_displayed()
 
     def navigate_to_my_subjects_list_tab(self):
         self.driver.find(MY_SUBJECTS_TAB_LINK).click()
@@ -70,9 +69,7 @@ class ProjectSubjectsPage(Page):
             lambda driver: driver.find(by_xpath(".//*[@id='subjects_table']/tbody/tr[2]/td[1]/input")).is_displayed())
 
     def click_checkall_checkbox(self):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, CHECKALL_CB, True)
         self.driver.find(CHECKALL_CB).click()
-
     def get_number_of_selected_subjects(self):
         return len([input_element for input_element in self.get_inputs_webelement() if
                     input_element.get_attribute("checked") == "true"])
