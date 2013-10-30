@@ -10,7 +10,6 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.utils.form_model_builder import FormModelBuilder
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from datawinners.entity.import_data import get_entity_type_info
 from datawinners.entity.import_data import FilePlayer
 from mangrove.bootstrap import initializer
 from mangrove.datastore.datadict import DataDictType
@@ -19,7 +18,7 @@ from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.parser import CsvParser, XlsDatasenderParser
 from mangrove.transport.contract.transport_info import Channel
 from mangrove.form_model.form_model import FormModel
-from datawinners.entity.helper import get_json_field_infos
+from datawinners.entity.helper import get_json_field_infos, get_entity_type_info
 from datawinners.submission.location import LocationBridge
 from datawinners.accountmanagement.models import Organization
 from mangrove.transport.contract.submission import Submission

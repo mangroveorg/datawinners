@@ -19,10 +19,10 @@ from datawinners.entity.data_sender import remove_system_datasenders, get_datase
 from datawinners.entity.views import _get_full_name, log_activity, get_success_message
 from datawinners.main.database import get_database_manager
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for
-from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, reporter_id_list_of_all_users
+from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, reporter_id_list_of_all_users, load_entity_registration_data
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
-from datawinners.project.views.datasenders import _parse_successful_imports, _add_imported_datasenders_to_trail_account
+from datawinners.project.views.datasenders import _parse_successful_imports, _add_imported_datasenders_to_trail_account, _get_import_count_message
 from datawinners.search.entity_search import DatasenderQuery
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import TransportInfo
@@ -51,9 +51,7 @@ class AllDataSendersView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        error_message, failure_imports, success_message, imported_datasenders, successful_imports = import_module.import_data(request,
-                                                                                                          manager,
-                                                                                                          default_parser=XlsDatasenderParser)
+        error_message, failure_imports, successful_imports = import_module.import_datasenders(request, manager)
         imported_data_senders = _parse_successful_imports(successful_imports)
         imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
         if len(imported_datasenders_ids):
@@ -62,10 +60,11 @@ class AllDataSendersView(TemplateView):
                                       dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})))
         org_id = request.user.get_profile().org_id
         _add_imported_datasenders_to_trail_account(imported_data_senders, org_id)
+        import_count_message = _get_import_count_message(len(successful_imports), len(failure_imports))
         return HttpResponse(json.dumps(
             {
                 'success': error_message is None and is_empty(failure_imports),
-                'message': success_message,
+                'message': import_count_message,
                 'error_message': error_message,
                 'failure_imports': failure_imports,
                 'successful_imports': imported_data_senders
@@ -81,7 +80,7 @@ class AllDataSendersView(TemplateView):
         return super(AllDataSendersView, self).dispatch(*args, **kwargs)
 
     def _get_all_datasenders(self, manager, projects, user):
-        all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
+        all_data_senders, fields, labels = load_entity_registration_data(manager, REPORTER)
         project_association = self._get_project_association(projects)
         remove_system_datasenders(all_data_senders)
         for datasender in all_data_senders:

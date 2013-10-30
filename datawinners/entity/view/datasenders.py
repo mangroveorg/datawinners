@@ -133,7 +133,7 @@ class CreateDataSenderView(TemplateView):
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
         dbm = get_database_manager(request.user)
         org_id = request.user.get_profile().org_id
-        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
+        form = ReporterRegistrationForm(org_id=org_id, data=request.POST, dbm=dbm)
         try:
             reporter_id, message = process_create_data_sender_form(dbm, form, org_id)
         except DataObjectAlreadyExists as e:

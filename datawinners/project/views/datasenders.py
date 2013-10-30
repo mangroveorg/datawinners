@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils import translation
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext_lazy as _, get_language, activate
+from django.utils.translation import ugettext_lazy as _, get_language, activate, ugettext_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 import jsonpickle
@@ -79,6 +79,10 @@ def _parse_successful_imports(successful_imports):
     return imported_data_senders
 
 
+def _get_import_count_message(success_import_count, failure_import_count):
+    total = success_import_count + failure_import_count
+    return ugettext_lazy('%s of %s records uploaded') % ( success_import_count, total)
+
 def _add_imported_datasenders_to_project(imported_datasenders_id, manager, project):
     project.data_senders.extend(imported_datasenders_id)
     project.save(manager)
@@ -107,8 +111,7 @@ def registered_datasenders(request, project_id):
                                       'users_list':user_rep_ids},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
-        error_message, failure_imports, success_message, imported_entities, successful_imports = import_module.import_data(request, manager,
-                                                                                                                           default_parser=XlsDatasenderParser)
+        error_message, failure_imports, successful_imports = import_module.import_datasenders(request, manager)
         imported_data_senders = _parse_successful_imports(successful_imports)
         imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
         _add_imported_datasenders_to_project(imported_datasenders_ids, manager, project)
@@ -119,10 +122,11 @@ def registered_datasenders(request, project_id):
                                   project=project.name)
         org_id = request.user.get_profile().org_id
         _add_imported_datasenders_to_trail_account(imported_data_senders, org_id)
+        import_count_message = _get_import_count_message(len(successful_imports), len(failure_imports))
         return HttpResponse(json.dumps(
             {
                 'success': error_message is None and is_empty(failure_imports),
-                'message': success_message,
+                'message': import_count_message,
                 'error_message': error_message,
                 'failure_imports': failure_imports,
                 'successful_imports': imported_data_senders

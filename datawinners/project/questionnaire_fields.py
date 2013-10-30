@@ -9,7 +9,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from datawinners.entity.fields import PhoneNumberField, DjangoDateField
-from datawinners.entity.import_data import load_all_entities_of_type
+from datawinners.entity.helper import load_entity_registration_data
 from mangrove.form_model.validation import GeoCodeConstraint
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField, DateField
@@ -213,7 +213,7 @@ class EntityField(object):
         return [(entity['short_code'], entity['name'] + '  (' + entity['short_code'] + ')') for entity in entities]
 
     def _subject_choice_fields(self, entity_type, subject_field):
-        subjects, fields, label = load_all_entities_of_type(self.dbm, type=entity_type)
+        subjects, fields, label = load_entity_registration_data(self.dbm, type=entity_type)
         subjects = self._build_subject_choice_data(subjects, fields)
         language = get_text_language_by_instruction(subject_field.instruction)
         instruction_for_subject_field = translate("Choose Subject from this list.", language=language, func=ugettext)

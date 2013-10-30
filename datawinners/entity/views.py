@@ -20,22 +20,25 @@ from django.contrib import messages
 
 from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, valid_web_user
+from datawinners.entity.import_datasenders import send_email_to_data_sender
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.main.database import get_database_manager
+from datawinners.main.utils import timebox
 from datawinners.search.entity_search import SubjectQuery
+from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, delete_entity_instance, get_entity_type_fields, put_email_information_to_entity
+from datawinners.entity.helper import create_registration_form, delete_entity_instance, get_entity_type_fields, put_email_information_to_entity, tabulate_data
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from mangrove.datastore.entity_type import define_type
+from mangrove.datastore.entity_type import define_type, get_all_entity_types
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields, FormModel
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import TransportInfo
 from datawinners.entity import import_data as import_module
@@ -44,11 +47,10 @@ from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
     get_database_manager_for_org, get_changed_questions
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity import get_by_short_code, Entity
 from mangrove.transport.player.parser import XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
-from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 
@@ -272,9 +274,7 @@ def create_multiple_web_users(request):
 #todo remove form_code from here, use entity_type instead
 def import_subjects_from_project_wizard(request, form_code):
     manager = get_database_manager(request.user)
-    error_message, failure_imports, success_message, imported_entities, successful_imports= import_module.import_data(request, manager,
-                                                                                                   default_parser=XlsOrderedParser,
-                                                                                                   form_code=form_code)
+    error_message, failure_imports, success_message, imported_entities, successful_imports= import_module.import_subjects(request, manager, form_code=form_code)
     if len(imported_entities) != 0:
         detail_dict = dict()
         for short_code, entity_type in imported_entities.items():
@@ -287,7 +287,7 @@ def import_subjects_from_project_wizard(request, form_code):
             detail_dict.update({key: "[%s]" % ", ".join(detail)})
         UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
 
-    subjects_data = import_module.load_all_subjects(manager)
+    subjects_data = load_all_subjects(manager)
 
     return HttpResponse(json.dumps(
         {'success': error_message is None and is_empty(failure_imports),
@@ -297,6 +297,66 @@ def import_subjects_from_project_wizard(request, form_code):
          'all_data': subjects_data,
          'imported': imported_entities.keys()
         }))
+
+@timebox
+def load_all_subjects(manager):
+    subject_types = _get_entity_types(manager)
+    form_models = _get_subject_form_models(manager)
+    subjects = _get_all_subjects(manager)
+
+    return _get_all_subject_data(form_models, subject_types, subjects)
+
+@timebox
+def _get_entity_types(manager):
+    entity_types = get_all_entity_types(manager)
+    entity_list = [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
+    return sorted(entity_list)
+
+@timebox
+def _get_subject_form_models(manager):
+    form_models = {}
+    form_model_values = manager.load_all_rows_in_view('questionnaire')
+    for each in form_model_values:
+        form_model = FormModel.new_from_doc(manager, FormModelDocument.wrap(each['value']))
+        if form_model.is_entity_registration_form() and not form_model.entity_defaults_to_reporter():
+            form_models[form_model.entity_type[0]] = form_model
+    return form_models
+
+@timebox
+def _get_all_subjects(manager):
+    rows = manager.view.all_subjects()
+    return [_from_row_to_subject(manager, row) for row in rows]
+
+def _from_row_to_subject(dbm, row):
+    return Entity.new_from_doc(dbm=dbm, doc=Entity.__document_class__.wrap(row.get('value')))
+
+
+def _get_subject_type_infos(subject_types, form_models_grouped_by_subject_type):
+    subject_types_dict = {}
+    default_form_model = form_models_grouped_by_subject_type.get('registration')
+
+    for subject_type in subject_types:
+        form_model = form_models_grouped_by_subject_type.get(subject_type, default_form_model)
+        names, labels, codes = zip(*[(field.name, field.label, field.code) for field in form_model.fields])
+        subject_types_dict[subject_type] = dict(entity=subject_type,
+                                                code=form_model.form_code,
+                                                names=names,
+                                                labels=labels,
+                                                codes=codes,
+                                                data=[], )
+    return subject_types_dict
+
+def _get_all_subject_data(form_models, subject_types, subjects):
+    subject_type_infos_dict = _get_subject_type_infos(subject_types, form_models)
+    for subject in subjects:
+        subject_type = subject.type_string
+        if subject_type in subject_type_infos_dict.keys():
+            form_model = form_models[subject_type]
+            data = tabulate_data(subject, form_model, subject_type_infos_dict[subject_type]['codes'])
+            subject_type_infos_dict[subject_type]['data'].append(data)
+
+    return [subject_type_infos_dict[subject_type] for subject_type in subject_types]
+
 
 
 def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, form_code, org_number,
