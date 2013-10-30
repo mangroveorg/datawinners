@@ -15,7 +15,7 @@ TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
 
 class Organization(models.Model):
-    name = models.TextField()
+    name = models.TextField("Organization Name")
     sector = models.TextField()
     address = models.TextField()
     addressline2 = models.TextField(blank=True)
@@ -27,7 +27,7 @@ class Organization(models.Model):
     website = models.TextField(blank=True)
     org_id = models.TextField(primary_key=True)
     in_trial_mode = models.BooleanField(default=False)
-    active_date = models.DateTimeField(blank=True, null=True)
+    active_date = models.DateTimeField("Created On", blank=True, null=True)
     is_deactivate_email_sent = models.BooleanField(False)
     status = models.CharField(null=True, max_length=20, default='Activated')
     status_changed_datetime = models.DateTimeField(blank=True, null=True)
