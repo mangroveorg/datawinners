@@ -43,3 +43,4 @@ NONE_SELECTED_LOCATOR = by_xpath(".//li[contains(@class,'none-selected')]")
 ACTION_MENU = by_xpath(".//ul[contains(@class,'dropdown-menu')]")
 
 ACTION_LI_LOCATOR = ".//a[contains(@class,'%s')]/.."
+ACTION_LOCATOR = ".//a[contains(@class,'%s')]"

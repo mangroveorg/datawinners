@@ -64,7 +64,7 @@ class AllDataSendersPage(Page):
 
     def perform_datasender_action(self, action_to_be_performed):
         self.driver.find(ACTION_DROP_DOWN).click()
-        option = self.driver.find_visible_element(by_css("a." + action_to_be_performed))
+        option = self.driver.find_visible_element(by_xpath(ACTION_LOCATOR % action_to_be_performed))
         option.click()
 
     def get_success_message(self):
