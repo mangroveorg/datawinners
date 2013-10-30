@@ -209,7 +209,8 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 
     // Server-side processing should just call fnDraw
     if ( oSettings.oFeatures.bServerSide ) {
-        this.fnDraw();
+        oSettings["iInitDisplayStart"] = oSettings._iDisplayStart;
+        this.fnDraw(false);
         return;
     }
 

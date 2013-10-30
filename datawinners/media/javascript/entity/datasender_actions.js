@@ -185,10 +185,16 @@ function uncheck_users(table, user_ids){
 
 function handle_datasender_delete(table, allIds, all_selected){
     $("#note_for_delete_users").hide();
+    var settings = table.fnSettings();
+    if (settings.fnDisplayEnd() == settings.fnRecordsDisplay()){
+        if ($(table).find("input.row_checkbox").length == allIds.length){
+           settings._iDisplayStart = 0;
+        }
+    }
+
     var users = get_users_from_selected_datasenders(table, allIds);
 
     if (users["names"].length) {
-
         var users_list_for_html = "<li>" + users["names"].join("</li><li>") + "</li>";
         if (users["names"].length == allIds.length) { //Each DS selected is also User
 
@@ -295,7 +301,6 @@ function populate_dialog_box_for_web_users(table) {
                     $('#web_user_error').html(html);
                     $('#web_user_error').show();
                 }
-
             });
         return false;
     });
