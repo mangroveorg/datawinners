@@ -9,7 +9,7 @@ from testdata.constants import *
 ASSOCIATE_SUCCESS_TEXT = "Data Senders associated Successfully. Please Wait...."
 DISSOCIATE_SUCCESS_TEXT = "Data Senders dissociated Successfully. Please Wait...."
 ERROR_MSG_WITHOUT_SELECTING_DS = u"Please select atleast 1 data sender"
-DELETE_SUCCESS_TEXT = "Data Sender(s) successfully deleted.."
+DELETE_SUCCESS_TEXT = "Data Sender(s) successfully deleted."
 SMS_ERROR_MESSAGE = "Your telephone number is not yet registered in our system. Please contact your supervisor."
 REGISTRATION_SUCCESS_MESSAGE_TEXT = "Registration successful. ID is: rep"
 ASSOCIATE_DATA_SENDER = {PROJECT_NAME: "clinic test project1",
