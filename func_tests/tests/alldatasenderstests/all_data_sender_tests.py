@@ -261,7 +261,7 @@ class TestAllDataSenders(unittest.TestCase):
         email_address = fetch_(EMAIL_ADDRESS, VALID_DATASENDER_WITHOUT_WEB_ACCESS)
         self.all_datasenders_page.give_web_and_smartphone_access(email_address)
         self.all_datasenders_page.wait_for_table_to_load()
-        self.assertEqual("Access to Web Submission has been given to your DataSenders",
+        self.assertEqual("Access to Web Submission has been given to your DataSenders.",
                          self.all_datasenders_page.get_success_message())
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.assertTrue(self.all_datasenders_page.is_web_and_smartphone_device_checkmarks_present(

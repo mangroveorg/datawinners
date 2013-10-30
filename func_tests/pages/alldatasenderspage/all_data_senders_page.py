@@ -44,7 +44,7 @@ class AllDataSendersPage(Page):
          """
         self.driver.find(CONFIRM_BUTTON).click()
         if wait:
-            self.driver.wait_until_modal_dismissed(20)
+            self.driver.wait_until_modal_dismissed()
 
     def click_cancel(self):
         """

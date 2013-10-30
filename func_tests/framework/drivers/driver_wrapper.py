@@ -180,8 +180,8 @@ class DriverWrapper(object):
         except CouldNotLocateElementException:
             return False
 
-    def wait_until_modal_dismissed(self, time_out_in_seconds=5):
-        self.wait_until_element_is_not_present(time_out_in_seconds, by_css(".loading"))
+    def wait_until_modal_dismissed(self):
+        self.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".loading"))
 
     def wait_for_element(self, time_out_in_seconds, object_id, want_visible=None):
         """Finds elements by their id by waiting till timeout.
