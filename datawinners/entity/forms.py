@@ -46,6 +46,7 @@ def smartphone_icon():
     return ' + <img src="/media/images/smart_phone.png" /><span>Smartphone</span>'
 
 
+
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
@@ -177,6 +178,35 @@ class ReporterRegistrationForm(Form):
         mapper = {MOBILE_NUMBER_FIELD_CODE: 'telephone_number'}
         validation_error = validation_errors.get(MOBILE_NUMBER_FIELD_CODE)
         self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]] = self.error_class([validation_error])
+
+
+class EditReporterRegistrationForm(ReporterRegistrationForm):
+
+    def __init__(self, dbm=None, org_id=None, *args, **kwargs):
+        super(EditReporterRegistrationForm, self).__init__(dbm=dbm, org_id= org_id, *args, **kwargs)
+
+    initial_telephone_number = PhoneNumberField(required=False, widget=HiddenInput())
+    initial_email = EmailField(required=False, widget=HiddenInput())
+
+    def clean_telephone_number(self):
+
+        telephone_number = self.cleaned_data.get("telephone_number")
+        initial_telephone_number = self.data.get("initial_telephone_number")
+
+        if telephone_number != initial_telephone_number:
+            return super(EditReporterRegistrationForm, self).clean_telephone_number()
+        else:
+            return telephone_number
+
+    def clean_email(self):
+
+        email = self.cleaned_data.get("email")
+        initial_email = self.data.get("initial_email")
+
+        if email != initial_email:
+            return super(EditReporterRegistrationForm, self).clean_email()
+        else:
+            return email
 
 
 class SubjectUploadForm(Form):
