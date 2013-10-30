@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import email_re
 from django.utils.translation import ugettext as _
 from mangrove.data_cleaner import TelephoneNumber
-from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, GEO_CODE, EMAIL_FIELD_CODE, case_insensitive_lookup
+from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, GEO_CODE, EMAIL_FIELD_CODE, case_insensitive_lookup, SHORT_CODE
 from mangrove.transport.repository.reporters import is_datasender_with_mobile_number_present
 
 
@@ -90,10 +90,26 @@ class LocationValidator:
         return errors
 
 
+class ShortCodeValidator(object):
+    def validate(self, values):
+        errors = []
+        short_code = case_insensitive_lookup(values, SHORT_CODE)
+
+        if _is_value_missing(short_code):
+            return []
+
+        if len(short_code) > 12:
+            errors.append(Error("Short-code-too-long", _("Unique ID should be less than 12 characters.")))
+
+        if not re.match("^[a-zA-Z0-9]+$", short_code):
+            errors.append(Error("special-characters-in-short-code", _("Only letters and numbers are valid.")))
+
+        return errors
+
 class DataSenderImportValidator:
     def __init__(self, dbm):
         self.validators = [NameValidator(), MobileNumberValidator(dbm), LocationValidator(), EmailValidator(),
-                           CoordinatesValidator()]
+                           CoordinatesValidator(), ShortCodeValidator()]
 
     def validate(self, row_entry):
         errors = []

@@ -1708,7 +1708,7 @@ msgstr ""
 "Un email d'activation a été envoyé sur votre adresse email. Veuillez activer "
 "votre compte avant de vous connecter."
 
-msgid "Only letters and numbers are valid"
+msgid "Only letters and numbers are valid."
 msgstr "Seuls les lettres et les chiffres sont valides"
 
 msgid "Entity definition successful"
