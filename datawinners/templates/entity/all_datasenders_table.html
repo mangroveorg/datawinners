@@ -28,13 +28,7 @@ $(function(){
                 {"label":"Add to project", handler:action_handler.associate, "allow_selection": "multiple"},
                 {"label":"Remove from project", handler:action_handler.disassociate, "allow_selection": "multiple"},
                 {"label":"Give Web Submission Access", handler:action_handler.makewebuser, "allow_selection": "multiple"},
-                {% if EDIT_SUBJECT_ENABLED and not in_trial_mode %}
                 {"label":"Edit", handler:action_handler.edit, "allow_selection": "single"},
-                {% else %}
-                    {% if in_trial_mode %}
-                        {"label":"Edit", handler:action_handler.edit, "allow_selection": "disabled"},
-                    {% endif %}
-            {% endif %}
                 {"label": "Delete", "handler":action_handler["delete"], "allow_selection": "multiple"}
             ],
             "aoColumnDefs":[{"bSortable": false, "aTargets":[col("devices"),col("projects")]}]
