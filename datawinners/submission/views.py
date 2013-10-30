@@ -102,7 +102,7 @@ def find_dbm_for_web_sms(request):
 def process_sms_counter(incoming_request):
     organization = incoming_request['organization']
 
-    if organization.status == 'Deactivated':
+    if organization.status == 'Deactivated' or organization.is_expired():
         incoming_request['outgoing_message'] = ''
         return incoming_request
 

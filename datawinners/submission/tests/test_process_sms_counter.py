@@ -10,13 +10,18 @@ from django.core import mail
 from django.contrib.auth.models import Group
 from django.template.loader import render_to_string
 from rest_framework.authtoken.models import Token
+from dateutil.relativedelta import relativedelta
 
 class TestProcessSMSCounter(unittest.TestCase):
     def setUp(self):
         self.incoming_request ={}
         self.incoming_request['outgoing_message']=''
         self.incoming_request['incoming_message']=''
-        self.incoming_request['organization']= Organization.objects.get(pk=TRIAL_ACCOUNT_ORGANIZATION_ID)
+        organization = Organization.objects.get(pk=TRIAL_ACCOUNT_ORGANIZATION_ID)
+        active_date = datetime.datetime.today()  - relativedelta(days=3)
+        organization.active_date, organization.status_changed_datetime = active_date, active_date
+        organization.save()
+        self.incoming_request['organization'] = organization
         self.outgoing_message = "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
         users = self.incoming_request['organization'].get_related_users()
         self.user = users[0]
@@ -88,3 +93,10 @@ class TestProcessSMSCounter(unittest.TestCase):
                 msgs = [mail.outbox.pop() for i in range(len(mail.outbox))]
                 for msg in msgs:
                     self.assertIn(msg.subject, expected_subjects)
+
+    def test_should_return_empty_string_for_expired_account(self):
+        with patch.object(Organization, 'is_expired') as patch_is_expired:
+            patch_is_expired.return_value = True
+            self.assertTrue(self.incoming_request.get('organization').is_expired())
+            self.incoming_request = process_sms_counter(self.incoming_request)
+            self.assertEqual(self.incoming_request['outgoing_message'], "")
