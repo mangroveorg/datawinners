@@ -160,6 +160,7 @@ class TestFeeds(unittest.TestCase):
         end_date = self._get_encoded_date()
         time.sleep(10)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
+        
         print "Submission entries start"
         for r in response_list_after_delete:
             print r["status"]
