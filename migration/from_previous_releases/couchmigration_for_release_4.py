@@ -33,8 +33,8 @@ def migrate_01(managers, map_fun_raw_form_model_docs):
                     document['is_registration_model'] = True
                     document["validators"] = [
                             {"cls": "mandatory"},
-                            #{"cls": "mobile_number_mandatory_for_reporter"},
-                            #{"cls": "at_least_one_location_field_must_be_answered_validator"}
+                            {"cls": "mobile_number_mandatory_for_reporter"},
+                            {"cls": "at_least_one_location_field_must_be_answered_validator"}
                     ]
                 else:
                     document['is_registration_model'] = False
