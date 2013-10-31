@@ -1654,7 +1654,7 @@ msgid ""
 "before login."
 msgstr ""
 
-msgid "Only letters and numbers are valid."
+msgid "Only letters and numbers are valid"
 msgstr ""
 
 msgid "Entity definition successful"

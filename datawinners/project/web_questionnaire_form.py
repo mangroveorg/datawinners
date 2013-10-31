@@ -35,7 +35,7 @@ class SubjectRegistrationForm(WebForm):
                 min_length = constraint.min
         regex_field = RegexField("^[a-zA-Z0-9]+$", label=field.label, initial=field.value,
                                  required=field.is_required(), max_length=max_length, min_length=min_length,
-                                 help_text=field.instruction, error_message=_("Only letters and numbers are valid."),
+                                 help_text=field.instruction, error_message=_("Only letters and numbers are valid"),
         )
         regex_field.widget.attrs['class'] = css_class(field)
         return regex_field

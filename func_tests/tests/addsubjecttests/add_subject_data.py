@@ -114,7 +114,7 @@ CLINIC_WITH_INVALID_UID = {ENTITY_TYPE: "clinic",
                            GPS: "47.411631 28.369885",
                            MOBILE_NUMBER: "34-567-890",
                            SUB_UNIQUE_ID: "12345678-=323223",
-                           ERROR_MSG: "Only letters and numbers are valid."}
+                           ERROR_MSG: "Only letters and numbers are valid"}
 
 PROJECT_NAME = "project_name"
 PROJECT_BACKGROUND = "project_background"

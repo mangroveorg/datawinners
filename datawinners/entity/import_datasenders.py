@@ -94,12 +94,12 @@ class DataSenderFileUpload(FilePlayer):
 
     def _import_data_sender(self, form_model, organization, submission, values):
         email = case_insensitive_lookup(values, "email")
-        response = self.submit(form_model, values, submission, [])
         if email:
+            response = self.submit(form_model, values, submission, [])
             user = self._create_user(email, organization, response)
             send_email_to_data_sender(user, _("en"))
-        #else:
-        #    response = self.submit(form_model, values, submission, [])
+        else:
+            response = self.submit(form_model, values, submission, [])
         return response
 
     def _get_phone_numbers(self, organization):

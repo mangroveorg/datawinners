@@ -1,5 +1,3 @@
-import re
-
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import HiddenInput
@@ -8,11 +6,12 @@ from django.forms.widgets import CheckboxSelectMultiple, TextInput
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
-
+from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE
 from mangrove.transport.repository.reporters import is_datasender_with_mobile_number_present
 from mangrove.utils.types import is_empty
 from datawinners.entity.fields import PhoneNumberField
+import re
 
 
 class EntityTypeForm(Form):
@@ -124,7 +123,7 @@ class ReporterRegistrationForm(Form):
         if short_code:
             self.fields.get("short_code").widget.attrs.pop("disabled")
             if len(short_code) > 12:
-                msg = _("Unique ID should be less than 12 characters.")
+                msg = _("Unique ID should be less than 12 characters")
                 self.errors['short_code'] = self.error_class([msg])
 
             if not re.match("^[a-zA-Z0-9]+$", short_code):
