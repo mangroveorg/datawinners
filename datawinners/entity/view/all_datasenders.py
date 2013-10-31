@@ -24,7 +24,7 @@ from datawinners.project.models import get_all_projects, Project, delete_datasen
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import _parse_successful_imports, _add_imported_datasenders_to_trail_account, _get_import_count_message
 from datawinners.search.entity_search import DatasenderQuery
-from mangrove.form_model.form_model import REPORTER
+from mangrove.form_model.form_model import REPORTER, header_fields, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE
 from mangrove.transport import TransportInfo
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization_from_manager, get_organization
@@ -144,6 +144,19 @@ class DataSenderActionView(View):
     def dispatch(self, *args, **kwargs):
         return super(DataSenderActionView, self).dispatch(*args, **kwargs)
 
+
+def data_sender_short_codes(request, manager):
+    if request.POST.get("all_selected", False):
+        search_query = request.POST.get('search_query')
+        subject_list = DatasenderQuery().query(request.user, search_query)
+        fields = header_fields(manager, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE).keys()
+        fields.remove("entity_type")
+        short_code_index = fields.index("short_code")
+        return [s[short_code_index] for s in subject_list]
+
+    return request.POST['ids'].split(';')
+
+
 class AssociateDataSendersView(DataSenderActionView):
 
     def post(self, request, *args, **kwargs):
@@ -151,7 +164,7 @@ class AssociateDataSendersView(DataSenderActionView):
         projects = self._get_projects(manager, request)
         projects_name = []
         for project in projects:
-            project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
+            project.data_senders.extend([id for id in data_sender_short_codes(request, manager) if not id in project.data_senders])
             projects_name.append(project.name.capitalize())
             project.save(manager)
         ids = request.POST["ids"].split(';')
@@ -159,7 +172,7 @@ class AssociateDataSendersView(DataSenderActionView):
             UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
-        return HttpResponse(reverse("all_datasenders"))
+        return HttpResponse({"success": True})
 
 
 class DisassociateDataSendersView(DataSenderActionView):
@@ -169,7 +182,7 @@ class DisassociateDataSendersView(DataSenderActionView):
         projects = self._get_projects(manager, request)
         projects_name = []
         for project in projects:
-            [project.delete_datasender(manager, id) for id in request.POST['ids'].split(';') if id in project.data_senders]
+            [project.delete_datasender(manager, id) for id in data_sender_short_codes(request, manager) if id in project.data_senders]
             project.save(manager)
             projects_name.append(project.name.capitalize())
         ids = request.POST["ids"].split(";")
@@ -177,7 +190,7 @@ class DisassociateDataSendersView(DataSenderActionView):
             UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
-        return HttpResponse(reverse("all_datasenders"))
+        return HttpResponse({"success": True})
 
 
 @csrf_view_exempt
@@ -192,7 +205,7 @@ def delete_data_senders(request):
     manager = get_database_manager(request.user)
     organization = get_organization(request)
     entity_type = request.POST['entity_type']
-    all_ids = request.POST['all_ids'].split(';')
+    all_ids = data_sender_short_codes(request, manager)
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
     if ngo_admin_user_profile.reporter_id in all_ids:
         messages = _("Your organization's account Administrator %s cannot be deleted") % (_get_full_name(ngo_admin_user_profile.user))

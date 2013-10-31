@@ -27,7 +27,7 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
         var allIds = delete_dialog.data("allIds");
         var all_selected = delete_dialog.data("all_selected");
         var entity_type = delete_dialog.data("entity_type");
-        post_data = {'all_ids':allIds.join(';'), 'entity_type':entity_type}
+        post_data = {'ids':allIds.join(';'), 'entity_type':entity_type, 'all_selected':all_selected, 'search_query':$(".datasender_table_filter input").val()}
         if ($("#project_name").length)
             post_data.project = $("#project_name").val();
         if(all_selected)
@@ -61,10 +61,10 @@ DW.DataSenderActionHandler = function(){
     populate_dialog_box_for_web_users(table);
   };
   this["associate"] = function(table, selected_ids, all_selected){
-    add_remove_from_project('associate');
+    add_remove_from_project('associate', table, selected_ids, all_selected);
   };
   this["disassociate"] = function(table, selected_ids, all_selected){
-    add_remove_from_project('disassociate');
+    add_remove_from_project('disassociate', table, selected_ids, all_selected);
   };
   this["mydsedit"] = function(table, selected_ids){
     location.href = '/project/datasender/edit/' + $("#project_id").val() + '/' + selected_ids[0] + '/';
@@ -94,7 +94,7 @@ function flash_message(msg, status){
     });
 }
 
-function add_remove_from_project(action) {
+function add_remove_from_project(action,  table, selected_ids, all_selected) {
     $("#all_project_block").dialog({
         autoOpen: false,
         modal: true,
@@ -113,7 +113,6 @@ function add_remove_from_project(action) {
 
     $("#all_project_block .button").bind("click", function () {
 
-        var allIds = $.map($('#datasender_table .row_checkbox:checked'), function(e){return $(e).val();});
         var projects = [];
         $('#all_project_block :checked').each(function () {
             projects.push($(this).val());
@@ -130,8 +129,10 @@ function add_remove_from_project(action) {
                         type: "POST",
                         headers: { "X-CSRFToken": $.cookie('csrftoken') },
                     data: {
-                            'ids': allIds.join(';'),
-                            'project_id': projects.join(';')
+                            'ids': selected_ids.join(';'),
+                            'project_id': projects.join(';'),
+                            'all_selected': all_selected,
+                            'search_query':$(".dataTables_filter input").val()
                         }
 
             }).done(function (data) {

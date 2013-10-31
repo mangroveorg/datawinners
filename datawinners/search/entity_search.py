@@ -1,7 +1,7 @@
 import elasticutils
 from datawinners.entity.helper import get_entity_type_fields
 from datawinners.main.database import get_database_manager
-from mangrove.form_model.form_model import header_fields
+from mangrove.form_model.form_model import header_fields, REPORTER
 from datawinners.settings import ELASTIC_SEARCH_URL
 
 class EntityQueryBuilder():
@@ -81,6 +81,13 @@ class DatasenderQuery(EntityQuery):
         fields.append("devices")
         fields.append('projects')
         return fields
+
+    def query(self, user, query_text):
+        subject_headers = self.get_headers(user)
+        query = self.query_builder.create_query(REPORTER, self._getDatabaseName(user))
+        query_all_results = query[:query.count()]
+        query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_text, query_all_results)
+        return  self.response_creator.create_response(subject_headers, query_with_criteria)
 
 class MyDataSenderQuery(EntityQuery):
 
