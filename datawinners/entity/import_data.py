@@ -82,14 +82,6 @@ def _get_failed_responses(responses):
 def _get_successful_responses(responses):
     return [response for response in responses if response.success]
 
-def _tabulate_failed_datasenders(rows):
-    tabulated_data = []
-    for row in rows:
-        row[1].errors['row_num'] = row[0] + 2
-
-        row[1].errors['error'] = "<br>".join(row[1].errors['error'].values())
-        tabulated_data.append(row[1].errors)
-    return tabulated_data
 
 def import_datasenders(request, manager):
     error_message = None
@@ -105,7 +97,7 @@ def import_datasenders(request, manager):
         total = len(failures) + len(successes)
         if total == 0:
             error_message = _("The imported file is empty.")
-        failure_imports = _tabulate_failed_datasenders(failures)
+        failure_imports = _tabulate_failures(failures)
         successful_imports = _tabulate_success(successes)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message

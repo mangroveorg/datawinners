@@ -10,7 +10,7 @@ from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
 from datawinners.accountmanagement.helper import get_all_registered_phone_numbers_on_trial_account
-from datawinners.entity.datasender_validators import DataSenderImportValidator, Error
+from datawinners.entity.datasender_validators import DataSenderImportValidator
 from datawinners.entity.helper import load_entity_registration_data
 from datawinners.entity.player import FilePlayer
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
@@ -72,7 +72,10 @@ class DataSenderFileUpload(FilePlayer):
             if self.logger is not None:
                 log_entry += "Status: False"
                 self.logger.info(log_entry)
-            return self._create_failure_response([Error("Short-Code-Exists", "reporter with Unique Identification Number (ID) = %s already exists." % e.data[1])], values)
+            return self._appendFailedResponse("%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
+                                              values=values)
+        except (InvalidEmailException, MangroveException, NameNotFoundException) as e:
+            return self._appendFailedResponse(e.message, values=values)
 
     def _validate_entry(self, values):
         return DataSenderImportValidator(self.dbm).validate(row_entry=values)
