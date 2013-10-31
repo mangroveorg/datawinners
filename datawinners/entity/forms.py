@@ -8,11 +8,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE
-from mangrove.transport.repository.reporters import is_datasender_with_mobile_number_present
 from mangrove.utils.types import is_empty
 from datawinners.entity.fields import PhoneNumberField
 import re
-
 
 class EntityTypeForm(Form):
     error_css_class = 'error'
@@ -44,37 +42,34 @@ class SubjectForm(Form):
 def smartphone_icon():
     return ' + <img src="/media/images/smart_phone.png" /><span>Smartphone</span>'
 
-
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
     name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
-                      error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
-                      label=_("Name"))
+        error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
+        label=_("Name"))
     telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
 
     location = CharField(max_length=100, required=False, label=_("Name"))
     project_id = CharField(required=False, widget=HiddenInput())
 
-    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), (
-        'web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span>' + smartphone_icon())))
+    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span>' + smartphone_icon())))
     devices = MultipleChoiceField(label=_('Device'), widget=CheckboxSelectMultiple(), choices=DEVICE_CHOICES,
-                                  initial=['sms'], required=False, )
+        initial=['sms'], required=False,)
     email = EmailField(required=False, widget=TextInput(attrs=dict({'class': 'required'},
-                                                                   maxlength=75)),
-                       label=_("Email address"),
-                       error_messages={
-                           'invalid': _('Enter a valid email address. Example:name@organization.com')})
+        maxlength=75)),
+        label=_("Email address"),
+        error_messages={
+            'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
     short_code = CharField(required=False, max_length=12, label=_("Unique ID"), widget=TextInput(attrs=dict({'class': 'subject_field','disabled':'disabled'})))
 
-    #    Needed for telephone number validation
+#    Needed for telephone number validation
     org_id = None
 
-    def __init__(self, dbm=None, org_id=None, *args, **kwargs):
+    def __init__(self, org_id=None, *args, **kwargs):
         self.org_id = org_id
-        self.dbm = dbm
         super(ReporterRegistrationForm, self).__init__(*args, **kwargs)
 
     def _is_int(self, s):
@@ -137,11 +132,13 @@ class ReporterRegistrationForm(Form):
         Validate telephone number. This expects the dbm to be set on the form before trying to clean.
         """
 
-        mobile_number = self.cleaned_data.get("telephone_number")
-        if is_datasender_with_mobile_number_present(self.dbm, mobile_number):
-            raise forms.ValidationError(
-                _("Sorry, this number has already been used for a different DataWinners trial account."))
-        return mobile_number
+        organization = Organization.objects.get(org_id=self.org_id)
+        if organization.in_trial_mode:
+            if DataSenderOnTrialAccount.objects.filter(mobile_number=(self.cleaned_data.get('telephone_number'))).exists():
+                self._errors['telephone_number'] = self.error_class(
+                    [(u"Sorry, this number has already been used for a different DataWinners trial account.")])
+        return self.cleaned_data.get('telephone_number')
+
 
     def clean_email(self):
         """
@@ -158,10 +155,9 @@ class ReporterRegistrationForm(Form):
             self._errors['email'] = self.error_class([msg])
             return None
 
-        if User.objects.filter(email__iexact=email):
-            raise forms.ValidationError(
-                _("This email address is already in use. Please supply a different email address."))
-        return email
+        if User.objects.filter(email__iexact=self.cleaned_data['email']):
+            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
+        return self.cleaned_data['email']
 
     def convert_email_to_lowercase(self):
         email = self.cleaned_data.get('email')
@@ -175,7 +171,8 @@ class ReporterRegistrationForm(Form):
     def update_errors(self, validation_errors):
         mapper = {MOBILE_NUMBER_FIELD_CODE: 'telephone_number'}
         validation_error = validation_errors.get(MOBILE_NUMBER_FIELD_CODE)
-        self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]] = self.error_class([validation_error])
+        self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]]= self.error_class([validation_error])
+
 
 
 class SubjectUploadForm(Form):

@@ -20,7 +20,6 @@ from django.utils.http import base36_to_int
 from datawinners.accountmanagement.decorators import is_admin, session_not_expired, is_not_expired, is_trial, valid_web_user, is_sms_api_user
 
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
-from datawinners.entity.import_datasenders import send_email_to_data_sender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.main.database import get_database_manager
 from mangrove.errors.MangroveException import AccountExpiredException
@@ -34,6 +33,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETED_USERS
 from datawinners.entity.helper import delete_datasender_for_trial_mode, \
     delete_datasender_users_if_any, delete_entity_instance
+from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import TransportInfo
 

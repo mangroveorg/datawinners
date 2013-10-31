@@ -23,7 +23,8 @@ from datawinners.scheduler.smsclient import NoSMSCException
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import process_create_data_sender_form, load_entity_registration_data, get_entity_type_info
+from datawinners.entity.helper import process_create_data_sender_form
+from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_map_key
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
@@ -37,6 +38,7 @@ from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
 from mangrove.transport.contract.transport_info import Channel
 import datawinners.utils as utils
+from datawinners.entity.import_data import load_all_entities_of_type, get_entity_type_info
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
@@ -334,7 +336,7 @@ def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     number_associated_ds = len(project.data_senders)
-    number_of_ds = len(load_entity_registration_data(dbm, type=REPORTER)[0]) - 1
+    number_of_ds = len(import_module.load_all_entities_of_type(dbm, type=REPORTER)[0]) - 1
     questionnaire = FormModel.get(dbm, project.qid)
     organization = utils.get_organization(request)
     if request.method == 'GET':
@@ -354,13 +356,12 @@ def broadcast_message(request, project_id):
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
-            failed_numbers = []
-            try:
+            failed_numbers=[]
+            try :
                 failed_numbers = helper.broadcast_message(data_senders, form.cleaned_data['text'],
-                                                          organization_setting.get_organisation_sms_number()[0],
-                                                          other_numbers,
-                                                          message_tracker,
-                                                          country_code=organization.get_phone_country_code())
+                                                organization_setting.get_organisation_sms_number()[0], other_numbers,
+                                                message_tracker,
+                                                country_code=organization.get_phone_country_code())
             except NoSMSCException as e:
                 no_smsc = True
             success = not no_smsc and len(failed_numbers) == 0
@@ -368,14 +369,12 @@ def broadcast_message(request, project_id):
             if success:
                 form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
             else:
-                form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
-                                            data=request.POST)
+                 form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
             return render_to_response('project/broadcast_message.html',
                                       {'project': project,
                                        "project_links": make_project_links(project, questionnaire.form_code),
                                        "form": form,
-                                       "ong_country": organization.country, "no_smsc": no_smsc,
-                                       'failed_numbers': ",".join(failed_numbers), "success": success},
+                                       "ong_country": organization.country, "no_smsc": no_smsc,'failed_numbers': ",".join(failed_numbers), "success":success},
                                       context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',
@@ -386,7 +385,7 @@ def broadcast_message(request, project_id):
 
 
 def _get_all_data_senders(dbm):
-    data_senders, fields, labels = load_entity_registration_data(dbm, REPORTER)
+    data_senders, fields, labels = load_all_entities_of_type(dbm)
     return [dict(zip(fields, data["cols"])) for data in data_senders]
 
 
@@ -474,7 +473,6 @@ def _get_questions_for_datasenders_registration_for_print_preview(questions):
 
 def _get_questions_for_datasenders_registration_for_wizard(questions):
     return [questions[1], questions[2], questions[3], questions[4], questions[5]]
-
 
 def get_preview_and_instruction_links_for_questionnaire():
     return {'sms_preview': reverse("questionnaire_sms_preview"),
@@ -872,16 +870,16 @@ def create_data_sender_and_web_user(request, project_id=None):
     if request.method == 'GET':
         form = ReporterRegistrationForm(initial={'project_id': project_id})
         return render_to_response('project/register_datasender.html', {
-            'project': project,
-            'project_links': project_links,
-            'form': form,
-            'in_trial_mode': in_trial_mode,
-            'current_language': translation.get_language()
-        }, context_instance=RequestContext(request))
+                                                                        'project': project,
+                                                                        'project_links': project_links,
+                                                                        'form': form,
+                                                                        'in_trial_mode': in_trial_mode,
+                                                                        'current_language': translation.get_language()
+                                                                      }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
-        form = ReporterRegistrationForm(dbm=manager, org_id=org_id, data=request.POST)
+        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
         try:
             reporter_id, message = process_create_data_sender_form(manager, form, org_id)
         except DataObjectAlreadyExists as e:
@@ -901,7 +899,6 @@ def create_data_sender_and_web_user(request, project_id=None):
         return render_to_response('datasender_form.html',
                                   context,
                                   context_instance=RequestContext(request))
-
 
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode

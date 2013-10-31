@@ -12,7 +12,7 @@ from datawinners.utils import get_organization_from_manager
 from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.datadict import get_datadict_type_by_slug,\
     create_datadict_type
-from mangrove.datastore.entity import get_by_short_code_include_voided, get_all_entities
+from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
@@ -322,39 +322,3 @@ def reporter_id_list_of_all_users(manager):
         'id', flat=True)
     user_rep_ids = [str(rep_id_map[user_id]) for user_id in user_ids]
     return user_rep_ids
-
-
-def load_entity_registration_data(manager,
-                                  type=REPORTER, tabulate_function=tabulate_data):
-    entity_type = entity_type_as_sequence('registration' if type == REPORTER else type)
-    form_model = get_form_model_by_entity_type(manager, entity_type)
-
-    fields, labels, codes = get_entity_type_fields(manager, type)
-    entities = get_all_entities(dbm=manager, entity_type=entity_type_as_sequence(type))
-    data = []
-    for entity in entities:
-        data.append(tabulate_function(entity, form_model, codes))
-    return data, fields, labels
-
-
-def get_entity_type_info(entity_type, manager=None):
-    if entity_type == 'reporter':
-        form_code = 'reg'
-        form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)[0]
-        names, labels, codes = get_json_field_infos(form_model.value['json_fields'])
-    else:
-        form_model = get_form_model_by_entity_type(manager, entity_type_as_sequence(entity_type))
-        form_code = form_model.form_code
-        names, labels, codes = _get_field_infos(form_model.fields)
-
-    return dict(entity=entity_type, code=form_code, names=names, labels=labels, codes=codes, data=[])
-
-
-def _get_field_infos(fields):
-    fields_names, labels, codes = [], [], []
-    for field in fields:
-        if field.name != 'entity_type':
-            fields_names.append(field.name)
-            labels.append(field.label)
-            codes.append(field.code)
-    return fields_names, labels, codes

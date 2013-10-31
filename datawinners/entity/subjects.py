@@ -1,6 +1,6 @@
 from collections import OrderedDict
+from datawinners.entity.import_data import get_entity_types
 from datawinners.main.utils import timebox
-from mangrove.datastore.entity_type import get_all_entity_types
 
 
 @timebox
@@ -28,9 +28,3 @@ def get_subjects_count(manager):
     for row in rows:
         subject_count[row.key[0]] = row.value
     return subject_count
-
-
-@timebox
-def get_entity_types(manager):
-    entity_types = get_all_entity_types(manager)
-    return [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']

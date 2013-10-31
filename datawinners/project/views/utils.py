@@ -2,8 +2,8 @@ from collections import namedtuple
 
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from datawinners.entity.helper import get_entity_type_info
 
+from datawinners.entity.import_data import get_entity_type_info
 from datawinners.project.utils import make_project_links, make_data_sender_links, make_subject_links
 from mangrove.form_model.form_model import REPORTER
 
