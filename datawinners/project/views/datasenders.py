@@ -16,7 +16,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, EDITED_DATA_SENDER
 from datawinners.entity import import_data as import_module, import_data
 from datawinners.entity.data_sender import get_user_profile_by_reporter_id
-from datawinners.entity.forms import ReporterRegistrationForm, EditReporterRegistrationForm
+from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization, reporter_id_list_of_all_users
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
@@ -148,16 +148,6 @@ def disassociate_datasenders(request):
     return HttpResponse(reverse(registered_datasenders, args=(project.id,)))
 
 
-def get_reporter_details_for_initial_form_data(project_id, reporter_entity, mobile_number):
-    return {
-             'project_id': project_id,
-             'name': reporter_entity.name,
-             'telephone_number': mobile_number,
-             'initial_telephone_number': mobile_number,
-             'location': reporter_entity.location,
-             'geo_code': reporter_entity.geo_code
-            }
-
 def edit_data_sender(request, project_id, reporter_id):
     manager = get_database_manager(request.user)
     reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
@@ -166,24 +156,19 @@ def edit_data_sender(request, project_id, reporter_id):
     email = user_profile.user.email if user_profile else None
 
     if request.method == 'GET':
-        #location = reporter_entity.location
-        #geo_code = reporter_entity.geo_code
-        initial_data = get_reporter_details_for_initial_form_data(project_id, reporter_entity, reporter_entity.mobile_number)
-        form = EditReporterRegistrationForm(initial=initial_data)
+        location = reporter_entity.location
+        geo_code = reporter_entity.geo_code
+        form = ReporterRegistrationForm(initial={'project_id': project_id, 'name': reporter_entity.name,
+                                                 'telephone_number': reporter_entity.mobile_number, 'location': location
+            , 'geo_code': geo_code})
         return render_to_response('project/edit_datasender.html',
-                                  {
-                                      'project': project,
-                                      'reporter_id': reporter_id,
-                                      'form': form,
-                                      'project_links': links,
-                                      'in_trial_mode': _in_trial_mode(request),
-                                      'email': email
-                                  },
+                                  {'project': project, 'reporter_id': reporter_id, 'form': form, 'project_links': links,
+                                   'in_trial_mode': _in_trial_mode(request), 'email': email},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
-        form = EditReporterRegistrationForm(org_id=org_id, data=request.POST, dbm=manager)
+        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
 
         message = None
         if form.is_valid():
@@ -198,10 +183,9 @@ def edit_data_sender(request, project_id, reporter_id):
                             transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
                             is_update=True))
                 if response.success:
-                    updated_telephone_number = form.cleaned_data["telephone_number"]
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
-                                                                   updated_telephone_number, org_id)
+                                                                   form.cleaned_data["telephone_number"], org_id)
                     message = _("Your changes have been saved.")
 
                     detail_dict = {"Unique ID": reporter_id}
@@ -217,21 +201,12 @@ def edit_data_sender(request, project_id, reporter_id):
                         detail_as_string = json.dumps(detail_dict)
                         UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string,
                                               project=project.name)
-                    initial_data = get_reporter_details_for_initial_form_data(project_id, reporter_entity, updated_telephone_number)
-                    form = EditReporterRegistrationForm(initial=initial_data)
                 else:
                     form.update_errors(response.errors)
             except MangroveException as exception:
                 message = exception.message
 
         return render_to_response('edit_datasender_form.html',
-                                  {
-                                      'project': project,
-                                      'form': form,
-                                      'reporter_id': reporter_id,
-                                      'message': message,
-                                      'project_links': links,
-                                      'in_trial_mode': _in_trial_mode(request),
-                                      'email': email
-                                  },
+                                  {'project': project, 'form': form, 'reporter_id': reporter_id, 'message': message,
+                                   'project_links': links, 'in_trial_mode': _in_trial_mode(request), 'email': email},
                                   context_instance=RequestContext(request))

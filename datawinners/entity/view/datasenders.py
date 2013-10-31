@@ -10,7 +10,7 @@ from datawinners.accountmanagement.models import Organization
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SENDER, REGISTERED_DATA_SENDER
 from datawinners.entity.data_sender import get_datasender_user_detail
-from datawinners.entity.forms import ReporterRegistrationForm, EditReporterRegistrationForm
+from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.helper import _get_data, update_data_sender_from_trial_organization, process_create_data_sender_form
 from datawinners.entity.views import create_single_web_user
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
@@ -28,15 +28,6 @@ from mangrove.transport.player.player import WebPlayer
 class EditDataSenderView(TemplateView):
     template_name = 'entity/create_or_edit_data_sender.html'
 
-    def _get_reporter_details_for_initial_form_data(self, reporter_entity, mobile_number):
-        return {
-                 'name': reporter_entity.name,
-                 'telephone_number': mobile_number,
-                 'initial_telephone_number': mobile_number,
-                 'location': reporter_entity.location,
-                 'geo_code': reporter_entity.geo_code
-                }
-
     def get(self, request, reporter_id, *args, **kwargs):
         create_data_sender = False
         manager = get_database_manager(request.user)
@@ -45,8 +36,16 @@ class EditDataSenderView(TemplateView):
         datasender = {'short_code': reporter_id}
         get_datasender_user_detail(datasender, request.user)
         email = datasender.get('email') if datasender.get('email') != '--' else False
-        intial_data = self._get_reporter_details_for_initial_form_data(reporter_entity, reporter_entity.mobile_number)
-        form = EditReporterRegistrationForm(initial=intial_data)
+        name = reporter_entity.name
+        phone_number = reporter_entity.mobile_number
+        location = reporter_entity.location
+        geo_code = reporter_entity.geo_code
+        form = ReporterRegistrationForm(initial={
+                                                 'name': name,
+                                                 'telephone_number': phone_number,
+                                                 'location': location,
+                                                 'geo_code': geo_code
+                                                })
         return self.render_to_response({
                                            'reporter_id': reporter_id,
                                            'form': form,
@@ -63,7 +62,7 @@ class EditDataSenderView(TemplateView):
         get_datasender_user_detail(datasender, request.user)
         email = datasender.get('email') if datasender.get('email') != '--' else False
         org_id = request.user.get_profile().org_id
-        form = EditReporterRegistrationForm(org_id=org_id, data=request.POST, dbm=manager)
+        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
         message = None
         if form.is_valid():
             try:
@@ -78,10 +77,9 @@ class EditDataSenderView(TemplateView):
                             transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
                             is_update=True))
                 if response.success:
-                    updated_telephone_number = form.cleaned_data["telephone_number"]
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,
-                                                                   updated_telephone_number, org_id)
+                                                                   form.cleaned_data["telephone_number"], org_id)
 
                     message = _("Your changes have been saved.")
 
@@ -97,8 +95,6 @@ class EditDataSenderView(TemplateView):
                     if len(detail_dict) > 1:
                         detail_as_string = json.dumps(detail_dict)
                         UserActivityLog().log(request, action=EDITED_DATA_SENDER, detail=detail_as_string)
-                    intial_data = self._get_reporter_details_for_initial_form_data(reporter_entity, updated_telephone_number)
-                    form = EditReporterRegistrationForm(initial=intial_data)
                 else:
                     form.update_errors(response.errors)
 
