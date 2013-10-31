@@ -158,8 +158,12 @@ class CreateDataSenderView(TemplateView):
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
-                                  {'form': form, 'message': message, 'success': reporter_id is not None,
-                                   'project_inks': entity_links},
+                                  {
+                                      'form': form,
+                                      'message': message,
+                                      'success': reporter_id is not None,
+                                      'project_inks': entity_links
+                                  },
                                   context_instance=RequestContext(request))
 
     @method_decorator(valid_web_user)
