@@ -1672,7 +1672,7 @@ msgstr ""
 msgid "answer"
 msgstr ""
 
-msgid "Answer for question %s is required"
+msgid "Answer for question %s is required."
 msgstr ""
 
 msgid "The answer %s must be between %s and %s"

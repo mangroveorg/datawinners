@@ -98,9 +98,9 @@ class FilePlayer(Player):
 
     def _import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
                            values):
-        phone_number = TelephoneNumber().clean(case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE))
-        if phone_number in registered_phone_numbers:
-            raise DataObjectAlreadyExists(_("Data Sender"), _("Mobile Number"), phone_number)
+        #phone_number = TelephoneNumber().clean(case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE))
+        #if phone_number in registered_phone_numbers:
+        #    raise DataObjectAlreadyExists(_("Data Sender"), _("Mobile Number"), phone_number)
         email = case_insensitive_lookup(values, "email")
         if email:
             if email in registered_emails:
@@ -208,28 +208,27 @@ def tabulate_failures(rows):
         row[1].errors['row_num'] = row[0] + 2
 
         if isinstance(row[1].errors['error'], dict):
-            errors = ''
+            errors = []
             for key, value in row[1].errors['error'].items():
                 if 'is required' in value:
                     code = value.split(' ')[3]
-                    errors = errors + "\n" + _('Answer for question %s is required') % (code, )
+                    errors.append(_('Answer for question %s is required.') % (code, ))
                 elif 'xx.xxxx yy.yyyy' in value:
-                    errors = errors + "\n" + _(
-                        'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315')
-                elif 'longer' in value:
-                    text = value.split(' ')[1]
-                    errors = errors + "\n" + _("Answer %s for question %s is longer than allowed.") % (text, key)
+                    errors.append(_('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315.'))
+                #elif 'longer' in value:
+                #    text = value.split(' ')[1]
+                #    errors = errors + "<br>" + _("Answer %s for question %s is longer than allowed.") % (text, key)
                 elif 'must be between' in value:
                     text = value.split(' ')[2]
                     low = value.split(' ')[6]
                     high = value.split(' ')[8]
-                    errors = errors + "\n" + _("The answer %s must be between %s and %s") % (text, low, high)
+                    errors.append(_("The answer %s must be between %s and %s.") % (text, low, high))
                 else:
-                    errors = errors + "\n" + _(value)
+                    errors.append(_(value))
         else:
-            errors = _(row[1].errors['error'])
+            errors = [_(row[1].errors['error'])]
 
-        row[1].errors['error'] = errors
+        row[1].errors['error'] = "<br>".join(errors)
         tabulated_data.append(row[1].errors)
     return tabulated_data
 
