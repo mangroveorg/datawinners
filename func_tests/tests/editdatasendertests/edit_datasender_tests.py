@@ -29,4 +29,4 @@ class TestEditDataSender(unittest.TestCase):
         page.click_submit_button()
         time.sleep(2)
         self.assertEqual(page.get_error_message(),
-            u'Mobile Number Sorry, the telephone number 1234567890 has already been registered')
+            u'Mobile Number Sorry, the telephone number 1234567890 has already been registered.')

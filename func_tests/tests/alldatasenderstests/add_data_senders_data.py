@@ -65,7 +65,7 @@ EXISTING_DATA = {NAME: "Mickey Mouse",
                  MOBILE_NUMBER: "123-4567-890",
                  COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                  GPS: "-21.7622088847 48.0690991394",
-                 ERROR_MSG: "Mobile Number Sorry, the telephone number 1234567890 has already been registered"}
+                 ERROR_MSG: "Mobile Number Sorry, the telephone number 1234567890 has already been registered."}
 
 WITHOUT_LOCATION_NAME = {NAME: "a Mini Mouse",
                          MOBILE_NUMBER: random_number(),
