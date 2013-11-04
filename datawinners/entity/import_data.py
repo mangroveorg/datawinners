@@ -81,7 +81,6 @@ class FilePlayer(Player):
         return player
 
     def _process(self, form_model, values):
-        #values = GeneralWorkFlow().process(values)
         if form_model.is_entity_registration_form():
             values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree).process(values)
         if form_model.entity_defaults_to_reporter():
@@ -96,33 +95,32 @@ class FilePlayer(Player):
         response.errors = dict(error=ugettext(message), row=values)
         return response
 
+    def _create_user(self, email, organization, response):
+        user = User.objects.create_user(email, email, 'password')
+        group = Group.objects.filter(name="Data Senders")[0]
+        user.groups.add(group)
+        user.first_name = case_insensitive_lookup(response.processed_data, NAME_FIELD_CODE)
+        user.save()
+        profile = NGOUserProfile(user=user, org_id=organization.org_id, title="Mr",
+                                 reporter_id=case_insensitive_lookup(response.processed_data, SHORT_CODE))
+        profile.save()
+        return user
+
     def _import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
                            values):
-        #phone_number = TelephoneNumber().clean(case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE))
-        #if phone_number in registered_phone_numbers:
-        #    raise DataObjectAlreadyExists(_("Data Sender"), _("Mobile Number"), phone_number)
         email = case_insensitive_lookup(values, "email")
         if email:
-            if email in registered_emails:
-                raise DataObjectAlreadyExists(_("User"), _("email address"), email)
-
             if not email_re.match(email):
                 raise InvalidEmailException(message="Invalid email address.")
 
-            response = self.submit(form_model, values, submission, [])
-            user = User.objects.create_user(email, email, 'password')
-            group = Group.objects.filter(name="Data Senders")[0]
-            user.groups.add(group)
-            user.first_name = case_insensitive_lookup(response.processed_data, NAME_FIELD_CODE)
-            if user.first_name is None:
-                raise NameNotFoundException(message='Answer for name field is missing.')
-            user.save()
+            if email in registered_emails:
+                raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
-            profile = NGOUserProfile(user=user, org_id=organization.org_id, title="Mr",
-                                     reporter_id=case_insensitive_lookup(response.processed_data,
-                                                                         SHORT_CODE))
-            profile.save()
-            send_email_to_data_sender(user, _("en"))
+            response = self.submit(form_model, values, submission, [])
+
+            if response.success:
+                user = self._create_user(email, organization, response)
+                send_email_to_data_sender(user, _("en"))
         else:
             response = self.submit(form_model, values, submission, [])
         return response
@@ -210,10 +208,10 @@ def tabulate_failures(rows):
         if isinstance(row[1].errors['error'], dict):
             errors = []
             for key, value in row[1].errors['error'].items():
-                if 'is required' in value:
-                    code = value.split(' ')[3]
-                    errors.append(_('Answer for question %s is required.') % (code, ))
-                elif 'xx.xxxx yy.yyyy' in value:
+                #if 'is required' in value:
+                #    code = value.split(' ')[3]
+                #    errors.append(_('Answer for question %s is required.') % (code, ))
+                if 'xx.xxxx yy.yyyy' in value:
                     errors.append(_('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315.'))
                 #elif 'longer' in value:
                 #    text = value.split(' ')[1]
