@@ -1,5 +1,6 @@
 {% load i18n %}
 <div id="web_user_block">
+    <div id="all_selected_message" class="all_selected_message"></div>
     <div class="italic">{% trans "Enter each data sender's email address below. Each can submit data via the internet" %}</div>
     <div class="message-box none" id="web_user_error"></div>
     <table id="web_user_table">
@@ -8,12 +9,14 @@
         <th>{% trans "Name" %} </th>
         <th>{% trans "Location" %} </th>
         <th>{% trans "Projects" %} </th>
-        <th>{% trans "Email" %} *</th>
+        <th>{% trans "Email" %} </th>
         </thead>
         <tbody id="web_user_table_body">
 
         </tbody>
     </table>
-    <a href="#" class="cancel_link cancel_{% trans "en" %}" >{% trans "Cancel" %}</a>
-    <a href="#" class="button" id="web_user_button">{% trans "Give Access" %}</a>
+    <div class="submission-controls">
+        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
+        <a href="#" class="button" id="web_user_button">{% trans "Give Access" %}</a>
+    </div>
 </div>

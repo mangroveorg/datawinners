@@ -1043,3 +1043,5 @@ msgstr " Enregistrements ont été importés avec succès"
 msgid "Access to Web Submission has been given to your DataSenders"
 msgstr "Un accès à la page d'envoi web a été donné à vos expéditeurs de données"
 
+msgid "all_selected_message %(total_records)s %(current_page_size)s"
+msgstr "Nous avons limité votre sélection à %(total_records)s Expéditeurs de Données sur %(current_page_size)s Expédteurs de Données sur la page courante. Après avoir donné accès à ces Expéditeurs de Données, vous pouvez continuer à la page suivante."

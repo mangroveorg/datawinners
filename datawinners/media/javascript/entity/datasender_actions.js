@@ -58,7 +58,7 @@ DW.DataSenderActionHandler = function(){
     location.href = '/entity/datasender/edit' + '/' + selected_ids[0] + '/';
   };
   this["makewebuser"] = function(table, selected_ids, all_selected){
-    populate_dialog_box_for_web_users(table);
+    populate_dialog_box_for_web_users(table, all_selected);
   };
   this["associate"] = function(table, selected_ids, all_selected){
     add_remove_from_project('associate', table, selected_ids, all_selected);
@@ -213,7 +213,18 @@ function handle_datasender_delete(table, allIds, all_selected){
 }
 
 
-function populate_dialog_box_for_web_users(table) {
+function populate_dialog_box_for_web_users(table, all_selected) {
+    if (all_selected) {
+        var total_records = table.fnSettings().fnRecordsDisplay();
+        var current_page_size = table.fnSettings()._iDisplayLength;
+        $("#all_selected_message").show();
+        $("#all_selected_message").text(
+            interpolate(gettext('all_selected_message %(total_records)s %(current_page_size)s'),
+                {total_records: total_records, current_page_size: current_page_size}, true));
+    } else {
+        $("#all_selected_message").hide();
+    }
+
     var data_sender_details = [];
     $(table).find("input.row_checkbox:checked").each(function () {
         var row = $(this).parent().parent();
@@ -227,13 +238,17 @@ function populate_dialog_box_for_web_users(table) {
         if (!$.trim(data_sender.email)) {
             data_sender.input_field_disabled = "";
             data_sender.email = "";
+        } else {
+            data_sender.hideInput = "none";
         }
+
         data_sender_details.push(data_sender);
     });
      var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>" +
         "${location}</td><td>${contactInformation}</td><td>" +
-        "<input type='text' style='width:150px' class='ds-email' value='${email}' " +
-        "${input_field_disabled}/></td></tr>";
+        "<input type='text' style='width:150px' class='ds-email ${hideInput}' ${input_field_disabled}/>" +
+        "<label style='font-weight:inherit'>${email}</label>" +
+         "</td></tr>";
     $.template("webUserTemplate", markup);
     $('#web_user_table_body').html($.tmpl('webUserTemplate', data_sender_details));
     $("#web_user_block").dialog({

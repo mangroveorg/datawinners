@@ -1004,3 +1004,6 @@ msgstr ""
 
 msgid "Access to Web Submission has been given to your DataSenders"
 msgstr ""
+
+msgid "all_selected_message %(total_records)s %(current_page_size)s"
+msgstr "We limited your selection of %(total_records)s Data Senders to the %(current_page_size)s Data Senders on the current page. After giving access to these %(current_page_size)s Data Senders you can continue with the next page."
