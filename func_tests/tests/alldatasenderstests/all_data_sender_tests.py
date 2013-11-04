@@ -6,7 +6,7 @@ from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 
 from framework.base_test import setup_driver, teardown_driver, BaseTest
-from framework.utils.common_utils import by_css
+from framework.utils.common_utils import by_css, by_id
 from framework.utils.data_fetcher import fetch_, from_
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import WEB_USER_BLOCK_EMAIL, GIVE_ACCESS_LINK
@@ -69,17 +69,18 @@ class TestAllDataSenders(unittest.TestCase):
         self.assertEqual("", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
         self.all_datasenders_page.associate_datasender_to_projects(self.datasender_id_without_web_access,
                                                                    ["clinic test project1", "clinic test project"])
-        self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
+
         self.assertEqual("clinic test project, clinic test project1",
                          self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
         self.all_datasenders_page.dissociate_datasender_from_project(self.datasender_id_without_web_access,
                                                                      "clinic test project1")
-        self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
         self.assertEqual("clinic test project",
                          self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
         self.all_datasenders_page.dissociate_datasender_from_project(self.datasender_id_without_web_access,
                                                                      "clinic test project")
-        self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
         self.assertEqual("", self.all_datasenders_page.get_project_names(self.datasender_id_without_web_access))
 
     @attr('functional_test')

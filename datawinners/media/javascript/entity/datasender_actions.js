@@ -51,6 +51,9 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
 
 
 DW.DataSenderActionHandler = function(){
+
+  init__dialog_box_for_web_users();
+
   this["delete"] = function(table, selected_ids, all_selected){
         handle_datasender_delete(table, selected_ids, all_selected);
   };
@@ -70,16 +73,15 @@ DW.DataSenderActionHandler = function(){
     location.href = '/project/datasender/edit/' + $("#project_id").val() + '/' + selected_ids[0] + '/';
   };
   this["remove_from_project"] = function(table, selectedIds, all_selected) {
-            DW.loading();
-            $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
-                data: {'ids':selectedIds.join(';'), 'project_id':$("#project_id").val()}
-            }).done(function (data) {
-                    table.fnReloadAjax();
-                    flash_message("Data Senders dissociated Successfully");
-                }
-            );
-        };
-
+    DW.loading();
+    $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
+        data: {'ids':selectedIds.join(';'), 'project_id':$("#project_id").val()}
+    }).done(function (data) {
+            table.fnReloadAjax();
+            flash_message("Data Senders dissociated Successfully");
+        }
+    );
+  };
 };
 
 function flash_message(msg, status){
@@ -162,7 +164,6 @@ get_users_from_selected_datasenders = function (table, selected_ids) {
 
 function delete_all_ds_are_users_show_warning(users) {
 
-
     var kwargs = {container: "#delete_all_ds_are_users_warning_dialog",
         autoOpen: false,
         cancel_handler: function () {
@@ -212,45 +213,14 @@ function handle_datasender_delete(table, allIds, all_selected){
     }
 }
 
-
-function populate_dialog_box_for_web_users(table, all_selected) {
-    if (all_selected) {
-        var total_records = table.fnSettings().fnRecordsDisplay();
-        var current_page_size = table.fnSettings()._iDisplayLength;
-        $("#all_selected_message").show();
-        $("#all_selected_message").text(
-            interpolate(gettext('all_selected_message %(total_records)s %(current_page_size)s'),
-                {total_records: total_records, current_page_size: current_page_size}, true));
-    } else {
-        $("#all_selected_message").hide();
-    }
-
-    var data_sender_details = [];
-    $(table).find("input.row_checkbox:checked").each(function () {
-        var row = $(this).parent().parent();
-        var data_sender = {};
-        data_sender.short_name = $($(row).children()[2]).html();
-        data_sender.name = $($(row).children()[1]).html();
-        data_sender.location = $($(row).children()[4]).html();
-        data_sender.contactInformation = $($(row).children()[8]).html();
-        data_sender.email = $($(row).children()[6]).html();
-        data_sender.input_field_disabled = "disabled";
-        if (!$.trim(data_sender.email)) {
-            data_sender.input_field_disabled = "";
-            data_sender.email = "";
-        } else {
-            data_sender.hideInput = "none";
-        }
-
-        data_sender_details.push(data_sender);
-    });
-     var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>" +
+function init__dialog_box_for_web_users() {
+    var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>" +
         "${location}</td><td>${contactInformation}</td><td>" +
         "<input type='text' style='width:150px' class='ds-email ${hideInput}' ${input_field_disabled}/>" +
         "<label style='font-weight:inherit'>${email}</label>" +
          "</td></tr>";
     $.template("webUserTemplate", markup);
-    $('#web_user_table_body').html($.tmpl('webUserTemplate', data_sender_details));
+
     $("#web_user_block").dialog({
         autoOpen: false,
         modal: true,
@@ -301,7 +271,7 @@ function populate_dialog_box_for_web_users(table, all_selected) {
                 var json_data = JSON.parse(response);
                 if (json_data.success) {
                     $("#web_user_block").dialog("close");
-                    table.fnReloadAjax();
+                    $("#datasender_table").dataTable().fnReloadAjax();
                     flash_message("Access to Web Submission has been given to your DataSenders");
                 } else {
                     var html = "";
@@ -321,7 +291,42 @@ function populate_dialog_box_for_web_users(table, all_selected) {
             });
         return false;
     });
+}
 
+
+function populate_dialog_box_for_web_users(table, all_selected) {
+    if (all_selected) {
+        var total_records = table.fnSettings().fnRecordsDisplay();
+        var current_page_size = table.fnSettings()._iDisplayLength;
+        $("#all_selected_message").show();
+        $("#all_selected_message").text(
+            interpolate(gettext('all_selected_message %(total_records)s %(current_page_size)s'),
+                {total_records: total_records, current_page_size: current_page_size}, true));
+    } else {
+        $("#all_selected_message").hide();
+    }
+
+    var data_sender_details = [];
+    $(table).find("input.row_checkbox:checked").each(function () {
+        var row = $(this).parent().parent();
+        var data_sender = {};
+        data_sender.short_name = $($(row).children()[2]).html();
+        data_sender.name = $($(row).children()[1]).html();
+        data_sender.location = $($(row).children()[4]).html();
+        data_sender.contactInformation = $($(row).children()[8]).html();
+        data_sender.email = $($(row).children()[6]).html();
+        data_sender.input_field_disabled = "disabled";
+        if (!$.trim(data_sender.email)) {
+            data_sender.input_field_disabled = "";
+            data_sender.email = "";
+        } else {
+            data_sender.hideInput = "none";
+        }
+
+        data_sender_details.push(data_sender);
+    });
+
+    $('#web_user_table_body').html($.tmpl('webUserTemplate', data_sender_details));
 
     $("#web_user_block").dialog("open")
 }
