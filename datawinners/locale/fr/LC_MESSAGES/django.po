@@ -4302,3 +4302,9 @@ msgstr "Vous ne pouvez pas laisser ceci vide."
 
 msgid "Please use only letters (a-z), numbers, and spaces."
 msgstr "Utilisez uniquement des lettres (a-z), des chiffres et des espaces."
+
+msgid "Data Sender Id"
+msgstr "Id de l'expéditeur"
+
+msgid "Data Sender Name"
+msgstr "Nom de l'expéditeur"

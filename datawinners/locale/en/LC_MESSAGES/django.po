@@ -4224,3 +4224,9 @@ msgstr ""
 
 msgid "Please use only letters (a-z), numbers, and spaces."
 msgstr ""
+
+msgid "Data Sender Id"
+msgstr ""
+
+msgid "Data Sender Name"
+msgstr ""
