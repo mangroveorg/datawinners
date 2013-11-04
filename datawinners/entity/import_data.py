@@ -208,10 +208,10 @@ def tabulate_failures(rows):
         if isinstance(row[1].errors['error'], dict):
             errors = []
             for key, value in row[1].errors['error'].items():
-                #if 'is required' in value:
-                #    code = value.split(' ')[3]
-                #    errors.append(_('Answer for question %s is required.') % (code, ))
-                if 'xx.xxxx yy.yyyy' in value:
+                if 'is required' in value:
+                    code = value.split(' ')[3]
+                    errors.append(_('Answer for question %s is required.') % (code, ))
+                elif 'xx.xxxx yy.yyyy' in value:
                     errors.append(_('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315.'))
                 #elif 'longer' in value:
                 #    text = value.split(' ')[1]

@@ -1726,11 +1726,11 @@ msgstr "Une entité avec le numéro d'identification unique (ID) =% s existe dé
 msgid "answer"
 msgstr "réponse"
 
-msgid "Answer for question %s is required"
-msgstr "Réponse pour la question %s est obligatoire"
+msgid "Answer for question %s is required."
+msgstr "Réponse pour la question %s est obligatoire."
 
-msgid "The answer %s must be between %s and %s"
-msgstr "La réponse %s doit être comprise entre %s et %s"
+msgid "The answer %s must be between %s and %s."
+msgstr "La réponse %s doit être comprise entre %s et %s."
 
 msgid "Patern should be ^[0-9]+$"
 msgstr "Le modèle devrait être ^[0-9]+$"
@@ -1873,8 +1873,8 @@ msgstr "La réponse %s à la question %s dépasse la longueur autorisée."
 msgid "Answer %s for question %s is %s than allowed."
 msgstr "La réponse %s pour la question %s est %s la valeur autorisée."
 
-msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
-msgstr "Format de GPS incorrect. Les coordonnées GPS doivent être dans le format suivant:. Xx.xxxx,yy.yyyy Exemple -18.8665,47.5315"
+msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315."
+msgstr "Format de GPS incorrect. Les coordonnées GPS doivent être dans le format suivant:. xx.xxxx,yy.yyyy Exemple -18.8665,47.5315."
 
 msgid "greater"
 msgstr "supérieur à"
