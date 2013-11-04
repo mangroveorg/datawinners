@@ -2,6 +2,7 @@ import json
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _, get_language, activate
 from django.views.generic.base import TemplateView
@@ -126,7 +127,8 @@ class CreateDataSenderView(TemplateView):
         return self.render_to_response({
                                            'form': form,
                                            'create_data_sender': create_data_sender,
-                                           'project_links': entity_links
+                                           'project_links': entity_links,
+                                           'current_language': translation.get_language(),
                                        })
 
     def post(self, request, *args, **kwargs):
@@ -154,8 +156,13 @@ class CreateDataSenderView(TemplateView):
                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
-                                  {'form': form, 'message': message, 'success': reporter_id is not None,
-                                   'project_inks': entity_links},
+                                  {
+                                      'form': form,
+                                      'message': message,
+                                      'success': reporter_id is not None,
+                                      'project_inks': entity_links,
+                                      'current_language': translation.get_language(),
+                                  },
                                   context_instance=RequestContext(request))
 
     @method_decorator(valid_web_user)
