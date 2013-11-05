@@ -147,13 +147,13 @@ class DataSenderActionView(View):
 
 
 def data_sender_short_codes(request, manager):
-    if request.POST.get("all_selected", False):
+    if request.POST.get("all_selected") == 'true':
         search_query = request.POST.get('search_query')
-        subject_list = DatasenderQuery().query(request.user, search_query)
+        datasender_list = DatasenderQuery().query(request.user, search_query)
         fields = header_fields(manager, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE).keys()
         fields.remove("entity_type")
         short_code_index = fields.index("short_code")
-        return [s[short_code_index] for s in subject_list]
+        return [s[short_code_index] for s in datasender_list]
 
     return request.POST['ids'].split(';')
 

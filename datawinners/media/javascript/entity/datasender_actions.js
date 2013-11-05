@@ -1,21 +1,24 @@
 
 function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_element) {
-   //$("#delete_ds_block").dialog();
+    var delete_dialog = $("#delete_ds_block");
+    delete_dialog.data("allIds", allIds);
+    delete_dialog.data("all_selected", all_selected);
+    delete_dialog.data("entity_type", entity_type);
+    delete_dialog.data("action_element", action_element);
+    delete_dialog.dialog("open");
+}
+
+function init_warnThenDeleteDialogBox() {
     var delete_dialog = $("#delete_ds_block").dialog({
             title: gettext("Warning !!"),
             modal: true,
-            autoOpen: true,
+            autoOpen: false,
             width: 500,
             closeText: 'hide'
         }
     );
 
-    delete_dialog.data("allIds", allIds);
-    delete_dialog.data("all_selected", all_selected);
-    delete_dialog.data("entity_type", entity_type);
-    delete_dialog.data("action_element", action_element);
-
-     $("#delete_ds_block .cancel_link").click(function() {
+    $("#delete_ds_block .cancel_link").click(function() {
          delete_dialog.dialog("close");
         $('#delete_ds_block').data("action_element").value = "";
         return false;
@@ -27,7 +30,7 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
         var allIds = delete_dialog.data("allIds");
         var all_selected = delete_dialog.data("all_selected");
         var entity_type = delete_dialog.data("entity_type");
-        post_data = {'ids':allIds.join(';'), 'entity_type':entity_type, 'all_selected':all_selected, 'search_query':$(".datasender_table_filter input").val()}
+        post_data = {'ids':allIds.join(';'), 'entity_type':entity_type, 'all_selected':all_selected, 'search_query':$(".dataTables_filter input").val()}
         if ($("#project_name").length)
             post_data.project = $("#project_name").val();
         if(all_selected)
@@ -44,15 +47,13 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
         );
         return false;
     });
-
-
-    delete_dialog.dialog("open");
 }
-
 
 DW.DataSenderActionHandler = function(){
 
-  init__dialog_box_for_web_users();
+  init_dialog_box_for_web_users();
+  init_warnThenDeleteDialogBox();
+  init_add_remove_from_project();
 
   this["delete"] = function(table, selected_ids, all_selected){
         handle_datasender_delete(table, selected_ids, all_selected);
@@ -96,8 +97,8 @@ function flash_message(msg, status){
     });
 }
 
-function add_remove_from_project(action,  table, selected_ids, all_selected) {
-    $("#all_project_block").dialog({
+function init_add_remove_from_project() {
+    var all_project_block = $("#all_project_block").dialog({
         autoOpen: false,
         modal: true,
         title: gettext('Select Projects'),
@@ -106,15 +107,12 @@ function add_remove_from_project(action,  table, selected_ids, all_selected) {
             $('#action').at;
         }
     });
-    $("#all_project_block").find('#error').remove();
-    $('#all_project_block :checked').attr("checked",false);
 
     $("#all_project_block .cancel_link").bind("click", function () {
-        $("#all_project_block").dialog("close");
+        all_project_block.dialog("close");
     });
 
     $("#all_project_block .button").bind("click", function () {
-
         var projects = [];
         $('#all_project_block :checked').each(function () {
             projects.push($(this).val());
@@ -123,7 +121,7 @@ function add_remove_from_project(action,  table, selected_ids, all_selected) {
             $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project")
                 + '</div>').insertBefore($("#all_projects"));
         } else {
-            var url = '/entity/' + action + '/';
+            var url = '/entity/' + all_project_block.data("action") + '/';
             $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
                 + gettext("Just a moment") + '...</span></h1>', css: { width: '275px', zIndex: 1000000}});
             $.ajax({
@@ -131,9 +129,9 @@ function add_remove_from_project(action,  table, selected_ids, all_selected) {
                         type: "POST",
                         headers: { "X-CSRFToken": $.cookie('csrftoken') },
                     data: {
-                            'ids': selected_ids.join(';'),
+                            'ids': all_project_block.data("selected_ids").join(';'),
                             'project_id': projects.join(';'),
-                            'all_selected': all_selected,
+                            'all_selected': all_project_block.data("all_selected"),
                             'search_query':$(".dataTables_filter input").val()
                         }
 
@@ -143,8 +141,16 @@ function add_remove_from_project(action,  table, selected_ids, all_selected) {
                 });
         }
     });
+}
 
-    $("#all_project_block").dialog("open");
+function add_remove_from_project(action,  table, selected_ids, all_selected) {
+    var all_project_block = $("#all_project_block");
+    all_project_block.find('#error').remove();
+    $('#all_project_block :checked').attr("checked",false);
+    all_project_block.data("selected_ids", selected_ids);
+    all_project_block.data("all_selected", all_selected);
+    all_project_block.data("action", action);
+    all_project_block.dialog("open");
 }
 
 get_users_from_selected_datasenders = function (table, selected_ids) {
@@ -213,7 +219,7 @@ function handle_datasender_delete(table, allIds, all_selected){
     }
 }
 
-function init__dialog_box_for_web_users() {
+function init_dialog_box_for_web_users() {
     var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>" +
         "${location}</td><td>${contactInformation}</td><td>" +
         "<input type='text' style='width:150px' class='ds-email ${hideInput}' ${input_field_disabled}/>" +
@@ -305,7 +311,7 @@ function init__dialog_box_for_web_users() {
 function populate_dialog_box_for_web_users(table, all_selected) {
     if (all_selected) {
         var total_records = table.fnSettings().fnRecordsDisplay();
-        var current_page_size = table.fnSettings()._iDisplayLength;
+        var current_page_size = $(table).find("input.row_checkbox:checked").length;
         $("#all_selected_message").show();
         $("#all_selected_message").text(
             interpolate(gettext('all_selected_message %(total_records)s %(current_page_size)s'),

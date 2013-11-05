@@ -64,4 +64,6 @@
         <h3 class="margin_top_20" hidden="true">{% trans "All Data Senders " %}</h3>
         {% include 'entity/all_datasenders_table.html' %}
     </div>
+    {% include "entity/delete_datasenders_warning_dialog.html" %}
+    {% include 'entity/all_data_senders/all_project_blocks.html' %}
 {% endblock %}
