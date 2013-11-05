@@ -203,7 +203,7 @@ def delete_subjects(request):
 
 
 def subject_short_codes_to_delete(request, manager, entity_type):
-    if request.POST.get("all_selected", False):
+    if request.POST.get("all_selected") == 'true':
         search_query = request.POST.get('search_query')
         subject_list = SubjectQuery().query(request.user, entity_type, search_query)
         short_code_index = header_fields(manager, entity_type).keys().index("short_code")
