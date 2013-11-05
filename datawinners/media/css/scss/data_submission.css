@@ -22,10 +22,10 @@
     .device-navigation .inactive .smartphone {
       background: url("/media/images/smart_phone_black.png") no-repeat 5px; }
 
-.smartphone-device-navigation-bg-padding, .device-navigation .active .smartphone, .device-navigation .inactive:hover .smartphone, .device-navigation .inactive .smartphone {
+.smartphone-device-navigation-bg-padding, .device-navigation .active .smartphone, .device-navigation .inactive .smartphone {
   padding: 4px 10px 0 21px; }
 
-.web-device-navigation-bg-padding, .device-navigation .active .web, .device-navigation .inactive:hover .web, .device-navigation .inactive .web {
+.web-device-navigation-bg-padding, .device-navigation .active .web, .device-navigation .inactive .web {
   padding: 4px 10px 0 28px; }
 
 .back-to-list {
@@ -41,3 +41,7 @@
 
 #cancel_submission_warning_message a {
   text-decoration: none; }
+
+#cancel {
+  margin: -25px 0px 0px 220px;
+  float: left; }
