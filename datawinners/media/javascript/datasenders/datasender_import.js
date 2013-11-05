@@ -77,20 +77,20 @@ $(document).ready(function () {
             $('#error_body').html('');
             $("#error_import_section").hide();
             if ($.isEmptyObject(responseJSON)) {
-                $('<div id="message" class="error_message message-box clear-left">' + gettext("Sorry, an error occured - the reason could be connectivity issues or the import taking too long to process.  Please try again.  Limit the number of subjects you import to 200 or less.") + '</div>').insertAfter($('#file-uploader'));
+                $('<div id="message" class="error_message message-box clear-left">' + gettext("Sorry, an error occured - the reason could be connectivity issues or the import taking too long to process.  Please try again.  Limit the number of subjects you import to 200 or less.") + '</div>').insertAfter($('#template-download-section'));
             }
             else {
                 refresh_success_table(responseJSON);
                 if (responseJSON.success == true) {
-                    $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
+                    $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#template-download-section'));
                 }
                 else {
 
                     if (responseJSON.error_message) {
-                        $('<div id="message" class="error_message message-box clear-left">' + responseJSON.error_message + '</div>').insertAfter($('#file-uploader'));
+                        $('<div id="message" class="error_message message-box clear-left">' + responseJSON.error_message + '</div>').insertAfter($('#template-download-section'));
                     }
                     else {
-                        $('<div id="message" class="error_message message-box clear-left">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
+                        $('<div id="message" class="error_message message-box clear-left">' + responseJSON.message + '</div>').insertAfter($('#template-download-section'));
                     }
                     refresh_error_table(responseJSON);
                 }
