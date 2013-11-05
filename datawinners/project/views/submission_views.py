@@ -75,7 +75,7 @@ def index(request, project_id=None, questionnaire_code=None, tab="0"):
                        "datasender_list": survey_responses.get_data_senders(),
                        "subject_list": survey_responses.get_subjects(),
                        "tab": tab,
-                       "is_quota_reached": is_quota_reached(request),
+                       "is_quota_reached": is_quota_reached(request, org_id=org_id),
                        "active_tab":submission_type
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))

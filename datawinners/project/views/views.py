@@ -316,7 +316,7 @@ def sent_reminders(request, project_id):
     return render_to_response(html,
                               {'project': project,
                                "project_links": make_project_links(project, questionnaire.form_code),
-                               'is_quota_reached':is_quota_reached(request),
+                               'is_quota_reached':is_quota_reached(request, organization=organization),
                                'reminders': get_all_reminder_logs_for_project(project_id, dbm),
                                'in_trial_mode': is_trial_account,
                                'create_reminder_link': reverse(create_reminder, args=[project_id])},
@@ -348,7 +348,7 @@ def broadcast_message(request, project_id):
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': project,
                                          "project_links": make_project_links(project, questionnaire.form_code),
-                                         'is_quota_reached':is_quota_reached(request),
+                                         'is_quota_reached':is_quota_reached(request, organization=organization),
                                          "form": form, "ong_country": organization.country,
                                          "success": None},
                                   context_instance=RequestContext(request))
@@ -378,7 +378,7 @@ def broadcast_message(request, project_id):
             return render_to_response('project/broadcast_message.html',
                                       {'project': project,
                                        "project_links": make_project_links(project, questionnaire.form_code),
-                                       'is_quota_reached':is_quota_reached(request),
+                                       'is_quota_reached':is_quota_reached(request, organization=organization),
                                        "form": form,
                                        "ong_country": organization.country, "no_smsc": no_smsc,'failed_numbers': ",".join(failed_numbers), "success":success},
                                       context_instance=RequestContext(request))
@@ -386,7 +386,7 @@ def broadcast_message(request, project_id):
         return render_to_response('project/broadcast_message.html',
                                   {'project': project,
                                    "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                                   'is_quota_reached':is_quota_reached(request),
+                                   'is_quota_reached':is_quota_reached(request, organization=organization),
                                    'success': None, "ong_country": organization.country},
                                   context_instance=RequestContext(request))
 
@@ -699,9 +699,11 @@ class SurveyWebQuestionnaireRequest():
 
     def response_for_post_request(self, is_update=None):
         questionnaire_form = self.form(self.request.POST)
-        if not questionnaire_form.is_valid():
+        quota_reached = is_quota_reached(self.request)
+        if not questionnaire_form.is_valid() or quota_reached:
             form_context = get_form_context(self.form_code, self.project, questionnaire_form,
                                             self.manager, self.hide_link_class, self.disable_link_class)
+            form_context.update({'is_quota_reached':quota_reached})
             return render_to_response(self.template, form_context,
                                       context_instance=RequestContext(self.request))
 

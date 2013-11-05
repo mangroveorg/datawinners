@@ -161,7 +161,7 @@ def failed_submissions(request):
                                'disable_link_class': disable_link_class,
                                'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
                                'project_links': get_alldata_project_links(),
-                               'is_quota_reached':is_quota_reached(request)},
+                               'is_quota_reached':is_quota_reached(request, organization=organization)},
                               context_instance=RequestContext(request))
 
 

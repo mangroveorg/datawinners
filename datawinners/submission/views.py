@@ -29,6 +29,7 @@ from django.utils import translation
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParserFactory
 from datawinners.settings import NEAR_SUBMISSION_LIMIT_TRIGGER, NEAR_SMS_LIMIT_TRIGGER, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
+from datawinners.project.utils import is_quota_reached
 
 
 logger = logging.getLogger("django")
@@ -91,6 +92,11 @@ def find_dbm_for_web_sms(request):
     incoming_request = dict()
     MangroveWebSMSRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
     incoming_request['organization'] = get_organization(request)
+    
+    if is_quota_reached(request, organization=incoming_request.get('organization')):
+        incoming_request['outgoing_message'] = ''
+        return incoming_request
+    
     incoming_request['next_state'] = submit_to_player
     import logging
 
@@ -129,10 +135,11 @@ def check_quotas_for_trial(incoming_request):
     return incoming_request
 
 def check_quotas_and_update_users(organization, sms_channel=False):
-    if organization.get_total_submission_count() == NEAR_SUBMISSION_LIMIT_TRIGGER:
+    if organization.in_trial_mode and organization.get_total_submission_count() == NEAR_SUBMISSION_LIMIT_TRIGGER:
         organization.send_mail_to_organization_creator(email_type='about_to_reach_submission_limit')
 
-    if sms_channel and organization.get_total_message_count() == NEAR_SMS_LIMIT_TRIGGER:
+    if organization.in_trial_mode and sms_channel and \
+        organization.get_total_incoming_message_count() == NEAR_SMS_LIMIT_TRIGGER:
         organization.send_mail_to_organization_creator(email_type='about_to_reach_sms_limit')
 
     if organization.get_total_submission_count() == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:

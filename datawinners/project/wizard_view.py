@@ -227,7 +227,7 @@ def reminders(request, project_id):
              'reminders': _format_reminders(reminders, project_id),
              'in_trial_mode': organization.in_trial_mode,
              'create_reminder_link': reverse(create_reminder, args=[project_id]),
-             'project_links': project_links, 'is_quota_reached':is_quota_reached(request)},
+             'project_links': project_links, 'is_quota_reached':is_quota_reached(request, organization=organization)},
             context_instance=RequestContext(request))
 
 
@@ -248,8 +248,8 @@ def reminder_settings(request, project_id):
     if request.method == 'GET':
         form = ReminderForm(data=(_reminder_info_about_project(project)))
         return render_to_response(html,
-            {'project_links': project_links, 'is_quota_reached':is_quota_reached(request), 'project': project,
-             'form': form}, context_instance=RequestContext(request))
+            {'project_links': project_links, 'is_quota_reached':is_quota_reached(request, organization=organization),
+             'project': project,'form': form}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         form = ReminderForm(data=request.POST.copy())
@@ -269,8 +269,8 @@ def reminder_settings(request, project_id):
             return HttpResponseRedirect('')
         else:
             return render_to_response(html,
-                {'project_links': project_links, 'is_quota_reached':is_quota_reached(request), 'project': project,
-                 'form': form}, context_instance=RequestContext(request))
+                {'project_links': project_links, 'is_quota_reached':is_quota_reached(request, organization=organization),
+                 'project': project, 'form': form}, context_instance=RequestContext(request))
 
 
 def _reminder_info_about_project(project):

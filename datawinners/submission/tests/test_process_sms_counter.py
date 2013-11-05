@@ -72,7 +72,7 @@ class TestProcessSMSCounter(unittest.TestCase):
     def test_should_send_mail_to_when_sms_limit_is_about_to_reached(self):
         token = Token.objects.get_or_create(user=self.user)[0].key
         organization = self.incoming_request.get('organization')
-        with patch.object(Organization, "get_total_message_count") as patch_get_total_message_count:
+        with patch.object(Organization, "get_total_incoming_message_count") as patch_get_total_message_count:
             patch_get_total_message_count.return_value = NEAR_SMS_LIMIT_TRIGGER
             check_quotas_and_update_users(organization=organization, sms_channel=True)
             email = mail.outbox.pop()

@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.utils import translation
 from datawinners.utils import get_organization
 from datawinners.project.models import ProjectState, Project
+from datawinners.accountmanagement.models import Organization
 
 def make_subject_links(project_id):
     subject_links = {'subjects_link': reverse('registered_subjects', args=[project_id]),
@@ -58,20 +59,22 @@ def project_info(request, manager, form_model, project_id, questionnaire_code):
     project = Project.load(manager.database, project_id)
     is_summary_report = form_model.entity_defaults_to_reporter()
     rp_field = form_model.event_time_question
-    in_trial_mode = get_organization(request).in_trial_mode
+    organization = get_organization(request)
+    in_trial_mode = organization.in_trial_mode
     has_rp = rp_field is not None
     is_monthly_reporting = rp_field.date_format.find('dd') < 0 if has_rp else False
 
     return {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
             "is_monthly_reporting": is_monthly_reporting, "entity_type": form_model.entity_type[0].capitalize(),
             'project_links': (make_project_links(project, questionnaire_code)),
-            'is_quota_reached':is_quota_reached(request),
+            'is_quota_reached':is_quota_reached(request, organization=organization),
             'project': project,
             'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
             'reporting_period_question_text': rp_field.label if has_rp else None,
             'has_reporting_period': has_rp,
             'is_summary_report': is_summary_report}
 
-def is_quota_reached(request):
-    organization = get_organization(request)
+def is_quota_reached(request, organization=None, org_id=None):
+    if not organization:
+        organization = Organization.objects.get(pk=org_id) if org_id else get_organization(request)
     return organization.has_exceeded_submission_limit()
