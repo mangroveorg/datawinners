@@ -221,17 +221,25 @@ def log_activity(request, action, detail):
 
 
 def __create_web_users(org_id, reporter_details, language_code):
-    duplicate_email_ids = User.objects.filter(email__in=[x['email'].lower() for x in reporter_details]).values('email')
+
+    duplicate_entries = {}
+    [duplicate_entries.update({item[0]:item[1]}) for item in reporter_details.items() if [val for val in reporter_details.values()].count(item[1]) > 1]
+
     errors = []
+    if len(duplicate_entries) > 0:
+        content = json.dumps({'success': False, 'errors': errors,'duplicate_entries':duplicate_entries})
+
     dbm = get_database_manager_for_org(Organization.objects.get(org_id=org_id))
-    if len(duplicate_email_ids) > 0:
-        for duplicate_email in duplicate_email_ids:
+    existent_email_addresses = User.objects.filter(email__in=reporter_details.values()).values('email')
+
+    if len(existent_email_addresses) > 0:
+        for duplicate_email in existent_email_addresses:
             errors.append("User with email %s already exists" % duplicate_email['email'])
-        content = json.dumps({'success': False, 'errors': errors})
-    else:
-        for reporter in reporter_details:
-            reporter_entity = get_by_short_code(dbm, reporter['reporter_id'], [REPORTER])
-            reporter_email = reporter['email'].lower()
+        content = json.dumps({'success': False, 'errors': errors,'duplicate_entries':duplicate_entries})
+    if errors.__len__() == 0 and duplicate_entries.keys().__len__()==0:
+        for reporter_id,email in reporter_details.iteritems():
+            reporter_entity = get_by_short_code(dbm, reporter_id, [REPORTER])
+            reporter_email = email.lower()
             put_email_information_to_entity(dbm, reporter_entity, email=reporter_email)
             user = User.objects.create_user(reporter_email, reporter_email, 'test123')
             group = Group.objects.filter(name="Data Senders")[0]
@@ -239,7 +247,7 @@ def __create_web_users(org_id, reporter_details, language_code):
             user.first_name = reporter_entity.value(NAME_FIELD)
             user.save()
             profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
-                                     reporter_id=reporter['reporter_id'].lower())
+                                     reporter_id=reporter_id.lower())
             profile.save()
 
             send_email_to_data_sender(user, language_code)
@@ -251,7 +259,7 @@ def __create_web_users(org_id, reporter_details, language_code):
 def create_single_web_user(org_id, email_address, reporter_id, language_code):
     """Create single web user from My Data Senders page"""
     return HttpResponse(
-        __create_web_users(org_id, [{'email': email_address, 'reporter_id': reporter_id}], language_code))
+        __create_web_users(org_id, {reporter_id: email_address}, language_code))
 
 
 @login_required(login_url='/login')
@@ -260,8 +268,9 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
 def create_multiple_web_users(request):
     """Create multiple web users from All Data Senders page"""
     org_id = request.user.get_profile().org_id
+    post_data = {}
     if request.method == 'POST':
-        post_data = json.loads(request.POST['post_data'])
+        [post_data.update({item['reporter_id']:item['email']}) for item in json.loads(request.POST['post_data'])]
         content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE)
         return HttpResponse(content)
 

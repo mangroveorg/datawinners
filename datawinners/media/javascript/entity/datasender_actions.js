@@ -281,6 +281,14 @@ function init__dialog_box_for_web_users() {
                         var error_message = gettext('User with email ') + email_in_error + gettext(' already exists');
                         html += "<tr><td>" + error_message + "</td></tr>";
                     }
+
+                    var duplicate_entries = json_data.duplicate_entries;
+                    var rep_ids = Object.keys(duplicate_entries);
+                    var duplicate_emails = rep_ids.map(function (key) { return json_data.duplicate_entries[key]; });
+                    if (duplicate_emails.length !=0) {
+                        error_message = "Duplicate email ids "+ (_.uniq(duplicate_emails)).join(", ") +" assigned to " + rep_ids.join(", ");
+                        html += "<tr><td>" + error_message + "</td></tr>";
+                    }
                     if (html != "") {
                         html = '<table cellpadding="0" cellspacing="0" border="0">' + html + '</table>';
                     }
