@@ -68,13 +68,11 @@ $.fn.dwTable = function(options){
                 $(this).find(".select_all_message").data('all_selected', false);
             }
 
-
             defaults["fnInitComplete"] = function(original_init_complete_handler, concept, actionItems){
                 return function(){
                     var dataTableObject = this;
 
                     if (typeof actionItems != "undefined" && actionItems.length){
-                        //$(dataTableObject).find('thead>tr').prepend('<th><input type="checkbox" class="checkall-checkbox"></th>');
                         var dropdown_id = "dropdown-menu" + Math.floor(Math.random() * 10000000000000001);
                         var html = '<div class="table_action_button action_bar clear-both"> <div class="btn-group">' +
                                 '<button class="btn dropdown-toggle action" href="#" data-dropdown="#'+dropdown_id+ '">Actions' +
@@ -84,9 +82,6 @@ $.fn.dwTable = function(options){
                         $(this).parents(".dataTables_wrapper").append('<div id="'+ dropdown_id + '" class="dropdown"> <ul class="dropdown-menu"><li class="none-selected disabled"><label>' + select_link_text + '</label><li></ul> </div>');
 
                         $(".checkall-checkbox").parents("th").addClass("checkbox_col");
-                        //$(action_button).dropdown();
-
-
 
                         for (var item = 0; item<actionItems.length; item++) {
                             var item_handler = function(handler){
@@ -105,10 +100,8 @@ $.fn.dwTable = function(options){
                             $(menu_item, 'a').click(item_handler(actionItems[item].handler));
                         }
 
-                        //$(dataTableObject).find(".action").dropdown();
-                        //$(dataTableObject).find(".action").dropdown("attach", "#" + dropdown_id)
-
                         $(this).parents(".dataTables_wrapper").find('.action').click(function(){
+                            var all_selected =  $(dataTableObject).find(".select_all_message").data('all_selected');
                             var selected_count = $(this).parents('.dataTables_wrapper').find('input:checked').not(".checkall-checkbox").length
                             if(selected_count == 0){
                                 $("#" + dropdown_id + ">.dropdown-menu li").hide();
@@ -116,7 +109,7 @@ $.fn.dwTable = function(options){
                             } else {
                                 $("#" + dropdown_id + ">.dropdown-menu li").show();
                                 $("#" + dropdown_id + ">.dropdown-menu li.none-selected").hide();
-                                if (selected_count>1)
+                                if (selected_count > 1 || all_selected)
                                     $("#" + dropdown_id + ">.dropdown-menu li.single").addClass('disabled')
                                 else
                                     $("#" + dropdown_id + ">.dropdown-menu li.single").removeClass('disabled')
@@ -159,7 +152,6 @@ $.fn.dwTable = function(options){
                             $(dataTableObject).find(".select_all_message").html('')
                         }
                     }
-
 
                     $(this).find(".checkall-checkbox").click(function(){
                         $(dataTableObject).find("input.row_checkbox").attr('checked', $(this).is(":checked"));
