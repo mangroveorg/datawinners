@@ -15,6 +15,7 @@ $(function(){
         return $('#datasender_table th.' + header_class_name).index('#datasender_table th');
     }
     var action_handler = new DW.DataSenderActionHandler();
+    var number_of_projects = {{ projects|length }};
     $("#datasender_table").dwTable({
             "concept": "Data Sender",
             "sAjaxSource": datasender_ajax_url,
@@ -25,8 +26,8 @@ $(function(){
             },
             "aaSorting": [ [ col("name"), "asc"] ] ,
             "actionItems" : [
-                {"label":"Add to project", handler:action_handler.associate, "allow_selection": "multiple"},
-                {"label":"Remove from project", handler:action_handler.disassociate, "allow_selection": "multiple"},
+                {"label":"Add to project", handler:action_handler.associate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
+                {"label":"Remove from project", handler:action_handler.disassociate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
                 {"label":"Give Web Submission Access", handler:action_handler.makewebuser, "allow_selection": "multiple"},
                 {"label":"Edit", handler:action_handler.edit, "allow_selection": "single"},
                 {"label": "Delete", "handler":action_handler["delete"], "allow_selection": "multiple"}
