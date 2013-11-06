@@ -1,7 +1,4 @@
 from collections import OrderedDict
-import elasticutils
-from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
-from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.form_model import header_fields
 from datawinners.search.query import QueryBuilder, Query
 
@@ -12,10 +9,6 @@ class SubmissionQueryBuilder(QueryBuilder):
         if query_params.get('filter'):
             query = query.filter(status=query_params.get('filter'))
         return query
-
-    def create_query(self, doc_type, database_name):
-        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type)
-
 
 class SubmissionQueryResponseCreator():
     def __init__(self,form_model):

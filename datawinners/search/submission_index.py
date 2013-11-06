@@ -1,7 +1,6 @@
 from babel.dates import format_datetime
 import elasticutils
 from datawinners.main.database import get_db_manager
-from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from datawinners.search.index_utils import get_fields_mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.datadict import DataDictType
@@ -51,10 +50,11 @@ def _update_with_form_model_fields(submission_doc, search_dict):
         field = submission_doc.values[key]
         value = field if submission_doc.status == 'error' else field.get("answer")
         if isinstance(value, dict):
-            if field.get("is_entity_question") :
-                search_dict.update({"entity_short_code":value.get("id")})
+            if field.get("is_entity_question"):
+                search_dict.update({"entity_short_code": value.get("id")})
                 value = value.get("name")
             else:
                 value = ','.join(value.values())
         search_dict.update({key: value})
+    search_dict.update({'void': submission_doc.void})
     return search_dict

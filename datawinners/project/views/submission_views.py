@@ -91,11 +91,19 @@ def index(request, project_id=None, questionnaire_code=None, tab="0"):
                                          "statistics_result": analysis_result.statistics_result}))
 
 
+def get_survey_response_ids_from_request(manager, request, form_model):
+    if request.POST.get('all_selected', False):
+        rows = manager.load_all_rows_in_view('undeleted_survey_response', startkey=[form_model.form_code],
+                                             endkey=[form_model.form_code, {}], reduce=False)
+        return [row.id for row in rows]
+    return json.loads(request.POST.get('id_list'))
+
+
 def delete(request, project_id):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
-    survey_response_ids = json.loads(request.POST.get('id_list'))
-
+    form_model = FormModel.get(manager, project.qid)
+    survey_response_ids = get_survey_response_ids_from_request(manager, request, form_model)
     received_times = []
     for survey_response_id in survey_response_ids:
         survey_response = SurveyResponse.get(manager, survey_response_id)

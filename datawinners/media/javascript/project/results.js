@@ -152,14 +152,14 @@ $(document).ready(function () {
 //        }
 //    });
 
-    function removeRowsFromDataTable(ids) {
-        $.each(ids, function (index, value) {
-            $dataTable.fnDeleteRow($(':checkbox[value=' + $.trim(value) + ']').parents('tr').get(0));
-        });
-        if ($("table.submission_table tbody tr").length) {
-            $("#master_checkbox").attr("disabled", "disabled");
-        }
-    }
+//    function removeRowsFromDataTable(ids) {
+//        $.each(ids, function (index, value) {
+//            $dataTable.fnDeleteRow($(':checkbox[value=' + $.trim(value) + ']').parents('tr').get(0));
+//        });
+//        if ($("table.submission_table tbody tr").length) {
+//            $("#master_checkbox").attr("disabled", "disabled");
+//        }
+//    }
 
     function getColumnDefinition() {
         var columns = [
