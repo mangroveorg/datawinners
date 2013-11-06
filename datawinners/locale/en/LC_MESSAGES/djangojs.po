@@ -117,7 +117,7 @@ msgstr ""
 msgid "Select 1 Data Sender only"
 msgstr ""
 
-msgid "Data Senders"
+msgid "Data Sender"
 msgstr ""
 
 #: media/javascript/data_modified_warning.js:53

@@ -39,7 +39,7 @@ $.fn.dwTable = function(options){
                             "sLengthMenu": gettext("Show") + " _MENU_ " + gettext(defaults.concept),
                             "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
                             "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
-                                {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_', subject_type:defaults.concept}, true),
+                                {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_', subject_type:gettext(defaults.concept)}, true),
                             "sInfoEmpty": gettext("<b> 0 to 0</b> of 0") + " " + gettext(defaults.concept),
                             "sSearch": "<strong>" + gettext("Search:") + "</strong>"
                             ,"sZeroRecords": gettext("No matching records found")
@@ -127,7 +127,7 @@ $.fn.dwTable = function(options){
                     function select_all_rows() {
                         $(dataTableObject).find(".select_all_message").data('all_selected', true);
                         var total_number_of_records = $(dataTableObject).dataTable().fnSettings().fnRecordsDisplay();
-                        var msg = interpolate(gettext("You have selected all %(total_number_of_records)s %(concept)s(s)."), {"total_number_of_records":total_number_of_records,"concept": concept}, true);
+                        var msg = interpolate(gettext("You have selected all %(total_number_of_records)s %(concept)s(s)."), {"total_number_of_records":total_number_of_records,"concept": gettext(concept)}, true);
                         msg  += ' <a href="#">' + gettext("Clear Selection") + '</a>';
                         $(dataTableObject).find(".select_all_message").html(msg);
                         $(dataTableObject).find(".select_all_message").find('a').click(clear_select_all_rows);
@@ -141,9 +141,9 @@ $.fn.dwTable = function(options){
                         if(show && are_there_more_items) {
                             var msg = "";
                             $(dataTableObject).find(".table_message").parent().show();
-                            msg = interpolate(gettext("You have selected <b>%(number_of_records)s</b> %(concept)s(s) on this page."), {"number_of_records": boxes.length, "concept": concept}, true);
+                            msg = interpolate(gettext("You have selected <b>%(number_of_records)s</b> %(concept)s(s) on this page."), {"number_of_records": boxes.length, "concept": gettext(concept)}, true);
                             msg += ' <a href="#">' +  interpolate(gettext('Select all <b> %(total_number_of_records)s </b>%(concept)s(s)'),
-                                    {'total_number_of_records': total_number_of_records, "concept": concept}, true) + "</a>";
+                                    {'total_number_of_records': total_number_of_records, "concept": gettext(concept)}, true) + "</a>";
                             var link = $(msg)
                             $(dataTableObject).find(".select_all_message").html(msg);
                             $(dataTableObject).find(".select_all_message").find('a').click(select_all_rows);
