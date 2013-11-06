@@ -148,6 +148,7 @@ $.fn.dwTable = function(options){
                             $(dataTableObject).find(".select_all_message").html(msg);
                             $(dataTableObject).find(".select_all_message").find('a').click(select_all_rows);
                         } else {
+                            $(dataTableObject).find(".select_all_message").data('all_selected', false);
                             $(dataTableObject).find(".table_message").parent().hide();
                             $(dataTableObject).find(".select_all_message").html('')
                         }
