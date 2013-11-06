@@ -1804,8 +1804,8 @@ msgstr "Ajouter un message de rappel"
 msgid "The selected records have been deleted"
 msgstr "Les dossiers sélectionnés ont été supprimés"
 
-msgid "Enter each data sender's email address below. Each can submit data via the internet"
-msgstr "Entrez l'adresse e-mail de chaque expéditeur de données ci-dessous. Chacun peut soumettre des données via Internet"
+msgid "Add your Data Senders' email addresses to give them access."
+msgstr "Ajoutez les adresses email de vos Expéditeurs de Données pour leur donner accès."
 
 msgid "Reporter ID"
 msgstr "ID "

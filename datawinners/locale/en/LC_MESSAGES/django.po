@@ -1751,7 +1751,7 @@ msgstr ""
 msgid "The selected records have been deleted"
 msgstr ""
 
-msgid "Enter each data sender's email address below. Each can submit data via the internet"
+msgid "Add your Data Senders' email addresses to give them access."
 msgstr ""
 
 msgid "Reporter ID"
