@@ -134,7 +134,7 @@ class ReporterRegistrationForm(Form):
 
         organization = Organization.objects.get(org_id=self.org_id)
         if organization.in_trial_mode:
-            if DataSenderOnTrialAccount.objects.filter(mobile_number=(self.cleaned_data.get('telephone_number'))).exists():
+            if DataSenderOnTrialAccount.objects.filter(mobile_number=(self.cleaned_data.get('telephone_number'))).exclude(organization=organization).exists():
                 self._errors['telephone_number'] = self.error_class(
                     [(u"Sorry, this number has already been used for a different DataWinners trial account.")])
         return self.cleaned_data.get('telephone_number')
