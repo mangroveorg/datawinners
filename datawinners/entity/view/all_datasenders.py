@@ -179,10 +179,6 @@ class AssociateDataSendersView(DataSenderActionView):
 
 class DisassociateDataSendersView(DataSenderActionView):
 
-    def fun(self, manager, project):
-        project.delete_datasender(manager, id)
-
-
     def responseMessage(self, selected_rep_ids, users_in_selected_ds):
         message = _("The Data Sender(s) are removed from project(s) successfully")
         selected_users_count = len(users_in_selected_ds)

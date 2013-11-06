@@ -76,7 +76,11 @@ DW.DataSenderActionHandler = function(){
   this["remove_from_project"] = function(table, selectedIds, all_selected) {
     DW.loading();
     $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
-        data: {'ids':selectedIds.join(';'), 'project_id':$("#project_id").val()}
+        data: { 'ids':selectedIds.join(';'),
+                'project_id':$("#project_id").val(),
+                'all_selected':all_selected,
+                'search_query':$(".dataTables_filter input").val()
+              }
     }).done(function (json_response) {
             table.fnReloadAjax();
             var response = $.parseJSON(json_response);
