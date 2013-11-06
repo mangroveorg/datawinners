@@ -77,9 +77,10 @@ DW.DataSenderActionHandler = function(){
     DW.loading();
     $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
         data: {'ids':selectedIds.join(';'), 'project_id':$("#project_id").val()}
-    }).done(function (data) {
+    }).done(function (json_response) {
             table.fnReloadAjax();
-            flash_message("Data Senders dissociated Successfully");
+            var response = $.parseJSON(json_response);
+            flash_message(response.message, response.success);
         }
     );
   };
@@ -135,9 +136,11 @@ function init_add_remove_from_project() {
                             'search_query':$(".dataTables_filter input").val()
                         }
 
-            }).done(function (data) {
+            }).done(function (json_response) {
                     $("#all_project_block").dialog('close');
                     $("#datasender_table").dataTable().fnReloadAjax();
+                    var response = $.parseJSON(json_response);
+                    flash_message(response.message, response.success);
                 });
         }
     });

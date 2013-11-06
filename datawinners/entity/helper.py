@@ -322,3 +322,18 @@ def reporter_id_list_of_all_users(manager):
         'id', flat=True)
     user_rep_ids = [str(rep_id_map[user_id]) for user_id in user_ids]
     return user_rep_ids
+
+def rep_id_name_dict_of_superusers(manager):
+    org_id = get_organization_from_manager(manager).org_id
+    orgUsers = NGOUserProfile.objects.filter(org_id=org_id).values_list("user_id", "reporter_id")
+
+    rep_id_map = {}
+    user_id_name_map = {}
+    for u in orgUsers:
+        rep_id_map.update({u[0]: u[1]})
+    users = User.objects.filter(groups__name__in=['Project Managers', 'NGO Admins'], id__in=rep_id_map.keys()).values()
+
+    for user in users:
+        user_id_name_map[rep_id_map[user["id"]]] = user["first_name"] + " " + user["last_name"]
+
+    return user_id_name_map

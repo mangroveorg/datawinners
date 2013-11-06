@@ -4308,3 +4308,12 @@ msgstr "Id de l'expéditeur"
 
 msgid "Data Sender Name"
 msgstr "Nom de l'expéditeur"
+
+msgid "The Data Sender(s) are removed from project(s) successfully"
+msgstr "Le(s) Expéditeur(s) de Données a (ont) été retiré(s) du projet avec succès"
+
+msgid "Note, the following Data Senders were not removed as they are DataWinners users: "
+msgstr "Les Expéditeurs de Données suivants ont été retirés car ils sont des utilisateurs de DataWinners: "
+
+msgid "The Data Sender(s) are added to project(s) successfully"
+msgstr "L(es) Expéditeur(s) de Données a (ont) été ajouté(s) au(x) projet(s) avec succès"

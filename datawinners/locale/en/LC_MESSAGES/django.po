@@ -4230,3 +4230,12 @@ msgstr ""
 
 msgid "Data Sender Name"
 msgstr ""
+
+msgid "The Data Sender(s) are removed from project(s) successfully"
+msgstr ""
+
+msgid "Note, the following Data Senders were not removed as they are DataWinners users: "
+msgstr ""
+
+msgid "The Data Sender(s) are added to project(s) successfully"
+msgstr ""

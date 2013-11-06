@@ -19,7 +19,7 @@ from datawinners.entity.data_sender import remove_system_datasenders, get_datase
 from datawinners.entity.views import _get_full_name, log_activity, get_success_message
 from datawinners.main.database import get_database_manager
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for
-from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, reporter_id_list_of_all_users
+from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, reporter_id_list_of_all_users, rep_id_name_dict_of_superusers
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import _parse_successful_imports, _add_imported_datasenders_to_trail_account
@@ -173,25 +173,56 @@ class AssociateDataSendersView(DataSenderActionView):
             UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
-        return HttpResponse({"success": True})
+
+        return HttpResponse(json.dumps({"success": True, "message": _("The Data Sender(s) are added to project(s) successfully")}))
 
 
 class DisassociateDataSendersView(DataSenderActionView):
+
+    def fun(self, manager, project):
+        project.delete_datasender(manager, id)
+
+
+    def responseMessage(self, selected_rep_ids, users_in_selected_ds):
+        message = _("The Data Sender(s) are removed from project(s) successfully")
+        selected_users_count = len(users_in_selected_ds)
+
+        if len(selected_rep_ids) == selected_users_count:
+            message = _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
+                      ', '.join(users_in_selected_ds)
+        elif selected_users_count > 0:
+            message = _("The Data Sender(s) are removed from project(s) successfully") + ". " + \
+                      _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
+                      ', '.join(users_in_selected_ds)
+        return message
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = self._get_projects(manager, request)
         projects_name = []
+        removed_rep_ids = []
+        selected_rep_ids = data_sender_short_codes(request, manager)
+        superusers = rep_id_name_dict_of_superusers(manager)
+        users_in_selected_ds = []
+
         for project in projects:
-            [project.delete_datasender(manager, id) for id in data_sender_short_codes(request, manager) if id in project.data_senders]
-            project.save(manager)
-            projects_name.append(project.name.capitalize())
-        ids = request.POST["ids"].split(";")
-        if len(ids):
+            for rep_id in selected_rep_ids:
+                if rep_id in superusers.keys():
+                    users_in_selected_ds.append(superusers[rep_id])
+                elif rep_id in project.data_senders:
+                    project.delete_datasender(manager, rep_id)
+                    project.save(manager)
+                    projects_name.append(project.name.capitalize())
+                    removed_rep_ids.append(rep_id)
+
+        if len(removed_rep_ids):
             UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
-                                  detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
+                                  detail=json.dumps({"Unique ID": "[%s]" % ", ".join(removed_rep_ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
-        return HttpResponse({"success": True})
+
+        message = self.responseMessage(selected_rep_ids, users_in_selected_ds)
+
+        return HttpResponse(json.dumps({"success": True, "message": message}))
 
 
 @csrf_view_exempt
