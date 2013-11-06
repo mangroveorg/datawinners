@@ -18,7 +18,7 @@ $(document).ready(function () {
         width: 940,
         close: function () {
             if ($('#message').length) {
-                window.location.replace(document.location.href);
+                window.location.reload();
             }
         }
     });
