@@ -179,17 +179,17 @@ class AssociateDataSendersView(DataSenderActionView):
 
 class DisassociateDataSendersView(DataSenderActionView):
 
-    def responseMessage(self, selected_rep_ids, users_in_selected_ds):
+    def responseMessage(self, selected_rep_ids, superusers_selected):
         message = _("The Data Sender(s) are removed from project(s) successfully")
-        selected_users_count = len(users_in_selected_ds)
+        superuser_count = len(superusers_selected)
 
-        if len(selected_rep_ids) == selected_users_count:
+        if len(selected_rep_ids) == superuser_count:
             message = _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
-                      ', '.join(users_in_selected_ds)
-        elif selected_users_count > 0:
+                      ', '.join(superusers_selected)
+        elif superuser_count > 0:
             message = _("The Data Sender(s) are removed from project(s) successfully") + ". " + \
                       _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
-                      ', '.join(users_in_selected_ds)
+                      ', '.join(superusers_selected)
         return message
 
     def post(self, request, *args, **kwargs):
@@ -199,24 +199,32 @@ class DisassociateDataSendersView(DataSenderActionView):
         removed_rep_ids = []
         selected_rep_ids = data_sender_short_codes(request, manager)
         superusers = rep_id_name_dict_of_superusers(manager)
-        users_in_selected_ds = []
+        superusers_selected = []
 
-        for project in projects:
-            for rep_id in selected_rep_ids:
-                if rep_id in superusers.keys():
-                    users_in_selected_ds.append(superusers[rep_id])
-                elif rep_id in project.data_senders:
+        non_superuser_selected = []
+        for rep_id in selected_rep_ids:
+            if rep_id in superusers.keys():
+                superusers_selected.append(superusers[rep_id])
+            else:
+                non_superuser_selected.append(rep_id)
+
+        for rep_id in non_superuser_selected:
+            project_has_repid = False
+            for project in projects:
+                if rep_id in project.data_senders:
                     project.delete_datasender(manager, rep_id)
                     project.save(manager)
                     projects_name.append(project.name.capitalize())
-                    removed_rep_ids.append(rep_id)
+                    project_has_repid = True
+            if project_has_repid:
+                removed_rep_ids.append(rep_id)
 
         if len(removed_rep_ids):
             UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(removed_rep_ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
-        message = self.responseMessage(selected_rep_ids, users_in_selected_ds)
+        message = self.responseMessage(selected_rep_ids, superusers_selected)
 
         return HttpResponse(json.dumps({"success": True, "message": message}))
 
