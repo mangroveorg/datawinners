@@ -1,9 +1,9 @@
-DW.SubmissionLogActionHandler = function () {
+DW.SubmissionLogActionHandler = function (submission_type, project_id) {
     this["delete"] = function (table, selected_ids, all_selected) {
         handle_submission_log_delete(table, selected_ids, all_selected);
     };
     this["edit"] = function (table, selected_ids, all_selected) {
-        handle_submission_log_edit(table, selected_ids, all_selected);
+        handle_submission_log_edit(table, selected_ids, all_selected, submission_type, project_id);
     };
 }
 
@@ -56,9 +56,8 @@ function handle_submission_log_delete(table, selected_ids, all_selected) {
     $("#message_text .message").delay(5000).fadeOut();
 }
 
-function handle_submission_log_edit(table, selected_ids, all_selected) {
+function handle_submission_log_edit(table, selected_ids, all_selected, active_tab_index, project_id) {
     survey_response_id = selected_ids[0];
-    var project_id = project_id;
 //    if (survey_response_id.length > 1) {
 //        return false;
 //    } else {

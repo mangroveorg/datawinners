@@ -299,7 +299,7 @@ def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
 @valid_web_user
 def get_submissions(request, project_id):
     dbm = get_database_manager(request.user)
-    form_model = get_form_model_by_code(dbm,project_id)
+    form_model = get_form_model_by_code(dbm, project_id)
     search_parameters = {}
     search_text = request.GET.get('sSearch', '').strip()
     search_parameters.update({"search_text": search_text})
@@ -311,7 +311,8 @@ def get_submissions(request, project_id):
     if filter_type.lower() != 'all':
         search_parameters.update({"filter": filter_type})
     user = request.user
-    query_count, search_count, submissions= SubmissionQuery(form_model,search_parameters).paginated_query(user, form_model.id)
+    query_count, search_count, submissions = SubmissionQuery(form_model, search_parameters).paginated_query(user,
+                                                                                                            form_model.id)
 
     return HttpResponse(
         jsonpickle.encode(

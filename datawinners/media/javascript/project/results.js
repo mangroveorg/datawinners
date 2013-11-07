@@ -63,7 +63,7 @@ $(document).ready(function () {
         window.location.href = window.location.pathname + '?type=' + tab[active_tab_index];
     });
     var all_tabs = $("#tabs").tabs().find('>ul>li>a[href$=tab_template]');
-    for (var i=0 ; i <  all_tabs.length;i++) {
+    for (var i = 0; i < all_tabs.length; i++) {
         if (all_tabs[i].text.toLowerCase().indexOf(active_tab) != -1) {
             $($(all_tabs[i]).parent()).addClass('ui-tabs-selected ui-state-active')
         } else {
@@ -81,27 +81,27 @@ $(document).ready(function () {
     });
 
 
-
-
-
     function bind_data(data) {
-        var action_handler = new DW.SubmissionLogActionHandler();
+        var active_tab_index = tab.indexOf(active_tab);
+        var action_handler = new DW.SubmissionLogActionHandler(active_tab_index, project_id);
 
         $(".submission_table").dwTable({
             "concept": "submissions",
             "sAjaxSource": render_table_url,
-            "sAjaxDataIdColIndex" : 1,
+            "sAjaxDataIdColIndex": 1,
             "remove_id": true,
             "bServerSide": true,
             "oLanguage": {
                 "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html() //todo check getEmptyTableText()
             },
-            "aaSorting": [ [ 2, "desc"] ] ,
-            "actionItems" : [
-                {"label":"Edit", handler:action_handler['edit'], "allow_selection": "single"},
-                {"label": "Delete", handler:action_handler['delete'], "allow_selection": "multiple"}
+            "aaSorting": [
+                [ 2, "desc"]
+            ],
+            "actionItems": [
+                {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
+                {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
             ]
-      });
+        });
 
     }
 
@@ -178,41 +178,41 @@ $(document).ready(function () {
     }
 
     var options = {container: "#delete_submission_warning_dialog",
-            continue_handler: function () {
-                var selected_ids = this.ids;
-                DW.loading();
-                var project_id = $(location).attr('href').split('/')[4];
-                $.ajax({
-                        type: 'POST',
-                        url: '/project/' + project_id + '/submissions/delete/',
-                        data: {
-                            'id_list': JSON.stringify(selected_ids)
-                        },
-                        success: function (response) {
-                            var data = JSON.parse(response);
-                            if (data.success) {
-                                $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
-                                removeRowsFromDataTable(selected_ids);
-                            } else {
-                                $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
-                            }
-                            $("#message_text .message").delay(5000).fadeOut();
-                        },
-                        error: function (e) {
-                            $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
+        continue_handler: function () {
+            var selected_ids = this.ids;
+            DW.loading();
+            var project_id = $(location).attr('href').split('/')[4];
+            $.ajax({
+                    type: 'POST',
+                    url: '/project/' + project_id + '/submissions/delete/',
+                    data: {
+                        'id_list': JSON.stringify(selected_ids)
+                    },
+                    success: function (response) {
+                        var data = JSON.parse(response);
+                        if (data.success) {
+                            $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
+                            removeRowsFromDataTable(selected_ids);
+                        } else {
+                            $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
                         }
+                        $("#message_text .message").delay(5000).fadeOut();
+                    },
+                    error: function (e) {
+                        $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
                     }
-                )
-                ;
+                }
+            )
+            ;
 
-                return false;
-            },
-            title: gettext("Your Submission(s) will be deleted"),
-            cancel_handler: function () {
-            },
-            height: 150,
-            width: 550
-        }
+            return false;
+        },
+        title: gettext("Your Submission(s) will be deleted"),
+        cancel_handler: function () {
+        },
+        height: 150,
+        width: 550
+    }
 });
 
 //    var delete_submission_warning_dialog = new DW.warning_dialog(options);
