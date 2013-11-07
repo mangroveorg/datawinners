@@ -17,7 +17,7 @@ from datawinners.common.constant import IMPORTED_DATA_SENDERS, REMOVED_DATA_SEND
 from datawinners.entity import import_data as import_module, import_data
 from datawinners.entity.data_sender import get_user_profile_by_reporter_id
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization, reporter_id_list_of_all_users
+from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization, rep_id_name_dict_of_superusers
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
 from datawinners.project.models import Project
@@ -102,13 +102,13 @@ def registered_datasenders(request, project_id):
     project, project_links = _get_project_and_project_link(manager, project_id)
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
-        user_rep_ids = reporter_id_list_of_all_users(manager)
+        user_rep_id_name_dict = rep_id_name_dict_of_superusers(manager)
         return render_to_response('project/registered_datasenders.html',
                                   {   'project': project,
                                       'project_links': project_links,
                                       'current_language': translation.get_language(),
                                       'in_trial_mode': in_trial_mode,
-                                      'users_list':user_rep_ids},
+                                      'user_dict': json.dumps(user_rep_id_name_dict)},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities, successful_imports = import_module.import_data(request, manager,
@@ -131,21 +131,6 @@ def registered_datasenders(request, project_id):
                 'failure_imports': failure_imports,
                 'successful_imports': imported_data_senders
             }))
-
-
-@login_required
-@csrf_exempt
-@is_not_expired
-def disassociate_datasenders(request):
-    manager = get_database_manager(request.user)
-    project = Project.load(manager.database, request.POST['project_id'])
-    [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
-    project.save(manager)
-    ids = request.POST["ids"].split(";")
-    if len(ids):
-        UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS, project=project.name,
-                              detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(ids)})))
-    return HttpResponse(reverse(registered_datasenders, args=(project.id,)))
 
 
 def edit_data_sender(request, project_id, reporter_id):

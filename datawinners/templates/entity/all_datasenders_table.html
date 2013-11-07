@@ -10,6 +10,7 @@
 <script src="/media/javascript/entity/datasender_actions.js"></script>
 <script>
     var datasender_ajax_url = "{% url all_datasenders_ajax %}";
+    var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
 $(function(){
     function col(header_class_name){
         return $('#datasender_table th.' + header_class_name).index('#datasender_table th');

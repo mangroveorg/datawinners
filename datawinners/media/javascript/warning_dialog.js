@@ -10,7 +10,6 @@ DW.show_dialog_overlay = function () {
 DW.warning_dialog = function (kwargs) {
     var defaults = {
         width:650,
-        height:200,
         is_continue:false,
         title:gettext("Warning"),
         continue_handler:function () {

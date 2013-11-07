@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, url
-from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataSendersAjaxView, AssociateDataSendersView, DisassociateDataSendersView, delete_data_senders
+from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataSendersAjaxView, AssociateDataSendersView, DisassociateDataSendersView, delete_data_senders, SuperusersInSearchedDataSender
 from datawinners.entity.view.datasenders import EditDataSenderView, CreateDataSenderView
 from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject
 from datawinners.entity.views import create_subject
@@ -33,4 +33,5 @@ urlpatterns = patterns('',
                        url(r'subject/export/', export_subject, name="export_subject"),
                        (r'subject/template/(?P<entity_type>.+?)/$', export_template),
                        url(r'subjects/$', all_subject_types, name="all_subject_type_page"),
+                       url(r'superusersindssearched/$', SuperusersInSearchedDataSender.as_view(), name="superusers_in_ds_searched")
 )

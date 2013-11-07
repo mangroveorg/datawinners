@@ -32,9 +32,9 @@ function init_warnThenDeleteDialogBox() {
         var entity_type = delete_dialog.data("entity_type");
         post_data = {'ids':allIds.join(';'), 'entity_type':entity_type, 'all_selected':all_selected, 'search_query':$(".dataTables_filter input").val()}
         if ($("#project_name").length)
-            post_data.project = $("#project_name").val();
+            post_data["project_name"] = $("#project_name").val();
         if(all_selected)
-            post_data.all_selected = true;
+            post_data["all_selected"] = true;
         DW.loading();
         $.post("/entity/delete/", post_data,
             function (json_response) {
@@ -78,6 +78,7 @@ DW.DataSenderActionHandler = function(){
     handle_row_deletion(table, selectedIds);
     $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
         data: { 'ids':selectedIds.join(';'),
+                'project_name':$("#project_name").val(),
                 'project_id':$("#project_id").val(),
                 'all_selected':all_selected,
                 'search_query':$(".dataTables_filter input").val()
@@ -160,20 +161,55 @@ function add_remove_from_project(action,  table, selected_ids, all_selected) {
     all_project_block.data("action", action);
     all_project_block.dialog("open");
 }
-
-get_users_from_selected_datasenders = function (table, selected_ids) {
-    var users = {};
-    users["ids"] = [];
-    users["names"] = [];
-    $(table).find('input.row_checkbox:checked').each(function () {
-        var datasender_id = $(this).val();
-        if ($.inArray(datasender_id ,users_list) >= 0) {
-            users["ids"].push(datasender_id);
-            users["names"].push($(this).parent().next().html());
+function get_superuser_names_from_selected_datasenders(table, selected_ids, all_selected) {
+    var superusers =[];
+    var user_rep_ids = [];
+    var user_fullnames = [];
+    $.each(user_dict, function(k,v) {
+            user_rep_ids.push(k);
+            user_fullnames.push(v)
         }
+    );
+
+    var searchQuery = $(".dataTables_filter input").val();
+
+    if (all_selected) {
+        if($.trim(searchQuery) != "") {
+            superusers = superusersInSearchedDS();
+        }else {
+            superusers = user_fullnames;
+        }
+    }else {
+        $(table).find('input.row_checkbox:checked').each(function () {
+            var datasender_id = $(this).val();
+            if ($.inArray(datasender_id ,user_rep_ids) >= 0) {
+                  superusers.push(user_dict[datasender_id])
+            }
+        });
+    }
+    return superusers;
+}
+
+
+function superusersInSearchedDS() {
+    var superusers;
+    // synchronous
+    $.ajax({
+        async: false,
+        url: superusersearch_ajax_url,
+        type: "POST",
+        headers: { "X-CSRFToken": $.cookie('csrftoken') },
+        data: {
+            'all_selected': true,
+            'search_query':$(".dataTables_filter input").val()
+        }
+
+    }).done(function (json_response) {
+            var response = $.parseJSON(json_response);
+            superusers = response.superusers_selected;
     });
 
-    return users;
+    return superusers;
 }
 
 function delete_all_ds_are_users_show_warning(users) {
@@ -184,7 +220,6 @@ function delete_all_ds_are_users_show_warning(users) {
             $('#action').removeAttr("data-selected-action");
             $("input.is_user").attr("checked", false);
         },
-        height: 180,
         width: 550
     }
 
@@ -213,17 +248,15 @@ function handle_datasender_delete(table, allIds, all_selected){
     $("#note_for_delete_users").hide();
     handle_row_deletion(table, allIds);
 
-    var users = get_users_from_selected_datasenders(table, allIds);
+    var superusers_selected = get_superuser_names_from_selected_datasenders(table, allIds, all_selected);
 
-    if (users["names"].length) {
-        var users_list_for_html = "<li>" + users["names"].join("</li><li>") + "</li>";
-        if (users["names"].length == allIds.length) { //Each DS selected is also User
-
+    if (superusers_selected.length) {
+        var users_list_for_html = "<li>" + superusers_selected.join("</li><li>") + "</li>";
+        if (superusers_selected.length == allIds.length) { //Each DS selected is also User
             delete_all_ds_are_users_show_warning(users_list_for_html);
         } else { // A mix of Simple DS and DS having user credentials
             $("#note_for_delete_users .users_list").html(users_list_for_html);
             $("#note_for_delete_users").show();
-            allIds = uncheck_users(table, users["ids"]);
             warnThenDeleteDialogBox(allIds, all_selected, "reporter", this);
         }
     } else {

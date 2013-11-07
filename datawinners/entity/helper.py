@@ -312,17 +312,6 @@ def put_email_information_to_entity(dbm, entity, email):
     data = (email_field_label, email, email_ddtype)
     entity.update_latest_data([data])
 
-def reporter_id_list_of_all_users(manager):
-    org_id = get_organization_from_manager(manager).org_id
-    users = NGOUserProfile.objects.filter(org_id=org_id).values_list("user_id", "reporter_id")
-    rep_id_map = {}
-    for u in users:
-        rep_id_map.update({u[0]: u[1]})
-    user_ids = User.objects.filter(groups__name__in=['Project Managers'], id__in=rep_id_map.keys()).values_list(
-        'id', flat=True)
-    user_rep_ids = [str(rep_id_map[user_id]) for user_id in user_ids]
-    return user_rep_ids
-
 def rep_id_name_dict_of_superusers(manager):
     org_id = get_organization_from_manager(manager).org_id
     orgUsers = NGOUserProfile.objects.filter(org_id=org_id).values_list("user_id", "reporter_id")

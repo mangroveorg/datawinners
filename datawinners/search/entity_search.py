@@ -114,6 +114,13 @@ class MyDataSenderQuery(EntityQuery):
         entities = self.response_creator.create_response(entity_headers, query_with_criteria)
         return query_with_criteria.count(), paginated_query.count(), entities
 
+    def query_by_project_name(self, user, project_name, search_text):
+        entity_headers = self.get_headers(user)
+        query = self.query_builder.create_query(REPORTER, self._getDatabaseName(user))
+        query = query[:query.count()]
+        query = self.query_builder.add_query_criteria(entity_headers, search_text, query).filter(projects_value=project_name)
+        return self.response_creator.create_response(entity_headers, query)
+
 class SubjectQuery(EntityQuery):
     def __init__(self):
         EntityQuery.__init__(self, SubjectQueryResponseCreator())
