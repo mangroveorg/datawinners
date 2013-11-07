@@ -213,9 +213,17 @@ def tabulate_failures(rows):
                     errors.append(_('Answer for question %s is required.') % (code, ))
                 elif 'xx.xxxx yy.yyyy' in value:
                     errors.append(_('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315.'))
-                #elif 'longer' in value:
-                #    text = value.split(' ')[1]
-                #    errors = errors + "<br>" + _("Answer %s for question %s is longer than allowed.") % (text, key)
+                elif 'longer' in value:
+                    text = value.split(' ')[1]
+                    question = value.split(' ')[4]
+                    length = value.split(' ')[13].rstrip(".")
+                    errors.append(_("Answer %s for question %s is longer than allowed. Maximum allowed length is %s.") % (text, question, length))
+                elif 'shorter' in value:
+                    text = value.split(' ')[1]
+                    question = value.split(' ')[4]
+                    length = value.split(' ')[13].rstrip(".")
+                    errors.append(_("Answer %s for question %s is shorter than allowed. Minimum allowed length is %s.") % (text, question, length))
+
                 elif 'must be between' in value:
                     text = value.split(' ')[2]
                     low = value.split(' ')[6]

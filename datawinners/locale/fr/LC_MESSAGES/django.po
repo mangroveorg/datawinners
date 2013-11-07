@@ -1867,8 +1867,11 @@ msgstr "Tous les champs sont obligatoires sauf indication \"facultatif\"."
 msgid "Optional"
 msgstr "facultatif"
 
-msgid "Answer %s for question %s is longer than allowed."
-msgstr "La réponse %s à la question %s dépasse la longueur autorisée."
+msgid "Answer %s for question %s is longer than allowed. Maximum allowed length is %s."
+msgstr "La réponse %s à la question %s est plus longue que ce qui est permis. Le nombre de caractères maximum autorisé est %s."
+
+msgid "Answer %s for question %s is shorter than allowed. Minimum allowed length is %s."
+msgstr "La réponse %s à la question %s est plus courte que ce qui est permis. Le nombre de caractères minimum autorisé est %s."
 
 msgid "Answer %s for question %s is %s than allowed."
 msgstr "La réponse %s pour la question %s est %s la valeur autorisée."
@@ -1966,6 +1969,9 @@ msgstr "Réponse incorrecte pour la t. Veuillez envoyer de nouveau la totalité 
 
 msgid "Invalid message format."
 msgstr "Format de message non valide."
+
+msgid "Invalid Short Code. Only letters and numbers are valid."
+msgstr "Code invalide. Seuls les lettres et les nombres sont valides."
 
 msgid "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."
 msgstr "Erreur: SMS Incorrect. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."
