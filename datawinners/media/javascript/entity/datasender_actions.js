@@ -75,6 +75,7 @@ DW.DataSenderActionHandler = function(){
   };
   this["remove_from_project"] = function(table, selectedIds, all_selected) {
     DW.loading();
+    handle_row_deletion(table, selectedIds);
     $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
         data: { 'ids':selectedIds.join(';'),
                 'project_id':$("#project_id").val(),
@@ -199,14 +200,18 @@ function uncheck_users(table, user_ids){
     return $.map($(table).find("input.row_checkbox:checked"), function(e){return $(e).val();});
 }
 
-function handle_datasender_delete(table, allIds, all_selected){
-    $("#note_for_delete_users").hide();
+function handle_row_deletion(table, allIds){
     var settings = table.fnSettings();
     if (settings.fnDisplayEnd() == settings.fnRecordsDisplay()){
         if ($(table).find("input.row_checkbox").length == allIds.length){
            settings._iDisplayStart = 0;
         }
     }
+}
+
+function handle_datasender_delete(table, allIds, all_selected){
+    $("#note_for_delete_users").hide();
+    handle_row_deletion(table, allIds);
 
     var users = get_users_from_selected_datasenders(table, allIds);
 
