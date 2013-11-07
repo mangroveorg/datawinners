@@ -12,8 +12,8 @@ from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import create_entity
-from mangrove.datastore.datadict import get_or_create_data_dict
-from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD, EMAIL_FIELD
+from mangrove.datastore.datadict import get_datadict_type_by_slug
+from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD, EMAIL_FIELD, LOCATION_TYPE_FIELD_NAME
 from mangrove.datastore.queries import get_entity_count_for_type
 
 
@@ -78,31 +78,37 @@ def active_organization(org):
         org.save()
 
 
+def _create_entity_data(manager, current_user_name, email, location, mobile_number):
+    mobile_number_type = get_datadict_type_by_slug(manager, slug='mobile_number')
+    name_type = get_datadict_type_by_slug(manager, slug='name')
+    location_type = get_datadict_type_by_slug(manager, slug='location')
+    data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type),
+            (LOCATION_TYPE_FIELD_NAME, location, location_type)]
+    if email:
+        data.append((EMAIL_FIELD, email, name_type ))
+    return data
+
+
 def make_user_as_a_datasender(manager, organization, current_user_name, mobile_number, email=None):
     total_entity = get_entity_count_for_type(manager, [REPORTER])
     reporter_id = None
     offset = 1
+    location = [organization.country_name()]
     while not reporter_id:
         reporter_short_code = 'rep' + str(total_entity + offset)
         try:
             entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=reporter_short_code,
-                                   location=[organization.country_name()])
+                                   location=location)
             reporter_id = entity.short_code
-        except DataObjectAlreadyExists as ignore:
+        except DataObjectAlreadyExists:
             offset += 1
 
-    mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
-                                                 primitive_type='string')
-    name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
-    data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type)]
-    if email:
-        data.append((EMAIL_FIELD, email, name_type ))
+    data = _create_entity_data(manager, current_user_name, email, location, mobile_number)
     entity.add_data(data=data)
     entity.save()
 
     if organization.in_trial_mode:
-        data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
-                                                             organization=organization)
+        data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number, organization=organization)
         data_sender.save()
     return entity.short_code
 
