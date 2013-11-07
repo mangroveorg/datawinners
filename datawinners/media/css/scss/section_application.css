@@ -14,6 +14,7 @@
   background: #e8eff6 url("/media/images/application_bg.gif") repeat-x top left !important;
   padding-bottom: 30px; }
   #container_content .content, #container_wizard .content {
+    clear: both;
     min-height: 550px;
     background: #FFFFFF;
     border: 1px solid #cccccc;

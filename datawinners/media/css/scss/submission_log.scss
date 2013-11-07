@@ -17,22 +17,6 @@
 }
 
 #submission_logs {
-  .btn {
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#CCDFED), to(#B0CFD7));
-    background: -moz-linear-gradient(top, #CCDFED, #B0CFD7);
-    -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
-    display:inline-block; /* IE is so silly */
-  }
-  .btn:hover {
-    background: #DBE6F1;
-  }
-  .btn-group.open .btn.dropdown-toggle {
-    background: #DBE6F1;
-  }
-  .btn-group .btn.dropdown-toggle{
-    margin-right: 20px;
-  }
   .ui-state-default {
     font-weight: normal;
   }
@@ -82,42 +66,6 @@
       background: none;
       border-bottom: 4px solid #525252 !important;
     }
-  }
-  #page_hint {
-    >div {
-      display: none;
-    }
-    div:first-child {
-      display: block;
-    }
-  }
-  .dataTables_info {
-    float: none;
-    display: inline;
-  }
-  .btn-group{
-    font-size: 13px;
-    margin-right: 50px;
-  }
-  .action_bar {
-    width: 100%;
-    height: 30px;
-  }
-  select.action {
-    background: url("/media/images/action.png") no-repeat scroll left 0 transparent;
-    border: medium none;
-    overflow:hidden;
-    width: 108px;
-    color: #536E8C;
-    font-size: 12px;
-    font-weight: bold;
-    padding-top: 2px;
-  }
-  .action_container{
-    display: block;
-    overflow: hidden;
-    width: 90px;
-    float: left;
   }
 }
 

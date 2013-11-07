@@ -12,19 +12,6 @@
     color: #000;
     cursor: pointer; }
 
-#submission_logs .btn {
-  background: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
-  background: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
-  display: inline-block;
-  /* IE is so silly */ }
-#submission_logs .btn:hover {
-  background: #DBE6F1; }
-#submission_logs .btn-group.open .btn.dropdown-toggle {
-  background: #DBE6F1; }
-#submission_logs .btn-group .btn.dropdown-toggle {
-  margin-right: 20px; }
 #submission_logs .ui-state-default {
   font-weight: normal; }
 #submission_logs tr, #submission_logs td {
@@ -55,33 +42,6 @@
   #submission_logs #tabs.ui-widget-content .ui-widget-header {
     background: none;
     border-bottom: 4px solid #525252 !important; }
-#submission_logs #page_hint > div {
-  display: none; }
-#submission_logs #page_hint div:first-child {
-  display: block; }
-#submission_logs .dataTables_info {
-  float: none;
-  display: inline; }
-#submission_logs .btn-group {
-  font-size: 13px;
-  margin-right: 50px; }
-#submission_logs .action_bar {
-  width: 100%;
-  height: 30px; }
-#submission_logs select.action {
-  background: url("/media/images/action.png") no-repeat scroll left 0 transparent;
-  border: medium none;
-  overflow: hidden;
-  width: 108px;
-  color: #536E8C;
-  font-size: 12px;
-  font-weight: bold;
-  padding-top: 2px; }
-#submission_logs .action_container {
-  display: block;
-  overflow: hidden;
-  width: 90px;
-  float: left; }
 
 #submission_logs.narrow_first_col thead th:first-child {
   width: 20px !important;

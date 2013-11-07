@@ -316,7 +316,7 @@ def get_submissions(request, project_id):
     return HttpResponse(
         jsonpickle.encode(
             {
-                'submissions': submissions,
+                'data': submissions,
                 'iTotalDisplayRecords': search_count,
                 'iDisplayStart': int(request.GET.get('iDisplayStart')),
                 "iTotalRecords": query_count,
