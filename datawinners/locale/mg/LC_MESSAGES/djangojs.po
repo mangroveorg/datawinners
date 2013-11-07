@@ -381,13 +381,13 @@ msgid "Search:"
 msgstr "Recherche:"
 
 msgid "First"
-msgstr "Premiere"
+msgstr "Précédent"
 
 msgid "Previous"
 msgstr "Préc."
 
 msgid "Last"
-msgstr "Dernière"
+msgstr "Suivant"
 
 msgid "Cancel this Project?"
 msgstr "Annuler ce projet?"

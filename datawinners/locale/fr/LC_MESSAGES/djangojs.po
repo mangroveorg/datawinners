@@ -603,7 +603,7 @@ msgstr "Recherche:"
 #: media/javascript/project/results.js:185
 #: media/javascript/useractivity/log.js:39
 msgid "First"
-msgstr "Premiere"
+msgstr "Précédent"
 
 #: media/javascript/project/data_analysis.js:77
 #: media/javascript/project/results.js:186
@@ -621,7 +621,7 @@ msgstr "Suiv."
 #: media/javascript/project/results.js:188
 #: media/javascript/useractivity/log.js:42
 msgid "Last"
-msgstr "Dernière"
+msgstr "Suivant"
 
 #: media/javascript/project/data_analysis.js:90
 msgid "Reporting Period"
