@@ -1,16 +1,16 @@
+import cProfile
 from collections import defaultdict
 import json
-from django.contrib import messages
+import pstats
+from sets import Set
 
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 from django.utils import translation
-from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
-from django.utils.translation import ugettext as _, ugettext
-from django.views.generic.base import TemplateView, View, RedirectView
+from django.utils.translation import ugettext as _
+from django.views.generic.base import TemplateView, View
 import jsonpickle
 
 from datawinners import utils
@@ -18,8 +18,8 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
 from datawinners.entity.data_sender import remove_system_datasenders, get_datasender_user_detail
 from datawinners.entity.views import _get_full_name, log_activity, get_success_message
 from datawinners.main.database import get_database_manager
-from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for
-from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, reporter_id_list_of_all_users, rep_id_name_dict_of_superusers
+from datawinners.accountmanagement.models import get_ngo_admin_user_profiles_for
+from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, reporter_id_list_of_all_users, rep_id_name_dict_of_superusers
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import _parse_successful_imports, _add_imported_datasenders_to_trail_account
@@ -27,7 +27,7 @@ from datawinners.search.entity_search import DatasenderQuery
 from mangrove.form_model.form_model import REPORTER, header_fields, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE
 from mangrove.transport import TransportInfo
 from mangrove.utils.types import is_empty
-from datawinners.utils import get_organization_from_manager, get_organization
+from datawinners.utils import get_organization
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_PROJECTS, REMOVED_DATA_SENDER_TO_PROJECTS, DELETED_DATA_SENDERS
@@ -163,10 +163,11 @@ class AssociateDataSendersView(DataSenderActionView):
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = self._get_projects(manager, request)
-        projects_name = []
+        projects_name = Set()
         for project in projects:
+            #for id in data_sender_short_codes(request, manager): if not id in project.data_senders: project.associate_data_sender_to_project(manager, id)
             project.data_senders.extend([id for id in data_sender_short_codes(request, manager) if not id in project.data_senders])
-            projects_name.append(project.name.capitalize())
+            projects_name.add(project.name.capitalize())
             project.save(manager)
         ids = request.POST["ids"].split(';')
         if len(ids):
@@ -195,8 +196,8 @@ class DisassociateDataSendersView(DataSenderActionView):
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = self._get_projects(manager, request)
-        projects_name = []
-        removed_rep_ids = []
+        projects_name = Set()
+        removed_rep_ids = Set()
         selected_rep_ids = data_sender_short_codes(request, manager)
         superusers = rep_id_name_dict_of_superusers(manager)
         superusers_selected = []
@@ -208,16 +209,12 @@ class DisassociateDataSendersView(DataSenderActionView):
             else:
                 non_superuser_selected.append(rep_id)
 
-        for rep_id in non_superuser_selected:
-            project_has_repid = False
-            for project in projects:
+        for project in projects:
+            for rep_id in non_superuser_selected:
                 if rep_id in project.data_senders:
                     project.delete_datasender(manager, rep_id)
-                    project.save(manager)
-                    projects_name.append(project.name.capitalize())
-                    project_has_repid = True
-            if project_has_repid:
-                removed_rep_ids.append(rep_id)
+                    projects_name.add(project.name.capitalize())
+                    removed_rep_ids.add(rep_id)
 
         if len(removed_rep_ids):
             UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
@@ -225,7 +222,6 @@ class DisassociateDataSendersView(DataSenderActionView):
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
         message = self.responseMessage(selected_rep_ids, superusers_selected)
-
         return HttpResponse(json.dumps({"success": True, "message": message}))
 
 

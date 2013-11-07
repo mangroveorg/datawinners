@@ -256,10 +256,10 @@ class Project(DocumentBase):
         if len(rows) and rows[0]['value'] != self.id:
             raise DataObjectAlreadyExists('Project', "Name", "'%s'" % self.name)
 
-    def save(self, dbm):
+    def save(self, dbm, process_post_update=True):
         assert isinstance(dbm, DatabaseManager)
         self._check_if_project_name_unique(dbm)
-        return dbm._save_document(self)
+        return dbm._save_document(self, process_post_update=process_post_update)
 
     def update(self, value_dict):
         attribute_list = [item[0] for item in (self.items())]
@@ -316,7 +316,7 @@ class Project(DocumentBase):
     def delete_datasender(self, dbm, entity_id):
         from datawinners.search.datasender_index import update_datasender_index_by_id
         self.data_senders.remove(entity_id)
-        self.save(dbm)
+        self.save(dbm, process_post_update=False)
         update_datasender_index_by_id(entity_id,dbm)
 
     def associate_data_sender_to_project(self, dbm, data_sender_code):
