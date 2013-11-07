@@ -67,6 +67,10 @@ class MyDataSendersAjaxView(View):
 
 def _parse_successful_imports(successful_imports):
     imported_data_senders=[]
+
+    if not successful_imports:
+        return imported_data_senders
+
     for successful_import in successful_imports:
         data_sender={}
         data_sender['email'] = successful_import["email"] if "email" in successful_import else ""
