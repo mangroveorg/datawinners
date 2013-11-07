@@ -1,6 +1,7 @@
 (function($) {
 $.fn.dwTable = function(options){
-        function continue_dwtable_creation(){
+
+    function continue_dwtable_creation(){
             var defaults = {
                 "concept":"Row",
                 "sDom": "ipfrtipl",
@@ -59,7 +60,17 @@ $.fn.dwTable = function(options){
 
             defaults["fnPreDrawCallback"] = function(oSettings) {
                 $(this).find("input:checked").attr('checked',false);
+                _reset_start_page_when_page_length_changes.call(this, oSettings);
             };
+
+            function _reset_start_page_when_page_length_changes(oSettings) {
+                previous_page_length = jQuery.data($(this)[0], "displayLength");
+                if (previous_page_length != oSettings._iDisplayLength) {
+                    jQuery.data($(this)[0], "displayLength", oSettings._iDisplayLength);
+                    oSettings._iDisplayStart = 0;
+                }
+            }
+
 
             defaults["fnDrawCallback"] = function (oSettings) {
                 $(this).find("thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0);
@@ -68,9 +79,12 @@ $.fn.dwTable = function(options){
                 $(this).find(".select_all_message").data('all_selected', false);
             }
 
-            defaults["fnInitComplete"] = function(original_init_complete_handler, concept, actionItems){
+            defaults["fnInitComplete"] = function(original_init_complete_handler, concept, actionItems, displayLength){
                 return function(){
                     var dataTableObject = this;
+
+                    //Used to reset page number when page length changes
+                    jQuery.data( $(this)[0], "displayLength", displayLength);
 
                     if (typeof actionItems != "undefined" && actionItems.length){
                         var dropdown_id = "dropdown-menu" + Math.floor(Math.random() * 10000000000000001);
@@ -173,7 +187,7 @@ $.fn.dwTable = function(options){
 
                     if (typeof original_init_complete_handler == "function") original_init_complete_handler.apply(this, arguments);
                 }
-            }(defaults["fnInitComplete"], defaults.concept, defaults.actionItems);
+            }(defaults["fnInitComplete"], defaults.concept, defaults.actionItems, defaults.iDisplayLength);
 
 
             $(this).dataTable(defaults)["_dw"] = defaults;
@@ -247,4 +261,20 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
             fnCallback( oSettings );
         }
     }, oSettings );
+};
+
+$.fn.dataTableExt.oApi.fnDisplayStart = function ( oSettings, iStart, bRedraw )
+{
+    if ( typeof bRedraw == 'undefined' )
+    {
+        bRedraw = true;
+    }
+
+    oSettings._iDisplayStart = iStart;
+    oSettings.oApi._fnCalculateEnd( oSettings );
+
+    if ( bRedraw )
+    {
+        oSettings.oApi._fnDraw( oSettings );
+    }
 };
