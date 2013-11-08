@@ -7,20 +7,20 @@ DW.InitializeEditDataSender = function () {
         bind_all_links:function () {
             $("a#cancel").bind('click', {self:this}, function (event) {
                 var that = event.data.self;
-                that.redirect_url = $(this).attr("href");
-
                 if (that.is_form_changed() || that.form_has_errors()) {
-                    $("#cancel_submission_warning_message").dialog("open");
-                    return false;
+                    $("#cancel_submission_warning_message").dialog({modal:true}).dialog("open");
+//                    return false;
                 } else
-                    return that.redirect();
+                    $("#datasender-popup").dialog("close");
+                    $("#datasender_table").dataTable().fnReloadAjax();
             });
         },
 
         bind_yes_button_in_dialog:function () {
             $("#cancel_submission_warning_message .yes_button").bind('click', function () {
                 $("#cancel_submission_warning_message").dialog("close");
-                window.location.href = $('.back-to-list').attr("href");
+                $("#datasender-popup").dialog("close");
+                $("#datasender_table").dataTable().fnReloadAjax();
             });
         }
     };

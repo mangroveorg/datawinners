@@ -71,8 +71,7 @@ DW.DataSenderActionHandler = function () {
         add_remove_from_project('disassociate', table, selected_ids, all_selected);
     };
     this["mydsedit"] = function (table, selected_ids) {
-//        location.href = '/project/datasender/edit/' + $("#project_id").val() + '/' + selected_ids[0] + '/';
-                handle_datasender_edit(table, selected_ids);
+        handle_datasender_edit(table, selected_ids);
     };
   this["remove_from_project"] = function(table, selectedIds, all_selected) {
     DW.loading();
@@ -367,12 +366,6 @@ function init_dialog_box_for_datasender() {
             $('#action').removeAttr("data-selected-action");
             $('#web_user_error').hide();
         },
-        open:function(){
-            $("#cancel").click(function () {
-                $("#datasender-popup").dialog("close");
-                $("#datasender_table").dataTable().fnReloadAjax();
-            });
-        },
         close:function(){
             $("#datasender_table").dataTable().fnReloadAjax();
         }
@@ -387,6 +380,7 @@ function handle_datasender_edit(table, selectedIds) {
         success: function (response) {
             $("#datasender-popup").html(response) ;
             $("#datasender-popup").dialog('option','title',gettext('Edit Datasender')).dialog("open");
+            new DW.InitializeEditDataSender().init();
         }
     });
 }
@@ -401,7 +395,7 @@ function register_datasender(table) {
             $("#datasender-popup").dialog('option','title',gettext('Register Datasender')).dialog("open");
             device_actions();
             reporter_id_generation_action();
-
+            new DW.InitializeEditDataSender().init();
         }
     });
 }

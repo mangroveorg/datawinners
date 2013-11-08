@@ -113,7 +113,8 @@ var sender_registration_link = "{{ registration_link }}";
 
           </li>
           <li class="button_block">
-              <a class="cancel_link" onclick="cancel_handler()">{% trans "Cancel" %}</a>
+              <a id="cancel" class="cancel_link" >{% trans "Cancel" %}</a>
+              <div style="display: none;"> {% include "warning_section.html" %} </div>
               <input type="button" id="id_register_button" value="{% trans 'Register' %}" class="button margin_top_20"/>
           </li>
       </ul>
