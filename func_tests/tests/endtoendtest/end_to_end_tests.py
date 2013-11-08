@@ -238,6 +238,7 @@ class TestApplicationEndToEnd(BaseTest):
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
+        submission_log_page.wait_for_table_data_to_load()
         self.assertTrue(submission_log_page.empty_help_text())
 
     def add_edit_delete_subject(self):
@@ -297,7 +298,7 @@ class TestApplicationEndToEnd(BaseTest):
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_project_activation()
         self.verify_submission_via_web(ds_email)
-        #self.admin_edit_delete_submissions()
+        self.admin_edit_delete_submissions()
         self.delete_project()
 
         project_overview_page = self.verify_summary_report_project_creation()

@@ -92,7 +92,7 @@ $(document).ready(function () {
             "remove_id": true,
             "bServerSide": true,
             "oLanguage": {
-                "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html() //todo check getEmptyTableText()
+                "sEmptyTable": $('.help_no_submissions').html()
             },
             "aaSorting": [
                 [ 2, "desc"]

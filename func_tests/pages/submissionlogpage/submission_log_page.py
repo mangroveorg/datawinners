@@ -98,7 +98,7 @@ class SubmissionLogPage(Page):
         return self.driver.find(ACTION_MENU).is_displayed()
 
     def check_submission_by_row_number(self, row_number):
-        self.driver.find(by_css(SUBMISSION_CB_LOCATOR % str(row_number))).click()
+        self.driver.find(by_css(SUBMISSION_CB_LOCATOR % str(row_number+1))).click()
 
     def is_checkall_checked(self):
         return self.driver.find(CHECKALL_CB_CSS_LOCATOR).get_attribute("checked") == "true"
@@ -111,3 +111,6 @@ class SubmissionLogPage(Page):
 
     def empty_help_text(self):
         return self.driver.find(by_css('.submission_table .help_accordion')).text
+
+    def wait_for_table_data_to_load(self):
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("submission_table_processing"))
