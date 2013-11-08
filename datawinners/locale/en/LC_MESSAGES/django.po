@@ -3605,7 +3605,7 @@ msgstr ""
 
 msgid "data sender delete error text"
 msgstr "If you delete Data Senders, they can no longer send in data.<br/>"
-       "However, you can still view their previous data submissions on the Data pages."
+       "However, you can still view their previous Data Submissions on the Data pages."
 
 
 msgid "ID is:"
