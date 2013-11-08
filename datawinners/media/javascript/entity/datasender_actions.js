@@ -136,7 +136,7 @@ function init_add_remove_from_project() {
                         type: "POST",
                         headers: { "X-CSRFToken": $.cookie('csrftoken') },
                     data: {
-                            'ids': all_project_block.data("selected_ids").join(';'),
+                            'ids': $.map(all_project_block.data("selected_ids"), function(e){return e.toLowerCase();}).join(';'),
                             'project_id': projects.join(';'),
                             'all_selected': all_project_block.data("all_selected"),
                             'search_query':$(".dataTables_filter input").val()
