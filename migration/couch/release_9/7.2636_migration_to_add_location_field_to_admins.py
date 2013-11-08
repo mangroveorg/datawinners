@@ -3,6 +3,7 @@ import sys
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
+#noinspection PyUnresolvedReferences - used to initialize post save handlers for elasticsearch
 import datawinners.search
 from django.core.exceptions import ObjectDoesNotExist
 from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSetting
