@@ -94,9 +94,6 @@ def create_project(request):
                 state=request.POST['project_state'], devices=[u'sms', u'web', u'smartPhone'],
                 language=form.cleaned_data['language'])
 
-            if ngo_admin.reporter_id is not None:
-                project.data_senders.append(ngo_admin.reporter_id)
-
             for profile in get_ngoprofiles_for_all_users_in_account(request.user.get_profile().org_id):
                 project.data_senders.append(profile.reporter_id)
 
