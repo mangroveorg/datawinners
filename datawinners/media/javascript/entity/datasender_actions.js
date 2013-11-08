@@ -59,7 +59,7 @@ DW.DataSenderActionHandler = function(){
         handle_datasender_delete(table, selected_ids, all_selected);
   };
   this["edit"] = function(table, selected_ids){
-    location.href = '/entity/datasender/edit' + '/' + selected_ids[0] + '/';
+    location.href = '/entity/datasender/edit' + '/' + selected_ids[0].toLowerCase() + '/';
   };
   this["makewebuser"] = function(table, selected_ids, all_selected){
     populate_dialog_box_for_web_users(table, all_selected);

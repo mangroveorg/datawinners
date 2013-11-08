@@ -56,6 +56,7 @@ class EditDataSenderView(TemplateView):
                                        })
 
     def post(self, request, reporter_id, *args, **kwargs):
+        reporter_id = reporter_id.lower()
         manager = get_database_manager(request.user)
         reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
