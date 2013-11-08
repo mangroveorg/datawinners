@@ -27,15 +27,24 @@
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
     <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet"/>
     <link href="/media/css/scss/section_datasender_import.css" media="screen" rel="stylesheet"/>
+    <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet" />
+
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/datasender_import.js"></script>
+
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/location_auto_suggest_widget.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/definitions.js"></script>
+    <script src="/media/javascript/entity/datasender_actions.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
+
+
     <script type="text/javascript">
         var user_dict = {{ user_dict|safe }};
         var import_datasenders_link = "{% url all_datasenders%}";
@@ -46,7 +55,7 @@
 {% block content %}
     <div>
         <div class="float_right">
-            <a id="register_link" class="add_subject_link" href="{% url create_data_sender %}">
+            <a id="register_link" class="add_subject_link" onclick="register_datasender()">
                 {% trans "Register a Data Sender" %}
             </a> <span class="padding_left_right_10"> | </span>
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
@@ -67,4 +76,6 @@
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     {% include 'entity/all_data_senders/all_project_blocks.html' %}
+     <div id="datasender-popup" style="display:none;"></div>
+
 {% endblock %}

@@ -1,4 +1,9 @@
 {% load i18n %}
+<script type="text/javascript">
+var sender_registration_link = "{{ registration_link }}";
+</script>
+    <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet" />
+
   {% block messages %}
       <div id="message-label" class="message-box none">
       </div>
@@ -14,7 +19,9 @@
       {% endif %}
 
   </div>
-  <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>  <br>
+<div id="add_data_sender_form" class="">
+<h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>  <br>
+
   <form id="registration_form" class="" action="" method="POST">
   <fieldset>
       {% csrf_token %}
@@ -106,9 +113,10 @@
 
           </li>
           <li class="button_block">
-              <a href="/entity/datasenders/" class="cancel_link">{% trans "Cancel" %}</a>
+              <a class="cancel_link" onclick="cancel_handler()">{% trans "Cancel" %}</a>
               <input type="button" id="id_register_button" value="{% trans 'Register' %}" class="button margin_top_20"/>
           </li>
       </ul>
   </fieldset>
 </form>
+</div>

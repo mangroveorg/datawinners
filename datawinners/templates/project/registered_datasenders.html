@@ -29,12 +29,17 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/common/location_auto_suggest_widget.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/datasender_import.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/definitions.js"></script>
+
+    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
+
     <script>
         var user_dict = {{ user_dict|safe }};
         var import_datasenders_link = "{% url registered_datasenders project.id %}"
@@ -47,8 +52,14 @@
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
         <div class="float_right">
-            <a href="{{ project_links.register_datasenders_link }}"
-               class="register_data_sender">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
+
+{#            <a href="{{ project_links.register_datasenders_link }}"#}
+{#               class="register_data_sender">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;#}
+
+
+
+
+            <a class="register_data_sender" onclick="register_datasender()">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
         </div>
         <div class="clear-both"></div>
@@ -71,5 +82,7 @@
         {% include "import-datasenders.html" %}
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
+    <div id="datasender-popup" style="display:none;"></div>
+
 {% endblock %}
 

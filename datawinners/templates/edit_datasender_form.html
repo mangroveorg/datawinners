@@ -1,9 +1,19 @@
+<script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
 {% load i18n %}
 {% block messages %}
     <div id="message-label" class="message-box none">
     </div>
 {% endblock %}
+
+<script type="text/javascript">
+    var sender_registration_link = "/entity/datasender/edit/{{ reporter_id }}/";
+</script>
+<link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet"/>
+
+
 <input id='post_url' type="hidden" value="{{ post_url }}"/>
+<div id="add_data_sender_form" class="">
+
 <form id="registration_form" class="" action="" method="POST">
     <div class="application_register">
         {% if message %}
@@ -81,12 +91,8 @@
             <li>
                 <div class="button_block">
                     {% block cancel_block %}
-                        {% if entity_links %}
-                            <a id="cancel" href="{{ entity_links.back_link }}">{% trans "Cancel Editing" %}</a>
-                        {% else %}
-                            <a id="cancel" href="{{ project_links.registered_datasenders_link }}">{% trans "Cancel Editing" %}</a>
-                        {% endif %}
-                        {% include "warning_section.html" %}
+                        <a id="cancel" onclick="cancel_handler()">{% trans "Cancel Editing" %}</a>
+{#                        {% include "warning_section.html" %}#}
                     {% endblock %}
                     <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}"
                            class="button margin_top_20"/>
@@ -95,3 +101,4 @@
         </ul>
     </fieldset>
 </form>
+</div>
