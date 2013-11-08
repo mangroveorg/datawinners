@@ -1,15 +1,14 @@
 import sys
-#noinspection PyUnresolvedReferences
+
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0, ".")
+
 import datawinners.search
 from django.core.exceptions import ObjectDoesNotExist
 from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSetting
 from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
-
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
-
 from datawinners.main.database import get_db_manager
 from datawinners.main.couchdb.utils import all_db_names
 
