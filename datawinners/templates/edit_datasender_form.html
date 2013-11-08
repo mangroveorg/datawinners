@@ -1,4 +1,3 @@
-<script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
 {% load i18n %}
 {% block messages %}
     <div id="message-label" class="message-box none">
@@ -91,8 +90,8 @@
             <li>
                 <div class="button_block">
                     {% block cancel_block %}
-                        <a id="cancel" onclick="cancel_handler()">{% trans "Cancel Editing" %}</a>
-{#                        {% include "warning_section.html" %}#}
+                        <a id="cancel">{% trans "Cancel Editing" %}</a>
+                        <div style="display: none;"> {% include "warning_section.html" %} </div>
                     {% endblock %}
                     <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}"
                            class="button margin_top_20"/>

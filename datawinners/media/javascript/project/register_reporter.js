@@ -14,19 +14,19 @@ DW.Device = function (deviceElement) {
 
 var sms_device = new DW.Device("#id_devices_0");
 
-DW.Email = function(emailFieldId, emailHelpTextId, userCreationInfoLabelId, visibilityFactor){
-    this.setVisibility = function() {
-        if($(visibilityFactor).is(":checked")) show();
+DW.Email = function (emailFieldId, emailHelpTextId, userCreationInfoLabelId, visibilityFactor) {
+    this.setVisibility = function () {
+        if ($(visibilityFactor).is(":checked")) show();
         else hide();
     };
 
-    var hide = function(){
+    var hide = function () {
         $(emailFieldId).hide();
         $(emailHelpTextId).hide();
         $(userCreationInfoLabelId).hide();
     };
 
-    var show = function(){
+    var show = function () {
         $(emailFieldId).show();
         $(emailHelpTextId).show();
         $(userCreationInfoLabelId).show();
@@ -35,44 +35,36 @@ DW.Email = function(emailFieldId, emailHelpTextId, userCreationInfoLabelId, visi
 
 var email = new DW.Email("#email_field", "#email_field_help_text", "#user_creation_info", "#id_devices_1");
 
-$(document).on("click","#id_register_button",function () {
-        $.blockUI({
-            message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
-            css:{ width:'275px', top:'400px', left:'800px',zIndex:1000000}
-        });
-        $('#id_location').val($.trim($('#id_location').val()));
-        $('#id_geo_code').val($.trim($('#id_geo_code').val()));
-        $.ajax({
-            type:'POST',
-            url:sender_registration_link,
-            data:$("#registration_form").serialize(),
-            success:function (response) {
-                $.unblockUI();
-                $("#add_data_sender_form").html(response);
-//                new DW.InitializeEditDataSender().init();
-                $("#id_location").catcomplete({
-                    source:"/places"});
-                device_actions();
-                reporter_id_generation_action();
-
-                DW.set_focus_on_flash_message();
-                if ( $("#cancel_submission_warning_message").length) {
-                    if (!$("#flash-message.success-message-box").length)
-                        DW.edit_datasender.init();
-                    else {
-                        DW.edit_datasender.init_warning_dialog();
-                        $("a[href]").unbind();
-                    }
-                }
-            },
-            error:function (e) {
-                $.unblockUI();
-                $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
-                device_actions();
-                DW.set_focus_on_flash_message();
-            }
-        });
+$(document).on("click", "#id_register_button", function () {
+    $.blockUI({
+        message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
+        css: { width: '275px', top: '400px', left: '800px', zIndex: 1000000}
     });
+    $('#id_location').val($.trim($('#id_location').val()));
+    $('#id_geo_code').val($.trim($('#id_geo_code').val()));
+    $.ajax({
+        type: 'POST',
+        url: sender_registration_link,
+        data: $("#registration_form").serialize(),
+        success: function (response) {
+            $.unblockUI();
+            $("#add_data_sender_form").html(response);
+            $("#id_location").catcomplete({
+                source: "/places"});
+            device_actions();
+            reporter_id_generation_action();
+
+            DW.set_focus_on_flash_message();
+            new DW.InitializeEditDataSender().init();
+        },
+        error: function (e) {
+            $.unblockUI();
+            $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
+            device_actions();
+            DW.set_focus_on_flash_message();
+        }
+    });
+});
 
 $(document).ready(function () {
     sms_device.disable();
@@ -82,27 +74,21 @@ $(document).ready(function () {
         email.setVisibility();
     });
     $("#id_location").catcomplete({
-        source:"/places"
+        source: "/places"
     });
-     new DW.UniqueIdField("#registration_form");
+    new DW.UniqueIdField("#registration_form");
 });
 
-function cancel_handler(){
-    $("#cancel_submission_warning_message").dialog("open");
 
-     $("#datasender-popup").dialog("close");
-     $("#datasender_table").dataTable().fnReloadAjax();
-}
-
-function device_actions(){
+function device_actions() {
     sms_device.checked();
     sms_device.disable();
     email.setVisibility();
 }
 
-function reporter_id_generation_action(){
-        $("#generate_id").unbind().click(function() {
-        if($(this).is(":checked")) {
+function reporter_id_generation_action() {
+    $("#generate_id").unbind().click(function () {
+        if ($(this).is(":checked")) {
             $(".subject_field").attr("disabled", "disabled");
             $(".subject_field").val('');
         } else {
@@ -110,3 +96,4 @@ function reporter_id_generation_action(){
         }
     });
 }
+
