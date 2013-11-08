@@ -10,7 +10,7 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
 
 function init_warnThenDeleteDialogBox() {
     var delete_dialog = $("#delete_ds_block").dialog({
-            title: gettext("Warning !!"),
+            title: gettext("Warning!"),
             modal: true,
             autoOpen: false,
             width: 500,
