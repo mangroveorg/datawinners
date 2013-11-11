@@ -8,7 +8,6 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
-from datawinners.accountmanagement.views import get_ngoprofiles_for_all_users_in_account
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_projects, get_all_project_names
@@ -96,9 +95,6 @@ def create_project(request):
 
             if ngo_admin.reporter_id is not None:
                 project.data_senders.append(ngo_admin.reporter_id)
-
-            for profile in get_ngoprofiles_for_all_users_in_account(request.user.get_profile().org_id):
-                project.data_senders.append(profile.reporter_id)
 
             try:
                 questionnaire = create_questionnaire(post=request.POST, manager=manager,
