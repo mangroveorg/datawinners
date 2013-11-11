@@ -4,9 +4,8 @@ if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
 #noinspection PyUnresolvedReferences - used to initialize post save handlers for elasticsearch
-import datawinners.search
 from django.core.exceptions import ObjectDoesNotExist
-from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSetting
+from datawinners.accountmanagement.models import OrganizationSetting, get_ngo_admin_user_profiles_for
 from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
@@ -33,8 +32,8 @@ def _get_admin_document(admin_profiles, dbm):
 
 
 def _get_admin_profiles(dbm):
-    org_id = OrganizationSetting.objects.get(document_store=dbm.database_name).organization_id
-    admin_profiles = NGOUserProfile.objects.filter(org_id=org_id, user__is_superuser=True)
+    organization = OrganizationSetting.objects.get(document_store=dbm.database_name).organization
+    admin_profiles = get_ngo_admin_user_profiles_for(organization)
     return admin_profiles
 
 
