@@ -161,15 +161,15 @@ def new_user(request):
                                   context_instance=RequestContext(request))
 
 
-def get_ngoprofiles_for_all_users_in_account(org_id):
-    viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users']).values_list('id',flat=True)
-    return NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
-
 @valid_web_user
 @is_admin
 def users(request):
     if request.method == 'GET':
-        return render_to_response("accountmanagement/account/users_list.html", {'users': get_ngoprofiles_for_all_users_in_account(request.user.get_profile().org_id)},
+        org_id = request.user.get_profile().org_id
+        viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users']).values_list('id',
+                                                                                                              flat=True)
+        users = NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
+        return render_to_response("accountmanagement/account/users_list.html", {'users': users},
                                   context_instance=RequestContext(request))
 
 
