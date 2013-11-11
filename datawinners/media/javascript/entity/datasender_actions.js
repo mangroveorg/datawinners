@@ -56,6 +56,7 @@ DW.DataSenderActionHandler = function(){
   init_add_remove_from_project();
 
   this["delete"] = function(table, selected_ids, all_selected){
+        selected_ids= $.map(selected_ids, function(e){return e.toLowerCase();});
         handle_datasender_delete(table, selected_ids, all_selected);
   };
   this["edit"] = function(table, selected_ids){
