@@ -189,20 +189,20 @@ def take_psql_dump(name_prefix):
 def take_couchdbmain_dump(couchdb_path, name_prefix):
     backup = "/home/mangrover/mangrove_couchdb_main_backup_" + name_prefix + ".tar.gz"
     with cd(couchdb_path):
-        run('tar -czvPf  %s  couchdbmain' % backup)
+        run('sudo tar -czvPf  %s  couchdbmain' % backup)
 
 
 def take_couchdbfeed_dump(couchdb_path, name_prefix):
     backup = "/home/mangrover/mangrove_couchdb_feed_backup_" + name_prefix + ".tar.gz"
     with cd(couchdb_path):
-        run('tar -czvPf  %s  couchdbfeed' % backup)
+        run('sudo tar -czvPf  %s  couchdbfeed' % backup)
 
 
 def take_elastic_search_index_dump(name_prefix):
     backup = "/home/mangrover/mangrove_elasticsearch_index_backup_" + name_prefix + ".tar.gz"
     with cd('/var/lib/elasticsearch'):
         index_files = run('ls').split()
-        run('tar -czvPf  %s  %s' % (index_files[0], backup))
+        run('sudo tar -czvPf  %s  %s' % (index_files[0], backup))
 
 
 def take_database_backup(backup=False):
