@@ -5,6 +5,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import int_to_base36
 
 from nose.plugins.attrib import attr
+import time
 
 from framework.base_test import BaseTest, teardown_driver
 from framework.utils.common_utils import get_epoch_last_ten_digit, generate_random_email_id
@@ -13,6 +14,7 @@ from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
+from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
@@ -174,18 +176,22 @@ class TestApplicationEndToEnd(BaseTest):
         add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL, email=email)
         success_msg = add_data_sender_page.get_success_message()
         self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_WITH_EMAIL)), success_msg)
-        all_data_sender_page = global_navigation.navigate_to_all_data_sender_page()
+        add_data_sender_page.navigate_to_datasender_page()
+        all_data_sender_page = AllDataSendersPage(self.driver)
+
 
         rep_id = success_msg.replace(VALID_DATA_WITH_EMAIL[SUCCESS_MESSAGE], '')
         all_data_sender_page.select_a_data_sender_by_id(rep_id)
 
         all_data_sender_page.select_edit_action()
-        add_data_sender_page = AddDataSenderPage(self.driver)
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL_FOR_EDIT)
-        self.assertRegexpMatches(add_data_sender_page.get_success_message(),
+        time.sleep(2)
+        edit_datasender_page = AddDataSenderPage(self.driver)
+        edit_datasender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL_FOR_EDIT)
+        self.assertRegexpMatches(edit_datasender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL_FOR_EDIT)))
 
-        all_data_sender_page = global_navigation.navigate_to_all_data_sender_page()
+        edit_datasender_page.navigate_to_datasender_page()
+        all_data_sender_page = AllDataSendersPage(self.driver)
         all_data_sender_page.associate_datasender_to_projects(rep_id, [self.project_name])
         return email
 
