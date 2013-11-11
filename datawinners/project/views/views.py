@@ -693,7 +693,7 @@ class SurveyWebQuestionnaireRequest():
         mail_feed_errors(response, self.manager.database_name)
         if response.success and not created_request.is_update :
             organization = Organization.objects.get(org_id=user_profile.org_id)
-            organization.increment_message_count_for(**{'incoming_web_count':1})
+            organization.increment_message_count_for(incoming_web_count=1)
             check_quotas_and_update_users(organization)
         return response
 

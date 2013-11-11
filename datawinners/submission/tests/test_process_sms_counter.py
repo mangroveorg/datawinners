@@ -38,7 +38,6 @@ class TestProcessSMSCounter(unittest.TestCase):
     def test_should_return_outgoing_message_when_message_limit_exceeds(self):
         message_tracker = self._get_current_message_tracker_of_organization()
         message_tracker.incoming_sms_count = 50
-        message_tracker.outgoing_sms_count = 50
         message_tracker.save()
         with patch('datawinners.submission.views.get_translated_response_message') as mock_get_translated_response_message:
             self.incoming_request.update({'outgoing_message': self.outgoing_message})

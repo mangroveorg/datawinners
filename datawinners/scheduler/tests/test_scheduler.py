@@ -162,4 +162,4 @@ class TestScheduler(unittest.TestCase):
             get_reminder_repository_mock.return_value = reminder_repository_mock
             send_reminders_for_an_organization(org_mock, date.today(), self.sms_client,
                 self.FROM_NUMBER, dbm)
-            org_mock.increment_all_message_count_by.assert_called_once_with(0, 4)
+            org_mock.increment_message_count_for.assert_called_once_with(sent_reminders_count=4)
