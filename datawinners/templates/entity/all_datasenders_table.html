@@ -1,31 +1,58 @@
 {% load i18n %}
-<script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
-<script type="text/javascript" src="/media/javascript/datasenders/datasender_table.js"></script>
-<script type="text/javascript" src="/media/javascript/datasenders/all_datasenders_table.js"></script>
-<script type="text/javascript" src="/media/javascript/subjects/subject_actions.js"></script>
+<script type="text/javascript">
+    var users_list = {{ users_list|safe }};
+</script>
+<link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
+
+<script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+<script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+<script src="/media/javascript/data_tables/js/dwtable.js"></script>
+<script src="/media/javascript/entity/datasender_actions.js"></script>
 <script>
-    var datasender_ajax_url = "{% url all_datasenders_ajax %}"
+    var datasender_ajax_url = "{% url all_datasenders_ajax %}";
+    var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
+$(function(){
+    function col(header_class_name){
+        return $('#datasender_table th.' + header_class_name).index('#datasender_table th');
+    }
+    var action_handler = new DW.DataSenderActionHandler();
+    var number_of_projects = {{ projects|length }};
+    $("#datasender_table").dwTable({
+            "concept": "Data Sender",
+            "sAjaxSource": datasender_ajax_url,
+            "sAjaxDataIdColIndex" : col("short_code"),
+            "bServerSide": true,
+            "oLanguage": {
+                "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
+            },
+            "aaSorting": [ [ col("name"), "asc"] ] ,
+            "actionItems" : [
+                {"label":"Add to project", handler:action_handler.associate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
+                {"label":"Remove from project", handler:action_handler.disassociate, "allow_selection": number_of_projects==0?"disabled":"multiple"},
+                {"label":"Give Web Submission Access", handler:action_handler.makewebuser, "allow_selection": "multiple"},
+                {"label":"Edit", handler:action_handler.edit, "allow_selection": "single"},
+                {"label": "Delete", "handler":action_handler["delete"], "allow_selection": "multiple"}
+            ],
+            "aoColumnDefs":[{"bSortable": false, "aTargets":[col("devices"),col("projects")]}]
+      });
+ });
 </script>
 
-<div id="wrapper_div_for_table">
-    {% include 'entity/all_data_senders/datasender_actions.html' %}
-
-    <table id='datasender_table' class="styled_table">
+<div>
+    <table id='datasender_table' >
         <thead>
-        <th><input type="checkbox" id="checkall-datasenders"/></th>
-        <th>{% trans "Name" %}</th>
-        <th>{% trans "Unique ID" %}</th>
-        <th>{% trans "Location" %}</th>
-        <th>{% trans "GPS Coordinates" %}</th>
-        <th>{% trans "Mobile Number" %}</th>
-        <th>{% trans "Email address" %}</th>
-        <th class="devices">
-            <span>{% trans "Devices" %}</span>
-            {% include "alldata/device_icons.html" %}
-        </th>
-        <th>{% trans "Projects" %}</th>
+            <th></th>
+            <th class="name">{% trans "Name" %}</th>
+            <th class="short_code">{% trans "Unique ID" %}</th>
+            <th>{% trans "Location" %}</th>
+            <th>{% trans "GPS Coordinates" %}</th>
+            <th>{% trans "Mobile Number" %}</th>
+            <th>{% trans "Email address" %}</th>
+            <th class="devices">
+                <span>{% trans "Devices" %}</span>
+                {% include "alldata/device_icons.html" %}
+            </th>
+            <th class="projects">{% trans "Projects" %}</th>
         </thead>
-        <tbody id='all_data_senders' class="datasenders_list"></tbody>
     </table>
 </div>

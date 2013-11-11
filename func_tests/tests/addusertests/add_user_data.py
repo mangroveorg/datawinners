@@ -1,3 +1,5 @@
+from framework.utils.common_utils import random_number
+
 TITLE = "title"
 FIRST_NAME = "first_name"
 LAST_NAME = "last_name"
@@ -8,7 +10,7 @@ ADD_USER_DATA = {
     FIRST_NAME: "Mino",
     LAST_NAME: "Rakoto",
     USERNAME: "andrana@mailinator.com",
-    MOBILE_PHONE: "261331234567"
+    MOBILE_PHONE: random_number(9)
 }
 ADDED_USER_SUCCESS_MSG = u'User has been added successfully'
 DASHBOARD_PAGE_TITLE = u'Dashboard'

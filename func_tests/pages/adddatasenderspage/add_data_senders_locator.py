@@ -18,12 +18,12 @@ from framework.utils.common_utils import *
 LOCATOR = "locator"
 BY = "by"
 
-NAME_TB = by_css("input#id_name")
+NAME_TB = by_xpath(".//*[@id='id_name']")
 WEB_CB = by_css("input#id_devices_1")
-MOBILE_NUMBER_TB = by_css("input#id_telephone_number")
+MOBILE_NUMBER_TB = by_xpath(".//*[@id='id_telephone_number']")
 EMAIL_TB = by_css("input#id_email")
-COMMUNE_TB = by_css("input#id_location")
-GPS_TB = by_css("input#id_geo_code")
+COMMUNE_TB = by_xpath(".//*[@id='id_location']")
+GPS_TB = by_xpath(".//*[@id='id_geo_code']")
 OPEN_IMPORT_DIALOG_LINK = by_css("#import-datasenders")
 UNIQUE_ID_TB_LOCATOR = by_css("#id_short_code")
 CB_LET_US_GENERATE_ID_FOR_U = by_css("#generate_id")

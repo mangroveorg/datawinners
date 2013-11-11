@@ -43,7 +43,9 @@ def remove_deleted_ds_from_project(db_name):
                 traceback.print_exc(file=sys.stdout)
         logger.info("done:" + db_name)
         mark_start_of_migration(db_name)
-    except Exception as e :
-        logger.exception("Failed Database : %s , with error :%s " % (db_name, e.message))
+
+    except Exception as e:
+        logger.exception(e.message)
+
 
 migrate(all_db_names(), remove_deleted_ds_from_project, version=(9, 0, 4))

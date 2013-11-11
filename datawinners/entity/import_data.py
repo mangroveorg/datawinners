@@ -81,7 +81,6 @@ class FilePlayer(Player):
         return player
 
     def _process(self, form_model, values):
-        values = GeneralWorkFlow().process(values)
         if form_model.is_entity_registration_form():
             values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree).process(values)
         if form_model.entity_defaults_to_reporter():
@@ -90,44 +89,43 @@ class FilePlayer(Player):
             values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)
         return values
 
-    def appendFailedResponse(self, responses, message, values=None):
+    def _appendFailedResponse(self, message, values=None):
         response = Response(reporters=[], survey_response_id=None)
         response.success = False
         response.errors = dict(error=ugettext(message), row=values)
-        responses.append(response)
+        return response
 
-    def import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
+    def _create_user(self, email, organization, response):
+        user = User.objects.create_user(email, email, 'password')
+        group = Group.objects.filter(name="Data Senders")[0]
+        user.groups.add(group)
+        user.first_name = case_insensitive_lookup(response.processed_data, NAME_FIELD_CODE)
+        user.save()
+        profile = NGOUserProfile(user=user, org_id=organization.org_id, title="Mr",
+                                 reporter_id=case_insensitive_lookup(response.processed_data, SHORT_CODE))
+        profile.save()
+        return user
+
+    def _import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
                            values):
-        phone_number = TelephoneNumber().clean(case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE))
-        if phone_number in registered_phone_numbers:
-            raise DataObjectAlreadyExists(_("Data Sender"), _("Mobile Number"), phone_number)
         email = case_insensitive_lookup(values, "email")
         if email:
-            if email in registered_emails:
-                raise DataObjectAlreadyExists(_("User"), _("email address"), email)
-
             if not email_re.match(email):
                 raise InvalidEmailException(message="Invalid email address.")
 
-            response = self.submit(form_model, values, submission, [])
-            user = User.objects.create_user(email, email, 'password')
-            group = Group.objects.filter(name="Data Senders")[0]
-            user.groups.add(group)
-            user.first_name = case_insensitive_lookup(response.processed_data, NAME_FIELD_CODE)
-            if user.first_name is None:
-                raise NameNotFoundException(message='Answer for name field is missing.')
-            user.save()
+            if email in registered_emails:
+                raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
-            profile = NGOUserProfile(user=user, org_id=organization.org_id, title="Mr",
-                                     reporter_id=case_insensitive_lookup(response.processed_data,
-                                                                         SHORT_CODE))
-            profile.save()
-            send_email_to_data_sender(user, _("en"))
+            response = self.submit(form_model, values, submission, [])
+
+            if response.success:
+                user = self._create_user(email, organization, response)
+                send_email_to_data_sender(user, _("en"))
         else:
             response = self.submit(form_model, values, submission, [])
         return response
 
-    def append_country_for_location_field(self, form_model, values, organization):
+    def _append_country_for_location_field(self, form_model, values, organization):
         location_field_code = get_location_field_code(form_model)
         if location_field_code is None:
             return values
@@ -135,16 +133,15 @@ class FilePlayer(Player):
             values[location_field_code] = get_country_appended_location(values[location_field_code], organization.country_name())
         return values
 
-    def import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, responses,
-                          values, form_model=None):
-        self.append_country_for_location_field(form_model, values, organization)
+    def _import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, values, form_model=None):
+        self._append_country_for_location_field(form_model, values, organization)
         transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
         submission = self._create_submission(transport_info, form_code, copy(values))
         try:
             values = self._process(form_model, values)
             log_entry = "message: " + str(values) + "|source: web|"
             if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
-                response = self.import_data_sender(form_model, organization, registered_emails,
+                response = self._import_data_sender(form_model, organization, registered_emails,
                                                    registered_phone_numbers, submission, values)
             else:
                 response = self.submit(form_model, values, submission, [])
@@ -155,29 +152,25 @@ class FilePlayer(Player):
             else:
                 log_entry += "Status: True"
             self.logger.info(log_entry)
-            responses.append(response)
+            return response
         except DataObjectAlreadyExists as e:
             if self.logger is not None:
                 log_entry += "Status: False"
                 self.logger.info(log_entry)
-            self.appendFailedResponse(responses, "%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
-                                      values=values)
+            return self._appendFailedResponse("%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
+                                                values=values)
         except (InvalidEmailException, MangroveException, NameNotFoundException) as e:
-            self.appendFailedResponse(responses, e.message, values=values)
+            return self._appendFailedResponse(e.message, values=values)
 
-    def accept(self, file_contents):
-        responses = []
-        form_model = None
-        from datawinners.utils import get_organization_from_manager
-
-        organization = get_organization_from_manager(self.dbm)
-        registered_phone_numbers = get_all_registered_phone_numbers_on_trial_account() \
-            if organization.in_trial_mode else get_datasenders_mobile(self.dbm)
+    def _get_registered_emails(self):
         if type(self.parser) == XlsDatasenderParser:
             registered_emails = User.objects.values_list('email', flat=True)
         else:
             registered_emails = []
-        rows = self.parser.parse(file_contents)
+        return registered_emails
+
+    def _get_form_model(self, rows):
+        form_model = None
         if len(rows) > 0:
             (form_code, values) = rows[0]
             form_model = get_form_model_by_code(self.dbm, form_code)
@@ -186,9 +179,24 @@ class FilePlayer(Player):
                 raise FormCodeDoesNotMatchException(
                     ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') %
                     form_model.entity_type[0], form_code=form_code)
+        return form_model
+
+    def _get_phone_numbers(self, organization):
+        return get_all_registered_phone_numbers_on_trial_account() \
+            if organization.in_trial_mode else get_datasenders_mobile(self.dbm)
+
+    def accept(self, file_contents):
+        from datawinners.utils import get_organization_from_manager
+
+        organization = get_organization_from_manager(self.dbm)
+        registered_phone_numbers = self._get_phone_numbers(organization)
+        rows = self.parser.parse(file_contents)
+        form_model = self._get_form_model(rows)
+        responses = []
+        registered_emails = self._get_registered_emails()
         for (form_code, values) in rows:
-            self.import_submission(form_code, organization, registered_emails, registered_phone_numbers, responses,
-                                   values, form_model)
+            responses.append(
+                self._import_submission(form_code, organization, registered_emails, registered_phone_numbers,values, form_model))
         return responses
 
 #TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
@@ -198,29 +206,42 @@ def tabulate_failures(rows):
         row[1].errors['row_num'] = row[0] + 2
 
         if isinstance(row[1].errors['error'], dict):
-            errors = ''
+            errors = []
             for key, value in row[1].errors['error'].items():
                 if 'is required' in value:
                     code = value.split(' ')[3]
-                    errors = errors + "\n" + _('Answer for question %s is required') % (code, )
+                    errors.append(_('Answer for question %s is required.') % (code, ))
                 elif 'xx.xxxx yy.yyyy' in value:
-                    errors = errors + "\n" + _(
-                        'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315')
+                    errors.append(_('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315.'))
                 elif 'longer' in value:
                     text = value.split(' ')[1]
-                    errors = errors + "\n" + _("Answer %s for question %s is longer than allowed.") % (text, key)
+                    question = value.split(' ')[4]
+                    length = value.split(' ')[13].rstrip(".")
+                    errors.append(_("Answer %s for question %s is longer than allowed. Maximum allowed length is %s.") % (text, question, length))
+                elif 'shorter' in value:
+                    text = value.split(' ')[1]
+                    question = value.split(' ')[4]
+                    length = value.split(' ')[13].rstrip(".")
+                    errors.append(_("Answer %s for question %s is shorter than allowed. Minimum allowed length is %s.") % (text, question, length))
+
                 elif 'must be between' in value:
                     text = value.split(' ')[2]
                     low = value.split(' ')[6]
                     high = value.split(' ')[8]
-                    errors = errors + "\n" + _("The answer %s must be between %s and %s") % (text, low, high)
+                    errors.append(_("The answer %s must be between %s and %s.") % (text, low, high))
                 else:
-                    errors = errors + "\n" + _(value)
+                    errors.append(_(value))
         else:
-            errors = _(row[1].errors['error'])
+            errors = [_(row[1].errors['error'])]
 
-        row[1].errors['error'] = errors
+        row[1].errors['error'] = "<br>".join(errors)
         tabulated_data.append(row[1].errors)
+    return tabulated_data
+
+def tabulate_success(success_responses):
+    tabulated_data = []
+    for success_response in success_responses:
+        tabulated_data.append(success_response.processed_data)
     return tabulated_data
 
 
@@ -327,8 +348,8 @@ def load_all_entities_of_type(manager, type=REPORTER):
 def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None):
     base_name, extension = os.path.splitext(file_name)
     player = FilePlayer.build(manager, extension, default_parser=default_parser, form_code=form_code)
-    response = player.accept(file)
-    return response
+    responses = player.accept(file)
+    return responses
 
 
 def _get_imported_entities(responses):
@@ -346,6 +367,9 @@ def _get_imported_entities(responses):
 
 def _get_failed_responses(responses):
     return [i for i in enumerate(responses) if not i[1].success]
+
+def _get_successful_responses(responses):
+    return [response for response in responses if response.success]
 
 
 @timebox
@@ -368,6 +392,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
     response_message = ''
     error_message = None
     failure_imports = None
+    successful_imports = None
     imported_entities = {}
     try:
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
@@ -386,13 +411,15 @@ def import_data(request, manager, default_parser=None, form_code=None):
             call_command('crs_datamigration', form_code, *datarecords_id)
 
         imported_entities = imported_entities.get("short_codes")
-        successful_imports = len(imported_entities)
+        successful_import_count = len(imported_entities)
         total = len(responses)
         if total == 0:
             error_message = _("The imported file is empty.")
         failures = _get_failed_responses(responses)
+        successes = _get_successful_responses(responses)
         failure_imports = tabulate_failures(failures)
-        response_message = ugettext_lazy('%s of %s records uploaded') % (successful_imports, total)
+        successful_imports = tabulate_success(successes)
+        response_message = ugettext_lazy('%s of %s records uploaded') % (successful_import_count, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
@@ -404,7 +431,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
         error_message = _(u"Some unexpected error happened. Please check the excel file and import again.")
         if settings.DEBUG:
             raise
-    return error_message, failure_imports, response_message, imported_entities
+    return error_message, failure_imports, response_message, imported_entities , successful_imports
 
 
 def _file_and_name_for_ie(request):

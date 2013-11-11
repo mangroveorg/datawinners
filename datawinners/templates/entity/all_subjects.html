@@ -9,17 +9,17 @@
 {% endblock %}
 
 {% block secondary_navigation %}
-    <li><a href="{% url all_subject_type_page %}" class="back-to-list">
+    <li class="float_left"><a href="{% url all_subject_type_page %}">
         « {% trans "Back to All Subjects List" %}</a>
     </li>
-    <li><a id="register_subjects" href="{% url create_subject entity_type %}?web_view=True">{% trans "Register a" %} {{ entity_type|capfirst }}</a>&nbsp;|&nbsp;
+    <li class="float_right"><a id="register_subjects" href="{% url create_subject entity_type %}?web_view=True">{% trans "Register a" %} {{ entity_type|capfirst }}</a>&nbsp;|&nbsp;
         <a href="javascript:void(0);" class="import-subject">{% trans "Import a List" %}</a>&nbsp;|&nbsp;
         <a id='subject_export_link' href="#">{% trans "Export" %}</a>
     </li>
     <li><a href="{% url edit_subject_questionnaire entity_type %}" style="display:none;"
            class="edit-form-link">{% trans "Edit" %}</a>
+    <br/>
 {% endblock %}
-
 {% block help_accordian %}
     <div class="help_accordion margin_bottom_20">
         {% blocktrans %}View your registered {{ entity_type }}(s) in detail.{% endblocktrans %}

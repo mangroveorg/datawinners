@@ -63,7 +63,7 @@ class ReporterRegistrationForm(Form):
         error_messages={
             'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
-    short_code = CharField(required=False, label=_("Unique ID"), widget=TextInput(attrs=dict({'class': 'subject_field','disabled':'disabled'})))
+    short_code = CharField(required=False, max_length=12, label=_("Unique ID"), widget=TextInput(attrs=dict({'class': 'subject_field','disabled':'disabled'})))
 
 #    Needed for telephone number validation
     org_id = None
@@ -134,7 +134,7 @@ class ReporterRegistrationForm(Form):
 
         organization = Organization.objects.get(org_id=self.org_id)
         if organization.in_trial_mode:
-            if DataSenderOnTrialAccount.objects.filter(mobile_number=(self.cleaned_data.get('telephone_number'))).exists():
+            if DataSenderOnTrialAccount.objects.filter(mobile_number=(self.cleaned_data.get('telephone_number'))).exclude(organization=organization).exists():
                 self._errors['telephone_number'] = self.error_class(
                     [(u"Sorry, this number has already been used for a different DataWinners trial account.")])
         return self.cleaned_data.get('telephone_number')

@@ -1,17 +1,14 @@
 .import_link {
   color: #0070AC !important; }
 
+.projects {
+  min-width: 200px; }
+
 #delete_entity_block a {
   float: right !important; }
   #delete_entity_block a .cancel_link {
     padding-left: 5px !important;
     padding-top: 7px !important; }
-
-.data-sender-table-wrapper {
-  overflow-x: scroll;
-  float: left; }
-  .data-sender-table-wrapper table thead th:first-child input#checkall-datasenders {
-    margin-left: 0px !important; }
 
 .devices {
   vertical-align: bottom !important; }

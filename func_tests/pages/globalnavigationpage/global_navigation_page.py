@@ -73,3 +73,4 @@ class GlobalNavigationPage(Page):
         """
         self.driver.find(SIGN_OUT_LINK).click()
 
+

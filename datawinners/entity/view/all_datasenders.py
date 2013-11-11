@@ -1,16 +1,16 @@
+import cProfile
 from collections import defaultdict
 import json
-from django.contrib import messages
+import pstats
+from sets import Set
 
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 from django.utils import translation
-from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
-from django.utils.translation import ugettext as _, ugettext
-from django.views.generic.base import TemplateView, View, RedirectView
+from django.utils.translation import ugettext as _
+from django.views.generic.base import TemplateView, View
 import jsonpickle
 
 from datawinners import utils
@@ -18,15 +18,17 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
 from datawinners.entity.data_sender import remove_system_datasenders, get_datasender_user_detail
 from datawinners.entity.views import _get_full_name, log_activity, get_success_message
 from datawinners.main.database import get_database_manager
-from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for
-from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode
+from datawinners.accountmanagement.models import get_ngo_admin_user_profiles_for
+from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, rep_id_name_dict_of_superusers
+
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
-from datawinners.search.entity_search import DatasenderQuery
-from mangrove.form_model.form_model import REPORTER
+from datawinners.project.views.datasenders import _parse_successful_imports, _add_imported_datasenders_to_trail_account
+from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
+from mangrove.form_model.form_model import REPORTER, header_fields, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE
 from mangrove.transport import TransportInfo
 from mangrove.utils.types import is_empty
-from datawinners.utils import get_organization_from_manager, get_organization
+from datawinners.utils import get_organization
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_PROJECTS, REMOVED_DATA_SENDER_TO_PROJECTS, DELETED_DATA_SENDERS
@@ -35,22 +37,14 @@ from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDER
 class AllDataSendersView(TemplateView):
     template_name = 'entity/all_datasenders.html'
 
-    def _is_web_access_allowed(self, request):
-        grant_web_access = False
-        if request.method == 'GET' and int(request.GET.get('web', '0')):
-            grant_web_access = True
-        return grant_web_access
-
     def get(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = get_all_projects(manager)
         in_trial_mode = utils.get_organization(request).in_trial_mode
-        grant_web_access = self._is_web_access_allowed(request)
-        user_rep_ids = self._reporter_id_list_of_all_users(manager)
+        user_rep_id_name_dict = rep_id_name_dict_of_superusers(manager)
 
         return self.render_to_response({
-            "grant_web_access": grant_web_access,
-            "users_list": user_rep_ids,
+            "user_dict": json.dumps(user_rep_id_name_dict),
             "projects": projects,
             'current_language': translation.get_language(),
             'in_trial_mode': in_trial_mode
@@ -58,26 +52,24 @@ class AllDataSendersView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        projects = get_all_projects(manager)
-        error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
+        error_message, failure_imports, success_message, imported_datasenders, successful_imports = import_module.import_data(request,
                                                                                                           manager,
                                                                                                           default_parser=XlsDatasenderParser)
-        if len(imported_datasenders.keys()):
+        imported_data_senders = _parse_successful_imports(successful_imports)
+        imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
+        if len(imported_datasenders_ids):
             UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
                                   detail=json.dumps(
-                                      dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
-        all_data_senders = self._get_all_datasenders(manager, projects, request.user)
-        add_imported_data_sender_to_trial_organization(request, imported_datasenders,
-                                                       all_data_senders=all_data_senders, index=4)
-
+                                      dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})))
+        org_id = request.user.get_profile().org_id
+        _add_imported_datasenders_to_trail_account(imported_data_senders, org_id)
         return HttpResponse(json.dumps(
             {
                 'success': error_message is None and is_empty(failure_imports),
                 'message': success_message,
                 'error_message': error_message,
                 'failure_imports': failure_imports,
-                'all_data': all_data_senders,
-                'imported_datasenders': imported_datasenders
+                'successful_imports': imported_data_senders
             }))
 
     @method_decorator(csrf_view_exempt)
@@ -88,17 +80,6 @@ class AllDataSendersView(TemplateView):
     @method_decorator(is_not_expired)
     def dispatch(self, *args, **kwargs):
         return super(AllDataSendersView, self).dispatch(*args, **kwargs)
-
-    def _reporter_id_list_of_all_users(self, manager):
-        org_id = get_organization_from_manager(manager).org_id
-        users = NGOUserProfile.objects.filter(org_id=org_id).values_list("user_id", "reporter_id")
-        rep_id_map = {}
-        for u in users:
-            rep_id_map.update({u[0]: u[1]})
-        user_ids = User.objects.filter(groups__name__in=['Project Managers'], id__in=rep_id_map.keys()).values_list(
-            'id', flat=True)
-        user_rep_ids = [str(rep_id_map[user_id]) for user_id in user_ids]
-        return user_rep_ids
 
     def _get_all_datasenders(self, manager, projects, user):
         all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
@@ -133,7 +114,7 @@ class AllDataSendersAjaxView(View):
         return HttpResponse(
             jsonpickle.encode(
                 {
-                    'datasenders': datasenders,
+                    'data': datasenders,
                     'iTotalDisplayRecords': query_count,
                     'iDisplayStart': int(request.GET.get('iDisplayStart')),
                     "iTotalRecords": search_count,
@@ -165,40 +146,89 @@ class DataSenderActionView(View):
     def dispatch(self, *args, **kwargs):
         return super(DataSenderActionView, self).dispatch(*args, **kwargs)
 
+
+def data_sender_short_codes(request, manager):
+    if request.POST.get("all_selected") == 'true':
+        search_text = request.POST.get('search_query')
+        datasender_list = []
+        project_name = request.POST.get("project_name", None)
+        if project_name:
+            datasender_list = MyDataSenderQuery().query_by_project_name(request.user, project_name, search_text)
+        else:
+            datasender_list = DatasenderQuery().query(request.user, search_text)
+        fields = header_fields(manager, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE).keys()
+        fields.remove("entity_type")
+        short_code_index = fields.index("short_code")
+        return [s[short_code_index] for s in datasender_list]
+
+    return request.POST['ids'].split(';')
+
+
 class AssociateDataSendersView(DataSenderActionView):
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = self._get_projects(manager, request)
-        projects_name = []
+        projects_name = Set()
         for project in projects:
-            project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
-            projects_name.append(project.name.capitalize())
+            #for id in data_sender_short_codes(request, manager): if not id in project.data_senders: project.associate_data_sender_to_project(manager, id)
+            project.data_senders.extend([id for id in data_sender_short_codes(request, manager) if not id in project.data_senders])
+            projects_name.add(project.name.capitalize())
             project.save(manager)
         ids = request.POST["ids"].split(';')
         if len(ids):
             UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
-        return HttpResponse(reverse("all_datasenders"))
+
+        return HttpResponse(json.dumps({"success": True, "message": _("The Data Sender(s) are added to project(s) successfully")}))
 
 
 class DisassociateDataSendersView(DataSenderActionView):
 
+    def responseMessage(self, selected_rep_ids, superusers_selected):
+        message = _("The Data Sender(s) are removed from project(s) successfully")
+        superuser_count = len(superusers_selected)
+
+        if len(selected_rep_ids) == superuser_count:
+            message = _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
+                      ', '.join(superusers_selected)
+        elif superuser_count > 0:
+            message = _("The Data Sender(s) are removed from project(s) successfully") + ". " + \
+                      _("Note, the following Data Senders were not removed as they are DataWinners users: ") + \
+                      ', '.join(superusers_selected)
+        return message
+
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = self._get_projects(manager, request)
-        projects_name = []
+        projects_name = Set()
+        removed_rep_ids = Set()
+        selected_rep_ids = data_sender_short_codes(request, manager)
+        superusers = rep_id_name_dict_of_superusers(manager)
+        superusers_selected = []
+
+        non_superuser_selected = []
+        for rep_id in selected_rep_ids:
+            if rep_id in superusers.keys():
+                superusers_selected.append(superusers[rep_id])
+            else:
+                non_superuser_selected.append(rep_id)
+
         for project in projects:
-            [project.delete_datasender(manager, id) for id in request.POST['ids'].split(';') if id in project.data_senders]
-            project.save(manager)
-            projects_name.append(project.name.capitalize())
-        ids = request.POST["ids"].split(";")
-        if len(ids):
+            for rep_id in non_superuser_selected:
+                if rep_id in project.data_senders:
+                    project.delete_datasender(manager, rep_id)
+                    projects_name.add(project.name.capitalize())
+                    removed_rep_ids.add(rep_id)
+
+        if len(removed_rep_ids):
             UserActivityLog().log(request, action=REMOVED_DATA_SENDER_TO_PROJECTS,
-                                  detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
+                                  detail=json.dumps({"Unique ID": "[%s]" % ", ".join(removed_rep_ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
-        return HttpResponse(reverse("all_datasenders"))
+
+        message = self.responseMessage(selected_rep_ids, superusers_selected)
+        return HttpResponse(json.dumps({"success": True, "message": message}))
 
 
 @csrf_view_exempt
@@ -206,25 +236,39 @@ class DisassociateDataSendersView(DataSenderActionView):
 @login_required(login_url='/login')
 @is_datasender
 def delete_data_senders(request):
-    ''' The id's that we get from the front end will always be a subset and we will never have a use case where all elements
-     displayed are selected for delete operation as we can never delete the admin's which are also data senders which is implemented
-     via a validation in javascript.
-    '''
+
     manager = get_database_manager(request.user)
     organization = get_organization(request)
     entity_type = request.POST['entity_type']
-    all_ids = request.POST['all_ids'].split(';')
-    ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
-    if ngo_admin_user_profile.reporter_id in all_ids:
-        messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
-                                (_get_full_name(ngo_admin_user_profile.user)), "error_message")
-    else:
-        transport_info = TransportInfo("web", request.user.username, "")
-        delete_datasenders_from_project(manager, all_ids)
-        delete_entity_instance(manager, all_ids, entity_type, transport_info)
-        delete_datasender_users_if_any(all_ids, organization)
-        if organization.in_trial_mode:
-            delete_datasender_for_trial_mode(manager, all_ids, entity_type)
-        log_activity(request, DELETED_DATA_SENDERS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)), )
-        messages.success(request, get_success_message(entity_type))
-    return HttpResponse(json.dumps({'success': True}))
+    all_ids = data_sender_short_codes(request, manager)
+    superusers = rep_id_name_dict_of_superusers(manager)
+    non_superuser_rep_ids = [id for id in all_ids if id not in superusers.keys()]
+    transport_info = TransportInfo("web", request.user.username, "")
+
+    delete_datasenders_from_project(manager, non_superuser_rep_ids)
+    delete_entity_instance(manager, non_superuser_rep_ids, entity_type, transport_info)
+    delete_datasender_users_if_any(non_superuser_rep_ids, organization)
+    if organization.in_trial_mode:
+        delete_datasender_for_trial_mode(manager, non_superuser_rep_ids, entity_type)
+    log_activity(request, DELETED_DATA_SENDERS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(non_superuser_rep_ids)), )
+    messages = get_success_message(entity_type)
+    return HttpResponse(json.dumps({'success': True, 'message':messages}))
+
+class SuperusersInSearchedDataSender(DataSenderActionView):
+
+    def post(self, request, *args, **kwargs):
+
+        manager = get_database_manager(request.user)
+        selected_rep_ids = data_sender_short_codes(request, manager)
+        superusers = rep_id_name_dict_of_superusers(manager)
+        superusers_selected = []
+
+        non_superuser_selected = []
+        for rep_id in selected_rep_ids:
+            if rep_id in superusers.keys():
+                superusers_selected.append(superusers[rep_id])
+            else:
+                non_superuser_selected.append(rep_id)
+
+        return HttpResponse(json.dumps({"success": True, "superusers_selected": superusers_selected}))
+

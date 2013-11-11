@@ -28,8 +28,9 @@ class WebSubmissionPage(Page):
         return error_messages
 
     def get_success_message(self):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("div.success-message-box"), True)
-        return self.driver.find(by_css("div.success-message-box")).text
+        Success_Message_Box = by_xpath("//div[contains(@class,'success-message-box') and not(contains(@class,'none'))]")
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, Success_Message_Box, True)
+        return self.driver.find(Success_Message_Box).text
 
     def describe_error(self, error_element):
         question = error_element.find_element_by_xpath('../../../h6').text

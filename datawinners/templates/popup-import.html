@@ -19,9 +19,11 @@
             <div class="error">{% trans "Download the template:"%} <a href="{% url datawinners.entity.views.export_template subject.entity %}">{{ subject.entity }}.xls</a></div>
             <table class="styled_table">
                 <thead>
+                    <tr>
                     {% for title in subject.labels %}
                         <th>{{ title }}</th>
                     {% endfor %}
+                    </tr>
                 </thead>
                 <tbody id="{{ subject.code }}_table">
                 </tbody>
@@ -36,9 +38,11 @@
                 <br/>
                 <table class="styled_table">
                     <thead>
-                    <th>{% trans "Row Number" %}</th>
-                    <th>{% trans "Row" %}</th>
-                    <th>{% trans "Error" %}</th>
+                        <tr>
+                            <th>{% trans "Row Number" %}</th>
+                            <th>{% trans "Row" %}</th>
+                            <th>{% trans "Error" %}</th>
+                        </tr>
                     </thead>
                     <tbody>
 

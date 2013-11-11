@@ -5,11 +5,12 @@ from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import DATA_SENDER_DEVICES
 from pages.projectdatasenderspage.project_data_senders_locator import *
 from tests.projects.datasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
-from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+# from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
-class ProjectDataSendersPage(AllDataSendersPage):
+class ProjectDataSendersPage(Page):
     def __init__(self, driver):
         super(ProjectDataSendersPage, self).__init__(driver)
 
@@ -116,3 +117,10 @@ class ProjectDataSendersPage(AllDataSendersPage):
 
     def is_checkall_enabled(self):
         return self.driver.find(CHECKALL_CB).is_enabled()
+
+    def search_with(self, search_text):
+        self.driver.find_text_box(by_css("div#datasender_table_filter > input")).enter_text(search_text)
+
+    def get_checkbox_selector_for_datasender_row(self, row_number):
+        # first row is used to show all rows select message
+        return by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[1]/input" % (row_number + 1))

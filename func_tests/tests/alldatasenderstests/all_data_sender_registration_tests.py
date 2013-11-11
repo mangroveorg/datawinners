@@ -3,6 +3,7 @@ import time
 
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
+from framework.utils.common_utils import by_css
 
 from framework.utils.data_fetcher import fetch_, from_
 from framework.base_test import setup_driver, teardown_driver
@@ -49,8 +50,9 @@ class TestAllDataSenderRegistration(unittest.TestCase):
         success_msg = add_data_sender_page.get_success_message()
         self.assertRegexpMatches(success_msg, fetch_(SUCCESS_MSG, from_(VALID_DATA)))
         rep_id = self._parse(success_msg)
-        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
         all_data_senders_page = AllDataSendersPage(self.driver)
+        all_data_senders_page.load()
+        all_data_senders_page.search_with(rep_id)
         all_data_senders_page.select_a_data_sender_by_id(rep_id)
         all_data_senders_page.select_edit_action()
         self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
@@ -132,9 +134,10 @@ class TestAllDataSenderRegistration(unittest.TestCase):
     @attr('functional_test')
     def test_add_datasender_with_long_uid(self):
         add_data_sender_page = self.current_page
-        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_LONG_UID, "rep012345678901234567891")
-
-        self.assertEqual(add_data_sender_page.get_error_message(), fetch_(ERROR_MSG, from_(VALID_DATA_FOR_LONG_UID)))
+        self.driver.find(by_css("#generate_id")).click()
+        self.driver.find_text_box(by_css("#id_short_code")).enter_text("rep012345678901234567891")
+        short_code = self.driver.find(by_css("#id_short_code")).get_attribute('value')
+        self.assertEquals(len(short_code), 12)
 
 
     def assert_fields_are_populated_properly_in_edit_page(self, valid_registration_data):

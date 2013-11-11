@@ -708,9 +708,6 @@ msgstr "Donner un accès"
 msgid "Actions:"
 msgstr "Actions:"
 
-msgid "Add to project"
-msgstr "Relier à un projet"
-
 msgid "Remove from project"
 msgstr "Retirer d'un projet"
 
@@ -1729,11 +1726,11 @@ msgstr "Une entité avec le numéro d'identification unique (ID) =% s existe dé
 msgid "answer"
 msgstr "réponse"
 
-msgid "Answer for question %s is required"
-msgstr "Réponse pour la question %s est obligatoire"
+msgid "Answer for question %s is required."
+msgstr "Réponse pour la question %s est obligatoire."
 
-msgid "The answer %s must be between %s and %s"
-msgstr "La réponse %s doit être comprise entre %s et %s"
+msgid "The answer %s must be between %s and %s."
+msgstr "La réponse %s doit être comprise entre %s et %s."
 
 msgid "Patern should be ^[0-9]+$"
 msgstr "Le modèle devrait être ^[0-9]+$"
@@ -1807,8 +1804,8 @@ msgstr "Ajouter un message de rappel"
 msgid "The selected records have been deleted"
 msgstr "Les dossiers sélectionnés ont été supprimés"
 
-msgid "Enter each data sender's email address below. Each can submit data via the internet"
-msgstr "Entrez l'adresse e-mail de chaque expéditeur de données ci-dessous. Chacun peut soumettre des données via Internet"
+msgid "Add your Data Senders' email addresses to give them access."
+msgstr "Ajoutez les adresses email de vos Expéditeurs de Données pour leur donner accès."
 
 msgid "Reporter ID"
 msgstr "ID "
@@ -1870,14 +1867,17 @@ msgstr "Tous les champs sont obligatoires sauf indication \"facultatif\"."
 msgid "Optional"
 msgstr "facultatif"
 
-msgid "Answer %s for question %s is longer than allowed."
-msgstr "La réponse %s à la question %s dépasse la longueur autorisée."
+msgid "Answer %s for question %s is longer than allowed. Maximum allowed length is %s."
+msgstr "La réponse %s à la question %s est plus longue que ce qui est permis. Le nombre de caractères maximum autorisé est %s."
+
+msgid "Answer %s for question %s is shorter than allowed. Minimum allowed length is %s."
+msgstr "La réponse %s à la question %s est plus courte que ce qui est permis. Le nombre de caractères minimum autorisé est %s."
 
 msgid "Answer %s for question %s is %s than allowed."
 msgstr "La réponse %s pour la question %s est %s la valeur autorisée."
 
-msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
-msgstr "Format de GPS incorrect. Les coordonnées GPS doivent être dans le format suivant:. Xx.xxxx,yy.yyyy Exemple -18.8665,47.5315"
+msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315."
+msgstr "Format de GPS incorrect. Les coordonnées GPS doivent être dans le format suivant:. xx.xxxx,yy.yyyy Exemple -18.8665,47.5315."
 
 msgid "greater"
 msgstr "supérieur à"
@@ -1969,6 +1969,9 @@ msgstr "Réponse incorrecte pour la t. Veuillez envoyer de nouveau la totalité 
 
 msgid "Invalid message format."
 msgstr "Format de message non valide."
+
+msgid "Invalid Short Code. Only letters and numbers are valid."
+msgstr "Code invalide. Seuls les lettres et les nombres sont valides."
 
 msgid "Error: SMS Incorrect. Please review printed questionnaire and resend entire SMS."
 msgstr "Erreur: SMS Incorrect. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."
@@ -4372,3 +4375,17 @@ msgstr "Message de rappel le jour de la date d'échéance"
 msgid "Reminder text after deadline"
 msgstr "Message de rappel apres la date d'échéance"
 
+msgid "Data Sender Id"
+msgstr "Id de l'expéditeur"
+
+msgid "Data Sender Name"
+msgstr "Nom de l'expéditeur"
+
+msgid "The Data Sender(s) are removed from project(s) successfully"
+msgstr "Le(s) Expéditeur(s) de Données a (ont) été retiré(s) du projet avec succès"
+
+msgid "Note, the following Data Senders were not removed as they are DataWinners users: "
+msgstr "Les Expéditeurs de Données suivants ont été retirés car ils sont des utilisateurs de DataWinners: "
+
+msgid "The Data Sender(s) are added to project(s) successfully"
+msgstr "L(es) Expéditeur(s) de Données a (ont) été ajouté(s) au(x) projet(s) avec succès"

@@ -38,10 +38,3 @@ class TestAllDatasenderBehaviourInTrialOrg(unittest.TestCase):
     def test_should_show_default_datasender_for_newly_created_datasender(self):
         all_ds_page = self.page
         self.assertEqual(1, all_ds_page.get_datasenders_count())
-
-    @attr('functional_test')
-    def test_should_disable_associate_and_disassociate_action(self):
-        all_ds_page = self.page
-        all_ds_page.click_checkall_checkbox()
-        self.assertFalse(all_ds_page.is_associate_to_project_action_available())
-        self.assertFalse(all_ds_page.is_disassociate_to_project_action_available())

@@ -94,11 +94,6 @@
   #subject_create_type_link #add_new_subject_type {
     padding: 5px 0 5px 30px; }
 
-#subjects_table_wrapper .action_button {
-  display: inline;
-  float: left;
-  margin-top: -7px; }
-
 #delete_entity_block a {
   float: right !important; }
   #delete_entity_block a .cancel_link {

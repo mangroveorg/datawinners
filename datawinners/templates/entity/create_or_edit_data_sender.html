@@ -47,6 +47,8 @@
     {{ block.super }}
     <link href="/media/css/scss/section_register_entity.css" rel="stylesheet" />
     <link href="/media/css/scss/section_datasenders_common.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_datasender_import.css" media="screen" rel="stylesheet"/>
+
 {% endblock %}
 
 {% block page_css %}
@@ -64,10 +66,25 @@
 {% block content %}
     <div class="margin_bottom_10">
         <a href="{{ project_links.registered_datasenders_link }}" class="back-to-list"> « {% trans "Back to Data Sender List" %}</a>
+        {% if create_data_sender %}
+            <a href="javascript:void(0);" id="import-datasenders" class="float_right">{% trans "Import a List" %}</a>
+        {% endif %}
     </div>
     <div id="add_data_sender_form" class="">
   {% if create_data_sender %}
       {% include "datasender_form.html" %}
+      <div class="none">
+        <link href="/media/css/scss/import_popup.css" rel="stylesheet"/>
+        <link href="/media/css/scss/section_all_datasenders.css" rel="stylesheet"/>
+        <script>
+            var import_datasenders_link = "{% url all_datasenders%}";
+        </script>
+        <div id="popup-import" class="popup-import">
+            <script type="text/javascript" src="/media/javascript/datasenders/datasender_import.js"></script>
+            <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+            {% include "import-datasenders.html" %}
+        </div>
+      </div>
   {% else %}
       {% include "edit_datasender_form.html" %}
    {% endif %}

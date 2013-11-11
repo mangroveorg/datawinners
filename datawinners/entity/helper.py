@@ -2,10 +2,12 @@
 from collections import OrderedDict
 import re
 import logging
+from django.contrib.auth.models import User
 
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
 from datawinners.entity.entity_export_helper import get_json_field_infos_for_export
+from datawinners.utils import get_organization_from_manager
 
 from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.datadict import get_datadict_type_by_slug,\
@@ -162,7 +164,7 @@ def _get_data(form_data, country,reporter_id=None):
     return data
 
 
-def add_data_sender_to_trial_organization(telephone_number, org_id):
+def _add_data_sender_to_trial_organization(telephone_number, org_id):
     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=telephone_number,
         organization=Organization.objects.get(org_id=org_id))
     data_sender.save()
@@ -171,7 +173,7 @@ def update_data_sender_from_trial_organization(old_telephone_number,new_telephon
     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=old_telephone_number,
         organization=Organization.objects.get(org_id=org_id))
     data_sender.delete()
-    add_data_sender_to_trial_organization(new_telephone_number,org_id=org_id)
+    _add_data_sender_to_trial_organization(new_telephone_number,org_id=org_id)
 
 def process_create_data_sender_form(dbm, form, org_id):
     message = None
@@ -181,7 +183,7 @@ def process_create_data_sender_form(dbm, form, org_id):
         try:
             organization = Organization.objects.get(org_id=org_id)
             if organization.in_trial_mode:
-                add_data_sender_to_trial_organization(form.cleaned_data["telephone_number"], org_id)
+                _add_data_sender_to_trial_organization(form.cleaned_data["telephone_number"], org_id)
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
             reporter_id = form.cleaned_data["short_code"].lower() if form.cleaned_data != "" else None
             request = Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
@@ -229,14 +231,13 @@ def delete_datasender_for_trial_mode(manager, all_ids, entity_type):
         DataSenderOnTrialAccount.objects.get(mobile_number=entity_to_be_deleted.value(MOBILE_NUMBER_FIELD)).delete()
 
 
-def add_imported_data_sender_to_trial_organization(request, imported_datasenders, all_data_senders, index=0):
-    org_id = request.user.get_profile().org_id
+def add_imported_data_sender_to_trial_organization(org_id, imported_datasenders, all_data_senders, index=0):
     organization = Organization.objects.get(org_id=org_id)
     if organization.in_trial_mode:
         mobile_number_index = index
         for ds in all_data_senders:
             if ds['short_code'] in imported_datasenders:
-                add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
+                _add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
 
 
 def get_entity_type_fields(manager, type=REPORTER, for_export=False):
@@ -311,5 +312,17 @@ def put_email_information_to_entity(dbm, entity, email):
     data = (email_field_label, email, email_ddtype)
     entity.update_latest_data([data])
 
+def rep_id_name_dict_of_superusers(manager):
+    org_id = get_organization_from_manager(manager).org_id
+    orgUsers = NGOUserProfile.objects.filter(org_id=org_id).values_list("user_id", "reporter_id")
 
+    rep_id_map = {}
+    user_id_name_map = {}
+    for u in orgUsers:
+        rep_id_map.update({u[0]: u[1]})
+    users = User.objects.filter(groups__name__in=['Project Managers', 'NGO Admins'], id__in=rep_id_map.keys()).values()
 
+    for user in users:
+        user_id_name_map[rep_id_map[user["id"]]] = user["first_name"] + " " + user["last_name"]
+
+    return user_id_name_map

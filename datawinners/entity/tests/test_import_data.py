@@ -36,7 +36,7 @@ class TestImportData(unittest.TestCase):
                 with patch('datawinners.entity.import_data.get_country_appended_location') as get_country_appended_location:
                     get_location_field_code.return_value = 'q2'
                     get_country_appended_location.return_value = 'loc,Madagascar'
-                    result = file_player.append_country_for_location_field(form_model, {'q1': 'val1', 'q2': ''},Mock(spec=Organization))
+                    result = file_player._append_country_for_location_field(form_model, {'q1': 'val1', 'q2': ''},Mock(spec=Organization))
                     self.assertEquals(result,{'q1': 'val1', 'q2': ''})
 
     def test_should_append_country_to_if_location_present_in_imported_excel(self):
@@ -47,7 +47,7 @@ class TestImportData(unittest.TestCase):
                 with patch('datawinners.entity.import_data.get_country_appended_location') as get_country_appended_location:
                     get_location_field_code.return_value = 'q2'
                     get_country_appended_location.return_value = 'loc,Madagascar'
-                    result = file_player.append_country_for_location_field(form_model, {'q1': 'val1', 'q2': 'loc'},Mock(spec=Organization))
+                    result = file_player._append_country_for_location_field(form_model, {'q1': 'val1', 'q2': 'loc'},Mock(spec=Organization))
                     self.assertEquals(result,{'q1': 'val1', 'q2': 'loc,Madagascar'})
 
 def dummy_get_location_hierarchy(foo):

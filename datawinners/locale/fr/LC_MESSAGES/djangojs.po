@@ -118,8 +118,8 @@ msgstr ""
 msgid "Select 1 Data Sender only"
 msgstr "Sélectionnez seulement 1 Expéditeur de Données"
 
-msgid "Data Senders"
-msgstr "Expéditeurs de données"
+msgid "Data Sender"
+msgstr "Expéditeurs de donnée"
 
 #: media/javascript/data_modified_warning.js:53
 msgid "You Have Unsaved Changes"
@@ -193,11 +193,12 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
-#: media/javascript/admin/organization.js:18
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
-#: media/javascript/admin/organization.js:19
+msgid "Edit"
+msgstr "Modifier"
+
 msgid "Ok"
 msgstr ""
 
@@ -602,7 +603,7 @@ msgstr "Recherche:"
 #: media/javascript/project/results.js:185
 #: media/javascript/useractivity/log.js:39
 msgid "First"
-msgstr "Premiere"
+msgstr "Précédent"
 
 #: media/javascript/project/data_analysis.js:77
 #: media/javascript/project/results.js:186
@@ -620,7 +621,7 @@ msgstr "Suiv."
 #: media/javascript/project/results.js:188
 #: media/javascript/useractivity/log.js:42
 msgid "Last"
-msgstr "Dernière"
+msgstr "Suivant"
 
 #: media/javascript/project/data_analysis.js:90
 msgid "Reporting Period"
@@ -960,8 +961,8 @@ msgid "Terms And Conditions"
 msgstr "Termes et Conditions"
 
 #: media/javascript/subjects/subject_actions.js:15
-msgid "You have selected the <b>%(number_of_records)s</b> Subjects on this page."
-msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> Sujets sur cette page."
+msgid "You have selected <b>%(number_of_records)s</b> %(concept)s(s) on this page."
+msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> %(concept)s sur cette page."
 
 msgid "You have selected <b>%(number_of_records)s</b> Datasenders on this page."
 msgstr "Vous avez sélectionné <b>%(number_of_records)s</b> Expéditeurs sur cette page."
@@ -997,8 +998,8 @@ msgstr "Afficher 0 à 0 de 0 Enregistrements"
 #~ msgid "Not available for trial accounts"
 #~ msgstr "Non disponible pour les comptes essai"
 
-msgid "Select all <b> %(total_number_of_records)s </b>Subjects"
-msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>Sujets"
+msgid "Select all <b> %(total_number_of_records)s </b>%(concept)s(s)"
+msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>%(concept)s(s)"
 
 msgid "Select all <b> %(total_number_of_records)s </b>datasenders"
 msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>expéditeurs"
@@ -1006,8 +1007,8 @@ msgstr "Sélectionner tous les <b> %(total_number_of_records)s </b>expéditeurs"
 msgid "Enter any information you want to find"
 msgstr "Tapez toute information que vous recherchez"
 
-msgid "You have selected all %(total_number_of_records)s Subjects."
-msgstr "Vous avez sélectionné tous les %(total_number_of_records)s Sujets."
+msgid "You have selected all %(total_number_of_records)s %(concept)s(s)."
+msgstr "Vous avez sélectionné tous les %(total_number_of_records)s %(concept)s(s)."
 
 msgid "All %(total_number_of_records)s Datasenders selected."
 msgstr "Tous les %(total_number_of_records)s Expéditeurs sont sélectionnés."
@@ -1037,3 +1038,23 @@ msgid "Example: %(day)s of the reporting week"
 msgstr "Exemple: %(day)s de la même semaine"
 
 
+msgid "Select a %(concept)s"
+msgstr "Sélectionnez un(e) %(concept)s"
+
+msgid "Remove from project"
+msgstr "Retirer d'un projet"
+
+msgid "Add to project"
+msgstr "Relier à un projet"
+
+msgid " Record(s) Failed to Import"
+msgstr " Enregistrements n'ont pas pu être importés"
+
+msgid " Record(s) Successfully Imported"
+msgstr " Enregistrements ont été importés avec succès"
+
+msgid "Access to Web Submission has been given to your DataSenders"
+msgstr "Un accès à la page d'envoi web a été donné à vos expéditeurs de données"
+
+msgid "all_selected_message %(total_records)s %(current_page_size)s"
+msgstr "Nous avons limité votre sélection à %(total_records)s Expéditeurs de Données sur %(current_page_size)s Expédteurs de Données sur la page courante. Après avoir donné accès à ces %(current_page_size)s Expéditeurs de Données, vous pouvez continuer à la page suivante."

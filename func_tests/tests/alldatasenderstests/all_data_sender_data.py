@@ -6,7 +6,6 @@ from testdata.test_data import url
 from testdata.constants import *
 
 
-
 ASSOCIATE_SUCCESS_TEXT = "Data Senders associated Successfully. Please Wait...."
 DISSOCIATE_SUCCESS_TEXT = "Data Senders dissociated Successfully. Please Wait...."
 ERROR_MSG_WITHOUT_SELECTING_DS = u"Please select atleast 1 data sender"
@@ -53,42 +52,39 @@ VALID_DATASENDER_WITHOUT_WEB_ACCESS = {NAME: "aaa Kimi",
                                        GPS: "-21.7622088847 48.0690991394",
                                        SUCCESS_MSG: "Registration successful. ID is: rep"}
 
+DATA_SENDER_TO_DELETE = {NAME: "ALLDSDelete",
+                         MOBILE_NUMBER: random_number(9),
+                         COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                         GPS: "-21.7622088847 48.0690991394",
+                         SUCCESS_MSG: "Registration successful. ID is: rep"}
 
-DATA_SENDER_TO_DELETE = {NAME: "delete DS",
-                                       MOBILE_NUMBER: random_number(9),
-                                       COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-                                       GPS: "-21.7622088847 48.0690991394",
-                                       SUCCESS_MSG: "Registration successful. ID is: rep"}
-
+DATA_SENDER_FOR_MULTIPLE_DELETE = {NAME: "ALLDSDelete",
+                                   MOBILE_NUMBER: random_number(9),
+                                   COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                                   GPS: "-21.7622088847 48.0690991394",
+                                   SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 VALID_DATASENDER_WITH_WEB_ACCESS = {NAME: "aaa Mickey Duck",
-                               MOBILE_NUMBER: random_number(9),
-                               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-                               EMAIL_ADDRESS: "mIcKeY",
-                               GPS: "-21.7622088847 48.0690991394",
-                               SUCCESS_MSG: "Registration successful. ID is: rep"}
+                                    MOBILE_NUMBER: random_number(9),
+                                    COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                                    EMAIL_ADDRESS: "mIcKeY",
+                                    GPS: "-21.7622088847 48.0690991394",
+                                    SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 EDITED_DATA_SENDER = {NAME: "aaa Mickey Goose",
-                               MOBILE_NUMBER: random_number(9),
-                               COMMUNE: "Pakistan",
-                               EMAIL_ADDRESS: "goose",
-                               GPS: "3.33, 1.11",
-                               SUCCESS_MSG: "Your changes have been saved."}
-
+                      MOBILE_NUMBER: random_number(9),
+                      COMMUNE: "Pakistan",
+                      EMAIL_ADDRESS: "goose",
+                      GPS: "3.33, 1.11",
+                      SUCCESS_MSG: "Your changes have been saved."}
 
 INVALID_MOBILE_NUMBER_DATA = {NAME: "ReRegistered",
                               MOBILE_NUMBER: "abcdefgh",
                               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                               GPS: "-21.7622088847 48.0690991394"}
 
-
-
-
-
-
 ALL_DS_TO_DELETE_ARE_USER_MSG = u'You cannot delete the following Data Senders as they are DataWinners users:'
 NOTIFICATION_WHILE_DELETING_USER = "Note, the following Data Senders will not be deleted as they are DataWinners users"
-
 
 ALL_USERS_URL = url("/account/users/")
 TITLE = "title"
@@ -99,17 +95,9 @@ MOBILE_PHONE = "mobile_phone"
 
 NEW_USER_DATA = {
     TITLE: "Developer",
-    FIRST_NAME: "bbb kimi",
-    LAST_NAME: "Raikonan",
-    USERNAME: random_string(4)+"@mailinator.com",
-    MOBILE_PHONE: random_number(9)
-}
-
-NEW_USER_2_DATA = {
-    TITLE: "Developer",
-    FIRST_NAME: "delete",
+    FIRST_NAME: "AllDSDelete",
     LAST_NAME: "user",
-    USERNAME: random_string(4)+"@mailinator.com",
+    USERNAME: random_string(4) + "@mailinator.com",
     MOBILE_PHONE: random_number(9)
 }
 

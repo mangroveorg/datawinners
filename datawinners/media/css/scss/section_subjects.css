@@ -96,7 +96,8 @@
   margin-left: 10px; }
 
 #message {
-  clear: both; }
+  clear: both;
+  margin-bottom: 20px; }
 
 #my_subjects .secondary_tab {
   top: 0;
@@ -118,6 +119,7 @@
       color: #ffffff !important; }
 
 #my_subjects_links {
+  float: right;
   margin: 10px 0 20px 0; }
   #my_subjects_links ul {
     margin: 0;
@@ -233,7 +235,7 @@ form ul li {
     width: 350px;
     height: 100px;
     border-color: #cccccc;
-    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
+    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
   form ul li label {
     font-size: 14px;
     display: block;
@@ -243,7 +245,7 @@ form ul li {
     font-weight: bold; }
   form ul li input {
     float: left;
-    font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
+    font: 15px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
   form ul li span[wmwrap=true] {
     float: left;
     top: 3px; }
@@ -290,7 +292,7 @@ div.error_arrow {
 span.error_arrow, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 3px;
   display: inline;
-  float: left !important; }
+  float: left!important; }
 
 span .error_arrow label, div.error_arrow label, label.error_arrow label {
   float: none;
@@ -756,23 +758,20 @@ form div.action-section {
   float: left;
   padding-right: 2em; }
 
-.dataTables_wrapper table thead th {
-  padding: 10px 35px 10px 10px;
-  color: #FFF; }
-.dataTables_wrapper table thead .sorting {
-  background: url(/media/images/sort_arrow.png) no-repeat right center; }
-.dataTables_wrapper table thead .sorting_desc {
-  background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right center; }
-.dataTables_wrapper table thead .sorting_asc {
-  background: url(/media/images/sort_arrow_active_top.png) no-repeat right center; }
-.dataTables_wrapper table thead .devices {
-  padding: 10px 10px 10px 10px; }
-
 .pagination_button, .paginate_enabled_next, .paginate_enabled_previous, .paginate_more {
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
   background: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#CCDFED, endColorStr=#B0CFD7);
+  background-color: #f5f5f5;
+  background-image: -moz-linear-gradient(top, #ccdfed, #b0cfd7);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ccdfed), to(#b0cfd7));
+  background-image: -webkit-linear-gradient(top, #ccdfed, #b0cfd7);
+  background-image: -o-linear-gradient(top, #ccdfed, #b0cfd7);
+  background-image: linear-gradient(to bottom, #ccdfed, #b0cfd7);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffccdfed', endColorstr='#ffB0CFD7', GradientType=0);
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border-width: 1px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
@@ -971,7 +970,7 @@ span.paginate_more_disabled {
   margin-left: 20px; }
 
 .margin_left_180 {
-  margin-left: 180px !important; }
+  margin-left: 180px!important; }
 
 .margin_right_20 {
   margin-right: 20px; }
@@ -1072,7 +1071,7 @@ table.no_border td, table.no_border th {
   padding-left: 25px; }
 
 .cancel_link {
-  color: #0070ac !important;
+  color: #0070AC !important;
   margin-right: 10px;
   margin-top: 6px; }
 
@@ -1206,7 +1205,7 @@ span.tooltip {
 #cancel_project_block, #activate_project_block, #questionnaire_code_change,
 #subject_warning_message, #delete_project_block, #all_project_block, #new_reminder,
 #web_user_block, #user_should_agree_terms_block, #delete_question, #edit_question,
-#delete_entity_block,
+#delete_entity_block, #delete_ds_block,
 #delete_all_ds_are_users_warning_dialog,
 #option_warning_message {
   padding: 20px;
@@ -1214,14 +1213,14 @@ span.tooltip {
   #cancel_project_block .warning_message, #activate_project_block .warning_message, #questionnaire_code_change .warning_message,
   #subject_warning_message .warning_message, #delete_project_block .warning_message, #all_project_block .warning_message, #new_reminder .warning_message,
   #web_user_block .warning_message, #user_should_agree_terms_block .warning_message, #delete_question .warning_message, #edit_question .warning_message,
-  #delete_entity_block .warning_message,
+  #delete_entity_block .warning_message, #delete_ds_block .warning_message,
   #delete_all_ds_are_users_warning_dialog .warning_message,
   #option_warning_message .warning_message {
     margin-bottom: 30px; }
     #cancel_project_block .warning_message .learn_more_link, #activate_project_block .warning_message .learn_more_link, #questionnaire_code_change .warning_message .learn_more_link,
     #subject_warning_message .warning_message .learn_more_link, #delete_project_block .warning_message .learn_more_link, #all_project_block .warning_message .learn_more_link, #new_reminder .warning_message .learn_more_link,
     #web_user_block .warning_message .learn_more_link, #user_should_agree_terms_block .warning_message .learn_more_link, #delete_question .warning_message .learn_more_link, #edit_question .warning_message .learn_more_link,
-    #delete_entity_block .warning_message .learn_more_link,
+    #delete_entity_block .warning_message .learn_more_link, #delete_ds_block .warning_message .learn_more_link,
     #delete_all_ds_are_users_warning_dialog .warning_message .learn_more_link,
     #option_warning_message .warning_message .learn_more_link {
       color: #0070ac; }
@@ -1234,7 +1233,7 @@ span.tooltip {
   #web_user_block #ok_button, #user_should_agree_terms_block #confirm_delete, #user_should_agree_terms_block #confirm, #user_should_agree_terms_block #ok_button, #delete_question #confirm_delete, #delete_question #confirm, #delete_question #ok_button, #edit_question #confirm_delete, #edit_question #confirm, #edit_question #ok_button,
   #delete_entity_block #confirm_delete,
   #delete_entity_block #confirm,
-  #delete_entity_block #ok_button,
+  #delete_entity_block #ok_button, #delete_ds_block #confirm_delete, #delete_ds_block #confirm, #delete_ds_block #ok_button,
   #delete_all_ds_are_users_warning_dialog #confirm_delete,
   #delete_all_ds_are_users_warning_dialog #confirm,
   #delete_all_ds_are_users_warning_dialog #ok_button,
@@ -1248,7 +1247,7 @@ span.tooltip {
   #web_user_block a.wizard_cancel_link,
   #web_user_block a.cancel_link, #user_should_agree_terms_block a.wizard_cancel_link, #user_should_agree_terms_block a.cancel_link, #delete_question a.wizard_cancel_link, #delete_question a.cancel_link, #edit_question a.wizard_cancel_link, #edit_question a.cancel_link,
   #delete_entity_block a.wizard_cancel_link,
-  #delete_entity_block a.cancel_link,
+  #delete_entity_block a.cancel_link, #delete_ds_block a.wizard_cancel_link, #delete_ds_block a.cancel_link,
   #delete_all_ds_are_users_warning_dialog a.wizard_cancel_link,
   #delete_all_ds_are_users_warning_dialog a.cancel_link,
   #option_warning_message a.wizard_cancel_link,
@@ -1312,6 +1311,7 @@ span.tooltip {
   clear: right; }
 
 .help_accordion, .dataTables_empty {
+  clear: both;
   font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
   font-size: 14px;
   line-height: 18px;
@@ -1392,21 +1392,21 @@ div.border_top_bottom {
   border: 1px solid #D5B071 !important;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
-  background: #f8edb8 !important;
+  background: #F8EDB8!important;
   background: -webkit-gradient(linear, left top, left bottom, from(#f8edb8), to(#fde8a0)) !important;
   background: -moz-linear-gradient(top, #f8edb8, #fde8a0) !important;
   color: #C29870 !important;
-  font-family: "Arial" !important;
-  font-weight: bold !important;
-  padding: 6px 23px 5px 22px !important;
-  cursor: default !important;
-  cursor: hand !important; }
+  font-family: "Arial"!important;
+  font-weight: bold!important;
+  padding: 6px 23px 5px 22px!important;
+  cursor: default!important;
+  cursor: hand!important; }
 
 .can-not-submit-link-quest {
-  color: #066b06 !important;
+  color: #066B06!important;
   text-decoration: none;
   font-size: 12px;
-  cursor: default !important; }
+  cursor: default!important; }
   .can-not-submit-link-quest:hover {
     text-decoration: none; }
 
@@ -1422,7 +1422,6 @@ div.border_top_bottom {
 .padding_right_10 {
   padding-right: 10px !important; }
 
-
 .left_null {
   left: 0px !important; }
 
@@ -1430,3 +1429,20 @@ div.border_top_bottom {
   display: inline;
   float: left;
   margin-top: -7px; }
+
+#web_user_block .all_selected_message {
+  background-color: #E9F6FE;
+  margin-bottom: 10px; }
+
+#web_user_block table thead {
+  height: 40px;
+  background-color: #525252;
+  background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+  background: -moz-linear-gradient(top, #525252, #262626); }
+
+#web_user_block table th {
+  color: #ffffff; }
+
+#web_user_block .submission-controls {
+  float: right;
+  padding-top: 10px; }

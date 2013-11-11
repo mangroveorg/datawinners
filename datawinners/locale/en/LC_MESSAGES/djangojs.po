@@ -117,7 +117,7 @@ msgstr ""
 msgid "Select 1 Data Sender only"
 msgstr ""
 
-msgid "Data Senders"
+msgid "Data Sender"
 msgstr ""
 
 #: media/javascript/data_modified_warning.js:53
@@ -933,8 +933,8 @@ msgid "Terms And Conditions"
 msgstr ""
 
 #: media/javascript/subjects/subject_actions.js:15
-msgid "You have selected the <b>%(number_of_records)s</b> Subjects on this page."
-msgstr "You have selected the <b>%(number_of_records)s</b> Subjects on this page."
+msgid "You have selected <b>%(number_of_records)s</b> %(concept)s(s) on this page."
+msgstr "You have selected <b>%(number_of_records)s</b> %(concept)s(s) on this page."
 
 msgid "You have selected <b>%(number_of_records)s</b> Datasenders on this page."
 msgstr "You have selected <b>%(number_of_records)s</b> Datasenders on this page."
@@ -966,8 +966,8 @@ msgstr ""
 #~ msgid "Answer must be a word or phrase %d characters maximum"
 #~ msgstr "Answer must be a word %d characters maximum"
 
-msgid "Select all <b> %(total_number_of_records)s </b>Subjects"
-msgstr "Select all <b> %(total_number_of_records)s </b>Subjects"
+msgid "Select all <b> %(total_number_of_records)s </b>%(concept)s(s)"
+msgstr "Select all <b> %(total_number_of_records)s </b>%(concept)s(s)"
 
 msgid "Select all <b> %(total_number_of_records)s </b>datasenders"
 msgstr "Select all <b> %(total_number_of_records)s </b>datasenders"
@@ -975,7 +975,7 @@ msgstr "Select all <b> %(total_number_of_records)s </b>datasenders"
 msgid "Enter any information you want to find"
 msgstr ""
 
-msgid "You have selected all %(total_number_of_records)s Subjects."
+msgid "You have selected all %(total_number_of_records)s %(concept)s(s)."
 msgstr ""
 
 msgid "All %(total_number_of_records)s Datasenders selected."
@@ -1001,3 +1001,21 @@ msgstr ""
 
 msgid "Example: %(day)s of the reporting week"
 msgstr ""
+
+msgid "Remove from project"
+msgstr ""
+
+msgid "Add to project"
+msgstr ""
+
+msgid " Record(s) Failed to Import"
+msgstr ""
+
+msgid " Record(s) Successfully Imported"
+msgstr ""
+
+msgid "Access to Web Submission has been given to your DataSenders"
+msgstr ""
+
+msgid "all_selected_message %(total_records)s %(current_page_size)s"
+msgstr "We limited your selection of %(total_records)s Data Senders to the %(current_page_size)s Data Senders on the current page. After giving access to these %(current_page_size)s Data Senders you can continue with the next page."

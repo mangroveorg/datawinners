@@ -5,6 +5,8 @@ from framework.utils.data_fetcher import from_, fetch_
 from pages.adduserpage.add_user_locator import *
 from framework.utils.common_utils import by_css
 from pages.adddatasenderspage.add_data_senders_locator import FLASH_MESSAGE_LABEL
+from tests.testsettings import UI_TEST_TIMEOUT
+
 
 class AddUserPage(Page):
     def __init__(self, driver):
@@ -22,5 +24,5 @@ class AddUserPage(Page):
         Return success message
         """
         error_message = ""
-        locator = self.driver.wait_for_element(20, FLASH_MESSAGE_LABEL, want_visible=True)
+        locator = self.driver.wait_for_element(UI_TEST_TIMEOUT, FLASH_MESSAGE_LABEL, want_visible=True)
         return locator.text

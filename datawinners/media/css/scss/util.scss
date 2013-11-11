@@ -391,7 +391,7 @@ span.tooltip {
 #cancel_project_block, #activate_project_block, #questionnaire_code_change,
 #subject_warning_message, #delete_project_block, #all_project_block, #new_reminder,
 #web_user_block, #user_should_agree_terms_block, #delete_question, #edit_question,
-#delete_entity_block,
+#delete_entity_block, #delete_ds_block,
 #delete_all_ds_are_users_warning_dialog,
 #option_warning_message{
   padding: 20px;
@@ -484,6 +484,7 @@ span.tooltip {
 }
 
 .help_accordion {
+  clear:both;
   font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
   font-size: 14px;
   line-height: 18px;

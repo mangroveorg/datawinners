@@ -189,6 +189,15 @@ class TestApplicationEndToEnd(BaseTest):
         all_data_sender_page.associate_datasender_to_projects(rep_id, [self.project_name])
         return email
 
+    def verify_admin_present_in_my_datasenders_page(self):
+        global_navigation = GlobalNavigationPage(self.driver)
+        all_project_page=global_navigation.navigate_to_view_all_project_page()
+        project_overview_page=all_project_page.navigate_to_project_overview_page(self.project_name)
+        my_datasenders_page=project_overview_page.navigate_to_datasenders_page()
+        my_datasenders_page.search_with(self.email)
+        self.assertTrue(
+            self.driver.is_element_present(my_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
+
 
     def verify_submission_via_sms(self, organization_sms_tel_number):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
@@ -295,6 +304,7 @@ class TestApplicationEndToEnd(BaseTest):
         self.add_subject()
         self.add_edit_delete_subject()
         ds_email = self.add_edit_datasender()
+        self.verify_admin_present_in_my_datasenders_page()
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_project_activation()
         self.verify_submission_via_web(ds_email)

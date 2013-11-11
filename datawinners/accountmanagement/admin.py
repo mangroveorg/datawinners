@@ -143,6 +143,42 @@ class OrganizationChangeList(ChangeList):
             qs = qs.order_by('-active_date')
         return qs
 
+class OrganizationChangeList(ChangeList):
+    def get_query_set(self):
+        if not self.params.get("q", ""):
+            return super(OrganizationChangeList, self).get_query_set()
+            
+        from django.db import connection
+        cursor = connection.cursor()
+        query = """Select array_agg(DISTINCT o.org_id) from accountmanagement_organization o
+            inner join accountmanagement_ngouserprofile p on p.org_id = o.org_id
+            inner join auth_user u on u.id = p.user_id inner join auth_user_groups ug on ug.user_id = u.id
+            inner join auth_group g on ug.group_id = g.id and g.name = %s  """
+        params = ["NGO Admins"]
+        
+        for index, keyword in enumerate(self.params.get("q").split()):
+            from django_countries.countries import COUNTRIES
+            codes = ["'" + code + "'" for code, name in COUNTRIES if unicode(name).lower().find(keyword.lower()) != -1 ]
+            country_codes = ', '.join(codes) if len(codes) else "''"
+            query += "and " if index else "where"
+            query += " (o.country in (%s) " % country_codes
+            query += """OR  u.email ilike %s OR u.first_name||u.last_name ilike %s OR o.name ilike %s
+                OR p.mobile_phone ilike %s OR o.address||o.addressline2||o.city||o.zipcode||o.state ilike %s
+                OR o.office_phone ilike %s OR o.website ilike %s OR o.org_id ilike %s
+                OR to_char(o.active_date, 'YYYY-MM-DD HH:MI:SS') ilike %s) """
+
+            params.extend(["%" + keyword + "%"] * 9)
+
+        cursor.execute(query, params)
+        org_ids = cursor.fetchone()[0]
+        qs = Organization.objects.filter(org_id__in=org_ids or [])
+
+        if self.order_field:
+            qs = qs.order_by('%s%s' % ((self.order_type == 'desc' and '-' or ''), self.order_field))
+        else:
+            qs = qs.order_by('-active_date')
+        return qs
+
 class OrganizationAdmin(DatawinnerAdmin):
     list_display = (
         'name', 'org_id', 'complete_address', 'office_phone', 'website', 'paid', 'active_date', 'admin_name',

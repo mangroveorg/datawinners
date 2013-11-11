@@ -17,42 +17,36 @@
     {{ block.super }}
     <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_all_datasenders.css" rel="stylesheet"/>
+    <link href="/media/css/scss/import_popup.css" rel="stylesheet"/>
     <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
     <link href="/media/css/scss/action_button.css" media="screen" rel="stylesheet"/>
+    <link href="/media/css/scss/section_datasender_import.css" media="screen" rel="stylesheet"/>
+
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
-    <script type="text/javascript" src="/media/javascript/action_dropdown.js"></script>
-    <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/my_datasenders_reload_tables.js"></script>
-    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
-    <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
+    <script type="text/javascript" src="/media/javascript/datasenders/datasender_import.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
-
-    <script type="text/javascript" src="/media/javascript/entity/all_datasender_reload_tables.js"></script>
-    <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/datasender_actions.js"></script>
+    <script>
+        var user_dict = {{ user_dict|safe }};
+        var import_datasenders_link = "{% url registered_datasenders project.id %}"
+    </script>
 {% endblock %}
 
 {% block content %}
-    {% if grant_web_access %}
-        <div id="flash-message" class="success-message-box">
-            {% trans "Access to Web Submission has been given to your DataSenders" %}
-        </div>
-    {% endif %}
     <div>
         <div class="grid_8 alpha">
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
-        <div class="grid_8 float_right omega text_align_right">
+        <div class="float_right">
             <a href="{{ project_links.register_datasenders_link }}"
                class="register_data_sender">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a List" %}</a>
@@ -67,20 +61,15 @@
         {% endblock %}
     </div>
 
-    {% if messages %}
-        <ul class="messages padding_bottom_10">
-            {% for message in messages %}
-                <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    {% include 'flash_message.html' %}
 
     {% include 'entity/all_data_senders/web_submission_access_block.html' %}
     <input type="text" value="{{ project.id }}" class="none" id="project_id"/>
     <input type="hidden" value="{{ project.name }}" id="project_name"/>
     {% include 'project/mydatasenders_table.html' %}
-    <div id="popup-import">
+    <div id="popup-import" class="popup-import">
         {% include "import-datasenders.html" %}
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
 {% endblock %}
+

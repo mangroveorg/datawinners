@@ -9,7 +9,10 @@
            <div id="flash-message" class="{% if success %}success-message-box{% else %}message-box{% endif %}">
                {{ message }}
            </div>
+      {% else %}
+           &nbsp;
       {% endif %}
+
   </div>
   <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>  <br>
   <form id="registration_form" class="" action="" method="POST">
