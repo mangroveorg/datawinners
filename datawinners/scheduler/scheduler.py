@@ -59,7 +59,7 @@ def send_reminders_for_an_organization(org, on_date, sms_client, from_number, db
             #send reminders to next projects in the queue if their is any error while sending reminders to previous project
         try:
             _, total_sms_sent = send_reminders_on(project, reminders, on_date, sms_client, from_number, dbm)
-            org.increment_all_message_count_by(0, total_sms_sent)
+            org.increment_message_count_for(sent_reminders_count=total_sms_sent)
         except Exception:
             logger.exception("Exception while sending reminders for this project")
 

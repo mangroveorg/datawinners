@@ -4315,8 +4315,11 @@ msgstr "Vos 1000 soumissions gratuites ont été utilisées.Contactez votre Admi
 msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects."
 msgstr "Vous avez atteint la limite de 1000 soumissions gratuite. Adoptez la version payante pour continuer à soumettre des donnés pour vos projets"
 
-msgid "Your DataWinners account have been deactivated. Subscribe to a monthly subscription or contact your Project Manager to reactivate the account."
-msgstr "Votre compte DataWinners à été desactivé. Adoptez la vérsion payante ou contactez votre administrateur to réactivé votre compte."
+msgid "Your DataWinners account has been deactivated. "
+msgstr "Votre compte DataWinners a été désactivé. "
+
+msgid "To reactivate it, subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
+msgstr "Pour le réactiver, veuillez adhérer à une souscription mensuelle en contactant votre Gestionnaire de Projet ou le support DW au <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
 
 msgid "Get the Most out of Datawinners!"
 msgstr "Tirer le meilleur parti de Datawinners"

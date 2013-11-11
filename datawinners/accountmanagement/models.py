@@ -113,10 +113,7 @@ class Organization(models.Model):
     def increment_message_count_for(self, **kwargs):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = self._get_message_tracker(current_month)
-        for field_name, count in kwargs.items():
-            current_count = getattr(message_tracker, field_name)
-            setattr(message_tracker, field_name, count + current_count)
-        message_tracker.save()
+        message_tracker.increment_message_count_for(**kwargs)
 
     #TODO Should be removed??
     def _configure_organization_settings(self):
@@ -282,12 +279,14 @@ class OrganizationSetting(models.Model):
 class MessageTracker(models.Model):
     organization = models.ForeignKey(Organization)
     month = models.DateField()
-    sms_api_usage_count = models.IntegerField("API", default=0)
+    sms_api_usage_count = models.IntegerField(mark_safe("Outgoing <br/>SMS:<br/>API"), default=0)
     incoming_sms_count = models.IntegerField(default=0)
     sms_registration_count = models.IntegerField(mark_safe("SMS<br/>Subject<br/>Registration"), default=0)
     incoming_web_count = models.IntegerField(mark_safe("Web<br/>Submissions"), default=0)
     incoming_sp_count = models.IntegerField(mark_safe("SP<br/>Submissions"), default=0)
-    outgoing_sms_count = models.IntegerField(mark_safe("Outgoing<br/>SMS"), default=0)
+    outgoing_sms_count = models.IntegerField(mark_safe("Outgoing SMS:<br/>Autom Reply"), default=0)
+    send_message_count = models.IntegerField(mark_safe("Outgoing SMS:<br/>Send Message"), default=0)
+    sent_reminders_count = models.IntegerField(mark_safe("Outgoing SMS:<br/>Reminders"), default=0)
 
     def increment_incoming_message_count_by(self, count):
         self.incoming_sms_count += count
@@ -302,7 +301,7 @@ class MessageTracker(models.Model):
         self.save()
 
     def outgoing_message_count(self):
-        return self.sms_api_usage_count + self.outgoing_sms_count
+        return self.sms_api_usage_count + self.outgoing_sms_count + self.sent_reminders_count +self.send_message_count
 
     def total_messages(self):
         return self.outgoing_message_count() + self.incoming_sms_count
@@ -320,6 +319,8 @@ class MessageTracker(models.Model):
     def reset(self):
         self.incoming_sms_count = 0
         self.outgoing_sms_count = 0
+        self.send_message_count = 0
+        self.sent_reminders_count = 0
         self.incoming_web_count = 0
         self.incoming_sp_count = 0
         self.sms_api_usage_count = 0
@@ -332,7 +333,13 @@ class MessageTracker(models.Model):
             total_incoming += msg_tracker.total_monthly_incoming_messages()
         return total_incoming
 
+    def increment_message_count_for(self, **kwargs):
+        for field_name, count in kwargs.items():
+            current_count = getattr(self, field_name)
+            setattr(self, field_name, count + current_count)
+        self.save()
+
 
     def __unicode__(self):
         return "organization : %s incoming messages: %d outgoing messages: %d" % (
-            self.organization.name, self.incoming_sms_count, self.outgoing_sms_count)
+            self.organization.name, self.incoming_sms_count, self.outgoing_message_count())

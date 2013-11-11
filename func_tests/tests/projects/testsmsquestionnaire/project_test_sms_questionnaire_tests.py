@@ -22,6 +22,8 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         cls.message_tracker.sms_registration_count = 10
         cls.message_tracker.outgoing_sms_count = 50
         cls.message_tracker.incoming_sms_count = 50
+        cls.message_tracker.sent_reminders_count = 0
+        cls.message_tracker.send_message_count = 0
         cls.message_tracker.incoming_sp_count = 160
         cls.message_tracker.incoming_web_count = 800
         cls.message_tracker.month = datetime.strftime(datetime.today(), "%Y-%m-01")

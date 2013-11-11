@@ -101,7 +101,7 @@ def submission(request):
         return HttpResponseBadRequest()
 
     organization = Organization.objects.get(org_id=user_profile.org_id)
-    organization.increment_message_count_for(**{'incoming_sp_count':1})
+    organization.increment_message_count_for(incoming_sp_count=1)
 
     check_quotas_and_update_users(organization)
     response = HttpResponse(status=201)
