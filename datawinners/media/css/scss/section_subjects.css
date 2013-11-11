@@ -882,20 +882,6 @@ span.paginate_more_disabled {
 #wrapper_div_for_table {
   margin-top: 22px; }
 
-.table_message {
-  padding: 0;
-  border: 1px solid #A6C7F2;
-  background-color: #E9F6FE; }
-
-#select_all_message {
-  clear: both;
-  height: 2em;
-  text-align: center;
-  padding-top: 5px;
-  width: 910px;
-  left: 0px;
-  text-align: center; }
-
 .padding_right_null {
   padding-right: 0 !important; }
 

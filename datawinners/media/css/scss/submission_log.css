@@ -1,6 +1,9 @@
 .link, #submission_logs a, #submission_logs a:hover, #submission_logs .export_link {
   color: #0070AC; }
 
+.checkbox_col {
+  width: 30px; }
+
 #action_menu {
   width: 100px; }
   #action_menu ul {
@@ -14,8 +17,6 @@
 
 #submission_logs .ui-state-default {
   font-weight: normal; }
-#submission_logs tr, #submission_logs td {
-  background: none; }
 #submission_logs .ui-tabs-nav {
   padding-left: 0px;
   padding-right: 0px; }

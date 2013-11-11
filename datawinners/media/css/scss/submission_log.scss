@@ -2,6 +2,10 @@
   color: #0070AC;
 }
 
+.checkbox_col {
+  width: 30px;
+}
+
 #action_menu {
   width: 100px;
   ul {
@@ -21,13 +25,12 @@
     font-weight: normal;
   }
   a, a:hover {
-    @extend .link
+    @extend .link;
   }
   tr, td {
-    background: none;
   }
   .export_link {
-    @extend .link
+    @extend .link;
   }
   .ui-tabs-nav {
     padding-left: 0px;

@@ -5,7 +5,7 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
         nNext = $('<span class="paginate_button next">&#x25B6;</span>')
         nMore=$('<span class="paginate_more">&#x25BE;</span>')
 
-        var instance_id = parseInt(Math.random() * 100);
+        var instance_id = parseInt(Math.random() * 10000000000000001);
         dropdown_id = "pagination_more_menu" + instance_id;
         first_page_id = "first_page" + instance_id;
         last_page_id = "last_page" + instance_id;
@@ -17,6 +17,8 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
         $(document.body).append(dropdown);
 
         $(nMore).dropdown('attach', "#" + dropdown_id);
+        $(nMore).data('first', first_page_id);
+        $(nMore).data('last', last_page_id);
 
         $(nPrevious).click(function () {
             if ($(this).attr('class').indexOf("disabled")<0){
@@ -32,7 +34,7 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
             }
         });
 
-        $(nPaging).find("#"+first_page_id).click(function(){
+        $("#"+first_page_id).click(function(){
              if (!$(this).parent().hasClass("disabled")){
                 oSettings.oApi._fnPageChange(oSettings, "first");
                 fnCallbackDraw(oSettings);
@@ -41,7 +43,7 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
             return false;
         });
 
-        $(nPaging).find("#"+last_page_id).click(function(){
+        $("#"+last_page_id).click(function(){
              if (!$(this).parent().hasClass("disabled")){
                 oSettings.oApi._fnPageChange(oSettings, "last");
                 fnCallbackDraw(oSettings);
@@ -69,23 +71,24 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
         var an = oSettings.aanFeatures.p;
         for (var i = 0, iLen = an.length; i < iLen; i++) {
             var buttons = an[i].getElementsByTagName('span');
+            var first_id = $(an[i]).find(".paginate_more").data('first');
+            var last_id = $(an[i]).find(".paginate_more").data('last');
             if (oSettings._iDisplayStart === 0) {
                 buttons[0].className = "paginate_disabled_previous";
-                $($(an[i]).find("ul.dropdown-menu>li")[0]).addClass('disabled')
-
+                $($("#" + first_id).parent()).addClass('disabled');
             }
             else {
                 buttons[0].className = "paginate_enabled_previous";
-                $($(an[i]).find("ul.dropdown-menu>li")[0]).removeClass('disabled')
+                $($("#" + first_id).parent()).removeClass('disabled')
             }
 
             if (oSettings.fnDisplayEnd() == oSettings.fnRecordsDisplay()) {
                 buttons[1].className = "paginate_disabled_next";
-                $($(an[i]).find("ul.dropdown-menu>li")[1]).addClass('disabled')
+                $($("#" + last_id).parent()).addClass('disabled')
             }
             else {
                 buttons[1].className = "paginate_enabled_next";
-                $($(an[i]).find("ul.dropdown-menu>li")[1]).removeClass('disabled')
+                $($("#" + last_id).parent()).removeClass('disabled')
             }
 
             if (oSettings._iDisplayStart === 0 && oSettings.fnDisplayEnd() == oSettings.fnRecordsDisplay()) {

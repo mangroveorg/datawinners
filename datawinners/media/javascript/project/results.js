@@ -97,6 +97,7 @@ $(document).ready(function () {
             "aaSorting": [
                 [ 2, "desc"]
             ],
+            "aoColumnDefs":[{"aTargets":[0], "sWidth":"30px"}],
             "actionItems": [
                 {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
                 {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
