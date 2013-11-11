@@ -182,7 +182,7 @@ class Context(object):
 
 
 def take_psql_dump(name_prefix):
-    backup_name = "psql_backup_" + name_prefix + ".gz"
+    backup_name = "/home/mangrover/psql_backup_" + name_prefix + ".gz"
     run('pg_dump mangrove | gzip > %s' % backup_name)
 
 
