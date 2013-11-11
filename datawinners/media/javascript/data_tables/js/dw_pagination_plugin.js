@@ -1,8 +1,6 @@
 $.fn.dataTableExt.oPagination.dw_pagination = {
     "fnInit": function (oSettings, nPaging, fnCallbackDraw) {
 
-        //nPrevious.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sPrevious));
-        //nNext.appendChild(document.createTextNode(oSettings.oLanguage.oPaginate.sNext));
         nPrevious = $('<span class="paginate_button previous">&#x25C0;</span>')
         nNext = $('<span class="paginate_button next">&#x25B6;</span>')
         nMore=$('<span class="paginate_more">&#x25BE;</span>')
@@ -15,7 +13,8 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
                 '<ul class="dropdown-menu"> <li> <a href="#" id=' + first_page_id + '>' + gettext('First') +
                 '</a> </li> <li> <a  id=' + last_page_id + '>' + gettext('Last') + '</a></li></div>');
 
-        $(nPaging).append(nPrevious).append(nNext).append(nMore).append(dropdown);
+        $(nPaging).append(nPrevious).append(nNext).append(nMore);
+        $(document.body).append(dropdown);
 
         $(nMore).dropdown('attach', "#" + dropdown_id);
 

@@ -92,7 +92,7 @@ def index(request, project_id=None, questionnaire_code=None, tab="0"):
 
 
 def get_survey_response_ids_from_request(manager, request, form_model):
-    if request.POST.get('all_selected', False):
+    if request.POST.get('all_selected', "false") == "true":
         rows = manager.load_all_rows_in_view('undeleted_survey_response', startkey=[form_model.form_code],
                                              endkey=[form_model.form_code, {}], reduce=False)
         return [row.id for row in rows]

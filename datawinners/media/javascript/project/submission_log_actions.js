@@ -63,7 +63,4 @@ function removeRowsFromDataTable(ids) {
     $.each(ids, function (index, value) {
         $('.submission_table').dataTable().fnReloadAjax();
     });
-//    if ($("table.submission_table tbody tr").length) {
-//        $("#master_checkbox").attr("disabled", "disabled");
-//    }
 }
