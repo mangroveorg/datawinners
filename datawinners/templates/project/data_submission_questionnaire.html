@@ -1,7 +1,7 @@
 {% extends "project/web_questionnaire_questions.html" %}
 {% load i18n %}
-
 {% block cancel_block %}
     <a id="cancel" href="{{ back_to_project_link }}">{% trans "Cancel" %}</a>
-    {% include "warning_section.html" %}
+    <div style="display: none">
+        {% include "warning_section.html" %}</div>
 {% endblock %}

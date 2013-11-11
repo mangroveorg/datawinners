@@ -108,7 +108,7 @@ class AddDataSenderPage(Page):
         self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(mobile_number)
 
     def navigate_to_datasender_page(self):
-        self.driver.find(by_css("a.back-to-list")).click()
+        self.driver.find(by_id("cancel")).click()
 
     def click_submit_button(self):
         self.driver.find(REGISTER_BTN).click()
