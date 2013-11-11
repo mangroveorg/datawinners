@@ -4,9 +4,9 @@ table {
 .container_24 {
   float: left;
   margin: 0;
-  width: auto; }
+  width: 100%; }
   .container_24 .content {
-    width: auto;
+    width: 96%;
     padding: 0; }
     .container_24 .content > div, .container_24 .content > ul {
       width: 100%; }
