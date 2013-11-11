@@ -38,7 +38,11 @@
                 </div>
             </div>
             <div id='error_import_section' class="import_section">
-                <div id="error_table_message" class="import_message"></div>
+
+                <div>
+                    <span id="error_table_message" class="import_message"></span>
+                    <span class="error_import_template_link">{% trans "- Please use the latest "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></span>
+                </div>
                 <div class="import_table">
                     <table class="styled_table">
                         <thead>

@@ -4392,3 +4392,6 @@ msgstr "Les Expéditeurs de Données suivants ont été retirés car ils sont de
 
 msgid "The Data Sender(s) are added to project(s) successfully"
 msgstr "L(es) Expéditeur(s) de Données a (ont) été ajouté(s) au(x) projet(s) avec succès"
+
+msgid "- Please use the latest "
+msgstr "- Veuillez s'il vous plaît utiliser le dernier "
