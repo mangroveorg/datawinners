@@ -198,6 +198,13 @@ def take_couchdbfeed_dump(couchdb_path, name_prefix):
         run('tar -czvPf  %s  couchdbfeed' % backup)
 
 
+def take_elastic_search_index_dump(name_prefix):
+    backup = "/home/mangrover/mangrove_elasticsearch_index_backup_" + name_prefix + ".tar.gz"
+    with cd('/var/lib/elasticsearch'):
+        index_files = run('ls').split()
+        run('tar -czvPf  %s  %s' % (index_files[0], backup))
+
+
 def take_database_backup(backup=False):
     if backup:
         couchdb_path = '/opt/apache-couchdb/var/lib'
@@ -206,6 +213,7 @@ def take_database_backup(backup=False):
         take_psql_dump(backup_prefix)
         take_couchdbmain_dump(couchdb_path, backup_prefix)
         take_couchdbfeed_dump(couchdb_path, backup_prefix)
+        take_elastic_search_index_dump(backup_prefix)
 
 
 def production_deploy(mangrove_build_number="lastSuccessfulBuild",
