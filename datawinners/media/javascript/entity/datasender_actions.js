@@ -343,7 +343,7 @@ function init_dialog_box_for_web_users() {
                         return json_data.duplicate_entries[key];
                     });
                     if (duplicate_emails.length != 0) {
-                        error_message = "Duplicate email ids " + (_.uniq(duplicate_emails)).join(", ") + " assigned to " + rep_ids.join(", ");
+                        error_message = gettext("You cannot use the same email address for multiple Data Senders. Revise the email address for the following users: ")+rep_ids.join(", ");
                         html += "<tr><td>" + error_message + "</td></tr>";
                     }
                     if (html != "") {
