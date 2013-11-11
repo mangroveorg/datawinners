@@ -4234,9 +4234,11 @@ msgstr ""
 msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects."
 msgstr ""
 
-msgid "Your DataWinners account have been deactivated. Subscribe to a monthly subscription or contact your Project Manager to reactivate the account."
+msgid "Your DataWinners account has been deactivated. "
 msgstr ""
 
+msgid "To reactivate it, subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
+msgstr ""
 
 msgid "Get the Most out of Datawinners!"
 msgstr ""
