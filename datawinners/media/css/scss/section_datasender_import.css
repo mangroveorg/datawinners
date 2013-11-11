@@ -15,3 +15,7 @@
 
 .download-section {
   clear: both; }
+
+.error_import_template_link {
+  font-style: italic;
+  font-size: 12px; }
