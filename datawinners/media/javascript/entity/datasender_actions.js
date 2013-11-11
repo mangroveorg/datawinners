@@ -220,7 +220,8 @@ function delete_all_ds_are_users_show_warning(users) {
             $('#action').removeAttr("data-selected-action");
             $("input.is_user").attr("checked", false);
         },
-        width: 550
+        width: 550,
+        height: "auto"
     }
 
     $(kwargs.container + " .users_list").html(users);
