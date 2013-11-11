@@ -55,7 +55,8 @@ DW.DataSenderActionHandler = function () {
     init_add_remove_from_project();
     init_dialog_box_for_datasender();
 
-    this["delete"] = function (table, selected_ids, all_selected) {
+    this["delete"] = function(table, selected_ids, all_selected){
+        selected_ids= $.map(selected_ids, function(e){return e.toLowerCase();});
         handle_datasender_delete(table, selected_ids, all_selected);
     };
     this["edit"] = function (table, selected_ids) {
@@ -73,23 +74,23 @@ DW.DataSenderActionHandler = function () {
     this["mydsedit"] = function (table, selected_ids) {
         handle_datasender_edit(table, selected_ids);
     };
-  this["remove_from_project"] = function(table, selectedIds, all_selected) {
-    DW.loading();
-    handle_row_deletion(table, selectedIds);
-    $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
-        data: { 'ids':selectedIds.join(';'),
-                'project_name':$("#project_name").val(),
-                'project_id':$("#project_id").val(),
-                'all_selected':all_selected,
-                'search_query':$(".dataTables_filter input").val()
-              }
-    }).done(function (json_response) {
-            table.fnReloadAjax();
-            var response = $.parseJSON(json_response);
-            flash_message(response.message, response.success);
-        }
-    );
-  };
+    this["remove_from_project"] = function(table, selectedIds, all_selected) {
+        DW.loading();
+        handle_row_deletion(table, selectedIds);
+        $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
+            data: { 'ids':selectedIds.join(';'),
+                    'project_name':$("#project_name").val(),
+                    'project_id':$("#project_id").val(),
+                    'all_selected':all_selected,
+                    'search_query':$(".dataTables_filter input").val()
+                  }
+        }).done(function (json_response) {
+                table.fnReloadAjax();
+                var response = $.parseJSON(json_response);
+                flash_message(response.message, response.success);
+            }
+        );
+    };
 };
 
 function flash_message(msg, status) {
