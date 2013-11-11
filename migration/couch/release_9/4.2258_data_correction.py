@@ -36,7 +36,8 @@ def remove_deleted_ds_from_project(db_name):
                 project_doc = Project._wrap_row(project_doc)
                 for ds in invalid_ds:
                     logger.info("Found invalid data senders in project : " + str(project_doc) + " " + str(invalid_ds))
-                    project_doc.delete_datasender(dbm, ds)
+                    project_doc.data_senders.remove(ds)
+                    project_doc.save(dbm)
 
             except Exception as e:
                 print "Error : " + db_name + " : " + str(project_doc) + e.message
