@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import HiddenInput
@@ -6,11 +8,12 @@ from django.forms.widgets import CheckboxSelectMultiple, TextInput
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
+
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE
 from mangrove.utils.types import is_empty
 from datawinners.entity.fields import PhoneNumberField
-import re
+
 
 class EntityTypeForm(Form):
     error_css_class = 'error'
@@ -49,7 +52,7 @@ class ReporterRegistrationForm(Form):
         error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
         label=_("Name"))
     telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
-    geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
+    geo_code = CharField(max_length=30, required=False, label=_("GPS Coordinates"))
 
     location = CharField(max_length=100, required=False, label=_("Name"))
     project_id = CharField(required=False, widget=HiddenInput())
