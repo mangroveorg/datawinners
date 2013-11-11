@@ -269,3 +269,16 @@ class TestAllDataSenders(unittest.TestCase):
             self.datasender_id_without_web_access))
         self.assertEqual(email_address, self.all_datasenders_page.get_cell_value(1, 7))
 
+
+
+    @attr('functional_test')
+    def test_should_not_able_to_use_other_datasender_mobile_number(self):
+        self.all_datasenders_page.search_with('rep10')
+        self.all_datasenders_page.select_a_data_sender_by_id('rep10')
+        self.all_datasenders_page.select_edit_action()
+        page = AddDataSenderPage(self.driver)
+        page.enter_datasender_mobile_number("1234567890")
+        page.click_submit_button()
+        time.sleep(2)
+        self.assertEqual(page.get_error_message(),
+            u'Mobile Number Sorry, the telephone number 1234567890 has already been registered.')
