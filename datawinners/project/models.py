@@ -201,7 +201,7 @@ class Project(DocumentBase):
     def get_associated_datasenders(self, dbm):
         keys = [([REPORTER], short_code) for short_code in self.data_senders]
         rows = dbm.view.by_short_codes(reduce=False, include_docs=True, keys=keys)
-        return [Entity.new_from_doc(self, Entity.__document_class__.wrap(row.get('doc'))) for row in rows]
+        return [Entity.new_from_doc(dbm, Entity.__document_class__.wrap(row.get('doc'))) for row in rows]
 
     def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):
         start_date, end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
@@ -329,8 +329,8 @@ def get_all_projects(dbm, data_sender_id=None):
     return dbm.load_all_rows_in_view('all_projects')
 
 
-def get_all_project_names_for_ds(dbm, data_sender_id):
-    rows = dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id)
+def get_all_projects_for_datasender(dbm, data_sender_id):
+    rows = dbm.load_all_rows_in_view('projects_by_datasenders', key=data_sender_id, include_docs=True)
     return rows
 
 
