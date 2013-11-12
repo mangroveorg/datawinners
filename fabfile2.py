@@ -211,7 +211,7 @@ def take_database_backup(backup=False):
         today = datetime.now()
         backup_prefix = today.strftime("%d-%M-%Y")
         backup_path = "/home/mangrover/db_backup"+backup_prefix
-        run('mkdir %s'%backup_path)
+        run('mkdir -p %s'%backup_path)
         take_psql_dump(backup_path, backup_prefix)
         take_couchdbmain_dump(couchdb_path, backup_path, backup_prefix)
         take_couchdbfeed_dump(couchdb_path, backup_path, backup_prefix)
