@@ -1,6 +1,7 @@
+import cProfile
 import elasticutils
 from datawinners.main.database import get_db_manager
-from datawinners.project.models import get_all_projects
+from datawinners.project.models import get_all_projects, get_all_project_names, get_all_project_names_for_ds
 from datawinners.search.index_utils import _entity_dict, _mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.datadict import DataDictType
@@ -34,11 +35,7 @@ def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
 
 
 def _get_project_names_by_datasender_id(dbm, entity_id):
-    project_names = []
-    project_list = get_all_projects(dbm, entity_id)
-    for project in project_list:
-        project_names.append(project.value['name'])
-    return sorted(project_names)
+    return sorted([project.value for project in get_all_project_names_for_ds(dbm, entity_id)])
 
 
 def create_datasender_mapping(dbm, form_model):
@@ -49,8 +46,8 @@ def create_datasender_mapping(dbm, form_model):
 
 
 def update_datasender_for_project_change(project, dbm):
-    datasenders = project.get_associated_datasenders(dbm)
-    [update_datasender_index(entity_doc, dbm) for entity_doc in datasenders]
+    for entity_doc in project.get_associated_datasenders(dbm):
+        update_datasender_index(entity_doc, dbm)
 
 def create_datasender_index(database_name):
     dbm = get_db_manager(database_name)
