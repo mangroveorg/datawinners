@@ -1,5 +1,5 @@
 import sys
-from mangrove.errors.MangroveException import FormModelDoesNotExistsException
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException, QuestionCodeAlreadyExistsException
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
@@ -33,6 +33,8 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
         form_model.add_field(email_field)
         form_model.save()
         logger.info("Migrated registration form")
+    except QuestionCodeAlreadyExistsException as e:
+        logger.warning('email field is present' + e.message)
     except Exception as e:
         logger.exception(e.message)
 

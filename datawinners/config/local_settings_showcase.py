@@ -1,12 +1,10 @@
-import os
-
 SITE_ID = 2
 DEBUG = False
 TEMPLATE_DEBUG = False
 COMPRESS_ENABLED = True
 
 ADMINS = (
-    ('TW', 'apgeorge@thoughtworks.com'),
+    ('TW', 'sairama@thoughtworks.com'),
 )
 
 COMPRESS = False

@@ -18,12 +18,12 @@ def create_search_indices_for_datasenders(db_name):
         mark_start_of_migration(db_name)
         logger.info('Starting indexing')
         create_datasender_index(db_name)
+        logger.info('Completed Indexing')
 
     except FormModelDoesNotExistsException as e:
         logger.warning(e.message)
     except Exception as e:
         logger.exception(e.message)
-    logger.info('Completed Indexing')
 
 
 es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=180)
