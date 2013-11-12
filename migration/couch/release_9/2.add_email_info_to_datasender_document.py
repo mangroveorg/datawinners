@@ -1,5 +1,5 @@
 import sys
-from mangrove.errors.MangroveException import FormModelDoesNotExistsException
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException, DataObjectAlreadyExists
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
@@ -46,10 +46,12 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
             short_code = user_profile.reporter_id
             email_value = user_profile.user.email
             data = (email_field_label, email_value, email_ddtype)
-            add_email_data_to_entity_document(manager, short_code, data, logger)
-
+            if short_code:
+                add_email_data_to_entity_document(manager, short_code, data, logger)
+        except DataObjectAlreadyExists as e:
+            logger.warning(e.message)
         except Exception as e:
-            logger.exception("FAILED to migrate:%s " % short_code)
+            logger.exception("FAILED to migrate: %s" %short_code)
 
 
 migrate(all_db_names(), migration_to_add_email_data_for_web_users_in_couch, version=(9, 0, 2))

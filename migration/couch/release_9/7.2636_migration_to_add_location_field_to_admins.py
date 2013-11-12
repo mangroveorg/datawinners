@@ -13,7 +13,7 @@ from datawinners.main.database import get_db_manager
 from datawinners.main.couchdb.utils import all_db_names
 
 import logging
-from migration.couch.utils import migrate
+from migration.couch.utils import migrate, mark_start_of_migration
 
 
 def _add_location_field_if_absent(admin, dbm, logger):
@@ -25,10 +25,16 @@ def _add_location_field_if_absent(admin, dbm, logger):
         logger.info('Location field already present for admin %s' % admin.short_code)
 
 
+class NoRepIdException(Exception):
+    def __init__(self, message):
+        Exception.__init__(self, message)
+
+
 def _get_admin_document(admin_profiles, dbm):
     admin_profile = admin_profiles[0]
-    admin = get_by_short_code_include_voided(dbm, admin_profile.reporter_id, REPORTER_ENTITY_TYPE)
-    return admin
+    if not admin_profile.reporter_id:
+        raise NoRepIdException('No rep id for user with id %s' % admin_profile.user.id)
+    return get_by_short_code_include_voided(dbm, str(admin_profile.reporter_id), REPORTER_ENTITY_TYPE)
 
 
 def _get_admin_profiles(dbm):
@@ -40,16 +46,19 @@ def _get_admin_profiles(dbm):
 def migration_to_add_location_field_to_admins(db_name):
     logger = logging.getLogger(db_name)
     dbm = get_db_manager(db_name)
+    mark_start_of_migration(db_name)
     try:
         logger.info('Migration started for database %s' % db_name)
         admin_profiles = _get_admin_profiles(dbm)
         if not admin_profiles or len(admin_profiles) == 0:
-            logger.error('No admin for database %s' % db_name)
+            logger.warning('No admin for database %s' % db_name)
             return
         admin = _get_admin_document(admin_profiles, dbm)
         _add_location_field_if_absent(admin, dbm, logger)
+    except NoRepIdException as e:
+        logger.warning(e.message)
     except ObjectDoesNotExist:
-        logger.error("Entry not present for database: %s" % db_name)
+        logger.warning("Postgres Entry not present for database: %s" % db_name)
     except Exception as e:
         logger.exception("Update of location failed for database: %s with exception: %s" % (db_name, e.message))
 
