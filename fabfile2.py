@@ -45,8 +45,7 @@ def start_servers():
 def showcase():
     env.user = "mangrover"
     env.hosts = ["184.72.223.168"]
-    env.key_filename = ["/home/ashwin/.ssh/id_rsa"]
-    #env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
 
@@ -207,7 +206,7 @@ def take_elastic_search_index_dump(backup_path, name_prefix):
 
 
 def take_database_backup(backup=False):
-    if backup:
+    if backup == 'true':
         couchdb_path = '/opt/apache-couchdb/var/lib'
         today = datetime.now()
         backup_prefix = today.strftime("%d-%M-%Y")
