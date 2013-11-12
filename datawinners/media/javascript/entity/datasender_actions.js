@@ -175,11 +175,7 @@ function get_superuser_names_from_selected_datasenders(table, selected_ids, all_
     var searchQuery = $(".dataTables_filter input").val();
 
     if (all_selected) {
-        if($.trim(searchQuery) != "") {
-            superusers = superusersInSearchedDS();
-        }else {
-            superusers = user_fullnames;
-        }
+        superusers = superusersInSearchedDS();
     }else {
         $(table).find('input.row_checkbox:checked').each(function () {
             var datasender_id = $(this).val();
@@ -202,7 +198,8 @@ function superusersInSearchedDS() {
         headers: { "X-CSRFToken": $.cookie('csrftoken') },
         data: {
             'all_selected': true,
-            'search_query':$(".dataTables_filter input").val()
+            'search_query':$(".dataTables_filter input").val(),
+            'project_name':$("#project_name").val()
         }
 
     }).done(function (json_response) {
@@ -256,7 +253,8 @@ function handle_datasender_delete(table, allIds, all_selected){
 
     if (superusers_selected.length) {
         var users_list_for_html = "<li>" + superusers_selected.join("</li><li>") + "</li>";
-        if (superusers_selected.length == allIds.length) { //Each DS selected is also User
+        var total_records = table.fnSettings().fnRecordsDisplay().length;
+        if (superusers_selected.length == total_records) { //Each DS selected is also User
             delete_all_ds_are_users_show_warning(users_list_for_html);
         } else { // A mix of Simple DS and DS having user credentials
             $("#note_for_delete_users .users_list").html(users_list_for_html);
