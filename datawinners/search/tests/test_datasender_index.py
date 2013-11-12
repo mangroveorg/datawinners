@@ -42,11 +42,11 @@ class TestDatasenderIndex(unittest.TestCase):
         dbm = Mock(spec=DatabaseManager)
         entity_id = "rep"
         project1 = Mock()
-        type(project1).value = "project1"
+        type(project1).doc = {"name":"project1"}
         project2 = Mock()
-        type(project2).value = "project2"
+        type(project2).doc = {"name":"project2"}
 
-        with patch("datawinners.search.datasender_index.get_all_project_names_for_ds") as get_all_projects:
+        with patch("datawinners.search.datasender_index.get_all_projects_for_datasender") as get_all_projects:
             get_all_projects.return_value = [project2, project1]
             result = _get_project_names_by_datasender_id(dbm, entity_id)
 
