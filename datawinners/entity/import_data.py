@@ -216,13 +216,11 @@ def tabulate_failures(rows):
                 elif 'longer' in value:
                     text = value.split(' ')[1]
                     question = value.split(' ')[4]
-                    length = value.split(' ')[13].rstrip(".")
-                    errors.append(_("Answer %s for question %s is longer than allowed. Maximum allowed length is %s.") % (text, question, length))
+                    errors.append(_("Answer %s for question %s is longer than allowed.") % (text, question))
                 elif 'shorter' in value:
                     text = value.split(' ')[1]
                     question = value.split(' ')[4]
-                    length = value.split(' ')[13].rstrip(".")
-                    errors.append(_("Answer %s for question %s is shorter than allowed. Minimum allowed length is %s.") % (text, question, length))
+                    errors.append(_("Answer %s for question %s is shorter than allowed.") % (text, question))
 
                 elif 'must be between' in value:
                     text = value.split(' ')[2]

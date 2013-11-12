@@ -1735,8 +1735,8 @@ msgstr "La réponse %s doit être comprise entre %s et %s."
 msgid "Patern should be ^[0-9]+$"
 msgstr "Le modèle devrait être ^[0-9]+$"
 
-msgid "Invalid Mobile Number. Only Numbers and Dash(-) allowed."
-msgstr "Numéro de mobile incorrect. Seuls les chiffres et tirets (-) sont autorisés."
+msgid "Invalid Mobile Number."
+msgstr "Numéro de mobile incorrect."
 
 msgid "Mobile number is missing"
 msgstr "Numéro de mobile est manquant"
@@ -4395,3 +4395,6 @@ msgstr "L(es) Expéditeur(s) de Données a (ont) été ajouté(s) au(x) projet(s
 
 msgid "- Please use the latest "
 msgstr "- Veuillez s'il vous plaît utiliser le dernier "
+
+msgid "Invalid GPS value."
+msgstr "Coordonnées GPS non valides."

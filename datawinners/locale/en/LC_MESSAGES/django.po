@@ -1681,7 +1681,7 @@ msgstr ""
 msgid "Patern should be ^[0-9]+$"
 msgstr ""
 
-msgid "Invalid Mobile Number. Only Numbers and Dash(-) allowed."
+msgid "Invalid Mobile Number."
 msgstr ""
 
 msgid "Mobile number is missing"
@@ -4307,4 +4307,7 @@ msgid "Note, the following Data Senders were not removed as they are DataWinners
 msgstr ""
 
 msgid "The Data Sender(s) are added to project(s) successfully"
+msgstr ""
+
+msgid "Invalid GPS value."
 msgstr ""
