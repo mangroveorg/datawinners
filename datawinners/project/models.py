@@ -333,6 +333,11 @@ def get_all_projects(dbm, data_sender_id=None):
     return dbm.load_all_rows_in_view('all_projects')
 
 
+def get_all_project_names_for_ds(dbm, data_sender_id):
+    rows = dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id)
+    return rows
+
+
 def get_all_project_names(dbm):
     return [result['key'] for result in dbm.load_all_rows_in_view("project_names")]
 

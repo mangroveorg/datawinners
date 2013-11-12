@@ -1,6 +1,6 @@
 import elasticutils
 from datawinners.main.database import get_db_manager
-from datawinners.project.models import get_all_projects
+from datawinners.project.models import get_all_project_names_for_ds
 from datawinners.search.index_utils import _entity_dict, get_fields_mapping
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.datastore.datadict import DataDictType
@@ -14,6 +14,7 @@ def update_datasender_index_by_id(short_code, dbm):
     datasender = _entity_by_short_code(dbm, short_code, REPORTER_ENTITY_TYPE)
     update_datasender_index(datasender, dbm)
 
+
 def update_datasender_index(entity_doc, dbm):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     if entity_doc.short_code == 'test':
@@ -25,6 +26,7 @@ def update_datasender_index(entity_doc, dbm):
         es.index(dbm.database_name, entity_type, datasender_dict, id=entity_doc.id)
     es.refresh(dbm.database_name)
 
+
 def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
     datasender_dict = _entity_dict(entity_type, entity_doc, dbm, form_model)
     datasender_dict.update({"projects": _get_project_names_by_datasender_id(dbm, entity_doc.short_code)})
@@ -32,11 +34,8 @@ def _create_datasender_dict(dbm, entity_doc, entity_type, form_model):
 
 
 def _get_project_names_by_datasender_id(dbm, entity_id):
-    project_names = []
-    project_list = get_all_projects(dbm, entity_id)
-    for project in project_list:
-        project_names.append(project.value['name'])
-    return sorted(project_names)
+    return sorted([project.value for project in get_all_project_names_for_ds(dbm, entity_id)])
+
 
 def create_datasender_mapping(dbm, form_model):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
@@ -46,8 +45,9 @@ def create_datasender_mapping(dbm, form_model):
 
 
 def update_datasender_for_project_change(project, dbm):
-    datasenders = project.get_associated_datasenders(dbm)
-    [update_datasender_index(entity_doc, dbm) for entity_doc in datasenders]
+    for entity_doc in project.get_associated_datasenders(dbm):
+        update_datasender_index(entity_doc, dbm)
+
 
 def create_datasender_index(database_name):
     dbm = get_db_manager(database_name)
@@ -63,7 +63,6 @@ def _populate_index(dbm):
 def _create_datasender_mapping(dbm):
     form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
     create_datasender_mapping(dbm, form_model)
-
 
 
 def create_ds_mapping(dbm, form_model):
