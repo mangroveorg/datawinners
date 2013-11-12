@@ -201,11 +201,7 @@ class Project(DocumentBase):
     def get_associated_datasenders(self, dbm):
         keys = [([REPORTER], short_code) for short_code in self.data_senders]
         rows = dbm.view.by_short_codes(reduce=False, include_docs=True, keys=keys)
-        datasenders_associated = []
-        for row in rows:
-            datasender = Entity.get(dbm, row.id)
-            datasenders_associated.append(datasender)
-        return datasenders_associated
+        return [Entity.new_from_doc(self, Entity.__document_class__.wrap(row.get('doc'))) for row in rows]
 
     def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):
         start_date, end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
