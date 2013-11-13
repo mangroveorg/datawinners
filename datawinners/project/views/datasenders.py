@@ -1,4 +1,5 @@
 import json
+from urllib import unquote
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -10,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _, get_language, activate
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 import jsonpickle
+import unicodedata
 from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
 from datawinners.activitylog.models import UserActivityLog
@@ -35,6 +37,10 @@ from mangrove.utils.types import is_empty
 
 
 class MyDataSendersAjaxView(View):
+
+    def strip_accents(self, s):
+       return ''.join((c for c in unicodedata.normalize('NFD', unicode(s)) if unicodedata.category(c) != 'Mn'))
+
     def get(self, request, project_name, *args, **kwargs):
         search_parameters = {}
         search_text = request.GET.get('sSearch', '').strip()
@@ -45,7 +51,8 @@ class MyDataSendersAjaxView(View):
         search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
 
         user = request.user
-        query_count, search_count, datasenders = MyDataSenderQuery().filtered_query(user, project_name,
+        project_name_unquoted = unquote(project_name)
+        query_count, search_count, datasenders = MyDataSenderQuery().filtered_query(user, self.strip_accents(project_name_unquoted),
                                                                                     search_parameters)
 
         return HttpResponse(

@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.utils import translation
+from django.utils.http import urlquote_plus, urlquote
 from datawinners.utils import get_organization
 
 from datawinners.project.models import ProjectState, Project
@@ -29,6 +30,7 @@ def make_project_links(project, questionnaire_code, reporter_id=None):
                      'delete_project_link': reverse("delete_project", args=[project_id]),
                      'questionnaire_preview_link': reverse("questionnaire_preview", args=[project_id]),
                      'sms_questionnaire_preview_link': reverse("sms_questionnaire_preview", args=[project_id]),
+                     'my_datasenders_ajax_link': reverse("my_datasenders_ajax", args=[urlquote(project.name)]),
                      'current_language': translation.get_language()
     }
 
