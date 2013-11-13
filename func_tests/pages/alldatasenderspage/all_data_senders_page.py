@@ -29,6 +29,7 @@ class AllDataSendersPage(Page):
     def select_a_data_sender_by_id(self, data_sender_id):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id),
                                      True)
+
         self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
 
     def select_project(self, project_name):
@@ -134,6 +135,7 @@ class AllDataSendersPage(Page):
         self.driver.find(CHECKALL_DS_CB).click()
 
     def associate_datasender_to_projects(self, datasender_id, project_names):
+        self.search_with(datasender_id)
         self.select_a_data_sender_by_id(datasender_id)
         self.perform_datasender_action(ASSOCIATE)
         self.select_projects(project_names)
