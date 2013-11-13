@@ -159,9 +159,9 @@ def data_sender_short_codes(request, manager):
         fields = header_fields(manager, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE).keys()
         fields.remove("entity_type")
         short_code_index = fields.index("short_code")
-        return [s[short_code_index] for s in datasender_list]
+        return [ds[short_code_index].lower() for ds in datasender_list]
 
-    return request.POST['ids'].split(';')
+    return request.POST['ids'].lower().split(';')
 
 
 class AssociateDataSendersView(DataSenderActionView):
