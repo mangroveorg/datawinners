@@ -49,4 +49,4 @@ def remove_deleted_ds_from_project(db_name):
         logger.exception(e.message)
 
 
-migrate(all_db_names(), remove_deleted_ds_from_project, version=(9, 0, 4))
+migrate(all_db_names(), remove_deleted_ds_from_project, version=(9, 0, 3))

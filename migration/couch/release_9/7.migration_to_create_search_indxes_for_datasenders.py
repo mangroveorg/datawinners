@@ -27,4 +27,4 @@ def create_search_indices_for_datasenders(db_name):
 
 
 es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=180)
-migrate(all_db_names(), create_search_indices_for_datasenders, version=(9, 0, 3), threads=1)
+migrate(all_db_names(), create_search_indices_for_datasenders, version=(9, 0, 7), threads=1)

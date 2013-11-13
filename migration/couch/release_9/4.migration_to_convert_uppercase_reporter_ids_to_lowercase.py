@@ -31,4 +31,4 @@ def migration_to_create_search_indxes_for_datasenders(db_name):
     logger.info('Completed Migration')
 
 
-migrate(all_db_names(), migration_to_create_search_indxes_for_datasenders, version=(9, 0, 5))
+migrate(all_db_names(), migration_to_create_search_indxes_for_datasenders, version=(9, 0, 4))
