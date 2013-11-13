@@ -4,6 +4,7 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
     delete_dialog.data("all_selected", all_selected);
     delete_dialog.data("entity_type", entity_type);
     delete_dialog.data("action_element", action_element);
+    delete_dialog.data("pageToGo", get_updated_table_page_index($("#datasender_table").dataTable(), allIds, all_selected));
     delete_dialog.dialog("open");
 }
 
@@ -40,7 +41,9 @@ function init_warnThenDeleteDialogBox() {
                 var response = $.parseJSON(json_response);
                 flash_message(response.message, response.success);
                 if (response.success) {
-                    $("#datasender_table").dataTable().fnReloadAjax();
+                    var table = $("#datasender_table").dataTable();
+                    table.fnSettings()._iDisplayStart = delete_dialog.data("pageToGo");
+                    table.fnReloadAjax();
                 }
             }
         );
@@ -265,7 +268,7 @@ function get_updated_table_page_index(table, allIds, all_selected){
 
 function handle_datasender_delete(table, allIds, all_selected){
     $("#note_for_delete_users").hide();
-    table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, allIds, all_selected);
+//    table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, allIds, all_selected);
 
     var superusers_selected = get_superuser_names_from_selected_datasenders(table, allIds, all_selected);
 
@@ -342,6 +345,7 @@ function init_dialog_box_for_web_users() {
                 var json_data = JSON.parse(response);
                 if (json_data.success) {
                     $("#web_user_block").dialog("close");
+                    table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, allIds, all_selected);
                     $("#datasender_table").dataTable().fnReloadAjax();
                     flash_message("Access to Web Submission has been given to your DataSenders");
                 } else {
