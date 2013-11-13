@@ -31,4 +31,4 @@ def migration_to_add_location_field_to_datasenders(db_name):
     for ds in all_ds:
         _add_location_field_if_absent(ds, dbm, logger)
 
-migrate(all_db_names(), migration_to_add_location_field_to_datasenders, version=(9, 0, 7))
+migrate(all_db_names(), migration_to_add_location_field_to_datasenders, version=(9, 0, 6))
