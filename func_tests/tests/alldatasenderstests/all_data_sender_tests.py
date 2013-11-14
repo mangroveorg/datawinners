@@ -25,6 +25,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class TestAllDataSenders(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
@@ -129,8 +130,6 @@ class TestAllDataSenders(unittest.TestCase):
             msg="More than expected number of rows present")
         self.assertEqual("1 to 1 of 1 Data Sender(s)", self.all_datasenders_page.get_pagination_text())
 
-
-
     @attr('functional_test')
     def test_the_datasender_template_file_downloaded(self):
         import_lightbox = self.all_datasenders_page.open_import_lightbox()
@@ -152,7 +151,6 @@ class TestAllDataSenders(unittest.TestCase):
         return user_mobile_number
 
 
-    @SkipTest #Skipped because of the bug where user is deleted when selected along with datasender
     @attr('functional_test')
     def test_should_warn_and_not_delete_if_all_ds_selected_are_users(self):
         self.all_datasenders_page.search_with(self.user_ID)
@@ -169,20 +167,15 @@ class TestAllDataSenders(unittest.TestCase):
         self.all_datasenders_page.search_with(fetch_(FIRST_NAME, NEW_USER_DATA))
         self.all_datasenders_page.click_checkall_checkbox()
         self.all_datasenders_page.perform_datasender_action(DELETE)
-        #BUG
-        # self.assertFalse(self.all_datasenders_page.is_checkall_checked())
-        # Existing bug "Users getting deleting when both users and DS are selected to delete"
-        # self.assertFalse(self.all_datasenders_page.is_datasender_with_ID_checked(self.user_ID))
         DataSenderDeleteDialog(self.driver).ok()
         self.assertEqual(self.all_datasenders_page.get_delete_success_message(), DELETE_SUCCESS_TEXT)
         self.all_datasenders_page.search_with(delete_datasender_id)
         self.assertFalse(
             self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
-        # Existing bug "Users getting deleting when both users and DS are selected to delete"
-        # self.all_datasenders_page.search_with(user_ID)
+        self.all_datasenders_page.search_with(self.user_ID)
 
-        # self.assertTrue(
-        #     self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
+        self.assertTrue(
+             self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
 
     @attr('functional_test')
     def test_should_check_all_checkboxes_when_checking_checkall(self):
@@ -225,8 +218,6 @@ class TestAllDataSenders(unittest.TestCase):
     def assert_action_menu_shown(self):
         self.assertFalse(self.all_datasenders_page.is_none_selected_shown())
 
-
-    #
     @attr("functional_test")
     def test_should_check_checkall_when_all_cb_are_checked(self):
         self.all_datasenders_page.click_checkall_checkbox()
@@ -268,8 +259,6 @@ class TestAllDataSenders(unittest.TestCase):
         self.assertTrue(self.all_datasenders_page.is_web_and_smartphone_device_checkmarks_present(
             self.datasender_id_without_web_access))
         self.assertEqual(email_address, self.all_datasenders_page.get_cell_value(1, 7))
-
-
 
     @attr('functional_test')
     def test_should_not_able_to_use_other_datasender_mobile_number(self):
