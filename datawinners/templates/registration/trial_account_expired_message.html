@@ -1,15 +1,15 @@
 {% extends 'layout_registration.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Your one year Test Drive is expired" %}{% endblock %}
+{% block page_title %}{% trans "Your Account Has Expired" %}{% endblock %}
 {% load i18n %}
 
 {% block content %}
     <div class="expired-message-box">
-        <h3>{% trans "Your one year Test Drive is expired" %}</h3>
+        <h3>{% trans "Your Free Basic Account Has Expired" %}</h3>
 
-        <p>{% trans "Thank you for trying out DataWinners" %}</p>
+        <p>{% trans "Thank you for test-driving DataWinners during the past year." %}</p><br/>
 
-        <p>{% trans "Sign up for a monthly subscription to continue using DataWinners" %}</p>
+        <p>{% trans "Subscribe now to continue using your DataWinners Account and the<br/>data you have collected over the past year." %}</p>
 
         <div class="bottom_navigation">
             <a href="/en/pricing">{% trans "Learn More" %}</a>

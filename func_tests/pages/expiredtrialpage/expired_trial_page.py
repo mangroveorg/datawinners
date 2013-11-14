@@ -20,5 +20,5 @@ class ExpiredTrialPage(Page):
      return error_message.replace("\n", " ")
 
     def get_subscribe_button(self):
-        return self.driver.find_elements_(SUBSCRIBE_NOW)
+        return self.driver.find(SUBSCRIBE_NOW).get_attribute("href")
     

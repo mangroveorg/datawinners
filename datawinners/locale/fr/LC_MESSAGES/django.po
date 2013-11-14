@@ -3701,14 +3701,18 @@ msgstr "Si vous supprimez des Expéditeurs de Données, ils ne pourront plus env
 msgid "ID is:"
 msgstr "ID est:"
 
-msgid "Your one year Test Drive is expired"
-msgstr "Votre période de test d'une année est expirée"
 
-msgid "Thank you for trying out DataWinners"
-msgstr "Merci d'avoir testé DataWinners"
+msgid "Your Account Has Expired"
+msgstr "Votre Compte est expiré"
 
-msgid "Sign up for a monthly subscription to continue using DataWinners"
-msgstr "Inscrivez-vous pour un abonnement mensuel pour continuer à utiliser DataWinners"
+msgid "Your Free Basic Account Has Expired"
+msgstr "Votre Compte Basique gratuit est expiré"
+
+msgid "Thank you for test-driving DataWinners during the past year."
+msgstr "Nous vous remercions d'avoir testé DataWinners au cours de la dernière année."
+
+msgid "Subscribe now to continue using your DataWinners Account and the<br/>data you have collected over the past year."
+msgstr "Abonnez-vous maintenant pour pouvoir continuer à utiliser votre Compte DataWinners<br/>et les données que vous avez collectées au cours de la dernière année."
 
 msgid "Your organization's account Administrator %s cannot be deleted"
 msgstr "L'administrateur du votre compte DataWinners, %s, ne peut pas être supprimé"

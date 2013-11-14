@@ -8,9 +8,10 @@ from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.expiredtrialpage.expired_trial_page import ExpiredTrialPage
 from pages.loginpage.login_page import LoginPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, LOGOUT
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, LOGOUT, TRIAL_EXPIRED_PAGE
 from tests.logintests.login_data import *
 from tests.testsettings import UI_TEST_TIMEOUT
+from pages.expiredtrialpage.expired_trial_page import ExpiredTrialPage
 
 
 @attr('suit_2')
@@ -80,12 +81,10 @@ class TestLoginPage(BaseTest):
         login_page = LoginPage(self.driver)
         time.sleep(2)
         login_page.login_with(EXPIRED_TRIAL_ACCOUNT)
-        expired_trail_account_page = ExpiredTrialPage(self.driver)
-        self.assertEqual(expired_trail_account_page.get_error_message(),
+        
+        self.assertEqual(login_page.get_error_message(),
                          fetch_(ERROR_MESSAGE, from_(EXPIRED_TRIAL_ACCOUNT)))
 
-        subscribe_button = expired_trail_account_page.get_subscribe_button()
-        self.assertEqual("Subscribe Now", subscribe_button[0].text)
 
     @attr('functional_test')
     def test_login_with_deactivated_account(self):
@@ -93,3 +92,11 @@ class TestLoginPage(BaseTest):
         login_page = LoginPage(self.driver)
         login_page.login_with(DEACTIVATED_ACCOUNT_CREDENTIALS)
         self.assertEqual(login_page.get_error_message(), fetch_(ERROR_MESSAGE,from_(DEACTIVATED_ACCOUNT_CREDENTIALS)))
+
+
+    @attr('functional_test')
+    def test_should_check_trial_expired_page(self):
+        self.driver.go_to(TRIAL_EXPIRED_PAGE)
+        expired_page = ExpiredTrialPage(self.driver)
+        self.assertEqual(expired_page.get_error_message(), TRIAL_EXPIRED_MESSAGE)
+        self.assertRegexpMatches(expired_page.get_subscribe_button(), "/upgrade/")

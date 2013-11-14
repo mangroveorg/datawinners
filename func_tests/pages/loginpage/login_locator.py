@@ -24,4 +24,4 @@ PASSWORD_TB = by_css("input[name=password]")
 LOGIN_BTN = by_css("input#id_login")
 CREATE_AN_ACCOUNT_LINK = by_css("a[href='/register']")
 
-ERROR_MESSAGE_LABEL = by_xpath("//ul[@class='errorlist']/..")
+ERROR_MESSAGE_LABEL =  by_xpath("//ul[@class='errorlist']/..|//div[@class='warning-message-box clear-both overflow_hidden']/p")

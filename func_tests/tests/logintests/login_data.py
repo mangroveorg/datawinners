@@ -52,7 +52,7 @@ BLANK_CREDENTIALS = {USERNAME: "",
 
 EXPIRED_TRIAL_ACCOUNT = {USERNAME: "chinatwu@gmail.com",
                      PASSWORD: "chinatwu",
-                     ERROR_MESSAGE: "Your DataWinners account have been deactivated. Subscribe to a monthly subscription or contact your Project Manager to reactivate the account."}
+                     ERROR_MESSAGE: "Your DataWinners account has been deactivated."}
 
 NIGERIA_ACCOUNT_CREDENTIAL = {USERNAME: "gerard@mailinator.com",
                      PASSWORD: "gerard",
@@ -61,3 +61,5 @@ NIGERIA_ACCOUNT_CREDENTIAL = {USERNAME: "gerard@mailinator.com",
 DEACTIVATED_ACCOUNT_CREDENTIALS = {USERNAME: "deactivated@mailinator.com",
                                    PASSWORD: "deactivated",
                                    ERROR_MESSAGE: "Your account has been deactivated. Please contact the datawinners support at support@datawinners.com for reactivation of the account."}
+
+TRIAL_EXPIRED_MESSAGE = u'Your Free Basic Account Has Expired'

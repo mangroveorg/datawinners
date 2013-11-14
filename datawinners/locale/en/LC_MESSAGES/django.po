@@ -3611,13 +3611,16 @@ msgstr "If you delete Data Senders, they can no longer send in data.<br/>"
 msgid "ID is:"
 msgstr ""
 
-msgid "Your one year Test Drive is expired"
+msgid "Your Account Has Expired"
 msgstr ""
 
-msgid "Thank you for trying out DataWinners"
+msgid "Your Free Basic Account Has Expired"
 msgstr ""
 
-msgid "Sign up for a monthly subscription to continue using DataWinners"
+msgid "Thank you for test-driving DataWinners during the past year."
+msgstr ""
+
+msgid "Subscribe now to continue using your DataWinners Account and the<br/>data you have collected over the past year."
 msgstr ""
 
 msgid "Your organization's account Administrator %s cannot be deleted"
