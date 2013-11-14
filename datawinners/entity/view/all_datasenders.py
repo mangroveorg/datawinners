@@ -171,10 +171,9 @@ class AssociateDataSendersView(DataSenderActionView):
         projects = self._get_projects(manager, request)
         projects_name = Set()
         for project in projects:
-            #for id in data_sender_short_codes(request, manager): if not id in project.data_senders: project.associate_data_sender_to_project(manager, id)
-            project.data_senders.extend([id for id in data_sender_short_codes(request, manager) if not id in project.data_senders])
+            for id in data_sender_short_codes(request, manager):
+                project.associate_data_sender_to_project(manager, id)
             projects_name.add(project.name.capitalize())
-            project.save(manager)
         ids = request.POST["ids"].split(';')
         if len(ids):
             UserActivityLog().log(request, action=ADDED_DATA_SENDERS_TO_PROJECTS,
