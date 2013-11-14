@@ -961,7 +961,7 @@
         "pk": 2,
         "model": "sites.site",
         "fields": {
-            "domain": "184.72.223.168:8000",
+            "domain": "184.72.223.168",
             "name": "datawinners-showcase"
         }
     },
