@@ -45,7 +45,8 @@ def start_servers():
 def showcase():
     env.user = "mangrover"
     env.hosts = ["184.72.223.168"]
-    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
+    env.key_filename = ["/home/ashwin/.ssh/id_rsa"]
+    #env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
 
@@ -183,19 +184,19 @@ class Context(object):
 
 def take_psql_dump(backup_path, name_prefix):
     backup_name = "psql_backup_" + name_prefix + ".gz"
-    run('pg_dump mangrove | gzip > %s/%s' %(backup_path, backup_name))
+    run('pg_dump mangrove | gzip > %s/%s' % (backup_path, backup_name))
 
 
 def take_couchdbmain_dump(couchdb_path, backup_path, name_prefix):
     backup = "mangrove_couchdb_main_backup_" + name_prefix + ".tar.gz"
     with cd(couchdb_path):
-        run('sudo tar -czvPf  %s/%s  couchdbmain' %(backup_path, backup))
+        run('sudo tar -czvPf  %s/%s  couchdbmain' % (backup_path, backup))
 
 
 def take_couchdbfeed_dump(couchdb_path, backup_path, name_prefix):
     backup_name = "mangrove_couchdb_feed_backup_" + name_prefix + ".tar.gz"
     with cd(couchdb_path):
-        run('sudo tar -czvPf  %s/%s couchdbfeed' %(backup_path, backup_name))
+        run('sudo tar -czvPf  %s/%s couchdbfeed' % (backup_path, backup_name))
 
 
 def take_elastic_search_index_dump(backup_path, name_prefix):
@@ -258,3 +259,65 @@ def remove_cache(context):
     with cd(os.path.join(context.code_dir, DATAWINNERS, DATAWINNERS, 'media')):
         run('rm -rf CACHE/js/*')
         run('rm -rf CACHE/css/*')
+
+
+def apply_couchdb_backup(couchdb_dir, backup_file, type):
+    with cd(couchdb_dir):
+        if backup_file:
+            run('sudo rm -rf %s', type)
+            run('sudo tar -xvf %s' % backup_file)
+            run('sudo chown -R couchdb:couchdb %s' % type)
+        else:
+            print "no backup file"
+
+
+def get_backup_file(backup_dir, partial_file_name):
+    with cd(backup_dir):
+        backup_files = run('ls').split()
+        for f in backup_files:
+            if partial_file_name in f:
+                return f
+        return None
+
+
+def apply_psql_bkp(backup_dir, backup_file):
+    with cd(backup_dir):
+        run('dropdb mangrove && createdb -T template_postgis mangrove')
+        run('gunzip %s' % backup_file)
+        pg_dump_name = backup_file.rstrip('.gz')
+        run('psql mangrove < %s' % pg_dump_name)
+        with cd('/home/mangrover/workspace/datawinners/datawinners'):
+            run('&& python manage.py syncdb --noinput && python manage.py migrate && python manage.py loadshapes')
+
+
+def apply_elasticsearch_backup(backup_dir, index_bkp_file):
+    with cd('/var/lib/elasticsearch'):
+        indices_path = run('find $PWD -type d -name *0').split()
+        with cd(indices_path[0]):
+            run('sudo mkdir tmp')
+            with cd('tmp'):
+                run('tar -xvf %s/%s' % (backup_dir, index_bkp_file))
+                indices_backup_path = run('find $PWD -type d -name *indices').split()
+                run('sudo mv %s ../'%indices_backup_path)
+                print "applied"
+                run('sudo rm -rf ../tmp/')
+    with cd('/var/lib/elasticsearch'):
+        run('sudo chown -R elasticsearch:elasticsearch *')
+
+
+def restart_elasticsearch():
+    run('sudo service elasticsearch restart')
+
+
+def apply_backup(backup_dir):
+    couchdbmain_bkp_file = get_backup_file(backup_dir, 'mangrove_couchdb_main')
+    couchdb_path = '/opt/apache-couchdb/var/lib'
+    apply_couchdb_backup(couchdb_path, couchdbmain_bkp_file, 'couchdbmain')
+    couchdbfeed_bkp_file = get_backup_file(backup_dir, 'mangrove_couchdb_feed')
+    apply_couchdb_backup(couchdb_path, couchdbfeed_bkp_file, 'couchdbfeed')
+    psql_bkp_file = get_backup_file(backup_dir, 'psql_backup')
+    apply_psql_bkp(backup_dir, psql_bkp_file)
+    index_bkp_file = get_backup_file(backup_dir, 'mangrove_elasticsearch_index_backup')
+    apply_elasticsearch_backup(backup_dir, index_bkp_file)
+    restart_couchdb()
+    restart_elasticsearch()
