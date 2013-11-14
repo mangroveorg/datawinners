@@ -30,6 +30,7 @@
     border-width: 1px;
     margin: 0;
     padding: 4px 10px;
+    cursor: pointer;
 }
 .paginate_more {
     border-radius: 0 4px 4px 0;
