@@ -90,7 +90,8 @@ class TestMinimalRegistrationForm(unittest.TestCase):
                      'organization_city': 'aaa',
                      'organization_country': 'aa',
                      'organization_sector': 'Other',
-                     'invoice_period':'pay_monthly'
+                     'invoice_period':'pay_monthly',
+                     'language':'en'
         }
         form = MinimalRegistrationForm(base_form)
         self.assertTrue(form.is_valid())

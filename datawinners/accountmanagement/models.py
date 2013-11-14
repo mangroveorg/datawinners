@@ -4,12 +4,12 @@ from dateutil.relativedelta import relativedelta
 
 from django.conf import settings
 from django.db import models
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext, activate, get_language
 from django_countries import CountryField
 from datawinners.settings import LIMIT_TRIAL_ORG_MESSAGE_COUNT, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from django.contrib.auth.models import User
-from django.utils.translation import get_language
+from django.utils.translation import get_language, ugettext as _
 from datawinners.countrytotrialnumbermapping.models import Country
 from django.template.context import Context
 from django.core.mail.message import EmailMessage
@@ -38,6 +38,7 @@ class Organization(models.Model):
     is_deactivate_email_sent = models.BooleanField(False)
     status = models.CharField(null=True, max_length=20, default='Activated')
     status_changed_datetime = models.DateTimeField(blank=True, null=True)
+    language = models.CharField(max_length=2, default="en", null=True)
 
     def __unicode__(self):
         return unicode(self.name + "(" + self.org_id + ")")
@@ -66,7 +67,8 @@ class Organization(models.Model):
                                     zipcode=org_details.get('organization_zipcode'),
                                     office_phone=org_details.get('organization_office_phone'),
                                     website=org_details.get('organization_website'),
-                                    org_id=OrganizationIdCreator().generateId()
+                                    org_id=OrganizationIdCreator().generateId(),
+                                    language=org_details.get('language')
         )
         organization._configure_organization_settings()
         return organization
@@ -78,7 +80,8 @@ class Organization(models.Model):
                                     city=org_details.get('organization_city'),
                                     country=org_details.get('organization_country'),
                                     org_id=OrganizationIdCreator().generateId(),
-                                    in_trial_mode=True
+                                    in_trial_mode=True,
+                                    language=org_details.get('language')
         )
         organization._configure_organization_settings()
         return organization
@@ -178,6 +181,8 @@ class Organization(models.Model):
         users = self.get_related_users().filter(groups__name__in=["NGO Admins", "Project Managers"])
         from django.contrib.sites.models import Site
         current_site = Site.objects.get_current()
+        current_language = get_language()
+        activate(self.language)
         for user in users:
             email_subject, email_template, sender = get_email_detail_by_type(email_type)
             token = Token.objects.get_or_create(user=user)[0]
@@ -186,9 +191,11 @@ class Organization(models.Model):
                           'organization':self, 'current_site': current_site, 'token': token.key})
             email_content = loader.get_template('email/%s_%s.html' % (email_template, ugettext("en"),))
 
-            msg = EmailMessage(email_subject, email_content.render(c), sender or settings.EMAIL_HOST_USER, [user.email])
+            msg = EmailMessage(ugettext(email_subject), email_content.render(c), sender or settings.EMAIL_HOST_USER, [user.email])
             msg.content_subtype = "html"
             msg.send()
+
+        activate(current_language)
 
     @classmethod
     def get_all_trial_organizations(cls, active_date__contains=None):

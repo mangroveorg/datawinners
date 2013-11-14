@@ -129,6 +129,7 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
         label=_('Country'))
     organization_city = forms.CharField(max_length=30, required=True, label=_('City'))
     username = forms.CharField(max_length=30, required=False)
+    language = forms.CharField(widget=forms.HiddenInput(), max_length=2, initial=_("en"))
 
     def clean_mobile_phone(self):
         mobile_number = self.cleaned_data.get('mobile_phone')

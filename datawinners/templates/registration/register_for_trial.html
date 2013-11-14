@@ -24,6 +24,7 @@
                                 <h3 class="highlighted_title">{%  trans "Your Organization" %}<br/></h3>
                             </li>
                             <li class="{{ form.organization_name.css_classes }} form-row-10px">
+                                {{ form.language }}
                                 {{ form.organization_name|field_label }}
                                 {{ form.organization_name }}
                                     {{ form.organization_name.errors }}
