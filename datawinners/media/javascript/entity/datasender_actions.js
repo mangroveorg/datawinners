@@ -268,14 +268,12 @@ function get_updated_table_page_index(table, allIds, all_selected){
 
 function handle_datasender_delete(table, allIds, all_selected){
     $("#note_for_delete_users").hide();
-//    table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, allIds, all_selected);
 
     var superusers_selected = get_superuser_names_from_selected_datasenders(table, allIds, all_selected);
 
     if (superusers_selected.length) {
         var users_list_for_html = "<li>" + superusers_selected.join("</li><li>") + "</li>";
-        var total_records = table.fnSettings().fnRecordsDisplay().length;
-        if (superusers_selected.length == total_records) { //Each DS selected is also User
+        if (superusers_selected.length == allIds.length) { //Each DS selected is also User
             delete_all_ds_are_users_show_warning(users_list_for_html);
         } else { // A mix of Simple DS and DS having user credentials
             $("#note_for_delete_users .users_list").html(users_list_for_html);
@@ -345,7 +343,6 @@ function init_dialog_box_for_web_users() {
                 var json_data = JSON.parse(response);
                 if (json_data.success) {
                     $("#web_user_block").dialog("close");
-                    table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, allIds, all_selected);
                     $("#datasender_table").dataTable().fnReloadAjax();
                     flash_message("Access to Web Submission has been given to your DataSenders");
                 } else {

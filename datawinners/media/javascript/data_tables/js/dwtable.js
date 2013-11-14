@@ -142,7 +142,7 @@ $.fn.dwTable = function(options){
                         $(dataTableObject).find(".select_all_message").data('all_selected', true);
                         var total_number_of_records = $(dataTableObject).dataTable().fnSettings().fnRecordsDisplay();
                         var msg = interpolate(gettext("You have selected all %(total_number_of_records)s %(concept)s(s)."), {"total_number_of_records":total_number_of_records,"concept": gettext(concept)}, true);
-                        msg  += ' <a href="#">' + gettext("Clear Selection") + '</a>';
+                        msg  += ' <a href="javascript:void(0);">' + gettext("Clear Selection") + '</a>';
                         $(dataTableObject).find(".select_all_message").html(msg);
                         $(dataTableObject).find(".select_all_message").find('a').click(clear_select_all_rows);
                     }
@@ -156,7 +156,7 @@ $.fn.dwTable = function(options){
                             var msg = "";
                             $(dataTableObject).find(".table_message").parent().show();
                             msg = interpolate(gettext("You have selected <b>%(number_of_records)s</b> %(concept)s(s) on this page."), {"number_of_records": boxes.length, "concept": gettext(concept)}, true);
-                            msg += ' <a href="#">' +  interpolate(gettext('Select all <b> %(total_number_of_records)s </b>%(concept)s(s)'),
+                            msg += ' <a href="javascript:void(0);">' +  interpolate(gettext('Select all <b> %(total_number_of_records)s </b>%(concept)s(s)'),
                                     {'total_number_of_records': total_number_of_records, "concept": gettext(concept)}, true) + "</a>";
                             var link = $(msg)
                             $(dataTableObject).find(".select_all_message").html(msg);
