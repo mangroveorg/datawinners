@@ -37,5 +37,5 @@ django-debug-toolbar-django13
 requests==1.2.3
 elasticutils
 uWSGI==1.4.9
--e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
 djangorestframework
+-e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
