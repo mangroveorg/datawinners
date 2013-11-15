@@ -59,6 +59,11 @@ function unit_test {
 	(cd "$DWROOT_DIR/datawinners" && python manage.py test --verbosity=2 --with-xunit --xunit-file=/tmp/nosetests.xml)
 }
 
+function js_tests {
+	echo "running javascript unit tests"
+    (cd "$DWROOT_DIR/datawinners/tests" && ./phantomjs.runner.sh ./html/*.html)
+}
+
 function recreate_couch_db {
 	(cd "$DWROOT_DIR/datawinners" && python manage.py recreatedb)
 }

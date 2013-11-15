@@ -23,6 +23,7 @@ function main {
 		cm) compile_messages;;
 		rsdb) restore_couchdb_and_postgres;;
 		rs) run_server;;
+		jt) js_tests;;
 		*) show_help && exit 1;;
 	esac	
 }
