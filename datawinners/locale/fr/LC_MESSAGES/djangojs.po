@@ -700,6 +700,9 @@ msgstr ""
 msgid "Submissions"
 msgstr "Soumissions"
 
+msgid "Submission"
+msgstr "Soumission"
+
 #: media/javascript/project/data_analysis_chart_view.js:172
 msgid "Pie Chart"
 msgstr "Graphique Circulaire"

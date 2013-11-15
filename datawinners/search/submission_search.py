@@ -10,8 +10,9 @@ class SubmissionQueryBuilder(QueryBuilder):
             query = query.filter(status=query_params.get('filter'))
         return query
 
+
 class SubmissionQueryResponseCreator():
-    def __init__(self,form_model):
+    def __init__(self, form_model):
         self.form_model = form_model
 
     def create_response(self, required_field_names, query):
@@ -19,13 +20,14 @@ class SubmissionQueryResponseCreator():
         for res in query.values_dict(tuple(required_field_names)):
             submission = []
             submission.append(res._id)
-            submission.append([res.get('ds_name'), res.get('ds_id')])
+            submission.append([res.get('ds_name') + "<span class='small_grey'>  %s</span>" % res.get('ds_id')])
 
             for key in required_field_names:
                 meta_fields = ['ds_id', 'ds_name', 'entity_short_code']
                 if not key in meta_fields:
-                    if key == self.form_model.entity_question.code:
-                        submission.append(','.join([res.get(key),res.get('entity_short_code')]))
+                    if key.lower() == self.form_model.entity_question.code.lower():
+                        submission.append(
+                            [res.get(key) + "<span class='small_grey'>  %s</span>" % res.get('entity_short_code')])
                     elif isinstance(res.get(key), dict):
                         submission.append(res.get(key).values())
                     else:
@@ -57,10 +59,10 @@ class SubmissionQuery(Query):
         submission_type = self.query_params.get('filter')
         if not submission_type:
             header_dict.update({"status": "Status"})
-        elif submission_type == 'error':\
+        elif submission_type == 'error': \
             header_dict.update({"error_msg": "Error Message"})
         header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question): "Entity"})
-        header_dict.update({'entity_short_code':"Entity short code"})
+        header_dict.update({'entity_short_code': "Entity short code"})
         if self.form_model.event_time_question:
             header_dict.update({self._field_code_in_lowercase(self.form_model.event_time_question): "Reporting Date"})
 

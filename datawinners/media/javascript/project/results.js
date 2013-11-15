@@ -86,151 +86,41 @@ $(document).ready(function () {
         var action_handler = new DW.SubmissionLogActionHandler(active_tab_index, project_id);
 
         $(".submission_table").dwTable({
-            "concept": "submissions",
-            "sAjaxSource": render_table_url,
-            "sAjaxDataIdColIndex": 1,
-            "remove_id": true,
-            "bServerSide": true,
-            "oLanguage": {
-                "sEmptyTable": $('.help_no_submissions').html()
-            },
-            "aaSorting": [
-                [ 2, "desc"]
-            ],
-            "aoColumnDefs":[{"aTargets":[0], "sWidth":"30px"}],
-            "actionItems": [
-                {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
-                {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
-            ]
-        });
-
-    }
-
-    function getEmptyTableText() {
-        return isFiltering() ? help_all_data_are_filtered : $no_submission_hint.filter(':eq(' + active_tab_index + ')').html();
-    }
-
-    function isFiltering() {
-        return _.any(_.values(DW.get_criteria()), function (v) {
-            return !_.isUndefined(v) && !_.isEmpty($.trim(v))
-        })
-    }
-
-    function wrap_table() {
-        $(".submission_table").wrap("<div class='data_table' style='width:" + ($(window).width() - 65) + "px'/>");
-    }
-
-    function get_ids() {
-        return $(".selected_submissions:checked").map(function (index, value) {
-            return $(value).val();
-        }).get();
-    }
-
-//    $("#master_checkbox").live("click", function () {
-//        $(".selected_submissions").attr("checked", $(this).attr('checked') == "checked");
-//        submissions_action_dropdown.update_edit_action();
-//    });
-
-//    $('.delete').click(function () {
-//        var ids = get_ids();
-//        if (ids.length == 0) {
-//            $("#message_text").html("<div class='message message-box'>" + gettext("Please select at least one undeleted record") + "</div>");
-//        } else {
-//            delete_submission_warning_dialog.show_warning();
-//            delete_submission_warning_dialog.ids = ids;
-//        }
-//        $("#message_text .message").delay(5000).fadeOut();
-//    });
-//
-//    $('#edit').click(function () {
-//        var survey_response_id = get_ids();
-//        var project_id = $(location).attr('href').split('/')[4];
-//
-//        if (survey_response_id.length > 1) {
-//            return false;
-//        } else {
-//            $(this).attr('href', '/project/' + project_id + '/submissions/edit/' + survey_response_id + '/tab/' + active_tab_index)
-//        }
-//    });
-
-//    function removeRowsFromDataTable(ids) {
-//        $.each(ids, function (index, value) {
-//            $dataTable.fnDeleteRow($(':checkbox[value=' + $.trim(value) + ']').parents('tr').get(0));
-//        });
-//        if ($("table.submission_table tbody tr").length) {
-//            $("#master_checkbox").attr("disabled", "disabled");
-//        }
-//    }
-
-    function getColumnDefinition() {
-        var columns = [
-
-            {
-                "sClass": "center",
-                "sTitle": "<input type='checkbox'id='checkall-checkbox' class='selected_submissions'></input>",
-                "fnRender": function (data) {
-                    return '<input type="checkbox" value=' + data.aData[0] + ' />';
+                "concept": "Submission",
+                "sAjaxSource": render_table_url,
+                "sAjaxDataIdColIndex": 1,
+                "remove_id": true,
+                "bServerSide": true,
+                "oLanguage": {
+                    "sEmptyTable": $('.help_no_submissions').html()
                 },
-                "bSortable": false,
-                "aTargets": [0]
-            }
-        ];
-        return columns;
-    }
+                "aaSorting": [
+                    [ 2, "desc"]
+                ],
+                "aoColumnDefs": [
+                    {"aTargets": [0], "sWidth": "30px"}
+                ],
+                "actionItems": [
+                    {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
+                    {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
+                ],
 
-    var options = {container: "#delete_submission_warning_dialog",
-        continue_handler: function () {
-            var selected_ids = this.ids;
-            DW.loading();
-            var project_id = $(location).attr('href').split('/')[4];
-            $.ajax({
-                    type: 'POST',
-                    url: '/project/' + project_id + '/submissions/delete/',
-                    data: {
-                        'id_list': JSON.stringify(selected_ids)
-                    },
-                    success: function (response) {
-                        var data = JSON.parse(response);
-                        if (data.success) {
-                            $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
-                            removeRowsFromDataTable(selected_ids);
-                        } else {
-                            $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
-                        }
-                        $("#message_text .message").delay(5000).fadeOut();
-                    },
-                    error: function (e) {
-                        $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
-                    }
+                "fnDrawCallback": function (oSettings) {
+                    var searchPlaceholderText = 'Enter any information you want to find';
+                    $(this).find("thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0);
+                    var nCols = $(this).find('thead>tr').children('th').length;
+                    $(this).find('tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols + '><div class="select_all_message"></div></td></tr>');
+                    $(this).find(".select_all_message").data('all_selected', false);
+                    $('#filters').append($('.dataTables_wrapper .dataTables_filter'))
+                    $('#filters').find(".dataTables_filter input").attr('placeholder', gettext(searchPlaceholderText));
                 }
-            )
-            ;
+            }
 
-            return false;
-        },
-        title: gettext("Your Submission(s) will be deleted"),
-        cancel_handler: function () {
-        },
-        height: 150,
-        width: 550
+        );
+
     }
-});
+})
+;
 
-//    var delete_submission_warning_dialog = new DW.warning_dialog(options);
 
-//    var kwargs = {
-//        checkbox_locator: "#tabs table.submission_table input:checkbox",
-//        data_locator: "#action_menu",
-//        none_selected_locator: "#none-selected",
-//        many_selected_msg: gettext("Please select 1 Submission only"),
-//        check_single_checked_locator: "#tabs table.submission_table tbody input:checkbox[checked=checked]",
-//        no_cb_checked_locator: "#tabs table.submission_table input:checkbox[checked=checked]",
-//        checkall: "#master_checkbox"
-//    }
-//    var submissions_action_dropdown = new DW.action_dropdown(kwargs);
-//
-//    $(".selected_submissions").live("click", function () {
-//        $("#master_checkbox").attr("checked", $(".selected_submissions").length == $(".selected_submissions:checkbox[checked]").length);
-//    });
-//})
-//;
+

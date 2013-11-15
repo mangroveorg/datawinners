@@ -326,8 +326,8 @@ def get_submissions(request, project_id):
         jsonpickle.encode(
             {
                 'data': submissions,
-                'iTotalDisplayRecords': search_count,
+                'iTotalDisplayRecords': query_count,
                 'iDisplayStart': int(request.GET.get('iDisplayStart')),
-                "iTotalRecords": query_count,
+                "iTotalRecords": search_count,
                 'iDisplayLength': int(request.GET.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')

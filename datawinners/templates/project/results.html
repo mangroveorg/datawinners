@@ -35,10 +35,10 @@
     <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/project/filter/filters.js"></script>
     <script type="text/javascript" src="/media/javascript/project/filter/json2form.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/results.js"></script>
-    <script src="/media/javascript/data_tables/js/dwtable.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/submission_log_actions.js"></script>
     <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+    <script src="/media/javascript/data_tables/js/dwtable.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/results.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/submission_log_actions.js"></script>
 
 
 {% endblock %}
@@ -103,6 +103,7 @@
     {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
     {% include "project/submission_page_hint.html" %}
     <div class="heading_block clearfix margin_bottom_10">
+    <div id="filters"></div>
 
         <!--[if IE 7]>
             <div class="float_right"></div>
