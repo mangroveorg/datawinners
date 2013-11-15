@@ -559,7 +559,7 @@ msgstr ""
 
 msgid "help_how_to_use_dw"
 msgstr ""
-"DataWinners is the do-it-yourself Data Collection and Communication tool you "
+"Thoughtworks Data Collection is the do-it-yourself Data Collection and Communication tool you "
 "need to make better decisions.<br />Click on the Create a New Project button "
 "to get started."
 
