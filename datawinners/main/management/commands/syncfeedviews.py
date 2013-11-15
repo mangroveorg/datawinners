@@ -1,9 +1,9 @@
 import logging
 from django.core.management.base import BaseCommand
-from feeds.database import get_feed_db_from_main_db_name
 from datawinners import settings
-from main.management.sync_changed_views import SyncOnlyChangedViews
+from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.management.commands.utils import document_stores_to_process
+from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
 
 logger = logging.getLogger(__name__)
 class Command(BaseCommand):
