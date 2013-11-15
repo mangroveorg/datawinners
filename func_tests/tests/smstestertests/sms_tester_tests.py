@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import os
 import unittest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
@@ -8,7 +9,6 @@ from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE
 from tests.smstestertests.sms_tester_data import *
 
 
-@attr('suit_3')
 class TestSMSTester(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -47,8 +47,9 @@ class TestSMSTester(unittest.TestCase):
         Function to test the registration of the reporter using sms submission with registered number
         """
         self.sms_tester_page.send_sms_with(REGISTER_DATA_SENDER)
-        self.assertRegexpMatches(self.sms_tester_page.get_response_message(),
-                                 fetch_(SUCCESS_MESSAGE, from_(REGISTER_DATA_SENDER)))
+        actual_message = self.sms_tester_page.get_response_message()
+        TestSMSTester._create_screenshot("sms_successful_addition_of_ds")
+        self.assertRegexpMatches(actual_message, fetch_(SUCCESS_MESSAGE, from_(REGISTER_DATA_SENDER)))
 
     @attr('functional_test')
     def test_sms_player_for_addition_of_data_sender_from_unknown_number(self):
@@ -89,4 +90,10 @@ class TestSMSTester(unittest.TestCase):
         self.sms_tester_page.send_sms_with(UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA)
         self.assertEqual(self.sms_tester_page.get_response_message(),
                          fetch_(ERROR_MSG, from_(UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA)))
+
+    @classmethod
+    def _create_screenshot(cls, file_name):
+        if not os.path.exists("screenshots"):
+            os.mkdir("screenshots")
+        cls.driver.save_screenshot("screenshots/%s.png" % file_name)
    

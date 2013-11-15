@@ -245,10 +245,10 @@ def get_entity_type_fields(manager, type=REPORTER, for_export=False):
     form_code = "reg"
     if form_model is not None:
         form_code = form_model.form_code
-    form_model_rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
+    json_fields = get_form_model_by_code(manager,form_code)._doc["json_fields"]
     if for_export:
-        return get_json_field_infos_for_export(form_model_rows[0].value['json_fields'])
-    return get_json_field_infos(form_model_rows[0].value['json_fields'])
+        return get_json_field_infos_for_export(json_fields)
+    return get_json_field_infos(json_fields)
 
 
 def tabulate_data(entity, form_model, field_codes):

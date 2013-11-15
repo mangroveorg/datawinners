@@ -6,7 +6,7 @@
 <script src="/media/javascript/data_tables/js/dwtable.js"></script>
 <script src="/media/javascript/entity/datasender_actions.js"></script>
 <script>
-    var datasender_ajax_url = "{% url my_datasenders_ajax project.name %}";
+    var datasender_ajax_url = "{{ project_links.my_datasenders_ajax_link}}";
     var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
 
 $(function(){

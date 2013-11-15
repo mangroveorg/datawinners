@@ -4,6 +4,7 @@ function warnThenDeleteDialogBox(allIds, all_selected, entity_type, action_eleme
     delete_dialog.data("all_selected", all_selected);
     delete_dialog.data("entity_type", entity_type);
     delete_dialog.data("action_element", action_element);
+    delete_dialog.data("pageToGo", get_updated_table_page_index($("#datasender_table").dataTable(), allIds, all_selected));
     delete_dialog.dialog("open");
 }
 
@@ -40,7 +41,9 @@ function init_warnThenDeleteDialogBox() {
                 var response = $.parseJSON(json_response);
                 flash_message(response.message, response.success);
                 if (response.success) {
-                    $("#datasender_table").dataTable().fnReloadAjax();
+                    var table = $("#datasender_table").dataTable();
+                    table.fnSettings()._iDisplayStart = delete_dialog.data("pageToGo");
+                    table.fnReloadAjax();
                 }
             }
         );
@@ -76,7 +79,7 @@ DW.DataSenderActionHandler = function () {
     };
     this["remove_from_project"] = function(table, selectedIds, all_selected) {
         DW.loading();
-        handle_row_deletion(table, selectedIds);
+        table.fnSettings()._iDisplayStart = get_updated_table_page_index(table, selectedIds, all_selected);
         $.ajax({'url':'/project/disassociate/', 'type':'POST', headers: { "X-CSRFToken": $.cookie('csrftoken') },
             data: { 'ids':selectedIds.join(';'),
                     'project_name':$("#project_name").val(),
@@ -129,7 +132,8 @@ function init_add_remove_from_project() {
             $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project")
                 + '</div>').insertBefore($("#all_projects"));
         } else {
-            var url = '/entity/' + all_project_block.data("action") + '/';
+            var action = all_project_block.data("action");
+            var url = '/entity/' + action + '/';
             $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">'
                 + gettext("Just a moment") + '...</span></h1>', css: { width: '275px', zIndex: 1000000}});
             $.ajax({
@@ -144,8 +148,12 @@ function init_add_remove_from_project() {
                         }
 
             }).done(function (json_response) {
+                    var table = $("#datasender_table").dataTable();
+                    if (action == "disassociate") {
+                        table.fnSettings()._iDisplayStart = all_project_block.data("pageToGo");
+                    }
                     $("#all_project_block").dialog('close');
-                    $("#datasender_table").dataTable().fnReloadAjax();
+                    table.fnReloadAjax();
                     var response = $.parseJSON(json_response);
                     flash_message(response.message, response.success);
                 });
@@ -160,6 +168,7 @@ function add_remove_from_project(action, table, selected_ids, all_selected) {
     all_project_block.data("selected_ids", selected_ids);
     all_project_block.data("all_selected", all_selected);
     all_project_block.data("action", action);
+    all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
     all_project_block.dialog("open");
 }
 function get_superuser_names_from_selected_datasenders(table, selected_ids, all_selected) {
@@ -236,18 +245,29 @@ function uncheck_users(table, user_ids) {
     });
 }
 
-function handle_row_deletion(table, allIds){
+function get_updated_table_page_index(table, allIds, all_selected){
     var settings = table.fnSettings();
-    if (settings.fnDisplayEnd() == settings.fnRecordsDisplay()) {
-        if ($(table).find("input.row_checkbox").length == allIds.length) {
-            settings._iDisplayStart = 0;
-        }
+
+    if (current_page_rows_going_to_vanish()) {
+        return 0;
+    } else {
+        return settings._iDisplayStart;
     }
+
+    function is_last_page() {
+        return (settings.fnDisplayEnd() == settings.fnRecordsDisplay());
+    }
+
+    function current_page_rows_going_to_vanish() {
+        return all_selected ||
+                (is_last_page() &&
+                    ($(table).find("input.row_checkbox").length == allIds.length))
+    }
+
 }
 
 function handle_datasender_delete(table, allIds, all_selected){
     $("#note_for_delete_users").hide();
-    handle_row_deletion(table, allIds);
 
     var superusers_selected = get_superuser_names_from_selected_datasenders(table, allIds, all_selected);
 

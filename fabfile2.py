@@ -192,7 +192,6 @@ def take_couchdbmain_dump(couchdb_path, backup_path, name_prefix):
     with cd(couchdb_path):
         run('sudo tar -czvPf  %s/%s  couchdbmain' % (backup_path, backup))
 
-
 def take_couchdbfeed_dump(couchdb_path, backup_path, name_prefix):
     backup_name = "mangrove_couchdb_feed_backup_" + name_prefix + ".tar.gz"
     with cd(couchdb_path):
