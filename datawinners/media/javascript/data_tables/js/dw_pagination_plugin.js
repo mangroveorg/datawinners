@@ -71,6 +71,13 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
         var an = oSettings.aanFeatures.p;
         for (var i = 0, iLen = an.length; i < iLen; i++) {
             var buttons = an[i].getElementsByTagName('span');
+
+            if (oSettings._iDisplayStart === 0 && oSettings.fnDisplayEnd() == oSettings.fnRecordsDisplay()) {
+                buttons[2].className = "paginate_more_disabled dropdown-disabled";
+            } else {
+                buttons[2].className = "paginate_more";
+            }
+
             var first_id = $(an[i]).find(".paginate_more").data('first');
             var last_id = $(an[i]).find(".paginate_more").data('last');
             if (oSettings._iDisplayStart === 0) {
@@ -91,11 +98,6 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
                 $($("#" + last_id).parent()).removeClass('disabled')
             }
 
-            if (oSettings._iDisplayStart === 0 && oSettings.fnDisplayEnd() == oSettings.fnRecordsDisplay()) {
-                buttons[2].className = "paginate_more_disabled dropdown-disabled";
-            } else {
-                buttons[2].className = "paginate_more";
-            }
         }
     }
 };
