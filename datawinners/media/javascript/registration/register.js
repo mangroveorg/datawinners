@@ -1,13 +1,13 @@
 $(document).ready(function() {
     $('.pay_monthly').append(gettext("Renews automatically each month. Cancel at any time without penalty."));
-    $('.pay_half_yearly').append(gettext("Save 10% by paying 6 months in advance"));
+    $('.pay_half_yearly').append(gettext("Save x% by paying y months in advance"));
     $('.credit_card').append(gettext("Call us directly and we can securely process your credit card payment over the phone"));
     $('.pay_via_ach').append(gettext("Securely transfer funds between your US-based bank account and ours (normally free of charge)."));
 
     $("#user_should_agree_terms_block").dialog({
         autoOpen: false,
         modal: true,
-        title: gettext("DataWinners Terms & Conditions"),
+        title: "ThoughtWorks Terms and Conditions",
         zIndex:200,
         width: 500,
         beforeClose: function() {

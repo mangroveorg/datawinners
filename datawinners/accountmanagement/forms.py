@@ -163,9 +163,9 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
 def payment_details_form():
     pay_monthly = ('pay_monthly', _(mark_safe(
-        "<div class='radio_title'>Monthly: $ 399 per month</div><div class='subtitle_for_radio_button pay_monthly'></div>")))
+        "<div class='radio_title'>Monthly: $ xx per month</div><div class='subtitle_for_radio_button pay_monthly'></div>")))
     pay_half_yearly = ('half_yearly', _(mark_safe(
-        "<div class='radio_title'>6 months:$ 359 per month</div><div class='subtitle_for_radio_button pay_half_yearly'></div> ")))
+        "<div class='radio_title'>6 months:$ xx per month</div><div class='subtitle_for_radio_button pay_half_yearly'></div> ")))
     INVOICE_PERIOD_CHOICES = (pay_monthly, pay_half_yearly)
 
     wire_transfer = ('wire_transfer', _(mark_safe("<div class='radio_title'>Wire transfer</div>")))

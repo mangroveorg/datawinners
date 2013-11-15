@@ -1867,7 +1867,7 @@ msgid "User has been added successfully"
 msgstr ""
 
 msgid "agree-terms"
-msgstr "I agree to the DataWinners <a target=\"_blank\" href=\"/en/terms-and-conditions/\"  id=\"link-terms-and-conditions\">Terms and Conditions</a>"
+msgstr "I agree to the ThoughtWorks Data Collection <a target=\"_blank\" href=\"#\"  id=\"link-terms-and-conditions\">Terms and Conditions</a>"
 
 
 msgid "I Agree"
