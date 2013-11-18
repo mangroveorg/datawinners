@@ -5,7 +5,7 @@ DW.SubjectSMSPreviewPage = function () {
     sms_preview_form.html($("#subject_registration_form").clone().html());
     sms_preview_form.find('input[type="submit"]').remove();
     var sms_form_heading = $("#sms_form_heading");
-
+    sms_preview_form.find('.generate_id_check').remove();
     sms_preview_form.find('input,select').each(function (index, element) {
         var query_element_object = $(element);
         query_element_object.attr("disabled", true);
