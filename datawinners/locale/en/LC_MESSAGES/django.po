@@ -3656,6 +3656,9 @@ msgstr ""
 msgid "Refer to the Example SMS Answer and re-type your SMS"
 msgstr ""
 
+msgid "Thank you"
+msgstr ""
+
 msgid "Congratulations ! Go to "
 msgstr ""
 

@@ -953,7 +953,7 @@ msgid "No data available in table"
 msgstr ""
 
 #: media/javascript/useractivity/log.js:32
-msgid "Showing _START_ to _END_ of _TOTAL_ Data records"
+msgid "Showing %(start)s to %(end)s of %(total)s Data records"
 msgstr ""
 
 #: media/javascript/useractivity/log.js:33

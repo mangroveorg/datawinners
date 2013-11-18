@@ -984,9 +984,8 @@ msgid "No data available in table"
 msgstr "Aucune donnée disponible dans le tableau"
 
 #: media/javascript/useractivity/log.js:32
-#, fuzzy
-msgid "Showing _START_ to _END_ of _TOTAL_ Data records"
-msgstr "Afficher 0 à 0 de 0 Enregistrements"
+msgid "Showing %(start)s to %(end)s of %(total)s Data records"
+msgstr "Afficher %(start)s à %(end)s de %(total)s  Enregistrements"
 
 #: media/javascript/useractivity/log.js:33
 msgid "Showing 0 to 0 of 0 Data records"

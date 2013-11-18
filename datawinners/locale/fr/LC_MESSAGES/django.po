@@ -1862,7 +1862,7 @@ msgid "Minimum"
 msgstr "Minimum"
 
 msgid "All fields are required unless marked optional."
-msgstr "Tous les champs sont obligatoires sauf indication \"facultatif\"."
+msgstr "Tous les champs sont obligatoires sauf indication facultatif."
 
 msgid "Optional"
 msgstr "facultatif"
@@ -3746,6 +3746,9 @@ msgstr "Réponse SMS Automatique de DataWinners"
 
 msgid "Refer to the Example SMS Answer and re-type your SMS"
 msgstr "Référez-vous à l’Exemple de Réponse SMS et retapez votre SMS"
+
+msgid "Thank you"
+msgstr "Merci"
 
 msgid "Congratulations ! Go to "
 msgstr "Félicitations ! Allez à la page"
