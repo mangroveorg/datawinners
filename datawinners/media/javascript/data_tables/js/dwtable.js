@@ -73,12 +73,15 @@
                 }
             }
 
-            defaults["fnDrawCallback"] = defaults["fnDrawCallback"] || function (oSettings) {
-                $(this).find("thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0);
-                var nCols = $(this).find('thead>tr').children('th').length;
-                $(this).find('tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols + '><div class="select_all_message"></div></td></tr>');
-                $(this).find(".select_all_message").data('all_selected', false);
-            };
+            defaults["fnDrawCallback"] = function(orignal_handler){
+                return function (oSettings) {
+                    $(this).find("thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0);
+                    var nCols = $(this).find('thead>tr').children('th').length;
+                    $(this).find('tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols + '><div class="select_all_message"></div></td></tr>');
+                    $(this).find(".select_all_message").data('all_selected', false);
+                    if (typeof orignal_handler == "function") orignal_handler.apply(this,arguments);
+                }
+            }(defaults["fnDrawCallback"]);
 
 
             defaults["fnInitComplete"] = function (original_init_complete_handler, concept, actionItems, displayLength) {
