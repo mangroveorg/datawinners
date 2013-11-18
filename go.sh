@@ -60,8 +60,8 @@ function unit_test {
 }
 
 function js_tests {
-	echo "running javascript unit tests"
-    (cd "$DWROOT_DIR/datawinners/tests" && ./phantomjs.runner.sh ./html/*.html)
+    echo "running javascript unit tests"
+    (cd "$DWROOT_DIR/datawinners/tests/js_test" && ./phantomjs.runner.sh ./jasmine_runner/*.html)
 }
 
 function recreate_couch_db {

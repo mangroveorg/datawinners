@@ -1,11 +1,22 @@
 #!/bin/bash
 
+function installPhantomjs(){
+    echo "installing phantom"
+
+    cd /usr/local/share
+    wget http://phantomjs.googlecode.com/files/phantomjs-1.9.1-linux-x86_64.tar.bz2
+    tar xjf phantomjs-1.9.1-linux-x86_64.tar.bz2
+    sudo ln -s /usr/local/share/phantomjs-1.9.1-linux-x86_64/bin/phantomjs /usr/local/share/phantomjs
+    sudo ln -s /usr/local/share/phantomjs-1.9.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+    sudo ln -s /usr/local/share/phantomjs-1.9.1-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
+
+    echo "Done installing phantom"
+}
+
 # sanity check to make sure phantomjs exists in the PATH
 hash /usr/bin/env phantomjs &> /dev/null
 if [ $? -eq 1 ]; then
-    echo "ERROR: phantomjs is not installed"
-    echo "Please visit http://www.phantomjs.org/"
-    exit 1
+    (installPhantomjs)
 fi
 
 # sanity check number of args
