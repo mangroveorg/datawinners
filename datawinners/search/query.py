@@ -33,8 +33,8 @@ class Query(object):
             header_copy = list(entity_headers)
             if "entity_short_code" in header_copy : header_copy.remove("entity_short_code")
             options.update({"order_field": header_copy[self.query_params["order_by"]]})
-
-        paginated_query = self.query_builder.create_paginated_query(entity_type, self._getDatabaseName(user), options)
+        query = self.query_builder.create_query(entity_type,self._getDatabaseName(user))
+        paginated_query = self.query_builder.create_paginated_query(query, options)
         query_with_criteria = self.query_builder.add_query_criteria(entity_headers, self.query_params["search_text"],
                                                                     paginated_query)
         entities = self.response_creator.create_response(entity_headers, query_with_criteria)
@@ -48,12 +48,12 @@ class QueryBuilder(object):
     def create_query(self, doc_type, database_name):
         return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type).filter(void=False)
 
-    def create_paginated_query(self, doc_type, database_name, query_params):
+    def create_paginated_query(self, query, query_params):
         start_result_number = query_params.get("start_result_number")
         number_of_results = query_params.get("number_of_results")
         order = query_params.get("order")
         order_by = query_params.get("order_field")
-        query = self.create_query(doc_type, database_name)
+        #query = self.create_query(doc_type, database_name)
         if order_by:
             query = query.order_by(order + order_by + "_value")
         return query[start_result_number:start_result_number + number_of_results]

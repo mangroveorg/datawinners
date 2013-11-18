@@ -1,14 +1,22 @@
 from collections import OrderedDict
+import elasticutils
+from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.form_model import header_fields
 from datawinners.search.query import QueryBuilder, Query
 
 
 class SubmissionQueryBuilder(QueryBuilder):
-    def create_paginated_query(self, doc_type, database_name, query_params):
-        query = super(SubmissionQueryBuilder, self).create_paginated_query(doc_type, database_name, query_params)
-        if query_params.get('filter'):
-            query = query.filter(status=query_params.get('filter'))
-        return query
+    def create_query(self, doc_type, database_name):
+        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type)
+
+    def create_paginated_query(self, query, query_params):
+        query = super(SubmissionQueryBuilder, self).create_paginated_query(query,query_params)
+        submission_type_filter = query_params.get('filter')
+        if submission_type_filter:
+            if submission_type_filter == 'deleted':
+                return query.filter(void=True)
+            query = (query.filter(status=submission_type_filter))
+        return query.filter(void=False)
 
 
 class SubmissionQueryResponseCreator():
@@ -57,7 +65,7 @@ class SubmissionQuery(Query):
         header_dict.update({"ds_name": "Datasender Name"})
         header_dict.update({"date": "Submission Date"})
         submission_type = self.query_params.get('filter')
-        if not submission_type:
+        if not submission_type  or submission_type == 'deleted':
             header_dict.update({"status": "Status"})
         elif submission_type == 'error': \
             header_dict.update({"error_msg": "Error Message"})

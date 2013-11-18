@@ -123,6 +123,9 @@ class TestSubjectQuery(TestCase):
                 header_fields.return_value = subject_headers
                 paginated_query = Mock()
                 expected_total_result_count = 100
+                query = MagicMock()
+                subject_query_builder.create_query.return_value = query
+
                 paginated_query.count.return_value = expected_total_result_count
                 subject_query_builder.create_paginated_query.return_value = paginated_query
                 query_with_criteria = Mock()
@@ -133,7 +136,7 @@ class TestSubjectQuery(TestCase):
 
                 filtered_count, total_count, actualSubjects = subject_query.paginated_query(user, "subject_type")
 
-                subject_query_builder.create_paginated_query.assert_called_once_with("subject_type", "database_name", {
+                subject_query_builder.create_paginated_query.assert_called_once_with(query, {
                     "start_result_number": 2,
                     "number_of_results": 10,
                     "order_field": "field2",

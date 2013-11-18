@@ -65,7 +65,7 @@ class SubmissionsPageHeader(Header):
         return ugettext("Error Messages"), ''
 
     def _prefix(self):
-        if self.submission_type == 'all':
+        if self.submission_type in ['all','deleted']:
             return [self._id(), self._data_sender_header(), self._submission_date_header(), self._status(),
                     self._subject_header(), self._reporting_period_header()]
 

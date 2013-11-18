@@ -117,6 +117,8 @@ $(document).ready(function () {
             }
 
         );
+        var display_check_box = active_tab != 'deleted';
+        $(".submission_table").dataTable().fnSetColumnVis(0,display_check_box)
 
     }
 })

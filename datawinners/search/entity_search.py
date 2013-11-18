@@ -34,8 +34,8 @@ class MyDataSenderQuery(Query):
 
     def filtered_query(self, user, project_name, query_params):
         entity_headers = self.get_headers(user, "reporter")
-
-        paginated_query = self.query_builder.create_paginated_query("reporter", self._getDatabaseName(user), {
+        query = self.query_builder.create_query("reporter",self._getDatabaseName(user))
+        paginated_query = self.query_builder.create_paginated_query(query, {
             "start_result_number": query_params["start_result_number"],
             "number_of_results": query_params["number_of_results"],
             "order_field": entity_headers[query_params["order_by"]],

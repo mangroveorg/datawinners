@@ -55,7 +55,8 @@ class TestQueryBuilder(TestCase):
                     "order_field": "field_name_to_order_by"
                 }
 
-                QueryBuilder().create_paginated_query("subject_type", "database_name", query_params)
+                query_builder = QueryBuilder()
+                query_builder.create_paginated_query(query_builder.create_query("subject_type", "database_name"), query_params)
 
                 query.assert_called_with("subject_type", "database_name")
                 elasticUtilsMock.order_by.assert_called_with("-field_name_to_order_by_value")
@@ -72,7 +73,8 @@ class TestQueryBuilder(TestCase):
                     "order_field": "field_name_to_order_by"
                 }
 
-                QueryBuilder().create_paginated_query("subject_type", "database_name", query_params)
+                query_builder = QueryBuilder()
+                query_builder.create_paginated_query(query_builder.create_query("subject_type", "database_name"), query_params)
 
                 elasticUtilsMock.__getitem__.assert_called_with(slice(1, 11, None))
 
