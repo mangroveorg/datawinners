@@ -10,7 +10,6 @@ DW.SubjectSMSPreviewPage = function () {
         var query_element_object = $(element);
         query_element_object.attr("disabled", true);
     });
-    sms_preview_form.find("input").val('');
     var input_elements = $("#preview_form select, #preview_form input[type=checkbox]").not("#generate_id");
     input_elements.parents(".answer").before('<input type="text" disabled="disabled">');
     input_elements.each(function (index, element) {
@@ -34,6 +33,7 @@ DW.SubjectSMSPreviewPage = function () {
         }
         query_element_object.after(options_html);
     });
+    sms_preview_form.find("input").val('');
 
     this.enable = function () {
         $("#message_box").remove();
