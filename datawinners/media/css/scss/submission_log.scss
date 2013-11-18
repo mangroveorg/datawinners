@@ -6,19 +6,6 @@
   width: 30px;
 }
 
-#action_menu {
-  width: 100px;
-  ul {
-    min-width: 100px;
-    border-radius: 0px;
-  }
-  LI > A:hover,
-  LABEL:hover {
-    background-color: #E6F0F5;
-    color: #000;
-    cursor: pointer;
-  }
-}
 
 #submission_logs {
   .ui-state-default {
@@ -28,9 +15,6 @@
     @extend .link;
   }
   tr, td {
-  }
-  .export_link {
-    @extend .link;
   }
   .ui-tabs-nav {
     padding-left: 0px;
@@ -70,19 +54,4 @@
       border-bottom: 4px solid #525252 !important;
     }
   }
-}
-
-#submission_logs.narrow_first_col {
-  thead th:first-child{
-    width: 20px !important;
-    padding: 6px;
-    vertical-align: middle !important;
-  }
-  td:first-child {
-    min-width: 20px !important;
-  }
-}
-
-#none-selected .dropdown-panel{
-  display: inline-table;
 }

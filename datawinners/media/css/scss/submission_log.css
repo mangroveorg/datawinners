@@ -1,19 +1,8 @@
-.link, #submission_logs a, #submission_logs a:hover, #submission_logs .export_link {
+.link, #submission_logs a, #submission_logs a:hover {
   color: #0070AC; }
 
 .checkbox_col {
   width: 30px; }
-
-#action_menu {
-  width: 100px; }
-  #action_menu ul {
-    min-width: 100px;
-    border-radius: 0px; }
-  #action_menu LI > A:hover,
-  #action_menu LABEL:hover {
-    background-color: #E6F0F5;
-    color: #000;
-    cursor: pointer; }
 
 #submission_logs .ui-state-default {
   font-weight: normal; }
@@ -43,13 +32,3 @@
   #submission_logs #tabs.ui-widget-content .ui-widget-header {
     background: none;
     border-bottom: 4px solid #525252 !important; }
-
-#submission_logs.narrow_first_col thead th:first-child {
-  width: 20px !important;
-  padding: 6px;
-  vertical-align: middle !important; }
-#submission_logs.narrow_first_col td:first-child {
-  min-width: 20px !important; }
-
-#none-selected .dropdown-panel {
-  display: inline-table; }

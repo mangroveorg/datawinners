@@ -43,7 +43,7 @@ function handle_submission_log_delete(table, selected_ids, all_selected, project
             title: gettext("Your Submission(s) will be deleted"),
             cancel_handler: function () {
             },
-            height: 150,
+            height: 170,
             width: 550
         };
 
