@@ -16,13 +16,13 @@ def create_submission_mapping(dbm, form_model):
     es.put_mapping(dbm.database_name, form_model.id, mapping)
 
 
-def update_submission_search_index(submission_doc, feed_dbm):
+def update_submission_search_index(submission_doc, feed_dbm, refresh_index=False):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     dbm = get_db_manager(feed_dbm.database_name.replace("feed_", ""))
     form_model = get_form_model_by_code(dbm, submission_doc.form_code)
     search_dict = _meta_fields(submission_doc)
     _update_with_form_model_fields(submission_doc, search_dict)
-    es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id)
+    es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
 
 
 def _metadata_mapping(dbm):
