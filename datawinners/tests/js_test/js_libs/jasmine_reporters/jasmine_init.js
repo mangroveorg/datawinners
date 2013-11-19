@@ -5,10 +5,7 @@
   var trivialReporter = new jasmine.TrivialReporter();
 
   jasmineEnv.addReporter(trivialReporter);
-  jasmineEnv.addReporter(new jasmine.TerminalReporter({
-    verbosity: 3,
-    color: true
-  }));
+  jasmine.getEnv().addReporter(new jasmine.TapReporter());
 
   jasmineEnv.specFilter = function(spec) {
     return trivialReporter.specFilter(spec);

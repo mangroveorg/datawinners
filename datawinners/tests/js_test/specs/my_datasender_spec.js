@@ -1,4 +1,4 @@
-describe("dwtable", function() {
+describe("My DataSenders Table", function() {
 
     var onSuccess, onFailure;
     var serviceUrl;
