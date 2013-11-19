@@ -1,4 +1,4 @@
-describe("My DataSenders Table", function() {
+describe("My DS test", function() {
 
     var onSuccess, onFailure;
     var serviceUrl;
