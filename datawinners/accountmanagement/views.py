@@ -189,15 +189,8 @@ def edit_user(request):
         form = EditUserProfileForm(request.POST)
         message = ""
         if form.is_valid():
-            user = User.objects.get(username=request.user.username)
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
-            user.save()
-            ngo_user_profile = NGOUserProfile.objects.get(user=user)
-            ngo_user_profile.title = form.cleaned_data['title']
-            ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
-
-            ngo_user_profile.save()
+            _update_user_and_profile(request, form)
+            
             message = _('Profile has been updated successfully')
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
                                   context_instance=RequestContext(request))
@@ -214,16 +207,25 @@ def upgrade(request, token=None):
     organization = get_organization(request)
     if request.method == 'GET':
         form = UpgradeForm()
-        return render_to_response("registration/upgrade.html", {'organization': organization, 'profile': profile,
+        organization_form = OrganizationForm(instance=organization)
+        profile_form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
+                                             last_name=profile.user.last_name,
+                                             username=profile.user.username,
+                                             mobile_phone=profile.mobile_phone))
+        return render_to_response("registration/upgrade.html", {'organization': organization_form, 'profile': profile_form,
                                                                 'form': form}, context_instance=RequestContext(request))
     if request.method == 'POST':
         form = UpgradeForm(request.POST)
-        if form.is_valid():
+        organization = Organization.objects.get(org_id=request.POST["org_id"])
+        organization_form = OrganizationForm(request.POST, instance=organization).update()
+        profile_form = EditUserProfileForm(request.POST)
+        if form.is_valid() and organization_form.is_valid() and profile_form.is_valid():
             organization.in_trial_mode = False
             organization.save()
 
             invoice_period = form.cleaned_data['invoice_period']
             preferred_payment = form.cleaned_data['preferred_payment']
+
             payment_details = PaymentDetails.objects.model(organization=organization, invoice_period=invoice_period,
                                                            preferred_payment=preferred_payment)
             payment_details.save()
@@ -233,6 +235,7 @@ def upgrade(request, token=None):
                 tracker.reset()
             DataSenderOnTrialAccount.objects.filter(organization=organization).delete()
             _send_upgrade_email(request.user, request.LANGUAGE_CODE)
+            _update_user_and_profile(request, profile_form)
             messages.success(request, _("upgrade success message"))
             if token:
                 request.user.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -240,7 +243,7 @@ def upgrade(request, token=None):
                 Token.objects.get(pk=token).delete()
             return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
 
-        return render_to_response("registration/upgrade.html", {'organization': organization, 'profile': profile,
+        return render_to_response("registration/upgrade.html", {'organization': organization_form, 'profile': profile_form,
                                                                 'form': form}, context_instance=RequestContext(request))
 
 
@@ -308,3 +311,14 @@ def custom_password_reset_confirm(request, uidb36=None, token=None, set_password
             if user.get_profile().reporter else django_settings.DASHBOARD
         return HttpResponseRedirect(redirect_url)
     return response
+
+def _update_user_and_profile(request, form):
+    user = User.objects.get(username=request.user.username)
+    user.first_name = form.cleaned_data['first_name']
+    user.last_name = form.cleaned_data['last_name']
+    user.save()
+    ngo_user_profile = NGOUserProfile.objects.get(user=user)
+    ngo_user_profile.title = form.cleaned_data['title']
+    ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
+
+    ngo_user_profile.save()

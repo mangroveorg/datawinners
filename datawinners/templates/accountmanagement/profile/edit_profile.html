@@ -29,7 +29,7 @@
           <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>        <form method="post" action="" name="form" id='profile_form'>
           {% csrf_token %}
 
-          <ul class="organization">
+          <ul class="organization profile">
             <li class="{{ form.title.css_classes }} form-row-10px">
               {{ form.title|field_label }}
               {{ form.title }}

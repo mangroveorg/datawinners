@@ -15,7 +15,6 @@ def url(path):
         full_path += "/"
     return full_path
 
-
 DATA_WINNER_HOME_PAGE = "/home"
 DATA_WINNER_LOGIN_PAGE = url("/login")
 DATASENDER_HOME_PAGE = url("/alldata")
@@ -37,3 +36,4 @@ DATA_WINNER_TRIAL_ACCOUNT_EXPIRED_PAGE = url("/trial/expired/")
 DATA_WINNER_ALL_DATA_SENDERS_PAGE = url("/entity/datasenders/")
 DATA_WINNER_USER_ACTIVITY_LOG_PAGE = url("/useractivity/log/")
 TRIAL_EXPIRED_PAGE = url("/trial/expired/")
+UPGRADE_PAGE = url("/upgrade/")

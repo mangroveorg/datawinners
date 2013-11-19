@@ -22,7 +22,8 @@
         {% endif %}
     <form method="post" action="/account/" name="form">
       {% csrf_token %}
-       <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>      <ul class="organization">
+       <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
+        <ul class="organization">
         <li class="{{ form.organization_name.css_classes }} form-row-10px">
           {{ organization_form.name|field_label }}
           {{ organization_form.name }}

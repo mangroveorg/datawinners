@@ -16,7 +16,7 @@
 {% block content %}
     <div class="span-18 box">
         <fieldset>
-            <form id="registration_form" action="" method="POST">
+            <form id="registration_form" class="registration_form" action="" method="POST">
                 {% csrf_token %}
                 <div class="form-5px">
                     <ul>
@@ -25,29 +25,29 @@
                     <ul class="organization">
                         <li>
                             <h3 class="highlighted_title">{% trans "Your Organization" %}<br/></h3>
+                            {{ organization.org_id.as_hidden }}
                         </li>
-                        <li><label>{% trans "Organization Name" %}</label>{{ organization.name }}</li>
-                        <li><label>{% trans "Organization Sector" %}</label>{{ organization.sector }}</li>
-                        <li><label>{% trans "Address" %}</label>{{ organization.address }}</li>
-                        <li><label>{% trans "City" %}</label>{{ organization.city }}</li>
-                        <li><label>{% trans "State / Province" %}</label>{{ organization.state }}</li>
-                        <li><label>{% trans "Postal / Zip Code" %}</label>{{ organization.zipcode }}</li>
-                        <li><label>{% trans "Country" %}</label>{% trans organization.country_name %}</li>
-                        <li><label>{% trans "Office Phone Number" %}</label>{{ organization.office_phone }}</li>
-                        <li><label>{% trans "Website Url" %}</label>{{ organization.website }}</li>
+                        <li><label>{% trans "Organization Name" %}</label>{{ organization.name }}{{ organization.name.errors }}</li>
+                        <li>{{ organization.sector|field_label }}{{ organization.sector }}{{ organization.sector.errors }}</li>
+                        <li><label>{% trans "Address" %}</label>{{ organization.address }}{{ organization.address.errors }}</li>
+                        <li><label>{% trans "City" %}</label>{{ organization.city }}{{ organization.city.errors }}</li>
+                        <li>{{ organization.state|field_label }}{{ organization.state }}{{ organization.state.errors }}</li>
+                        <li><label>{% trans "Postal / Zip Code" %}</label>{{ organization.zipcode }}{{ organization.zipcode.errors }}</li>
+                        <li><label>{% trans "Country" %}</label>{{ organization.country  }}{{ organization.country.as_hidden }}</li>
+                        <li>{{ organization.office_phone|field_label }}{{ organization.office_phone }}{{ organization.office_phone.errors }}</li>
+                        <li>{{ organization.website|field_label }}{{ organization.website }}{{ organization.website.errors }}</li>
+
                     </ul>
                     <ul class="administrative">
                         <li>
                             <h3 class="highlighted_title">{% trans "Point of Contact / Account Administrator" %}<br/>
                             </h3>
                         </li>
-                        <li><label>{% trans "Job title" %}</label>{{ profile.title }}</li>
-                        <li><label>{% trans "First Name" %}</label>{{ user.first_name }}</li>
-                        <li><label>{% trans "Last Name" %}</label>{{ user.last_name }}</li>
-                        <li><label>{% trans "User Name" %}</label>{{ user.username }}</li>
-                        <li><label>{% trans "Office Phone" %}</label>{{ profile.office_phone }}</li>
-                        <li><label>{% trans "Mobile Phone" %}</label>{{ profile.mobile_phone }}</li>
-                        <li><label>{% trans "Skype" %}</label>{{ profile.skype }}</li>
+                        <li>{{ profile.title|field_label }}{{ profile.title }}</li>
+                        <li><label>{% trans "First Name" %}</label>{{ profile.first_name }}{{ profile.first_name.errors }}</li>
+                        <li><label>{% trans "Last Name" %}</label>{{ profile.last_name }}{{ profile.last_name.errors }}</li>
+                        <li><label>{% trans "Email address" %}</label>{{ user.username }}{{ profile.username.as_hidden }}</li>
+                        <li><label>{% trans "Mobile Phone" %}</label>{{ profile.mobile_phone }}{{ profile.mobile_phone.errors }}</li>
                     </ul>
                     <ul class="payment_details">
                         <li>
@@ -64,7 +64,7 @@
                             {{ form.preferred_payment|field_label }}
                             <div>
                                 <div class="choices_description">{% trans "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?" %}</div>
-                                <ul style="margin-left:170px">
+                                <ul>
                                     {{ form.preferred_payment }}
                                 </ul>
                                 {{ form.preferred_payment.errors }}
@@ -79,9 +79,10 @@
                         </li>
 
                         <li class="margin_top_20">
-                            <a class="float_left margin_top_15" href="javascript: goBack()">{% trans "Cancel" %}</a>
+
                             <input type="button" id="submit_registration_form" value="{% trans 'Upgrade' %}"
-                                   class="button margin_left_20"/>
+                                   class="button margin_left_20 margin_top_10"/>
+                            <a class="float_right margin_top_15" href="javascript: goBack()">{% trans "Cancel" %}</a>
 
                         </li>
                     </ul>

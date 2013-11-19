@@ -210,8 +210,10 @@ form.registration_form{
     margin-right: 383px;
 }
 
-ul.organization li:last-child{
+ul.organization {
+  &.profile > li:last-child{
     width: 383px;
+  }
 }
 
 #password_reset_form,#activate_datasender_form_fr{

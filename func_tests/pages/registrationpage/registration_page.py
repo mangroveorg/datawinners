@@ -6,6 +6,7 @@ from pages.registerconfirmationpage.registration_confirmation_page import Regist
 from framework.utils.data_fetcher import *
 from pages.registrationpage.registration_locator import *
 from tests.registrationtests.registration_data import *
+from tests.upgradetests.upgrade_trial_data import ORGANIZATION_SECTOR as ORGANIZATION_SECTOR_FOR_UPGRADE
 
 
 class RegistrationPage(Page):
@@ -21,17 +22,20 @@ class RegistrationPage(Page):
         return RegistrationConfirmationPage(self.driver), email
 
     def register_with(self, registration_data):
-        self.driver.find(AGREE_TERMS_CB).click()
+        self.agree_terms_and_conditions()
         for key,value in registration_data.items():
-            if key in [ORGANIZATION_SECTOR, ORGANIZATION_COUNTRY]:
+            if key in [ORGANIZATION_SECTOR, ORGANIZATION_COUNTRY, ORGANIZATION_SECTOR_FOR_UPGRADE]:
                 self.driver.find_drop_down(by_css("select[name=%s]" % key)).set_selected(value)
             elif key in [PAY_MONTHLY, WIRE_TRANSFER]:
                 self.driver.find_radio_button(by_css("input[value=%s]" % key)).click()
             else:
                 self.driver.find_text_box(by_css("input[name=%s]" % key)).enter_text(value)
 
-        self.driver.find(ORGANIZATION_REGISTER_BTN).click()
+        self.click_submit_button()
         return self
+
+    def agree_terms_and_conditions(self):
+        self.driver.find(AGREE_TERMS_CB).click()
 
     def get_error_message(self):
         error_message = ""
@@ -40,3 +44,6 @@ class RegistrationPage(Page):
             for locator in locators:
                 error_message = error_message + locator.text
         return error_message.replace("\n", " ")
+
+    def click_submit_button(self):
+        self.driver.find(ORGANIZATION_REGISTER_BTN).click()
