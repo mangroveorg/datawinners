@@ -2,6 +2,7 @@
 import unittest
 from datetime import datetime
 import time
+from django.utils.unittest.case import SkipTest
 
 from nose.plugins.attrib import attr
 from selenium.webdriver.support.wait import WebDriverWait
@@ -18,7 +19,7 @@ from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
 
-
+@SkipTest
 @attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
     @classmethod

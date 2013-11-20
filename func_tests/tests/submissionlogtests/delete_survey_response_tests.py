@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 import time
+from django.utils.unittest.case import SkipTest
 
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
@@ -49,6 +50,7 @@ class TestDeleteSurveyResponse(unittest.TestCase):
         create_project_page.save_and_create_project_successfully()
 
     @attr('functional_test')
+    @SkipTest
     def test_should_delete_a_submission(self):
         project_name, questionnaire_code = self._get_project_details()
 
