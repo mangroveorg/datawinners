@@ -16,7 +16,7 @@ def create_submission_mapping(dbm, form_model):
     es.put_mapping(dbm.database_name, form_model.id, mapping)
 
 
-def update_submission_search_index(submission_doc, feed_dbm, refresh_index=False):
+def update_submission_search_index(submission_doc, feed_dbm, refresh_index=True):
     es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
     dbm = get_db_manager(feed_dbm.database_name.replace("feed_", ""))
     form_model = get_form_model_by_code(dbm, submission_doc.form_code)

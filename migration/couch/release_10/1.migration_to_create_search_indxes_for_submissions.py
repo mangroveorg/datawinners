@@ -29,7 +29,7 @@ def create_submission_index(database_name):
     for row in rows:
         enriched_survey_response = feeds_dbm._load_document(row.get('id'), EnrichedSurveyResponseDocument)
         if enriched_survey_response is not None:
-            update_submission_search_index(enriched_survey_response,feeds_dbm)
+            update_submission_search_index(enriched_survey_response,feeds_dbm, refresh_index=False)
 
 def create_search_indices_for_submissions(db_name):
 
