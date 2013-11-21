@@ -18,6 +18,7 @@ from datawinners.accountmanagement.decorators import is_datasender_allowed, is_d
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
+from datawinners.project.submission.util import submission_stats
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, SurveyResponseForm
 from datawinners.scheduler.smsclient import NoSMSCException
 from mangrove.datastore.entity import get_by_short_code
@@ -52,7 +53,6 @@ from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project import helper
-from datawinners.project.analysis import Analysis
 from datawinners.project.utils import make_project_links
 from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import is_project_exist
@@ -936,9 +936,8 @@ def _in_trial_mode(request):
 def project_has_data(request, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    analyzer = Analysis(form_model, manager, helper.get_org_id_by_user(request.user), request.POST)
-    raw_field_values = analyzer.get_raw_values()
-    return HttpResponse(encode_json({'has_data': len(raw_field_values) != 0}))
+    success, error = submission_stats(manager, form_model.form_code)
+    return HttpResponse(encode_json({'has_data': (success+error>0)}))
 
 
 def edit_my_subject(request, entity_type, entity_id, project_id=None):

@@ -1,19 +1,21 @@
 from collections import OrderedDict
 import json
 import unittest
-from django.http import HttpRequest
+from datetime import  datetime
+
 from mock import Mock, patch, call
-from activitylog.models import UserActivityLog
-from common.constant import EDITED_DATA_SUBMISSION
+
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.common.constant import EDITED_DATA_SUBMISSION
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import  SurveyResponseDocument
 from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, DateField
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import SurveyResponse, SurveyResponseDifference
-from project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
+from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from datawinners.project.views.submission_views import build_static_info_context, get_option_value_for_field, construct_request_dict
-from datetime import  datetime
 from datawinners.project.views.submission_views import  log_edit_action
+
 
 class TestSubmissionViews(unittest.TestCase):
     def test_should_get_static_info_from_submission(self):

@@ -4,6 +4,9 @@
 .checkbox_col {
   width: 30px; }
 
+#filters {
+  height: 35px; }
+
 #submission_logs .ui-state-default {
   font-weight: normal; }
 #submission_logs .ui-tabs-nav {

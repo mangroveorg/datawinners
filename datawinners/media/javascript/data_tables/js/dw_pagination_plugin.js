@@ -1,6 +1,7 @@
 $.fn.dataTableExt.oPagination.dw_pagination = {
     "fnInit": function (oSettings, nPaging, fnCallbackDraw) {
 
+        $(nPaging).hide();
         nPrevious = $('<span class="paginate_button previous">&#x25C0;</span>')
         nNext = $('<span class="paginate_button next">&#x25B6;</span>')
         nMore=$('<span class="paginate_more">&#x25BE;</span>')
@@ -10,7 +11,7 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
         first_page_id = "first_page" + instance_id;
         last_page_id = "last_page" + instance_id;
         dropdown = $('<div class="dropdown dropdown-tip" style="display:none;" id="' + dropdown_id + '">' +
-                '<ul class="dropdown-menu"> <li> <a href="#" id=' + first_page_id + '>' + gettext('First') +
+                '<ul class="dropdown-menu"> <li> <a href="javascript:void(0);" id=' + first_page_id + '>' + gettext('First') +
                 '</a> </li> <li> <a  id=' + last_page_id + '>' + gettext('Last') + '</a></li></div>');
 
         $(nPaging).append(nPrevious).append(nNext).append(nMore);

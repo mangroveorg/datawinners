@@ -75,29 +75,6 @@ class AllSubmissionsHeaderTest(TestCase):
         self.form_model = self.form_model_generator.form_model()
 
 
-
-    def test_should_contain_column_headers_for_success_submissions(self):
-        expected_header_list_for_success_submissions = (
-        "Submission Id", "Data Sender", "Submission Date", "Clinic", "Reporting Period",
-        "Zhat are symptoms?", "What is your blood group?")
-        self.assertEquals(expected_header_list_for_success_submissions,SubmissionsPageHeader(self.form_model,'success').header_list)
-
-    def test_should_contain_column_headers_for_erred_submissions(self):
-
-        expected_header_list_for_erred_submissions = (
-        "Submission Id", "Data Sender", "Submission Date","Error Messages", "Clinic", "Reporting Period",
-        "Zhat are symptoms?", "What is your blood group?")
-        self.assertEquals(expected_header_list_for_erred_submissions,SubmissionsPageHeader(self.form_model,'error').header_list)
-
-    def test_should_contain_column_headers_for_all_submissions(self):
-        expected_header_list_for_all_submissions = (
-        "Submission Id", "Data Sender", "Submission Date","Status", "Clinic", "Reporting Period",
-        "Zhat are symptoms?", "What is your blood group?")
-        self.assertEquals(expected_header_list_for_all_submissions,SubmissionsPageHeader(self.form_model,'all').header_list)
-
-        expected_header_type_list = ('', '', 'dd.mm.yyyy', '', '', '', 'dd.mm.yyyy', '', '')
-
-        #self.assertEqual(expected_header_type_list, SubmissionsPageHeader(self.form_model,'all').header_type_list)
-
+#TODO SUBMISSION LOG HEADER TEST.
 
 

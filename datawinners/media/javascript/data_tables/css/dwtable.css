@@ -1,5 +1,6 @@
 .dataTables_wrapper{ margin-top: 10px;}
 .dataTables_filter {
+    display: none;
     float: right;
     padding-top:4px;
 }

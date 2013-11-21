@@ -57,7 +57,7 @@ def make_project_links(project, questionnaire_code, reporter_id=None):
     return project_links
 
 
-def project_info(request, manager, form_model, project_id, questionnaire_code):
+def project_info(request, manager, form_model, project_id, questionnaire_code): #revisit:export
     project = Project.load(manager.database, project_id)
     is_summary_report = form_model.entity_defaults_to_reporter()
     rp_field = form_model.event_time_question

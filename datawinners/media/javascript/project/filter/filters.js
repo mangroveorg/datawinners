@@ -64,20 +64,20 @@ $.fn.datePicker = function (options) {
 }
 
 DW.get_criteria = function () {
-    var reporting_period = DW.get_datepicker_value($('#reportingPeriodPicker'), gettext("All Periods"));
-    var submission_date = DW.get_datepicker_value($('#submissionDatePicker'), gettext("All Dates"));
-    var subject_ids = $('#subjectSelect').attr('ids');
-    var submission_sources = $('#dataSenderSelect').attr('data');
-    var keyword = $('#keyword').val();
+//    var reporting_period = DW.get_datepicker_value($('#reportingPeriodPicker'), gettext("All Periods"));
+//    var submission_date = DW.get_datepicker_value($('#submissionDatePicker'), gettext("All Dates"));
+//    var subject_ids = $('#subjectSelect').attr('ids');
+//    var submission_sources = $('#dataSenderSelect').attr('data');
+    var search = $('.dataTables_filter input').val();
     $(".dateErrorDiv").hide();
     return {
-        'start_time': $.trim(reporting_period.start_time),
-        'end_time': $.trim(reporting_period.end_time),
-        'submission_date_start': $.trim(submission_date.start_time),
-        'submission_date_end': $.trim(submission_date.end_time),
-        'subject_ids': subject_ids,
-        'submission_sources': submission_sources,
-        'keyword': keyword
+//        'start_time': $.trim(reporting_period.start_time),
+//        'end_time': $.trim(reporting_period.end_time),
+//        'submission_date_start': $.trim(submission_date.start_time),
+//        'submission_date_end': $.trim(submission_date.end_time),
+//        'subject_ids': subject_ids,
+//        'submission_sources': submission_sources,
+        'search': search
     };
 }
 

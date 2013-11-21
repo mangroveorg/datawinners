@@ -20,6 +20,7 @@ from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
+from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.search.submission_search import SubmissionQuery
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -29,20 +30,14 @@ from datawinners.utils import get_organization
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project import helper
-from datawinners.project.ExcelHeader import ExcelFileSubmissionHeader
 from datawinners.project.data_sender_helper import get_data_sender
-from datawinners.project.export_to_excel import _prepare_export_data, _create_excel_response
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from datawinners.project.models import Project
-from datawinners.project.survey_response_list import SurveyResponseList
-from datawinners.project.submission_list_for_excel import SurveyResponseForExcel
+
 from datawinners.project.utils import project_info, is_quota_reached
 from datawinners.project.Header import SubmissionsPageHeader
-from datawinners.project.analysis_result import AnalysisResult
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.project.views.views import XLS_TUPLE_FORMAT
 from datawinners.common.constant import DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
-from datawinners.project.submission_utils.submission_formatter import SubmissionFormatter
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed
 from datawinners.project.submission_form import EditSubmissionForm
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id
@@ -57,38 +52,51 @@ websubmission_logger = logging.getLogger("websubmission")
 @session_not_expired
 @is_datasender
 @is_not_expired
-def index(request, project_id=None, questionnaire_code=None, tab="0"):
+def headers(request, form_code):
+    manager = get_database_manager(request.user)
+    submission_type = request.GET.get('type', 'all')
+    form_model = get_form_model_by_code(manager, form_code)
+    headers = SubmissionsPageHeader(form_model, submission_type).get_column_title()
+    response = []
+    for header in headers:
+        response.append({"sTitle": header})
+    return HttpResponse(encode_json(response))
+
+
+@login_required(login_url='/login')
+@session_not_expired
+@is_datasender
+@is_not_expired
+def index(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
 
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    submission_type = request.GET.get('type', 'all')
     filters = request.POST
-    keyword = request.POST.get('keyword', '')
     org_id = helper.get_org_id_by_user(request.user)
 
-    survey_responses = SurveyResponseList(form_model, manager, org_id, submission_type, filters, keyword)
+
 
     if request.method == 'GET':
-        header = SubmissionsPageHeader(form_model, submission_type)
-        result_dict = {"header_list": header.header_list,
-                       "header_name_list": repr(encode_json(header.header_list)),
-                       "datasender_list": survey_responses.get_data_senders(),
-                       "subject_list": survey_responses.get_subjects(),
-                       "tab": tab,
+        result_dict = {
+                       #"datasender_list": survey_responses.get_data_senders(),
+                       #"subject_list": survey_responses.get_subjects(),
+                       #"tab": tab,
                        "is_quota_reached": is_quota_reached(request, org_id=org_id),
-                       "active_tab":submission_type
+                       #"active_tab": submission_type
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
 
-    if request.method == 'POST':
-        field_values = SubmissionFormatter().get_formatted_values_for_list(survey_responses.get_raw_values())
-        analysis_result = AnalysisResult(field_values, survey_responses.get_analysis_statistics(),
-                                         survey_responses.get_data_senders(), survey_responses.get_subjects(),
-                                         survey_responses.get_default_sort_order())
-        performance_logger.info("Fetch %d survey_responses from couchdb." % len(analysis_result.field_values))
-        return HttpResponse(encode_json({'data_list': analysis_result.field_values,
-                                         "statistics_result": analysis_result.statistics_result}))
+#export
+    # if request.method == 'POST':
+    #     survey_responses = SurveyResponseList(form_model, manager, org_id, submission_type, filters, keyword)
+    #     field_values = SubmissionFormatter().get_formatted_values_for_list(survey_responses.get_raw_values())
+    #     analysis_result = AnalysisResult(field_values, survey_responses.get_analysis_statistics(),
+    #                                      survey_responses.get_data_senders(), survey_responses.get_subjects(),
+    #                                      survey_responses.get_default_sort_order())
+    #     performance_logger.info("Fetch %d survey_responses from couchdb." % len(analysis_result.field_values))
+    #     return HttpResponse(encode_json({'data_list': analysis_result.field_values,
+    #                                      "statistics_result": analysis_result.statistics_result}))
 
 
 def get_survey_response_ids_from_request(manager, request, form_model):
@@ -138,9 +146,7 @@ def build_static_info_context(manager, survey_response, ui_model=None):
 
     form_ui_model.update({'static_content': static_content})
     form_ui_model.update({'is_edit': True})
-    form_ui_model.update({
-        'status': ugettext('Success') if survey_response.status else ugettext(
-            'Error')})
+    form_ui_model.update({'status': ugettext('Success') if survey_response.status else ugettext('Error')})
     return form_ui_model
 
 
@@ -283,19 +289,15 @@ def export(request):
     project_name = request.POST.get(u"project_name")
     submission_type = request.GET.get('type')
     filters = request.POST
-    keyword = request.POST.get('keyword', '')
-
-    user = helper.get_org_id_by_user(request.user)
-    manager = get_database_manager(request.user)
+    search_criteria = request.POST.get('search', '')
     questionnaire_code = request.POST.get('questionnaire_code')
+    manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    submission_list = SurveyResponseForExcel(form_model, manager, user, submission_type, filters, keyword)
-    formatted_values = SubmissionFormatter().get_formatted_values_for_list(submission_list.get_raw_values(),
-                                                                           tuple_format=XLS_TUPLE_FORMAT)
-    header_list = ExcelFileSubmissionHeader(form_model).header_list
-    exported_data, file_name = _prepare_export_data(submission_type, project_name, header_list, formatted_values)
-    return _create_excel_response(exported_data, file_name)
+
+
+    return SubmissionExporter(form_model, project_name, request.user)\
+        .create_excel_response(submission_type, search_criteria)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
@@ -305,9 +307,9 @@ def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
 
 
 @valid_web_user
-def get_submissions(request, project_id):
+def get_submissions(request, form_code):
     dbm = get_database_manager(request.user)
-    form_model = get_form_model_by_code(dbm, project_id)
+    form_model = get_form_model_by_code(dbm, form_code)
     search_parameters = {}
     search_text = request.GET.get('sSearch', '').strip()
     search_parameters.update({"search_text": search_text})

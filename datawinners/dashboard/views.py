@@ -10,6 +10,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.main.database import get_database_manager
+from datawinners.project.submission.util import submission_stats
 from mangrove.datastore.entity import get_by_short_code, Entity
 from mangrove.datastore.queries import get_entities_by_type
 from datawinners import settings
@@ -49,12 +50,7 @@ def get_submission_breakup(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     form_model = FormModel.get(dbm, project.qid)
-    rows = dbm.load_all_rows_in_view('undeleted_survey_response', startkey=[form_model.form_code], endkey=[form_model.form_code, {}],
-                                     group=True, group_level=1, reduce=True)
-    submission_success,submission_errors = 0, 0
-    for row in rows:
-        submission_success = row["value"]["success"]
-        submission_errors = row["value"]["count"] - row["value"]["success"]
+    submission_success, submission_errors = submission_stats(dbm, form_model.form_code)
     response = json.dumps([submission_success, submission_errors])
     return HttpResponse(response)
 
