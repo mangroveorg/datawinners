@@ -56,7 +56,7 @@ class MyDataSenderQuery(Query):
 
 class SubjectQuery(Query):
     def __init__(self,query_params=None):
-        Query.__init__(self, SubjectQueryResponseCreator(), QueryBuilder(),query_params)
+        Query.__init__(self, SubjectQueryResponseCreator(), QueryBuilder(), query_params)
 
     def get_headers(self, user, subject_type):
         manager = get_database_manager(user)

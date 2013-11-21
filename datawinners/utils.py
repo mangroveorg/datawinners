@@ -118,7 +118,7 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
                     ws.row(row_number).height = WIDTH_ONE_CHAR * 4
                     ws.write(row_number, col_number, val, _header_style())
 
-        if (row_number != 0):
+        else:
             if row_number > 0 and row_number % MAX_ROWS_IN_MEMORY == 0: ws.flush_row_data()
             row = _clean(row)
             write_row_to_worksheet(ws, row, row_number)

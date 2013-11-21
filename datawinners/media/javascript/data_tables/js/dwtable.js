@@ -187,6 +187,8 @@
                         show_select_all_message();
 
                     });
+                    $(".paging_dw_pagination").show();
+                    $(".dataTables_filter").show();
 
                     try {
                         $(dataTableObject).parents(".dataTables_wrapper").find(".dataTables_filter input").attr('placeholder', gettext(defaults.searchPlaceholderText));

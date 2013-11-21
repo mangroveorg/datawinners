@@ -1,4 +1,6 @@
+from collections import OrderedDict
 from django.utils.translation import ugettext
+from datawinners.search.submission_search import SubmissionQuery, SubmissionIndexConstants
 from mangrove.form_model.field import DateField, GeoCodeField
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.helper import DEFAULT_DATE_FORMAT
@@ -53,27 +55,39 @@ class Header(object):
         return "Submission Id", ''
 
 
-class SubmissionsPageHeader(Header):
+class SubmissionsPageHeader():
     def __init__(self, form_model, submission_type):
+        self._form_model = form_model
         self.submission_type = submission_type
-        super(SubmissionsPageHeader, self).__init__(form_model)
 
-    def _status(self):
-        return ugettext('Status'), ''
+    def get_column_title(self):
+        header_dict = SubmissionQuery(self._form_model, {"filter": self.submission_type}).get_header_dict()
+        header_dict.pop('ds_id')
+        header_dict.pop("entity_short_code")
+        return header_dict.values()
 
-    def _error_msg(self):
-        return ugettext("Error Messages"), ''
 
-    def _prefix(self):
-        if self.submission_type in ['all','deleted']:
-            return [self._id(), self._data_sender_header(), self._submission_date_header(), self._status(),
-                    self._subject_header(), self._reporting_period_header()]
+class SubmissionExcelHeader():
+    def __init__(self, form_model, submission_type):
+        self._form_model = form_model
+        self.submission_type = submission_type
 
-        elif self.submission_type == 'success':
-            return [self._id(), self._data_sender_header(), self._submission_date_header(), self._subject_header(),
-                    self._reporting_period_header()]
+    def add_datasender_id_column(self, header_dict, result):
+        result.update({
+        SubmissionIndexConstants.DATASENDER_ID_KEY: {"label": header_dict[SubmissionIndexConstants.DATASENDER_ID_KEY]}})
 
-        else:
-            return [self._id(), self._data_sender_header(), self._submission_date_header(), self._error_msg(),
-                    self._subject_header(), self._reporting_period_header()]
+    def get_columns(self):
+        header_dict = SubmissionQuery(self._form_model, {"filter": self.submission_type}).get_header_dict()
+        # header_dict = OrderedDict({'name':"Name"}, {"p":"Place", "})
+        result = OrderedDict()
+        for key in header_dict:
+            if key != SubmissionIndexConstants.DATASENDER_ID_KEY:
+                result.update({key: {"label": header_dict[key]}})
+                if key == SubmissionIndexConstants.DATASENDER_NAME_KEY: #add key column after name
+                    self.add_datasender_id_column(header_dict, result)
+        for field in self._form_model.fields:
+            result.get(field.code.lower()).update({"type": field.type})
+            if field.type == "date":
+                result.get(field.code.lower()).update({"format": field.date_format})
 
+        return result

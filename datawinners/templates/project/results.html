@@ -83,11 +83,8 @@
         <script type="text/javascript">
             var date_format = '{{ date_format }}';
             var entity_type = '{{ entity_type }}';
-            var header_name_list = JSON.parse({{header_name_list|safe}});
             var has_reporting_period = {{ has_reporting_period|lower }};
-            var default_tab = {{ tab }};
-            var render_table_url = '/project/submissions/{{ questionnaire_code }}'+'?type='+'{{ active_tab }}';
-            var active_tab = '{{ active_tab }}';
+            var render_table_url = '/project/submissions/{{ questionnaire_code }}';
             var project_id = '{{ project.id }}';
         </script>
     {% endcompress %}
@@ -97,13 +94,14 @@
     {% endblock %}
     <div class="heading_block alpha data_ana border_none">
         <ul class="links float_right">
-            <li><a href="#" class="export_link">{% trans "Export" %}</a></li>
+            <li><a href="javascript:void(0);" class="export_link">{% trans "Export" %}</a></li>
         </ul>
     </div>
     {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
     {% include "project/submission_page_hint.html" %}
-    <div class="heading_block clearfix margin_bottom_10">
     <div id="filters"></div>
+    <div class="heading_block clearfix margin_bottom_10">
+
 
         <!--[if IE 7]>
             <div class="float_right"></div>

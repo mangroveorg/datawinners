@@ -4,13 +4,16 @@ from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.form_model import header_fields
 from datawinners.search.query import QueryBuilder, Query
 
+class SubmissionIndexConstants:
+    DATASENDER_ID_KEY = "ds_id"
+    DATASENDER_NAME_KEY = "ds_name"
 
 class SubmissionQueryBuilder(QueryBuilder):
     def create_query(self, doc_type, database_name):
         return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type)
 
     def create_paginated_query(self, query, query_params):
-        query = super(SubmissionQueryBuilder, self).create_paginated_query(query,query_params)
+        query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
         submission_type_filter = query_params.get('filter')
         if submission_type_filter:
             if submission_type_filter == 'deleted':
@@ -26,9 +29,7 @@ class SubmissionQueryResponseCreator():
     def create_response(self, required_field_names, query):
         submissions = []
         for res in query.values_dict(tuple(required_field_names)):
-            submission = []
-            submission.append(res._id)
-            submission.append([res.get('ds_name') + "<span class='small_grey'>  %s</span>" % res.get('ds_id')])
+            submission = [res._id, [res.get('ds_name') + "<span class='small_grey'>  %s</span>" % res.get('ds_id')]]
 
             for key in required_field_names:
                 meta_fields = ['ds_id', 'ds_name', 'entity_short_code']
@@ -49,27 +50,31 @@ class SubmissionQuery(Query):
         Query.__init__(self, SubmissionQueryResponseCreator(form_model), SubmissionQueryBuilder(), query_params)
         self.form_model = form_model
 
-    def get_headers(self, user, form_code):
+    def get_header_dict(self):
         header_dict = OrderedDict()
         self._update_static_header_info(header_dict)
 
-        def key_attribute(field): return self._field_code_in_lowercase(field)
+        def key_attribute(field):
+            return self._field_code_in_lowercase(field)
 
         header_fields(self.form_model, key_attribute, header_dict)
         if "reporter" in self.form_model.entity_type:
             header_dict.pop(self.form_model.entity_question.code)
-        return header_dict.keys()
+        return header_dict
+
+    def get_headers(self, user, form_code):
+        return self.get_header_dict().keys()
 
     def _update_static_header_info(self, header_dict):
-        header_dict.update({"ds_id": "Datasender Id"})
-        header_dict.update({"ds_name": "Datasender Name"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
+        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
         header_dict.update({"date": "Submission Date"})
         submission_type = self.query_params.get('filter')
-        if not submission_type  or submission_type == 'deleted':
+        if not submission_type or submission_type in ["all", "deleted"]:
             header_dict.update({"status": "Status"})
         elif submission_type == 'error': \
             header_dict.update({"error_msg": "Error Message"})
-        header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question): "Entity"})
+        header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question):self.form_model.entity_type[0].title()})
         header_dict.update({'entity_short_code': "Entity short code"})
         if self.form_model.event_time_question:
             header_dict.update({self._field_code_in_lowercase(self.form_model.event_time_question): "Reporting Date"})

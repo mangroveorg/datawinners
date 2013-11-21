@@ -1,11 +1,10 @@
-from copy import deepcopy
 import elasticutils
 from datawinners.main.database import get_database_manager
 from datawinners.settings import ELASTIC_SEARCH_URL
 
 
 class Query(object):
-    def __init__(self, response_creator, query_builder,query_params):
+    def __init__(self, response_creator, query_builder, query_params):
         self.elastic_utils_helper = ElasticUtilsHelper()
         self.query_builder = query_builder
         self.response_creator = response_creator
@@ -17,7 +16,6 @@ class Query(object):
     def get_headers(self, user, entity_type):
         pass
 
-
     def populate_query_options(self):
         options = {
             "start_result_number": self.query_params["start_result_number"],
@@ -26,17 +24,21 @@ class Query(object):
         }
         return options
 
-    def paginated_query(self, user, entity_type):
+    def query_to_be_paginated(self, entity_type, user):
         entity_headers = self.get_headers(user, entity_type)
         options = self.populate_query_options()
         if self.query_params["order_by"] > 0:
             header_copy = list(entity_headers)
-            if "entity_short_code" in header_copy : header_copy.remove("entity_short_code")
+            if "entity_short_code" in header_copy: header_copy.remove("entity_short_code")
             options.update({"order_field": header_copy[self.query_params["order_by"]]})
-        query = self.query_builder.create_query(entity_type,self._getDatabaseName(user))
+        query = self.query_builder.create_query(entity_type, self._getDatabaseName(user))
         paginated_query = self.query_builder.create_paginated_query(query, options)
         query_with_criteria = self.query_builder.add_query_criteria(entity_headers, self.query_params["search_text"],
                                                                     paginated_query)
+        return entity_headers, paginated_query, query_with_criteria
+
+    def paginated_query(self, user, entity_type):
+        entity_headers, paginated_query, query_with_criteria = self.query_to_be_paginated(entity_type, user)
         entities = self.response_creator.create_response(entity_headers, query_with_criteria)
         return query_with_criteria.count(), paginated_query.count(), entities
 
@@ -70,6 +72,7 @@ class QueryBuilder(object):
             return search.query_raw(raw_query)
 
         return search.query()
+
 
 class ElasticUtilsHelper():
     def replace_special_chars(self, search_text):
