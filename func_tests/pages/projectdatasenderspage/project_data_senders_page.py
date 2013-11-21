@@ -14,13 +14,14 @@ class ProjectDataSendersPage(Page):
     def __init__(self, driver):
         super(ProjectDataSendersPage, self).__init__(driver)
 
-    def navigate_to_add_a_data_sender_page(self, wait_for_page_loading=False):
+    def navigate_to_add_a_data_sender_page(self, wait_for_page_loading=False, lightbox=True):
         """
         Function to navigate to add a data sender page of the website
 
         Return create project page
          """
-        self.driver.find(ADD_A_DATA_SENDER_LINK).click()
+        locator = ADD_A_DATA_SENDER_LINK if lightbox else DATASENDER_FORM_TAB_LINK_XPATH
+        self.driver.find(locator).click()
         if wait_for_page_loading:
             self.driver.wait_for_element(20, by_id("id_register_button"))
         return AddDataSenderPage(self.driver)

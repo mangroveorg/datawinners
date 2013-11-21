@@ -72,7 +72,7 @@ class TestProjectTestSMSPreview(unittest.TestCase):
     def test_should_show_upgrade_instruction_on_add_datasenders_page(self):
         project_overview_page = self.navigate_to_clinic3_overview_page()
         my_datasenders = project_overview_page.navigate_to_datasenders_page()
-        my_datasenders.navigate_to_add_a_data_sender_page(True)
+        my_datasenders.navigate_to_add_a_data_sender_page(True, False)
         self.check_upgrade_instruction(project_overview_page)
 
     @attr('functional_test')
