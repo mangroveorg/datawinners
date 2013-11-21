@@ -3,6 +3,7 @@ import os
 import time
 import unittest
 import urllib2
+from django.utils.unittest.case import SkipTest
 import jsonpickle
 from nose.plugins.attrib import attr
 import requests
@@ -119,6 +120,7 @@ class TestFeeds(unittest.TestCase):
 
 
     @attr('functional_test')
+    @SkipTest
     def test_feeds(self):
         start_date = self._get_encoded_date()
         questionnaire_code = self.project_overview_page.get_questionnaire_code()
