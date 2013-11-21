@@ -1,50 +1,21 @@
 describe("dwtable test", function () {
+    var table;
+    var getPaginationButton = function (pagination_link) {
+        var pagination_button = null;
+        $("div[id*='pagination_more_menu']").each(function () {
+            if (($(this).attr('style')) != 'display:none;') {
+                pagination_button = $(this).find($("a[id*='" + pagination_link + "']"));
+            }
+        });
 
-    var response_10_datarows = {responseText: {"iTotalRecords": 18, "data": [
-        ["Clinic", "TSIMANARIRAZANA", "TSIMANARIRAZANA,ANDRAINJATO AVARATRA,FIANARANTSOA I,HAUTE MATSIATRA,Madagascar", "-12.35, 49.3", "87654325", "cli12"],
-        ["Clinic", "Antalaha", "ANTALAHA,SAVA,Madagascar", "-14.8833, 50.25", "87654323", "cli10"],
-        ["Clinic", "ANALAMANGA", "ANALAMANGA,Madagascar", "-18.8, 47.4833", "87654324", "cli11"],
-        ["Kochi Clinic", "Test", "India,Kerala,Kochi", "9.939248, 76.259625", "123460", "cid005"],
-        ["New Gwalior Clinic", "Test", "India,Madhya Pradesh,New Gwalior", "26.227112, 78.18708", "1234561", "cid006"],
-        ["Indore Clinic", "Test", "India,Madhya Pradesh,Indore", "22.7167, 75.8", "1234562", "cid007"],
-        ["Khandwa Clinic", "Test", "India,MP,Khandwa", "21.8333, 76.3667", "123459", "cid004"],
-        ["Jabalpur Clinic", "Test", "India,MP,Jabalpur", "23.2, 79.95", "123458", "cid003"],
-        ["Satna Clinic", "Test", "India,MP,Satna", "24.5667, 80.8333", "123457", "cid002"],
-        ["Clinic", "Antsirabe", "ANTSIRABE,AMBANJA,DIANA,Madagascar", "-19.8167, 47.0667", "87654326", "cli13"]
-    ], "iTotalDisplayRecords": 18, "iDisplayStart": 0, "iDisplayLength": 10}};
+        return pagination_button;
 
-    var respose_25_datarows = {responseText: {"iTotalRecords": 25, "data": [
-        ["Clinic", "TSIMANARIRAZANA", "TSIMANARIRAZANA,ANDRAINJATO AVARATRA,FIANARANTSOA I,HAUTE MATSIATRA,Madagascar", "-12.35, 49.3", "87654325", "cli12"],
-        ["Clinic", "Antalaha", "ANTALAHA,SAVA,Madagascar", "-14.8833, 50.25", "87654323", "cli10"],
-        ["Clinic", "ANALAMANGA", "ANALAMANGA,Madagascar", "-18.8, 47.4833", "87654324", "cli11"],
-        ["Kochi Clinic", "Test", "India,Kerala,Kochi", "9.939248, 76.259625", "123460", "cid005"],
-        ["New Gwalior Clinic", "Test", "India,Madhya Pradesh,New Gwalior", "26.227112, 78.18708", "1234561", "cid006"],
-        ["Indore Clinic", "Test", "India,Madhya Pradesh,Indore", "22.7167, 75.8", "1234562", "cid007"],
-        ["Khandwa Clinic", "Test", "India,MP,Khandwa", "21.8333, 76.3667", "123459", "cid004"],
-        ["Jabalpur Clinic", "Test", "India,MP,Jabalpur", "23.2, 79.95", "123458", "cid003"],
-        ["Satna Clinic", "Test", "India,MP,Satna", "24.5667, 80.8333", "123457", "cid002"],
-        ["Clinic", "Antsirabe", "ANTSIRABE,AMBANJA,DIANA,Madagascar", "-19.8167, 47.0667", "87654326", "cli13"],
-        ["Clinic", "Besalampy", "BESALAMPY,MELAKY,Madagascar", "-16.75, 44.5", "87654327", "cli14"],
-        ["Clinic", "Analalava", "ANALALAVA,SOFIA,Madagascar", "-14.6333, 47.7667", "987654321", "cli8"],
-        ["Clinic", "Farafangana", "FARAFANGANA,ATSIMO ATSINANANA,Madagascar", "-22.8, 47.8333", "87654328", "cli15"],
-        ["Clinic", "Mahajanga", "MAHAJANGA,MAHAJANGA I,BOENY,Madagascar", "-15.6667, 46.35", "87654331", "cli18"],
-        ["Clinic", "Andapa", "ANDAPA,SAVA,Madagascar", "-14.65, 49.6167", "87654322", "cli9"],
-        ["Clinic", "Fianarantsoa-I", "Fianarantsoa-I", "-21.45, 47.1", "87654329", "cli16"],
-        ["Clinic", "Sainte-Marie", "Sainte-Marie", "-17.0833, 49.8167", "87654330", "cli17"],
-        ["Bhopal Clinic", "Test", "India,MP,Bhopal", "23.2833, 77.35", "123456", "cid001"],
-        ["Clinic", "TSIMANARIRAZANA", "TSIMANARIRAZANA,ANDRAINJATO AVARATRA,FIANARANTSOA I,HAUTE MATSIATRA,Madagascar", "-12.35, 49.3", "87654325", "cli12"],
-        ["Clinic", "Antalaha", "ANTALAHA,SAVA,Madagascar", "-14.8833, 50.25", "87654323", "cli10"],
-        ["Clinic", "ANALAMANGA", "ANALAMANGA,Madagascar", "-18.8, 47.4833", "87654324", "cli11"],
-        ["Kochi Clinic", "Test", "India,Kerala,Kochi", "9.939248, 76.259625", "123460", "cid005"],
-        ["New Gwalior Clinic", "Test", "India,Madhya Pradesh,New Gwalior", "26.227112, 78.18708", "1234561", "cid006"],
-        ["Indore Clinic", "Test", "India,Madhya Pradesh,Indore", "22.7167, 75.8", "1234562", "cid007"],
-        ["Khandwa Clinic", "Test", "India,MP,Khandwa", "21.8333, 76.3667", "123459", "cid004"]
-    ], "iTotalDisplayRecords": 25, "iDisplayStart": 0, "iDisplayLength": 25}};
-
+    }
 
     beforeEach(function () {
         jasmine.getFixtures().set('<div id="table-wrapper"><table id="simpleTable" ><thead><tr></tr></thead></table></div>');
         setupSpyForTableData();
+
 
         $("#simpleTable").dwTable({
             "concept": "Subject",
@@ -68,6 +39,8 @@ describe("dwtable test", function () {
                 { "sTitle": "devices", "sClass": "center" }
             ]
         });
+        table = $("#simpleTable_wrapper");
+
     });
 
     it('should find Select a Subject as menu item when no row is selected', function () {
@@ -77,14 +50,12 @@ describe("dwtable test", function () {
     });
 
     it('should find Select all link when all rows in the page are selected', function () {
-        var table = $("#simpleTable_wrapper");
-        select_all_rows(table);
+        select_all_rows(table, true);
         expect(table.find('.table_wrapper .select_all_message').text()).toEqual("You have selected 10 Subject(s) on this page. Select all  30 Subject(s)")
     });
 
     it('should find Clear all link when Select all is clicked and should disappear when Clear Selection is clicked', function () {
-        var table = $("#simpleTable_wrapper");
-        select_all_rows(table);
+        select_all_rows(table, true);
         table.find('.select_all_message a').click();
         expect(table.find('.select_all_message').text()).toEqual('You have selected all 30 Subject(s). Clear Selection');
 
@@ -92,22 +63,38 @@ describe("dwtable test", function () {
         expect(table.find('tbody tr:first')).toBeHidden();
     });
 
+    it('clear check-all and select all>all div when any of checkbox is unchecked', function () {
+        select_all_rows(table, true);
+        table.find('.select_all_message a').click();
+        expect(table.find('.select_all_message').text()).toEqual('You have selected all 30 Subject(s). Clear Selection');
+        check_a_checkbox(table.find('.row_checkbox:first'),false);
+        expect(table.find('tbody tr:first')).toBeHidden();
+        expect(table.find('.checkall-checkbox')).not.toBeChecked();
+    });
+
     it('should not find Select all>all when number of rows are less than page size', function () {
-        var table = $("#simpleTable_wrapper");
         var pagesize = 50;
         change_page_size_to(pagesize);
-        select_all_rows(table);
+        select_all_rows(table, true);
         expect(table.find('tbody tr:first')).toBeHidden();
     });
 
     it('should verify number of table rows and pagination text when page size is changed', function () {
-        var table = $("#simpleTable_wrapper");
         verifyInitialState(table);
 
         var pagesize = 50;
         change_page_size_to(pagesize);
         expect(table.find('.row_checkbox')).toHaveLength(30);
         expect(table.find('.dataTables_info').first()).toHaveText('1 to 30 of 30 Subject(s)');
+
+    });
+
+
+    it('should reset to first page when page size is changed from a different page', function () {
+        table.find('.paginate_enabled_next:first').click();
+        expect(table.find('.dataTables_info').first()).toHaveText('11 to 20 of 30 Subject(s)');
+        change_page_size_to(25);
+        expect(table.find('.dataTables_info').first()).toHaveText('1 to 25 of 30 Subject(s)');
 
     });
 
@@ -120,17 +107,15 @@ describe("dwtable test", function () {
         expect(searchTerm).toEqual(searchText);
     });
 
+
     it('should go to next page when paginate-next button is clicked', function () {
-        var table = $("#simpleTable_wrapper");
         var previous_page_button = table.find('.paginate_disabled_previous:first');
         expect(previous_page_button).not.toBeNull();
         table.find('.paginate_enabled_next:first').click();
         expect(table.find('.dataTables_info').first()).toHaveText('11 to 20 of 30 Subject(s)');
     });
 
-
     it('should check visibility of pagination first and last buttons', function () {
-        var table = $("#simpleTable_wrapper");
         table.find('.paginate_more:first').click();
 
         expect(getPaginationButton("first_page").parent()).toHaveAttr('class', 'disabled');
@@ -144,28 +129,49 @@ describe("dwtable test", function () {
         table.find('.paginate_more:first').click();
     });
 
+
+    it('All the pagination button should be enabled when in records exist in previous and next pages', function () {
+        table.find('.paginate_enabled_next:first').click();
+        expect(table.find('.dataTables_info').first()).toHaveText('11 to 20 of 30 Subject(s)');
+        expect(table.find('.paginate_enabled_next:first')).not.toBeNull();
+        expect(table.find('.paginate_enabled_previous:first')).not.toBeNull();
+        table.find('.paginate_more:first').click();
+        expect(getPaginationButton("first_page").parent()).not.toHaveAttr('class', 'disabled');
+        expect(getPaginationButton("last_page").parent()).not.toHaveAttr('class', 'disabled');
+        table.find('.paginate_more:first').click();
+    });
+
+    it('should clear select all master checkbox when one checkbox is unselected', function () {
+        select_all_rows(table, true);
+        check_a_checkbox(table.find('.row_checkbox:first'),false);
+        expect(table.find('.checkall-checkbox')).not.toBeChecked();
+        check_a_checkbox(table.find('.row_checkbox:first'),true);
+        expect(table.find('.checkall-checkbox')).toBeChecked();
+    });
+
+    it('should select master checkbox when all rows in the table are selected',function(){
+        var master_checkbox = table.find('.checkall-checkbox');
+        table.find('.row_checkbox').each(function(){
+            check_a_checkbox($(this),true);
+        });
+        expect(master_checkbox).toBeChecked();
+    });
     function verifyInitialState(table) {
         expect(table.find('.dataTables_info').first()).toHaveText('1 to 10 of 30 Subject(s)');
         expect(table.find('.row_checkbox')).toHaveLength(10);
     }
 
-    function getPaginationButton(pagination_link) {
-        var pagination_button;
-        $("div[id*='pagination_more_menu']").each(function () {
-            if (($(this).attr('style')) != 'display:none;') {
-                pagination_button = $(this).find($("a[id*='" + pagination_link + "']"));
-            }
-        });
-        return pagination_button;
+
+    function select_all_rows(table, check) {
+        check_a_checkbox(table.find('.checkall-checkbox'),check)
     }
 
-    function select_all_rows(table) {
-        var checkallBox = table.find('.checkall-checkbox');
+    function check_a_checkbox(checkbox, check) {
         // click handler is called before the checked value is updated; so setting checked value explicitly
-        checkallBox.prop('checked', true);
-        checkallBox.click();
+        checkbox.prop('checked', check);
+        checkbox.click();
         // the above click makes the checked value false; manually setting to true
-        checkallBox.prop('checked', true);
+        checkbox.prop('checked', check);
     }
 
     function change_page_size_to(page_size) {
