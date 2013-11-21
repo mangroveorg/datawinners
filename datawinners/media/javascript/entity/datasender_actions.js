@@ -273,8 +273,7 @@ function handle_datasender_delete(table, allIds, all_selected){
 
     if (superusers_selected.length) {
         var users_list_for_html = "<li>" + superusers_selected.join("</li><li>") + "</li>";
-        var total_records = table.fnSettings().fnRecordsDisplay().length;
-        if (superusers_selected.length == total_records) { //Each DS selected is also User
+        if (superusers_selected.length == allIds.length) { //Each DS selected is also User
             delete_all_ds_are_users_show_warning(users_list_for_html);
         } else { // A mix of Simple DS and DS having user credentials
             $("#note_for_delete_users .users_list").html(users_list_for_html);
