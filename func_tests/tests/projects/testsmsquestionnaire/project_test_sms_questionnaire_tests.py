@@ -30,6 +30,7 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         cls.message_tracker.month = datetime.strftime(datetime.today(), "%Y-%m-01")
         cls.message_tracker.save()
         # doing successful login with valid credentials
+
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
@@ -65,6 +66,8 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         self.driver.wait_for_page_with_title(20, MY_DATASENDERS_PAGE_TITLE)
         self.check_upgrade_instruction(project_overview_page)
 
+    @SkipTest
+    # TODO: Heri working on fix
     @attr('functional_test')
     def test_should_show_upgrade_instruction_on_add_datasenders_page(self):
         project_overview_page = self.navigate_to_clinic3_overview_page()
