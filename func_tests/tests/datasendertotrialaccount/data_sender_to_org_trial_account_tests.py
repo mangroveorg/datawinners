@@ -1,3 +1,4 @@
+from unittest import SkipTest
 from nose.plugins.attrib import attr
 
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_LOGIN_PAGE, LOGOUT
@@ -14,6 +15,7 @@ from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDE
  This test tests that submissions made through sms reach the accounts based on the receiver end points'''
 
 
+@SkipTest
 class TestDataSenderAssociationWithTrialAccount(BaseTest):
     @attr('functional_test')
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_trial_org_is_saved_in_right_trial_org(self):
