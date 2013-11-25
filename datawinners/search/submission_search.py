@@ -74,8 +74,9 @@ class SubmissionQuery(Query):
             header_dict.update({"status": "Status"})
         elif submission_type == 'error': \
             header_dict.update({"error_msg": "Error Message"})
-        header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question):self.form_model.entity_type[0].title()})
-        header_dict.update({'entity_short_code': "Entity short code"})
+        subject_title = self.form_model.entity_type[0].title()
+        header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question):subject_title})
+        header_dict.update({'entity_short_code': "%s ID"%subject_title })
         if self.form_model.event_time_question:
             header_dict.update({self._field_code_in_lowercase(self.form_model.event_time_question): "Reporting Date"})
 

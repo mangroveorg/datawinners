@@ -1,22 +1,3 @@
-# from unittest import TestCase
-# from django.contrib.auth.models import User
-# from django.http import HttpResponse
-# from mock import Mock
-# from datawinners.project.submission.exporter import SubmissionExporter
-# from mangrove.form_model.form_model import FormModel
-#
-#
-# # class ExporterTest(TestCase):
-# #
-# #     def test_export(self):
-# #         with
-# #         form_model = Mock(FormModel)
-# #         project_name = "a"
-# #         user = Mock(User)
-# #         exporter = SubmissionExporter(form_model, project_name, user)
-# #         response = exporter.create_excel_response(type, 'search_text')
-# #         self.assertTrue(isinstance(response, HttpResponse))
-# #         self.assertEquals(response.content_type, "application/vnd.ms-excel")
 import os
 import tempfile
 from django.test import TestCase, Client
@@ -24,10 +5,13 @@ import xlrd
 
 
 class ExporterTest(TestCase):
-    def test_export(self):
+    def setUp(self):
         self.client = Client()
+        self.create_submissions()
         self.client.login(username='tester150411@gmail.com', password='tester150411')
-        resp = self.client.post('/project/export/log', {'project_name': 'test data sorting', 'type':'all', 'search':'', 'questionnaire_code':'cli018'})
+
+    def test_export(self):
+        resp = self.client.post('/project/export/log', {'project_name': 'test data sorting', 'type':'all', 'search':'export20', 'questionnaire_code':'cli001'})
         print resp
         xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
         os.write(xlfile_fd, resp.content)
@@ -36,6 +20,15 @@ class ExporterTest(TestCase):
         print "file is %s" % xlfile_name
         sheet = workbook.sheet_by_index(0)
         self.assertEqual([u'Datasender Name', u'Datasender Id', u'Submission Date', u'Status', u'Clinic'], sheet.row_values(0,0,5))
+        self.assertEqual([u'export20' ], sheet.row_values(1,7,8))
+
+    def create_submissions(self):
+        _from = "917798987116"
+        _to = "919880734937"
+        for i in [18,19]:
+            message = "cli001 cid001 export%s %d 02.02.2012 a a 2,2 a" % (i,i)
+            data = {"message": message, "from_msisdn": _from, "to_msisdn": _to}
+            self.client.post("/submission", data)
 
 
 

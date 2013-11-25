@@ -5,7 +5,7 @@ from mangrove.form_model.field import DateField
 
 
 def _add_date_field_mapping(mapping_fields, field, key):
-    name = field.__getattribute__(key)
+    name = field.__getattribute__(key).lower()
     mapping_fields.update(
         {name: {"type": "multi_field", "fields": {
             name: {"type": "string"},
@@ -15,7 +15,7 @@ def _add_date_field_mapping(mapping_fields, field, key):
 
 
 def _add_text_field_mapping(mapping_fields, field, key):
-    name = field.__getattribute__(key)
+    name = field.__getattribute__(key).lower()
     mapping_fields.update(
         {name: {"type": "multi_field", "fields": {
             name: {"type": "string"},

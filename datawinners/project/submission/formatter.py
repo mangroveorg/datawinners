@@ -28,7 +28,7 @@ class SubmissionFormatter(object):
 
                 col_val = ExcelDate(datetime.strptime(row[field_code], py_date_format), date_format or "submission_date")
             else:
-                col_val = row[field_code]
+                col_val = row.get(field_code)
 
             result.append(col_val)
         return result
