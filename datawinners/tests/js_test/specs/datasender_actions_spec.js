@@ -120,5 +120,26 @@ describe('datasender actions', function () {
             expect(initSpy).toHaveBeenCalled();
         });
 
+        it("should initialize and open dialog when edit successful", function () {
+            jasmine.getFixtures().set('<div id=datasender-popup></div>');
+            var jquery_ajax = spyOn($, "ajax").andCallFake(function (e) {
+                e.success('<div>Edit successful</div>');
+            });
+            var initSpy = jasmine.createSpy('init');
+            var editActionInitializer = spyOn(DW, 'InitializeEditDataSender').andCallFake(function(){
+                return {init: initSpy };
+            });
+            var anotherDialogSpy = jasmine.createSpy("dialog");
+            var mockDialog = spyOn($.fn, "dialog").andReturn({
+                "dialog": anotherDialogSpy
+            });
+            spyOn(window, "gettext").andReturn("someText");
+
+            handle_datasender_edit(tableSpy, ['REp1']);
+
+            expect(mockDialog).toHaveBeenCalledWith('option','title', "someText");
+            expect(anotherDialogSpy).toHaveBeenCalledWith("open")
+        });
+
     });
 });
