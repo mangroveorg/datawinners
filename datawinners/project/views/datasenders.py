@@ -19,7 +19,7 @@ from datawinners.common.constant import IMPORTED_DATA_SENDERS, REMOVED_DATA_SEND
 from datawinners.entity import import_data as import_module, import_data
 from datawinners.entity.data_sender import get_user_profile_by_reporter_id
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization, rep_id_name_dict_of_superusers
+from datawinners.entity.helper import add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization, rep_id_name_dict_of_users
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
 from datawinners.project.models import Project
@@ -110,7 +110,7 @@ def registered_datasenders(request, project_id):
     project, project_links = _get_project_and_project_link(manager, project_id)
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
-        user_rep_id_name_dict = rep_id_name_dict_of_superusers(manager)
+        user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
         return render_to_response('project/registered_datasenders.html',
                                   {   'project': project,
                                       'project_links': project_links,

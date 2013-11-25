@@ -19,7 +19,7 @@ from datawinners.entity.data_sender import remove_system_datasenders, get_datase
 from datawinners.entity.views import _get_full_name, log_activity, get_success_message
 from datawinners.main.database import get_database_manager
 from datawinners.accountmanagement.models import get_ngo_admin_user_profiles_for
-from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, rep_id_name_dict_of_superusers
+from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, rep_id_name_dict_of_users
 
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
@@ -41,7 +41,7 @@ class AllDataSendersView(TemplateView):
         manager = get_database_manager(request.user)
         projects = get_all_projects(manager)
         in_trial_mode = utils.get_organization(request).in_trial_mode
-        user_rep_id_name_dict = rep_id_name_dict_of_superusers(manager)
+        user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
 
         return self.render_to_response({
             "user_dict": json.dumps(user_rep_id_name_dict),
@@ -217,7 +217,7 @@ def delete_data_senders(request):
     organization = get_organization(request)
     entity_type = request.POST['entity_type']
     all_ids = data_sender_short_codes(request, manager)
-    superusers = rep_id_name_dict_of_superusers(manager)
+    superusers = rep_id_name_dict_of_users(manager)
     non_superuser_rep_ids = [id for id in all_ids if id not in superusers.keys()]
     transport_info = TransportInfo("web", request.user.username, "")
 
@@ -230,21 +230,21 @@ def delete_data_senders(request):
     messages = get_success_message(entity_type)
     return HttpResponse(json.dumps({'success': True, 'message':messages}))
 
-class SuperusersInSearchedDataSender(DataSenderActionView):
+class UsersInSearchedDataSender(DataSenderActionView):
 
     def post(self, request, *args, **kwargs):
 
         manager = get_database_manager(request.user)
         selected_rep_ids = data_sender_short_codes(request, manager)
-        superusers = rep_id_name_dict_of_superusers(manager)
-        superusers_selected = []
+        users = rep_id_name_dict_of_users(manager)
+        users_selected = []
 
         non_superuser_selected = []
         for rep_id in selected_rep_ids:
-            if rep_id in superusers.keys():
-                superusers_selected.append(superusers[rep_id])
+            if rep_id in users.keys():
+                users_selected.append(users[rep_id])
             else:
                 non_superuser_selected.append(rep_id)
 
-        return HttpResponse(json.dumps({"success": True, "superusers_selected": superusers_selected}))
+        return HttpResponse(json.dumps({"success": True, "superusers_selected": users_selected}))
 

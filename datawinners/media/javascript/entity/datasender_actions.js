@@ -171,8 +171,8 @@ function add_remove_from_project(action, table, selected_ids, all_selected) {
     all_project_block.data("pageToGo", get_updated_table_page_index(table, selected_ids, all_selected));
     all_project_block.dialog("open");
 }
-function get_superuser_names_from_selected_datasenders(table, selected_ids, all_selected) {
-    var superusers =[];
+function get_user_names_from_selected_datasenders(table, selected_ids, all_selected) {
+    var users =[];
     var user_rep_ids = [];
     var user_fullnames = [];
     $.each(user_dict, function(k,v) {
@@ -181,23 +181,21 @@ function get_superuser_names_from_selected_datasenders(table, selected_ids, all_
         }
     );
 
-    var searchQuery = $(".dataTables_filter input").val();
-
     if (all_selected) {
-        superusers = superusersInSearchedDS();
+        users = usersInSearchedDS();
     }else {
         $(table).find('input.row_checkbox:checked').each(function () {
             var datasender_id = $(this).val();
             if ($.inArray(datasender_id ,user_rep_ids) >= 0) {
-                  superusers.push(user_dict[datasender_id])
+                  users.push(user_dict[datasender_id])
             }
         });
     }
-    return superusers;
+    return users;
 }
 
 
-function superusersInSearchedDS() {
+function usersInSearchedDS() {
     var superusers;
     // synchronous
     $.ajax({
@@ -269,13 +267,13 @@ function get_updated_table_page_index(table, allIds, all_selected){
 function handle_datasender_delete(table, allIds, all_selected){
     $("#note_for_delete_users").hide();
 
-    var superusers_selected = get_superuser_names_from_selected_datasenders(table, allIds, all_selected);
+    var superusers_selected = get_user_names_from_selected_datasenders(table, allIds, all_selected);
 
     if (superusers_selected.length) {
         var users_list_for_html = "<li>" + superusers_selected.join("</li><li>") + "</li>";
         if (superusers_selected.length == allIds.length) { //Each DS selected is also User
             delete_all_ds_are_users_show_warning(users_list_for_html);
-        } else { // A mix of Simple DS and DS having user credentials
+        } else { // A mix of DS and users
             $("#note_for_delete_users .users_list").html(users_list_for_html);
             $("#note_for_delete_users").show();
             warnThenDeleteDialogBox(allIds, all_selected, "reporter", this);

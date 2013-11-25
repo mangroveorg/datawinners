@@ -312,7 +312,7 @@ def put_email_information_to_entity(dbm, entity, email):
     data = (email_field_label, email, email_ddtype)
     entity.update_latest_data([data])
 
-def rep_id_name_dict_of_superusers(manager):
+def rep_id_name_dict_of_users(manager):
     org_id = get_organization_from_manager(manager).org_id
     orgUsers = NGOUserProfile.objects.filter(org_id=org_id).values_list("user_id", "reporter_id")
 
