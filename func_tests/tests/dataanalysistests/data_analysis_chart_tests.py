@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import time
 from datetime import datetime, timedelta
+from unittest import SkipTest
 from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.exception import CouldNotLocateElementException
 from framework.utils.data_fetcher import fetch_, from_
@@ -9,6 +10,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import PROJECT_NAME, DEFAULT_DATA_FOR_QUESTIONNAIRE, DAILY_DATE_RANGE
 from tests.dataextractionapitests.data_extraction_api_data import VALID_CREDENTIALS
 
+@SkipTest
 class TestDataAnalysisChart(BaseTest):
     @classmethod
     def setUpClass(cls):

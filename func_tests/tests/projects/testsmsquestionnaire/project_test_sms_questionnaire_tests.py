@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+from django.utils.unittest.case import SkipTest
 from framework.base_test import setup_driver, teardown_driver, BaseTest
 from nose.plugins.attrib import attr
 from pages.loginpage.login_page import LoginPage
@@ -40,9 +41,6 @@ class TestProjectTestSMSPreview(unittest.TestCase):
 
     def setUp(self):
         pass
-
-    def tearDown(self):
-        self.global_navigation.sign_out()
 
     def navigate_to_clinic3_overview_page(self):
         # going on all project page
@@ -104,6 +102,7 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         self.check_upgrade_instruction(project_overview_page)
 
 
+    @SkipTest
     @attr('functional_test')
     def test_should_show_upgrade_instruction_on_data_page(self):
         project_overview_page = self.navigate_to_clinic3_overview_page()
