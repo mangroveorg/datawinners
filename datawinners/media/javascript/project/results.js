@@ -108,8 +108,12 @@ $(document).ready(function () {
     function init_submission_log_table(cols) {
 
         var action_handler = new DW.SubmissionLogActionHandler(tab[active_tab_index], project_id);
-         var url = render_table_url + '?type=' + tab[active_tab_index];
-
+        var url = render_table_url + '?type=' + tab[active_tab_index];
+        var display_check_box = active_tab_index != 3;
+        var actions = display_check_box ? [
+                    {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
+                    {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
+                ]: []
         $(".submission_table").dwTable({
                 aoColumns: cols,
                 "concept": "Submission",
@@ -126,10 +130,7 @@ $(document).ready(function () {
                 "aoColumnDefs": [
                     {"aTargets": [0], "sWidth": "30px"}
                 ],
-                "actionItems": [
-                    {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
-                    {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
-                ],
+                "actionItems": actions,
                 "fnInitComplete":function(){
                     $('#filters').append($('.dataTables_wrapper .dataTables_filter'));
                 },
@@ -137,7 +138,6 @@ $(document).ready(function () {
             }
 
         );
-        var display_check_box = active_tab_index != 3;
         $(".submission_table").dataTable().fnSetColumnVis(0,display_check_box)
 
     }
