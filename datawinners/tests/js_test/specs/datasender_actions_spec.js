@@ -59,14 +59,16 @@ describe('datasender actions', function () {
             expect(warning_dialog_spy).toHaveBeenCalledWith(selected_ds, false, 'reporter', window);
         });
 
-        it('should call superusers from server if select all(all) is selected', function(){
-            user_dict = [{'name': 'id'}];
+        it('should call superusers from server if select all(all) is selected', function () {
+            user_dict = [
+                {'name': 'id'}
+            ];
             var getUsers = spyOn(window, 'usersInSearchedDS');
             get_user_names_from_selected_datasenders(tableSpy, ['rep1'], true);
             expect(getUsers).toHaveBeenCalled();
         });
 
-        it('should get users from selected datasenders', function(){
+        it('should get users from selected datasenders', function () {
             user_dict = {'id1': 'user1', 'id2': 'user2'};
             var getUsers = spyOn(window, 'usersInSearchedDS');
             jasmine.getFixtures().set('<table id="test_table"><tbody><tr><td><input type="checkbox" class="row_checkbox" value="id1" checked></td></tr>' +
@@ -77,8 +79,55 @@ describe('datasender actions', function () {
 
             var result = get_user_names_from_selected_datasenders('#test_table', ['rep1'], false);
 
-            expect(result).toEqual(['user1','user2']);
-        })
+            expect(result).toEqual(['user1', 'user2']);
+        });
+
+        it('should reset to first page upon deleting all datasenders', function () {
+            var table = jasmine.createSpyObj('table', ['fnSettings']);
+            var pageIndex = get_updated_table_page_index(table, ['rep1'], true);
+            expect(pageIndex).toEqual(0);
+        });
+
+        it('should remain in same page upon deleting all datasenders in any page except last page', function () {
+            var fnSettingsMock = jasmine.createSpy("settings").andReturn({
+                'fnDisplayEnd': function () {
+                    return 1;
+                },
+                'fnRecordsDisplay': function () {
+                    return 2;
+                },
+                '_iDisplayStart': 2
+            });
+            tableSpy = {
+                "fnSettings": fnSettingsMock
+            };
+
+            var pageIndex = get_updated_table_page_index(tableSpy, ['rep1'], false);
+
+            expect(pageIndex).toEqual(2);
+        });
+
+        it('should reset to first page upon deleting all datasenders in last page', function () {
+            var fnSettingsMock = jasmine.createSpy("settings").andReturn({
+                'fnDisplayEnd': function () {
+                    return 1;
+                },
+                'fnRecordsDisplay': function () {
+                    return 1;
+                },
+                '_iDisplayStart': 2
+            });
+            tableSpy = {
+                "find": function (parms) {
+                    return {"length": 1};
+                },
+                "fnSettings": fnSettingsMock
+            };
+
+            var pageIndex = get_updated_table_page_index(tableSpy, ['rep1'], false);
+
+            expect(pageIndex).toEqual(0);
+        });
     });
 
     describe("datasender action edit", function () {
@@ -96,7 +145,7 @@ describe('datasender actions', function () {
             var jquery_ajax = spyOn($, "ajax").andCallFake(function (e) {
                 e.success('<div>Edit successful</div>');
             });
-            var editActionInitializer = spyOn(DW, 'InitializeEditDataSender').andCallFake(function(){
+            var editActionInitializer = spyOn(DW, 'InitializeEditDataSender').andCallFake(function () {
                 return {init: jasmine.createSpy('init')};
             });
 
@@ -111,7 +160,7 @@ describe('datasender actions', function () {
                 e.success('<div>Edit successful</div>');
             });
             var initSpy = jasmine.createSpy('init');
-            var editActionInitializer = spyOn(DW, 'InitializeEditDataSender').andCallFake(function(){
+            var editActionInitializer = spyOn(DW, 'InitializeEditDataSender').andCallFake(function () {
                 return {init: initSpy };
             });
 

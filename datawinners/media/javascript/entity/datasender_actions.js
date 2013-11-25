@@ -259,7 +259,7 @@ function get_updated_table_page_index(table, allIds, all_selected){
     function current_page_rows_going_to_vanish() {
         return all_selected ||
                 (is_last_page() &&
-                    ($(table).find("input.row_checkbox").length == allIds.length))
+                    (table.find("input.row_checkbox").length == allIds.length))
     }
 
 }
