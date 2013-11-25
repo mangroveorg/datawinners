@@ -45,8 +45,7 @@ def start_servers():
 def showcase():
     env.user = "mangrover"
     env.hosts = ["184.72.223.168"]
-    env.key_filename = ["/home/ashwin/.ssh/id_rsa"]
-    #env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
     env.warn_only = True
 
 
@@ -317,6 +316,6 @@ def apply_backup(backup_dir):
     psql_bkp_file = get_backup_file(backup_dir, 'psql_backup')
     apply_psql_bkp(backup_dir, psql_bkp_file)
     index_bkp_file = get_backup_file(backup_dir, 'mangrove_elasticsearch_index_backup')
-    apply_elasticsearch_backup(backup_dir, index_bkp_file)
+    #apply_elasticsearch_backup(backup_dir, index_bkp_file)
     restart_couchdb()
     restart_elasticsearch()
