@@ -287,14 +287,11 @@ def get_option_value_for_field(diff_value, question_field):
 @is_not_expired
 def export(request):
     project_name = request.POST.get(u"project_name")
-    submission_type = request.GET.get('type')
-    filters = request.POST
-    search_criteria = request.POST.get('search', '')
-    questionnaire_code = request.POST.get('questionnaire_code')
+    submission_type = request.GET.get(u'type')
+    search_criteria = request.POST.get(u'search', '')
+    questionnaire_code = request.POST.get(u'questionnaire_code')
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-
-
 
     return SubmissionExporter(form_model, project_name, request.user)\
         .create_excel_response(submission_type, search_criteria)
