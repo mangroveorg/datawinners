@@ -3561,9 +3561,6 @@ msgstr ""
 msgid "Your Data Senders’ successful submissions will appear here."
 msgstr ""
 
-msgid "Once your Data Senders have sent in Submissions, they will appear here."
-msgstr ""
-
 msgid "To collect data"
 msgstr ""
 
@@ -3847,13 +3844,8 @@ msgstr ""
 msgid "hint for success submission page%(url)s"
 msgstr "View and manage successfully sent in Submissions for this project. Go to the <a href=\"%(url)s\">Analysis Page</a> to analyze your successful submissions."
 
-msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
-msgstr ""
 
 msgid "View deleted Submissions for this project."
-msgstr ""
-
-msgid "No deleted Submissions."
 msgstr ""
 
 msgid "Activated Reminders"
@@ -3993,9 +3985,6 @@ msgstr ""
 
 msgid "View and manage unsuccessful Submissions for this project."
 msgstr "View and manage unsuccessful Submissions for this project. Also view the <a href=\"/allfailedsubmissions\">Failed Submissions</a> page."
-
-msgid "No unsuccessful Submissions!"
-msgstr ""
 
 msgid "Error Messages"
 msgstr ""

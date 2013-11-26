@@ -1,3 +1,6 @@
+td.dataTables_empty div.help_accordion {
+  display: inline; }
+
 .link, #submission_logs a, #submission_logs a:hover {
   color: #0070AC; }
 

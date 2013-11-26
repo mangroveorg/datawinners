@@ -87,17 +87,6 @@ def index(request, project_id=None, questionnaire_code=None):
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
 
-#export
-    # if request.method == 'POST':
-    #     survey_responses = SurveyResponseList(form_model, manager, org_id, submission_type, filters, keyword)
-    #     field_values = SubmissionFormatter().get_formatted_values_for_list(survey_responses.get_raw_values())
-    #     analysis_result = AnalysisResult(field_values, survey_responses.get_analysis_statistics(),
-    #                                      survey_responses.get_data_senders(), survey_responses.get_subjects(),
-    #                                      survey_responses.get_default_sort_order())
-    #     performance_logger.info("Fetch %d survey_responses from couchdb." % len(analysis_result.field_values))
-    #     return HttpResponse(encode_json({'data_list': analysis_result.field_values,
-    #                                      "statistics_result": analysis_result.statistics_result}))
-
 
 def get_survey_response_ids_from_request(manager, request, form_model):
     if request.POST.get('all_selected', "false") == "true":

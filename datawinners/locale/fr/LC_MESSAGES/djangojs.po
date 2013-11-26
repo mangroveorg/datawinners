@@ -1064,3 +1064,14 @@ msgstr "Nous avons limité votre sélection à %(total_records)s Expéditeurs de
 msgid "You cannot use the same email address for multiple Data Senders. Revise the email address for the following users: "
 msgstr "Vous ne pouvez pas utiliser la même adresse email pour plusieurs Expéditeurs de Données. Veuillez corriger les adresses email des utilisateurs suivants: "
 
+msgid "No unsuccessful Submissions!"
+msgstr "Aucune soumission non réussie!"
+
+msgid "Once your Data Senders have sent in Submissions, they will appear here."
+msgstr "Une fois que vos Expéditeurs de Données ont soumis leurs données, ils apparaîtront ici."
+
+msgid "No deleted Submissions."
+msgstr "Aucune Soumission supprimée."
+
+msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
+msgstr "Une fois que Expéditeurs de Données ont soumis leurs données avec succès, ils apparaîtront ici."

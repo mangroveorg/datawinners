@@ -23,46 +23,20 @@ $(document).ready(function () {
     var $actionBar = $(".action_bar");
     var $dataTable = $('.submission_table');
     var tab = ["all", "success", "error", "deleted"];
+    var no_data_help = {"all":"<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.")+ "</span>" + $(".help_no_submissions").html(),
+            "success":"<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+            "error":gettext("No unsuccessful Submissions!"),
+            "deleted":gettext("No deleted Submissions.")
+    }
     var active_tab_index = 0;
     var match = window.location.pathname.match(/tab\/([^/]+)\//);
     if (match) active_tab_index = tab.indexOf(match[1]);
 
-//    function TabOptions() {
-//        var defaultOptions = {
-//            "show_status": true,
-//            "show_actions": true,
-//            "show_deleting_check_box": true,
-//            "show_reply_sms": false
-//        };
-//        this._options = {
-//            'all': defaultOptions,
-//            'success': $.extend({}, defaultOptions, {"show_status": false}),
-//            'error': $.extend({}, defaultOptions, {"show_status": false, "show_reply_sms": true}),
-//            'deleted': $.extend({}, defaultOptions, {"show_actions": false, "show_deleting_check_box": false})
-//        }
-//    }
-//
-//    TabOptions.prototype.show_status = function () {
-//        return this._options[active_tab].show_status;
-//    }
-//
-//    TabOptions.prototype.show_actions = function () {
-//        return this._options[active_tab].show_actions;
-//    }
-//
-//    TabOptions.prototype.show_deleting_check_box = function () {
-//        return this._options[active_tab].show_deleting_check_box;
-//    }
-//
-//    TabOptions.prototype.show_reply_sms = function () {
-//        return this._options[active_tab].show_reply_sms;
-//    }
-//    var tabOptions = new TabOptions();
 
     $.ajaxSetup({ cache: false });
     load_table(tab[active_tab_index]);
 
-    var $no_submission_hint = $('.help_no_submissions');
+    var $no_submission_hint = $('.help_no_submissions')
     var $page_hint = $('#page_hint');
     var $page_hint_section = $('#page_hint_section')
     $page_hint_section.text($page_hint.find('>div:first').text())
@@ -121,9 +95,7 @@ $(document).ready(function () {
                 "sAjaxDataIdColIndex": 1,
                 "remove_id": true,
                 "bServerSide": true,
-                "oLanguage": {
-                    "sEmptyTable": $('.help_no_submissions').html()
-                },
+                "oLanguage": {"sEmptyTable": no_data_help[tab[active_tab_index]]},
                 "aaSorting": [
                     [ 2, "desc"]
                 ],
@@ -142,12 +114,6 @@ $(document).ready(function () {
 
     }
 
-
-//    $(".export_link").click(function(){
-//        DW.loading();
-//        alert("export");
-//        $('#export_form').appendJson(DW.get_criteria()).attr('action', url).submit();
-//    })
 })
 ;
 

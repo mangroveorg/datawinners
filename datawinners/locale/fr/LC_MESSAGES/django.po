@@ -3652,9 +3652,6 @@ msgstr "Enregistrez un(e) %(subject)s"
 msgid "Your Data Senders’ successful submissions will appear here."
 msgstr "Les soumissions réussies de vos Expéditeurs de Données seront affichées ici."
 
-msgid "Once your Data Senders have sent in Submissions, they will appear here."
-msgstr "Une fois que vos Expéditeurs de Données ont soumis leurs données, ils apparaîtront ici."
-
 msgid "To collect data"
 msgstr "Pour collecter des données"
 
@@ -3924,17 +3921,11 @@ msgstr "Soumissions de données"
 msgid "Deleted Submissions"
 msgstr "Soumissions supprimées"
 
-msgid "No deleted Submissions."
-msgstr "Aucune Soumission supprimée."
-
 msgid "View deleted Submissions for this project."
 msgstr "Voir les Soumissions supprimées pour ce projet."
 
 msgid "hint for success submission page%(url)s"
 msgstr "Voir et gérer toutes les Soumissions envoyées avec succès. Allez sur la <a href=\"%(url)s\">Page Analyse</a> pour analyser les soumissions réussies."
-
-msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
-msgstr "Une fois que Expéditeurs de Données ont soumis leurs données avec succès, ils apparaîtront ici."
 
 msgid "Deleted Data Submission(s)"
 msgstr "A supprimé une/des soumission(s) de données"
@@ -4073,9 +4064,6 @@ msgstr "Etes-vous sûr de vouloir continuer?"
 
 msgid "View and manage unsuccessful Submissions for this project."
 msgstr "Voir et gérer les soumissions non réussies pour ce projet. Voir aussi la page <a href=\"/allfailedsubmissions\">Soumissions Echouées</a>."
-
-msgid "No unsuccessful Submissions!"
-msgstr "Aucune soumission non réussie!"
 
 msgid "Error Messages"
 msgstr "Messages d’Erreur"

@@ -1,3 +1,4 @@
+from string import lower
 from babel.dates import format_datetime
 from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import get_fields_mapping, get_elasticsearch_handle
@@ -20,8 +21,9 @@ def update_submission_search_index(submission_doc, feed_dbm, refresh_index=True)
     dbm = get_db_manager(feed_dbm.database_name.replace("feed_", ""))
     form_model = get_form_model_by_code(dbm, submission_doc.form_code)
     search_dict = _meta_fields(submission_doc)
-    _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model.entity_type)
+    _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
     es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
+
 
 
 def _metadata_mapping(dbm):
@@ -47,12 +49,14 @@ def _meta_fields(submission_doc):
 def lookup_entity_name(dbm, id, entity_type):
     return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
 
-def _update_with_form_model_fields(dbm, submission_doc, search_dict, entity_type):
+def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     for key in submission_doc.values:
         field = submission_doc.values[key]
-        if key == "eid":
+        entity_fields = [f for f in form_model.fields if f.is_entity_field and lower(f.code) == key]
+
+        if entity_fields:
             id = field if submission_doc.status == 'error' else field.get("answer").get("id")
-            value = field.get("answer").get("name")if isinstance(field, dict) else lookup_entity_name(dbm, id, entity_type)
+            value = field.get("answer").get("name")if isinstance(field, dict) else lookup_entity_name(dbm, id, form_model.entity_type)
             search_dict.update({"entity_short_code": id})
         else:
             value = field.get("answer") if isinstance(field, dict) else field
@@ -60,5 +64,6 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, entity_type
         if isinstance(value, dict):
             value = ','.join(value.values())
         search_dict.update({key: value})
+
     search_dict.update({'void': submission_doc.void})
     return search_dict

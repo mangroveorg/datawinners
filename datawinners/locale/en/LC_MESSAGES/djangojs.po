@@ -1019,3 +1019,15 @@ msgstr ""
 
 msgid "all_selected_message %(total_records)s %(current_page_size)s"
 msgstr "We limited your selection of %(total_records)s Data Senders to the %(current_page_size)s Data Senders on the current page. After giving access to these %(current_page_size)s Data Senders you can continue with the next page."
+
+msgid "No unsuccessful Submissions!"
+msgstr ""
+
+msgid "Once your Data Senders have sent in Submissions, they will appear here."
+msgstr ""
+
+msgid "No deleted Submissions."
+msgstr ""
+
+msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
+msgstr ""
