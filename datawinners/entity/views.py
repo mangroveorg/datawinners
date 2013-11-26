@@ -3,12 +3,11 @@ import json
 import logging
 
 from django.contrib.auth.decorators import login_required
-from django.template.defaultfilters import register
+from django.template.defaultfilters import register, slugify
 from django.utils import translation
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect, \
-    HttpResponseServerError
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
@@ -20,6 +19,7 @@ from django.contrib import messages
 
 from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, valid_web_user
+from datawinners.entity.entity_export_helper import get_json_field_infos
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.main.database import get_database_manager
 from datawinners.search.entity_search import SubjectQuery
@@ -28,7 +28,7 @@ from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, delete_entity_instance, get_entity_type_fields, put_email_information_to_entity
+from datawinners.entity.helper import create_registration_form, delete_entity_instance, put_email_information_to_entity
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
@@ -51,7 +51,6 @@ from datawinners.common.constant import ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, RE
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from datawinners.search.entity_search import DatasenderQuery
 
 
 websubmission_logger = logging.getLogger("websubmission")
@@ -145,7 +144,7 @@ def viewable_questionnaire(form_model):
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required()
+@login_required(login_url='/login')
 @session_not_expired
 @is_new_user
 @is_datasender
@@ -224,13 +223,13 @@ def log_activity(request, action, detail):
 
 
 def __create_web_users(org_id, reporter_details, language_code):
-
     duplicate_entries = {}
-    [duplicate_entries.update({item[0]:item[1]}) for item in reporter_details.items() if [val for val in reporter_details.values()].count(item[1]) > 1]
+    [duplicate_entries.update({item[0]: item[1]}) for item in reporter_details.items() if
+     [val for val in reporter_details.values()].count(item[1]) > 1]
 
     errors = []
     if len(duplicate_entries) > 0:
-        content = json.dumps({'success': False, 'errors': errors,'duplicate_entries':duplicate_entries})
+        content = json.dumps({'success': False, 'errors': errors, 'duplicate_entries': duplicate_entries})
 
     dbm = get_database_manager_for_org(Organization.objects.get(org_id=org_id))
     existent_email_addresses = User.objects.filter(email__in=reporter_details.values()).values('email')
@@ -238,9 +237,9 @@ def __create_web_users(org_id, reporter_details, language_code):
     if len(existent_email_addresses) > 0:
         for duplicate_email in existent_email_addresses:
             errors.append("User with email %s already exists" % duplicate_email['email'])
-        content = json.dumps({'success': False, 'errors': errors,'duplicate_entries':duplicate_entries})
-    if errors.__len__() == 0 and duplicate_entries.keys().__len__()==0:
-        for reporter_id,email in reporter_details.iteritems():
+        content = json.dumps({'success': False, 'errors': errors, 'duplicate_entries': duplicate_entries})
+    if errors.__len__() == 0 and duplicate_entries.keys().__len__() == 0:
+        for reporter_id, email in reporter_details.iteritems():
             reporter_entity = get_by_short_code(dbm, reporter_id, [REPORTER])
             reporter_email = email.lower()
             put_email_information_to_entity(dbm, reporter_entity, email=reporter_email)
@@ -273,7 +272,7 @@ def create_multiple_web_users(request):
     org_id = request.user.get_profile().org_id
     post_data = {}
     if request.method == 'POST':
-        [post_data.update({item['reporter_id']:item['email']}) for item in json.loads(request.POST['post_data'])]
+        [post_data.update({item['reporter_id']: item['email']}) for item in json.loads(request.POST['post_data'])]
         content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE)
         return HttpResponse(content)
 
@@ -284,9 +283,10 @@ def create_multiple_web_users(request):
 #todo remove form_code from here, use entity_type instead
 def import_subjects_from_project_wizard(request, form_code):
     manager = get_database_manager(request.user)
-    error_message, failure_imports, success_message, imported_entities, successful_imports= import_module.import_data(request, manager,
-                                                                                                   default_parser=XlsOrderedParser,
-                                                                                                   form_code=form_code)
+    error_message, failure_imports, success_message, imported_entities, successful_imports = import_module.import_data(
+        request, manager,
+        default_parser=XlsOrderedParser,
+        form_code=form_code)
     if len(imported_entities) != 0:
         detail_dict = dict()
         for short_code, entity_type in imported_entities.items():
@@ -490,6 +490,7 @@ def create_subject(request, entity_type=None):
         return render_to_response(web_questionnaire_template, subject_context,
                                   context_instance=RequestContext(request))
 
+
 @valid_web_user
 @login_required(login_url='/login')
 @session_not_expired
@@ -563,17 +564,17 @@ def export_subject(request):
     query_text = request.POST.get('query_text', '')
     subject_type = request.POST.get('subject_type', '').lower()
     subject_list = SubjectQuery().query(request.user, subject_type, query_text)
+    form_model = get_form_model_by_entity_type(manager, [subject_type.lower()])
 
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)
-    fields, labels, field_codes = get_entity_type_fields(manager, subject_type, for_export=True)
+    fields, labels, field_codes = get_json_field_infos(form_model.form_fields)
     raw_data = [labels]
 
     for subject in subject_list:
         raw_data.append(subject)
 
     wb = get_excel_sheet(raw_data, subject_type)
-    form_model = get_form_model_by_entity_type(manager, [subject_type.lower()])
     add_codes_sheet(wb, form_model.form_code, field_codes)
     wb.save(response)
     return response
@@ -585,35 +586,47 @@ def add_codes_sheet(wb, form_code, field_codes):
     ws = workbook_add_sheet(wb, [codes], "codes")
     ws.visibility = 1
 
-
 @valid_web_user
 def import_template(request, form_code):
     manager = get_database_manager(request.user)
-    if form_code is None:
-        return HttpResponseRedirect(reverse(all_subject_types))
-
-    fields, labels, field_codes = get_entity_type_fields(manager, form_code, for_export=True)
-    response = HttpResponse(mimetype='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % request.GET["filename"]
-    wb = get_excel_sheet([labels], form_code)
-    add_codes_sheet(wb, form_code, field_codes)
+    form_model=get_form_model_by_code(manager,form_code)
+    if form_model.is_entity_registration_form():
+        fields, labels, field_codes = get_json_field_infos(form_model.form_fields)
     try:
         index_geocode = fields.index(GEO_CODE_FIELD_NAME)
     except ValueError:
         index_geocode = 0
 
-    ws = wb.get_sheet(0)
+    filename = sheetname = request.GET["filename"]
+    uid_index = len(fields) - 1
+    data = [labels]
+    work_book_response_factory = WorkBookResponseFactory(form_code, filename, sheetname)
+    return work_book_response_factory.create_workbook_response(index_geocode, uid_index, data, field_codes)
 
-    style = xlwt.XFStyle()
-    style.num_format_str = '@'
-    gps_col = ws.col(index_geocode)
-    gps_col.set_style(style)
 
-    uid_col = ws.col(len(fields) - 1)
-    uid_col.set_style(style)
+class WorkBookResponseFactory:
+    def __init__(self, form_code, file_name, sheet_name):
+        self.form_code = form_code
+        self.file_name = file_name
+        self.sheet_name = sheet_name
 
-    wb.save(response)
-    return response
+    def _add_styles(self, index_geocode, uid_index, wb):
+        ws = wb.get_sheet(0)
+        style = xlwt.XFStyle()
+        style.num_format_str = '@'
+        gps_col = ws.col(index_geocode)
+        gps_col.set_style(style)
+        uid_col = ws.col(uid_index)
+        uid_col.set_style(style)
+
+    def create_workbook_response(self, geo_code_index, uid_index, data, field_codes):
+        response = HttpResponse(mimetype='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="%s.xls"' % slugify(self.file_name)
+        wb = get_excel_sheet(data, self.sheet_name)
+        add_codes_sheet(wb, self.form_code, field_codes)
+        self._add_styles(geo_code_index, uid_index, wb)
+        wb.save(response)
+        return response
 
 
 def get_organization_telephone_number(request):

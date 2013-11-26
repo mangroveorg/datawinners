@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
-from datawinners.entity.entity_export_helper import get_json_field_infos_for_export
 from datawinners.utils import get_organization_from_manager
 
 from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
@@ -240,11 +239,9 @@ def add_imported_data_sender_to_trial_organization(org_id, imported_datasenders,
                 _add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
 
 
-def get_entity_type_fields(manager, form_code='reg', for_export=False):
+def get_entity_type_fields(manager, form_code='reg'):
     form_model=get_form_model_by_code(manager,form_code)
     json_fields = form_model._doc["json_fields"]
-    if for_export:
-        return get_json_field_infos_for_export(json_fields)
     return get_json_field_infos(json_fields)
 
 

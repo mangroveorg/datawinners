@@ -2,7 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 import xlwt
 
 
-def get_json_field_infos_for_export(fields):
+def get_json_field_infos(fields):
     fields_names, labels, codes = [], [], []
     bold = xlwt.easyfont('bold true, height 220, name Helvetica Neue')
     brown = xlwt.easyfont('color_index brown, name Helvetica Neue, height 220')
