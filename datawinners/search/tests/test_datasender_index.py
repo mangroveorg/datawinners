@@ -1,5 +1,5 @@
 import unittest
-from mock import Mock, patch, PropertyMock
+from mock import Mock, patch
 from datawinners.search.datasender_index import update_datasender_index, _get_project_names_by_datasender_id
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
@@ -11,7 +11,7 @@ class TestDatasenderIndex(unittest.TestCase):
         dbm = Mock(spec=DatabaseManager)
         entity_doc = Entity(dbm, entity_type='reporter', short_code='test')
 
-        with patch("datawinners.search.datasender_index.elasticutils.get_es") as es:
+        with patch("datawinners.search.datasender_index.get_elasticsearch_handle") as es:
             es.return_value = Mock
             update_datasender_index(entity_doc, dbm)
             self.assertFalse(es.index.call_count)
@@ -24,7 +24,7 @@ class TestDatasenderIndex(unittest.TestCase):
         entity_doc.id = 'some_id'
         entity_doc.aggregation_paths = {"_type": ["reporter"]}
 
-        with patch("datawinners.search.datasender_index.elasticutils.get_es") as es:
+        with patch("datawinners.search.datasender_index.get_elasticsearch_handle") as es:
             with patch("datawinners.search.datasender_index.get_form_model_by_code") as get_form_model:
                 with patch("datawinners.search.datasender_index._create_datasender_dict") as create_ds_dict:
                     mock_form_model = Mock(spec=FormModel)

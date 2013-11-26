@@ -8,10 +8,11 @@ from pytz import UTC
 from datawinners import initializer
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
+from datawinners.main.management.commands.utils import TEST_EMAILS
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
-from datawinners.main.database import get_database_manager, get_db_manager, TEST_EMAILS
+from datawinners.main.database import get_database_manager, get_db_manager
 from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
