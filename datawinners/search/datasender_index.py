@@ -1,9 +1,6 @@
-import cProfile
-import elasticutils
 from datawinners.main.database import get_db_manager
 from datawinners.project.models import get_all_projects_for_datasender
-from datawinners.search.index_utils import _entity_dict, get_fields_mapping
-from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.search.index_utils import _entity_dict, get_fields_mapping, get_elasticsearch_handle
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import get_all_entities, _entity_by_short_code
 from mangrove.form_model.field import TextField
@@ -17,7 +14,7 @@ def update_datasender_index_by_id(short_code, dbm):
 
 
 def update_datasender_index(entity_doc, dbm):
-    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    es = get_elasticsearch_handle()
     if entity_doc.short_code == 'test':
         return
     if entity_doc.data:
@@ -39,7 +36,7 @@ def _get_project_names_by_datasender_id(dbm, entity_id):
 
 
 def create_datasender_mapping(dbm, form_model):
-    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    es = get_elasticsearch_handle()
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
@@ -66,7 +63,7 @@ def _create_datasender_mapping(dbm):
 
 
 def create_ds_mapping(dbm, form_model):
-    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    es = get_elasticsearch_handle()
     fields = form_model.fields
     fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))

@@ -1,5 +1,7 @@
 from collections import OrderedDict
+import elasticutils
 from datawinners.entity.helper import get_entity_type_fields, tabulate_data
+from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import DateField
 
@@ -44,3 +46,7 @@ def _entity_dict(entity_type, entity_doc, dbm, form_model):
     dictionary.update({"entity_type": entity_type})
     dictionary.update({"void": entity.is_void()})
     return dictionary
+
+def get_elasticsearch_handle():
+    return elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT)
+

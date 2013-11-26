@@ -1,11 +1,10 @@
 import sys
+from datawinners.search.index_utils import get_elasticsearch_handle
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
-import elasticutils
 from datawinners.main.couchdb.utils import all_db_names
-from datawinners.settings import ELASTIC_SEARCH_URL
 from datawinners.search.datasender_index import create_datasender_index
 
 import logging
@@ -26,5 +25,5 @@ def create_search_indices_for_datasenders(db_name):
         logger.exception(e.message)
 
 
-es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=180)
+es = get_elasticsearch_handle()
 migrate(all_db_names(), create_search_indices_for_datasenders, version=(9, 0, 7), threads=1)

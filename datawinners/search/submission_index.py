@@ -1,15 +1,13 @@
 from babel.dates import format_datetime
-import elasticutils
 from datawinners.main.database import get_db_manager
-from datawinners.search.index_utils import get_fields_mapping
-from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.search.index_utils import get_fields_mapping, get_elasticsearch_handle
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, DateField
 from mangrove.form_model.form_model import get_form_model_by_code
 
 
 def create_submission_mapping(dbm, form_model):
-    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    es = get_elasticsearch_handle()
     fields = _metadata_mapping(dbm)
     fields.extend(form_model.fields)
     mapping = get_fields_mapping(form_model.id, fields, 'code')
@@ -17,7 +15,7 @@ def create_submission_mapping(dbm, form_model):
 
 
 def update_submission_search_index(submission_doc, feed_dbm, refresh_index=True):
-    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    es = get_elasticsearch_handle()
     dbm = get_db_manager(feed_dbm.database_name.replace("feed_", ""))
     form_model = get_form_model_by_code(dbm, submission_doc.form_code)
     search_dict = _meta_fields(submission_doc)

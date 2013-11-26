@@ -3,12 +3,11 @@ import datetime
 
 from django.conf import settings
 from django.contrib.auth import login
-import elasticutils
 
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
-from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.search.index_utils import get_elasticsearch_handle
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import create_entity
@@ -54,7 +53,7 @@ def initialize_organization(sender, user, request, **kwargs):
 
 
 def create_search_index(db_name):
-    es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+    es = get_elasticsearch_handle()
     index_settings = {
         "settings": {
             "index": {

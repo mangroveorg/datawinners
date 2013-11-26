@@ -1,4 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import datetime
+
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
 from django.core.exceptions import ValidationError
@@ -7,18 +9,18 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django_digest.models import PartialDigest
+from django.contrib import messages
+from django.utils.safestring import mark_safe
+from django.contrib.admin.views.main import ChangeList
 
+from datawinners.search.index_utils import get_elasticsearch_handle
 from forms import forms
 from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization, NGOUserProfile, OutgoingNumberSetting
 from mangrove.utils.types import is_empty, is_not_empty
 from datawinners.countrytotrialnumbermapping.models import Country, Network
-from django.contrib import messages
 from datawinners.utils import get_database_manager_for_org
 from datawinners.feeds.database import feeds_db_for
-from datawinners.settings import ELASTIC_SEARCH_URL
-import datetime, elasticutils
-from django.utils.safestring import mark_safe
-from django.contrib.admin.views.main import ChangeList
+
 
 admin.site.disable_action('delete_selected')
 
@@ -222,7 +224,7 @@ class OrganizationAdmin(DatawinnerAdmin):
             feed_database_name = "feed_" + dbm.database_name
             feed_dbm = feeds_db_for(feed_database_name)
             del feed_dbm.server[feed_database_name]
-            es = elasticutils.get_es(urls=ELASTIC_SEARCH_URL)
+            es = get_elasticsearch_handle()
             es.delete_index(dbm.database_name)
 
     delete_organizations.short_description = "Delete accounts"
