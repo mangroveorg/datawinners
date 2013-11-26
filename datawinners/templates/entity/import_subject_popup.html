@@ -18,7 +18,7 @@
         <div class="clear"></div>
     </div>
     <div class="error">{% trans "Download the template:" %} <a
-            href="{% url datawinners.entity.views.export_template entity_type %}">{{ entity_type }}.xls</a></div>
+            href="{% url datawinners.entity.views.export_template form_code %}?filename={{ entity_type  }}">{{ entity_type }}.xls</a></div>
     <table class="styled_table">
         <thead>
             <tr>
@@ -33,7 +33,7 @@
     <div>
         Note:
         <ul class="bulleted">
-            <li>{% blocktrans with entity_type as entity_type and entity_type as form_code %}You cannot add new columns in your Excel file to create new question. <a href='javascript:void(0);' id='to-edit-{{ form_code }}' class='edit-form-code-link' >Edit the {{ entity_type }} Registration Form</a> to make these changes.{% endblocktrans %}</li>
+            <li>{% blocktrans with entity_type as entity_type%}You cannot add new columns in your Excel file to create new question. <a href='javascript:void(0);' id='to-edit-{{ form_code }}' class='edit-form-code-link' >Edit the {{ entity_type }} Registration Form</a> to make these changes.{% endblocktrans %}</li>
         </ul>
     </div>
     <div class='error_table none' id="{{ form_code }}_error_table">

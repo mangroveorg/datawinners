@@ -240,12 +240,9 @@ def add_imported_data_sender_to_trial_organization(org_id, imported_datasenders,
                 _add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
 
 
-def get_entity_type_fields(manager, type=REPORTER, for_export=False):
-    form_model = get_form_model_by_entity_type(manager, entity_type_as_sequence(type))
-    form_code = "reg"
-    if form_model is not None:
-        form_code = form_model.form_code
-    json_fields = get_form_model_by_code(manager,form_code)._doc["json_fields"]
+def get_entity_type_fields(manager, form_code='reg', for_export=False):
+    form_model=get_form_model_by_code(manager,form_code)
+    json_fields = form_model._doc["json_fields"]
     if for_export:
         return get_json_field_infos_for_export(json_fields)
     return get_json_field_infos(json_fields)

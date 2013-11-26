@@ -587,18 +587,15 @@ def add_codes_sheet(wb, form_code, field_codes):
 
 
 @valid_web_user
-def export_template(request, entity_type=None):
+def export_template(request, form_code):
     manager = get_database_manager(request.user)
-    if entity_type is None:
+    if form_code is None:
         return HttpResponseRedirect(reverse(all_subject_types))
 
-    fields, labels, field_codes = get_entity_type_fields(manager, entity_type, for_export=True)
+    fields, labels, field_codes = get_entity_type_fields(manager, form_code, for_export=True)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
-    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-
-    wb = get_excel_sheet([labels], entity_type)
-    form_code = form_model.form_code
+    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % request.GET["filename"]
+    wb = get_excel_sheet([labels], form_code)
     add_codes_sheet(wb, form_code, field_codes)
     try:
         index_geocode = fields.index(GEO_CODE_FIELD_NAME)

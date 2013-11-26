@@ -38,7 +38,7 @@ def get_fields_mapping(key, fields, mapping_key="name"):
 
 def _entity_dict(entity_type, entity_doc, dbm, form_model):
     entity = Entity.get(dbm, entity_doc.id)
-    fields, labels, codes = get_entity_type_fields(dbm, type=entity_type)
+    fields, labels, codes = get_entity_type_fields(dbm,form_model.form_code)
     data = tabulate_data(entity, form_model, codes)
     dictionary = OrderedDict()
     for index in range(0, len(fields)):

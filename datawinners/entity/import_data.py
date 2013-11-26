@@ -253,7 +253,7 @@ def load_entity_registration_data(manager,
     entity_type = entity_type_as_sequence('registration' if type == REPORTER else type)
     form_model = get_form_model_by_entity_type(manager, entity_type)
 
-    fields, labels, codes = get_entity_type_fields(manager, type)
+    fields, labels, codes = get_entity_type_fields(manager, form_model.form_code)
     entities = get_all_entities(dbm=manager, entity_type=entity_type_as_sequence(type))
     data = []
     for entity in entities:

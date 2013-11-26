@@ -33,7 +33,7 @@ urlpatterns = patterns('',
                            name="edit_subject_questionnaire"),
                        (r'questionnaire/save$', save_questionnaire),
                        url(r'subject/export/', export_subject, name="export_subject"),
-                       (r'subject/template/(?P<entity_type>.+?)/$', export_template),
+                       (r'subject/template/(?P<form_code>.+?)/$', export_template),
                        url(r'subjects/$', all_subject_types, name="all_subject_type_page"),
                        url(r'superusersindssearched/$', UsersInSearchedDataSender.as_view(), name="superusers_in_ds_searched")
 )
