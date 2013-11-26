@@ -1,4 +1,8 @@
 import sys
+
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0, ".")
+
 import logging
 
 import elasticutils
@@ -13,9 +17,6 @@ from datawinners.main.couchdb.utils import all_db_names
 from datawinners.settings import ELASTIC_SEARCH_URL
 from migration.couch.utils import migrate, mark_start_of_migration
 
-
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
 
 def create_submission_index(database_name):
     dbm = get_db_manager(database_name)
