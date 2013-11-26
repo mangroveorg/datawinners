@@ -1,12 +1,20 @@
 from collections import OrderedDict
+from babel.dates import format_datetime
+import datetime
 import elasticutils
+# from datawinners import search
+from datawinners.search.filters import SubmissionDateRangeFilter
+from mangrove.form_model.field import DateField
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.form_model import header_fields
 from datawinners.search.query import QueryBuilder, Query
+from datawinners.search import filters
+
 
 class SubmissionIndexConstants:
     DATASENDER_ID_KEY = "ds_id"
     DATASENDER_NAME_KEY = "ds_name"
+
 
 class SubmissionQueryBuilder(QueryBuilder):
     def create_query(self, doc_type, database_name):
@@ -14,12 +22,43 @@ class SubmissionQueryBuilder(QueryBuilder):
 
     def create_paginated_query(self, query, query_params):
         query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
+
+        submission_date_range = None
+        try:
+            submission_date_range = query_params.get('search_filters')["submissionDatePicker"]
+        except Exception as e:
+            pass
+
+        # query = query.filter(date_value__range=[format_datetime(datetime.datetime(2013, 11, 20), submission_date_format),
+        #                        format_datetime(datetime.datetime(2013, 11, 30), submission_date_format)])
+        query = SubmissionDateRangeFilter(submission_date_range).build_filter_query(query)
+        #query = query.filter(dict({"FA__text":'60'}))
+        #query = query.filter(FA__range=['60', '70'])
+        #addFilters(query, query_params);
+
+        # dat_ranges = query_params.get('filters').get('dateRange')
+        # for date in dat_ranges.items():
+        #     if range:
+        #         date_range_filter = getattr(date,'DateRangeFilter');
+        #     date_range_filter.build_filter_query(query)
+        #
+        # dat_ranges = query_params.get('filters').get('scalar')
+
+        # c_dict =
+
+        #instance = getattr(filters, 'SubmissionDateRangeFilter')(query_params.get('SubmissionDateRangeFilter'))
+        #instance = getattr(filters, 'ADateRangeFilter')(query_params.get('SubmissionDateRangeFilter'))
+
         submission_type_filter = query_params.get('filter')
         if submission_type_filter:
             if submission_type_filter == 'deleted':
                 return query.filter(void=True)
             query = (query.filter(status=submission_type_filter))
         return query.filter(void=False)
+        # c = {"query":{"and":[{"term": {"void": "false"}}, {"range": {"RD":{"gte":"11.12.2013","lte":"13.12.2013"}}}]}}
+        #
+        # return query.filter_raw({'and':[{'term': {'void': 'false'}},
+        #                                 {'range': {'RD':{'gte':'11.12.2013','lte':'13.12.2013'}}}]})
 
 
 class SubmissionQueryResponseCreator():
@@ -91,4 +130,5 @@ class SubmissionQuery(Query):
         except KeyError:
             pass
         return options
+
 

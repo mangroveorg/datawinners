@@ -81,6 +81,12 @@ DW.get_criteria = function () {
     };
 }
 
+    var $filterSelects = $('#submissionDatePicker');
+
+    function buildRangePicker() {
+        $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects});
+    }
+
 DW.get_datepicker_value = function ($datePicker, default_text) {
     var data = $datePicker.val().split("-");
     if (data[0] == "" || data[0] == default_text) {
@@ -103,3 +109,8 @@ DW.disable_filter_section_if_no_data = function () {
 
     $('.filter_label').addClass('grey')
 };
+
+
+    function closeFilterSelects() {
+        $filterSelects.dropdownchecklist('close')
+    }

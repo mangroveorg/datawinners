@@ -11,11 +11,14 @@
                 "sAjaxDataProp": "data",
                 "sPaginationType": "dw_pagination",
                 "searchPlaceholderText": 'Enter any information you want to find',
-
+                'getFilter':function(){},
                 "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
                     lastXHR = oSettings.jqXHR;
                     lastXHR && lastXHR.abort && lastXHR.abort();
                     aoData.push({"name": "disable_cache", "value": new Date().getTime()});
+                    aoData.push({"name": "search_filters", "value": defaults.getFilter()});
+
+                    //this.fnFilter(filterVal);
                     oSettings.jqXHR = $.ajax({
                         "dataType": 'json',
                         "type": "GET",

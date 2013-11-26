@@ -303,6 +303,7 @@ def get_submissions(request, form_code):
     search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
     search_parameters.update({"order_by": int(request.GET.get('iSortCol_0'))})
     search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
+    search_parameters.update({"search_filters": json.loads(request.GET.get('search_filters'))})
     filter_type = request.GET['type']
     if filter_type.lower() != 'all':
         search_parameters.update({"filter": filter_type})

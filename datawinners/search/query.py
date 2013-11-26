@@ -21,6 +21,7 @@ class Query(object):
             "start_result_number": self.query_params["start_result_number"],
             "number_of_results": self.query_params["number_of_results"],
             "order": self.query_params["order"],
+            "search_filters": self.query_params["search_filters"]
         }
         return options
 
