@@ -586,22 +586,33 @@ def add_codes_sheet(wb, form_code, field_codes):
     ws = workbook_add_sheet(wb, [codes], "codes")
     ws.visibility = 1
 
+
+def _get_geo_code_index(fields):
+    try:
+        index_geocode = fields.index(GEO_CODE_FIELD_NAME)
+    except ValueError:
+        index_geocode = 0
+    return index_geocode
+
+
 @valid_web_user
 def import_template(request, form_code):
     manager = get_database_manager(request.user)
     form_model=get_form_model_by_code(manager,form_code)
     if form_model.is_entity_registration_form():
         fields, labels, field_codes = get_json_field_infos(form_model.form_fields)
-    try:
-        index_geocode = fields.index(GEO_CODE_FIELD_NAME)
-    except ValueError:
-        index_geocode = 0
+        sheet_name = request.GET["filename"]
+    else:
+        form_fields = form_model.form_fields
+        fields, labels, field_codes = get_json_field_infos(form_fields)
+        sheet_name = "Import_Submissions"
 
-    filename = sheetname = request.GET["filename"]
+    index_geocode = _get_geo_code_index(fields)
+    filename = request.GET["filename"]
     uid_index = len(fields) - 1
     data = [labels]
-    work_book_response_factory = WorkBookResponseFactory(form_code, filename, sheetname)
-    return work_book_response_factory.create_workbook_response(index_geocode, uid_index, data, field_codes)
+    workbook_response_factory = WorkBookResponseFactory(form_code, filename, sheet_name)
+    return workbook_response_factory.create_workbook_response(index_geocode, uid_index, data, field_codes)
 
 
 class WorkBookResponseFactory:
