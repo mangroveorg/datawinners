@@ -2,6 +2,7 @@ from babel.dates import format_datetime
 from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import get_fields_mapping, get_elasticsearch_handle
 from mangrove.datastore.datadict import DataDictType
+from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.form_model.field import TextField, DateField
 from mangrove.form_model.form_model import get_form_model_by_code
 
@@ -19,7 +20,7 @@ def update_submission_search_index(submission_doc, feed_dbm, refresh_index=True)
     dbm = get_db_manager(feed_dbm.database_name.replace("feed_", ""))
     form_model = get_form_model_by_code(dbm, submission_doc.form_code)
     search_dict = _meta_fields(submission_doc)
-    _update_with_form_model_fields(submission_doc, search_dict)
+    _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model.entity_type)
     es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
 
 
@@ -43,16 +44,21 @@ def _meta_fields(submission_doc):
     return search_dict
 
 
-def _update_with_form_model_fields(submission_doc, search_dict):
+def lookup_entity_name(dbm, id, entity_type):
+    return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
+
+def _update_with_form_model_fields(dbm, submission_doc, search_dict, entity_type):
     for key in submission_doc.values:
         field = submission_doc.values[key]
-        value = field if submission_doc.status == 'error' else field.get("answer")
+        if key == "eid":
+            id = field if submission_doc.status == 'error' else field.get("answer").get("id")
+            value = field.get("answer").get("name")if isinstance(field, dict) else lookup_entity_name(dbm, id, entity_type)
+            search_dict.update({"entity_short_code": id})
+        else:
+            value = field.get("answer") if isinstance(field, dict) else field
+
         if isinstance(value, dict):
-            if field.get("is_entity_question"):
-                search_dict.update({"entity_short_code": value.get("id")})
-                value = value.get("name")
-            else:
-                value = ','.join(value.values())
+            value = ','.join(value.values())
         search_dict.update({key: value})
     search_dict.update({'void': submission_doc.void})
     return search_dict

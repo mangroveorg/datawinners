@@ -12,7 +12,7 @@ class TestSubmissionIndex(unittest.TestCase):
                   'q4': {'answer': '3,3', 'type': 'geocode', 'label': 'gps'},
                   'q5': {'answer': '11.12.2012', 'format': 'mm.dd.yyyy', 'type': 'date', 'label': 'date'}}
         submission_doc = EnrichedSurveyResponseDocument(values=values, status="success")
-        _update_with_form_model_fields(submission_doc, search_dict)
+        _update_with_form_model_fields(None, submission_doc, search_dict, ["clinic"])
         self.assertEquals({'eid': 'Test', "entity_short_code": "cid005", 'q2': 'name', 'q3': 'three,two', 'q4': '3,3',
                            'q5': '11.12.2012', 'void': False}, search_dict)
 
@@ -20,5 +20,5 @@ class TestSubmissionIndex(unittest.TestCase):
         search_dict = {}
         values = {'q2': 'wrong number', 'q3': 'wrong text'}
         submission_doc = EnrichedSurveyResponseDocument(values=values, status="error")
-        _update_with_form_model_fields(submission_doc, search_dict)
+        _update_with_form_model_fields(None, submission_doc, search_dict, ["reporter"])
         self.assertEquals({'q2': 'wrong number', 'q3': 'wrong text', 'void': False}, search_dict)
