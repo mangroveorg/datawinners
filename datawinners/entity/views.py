@@ -587,7 +587,7 @@ def add_codes_sheet(wb, form_code, field_codes):
 
 
 @valid_web_user
-def export_template(request, form_code):
+def import_template(request, form_code):
     manager = get_database_manager(request.user)
     if form_code is None:
         return HttpResponseRedirect(reverse(all_subject_types))

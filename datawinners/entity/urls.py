@@ -8,7 +8,7 @@ from datawinners.entity.views import create_type
 from datawinners.entity.views import all_subject_types, delete_subjects, all_subjects, all_subjects_ajax
 from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.entity.views import export_subject
-from datawinners.entity.views import export_template
+from datawinners.entity.views import import_template
 
 urlpatterns = patterns('',
                        url(r'datasender/create', DataSenderRegistrationFormView.as_view(), name="create_data_sender"),
@@ -33,7 +33,7 @@ urlpatterns = patterns('',
                            name="edit_subject_questionnaire"),
                        (r'questionnaire/save$', save_questionnaire),
                        url(r'subject/export/', export_subject, name="export_subject"),
-                       (r'subject/template/(?P<form_code>.+?)/$', export_template),
+                       (r'subject/template/(?P<form_code>.+?)/$', import_template),
                        url(r'subjects/$', all_subject_types, name="all_subject_type_page"),
                        url(r'superusersindssearched/$', UsersInSearchedDataSender.as_view(), name="superusers_in_ds_searched")
 )

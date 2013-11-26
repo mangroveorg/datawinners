@@ -16,7 +16,7 @@
                 </noscript>
                 <div class="clear"></div>
             </div>
-            <div class="error">{% trans "Download the template:"%} <a href="{% url datawinners.entity.views.export_template form_code %}?filename={{ subject.entity  }}">{{ subject.entity }}.xls</a></div>
+            <div class="error">{% trans "Download the template:"%} <a href="{% url datawinners.entity.views.import_template form_code %}?filename={{ subject.entity  }}">{{ subject.entity }}.xls</a></div>
             <table class="styled_table">
                 <thead>
                     <tr>

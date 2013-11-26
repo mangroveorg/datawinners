@@ -463,7 +463,7 @@ def registered_subjects(request, project_id=None):
     subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
     form_model = get_form_model_by_entity_type(manager, [subject.get('entity')])
-    return render_to_response('project/subjects/list.html',
+    return render_to_response('project/subjects/registered_subjects_list.html',
                               {'project': project,
                                'project_links': project_links,
                                'is_quota_reached':is_quota_reached(request),
