@@ -4,7 +4,7 @@ $(document).ready(function () {
         var url = render_table_url + "/headers";
         $.ajax({
             url: url,
-            data: {"type":tab_name },
+            data: {"type":tab_name, "no_cache": new Date() },
             success: function(columnDef){
                 init_submission_log_table(columnDef)
             },
