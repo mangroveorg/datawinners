@@ -77,11 +77,13 @@
     </script>
 
     <h2>{% trans "My Subjects" %}</h2>
-    {% with entity_type=project.entity_type create_entity_link=project_links.register_subjects_link %}
+    {% with entity_type=project.entity_type create_entity_link=project_links.register_subjects_link form_code=questionnaire_code %}
         {% include 'help/subjects_help.html' %}
     {% endwith %}
 
-    {% include "popup-import.html" %}
+    {% with form_code=questionnaire_code %}
+        {% include "popup-import.html" %}
+    {% endwith %}
 
     <div id="my_subjects">
         {% block secondary_navigation_subjects %}
