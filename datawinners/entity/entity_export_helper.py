@@ -141,7 +141,7 @@ class EntityIdSubmissionInstruction:
 
     @staticmethod
     def get_instruction(field):
-        return _("Enter the ID of the subject"), ""
+        return _("Enter unique ID"), ""
 
 
 class SubjectInstructionBuilder:

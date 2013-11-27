@@ -87,7 +87,7 @@ class TestExcelHeaders(MangroveTestCase):
         self.assertEqual(
             ["\n Enter a word", "\n Enter a number between 12-15.",
              "\n Enter the date in the following format: day.month.year",
-             "\n Enter the ID of the subject",
+             "\n Enter unique ID",
              "\n Choose 1 or more answers from the list."], header_instructions)
 
         header_examples = self._get_header_component(headers, 2)
