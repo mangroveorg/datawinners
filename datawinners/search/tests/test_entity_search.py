@@ -109,7 +109,7 @@ class TestSubjectQuery(TestCase):
                 "number_of_results": 10,
                 "order_by": 1,
                 "order": "-",
-                "search_text": "query_text"
+                "search_text": "query_text",
             }
         subject_query = SubjectQuery(query_params)
         response_creator = Mock()

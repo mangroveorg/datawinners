@@ -21,8 +21,9 @@ class Query(object):
             "start_result_number": self.query_params["start_result_number"],
             "number_of_results": self.query_params["number_of_results"],
             "order": self.query_params["order"],
-            "search_filters": self.query_params["search_filters"]
         }
+        if "search_filters" in self.query_params:
+            options.update({"search_filters": self.query_params["search_filters"]})
         return options
 
     def query_to_be_paginated(self, entity_type, user):

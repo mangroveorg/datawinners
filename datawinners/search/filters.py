@@ -29,7 +29,7 @@ class SubmissionDateRangeFilter():
         return format_datetime(date, date_format)
 
     def get_dates(self, date_range):
-        if date_range == '' or date_range == 'All Dates':
+        if not date_range or date_range == 'All Dates' :
             return None, None
 
         date_range_split = date_range.split('-')
