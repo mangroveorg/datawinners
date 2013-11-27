@@ -3,7 +3,7 @@ from babel.dates import format_datetime
 import datetime
 import elasticutils
 # from datawinners import search
-from datawinners.search.filters import SubmissionDateRangeFilter
+from datawinners.search.filters import SubmissionDateRangeFilter, ReportingDateRangeFilter
 from mangrove.form_model.field import DateField
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.form_model import header_fields
@@ -17,37 +17,20 @@ class SubmissionIndexConstants:
 
 
 class SubmissionQueryBuilder(QueryBuilder):
+    def __init__(self, form_model):
+        self.form_model = form_model
+
     def create_query(self, doc_type, database_name):
         return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type)
 
     def create_paginated_query(self, query, query_params):
         query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
 
-        submission_date_range = None
-        try:
-            submission_date_range = query_params.get('search_filters')["submissionDatePicker"]
-        except Exception as e:
-            pass
+        submission_date_range = query_params.get('search_filters').get("submissionDatePicker")
+        reporting_date_range = query_params.get('search_filters').get("reportingPeriodPicker")
 
-        # query = query.filter(date_value__range=[format_datetime(datetime.datetime(2013, 11, 20), submission_date_format),
-        #                        format_datetime(datetime.datetime(2013, 11, 30), submission_date_format)])
         query = SubmissionDateRangeFilter(submission_date_range).build_filter_query(query)
-        #query = query.filter(dict({"FA__text":'60'}))
-        #query = query.filter(FA__range=['60', '70'])
-        #addFilters(query, query_params);
-
-        # dat_ranges = query_params.get('filters').get('dateRange')
-        # for date in dat_ranges.items():
-        #     if range:
-        #         date_range_filter = getattr(date,'DateRangeFilter');
-        #     date_range_filter.build_filter_query(query)
-        #
-        # dat_ranges = query_params.get('filters').get('scalar')
-
-        # c_dict =
-
-        #instance = getattr(filters, 'SubmissionDateRangeFilter')(query_params.get('SubmissionDateRangeFilter'))
-        #instance = getattr(filters, 'ADateRangeFilter')(query_params.get('SubmissionDateRangeFilter'))
+        query = ReportingDateRangeFilter(reporting_date_range, self.form_model).build_filter_query(query)
 
         submission_type_filter = query_params.get('filter')
         if submission_type_filter:
@@ -55,10 +38,6 @@ class SubmissionQueryBuilder(QueryBuilder):
                 return query.filter(void=True)
             query = (query.filter(status=submission_type_filter))
         return query.filter(void=False)
-        # c = {"query":{"and":[{"term": {"void": "false"}}, {"range": {"RD":{"gte":"11.12.2013","lte":"13.12.2013"}}}]}}
-        #
-        # return query.filter_raw({'and':[{'term': {'void': 'false'}},
-        #                                 {'range': {'RD':{'gte':'11.12.2013','lte':'13.12.2013'}}}]})
 
 
 class SubmissionQueryResponseCreator():
@@ -86,7 +65,8 @@ class SubmissionQueryResponseCreator():
 
 class SubmissionQuery(Query):
     def __init__(self, form_model, query_params):
-        Query.__init__(self, SubmissionQueryResponseCreator(form_model), SubmissionQueryBuilder(), query_params)
+        Query.__init__(self, SubmissionQueryResponseCreator(form_model), SubmissionQueryBuilder(form_model),
+                       query_params)
         self.form_model = form_model
 
     def get_header_dict(self):
@@ -114,8 +94,8 @@ class SubmissionQuery(Query):
         elif submission_type == 'error': \
             header_dict.update({"error_msg": "Error Message"})
         subject_title = self.form_model.entity_type[0].title()
-        header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question):subject_title})
-        header_dict.update({'entity_short_code': "%s ID"%subject_title })
+        header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question): subject_title})
+        header_dict.update({'entity_short_code': "%s ID" % subject_title})
         if self.form_model.event_time_question:
             header_dict.update({self._field_code_in_lowercase(self.form_model.event_time_question): "Reporting Date"})
 

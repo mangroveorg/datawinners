@@ -58,6 +58,7 @@ $.fn.datePicker = function (options) {
                 }
             }
             settings.eventCallback = config.eventCallback
+            settings.onClose = config.onCloseCallback
             return settings;
         }
     })
@@ -81,10 +82,13 @@ DW.get_criteria = function () {
     };
 }
 
-    var $filterSelects = $('#submissionDatePicker');
+    var $filterSelects = $('#submissionDatePicker, #reportingPeriodPicker');
 
     function buildRangePicker() {
-        $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects});
+        //$('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects});
+        $('#submissionDatePicker').datePicker({onCloseCallback: onCloseSubmissionDatePicker});
+        $('#reportingPeriodPicker').datePicker({onCloseCallback: onCloseSubmissionDatePicker});
+
     }
 
 DW.get_datepicker_value = function ($datePicker, default_text) {
@@ -109,8 +113,13 @@ DW.disable_filter_section_if_no_data = function () {
 
     $('.filter_label').addClass('grey')
 };
-
-
     function closeFilterSelects() {
-        $filterSelects.dropdownchecklist('close')
+        $filterSelects.dropdownchecklist('close');
+    }
+
+    function onCloseSubmissionDatePicker() {
+        var table = $(".submission_table").dataTable();
+        $filterSelects.dropdownchecklist('close');
+        console.log('date range: ' + $('#submissionDatePicker').val());
+        table.fnDraw();
     }

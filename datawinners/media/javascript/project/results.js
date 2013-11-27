@@ -106,14 +106,17 @@ $(document).ready(function () {
                 ],
                 "actionItems": actions,
                 "fnInitComplete":function(){
-                    $('#filters').append($('.dataTables_wrapper .dataTables_filter'));
-                    $('#filters').append($('#submissionDatePicker'));
+                    $('#filters ').append($('.dataTables_wrapper .dataTables_filter'));
+//                    $('#filters').append($('#submissionDatePicker'));
                 },
                 "fnHeaderCallback":function(head){}
 
                 // range:[{'name':submissionDateRange,value:}], saclers:{'name':'dataSenders', 'value':$('datasenders').val()}}
 
-                ,"getFilter" : function() {return '{"submissionDatePicker":"'+$('#submissionDatePicker').val()+'"}';}
+                ,"getFilter" : function() {
+                    return '{"submissionDatePicker":"'+$('#submissionDatePicker').val()+'", ' +
+                                '"reportingPeriodPicker":"'+$('#reportingPeriodPicker').val()+'"}';
+                }
             }
 
         );

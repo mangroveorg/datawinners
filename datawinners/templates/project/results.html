@@ -104,6 +104,9 @@
     <div class="heading_block clearfix margin_bottom_10">
 
         {% include 'project/partials/filters/_filter_by_submission_date.html' %}
+        {% if has_reporting_period %}
+            {% include 'project/partials/filters/_filter_by_reporting_period.html' %}
+        {% endif %}
         <!--[if IE 7]>
             <div class="float_right"></div>
         <![endif]-->
