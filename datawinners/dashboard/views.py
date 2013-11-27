@@ -108,7 +108,7 @@ def start(request):
             {'text': text, 'title': text, 'active_tab': tabs_dict[url_tokens[-1]]},
                               context_instance=RequestContext(request))
 
-
+@valid_web_user
 def map_entities(request):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, request.GET['project_id'])
