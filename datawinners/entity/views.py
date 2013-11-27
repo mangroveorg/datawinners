@@ -20,6 +20,7 @@ from django.contrib import messages
 
 from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, valid_web_user
+from datawinners.accountmanagement.helper import is_org_user
 from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.main.database import get_database_manager
@@ -597,17 +598,31 @@ def _get_geo_code_index(fields):
     return index_geocode
 
 
+def field_names(fields):
+    return [field['name'] for field in fields]
+
+
+def field_code(fields):
+     return [field['code'] for field in fields]
+
+
 @valid_web_user
 def import_template(request, form_code):
     manager = get_database_manager(request.user)
     form_model=get_form_model_by_code(manager,form_code)
-    fields = form_model.field_names()
-    field_codes = form_model.field_codes()
     if form_model.is_entity_registration_form():
-        headers = get_subject_headers(form_model.form_fields)
+        form_fields = form_model.form_fields
+        headers = get_subject_headers(form_fields)
+        fields = field_names(form_fields)
+        field_codes = field_code(form_fields)
         sheet_name = request.GET["filename"]
     else:
         form_fields = form_model.form_fields
+        if form_model.entity_defaults_to_reporter():
+            if not is_org_user(request.user):
+                form_fields.remove(form_model.entity_question)
+        fields = field_names(form_fields)
+        field_codes = field_code(form_fields)
         headers = get_submission_headers(form_fields)
 
         sheet_name = "Import_Submissions"

@@ -33,3 +33,7 @@ def is_mobile_number_unique_for_paid_account(org,mobile_number):
 
 def get_all_registered_phone_numbers_on_trial_account():
     return DataSenderOnTrialAccount.objects.values_list('mobile_number', flat=True)
+
+
+def is_org_user(user):
+    return user.groups.filter(name__in=["NGO Admins", "Project Managers"]).count() > 0
