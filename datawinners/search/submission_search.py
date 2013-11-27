@@ -18,6 +18,7 @@ class SubmissionIndexConstants:
 
 class SubmissionQueryBuilder(QueryBuilder):
     def __init__(self, form_model):
+        QueryBuilder.__init__(self)
         self.form_model = form_model
 
     def create_query(self, doc_type, database_name):
@@ -26,11 +27,12 @@ class SubmissionQueryBuilder(QueryBuilder):
     def create_paginated_query(self, query, query_params):
         query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
 
-        submission_date_range = query_params.get('search_filters').get("submissionDatePicker")
-        reporting_date_range = query_params.get('search_filters').get("reportingPeriodPicker")
-
-        query = SubmissionDateRangeFilter(submission_date_range).build_filter_query(query)
-        query = ReportingDateRangeFilter(reporting_date_range, self.form_model).build_filter_query(query)
+        search_filter_param = query_params.get('search_filters')
+        if search_filter_param:
+            submission_date_range = search_filter_param.get("submissionDatePicker")
+            reporting_date_range = search_filter_param.get("reportingPeriodPicker")
+            query = SubmissionDateRangeFilter(submission_date_range).build_filter_query(query)
+            query = ReportingDateRangeFilter(reporting_date_range, self.form_model).build_filter_query(query)
 
         submission_type_filter = query_params.get('filter')
         if submission_type_filter:
