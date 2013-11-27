@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
 import logging
+from urllib import unquote
 
 from django.contrib.auth.decorators import login_required
 from django.template.defaultfilters import register, slugify
@@ -612,7 +613,7 @@ def import_template(request, form_code):
         sheet_name = "Import_Submissions"
 
     index_geocode = _get_geo_code_index(fields)
-    filename = request.GET["filename"]
+    filename = unquote(request.GET["filename"])
     uid_index = len(fields) - 1
     data = [headers]
     workbook_response_factory = WorkBookResponseFactory(form_code, filename, sheet_name)

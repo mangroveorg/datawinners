@@ -95,6 +95,7 @@
     <div class="heading_block alpha data_ana border_none">
         <ul class="links float_right">
             <li><a href="javascript:void(0);" class="export_link">{% trans "Export" %}</a></li>
+            <li><a href="javascript:void(0);" class="import_link">{% trans "Import" %}</a></li>
         </ul>
     </div>
     {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
@@ -136,6 +137,7 @@
         <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
         <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
     </form>
+    {% include "project/import_submission.html" %}
 {% endblock %}
 
 </div>

@@ -78,7 +78,9 @@ $(document).ready(function () {
         var url = '/project/export/log' + '?type=' + tab[active_tab_index];
         $('#export_form').appendJson(DW.get_criteria()).attr('action', url).submit();
     });
-
+    $('.import_link').click(function(){
+        import_dialog.dialog("open");
+    });
     function init_submission_log_table(cols) {
 
         var action_handler = new DW.SubmissionLogActionHandler(tab[active_tab_index], project_id);
@@ -121,6 +123,17 @@ $(document).ready(function () {
 
 
     buildRangePicker();
+
+    var import_dialog = $("#submission_import").dialog({
+            title: gettext("Import Submission"),
+            modal: true,
+            autoOpen: false,
+            width: 500,
+            closeText: 'hide'
+        }
+    );
+
+
 })
 ;
 

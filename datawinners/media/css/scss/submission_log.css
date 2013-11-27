@@ -38,3 +38,6 @@ td.dataTables_empty div.help_accordion {
   #submission_logs #tabs.ui-widget-content .ui-widget-header {
     background: none;
     border-bottom: 4px solid #525252 !important; }
+
+.import_link {
+  color: #0070AC !important; }

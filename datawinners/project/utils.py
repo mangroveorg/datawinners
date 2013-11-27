@@ -71,6 +71,7 @@ def project_info(request, manager, form_model, project_id, questionnaire_code): 
             'project_links': (make_project_links(project, questionnaire_code)),
             'is_quota_reached':is_quota_reached(request, organization=organization),
             'project': project,
+            'encoded_project_name':urlquote(project.name),
             'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
             'reporting_period_question_text': rp_field.label if has_rp else None,
             'has_reporting_period': has_rp,
