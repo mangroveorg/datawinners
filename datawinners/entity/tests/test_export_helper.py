@@ -1,4 +1,4 @@
-from datawinners.entity.entity_export_helper import get_json_field_infos
+from datawinners.entity.entity_export_helper import get_subject_headers
 from mangrove.bootstrap import initializer
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 
@@ -11,7 +11,10 @@ class TestExport(MangroveTestCase):
 
     def test_should_get_field_instructions_for_header_in_excel_export(self):
         registration_form_model = self.manager.load_all_rows_in_view("questionnaire", key="reg")[0].get('value')
-        fields, labels, codes = get_json_field_infos(registration_form_model.get('json_fields'))
+        fields = registration_form_model.field_names()
+        codes = registration_form_model.field_codes()
+
+        labels = get_subject_headers(registration_form_model.get('json_fields'))
         header = []
         for label in labels:
             self.assertTrue(isinstance(label, tuple))

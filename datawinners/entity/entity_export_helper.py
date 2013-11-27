@@ -2,31 +2,50 @@ from django.utils.translation import ugettext_lazy as _
 import xlwt
 
 
-def get_json_field_infos(fields):
-    fields_names, labels, codes = [], [], []
+def get_styles():
     bold = xlwt.easyfont('bold true, height 220, name Helvetica Neue')
     brown = xlwt.easyfont('color_index brown, name Helvetica Neue, height 220')
     italic = xlwt.easyfont('italic true, name Helvetica Neue, height 220')
+    return bold, brown, italic
+
+
+def get_subject_headers(fields):
+    headers = []
+    bold, brown, italic = get_styles()
     for field in fields:
-        if field['name'] != 'entity_type':
-            fields_names.append(field['name'])
-            instruction, example = _get_json_field_instruction_example(field)
-            labels.append(((field["label"], bold), (u"\n %s" % instruction, brown), (u"\n\n %s" % example, italic)))
-            codes.append(field['code'])
-    return fields_names, labels, codes
+        instruction, example = SubjectInstructionBuilder.fetch_instruction(field)
+        headers.append(((field["label"], bold), (u"\n %s" % instruction, brown), (u"\n\n %s" % example, italic)))
+    return headers
 
 
-def _get_json_field_instruction_example(field):
-    if field.get("entity_question_flag", False):
-        return _("Assign a unique ID for each Subject."), _(
-            "Leave this column blank if you want DataWinners to assign an ID for you.")
+def get_submission_headers(fields):
+    headers = []
+    bold, brown, italic = get_styles()
+    for field in fields:
+        instruction, example = SubmissionInstructionBuilder.fetch_instruction(field)
+        headers.append(((field["label"], bold), (u"\n %s" % instruction, brown), (u"\n\n %s" % example, italic)))
+    return headers
 
-    if field["type"] == "text":
+
+class TextFieldInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field["type"] == "text"
+
+    @staticmethod
+    def get_instruction(field):
         if "constraints" in field and field["constraints"][0][0] == "length" and "max" in field["constraints"][0][1]:
             return _("Enter a Word with a maximum %s of characters.") % field["constraints"][0][1].get("max"), ""
         return _("Enter a word"), ""
 
-    if field["type"] == "integer":
+
+class IntegerFieldInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field["type"] == "integer"
+
+    @staticmethod
+    def get_instruction(field):
         if "constraints" in field and field["constraints"][0][0] == "range":
             max = field["constraints"][0][1].get("max")
             min = field["constraints"][0][1].get("min")
@@ -38,27 +57,115 @@ def _get_json_field_instruction_example(field):
                 return _("Enter a number. The minimum is %s") % min, ""
             return _("Enter a number"), ""
 
-    if field["type"] == "geocode":
+
+class GeoCodeFieldInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field["type"] == "geocode"
+
+    @staticmethod
+    def get_instruction(field):
         return _("Enter GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."), _("Example: -18.1324,27.6547")
 
-    if field["type"] == "list":
+
+class ListFieldInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field["type"] == "list"
+
+    @staticmethod
+    def get_instruction(field):
         return _("Enter name of the location."), _("Example: Nairobi")
 
-    if field["type"] == "select1":
+
+class SingleSelectFieldInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field["type"] == "select1"
+
+    @staticmethod
+    def get_instruction(field):
         return _("Enter 1 answer from the list."), _("Example: a")
 
-    if field["type"] == "select":
+
+class MultiSelectFieldInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field["type"] == "select"
+
+    @staticmethod
+    def get_instruction(field):
         return _("Choose 1 or more answers from the list."), _("Example: a or ab")
 
-    if field["type"] == "telephone_number":
+
+class TelephoneNumberFieldInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field["type"] == "telephone_number"
+
+    @staticmethod
+    def get_instruction(field):
         return _("Enter a telephone number along with the country code."), _("Example: 261333745269")
 
-    date_format_mapping = {
-        "mm.yyyy": (_("Enter the date in the following format: month.year"), _("Example: 12.2011")),
-        "dd.mm.yyyy": (_("Enter the date in the following format: day.month.year"), _("Example: 25.12.2011")),
-        "mm.dd.yyyy": (_("Enter the date in the following format: month.day.year"), _("Example: 12.25.2011"))
-    }
 
-    if field["type"] == "date":
+class DateFieldInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field["type"] == "date"
+
+    @staticmethod
+    def get_instruction(field):
+        date_format_mapping = {
+            "mm.yyyy": (_("Enter the date in the following format: month.year"), _("Example: 12.2011")),
+            "dd.mm.yyyy": (_("Enter the date in the following format: day.month.year"), _("Example: 25.12.2011")),
+            "mm.dd.yyyy": (_("Enter the date in the following format: month.day.year"), _("Example: 12.25.2011"))
+        }
         return date_format_mapping.get(field["date_format"])
-    return field["instruction"], ""
+
+
+class EntityIdRegistrationInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field.get("entity_question_flag", False)
+
+    @staticmethod
+    def get_instruction(field):
+        return _("Assign a unique ID for each Subject."), _(
+            "Leave this column blank if you want DataWinners to assign an ID for you.")
+
+
+class EntityIdSubmissionInstruction:
+    @staticmethod
+    def matches_criteria(field):
+        return field.get("entity_question_flag", False)
+
+    @staticmethod
+    def get_instruction(field):
+        return _("Assign a unique ID for each Subject."), _(
+            "Leave this column blank if you want DataWinners to assign an ID for you.")
+
+
+class SubjectInstructionBuilder:
+    field_instructions = [EntityIdRegistrationInstruction, IntegerFieldInstruction, TextFieldInstruction,
+                          GeoCodeFieldInstruction, DateFieldInstruction, MultiSelectFieldInstruction,
+                          SingleSelectFieldInstruction, TelephoneNumberFieldInstruction, ListFieldInstruction]
+
+    @classmethod
+    def fetch_instruction(cls, field):
+        for field_instruction in cls.field_instructions:
+            if field_instruction.matches_criteria(field):
+                return field_instruction.get_instruction(field)
+        return None
+
+
+class SubmissionInstructionBuilder:
+    field_instructions = [EntityIdSubmissionInstruction, IntegerFieldInstruction, TextFieldInstruction,
+                          GeoCodeFieldInstruction, DateFieldInstruction, MultiSelectFieldInstruction,
+                          SingleSelectFieldInstruction]
+
+    @classmethod
+    def fetch_instruction(cls, field):
+        for field_instruction in cls.field_instructions:
+            if field_instruction.matches_criteria(field):
+                return field_instruction.get_instruction(field)
+        return None

@@ -19,7 +19,7 @@ from django.contrib import messages
 
 from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, valid_web_user
-from datawinners.entity.entity_export_helper import get_json_field_infos
+from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.main.database import get_database_manager
 from datawinners.search.entity_search import SubjectQuery
@@ -568,7 +568,8 @@ def export_subject(request):
 
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)
-    fields, labels, field_codes = get_json_field_infos(form_model.form_fields)
+    field_codes = form_model.field_codes()
+    labels = get_subject_headers(form_model.form_fields)
     raw_data = [labels]
 
     for subject in subject_list:
@@ -599,18 +600,21 @@ def _get_geo_code_index(fields):
 def import_template(request, form_code):
     manager = get_database_manager(request.user)
     form_model=get_form_model_by_code(manager,form_code)
+    fields = form_model.field_names()
+    field_codes = form_model.field_codes()
     if form_model.is_entity_registration_form():
-        fields, labels, field_codes = get_json_field_infos(form_model.form_fields)
+        headers = get_subject_headers(form_model.form_fields)
         sheet_name = request.GET["filename"]
     else:
         form_fields = form_model.form_fields
-        fields, labels, field_codes = get_json_field_infos(form_fields)
+        headers = get_submission_headers(form_fields)
+
         sheet_name = "Import_Submissions"
 
     index_geocode = _get_geo_code_index(fields)
     filename = request.GET["filename"]
     uid_index = len(fields) - 1
-    data = [labels]
+    data = [headers]
     workbook_response_factory = WorkBookResponseFactory(form_code, filename, sheet_name)
     return workbook_response_factory.create_workbook_response(index_geocode, uid_index, data, field_codes)
 
