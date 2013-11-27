@@ -141,8 +141,7 @@ class EntityIdSubmissionInstruction:
 
     @staticmethod
     def get_instruction(field):
-        return _("Assign a unique ID for each Subject."), _(
-            "Leave this column blank if you want DataWinners to assign an ID for you.")
+        return _("Enter the ID of the subject"), ""
 
 
 class SubjectInstructionBuilder:
