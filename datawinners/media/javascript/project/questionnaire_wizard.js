@@ -189,6 +189,7 @@ $(document).ready(function() {
     });
 
     $("#submit-button").click(function() {
+        DW.loading();
         if($("#qtype").val() != undefined) {
             $("#questionnaire-change").dialog("open");
         } else {
