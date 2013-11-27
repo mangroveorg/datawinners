@@ -1,11 +1,11 @@
 import sys
-from datawinners.search.index_utils import get_elasticsearch_handle
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
 import logging
 
+from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.database import get_db_manager
 from mangrove.form_model.form_model import FormModel
@@ -45,7 +45,7 @@ def create_search_indices_for_submissions(db_name):
         logger.exception(e.message)
 
 
-es = es = get_elasticsearch_handle()
+es = get_elasticsearch_handle()
 migrate(all_db_names(), create_search_indices_for_submissions, version=(10, 0, 1), threads=1)
 
 

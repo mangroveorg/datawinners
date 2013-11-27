@@ -1,5 +1,6 @@
 from string import lower
 from babel.dates import format_datetime
+from mangrove.datastore.documents import SurveyResponseDocument
 from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import get_fields_mapping, get_elasticsearch_handle
 from mangrove.datastore.datadict import DataDictType
@@ -16,13 +17,14 @@ def create_submission_mapping(dbm, form_model):
     es.put_mapping(dbm.database_name, form_model.id, mapping)
 
 
-def update_submission_search_index(submission_doc, feed_dbm, refresh_index=True):
+def update_submission_search_index(feed_submission_doc, feed_dbm, refresh_index=True):
     es = get_elasticsearch_handle()
     dbm = get_db_manager(feed_dbm.database_name.replace("feed_", ""))
-    form_model = get_form_model_by_code(dbm, submission_doc.form_code)
-    search_dict = _meta_fields(submission_doc)
-    _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
-    es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
+    form_model = get_form_model_by_code(dbm, feed_submission_doc.form_code)
+    submission_doc = SurveyResponseDocument.load(dbm.database, feed_submission_doc.id)
+    search_dict = _meta_fields(feed_submission_doc, submission_doc)
+    _update_with_form_model_fields(dbm, feed_submission_doc, search_dict, form_model)
+    es.index(dbm.database_name, form_model.id, search_dict, id=feed_submission_doc.id, refresh=refresh_index)
 
 
 
@@ -35,14 +37,13 @@ def _metadata_mapping(dbm):
             TextField("Error message", "error_msg", "Error Message", DataDictType(dbm))]
 
 
-def _meta_fields(submission_doc):
+def _meta_fields(feed_submission_doc, submission_doc):
     search_dict = {}
-    search_dict.update({"status": submission_doc.status.capitalize()})
-    search_dict.update(
-        {"date": format_datetime(submission_doc.survey_response_modified_time, "MMM. dd, yyyy, hh:mm a", locale="en")})
-    search_dict.update({"ds_id": submission_doc.data_sender.get('id')})
-    search_dict.update({"ds_name": submission_doc.data_sender.get('last_name')})
-    search_dict.update({"error_msg": submission_doc.error_message})
+    search_dict.update({"status": feed_submission_doc.status.capitalize()})
+    search_dict.update({"date": format_datetime(submission_doc.created, "MMM. dd, yyyy, hh:mm a", locale="en")})
+    search_dict.update({"ds_id": feed_submission_doc.data_sender.get('id')})
+    search_dict.update({"ds_name": feed_submission_doc.data_sender.get('last_name')})
+    search_dict.update({"error_msg": feed_submission_doc.error_message})
     return search_dict
 
 
