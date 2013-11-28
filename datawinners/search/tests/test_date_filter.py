@@ -33,7 +33,7 @@ class TestSubmissionFilter(unittest.TestCase):
 
 
 class TestReportingDateFilter(unittest.TestCase):
-    def test_should_not_return_back_query_if_no_reporting_period_question(self):
+    def test_should_return_back_query_if_no_reporting_period_question(self):
         mock_query = Mock(spec=elasticutils.S)
         mock_form_model = Mock(spec=FormModel)
         type(mock_form_model).event_time_question = PropertyMock(return_value=None)
