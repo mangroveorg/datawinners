@@ -42,7 +42,7 @@ def _meta_fields(feed_submission_doc, submission_doc, dbm):
     search_dict = {}
     datasender_id = feed_submission_doc.data_sender.get('id')
     search_dict.update({"status": feed_submission_doc.status.capitalize()})
-    search_dict.update({"date": format_datetime(submission_doc.created, "MMM. dd, yyyy, hh:mm a", locale="en")})
+    search_dict.update({"date": format_datetime(submission_doc.submitted_on, "MMM. dd, yyyy, hh:mm a", locale="en")})
     search_dict.update({"ds_id": datasender_id or "NA"})
     search_dict.update({"ds_name": lookup_entity_name(dbm, datasender_id, ["reporter"])})
     search_dict.update({"error_msg": feed_submission_doc.error_message})
