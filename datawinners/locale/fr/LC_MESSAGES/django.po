@@ -2569,6 +2569,19 @@ msgstr "Paramètres des rappels enregistrés avec succès."
 msgid "Answer must be a word or phrase %d characters maximum"
 msgstr "La réponse doit être un mot de %d caractères au maximum"
 
+
+msgid "Answer must be a word"
+msgstr "La réponse doit être un mot"
+
+msgid "Answer must be a word %s characters maximum"
+msgstr "La réponse doit être un mot à %s caractères au maximum"
+
+msgid "Answer must be a number. The minimum is %s"
+msgstr "La réponse doit être un nombre. Le minimum est %s"
+
+msgid "Answer must be a number. The maximum is %s"
+msgstr "La réponse doit être un nombre. Le maximum est %s"
+
 msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"
 msgstr "Entrez le numéro d'identification de l'Expéditeur de données. Cliquez sur 'Expéditeurs de données' en haut de cette page pour trouver ces numéros d'identification. Exemple: rep10"
 

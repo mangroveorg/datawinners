@@ -35,8 +35,8 @@ class TextFieldInstruction:
     @staticmethod
     def get_instruction(field):
         if "constraints" in field and field["constraints"][0][0] == "length" and "max" in field["constraints"][0][1]:
-            return _("Enter a Word with a maximum %s of characters.") % field["constraints"][0][1].get("max"), ""
-        return _("Enter a word"), ""
+            return _("Answer must be a word %s characters maximum") % field["constraints"][0][1].get("max"), ""
+        return _("Answer must be a word"), ""
 
 
 class IntegerFieldInstruction:
@@ -50,11 +50,11 @@ class IntegerFieldInstruction:
             max = field["constraints"][0][1].get("max")
             min = field["constraints"][0][1].get("min")
             if max and min:
-                return _("Enter a number between %s-%s.") % (min, max), ""
+                return _("Answer must be a number between %s-%s.") % (min, max), ""
             if max and not min:
-                return _("Enter a number. The maximum is %s") % max, ""
+                return _("Answer must be a number. The maximum is %s") % max, ""
             if not max and min:
-                return _("Enter a number. The minimum is %s") % min, ""
+                return _("Answer must be a number. The minimum is %s") % min, ""
             return _("Enter a number"), ""
 
 
@@ -65,7 +65,7 @@ class GeoCodeFieldInstruction:
 
     @staticmethod
     def get_instruction(field):
-        return _("Enter GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."), _("Example: -18.1324,27.6547")
+        return _("Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."), _("Example: -18.1324,27.6547")
 
 
 class ListFieldInstruction:
@@ -95,7 +95,7 @@ class MultiSelectFieldInstruction:
 
     @staticmethod
     def get_instruction(field):
-        return _("Choose 1 or more answers from the list."), _("Example: a or ab")
+        return _("Enter 1 or more answers from the list."), _("Example: a or ab")
 
 
 class TelephoneNumberFieldInstruction:
@@ -105,7 +105,7 @@ class TelephoneNumberFieldInstruction:
 
     @staticmethod
     def get_instruction(field):
-        return _("Enter a telephone number along with the country code."), _("Example: 261333745269")
+        return _("Answer must be country code plus telephone number"), _("Example: 261333745269")
 
 
 class DateFieldInstruction:
@@ -116,9 +116,9 @@ class DateFieldInstruction:
     @staticmethod
     def get_instruction(field):
         date_format_mapping = {
-            "mm.yyyy": (_("Enter the date in the following format: month.year"), _("Example: 12.2011")),
-            "dd.mm.yyyy": (_("Enter the date in the following format: day.month.year"), _("Example: 25.12.2011")),
-            "mm.dd.yyyy": (_("Enter the date in the following format: month.day.year"), _("Example: 12.25.2011"))
+            "mm.yyyy": (_("Answer must be a date in the following format: month.year"), _("Example: 12.2011")),
+            "dd.mm.yyyy": (_("Answer must be a date in the following format: day.month.year"), _("Example: 25.12.2011")),
+            "mm.dd.yyyy": (_("Answer must be a date in the following format: month.day.year"), _("Example: 12.25.2011"))
         }
         return date_format_mapping.get(field["date_format"])
 
