@@ -239,6 +239,7 @@ jQuery.fn.daterangepicker = function(settings){
         var dateEnd = (typeof end == 'string') ? Date.parse(end) : end();
         rp.find('.range-start').datepicker('setDate', dateStart).find('.ui-datepicker-current-day').trigger('click');
         rp.find('.range-end').datepicker('setDate', dateEnd).find('.ui-datepicker-current-day').trigger('click');
+        hideRPForAllPeriods(rp);
     }
 
     //preset menu click events
@@ -295,10 +296,10 @@ jQuery.fn.daterangepicker = function(settings){
 		}
 		else {
 			//custom date range
-            doneBtn.hide();
-            rp.find('.range-start, .range-end').hide(400, function(){
-                rpPickers.hide();
-            });
+            //doneBtn.hide();
+//            rp.find('.range-start, .range-end').hide(400, function(){
+//                rpPickers.hide();
+//            });
             if(range_list_item.data('is_for_all_period') ){
                 onAllPeriodSelected(range_list_item);
             } else {

@@ -47,7 +47,8 @@ $.fn.datePicker = function (options) {
                 earliestDate: '1/1/2011',
                 latestDate: '21/12/2012',
                 dateFormat: getDateFormat(date_format),
-                rangeSplitter: '-'
+                rangeSplitter: '-',
+                closeOnSelect:false
             };
             if (ismonthly) {
                 settings.presets = {dateRange: gettext('Choose Month(s)')}
