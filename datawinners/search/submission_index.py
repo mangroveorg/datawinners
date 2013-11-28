@@ -41,8 +41,8 @@ def _meta_fields(feed_submission_doc, submission_doc):
     search_dict = {}
     search_dict.update({"status": feed_submission_doc.status.capitalize()})
     search_dict.update({"date": format_datetime(submission_doc.created, "MMM. dd, yyyy, hh:mm a", locale="en")})
-    search_dict.update({"ds_id": feed_submission_doc.data_sender.get('id')})
-    search_dict.update({"ds_name": feed_submission_doc.data_sender.get('last_name')})
+    search_dict.update({"ds_id": feed_submission_doc.data_sender.get('id') or "NA"})
+    search_dict.update({"ds_name": feed_submission_doc.data_sender.get('last_name') or "NA"})
     search_dict.update({"error_msg": feed_submission_doc.error_message})
     return search_dict
 
