@@ -1,5 +1,6 @@
 from string import lower
 from babel.dates import format_datetime
+from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.datastore.documents import SurveyResponseDocument
 from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import get_fields_mapping, get_elasticsearch_handle
@@ -22,7 +23,7 @@ def update_submission_search_index(feed_submission_doc, feed_dbm, refresh_index=
     dbm = get_db_manager(feed_dbm.database_name.replace("feed_", ""))
     form_model = get_form_model_by_code(dbm, feed_submission_doc.form_code)
     submission_doc = SurveyResponseDocument.load(dbm.database, feed_submission_doc.id)
-    search_dict = _meta_fields(feed_submission_doc, submission_doc)
+    search_dict = _meta_fields(feed_submission_doc, submission_doc, dbm)
     _update_with_form_model_fields(dbm, feed_submission_doc, search_dict, form_model)
     es.index(dbm.database_name, form_model.id, search_dict, id=feed_submission_doc.id, refresh=refresh_index)
 
@@ -37,18 +38,22 @@ def _metadata_mapping(dbm):
             TextField("Error message", "error_msg", "Error Message", DataDictType(dbm))]
 
 
-def _meta_fields(feed_submission_doc, submission_doc):
+def _meta_fields(feed_submission_doc, submission_doc, dbm):
     search_dict = {}
+    datasender_id = feed_submission_doc.data_sender.get('id')
     search_dict.update({"status": feed_submission_doc.status.capitalize()})
     search_dict.update({"date": format_datetime(submission_doc.created, "MMM. dd, yyyy, hh:mm a", locale="en")})
-    search_dict.update({"ds_id": feed_submission_doc.data_sender.get('id') or "NA"})
-    search_dict.update({"ds_name": feed_submission_doc.data_sender.get('last_name') or "NA"})
+    search_dict.update({"ds_id": datasender_id or "NA"})
+    search_dict.update({"ds_name": lookup_entity_name(dbm, datasender_id, ["reporter"])})
     search_dict.update({"error_msg": feed_submission_doc.error_message})
     return search_dict
 
 
 def lookup_entity_name(dbm, id, entity_type):
-    return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
+    try :
+        return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
+    except DataObjectNotFound:
+        return id or "NA"
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     for key in submission_doc.values:
