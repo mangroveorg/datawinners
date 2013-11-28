@@ -38,6 +38,7 @@
     <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
     <script src="/media/javascript/data_tables/js/dwtable.js"></script>
     <script type="text/javascript" src="/media/javascript/project/results.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/import_submission.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_log_actions.js"></script>
 
 
@@ -86,6 +87,7 @@
             var has_reporting_period = {{ has_reporting_period|lower }};
             var render_table_url = '/project/submissions/{{ questionnaire_code }}';
             var project_id = '{{ project.id }}';
+            var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
         </script>
     {% endcompress %}
     {% block secondary_navigation_data %}
@@ -95,7 +97,7 @@
     <div class="heading_block alpha data_ana border_none">
         <ul class="links float_right">
             <li><a href="javascript:void(0);" class="export_link">{% trans "Export" %}</a></li>
-            <li><a href="javascript:void(0);" class="import_link">{% trans "Import" %}</a></li>
+            <li><a href="javascript:void(0);" data-projectname="{{ encoded_project_name }}" data-formcode="{{ questionnaire_code}}" class="import_link">{% trans "Import" %}</a></li>
         </ul>
     </div>
     {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}

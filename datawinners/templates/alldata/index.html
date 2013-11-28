@@ -8,6 +8,12 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/import_submission.js"></script>
+    <script type="text/javascript"> var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>"; </script>
+{% endblock %}
+
 {% block main_message %}
     {% if activation_success %}
         <div class="container_24" id="main_message">
@@ -62,6 +68,11 @@
                         </span>
                             <a href="{{ project.web_submission_link }}"
                                class="{{ project.disabled }} {{ project.web_submission_link_disabled }} send-in-data-link">{% trans "Send in data" %}</a>
+                            |
+                            <a class="import_link" data-projectname="{{ project.encoded_name }}"
+                               data-formcode="{{ project.qid }}"
+                               href="javascript:void(0);">{% trans "Import" %}</a>
+
                             {% if project.create_subjects_link %}
                                 |<a href="{{ project.create_subjects_link}}" class="register-subject-link">
                                 {% trans "Register a new " %}{{ project.entity_type }}</a>
@@ -71,5 +82,6 @@
                 </tr>
             {% endfor %}
         </table>
+        {% include "project/import_submission.html" %}
     </div>
 {% endblock %}

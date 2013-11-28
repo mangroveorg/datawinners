@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
+from django.utils.http import urlquote
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, is_new_user, valid_web_user
 from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.dataextraction.helper import convert_to_json_response
@@ -68,7 +69,8 @@ def get_project_info(manager, raw_project):
                         web_submission_link=web_submission_link,
                         web_submission_link_disabled=web_submission_link_disabled,
                         create_subjects_link=create_subjects_link,
-                        entity_type=project.entity_type)
+                        entity_type=project.entity_type,
+                        encoded_name=urlquote(raw_project['value']['name']))
     return project_info
 
 

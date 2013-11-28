@@ -15,7 +15,7 @@ def _get_submission_form_fields_for_user(form_model, request):
     form_fields = form_model.form_fields
     if form_model.entity_defaults_to_reporter():
         if not is_org_user(request.user):
-            form_fields.remove(form_model.entity_question)
+            return filter(lambda field: field['code']!= form_model.entity_question.code, form_fields)
     return form_fields
 
 
