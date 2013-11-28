@@ -54,6 +54,15 @@ class TestReportingDateFilter(unittest.TestCase):
         ReportingDateRangeFilter('21.11.2013-28.11.2013', mock_form_model).build_filter_query(mock_query)
         mock_query.filter.assert_called_with(rp_value__range=['21.11.2013', '29.11.2013'])
 
+    def test_should_build_query_with_start_and_end_date_in_different_format(self):
+        mock_query = Mock(spec=elasticutils.S)
+        mock_form_model = Mock(spec=FormModel)
+        type(mock_form_model).event_time_question = PropertyMock(
+            return_value=DateField(name='rp', code='rp', label='rp', date_format='mm.dd.yyyy',
+                                   ddtype=Mock(spec=DataDictType)))
+        ReportingDateRangeFilter('11.21.2013-11.28.2013', mock_form_model).build_filter_query(mock_query)
+        mock_query.filter.assert_called_with(rp_value__range=['11.21.2013', '11.29.2013'])
+
     def test_should_call_query_match_for_current_day(self):
         mock_query = Mock(spec=elasticutils.S)
         mock_form_model = Mock(spec=FormModel)

@@ -15,9 +15,11 @@ class DateRangeFilter():
     def get_persisted_date_format(self):
         pass
 
-    @staticmethod
-    def _format_date(date_string, date_format, end_date=False):
-        date = datetime.datetime.strptime(date_string.strip(), DATE_PICKER_WIDGET_DATE_FORMAT)
+    def get_python_date_format(self, date_format):
+        pass
+
+    def _format_date(self, date_string, date_format, end_date=False):
+        date = datetime.datetime.strptime(date_string.strip(), self.get_python_date_format(date_format))
         if end_date:
             date = date + datetime.timedelta(days=1)
         return format_datetime(date, date_format)
@@ -52,6 +54,8 @@ class SubmissionDateRangeFilter(DateRangeFilter):
     def get_persisted_date_format(self):
         return DateField.FORMAT_DATE_DICTIONARY.get('submission_date_format')
 
+    def get_python_date_format(self, date):
+        return '%d.%m.%Y'
 
 class ReportingDateRangeFilter(SubmissionDateRangeFilter):
     def __init__(self, date_range, form_model):
@@ -66,3 +70,7 @@ class ReportingDateRangeFilter(SubmissionDateRangeFilter):
     def get_date_field_name(self):
         return self.reporting_date_field.code
 
+    def get_python_date_format(self, date):
+        if self.reporting_date_field:
+            return DateField.DATE_DICTIONARY.get(self.reporting_date_field.date_format)
+        return None
