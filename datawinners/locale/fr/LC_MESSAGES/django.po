@@ -4393,3 +4393,6 @@ msgstr "- Veuillez s'il vous plaît utiliser le dernier "
 
 msgid "Invalid GPS value."
 msgstr "Coordonnées GPS non valides."
+
+msgid "Import"
+msgstr "Importer"

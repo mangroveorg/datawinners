@@ -26,11 +26,11 @@ def import_template(request, form_code):
     if form_model.is_entity_registration_form():
         form_fields = form_model.form_fields
         headers = get_subject_headers(form_fields)
-        field_codes = field_code(form_fields)
+        field_codes = _field_codes(form_fields)
         sheet_name = request.GET["filename"]
     else:
         form_fields = _get_submission_form_fields_for_user(form_model, request)
-        field_codes = field_code(form_fields)
+        field_codes = _field_codes(form_fields)
         headers = get_submission_headers(form_fields)
         sheet_name = "Import_Submissions"
 
@@ -39,17 +39,8 @@ def import_template(request, form_code):
     return workbook_response_factory.create_workbook_response([headers], field_codes)
 
 
-def field_code(fields):
+def _field_codes(fields):
     return [field['code'] for field in fields]
-
-
-def _get_geo_code_index(fields):
-    try:
-        index_geocode = fields.index(GEO_CODE_FIELD_NAME)
-    except ValueError:
-        index_geocode = 0
-    return index_geocode
-
 
 class WorkBookResponseFactory:
     def __init__(self, form_code, file_name, sheet_name):

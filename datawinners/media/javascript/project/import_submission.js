@@ -1,6 +1,6 @@
 $(document).ready(function(){
     var import_dialog = $("#submission_import").dialog({
-            title: gettext("Import Submission"),
+            title: gettext("Import Submission(s)"),
             modal: true,
             autoOpen: false,
             width: 500,
