@@ -51,9 +51,11 @@ def _meta_fields(feed_submission_doc, submission_doc, dbm):
 
 def lookup_entity_name(dbm, id, entity_type):
     try :
-        return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
+        if id:
+            return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
     except DataObjectNotFound:
-        return id or "NA"
+        pass
+    return id or "NA"
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     for key in submission_doc.values:
