@@ -5,8 +5,12 @@ from datawinners.entity.helper import delete_datasender_for_trial_mode
 from datawinners.utils import get_database_manager_for_org
 from mangrove.utils.types import is_not_empty
 
-org_id = 'SLX364903'
-email_addresses = ['ajay@test.com']
+org_id = 'FFN411573'
+email_addresses = ['ndarvech@unicef.org', 'srabotovao@unicef.org', 'handrianaivosoa@unicef.org', 'jratsimbazafy@unicef.org', 'eravelonjanahary@unicef.org',
+                   'bonardbonard@unicef.org', 'lrazafindrakoto@unicef.org', 'jrabenantenaina@unicef.org', 'hrasolomanana@unicef.org',
+                   'jrandriatefison@unicef.org', 'dralaivao@unicef.org', 'fsahoa@unicef.org', 'frakotomahanina@unicef.org', 'srakotondrina@unicef.org', 'srandrianarisoa@unicef.org',
+                   'arazanakoto@unicef.org', 'lrasoamahenina@unicef.org', 'drasolofoniaina@unicef.org', 'nandry@unicef.org', 'mrajonson@unicef.org',
+                   'adelcourt@unicef.org', 'aazevedo@unicef.org', 'rfysh@unicef.org']
 
 organization = Organization.objects.get(org_id=org_id)
 
@@ -30,7 +34,7 @@ def _is_only_datasender(user):
 
 for email_id in email_addresses:
     try:
-        print "Processing User with email_id: '%s'" % user.email
+        print "Processing User with email_id: '%s'" % email_id
         user = User.objects.get(email=email_id)
         if _is_only_datasender(user):
             profiles = NGOUserProfile.objects.filter(user=user)
