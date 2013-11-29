@@ -286,8 +286,9 @@ jQuery.fn.daterangepicker = function(settings){
                 rp.find('.ui-datepicker-inline').hide();
                 showMP($('#' + rp.data('for')));
                 if ($('#monthpicker_start').size() == 1 && $('#monthpicker_start').parent('.hasDatepicker:visible').size() == 0) {
-                    $('#monthpicker_start').appendTo($('.range-start'));
-                    $('#monthpicker_end').appendTo($('.range-end'));
+                    //$('.range-start>.ui-datepicker').empty();
+                    //$('#monthpicker_start').appendTo($('.range-start'));
+                    //$('#monthpicker_end').appendTo($('.range-end'));
                 }
             } else {
                 rp.find('#monthpicker_start').hide();
@@ -296,10 +297,10 @@ jQuery.fn.daterangepicker = function(settings){
 		}
 		else {
 			//custom date range
-            //doneBtn.hide();
-//            rp.find('.range-start, .range-end').hide(400, function(){
-//                rpPickers.hide();
-//            });
+            doneBtn.hide();
+            rp.find('.range-start, .range-end').hide(400, function(){
+                rpPickers.hide();
+            });
             if(range_list_item.data('is_for_all_period') ){
                 onAllPeriodSelected(range_list_item);
             } else {

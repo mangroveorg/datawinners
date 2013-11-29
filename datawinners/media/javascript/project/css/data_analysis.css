@@ -64,7 +64,3 @@
 
 .ui-daterangepickercontain .ranges, .ui-daterangepickercontain .range-end, .ui-daterangepickercontain .range-start {
   display: block; }
-
-table.styled_table thead th {
-  padding-right: 30px;
-  vertical-align: top !important; }

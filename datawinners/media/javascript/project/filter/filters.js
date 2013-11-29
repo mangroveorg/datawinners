@@ -2,7 +2,8 @@ $.fn.datePicker = function (options) {
     return this.each(function () {
         var $this = $(this);
         var config = $.extend({}, options || {});
-        $this.daterangepicker(getSettings(config, config.header || gettext('All Dates'), $this.data('ismonthly'))).monthpicker();
+        var widget = $this.daterangepicker(getSettings(config, config.header || gettext('All Dates'), $this.data('ismonthly')))
+        if ($this.data('ismonthly') != undefined) widget.monthpicker();
         $this.click(function () {
             var $monthpicker = $('#monthpicker_start, #monthpicker_end', $('.ranges'));
             if ($this.data('ismonthly')) {
