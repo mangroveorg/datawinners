@@ -24,15 +24,8 @@ describe("Import Submission Popup", function(){
 
         popup.open();
 
-        expect(mockDialog).toHaveBeenCalledWith({
-                                                  title: "someText",
-                                                  modal: true,
-                                                  autoOpen: false,
-                                                  width: 500,
-                                                  closeText: 'hide'
-                                                });
+        expect(mockDialog).toHaveBeenCalled();
         expect(chainedDialogSpy).toHaveBeenCalledWith("open")
     });
-
 
 });
