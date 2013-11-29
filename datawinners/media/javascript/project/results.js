@@ -17,6 +17,7 @@ $(document).ready(function () {
         $('#filters .dataTables_filter').remove();
         $('.submission_table').dataTable().fnDestroy();
         $('.submission_table').empty();
+        DW.loading();
         load_table(tab_name);
     }
 
