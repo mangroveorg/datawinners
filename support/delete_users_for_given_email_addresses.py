@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.entity.helper import delete_datasender_for_trial_mode
 from datawinners.utils import get_database_manager_for_org
+from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.utils.types import is_not_empty
 
 org_id = 'FFN411573'
@@ -20,16 +21,24 @@ dbm = get_database_manager_for_org(organization)
 def _delete_user_entry(profiles):
     user_profile = profiles[0]
     profile_reporter_id = user_profile.reporter_id
+
     if profile_reporter_id.lower() == profile_reporter_id:
         print "Not deleting user since the reporter id is already lowercase."
     else:
-        print "Deleting user."
-        user_profile.user.delete()
-        if organization.in_trial_mode:
-            delete_datasender_for_trial_mode(dbm, [profile_reporter_id.lower()], 'reporter')
+        entity_to_be_deleted = get_by_short_code_include_voided(dbm, profile_reporter_id.lower(), ['reporter'])
+        print "User void status:%s" % entity_to_be_deleted.is_void()
+        if entity_to_be_deleted.is_void():
+            print "Deleting user."
+            user_profile.user.delete()
+            if organization.in_trial_mode:
+                delete_datasender_for_trial_mode(dbm, [profile_reporter_id.lower()], 'reporter')
+        else:
+            print "Not deleting user since it is not soft deleted."
+
 
 def _is_only_datasender(user):
     return user.groups.filter(name__in=["NGO Admins", "Project Managers"]).count() <= 0
+
 
 for email_id in email_addresses:
     try:
@@ -44,4 +53,4 @@ for email_id in email_addresses:
         else:
             print "User with email_id: '%s' is not a simple DS and will not be deleted." % user.email
     except ObjectDoesNotExist:
-         print "User with email_id: '%s' does not exist" % user.email
+        print "User with email_id: '%s' does not exist" % user.email
