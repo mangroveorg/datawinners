@@ -9,8 +9,7 @@ org_id = 'FFN411573'
 email_addresses = ['ndarvech@unicef.org', 'srabotovao@unicef.org', 'handrianaivosoa@unicef.org', 'jratsimbazafy@unicef.org', 'eravelonjanahary@unicef.org',
                    'bonardbonard@unicef.org', 'lrazafindrakoto@unicef.org', 'jrabenantenaina@unicef.org', 'hrasolomanana@unicef.org',
                    'jrandriatefison@unicef.org', 'dralaivao@unicef.org', 'fsahoa@unicef.org', 'frakotomahanina@unicef.org', 'srakotondrina@unicef.org', 'srandrianarisoa@unicef.org',
-                   'arazanakoto@unicef.org', 'lrasoamahenina@unicef.org', 'drasolofoniaina@unicef.org', 'nandry@unicef.org', 'mrajonson@unicef.org',
-                   'adelcourt@unicef.org', 'aazevedo@unicef.org', 'rfysh@unicef.org']
+                   'arazanakoto@unicef.org', 'lrasoamahenina@unicef.org', 'drasolofoniaina@unicef.org', 'nandry@unicef.org', 'mrajonson@unicef.org']
 
 organization = Organization.objects.get(org_id=org_id)
 
