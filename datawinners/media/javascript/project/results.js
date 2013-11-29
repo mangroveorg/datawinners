@@ -4,15 +4,15 @@ $(document).ready(function () {
         var url = render_table_url + "/headers";
         $.ajax({
             url: url,
-            data: {"type":tab_name, "no_cache": new Date() },
-            success: function(columnDef){
+            data: {"type": tab_name, "no_cache": new Date() },
+            success: function (columnDef) {
                 init_submission_log_table(columnDef)
             },
             dataType: "json"
         });
     }
 
-    function activate_tab(tab_name){
+    function activate_tab(tab_name) {
 
         $('#filters .dataTables_filter').remove();
         $('.submission_table').dataTable().fnDestroy();
@@ -24,10 +24,10 @@ $(document).ready(function () {
     var $actionBar = $(".action_bar");
     var $dataTable = $('.submission_table');
     var tab = ["all", "success", "error", "deleted"];
-    var no_data_help = {"all":"<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.")+ "</span>" + $(".help_no_submissions").html(),
-            "success":"<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
-            "error":gettext("No unsuccessful Submissions!"),
-            "deleted":gettext("No deleted Submissions.")
+    var no_data_help = {"all": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+        "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+        "error": gettext("No unsuccessful Submissions!"),
+        "deleted": gettext("No deleted Submissions.")
     }
     var active_tab_index = 0;
     var match = window.location.pathname.match(/tab\/([^/]+)\//);
@@ -85,9 +85,9 @@ $(document).ready(function () {
         var url = render_table_url + '?type=' + tab[active_tab_index];
         var display_check_box = active_tab_index != 3;
         var actions = display_check_box ? [
-                    {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
-                    {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
-                ]: []
+            {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
+            {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
+        ] : []
         $(".submission_table").dwTable({
                 aoColumns: cols,
                 "concept": "Submission",
@@ -103,22 +103,23 @@ $(document).ready(function () {
                     {"aTargets": [0], "sWidth": "30px"}
                 ],
                 "actionItems": actions,
-                "fnInitComplete":function(){
-                    $('#filters ').append($('.dataTables_wrapper .dataTables_filter'));
+                "fnInitComplete": function () {
+                    $('#search_box').append($('.dataTables_wrapper .dataTables_filter'));
 //                    $('#filters').append($('#submissionDatePicker'));
                 },
-                "fnHeaderCallback":function(head){}
+                "fnHeaderCallback": function (head) {
+                }
 
                 // range:[{'name':submissionDateRange,value:}], saclers:{'name':'dataSenders', 'value':$('datasenders').val()}}
 
-                ,"getFilter" : function() {
-                    return '{"submissionDatePicker":"'+$('#submissionDatePicker').val()+'", ' +
-                                '"reportingPeriodPicker":"'+$('#reportingPeriodPicker').val()+'"}';
+                , "getFilter": function () {
+                    return '{"submissionDatePicker":"' + $('#submissionDatePicker').val() + '", ' +
+                        '"reportingPeriodPicker":"' + $('#reportingPeriodPicker').val() + '"}';
                 }
             }
 
         );
-        $(".submission_table").dataTable().fnSetColumnVis(0,display_check_box)
+        $(".submission_table").dataTable().fnSetColumnVis(0, display_check_box)
 
     }
 

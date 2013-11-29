@@ -22,46 +22,6 @@ table {
 #container_header_application #main_tab .logo img {
   margin-left: 15px; }
 
-.heading_block {
-  display: block;
-  border-bottom: 1px solid #CCCCCC;
-  padding-bottom: 5px;
-  margin-top: 15px; }
-  .heading_block .ui-dropdownchecklist label {
-    float: none;
-    display: inline-block; }
-  .heading_block .ui-dropdownchecklist .ui-dropdownchecklist-dropcontainer .ui-state-default, .heading_block .ui-dropdownchecklist .ui-widget-content .ui-state-default, .heading_block .ui-dropdownchecklist .ui-widget-header .ui-state-default {
-    border: none;
-    background: none; }
-  .heading_block #filter_section > div {
-    width: 200px;
-    float: left;
-    padding-top: 5px; }
-    .heading_block #filter_section > div input[type='text'], .heading_block #filter_section > div select {
-      width: 80%; }
-    .heading_block #filter_section > div > div {
-      width: 100%; }
-  .heading_block #filter_section > div.date_filter {
-    width: 240px; }
-  .heading_block .date_range_box {
-    float: left; }
-    .heading_block .date_range_box label, .heading_block .date_range_box select {
-      font-weight: normal;
-      float: left; }
-    .heading_block .date_range_box input {
-      float: left; }
-  .heading_block .filter_label label {
-    margin-bottom: 5px;
-    font-weight: bold;
-    margin-right: 0px; }
-  .heading_block #dateRangePicker {
-    padding: 0px 0px 0px 5px;
-    margin-left: 0px; }
-  .heading_block label {
-    float: left;
-    margin-right: 10px;
-    font-weight: normal; }
-
 .data_block .small_grey {
   margin-left: 10px; }
 
@@ -185,21 +145,15 @@ table {
 #data_analysis_wrapper #data_analysis_filter input {
   width: 200px;
   margin-bottom: 10px; }
-#data_analysis_wrapper table thead th {
-  color: #FFF; }
-#data_analysis_wrapper table thead .sorting {
-  background: url(/media/images/sort_arrow.png) no-repeat right 0px; }
-#data_analysis_wrapper table thead .sorting_desc {
-  background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right 0px; }
-#data_analysis_wrapper table thead .sorting_asc {
-  background: url(/media/images/sort_arrow_active_top.png) no-repeat right 0px; }
 
-.dataTables_wrapper table thead .sorting {
-    background: url(/media/images/sort_arrow.png) no-repeat right 0px; }
-.dataTables_wrapper table thead .sorting_desc {
-    background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right 0px; }
-.dataTables_wrapper table thead .sorting_asc {
-    background: url(/media/images/sort_arrow_active_top.png) no-repeat right 0px; }
+.dataTables_wrapper table thead th, #data_analysis_wrapper table thead th {
+  color: #FFF; }
+.dataTables_wrapper table thead .sorting, #data_analysis_wrapper table thead .sorting {
+  background: url(/media/images/sort_arrow.png) no-repeat right 0px; }
+.dataTables_wrapper table thead .sorting_desc, #data_analysis_wrapper table thead .sorting_desc {
+  background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right 0px; }
+.dataTables_wrapper table thead .sorting_asc, #data_analysis_wrapper table thead .sorting_asc {
+  background: url(/media/images/sort_arrow_active_top.png) no-repeat right 0px; }
 
 #dateRangePicker {
   width: 80%;

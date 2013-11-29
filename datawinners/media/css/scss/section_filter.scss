@@ -6,7 +6,7 @@
     height: 23px !important;
   }
 
-  .datepicker.disabled{
+  .datepicker.disabled {
     background-image: url("/media/images/arrow_dd_transparent.png") !important;
   }
 
@@ -23,12 +23,12 @@
     background: url("/media/images/arrow.png") no-repeat scroll right 4px transparent;
     font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
     font-size: 11px !important;
-    span span{
+    span span {
       width: 133px !important;
     }
   }
 
-  .ui-dropdownchecklist-selector-wrapper[disabled]{
+  .ui-dropdownchecklist-selector-wrapper[disabled] {
     background: url("/media/images/arrow_with_bg.png") no-repeat scroll right 2px transparent !important;
   }
 
@@ -36,10 +36,10 @@
     font-size: 11px !important;
   }
 
-  .ui-dropdownchecklist-dropcontainer-wrapper  > div {
-      background: url('/media/javascript/dateRangePicker/css/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png') repeat-x;
+  .ui-dropdownchecklist-dropcontainer-wrapper > div {
+    background: url('/media/javascript/dateRangePicker/css/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png') repeat-x;
   }
-    
+
   .btnDone {
     background: #cce3ee;
     /* for non-css3 browsers */
@@ -69,7 +69,7 @@
     }
   }
 
-  .ui-dropdownchecklist-close{
+  .ui-dropdownchecklist-close {
     font-size: 11px;
     font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   }
@@ -83,8 +83,93 @@
     width: 100px;
   }
 }
+
 @-moz-document url-prefix() {
-  #filter_section .ui-dropdownchecklist-dropcontainer-wrapper{
+  #filter_section .ui-dropdownchecklist-dropcontainer-wrapper {
     margin-top: -5px;
+  }
+}
+
+.heading_block {
+  display: block;
+  border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 5px;
+  margin-top: 15px;
+  .ui-dropdownchecklist {
+    label {
+      float: none;
+      display: inline-block;
+    }
+    .ui-dropdownchecklist-dropcontainer .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+      border: none;
+      background: none;
+    }
+  }
+  #filter_section {
+    > div {
+      width: 200px;
+      float: left;
+      input[type='text'], select {
+        width: 80%;
+      }
+      > div {
+        width: 100%;
+      }
+      padding-top: 5px;
+    }
+    > div.date_filter {
+      width: 240px;
+    }
+    #search_box {
+      input[type='text'] {
+        width: 260px;
+      }
+    }
+
+  }
+  .date_range_box {
+    float: left;
+    label, select {
+      font-weight: normal;
+      float: left;
+    }
+    input {
+      float: left;
+    }
+  }
+  .filter_label {
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+      margin-right: 0px;
+    }
+  }
+  #dateRangePicker {
+    padding: 0px 0px 0px 5px;
+    margin-left: 0px;
+  }
+  label {
+    float: left;
+    margin-right: 10px;
+    font-weight: normal;
+  }
+}
+
+.ui-daterangepickercontain .ui-daterangepicker {
+  font-size: 12px;
+  .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-state-hover {
+    border: 1px solid #666666;
+    background: #ccc;
+  }
+  .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited, .ui-state-hover a {
+    color: #000000;
+  }
+  .ui-widget-header {
+    background-color: #525252;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+    //for webkit browsers
+    background: -moz-linear-gradient(top, #525252, #262626);
+    //for firefox 3.6+
+    border: 1px solid #666666
   }
 }

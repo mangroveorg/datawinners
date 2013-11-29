@@ -45,7 +45,7 @@
                 "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
                     {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_', subject_type: gettext(defaults.concept)}, true),
                 "sInfoEmpty": gettext("<b> 0 to 0</b> of 0") + " " + gettext(defaults.concept),
-                "sSearch": "<strong>" + gettext("Search:") + "</strong>", "sZeroRecords": gettext("No matching records found")
+                "sSearch": "<label><strong>" + gettext("Search:") + "</strong></label>", "sZeroRecords": gettext("No matching records found")
             });
 
             defaults["aoColumns"] && defaults["aoColumns"].unshift({"sTitle": "<input type='checkbox' class='checkall-checkbox'/>"});

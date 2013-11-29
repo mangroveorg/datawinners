@@ -1,6 +1,6 @@
 #filter_section .datepicker {
   background: url("/media/images/arrow_dd.png") no-repeat scroll right 0px transparent;
-  font-family: "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif;
+  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   font-size: 11px !important;
   height: 23px !important; }
 #filter_section .datepicker.disabled {
@@ -8,11 +8,11 @@
 #filter_section input[type="text"] {
   height: 22px; }
 #filter_section #keyword {
-  font-family: "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif;
+  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   height: 22px !important; }
 #filter_section .ui-dropdownchecklist-selector-wrapper {
   background: url("/media/images/arrow.png") no-repeat scroll right 4px transparent;
-  font-family: "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif;
+  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   font-size: 11px !important; }
   #filter_section .ui-dropdownchecklist-selector-wrapper span span {
     width: 133px !important; }
@@ -45,7 +45,7 @@
     opacity: 0.9; }
 #filter_section .ui-dropdownchecklist-close {
   font-size: 11px;
-  font-family: "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
+  font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
 #filter_section div#keyword_input_container {
   width: 180px;
   height: 66px; }
@@ -55,3 +55,58 @@
 @-moz-document url-prefix() {
   #filter_section .ui-dropdownchecklist-dropcontainer-wrapper {
     margin-top: -5px; } }
+
+.heading_block {
+  display: block;
+  border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 5px;
+  margin-top: 15px; }
+  .heading_block .ui-dropdownchecklist label {
+    float: none;
+    display: inline-block; }
+  .heading_block .ui-dropdownchecklist .ui-dropdownchecklist-dropcontainer .ui-state-default, .heading_block .ui-dropdownchecklist .ui-widget-content .ui-state-default, .heading_block .ui-dropdownchecklist .ui-widget-header .ui-state-default {
+    border: none;
+    background: none; }
+  .heading_block #filter_section > div {
+    width: 200px;
+    float: left;
+    padding-top: 5px; }
+    .heading_block #filter_section > div input[type='text'], .heading_block #filter_section > div select {
+      width: 80%; }
+    .heading_block #filter_section > div > div {
+      width: 100%; }
+  .heading_block #filter_section > div.date_filter {
+    width: 240px; }
+  .heading_block #filter_section #search_box input[type='text'] {
+    width: 260px; }
+  .heading_block .date_range_box {
+    float: left; }
+    .heading_block .date_range_box label, .heading_block .date_range_box select {
+      font-weight: normal;
+      float: left; }
+    .heading_block .date_range_box input {
+      float: left; }
+  .heading_block .filter_label label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    margin-right: 0px; }
+  .heading_block #dateRangePicker {
+    padding: 0px 0px 0px 5px;
+    margin-left: 0px; }
+  .heading_block label {
+    float: left;
+    margin-right: 10px;
+    font-weight: normal; }
+
+.ui-daterangepickercontain .ui-daterangepicker {
+  font-size: 12px; }
+  .ui-daterangepickercontain .ui-daterangepicker .ui-state-active, .ui-daterangepickercontain .ui-daterangepicker .ui-widget-content .ui-state-active, .ui-daterangepickercontain .ui-daterangepicker .ui-widget-header .ui-state-active, .ui-daterangepickercontain .ui-daterangepicker .ui-state-hover {
+    border: 1px solid #666666;
+    background: #ccc; }
+  .ui-daterangepickercontain .ui-daterangepicker .ui-state-active a, .ui-daterangepickercontain .ui-daterangepicker .ui-state-active a:link, .ui-daterangepickercontain .ui-daterangepicker .ui-state-active a:visited, .ui-daterangepickercontain .ui-daterangepicker .ui-state-hover a {
+    color: #000000; }
+  .ui-daterangepickercontain .ui-daterangepicker .ui-widget-header {
+    background-color: #525252;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+    background: -moz-linear-gradient(top, #525252, #262626);
+    border: 1px solid #666666; }

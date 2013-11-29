@@ -29,65 +29,7 @@ table {
   margin-left: 15px;
 }
 
-.heading_block {
-  display: block;
-  border-bottom: 1px solid #CCCCCC;
-  padding-bottom: 5px;
-  margin-top: 15px;
-  .ui-dropdownchecklist {
-    label {
-      float: none;
-      display: inline-block;
-    }
-    .ui-dropdownchecklist-dropcontainer .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-      border: none;
-      background: none;
-    }
-  }
-  #filter_section {
-    >div {
-      width: 200px;
-      float: left;
-      input[type='text'], select {
-        width: 80%;
-      }
-      > div {
-        width: 100%;
-      }
-      padding-top: 5px;
-    }
-    >div.date_filter {
-      width: 240px;
-    }
 
-  }
-  .date_range_box {
-    float: left;
-    label, select {
-      font-weight: normal;
-      float: left;
-    }
-    input {
-      float: left;
-    }
-  }
-  .filter_label {
-    label {
-      margin-bottom: 5px;
-      font-weight: bold;
-      margin-right: 0px;
-    }
-  }
-  #dateRangePicker {
-    padding: 0px 0px 0px 5px;
-    margin-left: 0px;
-  }
-  label {
-    float: left;
-    margin-right: 10px;
-    font-weight: normal;
-  }
-}
 
 .data_block .small_grey {
   margin-left: 10px;
