@@ -87,8 +87,8 @@ DW.get_criteria = function () {
 
     function buildRangePicker() {
         //$('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects});
-        $('#submissionDatePicker').datePicker({onCloseCallback: onCloseSubmissionDatePicker});
-        $('#reportingPeriodPicker').datePicker({onCloseCallback: onCloseSubmissionDatePicker});
+        $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects, onCloseCallback: onCloseSubmissionDatePicker});
+        $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: closeFilterSelects, onCloseCallback: onCloseSubmissionDatePicker});
 
     }
 
