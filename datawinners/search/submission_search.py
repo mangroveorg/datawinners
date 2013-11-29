@@ -27,6 +27,15 @@ class SubmissionQueryBuilder(QueryBuilder):
     def create_paginated_query(self, query, query_params):
         query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
 
+        submission_type_filter = query_params.get('filter')
+        if submission_type_filter:
+            if submission_type_filter == 'deleted':
+                return query.filter(void=True)
+            query = (query.filter(status=submission_type_filter))
+        return query.filter(void=False)
+
+    def add_query_criteria(self, query_fields, query_text, query, query_params=None):
+        query = super(SubmissionQueryBuilder, self).add_query_criteria(query_fields, query_text, query, query_params)
         search_filter_param = query_params.get('search_filters')
         if search_filter_param:
             submission_date_range = search_filter_param.get("submissionDatePicker")
@@ -34,12 +43,7 @@ class SubmissionQueryBuilder(QueryBuilder):
             query = SubmissionDateRangeFilter(submission_date_range).build_filter_query(query)
             query = ReportingDateRangeFilter(reporting_date_range, self.form_model).build_filter_query(query)
 
-        submission_type_filter = query_params.get('filter')
-        if submission_type_filter:
-            if submission_type_filter == 'deleted':
-                return query.filter(void=True)
-            query = (query.filter(status=submission_type_filter))
-        return query.filter(void=False)
+        return query
 
 
 class SubmissionQueryResponseCreator():

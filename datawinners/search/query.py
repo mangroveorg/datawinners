@@ -36,7 +36,7 @@ class Query(object):
         query = self.query_builder.create_query(entity_type, self._getDatabaseName(user))
         paginated_query = self.query_builder.create_paginated_query(query, options)
         query_with_criteria = self.query_builder.add_query_criteria(entity_headers, self.query_params["search_text"],
-                                                                    paginated_query)
+                                                                    paginated_query, query_params=self.query_params)
         return entity_headers, paginated_query, query_with_criteria
 
     def paginated_query(self, user, entity_type):
@@ -62,7 +62,7 @@ class QueryBuilder(object):
             query = query.order_by(order + order_by + "_value")
         return query[start_result_number:start_result_number + number_of_results]
 
-    def add_query_criteria(self, query_fields, query_text, search):
+    def add_query_criteria(self, query_fields, query_text, search, query_params = None):
         if query_text:
             query_text_escaped = self.elastic_utils_helper.replace_special_chars(query_text)
             raw_query = {
