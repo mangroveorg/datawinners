@@ -45,7 +45,7 @@ class TestReportingDateFilter(unittest.TestCase):
         result = SubmissionDateRangeFilter('All Periods').build_filter_query(mock_query)
         self.assertEquals(result, mock_query)
 
-    def test_should_build_query_with_start_and_end_date(self):
+    def test_should_build_query_with_start_and_end_date_for_dd_mm_yy_format(self):
         mock_query = Mock(spec=elasticutils.S)
         mock_form_model = Mock(spec=FormModel)
         type(mock_form_model).event_time_question = PropertyMock(
@@ -54,7 +54,7 @@ class TestReportingDateFilter(unittest.TestCase):
         ReportingDateRangeFilter('21.11.2013-28.11.2013', mock_form_model).build_filter_query(mock_query)
         mock_query.filter.assert_called_with(rp_value__range=['21.11.2013', '29.11.2013'])
 
-    def test_should_build_query_with_start_and_end_date_in_different_format(self):
+    def test_should_build_query_with_start_and_end_date_for_mm_dd_yy_format(self):
         mock_query = Mock(spec=elasticutils.S)
         mock_form_model = Mock(spec=FormModel)
         type(mock_form_model).event_time_question = PropertyMock(
@@ -62,6 +62,15 @@ class TestReportingDateFilter(unittest.TestCase):
                                    ddtype=Mock(spec=DataDictType)))
         ReportingDateRangeFilter('11.21.2013-11.28.2013', mock_form_model).build_filter_query(mock_query)
         mock_query.filter.assert_called_with(rp_value__range=['11.21.2013', '11.29.2013'])
+
+    def test_should_build_query_with_start_and_end_date_for_mm_yyyy_format(self):
+        mock_query = Mock(spec=elasticutils.S)
+        mock_form_model = Mock(spec=FormModel)
+        type(mock_form_model).event_time_question = PropertyMock(
+            return_value=DateField(name='rp', code='rp', label='rp', date_format='mm.yyyy',
+                                   ddtype=Mock(spec=DataDictType)))
+        ReportingDateRangeFilter('11.2013-09.2013', mock_form_model).build_filter_query(mock_query)
+        mock_query.filter.assert_called_with(rp_value__range=['11.2013', '09.2013'])
 
     def test_should_call_query_match_for_current_day(self):
         mock_query = Mock(spec=elasticutils.S)

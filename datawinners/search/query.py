@@ -62,7 +62,7 @@ class QueryBuilder(object):
             query = query.order_by(order + order_by + "_value")
         return query[start_result_number:start_result_number + number_of_results]
 
-    def add_query_criteria(self, query_fields, query_text, search, query_params = None):
+    def add_query_criteria(self, query_fields, query_text, search, query_params=None):
         if query_text:
             query_text_escaped = self.elastic_utils_helper.replace_special_chars(query_text)
             raw_query = {
