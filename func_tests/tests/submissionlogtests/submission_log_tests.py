@@ -10,19 +10,24 @@ from selenium.webdriver.support.wait import WebDriverWait
 from framework.base_test import setup_driver, teardown_driver
 from framework.exception import CouldNotLocateElementException
 from framework.utils.common_utils import by_css
-from framework.utils.data_fetcher import fetch_
+from framework.utils.data_fetcher import fetch_, from_
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatapage.all_data_page import AllDataPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+from pages.allsubjectspage.add_subject_page import AddSubjectPage
+from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
+from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
+from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, ACTION_SELECT_CSS_LOCATOR
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
+
 
 @attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
@@ -62,7 +67,8 @@ class TestSubmissionLog(unittest.TestCase):
 
         time.sleep(5) # instead, check for other checkboxes value
         submission_log_page.check_all_submissions()
-        WebDriverWait(self.driver, UI_TEST_TIMEOUT, 1, (CouldNotLocateElementException)).until(lambda x: x.find(by_css(".selected_submissions")).is_selected())
+        WebDriverWait(self.driver, UI_TEST_TIMEOUT, 1, (CouldNotLocateElementException)).until(
+            lambda x: x.find(by_css(".selected_submissions")).is_selected())
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
@@ -175,6 +181,42 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page.search(ds_id)
         self.assertTrue(EDITED_DATASENDER_DETAILS[NAME] in submission_log_page.get_cell_value(row=1, column=2))
 
+    @attr("functional_test")
+    def test_should_update_submission_log_when_subject_info_is_edited(self):
+        self.dashboard.navigate_to_all_subject_page()
+        all_subject_type_page = AllSubjectTypePage(self.driver)
+        add_subject_page = all_subject_type_page.select_subject_type('Clinic').navigate_to_register_subject_page()
 
+        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
+        add_subject_page.submit_subject()
+        message = fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT))
+
+        flash_message = add_subject_page.get_flash_message()
+        self.assertIn(message, flash_message)
+        subject_short_code = flash_message.replace(message, '')
+
+        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
+        sms_tester_page = SMSTesterPage(self.driver)
+        VALID_SMS_FOR_EDIT_SUBJECT[SMS] = VALID_SMS_FOR_EDIT_SUBJECT[SMS].replace('short_code', subject_short_code, 1)
+        sms_tester_page.send_valid_sms_with(VALID_SMS_FOR_EDIT_SUBJECT)
+
+        submission_log_page = self.go_to_submission_log_page()
+        submission_log_page.search(subject_short_code)
+        self.assertIn(fetch_(SUB_LAST_NAME, VALID_DATA_FOR_SUBJECT), submission_log_page.get_cell_value(1, 5))
+
+        self.dashboard.navigate_to_all_subject_page()
+        all_subject_type_page = AllSubjectTypePage(self.driver)
+        add_subject_page = all_subject_type_page.select_subject_type('Clinic').navigate_to_register_subject_page()
+        
+        add_subject_page.navigate_to_subject_list()
+        subject_list_page = AllSubjectsListPage(self.driver)
+        subject_list_page.select_subject_by_id(subject_short_code)
+        edit_subject_page = subject_list_page.click_edit_action_button()
+        edit_subject_page.add_subject_with(VALID_DATA_FOR_EDIT)
+        edit_subject_page.submit_subject()
+
+        submission_log_page = self.go_to_submission_log_page()
+        submission_log_page.search(subject_short_code)
+        self.assertIn(fetch_(SUB_LAST_NAME, VALID_DATA_FOR_EDIT), submission_log_page.get_cell_value(1, 5))
 
 

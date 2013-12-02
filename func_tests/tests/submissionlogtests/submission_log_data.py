@@ -3,6 +3,7 @@
 ##Variables
 from framework.utils.common_utils import random_number, random_string
 from testdata.constants import NAME, MOBILE_NUMBER, COMMUNE, EMAIL_ADDRESS, GPS, SUCCESS_MSG, SENDER, RECEIVER, SMS, SUCCESS_MESSAGE
+from tests.addsubjecttests.add_subject_data import *
 
 SMS_SUBMISSION = "sms"
 UNIQUE_VALUE = "unique_value"
@@ -40,3 +41,30 @@ EDITED_DATASENDER_DETAILS = {NAME: "edited Dookudu",
                       EMAIL_ADDRESS: random_string(5)+'@'+random_string(3)+'.com',
                       GPS: "-21.7622088847 48.0690991394",
                       SUCCESS_MSG: "Registration successful. ID is: rep"}
+
+MOBILE_NUMBER_FOR_SUBJECT = random_number(9)
+
+VALID_DATA_FOR_EDIT = {ENTITY_TYPE: "Clinic",
+                       SUB_UNIQUE_ID: None,
+                       SUB_FIRST_NAME: "clinic FT",
+                       SUB_LAST_NAME: "Test2",
+                       LOCATION: "Monodovas",
+                       GPS: "47.0 28.0",
+                       MOBILE_NUMBER: MOBILE_NUMBER_FOR_SUBJECT,
+                       SUCCESS_MESSAGE: "Your changes have been saved."}
+
+
+VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "Clinic",
+                          SUB_UNIQUE_ID: None,
+                          SUB_FIRST_NAME: "Clinic FT",
+                          SUB_LAST_NAME: "Test",
+                          LOCATION: "Monodova",
+                          GPS: "47.411631 28.369885",
+                          MOBILE_NUMBER: MOBILE_NUMBER_FOR_SUBJECT,
+                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
+
+VALID_SMS_FOR_EDIT_SUBJECT = {SENDER: '1234567890',
+                               RECEIVER: '919880734937',
+                               SMS: "cli001 .EID short_code .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
+                               SUCCESS_MESSAGE: "Thank you"}
+
