@@ -3,6 +3,7 @@ from mock import patch, Mock, MagicMock
 from datawinners.search.entity_search import SubjectQueryResponseCreator, SubjectQuery
 from datawinners.search.entity_search import DatasenderQueryResponseCreator
 
+
 class TestSubjectQueryResponseCreator(TestCase):
     def test_should_return_subjects_with_field_values_for_specified_field_names_from_query_response(self):
         query = Mock()
@@ -21,18 +22,18 @@ class TestSubjectQueryResponseCreator(TestCase):
         query.values_dict.assert_called_with(("field_name1", "field_name2"))
         self.assertEquals(actualSubjects, [["field_value11", "field_value12"], ["field_value21", "field_value22"]])
 
+
 class TestDatasenderQueryResponseCreator(TestCase):
     def test_should_return_datasender_with_field_values_specified(self):
         required_field_names = ['field_name1', 'field_name2']
         query = Mock()
         query.values_dict.return_value = [{
-                                      "field_name1": "field_value11",
-                                      "field_name2": "field_value12"
-                                  }, {
-                                      "field_name1": "field_value21",
-                                      "field_name2": "field_value22"
-                                  }]
-
+                                              "field_name1": "field_value11",
+                                              "field_name2": "field_value12"
+                                          }, {
+                                              "field_name1": "field_value21",
+                                              "field_name2": "field_value22"
+                                          }]
 
         datasenders = DatasenderQueryResponseCreator().create_response(required_field_names, query)
         query.values_dict.assert_called_with(("field_name1", "field_name2"))
@@ -42,13 +43,12 @@ class TestDatasenderQueryResponseCreator(TestCase):
         required_field_names = ['field_name1', 'projects']
         query = Mock()
         query.values_dict.return_value = [{
-                                      "field_name1": "field_value11",
-                                      "projects": ["p1","p2"]
-                                  }, {
-                                      "field_name1": "field_value21",
-                                      "projects": ["p1", "p2", "p3"]
-                                  }]
-
+                                              "field_name1": "field_value11",
+                                              "projects": ["p1", "p2"]
+                                          }, {
+                                              "field_name1": "field_value21",
+                                              "projects": ["p1", "p2", "p3"]
+                                          }]
 
         datasenders = DatasenderQueryResponseCreator().create_response(required_field_names, query)
         query.values_dict.assert_called_with(("field_name1", "projects"))
@@ -58,15 +58,16 @@ class TestDatasenderQueryResponseCreator(TestCase):
         result = []
         check_img = '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">'
         datasender = {'email': 'test@test.com'}
-        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
+        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender, result)
         self.assertListEqual(result, [check_img + check_img + check_img])
 
     def test_should_not_add_check_symbol_if_no_email_id(self):
         result = []
         check_img = '<img alt="Yes" src="/media/images/right_icon.png" class="device_checkmark">'
         datasender = {'name': 'name'}
-        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender,result)
+        DatasenderQueryResponseCreator().add_check_symbol_for_row(datasender, result)
         self.assertListEqual(result, [check_img])
+
 
 class TestSubjectQuery(TestCase):
     def test_should_return_all_subjects_matching_given_subject_type_and_database_name_and_query_text(self):
@@ -105,12 +106,12 @@ class TestSubjectQuery(TestCase):
         user = Mock()
         subject_query_builder = Mock()
         query_params = {
-                "start_result_number": 2,
-                "number_of_results": 10,
-                "order_by": 1,
-                "order": "-",
-                "search_text": "query_text",
-            }
+            "start_result_number": 2,
+            "number_of_results": 10,
+            "order_by": 1,
+            "order": "-",
+            "search_text": "query_text",
+        }
         subject_query = SubjectQuery(query_params)
         response_creator = Mock()
 
@@ -144,7 +145,7 @@ class TestSubjectQuery(TestCase):
                 })
                 response_creator.create_response.assert_called_with(subject_headers, query_with_criteria)
                 subject_query_builder.add_query_criteria.assert_called_with(subject_headers, "query_text",
-                                                                            paginated_query)
+                                                                            paginated_query, query_params=query_params)
                 self.assertEquals(actualSubjects, "expected subjects")
                 self.assertEquals(filtered_count, expected_filtered_result_count)
                 self.assertEquals(total_count, expected_total_result_count)
