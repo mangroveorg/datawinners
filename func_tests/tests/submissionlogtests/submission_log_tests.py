@@ -2,6 +2,7 @@
 import unittest
 from datetime import datetime
 import time
+from django.utils.unittest.case import SkipTest
 
 from nose.plugins.attrib import attr
 from selenium.webdriver.support.wait import WebDriverWait
@@ -23,7 +24,6 @@ from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
 
-# @SkipTest
 @attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
     @classmethod
@@ -54,6 +54,7 @@ class TestSubmissionLog(unittest.TestCase):
             cls.URL = cls.driver.current_url
         return submission_log_page
 
+    @SkipTest
     @attr('functional_test')
     def test_should_show_warning_when_deleting_records(self):
         submission_log_page = self.get_submission_log_page()
@@ -66,6 +67,7 @@ class TestSubmissionLog(unittest.TestCase):
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
 
+    @SkipTest
     @attr('functional_test')
     def test_sorting_in_submission_log_page(self):
         submission_log_page = self.get_submission_log_page()
@@ -86,6 +88,7 @@ class TestSubmissionLog(unittest.TestCase):
             after = datetime.strptime(submission_dates[index + 2], SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
             self.assertTrue(before >= current >= after)
 
+    @SkipTest
     @attr('functional_test')
     def test_should_have_consistent_sorting_on_each_tabs_submission_log_page(self):
         submission_log_page = self.get_submission_log_page()
@@ -95,6 +98,7 @@ class TestSubmissionLog(unittest.TestCase):
         time.sleep(6)
         self.assertEqual(submission_log_page.get_all_data_on_nth_column(7), EXPECTED_FA_SORTED)
 
+    @SkipTest
     @attr('functional_test')
     def test_should_load_actions_dynamically(self):
         submission_log_page = self.get_submission_log_page()
@@ -118,6 +122,7 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertTrue(submission_log_page.actions_menu_shown())
         self.assertFalse(submission_log_page.is_none_selected_shown())
 
+    @SkipTest
     @attr("functional_test")
     def test_should_disable_checkall_cb__and_filters_if_there_is_no_submission(self):
 
@@ -125,6 +130,7 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertFalse(submission_log_page.is_checkall_enabled())
         self.assertFalse(submission_log_page.is_filter_enabled())
 
+    @SkipTest
     @attr("functional_test")
     def test_should_check_checkall_cb_when_all_cb_are_checked(self):
         submission_log_page = self.get_submission_log_page()
