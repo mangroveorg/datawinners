@@ -63,7 +63,7 @@ def _meta_fields(feed_submission_doc, submission_doc, dbm):
 def lookup_entity_name(dbm, id, entity_type):
     try :
         if id:
-            return get_by_short_code_include_voided(dbm, lower(id), entity_type).value("name")
+            return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
     except DataObjectNotFound:
         pass
     return id or "NA"
