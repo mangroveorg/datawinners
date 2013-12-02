@@ -2,7 +2,6 @@
 import unittest
 from datetime import datetime
 import time
-from django.utils.unittest.case import SkipTest
 
 from nose.plugins.attrib import attr
 from selenium.webdriver.support.wait import WebDriverWait
@@ -10,16 +9,21 @@ from selenium.webdriver.support.wait import WebDriverWait
 from framework.base_test import setup_driver, teardown_driver
 from framework.exception import CouldNotLocateElementException
 from framework.utils.common_utils import by_css
+from framework.utils.data_fetcher import fetch_
+from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
+from pages.alldatapage.all_data_page import AllDataPage
+from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
+from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, ACTION_SELECT_CSS_LOCATOR
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
 
-@SkipTest
+# @SkipTest
 @attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
     @classmethod
@@ -44,7 +48,8 @@ class TestSubmissionLog(unittest.TestCase):
 
     @classmethod
     def go_to_submission_log_page(cls, project_name=FIRST_PROJECT_NAME, cache_url=True):
-        submission_log_page = cls.dashboard.navigate_to_all_data_page().navigate_to_submission_log_page(project_name)
+        cls.driver.go_to(ALL_DATA_PAGE)
+        submission_log_page = AllDataPage(cls.driver).navigate_to_submission_log_page(project_name)
         if not cls.URL and cache_url:
             cls.URL = cls.driver.current_url
         return submission_log_page
@@ -129,6 +134,41 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertFalse(submission_log_page.is_checkall_checked())
         submission_log_page.check_submission_by_row_number(3)
         self.assertTrue(submission_log_page.is_checkall_checked())
+
+    def register_datasender(self, datasender_details, all_datasenders_page, id=None):
+        add_data_sender_page = all_datasenders_page.navigate_to_add_a_data_sender_page()
+        add_data_sender_page.enter_data_sender_details_from(datasender_details, unique_id=id)
+        return add_data_sender_page.get_registered_datasender_id() if id is None else id
+
+
+    @attr("functional_test")
+    def test_should_update_submission_log_when_DS_info_is_edited(self):
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        all_datasenders_page = AllDataSendersPage(self.driver)
+        ds_id = self.register_datasender(DATASENDER_DETAILS, all_datasenders_page)
+
+        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
+        sms_tester_page = SMSTesterPage(self.driver)
+        sms_tester_page.send_valid_sms_with(VALID_DATA)
+
+        message = sms_tester_page.get_response_message()
+        self.assertTrue(fetch_(SUCCESS_MESSAGE, VALID_DATA) in message, "message:" + message)
+
+        submission_log_page = self.go_to_submission_log_page()
+        submission_log_page.search(ds_id)
+        self.assertTrue(DATASENDER_DETAILS[NAME] in submission_log_page.get_cell_value(row=1, column=2))
+
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        all_datasenders_page.search_with(ds_id)
+        all_datasenders_page.wait_for_table_to_load()
+
+        all_datasenders_page.select_a_data_sender_by_id(ds_id)
+        all_datasenders_page.select_edit_action()
+        AddDataSenderPage(self.driver).enter_data_sender_details_from(EDITED_DATASENDER_DETAILS)
+        submission_log_page = self.go_to_submission_log_page()
+        submission_log_page.search(ds_id)
+        self.assertTrue(EDITED_DATASENDER_DETAILS[NAME] in submission_log_page.get_cell_value(row=1, column=2))
+
 
 
 

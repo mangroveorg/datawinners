@@ -113,4 +113,11 @@ class SubmissionLogPage(Page):
         return self.driver.find(by_css('.submission_table .help_accordion')).text
 
     def wait_for_table_data_to_load(self):
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("submission_table_processing"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".dataTables_processing"))
+
+    def search(self, search_text):
+        self.driver.find_text_box(by_css(".dataTables_filter>input")).enter_text(search_text)
+        self.wait_for_table_data_to_load()
+
+    def get_cell_value(self, row, column):
+        return self.driver.find(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td[%s]" % ((row +1), column))).text

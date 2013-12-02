@@ -17,7 +17,7 @@ def url(path):
 
 DATA_WINNER_HOME_PAGE = "/home"
 DATA_WINNER_LOGIN_PAGE = url("/login")
-DATASENDER_HOME_PAGE = url("/alldata")
+ALL_DATA_PAGE = url("/alldata")
 LOGOUT = url('/logout')
 DATA_WINNER_DASHBOARD_PAGE = url("/dashboard")
 DATA_WINNER_REGISTER_PAGE = url("/register")

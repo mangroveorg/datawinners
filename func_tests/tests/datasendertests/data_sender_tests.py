@@ -5,7 +5,7 @@ from framework.utils.data_fetcher import fetch_, from_
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.loginpage.login_page import LoginPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATASENDER_HOME_PAGE
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, ALL_DATA_PAGE
 from tests.addsubjecttests.add_subject_data import VALID_DATA, SUCCESS_MSG
 from tests.datasendertests.data_sender_data import PAGE_TITLE, SECTION_TITLE, SUBJECT_TYPE
 from tests.logintests.login_data import DATA_SENDER_CREDENTIALS
@@ -21,7 +21,7 @@ class DataSenderTest(unittest.TestCase):
         login_page.login_with(DATA_SENDER_CREDENTIALS)
 
     def setUp(self):
-        self.driver.go_to(DATASENDER_HOME_PAGE)
+        self.driver.go_to(ALL_DATA_PAGE)
         self.data_sender_page = DataSenderPage(self.driver)
 
     @classmethod
