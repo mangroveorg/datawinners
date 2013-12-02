@@ -1,5 +1,5 @@
 from datawinners.search.mapping import form_model_change_handler
-from datawinners.search.submission_index import create_submission_mapping, update_submission_search_index
+from datawinners.search.submission_index import create_submission_mapping, update_submission_search_index, submission_update_on_edit_DS
 from datawinners.search.subject_index import entity_search_update
 from mangrove.datastore.documents import EntityDocument, FormModelDocument, EnrichedSurveyResponseDocument
 
@@ -13,3 +13,5 @@ FormModelDocument.register_post_update(form_model_change_handler)
 Project.register_post_update(update_datasender_for_project_change)
 
 EnrichedSurveyResponseDocument.register_post_update(update_submission_search_index)
+EntityDocument.register_post_update(submission_update_on_edit_DS)
+

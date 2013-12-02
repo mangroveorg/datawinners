@@ -1,7 +1,8 @@
 from string import lower
 from babel.dates import format_datetime
+from datawinners.feeds.database import get_feed_db_from_main_db_name
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.datastore.documents import SurveyResponseDocument
+from mangrove.datastore.documents import SurveyResponseDocument, EnrichedSurveyResponseDocument
 from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import get_fields_mapping, get_elasticsearch_handle
 from mangrove.datastore.datadict import DataDictType
@@ -16,6 +17,16 @@ def create_submission_mapping(dbm, form_model):
     fields.extend(form_model.fields)
     mapping = get_fields_mapping(form_model.id, fields, 'code')
     es.put_mapping(dbm.database_name, form_model.id, mapping)
+
+def submission_update_on_edit_DS(entity_doc, dbm):
+    entity_uid = entity_doc.id
+    feeds_dbm = get_feed_db_from_main_db_name(dbm.database_name)
+    survey_responses = dbm.load_all_rows_in_view('survey_response_by_datasender', key=entity_uid, include_docs=False)
+    for survey_response in survey_responses:
+        enriched_survey_response = feeds_dbm._load_document(survey_response.id, EnrichedSurveyResponseDocument)
+        if enriched_survey_response is not None:
+            update_submission_search_index(enriched_survey_response, feeds_dbm, refresh_index=False)
+
 
 
 def update_submission_search_index(feed_submission_doc, feed_dbm, refresh_index=True):
@@ -52,7 +63,7 @@ def _meta_fields(feed_submission_doc, submission_doc, dbm):
 def lookup_entity_name(dbm, id, entity_type):
     try :
         if id:
-            return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
+            return get_by_short_code_include_voided(dbm, lower(id), entity_type).value("name")
     except DataObjectNotFound:
         pass
     return id or "NA"
