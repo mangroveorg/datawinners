@@ -94,7 +94,7 @@ class TestSubjectQuery(TestCase):
 
                 actualSubjects = subject_query.query(user, "subject_type", "query_text")
 
-                subject_query_builder.create_query.assert_called_once_with("subject_type", "database_name")
+                subject_query_builder.create_query.assert_called_once_with(doc_type='subject_type', database_name='database_name')
                 query.__getitem__assert_called_with(slice(None, count_of_all_matching_results, None))
                 subject_query_builder.add_query_criteria.assert_called_with(subject_headers, "query_text",
                                                                             query_all_results)

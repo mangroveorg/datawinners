@@ -9,7 +9,7 @@ class TestQueryBuilder(TestCase):
             with patch("datawinners.search.query.ELASTIC_SEARCH_URL") as searchUrl:
                 elasticUtilsMock.S.return_value = elasticUtilsMock
 
-                QueryBuilder().create_query("subject_type", "database_name")
+                QueryBuilder().create_query("database_name", "subject_type")
 
                 elasticUtilsMock.S.assert_called_with()
                 elasticUtilsMock.es.assert_called_with(urls=searchUrl)
@@ -19,7 +19,7 @@ class TestQueryBuilder(TestCase):
             elasticUtilsMock.S.return_value = elasticUtilsMock
             elasticUtilsMock.es.return_value = elasticUtilsMock
 
-            QueryBuilder().create_query("entity_type", "database_name")
+            QueryBuilder().create_query("database_name", "entity_type")
 
             elasticUtilsMock.indexes.assert_called_with("database_name")
 
@@ -29,7 +29,7 @@ class TestQueryBuilder(TestCase):
             elasticUtilsMock.es.return_value = elasticUtilsMock
             elasticUtilsMock.indexes.return_value = elasticUtilsMock
 
-            QueryBuilder().create_query("subject_type", "database_name")
+            QueryBuilder().create_query("database_name", "subject_type")
 
             elasticUtilsMock.doctypes.assert_called_with("subject_type")
 
@@ -40,7 +40,7 @@ class TestQueryBuilder(TestCase):
             elasticUtilsMock.indexes.return_value = elasticUtilsMock
             elasticUtilsMock.doctypes.return_value = elasticUtilsMock
 
-            QueryBuilder().create_query("subject_type", "database_name")
+            QueryBuilder().create_query("database_name", "subject_type")
 
             elasticUtilsMock.filter.assert_called_with(void=False)
 
@@ -56,9 +56,9 @@ class TestQueryBuilder(TestCase):
                 }
 
                 query_builder = QueryBuilder()
-                query_builder.create_paginated_query(query_builder.create_query("subject_type", "database_name"), query_params)
+                query_builder.create_paginated_query(query_builder.create_query("database_name", "subject_type"), query_params)
 
-                query.assert_called_with("subject_type", "database_name")
+                query.assert_called_with("database_name","subject_type")
                 elasticUtilsMock.order_by.assert_called_with("-field_name_to_order_by_value")
 
     def test_should_create_paginated_query_with_given_paginated_parameters(self):
@@ -74,7 +74,7 @@ class TestQueryBuilder(TestCase):
                 }
 
                 query_builder = QueryBuilder()
-                query_builder.create_paginated_query(query_builder.create_query("subject_type", "database_name"), query_params)
+                query_builder.create_paginated_query(query_builder.create_query("database_name", "subject_type"), query_params)
 
                 elasticUtilsMock.__getitem__.assert_called_with(slice(1, 11, None))
 

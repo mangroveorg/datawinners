@@ -17,15 +17,15 @@ class DatasenderQuery(Query):
 
     def query(self, user, query_text):
         subject_headers = self.get_headers(user)
-        query = self.query_builder.create_query(REPORTER, self._getDatabaseName(user))
+        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
         query_all_results = query[:query.count()]
         query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_text, query_all_results)
-        return  self.response_creator.create_response(subject_headers, query_with_criteria)
+        return self.response_creator.create_response(subject_headers, query_with_criteria)
+
 
 class MyDataSenderQuery(Query):
-
-    def __init__(self,query_params=None):
-        Query.__init__(self, MyDatasenderQueryResponseCreator(),QueryBuilder(),query_params)
+    def __init__(self, query_params=None):
+        Query.__init__(self, MyDatasenderQueryResponseCreator(), QueryBuilder(), query_params)
 
     def get_headers(self, user, entity_type=None):
         fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
@@ -33,8 +33,8 @@ class MyDataSenderQuery(Query):
         return fields
 
     def filtered_query(self, user, project_name, query_params):
-        entity_headers = self.get_headers(user, "reporter")
-        query = self.query_builder.create_query("reporter",self._getDatabaseName(user))
+        entity_headers = self.get_headers(user, REPORTER)
+        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
         paginated_query = self.query_builder.create_paginated_query(query, {
             "start_result_number": query_params["start_result_number"],
             "number_of_results": query_params["number_of_results"],
@@ -49,13 +49,15 @@ class MyDataSenderQuery(Query):
 
     def query_by_project_name(self, user, project_name, search_text):
         entity_headers = self.get_headers(user)
-        query = self.query_builder.create_query(REPORTER, self._getDatabaseName(user))
+        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
         query = query[:query.count()]
-        query = self.query_builder.add_query_criteria(entity_headers, search_text, query).filter(projects_value=project_name)
+        query = self.query_builder.add_query_criteria(entity_headers, search_text, query).filter(
+            projects_value=project_name)
         return self.response_creator.create_response(entity_headers, query)
 
+
 class SubjectQuery(Query):
-    def __init__(self,query_params=None):
+    def __init__(self, query_params=None):
         Query.__init__(self, SubjectQueryResponseCreator(), QueryBuilder(), query_params)
 
     def get_headers(self, user, subject_type):
@@ -65,7 +67,7 @@ class SubjectQuery(Query):
 
     def query(self, user, subject_type, query_text):
         subject_headers = self.get_headers(user, subject_type)
-        query = self.query_builder.create_query(subject_type, self._getDatabaseName(user))
+        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=subject_type)
         query_all_results = query[:query.count()]
         query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_text, query_all_results)
         subjects = self.response_creator.create_response(subject_headers, query_with_criteria)
@@ -104,6 +106,7 @@ class DatasenderQueryResponseCreator():
             result.extend([check_img + check_img + check_img])
         else:
             result.extend([check_img])
+
 
 class MyDatasenderQueryResponseCreator(DatasenderQueryResponseCreator):
     def create_response(self, required_field_names, query):

@@ -1,16 +1,16 @@
 from string import lower
 from babel.dates import format_datetime
-import elasticutils
-from datawinners.feeds.database import get_feed_db_from_main_db_name
-from datawinners.settings import ELASTIC_SEARCH_URL
+from datawinners.project.models import get_all_projects
+from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
+from datawinners.search.submission_search import SubmissionQueryBuilder, SubmissionIndexConstants
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.datastore.documents import SurveyResponseDocument, EnrichedSurveyResponseDocument
+from mangrove.datastore.documents import SurveyResponseDocument
 from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import get_fields_mapping, get_elasticsearch_handle
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.form_model.field import TextField, DateField
-from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 
 
 def create_submission_mapping(dbm, form_model):
@@ -21,39 +21,46 @@ def create_submission_mapping(dbm, form_model):
     es.put_mapping(dbm.database_name, form_model.id, mapping)
 
 
-def submission_update_on_edit_DS(entity_doc, dbm):
+def submission_update_on_entity_edition(entity_doc, dbm):
     if entity_doc.entity_type != ['reporter']:
-        update_submission_search_for_subjects(entity_doc, dbm)
+        update_submission_search_for_subject_edition(entity_doc, dbm)
     else:
-        entity_uid = entity_doc.id
-        feeds_dbm = get_feed_db_from_main_db_name(dbm.database_name)
-        survey_responses = dbm.load_all_rows_in_view('survey_response_by_datasender', key=entity_uid,
-                                                     include_docs=False)
-        for survey_response in survey_responses:
-            enriched_survey_response = feeds_dbm._load_document(survey_response.id, EnrichedSurveyResponseDocument)
-            if enriched_survey_response is not None:
-                update_submission_search_index(enriched_survey_response, feeds_dbm, refresh_index=False)
+        update_submission_search_for_datasender_edition(entity_doc, dbm)
 
 
-def update_submission_search_for_subjects(entity_doc, dbm):
-    entity_short_code = entity_doc.short_code
+def update_submission_search_for_datasender_edition(entity_doc, dbm):
+    args = {SubmissionIndexConstants.DATASENDER_ID_KEY: entity_doc.short_code}
+    fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
+    project_form_model_ids = [project.value['qid'] for project in get_all_projects(dbm)]
+    query = SubmissionQueryBuilder().create_query(dbm.database_name, *project_form_model_ids)
+    query_all = query[:query.count()]
+    filtered_query = query_all.filter(**args)
+    for survey_response in filtered_query.all():
+        SubmissionIndexUpdateHandler(dbm.database_name, survey_response._type).update_field_in_submission_index(
+            survey_response._id, fields_mapping)
+
+
+def _get_form_models_from_projects(dbm, projects):
+    form_models = []
+    for project in projects:
+        form_models.append(FormModel.get(dbm, project.doc['qid']))
+    return form_models
+
+
+def update_submission_search_for_subject_edition(entity_doc, dbm):
     entity_type = entity_doc.entity_type
     projects = dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True)
-    form_model_ids = []
-    for project in projects:
-        form_model_ids.append(project.doc['qid'])
+    form_models = _get_form_models_from_projects(dbm, projects)
 
-    es = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(dbm.database_name)
-    feeds_dbm = get_feed_db_from_main_db_name(dbm.database_name)
+    for form_model in form_models:
+        entity_field_name = form_model.entity_question.code
+        fields_mapping = {entity_field_name: entity_doc.data['name']['value']}
+        args = {'entity_short_code': entity_doc.short_code}
+        survey_response_filtered_query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, **args)
 
-    for id in form_model_ids:
-        query = es.doctypes(id)
-        query_all = query[:query.count()]
-        filtered_query = query_all.filter(entity_short_code=entity_short_code)
-        for survey_response in filtered_query.all():
-            enriched_survey_response = feeds_dbm._load_document(survey_response._id, EnrichedSurveyResponseDocument)
-            if enriched_survey_response is not None:
-                update_submission_search_index(enriched_survey_response, feeds_dbm, refresh_index=False)
+        for survey_response in survey_response_filtered_query.all():
+            SubmissionIndexUpdateHandler(dbm.database_name, form_model.id).update_field_in_submission_index(
+                survey_response._id, fields_mapping)
 
 
 def update_submission_search_index(feed_submission_doc, feed_dbm, refresh_index=True):
@@ -95,13 +102,13 @@ def lookup_entity_name(dbm, id, entity_type):
     return id or "NA"
 
 
-def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
-    for key in submission_doc.values:
-        field = submission_doc.values[key]
+def _update_with_form_model_fields(dbm, feed_submission_doc, search_dict, form_model):
+    for key in feed_submission_doc.values:
+        field = feed_submission_doc.values[key]
         entity_fields = [f for f in form_model.fields if f.is_entity_field and lower(f.code) == key]
 
         if entity_fields:
-            id = field if submission_doc.status == 'error' else field.get("answer").get("id")
+            id = field if feed_submission_doc.status == 'error' else field.get("answer").get("id")
             value = lookup_entity_name(dbm, id, form_model.entity_type)
             search_dict.update({"entity_short_code": id})
         else:
@@ -111,5 +118,6 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
             value = ','.join(value.values())
         search_dict.update({key: value})
 
-    search_dict.update({'void': submission_doc.void})
+    search_dict.update({'void': feed_submission_doc.void})
     return search_dict
+

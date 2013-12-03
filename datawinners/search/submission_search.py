@@ -17,12 +17,12 @@ class SubmissionIndexConstants:
 
 
 class SubmissionQueryBuilder(QueryBuilder):
-    def __init__(self, form_model):
+    def __init__(self, form_model=None):
         QueryBuilder.__init__(self)
         self.form_model = form_model
 
-    def create_query(self, doc_type, database_name):
-        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type)
+    def create_query(self, database_name, *doc_type):
+        return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(*doc_type)
 
     def create_paginated_query(self, query, query_params):
         query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
@@ -46,6 +46,11 @@ class SubmissionQueryBuilder(QueryBuilder):
             if datasender_filter:
                 query = query.filter(ds_id=datasender_filter)
         return query
+
+    def query_all(self, database_name, **kwargs):
+        query = self.create_query(database_name, database_name)
+        query_all_results = query[:query.count()]
+        return query_all_results.filter(**kwargs)
 
 
 class SubmissionQueryResponseCreator():

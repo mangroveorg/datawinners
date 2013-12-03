@@ -33,7 +33,7 @@ class Query(object):
             header_copy = list(entity_headers)
             if "entity_short_code" in header_copy: header_copy.remove("entity_short_code")
             options.update({"order_field": header_copy[self.query_params["order_by"]]})
-        query = self.query_builder.create_query(entity_type, self._getDatabaseName(user))
+        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=entity_type)
         paginated_query = self.query_builder.create_paginated_query(query, options)
         query_with_criteria = self.query_builder.add_query_criteria(entity_headers, self.query_params["search_text"],
                                                                     paginated_query, query_params=self.query_params)
@@ -49,7 +49,7 @@ class QueryBuilder(object):
     def __init__(self):
         self.elastic_utils_helper = ElasticUtilsHelper()
 
-    def create_query(self, doc_type, database_name):
+    def create_query(self, database_name, doc_type):
         return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type).filter(void=False)
 
     def create_paginated_query(self, query, query_params):
