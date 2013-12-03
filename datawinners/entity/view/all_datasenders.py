@@ -25,7 +25,7 @@ from datawinners.project.models import get_all_projects, Project, delete_datasen
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import _parse_successful_imports, _add_imported_datasenders_to_trail_account
 from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
-from mangrove.form_model.form_model import REPORTER, header_fields, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE
+from mangrove.form_model.form_model import REPORTER, header_fields, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE, get_form_model_by_code
 from mangrove.transport import TransportInfo
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization
@@ -156,7 +156,8 @@ def data_sender_short_codes(request, manager):
             datasender_list = MyDataSenderQuery().query_by_project_name(request.user, project_name, search_text)
         else:
             datasender_list = DatasenderQuery().query(request.user, search_text)
-        fields = header_fields(manager, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE).keys()
+        form_model = get_form_model_by_code(manager, 'reg')
+        fields = header_fields(form_model).keys()
         fields.remove("entity_type")
         short_code_index = fields.index("short_code")
         return [ds[short_code_index].lower() for ds in datasender_list]

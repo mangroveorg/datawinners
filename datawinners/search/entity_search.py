@@ -6,7 +6,7 @@ from mangrove.form_model.form_model import REPORTER
 
 
 class DatasenderQuery(Query):
-    def __init__(self,query_params):
+    def __init__(self,query_params=None):
         Query.__init__(self, DatasenderQueryResponseCreator(), QueryBuilder(),query_params)
 
     def get_headers(self, user, entity_type=None):
@@ -24,7 +24,7 @@ class DatasenderQuery(Query):
 
 class MyDataSenderQuery(Query):
 
-    def __init__(self,query_params):
+    def __init__(self,query_params=None):
         Query.__init__(self, MyDatasenderQueryResponseCreator(),QueryBuilder(),query_params)
 
     def get_headers(self, user, entity_type=None):
