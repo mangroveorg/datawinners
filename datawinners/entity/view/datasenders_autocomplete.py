@@ -11,7 +11,9 @@ class AllDataSenderAutoCompleteView(View):
     def get(self, request):
         search_text = lower(request.GET["term"] or "")
         database_name = get_database_name(request.user)
-        f = elasticutils.F(name=search_text) | elasticutils.F(short_code=search_text)
-        query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes("reporter").filter(f).values_dict()
-        resp = [{"id": r["short_code"], "label":r["name"]} for r in query]
+        query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes("reporter") \
+            .query(or_={'name__match': search_text, 'name_value': search_text, 'short_code__match': search_text,
+                        'short_code_value': search_text}) \
+            .values_dict()
+        resp = [{"id": r["short_code"], "label": r["name"]} for r in query[:min(query.count(), 50)]]
         return HttpResponse(json.dumps(resp))

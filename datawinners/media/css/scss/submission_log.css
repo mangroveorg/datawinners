@@ -1,6 +1,10 @@
 td.dataTables_empty div.help_accordion {
   display: inline; }
 
+ul.ui-autocomplete {
+  max-height: 200px;
+  overflow-y: auto; }
+
 .link, #submission_logs a, #submission_logs a:hover {
   color: #0070AC; }
 
