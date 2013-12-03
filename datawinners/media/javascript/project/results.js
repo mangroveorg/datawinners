@@ -111,7 +111,7 @@ $(document).ready(function () {
 
                 , "getFilter": function () {
                     return '{"submissionDatePicker":"' + $('#submissionDatePicker').val() + '", ' +
-                        '"datasenderFilter":"' + get_datasender_filter_id() + '", ' +
+                        '"datasenderFilter":"' + $("#data_sender_filter").data('ds_id') + '", ' +
                         '"reportingPeriodPicker":"' + $('#reportingPeriodPicker').val() + '"}';
                 }
             }
@@ -123,27 +123,24 @@ $(document).ready(function () {
 
 
     buildRangePicker();
+    $("#data_sender_filter").data('ds_id','');
     $("#data_sender_filter").autocomplete({
-        "source":"/entity/datasenders/autocomplete/",
-        select:function(event,ui){
-            datasender_filter_id = ui.item.id;
-            $(".submission_table").dataTable().fnDraw();
-        },
-        change:function(event,ui){
-        if ($('#data_sender_filter').val() == ''){
-                $('#data_sender_filter').val('All Datasenders');
+            "source":"/entity/datasenders/autocomplete/",
+            "select":function(event,ui){
+                $("#data_sender_filter").data('ds_id',ui.item.id);
                 $(".submission_table").dataTable().fnDraw();
-        }}
-    }).val("All Datasenders").data( "autocomplete" )._renderItem = function( ul, item ) {
+            }
+        }).data( "autocomplete" )._renderItem = function( ul, item ) {
         return $("<li></li>").data("item.autocomplete", item).append($("<a>" + item.label + ' <span class="small_grey">' + item.id + '</span></a>')).appendTo(ul);
     };
 
-    function get_datasender_filter_id(){
-        if ($('#data_sender_filter').val() == 'All Datasenders'){
-            datasender_filter_id = '';
-        }
-        return datasender_filter_id;
-    }
+    // change on autocomplete is not working in certain cases like select an item and then clear doesn't fire change event. so using input element's change.
+    $('#data_sender_filter').change(function(){
+        if ($('#data_sender_filter').val() == ''){
+                 $("#data_sender_filter").data('ds_id','');
+                 $(".submission_table").dataTable().fnDraw();
+         }
+    });
 });
 
 

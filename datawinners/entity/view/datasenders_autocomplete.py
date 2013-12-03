@@ -1,4 +1,5 @@
 import json
+from string import lower
 from django.http import HttpResponse
 from django.views.generic.base import View
 import elasticutils
@@ -8,7 +9,7 @@ from datawinners.settings import ELASTIC_SEARCH_URL
 
 class AllDataSenderAutoCompleteView(View):
     def get(self, request):
-        search_text = request.GET["term"]
+        search_text = lower(request.GET["term"] or "")
         database_name = get_database_name(request.user)
         f = elasticutils.F(name=search_text) | elasticutils.F(short_code=search_text)
         query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes("reporter").filter(f).values_dict()
