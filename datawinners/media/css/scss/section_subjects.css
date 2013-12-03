@@ -340,6 +340,9 @@ span .error_arrow label, div.error_arrow label, label.error_arrow label {
   .warning-message-box p {
     background: url("/media/images/icons.png") no-repeat left -70px;
     padding: 10px 0 10px 35px; }
+  .warning-message-box div.message_plus {
+    margin-left: 35px;
+    margin-right: 5px; }
 
 .try_button {
   display: block;
@@ -881,6 +884,9 @@ span.paginate_more_disabled {
 
 #wrapper_div_for_table {
   margin-top: 22px; }
+
+.dataTables_wrapper label {
+  display: inline; }
 
 .padding_right_null {
   padding-right: 0 !important; }

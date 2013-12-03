@@ -477,6 +477,11 @@ span.paginate_more_disabled {
 #wrapper_div_for_table {
   margin-top: 22px;
 }
+.dataTables_wrapper{
+  label {
+    display: inline;
+  }
+}
 
 
 @import "util.scss";
