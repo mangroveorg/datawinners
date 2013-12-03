@@ -33,7 +33,7 @@ class Query(object):
             header_copy = list(entity_headers)
             if "entity_short_code" in header_copy: header_copy.remove("entity_short_code")
             options.update({"order_field": header_copy[self.query_params["order_by"]]})
-        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=entity_type)
+        query = self.query_builder.create_query(self._getDatabaseName(user), entity_type)
         paginated_query = self.query_builder.create_paginated_query(query, options)
         query_with_criteria = self.query_builder.add_query_criteria(entity_headers, self.query_params["search_text"],
                                                                     paginated_query, query_params=self.query_params)

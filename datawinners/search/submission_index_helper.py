@@ -6,6 +6,6 @@ class SubmissionIndexUpdateHandler():
         self.index = index
         self.doc_type = doc_type
 
-    def update_field_in_submission_index(self, document_id, fields_mapping):
+    def update_field_in_submission_index(self, document_id, fields_mapping, refresh_index=True):
         es = get_elasticsearch_handle()
-        es.update(self.index, self.doc_type, id=document_id, doc=fields_mapping)
+        es.update(self.index, self.doc_type, id=document_id, doc=fields_mapping,refresh=refresh_index)

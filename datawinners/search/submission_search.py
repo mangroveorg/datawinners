@@ -1,14 +1,9 @@
 from collections import OrderedDict
-from babel.dates import format_datetime
-import datetime
 import elasticutils
-# from datawinners import search
 from datawinners.search.filters import SubmissionDateRangeFilter, ReportingDateRangeFilter
-from mangrove.form_model.field import DateField
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.form_model import header_fields
 from datawinners.search.query import QueryBuilder, Query
-from datawinners.search import filters
 
 
 class SubmissionIndexConstants:
