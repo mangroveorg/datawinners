@@ -2,6 +2,7 @@ from django.conf.urls.defaults import patterns, url
 from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataSendersAjaxView, AssociateDataSendersView, DisassociateDataSendersView, delete_data_senders, UsersInSearchedDataSender
 from datawinners.entity.view.datasenders import EditDataSenderView
 from datawinners.entity.view.datasenders import DataSenderRegistrationFormView, RegisterDatasenderView
+from datawinners.entity.view.datasenders_autocomplete import AllDataSenderAutoCompleteView
 from datawinners.entity.view.import_template import import_template
 from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject
 from datawinners.entity.views import create_subject
@@ -25,6 +26,7 @@ urlpatterns = patterns('',
                        (r'delete/$', delete_data_senders),
                        url(r'datasenders/$', AllDataSendersView.as_view(), name='all_datasenders'),
                        url(r'datasenders/ajax/$', AllDataSendersAjaxView.as_view(), name="all_datasenders_ajax"),
+                       url(r'datasenders/autocomplete/$', AllDataSenderAutoCompleteView.as_view()),
                        (r'disassociate/$', DisassociateDataSendersView.as_view()),
                        (r'associate/$', AssociateDataSendersView.as_view()),
                        url(r'subject/import/(?P<form_code>.+?)/$', import_subjects_from_project_wizard,

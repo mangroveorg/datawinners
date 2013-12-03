@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    var datasender_filter_id ;
     function load_table(tab_name) {
         var url = render_table_url + "/headers";
         $.ajax({
@@ -14,7 +14,7 @@ $(document).ready(function () {
 
     function activate_tab(tab_name) {
 
-        $('#filters .dataTables_filter').remove();
+        $('#search_box .dataTables_filter').remove();
         $('.submission_table').dataTable().fnDestroy();
         $('.submission_table').empty();
         DW.loading();
@@ -105,15 +105,13 @@ $(document).ready(function () {
                 "actionItems": actions,
                 "fnInitComplete": function () {
                     $('#search_box').append($('.dataTables_wrapper .dataTables_filter'));
-//                    $('#filters').append($('#submissionDatePicker'));
                 },
                 "fnHeaderCallback": function (head) {
                 }
 
-                // range:[{'name':submissionDateRange,value:}], saclers:{'name':'dataSenders', 'value':$('datasenders').val()}}
-
                 , "getFilter": function () {
                     return '{"submissionDatePicker":"' + $('#submissionDatePicker').val() + '", ' +
+                        '"datasenderFilter":"' + get_datasender_filter_id() + '", ' +
                         '"reportingPeriodPicker":"' + $('#reportingPeriodPicker').val() + '"}';
                 }
             }
@@ -125,8 +123,28 @@ $(document).ready(function () {
 
 
     buildRangePicker();
-})
-;
+    $("#data_sender_filter").autocomplete({
+        "source":"/entity/datasenders/autocomplete/",
+        select:function(event,ui){
+            datasender_filter_id = ui.item.id;
+            $(".submission_table").dataTable().fnDraw();
+        },
+        change:function(event,ui){
+        if ($('#data_sender_filter').val() == ''){
+                $('#data_sender_filter').val('All Datasenders');
+                $(".submission_table").dataTable().fnDraw();
+        }}
+    }).val("All Datasenders").data( "autocomplete" )._renderItem = function( ul, item ) {
+        return $("<li></li>").data("item.autocomplete", item).append($("<a>" + item.label + ' <span class="small_grey">' + item.id + '</span></a>')).appendTo(ul);
+    };
+
+    function get_datasender_filter_id(){
+        if ($('#data_sender_filter').val() == 'All Datasenders'){
+            datasender_filter_id = '';
+        }
+        return datasender_filter_id;
+    }
+});
 
 
 

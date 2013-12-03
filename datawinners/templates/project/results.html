@@ -109,7 +109,7 @@
     {% include "project/submission_page_hint.html" %}
     <div class="heading_block clearfix margin_bottom_10">
         <div id="filter_section" class="alpha data_ana float_left">
-
+            {% include 'project/partials/filters/_filter_by_data_sender.html' %}
             {% include 'project/partials/filters/_filter_by_submission_date.html' %}
             {% if has_reporting_period %}
                 {% include 'project/partials/filters/_filter_by_reporting_period.html' %}
