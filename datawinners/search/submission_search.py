@@ -43,7 +43,7 @@ class SubmissionQueryBuilder(QueryBuilder):
         return query
 
     def query_all(self, database_name, **kwargs):
-        query = self.create_query(database_name, database_name)
+        query = self.create_query(database_name, self.form_model.id)
         query_all_results = query[:query.count()]
         return query_all_results.filter(**kwargs)
 

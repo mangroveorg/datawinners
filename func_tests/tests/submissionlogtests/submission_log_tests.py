@@ -218,5 +218,3 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page = self.go_to_submission_log_page()
         submission_log_page.search(subject_short_code)
         self.assertIn(fetch_(SUB_LAST_NAME, VALID_DATA_FOR_EDIT), submission_log_page.get_cell_value(1, 5))
-
-
