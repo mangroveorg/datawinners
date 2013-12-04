@@ -3,21 +3,12 @@ from django.http import HttpResponse
 from django.template.defaultfilters import slugify
 import xlwt
 from datawinners.accountmanagement.decorators import valid_web_user
-from datawinners.accountmanagement.helper import is_org_user
 from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
 from datawinners.entity.views import add_codes_sheet
 from datawinners.main.database import get_database_manager
+from datawinners.project.submission.util import get_submission_form_fields_for_user
 from datawinners.utils import get_excel_sheet
-from mangrove.form_model.form_model import get_form_model_by_code, GEO_CODE_FIELD_NAME
-
-
-def _get_submission_form_fields_for_user(form_model, request):
-    form_fields = form_model.form_fields
-    if form_model.entity_defaults_to_reporter():
-        if not is_org_user(request.user):
-            return filter(lambda field: field['code']!= form_model.entity_question.code, form_fields)
-    return form_fields
-
+from mangrove.form_model.form_model import get_form_model_by_code
 
 @valid_web_user
 def import_template(request, form_code):
@@ -29,7 +20,7 @@ def import_template(request, form_code):
         field_codes = _field_codes(form_fields)
         sheet_name = request.GET["filename"]
     else:
-        form_fields = _get_submission_form_fields_for_user(form_model, request)
+        form_fields = get_submission_form_fields_for_user(form_model, request)
         field_codes = _field_codes(form_fields)
         headers = get_submission_headers(form_fields)
         sheet_name = "Import_Submissions"

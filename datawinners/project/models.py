@@ -226,6 +226,8 @@ class Project(DocumentBase):
         if self.reminder_and_deadline.get('frequency_period') == 'week':
             return Week(int(self.reminder_and_deadline.get('deadline_week')))
 
+    def is_summary_project(self):
+        return self.entity_type == u"reporter"
 
     def has_deadline(self):
         return self.reminder_and_deadline.get('has_deadline')

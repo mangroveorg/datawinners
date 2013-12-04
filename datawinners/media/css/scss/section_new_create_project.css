@@ -208,3 +208,8 @@ fieldset {
 #delete_periodicity_question_warning .show_link, #delete_periodicity_question_warning .hide_link {
   font-style: italic;
   color: #0070AC; }
+
+.gotitbutton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: right; }

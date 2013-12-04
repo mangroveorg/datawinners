@@ -1,6 +1,7 @@
 import unittest
 from django.http import HttpRequest
 from mock import patch, Mock, PropertyMock, MagicMock
+from datawinners.project.submission.util import get_submission_form_fields_for_user
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 
@@ -8,7 +9,7 @@ valid_web_user_patch = patch('datawinners.accountmanagement.decorators.valid_web
 valid_web_user_patch.start()
 
 
-from datawinners.entity.view.import_template import import_template, WorkBookResponseFactory, _get_submission_form_fields_for_user
+from datawinners.entity.view.import_template import import_template, WorkBookResponseFactory
 
 
 class TestImportTemplate(unittest.TestCase):
@@ -42,7 +43,7 @@ class TestImportTemplate(unittest.TestCase):
 
         with patch('datawinners.entity.view.import_template.get_database_manager') as get_db_manager:
             with patch('datawinners.entity.view.import_template.get_form_model_by_code') as get_form_model_by_code:
-                with patch('datawinners.entity.view.import_template._get_submission_form_fields_for_user') as get_submission_form_fields_for_user:
+                with patch('datawinners.entity.view.import_template.get_submission_form_fields_for_user') as get_submission_form_fields_for_user:
                     with patch('datawinners.entity.view.import_template.get_submission_headers') as get_submission_headers:
                         with patch("datawinners.entity.view.import_template.WorkBookResponseFactory") as workbook_response_factory:
                             get_db_manager.return_value = Mock(spec=DatabaseManager)
@@ -72,10 +73,10 @@ class TestImportTemplate(unittest.TestCase):
         request = HttpRequest()
         request.user = 'someuser'
 
-        with patch("datawinners.entity.view.import_template.is_org_user") as is_org_user:
+        with patch("datawinners.project.submission.util.is_org_user") as is_org_user:
             is_org_user.return_value = False
 
-            form_fields = _get_submission_form_fields_for_user(form_model, request)
+            form_fields = get_submission_form_fields_for_user(form_model, request)
 
             self.assertEqual(form_fields,[{'code': 'something','name':'firstname'}])
 
@@ -88,10 +89,10 @@ class TestImportTemplate(unittest.TestCase):
         request = HttpRequest()
         request.user = 'someuser'
 
-        with patch("datawinners.entity.view.import_template.is_org_user") as is_org_user:
+        with patch("datawinners.project.submission.util.is_org_user") as is_org_user:
             is_org_user.return_value = True
 
-            form_fields = _get_submission_form_fields_for_user(form_model, request)
+            form_fields = get_submission_form_fields_for_user(form_model, request)
 
             self.assertEqual(form_fields,[{'code': 'eid','name':'firstname'},{'code': 'something','name':'firstname'}])
 
@@ -100,7 +101,7 @@ class TestImportTemplate(unittest.TestCase):
         form_model.entity_defaults_to_reporter.return_value = False
         form_model.form_fields = [{'code': 'eid','name':'firstname'},{'code': 'something','name':'firstname'}]
 
-        form_fields = _get_submission_form_fields_for_user(form_model, HttpRequest())
+        form_fields = get_submission_form_fields_for_user(form_model, HttpRequest())
 
         self.assertEqual(form_fields,[{'code': 'eid','name':'firstname'},{'code': 'something','name':'firstname'}])
 

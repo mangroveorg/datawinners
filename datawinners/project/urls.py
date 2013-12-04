@@ -2,6 +2,7 @@
 from django.conf.urls.defaults import patterns, url
 from datawinners.entity.view.all_datasenders import DisassociateDataSendersView
 from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders, edit_data_sender
+from datawinners.project.views.import_submissions_views import ImportSubmissionView
 
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
@@ -88,4 +89,5 @@ urlpatterns = patterns('',
                        (r'^project/export/log$', submission_views.export),
                        (r'^project/submissions/(?P<form_code>.+?)/headers$', submission_views.headers),
                        (r'^project/submissions/(?P<form_code>.+?)$', submission_views.get_submissions),
+                       url(r'^project/import-submissions/(?P<form_code>.+?)$', ImportSubmissionView.as_view(), name="import_submissions"),
 )

@@ -7,15 +7,12 @@
             return msgid;
         }
 
-
         function interpolate(fmt, obj, named) {
-        if (named) {
-        return fmt.replace(/%\(\w+\)s/g, function(match){return String(obj[match.slice(2,-2)])});
-        } else {
-        return fmt.replace(/%s/g, function(match){return String(obj.shift())});
-        }
+
         }
         var import_template_url= "/domain/project/subject/form_code?filename=<project_name>";
+        var import_submission_url = 'some_dummy_url';
+
         var DW = {};
     </script>
     <!-- lib files goes first; Change the order at your own risk -->
@@ -25,7 +22,8 @@
 
     <script src="../../../media/javascript/jquery.js"></script>
     <script type="text/javascript" src="../../../media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
-
+    <script type="text/javascript" src="../../../media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/underscore.js"></script>
 
     <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine.js"></script>
     <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine-html.js"></script>
@@ -39,6 +37,7 @@
 
     <!--spec -->
     <script type="text/javascript" src="../specs/import_submission_spec.js"></script>
+    <script type="text/javascript" src="../specs/import_submission_postupload_spec.js"></script>
 
 </head>
 

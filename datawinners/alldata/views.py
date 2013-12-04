@@ -60,7 +60,8 @@ def get_project_info(manager, raw_project):
         create_subjects_link = append_query_strings_to_url(reverse("create_subject", args=[project.entity_type]),
                                                            web_view=True)
 
-    project_info = dict(name=raw_project['value']['name'],
+    project_info = dict(project_id=project_id,
+                        name=raw_project['value']['name'],
                         qid=questionnaire_code,
                         created=raw_project['value']['created'],
                         type=raw_project['value']['project_type'],

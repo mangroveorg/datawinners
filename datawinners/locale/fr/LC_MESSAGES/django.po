@@ -2913,8 +2913,11 @@ msgstr "Téléchargez le modèle"
 msgid "Fill out the template with your Data Senders information"
 msgstr "Remplissez le modèle avec les informations sur vos expéditeurs"
 
-msgid "Send in data"
-msgstr "Envoyer des données"
+msgid "Make a Submission"
+msgstr "Faire une Soumission"
+
+msgid "Import a List of Submissions"
+msgstr "Importer une liste de Soumissions"
 
 msgid "Data Submission"
 msgstr "Présentation des données"
@@ -4409,3 +4412,6 @@ msgstr "Coordonnées GPS non valides."
 
 msgid "Import"
 msgstr "Importer"
+
+msgid "Remind them to download the updated version of the Import Submission template"
+msgstr "Rappelez-leur de télécharger la version mise à jour du modèle d'importation de Soumission"

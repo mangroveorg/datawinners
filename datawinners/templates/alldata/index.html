@@ -10,8 +10,13 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/project/import_submission.js"></script>
-    <script type="text/javascript"> var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>"; </script>
+    <script type="text/javascript">
+        var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
+        var import_submission_url = "{% url import_submissions 'form_code'%}";
+
+    </script>
 {% endblock %}
 
 {% block main_message %}
@@ -67,11 +72,11 @@
                             |
                         </span>
                             <a href="{{ project.web_submission_link }}"
-                               class="{{ project.disabled }} {{ project.web_submission_link_disabled }} send-in-data-link">{% trans "Send in data" %}</a>
+                               class="{{ project.disabled }} {{ project.web_submission_link_disabled }} send-in-data-link">{% trans "Make a Submission" %}</a>
                             |
                             <a class="import_link" data-projectname="{{ project.encoded_name }}"
-                               data-formcode="{{ project.qid }}"
-                               href="javascript:void(0);">{% trans "Import" %}</a>
+                               data-formcode="{{ project.qid }}" data-projectid="{{ project.project_id }}"
+                               href="javascript:void(0);">{% trans "Import a List of Submissions" %}</a>
 
                             {% if project.create_subjects_link %}
                                 |<a href="{{ project.create_subjects_link}}" class="register-subject-link">

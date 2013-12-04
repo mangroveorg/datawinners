@@ -394,7 +394,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
     imported_entities = {}
     try:
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
-        file_name, file = _file_and_name(request) if 'qqfile' in request.GET else _file_and_name_for_ie(request)
+        file_name, file = get_filename_and_contents(request)
         responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager,
                                           default_parser=default_parser, form_code=form_code)
         imported_entities = _get_imported_entities(responses)
@@ -485,4 +485,5 @@ def send_email_to_data_sender(user, language_code, request=None, type="activatio
     email.send()
 
 
-
+def get_filename_and_contents(request):
+    return _file_and_name(request) if 'qqfile' in request.GET else _file_and_name_for_ie(request)

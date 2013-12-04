@@ -10,7 +10,7 @@ class TestSubmissionImport(TestCase):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
 
     def test_import_template(self):
-        resp = self.client.get('/entity/subject/template/cli051/?filename=clinic%20test%20project')
+        resp = self.client.get('/entity/entity/template/cli051/?filename=clinic%20test%20project')
         xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
         os.write(xlfile_fd, resp.content)
         os.close(xlfile_fd)
