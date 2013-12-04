@@ -1,3 +1,4 @@
+from string import lower
 import elasticutils
 from datawinners.main.database import get_database_manager
 from datawinners.settings import ELASTIC_SEARCH_URL
@@ -35,8 +36,8 @@ class Query(object):
             options.update({"order_field": header_copy[self.query_params["order_by"]]})
         query = self.query_builder.create_query(self._getDatabaseName(user), entity_type)
         paginated_query = self.query_builder.create_paginated_query(query, options)
-        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, self.query_params["search_text"],
-                                                                    paginated_query, query_params=self.query_params)
+        search_text = lower(self.query_params.get("search_text") or self.query_params.get("search_filters").get("search_text"))
+        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, search_text,paginated_query, query_params=self.query_params)
         return entity_headers, paginated_query, query_with_criteria
 
     def paginated_query(self, user, entity_type):

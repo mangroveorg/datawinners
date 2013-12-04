@@ -278,13 +278,22 @@ def get_option_value_for_field(diff_value, question_field):
 def export(request):
     project_name = request.POST.get(u"project_name")
     submission_type = request.GET.get(u'type')
-    search_criteria = request.POST.get(u'search', '')
+    search_filters = json.loads(request.POST.get('search_filters'))
     questionnaire_code = request.POST.get(u'questionnaire_code')
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
+    query_params = {"search_filters":search_filters,
+                "start_result_number": 0,
+                "number_of_results": 50000,
+                "order": "",
+                "order_by": 0
+    }
+    if submission_type != "all":
+        query_params.update({"filter": submission_type})
+
     return SubmissionExporter(form_model, project_name, request.user)\
-        .create_excel_response(submission_type, search_criteria)
+        .create_excel_response(submission_type, query_params)
 
 
 def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
@@ -305,7 +314,7 @@ def get_submissions(request, form_code):
     search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
     search_filters = json.loads(request.POST.get('search_filters'))
     search_parameters.update({"search_filters":search_filters})
-    search_text = search_filters.get("search_text", '')
+    search_text = search_filters.get("search_text", '').lower()
     search_parameters.update({"search_text": search_text})
     filter_type = request.GET['type']
     if filter_type.lower() != 'all':

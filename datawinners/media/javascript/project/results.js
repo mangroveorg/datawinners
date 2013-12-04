@@ -1,5 +1,13 @@
 $(document).ready(function () {
     var datasender_filter_id ;
+    var filter_as_json = function () {
+                    return {"submissionDatePicker": $('#submissionDatePicker').val(),
+                            "datasenderFilter": $("#data_sender_filter").data('ds_id'),
+                            "reportingPeriodPicker": $('#reportingPeriodPicker').val(),
+                            "search_text":$('#search_text').val()
+                    };
+    }
+
     function load_table(tab_name) {
         var url = render_table_url + "/headers";
         $.ajax({
@@ -77,7 +85,7 @@ $(document).ready(function () {
 
     $('.export_link').click(function () {
         var url = '/project/export/log' + '?type=' + tab[active_tab_index];
-        $('#export_form').appendJson(DW.get_criteria()).attr('action', url).submit();
+        $('#export_form').appendJson({"search_filters":JSON.stringify(filter_as_json())}).attr('action', url).submit();
     });
     function init_submission_log_table(cols) {
 
@@ -108,14 +116,9 @@ $(document).ready(function () {
                     $('#search_box').append($('.dataTables_wrapper .dataTables_filter'));
                 },
                 "fnHeaderCallback": function (head) {
-                }
+                },
+                "getFilter": filter_as_json
 
-                , "getFilter": function () {
-                    return {"submissionDatePicker": $('#submissionDatePicker').val(),
-                            "datasenderFilter": $("#data_sender_filter").data('ds_id'),
-                            "reportingPeriodPicker": $('#reportingPeriodPicker').val(),
-                            "search_text":$('#search_text').val() };
-                }
             }
 
         );

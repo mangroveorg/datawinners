@@ -12,17 +12,10 @@ class SubmissionExporter:
         self.db_name = get_database_name(user)
         self.user = user
 
-    def create_excel_response(self, submission_type, criteria):
+    def create_excel_response(self, submission_type, query_params):
         columns = SubmissionExcelHeader(self.form_model, submission_type).get_columns()
-        query_params = {"search_text": criteria,
-                        "start_result_number": 0,
-                        "number_of_results": 50000,
-                        "order": "",
-                        "order_by": 0
-        }
 
-        if submission_type != "all":
-            query_params.update({"filter": submission_type})
+
         entity_headers, paginated_query, query_with_criteria = SubmissionQuery(self.form_model,
                                                                                query_params).query_to_be_paginated(
                                                                                 self.form_model.id,

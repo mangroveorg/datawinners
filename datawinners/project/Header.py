@@ -79,6 +79,9 @@ class SubmissionExcelHeader():
     def get_columns(self):
         header_dict = SubmissionQuery(self._form_model, {"filter": self.submission_type}).get_header_dict()
         # header_dict = OrderedDict({'name':"Name"}, {"p":"Place", "})
+        if self._form_model.entity_type == ["reporter"]:
+            header_dict.pop("entity_short_code")
+
         result = OrderedDict()
         for key in header_dict:
             if key != SubmissionIndexConstants.DATASENDER_ID_KEY:
@@ -86,8 +89,9 @@ class SubmissionExcelHeader():
                 if key == SubmissionIndexConstants.DATASENDER_NAME_KEY: #add key column after name
                     self.add_datasender_id_column(header_dict, result)
         for field in self._form_model.fields:
-            result.get(field.code.lower()).update({"type": field.type})
-            if field.type == "date":
-                result.get(field.code.lower()).update({"format": field.date_format})
+            if result.has_key(field.code.lower()):
+                result.get(field.code.lower()).update({"type": field.type})
+                if field.type == "date":
+                    result.get(field.code.lower()).update({"format": field.date_format})
 
         return result
