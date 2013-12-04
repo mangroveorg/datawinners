@@ -1,3 +1,7 @@
 .help-steps{
   margin-left: 31px;
 }
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}

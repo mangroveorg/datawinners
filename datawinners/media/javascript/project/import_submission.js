@@ -8,10 +8,19 @@ DW.SubmissionImportPopup = function(){
                 autoOpen: false,
                 open: function(){
                     self.import_help_section.hide();
-                   self.success_section.hide();
+                    self.success_section.hide();
                 },
                 width: 500,
-                closeText: 'hide'
+//                closeText: 'hide',
+                dialogClass: "no-close",
+                buttons: [
+                    {
+                      text: "Close",
+                      click: function() {
+                        $( this ).dialog( "close" );
+                      }
+                    }
+                ]
             }
         );
         self.download_link = $("#template-download-link");
