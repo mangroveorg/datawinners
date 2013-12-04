@@ -12,7 +12,7 @@ class TestExporter(TestCase):
 
     def test_export(self):
         resp = self.client.post('/project/export/log',
-                                {'project_name': 'test data sorting', 'type': 'all', 'search': 'export18',
+                                {'project_name': 'test data sorting', 'type': 'all', 'search_filters': "{\"search_text\":\"export18\"}",
                                  'questionnaire_code': 'cli001'})
         xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
         os.write(xlfile_fd, resp.content)
