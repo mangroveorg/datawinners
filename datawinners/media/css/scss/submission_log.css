@@ -45,3 +45,6 @@ ul.ui-autocomplete {
 
 .import_link {
   color: #0070AC !important; }
+
+#search_text {
+  width: 350px; }

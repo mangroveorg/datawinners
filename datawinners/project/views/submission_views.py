@@ -13,6 +13,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
+from django.views.decorators.csrf import csrf_view_exempt
 import jsonpickle
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 
@@ -292,18 +293,20 @@ def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
         form_model_ui['status'] = ugettext('Success')
 
 
+@csrf_view_exempt
 @valid_web_user
 def get_submissions(request, form_code):
     dbm = get_database_manager(request.user)
     form_model = get_form_model_by_code(dbm, form_code)
     search_parameters = {}
-    search_text = request.GET.get('sSearch', '').strip()
+    search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
+    search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
+    search_parameters.update({"order_by": int(request.POST.get('iSortCol_0'))})
+    search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
+    search_filters = json.loads(request.POST.get('search_filters'))
+    search_parameters.update({"search_filters":search_filters})
+    search_text = search_filters.get("search_text", '')
     search_parameters.update({"search_text": search_text})
-    search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
-    search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
-    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0'))})
-    search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
-    search_parameters.update({"search_filters": json.loads(request.GET.get('search_filters'))})
     filter_type = request.GET['type']
     if filter_type.lower() != 'all':
         search_parameters.update({"filter": filter_type})
@@ -316,7 +319,7 @@ def get_submissions(request, form_code):
             {
                 'data': submissions,
                 'iTotalDisplayRecords': query_count,
-                'iDisplayStart': int(request.GET.get('iDisplayStart')),
+                'iDisplayStart': int(request.POST.get('iDisplayStart')),
                 "iTotalRecords": search_count,
-                'iDisplayLength': int(request.GET.get('iDisplayLength'))
+                'iDisplayLength': int(request.POST.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')

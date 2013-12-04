@@ -91,6 +91,7 @@ $(document).ready(function () {
         $(".submission_table").dwTable({
                 aoColumns: cols,
                 "concept": "Submission",
+                "sDom": "iprtipl",
                 "sAjaxSource": url,
                 "sAjaxDataIdColIndex": 1,
                 "remove_id": true,
@@ -110,9 +111,10 @@ $(document).ready(function () {
                 }
 
                 , "getFilter": function () {
-                    return '{"submissionDatePicker":"' + $('#submissionDatePicker').val() + '", ' +
-                        '"datasenderFilter":"' + $("#data_sender_filter").data('ds_id') + '", ' +
-                        '"reportingPeriodPicker":"' + $('#reportingPeriodPicker').val() + '"}';
+                    return {"submissionDatePicker": $('#submissionDatePicker').val(),
+                            "datasenderFilter": $("#data_sender_filter").data('ds_id'),
+                            "reportingPeriodPicker": $('#reportingPeriodPicker').val(),
+                            "search_text":$('#search_text').val() };
                 }
             }
 
@@ -141,6 +143,9 @@ $(document).ready(function () {
                  $(".submission_table").dataTable().fnDraw();
          }
     });
+    $("#search_text").keyup(function(){
+       $(".submission_table").dataTable().fnDraw();
+    })
 });
 
 

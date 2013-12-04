@@ -16,12 +16,12 @@
                     lastXHR = oSettings.jqXHR;
                     lastXHR && lastXHR.abort && lastXHR.abort();
                     aoData.push({"name": "disable_cache", "value": new Date().getTime()});
-                    aoData.push({"name": "search_filters", "value": defaults.getFilter()});
+                    aoData.push({"name": "search_filters", "value": JSON.stringify(defaults.getFilter())});
 
                     //this.fnFilter(filterVal);
                     oSettings.jqXHR = $.ajax({
                         "dataType": 'json',
-                        "type": "GET",
+                        "type": "POST",
                         "url": sSource,
                         "data": aoData,
                         "success": function (result) {
