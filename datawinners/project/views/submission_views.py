@@ -67,7 +67,7 @@ def headers(request, form_code):
 @session_not_expired
 @is_datasender
 @is_not_expired
-def index(request, project_id=None, questionnaire_code=None):
+def index(request, project_id=None, questionnaire_code=None, tab=0):
     manager = get_database_manager(request.user)
 
     form_model = get_form_model_by_code(manager, questionnaire_code)
@@ -80,7 +80,7 @@ def index(request, project_id=None, questionnaire_code=None):
         result_dict = {
                        #"datasender_list": survey_responses.get_data_senders(),
                        #"subject_list": survey_responses.get_subjects(),
-                       #"tab": tab,
+                       "tab": tab,
                        "is_quota_reached": is_quota_reached(request, org_id=org_id),
                        #"active_tab": submission_type
         }
