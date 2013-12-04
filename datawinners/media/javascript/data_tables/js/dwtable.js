@@ -179,6 +179,7 @@
                     }
 
                     $(this).find(".checkall-checkbox").click(function () {
+                        $('.select_all_message').width($('.grid_23').width())
                         $(dataTableObject).find("input.row_checkbox").attr('checked', $(this).is(":checked"));
                         show_select_all_message();
                     });
