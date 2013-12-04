@@ -2,8 +2,8 @@
 
 ##Variables
 from framework.utils.common_utils import random_number, random_string
+from tests.addsubjecttests.add_subject_data import ENTITY_TYPE, SUB_UNIQUE_ID, SUB_FIRST_NAME, SUB_LAST_NAME, LOCATION, GEO_CODE
 from testdata.constants import NAME, MOBILE_NUMBER, COMMUNE, EMAIL_ADDRESS, GPS, SUCCESS_MSG, SENDER, RECEIVER, SMS, SUCCESS_MESSAGE
-from tests.addsubjecttests.add_subject_data import *
 
 SMS_SUBMISSION = "sms"
 UNIQUE_VALUE = "unique_value"
@@ -49,7 +49,7 @@ VALID_DATA_FOR_EDIT = {ENTITY_TYPE: "Clinic",
                        SUB_FIRST_NAME: "clinic FT",
                        SUB_LAST_NAME: "Test2",
                        LOCATION: "Monodovas",
-                       GPS: "47.0 28.0",
+                       GEO_CODE: "47.0 28.0",
                        MOBILE_NUMBER: MOBILE_NUMBER_FOR_SUBJECT,
                        SUCCESS_MESSAGE: "Your changes have been saved."}
 
@@ -59,7 +59,7 @@ VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "Clinic",
                           SUB_FIRST_NAME: "Clinic FT",
                           SUB_LAST_NAME: "Test",
                           LOCATION: "Monodova",
-                          GPS: "47.411631 28.369885",
+                          GEO_CODE: "47.411631 28.369885",
                           MOBILE_NUMBER: MOBILE_NUMBER_FOR_SUBJECT,
                           SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
 

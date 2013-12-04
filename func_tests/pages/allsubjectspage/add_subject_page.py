@@ -37,7 +37,7 @@ class AddSubjectPage(Page):
         self.driver.find_text_box(LOCATION_TB).enter_text(
             fetch_(LOCATION, from_(addition_data)))
         self.driver.find_text_box(GEO_CODE_TB).enter_text(
-            fetch_(GPS, from_(addition_data)))
+            fetch_(GEO_CODE, from_(addition_data)))
         self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(
             fetch_(MOBILE_NUMBER, from_(addition_data)))
 

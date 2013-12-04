@@ -48,7 +48,7 @@ class TestAddSubject(unittest.TestCase):
 
     def assertErrorMessage(self, add_subject_page, message):
         actual_message = add_subject_page.get_error_message()
-        self.assertTrue(message in actual_message, actual_message)
+        self.assertTrue(message in actual_message)
 
     @attr('functional_test')
     def test_addition_of_subject_with_invalid_data(self):

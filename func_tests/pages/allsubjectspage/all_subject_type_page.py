@@ -8,6 +8,7 @@ from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from pages.page import Page
 from testdata.test_data import url
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class AllSubjectTypePage(Page):
@@ -115,5 +116,6 @@ class AllSubjectTypePage(Page):
             return None
 
     def select_subject_type(self, subject_type):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(".all_subject_type_table"))
         self.driver.find_element_by_link_text(subject_type).click()
         return AllSubjectsListPage(self.driver)
