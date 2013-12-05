@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from django.utils.translation import ugettext
-from datawinners.search.submission_search import SubmissionQuery, SubmissionIndexConstants
+from datawinners.search.submission_query import SubmissionQuery, SubmissionIndexConstants
 from mangrove.form_model.field import DateField, GeoCodeField
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.helper import DEFAULT_DATE_FORMAT

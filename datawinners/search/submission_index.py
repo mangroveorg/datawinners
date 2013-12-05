@@ -2,23 +2,59 @@ from string import lower
 from babel.dates import format_datetime
 from datawinners.project.models import get_all_projects
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
-from datawinners.search.submission_search import SubmissionQueryBuilder, SubmissionIndexConstants
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.datastore.documents import SurveyResponseDocument
 from datawinners.main.database import get_db_manager
-from datawinners.search.index_utils import get_fields_mapping, get_elasticsearch_handle
-from mangrove.datastore.datadict import DataDictType
+from datawinners.search.index_utils import get_elasticsearch_handle, get_fields_mapping_by_field_def, get_field_definition
 from mangrove.datastore.entity import get_by_short_code_include_voided
-from mangrove.form_model.field import TextField, DateField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 
 
+ES_SUBMISSION_FIELD_DS_ID = "ds_id"
+ES_SUBMISSION_FIELD_DS_NAME = "ds_name"
+ES_SUBMISSION_FIELD_DS_NAME = "ds_name"
+ES_SUBMISSION_FIELD_DATE = "date"
+ES_SUBMISSION_FIELD_STATUS = "status"
+ES_SUBMISSION_FIELD_ERROR_MSG = "error_msg"
+ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE = "entity_short_code"
+
+
+meta_fields = [ES_SUBMISSION_FIELD_DS_ID, ES_SUBMISSION_FIELD_DS_NAME, ES_SUBMISSION_FIELD_DATE,
+               ES_SUBMISSION_FIELD_STATUS, ES_SUBMISSION_FIELD_ERROR_MSG, ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE]
+
+submission_meta_fields = [{"name":ES_SUBMISSION_FIELD_DATE, "type":"date","date_format":'submission_date_format'},
+            {"name":ES_SUBMISSION_FIELD_STATUS},
+            {"name":ES_SUBMISSION_FIELD_DS_NAME},
+            {"name":ES_SUBMISSION_FIELD_DS_ID},
+            {"name":ES_SUBMISSION_FIELD_ERROR_MSG},
+            {"name":ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE}]
+
+submission_meta_field_names = dict([(field["name"],None) for field in submission_meta_fields])
+
+
+def is_submission_meta_field(field_name):
+    return submission_meta_field_names.has_key(field_name)
+
+
+def es_field_name(field_name, form_model_id):
+    """
+        prefixes form_model id to namespace all additional fields on questionnaire (ds_name, ds_id, status and date are not prefixed)
+    :param field_name:
+    """
+    return field_name if is_submission_meta_field(field_name) else "%s_%s"%(form_model_id, lower(field_name))
+
 def create_submission_mapping(dbm, form_model):
     es = get_elasticsearch_handle()
-    fields = _metadata_mapping(dbm)
-    fields.extend(form_model.fields)
-    mapping = get_fields_mapping(form_model.id, fields, 'code')
+    fields_definition = get_submission_meta_fields()
+
+    for field in form_model.fields:
+        fields_definition.append(get_field_definition(field, field_name=es_field_name(field.code, form_model.id)))
+    mapping = get_fields_mapping_by_field_def(doc_type=form_model.id, fields_definition=fields_definition)
     es.put_mapping(dbm.database_name, form_model.id, mapping)
+
+
+def get_submission_meta_fields():
+    return submission_meta_fields
 
 
 def submission_update_on_entity_edition(entity_doc, dbm):
@@ -29,6 +65,7 @@ def submission_update_on_entity_edition(entity_doc, dbm):
 
 
 def update_submission_search_for_datasender_edition(entity_doc, dbm):
+    from datawinners.search.submission_query import SubmissionQueryBuilder, SubmissionIndexConstants
     args = {SubmissionIndexConstants.DATASENDER_ID_KEY: entity_doc.short_code}
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
     project_form_model_ids = [project.value['qid'] for project in get_all_projects(dbm)]
@@ -48,6 +85,7 @@ def _get_form_models_from_projects(dbm, projects):
 
 
 def update_submission_search_for_subject_edition(entity_doc, dbm):
+    from datawinners.search.submission_query import SubmissionQueryBuilder
     entity_type = entity_doc.entity_type
     projects = dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True)
     form_models = _get_form_models_from_projects(dbm, projects)
@@ -71,15 +109,6 @@ def update_submission_search_index(feed_submission_doc, feed_dbm, refresh_index=
     search_dict = _meta_fields(feed_submission_doc, submission_doc, dbm)
     _update_with_form_model_fields(dbm, feed_submission_doc, search_dict, form_model)
     es.index(dbm.database_name, form_model.id, search_dict, id=feed_submission_doc.id, refresh=refresh_index)
-
-
-def _metadata_mapping(dbm):
-    return [DateField("Submission Date", "date", "Submission Date", 'submission_date_format', DataDictType(dbm)),
-            TextField("Status", "status", "Status", DataDictType(dbm)),
-            TextField("Datasender Name", "ds_name", "Datasender Name", DataDictType(dbm)),
-            TextField("Datasender Id", "ds_id", "Datasender Id", DataDictType(dbm)),
-            TextField("Entity Short Code", "entity_short_code", "Entity short code", DataDictType(dbm)),
-            TextField("Error message", "error_msg", "Error Message", DataDictType(dbm))]
 
 
 def _meta_fields(feed_submission_doc, submission_doc, dbm):
@@ -116,7 +145,7 @@ def _update_with_form_model_fields(dbm, feed_submission_doc, search_dict, form_m
 
         if isinstance(value, dict):
             value = ','.join(value.values())
-        search_dict.update({key: value})
+        search_dict.update({es_field_name(key, form_model.id): value})
 
     search_dict.update({'void': feed_submission_doc.void})
     return search_dict

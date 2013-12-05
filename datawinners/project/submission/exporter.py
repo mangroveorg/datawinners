@@ -2,7 +2,7 @@ from datawinners.main.utils import get_database_name
 from datawinners.project.Header import SubmissionExcelHeader
 from datawinners.project.submission.export import create_excel_response, export_filename
 from datawinners.project.submission.formatter import SubmissionFormatter
-from datawinners.search.submission_search import SubmissionQuery
+from datawinners.search.submission_query import SubmissionQuery
 
 
 class SubmissionExporter:

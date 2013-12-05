@@ -1,6 +1,7 @@
 from collections import OrderedDict
 import elasticutils
 from datawinners.search.filters import SubmissionDateRangeFilter, ReportingDateRangeFilter
+from datawinners.search.submission_index import es_field_name
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.form_model import header_fields
 from datawinners.search.query import QueryBuilder, Query
@@ -63,7 +64,7 @@ class SubmissionQueryResponseCreator():
             for key in required_field_names:
                 meta_fields = ['ds_id', 'ds_name', 'entity_short_code']
                 if not key in meta_fields:
-                    if key.lower() == self.form_model.entity_question.code.lower():
+                    if key.lower().endswith(self.form_model.entity_question.code.lower()):
                         submission.append(
                             [res.get(key) + "<span class='small_grey'>  %s</span>" % res.get('entity_short_code')])
                     elif isinstance(res.get(key), dict):
@@ -85,11 +86,15 @@ class SubmissionQuery(Query):
         self._update_static_header_info(header_dict)
 
         def key_attribute(field):
-            return self._field_code_in_lowercase(field)
+            return field.code.lower()
 
-        header_fields(self.form_model, key_attribute, header_dict)
+        headers = header_fields(self.form_model, key_attribute)
+        for field_code,val in headers.items():
+            key = es_field_name(field_code, self.form_model.id)
+            if not header_dict.has_key(key): header_dict.update({key:val})
+
         if "reporter" in self.form_model.entity_type:
-            header_dict.pop(self.form_model.entity_question.code)
+            header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
         return header_dict
 
     def get_headers(self, user=None, form_code=None):
@@ -105,13 +110,10 @@ class SubmissionQuery(Query):
         elif submission_type == 'error': \
             header_dict.update({"error_msg": "Error Message"})
         subject_title = self.form_model.entity_type[0].title()
-        header_dict.update({self._field_code_in_lowercase(self.form_model.entity_question): subject_title})
+        header_dict.update({es_field_name(self.form_model.entity_question.code,self.form_model.id): subject_title})
         header_dict.update({'entity_short_code': "%s ID" % subject_title})
         if self.form_model.event_time_question:
-            header_dict.update({self._field_code_in_lowercase(self.form_model.event_time_question): "Reporting Date"})
-
-    def _field_code_in_lowercase(self, field):
-        return field.code.lower()
+            header_dict.update({es_field_name(self.form_model.event_time_question.code, self.form_model.id): "Reporting Date"})
 
 
     def populate_query_options(self):

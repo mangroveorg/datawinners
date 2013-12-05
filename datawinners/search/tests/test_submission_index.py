@@ -2,7 +2,7 @@ import unittest
 import elasticutils
 from mock import Mock, PropertyMock, patch
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
-from datawinners.search.submission_search import SubmissionQueryBuilder
+from datawinners.search.submission_query import SubmissionQueryBuilder
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import TextField
@@ -13,7 +13,7 @@ from mangrove.datastore.documents import EnrichedSurveyResponseDocument
 
 class TestSubmissionIndex(unittest.TestCase):
     def setUp(self):
-        self.form_model = Mock(spec=FormModel)
+        self.form_model = Mock(spec=FormModel, id="1212")
         mock_field = Mock(TextField)
         mock_field.is_entity_field = True
         mock_field.code = 'EID'
@@ -31,8 +31,8 @@ class TestSubmissionIndex(unittest.TestCase):
             lookup_entity_name.return_value = 'Test'
             _update_with_form_model_fields(None, submission_doc, search_dict, self.form_model)
             self.assertEquals(
-                {'eid': 'Test', "entity_short_code": "cid005", 'q2': 'name', 'q3': 'three,two', 'q4': '3,3',
-                 'q5': '11.12.2012', 'void': False}, search_dict)
+                {'1212_eid': 'Test', "entity_short_code": "cid005", '1212_q2': 'name', '1212_q3': 'three,two', '1212_q4': '3,3',
+                 '1212_q5': '11.12.2012', 'void': False}, search_dict)
 
     def test_should_update_search_dict_with_form_field_questions_for_error_submissions(self):
         search_dict = {}
@@ -42,7 +42,7 @@ class TestSubmissionIndex(unittest.TestCase):
             lookup_entity_name.return_value = 'Test'
             _update_with_form_model_fields(None, submission_doc, search_dict, self.form_model)
             self.assertEquals(
-                {'eid': 'Test', "entity_short_code": "test_id", 'q2': 'wrong number', 'q3': 'wrong text', 'void': False},
+                {'1212_eid': 'Test', "entity_short_code": "test_id", '1212_q2': 'wrong number', '1212_q3': 'wrong text', 'void': False},
                 search_dict)
 
     def test_should_update_entity_field_in_submission_index(self):
