@@ -25,7 +25,7 @@ class TestSubmissionPersister(TestCase):
                 user_profile.reporter_id = "some_rep_id"
                 submission_persister = SubmissionPersister(user, None, None, form_model, project)
 
-                ignored_entries, saved_entries = submission_persister.save_submission(user_profile, valid_rows)
+                ignored_entries, saved_entries = submission_persister.save_submission(True, user_profile, valid_rows)
 
                 self.assertEqual(saved_entries, [{"key":"value1"}, {"key":"value2"}])
                 self.assertEqual(ignored_entries, [])
@@ -44,7 +44,7 @@ class TestSubmissionPersister(TestCase):
                 user_profile.reporter_id = "some_rep_id"
                 submission_persister = SubmissionPersister(user, None, None, form_model, project)
 
-                ignored_entries, saved_entries = submission_persister.save_submission(user_profile, valid_rows)
+                ignored_entries, saved_entries = submission_persister.save_submission(True, user_profile, valid_rows)
 
                 self.assertEqual(ignored_entries, [{"key":"value1"}, {"key":"value2"}])
                 self.assertEqual(saved_entries, [])
@@ -63,7 +63,7 @@ class TestSubmissionPersister(TestCase):
                 user_profile.reporter_id = "some_rep_id"
                 submission_persister = SubmissionPersister(user, None, None, form_model, project)
 
-                submission_persister.save_submission(user_profile, valid_rows)
+                submission_persister.save_submission(True, user_profile, valid_rows)
 
                 self.assertEqual(organization.increment_message_count_for.call_count, 2)
                 organization.increment_message_count_for.assert_called_with(incoming_web_count=1)
@@ -84,7 +84,7 @@ class TestSubmissionPersister(TestCase):
                 submission_persister = SubmissionPersister(user, None, None, form_model, project)
                 with patch("datawinners.project.submission.submission_import.check_quotas_and_update_users") as check_quotas_and_update_users:
 
-                    submission_persister.save_submission(user_profile, valid_rows)
+                    submission_persister.save_submission(True, user_profile, valid_rows)
 
                     check_quotas_and_update_users.assert_called_with(organization)
 
@@ -104,20 +104,18 @@ class TestSubmissionPersister(TestCase):
                 project.is_summary_project.return_value = True
                 form_model.form_code = "form_code"
                 submission_persister = SubmissionPersister(user, None, None, form_model, project)
-                with patch("datawinners.project.submission.submission_import.is_org_user") as is_org_user:
-                    with patch("datawinners.project.submission.submission_import.get_transport_info") as get_transport_info:
-                        with patch("datawinners.project.submission.submission_import.get_feed_dictionary") as get_feed_dictionary:
-                            transport_info = None
-                            additional_feed_dictionary = None
-                            get_feed_dictionary.return_value = additional_feed_dictionary
-                            get_transport_info.return_value = transport_info
-                            is_org_user.return_value = True
+                with patch("datawinners.project.submission.submission_import.get_web_transport_info") as get_web_transport_info:
+                    with patch("datawinners.project.submission.submission_import.get_feed_dictionary") as get_feed_dictionary:
+                        transport_info = None
+                        additional_feed_dictionary = None
+                        get_feed_dictionary.return_value = additional_feed_dictionary
+                        get_web_transport_info.return_value = transport_info
 
-                            submission_persister.save_submission(user_profile, valid_rows)
+                        submission_persister.save_submission(True, user_profile, valid_rows)
 
-                            service.save_survey.assert_called_with("form_code", valid_row, [],
-                                                               transport_info, valid_row, expected_reporter_id,
-                                                               additional_feed_dictionary)
+                        service.save_survey.assert_called_with("form_code", valid_row, [],
+                                                           transport_info, valid_row, expected_reporter_id,
+                                                           additional_feed_dictionary)
 
 
     def test_should_save_survey_with_logged_in_datasenders_reporter_id(self):
@@ -136,18 +134,16 @@ class TestSubmissionPersister(TestCase):
                 project.is_summary_project.return_value = False
                 form_model.form_code = "form_code"
                 submission_persister = SubmissionPersister(user, None, None, form_model, project)
-                with patch("datawinners.project.submission.submission_import.is_org_user") as is_org_user:
-                    with patch("datawinners.project.submission.submission_import.get_transport_info") as get_transport_info:
-                        with patch("datawinners.project.submission.submission_import.get_feed_dictionary") as get_feed_dictionary:
-                            transport_info = None
-                            additional_feed_dictionary = None
-                            get_feed_dictionary.return_value = additional_feed_dictionary
-                            get_transport_info.return_value = transport_info
-                            is_org_user.return_value = True
+                with patch("datawinners.project.submission.submission_import.get_web_transport_info") as get_web_transport_info:
+                    with patch("datawinners.project.submission.submission_import.get_feed_dictionary") as get_feed_dictionary:
+                        transport_info = None
+                        additional_feed_dictionary = None
+                        get_feed_dictionary.return_value = additional_feed_dictionary
+                        get_web_transport_info.return_value = transport_info
 
-                            submission_persister.save_submission(user_profile, valid_rows)
+                        submission_persister.save_submission(False, user_profile, valid_rows)
 
-                            service.save_survey.assert_called_with("form_code", valid_row, [],
-                                                               transport_info, valid_row, expected_reporter_id,
-                                                               additional_feed_dictionary)
+                        service.save_survey.assert_called_with("form_code", valid_row, [],
+                                                           transport_info, valid_row, expected_reporter_id,
+                                                           additional_feed_dictionary)
 

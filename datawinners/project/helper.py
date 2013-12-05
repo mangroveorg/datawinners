@@ -12,6 +12,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesN
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
+from mangrove.transport import TransportInfo
 from mangrove.utils.types import  is_sequence, sequence_to_str
 import models
 from datetime import datetime
@@ -212,11 +213,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
 
 def create_request(questionnaire_form, username, is_update=None):
     return Request(message=questionnaire_form.cleaned_data,
-        transportInfo=
-        TransportInfo(transport="web",
-            source=username,
-            destination=""
-        ), is_update=is_update)
+        transportInfo=get_web_transport_info(username), is_update=is_update)
 
 
 def _translate_messages(error_dict, fields):
@@ -262,3 +259,19 @@ def is_project_exist(f):
         return ret
 
     return wrapper
+
+
+def get_feed_dictionary(project):
+        additional_feed_dictionary = {}
+        project_dict = {
+            'id': project.id,
+            'name': project.name,
+            'type': project.entity_type,
+            'status': project.state
+        }
+        additional_feed_dictionary.update({'project': project_dict})
+        return additional_feed_dictionary
+
+
+def get_web_transport_info(username):
+        return TransportInfo(transport="web", source=username, destination="")

@@ -55,7 +55,7 @@ from datawinners.project.subject_question_creator import SubjectQuestionFieldCre
 from datawinners.project import helper
 from datawinners.project.utils import make_project_links
 from datawinners.project.filters import KeywordFilter
-from datawinners.project.helper import is_project_exist
+from datawinners.project.helper import is_project_exist, get_feed_dictionary
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_PROJECT
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
@@ -192,7 +192,7 @@ def project_overview(request, project_id=None):
         'project': project,
         'entity_type': project['entity_type'],
         'project_links': project_links,
-        'is_quota_reached':is_quota_reached(request),
+        'is_quota_reached': is_quota_reached(request),
         'number_of_questions': number_of_questions,
         'map_api_key': map_api_key,
         'number_data_sender': number_data_sender,
@@ -316,7 +316,7 @@ def sent_reminders(request, project_id):
     return render_to_response(html,
                               {'project': project,
                                "project_links": make_project_links(project, questionnaire.form_code),
-                               'is_quota_reached':is_quota_reached(request, organization=organization),
+                               'is_quota_reached': is_quota_reached(request, organization=organization),
                                'reminders': get_all_reminder_logs_for_project(project_id, dbm),
                                'in_trial_mode': is_trial_account,
                                'create_reminder_link': reverse(create_reminder, args=[project_id])},
@@ -348,7 +348,7 @@ def broadcast_message(request, project_id):
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': project,
                                          "project_links": make_project_links(project, questionnaire.form_code),
-                                         'is_quota_reached':is_quota_reached(request, organization=organization),
+                                         'is_quota_reached': is_quota_reached(request, organization=organization),
                                          "form": form, "ong_country": organization.country,
                                          "success": None},
                                   context_instance=RequestContext(request))
@@ -361,12 +361,13 @@ def broadcast_message(request, project_id):
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
-            failed_numbers=[]
-            try :
+            failed_numbers = []
+            try:
                 failed_numbers = helper.broadcast_message(data_senders, form.cleaned_data['text'],
-                                                organization_setting.get_organisation_sms_number()[0], other_numbers,
-                                                message_tracker,
-                                                country_code=organization.get_phone_country_code())
+                                                          organization_setting.get_organisation_sms_number()[0],
+                                                          other_numbers,
+                                                          message_tracker,
+                                                          country_code=organization.get_phone_country_code())
             except NoSMSCException as e:
                 no_smsc = True
             success = not no_smsc and len(failed_numbers) == 0
@@ -374,19 +375,21 @@ def broadcast_message(request, project_id):
             if success:
                 form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
             else:
-                 form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
+                form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds,
+                                            data=request.POST)
             return render_to_response('project/broadcast_message.html',
                                       {'project': project,
                                        "project_links": make_project_links(project, questionnaire.form_code),
-                                       'is_quota_reached':is_quota_reached(request, organization=organization),
+                                       'is_quota_reached': is_quota_reached(request, organization=organization),
                                        "form": form,
-                                       "ong_country": organization.country, "no_smsc": no_smsc,'failed_numbers': ",".join(failed_numbers), "success":success},
+                                       "ong_country": organization.country, "no_smsc": no_smsc,
+                                       'failed_numbers': ",".join(failed_numbers), "success": success},
                                       context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',
                                   {'project': project,
                                    "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                                   'is_quota_reached':is_quota_reached(request, organization=organization),
+                                   'is_quota_reached': is_quota_reached(request, organization=organization),
                                    'success': None, "ong_country": organization.country},
                                   context_instance=RequestContext(request))
 
@@ -439,7 +442,7 @@ def review_and_test(request, project_id=None):
         return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': make_project_links(project,
                                                                                                        form_model.form_code),
-                                                                   'is_quota_reached':is_quota_reached(request),
+                                                                   'is_quota_reached': is_quota_reached(request),
                                                                    'number_of_datasenders': number_of_registered_data_senders
             ,
                                                                    'number_of_subjects': number_of_registered_subjects,
@@ -466,7 +469,7 @@ def registered_subjects(request, project_id=None):
     return render_to_response('project/subjects/registered_subjects_list.html',
                               {'project': project,
                                'project_links': project_links,
-                               'is_quota_reached':is_quota_reached(request),
+                               'is_quota_reached': is_quota_reached(request),
                                "subject": subject,
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
@@ -509,7 +512,7 @@ def questionnaire(request, project_id=None):
                                    'questionnaire_code': form_model.form_code,
                                    'project': project,
                                    'project_links': project_links,
-                                   'is_quota_reached':is_quota_reached(request),
+                                   'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,
                                    'preview_links': get_preview_and_instruction_links_for_questionnaire()},
                                   context_instance=RequestContext(request))
@@ -678,20 +681,17 @@ class SurveyWebQuestionnaireRequest():
 
     def player_response(self, created_request):
         user_profile = NGOUserProfile.objects.get(user=self.request.user)
-        additional_feed_dictionary = {}
         if self.project.entity_type == u"reporter":
             reporter_id = created_request.message.get('eid')
         else:
             reporter_id = user_profile.reporter_id
 
-        project = {'id': self.project.id, 'name': self.project.name, 'type': self.project.entity_type,
-                   'status': self.project.state}
-        additional_feed_dictionary.update({'project': project})
-
-        response = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id) \
-            .add_survey_response(created_request, reporter_id, additional_feed_dictionary, websubmission_logger)
+        additional_feed_dictionary = get_feed_dictionary(self.project)
+        web_player = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id)
+        response = web_player.add_survey_response(created_request, reporter_id, additional_feed_dictionary,
+                                                  websubmission_logger)
         mail_feed_errors(response, self.manager.database_name)
-        if response.success and not created_request.is_update :
+        if response.success and not created_request.is_update:
             organization = Organization.objects.get(org_id=user_profile.org_id)
             organization.increment_message_count_for(incoming_web_count=1)
             check_quotas_and_update_users(organization)
@@ -703,7 +703,7 @@ class SurveyWebQuestionnaireRequest():
         if not questionnaire_form.is_valid() or quota_reached:
             form_context = get_form_context(self.form_code, self.project, questionnaire_form,
                                             self.manager, self.hide_link_class, self.disable_link_class)
-            form_context.update({'is_quota_reached':quota_reached})
+            form_context.update({'is_quota_reached': quota_reached})
             return render_to_response(self.template, form_context,
                                       context_instance=RequestContext(self.request))
 
@@ -787,7 +787,7 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
     return render_to_response(template,
                               {"questions": questions, 'questionnaire_code': form_model.form_code,
                                'project': project, 'project_links': project_links,
-                               'is_quota_reached':is_quota_reached(request),
+                               'is_quota_reached': is_quota_reached(request),
                                'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
                               context_instance=RequestContext(request))
 
@@ -817,7 +817,7 @@ def subject_registration_form_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview_list.html',
                                   {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
                                    'project': project, 'project_links': project_links,
-                                   'is_quota_reached':is_quota_reached(request),
+                                   'is_quota_reached': is_quota_reached(request),
                                    'example_sms': example_sms,
                                    'org_number': get_organization_telephone_number(request)},
                                   context_instance=RequestContext(request))
@@ -837,7 +837,7 @@ def sender_registration_form_preview(request, project_id=None):
                                   {"questions": datasender_questions,
                                    'questionnaire_code': registration_questionnaire.form_code,
                                    'project': project, 'project_links': project_links,
-                                   'is_quota_reached':is_quota_reached(request),
+                                   'is_quota_reached': is_quota_reached(request),
                                    'example_sms': example_sms,
                                    'org_number': get_organization_telephone_number(request)},
                                   context_instance=RequestContext(request))
@@ -863,7 +863,7 @@ def edit_my_subject_questionnaire(request, project_id=None):
     return render_to_response('project/subject_questionnaire.html',
                               {'project': project,
                                'project_links': project_links,
-                               'is_quota_reached':is_quota_reached(request),
+                               'is_quota_reached': is_quota_reached(request),
                                'existing_questions': repr(existing_questions),
                                'questionnaire_code': reg_form.form_code,
                                'language': reg_form.activeLanguages[0],
@@ -894,13 +894,13 @@ def create_data_sender_and_web_user(request, project_id=None):
     if request.method == 'GET':
         form = ReporterRegistrationForm(initial={'project_id': project_id})
         return render_to_response('project/register_datasender.html', {
-                                                                        'project': project,
-                                                                        'project_links': project_links,
-                                                                        'is_quota_reached':is_quota_reached(request),
-                                                                        'form': form,
-                                                                        'in_trial_mode': in_trial_mode,
-                                                                        'current_language': translation.get_language()
-                                                                      }, context_instance=RequestContext(request))
+            'project': project,
+            'project_links': project_links,
+            'is_quota_reached': is_quota_reached(request),
+            'form': form,
+            'in_trial_mode': in_trial_mode,
+            'current_language': translation.get_language()
+        }, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
@@ -925,6 +925,7 @@ def create_data_sender_and_web_user(request, project_id=None):
                                   context,
                                   context_instance=RequestContext(request))
 
+
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode
 
@@ -937,7 +938,7 @@ def project_has_data(request, questionnaire_code=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
     success, error = submission_stats(manager, form_model.form_code)
-    return HttpResponse(encode_json({'has_data': (success+error>0)}))
+    return HttpResponse(encode_json({'has_data': (success + error > 0)}))
 
 
 def edit_my_subject(request, entity_type, entity_id, project_id=None):

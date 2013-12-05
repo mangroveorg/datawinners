@@ -22,7 +22,7 @@ def import_template(request, form_code):
     else:
         form_fields = get_submission_form_fields_for_user(form_model, request)
         field_codes = _field_codes(form_fields)
-        headers = get_submission_headers(form_fields)
+        headers = get_submission_headers(form_fields, form_model)
         sheet_name = "Import_Submissions"
 
     filename = unquote(request.GET["filename"])
@@ -45,6 +45,8 @@ class WorkBookResponseFactory:
         style.num_format_str = '@'
         for column in ws.get_cols().values():
             column.set_style(style)
+
+        ws.row(0).height = 256*7
 
     def create_workbook_response(self, data, field_codes):
         response = HttpResponse(mimetype='application/vnd.ms-excel')
