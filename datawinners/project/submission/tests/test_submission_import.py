@@ -10,7 +10,9 @@ class TestSubmissionImport(TestCase):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
 
     def test_import_template(self):
+
         resp = self.client.get('/entity/entity/template/cli051/?filename=clinic%20test%20project')
+
         xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
         os.write(xlfile_fd, resp.content)
         os.close(xlfile_fd)
@@ -18,12 +20,12 @@ class TestSubmissionImport(TestCase):
         sheet = workbook.sheet_by_index(0)
         self.assertEqual(
             [
-                u"entity_question\n Enter unique ID\n\n ",
-                u"Name\n Answer must be a word 10 characters maximum\n\n ",
-                u"Father age\n Answer must be a number between 18-100.\n\n ",
-                u"Report date\n Answer must be a date in the following format: day.month.year\n\n Example: 25.12.2011",
-                u"Blood Group\n Enter 1 answer from the list.\n\n Example: a",
-                u"Symptoms\n Enter 1 or more answers from the list.\n\n Example: a or ab",
-                u"What is the GPS code for clinic?\n Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy.\n\n Example: -18.1324,27.6547",
-                u"Required Medicines\n Enter 1 or more answers from the list.\n\n Example: a or ab",
-            ], sheet.row_values(0, 0, 8))
+                u'entity_question\n\nEnter the unique ID for each clinic.\nYou can find the clinic List on the My Subjects page.\n\nExample: cli01',
+                u'Name\n\nAnswer must be a word 10 characters maximum\n\n',
+                u'Father age\n\nAnswer must be a number between 18-100.\n\n',
+                u'Report date\n\nAnswer must be a date in the following format: day.month.year\n\nExample: 25.12.2011',
+                u'Blood Group\n\nEnter 1 answer from the list.\n\nExample: a',
+                u'Symptoms\n\nEnter 1 or more answers from the list.\n\nExample: a or ab',
+                u'What is the GPS code for clinic?\n\nAnswer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy.\n\nExample: -18.1324,27.6547',
+                u'Required Medicines\n\nEnter 1 or more answers from the list.\n\nExample: a or ab'
+              ], sheet.row_values(0, 0, 8))
