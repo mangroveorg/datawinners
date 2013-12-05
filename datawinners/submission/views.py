@@ -40,7 +40,8 @@ logger = logging.getLogger("django")
 def sms(request):
     message = Responder().respond(request)
     response = HttpResponse(message)
-    response['X-Vumi-HTTPRelay-Reply'] = 'true' if message else 'false'
+    if message:
+        response['X-Vumi-HTTPRelay-Reply'] = 'true'
     response['Content-Length'] = len(response.content)
     return response
 
@@ -142,7 +143,7 @@ def check_quotas_and_update_users(organization, sms_channel=False):
         organization.get_total_incoming_message_count() == NEAR_SMS_LIMIT_TRIGGER:
         organization.send_mail_to_organization_creator(email_type='about_to_reach_sms_limit')
 
-    if organization.get_total_submission_count() == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
+    if organization.in_trial_mode and organization.get_total_submission_count() == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
         organization.send_mail_to_organization_creator(email_type='reached_submission_limit')
 
 def get_translated_response_message(incoming_request, original_message):
