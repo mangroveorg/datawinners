@@ -361,6 +361,7 @@ class MessageTracker(models.Model):
         self.incoming_web_count = 0
         self.incoming_sp_count = 0
         self.sms_api_usage_count = 0
+        self.sms_registration_count = 0
         self.save()
 
     def total_incoming_in_total(self):
