@@ -729,7 +729,8 @@ class SurveyWebQuestionnaireRequest():
                                             self.manager, self.hide_link_class, self.disable_link_class,
                                             is_update=is_update)
 
-        _project_context.update({'success_message': success_message, 'error_message': error_message, })
+        _project_context.update({'success_message': success_message, 'error_message': error_message,
+                                 'questionnaire_form':self.form(), })
 
         return render_to_response(self.template, _project_context,
                                   context_instance=RequestContext(self.request))

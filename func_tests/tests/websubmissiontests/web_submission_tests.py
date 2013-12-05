@@ -31,6 +31,7 @@ class TestWebSubmission(BaseTest):
     def test_successful_web_submission_by_paid_account(self):
         web_submission_page = self.submit_web_submission(VALID_CREDENTIALS)
         self.assertEqual(web_submission_page.get_errors(),[])
+        self.assertEqual(web_submission_page.get_text_value('NA'), u'')
 
     @SkipTest
     @attr('functional_test')
