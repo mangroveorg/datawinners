@@ -87,7 +87,7 @@ class TestRegistrationProcessor(unittest.TestCase):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user1).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
-                    'name': self.user1.first_name + ' ' + self.user1.last_name}
+                    'username': self.user1.first_name + ' ' + self.user1.last_name}
         self.assertEqual(render_to_string('registration/activation_email_in_en.html', ctx_dict), sent_email.body)
 
         payment_detail = PaymentDetails.objects.filter(organization=self.paid_organization)
@@ -115,7 +115,7 @@ class TestRegistrationProcessor(unittest.TestCase):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user2).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
-                    'name': self.user2.first_name + ' ' + self.user2.last_name}
+                    'username': self.user2.first_name + ' ' + self.user2.last_name}
         self.assertEqual(render_to_string('registration/activation_email_subject_for_trial_account_in_en.txt'), sent_email.subject)
         self.assertEqual(render_to_string('registration/activation_email_for_trial_account_in_en.html', ctx_dict), sent_email.body)
 
@@ -141,7 +141,7 @@ class TestRegistrationProcessor(unittest.TestCase):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user1).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
-                    'name': self.user1.first_name + ' ' + self.user1.last_name}
+                    'username': self.user1.first_name + ' ' + self.user1.last_name}
         self.assertEqual(render_to_string('registration/activation_email_in_fr.html', ctx_dict), sent_email.body)
 
         payment_detail = PaymentDetails.objects.filter(organization=self.paid_organization)
@@ -169,6 +169,6 @@ class TestRegistrationProcessor(unittest.TestCase):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user2).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
-                    'name': self.user2.first_name + ' ' + self.user2.last_name}
+                    'username': self.user2.first_name + ' ' + self.user2.last_name}
         self.assertEqual(render_to_string('registration/activation_email_subject_for_trial_account_in_fr.txt'), sent_email.subject)
         self.assertEqual(render_to_string('registration/activation_email_for_trial_account_in_fr.html', ctx_dict), sent_email.body)
