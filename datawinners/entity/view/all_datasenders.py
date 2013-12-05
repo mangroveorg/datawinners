@@ -99,14 +99,14 @@ class AllDataSendersView(TemplateView):
 
 class AllDataSendersAjaxView(View):
 
-   def get(self, request, *args, **kwargs):
+   def post(self, request, *args, **kwargs):
         search_parameters = {}
-        search_text = request.GET.get('sSearch', '').strip()
+        search_text = request.POST.get('sSearch', '').strip()
         search_parameters.update({"search_text": search_text})
-        search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
-        search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
-        search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
-        search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
+        search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
+        search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
+        search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
+        search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
         user = request.user
         query_count, search_count, datasenders = DatasenderQuery(search_parameters).paginated_query(user, REPORTER)
@@ -116,11 +116,13 @@ class AllDataSendersAjaxView(View):
                 {
                     'data': datasenders,
                     'iTotalDisplayRecords': query_count,
-                    'iDisplayStart': int(request.GET.get('iDisplayStart')),
+                    'iDisplayStart': int(request.POST.get('iDisplayStart')),
                     "iTotalRecords": search_count,
-                    'iDisplayLength': int(request.GET.get('iDisplayLength'))
+                    'iDisplayLength': int(request.POST.get('iDisplayLength'))
                 }, unpicklable=False), content_type='application/json')
 
+   @method_decorator(csrf_view_exempt)
+   @method_decorator(csrf_response_exempt)
    @method_decorator(login_required)
    @method_decorator(session_not_expired)
    @method_decorator(is_not_expired)

@@ -150,12 +150,12 @@ def viewable_questionnaire(form_model):
 @is_not_expired
 def all_subjects_ajax(request, subject_type):
     search_parameters = {}
-    search_text = request.GET.get('sSearch', '').strip()
+    search_text = request.POST.get('sSearch', '').strip()
     search_parameters.update({"search_text": search_text})
-    search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
-    search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
-    search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
-    search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
+    search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
+    search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
+    search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
+    search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
     user = request.user
 
     query_count, search_count, subjects = SubjectQuery(search_parameters).paginated_query(user, subject_type)
@@ -165,9 +165,9 @@ def all_subjects_ajax(request, subject_type):
             {
                 'data': subjects,
                 'iTotalDisplayRecords': query_count,
-                'iDisplayStart': int(request.GET.get('iDisplayStart')),
+                'iDisplayStart': int(request.POST.get('iDisplayStart')),
                 "iTotalRecords": search_count,
-                'iDisplayLength': int(request.GET.get('iDisplayLength'))
+                'iDisplayLength': int(request.POST.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')
 
 

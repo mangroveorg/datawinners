@@ -1,4 +1,5 @@
 import json
+from string import lower
 from urllib import unquote
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -8,7 +9,7 @@ from django.template import RequestContext
 from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _, get_language, activate
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_view_exempt, csrf_response_exempt
 from django.views.generic.base import View
 import jsonpickle
 import unicodedata
@@ -42,14 +43,14 @@ class MyDataSendersAjaxView(View):
     def strip_accents(self, s):
        return ''.join((c for c in unicodedata.normalize('NFD', unicode(s)) if unicodedata.category(c) != 'Mn'))
 
-    def get(self, request, project_name, *args, **kwargs):
+    def post(self, request, project_name, *args, **kwargs):
         search_parameters = {}
-        search_text = request.GET.get('sSearch', '').strip()
+        search_text = lower(request.POST.get('sSearch', '').strip())
         search_parameters.update({"search_text": search_text})
-        search_parameters.update({"start_result_number": int(request.GET.get('iDisplayStart'))})
-        search_parameters.update({"number_of_results": int(request.GET.get('iDisplayLength'))})
-        search_parameters.update({"order_by": int(request.GET.get('iSortCol_0')) - 1})
-        search_parameters.update({"order": "-" if request.GET.get('sSortDir_0') == "desc" else ""})
+        search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
+        search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
+        search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
+        search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
         user = request.user
         project_name_unquoted = unquote(project_name)
@@ -61,11 +62,13 @@ class MyDataSendersAjaxView(View):
                 {
                     'data': datasenders,
                     'iTotalDisplayRecords': query_count,
-                    'iDisplayStart': int(request.GET.get('iDisplayStart')),
+                    'iDisplayStart': int(request.POST.get('iDisplayStart')),
                     "iTotalRecords": search_count,
-                    'iDisplayLength': int(request.GET.get('iDisplayLength'))
+                    'iDisplayLength': int(request.POST.get('iDisplayLength'))
                 }, unpicklable=False), content_type='application/json')
 
+    @method_decorator(csrf_view_exempt)
+    @method_decorator(csrf_response_exempt)
     @method_decorator(login_required)
     @method_decorator(session_not_expired)
     @method_decorator(is_not_expired)

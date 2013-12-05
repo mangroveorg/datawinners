@@ -36,7 +36,8 @@ class Query(object):
             options.update({"order_field": header_copy[self.query_params["order_by"]]})
         query = self.query_builder.create_query(self._getDatabaseName(user), entity_type)
         paginated_query = self.query_builder.create_paginated_query(query, options)
-        search_text = lower(self.query_params.get("search_text") or self.query_params.get("search_filters").get("search_text"))
+        criteria = self.query_params.get("search_text")
+        search_text = lower(criteria.get("search_text") if isinstance(criteria, dict) else criteria)
         query_with_criteria = self.query_builder.add_query_criteria(entity_headers, search_text,paginated_query, query_params=self.query_params)
         return entity_headers, paginated_query, query_with_criteria
 
