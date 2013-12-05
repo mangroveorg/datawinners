@@ -1,3 +1,5 @@
+from mangrove.form_model.field import TextField
+from mangrove.form_model.form_model import FormModel
 from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
 from mangrove.bootstrap import initializer
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
@@ -46,16 +48,16 @@ class TestExcelHeaders(MangroveTestCase):
 
         header_instructions = self._get_header_component(headers, 1)
         self.assertEqual(
-            ["\n Answer must be a word", "\n Answer must be a number between 12-15.",
-             "\n Answer must be a date in the following format: day.month.year",
-             "\n Assign a unique ID for each Subject.", '\n Enter name of the location.',
-             "\n Enter 1 or more answers from the list."], header_instructions)
+            ["\nAnswer must be a word", "\nAnswer must be a number between 12-15.",
+             "\nAnswer must be a date in the following format: day.month.year",
+             "\nAssign a unique ID for each Subject.", '\nEnter name of the location.',
+             "\nEnter 1 or more answers from the list."], header_instructions)
 
         header_examples = self._get_header_component(headers, 2)
         self.assertEqual(
-            ["\n\n ", "\n\n ", "\n\n Example: 25.12.2011",
-             "\n\n Leave this column blank if you want DataWinners to assign an ID for you.", '\n\n Example: Nairobi',
-             "\n\n Example: a or ab"], header_examples)
+            ["\n\n", "\n\n", "\n\nExample: 25.12.2011",
+             "\n\nLeave this column blank if you want DataWinners to assign an ID for you.", '\n\nExample: Nairobi',
+             "\n\nExample: a or ab"], header_examples)
 
     def test_should_get_header_information_for_submission_excel(self):
         fields = [{"name": "first name", "code": 'q1', "label": 'What is your name', "entity_question_flag": False,
@@ -74,8 +76,9 @@ class TestExcelHeaders(MangroveTestCase):
                   {"name": "eid", "code": 'eid', "label": 'What is the subject id', "entity_question_flag": True,
                    "type": "text"},
                   {"name": "choices", "code": 'q5', "label": 'Your choices', "type": "select"}]
+        form_model = FormModel(self.manager, name="some_name", entity_type=['test'], form_code="cli00_mp", fields=[], type="type1")
 
-        headers = get_submission_headers(fields)
+        headers = get_submission_headers(fields, form_model)
 
         headers_text = self._get_header_component(headers, 0)
         self.assertEqual(
@@ -85,13 +88,13 @@ class TestExcelHeaders(MangroveTestCase):
 
         header_instructions = self._get_header_component(headers, 1)
         self.assertEqual(
-            ["\n Answer must be a word", "\n Answer must be a number between 12-15.",
-             "\n Answer must be a date in the following format: day.month.year",
-             "\n Enter unique ID",
-             "\n Enter 1 or more answers from the list."], header_instructions)
+            ["\n\nAnswer must be a word", "\n\nAnswer must be a number between 12-15.",
+             "\n\nAnswer must be a date in the following format: day.month.year",
+             "\n\nEnter the unique ID for each test.\nYou can find the test List on the My Subjects page.",
+             "\n\nEnter 1 or more answers from the list."], header_instructions)
 
         header_examples = self._get_header_component(headers, 2)
         self.assertEqual(
-            ["\n\n ", "\n\n ", "\n\n Example: 25.12.2011",
-             "\n\n ",
-             "\n\n Example: a or ab"], header_examples)
+            ["\n\n", "\n\n", "\n\nExample: 25.12.2011",
+             "\n\nExample: cli01",
+             "\n\nExample: a or ab"], header_examples)

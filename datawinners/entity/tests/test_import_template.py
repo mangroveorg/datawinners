@@ -59,7 +59,7 @@ class TestImportTemplate(unittest.TestCase):
                             import_template(request, '001')
 
                             workbook_response_factory.assert_called_with('001','file name','Import_Submissions')
-                            get_submission_headers.assert_called_with([{'code': 'cli001'}])
+                            get_submission_headers.assert_called_with([{'code': 'cli001'}], form_model)
                             workbook_response_factory.create_workbook_response.assert_called_with([['What is the submission date']],['cli001'])
 
     valid_web_user_patch.stop()
