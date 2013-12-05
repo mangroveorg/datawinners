@@ -1,12 +1,5 @@
 $(document).ready(function () {
     var datasender_filter_id ;
-    var filter_as_json = function () {
-                    return {"submissionDatePicker": $('#submissionDatePicker').val(),
-                            "datasenderFilter": $("#data_sender_filter").data('ds_id'),
-                            "reportingPeriodPicker": $('#reportingPeriodPicker').val(),
-                            "search_text":$('#search_text').val()
-                    };
-    }
 
     function load_table(tab_name) {
         var url = render_table_url + "/headers";

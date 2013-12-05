@@ -22,7 +22,7 @@ from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.exporter import SubmissionExporter
-from datawinners.search.submission_search import SubmissionQuery
+from datawinners.search.submission_search import SubmissionQuery, SubmissionQueryBuilder
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -75,43 +75,45 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
     filters = request.POST
     org_id = helper.get_org_id_by_user(request.user)
 
-
-
     if request.method == 'GET':
         result_dict = {
-                       #"datasender_list": survey_responses.get_data_senders(),
-                       #"subject_list": survey_responses.get_subjects(),
-                       "tab": tab,
-                       "is_quota_reached": is_quota_reached(request, org_id=org_id),
-                       #"active_tab": submission_type
+            #"datasender_list": survey_responses.get_data_senders(),
+            #"subject_list": survey_responses.get_subjects(),
+            "tab": tab,
+            "is_quota_reached": is_quota_reached(request, org_id=org_id),
+            #"active_tab": submission_type
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
 
 
-def get_survey_response_ids_from_request(manager, request, form_model):
+def get_survey_response_ids_from_request(dbm, request, form_model):
     if request.POST.get('all_selected', "false") == "true":
-        rows = manager.load_all_rows_in_view('undeleted_survey_response', startkey=[form_model.form_code],
-                                             endkey=[form_model.form_code, {}], reduce=False)
-        return [row.id for row in rows]
+        search_filters = json.loads(request.POST.get("search_filters"))
+        submission_type = request.POST.get("submission_type")
+        query_params = {'search_filters': search_filters, 'filter': submission_type}
+
+        submissions = SubmissionQuery(form_model, query_params).query(dbm.database_name)
+
+        return [submission[0] for submission in submissions]
     return json.loads(request.POST.get('id_list'))
 
 
 def delete(request, project_id):
-    manager = get_database_manager(request.user)
-    project = Project.load(manager.database, project_id)
-    form_model = FormModel.get(manager, project.qid)
-    survey_response_ids = get_survey_response_ids_from_request(manager, request, form_model)
+    dbm = get_database_manager(request.user)
+    project = Project.load(dbm.database, project_id)
+    form_model = FormModel.get(dbm, project.qid)
+    survey_response_ids = get_survey_response_ids_from_request(dbm, request, form_model)
     received_times = []
     for survey_response_id in survey_response_ids:
-        survey_response = SurveyResponse.get(manager, survey_response_id)
+        survey_response = SurveyResponse.get(dbm, survey_response_id)
         received_times.append(datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
         feeds_dbm = get_feeds_database(request.user)
         additional_feed_dictionary = get_project_details_dict_for_feed(project)
-        delete_response = WebPlayerV2(manager, feeds_dbm).delete_survey_response(survey_response,
-                                                                                 additional_feed_dictionary,
-                                                                                 websubmission_logger)
-        mail_feed_errors(delete_response, manager.database_name)
+        delete_response = WebPlayerV2(dbm, feeds_dbm).delete_survey_response(survey_response,
+                                                                             additional_feed_dictionary,
+                                                                             websubmission_logger)
+        mail_feed_errors(delete_response, dbm.database_name)
         if survey_response.data_record:
             ReportRouter().delete(get_organization(request).org_id, survey_response.form_code,
                                   survey_response.data_record.id)
@@ -283,16 +285,16 @@ def export(request):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    query_params = {"search_filters":search_filters,
-                "start_result_number": 0,
-                "number_of_results": 50000,
-                "order": "",
-                "order_by": 0
+    query_params = {"search_filters": search_filters,
+                    "start_result_number": 0,
+                    "number_of_results": 50000,
+                    "order": "",
+                    "order_by": 0
     }
     if submission_type != "all":
         query_params.update({"filter": submission_type})
 
-    return SubmissionExporter(form_model, project_name, request.user)\
+    return SubmissionExporter(form_model, project_name, request.user) \
         .create_excel_response(submission_type, query_params)
 
 
@@ -313,7 +315,7 @@ def get_submissions(request, form_code):
     search_parameters.update({"order_by": int(request.POST.get('iSortCol_0'))})
     search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
     search_filters = json.loads(request.POST.get('search_filters'))
-    search_parameters.update({"search_filters":search_filters})
+    search_parameters.update({"search_filters": search_filters})
     search_text = search_filters.get("search_text", '').lower()
     search_parameters.update({"search_text": search_text})
     filter_type = request.GET['type']

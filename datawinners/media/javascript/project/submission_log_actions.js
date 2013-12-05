@@ -1,13 +1,21 @@
 DW.SubmissionLogActionHandler = function (submission_type, project_id) {
     this["delete"] = function (table, selected_ids, all_selected) {
-        handle_submission_log_delete(table, selected_ids, all_selected, project_id);
+        handle_submission_log_delete(table, selected_ids, all_selected, project_id, submission_type);
     };
     this["edit"] = function (table, selected_ids, all_selected) {
         handle_submission_log_edit(table, selected_ids, all_selected, submission_type, project_id);
     };
 }
 
-function handle_submission_log_delete(table, selected_ids, all_selected, project_id) {
+var filter_as_json = function () {
+                return {"submissionDatePicker": $('#submissionDatePicker').val(),
+                        "datasenderFilter": $("#data_sender_filter").data('ds_id'),
+                        "reportingPeriodPicker": $('#reportingPeriodPicker').val(),
+                        "search_text":$('#search_text').val()
+                };
+};
+
+function handle_submission_log_delete(table, selected_ids, all_selected, project_id, submission_type) {
     if (selected_ids.length == 0) {
         $("#message_text").html("<div class='message message-box'>" + gettext("Please select at least one undeleted record") + "</div>");
     } else {
@@ -19,7 +27,9 @@ function handle_submission_log_delete(table, selected_ids, all_selected, project
                         url: '/project/' + project_id + '/submissions/delete/',
                         data: {
                             'id_list': JSON.stringify(selected_ids),
-                            'all_selected': all_selected
+                            'all_selected': all_selected,
+                            'search_filters':JSON.stringify(filter_as_json()),
+                            'submission_type':submission_type
                         },
                         success: function (response) {
                             var data = JSON.parse(response);
@@ -64,3 +74,4 @@ function removeRowsFromDataTable(ids) {
         $('.submission_table').dataTable().fnReloadAjax();
     });
 }
+

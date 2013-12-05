@@ -19,15 +19,18 @@ class SubmissionQueryBuilder(QueryBuilder):
     def create_query(self, database_name, *doc_type):
         return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(*doc_type)
 
-    def create_paginated_query(self, query, query_params):
-        query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
-
+    def filter_by_submission_type(self, query, query_params):
         submission_type_filter = query_params.get('filter')
         if submission_type_filter:
             if submission_type_filter == 'deleted':
                 return query.filter(void=True)
             query = (query.filter(status=submission_type_filter))
         return query.filter(void=False)
+
+    def create_paginated_query(self, query, query_params):
+        query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
+
+        return self.filter_by_submission_type(query, query_params)
 
     def add_query_criteria(self, query_fields, query_text, query, query_params=None):
         query = super(SubmissionQueryBuilder, self).add_query_criteria(query_fields, query_text, query, query_params)
@@ -89,7 +92,7 @@ class SubmissionQuery(Query):
             header_dict.pop(self.form_model.entity_question.code)
         return header_dict
 
-    def get_headers(self, user, form_code):
+    def get_headers(self, user=None, form_code=None):
         return self.get_header_dict().keys()
 
     def _update_static_header_info(self, header_dict):
@@ -119,4 +122,13 @@ class SubmissionQuery(Query):
             pass
         return options
 
-
+    def query(self, database_name):
+        query_all_results = self.query_builder.query_all(database_name)
+        submission_headers = self.get_headers()
+        query_by_submission_type = self.query_builder.filter_by_submission_type(query_all_results, self.query_params)
+        filtered_query = self.query_builder.add_query_criteria(submission_headers,
+                                                               self.query_params.get('search_filters').get(
+                                                                   'search_text'), query_by_submission_type,
+                                                               query_params=self.query_params)
+        submissions = self.response_creator.create_response(submission_headers, filtered_query)
+        return submissions
