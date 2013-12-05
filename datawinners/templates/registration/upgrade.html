@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load field_tags %}
 {% block page_title %}{% trans "Upgrade" %} {% endblock %}
-{% block section_title %} {%  trans "Sign Up To Start Using DataWinners Now" %} {% endblock %}
+{% block section_title %} {%  trans 'Upgrade to a "Pro Account"' %} {% endblock %}
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/registration/register.js"></script>
@@ -19,9 +19,6 @@
             <form id="registration_form" class="registration_form" action="" method="POST">
                 {% csrf_token %}
                 <div class="form-5px">
-                    <ul>
-                        <li><span class="bold">{% trans "upgrade edit note" %}</span></li>
-                    </ul>
                     <ul class="organization">
                         <li>
                             <h3 class="highlighted_title">{% trans "Your Organization" %}<br/></h3>
@@ -33,7 +30,7 @@
                         <li><label>{% trans "City" %}</label>{{ organization.city }}{{ organization.city.errors }}</li>
                         <li>{{ organization.state|field_label }}{{ organization.state }}{{ organization.state.errors }}</li>
                         <li><label>{% trans "Postal / Zip Code" %}</label>{{ organization.zipcode }}{{ organization.zipcode.errors }}</li>
-                        <li><label>{% trans "Country" %}</label>{{ organization.country  }}{{ organization.country.as_hidden }}</li>
+                        <li><label>{% trans "Country" %}</label>{{ organization.initial.country.name }}{{ organization.country.as_hidden }}</li>
                         <li>{{ organization.office_phone|field_label }}{{ organization.office_phone }}{{ organization.office_phone.errors }}</li>
                         <li>{{ organization.website|field_label }}{{ organization.website }}{{ organization.website.errors }}</li>
 
