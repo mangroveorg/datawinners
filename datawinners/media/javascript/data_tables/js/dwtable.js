@@ -285,3 +285,24 @@ $.fn.dataTableExt.oApi.fnDisplayStart = function (oSettings, iStart, bRedraw) {
         oSettings.oApi._fnDraw(oSettings);
     }
 };
+
+function get_updated_table_page_index(table, allIds, all_selected){
+    var settings = table.fnSettings();
+
+    if (current_page_rows_going_to_vanish()) {
+        return 0;
+    } else {
+        return settings._iDisplayStart;
+    }
+
+    function is_last_page() {
+        return (settings.fnDisplayEnd() == settings.fnRecordsDisplay());
+    }
+
+    function current_page_rows_going_to_vanish() {
+        return all_selected ||
+                (is_last_page() &&
+                    (table.find("input.row_checkbox").length == allIds.length))
+    }
+
+}

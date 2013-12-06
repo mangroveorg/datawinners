@@ -35,7 +35,8 @@ function handle_submission_log_delete(table, selected_ids, all_selected, project
                             var data = JSON.parse(response);
                             if (data.success) {
                                 $("#message_text").html("<div class='message success-box'>" + data.success_message + "</div>");
-                                $('.submission_table').dataTable().fnReloadAjax();
+                                table.fnSettings()._iDisplayStart = get_updated_table_page_index(table,selected_ids,all_selected);
+                                table.fnReloadAjax();
                             } else {
                                 $("#message_text").html("<div class='error_message message-box'>" + data.error_message + "</div>");
                             }
