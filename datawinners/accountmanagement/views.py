@@ -37,6 +37,7 @@ from datawinners.entity.import_data import send_email_to_data_sender
 from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import TransportInfo
 from rest_framework.authtoken.models import Token
+from django.contrib.sites.models import Site
 
 
 def registration_complete(request):
@@ -250,6 +251,7 @@ def upgrade(request, token=None):
 def _send_upgrade_email(user, language):
     subject = render_to_string('accountmanagement/upgrade_email_subject_' + language + '.txt')
     subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
+    site = Site.objects.get_current()
     body = render_to_string('accountmanagement/upgrade_email_' + language + '.html', {'username': user.first_name + ' ' + user.last_name})
     email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"

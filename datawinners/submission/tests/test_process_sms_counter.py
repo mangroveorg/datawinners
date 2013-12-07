@@ -11,6 +11,7 @@ from django.contrib.auth.models import Group
 from django.template.loader import render_to_string
 from rest_framework.authtoken.models import Token
 from dateutil.relativedelta import relativedelta
+from django.contrib.sites.models import Site
 
 class TestProcessSMSCounter(unittest.TestCase):
     def setUp(self):
@@ -59,12 +60,14 @@ class TestProcessSMSCounter(unittest.TestCase):
     def test_should_send_mail_when_ngo_about_to_reach_submission_limit(self):
         token = Token.objects.get_or_create(user=self.user)[0].key
         organization = self.incoming_request.get('organization')
+        site = Site.objects.get_current()
         with patch.object(Organization, "get_total_submission_count") as patch_get_total_submission_count:
             patch_get_total_submission_count.return_value = NEAR_SUBMISSION_LIMIT_TRIGGER
             check_quotas_and_update_users(organization=organization)
+            site = Site.objects.get_current()
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
-            ctx = {'username':'Trial User', 'organization':organization, 'current_site':'localhost:8000',
+            ctx = {'username':'Trial User', 'organization':organization, 'site':site,
                    'token':token}
             self.assertEqual(render_to_string('email/basicaccount/about_to_reach_submission_limit_en.html', ctx), email.body)
 
@@ -74,9 +77,10 @@ class TestProcessSMSCounter(unittest.TestCase):
         with patch.object(Organization, "get_total_incoming_message_count") as patch_get_total_message_count:
             patch_get_total_message_count.return_value = NEAR_SMS_LIMIT_TRIGGER
             check_quotas_and_update_users(organization=organization, sms_channel=True)
+            site = Site.objects.get_current()
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
-            ctx = {'username':'Trial User', 'organization':organization, 'current_site':'localhost:8000',
+            ctx = {'username':'Trial User', 'organization':organization, 'site':site,
                    'token': token}
             self.assertEqual(render_to_string('email/basicaccount/about_to_reach_sms_limit_en.html', ctx), email.body)
 

@@ -11,6 +11,7 @@ from datawinners.tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID
 from django.template.loader import render_to_string
 from django.core import mail
 from rest_framework.authtoken.models import Token
+from django.contrib.sites.models import Site
 
 class TestSendTimeBasedReminder(unittest.TestCase):
 
@@ -35,10 +36,10 @@ class TestSendTimeBasedReminder(unittest.TestCase):
             with patch.object(Organization, "get_all_trial_organizations", side_effect=self.organizations_side_effect):
                 subject, template, sender = get_email_detail_by_type(email_type)
                 send_time_based_reminder_email()
-                
+                site = Site.objects.get_current()
                 email = mail.outbox.pop()
                 self.assertEqual(['chinatwu2@gmail.com'], email.to)
-                ctx = {'username':'Trial User', 'organization':self.organization, 'current_site':'localhost:8000',
+                ctx = {'username':'Trial User', 'organization':self.organization, 'site':site,
                        'token': self.token}
                 self.assertEqual(render_to_string('email/%s_en.html' % template, ctx), email.body)
                 
