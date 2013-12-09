@@ -119,5 +119,14 @@ class SubmissionLogPage(Page):
         self.driver.find_text_box(by_css("#search_text")).enter_text(search_text)
         self.wait_for_table_data_to_load()
 
+    def filter_by_datasender_name(self,datasender):
+        self.driver.find_text_box(by_css("#data_sender_filter")).enter_text(datasender)
+        self.driver.find(by_xpath("//a[contains(text(),'"+datasender+"')]")).click()
+
+    def filter_by_datasender_id(self,repid):
+        self.driver.find_text_box(by_css("#data_sender_filter")).enter_text(repid)
+        time.sleep(1)
+        (self.driver.find(by_xpath("//a/span[@class='small_grey'][contains(text(),'" + repid + "')]"))).click()
+
     def get_cell_value(self, row, column):
         return self.driver.find(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td[%s]" % ((row +1), column))).text

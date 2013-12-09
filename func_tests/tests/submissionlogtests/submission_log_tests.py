@@ -9,24 +9,23 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from framework.base_test import setup_driver, teardown_driver
 from framework.exception import CouldNotLocateElementException
-from framework.utils.common_utils import by_css
+from framework.utils.common_utils import by_css, by_xpath
 from framework.utils.data_fetcher import fetch_, from_
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatapage.all_data_page import AllDataPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
-from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
-from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, ACTION_SELECT_CSS_LOCATOR
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
+from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA
 
 
 @attr('suit_3')
@@ -218,3 +217,30 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page = self.go_to_submission_log_page()
         submission_log_page.search(subject_short_code)
         self.assertIn(fetch_(SUB_LAST_NAME, VALID_DATA_FOR_EDIT), submission_log_page.get_cell_value(1, 5))
+
+
+    def make_web_submission(self):
+        all_data_page = self.dashboard.navigate_to_all_data_page()
+        web_submission_page = all_data_page.navigate_to_web_submission_page(
+            fetch_("project_name", from_(DEFAULT_ORG_DATA)))
+        self.driver.wait_for_page_with_title(5, web_submission_page.get_title())
+        web_submission_page.fill_questionnaire_with(VALID_SUBMISSION)
+        web_submission_page.submit_answers()
+
+    def test_should_filter_by_datasender_name_and_id(self):
+        self.make_web_submission()
+
+        submission_log_page = self.go_to_submission_log_page()
+        datasender_name = 'Tester'
+        submission_log_page.filter_by_datasender_name(datasender_name)
+        total_number_of_rows = self.driver.find_elements_(by_xpath(".//table[@class='submission_table']/tbody/tr")).__len__()
+
+        for i in range(1,total_number_of_rows):
+            self.assertIn(datasender_name, submission_log_page.get_cell_value(i, 2))
+
+
+        datasender_id = 'rep276'
+        submission_log_page.filter_by_datasender_id(datasender_id)
+
+        for i in range(1,total_number_of_rows):
+            self.assertIn(datasender_id, submission_log_page.get_cell_value(i, 2))

@@ -68,3 +68,21 @@ VALID_SMS_FOR_EDIT_SUBJECT = {SENDER: '1234567890',
                                SMS: "cli001 .EID short_code .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
                                SUCCESS_MESSAGE: "Thank you"}
 
+
+QCODE = "qcode"
+ANSWER = 'answer'
+TYPE = "type"
+SELECT = "select"
+TEXT = "text"
+CHECKBOX = "checkbox"
+
+VALID_SUBMISSION = [
+    {QCODE: 'EID', ANSWER: 'Indore Clinic', TYPE: SELECT},
+    {QCODE: 'NA', ANSWER: 'My name', TYPE: TEXT},
+    {QCODE: 'FA', ANSWER: '90', TYPE: TEXT},
+    {QCODE: 'RD', ANSWER: '09.12.2013', TYPE: TEXT},
+    {QCODE: 'BG', ANSWER: 'O-', TYPE: SELECT},
+    {QCODE: 'SY', ANSWER: ['a', 'c'], TYPE: CHECKBOX},
+    {QCODE: 'GPS', ANSWER: '-18.1324 27.6547', TYPE: TEXT},
+    {QCODE: 'RM', ANSWER: ['c'], TYPE: CHECKBOX},
+]
