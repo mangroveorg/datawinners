@@ -3,10 +3,8 @@ from babel.dates import format_datetime
 from datawinners.project.models import get_all_projects
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.datastore.documents import SurveyResponseDocument
-from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import get_elasticsearch_handle, get_fields_mapping_by_field_def, get_field_definition
-from mangrove.datastore.entity import get_by_short_code_include_voided
+from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 
 
@@ -44,6 +42,8 @@ def es_field_name(field_name, form_model_id):
     return field_name if is_submission_meta_field(field_name) else "%s_%s"%(form_model_id, lower(field_name))
 
 def create_submission_mapping(dbm, form_model):
+    if form_model.is_entity_registration_form() and "delete" == form_model.form_code:
+        return
     es = get_elasticsearch_handle()
     fields_definition = get_submission_meta_fields()
 
@@ -101,26 +101,39 @@ def update_submission_search_for_subject_edition(entity_doc, dbm):
                 survey_response._id, fields_mapping)
 
 
-def update_submission_search_index(feed_submission_doc, feed_dbm, refresh_index=True):
+def update_submission_search_index(submission_doc, dbm, refresh_index=True):
     es = get_elasticsearch_handle()
-    dbm = get_db_manager(feed_dbm.database_name.replace("feed_", ""))
-    form_model = get_form_model_by_code(dbm, feed_submission_doc.form_code)
-    submission_doc = SurveyResponseDocument.load(dbm.database, feed_submission_doc.id)
-    search_dict = _meta_fields(feed_submission_doc, submission_doc, dbm)
-    _update_with_form_model_fields(dbm, feed_submission_doc, search_dict, form_model)
-    es.index(dbm.database_name, form_model.id, search_dict, id=feed_submission_doc.id, refresh=refresh_index)
+    form_model = get_form_model_by_code(dbm, submission_doc.form_code)
+    #submission_doc = SurveyResponseDocument.load(dbm.database, feed_submission_doc.id)
+    search_dict = _meta_fields(submission_doc, dbm)
+    _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
+    es.index(dbm.database_name, form_model.id, search_dict, id=submission_doc.id, refresh=refresh_index)
 
 
-def _meta_fields(feed_submission_doc, submission_doc, dbm):
+def status_message(status):
+    return "Success" if status else "Error"
+
+
+#TODO manage_index
+def _meta_fields(submission_doc, dbm):
     search_dict = {}
-    datasender_id = feed_submission_doc.data_sender.get('id')
-    search_dict.update({"status": feed_submission_doc.status.capitalize()})
+    datasender_name, datasender_id = lookup_entity_by_uid(dbm, submission_doc.owner_uid)
+    search_dict.update({"status": status_message(submission_doc.status)})
     search_dict.update({"date": format_datetime(submission_doc.submitted_on, "MMM. dd, yyyy, hh:mm a", locale="en")})
-    search_dict.update({"ds_id": datasender_id or "NA"})
-    search_dict.update({"ds_name": lookup_entity_name(dbm, datasender_id, ["reporter"])})
-    search_dict.update({"error_msg": feed_submission_doc.error_message})
+    search_dict.update({"ds_id": datasender_id})
+    search_dict.update({"ds_name": datasender_name})
+    search_dict.update({"error_msg": submission_doc.error_message})
     return search_dict
 
+
+def lookup_entity_by_uid(dbm, uid):
+    try:
+        if uid:
+            entity = Entity.get(dbm, uid)
+            return entity.value('name'), entity.short_code
+    except Exception:
+        pass
+    return uid or "NA", "NA"
 
 def lookup_entity_name(dbm, id, entity_type):
     try:
@@ -131,22 +144,18 @@ def lookup_entity_name(dbm, id, entity_type):
     return id or "NA"
 
 
-def _update_with_form_model_fields(dbm, feed_submission_doc, search_dict, form_model):
-    for key in feed_submission_doc.values:
-        field = feed_submission_doc.values[key]
-        entity_fields = [f for f in form_model.fields if f.is_entity_field and lower(f.code) == key]
+def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
+    for key,value in submission_doc.values.items():
+        field = (f for f in form_model.fields if lower(f.code) == lower(key)).next()
 
-        if entity_fields:
-            id = field if feed_submission_doc.status == 'error' else field.get("answer").get("id")
-            value = lookup_entity_name(dbm, id, form_model.entity_type)
-            search_dict.update({"entity_short_code": id})
-        else:
-            value = field.get("answer") if isinstance(field, dict) else field
+        if field.is_entity_field:
+            entity_name = lookup_entity_name(dbm, value, form_model.entity_type)
+            search_dict.update({"entity_short_code": entity_name})
+        elif field.type.startswith("select"):
+            value = ",".join(field.get_option_value_list(value))
 
-        if isinstance(value, dict):
-            value = ','.join(value.values())
         search_dict.update({es_field_name(key, form_model.id): value})
 
-    search_dict.update({'void': feed_submission_doc.void})
+    search_dict.update({'void': submission_doc.void})
     return search_dict
 

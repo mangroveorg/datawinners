@@ -46,6 +46,7 @@ def update_datasender_for_project_change(project, dbm):
     for entity_doc in project.get_associated_datasenders(dbm):
         update_datasender_index(entity_doc, dbm)
 
+
 def create_datasender_index(database_name):
     dbm = get_db_manager(database_name)
     _create_datasender_mapping(dbm)

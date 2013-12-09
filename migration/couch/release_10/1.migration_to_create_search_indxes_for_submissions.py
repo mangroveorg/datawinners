@@ -1,4 +1,7 @@
 import sys
+from datawinners.main.couchdb.utils import all_db_names
+from datawinners.search.manage_index import populate_submission_index
+from datawinners.search.submission_index import create_submission_mapping
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
@@ -6,29 +9,20 @@ if __name__ == "__main__" and __package__ is None:
 import logging
 
 from datawinners.search.index_utils import get_elasticsearch_handle
-from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.database import get_db_manager
 from mangrove.form_model.form_model import FormModel
-from mangrove.datastore.documents import FormModelDocument, EnrichedSurveyResponseDocument
-from datawinners.search import create_submission_mapping, update_submission_search_index
+from mangrove.datastore.documents import FormModelDocument
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
-from datawinners.main.couchdb.utils import all_db_names
 from migration.couch.utils import migrate, mark_start_of_migration
 
 
 def create_submission_index(database_name):
     dbm = get_db_manager(database_name)
-    feeds_dbm = get_feed_db_from_main_db_name(database_name)
     for row in dbm.load_all_rows_in_view('questionnaire'):
         form_model = FormModel.new_from_doc(dbm, FormModelDocument.wrap(row["value"]))
-        if not form_model.is_entity_registration_form():
-            create_submission_mapping(dbm, form_model)
+        create_submission_mapping(dbm, form_model)
 
-    rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False)
-    for row in rows:
-        enriched_survey_response = feeds_dbm._load_document(row.get('id'), EnrichedSurveyResponseDocument)
-        if enriched_survey_response is not None:
-            update_submission_search_index(enriched_survey_response, feeds_dbm, refresh_index=False)
+    populate_submission_index(dbm)
 
 
 def create_search_indices_for_submissions(db_name):
