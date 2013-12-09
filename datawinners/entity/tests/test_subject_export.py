@@ -33,6 +33,7 @@ class TestSubjectExport(TestCase):
             sheet.row_values(0, 0, 5))
         self.assertEqual([u'firstname', u'lastname', u'location', u'3.0, 3.0', self.mobile_number],
                          sheet.row_values(1, 0, 5))
+        self.assertEqual([], sheet.row_values(1, 6))
 
     def create_subject(self):
         _from = "917798987116"
