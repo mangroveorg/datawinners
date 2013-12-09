@@ -208,7 +208,7 @@ def take_database_backup(backup=False):
     if backup == 'true':
         couchdb_path = '/opt/apache-couchdb/var/lib'
         today = datetime.now()
-        backup_prefix = today.strftime("%d-%M-%Y")
+        backup_prefix = today.strftime("%d-%m-%Y")
         backup_path = "/home/mangrover/db_backup"+backup_prefix
         run('mkdir -p %s'%backup_path)
         take_psql_dump(backup_path, backup_prefix)
@@ -315,7 +315,7 @@ def apply_backup(backup_dir):
     apply_couchdb_backup(couchdb_path, couchdbfeed_bkp_file, 'couchdbfeed')
     psql_bkp_file = get_backup_file(backup_dir, 'psql_backup')
     apply_psql_bkp(backup_dir, psql_bkp_file)
-    index_bkp_file = get_backup_file(backup_dir, 'mangrove_elasticsearch_index_backup')
+    #index_bkp_file = get_backup_file(backup_dir, 'mangrove_elasticsearch_index_backup')
     #apply_elasticsearch_backup(backup_dir, index_bkp_file)
     restart_couchdb()
     restart_elasticsearch()
