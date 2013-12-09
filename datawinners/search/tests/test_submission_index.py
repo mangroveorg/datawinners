@@ -57,7 +57,7 @@ class TestSubmissionIndex(unittest.TestCase):
         with patch(
                 'datawinners.search.submission_index._get_form_models_from_projects') as get_form_models_from_projects:
             with patch.object(SubmissionQueryBuilder, 'query_all') as query_all:
-                form_model1 = Mock(spec=FormModel)
+                form_model1 = Mock(spec=FormModel, id='12345')
                 entity_name = Mock()
                 type(entity_name).code = PropertyMock(return_value='q1')
                 type(form_model1).entity_question = PropertyMock(return_value=entity_name)
@@ -74,4 +74,4 @@ class TestSubmissionIndex(unittest.TestCase):
                                       'update_field_in_submission_index') as update_field_in_submission_index:
                         update_submission_search_for_subject_edition(entity_doc, dbm)
                         query_all.assert_called_with('db_name', **{'entity_short_code': 'cli001'})
-                        update_field_in_submission_index.assert_called_with('id1', {'q1': 'bangalore'})
+                        update_field_in_submission_index.assert_called_with('id1', {'12345_q1': 'bangalore'})
