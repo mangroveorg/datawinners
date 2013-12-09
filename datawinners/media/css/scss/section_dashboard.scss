@@ -104,3 +104,32 @@ p{
         margin-top: 10px;
     }
 }
+
+table.no-border{
+    width: 230px;
+    line-height: 12px;
+    &.line_height_14{
+        line-height:14px;
+    }
+    td,th{
+        border: none!important;
+        text-align: right;
+        &.small{
+            font-size: 10px;
+            vertical-align: bottom;
+            padding: 0 6px 0 0 !important;
+        }
+        &:first-child{
+            text-align: left;
+            max-width: 130px;
+        }
+    }
+}
+
+#blue_message_box{
+    width: 230px;
+    margin-top:0!important;
+    .button_fr{
+        width: 94px;
+    }
+}

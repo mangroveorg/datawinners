@@ -72,7 +72,7 @@
   margin-left: 20px; }
 
 .margin_left_180 {
-  margin-left: 180px!important; }
+  margin-left: 180px !important; }
 
 .margin_right_20 {
   margin-right: 20px; }
@@ -173,7 +173,7 @@ table.no_border td, table.no_border th {
   padding-left: 25px; }
 
 .cancel_link {
-  color: #0070AC !important;
+  color: #0070ac !important;
   margin-right: 10px;
   margin-top: 6px; }
 
@@ -526,3 +526,6 @@ div.border_top_bottom {
 
 .left_null {
   left: 0px !important; }
+
+.padding_5 {
+  padding: 5px; }

@@ -81,7 +81,7 @@ def dashboard(request):
     user_profile = NGOUserProfile.objects.get(user=request.user)
     organization = Organization.objects.get(org_id=user_profile.org_id)
     project_list = []
-    rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=4)
+    rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=8)
     for row in rows:
         link = reverse("project-overview", args=(row['value']['_id'],))
         if row['value']['state'] == ProjectState.INACTIVE:
@@ -89,8 +89,12 @@ def dashboard(request):
         project = dict(name=row['value']['name'], link=link, inactive=is_project_inactive(row), id=row['value']['_id'])
         project_list.append(project)
     language = request.session.get("django_language", "en")
+    has_reached_a_limit = organization.has_exceeded_message_limit() or organization.has_exceeded_submission_limit()
+
     return render_to_response('dashboard/home.html',
-                              {"projects": project_list, 'trial_account': organization.in_trial_mode, 'language':language}, context_instance=RequestContext(request))
+                              {"projects": project_list, 'trial_account': organization.in_trial_mode,
+                               'has_reached_a_limit':has_reached_a_limit,
+                               'language':language, 'counters':organization.get_counters()}, context_instance=RequestContext(request))
 
 
 @valid_web_user

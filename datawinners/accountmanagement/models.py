@@ -183,19 +183,49 @@ class Organization(models.Model):
         current_site = Site.objects.get_current()
         current_language = get_language()
         activate(self.language)
+        email_subject, email_template, sender = get_email_detail_by_type(email_type)
+        email_content = loader.get_template('email/%s_%s.html' % (email_template, ugettext("en"),))
         for user in users:
-            email_subject, email_template, sender = get_email_detail_by_type(email_type)
             token = Token.objects.get_or_create(user=user)[0]
-
             c = Context({ 'username': user.first_name +' '+ user.last_name,
                           'organization':self, 'current_site': current_site, 'token': token.key})
-            email_content = loader.get_template('email/%s_%s.html' % (email_template, ugettext("en"),))
 
             msg = EmailMessage(ugettext(email_subject), email_content.render(c), sender or settings.EMAIL_HOST_USER, [user.email])
             msg.content_subtype = "html"
             msg.send()
 
         activate(current_language)
+
+    def get_counters(self):
+        all_message_trackers = self._get_all_message_trackers()
+        counter_dict = dict({'total_submission_current_month':0, 'combined_total_submissions':0,
+                             'sms_submission_current_month':0, 'sp_submission_current_month':0,
+                             'web_submission_current_month':0, 'total_sms_submission':0,
+                             'total_sp_submission':0, 'total_web_submission':0,
+                             'total_sms_current_month':0, 'total_sent_sms':0, 'sms_reply_reminders':0,
+                             'send_a_msg_current_month':0, 'sent_via_api_current_month':0})
+        current_month = datetime.datetime.now().strftime("%Y-%m")
+        for message_tracker in all_message_trackers:
+            sms_submission_count = message_tracker.incoming_sms_count - message_tracker.sms_registration_count
+            total_submission = sms_submission_count + message_tracker.incoming_web_count + message_tracker.incoming_sp_count
+            counter_dict['combined_total_submissions'] += total_submission
+
+            counter_dict['total_sms_submission'] += sms_submission_count
+            counter_dict['total_sp_submission'] += message_tracker.incoming_sp_count
+            counter_dict['total_web_submission'] += message_tracker.incoming_web_count
+
+            if message_tracker.month.strftime("%Y-%m") == current_month:
+                counter_dict['sms_submission_current_month'] += sms_submission_count
+                counter_dict['sp_submission_current_month'] += message_tracker.incoming_sp_count
+                counter_dict['web_submission_current_month'] += message_tracker.incoming_web_count
+                counter_dict['total_submission_current_month'] += total_submission
+                counter_dict['total_sms_current_month'] += message_tracker.total_messages()
+                counter_dict['total_sent_sms'] += message_tracker.outgoing_message_count()
+                counter_dict['sms_reply_reminders'] += message_tracker.outgoing_sms_count + message_tracker.sent_reminders_count
+                counter_dict['send_a_msg_current_month'] += message_tracker.send_message_count
+                counter_dict['sent_via_api_current_month'] += message_tracker.sms_api_usage_count
+        return counter_dict
+                
 
     @classmethod
     def get_all_trial_organizations(cls, active_date__contains=None):

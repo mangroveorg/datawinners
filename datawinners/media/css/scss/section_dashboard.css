@@ -74,3 +74,25 @@ p {
 
 .news li {
   margin-top: 10px; }
+
+table.no-border {
+  width: 230px;
+  line-height: 12px; }
+  table.no-border.line_height_14 {
+    line-height: 14px; }
+  table.no-border td, table.no-border th {
+    border: none !important;
+    text-align: right; }
+    table.no-border td.small, table.no-border th.small {
+      font-size: 10px;
+      vertical-align: bottom;
+      padding: 0 6px 0 0 !important; }
+    table.no-border td:first-child, table.no-border th:first-child {
+      text-align: left;
+      max-width: 130px; }
+
+#blue_message_box {
+  width: 230px;
+  margin-top: 0 !important; }
+  #blue_message_box .button_fr {
+    width: 94px; }

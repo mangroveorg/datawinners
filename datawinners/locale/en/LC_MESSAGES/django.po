@@ -4304,3 +4304,47 @@ msgstr ""
 msgid "Invalid GPS value."
 msgstr ""
 
+msgid "Your Most Recent Projects"
+msgstr ""
+
+msgid "Submissions Received"
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "This Month"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Your SMS Usage This Month"
+msgstr ""
+
+msgid "Total SMS"
+msgstr ""
+
+msgid "sent out & received"
+msgstr ""
+
+msgid "Total SMS Sent Out"
+msgstr ""
+
+msgid "Reply SMS & Reminders"
+msgstr ""
+
+msgid "Send a message"
+msgstr ""
+
+msgid "You have reached your free Submission limit. Each Basic Account is limited to 1000 Submissions including 50 SMS Submissions."
+msgstr ""
+
+msgid "For unlimited Submissions upgrade to a monthly subscription."
+msgstr ""
+
+msgid "For unlimited data collection and advanced features, consider a Pro Account upgrade!"
+msgstr ""
+
+msgid "Go Pro"
+msgstr ""

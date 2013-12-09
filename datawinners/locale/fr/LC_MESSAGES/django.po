@@ -4415,3 +4415,48 @@ msgstr "Importer"
 
 msgid "Remind them to download the updated version of the Import Submission template"
 msgstr "Rappelez-leur de télécharger la version mise à jour du modèle d'importation de Soumission"
+
+msgid "Your Most Recent Projects"
+msgstr "Vos projets les plus récents"
+
+msgid "Statistics"
+msgstr "Statistiques"
+
+msgid "Submissions Received"
+msgstr "Soumissions"
+
+msgid "This Month"
+msgstr "Ce mois"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Your SMS Usage This Month"
+msgstr "Vos SMS de ce mois"
+
+msgid "Total SMS"
+msgstr "Total SMS"
+
+msgid "sent out & received"
+msgstr "envoyés & reçus"
+
+msgid "Total SMS Sent Out"
+msgstr "Total SMS envoyés"
+
+msgid "Reply SMS & Reminders"
+msgstr "SMS de retour et rappels"
+
+msgid "Send a message"
+msgstr "Envoyer un message"
+
+msgid "You have reached your free Submission limit. Each Basic Account is limited to 1000 Submissions including 50 SMS Submissions."
+msgstr "Vous avez atteint la limite de votre Soumission gratuite. Chaque Compte Basic est limité à 1000 Soumissions incluant 50 Soumissions SMS."
+
+msgid "For unlimited Submissions upgrade to a monthly subscription."
+msgstr "Pour accéder à une quantité illimitée de soumissions, migrez vers une souscription mensuelle."
+
+msgid "For unlimited data collection and advanced features, consider a Pro Account upgrade!"
+msgstr "Pour une collecte de données illimitée et des fonctionnalités avancées, envisagez de passer à un Compte Pro!"
+
+msgid "Go Pro"
+msgstr "Devenir Pro"

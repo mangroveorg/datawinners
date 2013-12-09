@@ -34,7 +34,7 @@
     {% for message in messages %}
             <div class="{{ message.tags }} success-box">{{ message }}</div>
     {% endfor %}
-    <div id="how_to">
+    <div id="how_to" class="none">
         <h3><span class="title">{% trans "How to use Datawinners" %}</span><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
             <div class="tooltip"><p>{% trans "Click on the triangle to the left of 'How to use DataWinners' to expand or collapse the box." %}</p></div>
         </h3>
@@ -44,7 +44,7 @@
     </div>
 
     <div class="grid_17 margin_left_null dashboard_left">
-        <h4 class="grid_16 omega alpha">{% trans "Your projects"%}</h4>
+        <h4 class="grid_16 omega alpha">{% trans "Your Most Recent Projects" %}</h4>
         <div id="projects">
         {% for project in projects %}
             <div class="project_header">
@@ -72,11 +72,45 @@
     </div>
     <div class="grid_5 alpha omega dashboard_right">
     {% if trial_account and user.groups.all.0.name == 'NGO Admins' %}
-    <ul class="news">
-        <li>{% trans "Your account is a Trial Account with some limitations. To upgrade click on the 'Subscribe Now' button." %}</li>
-        <li><a href="/upgrade/" class="button">{% trans "Subscribe Now" %}</a></li>
-        <li><a href="/{{ language }}/pricing/">{% trans "Learn More" %}</a></li>
-    </ul>
+        <div class="warning-message-box clear-both overflow_hidden padding_5" id="blue_message_box">
+            <br/>
+            <b>{% trans "Go Pro" %}</b><br/>
+            {% if has_reached_a_limit %}
+                {% trans "You have reached your free Submission limit. Each Basic Account is limited to 1000 Submissions including 50 SMS Submissions." %}
+                <br/>
+                {% trans "For unlimited Submissions upgrade to a monthly subscription." %}
+            {% else %}
+                {% trans "For unlimited data collection and advanced features, consider a Pro Account upgrade!" %}
+            {% endif %}
+            <br/><br/>
+            <a href="/upgrade/" class="button float_right button_{% trans "en" %}">{% trans "Subscribe Now" %}</a><a href="/{{ language }}/pricing/" class="float_right margin_top_5 margin_right_4">{% trans "Learn More" %}</a>
+            <br/>
+            <br class="clear_both"/>
+        </div>
     {% endif %}
+        <h4>{% trans "Statistics" %}</h4>
+        <b>{% trans "Submissions Received" %}</b>
+        <table class="no-border">
+            <tr><td>&nbsp;</td><td class="grey">{% trans "This Month" %}</td><td class="grey">{% trans "Total" %}</td></tr>
+            <tr><td><b>{% trans "Total" %}</b></td><td><b>{{ counters.total_submission_current_month }}</b></td><td><b>{{ counters.combined_total_submissions }}</b></td></tr>
+            <tr><td>{% trans "SMS" %}</td><td>{{ counters.sms_submission_current_month }}</td><td>{{ counters.total_sms_submission }}</td></tr>
+            <tr><td>{% trans "Smartphone" %}</td><td>{{ counters.sp_submission_current_month }}</td><td>{{ counters.total_sp_submission }}</td></tr>
+            <tr><td>{% trans "Web" %}</td><td>{{ counters.web_submission_current_month }}</td><td>{{ counters.total_web_submission }}</td></tr>
+        </table>
+        <br/>
+        <b>{% trans "Your SMS Usage This Month" %}</b>
+        <table class="no-border margin_top_5 line_height_14">
+            <tr>
+                <td width="130"><b>{% trans "Total SMS" %}</b><br/><span class="small">({% trans "sent out & received" %})</span></td>
+                <td style="vertical-align:top;"><b>{{ counters.total_sms_current_month }}</b>   </td>
+            </tr>
+        </table>
+    
+        <table class="no-border margin_top_5">
+            <tr><td><b>{% trans "Total SMS Sent Out" %}</b></td><td><b>{{ counters.total_sent_sms }}</b></td></tr>
+            <tr><td>{% trans "Reply SMS & Reminders" %}</td><td>{{ counters.sms_reply_reminders }}</td></tr>
+            <tr><td>{% trans "Send a message" %}</td><td>{{ counters.send_a_msg_current_month }}</td></tr>
+            <tr><td>{% trans "API" %}</td><td>{{ counters.sent_via_api_current_month }}</td></tr>
+        </table>
     </div>
 {% endblock %}

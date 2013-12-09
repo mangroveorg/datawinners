@@ -1,8 +1,9 @@
 import unittest
 import datetime
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, MessageTracker
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from dateutil.relativedelta import relativedelta
+from mock import Mock, patch
 
 
 class TestOrganization(unittest.TestCase):
@@ -72,3 +73,27 @@ class TestOrganization(unittest.TestCase):
         organization.active_date = active_date
         organization.status_changed_datetime = active_date
         self.assertTrue(organization.is_expired())
+
+    def test_get_counters(self):
+        today = datetime.datetime.today()
+        mt_current_month = MessageTracker(month=datetime.date(today.year, today.month, 1),
+            incoming_web_count=3, incoming_sms_count=40, incoming_sp_count=10, sms_api_usage_count=3,
+            sms_registration_count=4, sent_reminders_count=10, send_message_count=30, outgoing_sms_count=40
+        )
+        mt_last_month = MessageTracker(month=datetime.date(today.year, today.month - 1, 1),
+            incoming_web_count=10, incoming_sms_count=45, incoming_sp_count=7, sms_api_usage_count=3,
+            sms_registration_count=4, sent_reminders_count=10, send_message_count=30, outgoing_sms_count=40
+        )
+        message_trackers = [mt_current_month, mt_last_month]
+
+        expected = {'combined_total_submissions': 107, 'send_a_msg_current_month': 30, 'sent_via_api_current_month': 3,
+                    'sms_reply_reminders': 50, 'sms_submission_current_month': 36, 'sp_submission_current_month': 10,
+                    'total_sent_sms': 83, 'total_sms_current_month': 123, 'total_sms_submission': 77,
+                    'total_sp_submission': 17, 'total_submission_current_month': 49, 'total_web_submission': 13,
+                    'web_submission_current_month': 3}
+        
+        with patch.object(Organization, '_get_all_message_trackers') as get_all_message_trackers_mock:
+            get_all_message_trackers_mock.return_value = message_trackers
+            counters = self.organization.get_counters()
+            self.assertEqual(counters, expected)
+
