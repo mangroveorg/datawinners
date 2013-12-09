@@ -27,7 +27,7 @@ HNI_SUPPORT_EMAIL_ID = 'dummy@dummy.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'test.datawinners@gmail.com'
-EMAIL_HOST_PASSWORD = 'd@t@winners'
+EMAIL_HOST_PASSWORD = 'd@t@winner'
 EMAIL_PORT = 587
 
 COUCHDBMAIN_USERNAME = 'admin'
