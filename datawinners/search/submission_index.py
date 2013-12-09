@@ -145,12 +145,12 @@ def lookup_entity_name(dbm, id, entity_type):
 
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
-    for key,value in submission_doc.values.items():
+    for key, value in submission_doc.values.items():
         field = (f for f in form_model.fields if lower(f.code) == lower(key)).next()
 
         if field.is_entity_field:
-            entity_name = lookup_entity_name(dbm, value, form_model.entity_type)
-            search_dict.update({"entity_short_code": entity_name})
+            search_dict.update({"entity_short_code": value})
+            value = lookup_entity_name(dbm, value, form_model.entity_type)
         elif field.type.startswith("select"):
             value = ",".join(field.get_option_value_list(value))
 

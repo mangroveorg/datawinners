@@ -5,10 +5,10 @@ from datawinners.search.submission_index_helper import SubmissionIndexUpdateHand
 from datawinners.search.submission_query import SubmissionQueryBuilder
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import TextField
+from mangrove.form_model.field import TextField, Field
 from mangrove.form_model.form_model import FormModel
 from datawinners.search.submission_index import _update_with_form_model_fields, update_submission_search_for_subject_edition
-from mangrove.datastore.documents import EnrichedSurveyResponseDocument
+from mangrove.datastore.documents import EnrichedSurveyResponseDocument, SurveyResponseDocument
 
 
 class TestSubmissionIndex(unittest.TestCase):
@@ -17,21 +17,24 @@ class TestSubmissionIndex(unittest.TestCase):
         mock_field = Mock(TextField)
         mock_field.is_entity_field = True
         mock_field.code = 'EID'
-        self.form_model.fields = [mock_field]
+        mock_field.type="text"
+        self.form_model.fields = [mock_field,Mock(spec=Field,is_entity_field=False, code="q2", type="text"),Mock(spec=Field,is_entity_field=False, code="q3", type="text")]
 
     def test_should_update_search_dict_with_form_field_questions_for_success_submissions(self):
         search_dict = {}
-        values = {'eid': {'answer': {'deleted': False, 'id': 'cid005', 'name': 'Test'}, 'is_entity_question': 'true'},
-                  'q2': {'answer': 'name', 'type': 'text', 'label': 'First Name'},
-                  'q3': {'answer': {u'b': 'two', u'c': 'three'}, 'type': 'select', 'label': 'Question 2'},
-                  'q4': {'answer': '3,3', 'type': 'geocode', 'label': 'gps'},
-                  'q5': {'answer': '11.12.2012', 'format': 'mm.dd.yyyy', 'type': 'date', 'label': 'date'}}
-        submission_doc = EnrichedSurveyResponseDocument(values=values, status="success")
+        self.form_model.fields.append(Mock(spec=Field,is_entity_field=False, code="q4", type="select", get_option_value_list=Mock(return_value=["one","two"])))
+        self.form_model.fields.append(Mock(spec=Field,is_entity_field=False, code="q5", type="text"))
+        values = {'eid': 'cid005',
+                  'q2': "name",
+                  'q3': "3,3",
+                  'q4': "ab",
+                  'q5': '11.12.2012'}
+        submission_doc = SurveyResponseDocument(values=values, status="success")
         with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
             lookup_entity_name.return_value = 'Test'
             _update_with_form_model_fields(None, submission_doc, search_dict, self.form_model)
             self.assertEquals(
-                {'1212_eid': 'Test', "entity_short_code": "cid005", '1212_q2': 'name', '1212_q3': 'three,two', '1212_q4': '3,3',
+                {'1212_eid': 'Test', "entity_short_code": "cid005", '1212_q2': 'name', '1212_q3': '3,3', '1212_q4': 'one,two',
                  '1212_q5': '11.12.2012', 'void': False}, search_dict)
 
     def test_should_update_search_dict_with_form_field_questions_for_error_submissions(self):
