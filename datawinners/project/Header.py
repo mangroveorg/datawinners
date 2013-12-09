@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from django.utils.translation import ugettext
+from datawinners.search.submission_index import es_field_name
 from datawinners.search.submission_query import SubmissionQuery, SubmissionIndexConstants
 from mangrove.form_model.field import DateField, GeoCodeField
 from mangrove.utils.json_codecs import encode_json
@@ -74,7 +75,8 @@ class SubmissionExcelHeader():
 
     def add_datasender_id_column(self, header_dict, result):
         result.update({
-        SubmissionIndexConstants.DATASENDER_ID_KEY: {"label": header_dict[SubmissionIndexConstants.DATASENDER_ID_KEY]}})
+            SubmissionIndexConstants.DATASENDER_ID_KEY: {
+            "label": header_dict[SubmissionIndexConstants.DATASENDER_ID_KEY]}})
 
     def get_columns(self):
         header_dict = SubmissionQuery(self._form_model, {"filter": self.submission_type}).get_header_dict()
@@ -88,10 +90,12 @@ class SubmissionExcelHeader():
                 result.update({key: {"label": header_dict[key]}})
                 if key == SubmissionIndexConstants.DATASENDER_NAME_KEY: #add key column after name
                     self.add_datasender_id_column(header_dict, result)
+
         for field in self._form_model.fields:
-            if result.has_key(field.code.lower()):
-                result.get(field.code.lower()).update({"type": field.type})
+            field_name = es_field_name(field.code.lower(), self._form_model.id)
+            if result.has_key(field_name):
+                result.get(field_name).update({"type": field.type})
                 if field.type == "date":
-                    result.get(field.code.lower()).update({"format": field.date_format})
+                    result.get(field_name).update({"format": field.date_format})
 
         return result

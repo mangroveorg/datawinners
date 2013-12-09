@@ -34,12 +34,12 @@ def is_submission_meta_field(field_name):
     return submission_meta_field_names.has_key(field_name)
 
 
-def es_field_name(field_name, form_model_id):
+def es_field_name(field_code, form_model_id):
     """
         prefixes form_model id to namespace all additional fields on questionnaire (ds_name, ds_id, status and date are not prefixed)
-    :param field_name:
+    :param field_code:
     """
-    return field_name if is_submission_meta_field(field_name) else "%s_%s"%(form_model_id, lower(field_name))
+    return field_code if is_submission_meta_field(field_code) else "%s_%s"%(form_model_id, lower(field_code))
 
 def create_submission_mapping(dbm, form_model):
     if form_model.is_entity_registration_form() and "delete" == form_model.form_code:

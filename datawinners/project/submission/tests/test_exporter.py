@@ -1,3 +1,4 @@
+# coding=utf-8
 import os
 import tempfile
 from django.test import TestCase, Client
@@ -12,7 +13,8 @@ class TestExporter(TestCase):
 
     def test_export(self):
         resp = self.client.post('/project/export/log',
-                                {'project_name': 'test data sorting', 'type': 'all', 'search_filters': "{\"search_text\":\"export18\"}",
+                                {'project_name': 'test data sorting', 'type': 'all',
+                                 'search_filters': "{\"search_text\":\"export18\"}",
                                  'questionnaire_code': 'cli001'})
         xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
         os.write(xlfile_fd, resp.content)
@@ -20,8 +22,13 @@ class TestExporter(TestCase):
         workbook = xlrd.open_workbook(xlfile_name)
         print "file is %s" % xlfile_name
         sheet = workbook.sheet_by_index(0)
-        self.assertEqual([u'Datasender Name', u'Datasender Id', u'Submission Date', u'Status', u'Clinic'],
-                         sheet.row_values(0, 0, 5))
+        self.assertEqual([u'Datasender Name', u'Datasender Id', u'Submission Date', u'Status', u'Clinic', u'Clinic ID',
+                          u'Reporting Date', u"What is your namé?", u"What is age öf father?",
+                          u"What is your blood group?", u"What aré symptoms?",
+                          u'What is the GPS code for clinic? Latitude', u'What is the GPS code for clinic? Longitude',u"What are the required medicines?"],
+        sheet.row_values(0, 0, 14))
+        self.assertEqual(['2', '2'], sheet.row_values(1, 11, 13))
+
         self.assertEqual([u'export18'], sheet.row_values(1, 7, 8))
 
     def create_submissions(self):

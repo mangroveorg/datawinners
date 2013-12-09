@@ -2,6 +2,7 @@ from datetime import datetime
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 from mangrove.form_model.field import ExcelDate, DateField
 
+GEODCODE_FIELD_CODE = "geocode"
 
 
 class SubmissionFormatter(object):
@@ -13,8 +14,13 @@ class SubmissionFormatter(object):
 
     def format_tabular_data(self, values):
         formatted_values = []
-        headers = [col_def['label'] for col_def in self.columns.values()]
-
+        headers = []
+        for col_def in self.columns.values():
+            if col_def.get('type','') == GEODCODE_FIELD_CODE:
+                headers.append(col_def['label']+ " Latitude")
+                headers.append(col_def['label']+ " Longitude")
+            else:
+                headers.append(col_def['label'])
         for row in values:
             formatted_values.append(self._format_row(row))
         return headers, formatted_values
@@ -27,8 +33,12 @@ class SubmissionFormatter(object):
                 py_date_format = DateField.DATE_DICTIONARY.get(date_format) or SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
 
                 col_val = ExcelDate(datetime.strptime(row[field_code], py_date_format), date_format or "submission_date")
+                result.append(col_val)
+
+            elif self.columns[field_code].get("type") == GEODCODE_FIELD_CODE:
+                col_val = row.get(field_code).split(',')
+                result.extend(col_val)
             else:
                 col_val = row.get(field_code)
-
-            result.append(col_val)
+                result.append(col_val)
         return result
