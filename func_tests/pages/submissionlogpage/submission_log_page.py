@@ -7,6 +7,8 @@ from framework.utils.data_fetcher import *
 from pages.submissionlogpage.submission_log_locator import *
 from tests.submissionlogtests.submission_log_data import UNIQUE_VALUE
 from tests.testsettings import UI_TEST_TIMEOUT
+from framework.exception import CouldNotLocateElementException
+
 
 
 class SubmissionLogPage(Page):
@@ -119,14 +121,16 @@ class SubmissionLogPage(Page):
         self.driver.find_text_box(by_css("#search_text")).enter_text(search_text)
         self.wait_for_table_data_to_load()
 
-    def filter_by_datasender_name(self,datasender):
+    def filter_by_datasender(self,datasender):
         self.driver.find_text_box(by_css("#data_sender_filter")).enter_text(datasender)
-        self.driver.find(by_xpath("//a[contains(text(),'"+datasender+"')]")).click()
-
-    def filter_by_datasender_id(self,repid):
-        self.driver.find_text_box(by_css("#data_sender_filter")).enter_text(repid)
-        time.sleep(1)
-        (self.driver.find(by_xpath("//a/span[@class='small_grey'][contains(text(),'" + repid + "')]"))).click()
+        try:
+            (self.driver.find(by_xpath(DATASENDER_FILTER_LOCATOR_BY_NAME %datasender))).click()
+        except CouldNotLocateElementException:
+            time.sleep(1)
+            (self.driver.find(by_xpath(DATASENDER_FILTER_LOCATOR_BY_ID %datasender))).click()
 
     def get_cell_value(self, row, column):
         return self.driver.find(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td[%s]" % ((row +1), column))).text
+
+    def get_total_number_of_records(self):
+        return self.driver.find_elements_(by_xpath(".//table[@class='submission_table']/tbody/tr")).__len__()

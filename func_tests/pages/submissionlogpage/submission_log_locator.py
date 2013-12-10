@@ -38,3 +38,5 @@ NONE_SELECTED_LOCATOR = by_id("none-selected")
 ACTION_MENU = by_id("action_menu")
 SUBMISSION_CB_LOCATOR = "table.submission_table tbody tr:nth-child(%s) td:first-child input"
 SUBMISSION_DATE_FILTER = by_id("submissionDatePicker")
+DATASENDER_FILTER_LOCATOR_BY_NAME = "//a[contains(text(),'%s')]"
+DATASENDER_FILTER_LOCATOR_BY_ID = "//a/span[@class='small_grey'][contains(text(),'%s')]"

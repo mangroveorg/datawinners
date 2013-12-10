@@ -227,20 +227,21 @@ class TestSubmissionLog(unittest.TestCase):
         web_submission_page.fill_questionnaire_with(VALID_SUBMISSION)
         web_submission_page.submit_answers()
 
+    @attr("functional_test")
     def test_should_filter_by_datasender_name_and_id(self):
         self.make_web_submission()
-
         submission_log_page = self.go_to_submission_log_page()
+
         datasender_name = 'Tester'
-        submission_log_page.filter_by_datasender_name(datasender_name)
-        total_number_of_rows = self.driver.find_elements_(by_xpath(".//table[@class='submission_table']/tbody/tr")).__len__()
-
-        for i in range(1,total_number_of_rows):
-            self.assertIn(datasender_name, submission_log_page.get_cell_value(i, 2))
-
+        submission_log_page.filter_by_datasender(datasender_name)
+        self._verify_filtered_records_by_datasender_name_or_id(datasender_name,submission_log_page)
 
         datasender_id = 'rep276'
-        submission_log_page.filter_by_datasender_id(datasender_id)
+        submission_log_page.filter_by_datasender(datasender_id)
+        self._verify_filtered_records_by_datasender_name_or_id(datasender_id,submission_log_page)
 
+
+    def _verify_filtered_records_by_datasender_name_or_id(self,datasender,submission_log_page):
+        total_number_of_rows = submission_log_page.get_total_number_of_records()
         for i in range(1,total_number_of_rows):
-            self.assertIn(datasender_id, submission_log_page.get_cell_value(i, 2))
+            self.assertIn(datasender, submission_log_page.get_cell_value(i, 2))
