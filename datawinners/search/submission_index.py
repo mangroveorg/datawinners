@@ -146,8 +146,9 @@ def lookup_entity_name(dbm, id, entity_type):
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     for key, value in submission_doc.values.items():
-        field = (f for f in form_model.fields if lower(f.code) == lower(key)).next()
-
+        field = [f for f in form_model.fields if lower(f.code) == lower(key)]
+        if not len(field): continue
+        field = field[0]
         if field.is_entity_field:
             search_dict.update({"entity_short_code": value})
             value = lookup_entity_name(dbm, value, form_model.entity_type)
