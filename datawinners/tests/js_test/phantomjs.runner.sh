@@ -48,4 +48,4 @@ then
 else
     echo -e "\e[0;31;47mSome or all DW JS tests failed. Please check the logs above\e[0m"
 fi
-exit success
+exit $success
