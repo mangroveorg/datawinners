@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 ##Variables
+from datetime import datetime, timedelta
 from framework.utils.common_utils import random_number, random_string
 from tests.addsubjecttests.add_subject_data import ENTITY_TYPE, SUB_UNIQUE_ID, SUB_FIRST_NAME, SUB_LAST_NAME, LOCATION, GEO_CODE
 from testdata.constants import NAME, MOBILE_NUMBER, COMMUNE, EMAIL_ADDRESS, GPS, SUCCESS_MSG, SENDER, RECEIVER, SMS, SUCCESS_MESSAGE
@@ -106,3 +107,35 @@ SMS_WEB_SUBMISSION = {SENDER: '1234123413',
                       SMS: "cli001 .EID cid111 .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
                       SUCCESS_MESSAGE: "Thank you"}
 
+GEN_RANDOM = "gen_random"
+PROJECT_BACKGROUND = "project_background"
+PROJECT_TYPE = "project_type"
+SUBJECT = "subject"
+REPORT_TYPE = "report_type"
+DEVICES = "devices"
+PAGE_TITLE = "page_title"
+
+NEW_PROJECT_DATA = {PROJECT_NAME: "new project ", GEN_RANDOM: True,
+                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                           PROJECT_TYPE: "survey",
+                           SUBJECT: "waterpoint",
+                           REPORT_TYPE: "other subject",
+                           DEVICES: "sms",
+                           PAGE_TITLE: "Projects - Overview"}
+
+def get_sms_data_with_questionnaire_code(questionnaire_code):
+    return {SENDER: "919049008976",
+            RECEIVER: '919880734937',
+            SMS: questionnaire_code + " wp01 10.12.2013",
+            'message': 'Thanks'}
+
+
+def get_reporting_date_values():
+    today = datetime.now()
+    first_day_of_month = datetime(today.year, today.month, 1)
+    previous_month = first_day_of_month - timedelta(days=1)
+    first_day_of_year = datetime(today.year,1,1)
+    dates = []
+    for i in [today, first_day_of_month, previous_month, first_day_of_year]:
+        dates.append(i.strftime('%d.%m.%Y'))
+    return dates

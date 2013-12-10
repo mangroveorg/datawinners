@@ -40,3 +40,11 @@ SUBMISSION_CB_LOCATOR = "table.submission_table tbody tr:nth-child(%s) td:first-
 SUBMISSION_DATE_FILTER = by_id("submissionDatePicker")
 DS_AND_SUBJECT_FILTER_LOCATOR_BY_NAME = "//a[contains(text(),'%s')]"
 DS_AND_SUBJECT_FILTER_LOCATOR_BY_ID = "//a/span[@class='small_grey'][contains(text(),'%s')]"
+DATASENDER_FILTER_LOCATOR_BY_NAME = "//a[contains(text(),'%s')]"
+DATASENDER_FILTER_LOCATOR_BY_ID = "//a/span[@class='small_grey'][contains(text(),'%s')]"
+CURRENT_MONTH_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Current month']")
+LAST_MONTH_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Last Month']")
+YEAR_TO_DATE_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Year to date']")
+DAILY_DATE_RANGE_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Choose Date(s)']")
+MONTHLY_DATE_RANGE_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Choose Month(s)']")
+BTN_DONE_ = '//div[contains(@class, "ui-daterangepickercontain")]//button[contains(@class, "btnDone")]'

@@ -16,11 +16,15 @@ from pages.alldatapage.all_data_page import AllDataPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
+from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import LoginPage
+from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, ACTION_SELECT_CSS_LOCATOR
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE
+from tests.dataanalysistests.data_analysis_data import DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
@@ -36,11 +40,40 @@ class TestSubmissionLog(unittest.TestCase):
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.dashboard = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        cls.reporting_period_project_name = cls.populate_data_for_date_range_filters()
         cls.URL = None
 
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
+
+    @classmethod
+    def _create_project(cls):
+        cls.dashboard_page = DashboardPage(cls.driver)
+        create_project_page = cls.dashboard_page.navigate_to_create_project_page()
+        create_project_page.create_project_with(NEW_PROJECT_DATA)
+        create_project_page.continue_create_project()
+        create_project_page.save_and_create_project_successfully()
+
+    @classmethod
+    def populate_data_for_date_range_filters(cls):
+        cls._create_project()
+        project_name, questionnaire_code = cls._get_project_details()
+        cls._submit_sms_data(get_sms_data_with_questionnaire_code(questionnaire_code))
+        return project_name
+
+    @classmethod
+    def _get_project_details(cls):
+        overview_page = ProjectOverviewPage(cls.driver)
+        return overview_page.get_project_title(), overview_page.get_questionnaire_code()
+
+    @classmethod
+    def _submit_sms_data(cls, sms_data):
+        cls.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
+        page = SMSTesterPage(cls.driver)
+        page.send_sms_with(sms_data)
+        assert 'Thanks' in page.get_response_message()
+
 
     def get_submission_log_page(self):
         if self.URL:
@@ -218,12 +251,12 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page.search(subject_short_code)
         self.assertIn(fetch_(SUB_LAST_NAME, VALID_DATA_FOR_EDIT), submission_log_page.get_cell_value(1, 5))
 
-    def make_web_submission(self):
+
+    def make_web_submission(self, project_name, submission):
         all_data_page = self.dashboard.navigate_to_all_data_page()
-        web_submission_page = all_data_page.navigate_to_web_submission_page(
-            fetch_("project_name", from_(DEFAULT_ORG_DATA)))
+        web_submission_page = all_data_page.navigate_to_web_submission_page(project_name)
         self.driver.wait_for_page_with_title(5, web_submission_page.get_title())
-        web_submission_page.fill_questionnaire_with(VALID_SUBMISSION)
+        web_submission_page.fill_questionnaire_with(submission)
         web_submission_page.submit_answers()
 
     @attr("functional_test")
@@ -265,3 +298,45 @@ class TestSubmissionLog(unittest.TestCase):
         total_number_of_rows = submission_log_page.get_total_number_of_records()
         for i in range(1, total_number_of_rows):
             self.assertIn(project, submission_log_page.get_cell_value(i, 5))
+
+    def assert_reporting_period_values(self, submission_log_page, total_number_of_rows):
+        rp_column = 6
+        all_reporting_dates = []
+        dates = get_reporting_date_values()
+        for i in range(1, total_number_of_rows+1):
+            all_reporting_dates.append(submission_log_page.get_cell_value(i, rp_column))
+        self.assertTrue(set(all_reporting_dates).issubset(dates))
+
+    @attr("functional_test")
+    def test_should_filter_by_reporting_period(self):
+        reporting_period_project_name = self.populate_data_for_date_range_filters()
+
+        submission_log_page = self.go_to_submission_log_page(project_name=reporting_period_project_name)
+
+        submission_log_page.filter_by_reporting_date(DAILY_DATE_RANGE)
+
+        submission_log_page.wait_for_table_data_to_load()
+        total_number_of_rows = submission_log_page.get_total_number_of_records()
+        self.assertEqual(total_number_of_rows, 1)
+        self.assert_reporting_period_values(submission_log_page, total_number_of_rows)
+
+        submission_log_page.filter_by_reporting_date(CURRENT_MONTH)
+
+        submission_log_page.wait_for_table_data_to_load()
+        total_number_of_rows = submission_log_page.get_total_number_of_records()
+        self.assertEqual(total_number_of_rows, 2)
+        self.assert_reporting_period_values(submission_log_page, total_number_of_rows)
+
+        submission_log_page.filter_by_reporting_date(LAST_MONTH)
+
+        submission_log_page.wait_for_table_data_to_load()
+        total_number_of_rows = submission_log_page.get_total_number_of_records()
+        self.assertEqual(total_number_of_rows, 1)
+        self.assert_reporting_period_values(submission_log_page, total_number_of_rows)
+
+        submission_log_page.filter_by_reporting_date(YEAR_TO_DATE)
+
+        submission_log_page.wait_for_table_data_to_load()
+        total_number_of_rows = submission_log_page.get_total_number_of_records()
+        self.assertEqual(total_number_of_rows, 4)
+        self.assert_reporting_period_values(submission_log_page, total_number_of_rows)

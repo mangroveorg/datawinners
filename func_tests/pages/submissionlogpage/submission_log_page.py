@@ -142,3 +142,10 @@ class SubmissionLogPage(Page):
 
     def get_total_number_of_records(self):
         return self.driver.find_elements_(by_xpath(".//table[@class='submission_table']/tbody/tr")).__len__()
+
+    def filter_by_reporting_date(self):
+        self.driver.find(by_css('#reportingPeriodPicker')).click()
+        self.driver.find(by_xpath(DAILY_DATE_RANGE_LABEL)).click()
+        self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
+
+
