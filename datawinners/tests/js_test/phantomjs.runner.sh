@@ -27,10 +27,8 @@ fi
 
 SCRIPTDIR=$(dirname `perl -e 'use Cwd "abs_path";print abs_path(shift)' $0`)
 TESTFILE=""
-success = 0
 while (( "$#" )); do
         TESTFILE="$TESTFILE `perl -e 'use Cwd "abs_path";print abs_path(shift)' $1`"
-        success = success & $?
     shift
 done
 
@@ -41,11 +39,11 @@ done
 # fire up the phantomjs environment and run the test
 cd $SCRIPTDIR
 /usr/bin/env phantomjs ./js_libs/jasmine_reporters/phantomjs-testrunner.js $TESTFILE
-
 if [ $? -eq 0 ]
 then
     echo -e "\e[0;32;47mAll DW JS test passed\e[0m"
+    exit 0
 else
     echo -e "\e[0;31;47mSome or all DW JS tests failed. Please check the logs above\e[0m"
+    exit 1
 fi
-exit $success
