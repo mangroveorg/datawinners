@@ -218,7 +218,6 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page.search(subject_short_code)
         self.assertIn(fetch_(SUB_LAST_NAME, VALID_DATA_FOR_EDIT), submission_log_page.get_cell_value(1, 5))
 
-
     def make_web_submission(self):
         all_data_page = self.dashboard.navigate_to_all_data_page()
         web_submission_page = all_data_page.navigate_to_web_submission_page(
@@ -228,8 +227,13 @@ class TestSubmissionLog(unittest.TestCase):
         web_submission_page.submit_answers()
 
     @attr("functional_test")
-    def test_should_filter_by_datasender_name_and_id(self):
-        self.make_web_submission()
+    def test_should_filter_by__name_and_id_of_datasender_and_subject(self):
+
+        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
+        sms_tester_page = SMSTesterPage(self.driver)
+        sms_tester_page.send_valid_sms_with(SMS_REGISTER_SUBJECT)
+        sms_tester_page.send_valid_sms_with(SMS_WEB_SUBMISSION)
+
         submission_log_page = self.go_to_submission_log_page()
 
         datasender_name = 'Tester'
@@ -237,13 +241,27 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page.wait_for_table_data_to_load()
         self._verify_filtered_records_by_datasender_name_or_id(datasender_name, submission_log_page)
 
+        project_name = fetch_("last_name", from_(SUBJECT_DATA))
+        submission_log_page.filter_by_subject(project_name)
+        submission_log_page.wait_for_table_data_to_load()
+        self._verify_filtered_records_by_subject_name_or_id(project_name, submission_log_page)
+
         datasender_id = 'rep276'
         submission_log_page.filter_by_datasender(datasender_id)
         submission_log_page.wait_for_table_data_to_load()
         self._verify_filtered_records_by_datasender_name_or_id(datasender_id, submission_log_page)
 
+        project_short_code = fetch_("short_code", from_(SUBJECT_DATA))
+        submission_log_page.filter_by_subject(project_short_code)
+        submission_log_page.wait_for_table_data_to_load()
+        self._verify_filtered_records_by_subject_name_or_id(project_short_code, submission_log_page)
 
     def _verify_filtered_records_by_datasender_name_or_id(self, datasender, submission_log_page):
         total_number_of_rows = submission_log_page.get_total_number_of_records()
         for i in range(1, total_number_of_rows):
             self.assertIn(datasender, submission_log_page.get_cell_value(i, 2))
+
+    def _verify_filtered_records_by_subject_name_or_id(self, project, submission_log_page):
+        total_number_of_rows = submission_log_page.get_total_number_of_records()
+        for i in range(1, total_number_of_rows):
+            self.assertIn(project, submission_log_page.get_cell_value(i, 5))

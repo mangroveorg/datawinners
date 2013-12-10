@@ -124,10 +124,18 @@ class SubmissionLogPage(Page):
     def filter_by_datasender(self,datasender):
         self.driver.find_text_box(by_css("#data_sender_filter")).enter_text(datasender)
         try:
-            (self.driver.find(by_xpath(DATASENDER_FILTER_LOCATOR_BY_NAME %datasender))).click()
+            (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_NAME %datasender))).click()
         except CouldNotLocateElementException:
             time.sleep(1)
-            (self.driver.find(by_xpath(DATASENDER_FILTER_LOCATOR_BY_ID %datasender))).click()
+            (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_ID %datasender))).click()
+
+    def filter_by_subject(self, subject):
+        self.driver.find_text_box(by_css("#subject_filter")).enter_text(subject)
+        try:
+            (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_NAME %subject))).click()
+        except CouldNotLocateElementException:
+            time.sleep(1)
+            (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_ID %subject))).click()
 
     def get_cell_value(self, row, column):
         return self.driver.find(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td[%s]" % ((row +1), column))).text

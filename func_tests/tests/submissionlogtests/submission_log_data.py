@@ -10,23 +10,29 @@ UNIQUE_VALUE = "unique_value"
 FAILURE_MSG = "failure_msg"
 
 PROJECT_NAME = "clinic2 test project"
+SUBJECT_NAME = "subject_name"
+SHORT_CODE = "short_code"
+LAST_NAME = "last_name"
 
-SMS_DATA_LOG = {SMS_SUBMISSION: "Success No cid005 Mr. Tessy 58 17.05.2011 O- Rapid weight loss, Memory loss, Neurological disorders 27.178057 -78.007789",
-                UNIQUE_VALUE: "Mr. Tessy"}
+SMS_DATA_LOG = {
+    SMS_SUBMISSION: "Success No cid005 Mr. Tessy 58 17.05.2011 O- Rapid weight loss, Memory loss, Neurological disorders 27.178057 -78.007789",
+    UNIQUE_VALUE: "Mr. Tessy"}
 
 PAGE_TITLE_IN_FRENCH = "Journal de Soumission"
 FIRST_PROJECT_NAME = "clinic test project1"
 DELETE_SUBMISSION_WARNING_MESSAGE = u'Your Submission(s) will be moved to Deleted Submissions.\nThis action cannot be undone.\n\nAre you sure you want to continue?'
-EXPECTED_FA_LIST = ['89.0', '77', '77', '89.0', '77', '58', '27', '58', '98', '37', '28', '78', '28', '45', '56', '89', '88', '88', '36', '69', '45', '91', '43', '32', '35']
+EXPECTED_FA_LIST = ['89.0', '77', '77', '89.0', '77', '58', '27', '58', '98', '37', '28', '78', '28', '45', '56', '89',
+                    '88', '88', '36', '69', '45', '91', '43', '32', '35']
 
-EXPECTED_FA_SORTED = ['24', '27', '28', '28', '30', '32', '34', '34', '34', '34', '34', '35', '36', '37', '37', '38', '38', '38', '43', '45', '45', '45', '47', '47', '48']
+EXPECTED_FA_SORTED = ['24', '27', '28', '28', '30', '32', '34', '34', '34', '34', '34', '35', '36', '37', '37', '38',
+                      '38', '38', '43', '45', '45', '45', '47', '47', '48']
 
 MOBILE_NUMBER_RANDOM = random_number(9)
 
 DATASENDER_DETAILS = {NAME: "Dookudu",
                       MOBILE_NUMBER: MOBILE_NUMBER_RANDOM,
                       COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-                      EMAIL_ADDRESS: random_string(5)+'@'+random_string(3)+'.com',
+                      EMAIL_ADDRESS: random_string(5) + '@' + random_string(3) + '.com',
                       GPS: "-21.7622088847 48.0690991394",
                       SUCCESS_MSG: "Registration successful. ID is: rep"}
 
@@ -36,11 +42,11 @@ VALID_DATA = {SENDER: MOBILE_NUMBER_RANDOM,
               SUCCESS_MESSAGE: "Thank you"}
 
 EDITED_DATASENDER_DETAILS = {NAME: "edited Dookudu",
-                      MOBILE_NUMBER: MOBILE_NUMBER_RANDOM,
-                      COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-                      EMAIL_ADDRESS: random_string(5)+'@'+random_string(3)+'.com',
-                      GPS: "-21.7622088847 48.0690991394",
-                      SUCCESS_MSG: "Registration successful. ID is: rep"}
+                             MOBILE_NUMBER: MOBILE_NUMBER_RANDOM,
+                             COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+                             EMAIL_ADDRESS: random_string(5) + '@' + random_string(3) + '.com',
+                             GPS: "-21.7622088847 48.0690991394",
+                             SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 MOBILE_NUMBER_FOR_SUBJECT = random_number(9)
 
@@ -53,7 +59,6 @@ VALID_DATA_FOR_EDIT = {ENTITY_TYPE: "Clinic",
                        MOBILE_NUMBER: MOBILE_NUMBER_FOR_SUBJECT,
                        SUCCESS_MESSAGE: "Your changes have been saved."}
 
-
 VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "Clinic",
                           SUB_UNIQUE_ID: None,
                           SUB_FIRST_NAME: "Clinic FT",
@@ -64,10 +69,9 @@ VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "Clinic",
                           SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}
 
 VALID_SMS_FOR_EDIT_SUBJECT = {SENDER: '1234567890',
-                               RECEIVER: '919880734937',
-                               SMS: "cli001 .EID short_code .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
-                               SUCCESS_MESSAGE: "Thank you"}
-
+                              RECEIVER: '919880734937',
+                              SMS: "cli001 .EID short_code .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
+                              SUCCESS_MESSAGE: "Thank you"}
 
 QCODE = "qcode"
 ANSWER = 'answer'
@@ -86,3 +90,19 @@ VALID_SUBMISSION = [
     {QCODE: 'GPS', ANSWER: '-18.1324 27.6547', TYPE: TEXT},
     {QCODE: 'RM', ANSWER: ['c'], TYPE: CHECKBOX},
 ]
+
+SMS_REGISTER_SUBJECT = {SENDER: '1234567890',
+                        RECEIVER: '919880734937',
+                        SMS: "cli first test_subject loc 2,2 1231231213 cid111",
+                        SUCCESS_MESSAGE: "Thank you"}
+
+SUBJECT_DATA = {
+    LAST_NAME: 'test_subject',
+    SHORT_CODE: 'cid111'
+}
+
+SMS_WEB_SUBMISSION = {SENDER: '1234123413',
+                      RECEIVER: '919880734937',
+                      SMS: "cli001 .EID cid111 .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
+                      SUCCESS_MESSAGE: "Thank you"}
+
