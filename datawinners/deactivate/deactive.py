@@ -62,5 +62,5 @@ def deactivate_expired_trial_account():
         organization.deactivate()
 
 def get_expired_trial_organizations():
-    trial_organizations = Organization.objects.filter(in_trial_mode=True)
+    trial_organizations = Organization.objects.filter(in_trial_mode=True, status='Activated')
     return [organization for organization in trial_organizations if organization.is_expired()]

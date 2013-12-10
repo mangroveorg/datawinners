@@ -56,6 +56,7 @@ class OrganizationSettingAdmin(DatawinnerAdmin):
 
     def activation_date(self, obj):
         return obj.organization.active_date if obj.organization.active_date is not None else '--'
+    activation_date.short_description = "Created on"
 
 
 class MessageTrackerAdmin(DatawinnerAdmin):
