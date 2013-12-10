@@ -9,7 +9,7 @@ from mock import Mock, patch, call, PropertyMock, MagicMock
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SUBMISSION
 from datawinners.search.submission_query import SubmissionQuery
-from framework.utils.database_manager_postgres import DatabaseManager
+from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, DateField
