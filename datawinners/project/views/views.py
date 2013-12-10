@@ -54,7 +54,6 @@ from datawinners.project import models
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project import helper
 from datawinners.project.utils import make_project_links
-from datawinners.project.filters import KeywordFilter
 from datawinners.project.helper import is_project_exist, get_feed_dictionary
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_PROJECT, ACTIVATED_PROJECT, REGISTERED_SUBJECT, REGISTERED_DATA_SENDER, EDITED_PROJECT
@@ -204,10 +203,6 @@ def project_overview(request, project_id=None):
         'in_trial_mode': in_trial_mode,
         'questionnaire_code': questionnaire_code,
     }))
-
-
-def filter_by_keyword(keyword, raw_field_values):
-    return KeywordFilter(keyword).filter(raw_field_values)
 
 
 def _to_name_id_string(value, delimiter='</br>'):

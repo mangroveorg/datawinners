@@ -1,12 +1,12 @@
 from unittest import TestCase
-from django.forms import RegexField, HiddenInput, CharField
+from django.forms import RegexField, HiddenInput
 from mock import Mock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME
-from project.subject_question_creator import SubjectQuestionFieldCreator
-from project.web_questionnaire_form import SubjectRegistrationForm, WebForm, SurveyResponseForm
+from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
+from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, WebForm, SurveyResponseForm
 
 
 class TestWebForm(TestCase):
