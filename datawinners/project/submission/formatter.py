@@ -31,12 +31,14 @@ class SubmissionFormatter(object):
             if self.columns[field_code].get("type") == "date" or field_code == "date":
                 date_format = self.columns[field_code].get("format")
                 py_date_format = DateField.DATE_DICTIONARY.get(date_format) or SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
-
-                col_val = ExcelDate(datetime.strptime(row[field_code], py_date_format), date_format or "submission_date")
+                try:
+                    col_val = ExcelDate(datetime.strptime(row[field_code], py_date_format), date_format or "submission_date")
+                except ValueError:
+                    col_val = row[field_code]
                 result.append(col_val)
 
             elif self.columns[field_code].get("type") == GEODCODE_FIELD_CODE:
-                col_val = row.get(field_code).split(',')
+                col_val = row.get(field_code, ',').split(',')
                 result.extend(col_val)
             else:
                 col_val = row.get(field_code)
