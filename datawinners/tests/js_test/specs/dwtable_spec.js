@@ -13,7 +13,7 @@ describe("dwtable test", function () {
     }
 
     beforeEach(function () {
-        jasmine.getFixtures().set('<div id="table-wrapper"><table id="simpleTable" ><thead><tr></tr></thead></table></div>');
+        setFixtures('<div id="table-wrapper"><table id="simpleTable" ><thead><tr></tr></thead></table></div>');
         setupSpyForTableData();
 
 

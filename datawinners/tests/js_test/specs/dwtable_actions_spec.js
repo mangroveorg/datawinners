@@ -5,7 +5,7 @@ describe("Generic Actions Test", function () {
     var deleteSpyedHandler, editSpyedHandler;
 
     beforeEach(function () {
-        jasmine.getFixtures().set('<div id="table-wrapper"><table id="simpleTable" ><thead><tr></tr></thead></table></div>');
+        setFixtures('<div id="table-wrapper"><table id="simpleTable" ><thead><tr></tr></thead></table></div>');
 
         onSuccess = jasmine.createSpy('onSuccess');
         onFailure = jasmine.createSpy('onFailure');

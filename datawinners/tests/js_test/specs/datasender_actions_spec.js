@@ -18,7 +18,7 @@ describe('datasender actions', function () {
         });
 
         it('should show warning box when deleting combination of users and datasenders', function () {
-            jasmine.getFixtures().set('<div id="note_for_delete_users"><ul class="users_list"></ul></div>');
+            setFixtures('<div id="note_for_delete_users"><ul class="users_list"></ul></div>');
 
             var superusers_selected = spyOn(window, "get_user_names_from_selected_datasenders");
             superusers_selected.andReturn(['admin']);
@@ -32,7 +32,7 @@ describe('datasender actions', function () {
         });
 
         it('should populate warning box with user list when deleting combination of users and datasenders', function () {
-            jasmine.getFixtures().set('<div id="note_for_delete_users"><ul class="users_list"></ul></div>');
+            setFixtures('<div id="note_for_delete_users"><ul class="users_list"></ul></div>');
 
             var superusers_selected = spyOn(window, "get_user_names_from_selected_datasenders");
             superusers_selected.andReturn(['admin']);
@@ -46,7 +46,7 @@ describe('datasender actions', function () {
         });
 
         it('should show warning box when deleting only datasenders', function () {
-            jasmine.getFixtures().set('<div id="note_for_delete_users"><ul class="users_list"></ul></div>');
+            setFixtures('<div id="note_for_delete_users"><ul class="users_list"></ul></div>');
 
             var superusers_selected = spyOn(window, "get_user_names_from_selected_datasenders");
             superusers_selected.andReturn([]);
@@ -71,7 +71,7 @@ describe('datasender actions', function () {
         it('should get users from selected datasenders', function () {
             user_dict = {'id1': 'user1', 'id2': 'user2'};
             var getUsers = spyOn(window, 'usersInSearchedDS');
-            jasmine.getFixtures().set('<table id="test_table"><tbody><tr><td><input type="checkbox" class="row_checkbox" value="id1" checked></td></tr>' +
+            setFixtures('<table id="test_table"><tbody><tr><td><input type="checkbox" class="row_checkbox" value="id1" checked></td></tr>' +
                 '<tr><td><input type="checkbox" class="row_checkbox" value="id2" checked></td></tr>' +
                 '<tr><td><input type="checkbox" class="row_checkbox" value="rep1" checked></td></tr>' +
                 '<tr><td><input type="checkbox" class="row_checkbox" value="rep2" checked></td></tr>' +
@@ -84,7 +84,9 @@ describe('datasender actions', function () {
 
         it('should reset to first page upon deleting all datasenders', function () {
             var table = jasmine.createSpyObj('table', ['fnSettings']);
+
             var pageIndex = get_updated_table_page_index(table, ['rep1'], true);
+
             expect(pageIndex).toEqual(0);
         });
 
