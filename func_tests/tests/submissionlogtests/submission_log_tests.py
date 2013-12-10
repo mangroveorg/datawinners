@@ -206,7 +206,7 @@ class TestSubmissionLog(unittest.TestCase):
         self.dashboard.navigate_to_all_subject_page()
         all_subject_type_page = AllSubjectTypePage(self.driver)
         add_subject_page = all_subject_type_page.select_subject_type('Clinic').navigate_to_register_subject_page()
-        
+
         add_subject_page.navigate_to_subject_list()
         subject_list_page = AllSubjectsListPage(self.driver)
         subject_list_page.select_subject_by_id(subject_short_code)
@@ -234,14 +234,16 @@ class TestSubmissionLog(unittest.TestCase):
 
         datasender_name = 'Tester'
         submission_log_page.filter_by_datasender(datasender_name)
-        self._verify_filtered_records_by_datasender_name_or_id(datasender_name,submission_log_page)
+        submission_log_page.wait_for_table_data_to_load()
+        self._verify_filtered_records_by_datasender_name_or_id(datasender_name, submission_log_page)
 
         datasender_id = 'rep276'
         submission_log_page.filter_by_datasender(datasender_id)
-        self._verify_filtered_records_by_datasender_name_or_id(datasender_id,submission_log_page)
+        submission_log_page.wait_for_table_data_to_load()
+        self._verify_filtered_records_by_datasender_name_or_id(datasender_id, submission_log_page)
 
 
-    def _verify_filtered_records_by_datasender_name_or_id(self,datasender,submission_log_page):
+    def _verify_filtered_records_by_datasender_name_or_id(self, datasender, submission_log_page):
         total_number_of_rows = submission_log_page.get_total_number_of_records()
-        for i in range(1,total_number_of_rows):
+        for i in range(1, total_number_of_rows):
             self.assertIn(datasender, submission_log_page.get_cell_value(i, 2))
