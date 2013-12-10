@@ -27,8 +27,10 @@ fi
 
 SCRIPTDIR=$(dirname `perl -e 'use Cwd "abs_path";print abs_path(shift)' $0`)
 TESTFILE=""
+success = 0
 while (( "$#" )); do
         TESTFILE="$TESTFILE `perl -e 'use Cwd "abs_path";print abs_path(shift)' $1`"
+        success = success & $?
     shift
 done
 
@@ -46,3 +48,4 @@ then
 else
     echo -e "\e[0;31;47mSome or all DW JS tests failed. Please check the logs above\e[0m"
 fi
+exit success
