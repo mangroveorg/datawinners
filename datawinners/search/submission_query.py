@@ -39,11 +39,14 @@ class SubmissionQueryBuilder(QueryBuilder):
         if search_filter_param:
             submission_date_range = search_filter_param.get("submissionDatePicker")
             reporting_date_range = search_filter_param.get("reportingPeriodPicker")
-            datasender_filter = search_filter_param.get("datasenderFilter")
             query = SubmissionDateRangeFilter(submission_date_range).build_filter_query(query)
             query = ReportingDateRangeFilter(reporting_date_range, self.form_model).build_filter_query(query)
+            datasender_filter = search_filter_param.get("datasenderFilter")
             if datasender_filter:
                 query = query.filter(ds_id=datasender_filter)
+            subjectFilter = search_filter_param.get("subjectFilter")
+            if subjectFilter:
+                query = query.filter(entity_short_code = subjectFilter)
         return query
 
     def query_all(self, database_name, **kwargs):

@@ -3,7 +3,7 @@ import json
 import logging
 
 from django.contrib.auth.decorators import login_required
-from django.template.defaultfilters import register
+from django.template.defaultfilters import register, lower
 from django.utils import translation
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
@@ -13,6 +13,7 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
+import elasticutils
 import jsonpickle
 from django.contrib import messages
 
@@ -21,7 +22,9 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
 from datawinners.entity.entity_export_helper import get_subject_headers
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.main.database import get_database_manager
+from datawinners.main.utils import get_database_name
 from datawinners.search.entity_search import SubjectQuery
+from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -556,6 +559,15 @@ def save_questionnaire(request):
         except EntityQuestionAlreadyExistsException as e:
             return HttpResponse(json.dumps({'success': False, 'error_message': _(e.message)}))
 
+def subject_autocomplete(request, entity_type):
+        search_text = lower(request.GET["term"] or "")
+        database_name = get_database_name(request.user)
+        query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(lower(entity_type)) \
+            .query(or_={'name__match': search_text, 'name_value': search_text, 'short_code__match': search_text,
+                        'short_code_value': search_text}) \
+            .values_dict()
+        resp = [{"id": r["short_code"], "label": r["name"]} for r in query[:min(query.count(), 50)]]
+        return HttpResponse(json.dumps(resp))
 
 @valid_web_user
 def export_subject(request):

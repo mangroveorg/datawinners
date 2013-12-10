@@ -4,10 +4,6 @@
         <label class="full_width">{{ entity_type }}</label>
     </div>
     <div class="float_left ">
-        <select multiple="multiple" id="subjectSelect">
-            {%  for name, id in subject_list %}
-                <option value="{{ name }}" code='{{ id }}'>{{ name }}</option>
-            {% endfor %}
-        </select>
+        <input id="subject_filter" type="text" placeholder="All Subjects" entity_type="{{ entity_type }}"/>
     </div>
 </div>

@@ -11,6 +11,7 @@ var filter_as_json = function () {
                 return {"submissionDatePicker": $('#submissionDatePicker').val(),
                         "datasenderFilter": $("#data_sender_filter").data('ds_id'),
                         "reportingPeriodPicker": $('#reportingPeriodPicker').val(),
+                        "subjectFilter":$('#subject_filter').data('value'),
                         "search_text":$('#search_text').val()
                 };
 };

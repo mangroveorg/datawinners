@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    var datasender_filter_id ;
 
     function load_table(tab_name) {
         var url = render_table_url + "/headers";
@@ -107,6 +106,9 @@ $(document).ready(function () {
                 "actionItems": actions,
                 "fnInitComplete": function () {
                     $('#search_box').append($('.dataTables_wrapper .dataTables_filter'));
+                    if($(".submission_table").dataTable().fnSettings().fnRecordsDisplay() == 0){
+                        $("#filter_section input").attr('disabled','disabled');
+                    }
                 },
                 "fnHeaderCallback": function (head) {
                 },
@@ -142,6 +144,25 @@ $(document).ready(function () {
     $("#search_text").keyup(function(){
        $(".submission_table").dataTable().fnDraw();
     })
+
+    var entity_type = $("#subject_filter").attr('entity_type')
+    $("#subject_filter").data('value','');
+    $("#subject_filter").autocomplete({
+            "source":"/entity/" + entity_type + "/autocomplete/"    ,
+            "select":function(event,ui){
+                $("#subject_filter").data('value',ui.item.id);
+                $(".submission_table").dataTable().fnDraw();
+            }
+        }).data( "autocomplete" )._renderItem = function( ul, item ) {
+        return $("<li></li>").data("item.autocomplete", item).append($("<a>" + item.label + ' <span class="small_grey">' + item.id + '</span></a>')).appendTo(ul);
+    };
+    $('#subject_filter').change(function(){
+        if ($('#subject_filter').val() == ''){
+                 $("#subject_filter").data('value','');
+                 $(".submission_table").dataTable().fnDraw();
+         }
+    });
+
 });
 
 
