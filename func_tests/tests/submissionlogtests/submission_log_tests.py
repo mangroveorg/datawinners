@@ -23,7 +23,7 @@ from pages.loginpage.login_page import LoginPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, ACTION_SELECT_CSS_LOCATOR
-from pages.submissionlogpage.submission_log_page import SubmissionLogPage, DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE
+from pages.submissionlogpage.submission_log_page import SubmissionLogPage, DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE, MONTHLY_DATE_RANGE
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE
 from tests.dataanalysistests.data_analysis_data import DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE
 from tests.logintests.login_data import VALID_CREDENTIALS
@@ -31,6 +31,7 @@ from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
 from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA
+
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
 
 
@@ -49,29 +50,34 @@ class TestSubmissionLog(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    def _create_project(self):
+    def _create_project(self, project_data, monthly):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
         self.dashboard_page = DashboardPage(self.driver)
         create_project_page = self.dashboard_page.navigate_to_create_project_page()
-        create_project_page.create_project_with(NEW_PROJECT_DATA)
+        create_project_page.create_project_with(project_data)
         create_project_page.continue_create_project()
+        if monthly:
+            create_questionnaire_page = CreateQuestionnairePage(self.driver)
+            create_questionnaire_page.select_question_link(2)
+            create_questionnaire_page.change_date_type_question(date_format=MM_YYYY)
         create_project_page.save_and_create_project_successfully()
 
-    def populate_data_for_date_range_filters(self):
-        self._create_project()
-        self.reporting_period_project_name, questionnaire_code = self._get_project_details()
-        self._submit_sms_data(questionnaire_code)
+    def populate_data_for_date_range_filters(self, project_data=NEW_PROJECT_DATA, monthly=False):
+        self._create_project(project_data, monthly)
+        project_name, questionnaire_code = self._get_project_details()
+        self._submit_sms_data(questionnaire_code, monthly=monthly)
+        return project_name
 
     def _get_project_details(self):
         overview_page = ProjectOverviewPage(self.driver)
         return overview_page.get_project_title(), overview_page.get_questionnaire_code()
 
     @classmethod
-    def _submit_sms_data(cls, questionnaire_code):
+    def _submit_sms_data(cls, questionnaire_code, monthly):
         cls.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         page = SMSTesterPage(cls.driver)
 
-        dates = get_reporting_date_values()
+        dates = get_reporting_date_values(monthly)
         for i in dates:
             page.send_sms_with(get_sms_data_with_questionnaire_code(questionnaire_code, i))
             assert 'Thank you' in page.get_response_message()
@@ -246,10 +252,10 @@ class TestSubmissionLog(unittest.TestCase):
         for i in range(1, total_number_of_rows):
             self.assertIn(project, submission_log_page.get_cell_value(i, 5))
 
-    def assert_reporting_period_values(self, submission_log_page, total_number_of_rows):
+    def assert_reporting_period_values(self, submission_log_page, total_number_of_rows, monthly=False):
         rp_column = 6
         all_reporting_dates = []
-        dates = get_reporting_date_values()
+        dates = get_reporting_date_values(monthly)
         for i in range(1, total_number_of_rows + 1):
             all_reporting_dates.append(submission_log_page.get_cell_value(i, rp_column))
         self.assertTrue(set(all_reporting_dates).issubset(dates))
@@ -257,7 +263,7 @@ class TestSubmissionLog(unittest.TestCase):
     @attr("functional_test")
     def test_date_filters(self):
         if not self.reporting_period_project_name:
-            self.populate_data_for_date_range_filters()
+            self.reporting_period_project_name = self.populate_data_for_date_range_filters()
 
         submission_log_page = self.go_to_submission_log_page(project_name=self.reporting_period_project_name)
 
@@ -310,22 +316,50 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertEqual(total_number_of_rows, 4)
         self.assert_reporting_period_values(submission_log_page, total_number_of_rows)
 
-    def verify_sort_data_by_date(self, submission_log_page, column,date_format=SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG):
+    @attr("functional_test")
+    def test_reporting_period_month_filters(self):
+        monthly_rp_project_name = self.populate_data_for_date_range_filters(monthly=True)
+
+        submission_log_page = self.go_to_submission_log_page(project_name=monthly_rp_project_name)
+
+        submission_log_page.filter_by_reporting_month(MONTHLY_DATE_RANGE)
+
+        submission_log_page.wait_for_table_data_to_load()
+        total_number_of_rows = submission_log_page.get_total_number_of_records()
+        self.assertEqual(total_number_of_rows, 2)
+        self.assert_reporting_period_values(submission_log_page, total_number_of_rows, monthly=True)
+
+        submission_log_page.filter_by_reporting_month(CURRENT_MONTH)
+
+        submission_log_page.wait_for_table_data_to_load()
+        total_number_of_rows = submission_log_page.get_total_number_of_records()
+        self.assertEqual(total_number_of_rows, 2)
+        self.assert_reporting_period_values(submission_log_page, total_number_of_rows, monthly=True)
+
+        submission_log_page.filter_by_reporting_month(LAST_MONTH)
+
+        submission_log_page.wait_for_table_data_to_load()
+        total_number_of_rows = submission_log_page.get_total_number_of_records()
+        self.assertEqual(total_number_of_rows, 1)
+        self.assert_reporting_period_values(submission_log_page, total_number_of_rows, monthly=True)
+
+    def verify_sort_data_by_date(self, submission_log_page, column,
+                                 date_format=SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG):
         date_strings = submission_log_page.get_all_data_on_nth_column(column)
         self.assertTrue(len(date_strings) >= 3)
         dates = []
         for date in date_strings:
             dates.append(datetime.strptime(date, date_format))
-        self.assertTrue(dates[2] >= dates[1] >= dates[0],msg="Dates:"+str(dates))
+        self.assertTrue(dates[2] >= dates[1] >= dates[0], msg="Dates:" + str(dates))
 
     @attr('functional_test')
     def test_sorting_on_date_columns(self):
         if not self.reporting_period_project_name:
-            self.populate_data_for_date_range_filters()
+            self.reporting_period_project_name = self.populate_data_for_date_range_filters()
         submission_log_page = self.go_to_submission_log_page(project_name=self.reporting_period_project_name)
         submission_log_page.wait_for_table_data_to_load()
         #default sorting on submission date
         self.verify_sort_data_by_date(submission_log_page, column=3)
         submission_log_page.click_on_nth_header(6)
         submission_log_page.wait_for_table_data_to_load()
-        self.verify_sort_data_by_date(submission_log_page,6,date_format='%d.%m.%Y')
+        self.verify_sort_data_by_date(submission_log_page, 6, date_format='%d.%m.%Y')

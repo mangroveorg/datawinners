@@ -167,6 +167,14 @@ class SubmissionLogPage(Page):
             time.sleep(1)
             buttons[1].click()
 
+    def filter_by_reporting_month(self, type):
+        self.driver.find(by_css('#reportingPeriodPicker')).click()
+        self.driver.wait_for_element(20, self.date_range_dict.get(type), want_visible=True).click()
+        if type == MONTHLY_DATE_RANGE:
+            buttons = self.driver.find_elements_(BTN_DONE_)
+            time.sleep(1)
+            buttons[1].click()
+
     def filter_by_submission_date(self, type):
         self.driver.find(by_css('#submissionDatePicker')).click()
         self.driver.wait_for_element(20, self.date_range_dict.get(type), want_visible=True).click()
