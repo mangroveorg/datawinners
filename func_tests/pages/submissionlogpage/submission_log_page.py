@@ -9,11 +9,21 @@ from tests.submissionlogtests.submission_log_data import UNIQUE_VALUE
 from tests.testsettings import UI_TEST_TIMEOUT
 from framework.exception import CouldNotLocateElementException
 
+DAILY_DATE_RANGE = "daily_date_range"
+MONTHLY_DATE_RANGE = "month_date_range"
+CURRENT_MONTH = "current_month"
+LAST_MONTH = "last_month"
+YEAR_TO_DATE = "year_to_date"
 
 
 class SubmissionLogPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
+        self.date_range_dict = {CURRENT_MONTH: CURRENT_MONTH_LABEL,
+                        LAST_MONTH: LAST_MONTH_LABEL,
+                        YEAR_TO_DATE: YEAR_TO_DATE_LABEL,
+                        DAILY_DATE_RANGE: DAILY_DATE_RANGE_LABEL,
+                        MONTHLY_DATE_RANGE: MONTHLY_DATE_RANGE_LABEL}
 
     def get_submission_message(self, sms_data):
         """
@@ -65,7 +75,7 @@ class SubmissionLogPage(Page):
         row_data = []
         time.sleep(2)
         for col in range(2, header_count + 1):
-            row_data.append(self.get_cell_data(row, col))
+            row_data.append(self.get_cell_value(row, col))
         return row_data
 
     def get_shown_records_count(self):
@@ -140,12 +150,29 @@ class SubmissionLogPage(Page):
     def get_cell_value(self, row, column):
         return self.driver.find(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td[%s]" % ((row +1), column))).text
 
-    def get_total_number_of_records(self):
+    def get_total_number_of_rows(self):
         return self.driver.find_elements_(by_xpath(".//table[@class='submission_table']/tbody/tr")).__len__()
 
-    def filter_by_reporting_date(self):
+    def get_total_number_of_records(self):
+        return self.driver.find_elements_(by_css(".row_checkbox")).__len__()
+
+    def get_empty_datatable_text(self):
+        return self.driver.find(EMPTY_TABLE_MSG_ROW).text
+
+    def filter_by_reporting_date(self, type):
         self.driver.find(by_css('#reportingPeriodPicker')).click()
-        self.driver.find(by_xpath(DAILY_DATE_RANGE_LABEL)).click()
-        self.driver.wait_for_element(20, by_xpath(BTN_DONE_), want_visible=True).click()
+        self.driver.wait_for_element(20, self.date_range_dict.get(type), want_visible=True).click()
+        if type == DAILY_DATE_RANGE:
+            buttons = self.driver.find_elements_(BTN_DONE_)
+            time.sleep(1)
+            buttons[1].click()
+
+    def filter_by_submission_date(self, type):
+        self.driver.find(by_css('#submissionDatePicker')).click()
+        self.driver.wait_for_element(20, self.date_range_dict.get(type), want_visible=True).click()
+        if type == DAILY_DATE_RANGE:
+            buttons = self.driver.find_elements_(BTN_DONE_)
+            time.sleep(1)
+            buttons[0].click()
 
 

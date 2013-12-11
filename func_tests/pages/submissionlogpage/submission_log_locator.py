@@ -47,4 +47,6 @@ LAST_MONTH_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and con
 YEAR_TO_DATE_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Year to date']")
 DAILY_DATE_RANGE_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Choose Date(s)']")
 MONTHLY_DATE_RANGE_LABEL = by_xpath("//div[contains(@class,'ui-daterangepicker') and contains(@style,'block')]/ul/li/a[text()='Choose Month(s)']")
-BTN_DONE_ = '//div[contains(@class, "ui-daterangepickercontain")]//button[contains(@class, "btnDone")]'
+#BTN_DONE_ = by_xpath('//div[contains(@class, "ui-daterangepickercontain")]//button[contains(@class, "btnDone")]')
+BTN_DONE_ = by_css('button.btnDone')
+EMPTY_TABLE_MSG_ROW = by_css('td.dataTables_empty')

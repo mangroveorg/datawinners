@@ -115,27 +115,28 @@ REPORT_TYPE = "report_type"
 DEVICES = "devices"
 PAGE_TITLE = "page_title"
 
-NEW_PROJECT_DATA = {PROJECT_NAME: "new project ", GEN_RANDOM: True,
-                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                           PROJECT_TYPE: "survey",
-                           SUBJECT: "waterpoint",
-                           REPORT_TYPE: "other subject",
-                           DEVICES: "sms",
-                           PAGE_TITLE: "Projects - Overview"}
+NEW_PROJECT_DATA = {'project_name': "new project ", GEN_RANDOM: True,
+                    PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                    PROJECT_TYPE: "survey",
+                    SUBJECT: "waterpoint",
+                    REPORT_TYPE: "other subject",
+                    DEVICES: "sms",
+                    PAGE_TITLE: "Projects - Overview"}
 
-def get_sms_data_with_questionnaire_code(questionnaire_code):
+
+def get_sms_data_with_questionnaire_code(questionnaire_code, date):
     return {SENDER: "919049008976",
             RECEIVER: '919880734937',
-            SMS: questionnaire_code + " wp01 10.12.2013",
+            SMS: questionnaire_code + " wp01 %s" % date,
             'message': 'Thanks'}
 
 
 def get_reporting_date_values():
     today = datetime.now()
-    first_day_of_month = datetime(today.year, today.month, 1)
-    previous_month = first_day_of_month - timedelta(days=1)
-    first_day_of_year = datetime(today.year,1,1)
+    second_day_of_month = datetime(today.year, today.month, 2)
+    previous_month = datetime(today.year, today.month - 1, 2)
+    second_day_of_year = datetime(today.year, 1, 2)
     dates = []
-    for i in [today, first_day_of_month, previous_month, first_day_of_year]:
+    for i in [today, second_day_of_month, previous_month, second_day_of_year]:
         dates.append(i.strftime('%d.%m.%Y'))
     return dates
