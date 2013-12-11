@@ -316,7 +316,7 @@ class TestSubmissionLog(unittest.TestCase):
         dates = []
         for date in date_strings:
             dates.append(datetime.strptime(date, date_format))
-        self.assertTrue(dates[2] >= dates[1] >= dates[0])
+        self.assertTrue(dates[2] >= dates[1] >= dates[0],msg="Dates:"+str(dates))
 
     @attr('functional_test')
     def test_sorting_on_date_columns(self):
@@ -325,7 +325,7 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page = self.go_to_submission_log_page(project_name=self.reporting_period_project_name)
         submission_log_page.wait_for_table_data_to_load()
         #default sorting on submission date
-        self.verify_sort_data_by_date(submission_log_page,3)
+        self.verify_sort_data_by_date(submission_log_page, column=3)
         submission_log_page.click_on_nth_header(6)
         submission_log_page.wait_for_table_data_to_load()
         self.verify_sort_data_by_date(submission_log_page,6,date_format='%d.%m.%Y')
