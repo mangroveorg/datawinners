@@ -42,10 +42,11 @@ def es_field_name(field_code, form_model_id):
     return field_code if is_submission_meta_field(field_code) else "%s_%s"%(form_model_id, lower(field_code))
 
 def create_submission_mapping(dbm, form_model):
-    if form_model.is_entity_registration_form() and "delete" == form_model.form_code:
+    if form_model.is_entity_registration_form() or "delete" == form_model.form_code:
         return
     es = get_elasticsearch_handle()
-    fields_definition = get_submission_meta_fields()
+    fields_definition = []
+    fields_definition.extend(get_submission_meta_fields())
 
     for field in form_model.fields:
         fields_definition.append(get_field_definition(field, field_name=es_field_name(field.code, form_model.id)))
