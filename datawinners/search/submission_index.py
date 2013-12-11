@@ -150,7 +150,9 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
         if field.is_entity_field:
             search_dict.update({"entity_short_code": value})
             value = lookup_entity_name(dbm, value, form_model.entity_type)
-        elif field.type.startswith("select"):
+        elif field.type == "select":
+            value = field.get_option_value_list(value)
+        elif field.type == "select1":
             value = ",".join(field.get_option_value_list(value))
 
         search_dict.update({es_field_name(key, form_model.id): value})
