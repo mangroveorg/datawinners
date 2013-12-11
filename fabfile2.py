@@ -6,7 +6,6 @@ from datetime import datetime
 from fabric.api import run, env
 from fabric.context_managers import cd
 from fabric.operations import sudo
-from django.conf import settings
 
 DATAWINNERS = 'datawinners'
 MANGROVE = 'mangrove'
@@ -123,9 +122,6 @@ def restart_couchdb():
     sudo("/etc/init.d/%s restart" % couch_db_main_service_name, pty=False)
     sudo("/etc/init.d/%s restart" % couch_db_feed_service_name, pty=False)
 
-def restart_scheduler():
-    sudo("/etc/init.d/remainders restart")
-
 
 def migrate_couchdb(context):
     if context.couch_migration_file:
@@ -240,9 +236,6 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
     _deploy_datawinners(context)
 
     remove_cache(context)
-    if settings.START_SCHEDULER:
-        restart_scheduler()
-
     start_servers()
 
 
