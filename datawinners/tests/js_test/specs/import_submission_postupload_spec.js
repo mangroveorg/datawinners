@@ -18,7 +18,8 @@ describe("Import Submission postupload", function(){
     it("should update the success table header on success submission", function(){
         var responseJSON = {
             'question_map':{'q1':'question_1', 'q2':'question_2'},
-            'success_submissions':[{'q1':'answer_1'},{'q2':'answer_2'}]
+            'success_submissions':[{'q1':'answer_1'},{'q2':'answer_2'}],
+            'errored_submission_details':[]
         };
 
         fileUploader.onComplete('', '', responseJSON);
@@ -31,7 +32,8 @@ describe("Import Submission postupload", function(){
     it("should update body with successful submissions", function(){
         var responseJSON = {
             'question_map':{'q1':'question_1', 'q2':'question_2'},
-            'success_submissions':[{'q1':'answer_11','q2':'answer_12'}, {'q1':'answer_21','q2':'answer_22'}]
+            'success_submissions':[{'q1':'answer_11','q2':'answer_12'}, {'q1':'answer_21','q2':'answer_22'}],
+            'errored_submission_details':[]
         };
 
         fileUploader.onComplete('', '', responseJSON);
@@ -50,7 +52,7 @@ describe("Import Submission postupload", function(){
     it("should hide onload spinner when upload completes", function() {
         var mockedUiblockUI = spyOn($, 'unblockUI');
 
-        fileUploader.onComplete('', '', {'success_submissions':[]});
+        fileUploader.onComplete('', '', {'success_submissions':[], 'errored_submission_details':[]});
 
         expect(mockedUiblockUI).toHaveBeenCalled();
     });
