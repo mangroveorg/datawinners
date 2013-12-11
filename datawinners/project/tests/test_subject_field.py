@@ -3,8 +3,8 @@ from django.forms import ChoiceField
 from mock import Mock, patch, PropertyMock
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import TextField
-from project.models import Project
-from project.questionnaire_fields import EntityField, FormField
+from datawinners.project.models import Project
+from datawinners.project.questionnaire_fields import EntityField, FormField
 
 class TestSubjectField(unittest.TestCase):
     def test_create_entity_list_for_reporters(self):

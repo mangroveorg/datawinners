@@ -7,7 +7,6 @@ from mock import Mock
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, field_attributes
 from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import TextLengthConstraint
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 

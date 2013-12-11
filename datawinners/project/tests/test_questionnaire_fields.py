@@ -8,7 +8,7 @@ from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import SelectField, IntegerField, GeoCodeField, TextField, TelephoneNumberField, HierarchyField
-from project.questionnaire_fields import TextInputForFloat, FormField, GeoCodeValidator
+from datawinners.project.questionnaire_fields import TextInputForFloat, FormField, GeoCodeValidator
 
 
 class TestTextInputForFloat(TestCase):
