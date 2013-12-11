@@ -25,7 +25,7 @@ class SubmissionQueryBuilder(QueryBuilder):
         if submission_type_filter:
             if submission_type_filter == 'deleted':
                 return query.filter(void=True)
-            query = (query.filter(status=submission_type_filter))
+            query = query.filter(status=submission_type_filter)
         return query.filter(void=False)
 
     def create_paginated_query(self, query, query_params):
