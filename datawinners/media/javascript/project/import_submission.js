@@ -9,9 +9,11 @@ DW.SubmissionImportPopup = function(){
                 open: function(){
                     self.import_help_section.hide();
                     self.success_section.hide();
+                    self.success_message.hide();
+                    self.error_section.hide();
+                    self.error_message.hide();
                 },
                 width: 500,
-//                closeText: 'hide',
                 dialogClass: "no-close",
                 buttons: [
                     {
@@ -30,6 +32,9 @@ DW.SubmissionImportPopup = function(){
         self.show_help_link = $("#show_help");
         self.hide_help_link = $("#hide_help");
         self.success_section = $('#success_import_section');
+        self.error_section = $('#error_import_section');
+        self.error_message = $('#error_message');
+        self.success_message = $('#success_message');
         self.import_template_url_template = options.import_template_url_template;
         self.import_submission_url_template = options.import_submission_url_template;
         _initialize_event_handlers();
@@ -84,15 +89,22 @@ DW.SubmissionImportPopup = function(){
 DW.SubmissionFileUploader = function(options){
     var self = this;
     var success_table = $('#success_table');
+    var error_table = $('#error_table');
 
     self.onComplete = function(id, fileName, responseJSON){
         $.unblockUI();
+         _clearTables();
         if(responseJSON.success_submissions.length > 0){
-             _clearSuccessSection();
              _populateSuccessTable(responseJSON.question_map, responseJSON.success_submissions);
              _updateSuccessSectionHeader(responseJSON);
              $('#success_import_section').show();
         }
+
+        if (responseJSON.errored_submission_details.length > 0) {
+            _populateErrorTable(responseJSON.errored_submission_details);
+            $('#error_import_section').show();
+        }
+        _updateMessages(responseJSON);
     };
 
     function _createHeader(questionMap) {
@@ -104,32 +116,82 @@ DW.SubmissionFileUploader = function(options){
         return header;
     };
 
-    function _createSuccessTableBody(submissions, questionMap) {
-        var successBody = '<tbody>';
+    function _createTableBody(submissions, questionMap) {
+        var body = '<tbody>';
         _.each(submissions, function (submission) {
-            successBody += '<tr>';
+            body += '<tr>';
             _.each(questionMap, function (questionText, questionCode) {
-                successBody += '<td>' + submission[questionCode] + '</td>';
+                body += '<td>' + submission[questionCode] + '</td>';
             });
-            successBody += '</tr>';
+            body += '</tr>';
         });
-        successBody += '</tbody>'
-        return successBody;
+        body += '</tbody>'
+        return body;
     };
 
     function _updateSuccessSectionHeader(responseJSON) {
-        $("#success_table_message").html(responseJSON.success_submissions.length + gettext(" Record(s) Successfully Imported"));
+        $("#success_table_message").html(responseJSON.success_submissions.length + gettext(" Submission(s) Successfully Imported"));
     };
+
+    var _populateErrorTable = function(error_details){
+        var header = _createErrorHeader();
+        error_table.append(header);
+        var body = _createErrorBody(error_details);
+        error_table.append(body);
+    };
+
+    var _createErrorHeader = function() {
+        return '<thead><tr><th>Row Number</th><th>Details</th></tr></thead>';
+    }
+
+    function _updateMessages(responseJSON) {
+        if (responseJSON.success) {
+            _update_success_table_message(responseJSON);
+            var successCount = responseJSON.success_submissions.length;
+            $("#success_message").html(interpolate(gettext("All %(successCount)s records have been successfully imported."), {'successCount':successCount}, true));
+            $("#success_message").show();
+        } else {
+            var errorCount = responseJSON.errored_submission_details.length;
+            $("#error_table_message").html(interpolate(gettext("%(errorCount)s Submission(s) Failed to Import"),
+                {'errorCount':errorCount}, true));
+
+            $("#error_message").html(responseJSON.message);
+            $('#error_message').show();
+            _update_success_table_message(responseJSON)
+        }
+    };
+
+    function _update_success_table_message(responseJSON) {
+        if(responseJSON.success_submissions.length > 0) {
+            var successCount = responseJSON.success_submissions.length;
+            $("#success_table_message").html(interpolate(gettext('%(successCount)s Submissions Successfully Imported'),{'successCount':successCount}, true));
+        }
+    };
+
+    var _createErrorBody = function(error_details) {
+        var body = '<tbody>';
+            _.each(error_details, function (error_detail) {
+                body += '<tr><td>' + error_detail.row_count + '</td><td>';
+                body += '<ul class="bulleted">'
+                _.each(error_detail.errors, function (error) {
+                    body += '<li>' + error + '</li>';
+                });
+                body += '</ul></td></tr>';
+            });
+        body += '</tbody>'
+        return body;
+    }
 
     var _populateSuccessTable = function(questionMap, submissions){
         var header = _createHeader(questionMap);
         success_table.append(header);
-        var successBody = _createSuccessTableBody(submissions, questionMap);
+        var successBody = _createTableBody(submissions, questionMap);
         success_table.append(successBody);
     };
 
-    var _clearSuccessSection = function(){
+    var _clearTables = function(){
         success_table.html("");
+        error_table.html("");
     };
 
     new qq.FileUploader({
@@ -139,6 +201,11 @@ DW.SubmissionFileUploader = function(options){
             action: options.upload_link,
             params: {},
             onSubmit: function () {
+                $('#success_import_section').hide();
+                $('#success_message').hide();
+                $('#error_import_section').hide();
+                $('#error_message').hide();
+
                 $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
             },
             onComplete: self.onComplete

@@ -2,10 +2,6 @@ from unittest import TestCase
 from mock import patch, Mock, MagicMock
 from datawinners.project.submission.submission_import import SubmissionPersister
 
-
-class TestSubmissionImporter(TestCase):
-    pass
-
 class TestSubmissionPersister(TestCase):
 
     def setUp(self):
@@ -15,7 +11,7 @@ class TestSubmissionPersister(TestCase):
         with patch("datawinners.project.submission.submission_import.Organization") as Organization:
             organization = MagicMock()
             Organization.objects.get.return_value= organization
-            organization.has_exceeded_submission_limit.return_value = False
+            organization.has_exceeded_quota_and_notify_users.return_value = False
             user_profile = MagicMock()
             valid_rows = [{"key":"value1"}, {"key":"value2"}]
             with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
@@ -34,7 +30,7 @@ class TestSubmissionPersister(TestCase):
         with patch("datawinners.project.submission.submission_import.Organization") as Organization:
             organization = MagicMock()
             Organization.objects.get.return_value= organization
-            organization.has_exceeded_submission_limit.return_value = True
+            organization.has_exceeded_quota_and_notify_users.return_value = True
             user_profile = MagicMock()
             valid_rows = [{"key":"value1"}, {"key":"value2"}]
             with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
@@ -53,7 +49,7 @@ class TestSubmissionPersister(TestCase):
         with patch("datawinners.project.submission.submission_import.Organization") as Organization:
             organization = MagicMock()
             Organization.objects.get.return_value= organization
-            organization.has_exceeded_submission_limit.return_value = False
+            organization.has_exceeded_quota_and_notify_users.return_value = False
             user_profile = MagicMock()
             valid_rows = [{"key":"value1"}, {"key":"value2"}]
             with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
@@ -73,7 +69,7 @@ class TestSubmissionPersister(TestCase):
         with patch("datawinners.project.submission.submission_import.Organization") as Organization:
             organization = MagicMock()
             Organization.objects.get.return_value= organization
-            organization.has_exceeded_submission_limit.return_value = False
+            organization.has_exceeded_quota_and_notify_users.return_value = False
             user_profile = MagicMock()
             valid_rows = [{}]
             with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
@@ -82,17 +78,15 @@ class TestSubmissionPersister(TestCase):
                 project.is_summary_project.return_value = False
                 user_profile.reporter_id = "some_rep_id"
                 submission_persister = SubmissionPersister(user, None, None, form_model, project)
-                with patch("datawinners.project.submission.submission_import.check_quotas_and_update_users") as check_quotas_and_update_users:
 
-                    submission_persister.save_submission(True, user_profile, valid_rows)
-
-                    check_quotas_and_update_users.assert_called_with(organization)
+                submission_persister.save_submission(True, user_profile, valid_rows)
+                organization.has_exceeded_quota_and_notify_users.assert_called_with()
 
     def test_should_save_survey_with_uploaded_entrys_report_id_for_summary_project_when_user_is_logged_in(self):
         with patch("datawinners.project.submission.submission_import.Organization") as Organization:
             organization = MagicMock()
             Organization.objects.get.return_value= organization
-            organization.has_exceeded_submission_limit.return_value = False
+            organization.has_exceeded_quota_and_notify_users.return_value = False
             user_profile = MagicMock()
             expected_reporter_id = "rep_1"
             valid_row = {"eid": expected_reporter_id}
@@ -122,7 +116,7 @@ class TestSubmissionPersister(TestCase):
         with patch("datawinners.project.submission.submission_import.Organization") as Organization:
             organization = MagicMock()
             Organization.objects.get.return_value= organization
-            organization.has_exceeded_submission_limit.return_value = False
+            organization.has_exceeded_quota_and_notify_users.return_value = False
             user_profile = MagicMock()
             expected_reporter_id = "rep_1"
             user_profile.reporter_id = expected_reporter_id

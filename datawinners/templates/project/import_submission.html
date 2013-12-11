@@ -4,8 +4,10 @@
 
 <div id="submission_import">
     <div class="import_subject_form">
-    {% trans "Upload an Excel file (.xsl) with your Submssion list." %}
-    <a id="show_help">{% trans "How do I do this?" %}</a>
+        <div id="error_message" class="import_message error_message message-box"></div>
+        <div id="success_message" class="import_message success_message success-box"></div>
+        {% trans "Upload an Excel file (.xsl) with your Submssion list." %}
+        <a id="show_help">{% trans "How do I do this?" %}</a>
         <div id="import_help_section">
             <ol class="help-steps">
                 <li>{% trans "Download the template" %} <a id="secondary-template-download-link">{% trans "DataWinners_ImportSubmissions"%}.xsl</a></li>
@@ -32,13 +34,17 @@
     </div>
     <div class="clear"></div>
     <br/>
+
+    <div id='error_import_section' class="import_section">
+        <div id="error_table_message" class="import_message"></div>
+        <div class="import_table">
+            <table id="error_table" class="styled_table"></table>
+        </div>
+    </div>
     <div id="success_import_section" class="import_section">
         <div id="success_table_message" class="import_message"></div>
         <div class="import_table">
             <table id="success_table" class="styled_table"></table>
         </div>
-    </div>
-    <div id='error_import_section' class="import_section">
-
     </div>
 </div>

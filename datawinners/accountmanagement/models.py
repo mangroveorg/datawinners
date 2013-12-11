@@ -6,7 +6,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext, activate, get_language
 from django_countries import CountryField
-from datawinners.settings import LIMIT_TRIAL_ORG_MESSAGE_COUNT, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
+from datawinners.settings import LIMIT_TRIAL_ORG_MESSAGE_COUNT, LIMIT_TRIAL_ORG_SUBMISSION_COUNT, NEAR_SUBMISSION_LIMIT_TRIGGER
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from django.contrib.auth.models import User
 from django.utils.translation import get_language, ugettext as _
@@ -95,6 +95,16 @@ class Organization(models.Model):
         if self.in_trial_mode and self._has_exceeded_submission_limit_for_trial_account():
             return True
         return False
+
+    def has_exceeded_quota_and_notify_users(self):
+        submission_count = self.get_total_submission_count()
+        if self.in_trial_mode and submission_count == NEAR_SUBMISSION_LIMIT_TRIGGER:
+            self.send_mail_to_self_creator(email_type='about_to_reach_submission_limit')
+
+        if self.in_trial_mode and submission_count == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
+            self.send_mail_to_organization_creator(email_type='reached_submission_limit')
+
+        return submission_count >= LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 
     def increment_sms_api_usage_count(self):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)

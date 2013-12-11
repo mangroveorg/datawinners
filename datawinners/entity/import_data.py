@@ -200,35 +200,69 @@ class FilePlayer(Player):
         return responses
 
 #TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
+def translate_errors(items, question_dict={}, question_answer_dict={}):
+    errors = []
+    for key, value in items:
+
+        answer, question_label = _get_answer_and_question_label(question_answer_dict, question_dict, key)
+
+        # todo the ds & subject import errors will now start showing question_label than quotes. Do we need to have that?
+
+        if 'is required' in value:
+            errors.append(_('Answer for question %s is required.') % (question_label, ))
+
+        elif 'Expected date in mm.yyyy format' in value:
+            errors.append(_('Answer %s for question %s is invalid. Expected date in mm.yyyy format') % (answer, question_label))
+
+        elif 'Expected date in dd.mm.yyyy format' in value:
+            errors.append(_('Answer %s for question %s is invalid. Expected date in dd.mm.yyyy format') % (answer, question_label))
+
+        elif 'Expected date in mm.dd.yyyy format' in value:
+            errors.append(_('Answer %s for question %s is invalid. Expected date in mm.dd.yyyy format') % (answer, question_label))
+
+        elif 'smaller than allowed' in value:
+            errors.append(_('Answer %s for question %s is smaller than allowed.') % (answer, question_label))
+
+        elif 'is of the wrong type' in value:
+            errors.append(_('Answer %s for question %s is of the wrong type.') % (answer, question_label))
+
+        elif 'xx.xxxx yy.yyyy' in value:
+            errors.append(_(
+                'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315.'))
+
+        elif 'longer' in value:
+            errors.append(_("Answer %s for question %s is longer than allowed.") % (answer, question_label))
+
+        elif 'subject id not matched' in value:
+            errors.append(_("Answer %s for question %s is invalid. Subject id not matched") % (answer, question_label))
+
+        elif 'shorter' in value:
+            # todo check the usage and remove the split
+            text = value.split(' ')[1]
+            question = value.split(' ')[4]
+            errors.append(_("Answer %s for question %s is shorter than allowed.") % (text, question))
+
+        elif 'must be between' in value:
+            # todo check the usage and remove the split
+            text = value.split(' ')[2]
+            low = value.split(' ')[6]
+            high = value.split(' ')[8]
+            errors.append(_("The answer %s must be between %s and %s.") % (text, low, high))
+        else:
+            errors.append(_(value))
+    return errors
+
+def _get_answer_and_question_label(question_answer_dict, question_dict, question_code):
+    return question_answer_dict.get(question_code), question_dict.get(question_code, question_code)
+
 def tabulate_failures(rows):
     tabulated_data = []
     for row in rows:
         row[1].errors['row_num'] = row[0] + 2
 
         if isinstance(row[1].errors['error'], dict):
-            errors = []
-            for key, value in row[1].errors['error'].items():
-                if 'is required' in value:
-                    code = value.split(' ')[3]
-                    errors.append(_('Answer for question %s is required.') % (code, ))
-                elif 'xx.xxxx yy.yyyy' in value:
-                    errors.append(_('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315.'))
-                elif 'longer' in value:
-                    text = value.split(' ')[1]
-                    question = value.split(' ')[4]
-                    errors.append(_("Answer %s for question %s is longer than allowed.") % (text, question))
-                elif 'shorter' in value:
-                    text = value.split(' ')[1]
-                    question = value.split(' ')[4]
-                    errors.append(_("Answer %s for question %s is shorter than allowed.") % (text, question))
 
-                elif 'must be between' in value:
-                    text = value.split(' ')[2]
-                    low = value.split(' ')[6]
-                    high = value.split(' ')[8]
-                    errors.append(_("The answer %s must be between %s and %s.") % (text, low, high))
-                else:
-                    errors.append(_(value))
+            errors = translate_errors(items=row[1].errors['error'].items(), question_answer_dict=row[1].errors['row'])
         else:
             errors = [_(row[1].errors['error'])]
 

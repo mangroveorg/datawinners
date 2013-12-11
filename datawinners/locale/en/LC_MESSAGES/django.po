@@ -4348,3 +4348,10 @@ msgstr ""
 
 msgid "Go Pro"
 msgstr ""
+
+msgid "Note: You cannot add new columns in your Excel file to create new questions."
+msgstr ""
+
+msgid "Edit the Questionnaire to make these changes."
+msgstr ""
+

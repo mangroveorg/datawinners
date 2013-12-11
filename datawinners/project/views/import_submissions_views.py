@@ -25,19 +25,24 @@ class ImportSubmissionView(View):
         project = Project.load(manager.database, project_id)
         form_model = get_form_model_by_code(manager, form_code)
         submission_importer = SubmissionImporter(manager, feeds_dbm, request.user, form_model, project)
-        submission_import_response = submission_importer.import_submission(content)
+        response = submission_importer.import_submission(content)
 
         return HttpResponse(
             json.dumps(
                 {
-                    "success": self._successful(submission_import_response),
+                    "success": self._successful(response),
                     "question_map": self._get_question_code_map(form_model, request),
-                    "success_submissions":submission_import_response.saved_entries,
+                    "success_submissions":response.saved_entries,
+                    "errored_submission_details":response.errored_entrie_details,
+                    "message": response.message,
+                    "total_submissions":response.total_submissions
                 }),
             content_type='application/json')
 
-    def _successful(self, submission_import_response):
-        return submission_import_response.saved_entries and not submission_import_response.ignored_entries
+    def _successful(self, response):
+        return True if response.saved_entries \
+            and not response.ignored_entries \
+            and not response.errored_entrie_details else False
 
     @method_decorator(csrf_view_exempt)
     @method_decorator(csrf_response_exempt)
