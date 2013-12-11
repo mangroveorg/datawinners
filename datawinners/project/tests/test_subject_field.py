@@ -8,7 +8,7 @@ from datawinners.project.questionnaire_fields import EntityField, FormField
 
 class TestSubjectField(unittest.TestCase):
     def test_create_entity_list_for_reporters(self):
-        with patch ("project.questionnaire_fields.EntityField._data_sender_choice_fields") as ds_choice_fields:
+        with patch ("datawinners.project.questionnaire_fields.EntityField._data_sender_choice_fields") as ds_choice_fields:
 
             choices = ChoiceField(choices=[('rep1', 'ashwin'), ('rep2', 'pooja')])
             ds_choice_fields.return_value = choices
@@ -23,7 +23,7 @@ class TestSubjectField(unittest.TestCase):
             self.assertEquals(result_field.get('eid'),choices)
 
     def test_create_entity_list_for_subjects(self):
-        with patch ("project.questionnaire_fields.EntityField._subject_choice_fields") as subject_choice_fields:
+        with patch ("datawinners.project.questionnaire_fields.EntityField._subject_choice_fields") as subject_choice_fields:
 
             choices = ChoiceField(choices=[('sub1', 'one_subject'), ('sub2', 'another_subject')])
             subject_choice_fields.return_value = choices
