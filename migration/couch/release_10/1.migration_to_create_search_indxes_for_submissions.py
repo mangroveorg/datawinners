@@ -13,7 +13,10 @@ def create_submission_index(database_name):
     dbm = get_db_manager(database_name)
     for row in dbm.load_all_rows_in_view('questionnaire'):
         form_model = FormModel.new_from_doc(dbm, FormModelDocument.wrap(row["value"]))
+        if form_model.is_entity_registration_form() or "delete" == form_model.form_code:
+            continue
         create_submission_mapping(dbm, form_model)
+
 
     populate_submission_index(dbm)
 
