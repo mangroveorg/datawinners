@@ -70,8 +70,6 @@ class SubmissionQueryResponseCreator():
                     if key.lower().endswith(self.form_model.entity_question.code.lower()):
                         submission.append(
                             [res.get(key) + "<span class='small_grey'>  %s</span>" % res.get('entity_short_code')])
-                    elif isinstance(res.get(key), dict):
-                        submission.append(res.get(key).values())
                     else:
                         submission.append(res.get(key))
             submissions.append(submission)
