@@ -213,7 +213,7 @@ class TestSubmissionLog(unittest.TestCase):
         web_submission_page.submit_answers()
 
     @attr("functional_test")
-    def test_should_filter_by__name_and_id_of_datasender_and_subject(self):
+    def test_should_filter_by_name_and_id_of_datasender_and_subject(self):
 
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
@@ -363,3 +363,27 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page.click_on_nth_header(6)
         submission_log_page.wait_for_table_data_to_load()
         self.verify_sort_data_by_date(submission_log_page, 6, date_format='%d.%m.%Y')
+
+    @attr('functional_test')
+    def test_should_delete_submission(self):
+        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
+        sms_tester_page = SMSTesterPage(self.driver)
+        sms_tester_page.send_valid_sms_with(VALID_DATA_FOR_DELETE)
+
+        message = sms_tester_page.get_response_message()
+        self.assertTrue(fetch_(SUCCESS_MESSAGE, VALID_DATA_FOR_DELETE) in message, "message:" + message)
+
+        submission_log_page = self.go_to_submission_log_page()
+        submission_log_page.search(unique_text)
+        submission_log_page.wait_for_table_data_to_load()
+
+        submission_log_page.check_submission_by_row_number(1)
+        submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
+        warning_dialog = WarningDialog(self.driver)
+        warning_dialog.confirm()
+        time.sleep(1)
+        delete_success_text = self.driver.find_visible_element(by_css('#message_text')).text
+        self.assertEqual(delete_success_text, "The selected records have been deleted")
+        submission_log_page.wait_for_table_data_to_load()
+        self.assertEquals(int(submission_log_page.get_total_number_of_records()), 0)
+

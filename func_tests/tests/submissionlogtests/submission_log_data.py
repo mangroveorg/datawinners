@@ -41,6 +41,12 @@ DATASENDER_DETAILS = {NAME: "Dookudu",
 VALID_DATA = {SENDER: MOBILE_NUMBER_RANDOM,
               RECEIVER: '919880734937',
               SMS: "cli001 .EID cid003 .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
+                            SUCCESS_MESSAGE: "Thank you"}
+
+unique_text = random_string()
+VALID_DATA_FOR_DELETE = {SENDER: '919049008976',
+              RECEIVER: '919880734937',
+              SMS: "cli001 .EID cid003 .NA "+unique_text +" .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
               SUCCESS_MESSAGE: "Thank you"}
 
 EDITED_DATASENDER_DETAILS = {NAME: "edited Dookudu",
