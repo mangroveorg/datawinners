@@ -65,9 +65,9 @@ class SubmissionLogPage(Page):
 
     def get_all_data_on_nth_column(self, column):
         column_data = []
-        index = 1
-        while index <= self.get_shown_records_count():
-            column_data.append(self.get_cell_data(index, column))
+        index = 2
+        while index <= self.get_total_number_of_records():
+            column_data.append(self.get_cell_value(index, column))
             index += 1
         return column_data
 

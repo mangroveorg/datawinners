@@ -31,6 +31,7 @@ from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
 from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA
+SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
 
 
 @attr('suit_3')
@@ -41,6 +42,7 @@ class TestSubmissionLog(unittest.TestCase):
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.dashboard = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        cls.reporting_period_project_name = None
         cls.URL = None
 
     @classmethod
@@ -57,9 +59,8 @@ class TestSubmissionLog(unittest.TestCase):
 
     def populate_data_for_date_range_filters(self):
         self._create_project()
-        project_name, questionnaire_code = self._get_project_details()
+        self.reporting_period_project_name, questionnaire_code = self._get_project_details()
         self._submit_sms_data(questionnaire_code)
-        return project_name
 
     def _get_project_details(self):
         overview_page = ProjectOverviewPage(self.driver)
@@ -106,26 +107,6 @@ class TestSubmissionLog(unittest.TestCase):
         warning_dialog = WarningDialog(self.driver)
         self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
 
-    @SkipTest
-    @attr('functional_test')
-    def test_sorting_in_submission_log_page(self):
-        submission_log_page = self.get_submission_log_page()
-        self.verify_sort_data_by_submission_date_by_default(submission_log_page)
-        self.verify_sort_data_alphanumerically_for_other_column_than_submission_date(submission_log_page)
-
-    def verify_sort_data_alphanumerically_for_other_column_than_submission_date(self, submission_log_page):
-        submission_log_page.click_on_nth_header(8)
-        self.assertEqual(submission_log_page.get_all_data_on_nth_column(8), EXPECTED_FA_SORTED)
-
-    def verify_sort_data_by_submission_date_by_default(self, submission_log_page):
-        submission_dates = submission_log_page.get_all_data_on_nth_column(3)
-        self.assertTrue(len(submission_dates) >= 3)
-        SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
-        for index, submission_date in enumerate(submission_dates[1:-1]):
-            before = datetime.strptime(submission_dates[index], SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
-            current = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
-            after = datetime.strptime(submission_dates[index + 2], SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG)
-            self.assertTrue(before >= current >= after)
 
     @SkipTest
     @attr('functional_test')
@@ -137,22 +118,6 @@ class TestSubmissionLog(unittest.TestCase):
         time.sleep(6)
         self.assertEqual(submission_log_page.get_all_data_on_nth_column(7), EXPECTED_FA_SORTED)
 
-    @SkipTest
-    @attr('functional_test')
-    def test_should_load_actions_dynamically(self):
-        submission_log_page = self.get_submission_log_page()
-        time.sleep(2)
-        submission_log_page.click_action_button()
-        self.assert_none_selected_shown(submission_log_page)
-        time.sleep(1)
-        submission_log_page.check_submission_by_row_number(3)
-        submission_log_page.click_action_button()
-        self.assert_action_menu_shown_for(submission_log_page)
-
-        submission_log_page.check_submission_by_row_number(3)
-        submission_log_page.click_action_button()
-        self.assert_none_selected_shown(submission_log_page)
-
     def assert_none_selected_shown(self, submission_log_page):
         self.assertTrue(submission_log_page.is_none_selected_shown())
         self.assertFalse(submission_log_page.actions_menu_shown())
@@ -160,25 +125,6 @@ class TestSubmissionLog(unittest.TestCase):
     def assert_action_menu_shown_for(self, submission_log_page):
         self.assertTrue(submission_log_page.actions_menu_shown())
         self.assertFalse(submission_log_page.is_none_selected_shown())
-
-    @SkipTest
-    @attr("functional_test")
-    def test_should_disable_checkall_cb__and_filters_if_there_is_no_submission(self):
-
-        submission_log_page = self.go_to_submission_log_page("project having people as subject", cache_url=False)
-        self.assertFalse(submission_log_page.is_checkall_enabled())
-        self.assertFalse(submission_log_page.is_filter_enabled())
-
-    @SkipTest
-    @attr("functional_test")
-    def test_should_check_checkall_cb_when_all_cb_are_checked(self):
-        submission_log_page = self.get_submission_log_page()
-        submission_log_page.check_all_submissions()
-        self.assertTrue(submission_log_page.is_checkall_checked())
-        submission_log_page.check_submission_by_row_number(3)
-        self.assertFalse(submission_log_page.is_checkall_checked())
-        submission_log_page.check_submission_by_row_number(3)
-        self.assertTrue(submission_log_page.is_checkall_checked())
 
     def register_datasender(self, datasender_details, all_datasenders_page, id=None):
         add_data_sender_page = all_datasenders_page.navigate_to_add_a_data_sender_page()
@@ -304,15 +250,16 @@ class TestSubmissionLog(unittest.TestCase):
         rp_column = 6
         all_reporting_dates = []
         dates = get_reporting_date_values()
-        for i in range(1, total_number_of_rows+1):
+        for i in range(1, total_number_of_rows + 1):
             all_reporting_dates.append(submission_log_page.get_cell_value(i, rp_column))
         self.assertTrue(set(all_reporting_dates).issubset(dates))
 
     @attr("functional_test")
     def test_date_filters(self):
-        reporting_period_project_name = self.populate_data_for_date_range_filters()
+        if not self.reporting_period_project_name:
+            self.populate_data_for_date_range_filters()
 
-        submission_log_page = self.go_to_submission_log_page(project_name=reporting_period_project_name)
+        submission_log_page = self.go_to_submission_log_page(project_name=self.reporting_period_project_name)
 
         submission_log_page.filter_by_reporting_date(DAILY_DATE_RANGE)
 
@@ -362,3 +309,23 @@ class TestSubmissionLog(unittest.TestCase):
         total_number_of_rows = submission_log_page.get_total_number_of_records()
         self.assertEqual(total_number_of_rows, 4)
         self.assert_reporting_period_values(submission_log_page, total_number_of_rows)
+
+    def verify_sort_data_by_date(self, submission_log_page, column,date_format=SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG):
+        date_strings = submission_log_page.get_all_data_on_nth_column(column)
+        self.assertTrue(len(date_strings) >= 3)
+        dates = []
+        for date in date_strings:
+            dates.append(datetime.strptime(date, date_format))
+        self.assertTrue(dates[2] >= dates[1] >= dates[0])
+
+    @attr('functional_test')
+    def test_sorting_on_date_columns(self):
+        if not self.reporting_period_project_name:
+            self.populate_data_for_date_range_filters()
+        submission_log_page = self.go_to_submission_log_page(project_name=self.reporting_period_project_name)
+        submission_log_page.wait_for_table_data_to_load()
+        #default sorting on submission date
+        self.verify_sort_data_by_date(submission_log_page,3)
+        submission_log_page.click_on_nth_header(6)
+        submission_log_page.wait_for_table_data_to_load()
+        self.verify_sort_data_by_date(submission_log_page,6,date_format='%d.%m.%Y')
