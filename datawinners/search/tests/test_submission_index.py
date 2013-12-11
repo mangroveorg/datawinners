@@ -34,7 +34,7 @@ class TestSubmissionIndex(unittest.TestCase):
             lookup_entity_name.return_value = 'Test'
             _update_with_form_model_fields(None, submission_doc, search_dict, self.form_model)
             self.assertEquals(
-                {'1212_eid': 'Test', "entity_short_code": "cid005", '1212_q2': 'name', '1212_q3': '3,3', '1212_q4': 'one,two',
+                {'1212_eid': 'Test', "entity_short_code": "cid005", '1212_q2': 'name', '1212_q3': '3,3', '1212_q4': ['one','two'],
                  '1212_q5': '11.12.2012', 'void': False}, search_dict)
 
     def test_should_update_search_dict_with_form_field_questions_for_error_submissions(self):
