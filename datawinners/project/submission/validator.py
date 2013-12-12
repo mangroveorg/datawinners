@@ -16,13 +16,23 @@ class ImportSubmissionValidator():
         row_count = 1
         for row in parsed_rows:
             row_count += 1
-            question_code, answer = row.items()[0]
-            errors = self._verify_uploaded_id(question_code, answer)
+            entity_key = self._get_entity_key()
+            entity_answer = row.get(entity_key)
+
+            errors = self._verify_uploaded_id(entity_key, entity_answer)
             if not errors:
                 cleaned_data, errors = self.form_model.validate_submission(values=row)
             errors_translated = translate_errors(items=errors.items(), question_dict=self.field_code_label_dict, question_answer_dict=row)
             invalid_row_details.append({"errors":errors_translated,"row_count":row_count}) if len(errors) > 0 else valid_rows.append(row)
         return valid_rows, invalid_row_details
+
+    def _get_entity_key(self):
+        for field in self.form_model.fields:
+            if field.is_entity_field:
+                return field.code
+
+        return None
+
 
     def _verify_uploaded_id(self, q_code, imported_id):
         errors = None

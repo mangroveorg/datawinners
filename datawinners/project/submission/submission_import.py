@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import logging
 from django.utils.translation import ugettext_lazy, gettext
 import xlrd
@@ -142,17 +143,6 @@ class SubmissionParser():
     def _parse(self):
         p = XlsSubmissionParser()
         return p.parse(self.file_content)
-
-    def _validate_columns(self, rows):
-
-        header_row = rows[0]
-        col_mapping = {}
-
-        for field in self.form_model.fields:
-            index = [i for i, col in enumerate(header_row) if field.label in col][0]
-            col_mapping.update({field.code:index})
-
-        return len(col_mapping) == len(self.form_model.fields), col_mapping
 
     def _get_rows(self, rows, col_mapping):
         result = []
