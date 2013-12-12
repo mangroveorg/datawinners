@@ -38,9 +38,19 @@ class SubmissionFormatter(object):
                 result.append(col_val)
 
             elif self.columns[field_code].get("type") == GEODCODE_FIELD_CODE:
-                col_val = row.get(field_code, ',').split(',')
+                col_val = self._split_gps(row.get(field_code))
+                #col_val = row.get(field_code, ',').replace(' ', ',').split(',')
                 result.extend(col_val)
             else:
                 col_val = row.get(field_code)
                 result.append(col_val)
         return result
+
+    def _split_gps(self, value):
+        if not value:
+            return ['','']
+        if ',' in value:
+            a = value.split(',')
+            return [i.strip() for i in a]
+        else:
+            return value.split()
