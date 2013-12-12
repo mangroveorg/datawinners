@@ -106,9 +106,6 @@ $(document).ready(function () {
                 "actionItems": actions,
                 "fnInitComplete": function () {
                     $('#search_box').append($('.dataTables_wrapper .dataTables_filter'));
-                    if($(".submission_table").dataTable().fnSettings().fnRecordsDisplay() == 0){
-                        $("#filter_section input").attr('disabled','disabled');
-                    }
                 },
                 "fnHeaderCallback": function (head) {
                 },
