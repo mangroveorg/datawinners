@@ -2,7 +2,7 @@ from collections import OrderedDict
 from django.utils.translation import gettext
 from datawinners.entity.import_data import tabulate_failures, translate_errors
 
-class ImportSubmissionValidator():
+class SubmissionWorkbookRowValidator():
 
     def __init__(self, manager, form_model, project):
         self.manager = manager
@@ -20,8 +20,8 @@ class ImportSubmissionValidator():
             entity_answer = row.get(entity_key)
 
             errors = self._verify_uploaded_id(entity_key, entity_answer)
-            if not errors:
-                cleaned_data, errors = self.form_model.validate_submission(values=row)
+            cleaned_data, field_errors = self.form_model.validate_submission(values=row)
+            errors.update(field_errors)
             errors_translated = translate_errors(items=errors.items(), question_dict=self.field_code_label_dict, question_answer_dict=row)
             invalid_row_details.append({"errors":errors_translated,"row_count":row_count}) if len(errors) > 0 else valid_rows.append(row)
         return valid_rows, invalid_row_details
@@ -35,13 +35,13 @@ class ImportSubmissionValidator():
 
 
     def _verify_uploaded_id(self, q_code, imported_id):
-        errors = None
+        errors = OrderedDict()
         if self.project.is_summary_project():
             if imported_id not in self.datasender_ids:
-                errors = OrderedDict([(q_code, gettext("datasender id not matched"))])
+                errors.update({q_code: gettext("datasender id not matched")})
         else:
             if imported_id not in self.subject_ids:
-                errors = OrderedDict([(q_code, gettext("subject id not matched"))])
+                errors.update({q_code: gettext("subject id not matched")})
         return errors
 
     def _get_subject_or_datasender_ids(self):

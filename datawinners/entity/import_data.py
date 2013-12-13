@@ -235,7 +235,8 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
 
         elif 'subject id not matched' in value:
             errors.append(_("Answer %s for question %s is invalid. Subject id not matched") % (answer, question_label))
-
+        elif 'datasender id not matched' in value:
+            errors.append(_("Answer %s for question %s is invalid. Datasender id not matched") % (answer, question_label))
         elif 'shorter' in value:
             # todo check the usage and remove the split
             text = value.split(' ')[1]

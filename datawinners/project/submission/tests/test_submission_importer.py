@@ -1,143 +1,206 @@
 from unittest import TestCase
+import unittest
+from django.contrib.auth.models import User
 from mock import patch, Mock, MagicMock
-from datawinners.project.submission.submission_import import SubmissionPersister
+from datawinners.project.models import Project
+from datawinners.project.submission.submission_import import SubmissionPersister, SubmissionWorkbookValidator, SubmissionPreprocessor, ImportValidationError
+from mangrove.datastore.database import DatabaseManager
+from mangrove.datastore.datadict import DataDictType
+from mangrove.form_model.field import TextField
+from mangrove.form_model.form_model import FormModel
+
 
 class TestSubmissionPersister(TestCase):
-
     def setUp(self):
         pass
 
     def test_should_save_submissions_when_the_limit_not_exceeded(self):
-        with patch("datawinners.project.submission.submission_import.Organization") as Organization:
-            organization = MagicMock()
-            Organization.objects.get.return_value= organization
-            organization.has_exceeded_quota_and_notify_users.return_value = False
-            user_profile = MagicMock()
-            valid_rows = [{"key":"value1"}, {"key":"value2"}]
-            with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-                service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
-                SurveyResponseService.return_value = service
-                project.is_summary_project.return_value = False
-                user_profile.reporter_id = "some_rep_id"
-                submission_persister = SubmissionPersister(user, None, None, form_model, project)
+        submission_quota_service = MagicMock()
+        submission_quota_service.has_exceeded_quota_and_notify_users.return_value = False
+        user_profile = MagicMock()
+        valid_rows = [{"key": "value1"}, {"key": "value2"}]
+        with patch(
+                "datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
+            service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
+            SurveyResponseService.return_value = service
+            project.is_summary_project.return_value = False
+            user_profile.reporter_id = "some_rep_id"
+            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
 
-                ignored_entries, saved_entries = submission_persister.save_submission(True, user_profile, valid_rows)
+            ignored_entries, saved_entries = submission_persister.save_submissions(True, user_profile, valid_rows)
 
-                self.assertEqual(saved_entries, [{"key":"value1"}, {"key":"value2"}])
-                self.assertEqual(ignored_entries, [])
+            self.assertEqual(saved_entries, [{"key": "value1"}, {"key": "value2"}])
+            self.assertEqual(ignored_entries, [])
 
     def test_should_ignore_submissions_when_the_limit_has_exceeded(self):
-        with patch("datawinners.project.submission.submission_import.Organization") as Organization:
-            organization = MagicMock()
-            Organization.objects.get.return_value= organization
-            organization.has_exceeded_quota_and_notify_users.return_value = True
-            user_profile = MagicMock()
-            valid_rows = [{"key":"value1"}, {"key":"value2"}]
-            with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-                service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
-                SurveyResponseService.return_value = service
-                project.is_summary_project.return_value = True
-                user_profile.reporter_id = "some_rep_id"
-                submission_persister = SubmissionPersister(user, None, None, form_model, project)
+        submission_quota_service = MagicMock()
+        submission_quota_service.has_exceeded_quota_and_notify_users.return_value = True
+        user_profile = MagicMock()
+        valid_rows = [{"key": "value1"}, {"key": "value2"}]
+        with patch(
+                "datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
+            service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
+            SurveyResponseService.return_value = service
+            project.is_summary_project.return_value = True
+            user_profile.reporter_id = "some_rep_id"
+            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
 
-                ignored_entries, saved_entries = submission_persister.save_submission(True, user_profile, valid_rows)
+            ignored_entries, saved_entries = submission_persister.save_submissions(True, user_profile, valid_rows)
 
-                self.assertEqual(ignored_entries, [{"key":"value1"}, {"key":"value2"}])
-                self.assertEqual(saved_entries, [])
+            self.assertEqual(ignored_entries, [{"key": "value1"}, {"key": "value2"}])
+            self.assertEqual(saved_entries, [])
 
     def test_should_increment_web_count_for_each_successful_submission(self):
-        with patch("datawinners.project.submission.submission_import.Organization") as Organization:
-            organization = MagicMock()
-            Organization.objects.get.return_value= organization
-            organization.has_exceeded_quota_and_notify_users.return_value = False
-            user_profile = MagicMock()
-            valid_rows = [{"key":"value1"}, {"key":"value2"}]
-            with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-                service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
-                SurveyResponseService.return_value = service
-                project.is_summary_project.return_value = False
-                user_profile.reporter_id = "some_rep_id"
-                submission_persister = SubmissionPersister(user, None, None, form_model, project)
+        submission_quota_service = MagicMock()
+        submission_quota_service.has_exceeded_quota_and_notify_users.return_value = False
+        user_profile = MagicMock()
+        valid_rows = [{"key": "value1"}, {"key": "value2"}]
+        with patch(
+                "datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
+            service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
+            SurveyResponseService.return_value = service
+            project.is_summary_project.return_value = False
+            user_profile.reporter_id = "some_rep_id"
+            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
 
-                submission_persister.save_submission(True, user_profile, valid_rows)
+            submission_persister.save_submissions(True, user_profile, valid_rows)
 
-                self.assertEqual(organization.increment_message_count_for.call_count, 2)
-                organization.increment_message_count_for.assert_called_with(incoming_web_count=1)
+            self.assertEqual(submission_quota_service.increment_web_submission_count.call_count, 2)
+            #organization.increment_message_count_for.assert_called_with(incoming_web_count=1)
 
 
     def test_should_check_quotas_and_update_users_on_saving_submissions(self):
-        with patch("datawinners.project.submission.submission_import.Organization") as Organization:
-            organization = MagicMock()
-            Organization.objects.get.return_value= organization
-            organization.has_exceeded_quota_and_notify_users.return_value = False
-            user_profile = MagicMock()
-            valid_rows = [{}]
-            with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-                service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
-                SurveyResponseService.return_value = service
-                project.is_summary_project.return_value = False
-                user_profile.reporter_id = "some_rep_id"
-                submission_persister = SubmissionPersister(user, None, None, form_model, project)
+        submission_quota_service = MagicMock()
+        submission_quota_service.has_exceeded_quota_and_notify_users.return_value = False
+        user_profile = MagicMock()
+        valid_rows = [{}]
+        with patch(
+                "datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
+            service, project, user, form_model = Mock(), Mock(), Mock(), Mock()
+            SurveyResponseService.return_value = service
+            project.is_summary_project.return_value = True
+            user_profile.reporter_id = "some_rep_id"
+            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
 
-                submission_persister.save_submission(True, user_profile, valid_rows)
-                organization.has_exceeded_quota_and_notify_users.assert_called_with()
+            submission_persister.save_submissions(True, user_profile, valid_rows)
+            self.assertEqual(submission_quota_service.increment_web_submission_count.call_count, 1)
 
     def test_should_save_survey_with_uploaded_entrys_report_id_for_summary_project_when_user_is_logged_in(self):
-        with patch("datawinners.project.submission.submission_import.Organization") as Organization:
-            organization = MagicMock()
-            Organization.objects.get.return_value= organization
-            organization.has_exceeded_quota_and_notify_users.return_value = False
-            user_profile = MagicMock()
-            expected_reporter_id = "rep_1"
-            valid_row = {"eid": expected_reporter_id}
-            valid_rows = [valid_row]
-            with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-                service, project, user, form_model = Mock(), MagicMock(), Mock(), MagicMock()
+        submission_quota_service = MagicMock()
+        submission_quota_service.has_exceeded_quota_and_notify_users.return_value = False
+        user_profile = MagicMock()
+        expected_reporter_id = "rep_1"
+        valid_row = {"eid": expected_reporter_id}
+        valid_rows = [valid_row]
+        with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
+            service, project, user, form_model = Mock(), MagicMock(), Mock(), MagicMock()
 
-                SurveyResponseService.return_value = service
-                project.is_summary_project.return_value = True
-                form_model.form_code = "form_code"
-                submission_persister = SubmissionPersister(user, None, None, form_model, project)
-                with patch("datawinners.project.submission.submission_import.get_web_transport_info") as get_web_transport_info:
-                    with patch("datawinners.project.submission.submission_import.get_feed_dictionary") as get_feed_dictionary:
-                        transport_info = None
-                        additional_feed_dictionary = None
-                        get_feed_dictionary.return_value = additional_feed_dictionary
-                        get_web_transport_info.return_value = transport_info
+            SurveyResponseService.return_value = service
+            project.is_summary_project.return_value = True
+            form_model.form_code = "form_code"
+            default_ddtype = DataDictType(Mock(spec=DatabaseManager), name='Default String Datadict Type', slug='string_default',
+                                      primitive_type='string')
+            form_model.fields=[TextField(name="Q1", code="EID", label="What is the reporter ID?", entity_question_flag=True,
+                       ddtype=default_ddtype)]
+            form_model.entity_question.code = "eid"
 
-                        submission_persister.save_submission(True, user_profile, valid_rows)
+            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
+            with patch(
+                    "datawinners.project.submission.submission_import.get_web_transport_info") as get_web_transport_info:
+                with patch(
+                        "datawinners.project.submission.submission_import.get_feed_dictionary") as get_feed_dictionary:
+                    transport_info = None
+                    additional_feed_dictionary = None
+                    get_feed_dictionary.return_value = additional_feed_dictionary
+                    get_web_transport_info.return_value = transport_info
 
-                        service.save_survey.assert_called_with("form_code", valid_row, [],
+                    submission_persister.save_submissions(True, user_profile, valid_rows)
+
+                    service.save_survey.assert_called_with("form_code", valid_row, [],
                                                            transport_info, valid_row, expected_reporter_id,
                                                            additional_feed_dictionary)
 
 
     def test_should_save_survey_with_logged_in_datasenders_reporter_id(self):
-        with patch("datawinners.project.submission.submission_import.Organization") as Organization:
-            organization = MagicMock()
-            Organization.objects.get.return_value= organization
-            organization.has_exceeded_quota_and_notify_users.return_value = False
-            user_profile = MagicMock()
-            expected_reporter_id = "rep_1"
-            user_profile.reporter_id = expected_reporter_id
-            valid_row = {}
-            valid_rows = [valid_row]
-            with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
-                service, project, user, form_model = Mock(), MagicMock(), Mock(), MagicMock()
-                SurveyResponseService.return_value = service
-                project.is_summary_project.return_value = False
-                form_model.form_code = "form_code"
-                submission_persister = SubmissionPersister(user, None, None, form_model, project)
-                with patch("datawinners.project.submission.submission_import.get_web_transport_info") as get_web_transport_info:
-                    with patch("datawinners.project.submission.submission_import.get_feed_dictionary") as get_feed_dictionary:
-                        transport_info = None
-                        additional_feed_dictionary = None
-                        get_feed_dictionary.return_value = additional_feed_dictionary
-                        get_web_transport_info.return_value = transport_info
+        submission_quota_service = MagicMock()
+        submission_quota_service.has_exceeded_quota_and_notify_users.return_value = False
+        user_profile = MagicMock()
+        expected_reporter_id = "rep_1"
+        user_profile.reporter_id = expected_reporter_id
+        valid_row = {}
+        valid_rows = [valid_row]
+        with patch(
+                "datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
+            service, project, user, form_model = Mock(), MagicMock(), Mock(), MagicMock()
+            SurveyResponseService.return_value = service
+            project.is_summary_project.return_value = True
+            form_model.form_code = "form_code"
+            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
+            with patch(
+                    "datawinners.project.submission.submission_import.get_web_transport_info") as get_web_transport_info:
+                with patch(
+                        "datawinners.project.submission.submission_import.get_feed_dictionary") as get_feed_dictionary:
+                    transport_info = None
+                    additional_feed_dictionary = None
+                    get_feed_dictionary.return_value = additional_feed_dictionary
+                    get_web_transport_info.return_value = transport_info
 
-                        submission_persister.save_submission(False, user_profile, valid_rows)
+                    submission_persister.save_submissions(False, user_profile, valid_rows)
 
-                        service.save_survey.assert_called_with("form_code", valid_row, [],
+                    service.save_survey.assert_called_with("form_code", valid_row, [],
                                                            transport_info, valid_row, expected_reporter_id,
                                                            additional_feed_dictionary)
 
+
+class SubmissionParserTest(TestCase):
+    def setUp(self):
+        self.data = [[
+                    "What is the reporting period for the activity?\n\n Answer must be a date in the following format: day.month.year\n\n Example: 25.12.2011"],
+                ["12.12.2012"],
+                ["11.11.2012"],
+                ["12.10.2012"],
+        ]
+        self.user = Mock(User)
+        self.dbm = Mock(spec=DatabaseManager)
+        default_ddtype = DataDictType(self.dbm, name='Default String Datadict Type', slug='string_default',
+                                      primitive_type='string')
+        fields = \
+            [TextField(name="Q1", code="EID", label="What is the reporter ID?", entity_question_flag=True,
+                       ddtype=default_ddtype),
+             TextField(name="Q2", code="DATE", label="What is the reporting period for the activity?",
+                       entity_question_flag=False, ddtype=default_ddtype)]
+        self.form_model = FormModel(self.dbm, "abc", "abc", entity_type=["clinic"], form_code="cli001", fields=fields,
+                               type="survey")
+        self.project = Mock(Project)
+
+    def add_datasender_col(self):
+        self.data[0].insert(0, "What is the reporter ID?")
+        for row in self.data[1:]: row.insert(0, "ds1")
+
+    def test_should_process_submission_import_worksheet_for_datasender(self):
+        expected_ans_dict = [{'DATE': '12.12.2012'}, {'DATE': '11.11.2012'}, {'DATE': '12.10.2012'}]
+        self.assertEquals(expected_ans_dict, SubmissionPreprocessor(self.data, self.form_model).process());
+
+    def test_process_submission_import_worksheet_test_for_datasender(self):
+        self.add_datasender_col();
+        ans_dict = SubmissionPreprocessor(self.data, self.form_model).process()
+        try:
+            SubmissionWorkbookValidator(self.form_model, False, True).validate(ans_dict)
+        except ImportValidationError as e:
+            self.assertEquals("Invalid template", e.message)
+
+    def test_submission_import_worksheet_should_have_datasender_id(self):
+        self.add_datasender_col()
+        ans_dict = SubmissionPreprocessor(self.data, self.form_model).process()
+        self.assertEquals(None, SubmissionWorkbookValidator(self.form_model, is_org_user=True, is_summary_project=True).validate(ans_dict))
+
+    def test_validate_template_for_datasender(self):
+        data = SubmissionPreprocessor(self.data, self.form_model).process()
+        try:
+            SubmissionWorkbookValidator(self.form_model, is_org_user=False, is_summary_project=True).validate(data)
+        except ImportValidationError as e:
+            self.assertEquals("Invalid template", e.message)
+
+
+if __name__ == '__main__':
+    unittest.main()
