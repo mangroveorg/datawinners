@@ -143,20 +143,36 @@ def lookup_entity_name(dbm, id, entity_type):
 
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
-    for key, value in submission_doc.values.items():
-        field = [f for f in form_model.fields if lower(f.code) == lower(key)]
-        if not len(field): continue
-        field = field[0]
+    for field in form_model.fields:
+        entry = submission_doc.values.get(lower(field.code))
         if field.is_entity_field:
-            search_dict.update({"entity_short_code": value})
-            value = lookup_entity_name(dbm, value, form_model.entity_type)
+            search_dict.update({"entity_short_code": entry or 'NA'})
+            entry = lookup_entity_name(dbm, entry, form_model.entity_type)
         elif field.type == "select":
-            value = field.get_option_value_list(value)
+            entry = field.get_option_value_list(entry)
         elif field.type == "select1":
-            value = ",".join(field.get_option_value_list(value))
+            entry = ",".join(field.get_option_value_list(entry))
 
-        search_dict.update({es_field_name(key, form_model.id): value})
+        search_dict.update({es_field_name(lower(field.code), form_model.id): entry})
 
     search_dict.update({'void': submission_doc.void})
     return search_dict
+
+#def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
+#    for key, value in submission_doc.values.items():
+#        field = [f for f in form_model.fields if lower(f.code) == lower(key)]
+#        if not len(field): continue
+#        field = field[0]
+#        if field.is_entity_field:
+#            search_dict.update({"entity_short_code": value})
+#            value = lookup_entity_name(dbm, value, form_model.entity_type)
+#        elif field.type == "select":
+#            value = field.get_option_value_list(value)
+#        elif field.type == "select1":
+#            value = ",".join(field.get_option_value_list(value))
+#
+#        search_dict.update({es_field_name(key, form_model.id): value})
+#
+#    search_dict.update({'void': submission_doc.void})
+#    return search_dict
 
