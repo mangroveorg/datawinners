@@ -46,7 +46,7 @@ class SubmissionQueryBuilder(QueryBuilder):
                 query = query.filter(ds_id=datasender_filter)
             subjectFilter = search_filter_param.get("subjectFilter")
             if subjectFilter:
-                query = query.filter(entity_short_code = subjectFilter)
+                query = query.filter(entity_short_code=subjectFilter)
         return query
 
     def query_all(self, database_name, **kwargs):
@@ -62,14 +62,18 @@ class SubmissionQueryResponseCreator():
     def create_response(self, required_field_names, query):
         submissions = []
         for res in query.values_dict(tuple(required_field_names)):
-            submission = [res._id, [res.get('ds_name') + "<span class='small_grey'>  %s</span>" % res.get('ds_id')]]
+            submission = [res._id]
+            submission.append(
+                ["%s<span class='small_grey'>  %s</span>" % (res.get('ds_name'), res.get('ds_id'))]) if res.get(
+                'ds_name') else submission.append(res.get('ds_name'))
 
             for key in required_field_names:
                 meta_fields = ['ds_id', 'ds_name', 'entity_short_code']
                 if not key in meta_fields:
                     if key.lower().endswith(self.form_model.entity_question.code.lower()):
                         submission.append(
-                            [res.get(key) + "<span class='small_grey'>  %s</span>" % res.get('entity_short_code')])
+                            ["%s<span class='small_grey'>  %s</span>" % (
+                                res.get(key), res.get('entity_short_code'))] if res.get(key) else res.get(key))
                     else:
                         submission.append(res.get(key))
             submissions.append(submission)
@@ -90,9 +94,9 @@ class SubmissionQuery(Query):
             return field.code.lower()
 
         headers = header_fields(self.form_model, key_attribute)
-        for field_code,val in headers.items():
+        for field_code, val in headers.items():
             key = es_field_name(field_code, self.form_model.id)
-            if not header_dict.has_key(key): header_dict.update({key:val})
+            if not header_dict.has_key(key): header_dict.update({key: val})
 
         if "reporter" in self.form_model.entity_type:
             header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
@@ -111,10 +115,11 @@ class SubmissionQuery(Query):
         elif submission_type == 'error': \
             header_dict.update({"error_msg": "Error Message"})
         subject_title = self.form_model.entity_type[0].title()
-        header_dict.update({es_field_name(self.form_model.entity_question.code,self.form_model.id): subject_title})
+        header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
         header_dict.update({'entity_short_code': "%s ID" % subject_title})
         if self.form_model.event_time_question:
-            header_dict.update({es_field_name(self.form_model.event_time_question.code, self.form_model.id): "Reporting Date"})
+            header_dict.update(
+                {es_field_name(self.form_model.event_time_question.code, self.form_model.id): "Reporting Date"})
 
 
     def populate_query_options(self):
