@@ -96,10 +96,10 @@ class SubmissionPersister():
         return ignored_entries, saved_entries
 
     def _get_reporter_id_for_submission(self, is_organization_user, user_profile, valid_row):
-        if self.project.is_summary_project() and not is_organization_user:
-            reporter_id = user_profile.reporter_id
-        else:
+        if self.project.is_summary_project() and is_organization_user:
             reporter_id = valid_row.get(self.form_model.entity_question.code)
+        else:
+            reporter_id = user_profile.reporter_id
         return reporter_id
 
     def _save_survey(self, is_organization_user, user_profile, valid_row):

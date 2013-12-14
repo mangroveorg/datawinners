@@ -81,7 +81,7 @@ class TestSubmissionResponseCreator(unittest.TestCase):
                                                               'entity_short_code': 'subject_id',
                                                               'entity_question': 'sub_last_name'}}], '')
         query.values_dict.return_value = dict_result
-        form_model.entity_question = Mock(code='q1')
+        form_model.entity_question = Mock(code='entity_question')
 
         submissions = SubmissionQueryResponseCreator(form_model).create_response(required_field_names, query)
 

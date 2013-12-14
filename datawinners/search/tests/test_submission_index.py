@@ -3,7 +3,6 @@ import elasticutils
 from mock import Mock, PropertyMock, patch
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from datawinners.search.submission_query import SubmissionQueryBuilder
-from framework.utils.common_utils import random_number
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import Entity
