@@ -29,6 +29,8 @@ DW.post_subject_data = function(){
             $("#message-label").addClass("message-box");
             $("#message-label").html("<label class='error_message'> " + gettext(responseJson.error_message) + ".</label>");
         }
+        $("#submit-button").removeAttr('disabled');
+
     });
 };
 
@@ -60,9 +62,12 @@ $(document).ready(function() {
     DW.questionnaire_was_changed = false;
     DW.init_inform_datasender_about_changes();
     $("#submit-button").click(function() {
+        $("#submit-button").attr('disabled','disabled');
         if(questionnnaire_code.processValidation() && questionnaire_form.processValidation()){
             if (questionnaireViewModel.hasDeletedOldQuestion && !DW.has_submission_delete_warning_for_entity.is_continue && DW.questionnaire_has_submission()){
                 DW.has_new_submission_delete_warning_for_entity.show_warning();
+                $("#submit-button").removeAttr('disabled');
+
             } else {
                 $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
                 DW.post_subject_data();
