@@ -22,8 +22,8 @@ def send_reminders():
     send_reminders_scheduled_on(date(now.year, now.month, now.day), SMSClient())
 
 
-def _get_paid_organization():
-    return Organization.objects.filter(in_trial_mode=False)
+def _get_active_paid_organization():
+    return Organization.objects.filter(in_trial_mode=False, status='Activated')
 
 
 def send_reminders_scheduled_on(on_date, sms_client):
@@ -34,7 +34,7 @@ def send_reminders_scheduled_on(on_date, sms_client):
 
     try:
         logger.info("Sending reminders for date:- %s" % on_date)
-        paid_organization = _get_paid_organization()
+        paid_organization = _get_active_paid_organization()
         for org in paid_organization:
             logger.info("Organization %s" % org.name)
             org_setting = OrganizationSetting.objects.filter(organization=org)[0]
@@ -99,7 +99,7 @@ def _get_reminders_grouped_by_project_for_organization(organization_id):
 def send_time_based_reminder_email():
     for email_type, delta_dict in RELATIVE_DELTA_BY_EMAIL_TYPE.items():
         active_date = datetime.strftime(datetime.now() - relativedelta(**delta_dict[0]), "%Y-%m-%d")
-        organizations = Organization.get_all_trial_organizations(active_date__contains=active_date)
+        organizations = Organization.get_all_active_trial_organizations(active_date__contains=active_date)
         for organization in organizations:
             if organization.active_date != organization.status_changed_datetime and not delta_dict[1]: continue
             organization.send_mail_to_organization_creator(email_type)

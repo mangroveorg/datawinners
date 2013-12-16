@@ -239,10 +239,10 @@ class Organization(models.Model):
                 
 
     @classmethod
-    def get_all_trial_organizations(cls, active_date__contains=None):
+    def get_all_active_trial_organizations(cls, active_date__contains=None):
         if active_date__contains:
-            return cls.objects.filter(in_trial_mode=True,status_changed_datetime__contains=active_date__contains)
-        return cls.objects.filter(in_trial_mode=True)
+            return cls.objects.filter(in_trial_mode=True,status_changed_datetime__contains=active_date__contains,status='Activated')
+        return cls.objects.filter(in_trial_mode=True,status='Activated')
 
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)

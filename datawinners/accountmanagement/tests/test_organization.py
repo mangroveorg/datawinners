@@ -97,3 +97,7 @@ class TestOrganization(unittest.TestCase):
             counters = self.organization.get_counters()
             self.assertEqual(counters, expected)
 
+    def test_should_get_only_active_trail_org(self):
+        self.organization.deactivate()
+        organizations = Organization.get_all_active_trial_organizations()
+        self.assertNotIn(self.organization,organizations)

@@ -33,7 +33,7 @@ class TestSendTimeBasedReminder(unittest.TestCase):
             self.organization.status_changed_datetime = active_date
             self.organization.active_date = active_date
             self.organization.save()
-            with patch.object(Organization, "get_all_trial_organizations", side_effect=self.organizations_side_effect):
+            with patch.object(Organization, "get_all_active_trial_organizations", side_effect=self.organizations_side_effect):
                 subject, template, sender = get_email_detail_by_type(email_type)
                 send_time_based_reminder_email()
                 site = Site.objects.get_current()
