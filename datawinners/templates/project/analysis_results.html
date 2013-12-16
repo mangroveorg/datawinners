@@ -1,0 +1,146 @@
+{% extends 'project/tab_navigation.html' %}
+{% load i18n %}
+{% block page_title %} {% trans "Submission Log" %} {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+    {% activetab "tab_nav" "data" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_meta %}
+    {% include 'page_refresh_meta.html' %}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/datatable_sorting.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
+    <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/data_help_img.js"></script>
+    <script type="text/javascript" src="/media/javascript/monthly_date_picker/month-picker.js"></script>
+    <script type="text/javascript" src="/media/javascript/custom_select_box.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.custom.js"></script>
+    <script type="text/javascript" src="/media/javascript/dropdown_check_list/dropdownchecklist.custom.js"></script>
+    <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/filter/filters.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/filter/json2form.js"></script>
+    <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+    <script src="/media/javascript/data_tables/js/dwtable.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/results.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/import_submission.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/submission_log_actions.js"></script>
+{% endblock %}
+
+{% block page_css %}
+    {{ block.super }}
+    <link href="/media/css/plugins/jquery_pagination/pagination.css" media="screen" rel="stylesheet"/>
+    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet"/>
+    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/javascript/project/css/data_analysis.css" rel="stylesheet"/>
+    <link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="/media/css/scss/util.css" rel="stylesheet"/>
+    <link href="/media/css/scss/submission_log.css" media="screen" rel="stylesheet"/>
+    <link href="/media/css/scss/section_data_full_width.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/form.css" rel="stylesheet"/>
+    <link href="/media/css/plugins/jqueryUI/ie-hacks.css" rel="stylesheet"/>
+    <link href="/media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
+    <link href="/media/css/scss/import_submission.css" rel="stylesheet"/>
+
+{% endblock %}
+
+{% block content %}
+    {% load compress %}
+    {% compress js %}
+        <script type="text/javascript">
+            var date_format = '{{ date_format }}';
+            var entity_type = '{{ entity_type }}';
+            var has_reporting_period = {{ has_reporting_period|lower }};
+            var render_table_url = '/project/submissions/{{ questionnaire_code }}';
+            var project_id = '{{ project.id }}';
+            var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
+            var import_submission_url = "{% url import_submissions 'form_code'%}";
+        </script>
+    {% endcompress %}
+
+    {% block secondary_navigation_data %}
+        {% activetab "secondary_tab_nav" "analysis" %}
+        {{ block.super }}
+    {% endblock %}
+    <div class="heading_block alpha data_ana border_none">
+        <span class="links float_right">
+            <a href="javascript:void(0);" class="export_link">{% trans "Export" %}</a>
+            |
+            <a href="javascript:void(0);" data-projectname="{{ encoded_project_name }}"
+               data-formcode="{{ questionnaire_code }}" data-projectid="{{ project.id }}" class="import_link">{% trans "Import a List of Submissions" %}</a>
+        </span>
+    </div>
+    {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}
+    {% include "project/submission_page_hint.html" %}
+    <div class="heading_block clearfix margin_bottom_10">
+        <div id="filter_section" class="alpha data_ana float_left">
+            {% include 'project/partials/filters/_filter_by_data_sender.html' %}
+            {% include 'project/partials/filters/_filter_by_submission_date.html' %}
+            {% if has_reporting_period %}
+                {% include 'project/partials/filters/_filter_by_reporting_period.html' %}
+            {% endif %}
+            {% include 'project/partials/filters/_filter_by_subject.html' %}
+            {% include 'project/partials/filters/_filter_by_keyword.html' %}
+            <!--[if IE 7]>
+            <div class="float_right"></div>
+        <![endif]-->
+            <div id="search_box"></div>
+        </div>
+    </div>
+    <div id="submission_logs" class="grid_23 alpha margin_top_20">
+{#        <div id="tabs" class="ui-tabs ui-widget ui-widget-content">#}
+{#            <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header">#}
+{#                <li class="ui-state-default ui-tabs-selected ui-state-active"><a#}
+{#                        href="#tab_template">{% trans 'All' %}</a><a class="tab-separator"></a></li>#}
+{#                <li class="ui-state-default"><a href="#tab_template" class="tab-middle">{% trans 'Success' %}</a><a#}
+{#                        class="tab-separator"></a></li>#}
+{#                <li class="ui-state-default"><a href="#tab_template">{% trans 'Errors' %}</a></li>#}
+{#                <li style="float:right" class="ui-state-default"><a#}
+{#                        href="#tab_template">{% trans 'Deleted Submissions' %}</a></li>#}
+{#            </ul>#}
+            <div id="tab_template" style="padding: 0px;" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+                {% include 'project/log_table.html' %}
+            </div>
+        </div>
+    </div>
+    <div id="delete_submission_warning_dialog" style="display:none;">
+        <div class="warning_message">
+            {% trans "Your Submission(s) will be moved to Deleted Submissions.<br/>This action cannot be undone." %}
+            <br/><br/>
+            {% trans "Are you sure you want to continue?" %}
+        </div>
+        <div class="text_align_right">
+            <a class="no_button cancel_link">{% trans "Cancel" %}</a>
+            <a id="ok_button" class="button yes_button">{% trans "Continue" %}</a>
+        </div>
+    </div>
+    <form id="export_form" method="POST">
+        {% csrf_token %}
+        <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+        <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
+    </form>
+    {% include "project/import_submission.html" %}
+{% endblock %}

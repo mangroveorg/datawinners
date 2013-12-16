@@ -82,6 +82,24 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
 
+@login_required(login_url='/login')
+@session_not_expired
+@is_datasender
+@is_not_expired
+def analysis_results(request, project_id=None, questionnaire_code=None, tab=0):
+    manager = get_database_manager(request.user)
+
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    org_id = helper.get_org_id_by_user(request.user)
+
+    if request.method == 'GET':
+        result_dict = {
+            "tab": tab,
+            "is_quota_reached": is_quota_reached(request, org_id=org_id),
+        }
+        result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
+        return render_to_response('project/analysis_results.html', result_dict, context_instance=RequestContext(request))
+
 
 def get_survey_response_ids_from_request(dbm, request, form_model):
     if request.POST.get('all_selected', "false") == "true":
