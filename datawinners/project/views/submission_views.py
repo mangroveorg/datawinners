@@ -49,7 +49,7 @@ performance_logger = logging.getLogger("performance")
 websubmission_logger = logging.getLogger("websubmission")
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
@@ -64,7 +64,7 @@ def headers(request, form_code):
     return HttpResponse(encode_json(response))
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
@@ -82,7 +82,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
         return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
@@ -289,7 +289,7 @@ def get_option_value_for_field(diff_value, question_field):
     return reslt_dict
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
