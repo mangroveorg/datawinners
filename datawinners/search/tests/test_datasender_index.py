@@ -7,14 +7,6 @@ from mangrove.form_model.form_model import FormModel
 
 
 class TestDatasenderIndex(unittest.TestCase):
-    def test_should_not_create_index_for_testdatasenders(self):
-        dbm = Mock(spec=DatabaseManager)
-        entity_doc = Entity(dbm, entity_type='reporter', short_code='test')
-
-        with patch("datawinners.search.datasender_index.get_elasticsearch_handle") as es:
-            es.return_value = Mock
-            update_datasender_index(entity_doc, dbm)
-            self.assertFalse(es.index.call_count)
 
     def test_should_create_index_for_datasenders(self):
         dbm = Mock(spec=DatabaseManager)

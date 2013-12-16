@@ -1,13 +1,16 @@
 import sys
-from datawinners.main.database import get_db_manager
-from datawinners.search import entity_search_update
-from datawinners.search.index_utils import get_elasticsearch_handle
-from mangrove.datastore.entity import get_all_entities, get_all_entities_include_voided
-from mangrove.errors.MangroveException import FormModelDoesNotExistsException
-from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
+
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
+
+from mangrove.datastore.entity import get_all_entities_include_voided
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException
+
+from datawinners.main.database import get_db_manager
+from datawinners.search import entity_search_update
+from datawinners.search.index_utils import get_elasticsearch_handle
+
 from datawinners.main.couchdb.utils import all_db_names
 
 import logging
@@ -22,8 +25,8 @@ def create_search_indices_for_datasenders(db_name):
         dbm = get_db_manager(db_name)
 
         for entity in get_all_entities_include_voided(dbm):
-            if entity.is_void():
-                entity_search_update(entity,dbm)
+            if entity.is_void() or entity.short_code == 'test':
+                entity_search_update(entity, dbm)
 
         logger.info('Completed Indexing')
 
@@ -34,4 +37,4 @@ def create_search_indices_for_datasenders(db_name):
 
 
 es = get_elasticsearch_handle()
-migrate(all_db_names(), create_search_indices_for_datasenders, version=(9, 0, 7), threads=1)
+migrate(all_db_names(), create_search_indices_for_datasenders, version=(10, 0, 2), threads=1)

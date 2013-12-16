@@ -1,3 +1,8 @@
+import sys
+
+if __name__ == "__main__" and __package__ is None:
+    sys.path.insert(0, ".")
+
 import logging
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.search.manage_index import populate_submission_index

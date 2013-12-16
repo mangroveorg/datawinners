@@ -1,6 +1,6 @@
 from unittest import TestCase
 from mock import patch, Mock, MagicMock
-from datawinners.search.entity_search import SubjectQueryResponseCreator, SubjectQuery
+from datawinners.search.entity_search import SubjectQueryResponseCreator, SubjectQuery, DataSenderQueryBuilder
 from datawinners.search.entity_search import DatasenderQueryResponseCreator
 
 
@@ -94,7 +94,8 @@ class TestSubjectQuery(TestCase):
 
                 actualSubjects = subject_query.query(user, "subject_type", "query_text")
 
-                subject_query_builder.create_query.assert_called_once_with(doc_type='subject_type', database_name='database_name')
+                subject_query_builder.create_query.assert_called_once_with(doc_type='subject_type',
+                                                                           database_name='database_name')
                 query.__getitem__assert_called_with(slice(None, count_of_all_matching_results, None))
                 subject_query_builder.add_query_criteria.assert_called_with(subject_headers, "query_text",
                                                                             query_all_results)
@@ -150,3 +151,15 @@ class TestSubjectQuery(TestCase):
                 self.assertEquals(filtered_count, expected_filtered_result_count)
                 self.assertEquals(total_count, expected_total_result_count)
 
+
+class TestDataSenderQueryBuilder(TestCase):
+    def test_should_add_not_filter_to_query(self):
+        with patch("datawinners.search.entity_search.QueryBuilder") as query_builder:
+            with patch("datawinners.search.query.elasticutils") as elasticUtilsMock:
+                with patch("datawinners.search.entity_search.elasticutils.F") as mock_filter:
+                    query_builder.return_value = query_builder
+                    query_builder.create_query.return_value = elasticUtilsMock
+                    mock_filter.return_value = mock_filter
+                    DataSenderQueryBuilder().create_query("dbm")
+                    query_builder.create_query.assert_called_with(database_name="dbm", doc_type="reporter")
+                    elasticUtilsMock.filter.assert_called_with(~mock_filter)

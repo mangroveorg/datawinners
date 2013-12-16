@@ -15,8 +15,6 @@ def update_datasender_index_by_id(short_code, dbm):
 
 def update_datasender_index(entity_doc, dbm):
     es = get_elasticsearch_handle()
-    if entity_doc.short_code == 'test':
-        return
     if entity_doc.data:
         entity_type = entity_doc.aggregation_paths['_type'][0].lower()
         form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)

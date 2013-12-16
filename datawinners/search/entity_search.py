@@ -1,13 +1,18 @@
+import elasticutils
+from mangrove.form_model.form_model import header_fields, get_form_model_by_entity_type
+
+from mangrove.form_model.form_model import REPORTER
+
 from datawinners.entity.helper import get_entity_type_fields
+
 from datawinners.main.database import get_database_manager
 from datawinners.search.query import Query, QueryBuilder
-from mangrove.form_model.form_model import header_fields, get_form_model_by_entity_type
-from mangrove.form_model.form_model import REPORTER
+from datawinners.settings import ELASTIC_SEARCH_URL
 
 
 class DatasenderQuery(Query):
-    def __init__(self,query_params=None):
-        Query.__init__(self, DatasenderQueryResponseCreator(), QueryBuilder(),query_params)
+    def __init__(self, query_params=None):
+        Query.__init__(self, DatasenderQueryResponseCreator(), DataSenderQueryBuilder(), query_params)
 
     def get_headers(self, user, entity_type=None):
         fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
@@ -25,7 +30,7 @@ class DatasenderQuery(Query):
 
 class MyDataSenderQuery(Query):
     def __init__(self, query_params=None):
-        Query.__init__(self, MyDatasenderQueryResponseCreator(), QueryBuilder(), query_params)
+        Query.__init__(self, MyDatasenderQueryResponseCreator(), DataSenderQueryBuilder(), query_params)
 
     def get_headers(self, user, entity_type=None):
         fields, old_labels, codes = get_entity_type_fields(get_database_manager(user))
@@ -54,6 +59,12 @@ class MyDataSenderQuery(Query):
         query = self.query_builder.add_query_criteria(entity_headers, search_text, query).filter(
             projects_value=project_name)
         return self.response_creator.create_response(entity_headers, query)
+
+
+class DataSenderQueryBuilder(QueryBuilder):
+    def create_query(self, database_name, doc_type=REPORTER):
+        query = QueryBuilder().create_query(database_name=database_name, doc_type=doc_type)
+        return query.filter(~ elasticutils.F(short_code='test'))
 
 
 class SubjectQuery(Query):
