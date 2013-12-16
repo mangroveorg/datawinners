@@ -38,6 +38,7 @@ from mangrove.form_model.form_model import REPORTER
 from mangrove.transport import TransportInfo
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
+import datetime
 
 
 def registration_complete(request):
@@ -230,10 +231,9 @@ def upgrade(request, token=None):
             payment_details = PaymentDetails.objects.model(organization=organization, invoice_period=invoice_period,
                                                            preferred_payment=preferred_payment)
             payment_details.save()
-            message_tracker = MessageTracker.objects.filter(organization=organization).order_by('-month')
-            if message_tracker.count() > 0:
-                tracker = message_tracker[0]
-                tracker.reset()
+            message_tracker = MessageTracker(organization=organization, month=datetime.datetime.today())
+            message_tracker.save()
+
             DataSenderOnTrialAccount.objects.filter(organization=organization).delete()
             _send_upgrade_email(request.user, request.LANGUAGE_CODE)
             _update_user_and_profile(request, profile_form)

@@ -139,10 +139,17 @@ class Organization(models.Model):
         return organization_setting
 
     def _get_message_tracker(self, date):
-        return MessageTracker.objects.get_or_create(organization=self, month=date)[0]
+        message_tracker = MessageTracker.objects.filter(organization=self, month__year=date.year, month__month=date.month)\
+            .order_by("-month", "-id")
+        if len(message_tracker):
+            return message_tracker[0]
+
+        message_tracker = MessageTracker(organization=self, month=date)
+        message_tracker.save()
+        return message_tracker
 
     def _get_all_message_trackers(self):
-        return MessageTracker.objects.filter(organization=self)
+        return MessageTracker.objects.filter(organization=self).order_by('-month', '-id')
 
     def get_total_message_count(self):
         message_trackers = self._get_all_message_trackers()
@@ -216,6 +223,7 @@ class Organization(models.Model):
                              'total_sms_current_month':0, 'total_sent_sms':0, 'sms_reply_reminders':0,
                              'send_a_msg_current_month':0, 'sent_via_api_current_month':0})
         current_month = datetime.datetime.now().strftime("%Y-%m")
+        current_month_flag = False
         for message_tracker in all_message_trackers:
             sms_submission_count = message_tracker.incoming_sms_count - message_tracker.sms_registration_count
             total_submission = sms_submission_count + message_tracker.incoming_web_count + message_tracker.incoming_sp_count
@@ -225,7 +233,8 @@ class Organization(models.Model):
             counter_dict['total_sp_submission'] += message_tracker.incoming_sp_count
             counter_dict['total_web_submission'] += message_tracker.incoming_web_count
 
-            if message_tracker.month.strftime("%Y-%m") == current_month:
+
+            if not current_month_flag and message_tracker.month.strftime("%Y-%m") == current_month:
                 counter_dict['sms_submission_current_month'] += sms_submission_count
                 counter_dict['sp_submission_current_month'] += message_tracker.incoming_sp_count
                 counter_dict['web_submission_current_month'] += message_tracker.incoming_web_count
@@ -235,6 +244,7 @@ class Organization(models.Model):
                 counter_dict['sms_reply_reminders'] += message_tracker.outgoing_sms_count + message_tracker.sent_reminders_count
                 counter_dict['send_a_msg_current_month'] += message_tracker.send_message_count
                 counter_dict['sent_via_api_current_month'] += message_tracker.sms_api_usage_count
+                current_month_flag = True
         return counter_dict
                 
 
@@ -355,11 +365,12 @@ class MessageTracker(models.Model):
         return self.outgoing_message_count() + self.incoming_sms_count
 
     def combined_total_messages(self):
-        msg_trackers = MessageTracker.objects.filter(organization=self.organization_id, month__lt=self.month)
-        total_msg = self.total_messages()
+        msg_trackers = MessageTracker.objects.filter(organization=self.organization_id, month__lte=self.month).exclude(id=self.id)
+        return msg_trackers.query
+        """total_msg = self.total_messages()
         for msg_tracker in msg_trackers:
             total_msg += msg_tracker.total_messages()
-        return total_msg
+        return total_msg"""
 
     def total_monthly_incoming_messages(self):
         return self.incoming_sms_count + self.incoming_sp_count + self.incoming_web_count - self.sms_registration_count
