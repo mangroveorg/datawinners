@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     _initTable(submissionTabs);
     _initialize_filters();
-    $('#page_hint_section').text($('#page_hint').find('>div:first').text())
+    $('#page_hint_section').text($('#page_hint').find('>div:first').text());
 
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
