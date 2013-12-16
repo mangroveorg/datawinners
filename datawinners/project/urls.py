@@ -77,7 +77,7 @@ urlpatterns = patterns('',
                        url(r'^project/(?P<project_id>.+?)/results/(?P<questionnaire_code>.+?)/$',
                            submission_views.index, name='submissions'),
                        url(r'^project/(?P<project_id>.+?)/data/(?P<questionnaire_code>[^\\/]+?)/$',
-                           submission_views.analysis_results, name="analysis"),
+                           submission_views.analysis_results, name="submission_analysis"),
                        url(r'^project/(?P<project_id>.+?)/submissions/edit/(?P<survey_response_id>[^\\/]+?)/$',
                            submission_views.edit, name="submissions_edit"),
                        url(

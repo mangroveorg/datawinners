@@ -36,7 +36,7 @@ def get_project_analysis_and_log_link(project, project_id, questionnaire_code):
     disabled = "disable_link"
     if project.state != ProjectState.INACTIVE:
         disabled = ""
-        analysis = reverse("project_data", args=[project_id, questionnaire_code])
+        analysis = reverse("submission_analysis", args=[project_id, questionnaire_code])
         log = reverse("submissions", args=[project_id, questionnaire_code])
     return analysis, disabled, log
 

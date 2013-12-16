@@ -35,7 +35,7 @@ def make_project_links(project, questionnaire_code, reporter_id=None):
     }
 
     if project.state == ProjectState.TEST or project.state == ProjectState.ACTIVE:
-        project_links['data_analysis_link'] = reverse("analysis", args=[project_id, questionnaire_code])
+        project_links['data_analysis_link'] = reverse("submission_analysis", args=[project_id, questionnaire_code])
         project_links['submission_log_link'] = reverse("submissions", args=[project_id, questionnaire_code])
         project_links['finish_link'] = reverse("review_and_test", args=[project_id])
         project_links['reminders_link'] = reverse('reminder_settings', args=[project_id])
