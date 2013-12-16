@@ -41,7 +41,7 @@
     box-shadow: inset 0px 0px 2px 2px rgba(33, 33, 33, 0.1);
     -webkit-box-shadow: inset 0px 0px 2px 2px rgba(33, 33, 33, 0.1); }
 
-.paginate_more {
+.paginate_more,span.paginate_more_disabled {
     border-radius: 0 4px 4px 0;
     border-width: 1px 1px 1px 0;
     padding: 4px;
