@@ -83,33 +83,6 @@ $(document).ready(function () {
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
     var help_all_data_are_filtered = "<div class=\"help_accordion\" style=\"text-align: left;\">" + message + "</div>";
 
-//    $("#tabs").tabs().find('>ul>li>a[href$=tab_template]').click(function () {
-//        if ($dataTable.parents('.dataTables_wrapper').length >= 1) {
-//            DW.current_sort_order = $dataTable.dataTable().fnSettings().aaSorting;
-//        } else {
-//            DW.current_sort_order = [
-//                [2, "desc"]
-//            ];
-//        }
-//        var tab_index = $(this).parent().index();
-//
-//        if (active_tab_index === tab_index) {
-//            return;
-//        }
-//        active_tab_index = tab_index;
-//        //window.location.href = window.location.pathname + '?type=' + tab[active_tab_index];
-//        activate_tab(tab[active_tab_index]);
-//        return true;
-//    });
-//    var all_tabs = $("#tabs").tabs().find('>ul>li>a[href$=tab_template]');
-//    for (var i = 0; i < all_tabs.length; i++) {
-//        if (i == active_tab_index) {
-//            $($(all_tabs[i]).parent()).addClass('ui-tabs-selected ui-state-active')
-//        } else {
-//            $($(all_tabs[i]).parent()).removeClass('ui-tabs-selected ui-state-active')
-//        }
-//
-//    }
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
 
@@ -120,7 +93,7 @@ $(document).ready(function () {
     });
 
 
-    buildRangePicker();
+//    buildRangePicker();
     $("#data_sender_filter").data('ds_id','');
     $("#data_sender_filter").autocomplete({
             "source":"/entity/datasenders/autocomplete/",

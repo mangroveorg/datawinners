@@ -75,12 +75,6 @@ DW.get_criteria = function () {
 };
 
 
-function buildRangePicker() {
-    $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects, onCloseCallback: onCloseSubmissionDatePicker});
-    $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: closeFilterSelects, onCloseCallback: onCloseSubmissionDatePicker});
-
-};
-
 DW.get_datepicker_value = function ($datePicker, default_text) {
     var data = $datePicker.val().split("-");
     if (data[0] == "" || data[0] == default_text) {
@@ -92,28 +86,4 @@ DW.get_datepicker_value = function ($datePicker, default_text) {
         data[1] = data[0];
     }
     return {start_time: data[0], end_time: data[1]};
-};
-
-// Used only in old data_analysis.js - to be deleted
-DW.disable_filter_section_if_no_data = function () {
-    if ($('#dataSenderSelect>option').size() != 0) {
-        return false;
-    }
-    var $filters = $(".ui-dropdownchecklist, .ui-dropdownchecklist-selector, .ui-dropdownchecklist-text, #keyword, #reportingPeriodPicker, #submissionDatePicker").add($('#go').removeClass('button_blue').addClass('button_disabled'));
-    $filters.attr('disabled', 'disabled').addClass('disabled').filter('span').find('>span').addClass('disabled').end().unbind('click');
-
-    $('.filter_label').addClass('grey')
-};
-
-var $filterSelects = $('#submissionDatePicker, #reportingPeriodPicker');
-
-function closeFilterSelects() {
-    $filterSelects.dropdownchecklist('close');
-};
-
-function onCloseSubmissionDatePicker() {
-    var table = $(".submission_table").dataTable();
-    $filterSelects.dropdownchecklist('close');
-    console.log('date range: ' + $('#submissionDatePicker').val());
-    table.fnDraw();
 };
