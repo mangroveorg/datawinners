@@ -1756,7 +1756,7 @@ msgstr "Les paramètres ont été mis à jour avec succès"
 msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
 msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. Veuillez contacter le Service d’Assistance de DataWinners."
 
-msgid "We could not import your data ! You are using a document format we canʼt import. Please use the import template file!"
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!"
 msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. Veuillez utiliser le fichier modèle d'importation!"
 
 msgid "Register"

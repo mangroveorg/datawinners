@@ -1702,7 +1702,7 @@ msgstr ""
 msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
 msgstr ""
 
-msgid "We could not import your data ! You are using a document format we canʼt import. Please use the import template file!"
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!"
 msgstr ""
 
 msgid "Register"
