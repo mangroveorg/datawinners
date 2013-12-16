@@ -74,33 +74,7 @@ $(document).ready(function () {
     });
 });
 
-DW.FilterSubmissionTableBySearchText = function(){
-};
-DW.FilterSubmissionTableBySearchText.prototype = new DW.SearchTextFilter();
-DW.FilterSubmissionTableBySearchText.prototype.postFilterSelection = function(){
-       $(".submission_table").dataTable().fnDraw();
-};
 
-DW.FilterSubmissionTableByDate = function(){
-};
-DW.FilterSubmissionTableByDate.prototype = new DW.DateFilter();
-DW.FilterSubmissionTableByDate.prototype.postFilterSelection = function(){
-       $(".submission_table").dataTable().fnDraw();
-};
-
-DW.FilterSubmissionTableBySubject = function(){
-};
-DW.FilterSubmissionTableBySubject.prototype = new DW.SubjectFilter();
-DW.FilterSubmissionTableBySubject.prototype.postFilterSelection = function(){
-       $(".submission_table").dataTable().fnDraw();
-};
-
-DW.FilterSubmissionTableByDataSender = function(){
-};
-DW.FilterSubmissionTableByDataSender.prototype = new DW.DataSenderFilter();
-DW.FilterSubmissionTableByDataSender.prototype.postFilterSelection = function(){
-       $(".submission_table").dataTable().fnDraw();
-};
 
 
 

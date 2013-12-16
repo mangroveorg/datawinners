@@ -26,6 +26,10 @@ DW.SubmissionTabs = function(){
         self.isTableEntriesCheckable = function(){
            return active_tab_index != 3;
         };
+
+        self.setToSuccessTab = function(){
+          active_tab_index = 1;
+        };
 };
 
 DW.SubmissionLogTable = function(options){
@@ -181,4 +185,31 @@ DW.SearchTextFilter = function(){
 
 };
 
+DW.FilterSubmissionTableBySearchText = function(){
+};
+DW.FilterSubmissionTableBySearchText.prototype = new DW.SearchTextFilter();
+DW.FilterSubmissionTableBySearchText.prototype.postFilterSelection = function(){
+       $(".submission_table").dataTable().fnDraw();
+};
+
+DW.FilterSubmissionTableByDate = function(){
+};
+DW.FilterSubmissionTableByDate.prototype = new DW.DateFilter();
+DW.FilterSubmissionTableByDate.prototype.postFilterSelection = function(){
+       $(".submission_table").dataTable().fnDraw();
+};
+
+DW.FilterSubmissionTableBySubject = function(){
+};
+DW.FilterSubmissionTableBySubject.prototype = new DW.SubjectFilter();
+DW.FilterSubmissionTableBySubject.prototype.postFilterSelection = function(){
+       $(".submission_table").dataTable().fnDraw();
+};
+
+DW.FilterSubmissionTableByDataSender = function(){
+};
+DW.FilterSubmissionTableByDataSender.prototype = new DW.DataSenderFilter();
+DW.FilterSubmissionTableByDataSender.prototype.postFilterSelection = function(){
+       $(".submission_table").dataTable().fnDraw();
+};
 
