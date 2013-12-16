@@ -33,15 +33,14 @@ class SubmissionWorkbookRowValidator():
 
         return None
 
-
     def _verify_uploaded_id(self, q_code, imported_id):
         errors = OrderedDict()
         if self.project.is_summary_project():
             if imported_id not in self.datasender_ids:
-                errors.update({q_code: gettext("datasender id not matched")})
+                errors.update({q_code: "Data Sender ID not matched"})
         else:
             if imported_id not in self.subject_ids:
-                errors.update({q_code: gettext("subject id not matched")})
+                errors.update({q_code: "Subject does not matched"})
         return errors
 
     def _get_subject_or_datasender_ids(self):

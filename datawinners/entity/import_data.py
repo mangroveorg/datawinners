@@ -212,13 +212,13 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
             errors.append(_('Answer for question %s is required.') % (question_label, ))
 
         elif 'Expected date in mm.yyyy format' in value:
-            errors.append(_('Answer %s for question %s is invalid. Expected date in mm.yyyy format') % (answer, question_label))
+            errors.append(_('Answer %s for question %s is invalid. Expected date in %s format') % (answer, question_label, ' mm.yyyy'))
 
         elif 'Expected date in dd.mm.yyyy format' in value:
-            errors.append(_('Answer %s for question %s is invalid. Expected date in dd.mm.yyyy format') % (answer, question_label))
+            errors.append(_('Answer %s for question %s is invalid. Expected date in %s format') % (answer, question_label, 'dd.mm.yyyy'))
 
         elif 'Expected date in mm.dd.yyyy format' in value:
-            errors.append(_('Answer %s for question %s is invalid. Expected date in mm.dd.yyyy format') % (answer, question_label))
+            errors.append(_('Answer %s for question %s is invalid. Expected date in %s format') % (answer, question_label, 'mm.dd.yyyy'))
 
         elif 'smaller than allowed' in value:
             errors.append(_('Answer %s for question %s is smaller than allowed.') % (answer, question_label))
@@ -231,12 +231,14 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
                 'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315.'))
 
         elif 'longer' in value:
-            errors.append(_("Answer %s for question %s is longer than allowed.") % (answer, question_label))
+            errors.append(_("Answer %s for question %s is longer than allowed") % (answer, question_label))
 
-        elif 'subject id not matched' in value:
-            errors.append(_("Answer %s for question %s is invalid. Subject id not matched") % (answer, question_label))
-        elif 'datasender id not matched' in value:
-            errors.append(_("Answer %s for question %s is invalid. Datasender id not matched") % (answer, question_label))
+        elif 'Subject does not matched' in value:
+            errors.append(_("The unique ID %s of the Subject does not match with any existing Subject ID. Please correct and import again.") % (answer))
+
+        elif 'Data Sender ID not matched' in value:
+            errors.append(_("The unique ID %s of the Data Sender does not match with any existing Data Sender ID. Please correct and import again.") % (answer))
+
         elif 'shorter' in value:
             # todo check the usage and remove the split
             text = value.split(' ')[1]

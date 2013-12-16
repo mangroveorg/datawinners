@@ -3,7 +3,7 @@ import unittest
 from django.contrib.auth.models import User
 from mock import patch, Mock, MagicMock
 from datawinners.project.models import Project
-from datawinners.project.submission.submission_import import SubmissionPersister, SubmissionWorkbookValidator, SubmissionPreprocessor, ImportValidationError
+from datawinners.project.submission.submission_import import SubmissionPersister, SubmissionWorkbookValidator, SubmissionWorkbookMapper, ImportValidationError
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField
@@ -179,27 +179,27 @@ class SubmissionParserTest(TestCase):
 
     def test_should_process_submission_import_worksheet_for_datasender(self):
         expected_ans_dict = [{'DATE': '12.12.2012'}, {'DATE': '11.11.2012'}, {'DATE': '12.10.2012'}]
-        self.assertEquals(expected_ans_dict, SubmissionPreprocessor(self.data, self.form_model).process());
+        self.assertEquals(expected_ans_dict, SubmissionWorkbookMapper(self.data, self.form_model).process());
 
     def test_process_submission_import_worksheet_test_for_datasender(self):
         self.add_datasender_col();
-        ans_dict = SubmissionPreprocessor(self.data, self.form_model).process()
+        ans_dict = SubmissionWorkbookMapper(self.data, self.form_model).process()
         try:
             SubmissionWorkbookValidator(self.form_model, False, True).validate(ans_dict)
         except ImportValidationError as e:
-            self.assertEquals("Invalid template", e.message)
+            self.assertEquals("The columns you are importing do not match. Please download the latest template for importing.", e.message)
 
     def test_submission_import_worksheet_should_have_datasender_id(self):
         self.add_datasender_col()
-        ans_dict = SubmissionPreprocessor(self.data, self.form_model).process()
+        ans_dict = SubmissionWorkbookMapper(self.data, self.form_model).process()
         self.assertEquals(None, SubmissionWorkbookValidator(self.form_model, is_org_user=True, is_summary_project=True).validate(ans_dict))
 
     def test_validate_template_for_datasender(self):
-        data = SubmissionPreprocessor(self.data, self.form_model).process()
+        data = SubmissionWorkbookMapper(self.data, self.form_model).process()
         try:
             SubmissionWorkbookValidator(self.form_model, is_org_user=False, is_summary_project=True).validate(data)
         except ImportValidationError as e:
-            self.assertEquals("Invalid template", e.message)
+            self.assertEquals("The columns you are importing do not match. Please download the latest template for importing.", e.message)
 
 
 if __name__ == '__main__':

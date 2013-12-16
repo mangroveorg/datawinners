@@ -13,13 +13,14 @@ DW.SubmissionImportPopup = function(){
                     self.error_section.hide();
                     self.error_message.hide();
                 },
-                width: 500,
+                width: 750,
                 dialogClass: "no-close",
                 buttons: [
                     {
                       text: "Close",
                       click: function() {
                         $( this ).dialog( "close" );
+                       _reload_avaliable_submission_table();
                       }
                     }
                 ]
@@ -54,6 +55,12 @@ DW.SubmissionImportPopup = function(){
         self.import_dialog.dialog("open");
         return self;
     };
+
+    function _reload_avaliable_submission_table() {
+        if ($(".submission_table").length > 0) {
+            $(".submission_table").dataTable().fnDraw();
+        }
+    }
 
     function _updateTemplateDownloadLink(project_name, form_code) {
         var template_download_url = self.import_template_url_template.replace("<project_name>", project_name).replace("form_code", form_code);
@@ -105,6 +112,7 @@ DW.SubmissionFileUploader = function(options){
             $('#error_import_section').show();
         }
         _updateMessages(responseJSON);
+
     };
 
     function _createHeader(questionMap) {

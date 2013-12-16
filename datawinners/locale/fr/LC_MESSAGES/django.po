@@ -2714,8 +2714,8 @@ msgstr "<br/>Affichez vos données qui ont été reçues pendant une période de
        "Vous pouvez traduire ou modifier cette question, mais essayez de garder le même sens (Exemple : « Pour quel mois et quelle année établissez-vous le rapport ?)"
        "<br/><br/><a class='hide_link' href=\"javascript:void(0);\">Cacher l'aide</a>"
 
-msgid "Upload an Excel file (.xls) with Your %(entity_type)s list"
-msgstr "Télécharger un fichier excel (.xls) avec votre liste de %(entity_type)s"
+msgid "Upload an Excel file (.xls) with Your %(entity_type)s list."
+msgstr "Télécharger un fichier excel (.xls) avec votre liste de %(entity_type)s."
 
 msgid "Download the template:"
 msgstr "Télécharger le modèle:"
@@ -4460,3 +4460,34 @@ msgstr "Pour une collecte de données illimitée et des fonctionnalités avancé
 
 msgid "Go Pro"
 msgstr "Devenir Pro"
+
+msgid "The columns you are importing do not match. Please download the latest template for importing."
+msgstr "Les colonnes que vous importez sont imcompatibles. Veuillez SVP télécharger le dernier modèle d'importation"
+
+msgid "You are not allowed to make submissions on behalf of other Data Senders. Please contact your administrator for the same. Or use the correct import template for importing."
+msgstr "Vous n'êtes pas autorisé à envoyer des soumissions au nom d'autres Expéditeurs de Données. Veuillez SVP contacter votre Administrateur de Données, ou utiliser le bon modèle d'importation."
+
+msgid "You have crossed the 1000 submissions limit for a trial account. Submissions from row %s have been ignored."
+msgstr "Vous avez dépassé la limite des 1000 soumissions pour les comptes essais. Les soumissions à partir de la ligne %s ont été ignorés."
+
+msgid "20 of 22 Submissions imported. Please check below for details."
+msgstr "20 soumissions sur 22 ont été importés. Veuillez voir les détails ci-dessous."
+
+msgid "The unique ID %s of the Data Sender does not match with any existing Data Sender ID. Please correct and import again."
+msgstr "Le Code %s d'Identité Unique de l'Expéditeur de Données ne correspond avec aucune Code d'Expéditeur de Données existante. Veuillez SVP corriger et importer encore une fois."
+
+msgid "The unique ID %s of the Subject does not match with any existing Subject ID. Please correct and import again."
+msgstr "Le Code %s d'Identité Unique du sujet ne correspond avec aucune Code de Sujet existante. Veuillez SVP corriger et importer encore une fois."
+
+msgid "Please enter the (reporting date) in the expected format mm.yyyy"
+msgstr "Veuillez SVP introduire la (date de rapportage) suivant le format requis suivant : mm.yyyy"
+
+msgid "Please enter the (reporting date) in the expected format mm.dd.yyyy"
+msgstr "Veuillez SVP introduire la (date de rapportage) suivant le format requis suivant : mm.dd.yyyy."
+
+msgid "Answer %s for question %s is longer than allowed"
+msgstr "La réponse %s à la question %s est plus longue que la limite autorisée"
+
+msgid "Please enter a valid value for %s"
+msgstr "Veuillez SVP introduire une valeur valide pour %s"
+

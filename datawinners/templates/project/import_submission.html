@@ -6,11 +6,11 @@
     <div class="import_subject_form">
         <div id="error_message" class="import_message error_message message-box"></div>
         <div id="success_message" class="import_message success_message success-box"></div>
-        {% trans "Upload an Excel file (.xsl) with your Submssion list." %}
+        {% blocktrans with 'Submssion' as entity_type %}Upload an Excel file (.xls) with Your {{ entity_type }} list.{% endblocktrans %}
         <a id="show_help">{% trans "How do I do this?" %}</a>
         <div id="import_help_section">
             <ol class="help-steps">
-                <li>{% trans "Download the template" %} <a id="secondary-template-download-link">{% trans "DataWinners_ImportSubmissions"%}.xsl</a></li>
+                <li>{% trans "Download the template" %} <a id="secondary-template-download-link">DataWinners_ImportSubmissions.xsl</a></li>
                 <li>{% trans "Fill out the template with your list of Submissions" %}</li>
                 <li>{% trans "Save the template on your computer" %}</li>
                 <li>{% trans "Click on the Upload a file button and select the saved template" %}</li>
@@ -24,8 +24,7 @@
             <div id="file_uploader" class="float_left grid_5"></div>
         </div>
         <div id="template-download-section" class="error download-section" class="margin_top_15">
-            {% trans "Download the template: " %}
-            <a id="template-download-link">{% trans "DataWinners_ImportSubmissions"%}.xsl</a>
+            {% trans "Download the template:" %} <a id="template-download-link">{% trans "DataWinners_ImportSubmissions"%}.xsl</a>
         </div>
         <div>
             {% trans "Note: You cannot add new columns in your Excel file to create new questions. " %}

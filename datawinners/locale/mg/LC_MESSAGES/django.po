@@ -1972,7 +1972,7 @@ msgstr ""
 msgid "Example: a report per patient, clinic, water pump - choose below"
 msgstr ""
 
-msgid "Upload an Excel file (.xls) with Your %(entity_type)s list"
+msgid "Upload an Excel file (.xls) with Your %(entity_type)s list."
 msgstr ""
 
 msgid "Download the template:"

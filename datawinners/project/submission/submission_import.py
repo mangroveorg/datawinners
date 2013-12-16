@@ -29,8 +29,8 @@ class SubmissionImporter():
         try:
             tabular_data = XlsSubmissionParser().parse(file_content)
             if len(tabular_data) <= 1:
-                raise ImportValidationError("Empty workbook")
-            q_answer_dicts = SubmissionPreprocessor(tabular_data, self.form_model).process()
+                raise ImportValidationError(gettext("The imported file is empty."))
+            q_answer_dicts = SubmissionWorkbookMapper(tabular_data, self.form_model).process()
             SubmissionWorkbookValidator(self.form_model, is_org_user(self.user), self.is_summary_project).validate(q_answer_dicts)
 
             total_submissions = len(q_answer_dicts)
@@ -46,6 +46,9 @@ class SubmissionImporter():
                 message = gettext('%s of %s Submissions imported. Please check below for details') % (len(saved_entries), len(q_answer_dicts))
         except ImportValidationError as e:
             message = e.message
+        except Exception as e:
+            message = gettext("Cannot import")
+
         return SubmissionImportResponse(saved_entries=saved_entries,
                                         errored_entrie_details=invalid_row_details,
                                         ignored_entries=ignored_entries,
@@ -117,12 +120,12 @@ class SubmissionWorkbookValidator():
         self.is_org_user = is_org_user
         self.is_summary_project = is_summary_project
 
-    def validate(self, data):
+    def validate(self, q_answer_dicts):
         expected_cols = [f.code for f in self.form_model.fields]
         if not self.is_org_user and self.is_summary_project:
             expected_cols.remove(self.form_model.entity_question.code)
-        if set(data[0].keys()) != set(expected_cols):
-            raise ImportValidationError("Invalid template")
+        if set(q_answer_dicts[0].keys()) != set(expected_cols):
+            raise ImportValidationError(gettext("The columns you are importing do not match. Please download the latest template for importing."))
         return None
 
 
@@ -131,7 +134,7 @@ class ImportValidationError(Exception):
         super(Exception,self).__init__(message)
 
 
-class SubmissionPreprocessor():
+class SubmissionWorkbookMapper():
 
     def __init__(self, input_data, form_model):
         self.input_data = input_data
@@ -145,19 +148,19 @@ class SubmissionPreprocessor():
                 index = header_cell[0]
                 col_mapping.update({field.code: index})
         return col_mapping
-    # question_code_to_answer_dicts()
+
     def process(self):
         rows = self.input_data
         try:
             col_mapping = self._col_mapping(header_row=rows[0])
             return self._get_q_code_answer_dict(rows, col_mapping)
         except Exception as e:
-            raise ImportValidationError(gettext("columns not matched. Template invalid"))
+            raise ImportValidationError(gettext("The columns you are importing do not match. Please download the latest template for importing."))
 
     def _get_q_code_answer_dict(self, rows, col_mapping):
         result = []
         for data in rows[1:]:
-            row_value = {}
+            row_value = OrderedDict()
             for field in self.form_model.fields:
                 if col_mapping.has_key(field.code):
                     row_value.update({field.code: data[col_mapping[field.code]]})
