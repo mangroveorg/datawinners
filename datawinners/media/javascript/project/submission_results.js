@@ -1,42 +1,44 @@
 $(document).ready(function () {
 
-    function load_table(tab_name) {
-        var url = render_table_url + "/headers";
-        $.ajax({
-            url: url,
-            data: {"type": tab_name, "no_cache": new Date() },
-            success: function (columnDef) {
-                init_submission_log_table(columnDef)
-            },
-            dataType: "json"
-        });
-    }
+    var submissionTabs = new DW.SubmissionTabs();
+    submissionTabs.updateActiveTabIndexBasedOnCurrentLocation();
 
-    function activate_tab(tab_name) {
+    var _getTableActionsMenu = function(submissionTabs){
+      var action_handler = new DW.SubmissionLogActionHandler(submissionTabs.getActiveTabName(), project_id);
+      var table_actions_menu = submissionTabs.isTableEntriesCheckable() ? [
+            {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
+            {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
+        ] : [];
+      return table_actions_menu;
+    };
+
+    var _initTable = function(submissionTabs){
+        var submission_table_options = {
+            header_url: render_table_url + "/headers",
+            table_source_url: render_table_url + '?type=' + submissionTabs.getActiveTabName(),
+            row_check_box_visible: submissionTabs.isTableEntriesCheckable(),
+            actions_menu: _getTableActionsMenu(submissionTabs),
+            tabName: submissionTabs.getActiveTabName()
+        };
+        new DW.SubmissionLogTable(submission_table_options);
+    };
+
+    function activate_tab(submissionTabs) {
 
         $('#search_box .dataTables_filter').remove();
         $('.submission_table').dataTable().fnDestroy();
         $('.submission_table').empty();
         DW.loading();
-        load_table(tab_name);
-    }
+        _initTable(submissionTabs);
+    };
 
-    var $actionBar = $(".action_bar");
+//    var $actionBar = $(".action_bar");
     var $dataTable = $('.submission_table');
-    var tab = ["all", "success", "error", "deleted"];
-    var no_data_help = {"all": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
-        "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
-        "error": gettext("No unsuccessful Submissions!"),
-        "deleted": gettext("No deleted Submissions.")
-    }
-    var active_tab_index = 0;
-    var match = window.location.pathname.match(/tab\/([^/]+)\//);
-    if (match) active_tab_index = tab.indexOf(match[1]);
 
 
     $.ajaxSetup({ cache: false });
-    load_table(tab[active_tab_index]);
 
+    _initTable(submissionTabs);
     var $no_submission_hint = $('.help_no_submissions')
     var $page_hint = $('#page_hint');
     var $page_hint_section = $('#page_hint_section')
@@ -54,69 +56,32 @@ $(document).ready(function () {
         }
         var tab_index = $(this).parent().index();
 
-        if (active_tab_index === tab_index) {
+        if (submissionTabs.getActiveTabIndex() === tab_index) {
             return;
         }
-        active_tab_index = tab_index;
-        //window.location.href = window.location.pathname + '?type=' + tab[active_tab_index];
-        activate_tab(tab[active_tab_index]);
+        submissionTabs.setActiveTabIndex(tab_index);
+        activate_tab(submissionTabs);
         return true;
     });
+
     var all_tabs = $("#tabs").tabs().find('>ul>li>a[href$=tab_template]');
     for (var i = 0; i < all_tabs.length; i++) {
-        if (i == active_tab_index) {
+        if (i == submissionTabs.getActiveTabIndex()) {
             $($(all_tabs[i]).parent()).addClass('ui-tabs-selected ui-state-active')
         } else {
             $($(all_tabs[i]).parent()).removeClass('ui-tabs-selected ui-state-active')
         }
 
     }
+
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
 
 
     $('.export_link').click(function () {
-        var url = '/project/export/log' + '?type=' + tab[active_tab_index];
+        var url = '/project/export/log' + '?type=' + submissionTabs.getActiveTabName();
         $('#export_form').appendJson({"search_filters":JSON.stringify(filter_as_json())}).attr('action', url).submit();
     });
-    function init_submission_log_table(cols) {
-
-        var action_handler = new DW.SubmissionLogActionHandler(tab[active_tab_index], project_id);
-        var url = render_table_url + '?type=' + tab[active_tab_index];
-        var display_check_box = active_tab_index != 3;
-        var actions = display_check_box ? [
-            {"label": "Edit", handler: action_handler['edit'], "allow_selection": "single"},
-            {"label": "Delete", handler: action_handler['delete'], "allow_selection": "multiple"}
-        ] : []
-        $(".submission_table").dwTable({
-                aoColumns: cols,
-                "concept": "Submission",
-                "sDom": "iprtipl",
-                "sAjaxSource": url,
-                "sAjaxDataIdColIndex": 1,
-                "remove_id": true,
-                "bServerSide": true,
-                "oLanguage": {"sEmptyTable": no_data_help[tab[active_tab_index]]},
-                "aaSorting": [
-                    [ 2, "desc"]
-                ],
-                "aoColumnDefs": [
-                    {"aTargets": [0], "sWidth": "30px"}
-                ],
-                "actionItems": actions,
-                "fnInitComplete": function () {
-                    $('#search_box').append($('.dataTables_wrapper .dataTables_filter'));
-                },
-                "fnHeaderCallback": function (head) {
-                },
-                "getFilter": filter_as_json
-
-            }
-
-        );
-        $(".submission_table").dataTable().fnSetColumnVis(0, display_check_box)
-
-    }
 
 
     buildRangePicker();
@@ -161,6 +126,85 @@ $(document).ready(function () {
     });
 
 });
+
+DW.SubmissionLogTable = function(options){
+
+    $.ajax({
+        url: options.header_url,
+        data: {"type": options.tabName, "no_cache": new Date() },
+        success: function (columnDef) {
+            _init_submission_log_table(columnDef)
+        },
+        dataType: "json"
+    });
+
+    var no_data_help = {"all": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+            "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+            "error": gettext("No unsuccessful Submissions!"),
+            "deleted": gettext("No deleted Submissions.")
+    };
+
+    function _init_submission_log_table(cols) {
+        $(".submission_table").dwTable({
+                aoColumns: cols,
+                "concept": "Submission",
+                "sDom": "iprtipl",
+                "sAjaxSource": options.table_source_url,
+                "sAjaxDataIdColIndex": 1,
+                "remove_id": true,
+                "bServerSide": true,
+                "oLanguage": {"sEmptyTable": no_data_help[options.tabName]},
+                "aaSorting": [
+                    [ 2, "desc"]
+                ],
+                "aoColumnDefs": [
+                    {"aTargets": [0], "sWidth": "30px"}
+                ],
+                "actionItems": options.actions_menu,
+                "fnInitComplete": function () {
+                    $('#search_box').append($('.dataTables_wrapper .dataTables_filter'));
+                },
+                "fnHeaderCallback": function (head) {
+                },
+                "getFilter": filter_as_json
+            }
+        );
+        $(".submission_table").dataTable().fnSetColumnVis(0, options.row_check_box_visible)
+    };
+};
+
+DW.SubmissionTabs = function(){
+        var self = this;
+
+        var tabList = ["all", "success", "error", "deleted"];
+        var active_tab_index = 0;
+
+        self.updateActiveTabIndexBasedOnCurrentLocation = function(){
+            active_tab_index = 0;
+            var match = window.location.pathname.match(/tab\/([^/]+)\//);
+            if (match)
+                active_tab_index = tabList.indexOf(match[1]);
+        };
+
+        self.getActiveTabIndex = function(){
+            return active_tab_index;
+        }
+
+        self.setActiveTabIndex = function(tabIndex){
+            active_tab_index = tabIndex;
+        };
+
+        self.getActiveTabName = function(){
+            return tabList[active_tab_index];
+        };
+
+        self.isTableEntriesCheckable = function(){
+           return active_tab_index != 3;
+        };
+
+};
+
+
 
 
 

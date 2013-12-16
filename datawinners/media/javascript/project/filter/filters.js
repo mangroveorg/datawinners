@@ -64,34 +64,22 @@ $.fn.datePicker = function (options) {
             return settings;
         }
     })
-}
+};
 
 DW.get_criteria = function () {
-//    var reporting_period = DW.get_datepicker_value($('#reportingPeriodPicker'), gettext("All Periods"));
-//    var submission_date = DW.get_datepicker_value($('#submissionDatePicker'), gettext("All Dates"));
-//    var subject_ids = $('#subjectSelect').attr('ids');
-//    var submission_sources = $('#dataSenderSelect').attr('data');
     var search = $('.dataTables_filter input').val();
     $(".dateErrorDiv").hide();
     return {
-//        'start_time': $.trim(reporting_period.start_time),
-//        'end_time': $.trim(reporting_period.end_time),
-//        'submission_date_start': $.trim(submission_date.start_time),
-//        'submission_date_end': $.trim(submission_date.end_time),
-//        'subject_ids': subject_ids,
-//        'submission_sources': submission_sources,
         'search': search
     };
-}
+};
 
-    var $filterSelects = $('#submissionDatePicker, #reportingPeriodPicker');
 
-    function buildRangePicker() {
-        //$('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects});
-        $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects, onCloseCallback: onCloseSubmissionDatePicker});
-        $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: closeFilterSelects, onCloseCallback: onCloseSubmissionDatePicker});
+function buildRangePicker() {
+    $('#submissionDatePicker').datePicker({eventCallback: closeFilterSelects, onCloseCallback: onCloseSubmissionDatePicker});
+    $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: closeFilterSelects, onCloseCallback: onCloseSubmissionDatePicker});
 
-    }
+};
 
 DW.get_datepicker_value = function ($datePicker, default_text) {
     var data = $datePicker.val().split("-");
@@ -104,8 +92,9 @@ DW.get_datepicker_value = function ($datePicker, default_text) {
         data[1] = data[0];
     }
     return {start_time: data[0], end_time: data[1]};
-}
+};
 
+// Used only in old data_analysis.js - to be deleted
 DW.disable_filter_section_if_no_data = function () {
     if ($('#dataSenderSelect>option').size() != 0) {
         return false;
@@ -115,13 +104,16 @@ DW.disable_filter_section_if_no_data = function () {
 
     $('.filter_label').addClass('grey')
 };
-    function closeFilterSelects() {
-        $filterSelects.dropdownchecklist('close');
-    }
 
-    function onCloseSubmissionDatePicker() {
-        var table = $(".submission_table").dataTable();
-        $filterSelects.dropdownchecklist('close');
-        console.log('date range: ' + $('#submissionDatePicker').val());
-        table.fnDraw();
-    }
+var $filterSelects = $('#submissionDatePicker, #reportingPeriodPicker');
+
+function closeFilterSelects() {
+    $filterSelects.dropdownchecklist('close');
+};
+
+function onCloseSubmissionDatePicker() {
+    var table = $(".submission_table").dataTable();
+    $filterSelects.dropdownchecklist('close');
+    console.log('date range: ' + $('#submissionDatePicker').val());
+    table.fnDraw();
+};

@@ -1,3 +1,5 @@
+//NOT USED
+
 $(document).ready(function () {
     var help_no_submission = $('.help_no_submissions').html();
     var message = gettext("No submissions available for this search. Try changing some of the filters.");
