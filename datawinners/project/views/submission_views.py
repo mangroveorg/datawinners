@@ -80,7 +80,7 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
-        return render_to_response('project/results.html', result_dict, context_instance=RequestContext(request))
+        return render_to_response('project/submission_results.html', result_dict, context_instance=RequestContext(request))
 
 @login_required
 @session_not_expired
