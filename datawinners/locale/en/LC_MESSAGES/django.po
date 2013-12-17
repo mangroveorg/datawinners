@@ -2282,7 +2282,7 @@ msgid "Import A List"
 msgstr ""
 
 msgid "upgrade success message"
-msgstr "Congratulations on upgrading to a full monthly subscription!   We will send you an email soon with next steps. Please note that you will not be able to send or receive SMS until we receive payment. If you do not receive an email from us within the next 24 hours, please check your SPAM folder."
+msgstr "Congratulations for going pro! We will send you an email soon with the next steps. If you do not receive an email from us within the next 24 hours, please check your Spam folder."
 
 msgid "upgrade project note"
 msgstr "Note, your projects from the Basic Account will still be available"
