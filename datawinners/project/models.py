@@ -358,3 +358,6 @@ def delete_datasenders_from_project(manager, data_sender_ids):
         for associated_project in associated_projects:
             project = Project.load(manager.database, associated_project['value']['_id'])
             project.delete_datasender(manager, entity_id)
+
+def is_summary_project(form_model):
+    return form_model.entity_type == ["reporter"]

@@ -14,7 +14,7 @@ def _get_survey_responses_with_no_eid(dbm, logger):
         try:
             survey_response = SurveyResponse.get(dbm, row.id)
             form_model = get_form_model_by_code(dbm, survey_response.form_code)
-            if form_model.entity_defaults_to_reporter() and "eid" not in survey_response.values.keys():
+            if form_model.is_entity_type_reporter() and "eid" not in survey_response.values.keys():
                 inconsistent_survey_response_list.append(survey_response)
         except Exception as e:
             logger.exception(e)

@@ -158,7 +158,7 @@ def edit_project(request, project_id=None):
         activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
         subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
         fields = questionnaire.fields
-        if questionnaire.entity_defaults_to_reporter():
+        if questionnaire.is_entity_type_reporter():
             fields = helper.hide_entity_question(questionnaire.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
 

@@ -102,7 +102,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
             form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'tester', 'age': '12', 'choice': 'red'}
-        form_model_mock.entity_defaults_to_reporter.return_value = False
+        form_model_mock.is_entity_type_reporter.return_value = False
         message = get_success_msg_for_submission_using(response, form_model_mock)
         self.assertEqual(expected_message, message)
 

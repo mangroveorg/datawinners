@@ -5,13 +5,13 @@ class ResponseBuilder(object):
 
     def get_expanded_response(self):
         new_dict = self.form_model.stringify(self.processed_data)
-        if self.form_model.entity_defaults_to_reporter():
+        if self.form_model.is_entity_type_reporter():
             new_dict.pop(self.form_model.entity_question.code)
         return "; ".join([each for each in new_dict.values()])
 
     def get_expanded_response_with_ordered_question_code(self):
         new_dict = self.form_model.stringify(self.processed_data)
-        if self.form_model.entity_defaults_to_reporter():
+        if self.form_model.is_entity_type_reporter():
             return self._get_response_for_entity_defaults_to_reporter(new_dict)
         else:
             response = " ".join([": ".join(["q%s" % str(index+1), each]) for index, each in enumerate(new_dict.values())])

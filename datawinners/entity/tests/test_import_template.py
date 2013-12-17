@@ -66,7 +66,7 @@ class TestImportTemplate(unittest.TestCase):
 
     def test_should_remove_entity_question_field_for_summary_project_when_datasender_is_logged_in(self):
         form_model = MagicMock(spec=FormModel)
-        form_model.entity_defaults_to_reporter.return_value = True
+        form_model.is_entity_type_reporter.return_value = True
         form_model.form_fields = [{'code': 'eid','name':'firstname'},{'code': 'something','name':'firstname'}]
         form_model.entity_question.code = 'eid'
 
@@ -82,7 +82,7 @@ class TestImportTemplate(unittest.TestCase):
 
     def test_should_return_all_form_fields_for_summary_project_when_user_is_logged_in(self):
         form_model = MagicMock(spec=FormModel)
-        form_model.entity_defaults_to_reporter.return_value = True
+        form_model.is_entity_type_reporter.return_value = True
         form_model.form_fields = [{'code': 'eid','name':'firstname'},{'code': 'something','name':'firstname'}]
         form_model.entity_question.code = 'eid'
 
@@ -98,7 +98,7 @@ class TestImportTemplate(unittest.TestCase):
 
     def test_should_return_all_form_fields_for_entity_project(self):
         form_model = MagicMock(spec=FormModel)
-        form_model.entity_defaults_to_reporter.return_value = False
+        form_model.is_entity_type_reporter.return_value = False
         form_model.form_fields = [{'code': 'eid','name':'firstname'},{'code': 'something','name':'firstname'}]
 
         form_fields = get_submission_form_fields_for_user(form_model, HttpRequest())

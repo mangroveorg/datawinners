@@ -130,7 +130,7 @@ class TestProjectViews(unittest.TestCase):
     def test_should_get_question_list(self):
         form_model = Mock()
         form_model.fields = [{}]
-        form_model.entity_defaults_to_reporter.return_value = False
+        form_model.is_entity_type_reporter.return_value = False
 
         with patch("datawinners.project.preview_views.get_preview_for_field") as preview_of_field:
             preview_of_field.return_value = {"description": "description"}
@@ -140,7 +140,7 @@ class TestProjectViews(unittest.TestCase):
     def test_should_get_question_list_when_entity_is_reporter(self):
         form_model = Mock()
         form_model.fields = [{}]
-        form_model.entity_defaults_to_reporter.return_value = True
+        form_model.is_entity_type_reporter.return_value = True
 
         with patch("datawinners.project.preview_views.get_preview_for_field") as preview_of_field:
             preview_of_field.return_value = {"description": "description"}

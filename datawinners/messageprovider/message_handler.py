@@ -29,13 +29,13 @@ def get_exception_message_for(exception, channel=None, formatter=default_formatt
         message = _(message)
     return formatter(exception, message)
 
-
 def index_of_question(form_model, question_code):
-    return [index for index, field in enumerate(form_model.fields) if field.code.lower() == lower(question_code)][0] + 1
+    from datawinners.project.models import is_summary_project
+    start_index = 1 if is_summary_project(form_model) else 0 # in summary projects first question is hidden, ignoring it
+    return [index for index, field in enumerate(form_model.fields[start_index:]) if field.code.lower() == lower(question_code)][0] + 1
 
 
 def get_submission_error_message_for(response, form_model):
-# :-( :-( :-(
     errors = response.errors
     if isinstance(errors, dict) and form_model:
         keys = [_("question_prefix%s") % index_of_question(form_model, question_code) for question_code in errors.keys()]
