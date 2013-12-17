@@ -102,14 +102,16 @@ class ErroredSubmissionHeader(SubmissionHeader):
 
 class HeaderFactory():
     def __init__(self, form_model):
-        self.header_to_class_dict = {"all": AllSubmissionHeader, "analysis": SubmissionAnalysisHeader,
+        self.header_to_class_dict = {"all": AllSubmissionHeader,"deleted": AllSubmissionHeader, "analysis": SubmissionAnalysisHeader,
                                      "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader}
         self.form_model = form_model
 
     def get_header(self, submission_type):
-        if not submission_type or submission_type in ["all", "deleted"]:
-            return self.header_to_class_dict.get("all")(self.form_model).get_header_field_names()
-        return self.header_to_class_dict.get(submission_type)(self.form_model).get_header_field_names()
+        header_class = self.header_to_class_dict.get(submission_type)
+        if not submission_type:
+            submission_type = "all"
+            return header_class(self.form_model).get_header_field_names()
+        return header_class(self.form_model).get_header_field_names()
 
     def get_header_dictionary(self, submission_type):
         if not submission_type or submission_type in ["all", "deleted"]:

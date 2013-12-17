@@ -105,8 +105,7 @@ def get_survey_response_ids_from_request(dbm, request, form_model):
         search_filters = json.loads(request.POST.get("search_filters"))
         submission_type = request.POST.get("submission_type")
         query_params = {'search_filters': search_filters}
-        if submission_type.lower() != 'all':
-            query_params.update({'filter': submission_type})
+        query_params.update({'filter': submission_type})
 
         submissions = SubmissionQuery(form_model, query_params).query(dbm.database_name)
 
@@ -334,8 +333,7 @@ def get_submissions(request, form_code):
     search_text = search_filters.get("search_text", '').lower()
     search_parameters.update({"search_text": search_text})
     filter_type = request.GET['type']
-    if filter_type.lower() != 'all':
-        search_parameters.update({"filter": filter_type})
+    search_parameters.update({"filter": filter_type})
     user = request.user
     query_count, search_count, submissions = SubmissionQuery(form_model, search_parameters).paginated_query(user,
                                                                                                             form_model.id)

@@ -66,12 +66,12 @@ def submission_update_on_entity_edition(entity_doc, dbm):
 def update_submission_search_for_datasender_edition(entity_doc, dbm):
     from datawinners.search.submission_query import SubmissionQueryBuilder
 
-    args = {SubmissionIndexConstants.DATASENDER_ID_KEY: entity_doc.short_code}
+    kwargs = {SubmissionIndexConstants.DATASENDER_ID_KEY: entity_doc.short_code}
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
     project_form_model_ids = [project.value['qid'] for project in get_all_projects(dbm)]
-    query = SubmissionQueryBuilder().create_query(dbm.database_name, *project_form_model_ids)
-    query_all = query[:query.count()]
-    filtered_query = query_all.filter(**args)
+
+    filtered_query = SubmissionQueryBuilder().query_all(dbm.database_name, *project_form_model_ids, **kwargs)
+
     for survey_response in filtered_query.all():
         SubmissionIndexUpdateHandler(dbm.database_name, survey_response._type).update_field_in_submission_index(
             survey_response._id, fields_mapping)

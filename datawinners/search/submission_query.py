@@ -15,13 +15,14 @@ class SubmissionQueryBuilder(QueryBuilder):
 
     def filter_by_submission_type(self, query, query_params):
         submission_type_filter = query_params.get('filter')
-        if submission_type_filter:
-            if submission_type_filter == 'deleted':
-                return query.filter(void=True)
-            elif submission_type_filter == 'analysis':
-                query = query.filter(status="success")
-            else:
-                query = query.filter(status=submission_type_filter)
+        if submission_type_filter == 'deleted':
+            return query.filter(void=True)
+        elif submission_type_filter == 'all':
+            return query.filter(void=False)
+        elif submission_type_filter == 'analysis':
+            query = query.filter(status="success")
+        else:
+            query = query.filter(status=submission_type_filter)
         return query.filter(void=False)
 
     def create_paginated_query(self, query, query_params):
@@ -44,8 +45,8 @@ class SubmissionQueryBuilder(QueryBuilder):
                 query = query.filter(entity_short_code=subjectFilter)
         return query
 
-    def query_all(self, database_name, **kwargs):
-        query = self.create_query(database_name, self.form_model.id)
+    def query_all(self, database_name, *args, **kwargs):
+        query = self.create_query(database_name, *args)
         query_all_results = query[:query.count()]
         return query_all_results.filter(**kwargs)
 
