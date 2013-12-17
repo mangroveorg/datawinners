@@ -1,5 +1,172 @@
+@charset "UTF-8";
+/* CSS Document */
+
 #country_select{
     height: 20px;
     width: 150px;
     margin-bottom: 3px;
+}
+
+.wrap_outer {
+	width:100%;
+	background-color:#fefeff;
+	float: left;
+}
+
+
+.wrap {
+	width:958px;
+	margin: 0 auto;
+}
+
+
+
+.box_left {
+	width:280px;
+	height:380px;
+	background-color:#fff3b9;
+	margin-top:15px;
+	float: left;
+	text-align: center;
+}
+
+.box_center {
+	width:280px;
+	height:380px;
+	background-color:#fff3b9;
+	margin-left:59px;
+	margin-right:59px;
+	margin-top:15px;
+	float: left;
+	text-align: center;
+}
+
+.box_right {
+	width:280px;
+	height:380px;
+	margin-top:15px;
+	background-color:#fff3b9;
+	float: left;
+	text-align: center;
+}
+
+.box2 {
+	width:280px;
+	background-color:#fff3b9;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.box3 {
+	width:958px;
+    margin: 0 auto;
+	text-align: left;
+	font-size: 24px;
+	font-weight: bold;
+	color: #000;
+}
+
+
+.strong2 {
+	font-size:14px;
+	font-weight:bold;
+	color: #000;
+	text-align: center;
+}
+
+.strong3 {
+	font-size:13px;
+	color: #000;
+	text-align: center;
+}
+
+.h5 {
+	font-size:14px;
+	font-weight:bold;
+	color: #000;
+	text-align: center;
+}
+
+
+.h6 {
+	font-size:15px;
+	font-weight:bold;
+	color: #000;
+	text-align: left;
+}
+
+.h7 {
+	font-size:24px;
+	font-weight:bold;
+	color: #000;
+	text-align: left;
+}
+
+.h8 {
+	font-size:14px;
+	color: #000;
+	text-align: center;
+	vertical-align:middle;
+}
+
+.h9 {
+	font-size:24px;
+	color: #000;
+	text-align: center;
+	vertical-align:middle;
+}
+
+
+body {
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
+h1 {
+    font-size: 30px;
+    color: #000;
+    text-align: center;
+    font-family: Helvetica, Arial, sans-serif;
+}
+#container_secondary_content #container_main_content #main_content .margin_left_20 #pricing .box .box2 .box3 .box4 table tr td {
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+#container_secondary_content #container_main_content #main_content .margin_left_20 #pricing .box .box2 table tr td {
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+.h5 {
+    text-align: center;
+}
+#container_secondary_content #container_main_content #main_content .margin_left_20 #pricing .box_left .box2 table tr td strong2 {
+    text-align: left;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+#container_secondary_content #container_main_content #main_content .margin_left_20 #pricing .box_left .box2 table tr td p strong {
+    text-align: center;
+}
+#container_secondary_content #container_main_content #main_content .margin_left_20 #pricing .box_left .box2 table tr td p strong {
+    text-align: center;
+}
+.new {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+}
+.h51 {	text-align: center;
+}
+.h52 {	font-size: 24px;
+}
+#container_secondary_content #container_page_title #box3 h7 .h52 {
+    font-weight: bold;
+    font-family: Helvetica, Arial, sans-serif;
 }

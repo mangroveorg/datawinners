@@ -1,14 +1,16 @@
-{% extends 'public_secondary.html' %}
-{% block page_title %} Pricing {% endblock %}
-
-{% load dw_tabs %}
-{% block body %}
-{% activetab "main_nav" "pricing" %}
-{{ block.super }}
+{% extends 'public_master.html' %}
+{% block layout_scss %}
 {% endblock %}
 
+{% block page_title %} Pricing {% endblock %}
+
+{% load i18n %}
 {% block page_js %}
     {{ block.super }}
+    <script language="javascript">
+        if("{{ flatpage.url }}" && "{% trans "en" %}" != "{{ flatpage.url|slice:"1:3"}}")
+            location.href = "/{% trans "en" %}{{ flatpage.url|slice:"3:" }}";
+    </script>
     <script src="/media/javascript/home/country_networks_en.js" type="text/javascript"></script>
     <script src="/media/javascript/home/pricing.js" type="text/javascript"></script>
 {% endblock %}
@@ -18,129 +20,312 @@
     <link href="/media/css/scss/pricing.css" rel="stylesheet" />
 {% endblock %}
 
-{% block page_breadcrumbs %}
-<a href="/en/home/">Home</a> &gt; Pricing
-{% endblock %}
+{% load dw_tabs %}
+{% block body %}
+    {% activetab "main_nav" "pricing" %}
+    {% block header %}
+    <div id="container_header">
+        <div id="header_public">
+            {% include 'public_header_wizard.html' %}
+            {% include 'public_main_navigation.html' %}
+        </div>
+    </div>
+    {% endblock %}
 
-{% block main_content %}
-<div id="nav_content">
-    <h1><a href="/en/pricing/">PRICING</a></h1>
-</div>
-<div id="main_content">
-    <div class="margin_left_20">
-        <div id="pricing">
-            <div class="grid_9 alpha omega">
-                <div class="container_plan">
-                    <div class="plan">
-                        <div class="padding_10">
-                            <h2>30 Day Test Drive</h2>
-                             <strong>free</strong>
-                            <a href="/register/trial" class="try_button">Try it free</a>
-                            <ul>
-                                <li>Same online data collection tools as paid subscription</li>
-                                <li>International telephone number for test purposes</li>
-                                <li>100 SMS*</li>
-                                <li>Unlimited Web submissions</li>
-                                <li>Available worldwide</li>
-                            </ul>
-                            <em><small>* For Test Drive Accounts international SMS rates apply</small></em>
-                        </div>
-                    </div>
-                    <!-- Try it star
-                    <div class="badge">
-                    <img src="/media/images/dw_badge_try.png" width="80" height="80" alt="worldwide" />
-                    </div>
-                    -->
-                </div>
+    <div id="container_secondary_content">
+        <div id="container_page_title">
+            <div class="box3">
+                <br/>
+                {% trans "Pricing" %}
             </div>
-
-            <div class="grid_9 alpha omega">
-                <div class="container_plan">
-                    <div class="plan">
-                        <div class="padding_10">
-                            <h2>Ready to Work</h2>
-                            <strong> $850 </strong> <small>per month</small>
-                            <a href="/register/" class="try_button">Subscribe now</a>
-                            <ul>
-                                <li>Full access to online data collection tool</li>
-                                <li>Local telephone number linked to your account</li>
-                                <li>5,000 SMS</li>
-                                <li>Unlimited Web submissions</li>
-                                <li>Available worldwide</li>
-                            </ul>
-                            Save 10% <a id="learn_more" href="#a3">learn more</a>
-                        </div>
-                    </div>
-                     <!-- Try it star
-                    <div class="badge">
-                        <img src="/media/images/dw_badge_subscribe.png" width="80" height="80" alt="Madagascar" />
-                    </div>
-                    -->
-                </div>
-            </div>
-            <div class="clear"></div>
         </div>
 
- <h2>How the Monthly Subscription Works</h2>
-        <ul class="bulleted">
-            <li>Subscription per organization per country</li>
-            <li>Local telephone number linked to your account</li>
-            <li>Packet of 5,000 outgoing SMS <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
-                <div class="tooltip"><p>
-                    Monthly packet of 5000 SMS includes both:<br/>
-                    &bull;&nbsp;<strong>in-bound</strong> (you receive SMS from your field staff)<br/>
-                    &bull;&nbsp;<strong>out-bound</strong> (you send SMS to your field staff)
-                </p></div>
-            </li>
-            <li>Overage: $50 for 500 additional SMS</li>
-            <li>Coverage 
-                <select id="country_select">
-                    <option>Select your country</option>
-                </select>
-                <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;" />
-                <div class="tooltip"><p>
-                    Using the telephone companies here, you can send SMS to and receive SMS from your DataWinners account.
-                    </p></div>
-                <ul class="bulleted" id="networks_list"></ul>
-            </li>
-            <li>Reverse SMS Billing <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;" />
-                <div class="tooltip"><p>
-                    Field staff pay nothing to send in their data via SMS. These in-bound SMS are deducted from your monthly packet of 5000.
-                </p></div>
-            </li>
-            <li>
-                Technical and customer support to get you started
-            </li>
-        </ul>
-        <p>View HNI’s <a href="/en/terms-and-conditions/">Terms and Conditions</a> and <a href="/en/privacy-policy/">Privacy Policy</a> for more details.</p>
-        <a name="a3"></a><h2>Monthly Subscription Costs</h2>
-        <table width="500" class="pricelist">
-            <tr>
-                <td width="400">Price per month:</td>
-                <td width="100">$ 850</td>
-            </tr>
-            <tr>
-                <td>- 10% Discount:<br/><em><small>Pay 6 months in advance and save 10%</small></em></td>
-                <td>- $ 85</td>
-            </tr>
-            <tr>
-                <td><strong>Price per month</strong> (with Discount):</td>
-                <td><strong>$ 765</strong></td>
-            </tr>
-        </table>
-        <a name="a4"></a><h2>Payment</h2>
-        <ol>
-            <li><strong>Wire transfer</strong></li>
-            <li><strong>Credit card</strong><br/>Call us directly and we can securely process your credit card payment over the phone.</li>
-            <li><strong>Pay via ACH</strong><br/>Securely transfer funds between your US-based bank account and ours (normally free of charge).</li>
-        </ol>
-        <a name="a5"></a>
+        <div class="wrap_outer" id="wrap_outer">
+            <div class="wrap" id="wrap">
+                <div class="box_left">
+                    <div class="box2">
+                        <table border="0" align="left" cellpadding="0" cellspacing="0">
 
-        <h2>Need help getting started? </h2>
-        <p>If you need help getting started or have an ambitious data collection project that requires a      DataWinners custom solution, contact us at
-        <a href="mailto:info@datawinners.com">info@datawinners.com</a> or use our <a href="/en/support/ask-us/">contact form</a>.</p>
-        <p>Our team has extensive experience developing mobile data collection systems. See our <a href="/en/success-stories">Success Stories</a>.</p>
+                          <tr>
+                            <td rowspan="4" align="left" valign="top" bgcolor="#fce95e">&nbsp;</td>
+                            <td align="center" valign="middle" bgcolor="#fce95e"></td>
+                            <td rowspan="4" align="left" valign="top" bgcolor="#fce95e">&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" bgcolor="#fce95e"><img src="/media/images/space.png" width="5" height="3"></td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" bgcolor="#fce95e"><h1>Basic</h1></td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" bgcolor="#fce95e"class="new"><p>Free for one year</p></td>
+                          </tr>
+                          <tr>
+                            <td colspan="3" align="left" valign="top"><img src="/media/images/Pricing_05.png" width="280" height="53"></td>
+                          </tr>
+                          <tr>
+                            <td rowspan="2" align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td rowspan="2" align="center" valign="top">&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td height="45" align="center" valign="top" class="h5"><p class="padding_10">SMS, Smartphone & Web Data Collection</p></td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td height="80" align="center" valign="top" class="strong3"><br>
+                              Satisfy small-scale data collection needs with up to 1000 Submissions (includes 50 SMS)</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td colspan="3" align="center" valign="top">&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td colspan="3" align="center" valign="top"><a href="/register/trial" class="try_button">Try It Free</a></td>
+                          </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="box_center">
+                    <div class="box2">
+                      <table width="280" border="0" align="left" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td width="13" rowspan="4" align="left" valign="top" bgcolor="#fce95e">&nbsp;</td>
+                          <td width="198" align="center" valign="middle" bgcolor="#fce95e"></td>
+                          <td width="13" rowspan="4" align="left" valign="top" bgcolor="#fce95e">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="middle" bgcolor="#fce95e"><img src="/media/images/space.png" width="5" height="3"></td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="middle" bgcolor="#fce95e"><h1>Pro</h1></td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="middle" bgcolor="#fce95e"class="new"><p>$99 per month with annual plan</p></td>
+                        </tr>
+                        <tr>
+                          <td colspan="3" align="left" valign="top"><img src="/media/images/Pricing_05.png" width="280" height="53"></td>
+                        </tr>
+                        <tr>
+                          <td rowspan="2" align="center" valign="top">&nbsp;</td>
+                          <td align="center" valign="top">&nbsp;</td>
+                          <td rowspan="2" align="center" valign="top">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td height="45" align="center" valign="top" class="h5">Unlimited Smartphone & Web Data Collection</td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="top">&nbsp;</td>
+                          <td height="80" align="center" valign="top" class="strong3"><br>
+                          As many Questionnaires, Submissions and Devices as you need with 24/7 Customer Support </td>
+                          <td align="center" valign="top">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td colspan="3" align="center" valign="top">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td colspan="3" align="center" valign="top"><a href="/register/pro/" class="try_button">Subscribe Now</a></td>
+                        </tr>
+                      </table>
+                    </div>
+                </div>
+
+                <div class="box_right">
+                    <div class="box2">
+                      <table width="280" border="0" align="left" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td width="13" rowspan="4" align="left" valign="top" bgcolor="#fce95e">&nbsp;</td>
+                          <td width="198" align="center" valign="middle" bgcolor="#fce95e"></td>
+                          <td width="13" rowspan="4" align="left" valign="top" bgcolor="#fce95e">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="middle" bgcolor="#fce95e"><img src="/media/images/space.png" width="5" height="3"></td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="middle" bgcolor="#fce95e"><h1>Pro SMS</h1></td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="middle" bgcolor="#fce95e"class="new"><p>$299 per month with annual plan</p></td>
+                        </tr>
+                        <tr>
+                          <td colspan="3" align="left" valign="top"><img src="/media/images/Pricing_05.png" width="280" height="53"></td>
+                        </tr>
+                        <tr>
+                          <td rowspan="2" align="center" valign="top">&nbsp;</td>
+                          <td align="center" valign="top">&nbsp;</td>
+                          <td rowspan="2" align="center" valign="top">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td height="45" align="center" valign="top" class="h5">Unlimited SMS, Smartphone & Web Data Collection</td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="top">&nbsp;</td>
+                          <td height="80" align="center" valign="top" class="strong3"><br>
+                          All Pro Features plus a Dedicated Local Telephone Number and 1000 Outgoing SMS/month </td>
+                          <td align="center" valign="top">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td colspan="3" align="center" valign="top">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td colspan="3" align="center" valign="top"><a href="/register/" class="try_button">Subscribe Now</a></td>
+                        </tr>
+                      </table>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <h2 class="h6"><br>
+                    <br>
+                    See the DataWinners Difference</h2>
+                     <table width="958" border="0" cellpadding="3" cellspacing="3" bordercolor="#e8e8e8">
+                       <tr>
+                         <td height="60" align="left" valign="middle" bgcolor="#FFFFFF">&nbsp;</td>
+                         <td align="center" valign="middle" bgcolor="#ffd504" class="h8">DataWinners</td>
+                         <td align="center" valign="middle" bgcolor="#5f9f50" class="h8">Magpi<br>
+                           (Episurveyor) Pro</td>
+                         <td align="center" valign="middle" bgcolor="#5f9f50" class="h8">iForm Builder<br>
+                           Emerging</td>
+                         <td align="center" valign="middle" bgcolor="#5f9f50" class="h8">Frontline SMS</td>
+                         <td align="center" valign="middle" bgcolor="#5f9f50" class="h8">Mobenzi<br>
+                           Researcher</td>
+                         <td align="center" valign="middle" bgcolor="#5f9f50" class="h8">Datadroid<br>
+                           20</td>
+                       </tr>
+                       <tr>
+                         <td height="40" align="left" valign="middle" bgcolor="#f3f3f3" class="h8">Unlimited Users/Devices</td>
+                         <td align="center" valign="middle" bgcolor="#FFFFFF" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                       </tr>
+                       <tr>
+                         <td height="40" align="left" valign="middle" bgcolor="#f3f3f3" class="h8">Cloud-based Data Storage</td>
+                         <td align="center" valign="middle" bgcolor="#FFFFFF" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                       </tr>
+                       <tr>
+                         <td height="40" align="left" valign="middle" bgcolor="#f3f3f3" class="h8">Questionnaire Builder</td>
+                         <td align="center" valign="middle" bgcolor="#FFFFFF" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                       </tr>
+                       <tr>
+                         <td height="40" align="left" valign="middle" bgcolor="#f3f3f3" class="h8">Smartphone App</td>
+                         <td align="center" valign="middle" bgcolor="#FFFFFF" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                       </tr>
+                       <tr>
+                         <td height="40" align="left" valign="middle" bgcolor="#f3f3f3" class="h8">SMS Collection - Any Mobile Phone</td>
+                         <td align="center" valign="middle" bgcolor="#FFFFFF" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                       </tr>
+                       <tr>
+                         <td height="40" align="left" valign="middle" bgcolor="#f3f3f3" class="h8">Dedicated Local Number</td>
+                         <td align="center" valign="middle" bgcolor="#FFFFFF" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                       </tr>
+                       <tr>
+                         <td height="40" align="left" valign="middle" bgcolor="#f3f3f3" class="h8">Register People, Places and Things</td>
+                         <td align="center" valign="middle" bgcolor="#FFFFFF" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                       </tr>
+                       <tr>
+                         <td height="40" align="left" valign="middle" bgcolor="#f3f3f3" class="h8">Open Source</td>
+                         <td align="center" valign="middle" bgcolor="#FFFFFF" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                       </tr>
+                       <tr>
+                         <td height="40" align="left" valign="middle" bgcolor="#f3f3f3" class="h8">Free Customer Support</td>
+                         <td align="center" valign="middle" bgcolor="#FFFFFF" class="h8"><img src="/media/images/Pricing-v10-6_crop_32.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                         <td align="center" valign="middle" bgcolor="#f3f3f3" class="h8"><img src="/media/images/Pricing-v10-6_crop_29.png" width="19" height="13"></td>
+                       </tr>
+                       <tr>
+                         <td height="40" bgcolor="#d4d4d4" class="h8">Monthly Subscription Price</td>
+                         <td align="center" valign="middle" bgcolor="#ffd504" class="h8">$299*</td>
+                         <td align="center" valign="middle" bgcolor="#d4d4d4" class="h8">$500</td>
+                         <td align="center" valign="middle" bgcolor="#d4d4d4" class="h8">$833.33</td>
+                         <td align="center" valign="middle" bgcolor="#d4d4d4" class="h8">Freeware</td>
+                         <td align="center" valign="middle" bgcolor="#d4d4d4" class="h8">$0.01 per submission</td>
+                         <td align="center" valign="middle" bgcolor="#d4d4d4" class="h8">$165.95</td>
+                       </tr>
+                     </table>
+                     <p>
+                        *$299/month with annual subscription. <a href="/en/what-is-datawinners/">Learn more</a> about DataWinners' features.</p>
+
+
+                     <h2 class="h6">&nbsp;</h2>
+                    <h1 class="h6"><br>
+                        <p>How the Monthly Subscription Works</p>
+                    </h1>
+                    <ul class="bulleted">
+                       <li>One DataWinners subscription per organization per country </li>
+                       <li>SMS Coverage
+                         <select name="country_select" id="country_select">
+                           <option>Select your country</option>
+                         </select>
+                         <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;" />
+                         <div class="tooltip"><p>
+                            Using the telephone companies here, you can send SMS to and receive SMS from your DataWinners account.
+                            </p></div>
+                          <ul class="bulleted" id="networks_list"></ul>
+                       </li>
+                       <li>$199/month for Pro and $399/month for Pro SMS if less than annual plan </li>
+                       <li>If you go beyond the 1000 SMS per month, buy 500 more for $50!</li>
+                    </ul>
+                    View HNI's <a href="/en/terms-and-conditions/">Terms and Conditions</a> and <a href="/en/privacy-policy/">Privacy Policy</a> for more details
+                    <h2 class="h6"><br>Need help getting started? </h2>
+                    <p>If you need help getting started or have an ambitious data collection project that requires a      DataWinners custom solution, contact us at
+                    <a href="mailto:info@datawinners.com">info@datawinners.com</a> or use our <a href="/en/support/ask-us/">contact form</a>.</p>
+                    <p><br>
+                      Our team has extensive experience developing mobile data collection systems. See our <a href="/en/support/quick-start-services/"> Quick Start Services.</a>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+
     </div>
-</div>
-<div class="clear"></div>
+
+    {% block footer %}
+    <div id="container_footer">
+        <div id="footer_public">
+            {% include 'public_footer.html' %}
+        </div>
+    </div>
+    {% endblock %}
 {% endblock %}
