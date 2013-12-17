@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+from mangrove.datastore.database import DatabaseManager
 from mock import Mock, patch
 from datawinners.submission.models import SMSResponse
 from mangrove.form_model.form_model import NAME_FIELD, FormModel
@@ -63,5 +64,6 @@ class TestSMSResponse(unittest.TestCase):
             self.form_submission_mock.is_registration,
             self.form_submission_mock.entity_type,
             self.form_submission_mock.form_model.form_code)
-
-        self.assertEqual(error_response, SMSResponse(response).text(Mock(spec=FormModel)))
+        with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_by_code:
+            get_form_model_by_code.return_value = None
+            self.assertEqual(error_response, SMSResponse(response).text(Mock(spec=DatabaseManager)))

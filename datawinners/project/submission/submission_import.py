@@ -40,14 +40,14 @@ class SubmissionImporter():
             valid_rows, invalid_row_details = self.submission_validator.validate_rows(q_answer_dicts)
             ignored_entries, saved_entries = self.submission_persister.save_submissions(is_organization_user, user_profile, valid_rows)
             if ignored_entries:
-                ignored_row_start = total_submissions - len(ignored_entries)
-                message = gettext("You have exceeded the limit. Starting from row %s is ignored" % str(ignored_row_start))
+                ignored_row_start = total_submissions - len(ignored_entries) + 1
+                message = gettext("You have crossed the 1000 submissions limit for a trial account. Submissions from row %s have been ignored." % str(ignored_row_start))
             else:
-                message = gettext('%s of %s Submissions imported. Please check below for details') % (len(saved_entries), len(q_answer_dicts))
+                message = gettext('%s of %s Submissions imported. Please check below for details.') % (len(saved_entries), len(q_answer_dicts))
         except ImportValidationError as e:
             message = e.message
         except Exception as e:
-            message = gettext("Cannot import")
+            message = gettext("Some unexpected error happened. Please check the excel file and import again.")
 
         return SubmissionImportResponse(saved_entries=saved_entries,
                                         errored_entrie_details=invalid_row_details,

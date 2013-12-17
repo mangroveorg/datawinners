@@ -4470,8 +4470,8 @@ msgstr "Vous n'êtes pas autorisé à envoyer des soumissions au nom d'autres Ex
 msgid "You have crossed the 1000 submissions limit for a trial account. Submissions from row %s have been ignored."
 msgstr "Vous avez dépassé la limite des 1000 soumissions pour les comptes essais. Les soumissions à partir de la ligne %s ont été ignorés."
 
-msgid "20 of 22 Submissions imported. Please check below for details."
-msgstr "20 soumissions sur 22 ont été importés. Veuillez voir les détails ci-dessous."
+msgid "%s of %s Submissions imported. Please check below for details."
+msgstr "%s soumissions sur %s ont été importés. Veuillez voir les détails ci-dessous."
 
 msgid "The unique ID %s of the Data Sender does not match with any existing Data Sender ID. Please correct and import again."
 msgstr "Le Code %s d'Identité Unique de l'Expéditeur de Données ne correspond avec aucune Code d'Expéditeur de Données existante. Veuillez SVP corriger et importer encore une fois."

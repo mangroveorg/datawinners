@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from string import lower
 from django.utils.translation import ugettext as _
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.form_model import  get_form_model_by_code
@@ -29,11 +30,15 @@ def get_exception_message_for(exception, channel=None, formatter=default_formatt
     return formatter(exception, message)
 
 
-def get_submission_error_message_for(response):
+def index_of_question(form_model, question_code):
+    return [index for index, field in enumerate(form_model.fields) if field.code.lower() == lower(question_code)][0] + 1
+
+
+def get_submission_error_message_for(response, form_model):
 # :-( :-( :-(
     errors = response.errors
-    if isinstance(errors, dict):
-        keys = [_("question_prefix%s") % key[1:] for key in errors.keys()]
+    if isinstance(errors, dict) and form_model:
+        keys = [_("question_prefix%s") % index_of_question(form_model, question_code) for question_code in errors.keys()]
         keys.sort()
         if len(keys) == 1:
             errors_text = "%s %s" % (_("singular_question"), keys[0])
@@ -63,11 +68,12 @@ def get_success_msg_for_registration_using(response, source, form_model=None):
 
 
 def _get_response_message(response, dbm):
-    if response.success:
+    if response.form_code:
         form_model = get_form_model_by_code(dbm, response.form_code)
+    if response.success:
         message = _get_success_message(response, form_model)
     else:
-        message = get_submission_error_message_for(response)
+        message = get_submission_error_message_for(response, form_model)
     return message
 
 

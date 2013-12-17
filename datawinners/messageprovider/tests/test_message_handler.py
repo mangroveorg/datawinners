@@ -1,14 +1,19 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-from mangrove.form_model.form_model import FormModel
+from mangrove.datastore.database import DatabaseManager
+
 from mock import Mock, patch
-from datawinners.messageprovider.messages import  get_registration_success_message
+from django.utils.translation import get_language, activate
+from mangrove.datastore.datadict import DataDictType
+from mangrove.form_model.field import TextField
+
+from mangrove.form_model.form_model import FormModel
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException,\
     MangroveException, EntityQuestionCodeNotSubmitted
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
 from mangrove.transport.contract.response import create_response_from_form_submission
 from datawinners.messageprovider.message_builder import ResponseBuilder
-from django.utils.translation import get_language, activate
+
 
 THANKS = "Thank you %s. We received your SMS"
 
@@ -57,24 +62,27 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         test_data_list = [{"expected_reply": [("en", u"Error. Incorrect answer for question 1. Please review printed Questionnaire and resend entire SMS."),
                                               ("fr", u"Erreur. Reponse incorrecte pour la question 1. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."),
                                               ("mg", u"Diso ny valin’ny fanontaniana faha-1. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina.")],
-                           "errors":{"q1": "Some error"}},
+                           "errors":{"N": "Some error"}},
                           {"expected_reply": [("en", u"Error. Incorrect answer for question 1 and 2. Please review printed Questionnaire and resend entire SMS."),
                                               ("fr", u"Erreur. Reponse incorrecte pour les questions 1 et 2. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."),
                                               ("mg", u"Diso ny valin’ny fanontaniana faha-1 sy faha-2. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina.")],
-                           "errors":{"q1": "Some error", "q2": "Some other error"}},
+                           "errors":{"FA": "Some error", "n": "Some other error"}},
                           {"expected_reply": [("en", u"Error. Incorrect answer for question 1, 2 and 3. Please review printed Questionnaire and resend entire SMS."),
                                               ("fr", u"Erreur. Reponse incorrecte pour les questions 1, 2 et 3. Veuillez revoir le Questionnaire rempli et renvoyez tout le SMS corrige."),
                                               ("mg", u"Diso ny valin’ny fanontaniana faha-1 sy faha-2 ary faha-3. Jereo ny lisitry ny fanontaniana azafady dia avereno alefa manontolo ny SMS marina.")],
-                           "errors": {"q1": "Some error", "q2": "Some other error", "q3":"Sp"}}]
+                           "errors": {"Fa": "Some error", "n": "Some other error", "pl":"Sp"}}]
 
         response = Mock()
         response.is_registration = False
         current_lg = get_language()
+        default_ddtype = DataDictType(Mock(spec=DatabaseManager), name='Default String Datadict Type', slug='string_default',
+                                           primitive_type='string')
+        form_model_mock = Mock(spec=FormModel, fields=[TextField("name", "n","Father's name", default_ddtype), TextField("age", "fa","Father's age", default_ddtype),TextField("place", "pl","Father's Place", default_ddtype)])
         for test_data in test_data_list:
             response.errors = test_data.get("errors")
             for (lg,expected_message) in test_data.get("expected_reply"):
                 activate(lg)
-                message = get_submission_error_message_for(response)
+                message = get_submission_error_message_for(response, form_model=form_model_mock)
                 self.assertEqual(expected_message, message)
         activate(current_lg)
         self.assertEqual(current_lg, get_language())

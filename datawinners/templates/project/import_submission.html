@@ -24,9 +24,11 @@
             <div id="file_uploader" class="float_left grid_5"></div>
         </div>
         <div id="template-download-section" class="error download-section" class="margin_top_15">
-            {% trans "Download the template:" %} <a id="template-download-link">{% trans "DataWinners_ImportSubmissions"%}.xsl</a>
+            <span style="padding-left:2em">
+                {% trans "Download the template:" %} <a id="template-download-link">{% trans "DataWinners_ImportSubmissions"%}.xsl</a>
+           </span>
         </div>
-        <div>
+        <div style="float: left;">
             {% trans "Note: You cannot add new columns in your Excel file to create new questions. " %}
             {% trans "Edit the Questionnaire to make these changes." %}
         </div>

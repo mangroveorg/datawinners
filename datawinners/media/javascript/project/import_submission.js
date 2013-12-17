@@ -100,10 +100,10 @@ DW.SubmissionFileUploader = function(options){
 
     self.onComplete = function(id, fileName, responseJSON){
         $.unblockUI();
+        $('.qq-upload-failed-text').hide();
          _clearTables();
         if(responseJSON.success_submissions.length > 0){
              _populateSuccessTable(responseJSON.question_map, responseJSON.success_submissions);
-             _updateSuccessSectionHeader(responseJSON);
              $('#success_import_section').show();
         }
 
@@ -137,10 +137,6 @@ DW.SubmissionFileUploader = function(options){
         return body;
     };
 
-    function _updateSuccessSectionHeader(responseJSON) {
-        $("#success_table_message").html(responseJSON.success_submissions.length + gettext(" Submission(s) Successfully Imported"));
-    };
-
     var _populateErrorTable = function(error_details){
         var header = _createErrorHeader();
         error_table.append(header);
@@ -172,7 +168,7 @@ DW.SubmissionFileUploader = function(options){
     function _update_success_table_message(responseJSON) {
         if(responseJSON.success_submissions.length > 0) {
             var successCount = responseJSON.success_submissions.length;
-            $("#success_table_message").html(interpolate(gettext('%(successCount)s Submissions Successfully Imported'),{'successCount':successCount}, true));
+            $("#success_table_message").html(interpolate(gettext('%(successCount)s Submission(s) Successfully Imported'),{'successCount':successCount}, true));
         }
     };
 
@@ -180,7 +176,7 @@ DW.SubmissionFileUploader = function(options){
         var body = '<tbody>';
             _.each(error_details, function (error_detail) {
                 body += '<tr><td>' + error_detail.row_count + '</td><td>';
-                body += '<ul class="bulleted">'
+                body += '<ul class="bulleted error_list">'
                 _.each(error_detail.errors, function (error) {
                     body += '<li>' + error + '</li>';
                 });

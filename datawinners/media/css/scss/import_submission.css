@@ -3,3 +3,26 @@
 
 .no-close .ui-dialog-titlebar-close {
   display: none; }
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    background: -moz-linear-gradient(center top , #DFEDF4, #CCE3EE) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #5087B4 !important;
+    cursor: pointer;
+    font-weight: normal;
+    padding: 0px 5px;
+}
+
+.ui-widget-content a {
+    color: #0070AC;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    background-image: none;
+    border-width: 0;
+    margin: 0;
+}
+
+.error_list {
+    list-style: disc outside none;
+    padding-left: 15px;
+}
