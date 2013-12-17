@@ -21,7 +21,7 @@ class SubmissionHeader():
             key = es_field_name(field_code, self.form_model.id)
             if not header_dict.has_key(key): header_dict.update({key: val})
 
-        if self.form_model.entity_defaults_to_reporter():
+        if self.form_model.is_entity_type_reporter():
             header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
             header_dict.pop('entity_short_code')
         return header_dict

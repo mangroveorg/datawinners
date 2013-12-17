@@ -17,7 +17,7 @@ class TestSubmissionQuery(unittest.TestCase):
         entity_question_field = Mock(spec=Field)
         form_model.entity_question = entity_question_field
         form_model.event_time_question = None
-        form_model.entity_defaults_to_reporter.return_value = False
+        form_model.is_entity_type_reporter.return_value = False
         entity_question_field.code.lower.return_value = 'eid'
         with patch("datawinners.search.submission_headers.header_fields") as header_fields:
             header_fields.return_value = {}
@@ -31,7 +31,7 @@ class TestSubmissionQuery(unittest.TestCase):
 
     def test_should_have_reporting_date_header_if_form_model_has_reporting_date(self):
         form_model = MagicMock(spec=FormModel, id="2323")
-        form_model.entity_defaults_to_reporter.return_value = False
+        form_model.is_entity_type_reporter.return_value = False
         entity_question_field = Mock(spec=Field)
         form_model.entity_question = entity_question_field
         entity_question_field.code.lower.return_value = 'eid'
@@ -52,7 +52,7 @@ class TestSubmissionQuery(unittest.TestCase):
 
     def test_submission_status_headers_for_success_and_erred_submissions(self):
         form_model = MagicMock(spec=FormModel, id="2323")
-        form_model.entity_defaults_to_reporter.return_value = False
+        form_model.is_entity_type_reporter.return_value = False
         entity_question_field = Mock(spec=Field)
         form_model.entity_question = entity_question_field
         form_model.event_time_question = None
@@ -76,7 +76,7 @@ class TestSubmissionQuery(unittest.TestCase):
 
     def test_headers_for_submission_analysis(self):
         form_model = MagicMock(spec=FormModel, id="2323")
-        form_model.entity_defaults_to_reporter.return_value = False
+        form_model.is_entity_type_reporter.return_value = False
         entity_question_field = Mock(spec=Field)
         form_model.entity_question = entity_question_field
 
