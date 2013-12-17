@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     $.ajaxSetup({ cache: false });
     var submissionTabs = new DW.SubmissionTabs();
     submissionTabs.setToSuccessTab();
@@ -28,11 +28,7 @@ $(document).ready(function () {
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");
 
-
-    $('.export_link').click(function () {
-        var url = '/project/export/log' + '?type=' + submissionTabs.getActiveTabName();
-        $('#export_form').appendJson({"search_filters":JSON.stringify(filter_as_json())}).attr('action', url).submit();
-    });
-})
+    new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
+});
 
 

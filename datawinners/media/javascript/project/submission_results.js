@@ -78,6 +78,23 @@ DW.SubmissionLogTable = function(options){
     };
 };
 
+DW.SubmissionLogExport = function(){
+    var self = this;
+
+    self.init = function(currentTab){
+        self.exportLink = $('.export_link');
+        self.exportForm = $('#export_form');
+        self.url = '/project/export/log' + '?type=' + currentTab;
+        _initialize_events();
+    };
+
+    var _initialize_events = function(){
+        self.exportLink.click(function () {
+            self.exportForm.appendJson({"search_filters":JSON.stringify(filter_as_json())}).attr('action', self.url).submit();
+        });
+    };
+};
+
 DW.DataSenderFilter = function(){
     var self = this;
     this.datasenders_source_url = "/entity/datasenders/autocomplete/";
