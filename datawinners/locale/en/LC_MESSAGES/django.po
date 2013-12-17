@@ -4331,7 +4331,7 @@ msgstr ""
 msgid "Total SMS Sent Out"
 msgstr ""
 
-msgid "Reply SMS & Reminders"
+msgid "Reply SMS"
 msgstr ""
 
 msgid "Send a message"
@@ -4355,3 +4355,5 @@ msgstr ""
 msgid "Edit the Questionnaire to make these changes."
 msgstr ""
 
+msgid "Upgrade to a Pro Account"
+msgstr ""

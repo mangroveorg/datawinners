@@ -9,6 +9,8 @@ p {
 
 .dashboard_right {
   margin-left: 10px; }
+  .dashboard_right h6 {
+    min-width: 204px; }
 
 #how_to {
   width: 100% !important;
@@ -77,12 +79,13 @@ p {
 
 table.no-border {
   width: 230px;
-  line-height: 12px; }
+  line-height: 5px; }
   table.no-border.line_height_14 {
     line-height: 14px; }
   table.no-border td, table.no-border th {
     border: none !important;
-    text-align: right; }
+    text-align: right;
+    padding-left: 0; }
     table.no-border td.small, table.no-border th.small {
       font-size: 10px;
       vertical-align: bottom;

@@ -4443,8 +4443,8 @@ msgstr "envoyés & reçus"
 msgid "Total SMS Sent Out"
 msgstr "Total SMS envoyés"
 
-msgid "Reply SMS & Reminders"
-msgstr "SMS de retour et rappels"
+msgid "Reply SMS"
+msgstr "SMS de retour"
 
 msgid "Send a message"
 msgstr "Envoyer un message"
@@ -4491,3 +4491,5 @@ msgstr "La réponse %s à la question %s est plus longue que la limite autorisé
 msgid "Please enter a valid value for %s"
 msgstr "Veuillez SVP introduire une valeur valide pour %s"
 
+msgid "Upgrade to a Pro Account"
+msgstr "Passer à un Compte Pro"

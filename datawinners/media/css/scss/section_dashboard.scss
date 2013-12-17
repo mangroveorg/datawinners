@@ -11,6 +11,9 @@ p{
 }
 .dashboard_right{
     margin-left:10px;
+    h6{
+        min-width: 204px;
+    }
 }
 #how_to{
     width:100% !important;
@@ -107,13 +110,14 @@ p{
 
 table.no-border{
     width: 230px;
-    line-height: 12px;
+    line-height: 5px;
     &.line_height_14{
         line-height:14px;
     }
     td,th{
         border: none!important;
         text-align: right;
+        padding-left: 0;
         &.small{
             font-size: 10px;
             vertical-align: bottom;
