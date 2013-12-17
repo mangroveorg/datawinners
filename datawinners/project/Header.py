@@ -63,9 +63,10 @@ class SubmissionsPageHeader():
         self.submission_type = submission_type
 
     def get_column_title(self):
-        header_dict = HeaderFactory(self._form_model).get_header_dictionary(self.submission_type)
+        header = HeaderFactory(self._form_model).create_header(self.submission_type)
+        header_dict = header.get_header_field_dict()
         header_dict.pop('ds_id')
-        header_dict.pop("entity_short_code")
+        header_dict.pop("entity_short_code",None)
         return header_dict.values()
 
 
@@ -80,7 +81,8 @@ class SubmissionExcelHeader():
                 "label": header_dict[SubmissionIndexConstants.DATASENDER_ID_KEY]}})
 
     def get_columns(self):
-        header_dict = HeaderFactory(self._form_model).get_header_dictionary(self.submission_type)
+        header = HeaderFactory(self._form_model).create_header(self.submission_type)
+        header_dict = header.get_header_field_dict()
         # header_dict = OrderedDict({'name':"Name"}, {"p":"Place", "})
         if self._form_model.entity_type == ["reporter"]:
             header_dict.pop("entity_short_code")

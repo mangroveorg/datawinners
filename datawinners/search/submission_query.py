@@ -55,21 +55,23 @@ class SubmissionQueryResponseCreator():
     def __init__(self, form_model):
         self.form_model = form_model
 
+    def combine_name_and_id(self, short_code, entity_name, submission):
+        return submission.append(
+            ["%s<span class='small_grey'>  %s</span>" % (
+                entity_name, short_code)]) if entity_name else submission.append(entity_name)
+
     def create_response(self, required_field_names, query):
         submissions = []
         for res in query.values_dict(tuple(required_field_names)):
             submission = [res._id]
-            submission.append(
-                ["%s<span class='small_grey'>  %s</span>" % (res.get('ds_name'), res.get('ds_id'))]) if res.get(
-                'ds_name') else submission.append(res.get('ds_name'))
 
             for key in required_field_names:
-                meta_fields = ['ds_id', 'ds_name', 'entity_short_code']
+                meta_fields = ['ds_id', 'entity_short_code']
                 if not key in meta_fields:
                     if key.lower().endswith(self.form_model.entity_question.code.lower()):
-                        submission.append(
-                            ["%s<span class='small_grey'>  %s</span>" % (
-                                res.get(key), res.get('entity_short_code'))] if res.get(key) else res.get(key))
+                        self.combine_name_and_id(res.get('entity_short_code'), res.get(key), submission)
+                    elif key == 'ds_name':
+                        self.combine_name_and_id(res.get('ds_id'), res.get('ds_name'), submission)
                     else:
                         submission.append(res.get(key))
             submissions.append(submission)
@@ -84,7 +86,8 @@ class SubmissionQuery(Query):
 
     def get_headers(self, user, entity_type):
         submission_type = self.query_params.get('filter')
-        return HeaderFactory(self.form_model).get_header(submission_type)
+        header = HeaderFactory(self.form_model).create_header(submission_type)
+        return header.get_header_field_names()
 
     def populate_query_options(self):
         options = super(SubmissionQuery, self).populate_query_options()
@@ -98,7 +101,8 @@ class SubmissionQuery(Query):
         query_all_results = self.query_builder.query_all(database_name)
         submission_type = self.query_params.get('filter')
 
-        submission_headers = HeaderFactory(self.form_model).get_header(submission_type)
+        header = HeaderFactory(self.form_model).create_header(submission_type)
+        submission_headers = header.get_header_field_names()
         query_by_submission_type = self.query_builder.filter_by_submission_type(query_all_results, self.query_params)
         filtered_query = self.query_builder.add_query_criteria(submission_headers,
                                                                self.query_params.get('search_filters').get(

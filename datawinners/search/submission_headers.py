@@ -21,8 +21,9 @@ class SubmissionHeader():
             key = es_field_name(field_code, self.form_model.id)
             if not header_dict.has_key(key): header_dict.update({key: val})
 
-        if "reporter" in self.form_model.entity_type:
+        if self.form_model.entity_defaults_to_reporter():
             header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
+            header_dict.pop('entity_short_code')
         return header_dict
 
     def get_header_field_names(self):
@@ -46,9 +47,9 @@ class SubmissionAnalysisHeader(SubmissionHeader):
             header_dict.update(
                 {es_field_name(self.form_model.event_time_question.code, self.form_model.id): "Reporting Date"})
 
+        header_dict.update({"date": "Submission Date"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
-        header_dict.update({"date": "Submission Date"})
         return header_dict
 
 
@@ -106,14 +107,6 @@ class HeaderFactory():
                                      "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader}
         self.form_model = form_model
 
-    def get_header(self, submission_type):
+    def create_header(self, submission_type):
         header_class = self.header_to_class_dict.get(submission_type)
-        if not submission_type:
-            submission_type = "all"
-            return header_class(self.form_model).get_header_field_names()
-        return header_class(self.form_model).get_header_field_names()
-
-    def get_header_dictionary(self, submission_type):
-        if not submission_type or submission_type in ["all", "deleted"]:
-            return self.header_to_class_dict.get("all")(self.form_model).get_header_field_dict()
-        return self.header_to_class_dict.get(submission_type)(self.form_model).get_header_field_dict()
+        return header_class(self.form_model)

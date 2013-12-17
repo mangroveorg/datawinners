@@ -31,9 +31,9 @@ class Query(object):
         entity_headers = self.get_headers(user, entity_type)
         options = self.populate_query_options()
         if self.query_params["order_by"] > 0:
-            header_copy = list(entity_headers)
-            if "entity_short_code" in header_copy: header_copy.remove("entity_short_code")
-            options.update({"order_field": header_copy[self.query_params["order_by"]]})
+            #header_copy = list(entity_headers)
+            #if "entity_short_code" in header_copy: header_copy.remove("entity_short_code")
+            options.update({"order_field": entity_headers[self.query_params["order_by"]]})
         query = self.query_builder.create_query(self._getDatabaseName(user), entity_type)
         paginated_query = self.query_builder.create_paginated_query(query, options)
         search_text = lower(self.query_params.get("search_text") or self.query_params.get("search_filters",{}).get("search_text",''))
