@@ -83,7 +83,7 @@ class TestQueryBuilder(TestCase):
         query_text = ""
         searchMock.query.return_value = searchMock
 
-        actual_query = QueryBuilder().add_query_criteria([], query_text, searchMock)
+        actual_query = QueryBuilder().add_query_criteria([], searchMock,query_text)
 
         searchMock.query.assert_called_with()
         self.assertEquals(actual_query, searchMock)
@@ -96,7 +96,7 @@ class TestQueryBuilder(TestCase):
             elastic_utils_helper.return_value = elastic_utils_helper
             elastic_utils_helper.replace_special_chars.return_value = "query_text_escaped"
 
-            QueryBuilder().add_query_criteria(["query_field1", "query_field2"], query_text, searchMock)
+            QueryBuilder().add_query_criteria(["query_field1", "query_field2"], searchMock, query_text)
 
             elastic_utils_helper.replace_special_chars.assert_called_with('query_text')
             searchMock.query_raw.assert_called_with({

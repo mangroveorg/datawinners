@@ -305,8 +305,7 @@ def export(request):
                     "order": "",
                     "order_by": 0
     }
-    if submission_type != "all":
-        query_params.update({"filter": submission_type})
+    query_params.update({"filter": submission_type})
 
     return SubmissionExporter(form_model, project_name, request.user) \
         .create_excel_response(submission_type, query_params)

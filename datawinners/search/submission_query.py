@@ -29,8 +29,8 @@ class SubmissionQueryBuilder(QueryBuilder):
         query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
         return self.filter_by_submission_type(query, query_params)
 
-    def add_query_criteria(self, query_fields, query_text, query, query_params=None):
-        query = super(SubmissionQueryBuilder, self).add_query_criteria(query_fields, query_text, query, query_params)
+    def add_query_criteria(self, query_fields, query, query_text, query_params=None):
+        query = super(SubmissionQueryBuilder, self).add_query_criteria(query_fields, query, query_text, query_params)
         search_filter_param = query_params.get('search_filters')
         if search_filter_param:
             submission_date_range = search_filter_param.get("submissionDatePicker")
@@ -84,7 +84,7 @@ class SubmissionQuery(Query):
                        query_params)
         self.form_model = form_model
 
-    def get_headers(self, user, entity_type):
+    def get_headers(self, user=None, entity_type=None):
         submission_type = self.query_params.get('filter')
         header = HeaderFactory(self.form_model).create_header(submission_type)
         return header.get_header_field_names()
@@ -104,9 +104,9 @@ class SubmissionQuery(Query):
         header = HeaderFactory(self.form_model).create_header(submission_type)
         submission_headers = header.get_header_field_names()
         query_by_submission_type = self.query_builder.filter_by_submission_type(query_all_results, self.query_params)
-        filtered_query = self.query_builder.add_query_criteria(submission_headers,
+        filtered_query = self.query_builder.add_query_criteria(submission_headers, query_by_submission_type,
                                                                self.query_params.get('search_filters').get(
-                                                                   'search_text'), query_by_submission_type,
+                                                                   'search_text'),
                                                                query_params=self.query_params)
         submissions = self.response_creator.create_response(submission_headers, filtered_query)
         return submissions

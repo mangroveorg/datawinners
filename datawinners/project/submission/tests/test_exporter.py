@@ -12,8 +12,8 @@ class TestExporter(TestCase):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
 
     def test_export(self):
-        resp = self.client.post('/project/export/log',
-                                {'project_name': 'test data sorting', 'type': 'all',
+        resp = self.client.post('/project/export/log?type=all',
+                                {'project_name': 'test data sorting',
                                  'search_filters': "{\"search_text\":\"export18\"}",
                                  'questionnaire_code': 'cli001'})
         xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")

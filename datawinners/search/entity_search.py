@@ -24,7 +24,7 @@ class DatasenderQuery(Query):
         subject_headers = self.get_headers(user)
         query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
         query_all_results = query[:query.count()]
-        query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_text, query_all_results)
+        query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_all_results, query_text)
         return self.response_creator.create_response(subject_headers, query_with_criteria)
 
 
@@ -46,8 +46,8 @@ class MyDataSenderQuery(Query):
             "order_field": entity_headers[query_params["order_by"]],
             "order": query_params["order"]
         })
-        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, query_params["search_text"],
-                                                                    paginated_query).filter(projects_value=project_name)
+        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, paginated_query, query_params["search_text"],
+                                                                    ).filter(projects_value=project_name)
 
         entities = self.response_creator.create_response(entity_headers, query_with_criteria)
         return query_with_criteria.count(), paginated_query.count(), entities
@@ -56,7 +56,7 @@ class MyDataSenderQuery(Query):
         entity_headers = self.get_headers(user)
         query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
         query = query[:query.count()]
-        query = self.query_builder.add_query_criteria(entity_headers, search_text, query).filter(
+        query = self.query_builder.add_query_criteria(entity_headers, query, search_text).filter(
             projects_value=project_name)
         return self.response_creator.create_response(entity_headers, query)
 
@@ -80,7 +80,7 @@ class SubjectQuery(Query):
         subject_headers = self.get_headers(user, subject_type)
         query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=subject_type)
         query_all_results = query[:query.count()]
-        query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_text, query_all_results)
+        query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_all_results, query_text)
         subjects = self.response_creator.create_response(subject_headers, query_with_criteria)
         return subjects
 

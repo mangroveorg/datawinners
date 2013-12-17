@@ -64,8 +64,7 @@ class TestDeleteSubmission(TestCase):
 
     def get_submissions(self, filter_type, search_text):
         query_params = {'search_filters': {'search_text': search_text}}
-        if filter_type != 'all':
-            query_params.update({'filter': filter_type})
+        query_params.update({'filter': filter_type})
         submissions = SubmissionQuery(self.form_model, query_params).query(self.dbm.database_name)
         return submissions
 

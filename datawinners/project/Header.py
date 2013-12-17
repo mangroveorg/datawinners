@@ -85,7 +85,7 @@ class SubmissionExcelHeader():
         header_dict = header.get_header_field_dict()
         # header_dict = OrderedDict({'name':"Name"}, {"p":"Place", "})
         if self._form_model.entity_type == ["reporter"]:
-            header_dict.pop("entity_short_code")
+            header_dict.pop("entity_short_code",None)
 
         result = OrderedDict()
         for key in header_dict:

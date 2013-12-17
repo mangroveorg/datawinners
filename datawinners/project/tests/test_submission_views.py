@@ -214,7 +214,7 @@ class TestSubmissionViews(unittest.TestCase):
             mock_submission_query.return_value = query_mock
             query_mock.query.return_value = []
             get_survey_response_ids_from_request(dbm, request, form_model)
-            mock_submission_query.assert_called_with(form_model, {'search_filters': []})
+            mock_submission_query.assert_called_with(form_model, {'filter':'all','search_filters': []})
             query_mock.query.assert_called_with('db_name')
 
     def test_get_submission_ids_to_delete_should_call_submission_query_with_submission_type_if_select_all_flag_is_true(self):

@@ -36,8 +36,10 @@ class Query(object):
             options.update({"order_field": entity_headers[self.query_params["order_by"]]})
         query = self.query_builder.create_query(self._getDatabaseName(user), entity_type)
         paginated_query = self.query_builder.create_paginated_query(query, options)
-        search_text = lower(self.query_params.get("search_text") or self.query_params.get("search_filters",{}).get("search_text",''))
-        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, search_text, paginated_query, query_params=self.query_params)
+        search_text = lower(
+            self.query_params.get("search_text") or self.query_params.get("search_filters", {}).get("search_text", ''))
+        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, paginated_query, search_text,
+                                                                    query_params=self.query_params)
         return entity_headers, paginated_query, query_with_criteria
 
     def paginated_query(self, user, entity_type):
@@ -63,7 +65,7 @@ class QueryBuilder(object):
             query = query.order_by(order + order_by + "_value")
         return query[start_result_number:start_result_number + number_of_results]
 
-    def add_query_criteria(self, query_fields, query_text, search, query_params=None):
+    def add_query_criteria(self, query_fields, query, query_text, query_params=None):
         if query_text:
             query_text_escaped = self.elastic_utils_helper.replace_special_chars(query_text)
             raw_query = {
@@ -72,9 +74,9 @@ class QueryBuilder(object):
                     "query": query_text_escaped
                 }
             }
-            return search.query_raw(raw_query)
+            return query.query_raw(raw_query)
 
-        return search.query()
+        return query.query()
 
 
 class ElasticUtilsHelper():

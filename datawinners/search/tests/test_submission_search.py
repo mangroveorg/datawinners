@@ -7,35 +7,37 @@ from datawinners.search.submission_index import es_field_name
 from datawinners.search.submission_query import SubmissionQuery, SubmissionQueryResponseCreator
 from mangrove.form_model.field import Field
 from mangrove.form_model.form_model import FormModel
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
 class TestSubmissionQuery(unittest.TestCase):
     def test_should_return_submission_log_specific_header_fields(self):
-        form_model = Mock(spec=FormModel, id="2323")
-        type(form_model).entity_type = PropertyMock(return_value=["clinic"])
+        form_model = MagicMock(spec=FormModel, id="2323")
+        #form_model.entity_type = ["clinic"]
         entity_question_field = Mock(spec=Field)
-        type(form_model).entity_question = PropertyMock(return_value=entity_question_field)
-        type(form_model).event_time_question = PropertyMock(return_value=None)
+        form_model.entity_question = entity_question_field
+        form_model.event_time_question = None
+        form_model.entity_defaults_to_reporter.return_value = False
         entity_question_field.code.lower.return_value = 'eid'
         with patch("datawinners.search.submission_headers.header_fields") as header_fields:
             header_fields.return_value = {}
-            query_params = {"filter": "success"}
+            query_params = {"filter": "all"}
 
-            headers = SubmissionQuery(form_model, query_params).get_headers(Mock, "code")
+            headers = SubmissionQuery(form_model, query_params).get_headers()
 
             expected = [es_field_name(f, "2323") for f in
                         ["ds_id", "ds_name", "date", "status", "eid", "entity_short_code"]]
             self.assertListEqual(expected, headers)
 
     def test_should_have_reporting_date_header_if_form_model_has_reporting_date(self):
-        form_model = Mock(spec=FormModel, id="2323")
-        type(form_model).entity_type = PropertyMock(return_value=["clinic"])
+        form_model = MagicMock(spec=FormModel, id="2323")
+        form_model.entity_defaults_to_reporter.return_value = False
         entity_question_field = Mock(spec=Field)
-        type(form_model).entity_question = PropertyMock(return_value=entity_question_field)
+        form_model.entity_question = entity_question_field
         entity_question_field.code.lower.return_value = 'eid'
 
         event_time_field = Mock(spec=Field)
-        type(form_model).event_time_question = PropertyMock(return_value=event_time_field)
+        form_model.event_time_question = event_time_field
         event_time_field.code.lower.return_value = "rp_date"
 
         with patch("datawinners.search.submission_headers.header_fields") as header_fields:
@@ -45,15 +47,15 @@ class TestSubmissionQuery(unittest.TestCase):
             headers = SubmissionQuery(form_model, query_params).get_headers(Mock, "code")
 
             expected = [es_field_name(f, "2323") for f in
-                        ["ds_id", "ds_name", "date", "status", "eid", "entity_short_code", "rp_date"]]
+                        ["ds_id", "ds_name", "date", "eid", "entity_short_code", "rp_date"]]
             self.assertListEqual(expected, headers)
 
     def test_submission_status_headers_for_success_and_erred_submissions(self):
-        form_model = Mock(spec=FormModel, id="2323")
-        type(form_model).entity_type = PropertyMock(return_value=["clinic"])
+        form_model = MagicMock(spec=FormModel, id="2323")
+        form_model.entity_defaults_to_reporter.return_value = False
         entity_question_field = Mock(spec=Field)
-        type(form_model).entity_question = PropertyMock(return_value=entity_question_field)
-        type(form_model).event_time_question = PropertyMock(return_value=None)
+        form_model.entity_question = entity_question_field
+        form_model.event_time_question = None
         entity_question_field.code.lower.return_value = 'eid'
         with patch("datawinners.search.submission_headers.header_fields") as header_fields:
             header_fields.return_value = {}
@@ -73,13 +75,13 @@ class TestSubmissionQuery(unittest.TestCase):
             self.assertListEqual(expected, headers)
 
     def test_headers_for_submission_analysis(self):
-        form_model = Mock(spec=FormModel, id="2323")
-        type(form_model).entity_type = PropertyMock(return_value=["clinic"])
+        form_model = MagicMock(spec=FormModel, id="2323")
+        form_model.entity_defaults_to_reporter.return_value = False
         entity_question_field = Mock(spec=Field)
-        type(form_model).entity_question = PropertyMock(return_value=entity_question_field)
+        form_model.entity_question = entity_question_field
 
         event_time_field = Mock(spec=Field)
-        type(form_model).event_time_question = PropertyMock(return_value=event_time_field)
+        form_model.event_time_question = event_time_field
         event_time_field.code.lower.return_value = "rp_date"
 
         entity_question_field.code.lower.return_value = 'eid'

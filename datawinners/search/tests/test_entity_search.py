@@ -97,8 +97,8 @@ class TestSubjectQuery(TestCase):
                 subject_query_builder.create_query.assert_called_once_with(doc_type='subject_type',
                                                                            database_name='database_name')
                 query.__getitem__assert_called_with(slice(None, count_of_all_matching_results, None))
-                subject_query_builder.add_query_criteria.assert_called_with(subject_headers, "query_text",
-                                                                            query_all_results)
+                subject_query_builder.add_query_criteria.assert_called_with(subject_headers, query_all_results,
+                                                                            "query_text")
                 response_creator.create_response.assert_called_with(subject_headers, query_with_criteria)
                 self.assertEquals(actualSubjects, "expected subjects")
 
@@ -145,8 +145,8 @@ class TestSubjectQuery(TestCase):
                     "order": "-"
                 })
                 response_creator.create_response.assert_called_with(subject_headers, query_with_criteria)
-                subject_query_builder.add_query_criteria.assert_called_with(subject_headers, "query_text",
-                                                                            paginated_query, query_params=query_params)
+                subject_query_builder.add_query_criteria.assert_called_with(subject_headers, paginated_query,
+                                                                            "query_text", query_params=query_params)
                 self.assertEquals(actualSubjects, "expected subjects")
                 self.assertEquals(filtered_count, expected_filtered_result_count)
                 self.assertEquals(total_count, expected_total_result_count)
