@@ -149,7 +149,7 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
             } else {
                 window.location.replace(redirect_url);
             }
-            
+
         } else {
             $.unblockUI();
             if (responseJson.error_in_project_section) {
@@ -174,6 +174,8 @@ $(document).ready(function () {
     DW.option_warning_dialog.init();
     DW.init_delete_periodicity_question_warning();
     if (is_edit){
+        $('.report_type').find('input,select').prop('disabled',true);
+        $("#add_subject_type").empty();
         DW.init_has_submission_delete_warning();
         DW.init_has_new_submission_delete_warning();
         DW.init_inform_datasender_about_changes();
