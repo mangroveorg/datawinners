@@ -1,15 +1,8 @@
-from collections import OrderedDict
 import elasticutils
 from datawinners.search.filters import SubmissionDateRangeFilter, ReportingDateRangeFilter
-from datawinners.search.submission_index import es_field_name
+from datawinners.search.submission_headers import HeaderFactory
 from datawinners.settings import ELASTIC_SEARCH_URL
-from mangrove.form_model.form_model import header_fields
 from datawinners.search.query import QueryBuilder, Query
-
-
-class SubmissionIndexConstants:
-    DATASENDER_ID_KEY = "ds_id"
-    DATASENDER_NAME_KEY = "ds_name"
 
 
 class SubmissionQueryBuilder(QueryBuilder):
@@ -25,12 +18,14 @@ class SubmissionQueryBuilder(QueryBuilder):
         if submission_type_filter:
             if submission_type_filter == 'deleted':
                 return query.filter(void=True)
-            query = query.filter(status=submission_type_filter)
+            elif submission_type_filter == 'analysis':
+                query = query.filter(status="success")
+            else:
+                query = query.filter(status=submission_type_filter)
         return query.filter(void=False)
 
     def create_paginated_query(self, query, query_params):
         query = super(SubmissionQueryBuilder, self).create_paginated_query(query, query_params)
-
         return self.filter_by_submission_type(query, query_params)
 
     def add_query_criteria(self, query_fields, query_text, query, query_params=None):
@@ -86,41 +81,9 @@ class SubmissionQuery(Query):
                        query_params)
         self.form_model = form_model
 
-    def get_header_dict(self):
-        header_dict = OrderedDict()
-        self._update_static_header_info(header_dict)
-
-        def key_attribute(field):
-            return field.code.lower()
-
-        headers = header_fields(self.form_model, key_attribute)
-        for field_code, val in headers.items():
-            key = es_field_name(field_code, self.form_model.id)
-            if not header_dict.has_key(key): header_dict.update({key: val})
-
-        if "reporter" in self.form_model.entity_type:
-            header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
-        return header_dict
-
-    def get_headers(self, user=None, form_code=None):
-        return self.get_header_dict().keys()
-
-    def _update_static_header_info(self, header_dict):
-        header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
-        header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
-        header_dict.update({"date": "Submission Date"})
+    def get_headers(self, user, entity_type):
         submission_type = self.query_params.get('filter')
-        if not submission_type or submission_type in ["all", "deleted"]:
-            header_dict.update({"status": "Status"})
-        elif submission_type == 'error': \
-            header_dict.update({"error_msg": "Error Message"})
-        subject_title = self.form_model.entity_type[0].title()
-        header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
-        header_dict.update({'entity_short_code': "%s ID" % subject_title})
-        if self.form_model.event_time_question:
-            header_dict.update(
-                {es_field_name(self.form_model.event_time_question.code, self.form_model.id): "Reporting Date"})
-
+        return HeaderFactory(self.form_model).get_header(submission_type)
 
     def populate_query_options(self):
         options = super(SubmissionQuery, self).populate_query_options()
@@ -132,7 +95,9 @@ class SubmissionQuery(Query):
 
     def query(self, database_name):
         query_all_results = self.query_builder.query_all(database_name)
-        submission_headers = self.get_headers()
+        submission_type = self.query_params.get('filter')
+
+        submission_headers = HeaderFactory(self.form_model).get_header(submission_type)
         query_by_submission_type = self.query_builder.filter_by_submission_type(query_all_results, self.query_params)
         filtered_query = self.query_builder.add_query_criteria(submission_headers,
                                                                self.query_params.get('search_filters').get(
@@ -140,3 +105,5 @@ class SubmissionQuery(Query):
                                                                query_params=self.query_params)
         submissions = self.response_creator.create_response(submission_headers, filtered_query)
         return submissions
+
+

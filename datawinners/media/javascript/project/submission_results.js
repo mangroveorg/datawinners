@@ -1,7 +1,7 @@
 DW.SubmissionTabs = function(){
         var self = this;
 
-        var tabList = ["all", "success", "error", "deleted"];
+        var tabList = ["all", "success", "error", "deleted","analysis"];
         var active_tab_index = 0;
 
         self.updateActiveTabIndexBasedOnCurrentLocation = function(){
@@ -27,8 +27,8 @@ DW.SubmissionTabs = function(){
            return active_tab_index != 3;
         };
 
-        self.setToSuccessTab = function(){
-          active_tab_index = 1;
+        self.setToAnalysisTab = function(){
+          active_tab_index = 4;
         };
 };
 

@@ -1,6 +1,7 @@
 from string import lower
 from babel.dates import format_datetime
 from datawinners.project.models import get_all_projects
+from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_fields_mapping_by_field_def, get_field_definition
@@ -63,7 +64,8 @@ def submission_update_on_entity_edition(entity_doc, dbm):
 
 
 def update_submission_search_for_datasender_edition(entity_doc, dbm):
-    from datawinners.search.submission_query import SubmissionQueryBuilder, SubmissionIndexConstants
+    from datawinners.search.submission_query import SubmissionQueryBuilder
+
     args = {SubmissionIndexConstants.DATASENDER_ID_KEY: entity_doc.short_code}
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
     project_form_model_ids = [project.value['qid'] for project in get_all_projects(dbm)]

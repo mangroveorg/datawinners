@@ -1,7 +1,8 @@
 from collections import OrderedDict
 from django.utils.translation import ugettext
+from datawinners.search.submission_headers import HeaderFactory
+from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index import es_field_name
-from datawinners.search.submission_query import SubmissionQuery, SubmissionIndexConstants
 from mangrove.form_model.field import DateField, GeoCodeField
 from mangrove.utils.json_codecs import encode_json
 from datawinners.project.helper import DEFAULT_DATE_FORMAT
@@ -62,7 +63,7 @@ class SubmissionsPageHeader():
         self.submission_type = submission_type
 
     def get_column_title(self):
-        header_dict = SubmissionQuery(self._form_model, {"filter": self.submission_type}).get_header_dict()
+        header_dict = HeaderFactory(self._form_model).get_header_dictionary(self.submission_type)
         header_dict.pop('ds_id')
         header_dict.pop("entity_short_code")
         return header_dict.values()
@@ -76,10 +77,10 @@ class SubmissionExcelHeader():
     def add_datasender_id_column(self, header_dict, result):
         result.update({
             SubmissionIndexConstants.DATASENDER_ID_KEY: {
-            "label": header_dict[SubmissionIndexConstants.DATASENDER_ID_KEY]}})
+                "label": header_dict[SubmissionIndexConstants.DATASENDER_ID_KEY]}})
 
     def get_columns(self):
-        header_dict = SubmissionQuery(self._form_model, {"filter": self.submission_type}).get_header_dict()
+        header_dict = HeaderFactory(self._form_model).get_header_dictionary(self.submission_type)
         # header_dict = OrderedDict({'name':"Name"}, {"p":"Place", "})
         if self._form_model.entity_type == ["reporter"]:
             header_dict.pop("entity_short_code")

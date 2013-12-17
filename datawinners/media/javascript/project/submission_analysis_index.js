@@ -1,7 +1,7 @@
 $(function () {
     $.ajaxSetup({ cache: false });
     var submissionTabs = new DW.SubmissionTabs();
-    submissionTabs.setToSuccessTab();
+    submissionTabs.setToAnalysisTab();
 
     var _initTable = function(submissionTabs){
         var submission_table_options = {

@@ -17,7 +17,7 @@ class TestSubmissionQuery(unittest.TestCase):
         type(form_model).entity_question = PropertyMock(return_value=entity_question_field)
         type(form_model).event_time_question = PropertyMock(return_value=None)
         entity_question_field.code.lower.return_value = 'eid'
-        with patch("datawinners.search.submission_query.header_fields") as header_fields:
+        with patch("datawinners.search.submission_headers.header_fields") as header_fields:
             header_fields.return_value = {}
 
             headers = SubmissionQuery(form_model, {}).get_headers(Mock, "code")
@@ -37,7 +37,7 @@ class TestSubmissionQuery(unittest.TestCase):
         type(form_model).event_time_question = PropertyMock(return_value=event_time_field)
         event_time_field.code.lower.return_value = "rp_date"
 
-        with patch("datawinners.search.submission_query.header_fields") as header_fields:
+        with patch("datawinners.search.submission_headers.header_fields") as header_fields:
             header_fields.return_value = {}
 
             headers = SubmissionQuery(form_model, {}).get_headers(Mock, "code")
@@ -53,7 +53,7 @@ class TestSubmissionQuery(unittest.TestCase):
         type(form_model).entity_question = PropertyMock(return_value=entity_question_field)
         type(form_model).event_time_question = PropertyMock(return_value=None)
         entity_question_field.code.lower.return_value = 'eid'
-        with patch("datawinners.search.submission_query.header_fields") as header_fields:
+        with patch("datawinners.search.submission_headers.header_fields") as header_fields:
             header_fields.return_value = {}
             query_params = {"filter": "success"}
 

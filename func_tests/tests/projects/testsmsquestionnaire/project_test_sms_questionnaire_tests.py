@@ -1,19 +1,20 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-from django.utils.unittest.case import SkipTest
-from framework.base_test import setup_driver, teardown_driver, BaseTest
+from datetime import datetime
+
 from nose.plugins.attrib import attr
+
+from framework.base_test import setup_driver, teardown_driver
 from pages.loginpage.login_page import LoginPage
 from pages.projectspage.projects_page import ProjectsPage
 from testdata.test_data import *
 from tests.projects.testsmsquestionnaire.project_test_sms_questionnaire_data import *
 from framework.utils.common_utils import by_id
 from datawinners.accountmanagement.models import MessageTracker
-from datetime import datetime
+
 
 @attr('suit_1')
 class TestProjectTestSMSPreview(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
@@ -66,7 +67,6 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         self.driver.wait_for_page_with_title(20, MY_DATASENDERS_PAGE_TITLE)
         self.check_upgrade_instruction(project_overview_page)
 
-    @SkipTest
     # TODO: Heri working on fix
     @attr('functional_test')
     def test_should_show_upgrade_instruction_on_add_datasenders_page(self):
@@ -105,7 +105,6 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         self.check_upgrade_instruction(project_overview_page)
 
 
-    @SkipTest
     @attr('functional_test')
     def test_should_show_upgrade_instruction_on_data_page(self):
         project_overview_page = self.navigate_to_clinic3_overview_page()
