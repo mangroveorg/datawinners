@@ -68,8 +68,8 @@ def get_success_msg_for_registration_using(response, source, form_model=None):
 
 
 def _get_response_message(response, dbm):
-    if response.form_code:
-        form_model = get_form_model_by_code(dbm, response.form_code)
+
+    form_model = get_form_model_by_code(dbm, response.form_code) if response.form_code else None
     if response.success:
         message = _get_success_message(response, form_model)
     else:
