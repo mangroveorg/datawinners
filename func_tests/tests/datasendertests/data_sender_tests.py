@@ -76,6 +76,7 @@ class DataSenderTest(unittest.TestCase):
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
 
+        web_submission_page = self.data_sender_page.send_in_data()
         smart_phone_instruction_page = data_sender_page.navigate_to_smart_phone_instruction()
         self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())
 
