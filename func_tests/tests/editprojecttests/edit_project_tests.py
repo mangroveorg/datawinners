@@ -20,7 +20,6 @@ class TestEditProject(BaseTest):
         # going on all project page
         return global_navigation.navigate_to_view_all_project_page()
 
-    @attr('functional_test')
     def test_successful_project_editing_with_subject_change(self):
         all_project_page = self.prerequisites_of_edit_project()
         project_overview_page = all_project_page.navigate_to_project_overview_page(
@@ -41,7 +40,6 @@ class TestEditProject(BaseTest):
         create_questionnaire_page.go_back()
         self.assertEqual(WATER_POINT_DATA, edit_project_page.get_project_details())
 
-    @attr('functional_test')
     def test_successful_project_editing_with_report_type_change(self):
         all_project_page = self.prerequisites_of_edit_project()
         project_overview_page = all_project_page.navigate_to_project_overview_page(
