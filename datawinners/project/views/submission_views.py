@@ -309,6 +309,9 @@ def export(request):
                     "order": "",
                     "sort_field": "date"
     }
+
+    search_text = search_filters.get("search_text", '')
+    query_params.update({"search_text": search_text})
     query_params.update({"filter": submission_type})
 
     return SubmissionExporter(form_model, project_name, request.user) \
