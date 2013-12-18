@@ -22,6 +22,8 @@ class SubmissionHeader():
             if not header_dict.has_key(key): header_dict.update({key: val})
 
         if self.form_model.is_entity_type_reporter():
+            # For summary projects there will be an extra datasender info question(code eid).
+            # This condition removes that extra question.
             header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
             header_dict.pop('entity_short_code')
         return header_dict
@@ -103,7 +105,8 @@ class ErroredSubmissionHeader(SubmissionHeader):
 
 class HeaderFactory():
     def __init__(self, form_model):
-        self.header_to_class_dict = {"all": AllSubmissionHeader,"deleted": AllSubmissionHeader, "analysis": SubmissionAnalysisHeader,
+        self.header_to_class_dict = {"all": AllSubmissionHeader, "deleted": AllSubmissionHeader,
+                                     "analysis": SubmissionAnalysisHeader,
                                      "success": SuccessSubmissionHeader, "error": ErroredSubmissionHeader}
         self.form_model = form_model
 

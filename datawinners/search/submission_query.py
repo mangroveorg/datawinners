@@ -89,8 +89,19 @@ class SubmissionQuery(Query):
         header = HeaderFactory(self.form_model).create_header(submission_type)
         return header.get_header_field_names()
 
-    def populate_query_options(self):
-        options = super(SubmissionQuery, self).populate_query_options()
+    def populate_query_options(self, entity_headers):
+        options = super(SubmissionQuery, self).populate_query_options(entity_headers)
+        header_copy = list(entity_headers)
+        try:
+            #Remove extra meta fields with which ordering in submission values
+            # and submission headers will not match
+            header_copy.remove('ds_id')
+            header_copy.remove('entity_short_code')
+        except ValueError:
+            pass
+        options.update({'order_field': header_copy[self.query_params.get('order_by')]})
+        if "search_filters" in self.query_params:
+            options.update({"search_filters": self.query_params["search_filters"]})
         try:
             options.update({'filter': self.query_params["filter"]})
         except KeyError:

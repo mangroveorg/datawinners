@@ -17,23 +17,21 @@ class Query(object):
     def get_headers(self, user, entity_type):
         pass
 
-    def populate_query_options(self):
+    def populate_query_options(self, entity_headers):
         options = {
             "start_result_number": self.query_params["start_result_number"],
             "number_of_results": self.query_params["number_of_results"],
             "order": self.query_params["order"],
         }
-        if "search_filters" in self.query_params:
-            options.update({"search_filters": self.query_params["search_filters"]})
+
+        #if self.query_params["order_by"] > 0:
+        options.update({"order_field": entity_headers[self.query_params.get("order_by")]})
+
         return options
 
     def query_to_be_paginated(self, entity_type, user):
         entity_headers = self.get_headers(user, entity_type)
-        options = self.populate_query_options()
-        if self.query_params["order_by"] > 0:
-            #header_copy = list(entity_headers)
-            #if "entity_short_code" in header_copy: header_copy.remove("entity_short_code")
-            options.update({"order_field": entity_headers[self.query_params["order_by"]]})
+        options = self.populate_query_options(entity_headers)
         query = self.query_builder.create_query(self._getDatabaseName(user), entity_type)
         paginated_query = self.query_builder.create_paginated_query(query, options)
         search_text = lower(

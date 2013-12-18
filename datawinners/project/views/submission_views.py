@@ -80,7 +80,9 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
-        return render_to_response('project/submission_results.html', result_dict, context_instance=RequestContext(request))
+        return render_to_response('project/submission_results.html', result_dict,
+                                  context_instance=RequestContext(request))
+
 
 @login_required
 @session_not_expired
@@ -97,7 +99,8 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
-        return render_to_response('project/analysis_results.html', result_dict, context_instance=RequestContext(request))
+        return render_to_response('project/analysis_results.html', result_dict,
+                                  context_instance=RequestContext(request))
 
 
 def get_survey_response_ids_from_request(dbm, request, form_model):
@@ -325,7 +328,7 @@ def get_submissions(request, form_code):
     search_parameters = {}
     search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
     search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
-    search_parameters.update({"order_by": int(request.POST.get('iSortCol_0'))})
+    search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
     search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
     search_filters = json.loads(request.POST.get('search_filters'))
     search_parameters.update({"search_filters": search_filters})
