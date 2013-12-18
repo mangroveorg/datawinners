@@ -95,7 +95,7 @@ class TestOrganization(unittest.TestCase):
 
     def test_get_counters(self):
         expected = {'combined_total_submissions': 75, 'send_a_msg_current_month': 0, 'sent_via_api_current_month': 3,
-                    'sms_reply_reminders': 50, 'sms_submission_current_month': 11, 'sp_submission_current_month': 5,
+                    'sms_reply':40, 'reminders': 10, 'sms_submission_current_month': 11, 'sp_submission_current_month': 5,
                     'total_sent_sms': 53, 'total_sms_current_month': 66, 'total_sms_submission': 33,
                     'total_sp_submission': 22, 'total_submission_current_month': 23, 'total_web_submission': 20,
                     'web_submission_current_month': 7}
