@@ -41,7 +41,7 @@ $(document).ready(function () {
 
     _initTable(submissionTabs);
     _initialize_filters();
-    $('#page_hint_section').text($('#page_hint').find('>div:first').text())
+    $('#page_hint_section').text($('#page_hint').find('>div:first').text());
 
     $("#tabs").tabs().find('>ul>li>a[href$=tab_template]').click(function () {
         var tab_index = $(this).parent().index();
@@ -50,6 +50,7 @@ $(document).ready(function () {
             return;
         }
         submissionTabs.setActiveTabIndex(tab_index);
+        new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
         _activate_tab(submissionTabs);
         return true;
     });

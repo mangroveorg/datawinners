@@ -81,10 +81,10 @@ DW.SubmissionLogTable = function(options){
 DW.SubmissionLogExport = function(){
     var self = this;
 
-    self.init = function(currentTab){
+    self.init = function(currentTabName){
         self.exportLink = $('.export_link');
         self.exportForm = $('#export_form');
-        self.url = '/project/export/log' + '?type=' + currentTab;
+        self.url = '/project/export/log' + '?type=' + currentTabName;
         _initialize_events();
     };
 
