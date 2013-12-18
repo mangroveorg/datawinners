@@ -10,7 +10,7 @@ class SubmissionQueryBuilder(QueryBuilder):
         QueryBuilder.__init__(self)
         self.form_model = form_model
 
-    def create_query(self, database_name, *doc_type):
+    def get_query(self, database_name, *doc_type):
         return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(*doc_type)
 
     def filter_by_submission_type(self, query, query_params):
@@ -46,7 +46,7 @@ class SubmissionQueryBuilder(QueryBuilder):
         return query
 
     def query_all(self, database_name, *doc_types, **filter_params):
-        query = self.create_query(database_name, *doc_types)
+        query = self.get_query(database_name, *doc_types)
         query_all_results = query[:query.count()]
         return query_all_results.filter(**filter_params)
 
@@ -88,25 +88,6 @@ class SubmissionQuery(Query):
         submission_type = self.query_params.get('filter')
         header = HeaderFactory(self.form_model).create_header(submission_type)
         return header.get_header_field_names()
-
-    def populate_query_options(self, entity_headers):
-        options = super(SubmissionQuery, self).populate_query_options(entity_headers)
-        header_copy = list(entity_headers)
-        try:
-            #Remove extra meta fields with which ordering in submission values
-            # and submission headers will not match
-            header_copy.remove('ds_id')
-            header_copy.remove('entity_short_code')
-        except ValueError:
-            pass
-        options.update({'order_field': header_copy[self.query_params.get('order_by')]})
-        if "search_filters" in self.query_params:
-            options.update({"search_filters": self.query_params["search_filters"]})
-        try:
-            options.update({'filter': self.query_params["filter"]})
-        except KeyError:
-            pass
-        return options
 
     def query(self, database_name):
         query_all_results = self.query_builder.query_all(database_name)

@@ -22,6 +22,7 @@ from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.exporter import SubmissionExporter
+from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_query import SubmissionQuery
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -306,7 +307,7 @@ def export(request):
                     "start_result_number": 0,
                     "number_of_results": 50000,
                     "order": "",
-                    "order_by": 0
+                    "sort_field": "date"
     }
     query_params.update({"filter": submission_type})
 
@@ -320,6 +321,19 @@ def _update_static_info_block_status(form_model_ui, is_errored_before_edit):
         form_model_ui['status'] = ugettext('Success')
 
 
+def _get_field_to_sort_on(post_dict, form_model, filter_type):
+    order_by = int(post_dict.get('iSortCol_0')) - 1
+    header = HeaderFactory(form_model).create_header(filter_type)
+    headers = header.get_header_field_names()
+    try:
+        #Remove extra meta fields with which ordering in submission values
+        #and submission headers will not match
+        headers.remove('ds_id')
+        headers.remove('entity_short_code')
+    except ValueError:
+        pass
+    return headers[order_by]
+
 @csrf_view_exempt
 @valid_web_user
 def get_submissions(request, form_code):
@@ -328,14 +342,15 @@ def get_submissions(request, form_code):
     search_parameters = {}
     search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
     search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
-    search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
+    filter_type = request.GET['type']
+    search_parameters.update({"filter": filter_type})
+
+    search_parameters.update({"sort_field": _get_field_to_sort_on(request.POST, form_model, filter_type)})
     search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
     search_filters = json.loads(request.POST.get('search_filters'))
     search_parameters.update({"search_filters": search_filters})
-    search_text = search_filters.get("search_text", '').lower()
+    search_text = search_filters.get("search_text", '')
     search_parameters.update({"search_text": search_text})
-    filter_type = request.GET['type']
-    search_parameters.update({"filter": filter_type})
     user = request.user
     query_count, search_count, submissions = SubmissionQuery(form_model, search_parameters).paginated_query(user,
                                                                                                             form_model.id)

@@ -52,9 +52,10 @@ class AllDataSendersView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        error_message, failure_imports, success_message, imported_datasenders, successful_imports = import_module.import_data(request,
-                                                                                                          manager,
-                                                                                                          default_parser=XlsDatasenderParser)
+        error_message, failure_imports, success_message, imported_datasenders, successful_imports = import_module.import_data(
+            request,
+            manager,
+            default_parser=XlsDatasenderParser)
         imported_data_senders = _parse_successful_imports(successful_imports)
         imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
         if len(imported_datasenders_ids):
@@ -97,18 +98,24 @@ class AllDataSendersView(TemplateView):
                 project_association[datasender].append(project['value']['name'])
         return project_association
 
-class AllDataSendersAjaxView(View):
 
-   def post(self, request, *args, **kwargs):
+class AllDataSendersAjaxView(View):
+    def _get_order_field(self, post_dict, user):
+        order_by = int(post_dict.get('iSortCol_0')) - 1
+        headers = DatasenderQuery().get_headers(user)
+        return headers[order_by]
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
         search_parameters = {}
         search_text = request.POST.get('sSearch', '').strip()
         search_parameters.update({"search_text": search_text})
         search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
         search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
-        search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
+        search_parameters.update({"sort_field": self._get_order_field(request.POST, user)})
+        #search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
         search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
 
-        user = request.user
         query_count, search_count, datasenders = DatasenderQuery(search_parameters).paginated_query(user, REPORTER)
 
         return HttpResponse(
@@ -121,17 +128,16 @@ class AllDataSendersAjaxView(View):
                     'iDisplayLength': int(request.POST.get('iDisplayLength'))
                 }, unpicklable=False), content_type='application/json')
 
-   @method_decorator(csrf_view_exempt)
-   @method_decorator(csrf_response_exempt)
-   @method_decorator(login_required)
-   @method_decorator(session_not_expired)
-   @method_decorator(is_not_expired)
-   def dispatch(self, *args, **kwargs):
+    @method_decorator(csrf_view_exempt)
+    @method_decorator(csrf_response_exempt)
+    @method_decorator(login_required)
+    @method_decorator(session_not_expired)
+    @method_decorator(is_not_expired)
+    def dispatch(self, *args, **kwargs):
         return super(AllDataSendersAjaxView, self).dispatch(*args, **kwargs)
 
 
 class DataSenderActionView(View):
-
     def _get_projects(self, manager, request):
         project_ids = request.POST.get('project_id').split(';')
         projects = []
@@ -168,7 +174,6 @@ def data_sender_short_codes(request, manager):
 
 
 class AssociateDataSendersView(DataSenderActionView):
-
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = self._get_projects(manager, request)
@@ -183,11 +188,11 @@ class AssociateDataSendersView(DataSenderActionView):
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
-        return HttpResponse(json.dumps({"success": True, "message": _("The Data Sender(s) are added to project(s) successfully")}))
+        return HttpResponse(
+            json.dumps({"success": True, "message": _("The Data Sender(s) are added to project(s) successfully")}))
 
 
 class DisassociateDataSendersView(DataSenderActionView):
-
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
         projects = self._get_projects(manager, request)
@@ -207,7 +212,8 @@ class DisassociateDataSendersView(DataSenderActionView):
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(removed_rep_ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
-        return HttpResponse(json.dumps({"success": True, "message": "The Data Sender(s) are removed from project(s) successfully"}))
+        return HttpResponse(
+            json.dumps({"success": True, "message": "The Data Sender(s) are removed from project(s) successfully"}))
 
 
 @csrf_view_exempt
@@ -215,7 +221,6 @@ class DisassociateDataSendersView(DataSenderActionView):
 @login_required(login_url='/login')
 @is_datasender
 def delete_data_senders(request):
-
     manager = get_database_manager(request.user)
     organization = get_organization(request)
     entity_type = request.POST['entity_type']
@@ -229,12 +234,13 @@ def delete_data_senders(request):
     delete_datasender_users_if_any(non_superuser_rep_ids, organization)
     if organization.in_trial_mode:
         delete_datasender_for_trial_mode(manager, non_superuser_rep_ids, entity_type)
-    log_activity(request, DELETED_DATA_SENDERS, "%s: [%s]" % (entity_type.capitalize(), ", ".join(non_superuser_rep_ids)), )
+    log_activity(request, DELETED_DATA_SENDERS,
+                 "%s: [%s]" % (entity_type.capitalize(), ", ".join(non_superuser_rep_ids)), )
     messages = get_success_message(entity_type)
-    return HttpResponse(json.dumps({'success': True, 'message':messages}))
+    return HttpResponse(json.dumps({'success': True, 'message': messages}))
+
 
 class UsersInSearchedDataSender(DataSenderActionView):
-
     def post(self, request, *args, **kwargs):
 
         manager = get_database_manager(request.user)

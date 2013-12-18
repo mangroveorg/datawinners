@@ -22,7 +22,7 @@ class DatasenderQuery(Query):
 
     def query(self, user, query_text):
         subject_headers = self.get_headers(user)
-        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
+        query = self.query_builder.get_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
         query_all_results = query[:query.count()]
         query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_all_results, query_text)
         return self.response_creator.create_response(subject_headers, query_with_criteria)
@@ -39,11 +39,11 @@ class MyDataSenderQuery(Query):
 
     def filtered_query(self, user, project_name, query_params):
         entity_headers = self.get_headers(user, REPORTER)
-        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
+        query = self.query_builder.get_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
         paginated_query = self.query_builder.create_paginated_query(query, {
             "start_result_number": query_params["start_result_number"],
             "number_of_results": query_params["number_of_results"],
-            "order_field": entity_headers[query_params["order_by"]],
+            "sort_field": entity_headers[query_params["order_by"]],
             "order": query_params["order"]
         })
         query_with_criteria = self.query_builder.add_query_criteria(entity_headers, paginated_query, query_params["search_text"],
@@ -54,7 +54,7 @@ class MyDataSenderQuery(Query):
 
     def query_by_project_name(self, user, project_name, search_text):
         entity_headers = self.get_headers(user)
-        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
+        query = self.query_builder.get_query(database_name=self._getDatabaseName(user), doc_type=REPORTER)
         query = query[:query.count()]
         query = self.query_builder.add_query_criteria(entity_headers, query, search_text).filter(
             projects_value=project_name)
@@ -62,8 +62,8 @@ class MyDataSenderQuery(Query):
 
 
 class DataSenderQueryBuilder(QueryBuilder):
-    def create_query(self, database_name, doc_type=REPORTER):
-        query = QueryBuilder().create_query(database_name=database_name, doc_type=doc_type)
+    def get_query(self, database_name, doc_type=REPORTER):
+        query = QueryBuilder().get_query(database_name=database_name, doc_type=doc_type)
         return query.filter(~ elasticutils.F(short_code='test'))
 
 
@@ -78,7 +78,7 @@ class SubjectQuery(Query):
 
     def query(self, user, subject_type, query_text):
         subject_headers = self.get_headers(user, subject_type)
-        query = self.query_builder.create_query(database_name=self._getDatabaseName(user), doc_type=subject_type)
+        query = self.query_builder.get_query(database_name=self._getDatabaseName(user), doc_type=subject_type)
         query_all_results = query[:query.count()]
         query_with_criteria = self.query_builder.add_query_criteria(subject_headers, query_all_results, query_text)
         subjects = self.response_creator.create_response(subject_headers, query_with_criteria)

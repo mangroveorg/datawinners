@@ -85,7 +85,7 @@ class TestSubjectQuery(TestCase):
                 header_fields.return_value = subject_headers
                 query_all_results = Mock()
                 query = MagicMock()
-                subject_query_builder.create_query.return_value = query
+                subject_query_builder.get_query.return_value = query
                 query.count.return_value = count_of_all_matching_results
                 query.__getitem__.return_value = query_all_results
                 query_with_criteria = Mock()
@@ -94,7 +94,7 @@ class TestSubjectQuery(TestCase):
 
                 actualSubjects = subject_query.query(user, "subject_type", "query_text")
 
-                subject_query_builder.create_query.assert_called_once_with(doc_type='subject_type',
+                subject_query_builder.get_query.assert_called_once_with(doc_type='subject_type',
                                                                            database_name='database_name')
                 query.__getitem__assert_called_with(slice(None, count_of_all_matching_results, None))
                 subject_query_builder.add_query_criteria.assert_called_with(subject_headers, query_all_results,
@@ -109,7 +109,7 @@ class TestSubjectQuery(TestCase):
         query_params = {
             "start_result_number": 2,
             "number_of_results": 10,
-            "order_by": 1,
+            "sort_field": 'last_name',
             "order": "-",
             "search_text": "query_text",
         }
@@ -126,7 +126,7 @@ class TestSubjectQuery(TestCase):
                 paginated_query = Mock()
                 expected_total_result_count = 100
                 query = MagicMock()
-                subject_query_builder.create_query.return_value = query
+                subject_query_builder.get_query.return_value = query
 
                 paginated_query.count.return_value = expected_total_result_count
                 subject_query_builder.create_paginated_query.return_value = paginated_query
@@ -138,12 +138,7 @@ class TestSubjectQuery(TestCase):
 
                 filtered_count, total_count, actualSubjects = subject_query.paginated_query(user, "subject_type")
 
-                subject_query_builder.create_paginated_query.assert_called_once_with(query, {
-                    "start_result_number": 2,
-                    "number_of_results": 10,
-                    "order_field": "field2",
-                    "order": "-"
-                })
+                subject_query_builder.create_paginated_query.assert_called_once_with(query, query_params)
                 response_creator.create_response.assert_called_with(subject_headers, query_with_criteria)
                 subject_query_builder.add_query_criteria.assert_called_with(subject_headers, paginated_query,
                                                                             "query_text", query_params=query_params)
@@ -158,8 +153,8 @@ class TestDataSenderQueryBuilder(TestCase):
             with patch("datawinners.search.query.elasticutils") as elasticUtilsMock:
                 with patch("datawinners.search.entity_search.elasticutils.F") as mock_filter:
                     query_builder.return_value = query_builder
-                    query_builder.create_query.return_value = elasticUtilsMock
+                    query_builder.get_query.return_value = elasticUtilsMock
                     mock_filter.return_value = mock_filter
-                    DataSenderQueryBuilder().create_query("dbm")
-                    query_builder.create_query.assert_called_with(database_name="dbm", doc_type="reporter")
+                    DataSenderQueryBuilder().get_query("dbm")
+                    query_builder.get_query.assert_called_with(database_name="dbm", doc_type="reporter")
                     elasticUtilsMock.filter.assert_called_with(~mock_filter)

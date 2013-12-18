@@ -144,6 +144,12 @@ def viewable_questionnaire(form_model):
     return questions
 
 
+def _get_order_field(post_dict, user, subject_type):
+    order_by = int(post_dict.get('iSortCol_0')) - 1
+    headers = SubjectQuery().get_headers(user,subject_type)
+    return headers[order_by]
+
+
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
@@ -152,14 +158,14 @@ def viewable_questionnaire(form_model):
 @is_datasender
 @is_not_expired
 def all_subjects_ajax(request, subject_type):
+    user = request.user
     search_parameters = {}
     search_text = request.POST.get('sSearch', '').strip()
     search_parameters.update({"search_text": search_text})
     search_parameters.update({"start_result_number": int(request.POST.get('iDisplayStart'))})
     search_parameters.update({"number_of_results": int(request.POST.get('iDisplayLength'))})
-    search_parameters.update({"order_by": int(request.POST.get('iSortCol_0')) - 1})
+    search_parameters.update({"sort_field": _get_order_field(request.POST, user, subject_type)})
     search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
-    user = request.user
 
     query_count, search_count, subjects = SubjectQuery(search_parameters).paginated_query(user, subject_type)
 

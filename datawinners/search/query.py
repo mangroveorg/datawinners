@@ -17,25 +17,11 @@ class Query(object):
     def get_headers(self, user, entity_type):
         pass
 
-    def populate_query_options(self, entity_headers):
-        options = {
-            "start_result_number": self.query_params["start_result_number"],
-            "number_of_results": self.query_params["number_of_results"],
-            "order": self.query_params["order"],
-        }
-
-        #if self.query_params["order_by"] > 0:
-        options.update({"order_field": entity_headers[self.query_params.get("order_by")]})
-
-        return options
-
     def query_to_be_paginated(self, entity_type, user):
         entity_headers = self.get_headers(user, entity_type)
-        options = self.populate_query_options(entity_headers)
-        query = self.query_builder.create_query(self._getDatabaseName(user), entity_type)
-        paginated_query = self.query_builder.create_paginated_query(query, options)
-        search_text = lower(
-            self.query_params.get("search_text") or self.query_params.get("search_filters", {}).get("search_text", ''))
+        query = self.query_builder.get_query(self._getDatabaseName(user), entity_type)
+        paginated_query = self.query_builder.create_paginated_query(query, self.query_params)
+        search_text = lower(self.query_params.get("search_text"))
         query_with_criteria = self.query_builder.add_query_criteria(entity_headers, paginated_query, search_text,
                                                                     query_params=self.query_params)
         return entity_headers, paginated_query, query_with_criteria
@@ -50,17 +36,15 @@ class QueryBuilder(object):
     def __init__(self):
         self.elastic_utils_helper = ElasticUtilsHelper()
 
-    def create_query(self, database_name, doc_type):
+    def get_query(self, database_name, doc_type):
         return elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(doc_type).filter(void=False)
 
     def create_paginated_query(self, query, query_params):
         start_result_number = query_params.get("start_result_number")
         number_of_results = query_params.get("number_of_results")
         order = query_params.get("order")
-        order_by = query_params.get("order_field")
-        #query = self.create_query(doc_type, database_name)
-        if order_by:
-            query = query.order_by(order + order_by + "_value")
+        sort_field = query_params.get("sort_field")
+        query = query.order_by(order + sort_field + "_value")
         return query[start_result_number:start_result_number + number_of_results]
 
     def add_query_criteria(self, query_fields, query, query_text, query_params=None):
