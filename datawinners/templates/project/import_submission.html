@@ -1,11 +1,13 @@
 {% load i18n %}
-
+{% load user_tags %}
+{% load dw_tabs %}
 
 
 <div id="submission_import">
     <div class="import_subject_form">
         <div id="error_message" class="import_message error_message message-box"></div>
         <div id="success_message" class="import_message success_message success-box"></div>
+        {% include "subscribe_now.html" %}
         {% blocktrans with 'Submssion' as entity_type %}Upload an Excel file (.xls) with Your {{ entity_type }} list.{% endblocktrans %}
         <a id="show_help">{% trans "How do I do this?" %}</a>
         <div id="import_help_section">
@@ -17,12 +19,24 @@
             </ol>
             <a id="hide_help">{% trans "Hide Details" %}</a>
         </div>
+
+
+        {% if is_quota_reached %}
         <div class="file-uploader" class="grid">
+            <noscript>
+                <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+            </noscript>
+            <div id="file_uploader" class="float_left grid_5" style="display:none"></div>
+            <span disabled="disabled" class="button disabled" back>Upload a file</span>
+        </div>
+        {% else %}
+            <div class="file-uploader" class="grid">
             <noscript>
                 <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
             </noscript>
             <div id="file_uploader" class="float_left grid_5"></div>
         </div>
+        {% endif %}
         <div id="template-download-section" class="error download-section" class="margin_top_15">
             <span style="padding-left:2em">
                 {% trans "Download the template:" %} <a id="template-download-link">{% trans "DataWinners_ImportSubmissions"%}.xsl</a>
