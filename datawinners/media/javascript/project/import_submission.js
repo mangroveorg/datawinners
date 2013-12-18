@@ -100,7 +100,6 @@ DW.SubmissionFileUploader = function(options){
 
     self.onComplete = function(id, fileName, responseJSON){
         $.unblockUI();
-        $('.qq-upload-failed-text').hide();
          _clearTables();
         if(responseJSON.success_submissions.length > 0){
              _populateSuccessTable(responseJSON.question_map, responseJSON.success_submissions);
