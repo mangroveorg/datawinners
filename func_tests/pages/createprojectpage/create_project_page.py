@@ -216,3 +216,9 @@ class CreateProjectPage(Page):
         locator = comm_utils.is_element_present(INFORM_DATASENDERS_OK_BUTTON_BY_CSS)
         if locator and locator.is_displayed():
             locator.click()
+
+    def is_summary_project_option_enabled(self):
+        return self.driver.find_radio_button(by_id("id_activity_report_0")).is_enabled()
+
+    def is_individual_project_option_enabled(self):
+        return self.driver.find_radio_button(by_id("id_activity_report_1")).is_enabled()
