@@ -1,15 +1,19 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import OrderedDict
 import logging
-from django.utils.translation import ugettext_lazy, gettext
+import os
+from django.utils.translation import gettext
 import xlrd
 from datawinners.accountmanagement.helper import is_org_user
 from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.entity.entity_exceptions import InvalidFileFormatException
+from datawinners.entity.import_data import get_filename_and_contents
 from datawinners.project.helper import get_feed_dictionary, get_web_transport_info
 from datawinners.project.submission.validator import SubmissionWorkbookRowValidator
-from mangrove.transport.player.parser import XlsOrderedParser, XlsParser
+from mangrove.transport.player.parser import XlsParser
 from mangrove.transport.services.survey_response_service import SurveyResponseService
 
-logger = logging.getLogger("importsubmission")
+logger = logging.getLogger("datawinners")
 
 
 class SubmissionImporter():
@@ -21,12 +25,14 @@ class SubmissionImporter():
         self.submission_persister = SubmissionPersister(user, dbm, feed_dbm, form_model, project, submission_quota_service)
         self.is_summary_project = project.is_summary_project()
 
-    def import_submission(self, file_content):
+    def import_submission(self, request):
         saved_entries,invalid_row_details,ignored_entries = [], [], []
         total_submissions = 0
 
-        is_organization_user = is_org_user(self.user)
         try:
+            file_content = self._get_uploaded_content(request)
+            is_organization_user = is_org_user(self.user)
+
             tabular_data = XlsSubmissionParser().parse(file_content)
             if len(tabular_data) <= 1:
                 raise ImportValidationError(gettext("The imported file is empty."))
@@ -44,10 +50,13 @@ class SubmissionImporter():
                 message = gettext("You have crossed the 1000 submissions limit for a trial account. Submissions from row %s have been ignored." % str(ignored_row_start))
             else:
                 message = gettext('%s of %s Submissions imported. Please check below for details.') % (len(saved_entries), len(q_answer_dicts))
+        except InvalidFileFormatException as e:
+            message = gettext(u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!")
         except ImportValidationError as e:
             message = e.message
         except Exception as e:
             message = gettext("Some unexpected error happened. Please check the excel file and import again.")
+            logger.exception("Submission import failed")
 
         return SubmissionImportResponse(saved_entries=saved_entries,
                                         errored_entrie_details=invalid_row_details,
@@ -55,6 +64,13 @@ class SubmissionImporter():
                                         message=message,
                                         total_submissions=total_submissions)
 
+    def _get_uploaded_content(self, request):
+        file_name, file_content = get_filename_and_contents(request)
+        base_name, extension = os.path.splitext(file_name)
+        if extension != '.xls':
+            raise InvalidFileFormatException()
+
+        return file_content
 
     def _add_reporter_id_for_datasender(self, parsed_rows, user_profile, is_organization_user):
         if self.is_summary_project and not is_organization_user:
@@ -143,7 +159,7 @@ class SubmissionWorkbookMapper():
     def _col_mapping(self, header_row):
         col_mapping = {}
         for field in self.form_model.fields:
-            header_cell = [i for i, col in enumerate(header_row) if field.label in col]
+            header_cell = [i for i, col in enumerate(header_row) if field.label.strip() in col]
             if header_cell:
                 index = header_cell[0]
                 col_mapping.update({field.code: index})

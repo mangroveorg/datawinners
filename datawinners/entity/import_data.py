@@ -223,8 +223,17 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
         elif 'smaller than allowed' in value:
             errors.append(_('Answer %s for question %s is smaller than allowed.') % (answer, question_label))
 
+        elif 'greater than allowed' in value:
+            errors.append(_('Answer %s for question %s is greater than allowed.') % (answer, question_label))
+
         elif 'is of the wrong type' in value:
             errors.append(_('Answer %s for question %s is of the wrong type.') % (answer, question_label))
+
+        elif 'contains more than one value' in value:
+            errors.append(_('Answer %s for question %s contains more than one value.') % (answer, question_label))
+
+        elif 'not present in the allowed options' in value:
+            errors.append(_('Answer %s for question %s is not present in the allowed options.') % (answer, question_label))
 
         elif 'xx.xxxx yy.yyyy' in value:
             errors.append(_(

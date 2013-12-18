@@ -99,7 +99,7 @@ class Organization(models.Model):
     def has_exceeded_quota_and_notify_users(self):
         submission_count = self.get_total_submission_count()
         if self.in_trial_mode and submission_count == NEAR_SUBMISSION_LIMIT_TRIGGER:
-            self.send_mail_to_self_creator(email_type='about_to_reach_submission_limit')
+            self.send_mail_to_organization_creator(email_type='about_to_reach_submission_limit')
 
         if self.in_trial_mode and submission_count == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
             self.send_mail_to_organization_creator(email_type='reached_submission_limit')

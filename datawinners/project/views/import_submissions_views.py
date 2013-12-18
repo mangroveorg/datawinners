@@ -32,14 +32,13 @@ class ImportSubmissionView(View):
         manager = get_database_manager(request.user)
         feeds_dbm = get_feeds_database(request.user)
         project_id = request.GET["project_id"]
-        file_name, content = get_filename_and_contents(request)
         project = Project.load(manager.database, project_id)
         form_model = get_form_model_by_code(manager, form_code)
         user_profile = NGOUserProfile.objects.get(user=request.user)
         organization = Organization.objects.get(org_id=user_profile.org_id)
         submission_importer = SubmissionImporter(manager, feeds_dbm, request.user, form_model, project,
                                                  SubmissionQuotaService(organization))
-        response = submission_importer.import_submission(content)
+        response = submission_importer.import_submission(request)
 
         return HttpResponse(
             json.dumps(
