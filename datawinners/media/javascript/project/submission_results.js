@@ -1,38 +1,38 @@
-DW.SubmissionTabs = function(){
-        var self = this;
+DW.SubmissionTabs = function () {
+    var self = this;
 
-        var tabList = ["all", "success", "error", "deleted","analysis"];
-        var active_tab_index = 0;
+    var tabList = ["all", "success", "error", "deleted", "analysis"];
+    var active_tab_index = 0;
 
-        self.updateActiveTabIndexBasedOnCurrentLocation = function(){
-            active_tab_index = 0;
-            var match = window.location.pathname.match(/tab\/([^/]+)\//);
-            if (match)
-                active_tab_index = tabList.indexOf(match[1]);
-        };
+    self.updateActiveTabIndexBasedOnCurrentLocation = function () {
+        active_tab_index = 0;
+        var match = window.location.pathname.match(/tab\/([^/]+)\//);
+        if (match)
+            active_tab_index = tabList.indexOf(match[1]);
+    };
 
-        self.getActiveTabIndex = function(){
-            return active_tab_index;
-        };
+    self.getActiveTabIndex = function () {
+        return active_tab_index;
+    };
 
-        self.setActiveTabIndex = function(tabIndex){
-            active_tab_index = tabIndex;
-        };
+    self.setActiveTabIndex = function (tabIndex) {
+        active_tab_index = tabIndex;
+    };
 
-        self.getActiveTabName = function(){
-            return tabList[active_tab_index];
-        };
+    self.getActiveTabName = function () {
+        return tabList[active_tab_index];
+    };
 
-        self.isTableEntriesCheckable = function(){
-           return active_tab_index != 3;
-        };
+    self.isTableEntriesCheckable = function () {
+        return active_tab_index != 3;
+    };
 
-        self.setToAnalysisTab = function(){
-          active_tab_index = 4;
-        };
+    self.setToAnalysisTab = function () {
+        active_tab_index = 4;
+    };
 };
 
-DW.SubmissionLogTable = function(options){
+DW.SubmissionLogTable = function (options) {
 
     $.ajax({
         url: options.header_url,
@@ -44,9 +44,10 @@ DW.SubmissionLogTable = function(options){
     });
 
     var no_data_help = {"all": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
-            "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
-            "error": gettext("No unsuccessful Submissions!"),
-            "deleted": gettext("No deleted Submissions.")
+        "analysis": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+        "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>" + $(".help_no_submissions").html(),
+        "error": gettext("No unsuccessful Submissions!"),
+        "deleted": gettext("No deleted Submissions.")
     };
 
     function _init_submission_log_table(cols) {
@@ -78,98 +79,98 @@ DW.SubmissionLogTable = function(options){
     };
 };
 
-DW.SubmissionLogExport = function(){
+DW.SubmissionLogExport = function () {
     var self = this;
 
-    self.init = function(currentTabName){
+    self.init = function (currentTabName) {
         self.exportLink = $('.export_link');
         self.exportForm = $('#export_form');
         self.url = '/project/export/log' + '?type=' + currentTabName;
         _initialize_events();
     };
 
-    var _initialize_events = function(){
+    var _initialize_events = function () {
         self.exportLink.click(function () {
-            self.exportForm.appendJson({"search_filters":JSON.stringify(filter_as_json())}).attr('action', self.url).submit();
+            self.exportForm.appendJson({"search_filters": JSON.stringify(filter_as_json())}).attr('action', self.url).submit();
         });
     };
 };
 
-DW.DataSenderFilter = function(){
+DW.DataSenderFilter = function () {
     var self = this;
     this.datasenders_source_url = "/entity/datasenders/autocomplete/";
 
-    self.init = function(){
+    self.init = function () {
         self.filter = $("#data_sender_filter");
-        self.filter.data('ds_id','');
+        self.filter.data('ds_id', '');
         self.initialize_autocomplete();
         self.initialize_events();
     };
 
-    self.initialize_autocomplete = function(){
+    self.initialize_autocomplete = function () {
         var self = this;
         self.filter.autocomplete({
             "source": self.datasenders_source_url,
-            "select":function(event,ui){
-                self.filter.data('ds_id',ui.item.id);
+            "select": function (event, ui) {
+                self.filter.data('ds_id', ui.item.id);
                 self.postFilterSelection(); //abstract-method
             }
-        }).data("autocomplete")._renderItem = function( ul, item ) {
+        }).data("autocomplete")._renderItem = function (ul, item) {
             return $("<li></li>").data("item.autocomplete", item).append($("<a>" + item.label + ' <span class="small_grey">' + item.id + '</span></a>')).appendTo(ul);
         };
     };
 
-    self.initialize_events = function(){
+    self.initialize_events = function () {
         // change on autocomplete is not working in certain cases like select an item and then clear doesn't fire change event. so using input element's change.
         var self = this;
-        self.filter.change(function(){
-            if (self.filter.val() == ''){
-                 self.filter.data('ds_id','');
-                 self.postFilterSelection();
-             }
+        self.filter.change(function () {
+            if (self.filter.val() == '') {
+                self.filter.data('ds_id', '');
+                self.postFilterSelection();
+            }
         });
     };
 };
 
-DW.SubjectFilter = function(){
+DW.SubjectFilter = function () {
     var self = this;
 
-    self.init = function(){
+    self.init = function () {
         self.filter = $("#subject_filter");
-        self.filter.data('value','');
+        self.filter.data('value', '');
         self.initialize_autocomplete();
         self.initialize_events();
     };
 
-    self.initialize_autocomplete = function(){
+    self.initialize_autocomplete = function () {
         var self = this;
         self.filter.autocomplete({
-            "source":"/entity/" + entity_type + "/autocomplete/",
-            "select": function(event,ui){
-                self.filter.data('value',ui.item.id);
+            "source": "/entity/" + entity_type + "/autocomplete/",
+            "select": function (event, ui) {
+                self.filter.data('value', ui.item.id);
                 self.postFilterSelection(); //abstract-method
             }
-        }).data( "autocomplete" )._renderItem = function( ul, item ) {
-        return $("<li></li>").data("item.autocomplete", item).append($("<a>" + item.label + ' <span class="small_grey">' + item.id + '</span></a>')).appendTo(ul);
+        }).data("autocomplete")._renderItem = function (ul, item) {
+            return $("<li></li>").data("item.autocomplete", item).append($("<a>" + item.label + ' <span class="small_grey">' + item.id + '</span></a>')).appendTo(ul);
         };
     };
 
-    self.initialize_events = function(){
+    self.initialize_events = function () {
         // change on autocomplete is not working in certain cases like select an item and then clear doesn't fire change event. so using input element's change.
         var self = this;
-        self.filter.change(function(){
-            if (self.filter.val() == ''){
-                 self.filter.data('value','');
-                 self.postFilterSelection();
-             }
+        self.filter.change(function () {
+            if (self.filter.val() == '') {
+                self.filter.data('value', '');
+                self.postFilterSelection();
+            }
         });
     };
 };
 
-DW.DateFilter = function(){
+DW.DateFilter = function () {
     var self = this;
 
-    self.init = function(){
+    self.init = function () {
         self.filterSelects = $('#submissionDatePicker, #reportingPeriodPicker');
         $('#submissionDatePicker').datePicker({eventCallback: _closeFilterSelects, onCloseCallback: _onCloseSubmissionDatePicker});
         $('#reportingPeriodPicker').datePicker({header: gettext('All Periods'), eventCallback: _closeFilterSelects, onCloseCallback: _onCloseSubmissionDatePicker});
@@ -186,47 +187,47 @@ DW.DateFilter = function(){
     };
 };
 
-DW.SearchTextFilter = function(){
-  var self = this;
+DW.SearchTextFilter = function () {
+    var self = this;
 
-  self.init = function(){
-    self.filter = $("#search_text");
-    _initialize_events();
-  };
+    self.init = function () {
+        self.filter = $("#search_text");
+        _initialize_events();
+    };
 
-  var _initialize_events = function(){
-     self.filter.keyup(function(){
-       self.postFilterSelection();
-    })
-  };
+    var _initialize_events = function () {
+        self.filter.keyup(function () {
+            self.postFilterSelection();
+        })
+    };
 
 };
 
-DW.FilterSubmissionTableBySearchText = function(){
+DW.FilterSubmissionTableBySearchText = function () {
 };
 DW.FilterSubmissionTableBySearchText.prototype = new DW.SearchTextFilter();
-DW.FilterSubmissionTableBySearchText.prototype.postFilterSelection = function(){
-       $(".submission_table").dataTable().fnDraw();
+DW.FilterSubmissionTableBySearchText.prototype.postFilterSelection = function () {
+    $(".submission_table").dataTable().fnDraw();
 };
 
-DW.FilterSubmissionTableByDate = function(){
+DW.FilterSubmissionTableByDate = function () {
 };
 DW.FilterSubmissionTableByDate.prototype = new DW.DateFilter();
-DW.FilterSubmissionTableByDate.prototype.postFilterSelection = function(){
-       $(".submission_table").dataTable().fnDraw();
+DW.FilterSubmissionTableByDate.prototype.postFilterSelection = function () {
+    $(".submission_table").dataTable().fnDraw();
 };
 
-DW.FilterSubmissionTableBySubject = function(){
+DW.FilterSubmissionTableBySubject = function () {
 };
 DW.FilterSubmissionTableBySubject.prototype = new DW.SubjectFilter();
-DW.FilterSubmissionTableBySubject.prototype.postFilterSelection = function(){
-       $(".submission_table").dataTable().fnDraw();
+DW.FilterSubmissionTableBySubject.prototype.postFilterSelection = function () {
+    $(".submission_table").dataTable().fnDraw();
 };
 
-DW.FilterSubmissionTableByDataSender = function(){
+DW.FilterSubmissionTableByDataSender = function () {
 };
 DW.FilterSubmissionTableByDataSender.prototype = new DW.DataSenderFilter();
-DW.FilterSubmissionTableByDataSender.prototype.postFilterSelection = function(){
-       $(".submission_table").dataTable().fnDraw();
+DW.FilterSubmissionTableByDataSender.prototype.postFilterSelection = function () {
+    $(".submission_table").dataTable().fnDraw();
 };
 

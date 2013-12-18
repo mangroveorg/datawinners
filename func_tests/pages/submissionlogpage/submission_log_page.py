@@ -78,21 +78,6 @@ class SubmissionLogPage(Page):
             row_data.append(self.get_cell_value(row, col))
         return row_data
 
-    def get_shown_records_count(self):
-        try:
-            datatable_info = self.driver.find(SHOWN_RECORDS_COUNT_CSS_LOCATOR).text
-            [begin, end] = re.findall('\d+', datatable_info)
-            return int(end) - int(begin) + 1
-        except Exception:
-            return 0
-
-    def get_total_count_of_records(self):
-        return self.driver.find(TOTAL_RECORDS_COUNT).text
-
-    def get_cell_data(self, row, col):
-        locator = by_xpath(XPATH_TO_CELL % (str(row), str(col)))
-        return self.driver.find(locator).text
-
     def click_on_nth_header(self, index):
         self.driver.find(by_css(HEADER_CELL_CSS_LOCATOR % str(index))).click()
 
@@ -117,9 +102,6 @@ class SubmissionLogPage(Page):
 
     def is_checkall_enabled(self):
         return self.driver.find(CHECKALL_CB_CSS_LOCATOR).is_enabled()
-
-    def is_filter_enabled(self):
-        return self.driver.find(SUBMISSION_DATE_FILTER).is_enabled()
 
     def empty_help_text(self):
         return self.driver.find(by_css('.submission_table .help_accordion')).text
@@ -148,6 +130,7 @@ class SubmissionLogPage(Page):
             (self.driver.find(by_xpath(DS_AND_SUBJECT_FILTER_LOCATOR_BY_ID %subject))).click()
 
     def get_cell_value(self, row, column):
+        #row+1 for ignoring extra row for select all msg
         return self.driver.find(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td[%s]" % ((row +1), column))).text
 
     def get_total_number_of_rows(self):

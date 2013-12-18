@@ -20,26 +20,26 @@ class TestDataSenderAssociationWithTrialAccount(BaseTest):
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_trial_org_is_saved_in_right_trial_org(self):
         self.send_sms(VALID_DATA)
         analysis_page = self.go_to_analysis_page(TRIAL_CREDENTIALS_VALIDATES)
-        first_submission = analysis_page.get_data_rows()[0]
-        self.assertRegexpMatches(first_submission.text, RE_TRIAL_SMS_DATA)
+        first_submission = analysis_page.get_all_data_on_nth_row(1)
+        self.assertRegexpMatches(' '.join(first_submission), RE_TRIAL_SMS_DATA)
         self.driver.go_to(LOGOUT)
 
         analysis_page = self.go_to_analysis_page(VALID_CREDENTIALS)
-        first_submission = analysis_page.get_data_rows()[0]
-        self.assertNotRegexpMatches(first_submission.text, RE_TRIAL_SMS_DATA)
+        first_submission = analysis_page.get_all_data_on_nth_row(1)
+        self.assertNotRegexpMatches(' '.join(first_submission), RE_TRIAL_SMS_DATA)
         self.driver.go_to(LOGOUT)
 
     @attr('functional_test')
     def test_SMS_sent_by_data_sender_registered_for_trial_and_paid_orgs_to_paid_org_is_saved_in_paid_org(self):
         self.send_sms(VALID_PAID_DATA)
         analysis_page = self.go_to_analysis_page(VALID_CREDENTIALS)
-        first_submission = analysis_page.get_data_rows()[0]
-        self.assertRegexpMatches(first_submission.text, RE_PAID_SMS_DATA)
+        first_submission = analysis_page.get_all_data_on_nth_row(1)
+        self.assertRegexpMatches(' '.join(first_submission), RE_PAID_SMS_DATA)
         self.driver.go_to(LOGOUT)
 
         analysis_page = self.go_to_analysis_page(TRIAL_CREDENTIALS_VALIDATES)
-        first_submission = analysis_page.get_data_rows()[0]
-        self.assertNotRegexpMatches(first_submission.text, RE_PAID_SMS_DATA)
+        first_submission = analysis_page.get_all_data_on_nth_row(1)
+        self.assertNotRegexpMatches(' '.join(first_submission), RE_PAID_SMS_DATA)
 
     def send_sms(self, sms_content):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
@@ -52,4 +52,5 @@ class TestDataSenderAssociationWithTrialAccount(BaseTest):
         global_navigation = login_page.do_successful_login_with(credentials)
         all_data_page = global_navigation.navigate_to_all_data_page()
         analysis_page = all_data_page.navigate_to_data_analysis_page(PROJECT_NAME)
+        analysis_page.wait_for_table_data_to_load()
         return analysis_page
