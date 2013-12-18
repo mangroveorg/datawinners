@@ -36,12 +36,16 @@ def send_reminders_scheduled_on(on_date, sms_client):
         logger.info("Sending reminders for date:- %s" % on_date)
         paid_organization = _get_active_paid_organization()
         for org in paid_organization:
-            logger.info("Organization %s" % org.name)
-            org_setting = OrganizationSetting.objects.filter(organization=org)[0]
-            manager = get_db_manager(org_setting.document_store)
-            send_reminders_for_an_organization(org, on_date, sms_client, from_number=org_setting.sms_tel_number,
+            try:
+                logger.info("Organization %s" % org.name)
+                org_setting = OrganizationSetting.objects.filter(organization=org)[0]
+                manager = get_db_manager(org_setting.document_store)
+                send_reminders_for_an_organization(org, on_date, sms_client, from_number=org_setting.sms_tel_number,
                                                dbm=manager)
-        logger.info("Done sending reminders.")
+                logger.info("Successfully sent reminders for Org: %s.", org.name)
+            except Exception as e:
+                logger.exception("Error while sending reminders for organization : %s" % org.name)
+        logger.info("Done sending all reminders.")
     except Exception as e:
         logger.exception("Exception while sending reminders")
 
@@ -53,11 +57,11 @@ def send_reminders_for_an_organization(org, on_date, sms_client, from_number, db
     reminders_grouped_by_proj = _get_reminders_grouped_by_project_for_organization(org.org_id)
     logger.info("Projects with reminders:- %d" % len(reminders_grouped_by_proj))
     for project_id, reminders in reminders_grouped_by_proj.items():
-        project = dbm._load_document(project_id, Project)
-        if not project.has_deadline():
-            continue
-            #send reminders to next projects in the queue if their is any error while sending reminders to previous project
         try:
+            project = dbm._load_document(project_id, Project)
+            if not project.has_deadline():
+                continue
+            #send reminders to next projects in the queue if their is any error while sending reminders to previous project
             _, total_sms_sent = send_reminders_on(project, reminders, on_date, sms_client, from_number, dbm)
             org.increment_message_count_for(sent_reminders_count=total_sms_sent)
         except Exception:
