@@ -45,10 +45,10 @@ class SubmissionQueryBuilder(QueryBuilder):
                 query = query.filter(entity_short_code=subjectFilter)
         return query
 
-    def query_all(self, database_name, *args, **kwargs):
-        query = self.create_query(database_name, *args)
+    def query_all(self, database_name, *doc_types, **filter_params):
+        query = self.create_query(database_name, *doc_types)
         query_all_results = query[:query.count()]
-        return query_all_results.filter(**kwargs)
+        return query_all_results.filter(**filter_params)
 
 
 class SubmissionQueryResponseCreator():

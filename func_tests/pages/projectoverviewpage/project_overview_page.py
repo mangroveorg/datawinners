@@ -33,10 +33,6 @@ class ProjectOverviewPage(Page):
         self.driver.find(MESSAGES_AND_REMINDERS_TAB).click()
         return AllReminderPage(self.driver)
 
-    def navigate_to_data_page(self):
-        self.driver.find(DATA_TAB).click()
-        return DataAnalysisPage(self.driver)
-
     def navigate_to_edit_project_page(self):
         self.driver.find(PROJECT_EDIT_LINK).click()
         from pages.createprojectpage.create_project_page import CreateProjectPage

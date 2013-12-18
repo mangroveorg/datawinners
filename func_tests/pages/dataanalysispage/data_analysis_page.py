@@ -14,7 +14,7 @@ class DataAnalysisPage(SubmissionLogPage):
         super(DataAnalysisPage, self).__init__(driver)
 
     def get_number_of_columns(self, row):
-        row = row+1 #to ignore hidden row for select all msg
+        row = row + 1 #to ignore hidden row for select all msg
         columns = self.driver.find_elements_(by_xpath(".//*[@class='submission_table']/tbody/tr[%s]/td" % row))
         return len(columns)
 
@@ -27,3 +27,17 @@ class DataAnalysisPage(SubmissionLogPage):
         for col in range(1, column_count + 1):
             row_data.append(self.get_cell_value(row, col))
         return row_data
+
+    def navigate_to_web_submission_tab(self):
+        self.driver.find(by_css('.secondary_tab>li:nth-child(4) a')).click()
+        return WebSubmissionPage(self.driver)
+
+    def navigate_to_all_data_record_page(self):
+        """
+        Function to navigate all data record page
+
+        Return data all data record
+         """
+        self.driver.find(ALL_DATA_RECORDS_LINK).click()
+        self.driver.wait_for_element(20, by_css("table.submission_table"))
+        return SubmissionLogPage(self.driver)

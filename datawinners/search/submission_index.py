@@ -17,18 +17,17 @@ ES_SUBMISSION_FIELD_STATUS = "status"
 ES_SUBMISSION_FIELD_ERROR_MSG = "error_msg"
 ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE = "entity_short_code"
 
-
 meta_fields = [ES_SUBMISSION_FIELD_DS_ID, ES_SUBMISSION_FIELD_DS_NAME, ES_SUBMISSION_FIELD_DATE,
                ES_SUBMISSION_FIELD_STATUS, ES_SUBMISSION_FIELD_ERROR_MSG, ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE]
 
-submission_meta_fields = [{"name":ES_SUBMISSION_FIELD_DATE, "type":"date","date_format":'submission_date_format'},
-            {"name":ES_SUBMISSION_FIELD_STATUS},
-            {"name":ES_SUBMISSION_FIELD_DS_NAME},
-            {"name":ES_SUBMISSION_FIELD_DS_ID},
-            {"name":ES_SUBMISSION_FIELD_ERROR_MSG},
-            {"name":ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE}]
+submission_meta_fields = [{"name": ES_SUBMISSION_FIELD_DATE, "type": "date", "date_format": 'submission_date_format'},
+                          {"name": ES_SUBMISSION_FIELD_STATUS},
+                          {"name": ES_SUBMISSION_FIELD_DS_NAME},
+                          {"name": ES_SUBMISSION_FIELD_DS_ID},
+                          {"name": ES_SUBMISSION_FIELD_ERROR_MSG},
+                          {"name": ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE}]
 
-submission_meta_field_names = dict([(field["name"],None) for field in submission_meta_fields])
+submission_meta_field_names = dict([(field["name"], None) for field in submission_meta_fields])
 
 
 def is_submission_meta_field(field_name):
@@ -40,7 +39,8 @@ def es_field_name(field_code, form_model_id):
         prefixes form_model id to namespace all additional fields on questionnaire (ds_name, ds_id, status and date are not prefixed)
     :param field_code:
     """
-    return field_code if is_submission_meta_field(field_code) else "%s_%s"%(form_model_id, lower(field_code))
+    return field_code if is_submission_meta_field(field_code) else "%s_%s" % (form_model_id, lower(field_code))
+
 
 def create_submission_mapping(dbm, form_model):
     es = get_elasticsearch_handle()
@@ -86,6 +86,7 @@ def _get_form_models_from_projects(dbm, projects):
 
 def update_submission_search_for_subject_edition(entity_doc, dbm):
     from datawinners.search.submission_query import SubmissionQueryBuilder
+
     entity_type = entity_doc.entity_type
     projects = dbm.load_all_rows_in_view('projects_by_subject_type', key=entity_type[0], include_docs=True)
     form_models = _get_form_models_from_projects(dbm, projects)
@@ -94,7 +95,8 @@ def update_submission_search_for_subject_edition(entity_doc, dbm):
         entity_field_name = lower(form_model.entity_question.code)
         fields_mapping = {es_field_name(entity_field_name, form_model.id): entity_doc.data['name']['value']}
         args = {'entity_short_code': entity_doc.short_code}
-        survey_response_filtered_query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, **args)
+        survey_response_filtered_query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, form_model.id,
+                                                                                      **args)
 
         for survey_response in survey_response_filtered_query.all():
             SubmissionIndexUpdateHandler(dbm.database_name, form_model.id).update_field_in_submission_index(
@@ -134,6 +136,7 @@ def lookup_entity_by_uid(dbm, uid):
     except Exception:
         pass
     return uid or "NA", "NA"
+
 
 def lookup_entity_name(dbm, id, entity_type):
     try:
