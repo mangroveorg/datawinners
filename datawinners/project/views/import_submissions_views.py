@@ -24,7 +24,7 @@ class SubmissionQuotaService(object):
         self.organization.increment_message_count_for(incoming_web_count=1)
 
     def has_exceeded_quota_and_notify_users(self):
-        self.organization.has_exceeded_quota_and_notify_users()
+        return self.organization.has_exceeded_quota_and_notify_users()
 
 
 class ImportSubmissionView(View):
