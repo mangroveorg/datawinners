@@ -108,3 +108,16 @@ class TestOrganization(unittest.TestCase):
         self.organization.deactivate()
         organizations = Organization.get_all_active_trial_organizations()
         self.assertNotIn(self.organization,organizations)
+
+    def test_has_exceeded_submission_limit(self):
+        self.assertFalse(self.organization.has_exceeded_submission_limit())
+
+        last_month = datetime.date.today()- datetime.timedelta(days=4)
+        mt_current_month = MessageTracker(month=datetime.date(last_month.year, last_month.month, 12),
+            incoming_web_count=909, incoming_sms_count=13, incoming_sp_count=5, sms_api_usage_count=3,
+            sms_registration_count=2, sent_reminders_count=10, send_message_count=0, outgoing_sms_count=40,
+            organization=self.organization
+        )
+        mt_current_month.save()
+        print self.organization.get_total_submission_count()
+        self.assertTrue(self.organization.has_exceeded_submission_limit())

@@ -104,7 +104,7 @@ class Organization(models.Model):
         if self.in_trial_mode and submission_count == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
             self.send_mail_to_organization_creator(email_type='reached_submission_limit')
 
-        return submission_count >= LIMIT_TRIAL_ORG_SUBMISSION_COUNT
+        return self.has_exceeded_submission_limit()
 
     def increment_sms_api_usage_count(self):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
