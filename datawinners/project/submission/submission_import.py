@@ -158,11 +158,9 @@ class SubmissionWorkbookMapper():
 
     def _col_mapping(self, header_row):
         col_mapping = {}
-        for field in self.form_model.fields:
-            header_cell = [i for i, col in enumerate(header_row) if field.label.strip() in col]
-            if header_cell:
-                index = header_cell[0]
-                col_mapping.update({field.code: index})
+        for i, col in enumerate(header_row):
+            field = [field for field in self.form_model.fields if field.label.strip() in col][0]
+            col_mapping.update({field.code: i})
         return col_mapping
 
     def process(self):
