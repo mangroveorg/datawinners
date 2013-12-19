@@ -73,3 +73,13 @@ class TestSubmissionFormatter(TestCase):
         self.assertEquals(headers, ['what is submission date'])
         result_date = datetime.datetime.strptime(date_1, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
         self.assertEquals(values, [[ExcelDate(result_date, "submission_date")]])
+
+    def test_should_return_empty_when_date_value_is_invalid(self):
+        columns = {'form_id_q2': {'type': 'date', 'label':'what is submission date', 'format': "submission_date"}}
+        date_1 = 'Dec. 09, 2013, 10:48 AM'
+        submission_list = [{'form_id_q1': date_1}]
+
+        headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
+
+        self.assertEquals(headers, ['what is submission date'])
+        self.assertEquals(values, [['']])

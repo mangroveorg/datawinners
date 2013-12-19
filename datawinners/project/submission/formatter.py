@@ -33,8 +33,8 @@ class SubmissionFormatter(object):
                 py_date_format = DateField.DATE_DICTIONARY.get(date_format) or SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
                 try:
                     col_val = ExcelDate(datetime.strptime(row[field_code], py_date_format), date_format or "submission_date")
-                except ValueError:
-                    col_val = row[field_code]
+                except Exception:
+                    col_val = row.get(field_code) or ""
                 result.append(col_val)
 
             elif self.columns[field_code].get("type") == GEODCODE_FIELD_CODE:
