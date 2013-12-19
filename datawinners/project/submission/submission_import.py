@@ -157,6 +157,8 @@ class SubmissionWorkbookMapper():
         self.form_model = form_model
 
     def _col_mapping(self, header_row):
+        if (len(header_row) != len(self.form_model.fields)):
+            raise ImportValidationError("number of columns not matching")
         col_mapping = {}
         for field in self.form_model.fields:
             header_cell = [i for i, col in enumerate(header_row) if field.label.strip() in col]
