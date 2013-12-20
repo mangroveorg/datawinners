@@ -92,11 +92,13 @@ function drawBar(answers, total, $locator, barColor) {
     var chart_data = [];
     var axis_label = [];
     $.each(answers, function(index, answer){
-        var label = answer[0];
-        label = label.replace(/'/g, '"')
-        label = "<div class='barLabel' title='"+label+"'>" + label + '</div>';
-        axis_label.push([index+1, label]);
-        chart_data.push([answer[1],index+1]);
+        $.each(answer,function(i,ans){
+            var label = ans.term;
+            label = "<div class='barLabel' title='"+label+"'>" + label + '</div>';
+            axis_label.push([i+1, label]);
+            chart_data.push([ans.count,i+1]);
+
+        });
     });
     $.plot(
         $locator,
@@ -108,8 +110,8 @@ function drawBar(answers, total, $locator, barColor) {
                     show:true,
                     barWidth:.4,
                     align:'center',
-                    horizontal: true,
-                    fillColor: { colors: [barColor, getColorOf(barColor,0.8) , getColorOf(barColor,0.6)] }
+                    horizontal: true
+//                    fillColor: { colors: [barColor, getColorOf(barColor,0.8) , getColorOf(barColor,0.6)] }
                 }
 
             }

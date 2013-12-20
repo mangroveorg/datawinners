@@ -35,7 +35,11 @@ $(function () {
         if (DW.chart_view_shown) {
             $("#table_view").addClass("active");
             $("#chart_view").removeClass("active-right");
-            DW.toggle_view();
+            $("#submission_logs").show();
+            $('.submission_table').dataTable().fnDestroy();
+            $('.submission_table').empty();
+            _initTable(submissionTabs);
+            $("#data_pane").hide();
             DW.chart_view_shown = false;
         }
     };
@@ -44,7 +48,6 @@ $(function () {
         if (!DW.chart_view_shown) {
             $("#table_view").removeClass("active");
             $("#chart_view").addClass("active-right");
-            DW.toggle_view();
             DW.chart_view_shown = true;
             $.ajax({
                 "dataType": 'json',
@@ -52,6 +55,9 @@ $(function () {
                 "url": analysis_stats_url,
                 "data": {'search_filters':JSON.stringify(filter_as_json())},
                 "success": function (result) {
+                    $("#submission_logs").hide();
+                    $('#data_pane').show();
+                    drawBar(result,20,$('#data_pane'));
                 },
                 "error": function () {
                 },
@@ -59,16 +65,6 @@ $(function () {
             })
         }
     };
-
-    DW.toggle_view = function () {
-        $('#dataTables_info').toggle();
-        $('#chart_info').toggle();
-        $('#chart_info_2').toggle();
-        $('#data_analysis_chart').toggle();
-        $('#data_analysis_wrapper').toggle();
-    };
-
-
 });
 
 

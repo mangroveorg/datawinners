@@ -38,10 +38,13 @@
     <script type="text/javascript" src="/media/javascript/project/filter/json2form.js"></script>
     <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
     <script src="/media/javascript/data_tables/js/dwtable.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/data_analysis_chart_view.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_results.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_analysis_index.js"></script>
     <script type="text/javascript" src="/media/javascript/project/import_submission.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_log_actions.js"></script>
+    <script type="text/javascript" src="/media/javascript/flot/jquery.flot.min.js"></script>
+
 {% endblock %}
 
 {% block page_css %}
@@ -129,11 +132,10 @@
         </div>
         <div id="chart_info_2"></div>
     </div>
-
-
-    <div id="submission_logs" class="grid_23 alpha">
-        {% include 'project/log_table.html' %}
-    </div>
+    <div id="data_pane" style="height: 250px;width: 500px;display: none;" ></div>
+        <div id="submission_logs" class="grid_23 alpha" >
+            {% include 'project/log_table.html' %}
+        </div>
     </div>
     <div id="delete_submission_warning_dialog" style="display:none;">
         <div class="warning_message">

@@ -372,7 +372,7 @@ def get_submissions(request, form_code):
 
 def add_facet_to_query(query_with_criteria, choice_fields, form_model_id):
     for field in choice_fields:
-        query_with_criteria = query_with_criteria.facet(es_field_name(field.code, form_model_id) + "_value")
+        query_with_criteria = query_with_criteria.facet(es_field_name(field.code, form_model_id) + "_value",filtered=True)
     return query_with_criteria
 
 
