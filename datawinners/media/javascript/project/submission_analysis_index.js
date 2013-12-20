@@ -3,7 +3,7 @@ $(function () {
     var submissionTabs = new DW.SubmissionTabs();
     submissionTabs.setToAnalysisTab();
 
-    var _initTable = function(submissionTabs){
+    var _initTable = function (submissionTabs) {
         var submission_table_options = {
             header_url: render_table_url + "/headers",
             table_source_url: render_table_url + '?type=' + submissionTabs.getActiveTabName(),
@@ -14,7 +14,7 @@ $(function () {
         new DW.SubmissionLogTable(submission_table_options);
     };
 
-    var _initialize_filters = function(){
+    var _initialize_filters = function () {
         new DW.FilterSubmissionTableByDate().init();
         new DW.FilterSubmissionTableByDataSender().init();
         new DW.FilterSubmissionTableBySubject().init();
@@ -29,6 +29,46 @@ $(function () {
     $(".ui-corner-top").removeClass("ui-corner-top");
 
     new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
+    DW.chart_view_shown = false;
+
+    DW.show_data_view = function () {
+        if (DW.chart_view_shown) {
+            $("#table_view").addClass("active");
+            $("#chart_view").removeClass("active-right");
+            DW.toggle_view();
+            DW.chart_view_shown = false;
+        }
+    };
+
+    DW.show_chart_view = function () {
+        if (!DW.chart_view_shown) {
+            $("#table_view").removeClass("active");
+            $("#chart_view").addClass("active-right");
+            DW.toggle_view();
+            DW.chart_view_shown = true;
+            $.ajax({
+                "dataType": 'json',
+                "type": "POST",
+                "url": analysis_stats_url,
+                "data": {'search_filters':JSON.stringify(filter_as_json())},
+                "success": function (result) {
+                },
+                "error": function () {
+                },
+                "global": false
+            })
+        }
+    };
+
+    DW.toggle_view = function () {
+        $('#dataTables_info').toggle();
+        $('#chart_info').toggle();
+        $('#chart_info_2').toggle();
+        $('#data_analysis_chart').toggle();
+        $('#data_analysis_wrapper').toggle();
+    };
+
+
 });
 
 
