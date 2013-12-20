@@ -70,3 +70,7 @@ datawinners/media/CACHE
 # Emacs files
 .ropeproject
 
+# celery generated
+###################
+datawinners/celery
+

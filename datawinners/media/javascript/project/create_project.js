@@ -274,33 +274,10 @@ $(document).ready(function () {
         }
     );
 
-    $("#questionnaire_code_change").dialog({
-            title:gettext("Warning !!"),
-            modal:true,
-            autoOpen:false,
-            height:200,
-            width:300,
-            closeText:'hide'
-        }
-    );
-
     $('#questionnaire-code').blur(function () {
         if ($('#project-state').val() == "Test" && $('#saved-questionnaire-code').val() != $('#questionnaire-code').val()) {
-            $("#questionnaire_code_change").dialog("open");
+            DW.questionnaire_was_changed = true;
         }
-    });
-
-    $("#ok_button").bind("click", function () {
-        $("#questionnaire_code_change").dialog("close");
-        DW.questionnaire_was_changed = true;
-        return false;
-    });
-
-    $(".cancel_link").bind("click", function () {
-        $("#questionnaire_code_change").dialog("close");
-        var old_questionnaire_code = $('#saved-questionnaire-code').val();
-        $('#questionnaire-code').val(old_questionnaire_code);
-        return false;
     });
 
     $("#question_title").focus(function () {

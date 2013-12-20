@@ -54,7 +54,7 @@ USE_I18N = True
 LANGUAGES = (
     ('en', 'English'),
     ('fr', 'French'),
-    )
+)
 
 
 # If you set this to False, Django will not format dates, numbers and
@@ -75,7 +75,7 @@ COMPRESS_URL = '/media/'
 COMPRESS_PRECOMPILERS = (
     ('text/x-sass', 'sass {infile} {outfile}'),
     ('text/x-scss', 'sass --scss {infile} {outfile}'),
-    )
+)
 
 
 # Absolute path to the directory static files should be collected to.
@@ -107,7 +107,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'compressor.finders.CompressorFinder',
-    )
+)
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ')(qag8n#2$8dl8krz20+xe9khly2_g$k&29m&-$)bcmd-l-5m)'
@@ -117,7 +117,7 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
     #     'django.template.loaders.eggs.Loader',
-    )
+)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -128,7 +128,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'datawinners.middleware.exception_middleware.ExceptionMiddleware',
-    )
+)
 
 ROOT_URLCONF = 'datawinners.urls'
 AUTH_PROFILE_MODULE = "accountmanagement.NGOUserProfile"
@@ -139,12 +139,12 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/registration".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    )
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'datawinners.accountmanagement.context_processors.add_feature_flags',
-    )
+)
 
 INDEX_PAGE = '/home'
 HOME_PAGE = '/dashboard'
@@ -185,7 +185,9 @@ INSTALLED_APPS = (
     'django_digest',
     'datawinners.custom_reports.crs',
     'rest_framework.authtoken',
-    )
+    'kombu.transport.django',
+    'celery',
+)
 
 WAYBILL_SENT_QUESTIONNAIRE_CODE = 'way1'
 WAYBILL_SENT_BY_SITE = 'wbs'
@@ -240,8 +242,8 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'DEBUG',
             'propagate': True,
-            },
-        }
+        },
+    }
 }
 
 SCHEDULER_HOUR = 5
@@ -254,7 +256,7 @@ GOOGLE_ANALYTICS_ENABLED = True
 TRIAL_REGISTRATION_ENABLED = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-ELASTIC_SEARCH_URL='http://localhost:9200/'
+ELASTIC_SEARCH_URL = 'http://localhost:9200/'
 ELASTIC_SEARCH_TIMEOUT = 180
 
 try:
@@ -263,4 +265,3 @@ except ImportError, e:
     raise Exception("You need to create a local_settings.py from local_settings_example.py")
 
 from logger_settings import *
-
