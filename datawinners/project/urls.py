@@ -13,7 +13,6 @@ js_info_dict = {
     'domain': 'djangojs',
     'packages': ('datawinners.project',),
 }
-
 urlpatterns = patterns('',
                        (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
                        (r'^project/disassociate/$', DisassociateDataSendersView.as_view()),
@@ -88,6 +87,8 @@ urlpatterns = patterns('',
                        (r'^project/export/data$', submission_views.export),
                        (r'^project/export/log$', submission_views.export),
                        (r'^project/submissions/(?P<form_code>.+?)/headers$', submission_views.headers),
+                       (r'^project/submissions/(?P<form_code>.+?)/analysis$', submission_views.get_stats),
                        (r'^project/submissions/(?P<form_code>.+?)$', submission_views.get_submissions),
                        url(r'^project/import-submissions/(?P<form_code>.+?)$', ImportSubmissionView.as_view(), name="import_submissions"),
-)
+                       )
+

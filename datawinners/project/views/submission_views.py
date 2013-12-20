@@ -23,6 +23,7 @@ from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.search.submission_headers import HeaderFactory
+from datawinners.search.submission_index import es_field_name
 from datawinners.search.submission_query import SubmissionQuery
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -367,3 +368,32 @@ def get_submissions(request, form_code):
                 "iTotalRecords": search_count,
                 'iDisplayLength': int(request.POST.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')
+
+
+def add_facet_to_query(query_with_criteria, choice_fields, form_model_id):
+    for field in choice_fields:
+        query_with_criteria = query_with_criteria.facet(es_field_name(field.code, form_model_id) + "_value")
+    return query_with_criteria
+
+
+@csrf_view_exempt
+@valid_web_user
+def get_stats(request, form_code):
+    dbm = get_database_manager(request.user)
+    form_model = get_form_model_by_code(dbm, form_code)
+    search_parameters = {}
+    search_parameters.update({"start_result_number": 0})
+    search_parameters.update({"number_of_results": 0})
+    filter_type = "success"
+    search_parameters.update({"filter": filter_type})
+
+    search_parameters.update({"sort_field": "ds_id"})
+    search_parameters.update({"order": "-" if request.POST.get('sSortDir_0') == "desc" else ""})
+    search_filters = json.loads(request.POST.get('search_filters'))
+    search_parameters.update({"search_filters": search_filters})
+    search_text = search_filters.get("search_text", '')
+    search_parameters.update({"search_text": search_text})
+    user = request.user
+    entity_headers, paginated_query, query_with_criteria = SubmissionQuery(form_model, search_parameters).query_to_be_paginated(form_model.id,user)
+    facet_query = add_facet_to_query(query_with_criteria, form_model.choice_fields, form_model.id)
+    return HttpResponse(json.dumps(facet_query.facet_counts()), content_type='application/json')
