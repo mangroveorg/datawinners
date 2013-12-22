@@ -162,13 +162,13 @@ class SubmissionParserTest(TestCase):
         ]
         self.user = Mock(User)
         self.dbm = Mock(spec=DatabaseManager)
-        default_ddtype = DataDictType(self.dbm, name='Default String Datadict Type', slug='string_default',
+        self.default_ddtype = DataDictType(self.dbm, name='Default String Datadict Type', slug='string_default',
                                       primitive_type='string')
         fields = \
             [TextField(name="Q1", code="EID", label="What is the reporter ID?", entity_question_flag=True,
-                       ddtype=default_ddtype),
+                       ddtype=self.default_ddtype),
              TextField(name="Q2", code="DATE", label="What is the reporting period for the activity?",
-                       entity_question_flag=False, ddtype=default_ddtype)]
+                       entity_question_flag=False, ddtype=self.default_ddtype)]
         self.form_model = FormModel(self.dbm, "abc", "abc", entity_type=["clinic"], form_code="cli001", fields=fields,
                                type="survey")
         self.project = Mock(Project)
@@ -201,6 +201,28 @@ class SubmissionParserTest(TestCase):
         except ImportValidationError as e:
             self.assertEquals("The columns you are importing do not match. Please download the latest template for importing.", e.message)
 
+
+    def test_should_handle_questions_with_similar_label(self):
+        self.data = [[
+                    "What is the reporting period for the activity?\n\n Answer must be a date in the following format: day.month.year\n\n Example: 25.12.2011",
+                    "Name",
+                    "Name 1"],
+
+                ["12.12.2012", "name11", "name12"],
+                ["11.11.2012", "name21", "name22"],
+                ["12.10.2012", "name31", "name32"]
+        ]
+        field = TextField(name="Q3", code="NAME", label="Name",
+                       entity_question_flag=False, ddtype=self.default_ddtype)
+        self.form_model.add_field(field)
+        field = TextField(name="Q4", code="NAME1", label="Name 1",
+                       entity_question_flag=False, ddtype=self.default_ddtype)
+        self.form_model.add_field(field)
+        expected_ans_dict = [{'DATE': '12.12.2012', 'NAME': 'name11', 'NAME1': 'name12'},
+                             {'DATE': '11.11.2012', 'NAME': 'name21', 'NAME1': 'name22'},
+                             {'DATE': '12.10.2012', 'NAME': 'name31', 'NAME1': 'name32'}]
+
+        self.assertEquals(expected_ans_dict, SubmissionWorkbookMapper(self.data, self.form_model).process());
 
 if __name__ == '__main__':
     unittest.main()
