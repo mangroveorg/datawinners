@@ -26,6 +26,7 @@ class SubmissionHeader():
             # This condition removes that extra question.
             header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
             header_dict.pop('entity_short_code')
+        header_dict.update({'dummy_col':'dummy col for testing'})
         return header_dict
 
     def get_header_field_names(self):
