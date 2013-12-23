@@ -1,9 +1,10 @@
 from abc import abstractmethod
 from collections import OrderedDict
+import logging
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index import es_field_name
 from mangrove.form_model.form_model import header_fields
-
+logger = logging.getLogger("datawinners")
 
 class SubmissionHeader():
     def __init__(self, form_model):
@@ -26,6 +27,7 @@ class SubmissionHeader():
             # This condition removes that extra question.
             header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
             header_dict.pop('entity_short_code')
+        logger.info(header_dict)
         return header_dict
 
     def get_header_field_names(self):
