@@ -113,7 +113,7 @@ LOGGING = {
             'propagate': True,
         },
         'datawinners': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'handlers': ['log-file'],
             'propagate': True,
         },
