@@ -48,9 +48,13 @@ class ImportSubmissionView(View):
                     "success_submissions": response.saved_entries,
                     "errored_submission_details": response.errored_entrie_details,
                     "message": response.message,
-                    "total_submissions": response.total_submissions
+                    "total_submissions": response.total_submissions,
+                    "quota_over": self._is_submission_quota_over(response)
                 }),
             content_type='application/json')
+
+    def _is_submission_quota_over(self, response):
+        return True if response.ignored_entries else False
 
     def _successful(self, response):
         return True if response.saved_entries \

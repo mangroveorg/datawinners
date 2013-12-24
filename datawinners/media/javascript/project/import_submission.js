@@ -111,8 +111,15 @@ DW.SubmissionFileUploader = function(options){
             $('#error_import_section').show();
         }
         _updateMessages(responseJSON);
+        _disable_upload_button(responseJSON.quota_over);
 
     };
+
+    function _disable_upload_button(quota_over) {
+        if (quota_over) {
+            $('.file-uploader').html('<span disabled="disabled" class="button disabled" back>Upload a file</span>');
+        }
+    }
 
     function _createHeader(questionMap) {
         var header = '<thead><tr>'
