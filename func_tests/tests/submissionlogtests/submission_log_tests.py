@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import os
 import unittest
 from datetime import datetime
 import time
@@ -35,7 +36,6 @@ from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
 
 
-@attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -345,12 +345,21 @@ class TestSubmissionLog(unittest.TestCase):
 
     def verify_sort_data_by_date(self, submission_log_page, column,
                                  date_format=SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG):
+        TestSubmissionLog._create_screenshot("sort_dates_before")
         date_strings = submission_log_page.get_all_data_on_nth_column(column)
         self.assertTrue(len(date_strings) >= 3)
         dates = []
         for date in date_strings:
             dates.append(datetime.strptime(date, date_format))
+
         self.assertTrue(dates[2] >= dates[1] >= dates[0], msg="Dates:" + str(dates))
+
+    @classmethod
+    def _create_screenshot(cls, file_name):
+        if not os.path.exists("screenshots"):
+            os.mkdir("screenshots")
+        cls.driver.save_screenshot("screenshots/%s.png" % file_name)
+
 
     @attr('functional_test')
     def test_sorting_on_date_columns(self):
