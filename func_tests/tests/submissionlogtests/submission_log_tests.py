@@ -343,7 +343,7 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertEqual(total_number_of_rows, 1)
         self.assert_reporting_period_values(submission_log_page, total_number_of_rows, monthly=True)
 
-    def verify_sort_data_by_date(self, submission_log_page, column,
+    def verify_sort_data_by_date(self, submission_log_page, column, sort_predicate,
                                  date_format=SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG):
         TestSubmissionLog._create_screenshot("sort_dates_before")
         date_strings = submission_log_page.get_all_data_on_nth_column(column)
@@ -352,7 +352,8 @@ class TestSubmissionLog(unittest.TestCase):
         for date in date_strings:
             dates.append(datetime.strptime(date, date_format))
 
-        self.assertTrue(dates[2] >= dates[1] >= dates[0], msg="Dates:" + str(dates))
+        self.assertTrue(sort_predicate(dates[0], dates[1]), msg="Dates:" + str(dates))
+        self.assertTrue(sort_predicate(dates[1], dates[2]), msg="Dates:" + str(dates))
 
     @classmethod
     def _create_screenshot(cls, file_name):
@@ -367,11 +368,11 @@ class TestSubmissionLog(unittest.TestCase):
             self.reporting_period_project_name = self.populate_data_for_date_range_filters()
         submission_log_page = self.go_to_submission_log_page(project_name=self.reporting_period_project_name)
         submission_log_page.wait_for_table_data_to_load()
-        #default sorting on submission date
-        self.verify_sort_data_by_date(submission_log_page, column=3)
+        #default sorting on submission date should be in descending order
+        self.verify_sort_data_by_date(submission_log_page, 3, greater_than_equal)
         submission_log_page.click_on_nth_header(6)
         submission_log_page.wait_for_table_data_to_load()
-        self.verify_sort_data_by_date(submission_log_page, 6, date_format='%d.%m.%Y')
+        self.verify_sort_data_by_date(submission_log_page, 6, less_than_equal, date_format='%d.%m.%Y')
 
     @attr('functional_test')
     def test_should_delete_submission(self):
@@ -395,4 +396,10 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertEqual(delete_success_text, "The selected records have been deleted")
         submission_log_page.wait_for_table_data_to_load()
         self.assertEquals(int(submission_log_page.get_total_number_of_records()), 0)
+
+def less_than_equal(x, y):
+    return x <= y
+
+def greater_than_equal(x, y):
+    return x >= y
 
