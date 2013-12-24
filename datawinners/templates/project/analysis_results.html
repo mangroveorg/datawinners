@@ -128,18 +128,18 @@
             <div class="view_style_block">
                 <label>{% trans "View:" %}</label>
                 <ul>
-                    <li id="table_view" class="active list"><a onclick="DW.show_data_view()">{% trans "List" %}</a></li>
-                    <li id="chart_view" class="chart"><a onclick="DW.show_chart_view()">{% trans "Chart" %}</a></li>
+                    <li id="table_view_option" class="active list"><a>{% trans "List" %}</a></li>
+                    <li id="chart_view_option" class="chart"><a>{% trans "Chart" %}</a></li>
                 </ul>
             </div>
         </div>
         <div id="chart_info_2"></div>
     </div>
     <div id="chart_ol" style="display: none;" class="chartOl" ></div>
-        <div id="submission_logs" class="grid_23 alpha" >
-            {% include 'project/log_table.html' %}
-        </div>
+    <div id="submission_logs" class="grid_23 alpha">
+        {% include 'project/log_table.html' %}
     </div>
+{#    </div>#}
     <div id="delete_submission_warning_dialog" style="display:none;">
         <div class="warning_message">
             {% trans "Your Submission(s) will be moved to Deleted Submissions.<br/>This action cannot be undone." %}

@@ -1,9 +1,36 @@
 $(function () {
     $.ajaxSetup({ cache: false });
-    var submissionTabs = new DW.SubmissionTabs();
-    submissionTabs.setToAnalysisTab();
+    $('#page_hint_section').text($('#page_hint').find('>div:first').text());
+    $(".ui-corner-all").removeClass("ui-corner-all");
+    $(".ui-corner-top").removeClass("ui-corner-top");
 
-    var _initTable = function (submissionTabs) {
+    new DW.SubmissionAnalysisView().init();
+});
+
+DW.SubmissionAnalysisView = function(){
+
+    var self = this;
+    var tableViewOption = $("#table_view_option");
+    var chartViewOption = $("#chart_view_option");
+    var tableView = $("#submission_logs");
+    var chartView = $('#chart_ol');
+    var isChartViewShown = false;
+    var submissionTabs = new DW.SubmissionTabs();
+    var chartGenerator = new DW.SubmissionAnalysisChartGenerator();
+
+    self.init = function(){
+       submissionTabs.setToAnalysisTab();
+       _initializeSubmissionTable(submissionTabs);
+       _initializeSubmissionTableFilters();
+       _initializeEvents();
+       _initializeExport();
+    };
+
+    var _initializeExport = function(){
+        new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
+    };
+
+    var _initializeSubmissionTable = function(submissionTabs){
         var submission_table_options = {
             header_url: render_table_url + "/headers",
             table_source_url: render_table_url + '?type=' + submissionTabs.getActiveTabName(),
@@ -14,76 +41,92 @@ $(function () {
         new DW.SubmissionLogTable(submission_table_options);
     };
 
-    var _initialize_filters = function () {
+    var _initializeSubmissionTableFilters = function() {
         new DW.FilterSubmissionTableByDate().init();
         new DW.FilterSubmissionTableByDataSender().init();
         new DW.FilterSubmissionTableBySubject().init();
         new DW.FilterSubmissionTableBySearchText().init();
     };
 
-    _initTable(submissionTabs);
-    _initialize_filters();
-    $('#page_hint_section').text($('#page_hint').find('>div:first').text());
-
-    $(".ui-corner-all").removeClass("ui-corner-all");
-    $(".ui-corner-top").removeClass("ui-corner-top");
-
-    new DW.SubmissionLogExport().init(submissionTabs.getActiveTabName());
-    DW.chart_view_shown = false;
-
-    DW.show_data_view = function () {
-        if (DW.chart_view_shown) {
-            $("#table_view").addClass("active");
-            $("#chart_view").removeClass("active-right");
-            reinitialize_table_view();
-            _initTable(submissionTabs);
-            $("#chart_ol").hide();
-            DW.chart_view_shown = false;
-        }
+    var _initializeSubmissionChartFilters = function(){
+        new DW.FilterSubmissionChartsBySearchText().init();
     };
 
-    DW.show_chart_view = function () {
-        if (!DW.chart_view_shown) {
-            $("#table_view").removeClass("active");
-            $("#chart_view").addClass("active-right");
-            DW.chart_view_shown = true;
-            $.ajax({
+    var _initializeEvents = function(){
+        tableViewOption.on("click", _showDataTableView);
+        chartViewOption.on("click", _showChartView);
+    };
+
+    var _showDataTableView = function () {
+        if (!isChartViewShown)
+            return;
+        tableViewOption.addClass("active");
+        chartViewOption.removeClass("active-right");
+        _reinitializeSubmissionTableView();
+        _initializeSubmissionTable(submissionTabs);
+        chartView.hide();
+        isChartViewShown = false;
+    };
+
+    var _reinitializeSubmissionTableView = function(){
+        tableView.show();
+        $('.submission_table').dataTable().fnDestroy();
+        $('.submission_table').empty();
+        $('#chart_info').empty();
+        $('#chart_info_2').empty();
+        chartView.empty();
+    };
+
+    var _showChartView = function () {
+        if (isChartViewShown)
+            return;
+        tableViewOption.removeClass("active");
+        chartViewOption.addClass("active-right");
+        isChartViewShown = true;
+        tableView.hide();
+        chartGenerator.generateCharts();
+    };
+
+};
+
+DW.SubmissionAnalysisChartGenerator = function(){
+    var self = this;
+    var chartView = $('#chart_ol');
+
+    self.generateCharts = function(){
+         $.ajax({
                 "dataType": 'json',
                 "type": "POST",
                 "url": analysis_stats_url,
                 "data": {'search_filters': JSON.stringify(filter_as_json())},
                 "success": function (response) {
-                    $("#submission_logs").hide();
-                    $('#chart_ol').show();
-                    draw_bar_charts(response);
+                       chartView.show();
+                      _draw_bar_charts(response);
                 },
                 "error": function () {
                 },
                 "global": false
-            })
-        }
+            });
     };
-});
 
+    var _draw_bar_charts = function(response){
+        if (response.total == 0) {
+            showNoSubmissionExplanation(chartView);
+            return;
+        }
+        var $chart_ol = chartView.attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();
+        var i = 0;
+        $.each(response.result, function (index, ans) {
+            drawChartBlockForQuestions(index, ans, i, $chart_ol);
+            drawChart(ans, i, response.total, "");
+            i++;
+        });
+    };
+};
 
-function draw_bar_charts(response) {
-    if (response.total == 0) {
-        return showNoSubmissionExplanation($('#chart_ol'));
-    }
-    $chart_ol = $('#chart_ol').attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();
-    var i = 0;
-    $.each(response.result, function (index, ans) {
-        drawChartBlockForQuestions(index, ans, i, $chart_ol);
-        drawChart(ans, i, response.total, "");
-        i++;
-    });
-}
-
-function reinitialize_table_view() {
-    $("#submission_logs").show();
-    $('.submission_table').dataTable().fnDestroy();
-    $('.submission_table').empty();
-    $('#chart_info').empty();
-    $('#chart_info_2').empty();
-    $('#chart_ol').empty();
-}
+DW.FilterSubmissionChartsBySearchText = function () {
+};
+DW.FilterSubmissionChartsBySearchText.prototype = new DW.SearchTextFilter();
+DW.FilterSubmissionChartsBySearchText.prototype.postFilterSelection = function () {
+    new DW.SubmissionAnalysisChartGenerator().generateCharts();
+};
