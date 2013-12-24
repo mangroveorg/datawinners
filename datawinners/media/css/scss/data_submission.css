@@ -45,3 +45,9 @@
 #cancel {
   margin: -25px 0px 0px 220px;
   float: left; }
+
+#action-section, #cancel {
+    margin: 0px;
+    float: none;
+    padding-right: 10px;
+}
