@@ -20,7 +20,7 @@ DW.SubmissionImportPopup = function(){
                       text: "Close",
                       click: function() {
                         $( this ).dialog( "close" );
-                       _reload_avaliable_submission_table();
+                       _reload_parent_page();
                       }
                     }
                 ]
@@ -56,10 +56,8 @@ DW.SubmissionImportPopup = function(){
         return self;
     };
 
-    function _reload_avaliable_submission_table() {
-        if ($(".submission_table").length > 0) {
-            $(".submission_table").dataTable().fnDraw();
-        }
+    function _reload_parent_page() {
+        window.location.reload();
     }
 
     function _updateTemplateDownloadLink(project_name, form_code) {
