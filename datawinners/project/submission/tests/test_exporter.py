@@ -27,7 +27,7 @@ class TestExporter(TestCase):
                           u"What is your blood group?", u"What aré symptoms?",
                           u'What is the GPS code for clinic? Latitude', u'What is the GPS code for clinic? Longitude',u"What are the required medicines?"],
         sheet.row_values(0, 0, 14))
-        self.assertEqual(['2', '2'], sheet.row_values(1, 11, 13))
+        self.assertEqual([2.0, 2.0], sheet.row_values(1, 11, 13))
 
         self.assertEqual([u'export18'], sheet.row_values(1, 7, 8))
 

@@ -13,7 +13,7 @@ class TestSubmissionFormatter(TestCase):
         headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
 
         self.assertEquals(headers, ['what is gps Latitude', 'what is gps Longitude'])
-        self.assertEquals(values, [['3', '3']])
+        self.assertEquals(values, [[3.0, 3.0]])
 
     def test_should_split_gps_values_based_on_space(self):
         columns = {'form_id_q1': {'type': 'geocode', 'label':'what is gps'}}
@@ -22,7 +22,17 @@ class TestSubmissionFormatter(TestCase):
         headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
 
         self.assertEquals(headers, ['what is gps Latitude', 'what is gps Longitude'])
-        self.assertEquals(values, [['3.90', '-7.89']])
+        self.assertEquals(values, [[3.9, -7.89]])
+
+    def test_should_retain_junk_values_as_is_though_type_is_geo_coordinate(self):
+        columns = {'form_id_q1': {'type': 'geocode', 'label':'what is gps'}}
+        submission_list = [{'form_id_q1': 'aa'}]
+
+        headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
+
+        self.assertEquals(headers, ['what is gps Latitude', 'what is gps Longitude'])
+        self.assertEquals(values, [['a','a']])
+
 
     def test_should_give_back_empty_values_and_append_latitude_and_longitude_in_headers_when_no_gps_value_in_submission(self):
         columns = {'form_id_q1': {'type': 'geocode', 'label':'what is gps'}, 'form_id_q2':{'type': 'text', 'label': 'say hi'}}
@@ -83,3 +93,30 @@ class TestSubmissionFormatter(TestCase):
 
         self.assertEquals(headers, ['what is submission date'])
         self.assertEquals(values, [['']])
+
+    def test_should_concatenate_multi_select_values(self):
+        columns = {'form_id_q1': {'type': 'select', 'label':'What programming languages do you use'}}
+        submission_list = [{'form_id_q1': ["Python", "C#", "Java"]}]
+
+        headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
+
+        self.assertEquals(headers, ['What programming languages do you use'])
+        self.assertEquals(values, [['Python, C#, Java']])
+
+    def test_should_parse_numeric_values_when_type_is_numeric(self):
+        columns = {'form_id_q1': {'type': 'integer', 'label':'How many hours do you code'}}
+        submission_list = [{'form_id_q1': "12.0"}]
+
+        headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
+
+        self.assertEquals(headers, ['How many hours do you code'])
+        self.assertEquals(values, [[12.0]])
+
+    def test_should_treat_no_numeric_answers_as_text_even_when_though_type_is_numeric(self):
+        columns = {'form_id_q1': {'type': 'integer', 'label':'How many hours do you code'}}
+        submission_list = [{'form_id_q1': "some rubbish"}]
+
+        headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
+
+        self.assertEquals(headers, ['How many hours do you code'])
+        self.assertEquals(values, [["some rubbish"]])
