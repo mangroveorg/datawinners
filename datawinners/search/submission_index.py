@@ -41,6 +41,11 @@ def es_field_name(field_code, form_model_id):
     """
     return field_code if is_submission_meta_field(field_code) else "%s_%s" % (form_model_id, lower(field_code))
 
+def get_code_from_es_field_name(es_field_name,form_model_id):
+    for item in es_field_name.split('_'):
+        if item != 'value' and item != form_model_id:
+            return item
+
 
 def create_submission_mapping(dbm, form_model):
     es = get_elasticsearch_handle()

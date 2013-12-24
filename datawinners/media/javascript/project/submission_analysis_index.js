@@ -35,11 +35,9 @@ $(function () {
         if (DW.chart_view_shown) {
             $("#table_view").addClass("active");
             $("#chart_view").removeClass("active-right");
-            $("#submission_logs").show();
-            $('.submission_table').dataTable().fnDestroy();
-            $('.submission_table').empty();
+            reinitialize_table_view();
             _initTable(submissionTabs);
-            $("#data_pane").hide();
+            $("#chart_ol").hide();
             DW.chart_view_shown = false;
         }
     };
@@ -53,11 +51,11 @@ $(function () {
                 "dataType": 'json',
                 "type": "POST",
                 "url": analysis_stats_url,
-                "data": {'search_filters':JSON.stringify(filter_as_json())},
-                "success": function (result) {
+                "data": {'search_filters': JSON.stringify(filter_as_json())},
+                "success": function (response) {
                     $("#submission_logs").hide();
-                    $('#data_pane').show();
-                    drawBar(result,20,$('#data_pane'));
+                    $('#chart_ol').show();
+                    draw_bar_charts(response);
                 },
                 "error": function () {
                 },
@@ -68,3 +66,24 @@ $(function () {
 });
 
 
+function draw_bar_charts(response) {
+    if (response.total == 0) {
+        return showNoSubmissionExplanation($('#chart_ol'));
+    }
+    $chart_ol = $('#chart_ol').attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();
+    var i = 0;
+    $.each(response.result, function (index, ans) {
+        drawChartBlockForQuestions(index, ans, i, $chart_ol);
+        drawChart(ans, i, response.total, "");
+        i++;
+    });
+}
+
+function reinitialize_table_view() {
+    $("#submission_logs").show();
+    $('.submission_table').dataTable().fnDestroy();
+    $('.submission_table').empty();
+    $('#chart_info').empty();
+    $('#chart_info_2').empty();
+    $('#chart_ol').empty();
+}

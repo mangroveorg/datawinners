@@ -4,7 +4,7 @@ import json
 import re
 import datetime
 import logging
-from string import capitalize
+from string import capitalize, lower
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
@@ -23,7 +23,7 @@ from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.search.submission_headers import HeaderFactory
-from datawinners.search.submission_index import es_field_name
+from datawinners.search.submission_index import es_field_name, get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQuery
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -338,6 +338,7 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
         pass
     return headers[order_by]
 
+
 @csrf_view_exempt
 @valid_web_user
 def get_submissions(request, form_code):
@@ -372,7 +373,8 @@ def get_submissions(request, form_code):
 
 def add_facet_to_query(query_with_criteria, choice_fields, form_model_id):
     for field in choice_fields:
-        query_with_criteria = query_with_criteria.facet(es_field_name(field.code, form_model_id) + "_value",filtered=True)
+        query_with_criteria = query_with_criteria.facet(es_field_name(field.code, form_model_id) + "_value",
+                                                        filtered=True)
     return query_with_criteria
 
 
@@ -394,6 +396,32 @@ def get_stats(request, form_code):
     search_text = search_filters.get("search_text", '')
     search_parameters.update({"search_text": search_text})
     user = request.user
-    entity_headers, paginated_query, query_with_criteria = SubmissionQuery(form_model, search_parameters).query_to_be_paginated(form_model.id,user)
+
+    entity_headers, paginated_query, query_with_criteria = SubmissionQuery(form_model,
+                                                                           search_parameters).query_to_be_paginated(
+        form_model.id, user)
     facet_query = add_facet_to_query(query_with_criteria, form_model.choice_fields, form_model.id)
-    return HttpResponse(json.dumps(facet_query.facet_counts()), content_type='application/json')
+    facet_results = facet_query.facet_counts()
+
+    return HttpResponse(json.dumps(
+        {'result': create_statistics_response(facet_results, form_model), 'total': query_with_criteria.count()}),
+                        content_type='application/json')
+
+
+def create_statistics_response(facet_results, form_model):
+    analysis_response = {}
+    for key, value in facet_results.iteritems():
+        field_code = get_code_from_es_field_name(key, form_model.id)
+        field = form_model._get_field_by_code(field_code)
+
+        field_options = [lower(option['text']) for option in field.options]
+        facet_result_options = [lower(option['term']) for option in value]
+
+        for option in field_options:
+            if option not in facet_result_options:
+                value.append({'count': 0, 'term': option})
+
+        analysis_response.update({field.label: {'data': value, 'field_type': field.type}})
+    return analysis_response
+
+
