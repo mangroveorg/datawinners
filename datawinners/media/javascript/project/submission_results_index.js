@@ -33,10 +33,14 @@ $(document).ready(function () {
     };
 
     var _initialize_filters = function(){
-        new DW.FilterSubmissionTableByDate().init();
-        new DW.FilterSubmissionTableByDataSender().init();
-        new DW.FilterSubmissionTableBySubject().init();
-        new DW.FilterSubmissionTableBySearchText().init();
+        new DW.DateFilter(_postFilterSelection).init();
+        new DW.DataSenderFilter(_postFilterSelection).init();
+        new DW.SubjectFilter(_postFilterSelection).init();
+        new DW.SearchTextFilter(_postFilterSelection).init();
+    };
+
+    var _postFilterSelection = function(){
+        $(".submission_table").dataTable().fnDraw();
     };
 
     _initTable(submissionTabs);
@@ -54,16 +58,6 @@ $(document).ready(function () {
         _activate_tab(submissionTabs);
         return true;
     });
-
-//    var all_tabs = $("#tabs").tabs().find('>ul>li>a[href$=tab_template]');
-//    for (var i = 0; i < all_tabs.length; i++) {
-//        if (i == submissionTabs.getActiveTabIndex()) {
-//            $($(all_tabs[i]).parent()).addClass('ui-tabs-selected ui-state-active')
-//        } else {
-//            $($(all_tabs[i]).parent()).removeClass('ui-tabs-selected ui-state-active')
-//        }
-//
-//    };
 
     $(".ui-corner-all").removeClass("ui-corner-all");
     $(".ui-corner-top").removeClass("ui-corner-top");

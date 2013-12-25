@@ -96,8 +96,9 @@ DW.SubmissionLogExport = function () {
     };
 };
 
-DW.DataSenderFilter = function () {
+DW.DataSenderFilter = function (postFilterSelectionCallBack) {
     var self = this;
+    var postFilterSelection = postFilterSelectionCallBack;
     this.datasenders_source_url = "/entity/datasenders/autocomplete/";
 
     self.init = function () {
@@ -113,7 +114,7 @@ DW.DataSenderFilter = function () {
             "source": self.datasenders_source_url,
             "select": function (event, ui) {
                 self.filter.data('ds_id', ui.item.id);
-                self.postFilterSelection(); //abstract-method
+                postFilterSelection();
             }
         }).data("autocomplete")._renderItem = function (ul, item) {
             return $("<li></li>").data("item.autocomplete", item).append($("<a>" + item.label + ' <span class="small_grey">' + item.id + '</span></a>')).appendTo(ul);
@@ -122,18 +123,18 @@ DW.DataSenderFilter = function () {
 
     self.initialize_events = function () {
         // change on autocomplete is not working in certain cases like select an item and then clear doesn't fire change event. so using input element's change.
-        var self = this;
         self.filter.change(function () {
             if (self.filter.val() == '') {
                 self.filter.data('ds_id', '');
-                self.postFilterSelection();
+                postFilterSelection();
             }
         });
     };
 };
 
-DW.SubjectFilter = function () {
+DW.SubjectFilter = function (postFilterSelectionCallBack) {
     var self = this;
+    var postFilterSelection = postFilterSelectionCallBack;
 
     self.init = function () {
         self.filter = $("#subject_filter");
@@ -148,7 +149,7 @@ DW.SubjectFilter = function () {
             "source": "/entity/" + entity_type + "/autocomplete/",
             "select": function (event, ui) {
                 self.filter.data('value', ui.item.id);
-                self.postFilterSelection(); //abstract-method
+                postFilterSelection();
             }
         }).data("autocomplete")._renderItem = function (ul, item) {
             return $("<li></li>").data("item.autocomplete", item).append($("<a>" + item.label + ' <span class="small_grey">' + item.id + '</span></a>')).appendTo(ul);
@@ -157,18 +158,18 @@ DW.SubjectFilter = function () {
 
     self.initialize_events = function () {
         // change on autocomplete is not working in certain cases like select an item and then clear doesn't fire change event. so using input element's change.
-        var self = this;
         self.filter.change(function () {
             if (self.filter.val() == '') {
                 self.filter.data('value', '');
-                self.postFilterSelection();
+                postFilterSelection();
             }
         });
     };
 };
 
-DW.DateFilter = function () {
+DW.DateFilter = function (postFilterSelectionCallBack) {
     var self = this;
+    var postFilterSelection = postFilterSelectionCallBack;
 
     self.init = function () {
         self.filterSelects = $('#submissionDatePicker, #reportingPeriodPicker');
@@ -183,12 +184,13 @@ DW.DateFilter = function () {
 
     function _onCloseSubmissionDatePicker() {
         self.filterSelects.dropdownchecklist('close');
-        self.postFilterSelection();
+        postFilterSelection();
     };
 };
 
-DW.SearchTextFilter = function () {
+DW.SearchTextFilter = function (postFilterSelectionCallBack) {
     var self = this;
+    var postFilterSelection = postFilterSelectionCallBack;
 
     self.init = function () {
         self.filter = $("#search_text");
@@ -197,37 +199,8 @@ DW.SearchTextFilter = function () {
 
     var _initialize_events = function () {
         self.filter.keyup(function () {
-            self.postFilterSelection();
+            postFilterSelection();
         })
     };
 
 };
-
-DW.FilterSubmissionTableBySearchText = function () {
-};
-DW.FilterSubmissionTableBySearchText.prototype = new DW.SearchTextFilter();
-DW.FilterSubmissionTableBySearchText.prototype.postFilterSelection = function () {
-    $(".submission_table").dataTable().fnDraw();
-};
-
-DW.FilterSubmissionTableByDate = function () {
-};
-DW.FilterSubmissionTableByDate.prototype = new DW.DateFilter();
-DW.FilterSubmissionTableByDate.prototype.postFilterSelection = function () {
-    $(".submission_table").dataTable().fnDraw();
-};
-
-DW.FilterSubmissionTableBySubject = function () {
-};
-DW.FilterSubmissionTableBySubject.prototype = new DW.SubjectFilter();
-DW.FilterSubmissionTableBySubject.prototype.postFilterSelection = function () {
-    $(".submission_table").dataTable().fnDraw();
-};
-
-DW.FilterSubmissionTableByDataSender = function () {
-};
-DW.FilterSubmissionTableByDataSender.prototype = new DW.DataSenderFilter();
-DW.FilterSubmissionTableByDataSender.prototype.postFilterSelection = function () {
-    $(".submission_table").dataTable().fnDraw();
-};
-

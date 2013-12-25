@@ -21,7 +21,7 @@ DW.SubmissionAnalysisView = function(){
     self.init = function(){
        submissionTabs.setToAnalysisTab();
        _initializeSubmissionTable(submissionTabs);
-       _initializeSubmissionTableFilters();
+       _initializeFilters();
        _initializeEvents();
        _initializeExport();
     };
@@ -41,15 +41,18 @@ DW.SubmissionAnalysisView = function(){
         new DW.SubmissionLogTable(submission_table_options);
     };
 
-    var _initializeSubmissionTableFilters = function() {
-        new DW.FilterSubmissionTableByDate().init();
-        new DW.FilterSubmissionTableByDataSender().init();
-        new DW.FilterSubmissionTableBySubject().init();
-        new DW.FilterSubmissionTableBySearchText().init();
+    var _initializeFilters = function() {
+        new DW.DateFilter(_postFilterSelection).init();
+        new DW.DataSenderFilter(_postFilterSelection).init();
+        new DW.SubjectFilter(_postFilterSelection).init();
+        new DW.SearchTextFilter(_postFilterSelection).init();
     };
 
-    var _initializeSubmissionChartFilters = function(){
-        new DW.FilterSubmissionChartsBySearchText().init();
+    var _postFilterSelection = function(){
+      if(isChartViewShown)
+        chartGenerator.generateCharts();
+      else
+        $(".submission_table").dataTable().fnDraw();
     };
 
     var _initializeEvents = function(){
@@ -122,11 +125,4 @@ DW.SubmissionAnalysisChartGenerator = function(){
             i++;
         });
     };
-};
-
-DW.FilterSubmissionChartsBySearchText = function () {
-};
-DW.FilterSubmissionChartsBySearchText.prototype = new DW.SearchTextFilter();
-DW.FilterSubmissionChartsBySearchText.prototype.postFilterSelection = function () {
-    new DW.SubmissionAnalysisChartGenerator().generateCharts();
 };
