@@ -1,14 +1,14 @@
 import json
+
 from django.test import Client
 from django.utils import unittest
-import elasticutils
+from mock import Mock, PropertyMock
+
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import SelectField
 from mangrove.datastore.database import DatabaseManager
-from mock import Mock, PropertyMock, patch
 from mangrove.form_model.form_model import FormModel
 from datawinners.project.views.submission_views import create_statistics_response
-from datawinners.settings import ELASTIC_SEARCH_URL
 
 
 class TestAnalysisStats(unittest.TestCase):
@@ -20,7 +20,6 @@ class TestAnalysisStats(unittest.TestCase):
         expected = [{"count": 3, "term": "b+"}, {"count": 2, "term": "o+"}, {"count": 1, "term": "o-"},
                     {"count": 1, "term": "ab"}]
         response = json.loads(res.content)
-        print response
         self.assertEquals(response['result'].get('What is your blood group?').get('data'), expected)
         self.assertEquals(response['result'].get('What is your blood group?').get('field_type'), 'select1')
 
@@ -39,4 +38,5 @@ class TestAnalysisStats(unittest.TestCase):
 
         analysis_response = create_statistics_response(facet_results, form_model)
         self.assertIn({'count': 0, 'term': 'a-'}, analysis_response["What is your blood group?"].get('data'))
+
 
