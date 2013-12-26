@@ -114,7 +114,11 @@ DW.SubmissionAnalysisChartGenerator = function(){
 
     var _draw_bar_charts = function(response){
         if (response.total == 0) {
-            showNoSubmissionExplanation(chartView);
+            var html = "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html();
+            showNoSubmissionExplanation(chartView, html);
+            return;
+        } else if ($.isEmptyObject(response.result)){
+            showNoSubmissionExplanation(chartView, gettext("You do not have any multiple choice questions (Answer Type: List of choices) to display here."));
             return;
         }
         var $chart_ol = chartView.attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();

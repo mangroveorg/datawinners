@@ -36,8 +36,9 @@ function drawPercentHeader(answers, total) {
     formula = first_row.term + ': ' + first_row.count + "/" + total + ' = ' + percentage;
     $p = $('<p></p>').append(percent_tip + formula);
     $tooltip = $('<div class="tooltip" ></div>').append($p);
-
-    return $percentHdr.append($tooltip);
+    $percentHdr.append($tooltip);
+    toolTip($tooltip_icon);
+    return $percentHdr;
 }
 
 function drawTableFooter(total, total_count, legendTable) {
@@ -217,7 +218,6 @@ function drawChart(result, index,submissionCount, emptySubmissionText) {
 
     drawChartInfo(submissionCount, emptySubmissionText);
     drawChartReport(result.data,result.field_type,submissionCount,index);
-    toolTip();
 }
 
 function showPie(index){
@@ -243,8 +243,8 @@ function getColorScaleFactor(answers, total) {
     return 1.0/max_percent;
 };
 
-function toolTip(){
-    $(".help_icon_1").tooltip({
+function toolTip(element){
+    $(element).tooltip({
         position: "top right",
         relative: true,
         opacity:0.8,
@@ -255,11 +255,10 @@ function toolTip(){
             tooltip: "click,click"
         }
 
-    }).dynamic({ bottom: { direction: 'down', bounce: true } });
+    });
 }
-function showNoSubmissionExplanation($locator) {
+function showNoSubmissionExplanation($locator, message) {
     $locator.show();
-    var message = gettext("You don't have any submissions for this question yet");
     var $explanation_container = $('<div class="help_accordion">' + message + '</div>');
     $explanation_container.css("padding-right", "20px");
     $locator.append($explanation_container);

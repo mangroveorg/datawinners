@@ -57,63 +57,6 @@ table {
   height: 40px;
 }
 
-.view_style_block {
-  float: right;
-  label, ul {
-    font-weight: normal;
-    float: left;
-    margin-left: 10px;
-  }
-  ul {
-    background: #e6f2fc;
-    border: 1px solid #e6f2fc;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    margin-top: -3px;
-    li {
-      float: left;
-      background: url(/media/images/list_chart_map.png) no-repeat top left;
-      padding: 2px 10px 2px 23px;
-      a {
-        padding: 10px;
-      }
-    }
-    li.active {
-      background-color: #94d1ff;
-      border: 1px solid #94d1ff;
-      -moz-border-radius: 10px 0 0px 10px;
-      -webkit-border-radius: 10px 0 0px 10px;
-      a {
-        color: #000000;
-      }
-      a:hover {
-        text-decoration: none;
-        cursor: default;
-      }
-    }
-    li.active-right {
-      background-color: #94d1ff;
-      border: 1px solid #94d1ff;
-      -moz-border-radius: 0px 10px 10px 0px;
-      -webkit-border-radius: 0px 10px 10px 0px;
-      a {
-        color: #000000;
-      }
-      a:hover {
-        text-decoration: none;
-        cursor: default;
-      }
-    }
-    li.list {
-      background-position: 6px 3px;
-      border-right: 1px solid #CCC;
-    }
-    li.chart {
-      background-position: 10px -27px;
-    }
-  }
-}
-
 .data_table {
   float: left;
   overflow: auto;

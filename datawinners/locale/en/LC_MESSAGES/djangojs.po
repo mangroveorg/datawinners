@@ -1031,3 +1031,6 @@ msgstr ""
 
 msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
 msgstr ""
+
+msgid "You do not have any multiple choice questions (Answer Type: List of choices) to display here."
+msgstr ""

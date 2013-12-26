@@ -1075,3 +1075,6 @@ msgstr "Aucune Soumission supprimée."
 
 msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
 msgstr "Une fois que Expéditeurs de Données ont soumis leurs données avec succès, ils apparaîtront ici."
+
+msgid "You do not have any multiple choice questions (Answer Type: List of choices) to display here."
+msgstr "Vous n’avez aucune question à choix multiples (Type de Réponse : Liste de Choix) à afficher ici."
