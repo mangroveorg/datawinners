@@ -113,6 +113,8 @@ DW.SubmissionAnalysisChartGenerator = function(){
     };
 
     var _draw_bar_charts = function(response){
+        var $chart_ol = chartView.attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();
+
         if (response.total == 0) {
             var html = "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>" + $(".help_no_submissions").html();
             showNoSubmissionExplanation(chartView, html);
@@ -121,7 +123,7 @@ DW.SubmissionAnalysisChartGenerator = function(){
             showNoSubmissionExplanation(chartView, gettext("You do not have any multiple choice questions (Answer Type: List of choices) to display here."));
             return;
         }
-        var $chart_ol = chartView.attr('style', 'width:' + ($(window).width() - 85) + 'px').empty();
+
         var i = 0;
         $.each(response.result, function (index, ans) {
             drawChartBlockForQuestions(index, ans, i, $chart_ol);
