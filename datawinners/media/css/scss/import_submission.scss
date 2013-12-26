@@ -1,3 +1,4 @@
+@import "form";
 .help-steps {
   margin-left: 31px; }
 
@@ -5,11 +6,10 @@
   display: none; }
 
 .ui-dialog button.ui-button {
-    background: -moz-linear-gradient(center top , #DFEDF4, #CCE3EE) repeat scroll 0 0 rgba(0, 0, 0, 0);
-    border: 1px solid #5087B4 !important;
+    @extend .button;
     cursor: pointer;
-    font-weight: normal;
-    padding: 0px 5px;
+    padding: 0px 0px;
+    height: 34px;
 }
 
 .ui-dialog  .ui-widget-content a {
