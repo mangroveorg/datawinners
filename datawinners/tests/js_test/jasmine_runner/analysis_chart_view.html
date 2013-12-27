@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script>
+        function gettext(msgid) {
+            return msgid;
+        }
+
+        function interpolate(fmt, obj, named) {
+
+        }
+        var import_template_url= "/domain/project/subject/form_code?filename=<project_name>";
+        var import_submission_url = 'some_dummy_url';
+
+        var DW = {};
+        var render_table_url = "dummyurl";
+        var entity_type="ds";
+        var analysis_stats_url="analysis_stats_url";
+    </script>
+    <!-- lib files goes first; Change the order at your own risk -->
+    <link href="../../../media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../../../media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+    <link href="../js_libs/jasmine_reporters/jasmine.css" rel="stylesheet"/>
+
+    <script src="../../../media/javascript/jquery.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/underscore.js"></script>
+
+    <script type="text/javascript" src="../../../media/javascript/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/JSON_fix/json2.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery.validate.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery.watermark.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery.tmpl.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/knockout.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/global.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery.tools.min.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/datawinners.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery_pagination/jquery.pagination.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/datatable_sorting.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery.sprintf.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/warning_dialog.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/help_accordion.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/data_help_img.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/monthly_date_picker/month-picker.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/custom_select_box.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/dateRangePicker/js/daterangepicker.jQuery.custom.js"></script>
+
+    <script type="text/javascript" src="../../../media/javascript/datepicker.en.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/filter/filters.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/filter/json2form.js"></script>
+    <script src="../../../media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+    <script src="../../../media/javascript/data_tables/js/dwtable.js"></script>
+    <script src="../../../media/javascript/project/colorShadeGenerator.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/data_analysis_chart_view.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/submission_results.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/submission_analysis_index.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/import_submission.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/submission_log_actions.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/flot/jquery.flot.min.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/flot/jquery.flot.pie.min.js"></script>
+
+
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine.js"></script>
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine-html.js"></script>
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine-jquery.js"></script>
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine.tap_reporter.js"></script>
+
+    <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine_init.js"></script>
+    <!-- custom files goes next -->
+
+
+
+
+    <script type="text/javascript" src="../../../media/javascript/project/data_analysis_chart_view.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/submission_results.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/project/submission_analysis_index.js"></script>
+
+    <!--spec -->
+    <script type="text/javascript" src="../specs/analysis_chart_view_spec.js"></script>
+
+</head>
+
+<body>
+
+    <input type="text" placeholder="All Data Senders" id="data_sender_filter" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+<input type="text" entity_type="Reporter" placeholder="All Subjects" id="subject_filter" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+<div class="chartOl" style="width:1500px" id="chart_ol" style="height: 500px;"></div>
+<style>
+    .barDiv, .pieDiv{height: 200px;}
+</style>
+</body>
+</html>
