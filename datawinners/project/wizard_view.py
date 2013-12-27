@@ -59,7 +59,7 @@ def get_preview_and_instruction_links():
     return links
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @csrf_exempt
 @is_not_expired
@@ -141,7 +141,7 @@ def is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire)
     return False
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @csrf_exempt
@@ -206,7 +206,7 @@ def edit_project(request, project_id=None):
             return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
@@ -231,7 +231,7 @@ def reminders(request, project_id):
             context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
