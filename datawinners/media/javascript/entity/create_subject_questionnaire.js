@@ -62,8 +62,8 @@ $(document).ready(function() {
     DW.questionnaire_was_changed = false;
     DW.init_inform_datasender_about_changes();
     $("#submit-button").click(function() {
-        $("#submit-button").attr('disabled','disabled');
         if(questionnnaire_code.processValidation() && questionnaire_form.processValidation()){
+            $("#submit-button").attr('disabled','disabled');
             if (questionnaireViewModel.hasDeletedOldQuestion && !DW.has_submission_delete_warning_for_entity.is_continue && DW.questionnaire_has_submission()){
                 DW.has_new_submission_delete_warning_for_entity.show_warning();
                 $("#submit-button").removeAttr('disabled');
