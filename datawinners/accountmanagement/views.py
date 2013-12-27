@@ -68,7 +68,7 @@ def custom_reset_password(request):
                           password_reset_form=ResetPasswordForm)
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_admin
 @is_not_expired
@@ -110,10 +110,10 @@ def _associate_user_with_existing_project(manager, reporter_id):
         project_id = row['value']['_id']
         project = Project.load(manager.database, project_id)
         project.data_senders.append(reporter_id)
-        project.save(manager)
+        project.save(manager, process_post_update=False)
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_admin
 @is_not_expired
@@ -263,7 +263,7 @@ def user_activity_log_details(users_to_be_deleted):
         ("Name: " + user.get_full_name() + "<br>" + "Email: " + user.email) for user in users_to_be_deleted)
 
 
-@login_required(login_url='/login')
+@login_required
 @csrf_view_exempt
 @csrf_response_exempt
 @session_not_expired
