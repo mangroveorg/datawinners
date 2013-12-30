@@ -11,7 +11,8 @@ $(document).ready(function() {
         open: function(){
             $(".questionnaire_preview1").load(sms_questionnaire_preview_link, function() {
                 $('.printBtn').addClass('none');
-                $('.questionnaire-code').text($('#questionnaire-code').text())
+                $('.questionnaire-code').text($('#questionnaire-code').text());
+                $('#org_number').text($('.org-number strong').text());
             });
         }
     });
