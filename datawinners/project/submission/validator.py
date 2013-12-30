@@ -7,7 +7,7 @@ class SubmissionWorkbookRowValidator():
     def __init__(self, manager, form_model, project):
         self.manager = manager
         self.form_model = form_model
-        self.field_code_label_dict = self.get_field_code_label_dict()
+        self.field_code_label_dict = self.form_model.get_field_code_label_dict()
         self.project = project
         self.subject_ids, self.datasender_ids = self._get_subject_or_datasender_ids()
 
@@ -54,14 +54,6 @@ class SubmissionWorkbookRowValidator():
             rows = self.manager.database.view("entity_name_by_short_code/entity_name_by_short_code", startkey=start_key,endkey=end_key).rows
             subject_ids = [item["key"][1] for item in rows]
         return subject_ids, datasender_ids
-
-    def get_field_code_label_dict(self):
-        field_code_label_dict = {}
-        for form_field in self.form_model.form_fields:
-            label = form_field.get('label')
-            quoted_label = '&#39;' + label + '&#39;'
-            field_code_label_dict.update({form_field.get('code'):quoted_label})
-        return field_code_label_dict
 
 
 

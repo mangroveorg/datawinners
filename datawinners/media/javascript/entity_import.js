@@ -66,7 +66,7 @@ $(document).ready(function () {
                             $("#" + form_code + "_error_table").removeClass('none');
                         }
                         $.each(responseJSON.failure_imports, function (index, element) {
-                            $("#" + form_code + "_error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
+                            $("#" + form_code + "_error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>"
                                 + element.error + "</td></tr>");
                         });
                         $("#" + form_code + "_error_table").show();

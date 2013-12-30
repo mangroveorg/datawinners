@@ -249,10 +249,7 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
             errors.append(_("The unique ID %s of the Data Sender does not match with any existing Data Sender ID. Please correct and import again.") % (answer))
 
         elif 'shorter' in value:
-            # todo check the usage and remove the split
-            text = value.split(' ')[1]
-            question = value.split(' ')[4]
-            errors.append(_("Answer %s for question %s is shorter than allowed.") % (text, question))
+            errors.append(_("Answer %s for question %s is shorter than allowed.") % (answer, question_label))
 
         elif 'must be between' in value:
             # todo check the usage and remove the split
@@ -267,18 +264,25 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
 def _get_answer_and_question_label(question_answer_dict, question_dict, question_code):
     return question_answer_dict.get(question_code), question_dict.get(question_code, question_code)
 
-def tabulate_failures(rows):
+def tabulate_failures(rows,manager):
     tabulated_data = []
+    question_dict ={}
+
+    if len(rows)>0:
+        form_model = get_form_model_by_code(manager,rows[0][1].form_code)
+        question_dict = form_model.get_field_code_label_dict()
+
     for row in rows:
         row[1].errors['row_num'] = row[0] + 2
 
         if isinstance(row[1].errors['error'], dict):
 
-            errors = translate_errors(items=row[1].errors['error'].items(), question_answer_dict=row[1].errors['row'])
+            errors = translate_errors(items=row[1].errors['error'].items(),question_dict=question_dict, question_answer_dict=row[1].errors['row'])
         else:
             errors = [_(row[1].errors['error'])]
 
         row[1].errors['error'] = "<br>".join(errors)
+        row[1].errors.pop('row')
         tabulated_data.append(row[1].errors)
     return tabulated_data
 
@@ -461,7 +465,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
             error_message = _("The imported file is empty.")
         failures = _get_failed_responses(responses)
         successes = _get_successful_responses(responses)
-        failure_imports = tabulate_failures(failures)
+        failure_imports = tabulate_failures(failures,manager)
         successful_imports = tabulate_success(successes)
         response_message = ugettext_lazy('%s of %s records uploaded') % (successful_import_count, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:

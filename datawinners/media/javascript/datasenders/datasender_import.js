@@ -43,7 +43,7 @@ $(document).ready(function () {
             $("#error_import_section").show();
         }
         $.each(responseJSON.failure_imports, function (index, element) {
-            $("#error_import_section table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
+            $("#error_import_section table tbody").append("<tr><td>" + element.row_num + "</td><td>"
                 + element.error + "</td></tr>");
         });
     };
