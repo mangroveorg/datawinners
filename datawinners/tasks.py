@@ -3,7 +3,7 @@ from datawinners.main.database import get_db_manager
 
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 
-app = Celery('tasks', backend='amqp', broker='amqp://')
+app = Celery('tasks', backend='amqp', broker='amqp://guest@127.0.0.1:5672//')
 
 
 @app.task
