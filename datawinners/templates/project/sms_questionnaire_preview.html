@@ -58,7 +58,7 @@
         </li>
         <li>
             <h5>{% trans "Send your answers using SMS" %}</h5>
-            <div class="org-number">{% trans "Send your SMS to the telephone number:" %} {{ org_number|format_organization_number }}</div>
+            <div class="org-number">{% trans "Send your SMS to the telephone number:" %} <strong>{{ org_number|format_organization_number }}</strong></div>
         </li>
         <li>
             <h5>{% trans "Wait for our reply SMS" %}</h5>

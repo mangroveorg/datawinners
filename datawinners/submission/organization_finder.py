@@ -1,13 +1,16 @@
-from django.core.exceptions import ObjectDoesNotExist
-from datawinners.accountmanagement.models import OrganizationSetting, DataSenderOnTrialAccount
-from datawinners.countrytotrialnumbermapping.helper import get_trial_numbers
 import re
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
+
+from datawinners.accountmanagement.models import OrganizationSetting, DataSenderOnTrialAccount
+
 
 class OrganizationFinder(object):
     def find(self, from_number, to_number):
         to_number = re.sub("(\-)|(\+)", "", to_number)
         from_number = re.sub("(\-)|(\+)", "", from_number)
-        if to_number in get_trial_numbers():
+        if to_number in [settings.TRIAL_ACCOUNT_PHONE_NUMBER.replace("+","")]:
             return self.find_trial_account_organization(from_number)
         return self.find_paid_organization(to_number)
 

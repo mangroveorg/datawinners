@@ -17,7 +17,6 @@ import elasticutils
 import jsonpickle
 from django.contrib import messages
 
-from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, valid_web_user
 from datawinners.entity.entity_export_helper import get_subject_headers
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
@@ -30,7 +29,7 @@ from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, delete_entity_instance, put_email_information_to_entity
+from datawinners.entity.helper import create_registration_form, delete_entity_instance, put_email_information_to_entity, get_organization_telephone_number
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
@@ -604,14 +603,6 @@ def add_codes_sheet(wb, form_code, field_codes):
     ws = workbook_add_sheet(wb, [codes], "codes")
     ws.visibility = 1
 
-
-def get_organization_telephone_number(request):
-    organization_settings = utils.get_organization_settings_from_request(request)
-    organisation_sms_numbers = organization_settings.get_organisation_sms_number()
-    if organization_settings.organization.in_trial_mode:
-        return organisation_sms_numbers
-    return organisation_sms_numbers[0] if not organisation_sms_numbers[0] or organisation_sms_numbers[0][0] \
-                                          == "+" else "+%s" % organisation_sms_numbers[0]
 
 
 def get_example_sms_message(fields, form_code):

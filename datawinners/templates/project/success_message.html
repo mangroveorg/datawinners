@@ -1,33 +1,46 @@
 {% load i18n %}
 
 
+{% load questionnaire_preview_tags %}
 {% block content %}
     <!-- div for successful message creation-->
     <div class="wizard_success_message">
         <div class="wizard_heading">{% trans "You successfully created your project!" %} </div>
         <div class="line"></div>
         <div class="w_content">
-            <div class="gray_text">{% trans "Just one more step..." %} </div>
+            {% if not project.is_activity_report %}
+                <div class="gray_text">{% trans "Just two more steps..." %} </div>
+            {% else %}
+                <div class="gray_text">{% trans "Just one more step..." %} </div>
+            {% endif %}
             <ul>
                 <li><a id="datasenders_edit_link"
-                       href="{{project_links.register_datasenders_link}}">{% trans "Add data senders" %} </a>
-                    <span class="italic_grey">{% trans "required"  %}</span>
+                       href="{{ project_links.register_datasenders_link }}">{% trans "Add data senders" %} </a>
+                    <span class="italic_grey">{% trans "required" %}</span>
+
                     <p class="black_italic">{% trans "Register each Data Sender (e.g. field staff) to enable them to send data into your project." %} </p>
                 </li>
-            </ul>
-            <div class="gray_text">{% trans "Enhance your project..." %} </div>
-            <ul>
                 {% if not project.is_activity_report %}
-                <li><a id="subjects_edit_link" href="{{project_links.register_subjects_link_web_view}}">{% trans "Add a new" %} {{ project.entity_type }} </a>
+                    <li><a id="subjects_edit_link"
+                           href="{{ project_links.register_subjects_link_web_view }}">{% trans "Add a new" %} {{ project.entity_type }} </a>
 
-                    <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
-                </li>
+                        <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
+                    </li>
                 {% endif %}
-                <li><a id="reminder_edit_link"
-                       href="{{project_links.setting_reminders_link}}">{% trans "Set reminders" %} </a>
 
-                    <p class="black_italic">{% trans "Set up automatic SMS Reminders to be sent to your Data Senders (e.g. field staff) to ensure the timely collection of your data." %} </p>
+            </ul>
+            <div class="gray_text">{% trans "Test your SMS Questionaire..." %}</div>
+            <ul>
+                {% if project.state == 'Test' %}
+                    <li><a class='sms_tester' href="#">{% trans "Test your SMS Questionnaire" %} </a>
+                {% endif %}
+
+                <p>Send a test message to {{ org_number|format_organization_number }}</p>
                 </li>
+                <li><a id="test_web_questionnaire_section"
+                       href="{{ project_links.test_questionnaire_link }}">{% trans "Test your Web Questionnaire" %} </a>
+                </li>
+                <li><a class="printLink" href="#" style="padding-left: 1px">{% trans "Print your Questionnaire" %} </a></li>
             </ul>
         </div>
     </div>

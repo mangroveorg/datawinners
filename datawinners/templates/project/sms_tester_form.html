@@ -3,8 +3,10 @@
     {% if is_quota_reached %}
         <div class="warning-message-box clear-both overflow_hidden">
             <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects." %}</p>
-            <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/" target="blank">{% trans "Learn More" %}</a>
-            <a class="button margin_10 float_left" target="blank" href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
+            <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/"
+               target="blank">{% trans "Learn More" %}</a>
+            <a class="button margin_10 float_left" target="blank"
+               href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
         </div>
     {% endif %}
     <table class="no_border">
@@ -28,6 +30,14 @@
                 <div class="content italic padding_bottom_10">
                     {% trans "Use the phone below or your own mobile phone to send in your test answers." %}
                 </div>
+                <ol style="list-style-type: upper-alpha;margin-left: 26px">
+                    <li><strong>Use Your Own Mobile Phone</strong>
+                        <p>Send your SMS to <strong>{{ org_number }}</strong></p>
+                    </li>
+                    <br/>
+                    <li><strong>Use Our Online Phone</strong></li>
+
+                </ol>
                 <div class="mobile_container">
                     <div class="mobile_image">
                         <div class="margin_left_20 mobile_block">
@@ -35,7 +45,7 @@
                             <input id='to_msisdn' type='hidden' value="{{ to_number }}">
 
                             <div class="mobile">
-                                <textarea name="message" cols="30" rows="4" id="id_message"></textarea>
+                                <textarea placeholder="Type your answers here" name="message" cols="30" rows="4" id="id_message"></textarea>
                             </div>
                         </div>
 
@@ -45,7 +55,8 @@
                             <h5>{% trans 'Tips' %}</h5>
                             <ul>
                                 <li>
-                                    - {% trans 'Start your SMS with the Questionnaire Code' %} "<span class="questionnaire-code"></span>"
+                                    - {% trans 'Start your SMS with the Questionnaire Code' %} "<span
+                                        class="questionnaire-code"></span>"
                                 </li>
                                 <li>
                                     - {% trans 'Leave a space between answers in your SMS' %}
@@ -58,29 +69,34 @@
                         <div id="response_info">
                             <h5>{% trans 'DataWinners Automatic Reply SMS' %}</h5>
                             <h5>"{% trans "Error" %}"</h5>
-                                {% trans 'Refer to the Example SMS Answer and re-type your SMS' %}
+                            {% trans 'Refer to the Example SMS Answer and re-type your SMS' %}
                             <h5>"{% trans "Thank you" %}"</h5>
-                                {% trans 'Congratulations ! Go to ' %} <a id="submission_log_link" href="{{ project_links.submission_log_link }}">{% trans 'Submission Log' %}</a> {% trans 'to see the data you submitted' %}
+                            {% trans 'Congratulations ! Go to ' %} <a id="submission_log_link"
+                                                                      href="{{ project_links.submission_log_link }}">{% trans 'Submission Log' %}</a> {% trans 'to see the data you submitted' %}
                         </div>
                     </div>
                 </div>
                 <div class="clear-both padding_top_20 clear_and_submit">
                     {% if is_quota_reached %}
-                        <input id="send_sms" type="button" class="float_right disabled_yellow_submit_button" value="{% trans 'Send SMS' %}" disabled="disabled"/>
-                        <a id="clear_sms" class="padding_left_right_10 size_1_em float_right margin_top_5" >{% trans 'Clear' %}</a>
+                        <input id="send_sms" type="button" class="float_right disabled_yellow_submit_button"
+                               value="{% trans 'Send SMS' %}" disabled="disabled"/>
+                        <a id="clear_sms"
+                           class="padding_left_right_10 size_1_em float_right margin_top_5">{% trans 'Clear' %}</a>
                         <div class="can-not-submit">
-                            <a class="can-not-submit-link-quest help_icon">{% trans "Why canʼt I submit?" %}</a>
-                            <div class="tooltip">
-                                <p>
-                                    {% trans 'You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data.' %}
-                                </p>
-                            </div>
+                        <a class="can-not-submit-link-quest help_icon">{% trans "Why canʼt I submit?" %}</a>
+                        <div class="tooltip">
+                            <p>
+                                {% trans 'You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data.' %}
+                            </p>
+                        </div>
                     {% else %}
-                        <input id="send_sms" type="button" class="button float_right margin_top_5" value="{% trans 'Send SMS' %}"/>
-                        <a id="clear_sms" class="padding_top_10 padding_left_right_10 size_1_em float_right" >{% trans 'Clear' %}</a>
+                        <input id="send_sms" type="button" class="button float_right margin_top_5"
+                               value="{% trans 'Send SMS' %}"/>
+                        <a id="clear_sms"
+                           class="padding_top_10 padding_left_right_10 size_1_em float_right">{% trans 'Clear' %}</a>
                     {% endif %}
 
-                </div>
+                    </div>
             </td>
         </tr>
     </table>

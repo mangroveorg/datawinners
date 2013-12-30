@@ -3,7 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.accountmanagement.decorators import valid_web_user
-from datawinners.entity.views import get_organization_telephone_number, get_example_sms
+from datawinners.entity.helper import get_organization_telephone_number
+from datawinners.entity.views import get_example_sms
 from datawinners.main.database import get_database_manager
 from datawinners.project.web_questionnaire_form import SurveyResponseForm
 from mangrove.form_model.form_model import REPORTER

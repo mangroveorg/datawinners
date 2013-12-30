@@ -150,7 +150,7 @@ def new_user(request):
                 reset_form = PasswordResetForm({"email": username})
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
-                                              type="created_user")
+                                              type="created_user",organization=org)
                     first_name = form.cleaned_data.get("first_name")
                     last_name = form.cleaned_data.get("last_name")
                     form = UserProfileForm()

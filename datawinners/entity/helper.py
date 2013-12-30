@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
+from datawinners import utils
 from datawinners.utils import get_organization_from_manager
 
 from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
@@ -320,3 +321,12 @@ def rep_id_name_dict_of_users(manager):
         user_id_name_map[rep_id_map[user["id"]]] = user["first_name"] + " " + user["last_name"]
 
     return user_id_name_map
+
+
+def get_organization_telephone_number(request):
+    organization_settings = utils.get_organization_settings_from_request(request)
+    organisation_sms_numbers = organization_settings.get_organisation_sms_number()
+    if organization_settings.organization.in_trial_mode:
+        return organisation_sms_numbers
+    return organisation_sms_numbers[0] if not organisation_sms_numbers[0] or organisation_sms_numbers[0][0] \
+                                          == "+" else "+%s" % organisation_sms_numbers[0]

@@ -12,7 +12,7 @@ from django.contrib.sites.models import get_current_site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
-from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, entity_type_as_sequence, get_json_field_infos
+from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, entity_type_as_sequence, get_json_field_infos, get_organization_telephone_number
 
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
 from mangrove.data_cleaner import TelephoneNumber
@@ -495,7 +495,7 @@ def get_datasenders_mobile(manager):
     return [ds["cols"][index] for ds in all_data_senders]
 
 
-def send_email_to_data_sender(user, language_code, request=None, type="activation"):
+def send_email_to_data_sender(user, language_code, request=None, type="activation",organization=None):
     site = get_current_site(request)
     ctx_dict = {
         'domain': site.domain,
@@ -523,7 +523,8 @@ def send_email_to_data_sender(user, language_code, request=None, type="activatio
 
     if request is not None:
         ctx_dict.update({"creator_user": request.user.first_name})
-
+        if organization:
+            ctx_dict.update({"org_number":get_organization_telephone_number(request)})
     message = render_to_string(action.get("template") + language_code + '.html', ctx_dict)
     email = EmailMessage(subject, message, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
