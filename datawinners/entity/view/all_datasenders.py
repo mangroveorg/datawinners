@@ -1,3 +1,4 @@
+import StringIO
 import cProfile
 from collections import defaultdict
 import json
@@ -199,7 +200,8 @@ class DisassociateDataSendersView(DataSenderActionView):
         projects_name = Set()
         removed_rep_ids = Set()
         selected_rep_ids = data_sender_short_codes(request, manager)
-
+        pr = cProfile.Profile()
+        pr.enable()
         for project in projects:
             for rep_id in selected_rep_ids:
                 if rep_id in project.data_senders:
@@ -212,6 +214,13 @@ class DisassociateDataSendersView(DataSenderActionView):
                                   detail=json.dumps({"Unique ID": "[%s]" % ", ".join(removed_rep_ids),
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
+        pr.disable()
+        s = StringIO.StringIO()
+        ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
+        ps.print_stats()
+        fo = open("/home/ajay/profres.txt", "w")
+        fo.write(s.getvalue())
+        fo.close()
         return HttpResponse(
             json.dumps({"success": True, "message": "The Data Sender(s) are removed from project(s) successfully"}))
 
