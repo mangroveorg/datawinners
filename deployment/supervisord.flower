@@ -25,7 +25,7 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 serverurl=http://127.0.0.1:9010 ; use an http:// url to specify an inet socket
 
 [program:flower]
-command=celery flower --port=5555
+command=celery flower --port=5555 --broker=amqp://guest:guest@localhost:5672// --broker_api=http://guest:guest@localhost:55672/api/
 directory=/home/mangrover/virtual_env/datawinners/bin/
 autostart=true
 redirect_stderr=true
