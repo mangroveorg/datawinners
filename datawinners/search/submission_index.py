@@ -1,13 +1,17 @@
+import logging
 from string import lower
 from babel.dates import format_datetime
+from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
 from datawinners.project.models import get_all_projects
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
+from mangrove.datastore.documents import FormModelDocument
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_fields_mapping_by_field_def, get_field_definition
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 
+logger = logging.getLogger("datawinners")
 
 ES_SUBMISSION_FIELD_DS_ID = "ds_id"
 ES_SUBMISSION_FIELD_DS_NAME = "ds_name"
@@ -46,15 +50,74 @@ def get_code_from_es_field_name(es_field_name,form_model_id):
         if item != 'value' and item != form_model_id:
             return item
 
-
 def create_submission_mapping(dbm, form_model):
     es = get_elasticsearch_handle()
+    mapping = get_mappings(form_model)
+
+    try:
+        mapping_old = get_old_mappings(dbm, es, form_model)
+        if mapping_old:
+            verify_date_format_changed(mapping, mapping_old)
+        es.put_mapping(dbm.database_name, form_model.id, mapping)
+
+    except (ElasticHttpError, DateFormatChangedException) as e:
+        if isinstance(e, DateFormatChangedException) or e[1].startswith('MergeMappingException'):
+            recreate_index(es, form_model, dbm)
+        else:
+            logger.error(e)
+    except Exception as e:
+            logger.error(e)
+
+def verify_date_format_changed(mapping, mapping_old):
+    try:
+        old_q_codes = mapping_old.values()[0]['properties'].keys()
+        new_q_code = mapping.values()[0]['properties'].keys()
+        new_date_fields_with_format = set(
+            [k + f["fields"][k + "_value"]["format"] for k, f in mapping.values()[0]['properties'].items()
+             if f["fields"][k + "_value"]["type"] == "date" and k in old_q_codes])
+        old_date_fields_with_format = set(
+            [k + f["fields"][k + "_value"]["format"] for k, f in mapping_old.values()[0]['properties'].items()
+             if f.get('fields') and f["fields"][k + "_value"]["type"] == "date" and k in new_q_code])
+        date_format_changed = old_date_fields_with_format != new_date_fields_with_format
+        if date_format_changed:
+            raise DateFormatChangedException()
+    except Exception as e:
+        pass
+
+
+def get_old_mappings(dbm, es, form_model):
+    mapping_old = []
+    try:
+        mapping_old = es.get_mapping(index=dbm.database_name, doc_type=form_model.id)
+    except ElasticHttpNotFoundError as e:
+        pass
+    return mapping_old
+
+def get_mappings(form_model):
     fields_definition = []
     fields_definition.extend(get_submission_meta_fields())
     for field in form_model.fields:
         fields_definition.append(get_field_definition(field, field_name=es_field_name(field.code, form_model.id)))
     mapping = get_fields_mapping_by_field_def(doc_type=form_model.id, fields_definition=fields_definition)
-    es.put_mapping(dbm.database_name, form_model.id, mapping)
+    return mapping
+
+def recreate_index(es, form_model, dbm):
+    es.send_request('DELETE', [dbm.database_name, form_model.id, '_mapping'])
+    create_submission_index(dbm, form_model)
+    from datawinners.search.manage_index import populate_submission_index
+    populate_submission_index(dbm)
+
+def create_submission_index(dbm, form_model_current):
+    for row in dbm.load_all_rows_in_view('questionnaire', key=form_model_current.form_code):
+        form_model = FormModel.new_from_doc(dbm, FormModelDocument.wrap(row["value"]))
+        if form_model.is_entity_registration_form() or "delete" == form_model.form_code:
+            continue
+        create_submission_mapping(dbm, form_model)
+
+
+class DateFormatChangedException(Exception):
+    def __str__(self):
+        return self.message
 
 
 def get_submission_meta_fields():
