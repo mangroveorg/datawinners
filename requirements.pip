@@ -9,7 +9,7 @@ jsonpickle
 ipython
 mock
 selenium==2.35
-iso8601
+iso8601=0.1.4
 pytz==2013b
 django-registration==0.8
 gdata
