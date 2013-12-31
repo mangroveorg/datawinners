@@ -54,7 +54,7 @@ class TestImportData(unittest.TestCase):
     def test_should_fetch_questions_from_form_model(self):
         manager = Mock(spec=DatabaseManager)
         with patch("datawinners.entity.import_data.get_form_model_by_code") as get_form_model_by_code:
-            _get_form_model_questions(manager, [(1, Response(form_code='formcode'))])
+            _get_form_model_questions(manager, (1, Response(form_code='formcode'))  )
             get_form_model_by_code.assert_called_with(manager, 'formcode')
 
 def dummy_get_location_hierarchy(foo):
