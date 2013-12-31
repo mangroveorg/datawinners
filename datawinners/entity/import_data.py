@@ -264,20 +264,26 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
 def _get_answer_and_question_label(question_answer_dict, question_dict, question_code):
     return question_answer_dict.get(question_code), question_dict.get(question_code, question_code)
 
+
+def _get_form_model_questions(manager, rows):
+    question_dict = {}
+    if len(rows):
+        form_model = get_form_model_by_code(manager, rows[0][1].form_code)
+        question_dict = form_model.get_field_code_label_dict()
+    return question_dict
+
+
 def tabulate_failures(rows,manager):
     tabulated_data = []
-    question_dict ={}
 
-    if len(rows)>0:
-        form_model = get_form_model_by_code(manager,rows[0][1].form_code)
-        question_dict = form_model.get_field_code_label_dict()
+    questions_dict = _get_form_model_questions(manager, rows)
 
     for row in rows:
         row[1].errors['row_num'] = row[0] + 2
 
         if isinstance(row[1].errors['error'], dict):
 
-            errors = translate_errors(items=row[1].errors['error'].items(),question_dict=question_dict, question_answer_dict=row[1].errors['row'])
+            errors = translate_errors(items=row[1].errors['error'].items(),question_dict=questions_dict, question_answer_dict=row[1].errors['row'])
         else:
             errors = [_(row[1].errors['error'])]
 

@@ -1,6 +1,5 @@
 from collections import OrderedDict
-from django.utils.translation import gettext
-from datawinners.entity.import_data import tabulate_failures, translate_errors
+from datawinners.entity.import_data import translate_errors
 
 class SubmissionWorkbookRowValidator():
 

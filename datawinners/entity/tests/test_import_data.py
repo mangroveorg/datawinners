@@ -2,6 +2,7 @@
 from collections import OrderedDict
 import unittest
 from unittest.case import SkipTest
+from mangrove.transport.contract.response import Response
 
 from mock import Mock, patch
 from django.contrib.auth.models import UserManager
@@ -10,7 +11,7 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.utils.form_model_builder import FormModelBuilder
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from datawinners.entity.import_data import get_entity_type_info
+from datawinners.entity.import_data import get_entity_type_info, _get_form_model_questions
 from datawinners.entity.import_data import FilePlayer
 from mangrove.bootstrap import initializer
 from mangrove.datastore.datadict import DataDictType
@@ -49,6 +50,12 @@ class TestImportData(unittest.TestCase):
                     get_country_appended_location.return_value = 'loc,Madagascar'
                     result = file_player._append_country_for_location_field(form_model, {'q1': 'val1', 'q2': 'loc'},Mock(spec=Organization))
                     self.assertEquals(result,{'q1': 'val1', 'q2': 'loc,Madagascar'})
+
+    def test_should_fetch_questions_from_form_model(self):
+        manager = Mock(spec=DatabaseManager)
+        with patch("datawinners.entity.import_data.get_form_model_by_code") as get_form_model_by_code:
+            _get_form_model_questions(manager, [(1, Response(form_code='formcode'))])
+            get_form_model_by_code.assert_called_with(manager, 'formcode')
 
 def dummy_get_location_hierarchy(foo):
     return [u'arantany']
@@ -263,7 +270,7 @@ class TestFilePlayer(MangroveTestCase):
         with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
             get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
             responses = self.file_player.accept(csv_data)
-                
+
         self.assertFalse(responses[0].success)
         self.assertEqual(responses[0].errors['error'],"Data Sender with Mobile Number = 1234567890 already exists.")
 
