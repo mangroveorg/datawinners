@@ -52,7 +52,7 @@ class OrganizationSettingAdmin(DatawinnerAdmin):
         return "--"
 
     def type(self, obj):
-        return 'Trial' if obj.organization.in_trial_mode else 'Paid'
+        return obj.organization.account_type
 
     def activation_date(self, obj):
         return obj.organization.active_date if obj.organization.active_date is not None else '--'

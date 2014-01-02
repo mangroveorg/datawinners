@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    $('.pay_monthly').append(gettext("Renews automatically each month. Cancel at any time without penalty."));
-    $('.pay_half_yearly').append(gettext("Save 10% by paying 6 months in advance"));
     $('.credit_card').append(gettext("Call us directly and we can securely process your credit card payment over the phone"));
     $('.pay_via_ach').append(gettext("Securely transfer funds between your US-based bank account and ours (normally free of charge)."));
 
@@ -54,4 +52,33 @@ $(document).ready(function() {
         return false;
     });
 
+    $("[name=account_type]").bind("click", function(){
+        update_price();
+    });
+
+    function update_price(){
+        var account_type = $("[name=account_type]:checked").val();
+        var pricing = new Array();
+        pricing['Pro SMS'] = new Array();
+        pricing['Pro SMS']['pay_monthly_per_month'] = 399;
+        pricing['Pro SMS']['pay_half_yearly_per_month'] = 359;
+        pricing['Pro SMS']['pay_yearly_per_month'] = 299;
+        pricing['Pro SMS']['pay_monthly_total'] = 399;
+        pricing['Pro SMS']['pay_half_yearly_total'] = 2154;
+        pricing['Pro SMS']['pay_yearly_total'] = 3588;
+
+        pricing['Pro'] = new Array();
+        pricing['Pro']['pay_monthly_per_month'] = 199;
+        pricing['Pro']['pay_half_yearly_per_month'] = 149;
+        pricing['Pro']['pay_yearly_per_month'] = 99;
+        pricing['Pro']['pay_monthly_total'] = 199;
+        pricing['Pro']['pay_half_yearly_total'] = 894;
+        pricing['Pro']['pay_yearly_total'] = 1188;
+
+        for (dom_id in pricing[account_type]) {
+            $("#" + dom_id).text(pricing[account_type][dom_id]);
+        }
+    }
+
+    update_price();
 });

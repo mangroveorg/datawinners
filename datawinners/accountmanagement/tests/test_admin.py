@@ -40,7 +40,7 @@ class TestAdmin(unittest.TestCase):
                                     'organization_office_phone',
                                     'organization_website',
                                     org_id = self.org_id,
-                                    in_trial_mode = True,
+                                    account_type = 'Basic',
                                     active_date = datetime(2011,07,11))
         organization.save()
         self.organization_setting = OrganizationSetting()

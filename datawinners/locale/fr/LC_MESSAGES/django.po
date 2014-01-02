@@ -4493,3 +4493,41 @@ msgstr "Veuillez SVP introduire une valeur valide pour %s"
 
 msgid "Upgrade to a Pro Account"
 msgstr "Passer à un Compte Pro"
+
+msgid "Account & Payment Details"
+msgstr "Compte & Détails de paiement"
+
+msgid "pay_monthly_subtitle"
+msgstr "<div class='radio_title'>Mensuelle: $ <span id='pay_monthly_per_month'></span> par mois</div>"
+"<div class='subtitle_for_radio_button pay_monthly'>Renouvellement mensuel automatique. Annulation sans pénalité, faisable à tout moment.</div>"
+"<div class='total_calucation'>Total facture: <span id='pay_monthly_total'></span></div>"
+
+msgid "half_yearly_subtitle"
+msgstr "<div class='radio_title'>6 mois:$ <span id='pay_half_yearly_per_month'></span> par mois</div>"
+"<div class='subtitle_for_radio_button pay_half_yearly'>Économisez 25% en payant 6 mois à l’avance</div> "
+"<div class='total_calucation'>Total facture: <span id='pay_half_yearly_total'></span></div>"
+
+msgid "yearly_subtitle"
+msgstr "<div class='radio_title'>12 mois:$ <span id='pay_yearly_per_month'></span> par mois</div>"
+"<div class='subtitle_for_radio_button pay_yearly'>Économisez 50% en payant 12 mois à l’avance</div>"
+"<div class='total_calucation'>Total facture: <span id='pay_yearly_total'></span></div>"
+
+msgid "pro_subtitle"
+msgstr "<div class='radio_title'>Pro</div>"
+"<div class='subtitle_for_radio_button pro_account'>Collectez les données via 2 canaux: Android(Smartphone, Tablette) & Web OU on peut dire: Collecte de données illimité par Smartphone & Web</div>"
+
+msgid "pro_sms_subtitle"
+msgstr "<div class='radio_title'>Pro SMS</div>"
+"<div class='subtitle_for_radio_button pro_sms_account'>Collectez les données via 3 canaux: SMS, Android(Smartphone, Tablette) & Web OU on peut dire: Collecte de données illimité par SMS, Smartphone & Web</div>"
+
+msgid "Account Type"
+msgstr "Type de compte"
+
+msgid "1 month"
+msgstr "1 mois"
+
+msgid "6 months"
+msgstr "6 mois"
+
+msgid "12 months"
+msgstr "12 mois"

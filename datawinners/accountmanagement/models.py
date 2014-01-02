@@ -33,7 +33,7 @@ class Organization(models.Model):
     office_phone = models.TextField(blank=True)
     website = models.TextField(blank=True)
     org_id = models.TextField(primary_key=True)
-    in_trial_mode = models.BooleanField(default=False)
+    account_type = models.CharField(null=True, max_length=20, default='Pro SMS')
     active_date = models.DateTimeField("Created On", blank=True, null=True)
     is_deactivate_email_sent = models.BooleanField(False)
     status = models.CharField(null=True, max_length=20, default='Activated')
@@ -68,7 +68,8 @@ class Organization(models.Model):
                                     office_phone=org_details.get('organization_office_phone'),
                                     website=org_details.get('organization_website'),
                                     org_id=OrganizationIdCreator().generateId(),
-                                    language=org_details.get('language')
+                                    language=org_details.get('language'),
+                                    account_type=org_details.get('account_type')
         )
         organization._configure_organization_settings()
         return organization
@@ -80,7 +81,7 @@ class Organization(models.Model):
                                     city=org_details.get('organization_city'),
                                     country=org_details.get('organization_country'),
                                     org_id=OrganizationIdCreator().generateId(),
-                                    in_trial_mode=True,
+                                    account_type='Basic',
                                     language=org_details.get('language')
         )
         organization._configure_organization_settings()
@@ -250,8 +251,12 @@ class Organization(models.Model):
     @classmethod
     def get_all_active_trial_organizations(cls, active_date__contains=None):
         if active_date__contains:
-            return cls.objects.filter(in_trial_mode=True,status_changed_datetime__contains=active_date__contains,status='Activated')
-        return cls.objects.filter(in_trial_mode=True,status='Activated')
+            return cls.objects.filter(account_type='Basic',status_changed_datetime__contains=active_date__contains,status='Activated')
+        return cls.objects.filter(account_type='Basic',status='Activated')
+
+    @property
+    def in_trial_mode(self):
+        return self.account_type == "Basic"
 
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)

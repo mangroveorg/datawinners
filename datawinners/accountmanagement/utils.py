@@ -9,6 +9,13 @@ RELATIVE_DELTA_BY_EMAIL_TYPE = {'three_days_after_activation': ({'days':3}, Fals
                     'deactivation_day': ({'years':1}, True), 'sixty_days_after_deactivation': ({'years':1, 'days':60}, False)
                     }
 
+PRO_MONTHLY_PRICING = 199
+PRO_HALF_YEARLY_PRICING = 149
+PRO_YEARLY_PRICING = 99
+PRO_SMS_MONTHLY_PRICING = 399
+PRO_SMS_HALF_YEARLY_PRICING = 359
+PRO_SMS_YEARLY_PRICING = 299
+
 def get_email_detail_by_type(email_type):
     mail_dict = {'three_days_after_activation': ("Get the Most out of Datawinners!",
                                             "basicaccount/three_days_after_activation", settings.HNI_SUPPORT_EMAIL_ID),

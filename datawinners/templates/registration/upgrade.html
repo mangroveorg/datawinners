@@ -37,8 +37,7 @@
                     </ul>
                     <ul class="administrative">
                         <li>
-                            <h3 class="highlighted_title">{% trans "Point of Contact / Account Administrator" %}<br/>
-                            </h3>
+                            <h3 class="highlighted_title">{% trans "Point of Contact / Account Administrator" %}<br/></h3>
                         </li>
                         <li>{{ profile.title|field_label }}{{ profile.title }}</li>
                         <li><label>{% trans "First Name" %}</label>{{ profile.first_name }}{{ profile.first_name.errors }}</li>
@@ -48,7 +47,14 @@
                     </ul>
                     <ul class="payment_details">
                         <li>
-                            <h3 class="highlighted_title">{% trans "Payment Details" %}</h3>
+                             <h3 class="highlighted_title">{%  trans "Account & Payment Details" %}</h3>
+                        </li>
+
+                        <li class="{{ form.account_type.css_classes }} form-row-10px">
+                            {{ form.account_type|field_label }}
+                            {{ form.account_type }}
+
+                            {{ form.account_type.errors }}
                         </li>
                         <li class="{{ form.invoice_period.css_classes }} form-row-10px">
                             {{ form.invoice_period|field_label }}

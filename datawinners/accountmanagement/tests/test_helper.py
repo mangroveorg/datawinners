@@ -32,13 +32,13 @@ class TestHelper(unittest.TestCase):
 
     def test_should_validate_the_mobile_number_for_trial_account_if_not_unique(self):
         org = Mock(spec=Organization)
-        org.in_trial_mode = True
+        org.account_type = 'Basic'
         validator = get_unique_mobile_number_validator(org)
         self.assertFalse(validator(org,TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO))
 
     def test_should_validate_the_mobile_number_for_trial_account_if_unique(self):
         org = Mock(spec=Organization)
-        org.in_trial_mode = True
+        org.account_type = 'Basic'
         validator = get_unique_mobile_number_validator(org)
         self.assertTrue(validator(org,DEFAULT_TEST_ORG_TEL_NO))
 
@@ -51,7 +51,7 @@ class TestHelper(unittest.TestCase):
 
     def test_should_validate_the_mobile_number_for_paid_account_if_unique(self):
         org = Mock(spec=Organization)
-        org.in_trial_mode = False
+        org.account_type = 'Pro SMS'
         self.get_database_manager_for_org_mock.return_value = Mock(spec=DatabaseManager)
         self.find_reporters_by_from_number_mock.side_effect = NumberNotRegisteredException('1234')
         validator = get_unique_mobile_number_validator(org)

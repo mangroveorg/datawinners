@@ -164,11 +164,12 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
         return self.cleaned_data
 
 def payment_details_form():
-    pay_monthly = ('pay_monthly', _(mark_safe(
-        "<div class='radio_title'>Monthly: $ 399 per month</div><div class='subtitle_for_radio_button pay_monthly'></div>")))
-    pay_half_yearly = ('half_yearly', _(mark_safe(
-        "<div class='radio_title'>6 months:$ 359 per month</div><div class='subtitle_for_radio_button pay_half_yearly'></div> ")))
-    INVOICE_PERIOD_CHOICES = (pay_monthly, pay_half_yearly)
+    pay_monthly = ('pay_monthly', _(mark_safe("pay_monthly_subtitle")))
+    pay_half_yearly = ('half_yearly', _(mark_safe("half_yearly_subtitle")))
+    pay_yearly = ('yearly', _(mark_safe("yearly_subtitle")))
+
+
+    INVOICE_PERIOD_CHOICES = (pay_monthly, pay_half_yearly, pay_yearly)
 
     wire_transfer = ('wire_transfer', _(mark_safe("<div class='radio_title'>Wire transfer</div>")))
     credit_card = ('credit_card', _(mark_safe(
@@ -176,14 +177,18 @@ def payment_details_form():
     pay_via_ach = ('pay_via_ach', _(mark_safe(
         "<div class='radio_title'>Pay via ACH</div><div class='subtitle_for_radio_button pay_via_ach'></div>")))
     PREFERRED_PAYMENT_CHOICES = (wire_transfer, credit_card, pay_via_ach)
-
+    pro_account = ('Pro', _(mark_safe("pro_subtitle")))
+    pro_sms_account = ('Pro SMS', _(mark_safe("pro_sms_subtitle")))
+    ACCOUNT_TYPE_CHOICES = (pro_account, pro_sms_account)
+    account_type = forms.ChoiceField(required=True, label=_("Account Type"), widget=forms.RadioSelect(attrs={'data-bind':'checked:account_type'}),
+        choices=ACCOUNT_TYPE_CHOICES)
     invoice_period = forms.ChoiceField(required=True, label=_('Invoice Period'), widget=forms.RadioSelect,
         choices=INVOICE_PERIOD_CHOICES, help_text="O, no, Help")
 
     preferred_payment = forms.ChoiceField(required=False, label=_('Preferred Payment'), widget=forms.RadioSelect,
         choices=PREFERRED_PAYMENT_CHOICES, initial=False)
 
-    return invoice_period, preferred_payment
+    return account_type, invoice_period, preferred_payment
 
 
 class FullRegistrationForm(MinimalRegistrationForm):
@@ -196,7 +201,7 @@ class FullRegistrationForm(MinimalRegistrationForm):
     organization_office_phone = PhoneNumberField(required=False, label=_("Office Phone Number"))
     organization_website = forms.URLField(required=False, label=_('Website'))
 
-    invoice_period, preferred_payment = payment_details_form()
+    account_type, invoice_period, preferred_payment = payment_details_form()
 
     def clean_mobile_phone(self):
         return self.cleaned_data['mobile_phone']
@@ -257,4 +262,16 @@ class PasswordSetForm(SetPasswordForm):
 
 
 class UpgradeForm(forms.Form):
-    invoice_period, preferred_payment = payment_details_form()
+    account_type, invoice_period, preferred_payment = payment_details_form()
+
+class ProRegistrationForm(FullRegistrationForm):
+    def __init__(self, *args, **kwargs):
+        super(ProRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['account_type'].initial = 'Pro'
+
+class ProSMSRegistrationForm(FullRegistrationForm):
+    def __init__(self, *args, **kwargs):
+        super(ProSMSRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['account_type'].initial = 'Pro SMS'
+
+

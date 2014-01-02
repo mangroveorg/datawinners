@@ -23,7 +23,7 @@ class TestTrialAccount(unittest.TestCase):
                                     active_date=active_date,
                                     org_id=OrganizationIdCreator().generateId()
         )
-        organization.in_trial_mode=True
+        organization.account_type = 'Basic'
         return organization
 
     def test_organization_active_date_should_be_null_when_created(self):

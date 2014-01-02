@@ -30,7 +30,7 @@ class FilePlayerTest(MangroveTestCase):
         self._build_fixtures()
         with patch("datawinners.utils.get_organization_from_manager") as get_organization:
             organization = Mock(spec=Organization)
-            organization.in_trial_mode = True
+            organization.acount_type = 'Basic'
             get_organization.return_value = organization
             player = FilePlayer(self.manager, CsvParser(), Channel.CSV)
 
@@ -44,7 +44,7 @@ class FilePlayerTest(MangroveTestCase):
         with patch("datawinners.utils.get_organization_from_manager") as get_organization:
             with patch("datawinners.entity.import_data.get_form_model_by_code") as get_form_model_by_code_mock:
                 organization = Mock(spec=Organization)
-                organization.in_trial_mode = True
+                organization.account_type = 'Basic'
                 get_organization.return_value = organization
                 get_form_model_by_code_mock.return_value = Mock()
                 with open(self.file_name) as f:

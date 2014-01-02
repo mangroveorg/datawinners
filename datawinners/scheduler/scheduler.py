@@ -23,7 +23,7 @@ def send_reminders():
 
 
 def _get_active_paid_organization():
-    return Organization.objects.filter(in_trial_mode=False, status='Activated')
+    return Organization.objects.filter(status='Activated').exclude(account_type='Basic')
 
 
 def send_reminders_scheduled_on(on_date, sms_client):

@@ -50,7 +50,7 @@ class TestHelper(TestCase):
     def get_organization(self, org_id="ABCD"):
         organization = Mock(spec=Organization)
         organization.org_id = org_id
-        organization.in_trial_mode = True
+        organization.account_type = 'Basic'
         organization._state = "Madagascar"
         return organization
 

@@ -45,7 +45,7 @@ class TestOrganization(unittest.TestCase):
         trial_organization = Organization(name='test_org_for_trial_account',
                                           sector='PublicHealth', address='add',
                                           city='Pune', country='IN',
-                                          zipcode='411006', in_trial_mode=True,
+                                          zipcode='411006', account_type='Basic',
                                           org_id=OrganizationIdCreator().generateId(),
                                           status='Activated')
         trial_organization.save()

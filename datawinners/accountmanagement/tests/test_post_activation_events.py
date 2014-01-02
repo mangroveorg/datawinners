@@ -27,7 +27,7 @@ class TestPostActivationEvents(unittest.TestCase):
         self.trial_user.save()
 
         self.trial_org = Organization(name='trial_org', sector='PublicHealth', address='add', city='city', country=Country('MG'),
-        zipcode='10000', active_date=None, in_trial_mode=True,org_id='test')
+        zipcode='10000', active_date=None, account_type='Basic',org_id='test')
         self.trial_org.save()
 
         self.trial_mobile_number = "12445"

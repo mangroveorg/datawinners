@@ -3,7 +3,8 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 
-from datawinners.accountmanagement.forms import FullRegistrationForm, LoginForm, PasswordSetForm, MinimalRegistrationForm
+from datawinners.accountmanagement.forms import FullRegistrationForm, LoginForm, PasswordSetForm
+from datawinners.accountmanagement.forms import MinimalRegistrationForm, ProRegistrationForm, ProSMSRegistrationForm
 from datawinners.accountmanagement.views import custom_reset_password, custom_password_reset_confirm
 from views import settings, new_user, edit_user, users, custom_login, registration_complete, trial_expired, upgrade, delete_users, registration_activation_complete
 
@@ -17,7 +18,10 @@ urlpatterns = patterns('',
                         {'form_class': FullRegistrationForm, 'template_name': 'registration/register.html',
                          'backend': 'datawinners.accountmanagement.registration_backend.RegistrationBackend'}),
                        (r'^register/pro/$', 'registration.views.register',
-                        {'form_class': FullRegistrationForm, 'template_name': 'registration/register.html',
+                        {'form_class': ProRegistrationForm, 'template_name': 'registration/register.html',
+                         'backend': 'datawinners.accountmanagement.registration_backend.RegistrationBackend'}),
+                       (r'^register/prosms/$', 'registration.views.register',
+                        {'form_class': ProSMSRegistrationForm, 'template_name': 'registration/register.html',
                          'backend': 'datawinners.accountmanagement.registration_backend.RegistrationBackend'}),
                        (r'^register/trial/$', 'registration.views.register',
                         {'form_class': MinimalRegistrationForm, 'template_name': 'registration/register_for_trial.html',

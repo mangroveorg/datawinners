@@ -19,7 +19,7 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
         self.expired_organization_out_of_one_year = Organization(name='test_org_for_expired_organization_out_of_one_year',
                                                                 sector='PublicHealth', address='add',
                                                                 city='xian', country='china',
-                                                                zipcode='10000', in_trial_mode=True,
+                                                                zipcode='10000', account_type='Basic',
                                                                 active_date=datetime.today() -
                                                                     relativedelta(years=settings.TRIAL_PERIOD_IN_YEAR,
                                                                     days=1),
@@ -27,17 +27,17 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
         self.paid_organization = Organization(name='test_org_for_paid_account',
                                               sector='PublicHealth', address='add',
                                               city='xian', country='china',
-                                              zipcode='10000', in_trial_mode=False, active_date=datetime(2011, 8, 15),
+                                              zipcode='10000', account_type='Pro SMS', active_date=datetime(2011, 8, 15),
                                               org_id=OrganizationIdCreator().generateId())
         self.unexpired_organization = Organization(name='test_org_for_unexpired_account',
                                                    sector='PublicHealth', address='add',
                                                    city='xian', country='china',
-                                                   zipcode='10000', in_trial_mode=True, active_date=datetime.today(),
+                                                   zipcode='10000', account_type='Basic', active_date=datetime.today(),
                                                    org_id=OrganizationIdCreator().generateId())
         self.expired_organization_of_one_year = Organization(name='test_org_for_expired_organization_of_one_year',
                                                             sector='PublicHealth', address='add',
                                                             city='xian', country='china',
-                                                            zipcode='10000', in_trial_mode=True,
+                                                            zipcode='10000', account_type='Basic',
                                                             active_date=datetime.today() -
                                                                 relativedelta(years=settings.TRIAL_PERIOD_IN_YEAR),
                                                             org_id=OrganizationIdCreator().generateId())

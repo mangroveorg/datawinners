@@ -8,14 +8,19 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding field 'Organization.language'
-        db.add_column('accountmanagement_organization', 'language', self.gf('django.db.models.fields.CharField')(default='en', max_length=2, null=True), keep_default=False)
+        # Deleting field 'Organization.in_trial_mode'
+        db.delete_column('accountmanagement_organization', 'in_trial_mode')
 
 
     def backwards(self, orm):
         
-        # Deleting field 'Organization.language'
-        db.delete_column('accountmanagement_organization', 'language')
+        # Adding field 'Organization.in_trial_mode'
+        db.add_column('accountmanagement_organization', 'in_trial_mode', self.gf('django.db.models.fields.BooleanField')(default=False), keep_default=False)
+        for acc in orm.Organization.objects.all():
+            if acc.account_type == 'Basic':
+                acc.in_trial_mode = True
+            else :
+                acc.in_trial_mode = False
 
 
     models = {
@@ -49,12 +54,12 @@ class Migration(SchemaMigration):
         },
         'accountmanagement.organization': {
             'Meta': {'object_name': 'Organization'},
+            'account_type': ('django.db.models.fields.CharField', [], {'default': "'Pro SMS'", 'max_length': '20', 'null': 'True'}),
             'active_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'address': ('django.db.models.fields.TextField', [], {}),
             'addressline2': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'city': ('django.db.models.fields.TextField', [], {}),
             'country': ('django_countries.fields.CountryField', [], {'max_length': '2'}),
-            'in_trial_mode': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_deactivate_email_sent': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'language': ('django.db.models.fields.CharField', [], {'default': "'en'", 'max_length': '2', 'null': 'True'}),
             'name': ('django.db.models.fields.TextField', [], {}),

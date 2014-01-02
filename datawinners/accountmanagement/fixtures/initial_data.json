@@ -88,7 +88,7 @@
             "office_phone": "91-99766-76893",
             "state": "SH",
             "address": "Don Bosco Road, Yerwada",
-            "in_trial_mode": true,
+            "account_type": "Basic",
             "active_date": "2011-04-17 04:54:47"
         }
     },
@@ -106,7 +106,7 @@
             "office_phone": "91-99766-76893",
             "state": "SH",
             "address": "Don Bosco Road, Yerwada",
-            "in_trial_mode": true,
+            "account_type": "Basic",
             "active_date": "2020-11-17 04:54:47"
         }
     },
@@ -124,7 +124,7 @@
             "office_phone": "91-99766-76893",
             "state": "SH",
             "address": "Don Bosco Road, Yerwada",
-            "in_trial_mode": true,
+            "account_type": "Basic",
             "active_date": "2020-10-17 04:54:47"
         }
     },
@@ -142,7 +142,7 @@
             "office_phone": "91-99766-76893",
             "state": "SH",
             "address": "Don Bosco Road, Yerwada",
-            "in_trial_mode": true,
+            "account_type": "Basic",
             "active_date": "2020-10-17 04:54:47"
         }
     },
@@ -157,7 +157,7 @@
             "is_deactivate_email_sent": false,
             "country": "NG",
             "zipcode": "12345",
-            "in_trial_mode": false,
+            "account_type": "Pro SMS",
             "website": "",
             "office_phone": "",
             "state": "",
@@ -176,7 +176,7 @@
             "is_deactivate_email_sent": false,
             "country": "MG",
             "zipcode": "65212",
-            "in_trial_mode": false,
+            "account_type": "Pro SMS",
             "website": "",
             "office_phone": "2614787329",
             "state": "",
@@ -196,7 +196,7 @@
             "country": "MG",
             "status": "Deactivated",
             "zipcode": "65212",
-            "in_trial_mode": false,
+            "account_type": "Pro SMS",
             "website": "",
             "office_phone": "",
             "state": "",
@@ -217,7 +217,7 @@
             "country": "MG",
             "status": "Activated",
             "zipcode": "65212",
-            "in_trial_mode": true,
+            "account_type": "Basic",
             "website": "",
             "office_phone": "",
             "state": "",

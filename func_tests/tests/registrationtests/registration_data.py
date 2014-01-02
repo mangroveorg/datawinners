@@ -21,6 +21,8 @@ EMAIL = 'email'
 REGISTRATION_PASSWORD = 'password1'
 REGISTRATION_CONFIRM_PASSWORD = 'password2'
 WIRE_TRANSFER = 'wire_transfer'
+PRO = 'Pro'
+PRO_SMS = 'Pro SMS'
 PAY_MONTHLY = 'pay_monthly'
 ERROR_MESSAGE = 'message'
 ADMIN_MOBILE_NUMBER = "mobile_phone"
@@ -46,7 +48,8 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION = {ORGANIZATION_NAME: u"ÑGÓ 001"
                                                  REGISTRATION_PASSWORD: u"ngo001",
                                                  REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
                                                  PAY_MONTHLY: PAY_MONTHLY,
-                                                 WIRE_TRANSFER: WIRE_TRANSFER}
+                                                 WIRE_TRANSFER: WIRE_TRANSFER,
+                                                 PRO: PRO}
 
 REGISTRATION_SUCCESS_MESSAGE = u"You have successfully signed up with DataWinners!!\n\nLast Step: Activate your account\nWe've sent you an activation email. Please check your Spam folder if you haven't received it.\n\nContact support@datawinners.com if you need help."
 
@@ -87,9 +90,11 @@ EXISTING_EMAIL_ADDRESS = {ORGANIZATION_NAME: u"NGO 001",
                           EMAIL: u"tester150411@gmail.com",
                           ADMIN_MOBILE_NUMBER: "2345234",
                           REGISTRATION_PASSWORD: u"ngo001",
-                          REGISTRATION_CONFIRM_PASSWORD: u"ngo001"}
+                          REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
+                          PRO:PRO,
+                          PAY_MONTHLY:PAY_MONTHLY}
 
-EXISTING_EMAIL_ADDRESS_ERROR_MESSAGE = u"Office Phone Number optional Please enter a valid phone number.Email address This email address is already in use. Please supply a different email address.Invoice Period Monthly: $ 399 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 359 per month Save 10% by paying 6 months in advance This field is required."
+EXISTING_EMAIL_ADDRESS_ERROR_MESSAGE = u"Office Phone Number optional Please enter a valid phone number.Email address This email address is already in use. Please supply a different email address."
 
 INVALID_EMAIL_FORMAT_ERROR_MESSAGE = u"Office Phone Number Please enter a valid phone number.Email address Enter a valid email address. Example:name@organization.com"
 
@@ -144,9 +149,10 @@ WITHOUT_PREFERRED_PAYMENT = {ORGANIZATION_NAME: u"ÑGÓ 001",
                              ADMIN_MOBILE_NUMBER: "23-45-678-567",
                              REGISTRATION_PASSWORD: u"ngo001",
                              REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
-                             PAY_MONTHLY: PAY_MONTHLY}
+                             PAY_MONTHLY: PAY_MONTHLY,
+                             PRO:PRO}
 
-WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE = u"Organization Name This field is required.Address This field is required.City This field is required.Postal \/ Zip Code This field is required.Country.*Islands This field is required.First name This field is required.Last name This field is required.Email address This field is required.Password This field is required. Example: Minimum of 6 characters in lengthPassword \(again\) This field is required.Invoice Period Monthly: \$ 399 per month Renews automatically each month. Cancel at any time without penalty. 6 months:\$ 359 per month Save 10% by paying 6 months in advance This field is required."
+WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE = u"Organization Name This field is required.Address This field is required.City This field is required.Postal \/ Zip Code This field is required.Country.*Islands This field is required.First name This field is required.Last name This field is required.Email address This field is required.Password This field is required. Example: Minimum of 6 characters in lengthPassword \(again\) This field is required.Account Type Pro Collect data via 2 channels: Android\(Smartphone, Tablet\) \& Web OR we could say: Unlimited Smartphone \& Web Data Collection Pro SMS Collect data via 3 channels: SMS, Android\(Smartphone, Tablet\) \& Web OR we could say: Unlimited SMS, Smartphone \& Web Data Collection This field is required.Invoice Period Monthly: \$ per month Renews automatically each month. Cancel at any time without penalty. Invoice total: 6 months:\$ per month Save 25\% by paying 6 months in advance Invoice total: 12 months:\$ per month Save 50\% by paying 12 months in advance Invoice total: This field is required."
 
 INVALID_WEBSITE_URL = {ORGANIZATION_NAME: u"NGO 001",
                        ORGANIZATION_SECTOR: u"PublicHealth",
@@ -163,9 +169,11 @@ INVALID_WEBSITE_URL = {ORGANIZATION_NAME: u"NGO 001",
                        EMAIL: u"ngo002@ngo.com",
                        ADMIN_MOBILE_NUMBER: "6786679267",
                        REGISTRATION_PASSWORD: u"ngo001",
-                       REGISTRATION_CONFIRM_PASSWORD: u"ngo001"}
+                       REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
+                       PRO:PRO,
+                       PAY_MONTHLY:PAY_MONTHLY}
 
-INVALID_WEBSITE_URL_ERROR_MESSAGE = u"Office Phone Number optional Please enter a valid phone number.Website optional Enter a valid URL. Example: www.organization.comInvoice Period Monthly: $ 399 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 359 per month Save 10% by paying 6 months in advance This field is required."
+INVALID_WEBSITE_URL_ERROR_MESSAGE = u"Office Phone Number optional Please enter a valid phone number.Website optional Enter a valid URL. Example: www.organization.com"
 
 BEGIN_END_SPACED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
                              ORGANIZATION_SECTOR: u"PublicHealth",
@@ -184,7 +192,8 @@ BEGIN_END_SPACED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
                              REGISTRATION_PASSWORD: u" password ",
                              REGISTRATION_CONFIRM_PASSWORD: u" password ",
                              PAY_MONTHLY: PAY_MONTHLY,
-                             WIRE_TRANSFER: WIRE_TRANSFER}
+                             WIRE_TRANSFER: WIRE_TRANSFER,
+                             PRO: PRO}
 
 BEGIN_END_SPACED_PASSWORD_ERROR_MESSAGE = u"Password There should not be any space at the beginning and the end of the password. Example: Minimum of 6 characters in length"
 INVALID_EMAIL_ERROR_MESSAGE = u"Email address Enter a valid email address. Example:name@organization.com"
@@ -206,5 +215,6 @@ WHITE_SPACE_IN_SOME_FIELDS = {ORGANIZATION_NAME: u" ",
                       REGISTRATION_PASSWORD: u"password!231",
                       REGISTRATION_CONFIRM_PASSWORD: u"password!231",
                       PAY_MONTHLY: PAY_MONTHLY,
-                      WIRE_TRANSFER: WIRE_TRANSFER}
+                      WIRE_TRANSFER: WIRE_TRANSFER,
+                      PRO:PRO}
 WHITE_SPACES_ERROR_MESSAGE = u"Organization Name This field is required.City This field is required.First name This field is required.Last name This field is required."

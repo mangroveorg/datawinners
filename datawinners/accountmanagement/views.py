@@ -222,7 +222,6 @@ def upgrade(request, token=None):
         organization_form = OrganizationForm(request.POST, instance=organization).update()
         profile_form = EditUserProfileForm(request.POST)
         if form.is_valid() and organization_form.is_valid() and profile_form.is_valid():
-            organization.in_trial_mode = False
             organization.save()
 
             invoice_period = form.cleaned_data['invoice_period']

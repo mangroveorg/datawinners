@@ -5,25 +5,28 @@ from django.utils import unittest
 from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
-from datawinners.accountmanagement.registration_processors import get_registration_processor, PaidAccountRegistrationProcessor, TrialAccountRegistrationProcessor
+from datawinners.accountmanagement.registration_processors import get_registration_processor, \
+    ProSMSAccountRegistrationProcessor, PaidAccountRegistrationProcessor, TrialAccountRegistrationProcessor
 from django.contrib.sites.models import Site
 from django.conf import settings
 from datawinners.tests.email_utils import set_email_settings
 from mangrove.utils.types import is_not_empty
 from django.core import mail
+from mock import patch
+from datawinners.accountmanagement.utils import PRO_SMS_MONTHLY_PRICING
 
 class TestRegistrationProcessor(unittest.TestCase):
     def prepare_organization(self):
         self.paid_organization = Organization(name='test_org_for_paid_account',
                                               sector='PublicHealth', address='add',
                                               city='Pune', country='India',
-                                              zipcode='411006', in_trial_mode=False,
+                                              zipcode='411006', account_type='Pro SMS',
                                               org_id=OrganizationIdCreator().generateId())
         
         self.trial_organization = Organization(name='test_org_for_trial_account',
                                                             sector='PublicHealth', address='add',
                                                             city='Pune', country='India',
-                                                            zipcode='411006', in_trial_mode=True,
+                                                            zipcode='411006', account_type='Basic',
                                                             org_id=OrganizationIdCreator().generateId())
         self.paid_organization.save()
         self.trial_organization.save()
@@ -66,33 +69,38 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.assertTrue(isinstance(get_registration_processor(self.paid_organization), PaidAccountRegistrationProcessor))
 
     def test_should_process_registration_data_for_paid_acccount_in_english(self):
-        processor = get_registration_processor(self.paid_organization)
+        with patch.object(ProSMSAccountRegistrationProcessor, '_get_invoice_total') as get_invoice_total_patch:
+            get_invoice_total_patch.return_value = PRO_SMS_MONTHLY_PRICING, '1 month'
+            processor = get_registration_processor(self.paid_organization)
 
-        site = Site(domain='test', name='test_site')
-        kwargs = dict(invoice_period='', preferred_payment='')
 
-        processor.process(self.user1, site, 'en', kwargs)
+            site = Site(domain='test', name='test_site')
+            kwargs = dict(invoice_period='', preferred_payment='')
 
-        emails = [mail.outbox.pop() for i in range(len(mail.outbox))]
+            processor.process(self.user1, site, 'en', kwargs)
 
-        self.assertEqual(1, len(emails))
-        sent_email = emails[0]
+            emails = [mail.outbox.pop() for i in range(len(mail.outbox))]
 
-        self.assertEqual("html", sent_email.content_subtype)
-        self.assertEqual(settings.EMAIL_HOST_USER, sent_email.from_email)
-        self.assertEqual(['paid_account@mail.com'], sent_email.to)
-        self.assertEqual([settings.HNI_SUPPORT_EMAIL_ID], sent_email.bcc)
+            self.assertEqual(1, len(emails))
+            sent_email = emails[0]
 
-        self.assertEqual(render_to_string('registration/activation_email_subject_in_en.txt'), sent_email.subject)
-        ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user1).activation_key,
-                    'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-                    'site': site,
-                    'username': self.user1.first_name + ' ' + self.user1.last_name}
-        self.assertEqual(render_to_string('registration/activation_email_in_en.html', ctx_dict), sent_email.body)
+            self.assertEqual("html", sent_email.content_subtype)
+            self.assertEqual(settings.EMAIL_HOST_USER, sent_email.from_email)
+            self.assertEqual(['paid_account@mail.com'], sent_email.to)
+            self.assertEqual([settings.HNI_SUPPORT_EMAIL_ID], sent_email.bcc)
 
-        payment_detail = PaymentDetails.objects.filter(organization=self.paid_organization)
-        self.assertTrue(is_not_empty(payment_detail))
-        payment_detail.delete()
+            self.assertEqual(render_to_string('registration/activation_email_subject_in_en.txt'), sent_email.subject)
+            ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user1).activation_key,
+                        'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
+                        'site': site,
+                        'username': self.user1.first_name + ' ' + self.user1.last_name,
+                        'invoice_total': PRO_SMS_MONTHLY_PRICING,
+                        'period': '1 month'}
+            self.assertEqual(render_to_string('registration/pro_sms_activation_email_in_en.html', ctx_dict), sent_email.body)
+
+            payment_detail = PaymentDetails.objects.filter(organization=self.paid_organization)
+            self.assertTrue(is_not_empty(payment_detail))
+            payment_detail.delete()
 
     def test_should_process_registration_data_for_trial_acccount_in_english(self):
         processor = get_registration_processor(self.trial_organization)
@@ -120,33 +128,37 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.assertEqual(render_to_string('registration/activation_email_for_trial_account_in_en.html', ctx_dict), sent_email.body)
 
     def test_should_process_registration_data_for_paid_acccount_in_french(self):
-        processor = get_registration_processor(self.paid_organization)
+        with patch.object(ProSMSAccountRegistrationProcessor, '_get_invoice_total') as get_invoice_total_patch:
+            get_invoice_total_patch.return_value = PRO_SMS_MONTHLY_PRICING, '1 month'
+            processor = get_registration_processor(self.paid_organization)
 
-        site = Site(domain='test', name='test_site')
-        kwargs = dict(invoice_period='', preferred_payment='')
+            site = Site(domain='test', name='test_site')
+            kwargs = dict(invoice_period='', preferred_payment='')
 
-        processor.process(self.user1, site, 'fr', kwargs)
+            processor.process(self.user1, site, 'fr', kwargs)
 
-        emails = [mail.outbox.pop() for i in range(len(mail.outbox))]
+            emails = [mail.outbox.pop() for i in range(len(mail.outbox))]
 
-        self.assertEqual(1, len(emails))
-        sent_email = emails[0]
+            self.assertEqual(1, len(emails))
+            sent_email = emails[0]
 
-        self.assertEqual("html", sent_email.content_subtype)
-        self.assertEqual(settings.EMAIL_HOST_USER, sent_email.from_email)
-        self.assertEqual(['paid_account@mail.com'], sent_email.to)
-        self.assertEqual([settings.HNI_SUPPORT_EMAIL_ID], sent_email.bcc)
+            self.assertEqual("html", sent_email.content_subtype)
+            self.assertEqual(settings.EMAIL_HOST_USER, sent_email.from_email)
+            self.assertEqual(['paid_account@mail.com'], sent_email.to)
+            self.assertEqual([settings.HNI_SUPPORT_EMAIL_ID], sent_email.bcc)
 
-        self.assertEqual(render_to_string('registration/activation_email_subject_in_fr.txt'), sent_email.subject)
-        ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user1).activation_key,
-                    'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-                    'site': site,
-                    'username': self.user1.first_name + ' ' + self.user1.last_name}
-        self.assertEqual(render_to_string('registration/activation_email_in_fr.html', ctx_dict), sent_email.body)
+            self.assertEqual(render_to_string('registration/activation_email_subject_in_fr.txt'), sent_email.subject)
+            ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user1).activation_key,
+                        'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
+                        'site': site,
+                        'username': self.user1.first_name + ' ' + self.user1.last_name,
+                        'invoice_total': PRO_SMS_MONTHLY_PRICING,
+                        'period': '1 month'}
+            self.assertEqual(render_to_string('registration/pro_sms_activation_email_in_fr.html', ctx_dict), sent_email.body)
 
-        payment_detail = PaymentDetails.objects.filter(organization=self.paid_organization)
-        self.assertTrue(is_not_empty(payment_detail))
-        payment_detail.delete()
+            payment_detail = PaymentDetails.objects.filter(organization=self.paid_organization)
+            self.assertTrue(is_not_empty(payment_detail))
+            payment_detail.delete()
 
     def test_should_process_registration_data_for_trial_acccount_in_french(self):
         processor = get_registration_processor(self.trial_organization)

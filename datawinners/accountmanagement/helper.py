@@ -7,7 +7,7 @@ from datawinners.accountmanagement.models import Organization, NGOUserProfile,\
 from datawinners.utils import get_database_manager_for_org
 
 def get_trial_account_user_phone_numbers():
-    trial_orgs = Organization.objects.filter(in_trial_mode=True)
+    trial_orgs = Organization.objects.filter(account_type='Basic')
     phone_numbers = []
     for org in trial_orgs:
         profiles = NGOUserProfile.objects.filter(org_id=org.org_id)
