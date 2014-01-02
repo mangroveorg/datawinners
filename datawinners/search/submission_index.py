@@ -1,15 +1,18 @@
 import logging
 from string import lower
+
 from babel.dates import format_datetime
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
+
+from mangrove.form_model.field import DateField
 from datawinners.project.models import get_all_projects
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
-from mangrove.datastore.documents import FormModelDocument
 from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_fields_mapping_by_field_def, get_field_definition
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+
 
 logger = logging.getLogger("datawinners")
 
@@ -120,17 +123,10 @@ class SubmissionSearchStore():
 
     def recreate_elastic_store(self):
         self.es.send_request('DELETE', [self.dbm.database_name, self.form_model.id, '_mapping'])
-        self.create_submission_index()
+        self.es.put_mapping(self.dbm.database_name, self.form_model.id, self.get_mappings())
         from datawinners.search.manage_index import populate_submission_index
-
         populate_submission_index(self.dbm)
 
-    def create_submission_index(self):
-        for row in self.dbm.load_all_rows_in_view('questionnaire', key=self.form_model.form_code):
-            form_model_current = FormModel.new_from_doc(self.dbm, FormModelDocument.wrap(row["value"]))
-            if form_model_current.is_entity_registration_form() or "delete" == form_model_current.form_code:
-                continue
-            create_submission_mapping(self.dbm, form_model_current)
 
 
 class ChangeInvolvingDateFieldException(Exception):
@@ -243,27 +239,18 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
             entry = field.get_option_value_list(entry)
         elif field.type == "select1":
             entry = ",".join(field.get_option_value_list(entry))
+        elif field.type == "date":
+            try:
+                if form_model.revision != submission_doc.form_model_revision:
+                    old_submission_value = entry
+                    to_format = field.date_format
+                    current_format = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision).__date__(entry)
+                    entry = current_format.strftime(DateField.DATE_DICTIONARY.get(to_format))
+                    logger.info("Converting old date submission from %s to %s" % (old_submission_value, entry))
+            except Exception as ignore_conversion_errors:
+                pass
 
         search_dict.update({es_field_name(lower(field.code), form_model.id): entry})
 
     search_dict.update({'void': submission_doc.void})
     return search_dict
-
-#def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
-#    for key, value in submission_doc.values.items():
-#        field = [f for f in form_model.fields if lower(f.code) == lower(key)]
-#        if not len(field): continue
-#        field = field[0]
-#        if field.is_entity_field:
-#            search_dict.update({"entity_short_code": value})
-#            value = lookup_entity_name(dbm, value, form_model.entity_type)
-#        elif field.type == "select":
-#            value = field.get_option_value_list(value)
-#        elif field.type == "select1":
-#            value = ",".join(field.get_option_value_list(value))
-#
-#        search_dict.update({es_field_name(key, form_model.id): value})
-#
-#    search_dict.update({'void': submission_doc.void})
-#    return search_dict
-
