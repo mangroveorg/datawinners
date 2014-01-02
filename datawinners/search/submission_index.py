@@ -45,31 +45,50 @@ def es_field_name(field_code, form_model_id):
     """
     return field_code if is_submission_meta_field(field_code) else "%s_%s" % (form_model_id, lower(field_code))
 
-def get_code_from_es_field_name(es_field_name,form_model_id):
+
+def get_code_from_es_field_name(es_field_name, form_model_id):
     for item in es_field_name.split('_'):
         if item != 'value' and item != form_model_id:
             return item
 
+
 def create_submission_mapping(dbm, form_model):
     es = get_elasticsearch_handle()
-    mapping = get_mappings(form_model)
+    SubmissionSearchStore(dbm, es, form_model).update_store()
 
-    try:
-        mapping_old = get_old_mappings(dbm, es, form_model)
-        if mapping_old:
-            verify_date_format_changed(mapping, mapping_old)
-        es.put_mapping(dbm.database_name, form_model.id, mapping)
 
-    except (ElasticHttpError, DateFormatChangedException) as e:
-        if isinstance(e, DateFormatChangedException) or e[1].startswith('MergeMappingException'):
-            recreate_index(es, form_model, dbm)
-        else:
+class SubmissionSearchStore():
+    def __init__(self, dbm, es, form_model):
+        self.dbm = dbm
+        self.es = es
+        self.form_model = form_model
+
+    def update_store(self):
+        mapping = self.get_mappings()
+        try:
+            mapping_old = self.get_old_mappings()
+            if mapping_old:
+                self._verify_change_involving_date_field(mapping, mapping_old)
+            if not mapping_old or self._has_fields_changed(mapping, mapping_old):
+                self.es.put_mapping(self.dbm.database_name, self.form_model.id, mapping)
+
+        except (ElasticHttpError, ChangeInvolvingDateFieldException) as e:
+            if isinstance(e, ChangeInvolvingDateFieldException) or e[1].startswith('MergeMappingException'):
+                self.recreate_elastic_store()
+            else:
+                logger.error(e)
+        except Exception as e:
             logger.error(e)
-    except Exception as e:
-            logger.error(e)
 
-def verify_date_format_changed(mapping, mapping_old):
-    try:
+    def _has_fields_changed(self, mapping, mapping_old):
+        new_fields_with_format = set(
+            [k + f["fields"][k + "_value"]["type"] for k, f in mapping.values()[0]['properties'].items()])
+        old_fields_with_format = set(
+            [k + f["fields"][k + "_value"]["type"] for k, f in mapping_old.values()[0]['properties'].items()])
+
+        return new_fields_with_format != old_fields_with_format
+
+    def _verify_change_involving_date_field(self, mapping, mapping_old):
         old_q_codes = mapping_old.values()[0]['properties'].keys()
         new_q_code = mapping.values()[0]['properties'].keys()
         new_date_fields_with_format = set(
@@ -80,42 +99,41 @@ def verify_date_format_changed(mapping, mapping_old):
              if f.get('fields') and f["fields"][k + "_value"]["type"] == "date" and k in new_q_code])
         date_format_changed = old_date_fields_with_format != new_date_fields_with_format
         if date_format_changed:
-            raise DateFormatChangedException()
-    except Exception as e:
-        pass
+            raise ChangeInvolvingDateFieldException()
+
+    def get_old_mappings(self):
+        mapping_old = []
+        try:
+            mapping_old = self.es.get_mapping(index=self.dbm.database_name, doc_type=self.form_model.id)
+        except ElasticHttpNotFoundError as e:
+            pass
+        return mapping_old
+
+    def get_mappings(self):
+        fields_definition = []
+        fields_definition.extend(get_submission_meta_fields())
+        for field in self.form_model.fields:
+            fields_definition.append(
+                get_field_definition(field, field_name=es_field_name(field.code, self.form_model.id)))
+        mapping = get_fields_mapping_by_field_def(doc_type=self.form_model.id, fields_definition=fields_definition)
+        return mapping
+
+    def recreate_elastic_store(self):
+        self.es.send_request('DELETE', [self.dbm.database_name, self.form_model.id, '_mapping'])
+        self.create_submission_index()
+        from datawinners.search.manage_index import populate_submission_index
+
+        populate_submission_index(self.dbm)
+
+    def create_submission_index(self):
+        for row in self.dbm.load_all_rows_in_view('questionnaire', key=self.form_model.form_code):
+            form_model_current = FormModel.new_from_doc(self.dbm, FormModelDocument.wrap(row["value"]))
+            if form_model_current.is_entity_registration_form() or "delete" == form_model_current.form_code:
+                continue
+            create_submission_mapping(self.dbm, form_model_current)
 
 
-def get_old_mappings(dbm, es, form_model):
-    mapping_old = []
-    try:
-        mapping_old = es.get_mapping(index=dbm.database_name, doc_type=form_model.id)
-    except ElasticHttpNotFoundError as e:
-        pass
-    return mapping_old
-
-def get_mappings(form_model):
-    fields_definition = []
-    fields_definition.extend(get_submission_meta_fields())
-    for field in form_model.fields:
-        fields_definition.append(get_field_definition(field, field_name=es_field_name(field.code, form_model.id)))
-    mapping = get_fields_mapping_by_field_def(doc_type=form_model.id, fields_definition=fields_definition)
-    return mapping
-
-def recreate_index(es, form_model, dbm):
-    es.send_request('DELETE', [dbm.database_name, form_model.id, '_mapping'])
-    create_submission_index(dbm, form_model)
-    from datawinners.search.manage_index import populate_submission_index
-    populate_submission_index(dbm)
-
-def create_submission_index(dbm, form_model_current):
-    for row in dbm.load_all_rows_in_view('questionnaire', key=form_model_current.form_code):
-        form_model = FormModel.new_from_doc(dbm, FormModelDocument.wrap(row["value"]))
-        if form_model.is_entity_registration_form() or "delete" == form_model.form_code:
-            continue
-        create_submission_mapping(dbm, form_model)
-
-
-class DateFormatChangedException(Exception):
+class ChangeInvolvingDateFieldException(Exception):
     def __str__(self):
         return self.message
 
