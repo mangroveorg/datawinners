@@ -1,5 +1,10 @@
+import logging
 from string import lower
+
 from babel.dates import format_datetime
+from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
+
+from mangrove.form_model.field import DateField
 from datawinners.project.models import get_all_projects
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
@@ -8,6 +13,8 @@ from datawinners.search.index_utils import get_elasticsearch_handle, get_fields_
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 
+
+logger = logging.getLogger("datawinners")
 
 ES_SUBMISSION_FIELD_DS_ID = "ds_id"
 ES_SUBMISSION_FIELD_DS_NAME = "ds_name"
@@ -41,7 +48,8 @@ def es_field_name(field_code, form_model_id):
     """
     return field_code if is_submission_meta_field(field_code) else "%s_%s" % (form_model_id, lower(field_code))
 
-def get_code_from_es_field_name(es_field_name,form_model_id):
+
+def get_code_from_es_field_name(es_field_name, form_model_id):
     for item in es_field_name.split('_'):
         if item != 'value' and item != form_model_id:
             return item
@@ -49,12 +57,81 @@ def get_code_from_es_field_name(es_field_name,form_model_id):
 
 def create_submission_mapping(dbm, form_model):
     es = get_elasticsearch_handle()
-    fields_definition = []
-    fields_definition.extend(get_submission_meta_fields())
-    for field in form_model.fields:
-        fields_definition.append(get_field_definition(field, field_name=es_field_name(field.code, form_model.id)))
-    mapping = get_fields_mapping_by_field_def(doc_type=form_model.id, fields_definition=fields_definition)
-    es.put_mapping(dbm.database_name, form_model.id, mapping)
+    SubmissionSearchStore(dbm, es, form_model).update_store()
+
+
+class SubmissionSearchStore():
+    def __init__(self, dbm, es, form_model):
+        self.dbm = dbm
+        self.es = es
+        self.form_model = form_model
+
+    def update_store(self):
+        mapping = self.get_mappings()
+        try:
+            mapping_old = self.get_old_mappings()
+            if mapping_old:
+                self._verify_change_involving_date_field(mapping, mapping_old)
+            if not mapping_old or self._has_fields_changed(mapping, mapping_old):
+                self.es.put_mapping(self.dbm.database_name, self.form_model.id, mapping)
+
+        except (ElasticHttpError, ChangeInvolvingDateFieldException) as e:
+            if isinstance(e, ChangeInvolvingDateFieldException) or e[1].startswith('MergeMappingException'):
+                self.recreate_elastic_store()
+            else:
+                logger.error(e)
+        except Exception as e:
+            logger.error(e)
+
+    def _has_fields_changed(self, mapping, mapping_old):
+        new_fields_with_format = set(
+            [k + f["fields"][k + "_value"]["type"] for k, f in mapping.values()[0]['properties'].items()])
+        old_fields_with_format = set(
+            [k + f["fields"][k + "_value"]["type"] for k, f in mapping_old.values()[0]['properties'].items()])
+
+        return new_fields_with_format != old_fields_with_format
+
+    def _verify_change_involving_date_field(self, mapping, mapping_old):
+        old_q_codes = mapping_old.values()[0]['properties'].keys()
+        new_q_code = mapping.values()[0]['properties'].keys()
+        new_date_fields_with_format = set(
+            [k + f["fields"][k + "_value"]["format"] for k, f in mapping.values()[0]['properties'].items()
+             if f["fields"][k + "_value"]["type"] == "date" and k in old_q_codes])
+        old_date_fields_with_format = set(
+            [k + f["fields"][k + "_value"]["format"] for k, f in mapping_old.values()[0]['properties'].items()
+             if f.get('fields') and f["fields"][k + "_value"]["type"] == "date" and k in new_q_code])
+        date_format_changed = old_date_fields_with_format != new_date_fields_with_format
+        if date_format_changed:
+            raise ChangeInvolvingDateFieldException()
+
+    def get_old_mappings(self):
+        mapping_old = []
+        try:
+            mapping_old = self.es.get_mapping(index=self.dbm.database_name, doc_type=self.form_model.id)
+        except ElasticHttpNotFoundError as e:
+            pass
+        return mapping_old
+
+    def get_mappings(self):
+        fields_definition = []
+        fields_definition.extend(get_submission_meta_fields())
+        for field in self.form_model.fields:
+            fields_definition.append(
+                get_field_definition(field, field_name=es_field_name(field.code, self.form_model.id)))
+        mapping = get_fields_mapping_by_field_def(doc_type=self.form_model.id, fields_definition=fields_definition)
+        return mapping
+
+    def recreate_elastic_store(self):
+        self.es.send_request('DELETE', [self.dbm.database_name, self.form_model.id, '_mapping'])
+        self.es.put_mapping(self.dbm.database_name, self.form_model.id, self.get_mappings())
+        from datawinners.search.manage_index import populate_submission_index
+        populate_submission_index(self.dbm)
+
+
+
+class ChangeInvolvingDateFieldException(Exception):
+    def __str__(self):
+        return self.message
 
 
 def get_submission_meta_fields():
@@ -162,27 +239,18 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
             entry = field.get_option_value_list(entry)
         elif field.type == "select1":
             entry = ",".join(field.get_option_value_list(entry))
+        elif field.type == "date":
+            try:
+                if form_model.revision != submission_doc.form_model_revision:
+                    old_submission_value = entry
+                    to_format = field.date_format
+                    current_format = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision).__date__(entry)
+                    entry = current_format.strftime(DateField.DATE_DICTIONARY.get(to_format))
+                    logger.info("Converting old date submission from %s to %s" % (old_submission_value, entry))
+            except Exception as ignore_conversion_errors:
+                pass
 
         search_dict.update({es_field_name(lower(field.code), form_model.id): entry})
 
     search_dict.update({'void': submission_doc.void})
     return search_dict
-
-#def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
-#    for key, value in submission_doc.values.items():
-#        field = [f for f in form_model.fields if lower(f.code) == lower(key)]
-#        if not len(field): continue
-#        field = field[0]
-#        if field.is_entity_field:
-#            search_dict.update({"entity_short_code": value})
-#            value = lookup_entity_name(dbm, value, form_model.entity_type)
-#        elif field.type == "select":
-#            value = field.get_option_value_list(value)
-#        elif field.type == "select1":
-#            value = ",".join(field.get_option_value_list(value))
-#
-#        search_dict.update({es_field_name(key, form_model.id): value})
-#
-#    search_dict.update({'void': submission_doc.void})
-#    return search_dict
-

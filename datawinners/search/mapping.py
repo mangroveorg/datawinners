@@ -12,7 +12,7 @@ def form_model_change_handler(form_model_doc, dbm):
         else:
             create_subject_mapping(dbm, form_model)
     else:
-        if not form_model.form_code == 'delete':
+        if form_model.form_code != 'delete':
             create_submission_mapping(dbm, form_model)
 
 
