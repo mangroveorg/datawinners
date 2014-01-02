@@ -71,7 +71,7 @@ def submission_update_on_entity_edition(entity_doc, dbm):
 def update_submission_search_for_datasender_edition(entity_doc, dbm):
     from datawinners.search.submission_query import SubmissionQueryBuilder
 
-    kwargs = {SubmissionIndexConstants.DATASENDER_ID_KEY: entity_doc.short_code}
+    kwargs = {"%s%s"%(SubmissionIndexConstants.DATASENDER_ID_KEY, "_value"): entity_doc.short_code}
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: entity_doc.data['name']['value']}
     project_form_model_ids = [project.value['qid'] for project in get_all_projects(dbm)]
 
