@@ -62,7 +62,12 @@ class TestOrganization(unittest.TestCase):
             sms_registration_count=4, outgoing_sms_count=40, organization=trial_organization
         )
         mt_current_month.save()
-        mt_last_month = MessageTracker(month=datetime.date(today.year, today.month - 1, 1),
+        year = today.year
+        month = today.month
+        if today.month == 1:
+            year -= 1
+            month = 12
+        mt_last_month = MessageTracker(month=datetime.date(year, month, 1),
             incoming_web_count=10, incoming_sms_count=10, incoming_sp_count=7, sms_api_usage_count=3,
             sms_registration_count=4, outgoing_sms_count=40, organization=trial_organization
         )
