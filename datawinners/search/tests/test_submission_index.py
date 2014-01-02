@@ -1,15 +1,16 @@
 import unittest
 import elasticutils
+from mangrove.transport.contract.survey_response import SurveyResponse
 from mock import Mock, PropertyMock, patch
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from datawinners.search.submission_query import SubmissionQueryBuilder
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import TextField, Field, GeoCodeField, SelectField
+from mangrove.form_model.field import TextField, Field, GeoCodeField, SelectField, DateField
 from mangrove.form_model.form_model import FormModel
 from datawinners.search.submission_index import _update_with_form_model_fields, update_submission_search_for_subject_edition
-from mangrove.datastore.documents import EnrichedSurveyResponseDocument, SurveyResponseDocument
+from mangrove.datastore.documents import EnrichedSurveyResponseDocument, SurveyResponseDocument, DocumentBase, FormModelDocument
 
 
 class TestSubmissionIndex(unittest.TestCase):
@@ -88,12 +89,32 @@ class TestSubmissionIndex(unittest.TestCase):
     def test_should_update_search_dict_with_none_for_missing_entity_answer_in_submission(self):
         search_dict = {}
         values = {'q2': 'wrong number', 'q3': 'wrong text'}
-        submission_doc = EnrichedSurveyResponseDocument(values=values, status="error")
+        submission_doc = SurveyResponseDocument(values=values, status="error")
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
             {'1212_eid': 'NA', "entity_short_code": 'NA', '1212_q2': 'wrong number', '1212_q3': 'wrong text',
              'void': False},
             search_dict)
+
+    def test_should_update_submission_index_date_field_with_current_format(self):
+        dd_type = Mock(spec=DataDictType)
+        fields = [TextField(name="entity_question", code="EID", label="What is associated entity",
+            entity_question_flag=True, ddtype=dd_type), DateField("date", "date", "Date", "dd.mm.yyyy", dd_type)]
+        form_model = FormModel(dbm=Mock(spec=DatabaseManager),form_code="001", type="survey", name="form", entity_type=["clinic"], fields = fields)
+        form_model._doc.entity_type = ["clinic"]
+        values = {'eid': 'cid005',
+                  'date': '12.21.2012'}
+        submission_doc = SurveyResponseDocument(values=values, status="success", form_model_revision="rev1")
+        search_dict = {}
+        form_model._doc = Mock(spec=FormModelDocument)
+        form_model._doc.rev = "rev2"
+        form_model._snapshots = {"rev1":[DateField("date", "date", "Date", "mm.dd.yyyy", dd_type)]}
+        with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
+            lookup_entity_name.return_value = 'Test'
+            search_dict = _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, form_model)
+            self.assertEquals("21.12.2012", search_dict.get("date"))
+
+
 
     def test_should_update_entity_field_in_submission_index(self):
         entity_doc = Mock(spec=Entity)
