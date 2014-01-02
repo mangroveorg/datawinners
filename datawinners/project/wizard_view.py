@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -15,11 +16,13 @@ from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_project_names
-from datawinners.main.database import get_database_manager
-from datawinners.tasks import update_associated_submissions
+from datawinners.main.database import get_database_manager, get_db_manager
+from datawinners.tasks import app
+from celery.task import current
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
+from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 from mangrove.utils.types import is_string
 from datawinners.utils import get_organization, generate_project_name
 from mangrove.form_model.form_model import FormModel
@@ -391,3 +394,22 @@ def _get_activity_log_action(reminder_list, new_value):
                                               new_value['should_send_reminders_before_deadline']):
         action = DEACTIVATED_REMINDERS
     return action
+
+@app.task(max_retries=3, throw=False)
+def update_associated_submissions(update_dict):
+    try:
+        try:
+            manager = get_db_manager(update_dict['database_name'])
+            survey_responses = survey_responses_by_form_code(manager, update_dict['old_form_code'])
+            documents = []
+            for survey_response in survey_responses:
+                survey_response.form_code = update_dict['new_form_code']
+                survey_response.form_model_revision = update_dict["new_revision"]
+                documents.append(survey_response._doc)
+            manager._save_documents(documents)
+        except Exception as e:
+            current.retry(exc=e)
+    except Exception as e:
+        logger = logging.getLogger('datawinners')
+        logger.exception('Failed for arguments: '+str(update_dict))
+        logger.exception(e)
