@@ -40,7 +40,7 @@ class SubjectQuestionFieldCreator(object):
     def _get_all_options(self):
         entity_type = self.project.entity_type
         start_key = [[entity_type]]
-        end_key = [[entity_type], {}, {}]
+        end_key = [[entity_type], {}]
         rows = self.dbm.database.view("entity_name_by_short_code/entity_name_by_short_code", startkey=start_key,
                                       endkey=end_key).rows
         all_subject_choices = [(item["key"][1], item["value"] + "(" + item["key"][1] + ")") for item in rows]

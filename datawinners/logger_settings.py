@@ -9,6 +9,7 @@ MAX_LOG_BYTES = 1024 * 1024 * 50
 
 LOG_FOLDER = '/var/log/datawinners'
 LOG_FILE_NAME = "datawinners.log"
+TASKS_LOG_FILE_NAME = "celery-tasks.log"
 REMINDER_LOG_FILE_NAME = "datawinners_reminders.log"
 XFORM_LOG_FILE_NAME = "datawinners_xform.log"
 PERFORMANCE_LOG_FILE_NAME = "datawinners-performance.log"
@@ -36,6 +37,15 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.CompressRotatingFileHandler',
             'filename': os.path.join(LOG_FOLDER, LOG_FILE_NAME),
+            'mode': 'a', #append+create
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_BYTES,
+            'backupCount': BACK_UP_COUNT
+        },
+        'tasks-log-file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.CompressRotatingFileHandler',
+            'filename': os.path.join(LOG_FOLDER, TASKS_LOG_FILE_NAME),
             'mode': 'a', #append+create
             'formatter': 'verbose',
             'maxBytes': MAX_LOG_BYTES,
@@ -115,6 +125,11 @@ LOGGING = {
         'datawinners': {
             'level': 'ERROR',
             'handlers': ['log-file'],
+            'propagate': True,
+        },
+        'datawinners': {
+            'level': 'ERROR',
+            'handlers': ['tasks-log-file'],
             'propagate': True,
         },
         'django.request': {

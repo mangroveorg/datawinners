@@ -60,6 +60,7 @@ def create_submission_mapping(dbm, form_model):
     SubmissionSearchStore(dbm, es, form_model).update_store()
 
 
+
 class SubmissionSearchStore():
     def __init__(self, dbm, es, form_model):
         self.dbm = dbm
@@ -124,8 +125,8 @@ class SubmissionSearchStore():
     def recreate_elastic_store(self):
         self.es.send_request('DELETE', [self.dbm.database_name, self.form_model.id, '_mapping'])
         self.es.put_mapping(self.dbm.database_name, self.form_model.id, self.get_mappings())
-        from datawinners.search.manage_index import populate_submission_index
-        populate_submission_index(self.dbm)
+        from datawinners.search.submission_index_task import async_populate_submission_index
+        async_populate_submission_index.delay(self.dbm.database_name, self.form_model.form_code)
 
 
 
