@@ -203,7 +203,7 @@ def edit_project(request, project_id=None):
                 if old_form_code != new_form_code:
                     update_associated_submissions.delay(
                         {"database_name": manager.database_name, "old_form_code": old_form_code,
-                         "new_form_code": new_form_code, "new_revision":questionnaire.revision})
+                         "new_form_code": new_form_code})
                 UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
             except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                     EntityQuestionAlreadyExistsException) as ex:
@@ -404,7 +404,6 @@ def update_associated_submissions(update_dict):
             documents = []
             for survey_response in survey_responses:
                 survey_response.form_code = update_dict['new_form_code']
-                survey_response.form_model_revision = update_dict["new_revision"]
                 documents.append(survey_response._doc)
             manager._save_documents(documents)
         except Exception as e:
