@@ -90,7 +90,7 @@ class SubmissionQuery(Query):
         return header.get_header_field_names()
 
     def query(self, database_name):
-        query_all_results = self.query_builder.query_all(database_name)
+        query_all_results = self.query_builder.query_all(database_name, self.form_model.id)
         submission_type = self.query_params.get('filter')
 
         header = HeaderFactory(self.form_model).create_header(submission_type)
