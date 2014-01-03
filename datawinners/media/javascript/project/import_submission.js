@@ -14,6 +14,7 @@ DW.SubmissionImportPopup = function(){
                     self.error_message.hide();
                 },
                 width: 750,
+                zIndex: 200,
                 dialogClass: "no-close",
                 buttons: [
                     {
