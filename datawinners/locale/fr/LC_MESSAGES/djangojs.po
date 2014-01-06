@@ -711,14 +711,6 @@ msgstr "Graphique Circulaire"
 msgid "Bar Chart"
 msgstr "Histogramme"
 
-#: media/javascript/project/data_analysis_chart_view.js:225
-msgid ""
-"You do not have any multiple choice questions (Answer Type: List of choices) "
-"to display here."
-msgstr ""
-"Vous n’avez aucune question à choix multiples (Type de Réponse : Liste de "
-"Choix) à afficher ici."
-
 #: media/javascript/project/data_analysis_chart_view.js:272
 msgid "You don't have any submissions for this question yet"
 msgstr "Vous n'avez encore aucune soumission pour cette question"
