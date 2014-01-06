@@ -9,7 +9,6 @@ DW.InitializeEditDataSender = function () {
                 var that = event.data.self;
                 if (that.is_form_changed() || that.form_has_errors()) {
                     $("#cancel_submission_warning_message").dialog({modal:true}).dialog("open");
-//                    return false;
                 } else
                     $("#datasender-popup").dialog("close");
                     $("#datasender_table").dataTable().fnReloadAjax();
@@ -17,10 +16,14 @@ DW.InitializeEditDataSender = function () {
         },
 
         bind_yes_button_in_dialog:function () {
-            $("#cancel_submission_warning_message .yes_button").bind('click', function () {
+            $("#cancel_submission_warning_message .yes_button").bind('click', {self:this}, function (event) {
                 $("#cancel_submission_warning_message").dialog("close");
                 $("#datasender-popup").dialog("close");
-                $("#datasender_table").dataTable().fnReloadAjax();
+                if ($("#datasender_table").dataTable == undefined) {
+                    return event.data.self.redirect();
+                } else {
+                    $("#datasender_table").dataTable().fnReloadAjax();
+                }
             });
         }
     };
