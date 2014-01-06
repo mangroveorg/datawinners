@@ -10,7 +10,7 @@ def recreate_index_for_db(database_name, es):
     try:
         es.delete_index(database_name)
     except Exception as e:
-        logging.info("Could not delete index " + e.message)
+        logging.info("Could not delete index " + str(e.message))
     response = es.create_index(database_name, settings={"number_of_shards": 1, "number_of_replicas": 0})
     logging.info('%s search index created : %s' % (database_name, response.get('ok')))
     dbm = get_db_manager(database_name)
