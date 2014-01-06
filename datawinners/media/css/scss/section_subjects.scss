@@ -515,3 +515,11 @@ span.paginate_more_disabled {
     float:right;
     padding-top: 10px;
 }
+
+.import_table {
+    float: left;
+    margin-bottom: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+}

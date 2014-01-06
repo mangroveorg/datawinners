@@ -17,24 +17,26 @@
                 <div class="clear"></div>
             </div>
             <div class="error">{% trans "Download the template:"%} <a href="{% url import_template form_code %}?filename={{ subject.entity  }}">{{ subject.entity }}.xls</a></div>
-            <table class="styled_table">
-                <thead>
-                    <tr>
-                    {% for title in subject.labels %}
-                        <th>{{ title }}</th>
-                    {% endfor %}
-                    </tr>
-                </thead>
-                <tbody id="{{ subject.code }}_table">
-                </tbody>
-            </table>
+            <div class="import_table">
+                <table class="styled_table">
+                    <thead>
+                        <tr>
+                        {% for title in subject.labels %}
+                            <th>{{ title }}</th>
+                        {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody id="{{ subject.code }}_table">
+                    </tbody>
+                </table>
+            </div>
             <div>
                 Note:
                 <ul class="bulleted">
                     <li>{% blocktrans with subject.entity as entity_type and subject.entity as form_code %}You cannot add new columns in your Excel file to create new question. <a href='javascript:void(0);' id='to-edit-{{ form_code }}' class='edit-form-code-link' >Edit the {{ entity_type }} Registration Form</a> to make these changes.{% endblocktrans %}</li>
                 </ul>
             </div>
-            <div class='error_table none' id="{{ subject.code }}_error_table">
+            <div class='error_table none import_table' id="{{ subject.code }}_error_table">
                 <br/>
                 <table class="styled_table">
                     <thead>

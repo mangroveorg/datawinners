@@ -1420,6 +1420,9 @@ div.border_top_bottom {
 .padding_5 {
   padding: 5px; }
 
+.font_size_10 {
+  font-size: 10px; }
+
 #wrapper_div_for_table .action_button {
   display: inline;
   float: left;
@@ -1441,3 +1444,10 @@ div.border_top_bottom {
 #web_user_block .submission-controls {
   float: right;
   padding-top: 10px; }
+
+.import_table {
+  float: left;
+  margin-bottom: 15px;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%; }
