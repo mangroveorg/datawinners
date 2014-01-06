@@ -44,7 +44,7 @@ $(document).on("click", "#id_register_button", function () {
     $('#id_geo_code').val($.trim($('#id_geo_code').val()));
     $.ajax({
         type: 'POST',
-        url: sender_registration_link,
+        url: sender_registration_link || window.location.href,
         data: $("#registration_form").serialize(),
         success: function (response) {
             $.unblockUI();
