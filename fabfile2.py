@@ -219,11 +219,6 @@ def take_database_backup(backup=False):
         take_elastic_search_index_dump(backup_path, backup_prefix)
 
 
-def start_flower(context):
-    with cd(context.code_dir):
-        run("supervisord -c datawinners/deployment/supervisord.flower")
-
-
 def production_deploy(mangrove_build_number="lastSuccessfulBuild",
                       datawinner_build_number="lastSuccessfulBuild",
                       code_dir="/home/mangrover/workspace",
@@ -243,7 +238,6 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
     _deploy_datawinners(context)
 
     remove_cache(context)
-    start_flower(context)
     if context.environment == 'prod':
         restart_scheduler()
     start_servers()
