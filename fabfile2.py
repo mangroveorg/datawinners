@@ -33,12 +33,14 @@ def restart_servers():
 def stop_servers():
     run("sudo service nginx stop || echo 'nginx already stopped'")
     run("sudo service uwsgi stop || echo 'uwsgi already stopped'")
+    run("sudo service celeryd stop || echo 'celeryd already stopped'")
     print 'server stopped...'
 
 
 def start_servers():
     run("sudo service uwsgi start")
     run("sudo service nginx start")
+    run("sudo service celeryd start")
     print 'server started..'
 
 
