@@ -23,8 +23,8 @@ from pages.globalnavigationpage.global_navigation_locator import DASHBOARD_PAGE_
 from pages.loginpage.login_page import LoginPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, ACTION_SELECT_CSS_LOCATOR
-from pages.submissionlogpage.submission_log_page import SubmissionLogPage, DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE, MONTHLY_DATE_RANGE
+from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, ACTION_SELECT_CSS_LOCATOR, ALL_PERIODS_LABEL
+from pages.submissionlogpage.submission_log_page import SubmissionLogPage, DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE, MONTHLY_DATE_RANGE, ALL_PERIODS
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE
 from tests.dataanalysistests.data_analysis_data import DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE
 from tests.logintests.login_data import VALID_CREDENTIALS
@@ -290,10 +290,14 @@ class TestSubmissionLog(unittest.TestCase):
 
         submission_log_page.filter_by_reporting_date(YEAR_TO_DATE)
 
+        now = datetime.now()
+        year_to_date_expected = len([d for d in get_reporting_date_values(False) if datetime.strptime(d, "%d.%m.%Y").year == now.year and datetime.strptime(d, "%d.%m.%Y") <= now])
         submission_log_page.wait_for_table_data_to_load()
         total_number_of_rows = submission_log_page.get_total_number_of_records()
-        self.assertEqual(total_number_of_rows, 4)
+        self.assertEqual(total_number_of_rows, year_to_date_expected)
         self.assert_reporting_period_values(submission_log_page, total_number_of_rows)
+
+        submission_log_page.filter_by_reporting_date(ALL_PERIODS)
 
         submission_log_page.filter_by_submission_date(DAILY_DATE_RANGE)
 

@@ -147,8 +147,8 @@ def get_reporting_date_values(monthly):
     today = datetime.now()
     date_format = '%m.%Y' if monthly else '%d.%m.%Y'
     second_day_of_month = datetime(today.year, today.month, 2)
-    previous_month = datetime(today.year, today.month - 1, 2)
-    second_day_of_year = datetime(today.year, 1, 2)
+    previous_month = second_day_of_month - timedelta(days=30)
+    second_day_of_year = second_day_of_month + timedelta(days=30)
     dates = []
     for i in [today, second_day_of_month, previous_month, second_day_of_year]:
         dates.append(i.strftime(date_format))

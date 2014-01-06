@@ -14,6 +14,7 @@ MONTHLY_DATE_RANGE = "month_date_range"
 CURRENT_MONTH = "current_month"
 LAST_MONTH = "last_month"
 YEAR_TO_DATE = "year_to_date"
+ALL_PERIODS = "all_periods"
 
 
 class SubmissionLogPage(Page):
@@ -23,7 +24,8 @@ class SubmissionLogPage(Page):
                         LAST_MONTH: LAST_MONTH_LABEL,
                         YEAR_TO_DATE: YEAR_TO_DATE_LABEL,
                         DAILY_DATE_RANGE: DAILY_DATE_RANGE_LABEL,
-                        MONTHLY_DATE_RANGE: MONTHLY_DATE_RANGE_LABEL}
+                        MONTHLY_DATE_RANGE: MONTHLY_DATE_RANGE_LABEL,
+                        ALL_PERIODS:ALL_PERIODS_LABEL}
 
     def get_submission_message(self, sms_data):
         """
