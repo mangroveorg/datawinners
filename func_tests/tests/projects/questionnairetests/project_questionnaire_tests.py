@@ -94,7 +94,6 @@ class TestProjectQuestionnaire(unittest.TestCase):
             create_questionnaire_page.set_questionnaire_code(new_questionnaire_code)
             #to get the focus out
             create_questionnaire_page.select_question_link(3)
-            self.confirm_warning_dialog(element_id="ok_button")
             return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
         def verify_warning_for_change_in_question_text():
