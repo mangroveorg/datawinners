@@ -14,6 +14,7 @@ $.fn.dataTableExt.oPagination.dw_pagination = {
                 '<ul class="dropdown-menu"> <li> <a href="javascript:void(0);" id=' + first_page_id + '>' + gettext('First') +
                 '</a> </li> <li> <a  id=' + last_page_id + '>' + gettext('Last') + '</a></li></div>');
 
+        $(nPaging).css('font-family', 'Lucida Sans Unicode');
         $(nPaging).append(nPrevious).append(nNext).append(nMore);
         $(document.body).append(dropdown);
 
