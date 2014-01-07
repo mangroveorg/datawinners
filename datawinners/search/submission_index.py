@@ -218,7 +218,7 @@ def lookup_entity_by_uid(dbm, uid):
             return entity.value('name'), entity.short_code
     except Exception:
         pass
-    return uid or "NA", "NA"
+    return "NA", "NA"
 
 
 def lookup_entity_name(dbm, id, entity_type):
@@ -227,15 +227,17 @@ def lookup_entity_name(dbm, id, entity_type):
             return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
     except DataObjectNotFound:
         pass
-    return id or "NA"
+    return "NA"
 
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     for field in form_model.fields:
         entry = submission_doc.values.get(lower(field.code))
         if field.is_entity_field:
-            search_dict.update({"entity_short_code": entry or 'NA'})
-            entry = lookup_entity_name(dbm, entry, form_model.entity_type)
+            entity_name = lookup_entity_name(dbm, entry, form_model.entity_type)
+            entry_code = 'NA' if entity_name == 'NA' else entry
+            search_dict.update({"entity_short_code": entry_code or 'NA'})
+            entry = entity_name
         elif field.type == "select":
             entry = field.get_option_value_list(entry)
         elif field.type == "select1":
