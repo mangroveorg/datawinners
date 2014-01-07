@@ -45,7 +45,7 @@ p {
       color: #666666;
       float: right; }
   #projects .project_header.ui-state-active {
-    background-color: #525252 !important;
+    background: #525252 !important;
     border: 0;
     background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;
     background: -moz-linear-gradient(top, #525252, #262626) !important; }
