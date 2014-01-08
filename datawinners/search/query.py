@@ -43,7 +43,7 @@ class QueryBuilder(object):
         start_result_number = query_params.get("start_result_number")
         number_of_results = query_params.get("number_of_results")
         order = query_params.get("order")
-        sort_field = query_params.get("sort_field")
+        sort_field = query_params.get("sort_field").lower()
         query = query.order_by(order + sort_field + "_value")
         return query[start_result_number:start_result_number + number_of_results]
 
