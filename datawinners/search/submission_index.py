@@ -1,4 +1,5 @@
 import logging
+from collections import OrderedDict
 from string import lower
 
 from babel.dates import format_datetime
@@ -17,7 +18,6 @@ from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 logger = logging.getLogger("datawinners")
 
 ES_SUBMISSION_FIELD_DS_ID = "ds_id"
-ES_SUBMISSION_FIELD_DS_NAME = "ds_name"
 ES_SUBMISSION_FIELD_DS_NAME = "ds_name"
 ES_SUBMISSION_FIELD_DATE = "date"
 ES_SUBMISSION_FIELD_STATUS = "status"
@@ -231,8 +231,11 @@ def lookup_entity_name(dbm, id, entity_type):
 
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
+    #Submission value may have capitalized keys in some cases. This conversion is to do
+    #case insensitive lookup.
+    submission_values = OrderedDict((k.lower(), v) for k,v in submission_doc.values.iteritems())
     for field in form_model.fields:
-        entry = submission_doc.values.get(lower(field.code))
+        entry = submission_values.get(lower(field.code))
         if field.is_entity_field:
             entity_name = lookup_entity_name(dbm, entry, form_model.entity_type)
             entry_code = 'NA' if entity_name == 'NA' else entry
