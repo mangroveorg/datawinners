@@ -1451,3 +1451,7 @@ div.border_top_bottom {
   max-height: 200px;
   overflow-y: auto;
   width: 100%; }
+
+.popup-import .floatleft {
+  float: left;
+  width: 100%; }
