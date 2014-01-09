@@ -37,7 +37,7 @@ from datawinners.messageprovider.messages import exception_messages, WEB
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields, get_field_by_attribute_value
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import TransportInfo
 from datawinners.entity import import_data as import_module
@@ -573,8 +573,10 @@ def subject_autocomplete(request, entity_type):
     database_name = get_database_name(request.user)
     dbm = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(dbm, [entity_type.lower()])
-    es_field_name_for_subject_name = es_field_name('q2', form_model.id)
-    es_field_name_for_short_code = es_field_name('q6', form_model.id)
+    subject_name_field = get_field_by_attribute_value(form_model,'name','name')
+    es_field_name_for_subject_name = es_field_name(subject_name_field.code, form_model.id)
+    subject_short_code_field = get_field_by_attribute_value(form_model,'name','short_code')
+    es_field_name_for_short_code = es_field_name(subject_short_code_field.code, form_model.id)
     query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(lower(entity_type)) \
         .query(or_={es_field_name_for_subject_name + '__match': search_text,
                     es_field_name_for_subject_name + '_value': search_text,
