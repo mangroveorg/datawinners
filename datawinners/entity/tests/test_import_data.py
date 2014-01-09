@@ -51,11 +51,17 @@ class TestImportData(unittest.TestCase):
                     result = file_player._append_country_for_location_field(form_model, {'q1': 'val1', 'q2': 'loc'},Mock(spec=Organization))
                     self.assertEquals(result,{'q1': 'val1', 'q2': 'loc,Madagascar'})
 
-    def test_should_fetch_questions_from_form_model(self):
+    def test_should_fetch_questions_from_form_model_for_non_subject_entity(self):
         manager = Mock(spec=DatabaseManager)
         with patch("datawinners.entity.import_data.get_form_model_by_code") as get_form_model_by_code:
-            _get_form_model_questions(manager, (1, Response(form_code='formcode'))  )
+            _get_form_model_questions(manager, (1, Response(form_code='formcode', entity_type=['clinic']))  )
             get_form_model_by_code.assert_called_with(manager, 'formcode')
+
+    def test_should_fetch_questions_from_for_reporter(self):
+        manager = Mock(spec=DatabaseManager)
+        with patch("datawinners.entity.import_data.get_form_model_by_code") as get_form_model_by_code:
+            return_dict = _get_form_model_questions(manager, (1, Response(form_code='formcode', entity_type=['reporter'])))
+            self.assertEquals(return_dict, {'n':'&#39;Name&#39;', 'm':'&#39;Mobile Number&#39;'})
 
 def dummy_get_location_hierarchy(foo):
     return [u'arantany']

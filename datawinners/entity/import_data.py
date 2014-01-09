@@ -266,14 +266,14 @@ def _get_answer_and_question_label(question_answer_dict, question_dict, question
 
 
 def _get_form_model_questions(manager, row):
-    form_model = get_form_model_by_code(manager, row[1].form_code)
-    return form_model.get_field_code_label_dict()
-
+    return {'n':'&#39;Name&#39;', 'm':'&#39;Mobile Number&#39;'} if 'reporter' in row[1].entity_type else\
+        get_form_model_by_code(manager, row[1].form_code).get_field_code_label_dict()
 
 def tabulate_failures(rows,manager):
     tabulated_data = []
     form_model = None
     questions_dict = {}
+
     for row in rows:
         if form_model is None and row[1].form_code:
             questions_dict = _get_form_model_questions(manager,row)
