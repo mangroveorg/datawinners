@@ -2,6 +2,8 @@ from unittest import TestCase
 from mock import patch, Mock, MagicMock
 from datawinners.search.entity_search import SubjectQueryResponseCreator, SubjectQuery, DataSenderQueryBuilder
 from datawinners.search.entity_search import DatasenderQueryResponseCreator
+from mangrove.datastore.database import DatabaseManager
+from mangrove.form_model.form_model import FormModel
 
 
 class TestSubjectQueryResponseCreator(TestCase):
@@ -146,6 +148,20 @@ class TestSubjectQuery(TestCase):
                 self.assertEquals(filtered_count, expected_filtered_result_count)
                 self.assertEquals(total_count, expected_total_result_count)
 
+    def test_should_return_form_id_appended_question_codes(self):
+        subject_query = SubjectQuery()
+        user = Mock()
+        with patch('datawinners.search.entity_search.get_form_model_by_entity_type') as form_model:
+            with patch('datawinners.search.entity_search.get_database_manager') as get_database_manager:
+                with patch('datawinners.search.entity_search.header_fields') as header_fields:
+                    header_fields.return_value = {'code1':'question1','code2':'question2'}
+                    get_database_manager.return_value = Mock(spec=DatabaseManager)
+                    form_model.return_value = Mock(spec=FormModel, id='form_id')
+
+                    header_dict = subject_query.get_headers(user, 'subject_type')
+
+                    expected = ['form_id_code1','form_id_code2']
+                    self.assertEquals(header_dict,expected)
 
 class TestDataSenderQueryBuilder(TestCase):
     def test_should_add_not_filter_to_query(self):

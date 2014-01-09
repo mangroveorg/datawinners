@@ -23,6 +23,7 @@ from datawinners.entity.subjects import load_subject_type_with_projects, get_sub
 from datawinners.main.database import get_database_manager
 from datawinners.main.utils import get_database_name
 from datawinners.search.entity_search import SubjectQuery
+from datawinners.search.index_utils import es_field_name
 from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
@@ -55,6 +56,7 @@ from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 
 
 websubmission_logger = logging.getLogger("websubmission")
+
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -145,7 +147,7 @@ def viewable_questionnaire(form_model):
 
 def _get_order_field(post_dict, user, subject_type):
     order_by = int(post_dict.get('iSortCol_0')) - 1
-    headers = SubjectQuery().get_headers(user,subject_type)
+    headers = SubjectQuery().get_headers(user, subject_type)
     return headers[order_by]
 
 
@@ -282,6 +284,7 @@ def create_multiple_web_users(request):
         [post_data.update({item['reporter_id']: item['email']}) for item in json.loads(request.POST['post_data'])]
         content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE)
         return HttpResponse(content)
+
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -564,15 +567,24 @@ def save_questionnaire(request):
         except EntityQuestionAlreadyExistsException as e:
             return HttpResponse(json.dumps({'success': False, 'error_message': _(e.message)}))
 
+
 def subject_autocomplete(request, entity_type):
-        search_text = lower(request.GET["term"] or "")
-        database_name = get_database_name(request.user)
-        query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(lower(entity_type)) \
-            .query(or_={'name__match': search_text, 'name_value': search_text, 'short_code__match': search_text,
-                        'short_code_value': search_text}) \
-            .values_dict()
-        resp = [{"id": r["short_code"], "label": r["name"]} for r in query[:min(query.count(), 50)]]
-        return HttpResponse(json.dumps(resp))
+    search_text = lower(request.GET["term"] or "")
+    database_name = get_database_name(request.user)
+    dbm = get_database_manager(request.user)
+    form_model = get_form_model_by_entity_type(dbm, [entity_type.lower()])
+    es_field_name_for_subject_name = es_field_name('q2', form_model.id)
+    es_field_name_for_short_code = es_field_name('q6', form_model.id)
+    query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(lower(entity_type)) \
+        .query(or_={es_field_name_for_subject_name + '__match': search_text,
+                    es_field_name_for_subject_name + '_value': search_text,
+                    es_field_name_for_short_code + '__match': search_text,
+                    es_field_name_for_short_code + '_value': search_text}) \
+        .values_dict()
+    resp = [{"id": r[es_field_name_for_short_code], "label": r[es_field_name_for_subject_name]} for r in
+            query[:min(query.count(), 50)]]
+    return HttpResponse(json.dumps(resp))
+
 
 @valid_web_user
 def export_subject(request):
@@ -602,7 +614,6 @@ def add_codes_sheet(wb, form_code, field_codes):
     codes.extend(field_codes)
     ws = workbook_add_sheet(wb, [codes], "codes")
     ws.visibility = 1
-
 
 
 def get_example_sms_message(fields, form_code):

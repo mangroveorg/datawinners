@@ -4,50 +4,19 @@ from string import lower
 
 from babel.dates import format_datetime
 from pyelasticsearch.exceptions import ElasticHttpError, ElasticHttpNotFoundError
+from datawinners.search.submission_index_meta_fields import submission_meta_fields
 
 from mangrove.form_model.field import DateField
 from datawinners.project.models import get_all_projects
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
-from datawinners.search.index_utils import get_elasticsearch_handle, get_fields_mapping_by_field_def, get_field_definition
+from datawinners.search.index_utils import get_elasticsearch_handle, get_fields_mapping_by_field_def, get_field_definition, es_field_name
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 
 
 logger = logging.getLogger("datawinners")
-
-ES_SUBMISSION_FIELD_DS_ID = "ds_id"
-ES_SUBMISSION_FIELD_DS_NAME = "ds_name"
-ES_SUBMISSION_FIELD_DATE = "date"
-ES_SUBMISSION_FIELD_STATUS = "status"
-ES_SUBMISSION_FIELD_ERROR_MSG = "error_msg"
-ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE = "entity_short_code"
-
-meta_fields = [ES_SUBMISSION_FIELD_DS_ID, ES_SUBMISSION_FIELD_DS_NAME, ES_SUBMISSION_FIELD_DATE,
-               ES_SUBMISSION_FIELD_STATUS, ES_SUBMISSION_FIELD_ERROR_MSG, ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE]
-
-submission_meta_fields = [{"name": ES_SUBMISSION_FIELD_DATE, "type": "date", "date_format": 'submission_date_format'},
-                          {"name": ES_SUBMISSION_FIELD_STATUS},
-                          {"name": ES_SUBMISSION_FIELD_DS_NAME},
-                          {"name": ES_SUBMISSION_FIELD_DS_ID},
-                          {"name": ES_SUBMISSION_FIELD_ERROR_MSG},
-                          {"name": ES_SUBMISSION_FIELD_ENTITY_SHORT_CODE}]
-
-submission_meta_field_names = dict([(field["name"], None) for field in submission_meta_fields])
-
-
-def is_submission_meta_field(field_name):
-    return submission_meta_field_names.has_key(field_name)
-
-
-def es_field_name(field_code, form_model_id):
-    """
-        prefixes form_model id to namespace all additional fields on questionnaire (ds_name, ds_id, status and date are not prefixed)
-    :param field_code:
-    """
-    return field_code if is_submission_meta_field(field_code) else "%s_%s" % (form_model_id, lower(field_code))
-
 
 def get_code_from_es_field_name(es_field_name, form_model_id):
     for item in es_field_name.split('_'):

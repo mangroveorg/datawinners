@@ -1,4 +1,5 @@
 import elasticutils
+from datawinners.search.index_utils import es_field_name
 from mangrove.form_model.form_model import header_fields, get_form_model_by_entity_type
 
 from mangrove.form_model.form_model import REPORTER
@@ -74,7 +75,11 @@ class SubjectQuery(Query):
     def get_headers(self, user, subject_type):
         manager = get_database_manager(user)
         form_model = get_form_model_by_entity_type(manager, [subject_type])
-        return header_fields(form_model).keys()
+        #return header_fields(form_model,key_attribute='code').keys()
+        subject_es_headers = []
+        for code in header_fields(form_model, key_attribute='code').keys():
+            subject_es_headers.append(es_field_name(code, form_model.id))
+        return subject_es_headers
 
     def query(self, user, subject_type, query_text):
         subject_headers = self.get_headers(user, subject_type)

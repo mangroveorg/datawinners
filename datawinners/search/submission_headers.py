@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from collections import OrderedDict
+from datawinners.search.index_utils import es_field_name
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
-from datawinners.search.submission_index import es_field_name
 from mangrove.form_model.form_model import header_fields
 
 

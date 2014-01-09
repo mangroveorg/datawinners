@@ -22,8 +22,9 @@ from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.exporter import SubmissionExporter
+from datawinners.search.index_utils import es_field_name
 from datawinners.search.submission_headers import HeaderFactory
-from datawinners.search.submission_index import es_field_name, get_code_from_es_field_name
+from datawinners.search.submission_index import get_code_from_es_field_name
 from datawinners.search.submission_query import SubmissionQuery
 from mangrove.form_model.field import SelectField
 from mangrove.transport.player.new_players import WebPlayerV2

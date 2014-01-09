@@ -1,6 +1,7 @@
 from babel.dates import format_datetime
 import datetime
-from datawinners.search.submission_index import es_field_name, ES_SUBMISSION_FIELD_DATE
+from datawinners.search.index_utils import es_field_name
+from datawinners.search.submission_index_meta_fields import ES_SUBMISSION_FIELD_DATE
 from mangrove.form_model.field import DateField
 
 DATE_PICKER_WIDGET_DATE_FORMAT = '%d.%m.%Y'

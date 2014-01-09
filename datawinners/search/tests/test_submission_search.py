@@ -2,7 +2,7 @@ import unittest
 from elasticutils import S, DictSearchResults
 
 from mock import Mock, patch, PropertyMock, MagicMock
-from datawinners.search.submission_index import es_field_name
+from datawinners.search.index_utils import es_field_name
 
 from datawinners.search.submission_query import SubmissionQuery, SubmissionQueryResponseCreator
 from mangrove.form_model.field import Field

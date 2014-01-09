@@ -2,6 +2,7 @@ from collections import OrderedDict
 from string import lower
 import elasticutils
 from datawinners.entity.helper import get_entity_type_fields, tabulate_data
+from datawinners.search.submission_index_meta_fields import submission_meta_field_names
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import DateField
@@ -13,7 +14,7 @@ def _add_date_field_mapping(mapping_fields, field_def):
         {name: {"type": "multi_field", "fields": {
             name: {"type": "string"},
             name + "_value": {"type": "date", "format": DateField.FORMAT_DATE_DICTIONARY.get(field_def["date_format"]),
-                                    "ignore_malformed": True}
+                              "ignore_malformed": True}
         }}})
 
 
@@ -35,9 +36,11 @@ def get_field_definition(form_field, field_name=None):
         field_def.update({"type": 'string'})
     return field_def
 
+
 def get_fields_mapping(doc_type, fields):
     fields_definition = [get_field_definition(field) for field in fields]
     return get_fields_mapping_by_field_def(doc_type, fields_definition)
+
 
 def get_fields_mapping_by_field_def(doc_type, fields_definition):
     """
@@ -64,6 +67,30 @@ def _entity_dict(entity_type, entity_doc, dbm, form_model):
     dictionary.update({"void": entity.is_void()})
     return dictionary
 
+
+def subject_dict(entity_type, entity_doc, dbm, form_model):
+    entity = Entity.get(dbm, entity_doc.id)
+    field_names, labels, codes = get_entity_type_fields(dbm, form_model.form_code)
+    data = tabulate_data(entity, form_model, codes)
+    dictionary = OrderedDict()
+    for index in range(0, len(field_names)):
+        dictionary.update({es_field_name(codes[index],form_model.id): data['cols'][index]})
+    dictionary.update({"entity_type": entity_type})
+    dictionary.update({"void": entity.is_void()})
+    return dictionary
+
+
 def get_elasticsearch_handle():
     return elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT)
 
+
+def es_field_name(field_code, form_model_id):
+    """
+        prefixes form_model id to namespace all additional fields on questionnaire (ds_name, ds_id, status and date are not prefixed)
+    :param field_code:
+    """
+    return field_code if is_submission_meta_field(field_code) else "%s_%s" % (form_model_id, lower(field_code))
+
+
+def is_submission_meta_field(field_name):
+    return submission_meta_field_names.has_key(field_name)
