@@ -138,9 +138,8 @@ function drawPie(answers, total, $locator, baseColor, colorScaleFactor) {
     }
     var data = [];
     $.each(answers, function(index, answer){
-        var percentFade = (total == 0 ? 1 : answer.count/total * colorScaleFactor);
-//        data.push({label:answer[0], data:answer[1], color:getColorOf(baseColor, percentFade)})
-        data.push({label:answer.term, data:answer.count,color:getColorOf(baseColor, percentFade)})
+        var percentFade = (total == 0 ? 1 : 1.0*answer.count/total * 1.0/ colorScaleFactor);
+        data.push({label:answer.term, data:answer.count, color:getColorOf(baseColor, percentFade)})
     });
 
     $.plot($locator, data,
@@ -235,12 +234,12 @@ function showBar(index){
 }
 
 function getColorScaleFactor(answers, total) {
-    max_percent = 1;
+    max_percent = 0;
     $.each(answers, function(index,answer){
-        max_percent = Math.max(max_percent, answer.count/total);
+        max_percent = Math.max(max_percent, 1.0*answer.count/total);
     });
 
-    return 1.0/max_percent;
+    return max_percent;
 };
 
 function toolTip(element){
