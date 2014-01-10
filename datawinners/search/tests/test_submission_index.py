@@ -92,7 +92,7 @@ class TestSubmissionIndex(unittest.TestCase):
         submission_doc = SurveyResponseDocument(values=values, status="error")
         _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
         self.assertEquals(
-            {'1212_eid': 'NA', "entity_short_code": 'NA', '1212_q2': 'wrong number', '1212_q3': 'wrong text',
+            {'1212_eid': 'N/A', "entity_short_code": 'N/A', '1212_q2': 'wrong number', '1212_q3': 'wrong text',
              'void': False},
             search_dict)
 
