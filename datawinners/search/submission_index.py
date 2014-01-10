@@ -17,6 +17,7 @@ from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 
 
 logger = logging.getLogger("datawinners")
+UNKNOWN = "N/A"
 
 def get_code_from_es_field_name(es_field_name, form_model_id):
     for item in es_field_name.split('_'):
@@ -187,7 +188,7 @@ def lookup_entity_by_uid(dbm, uid):
             return entity.value('name'), entity.short_code
     except Exception:
         pass
-    return "NA", "NA"
+    return UNKNOWN, UNKNOWN
 
 
 def lookup_entity_name(dbm, id, entity_type):
@@ -196,7 +197,7 @@ def lookup_entity_name(dbm, id, entity_type):
             return get_by_short_code_include_voided(dbm, id, entity_type).value("name")
     except DataObjectNotFound:
         pass
-    return "NA"
+    return UNKNOWN
 
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
@@ -207,8 +208,8 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
         entry = submission_values.get(lower(field.code))
         if field.is_entity_field:
             entity_name = lookup_entity_name(dbm, entry, form_model.entity_type)
-            entry_code = 'NA' if entity_name == 'NA' else entry
-            search_dict.update({"entity_short_code": entry_code or 'NA'})
+            entry_code = UNKNOWN if entity_name == UNKNOWN else entry
+            search_dict.update({"entity_short_code": entry_code or UNKNOWN})
             entry = entity_name
         elif field.type == "select":
             entry = field.get_option_value_list(entry)
