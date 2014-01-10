@@ -35,3 +35,6 @@ class SMSTesterLightBoxPage(LightBox):
 
     def get_upgrade_instruction_present(self):
         return self.driver.is_element_present(UPGRADE_INSTRUCTION_BY_CSS)
+
+    def hit_clear_message_link(self):
+        self.driver.find(CLEAR_BTN_BY_ID).click()

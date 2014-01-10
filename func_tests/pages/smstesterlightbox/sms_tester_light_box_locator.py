@@ -23,3 +23,4 @@ SMS_TA = by_xpath("//div[@role='dialog' and contains(@style,'block')]/..//textar
 SEND_SMS_BTN = by_xpath("//div[@role='dialog' and contains(@style,'block')]/..//input[@id='send_sms']")
 CLEAR_BTN = by_xpath("//div[@role='dialog' and contains(@style,'block')]/..//input[@id='clear_sms']")
 UPGRADE_INSTRUCTION_BY_CSS = by_css("div.sms_tester_form > div.warning-message-box p")
+CLEAR_BTN_BY_ID = by_id("clear_sms")

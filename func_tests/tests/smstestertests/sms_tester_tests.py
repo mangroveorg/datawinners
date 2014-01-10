@@ -7,6 +7,9 @@ from framework.utils.data_fetcher import fetch_, from_
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE
 from tests.smstestertests.sms_tester_data import *
+from datawinners.tests.data import DEFAULT_TEST_ORG_ID
+from datawinners.accountmanagement.models import Organization
+from datetime import datetime
 
 
 class TestSMSTester(unittest.TestCase):
@@ -59,9 +62,15 @@ class TestSMSTester(unittest.TestCase):
 
     @attr('functional_test')
     def test_sms_player_for_registration_of_new_subject(self):
+        organization = Organization.objects.get(org_id=DEFAULT_TEST_ORG_ID)
+        message_tracker_before = organization._get_message_tracker(datetime.today())
         self.sms_tester_page.send_sms_with(REGISTER_NEW_SUBJECT)
         self.assertTrue(
             fetch_(SUCCESS_MESSAGE, from_(REGISTER_NEW_SUBJECT)) in self.sms_tester_page.get_response_message())
+        message_tracker_after = organization._get_message_tracker(datetime.today())
+        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.sms_registration_count + 1, message_tracker_after.sms_registration_count)
+        self.assertEqual(message_tracker_before.outgoing_message_count() + 1, message_tracker_after.outgoing_message_count())
 
     @attr('functional_test')
     def test_sms_player_for_registration_of_existing_subject_short_code(self):

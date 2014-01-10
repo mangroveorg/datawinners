@@ -22,3 +22,4 @@ VALID_DATA2 = {SMS: "cli005 .EID cid004 .NA Mr. O'man .FA 58 .RD 17.05.2011 .BG 
 VALID_ORDERED_SMS_DATA = {SMS: "cli005 cid004 O'man 58 17.05.2011 b ade 27.178057,-78.007789",
                           RESPONSE_MESSAGE: (
                                                 THANKS % "Test") + " for Clinic Khandwa Clinic (cid004)."}#+ " EID: cid004 NA: O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057, -78.007789"}
+SUBJECT_REGISTRATION_VIA_SMS = {SMS: "cli mariestopes madagascar avaradoha -1,-3 261498394"}
