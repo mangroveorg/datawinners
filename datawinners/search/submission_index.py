@@ -57,7 +57,7 @@ class SubmissionSearchStore():
         new_fields_with_format = set(
             [k + f["fields"][k + "_value"]["type"] for k, f in mapping.values()[0]['properties'].items()])
         old_fields_with_format = set(
-            [k + f["fields"][k + "_value"]["type"] for k, f in mapping_old.values()[0]['properties'].items()])
+            [k + f["fields"][k + "_value"]["type"] for k, f in mapping_old.values()[0]['properties'].items() if f.get("fields")])
 
         return new_fields_with_format != old_fields_with_format
 
