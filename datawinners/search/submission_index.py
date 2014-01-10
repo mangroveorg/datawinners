@@ -146,7 +146,7 @@ def update_submission_search_for_subject_edition(entity_doc, dbm):
     for form_model in form_models:
         entity_field_name = lower(form_model.entity_question.code)
         fields_mapping = {es_field_name(entity_field_name, form_model.id): entity_doc.data['name']['value']}
-        args = {'entity_short_code': entity_doc.short_code}
+        args = {'entity_short_code_value': entity_doc.short_code}
         survey_response_filtered_query = SubmissionQueryBuilder(form_model).query_all(dbm.database_name, form_model.id,
                                                                                       **args)
 

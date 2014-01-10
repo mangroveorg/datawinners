@@ -144,5 +144,5 @@ class TestSubmissionIndex(unittest.TestCase):
                     with patch.object(SubmissionIndexUpdateHandler,
                                       'update_field_in_submission_index') as update_field_in_submission_index:
                         update_submission_search_for_subject_edition(entity_doc, dbm)
-                        query_all.assert_called_with('db_name', '12345',**{'entity_short_code': 'cli001'})
+                        query_all.assert_called_with('db_name', '12345',**{'entity_short_code_value': 'cli001'})
                         update_field_in_submission_index.assert_called_with('id1', {'12345_q1': 'bangalore'})
