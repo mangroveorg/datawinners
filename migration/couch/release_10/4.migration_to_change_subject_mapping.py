@@ -20,7 +20,7 @@ function(doc) {
 }
 """
 
-
+# ~10min
 def recreate_subject_index(db_name):
     logger = logging.getLogger(db_name)
     try:
@@ -40,10 +40,10 @@ def recreate_subject_index(db_name):
                     subject = subject_dict(entity_type, entity_doc, dbm, form_model)
                     subject.update({'id': entity_doc.id})
                     entity_docs.append(subject)
-
-            es.bulk_index(dbm.database_name, entity_type, entity_docs)
-            es.refresh(dbm.database_name)
-            logger.info('Changed index for subject with codes ' + str([a.get('id') for a in entity_docs]))
+            if entity_docs:
+                es.bulk_index(dbm.database_name, entity_type, entity_docs)
+                es.refresh(dbm.database_name)
+                logger.info('Changed index for subject with codes ' + str([a.get('id') for a in entity_docs]))
         logger.info('Completed Indexing')
     except Exception as e:
         logger.exception(e.message)
