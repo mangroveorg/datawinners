@@ -1,3 +1,4 @@
+from copy import copy
 import json
 import logging
 
@@ -25,7 +26,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 from mangrove.utils.types import is_string
 from datawinners.utils import get_organization, generate_project_name
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, get_field_by_attribute_value
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions
 from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, SET_DEADLINE
@@ -192,18 +193,17 @@ def edit_project(request, project_id=None):
             project.update(form.cleaned_data)
             try:
                 old_fields = questionnaire.fields
-                old_form_code = questionnaire.form_code
+                old_form_model = copy(questionnaire)
                 questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'],
                                                      form.cleaned_data['name'], manager, form.cleaned_data['language'])
-                new_form_code = request.POST['questionnaire-code'].lower()
+                new_form_model = questionnaire
                 changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
                 detail.update(changed_questions)
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()
-                if old_form_code != new_form_code:
-                    update_associated_submissions.delay(
-                        {"database_name": manager.database_name, "old_form_code": old_form_code,
-                         "new_form_code": new_form_code})
+                update_associated_submissions(**{"database_name": manager.database_name, "old_form_model": old_form_model,
+                                               "new_form_model": new_form_model,
+                                               "changed_questions": changed_questions})
                 UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
             except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                     EntityQuestionAlreadyExistsException) as ex:
@@ -395,20 +395,39 @@ def _get_activity_log_action(reminder_list, new_value):
         action = DEACTIVATED_REMINDERS
     return action
 
+
+def update_submissions_for_form_code_change(manager, new_form_code, old_form_code):
+    if old_form_code != new_form_code:
+        survey_responses = survey_responses_by_form_code(manager, old_form_code)
+        documents = []
+        for survey_response in survey_responses:
+            survey_response.form_code = new_form_code
+            documents.append(survey_response._doc)
+        manager._save_documents(documents)
+
+
+def update_submissions_for_form_field_change(manager, new_form_model, old_form_model, changed_questions):
+    if changed_questions and changed_questions.get('deleted'):
+        survey_responses = survey_responses_by_form_code(manager, old_form_model.form_code)
+        documents = []
+        deleted_questions = []
+        for question_label in changed_questions.get('deleted'):
+            deleted_question_field = get_field_by_attribute_value(old_form_model, key_attribute='label',
+                                                                  attribute_label=question_label)
+            deleted_questions.append(deleted_question_field)
+
+        for survey_response in survey_responses:
+            for question in deleted_questions:
+                survey_response._doc.values.pop(question.code, None)
+            documents.append(survey_response._doc)
+        manager._save_documents(documents)
+
+
 @app.task(max_retries=3, throw=False)
-def update_associated_submissions(update_dict):
+def update_associated_submissions(old_form_model, new_form_model, changed_questions, database_name):
     try:
-        try:
-            manager = get_db_manager(update_dict['database_name'])
-            survey_responses = survey_responses_by_form_code(manager, update_dict['old_form_code'])
-            documents = []
-            for survey_response in survey_responses:
-                survey_response.form_code = update_dict['new_form_code']
-                documents.append(survey_response._doc)
-            manager._save_documents(documents)
-        except Exception as e:
-            current.retry(exc=e)
+        manager = get_db_manager(database_name)
+        update_submissions_for_form_code_change(manager, new_form_model.form_code, old_form_model.form_code)
+        update_submissions_for_form_field_change(manager, new_form_model, old_form_model, changed_questions)
     except Exception as e:
-        logger = logging.getLogger('datawinners')
-        logger.exception('Failed for arguments: '+str(update_dict))
-        logger.exception(e)
+        current.retry(exc=e)
