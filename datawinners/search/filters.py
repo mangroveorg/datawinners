@@ -23,7 +23,7 @@ class DateRangeFilter():
     def _format_date(self, date_string, date_format, end_date=False):
         date = datetime.datetime.strptime(date_string.strip(), self.get_python_date_format(date_format))
         if end_date:
-            date = date + datetime.timedelta(days=1)
+            date = date + datetime.timedelta(hours=23, minutes=59)
         return format_datetime(date, date_format)
 
     def _get_dates_from_request(self, date_range):

@@ -17,7 +17,7 @@ class TestSubmissionFilter(unittest.TestCase):
     def test_should_build_query_with_start_and_end_date(self):
         mock_query = Mock(spec=elasticutils.S)
         SubmissionDateRangeFilter('21.11.2013-28.11.2013').build_filter_query(mock_query)
-        mock_query.filter.assert_called_with(date_value__range=['Nov. 21, 2013, 12:00 AM', 'Nov. 29, 2013, 12:00 AM'])
+        mock_query.filter.assert_called_with(date_value__range=['Nov. 21, 2013, 12:00 AM', 'Nov. 28, 2013, 11:59 PM'])
 
     def test_should_not_call_query_with_start_and_end_date_for_invalid_date_range(self):
         mock_query = Mock(spec=elasticutils.S)
@@ -29,7 +29,7 @@ class TestSubmissionFilter(unittest.TestCase):
         mock_query = Mock(spec=elasticutils.S)
         today = "26.11.2013"
         SubmissionDateRangeFilter(today).build_filter_query(mock_query)
-        mock_query.filter.assert_called_with(date_value__range=['Nov. 26, 2013, 12:00 AM', 'Nov. 27, 2013, 12:00 AM'])
+        mock_query.filter.assert_called_with(date_value__range=['Nov. 26, 2013, 12:00 AM', 'Nov. 26, 2013, 11:59 PM'])
 
 
 class TestReportingDateFilter(unittest.TestCase):
@@ -52,7 +52,7 @@ class TestReportingDateFilter(unittest.TestCase):
                                    ddtype=Mock(spec=DataDictType))
         mock_form_model.id = 'form_id'
         ReportingDateRangeFilter('21.11.2013-28.11.2013', mock_form_model).build_filter_query(mock_query)
-        mock_query.filter.assert_called_with(form_id_rp_value__range=['21.11.2013', '29.11.2013'])
+        mock_query.filter.assert_called_with(form_id_rp_value__range=['21.11.2013', '28.11.2013'])
 
     def test_should_build_query_with_start_and_end_date_for_mm_dd_yy_format(self):
         mock_query = Mock(spec=elasticutils.S)
@@ -61,7 +61,7 @@ class TestReportingDateFilter(unittest.TestCase):
                                    ddtype=Mock(spec=DataDictType))
         mock_form_model.id = 'form_id'
         ReportingDateRangeFilter('11.21.2013-11.28.2013', mock_form_model).build_filter_query(mock_query)
-        mock_query.filter.assert_called_with(form_id_rp_value__range=['11.21.2013', '11.29.2013'])
+        mock_query.filter.assert_called_with(form_id_rp_value__range=['11.21.2013', '11.28.2013'])
 
     def test_should_build_query_with_start_and_end_date_for_mm_yyyy_format(self):
         mock_query = Mock(spec=elasticutils.S)
@@ -80,4 +80,4 @@ class TestReportingDateFilter(unittest.TestCase):
         mock_form_model.id = 'form_id'
         today = "26.11.2013"
         ReportingDateRangeFilter(today, mock_form_model).build_filter_query(mock_query)
-        mock_query.filter.assert_called_with(form_id_rp_value__range=['26.11.2013', '27.11.2013'])
+        mock_query.filter.assert_called_with(form_id_rp_value__range=['26.11.2013', '26.11.2013'])
