@@ -151,6 +151,15 @@ def is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire)
     return False
 
 
+def _get_deleted_question_codes(changed_questions, old_form_model):
+    deleted_question_codes = []
+    for question_label in changed_questions.get('deleted', []):
+        deleted_question_field = get_field_by_attribute_value(old_form_model, key_attribute='label',
+                                                              attribute_label=question_label)
+        deleted_question_codes.append(deleted_question_field.code)
+    return deleted_question_codes
+
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -201,9 +210,11 @@ def edit_project(request, project_id=None):
                 detail.update(changed_questions)
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()
-                update_associated_submissions(**{"database_name": manager.database_name, "old_form_model": old_form_model,
-                                               "new_form_model": new_form_model,
-                                               "changed_questions": changed_questions})
+
+                deleted_question_codes = _get_deleted_question_codes(changed_questions, old_form_model)
+
+                update_associated_submissions.delay(manager.database_name, old_form_model.form_code, new_form_model.form_code,
+                                                    deleted_question_codes)
                 UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
             except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                     EntityQuestionAlreadyExistsException) as ex:
@@ -406,28 +417,20 @@ def update_submissions_for_form_code_change(manager, new_form_code, old_form_cod
         manager._save_documents(documents)
 
 
-def update_submissions_for_form_field_change(manager, new_form_model, old_form_model, changed_questions):
-    if changed_questions and changed_questions.get('deleted'):
-        survey_responses = survey_responses_by_form_code(manager, old_form_model.form_code)
-        documents = []
-        deleted_questions = []
-        for question_label in changed_questions.get('deleted'):
-            deleted_question_field = get_field_by_attribute_value(old_form_model, key_attribute='label',
-                                                                  attribute_label=question_label)
-            deleted_questions.append(deleted_question_field)
-
+def update_submissions_for_form_field_change(manager, old_form_code, deleted_question_codes):
+    if deleted_question_codes:
+        survey_responses = survey_responses_by_form_code(manager, old_form_code)
         for survey_response in survey_responses:
-            for question in deleted_questions:
-                survey_response._doc.values.pop(question.code, None)
-            documents.append(survey_response._doc)
-        manager._save_documents(documents)
+            for code in deleted_question_codes:
+                survey_response._doc.values.pop(code, None)
+            survey_response.save()
 
 
 @app.task(max_retries=3, throw=False)
-def update_associated_submissions(old_form_model, new_form_model, changed_questions, database_name):
+def update_associated_submissions(database_name, old_form_code, new_form_code, deleted_question_codes):
     try:
         manager = get_db_manager(database_name)
-        update_submissions_for_form_code_change(manager, new_form_model.form_code, old_form_model.form_code)
-        update_submissions_for_form_field_change(manager, new_form_model, old_form_model, changed_questions)
+        update_submissions_for_form_code_change(manager, new_form_code, old_form_code)
+        update_submissions_for_form_field_change(manager, old_form_code, deleted_question_codes)
     except Exception as e:
         current.retry(exc=e)

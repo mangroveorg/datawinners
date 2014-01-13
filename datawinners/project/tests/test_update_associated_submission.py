@@ -33,33 +33,31 @@ class TestUpdateAssociatedSubmission(unittest.TestCase):
 
     def test_should_update_submissions_for_form_field_change(self):
         dbm = Mock(spec=DatabaseManager)
-        field = TextField(name='name', label='question label 1', code='field_code', ddtype=Mock(spec=DataDictType))
-        old_form_model = MagicMock()
-        old_form_model.fields = [field]
-        old_form_model._doc.form_code = 'form_code'
-        new_form_model = Mock(spec=FormModel)
-        changed_questions = {'deleted': ['question label 1']}
+        form_code = 'code'
+        deleted_question_codes = ['field_code']
         with patch("datawinners.project.wizard_view.survey_responses_by_form_code") as survey_responses_by_form_code:
-            mock_document1 = SurveyResponseDocument(values={'field_code': 'answer1', 'another_code': 'answer2'})
-            mock_document2 = SurveyResponseDocument(values={'field_code': 'answer3', 'another_code': 'answer4'})
-            survey_responses_mock = [(SurveyResponse.new_from_doc(dbm=None, doc=mock_document1)),
-                                     (SurveyResponse.new_from_doc(dbm=None, doc=mock_document2))]
+            mock_document1 = Mock(spec=SurveyResponseDocument,
+                                  values={'field_code': 'answer1', 'another_code': 'answer2'})
+            mock_document2 = Mock(spec=SurveyResponseDocument,
+                                  values={'field_code': 'answer3', 'another_code': 'answer4'})
+            survey_response1 = MagicMock(spec=SurveyResponse)
+            survey_response1._doc = mock_document1
+            survey_response2 = MagicMock(spec=SurveyResponse)
+            survey_response2._doc = mock_document2
+            survey_responses_mock = [survey_response1,survey_response2]
             survey_responses_by_form_code.return_value = survey_responses_mock
 
-            update_submissions_for_form_field_change(dbm, new_form_model, old_form_model, changed_questions)
+            update_submissions_for_form_field_change(dbm, form_code, deleted_question_codes)
 
-            dbm._save_documents.assert_called_with([mock_document1, mock_document2])
+            survey_response1.save.assert_called()
+            survey_response2.save.assert_called()
             self.assertEquals(mock_document1.values, {'another_code': 'answer2'})
             self.assertEquals(mock_document2.values, {'another_code': 'answer4'})
 
     def test_should_not_update_submissions_no_field_got_deleted(self):
         dbm = Mock(spec=DatabaseManager)
-        field = TextField(name='name', label='question label 1', code='field_code', ddtype=Mock(spec=DataDictType))
-        old_form_model = MagicMock()
-        old_form_model.fields = [field]
-        old_form_model._doc.form_code = 'form_code'
-        new_form_model = Mock(spec=FormModel)
-        changed_questions = {'added': ['question label 1']}
+        form_code = 'code'
+        deleted_question_codes = []
         with patch("datawinners.project.wizard_view.survey_responses_by_form_code") as survey_responses_by_form_code:
             mock_document1 = SurveyResponseDocument(values={'field_code': 'answer1', 'another_code': 'answer2'})
             mock_document2 = SurveyResponseDocument(values={'field_code': 'answer3', 'another_code': 'answer4'})
@@ -67,9 +65,9 @@ class TestUpdateAssociatedSubmission(unittest.TestCase):
                                      (SurveyResponse.new_from_doc(dbm=None, doc=mock_document2))]
             survey_responses_by_form_code.return_value = survey_responses_mock
 
-            update_submissions_for_form_field_change(dbm, new_form_model, old_form_model, changed_questions)
+            update_submissions_for_form_field_change(dbm, form_code, deleted_question_codes)
 
-            self.assertEquals(mock_document1.values, {'field_code': 'answer1','another_code': 'answer2'})
-            self.assertEquals(mock_document2.values, {'field_code': 'answer3','another_code': 'answer4'})
+            self.assertEquals(mock_document1.values, {'field_code': 'answer1', 'another_code': 'answer2'})
+            self.assertEquals(mock_document2.values, {'field_code': 'answer3', 'another_code': 'answer4'})
 
 
