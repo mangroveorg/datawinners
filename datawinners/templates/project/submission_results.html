@@ -92,7 +92,7 @@
             <a href="javascript:void(0);" class="export_link">{% trans "Export" %}</a>
             |
             <a href="javascript:void(0);" data-projectname="{{ encoded_project_name }}"
-               data-formcode="{{ questionnaire_code }}" data-projectid="{{ project.id }}" class="import_link">{% trans "Import a List of Submissions" %}</a>
+               data-formcode="{{ questionnaire_code }}" data-projectid="{{ project.id }}" data-filename="{{ import_template_file_name }}" class="import_link">{% trans "Import a List of Submissions" %}</a>
         </span>
     </div>
     {% include 'project/partials/_page_header.html' with title="Submission Log" help_message='place_holder' %}

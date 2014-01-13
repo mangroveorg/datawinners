@@ -1,8 +1,9 @@
 describe("Import Submission Popup", function(){
 
     beforeEach(function(){
-        setFixtures("<a class='import_link' data-projectname='projectname123' \
+        setFixtures("<a class='import_link' data-projectname='projectname123' data-filename='filename' \
             data-formcode='formcode123' data-projectid='999909b65b0'></a><a id='template-download-link'></a>\
+            <a id='secondary-template-download-link'></a>\
             <div id='submission_import'></div>")
     });
 
@@ -33,4 +34,16 @@ describe("Import Submission Popup", function(){
         expect(chainedDialogSpy).toHaveBeenCalledWith("open")
     });
 
+    it("should update the primary and secondary download template link text with filename from data attribute",function(){
+        var options = {
+        "import_template_url_template": '/domain/project/subject/form_code?filename=<project_name>',
+        "import_submission_url_template": '/domain/project/import-submissions/form_code'
+    };
+        var popup = new DW.SubmissionImportPopup().init(options);
+
+        popup.updateTemplateFileName($(".import_link"));
+
+        expect($("#template-download-link")).toHaveText("filename.xsl")
+        expect($("#secondary-template-download-link")).toHaveText("filename.xsl")
+    })
 });

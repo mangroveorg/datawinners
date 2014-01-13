@@ -52,6 +52,13 @@ DW.SubmissionImportPopup = function(){
         return self;
     };
 
+    self.updateTemplateFileName = function(target){
+          var selected_link_element = $(target);
+          var file_name = selected_link_element.attr("data-filename") + ".xsl";
+          self.download_link.text(file_name);
+          self.secondary_download_link.text(file_name);
+    };
+
     self.open = function(){
         self.import_dialog.dialog("open");
         return self;
@@ -228,7 +235,9 @@ $(function(){
     };
     var submissionPopup = new DW.SubmissionImportPopup().init(options);
     $(document).on("click", '.import_link', function(event){
-        submissionPopup.updateUrls(event.currentTarget);
+        var target = event.currentTarget;
+        submissionPopup.updateUrls(target);
+        submissionPopup.updateTemplateFileName(target);
         submissionPopup.initializeFileUploader();
         submissionPopup.open();
     });
