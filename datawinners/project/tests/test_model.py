@@ -122,7 +122,7 @@ class TestProjectModel(MangroveTestCase):
 
             form_model_mock.deactivate.assert_called_once_with()
             form_model_mock.save.assert_called_once_with()
-            project_save_mock.assert_called_once_with(dbm)
+            project_save_mock.assert_called_once_with(dbm, process_post_update=False)
 
         self.assertEqual(ProjectState.INACTIVE, project.state)
 

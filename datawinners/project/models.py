@@ -286,7 +286,7 @@ class Project(DocumentBase):
         form_model.deactivate()
         form_model.save()
         self.state = ProjectState.INACTIVE
-        self.save(dbm)
+        self.save(dbm, process_post_update=False)
 
     def to_test_mode(self, dbm):
         form_model = self._load_form(dbm)
@@ -302,7 +302,7 @@ class Project(DocumentBase):
     #The method name sucks but until we make Project DataObject we can't make the method name 'void'
     def set_void(self, dbm, void=True):
         self.void = void
-        self.save(dbm)
+        self.save(dbm, process_post_update=False)
 
     def is_on_type(self, type):
         return self.entity_type == type
