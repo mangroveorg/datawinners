@@ -199,6 +199,13 @@ def lookup_entity_name(dbm, id, entity_type):
         pass
     return UNKNOWN
 
+#TODO:This is required only for the migration for creating submission indexes.To be removed following release10
+def _update_select_field_by_revision(field, form_model, submission_doc):
+    field_by_revision = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
+    if field_by_revision and (field_by_revision.type == "select" or field_by_revision.type == "select1"):
+        field = field_by_revision
+    return field
+
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
     #Submission value may have capitalized keys in some cases. This conversion is to do
@@ -212,8 +219,10 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
             search_dict.update({"entity_short_code": entry_code or UNKNOWN})
             entry = entity_name
         elif field.type == "select":
+            field = _update_select_field_by_revision(field, form_model, submission_doc)
             entry = field.get_option_value_list(entry)
         elif field.type == "select1":
+            field = _update_select_field_by_revision(field, form_model, submission_doc)
             entry = ",".join(field.get_option_value_list(entry))
         elif field.type == "date":
             try:
