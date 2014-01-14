@@ -21,12 +21,14 @@ class SubmissionImporter():
         self.dbm = dbm
         self.user = user
         self.form_model = form_model
+        self.project = project
         self.submission_validator = SubmissionWorkbookRowValidator(dbm, form_model, project)
         self.submission_persister = SubmissionPersister(user, dbm, feed_dbm, form_model, project, submission_quota_service)
-        self.is_summary_project = project.is_summary_project()
+
 
     def import_submission(self, request):
         saved_entries,invalid_row_details,ignored_entries = [], [], []
+        is_summary_project = self.project.is_summary_project()
         total_submissions = 0
 
         try:
@@ -37,11 +39,11 @@ class SubmissionImporter():
             if len(tabular_data) <= 1:
                 raise ImportValidationError(gettext("The imported file is empty."))
             q_answer_dicts = SubmissionWorkbookMapper(tabular_data, self.form_model).process()
-            SubmissionWorkbookValidator(self.form_model, is_org_user(self.user), self.is_summary_project).validate(q_answer_dicts)
+            SubmissionWorkbookValidator(self.form_model, is_org_user(self.user), is_summary_project).validate(q_answer_dicts)
 
             total_submissions = len(q_answer_dicts)
             user_profile = NGOUserProfile.objects.filter(user=self.user)[0]
-            self._add_reporter_id_for_datasender(q_answer_dicts, user_profile, is_organization_user)
+            self._add_reporter_id_for_datasender(q_answer_dicts, user_profile, is_organization_user, is_summary_project)
 
             valid_rows, invalid_row_details = self.submission_validator.validate_rows(q_answer_dicts)
             ignored_entries, saved_entries = self.submission_persister.save_submissions(is_organization_user, user_profile, valid_rows)
@@ -72,9 +74,15 @@ class SubmissionImporter():
 
         return file_content
 
-    def _add_reporter_id_for_datasender(self, parsed_rows, user_profile, is_organization_user):
-        if self.is_summary_project and not is_organization_user:
-            for row in parsed_rows:
+    def _add_reporter_id_for_datasender(self, parsed_rows, user_profile, is_organization_user, is_summary_project):
+        if not is_summary_project:
+            return
+
+        for row in parsed_rows:
+            if is_organization_user:
+                if row['eid'] == '':
+                    row.update({'eid':user_profile.reporter_id})
+            else:
                 row.update({"eid": user_profile.reporter_id})
 
     def _uploaded_submission_has_reporter_id(self, parsed_rows):
