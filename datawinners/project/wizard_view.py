@@ -199,6 +199,7 @@ def edit_project(request, project_id=None):
             for key, changed in enumerate(form.changed_data):
                 if getattr(project, changed) != form.cleaned_data.get(changed):
                     detail.update({changed.capitalize(): form.cleaned_data.get(changed)})
+            is_project_name_changed = project_info['name'] != questionnaire.name
             project.update(form.cleaned_data)
             try:
                 old_fields = questionnaire.fields
@@ -225,7 +226,8 @@ def edit_project(request, project_id=None):
                                                 'error_message': 'Questionnaire with this code already exists'}))
 
             try:
-                project.save(manager)
+
+                project.save(manager, process_post_update=is_project_name_changed)
             except DataObjectAlreadyExists as ex:
                 message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
                 return HttpResponse(
