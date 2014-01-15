@@ -104,13 +104,13 @@ def settings(request):
                                   context_instance=RequestContext(request))
 
 
-def _associate_user_with_existing_project(manager, reporter_id):
+def associate_user_with_existing_project(manager, reporter_id):
     rows = get_all_projects(manager)
     for row in rows:
         project_id = row['value']['_id']
         project = Project.load(manager.database, project_id)
         project.data_senders.append(reporter_id)
-        project.save(manager, process_post_update=False)
+        project.save(manager, process_post_update=True)
 
 
 @login_required
@@ -146,7 +146,7 @@ def new_user(request):
                                                                          current_user_name=user.get_full_name(),
                                                                          mobile_number=mobile_number, email=username)
                 ngo_user_profile.save()
-                _associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
+                associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
                 reset_form = PasswordResetForm({"email": username})
                 if reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,

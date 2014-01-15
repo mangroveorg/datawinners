@@ -1,11 +1,12 @@
 import unittest
 
 from django_digest.test import Client
-from mock import Mock, patch, PropertyMock
+from mock import Mock, patch, PropertyMock, MagicMock
 from django.contrib.auth.models import User
 from django.http import HttpRequest
+from datawinners.project.models import Project
 from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_PASSWORD
-from datawinners.accountmanagement.views import users
+from datawinners.accountmanagement.views import users, associate_user_with_existing_project
 
 
 class TestUserActivityLogDetails(unittest.TestCase):
@@ -33,3 +34,19 @@ class TestUserActivityLogDetails(unittest.TestCase):
                     type(user_class).objects = PropertyMock(return_value=objects)
                     users(request)
                     objects.exclude.assert_called_once_with(groups__name__in=['Data Senders', 'SMS API Users'])
+
+
+class TestUserAssociationToProject(unittest.TestCase):
+    def test_should_associate_user_to_existing_projects(self):
+        dbm = Mock()
+        with patch('datawinners.accountmanagement.views.Project') as ProjectMock:
+            with patch("datawinners.accountmanagement.views.get_all_projects") as get_all_projects_mock:
+                get_all_projects_mock.return_value = [{'value':{'_id': 'id1'}}]
+                project_mock = MagicMock(spec=Project)
+                ProjectMock.load.return_value = project_mock
+                project_mock.data_senders = []
+
+                associate_user_with_existing_project(dbm, 'rep123')
+
+                self.assertEquals(project_mock.data_senders, ['rep123'])
+                project_mock.save.assert_called_once_with(dbm, process_post_update=True)
