@@ -43,7 +43,7 @@ describe("Import Submission Popup", function(){
 
         popup.updateTemplateFileName($(".import_link"));
 
-        expect($("#template-download-link")).toHaveText("filename.xsl")
-        expect($("#secondary-template-download-link")).toHaveText("filename.xsl")
+        expect($("#template-download-link")).toHaveText("filename.xls")
+        expect($("#secondary-template-download-link")).toHaveText("filename.xls")
     })
 });

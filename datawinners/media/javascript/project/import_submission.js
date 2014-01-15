@@ -54,7 +54,7 @@ DW.SubmissionImportPopup = function(){
 
     self.updateTemplateFileName = function(target){
           var selected_link_element = $(target);
-          var file_name = selected_link_element.attr("data-filename") + ".xsl";
+          var file_name = selected_link_element.attr("data-filename") + ".xls";
           self.download_link.text(file_name);
           self.secondary_download_link.text(file_name);
     };
