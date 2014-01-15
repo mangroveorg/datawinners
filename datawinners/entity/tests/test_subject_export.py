@@ -1,6 +1,7 @@
 import os
 import random
 import tempfile
+import uuid
 from django.test import TestCase, Client
 import xlrd
 
@@ -40,5 +41,5 @@ class TestSubjectExport(TestCase):
         _to = "919880734937"
 
         message = "cli firstname lastname location 3,3 %s" % self.mobile_number
-        data = {"message": message, "from_msisdn": _from, "to_msisdn": _to}
+        data = {"message": message, "from_msisdn": _from, "to_msisdn": _to, "message_id": uuid.uuid1().hex}
         self.client.post("/submission", data)

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import jsonpickle
 from datawinners.common.authorization import api_http_basic
+from datawinners.sms.models import MSG_TYPE_API
 from datawinners.utils import get_organization
 from datawinners.scheduler.smsclient import SMSClient
 
@@ -16,7 +17,7 @@ def send_sms(request):
     result = {}
     org_tel_number = organization.tel_number()
     for number in input_request['numbers']:
-        if client.send_sms(org_tel_number, number, unicode(input_request['message'])):
+        if client.send_sms(org_tel_number, number, unicode(input_request['message']), MSG_TYPE_API):
             result.update({number: "success"})
             organization.increment_sms_api_usage_count()
         else:

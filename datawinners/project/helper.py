@@ -14,6 +14,7 @@ from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
 from mangrove.transport import TransportInfo
 from mangrove.utils.types import  is_sequence, sequence_to_str
+from datawinners.sms.models import MSG_TYPE_USER_MSG
 import models
 from datetime import datetime
 from models import Reminder
@@ -181,6 +182,16 @@ def get_subject_report_questions(dbm):
     return [entity_id_question, activity_report_question]
 
 def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker, country_code=None):
+    """
+
+    :param data_senders:
+    :param message:
+    :param organization_tel_number:
+    :param other_numbers:
+    :param message_tracker:
+    :param country_code:
+    :return:
+    """
     sms_client = SMSClient()
     sms_sent = None
     failed_numbers = []
@@ -189,7 +200,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
             'mobile_number') #This should not be a dictionary but the API in import_data should be fixed to return entity
         if phone_number is not None:
             logger.info(("Sending broadcast message to %s from %s") % (phone_number, organization_tel_number))
-            sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message)
+            sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message, MSG_TYPE_USER_MSG)
         if sms_sent:
             message_tracker.increment_message_count_for(send_message_count=1)
         else:
@@ -202,7 +213,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
             number_with_country_prefix = "%s%s" % (country_code, re.sub(r"^[ 0]+", "", number))
 
         logger.info(("Sending broadcast message to %s from %s") % (number_with_country_prefix, organization_tel_number))
-        sms_sent = sms_client.send_sms(organization_tel_number, number_with_country_prefix, message)
+        sms_sent = sms_client.send_sms(organization_tel_number, number_with_country_prefix, message, MSG_TYPE_USER_MSG)
         if sms_sent:
             message_tracker.increment_message_count_for(send_message_count=1)
         else:

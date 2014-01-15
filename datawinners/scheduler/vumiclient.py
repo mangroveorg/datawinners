@@ -214,7 +214,7 @@ class VumiClient(object):
     def __init__(self, username, password, connection):
         self.connection = connection
 
-    @auto_response
+    #@auto_response
     def send_sms(self, **kwargs):
         """
         Send one or more SMS messages::

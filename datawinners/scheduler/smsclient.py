@@ -1,8 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import json
 from urllib2 import URLError
+import uuid
 from django.conf import settings
 import logging
 from datawinners.scheduler.vumiclient import VumiClient, Connection, VumiInvalidDestinationNumberException
+from datawinners.sms.models import SMS, MSG_TYPE_REMINDER
 from datawinners.submission.organization_finder import OrganizationFinder
 from mangrove.utils.types import is_not_empty
 from datawinners.utils import strip_accents
@@ -15,9 +18,20 @@ class NoSMSCException(Exception):
     pass
 
 
+def log_sms(to_tel, from_tel, message, organization, message_id, transport_name, message_type):
+    SMS(message= message,
+        message_id=message_id,
+        organization=organization,
+        msg_from = from_tel,
+        msg_to= to_tel,
+        smsc = transport_name,
+        msg_type = message_type,
+        status="Submitted").save()
+
+
 class SMSClient(object):
 
-    def send_sms(self,from_tel,to_tel, message):
+    def send_sms(self,from_tel,to_tel, message, message_type="Unknown"):
         message = strip_accents(message)
         if is_not_empty(from_tel):
             organization_setting = OrganizationFinder().find_organization_setting(from_tel)
@@ -40,7 +54,11 @@ class SMSClient(object):
                 try:
                     client = VumiClient(None, None, connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
                     client.debug = True
-                    client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))
+                    resp = client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))
+                    response_object = json.loads(resp.content)
+                    if (response_object):
+                        log_sms(to_tel, from_tel, message, organization_setting.organization,
+                                response_object[0].get('id'), smsc.vumi_username,message_type)
                     return True
                 except (URLError, VumiInvalidDestinationNumberException) as err:
                     logger.exception('Unable to send sms. %s' %err)
@@ -50,7 +68,7 @@ class SMSClient(object):
     def send_reminder(self,from_number, on_date, project, reminder, dbm):
         count = 0
         for data_sender in reminder.get_sender_list(project, on_date,dbm):
-            sms_sent = self.send_sms(from_number, data_sender["mobile_number"], reminder.message)
+            sms_sent = self.send_sms(from_number, data_sender["mobile_number"], reminder.message, MSG_TYPE_REMINDER)
             if sms_sent:
                 count += 1
                 reminder.log(dbm, project.id, on_date, number_of_sms=1, to_number=data_sender["mobile_number"])

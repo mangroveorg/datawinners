@@ -163,6 +163,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'datawinners.accountmanagement',
+    'datawinners.sms',
     'datawinners.activitylog',
     'registration',
     'django.contrib.admin',

@@ -15,6 +15,7 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField, Date
 from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from datawinners.scheduler.smsclient import SMSClient
+from datawinners.sms.models import MSG_TYPE_USER_MSG
 
 
 class TestHelper(unittest.TestCase):
@@ -212,9 +213,9 @@ class TestHelper(unittest.TestCase):
         sms_content = "test message"
         with patch.object(SMSClient, "send_sms") as mock_send_sms:
             helper.broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker, "261")
-            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "2613312345678", sms_content)
+            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "2613312345678", sms_content, MSG_TYPE_USER_MSG)
             helper.broadcast_message([], sms_content, ONG_TEL_NUMBER, ["03312345678"], message_tracker)
-            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "03312345678", sms_content)
+            mock_send_sms.assert_called_with(ONG_TEL_NUMBER, "03312345678", sms_content, MSG_TYPE_USER_MSG)
 
 
 class TestPreviewCreator(unittest.TestCase):

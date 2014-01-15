@@ -242,7 +242,7 @@ class Organization(models.Model):
                 counter_dict['total_sent_sms'] += message_tracker.outgoing_message_count()
                 counter_dict['sms_reply'] += message_tracker.outgoing_sms_count
                 counter_dict['reminders'] += message_tracker.sent_reminders_count
-                counter_dict['send_a_msg_current_month'] += message_tracker.send_message_count
+                counter_dict['send_a_msg_current_month'] += message_tracker.send_message_charged_count
                 counter_dict['sent_via_api_current_month'] += message_tracker.sms_api_usage_count
                 current_month_flag = True
         return counter_dict
@@ -348,6 +348,7 @@ class MessageTracker(models.Model):
     incoming_sp_count = models.IntegerField(mark_safe("SP<br/>Submissions"), default=0)
     outgoing_sms_count = models.IntegerField(mark_safe("Outgoing SMS:<br/>Autom Reply"), default=0)
     send_message_count = models.IntegerField(mark_safe("Outgoing SMS:<br/>Send Message"), default=0)
+    send_message_charged_count = models.IntegerField(mark_safe("Outgoing SMS:<br/>Send Message Charged"), default=0)
     sent_reminders_count = models.IntegerField(mark_safe("Outgoing SMS:<br/>Reminders"), default=0)
 
     def increment_incoming_message_count_by(self, count):
@@ -363,7 +364,7 @@ class MessageTracker(models.Model):
         self.save()
 
     def outgoing_message_count(self):
-        return self.sms_api_usage_count + self.outgoing_sms_count + self.sent_reminders_count +self.send_message_count
+        return self.sms_api_usage_count + self.outgoing_sms_count + self.sent_reminders_count +self.send_message_charged_count
 
     def total_messages(self):
         return self.outgoing_message_count() + self.incoming_sms_count
@@ -382,6 +383,7 @@ class MessageTracker(models.Model):
         self.incoming_sms_count = 0
         self.outgoing_sms_count = 0
         self.send_message_count = 0
+        self.send_message_charged_count = 0
         self.sent_reminders_count = 0
         self.incoming_web_count = 0
         self.incoming_sp_count = 0

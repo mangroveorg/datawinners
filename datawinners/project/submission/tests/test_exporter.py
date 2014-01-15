@@ -1,6 +1,7 @@
 # coding=utf-8
 import os
 import tempfile
+import uuid
 from django.test import TestCase, Client
 import xlrd
 
@@ -36,7 +37,7 @@ class TestExporter(TestCase):
         _to = "919880734937"
         for i in [17, 18]:
             message = "cli001 cid001 export%s %d 02.02.2012 a a 2,2 a" % (i, i)
-            data = {"message": message, "from_msisdn": _from, "to_msisdn": _to}
+            data = {"message": message, "from_msisdn": _from, "to_msisdn": _to, "message_id": uuid.uuid1().hex}
             self.client.post("/submission", data)
 
 

@@ -3,6 +3,7 @@ from django.http import HttpRequest, HttpResponse
 import jsonpickle
 from mock import Mock, patch, call, PropertyMock
 from datawinners.accountmanagement.models import Organization
+from datawinners.sms.models import MSG_TYPE_API
 
 
 def mock_auth(view, request, is_authenticated_func, authenticate_func, realm="", *args, **kwargs):
@@ -30,6 +31,6 @@ class TestSendSMSApi(TestCase):
                     self.assertEqual(200, response.status_code)
                     self.assertDictEqual({"34334": "failure", "1212": "success"},
                                          jsonpickle.decode(response.content))
-                    calls = [call("2222", '1212', "Hello world!"), call("2222", '34334', "Hello world!")]
+                    calls = [call("2222", '1212', "Hello world!",MSG_TYPE_API), call("2222", '34334', "Hello world!",MSG_TYPE_API)]
                     self.assertEqual(send_sms_patch.call_args_list, calls)
                     mock_org.increment_sms_api_usage_count.assert_called_once_with()

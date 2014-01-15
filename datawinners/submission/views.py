@@ -6,9 +6,17 @@ from django.http import HttpResponse
 from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from datawinners.accountmanagement.decorators import is_not_expired
+import iso8601
+from mangrove.transport.contract.request import Request
+from mangrove.errors.MangroveException import DataObjectAlreadyExists
+from mangrove.transport.player.player import SMSPlayer
+from django.utils import translation
+from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.transport.player.parser import SMSParserFactory
 
+from datawinners.accountmanagement.decorators import is_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
+from datawinners.smsapi.accounting import is_chargable
 from datawinners.submission.models import  SMSResponse
 from datawinners.utils import get_organization
 from datawinners.messageprovider.handlers import create_failure_log
@@ -19,20 +27,34 @@ from datawinners.utils import  get_database_manager_for_org
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.feeds.database import get_feeds_db_for_org
 from datawinners.feeds.mail_client import mail_feed_errors
-from mangrove.transport.contract.request import Request
 from datawinners.messageprovider.exception_handler import handle
-from mangrove.errors.MangroveException import DataObjectAlreadyExists
-from mangrove.transport.player.player import SMSPlayer
 from datawinners.submission.location import LocationBridge
-from mangrove.transport.repository.reporters import find_reporter_entity
-from django.utils import translation
-from mangrove.form_model.form_model import get_form_model_by_code
-from mangrove.transport.player.parser import SMSParserFactory
 from datawinners.settings import NEAR_SUBMISSION_LIMIT_TRIGGER, NEAR_SMS_LIMIT_TRIGGER, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 from datawinners.project.utils import is_quota_reached
-
+from datawinners.sms.models import SMS, MSG_TYPE_SUBMISSION_REPLY, MSG_TYPE_USER_MSG
 
 logger = logging.getLogger("django")
+
+
+
+@csrf_view_exempt
+@csrf_response_exempt
+@require_http_methods(['POST'])
+def receipt(request):
+    if request.POST.get("callback_name") == u"sms_receipt":
+        message = ""
+        try:
+            sms = SMS.objects.get(message_id=request.POST.get("id"))
+            sms.status = request.POST.get('transport_status')
+            if not sms.smsc: sms.smsc = request.POST.get('transport_name')
+            sms.delivered_at = iso8601.parse_date(request.POST.get('delivered_at'))
+            sms.save()
+            if is_chargable(sms.status, sms.smsc) and sms.msg_type == MSG_TYPE_USER_MSG:
+                sms.organization.increment_message_count_for(send_message_charged_count=1)
+        except Exception as e:
+            message = e.message
+        return HttpResponse(message)
+    return HttpResponse("NA")
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -71,6 +93,7 @@ def find_dbm(request):
     incoming_request['dbm'] = get_database_manager_for_org(organization)
     incoming_request['feeds_dbm'] = get_feeds_db_for_org(organization)
     incoming_request['organization'] = organization
+    incoming_request['message_id'] = request.POST.get('message_id')
 
     incoming_request['next_state'] = process_sms_counter
     return incoming_request
@@ -191,6 +214,16 @@ def submit_to_player(incoming_request):
         message = handle(exception, incoming_request)
 
     incoming_request['outgoing_message'] = message
+
+    if not incoming_request.get('test_sms_questionnaire', False):
+        SMS(message= message,
+            message_id=incoming_request['message_id'],
+            organization=incoming_request['organization'],
+            msg_from = mangrove_request.transport.source,
+            msg_to= mangrove_request.transport.destination,
+            msg_type=MSG_TYPE_SUBMISSION_REPLY,
+            status="Submitted").save()
+
     return incoming_request
 
 

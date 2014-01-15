@@ -11,6 +11,8 @@ from datawinners.scheduler.scheduler import   send_reminders_on, send_reminders_
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.database import DatabaseManager
 from datawinners.scheduler.scheduler import _get_active_paid_organization
+from datawinners.sms.models import MSG_TYPE_REMINDER
+
 
 class TestScheduler(unittest.TestCase):
 
@@ -75,7 +77,7 @@ class TestScheduler(unittest.TestCase):
         count = 0
         for reminder in [self.reminder1,self.reminder3]:
             for ds in self.data_senders:
-                self.assertEqual((("from_num", ds["mobile_number"],reminder.message),{}),self.sms_client.send_sms.call_args_list[count])
+                self.assertEqual((("from_num", ds["mobile_number"],reminder.message, MSG_TYPE_REMINDER),{}),self.sms_client.send_sms.call_args_list[count])
                 count+=1
 
     def test_should_send_reminders_to_only_data_senders_who_have_not_sent_in_for_period(self):
@@ -90,7 +92,7 @@ class TestScheduler(unittest.TestCase):
         count = 0
         for reminder in [self.reminder1,self.reminder3]:
             for ds in who_have_not_sent_data:
-                self.assertEqual((("from_num", ds["mobile_number"],reminder.message),{}),self.sms_client.send_sms.call_args_list[count])
+                self.assertEqual((("from_num", ds["mobile_number"],reminder.message, MSG_TYPE_REMINDER),{}),self.sms_client.send_sms.call_args_list[count])
                 count+=1
 
     def test_should_log_reminders_when_sent(self):

@@ -1,5 +1,6 @@
 import json
 import random
+import uuid
 from django.test import TestCase, Client
 from datawinners.feeds.migrate import project_by_form_model_id
 from datawinners.main.database import get_db_manager
@@ -51,7 +52,7 @@ class TestDeleteSubmission(TestCase):
         _to = "919880734937"
         for i in range(0, num_of_submissions):
             message = "cli001 cid001 %s 4%s 02.02.2012 a a 2,2 a" % (unique_text, i)
-            data = {"message": message, "from_msisdn": _from, "to_msisdn": _to}
+            data = {"message": message, "from_msisdn": _from, "to_msisdn": _to, "message_id":uuid.uuid1().hex}
             self.client.post("/submission", data)
 
     def create_errorred_submissions(self, num_of_submissions, unique_text):
@@ -59,7 +60,7 @@ class TestDeleteSubmission(TestCase):
         _to = "919880734937"
         for i in range(0, num_of_submissions):
             message = "cli001 cid001 %s %s 02.02.2012 a a 2,2 a" % (unique_text, i)
-            data = {"message": message, "from_msisdn": _from, "to_msisdn": _to}
+            data = {"message": message, "from_msisdn": _from, "to_msisdn": _to, "message_id":uuid.uuid1().hex}
             self.client.post("/submission", data)
 
     def get_submissions(self, filter_type, search_text):
