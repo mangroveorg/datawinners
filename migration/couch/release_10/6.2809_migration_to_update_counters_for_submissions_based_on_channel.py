@@ -12,14 +12,6 @@ from datawinners.main.couchdb.utils import all_db_names
 import logging
 from migration.couch.utils import migrate, mark_start_of_migration
 
-
-def update_counter_for_month(current_month, organization, smart_phone_count, sms_count, web_count):
-    message_tracker = organization._get_message_tracker(current_month)
-    message_tracker.incoming_web_count = web_count
-    message_tracker.incoming_sms_count = sms_count
-    message_tracker.incoming_sp_count = smart_phone_count
-    message_tracker.save()
-
 def get_submission_count_aggregate(dbm):
     survey_responses = dbm.load_all_rows_in_view("surveyresponse", reduce=False, include_doc=True)
     year_month_submission_count_dict = {}
@@ -34,12 +26,7 @@ def get_submission_count_aggregate(dbm):
         if key not in year_month_submission_count_dict:
             year_month_submission_count_dict[key] = {}
 
-        if channel == SMS:
-            if 'sms_count' in year_month_submission_count_dict[key]:
-                year_month_submission_count_dict[key]['sms_count'] += 1
-            else:
-                year_month_submission_count_dict[key]['sms_count'] = 1
-        elif channel == WEB:
+        if channel == WEB:
             if 'web_count' in year_month_submission_count_dict[key]:
                 year_month_submission_count_dict[key]['web_count'] += 1
             else:
@@ -56,10 +43,11 @@ def get_submission_count_aggregate(dbm):
 
 def update_counters_for_date(date, key, organization, year_month_submission_count_dict):
     smart_phone_count = year_month_submission_count_dict[key].get('sp_count', 0)
-    sms_count = year_month_submission_count_dict[key].get('sms_count', 0)
     web_count = year_month_submission_count_dict[key].get('web_count', 0)
-    update_counter_for_month(date, organization, smart_phone_count, sms_count, web_count)
-
+    message_tracker = organization._get_message_tracker(date)
+    message_tracker.incoming_web_count = web_count
+    message_tracker.incoming_sp_count = smart_phone_count
+    message_tracker.save()
 
 def update_counters_for_submissions(db_name):
     logger = logging.getLogger(db_name)
