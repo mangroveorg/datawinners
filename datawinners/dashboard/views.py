@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
+from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
@@ -117,7 +118,13 @@ def map_entities(request):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, request.GET['project_id'])
     if project.is_activity_report():
-        entity_list = [get_by_short_code(dbm, short_code, ["reporter"]) for short_code in project.data_senders]
+        entity_list = []
+        for short_code in project.data_senders:
+            try:
+                entity = get_by_short_code(dbm, short_code, ["reporter"])
+            except DataObjectNotFound:
+                continue
+            entity_list.append(entity)
     else:
         entity_list = get_entities_by_type(dbm, request.GET['id'])
     location_geojson = helper.create_location_geojson(entity_list)

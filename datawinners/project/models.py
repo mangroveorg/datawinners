@@ -320,9 +320,12 @@ class Project(DocumentBase):
     def associate_data_sender_to_project(self, dbm, data_sender_code):
         if data_sender_code in self.data_senders: return
         from datawinners.search.datasender_index import update_datasender_index_by_id
-        self.data_senders.append(data_sender_code)
-        self.save(dbm, process_post_update=False)
-        update_datasender_index_by_id(data_sender_code,dbm)
+        # Normally this case should not happen. However in a special case
+        # blank id was sent from client side. So introduced this check.
+        if data_sender_code:
+            self.data_senders.append(data_sender_code)
+            self.save(dbm, process_post_update=False)
+            update_datasender_index_by_id(data_sender_code,dbm)
 
 
 def get_all_projects(dbm, data_sender_id=None):

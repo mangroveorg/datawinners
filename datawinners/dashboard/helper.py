@@ -35,8 +35,10 @@ def create_location_geojson(entity_list):
     for entity in entity_list:
         geometry_geo_json = None
         if entity.geometry:
-            geometry_geo_json = _get_geo_json_for_entity_from_geo_code(entity, entity.geometry)
-
+            try:
+                geometry_geo_json = _get_geo_json_for_entity_from_geo_code(entity, entity.geometry)
+            except IndexError:
+                geometry_geo_json = None
         if geometry_geo_json is not None:
             location_list.append(geometry_geo_json)
 
