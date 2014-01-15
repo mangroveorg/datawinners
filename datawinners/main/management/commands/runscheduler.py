@@ -15,7 +15,7 @@ class Command(BaseCommand):
         scheduler = Scheduler(daemonic=False)
         logger.info("started the scheduler")
         scheduler.add_cron_job(send_reminders, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES)
+        scheduler.add_cron_job(send_time_based_reminder_email, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES)
         scheduler.add_cron_job(deactivate_expired_trial_account, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES)
         scheduler.add_cron_job(update_all_views, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES)
-        scheduler.add_cron_job(send_time_based_reminder_email, hour=settings.SCHEDULER_HOUR, minute=settings.SCHEDULER_MINUTES)
         scheduler.start()
