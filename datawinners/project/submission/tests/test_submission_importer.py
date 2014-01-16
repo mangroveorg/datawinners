@@ -187,7 +187,7 @@ class SubmissionParserTest(TestCase):
         try:
             SubmissionWorkbookValidator(self.form_model, False, True).validate(ans_dict)
         except ImportValidationError as e:
-            self.assertEquals("The columns you are importing do not match. Please download the latest template for importing.", e.message)
+            self.assertEquals("The columns you are importing do not match the current Questionnaire. Please download the latest template for importing.", e.message)
 
     def test_submission_import_worksheet_should_have_datasender_id(self):
         self.add_datasender_col()

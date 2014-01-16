@@ -1076,3 +1076,6 @@ msgstr "%s Soumission(s)importées avec succès"
 
 msgid "%s Submission(s) Failed to Import"
 msgstr "%s Soumission(s) non importée(s) avec succès"
+
+msgid "Close"
+msgstr "Fermer"

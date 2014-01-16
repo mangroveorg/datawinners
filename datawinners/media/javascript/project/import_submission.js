@@ -18,7 +18,7 @@ DW.SubmissionImportPopup = function(){
                 dialogClass: "no-close",
                 buttons: [
                     {
-                      text: "Close",
+                      text: gettext("Close"),
                       click: function() {
                         $( this ).dialog( "close" );
                        _reload_parent_page();

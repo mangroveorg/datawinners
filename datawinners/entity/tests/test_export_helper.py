@@ -48,7 +48,7 @@ class TestExcelHeaders(MangroveTestCase):
 
         header_instructions = self._get_header_component(headers, 1)
         self.assertEqual(
-            ["\nAnswer must be a word", "\nAnswer must be a number between 12-15.",
+            ["\nAnswer must be a word", "\nEnter a number between 12-15.",
              "\nAnswer must be a date in the following format: day.month.year",
              "\nAssign a unique ID for each Subject.", '\nEnter name of the location.',
              "\nEnter 1 or more answers from the list."], header_instructions)
@@ -88,7 +88,7 @@ class TestExcelHeaders(MangroveTestCase):
 
         header_instructions = self._get_header_component(headers, 1)
         self.assertEqual(
-            ["\n\nAnswer must be a word", "\n\nAnswer must be a number between 12-15.",
+            ["\n\nAnswer must be a word", "\n\nEnter a number between 12-15.",
              "\n\nAnswer must be a date in the following format: day.month.year",
              "\n\nEnter the unique ID for each test.\nYou can find the test List on the My Subjects page.",
              "\n\nEnter 1 or more answers from the list."], header_instructions)

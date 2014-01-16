@@ -22,7 +22,7 @@ class TestSubmissionImport(TestCase):
             [
                 u'entity_question\n\nEnter the unique ID for each clinic.\nYou can find the clinic List on the My Subjects page.\n\nExample: cli01',
                 u'Name\n\nAnswer must be a word 10 characters maximum\n\n',
-                u'Father age\n\nAnswer must be a number between 18-100.\n\n',
+                u'Father age\n\nEnter a number between 18-100.\n\n',
                 u'Report date\n\nAnswer must be a date in the following format: day.month.year\n\nExample: 25.12.2011',
                 u'Blood Group\n\nEnter 1 answer from the list.\n\nExample: a',
                 u'Symptoms\n\nEnter 1 or more answers from the list.\n\nExample: a or ab',

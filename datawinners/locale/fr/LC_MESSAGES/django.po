@@ -2889,8 +2889,8 @@ msgstr "Remplissez le modèle avec les informations sur vos %(entity_type)s"
 msgid "The last question is optional.  If you already have ID numbers for your %(entity_type)s, fill them in.  If not, DataWinners will generate them for you"
 msgstr "La dernière question est facultative. Si vous avez déjà votre numéro ID pour vos %(entity_type)ss, remplissez les. Sinon, DataWinners va les générer pour vous"
 
-msgid "Save the template on your computer"
-msgstr "Enregistrez le modèle sur votre ordinateur"
+msgid "Save the template on your computer."
+msgstr "Enregistrez le modèle sur votre ordinateur."
 
 msgid "Click the gold Upload a file button and select the saved template"
 msgstr "Cliquez sur le bouton Télécharger un fichier et sélectionnez le modèle enregistré"
@@ -3044,8 +3044,12 @@ msgstr "Seuls les lettres et les chiffres sont valides et vous ne pouvez saisir 
 msgid "WEB"
 msgstr "Internet"
 
-msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547"
 msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy.yyyy Exemple: -18.1324,27.6547"
+
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."
+msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy.yyyy."
+
 
 msgid "What is the Data Sender's mobile number?"
 msgstr "Quel est le numéro de téléphone mobile de l'éxpediteur de données?"
@@ -4612,3 +4616,9 @@ msgstr "Tapez le code unique pour chaque %s.\n Vous pouvez trouver la liste des 
 
 msgid "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."
 msgstr "Si vous soumettez des données pour le compte de quelqu'un, vous pouvez saisir le code unique de l'Expéditeur de Données."
+
+msgid "Example: %s"
+msgstr "Exemple: %s"
+
+msgid "Enter any information you want to find"
+msgstr "Tapez toute information que vous recherchez"

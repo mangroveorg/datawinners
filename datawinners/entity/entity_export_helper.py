@@ -19,6 +19,7 @@ def get_subject_headers(fields):
         headers.append(((field["label"], bold), (u"\n%s" % instruction, brown), (u"\n\n%s" % example, italic)))
     return headers
 
+
 def get_submission_headers(fields, form_model):
     headers = []
     bold, brown, italic, gray = get_styles()
@@ -54,7 +55,7 @@ class IntegerFieldInstruction:
             max = field["constraints"][0][1].get("max")
             min = field["constraints"][0][1].get("min")
             if max and min:
-                return _("Answer must be a number between %s-%s.") % (min, max), ""
+                return _("Enter a number between %s-%s.") % (min, max), ""
             if max and not min:
                 return _("Answer must be a number. The maximum is %s") % max, ""
             if not max and min:
@@ -69,7 +70,8 @@ class GeoCodeFieldInstruction:
 
     @staticmethod
     def get_instruction(context):
-        return _("Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."), _("Example: -18.1324,27.6547")
+        return _("Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy."), _(
+            "Example: -18.1324,27.6547")
 
 
 class ListFieldInstruction:
@@ -120,9 +122,10 @@ class DateFieldInstruction:
     @staticmethod
     def get_instruction(context):
         date_format_mapping = {
-            "mm.yyyy": (_("Answer must be a date in the following format: month.year"), _("Example: 12.2011")),
-            "dd.mm.yyyy": (_("Answer must be a date in the following format: day.month.year"), _("Example: 25.12.2011")),
-            "mm.dd.yyyy": (_("Answer must be a date in the following format: month.day.year"), _("Example: 12.25.2011"))
+            "mm.yyyy": (_("Answer must be a date in the following format: month.year"), _("Example: %s") % '12.2011'),
+            "dd.mm.yyyy": (
+                _("Answer must be a date in the following format: day.month.year"), _("Example: %s") % '25.12.2011'),
+            "mm.dd.yyyy": (_("Answer must be a date in the following format: month.day.year"), _("Example: %s" % '12.25.2011'))
         }
         return date_format_mapping.get(context.field["date_format"])
 
@@ -145,8 +148,10 @@ class SummaryProjectSubmissionInstruction:
 
     @staticmethod
     def get_instruction(context):
-        return _("If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."), \
+        return _(
+            "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."), \
                _("Example: rep42")
+
 
 class EntityProjectSubmissionInstruction:
     @staticmethod
@@ -155,8 +160,10 @@ class EntityProjectSubmissionInstruction:
 
     @staticmethod
     def get_instruction(context):
-        return _("Enter the unique ID for each %s.\nYou can find the %s List on the My Subjects page." % (context.entity_type, context.entity_type)), \
-               _("Example: cli01")
+        return _("Enter the unique ID for each %s.\nYou can find the %s List on the My Subjects page.") % (
+            context.entity_type, context.entity_type), \
+               (_("Example: %s")) % 'cli01'
+
 
 class SubjectInstructionBuilder:
     field_instructions = [EntityIdRegistrationInstruction, IntegerFieldInstruction, TextFieldInstruction,
@@ -172,7 +179,8 @@ class SubjectInstructionBuilder:
 
 
 class SubmissionInstructionBuilder:
-    field_instructions = [SummaryProjectSubmissionInstruction, EntityProjectSubmissionInstruction, IntegerFieldInstruction, TextFieldInstruction,
+    field_instructions = [SummaryProjectSubmissionInstruction, EntityProjectSubmissionInstruction,
+                          IntegerFieldInstruction, TextFieldInstruction,
                           GeoCodeFieldInstruction, DateFieldInstruction, MultiSelectFieldInstruction,
                           SingleSelectFieldInstruction]
 
@@ -184,8 +192,8 @@ class SubmissionInstructionBuilder:
                 return field_instruction.get_instruction(context)
         return None
 
-class InstructionContext():
 
+class InstructionContext():
     def __init__(self, field, entity_type):
         self.field = field
         self.entity_type = entity_type
