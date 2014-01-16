@@ -14,7 +14,7 @@ from migration.couch.utils import migrate, mark_start_of_migration
 
 map_form_model_for_projects = """
 function(doc) {
-   if (doc.document_type == 'FormModel' && doc.is_registration_model == false) {
+   if (doc.document_type == 'FormModel' && doc.is_registration_model == false && !doc.void) {
                emit(doc.form_code, null);
    }
 }
