@@ -1,9 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from datetime import datetime
-
 from nose.plugins.attrib import attr
-
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.common_utils import by_css
 from framework.utils.data_fetcher import fetch_, from_
@@ -31,14 +29,8 @@ class TestSMSTesterLightBox(unittest.TestCase):
     @attr('functional_test')
     def test_sms_player_for_exceeding_word_length(self):
         # going on all project page
-        TestSMSTesterLightBox.driver.go_to(url("/project/"))
-        all_project_page = self.global_navigation.navigate_to_view_all_project_page()
-        TestSMSTesterLightBox.driver.create_screenshot("exceeding_word_length.png")
-        project_overview_page = all_project_page.navigate_to_project_overview_page("clinic5 test project")
-        self.sms_tester_page = project_overview_page.open_sms_tester_light_box()
+        self.sms_tester_page = self.open_clinic5_project_and_send_msg_via_test_sms_questionnaire(EXCEED_NAME_LENGTH)
 
-        self.sms_tester_page.send_sms_with(EXCEED_NAME_LENGTH)
-        self.wait_while_loading()
         self.assertEqual(self.sms_tester_page.get_response_message(),
                          fetch_(RESPONSE_MESSAGE, from_(EXCEED_NAME_LENGTH)))
 
