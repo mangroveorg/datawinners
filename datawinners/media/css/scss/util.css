@@ -294,15 +294,16 @@ span.tooltip {
 .mobile_block p {
   font-size: 12px; }
 .mobile_block .mobile {
-  background: url("/media/images/mobile.png") no-repeat left top;
+  background: url("/media/images/mobile2.jpg") no-repeat left top;
   height: 360px;
-  width: 200px; }
+  width: 200px;
+  margin-left: -16px; }
   .mobile_block .mobile textarea {
-    height: 74px;
+    height: 88px !important;
     margin-left: 36px;
-    margin-top: 77px;
-    width: 94px;
-    font-size: 12px; }
+    margin-top: 98px;
+    width: 124px !important;
+    font-size: 14px; }
 
 #cancel_project_block, #activate_project_block, #questionnaire_code_change,
 #subject_warning_message, #delete_project_block, #all_project_block, #new_reminder,
