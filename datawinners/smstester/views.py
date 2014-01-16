@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import uuid
 from atom.http_core import HttpRequest
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -20,9 +21,9 @@ def index(request):
             try:
                 submission_request = HttpRequest(uri=reverse(sms), method='POST')
                 if settings.USE_NEW_VUMI:
-                    submission_request.POST = {"content": _message, "from_addr": _from, "to_addr": _to}
+                    submission_request.POST = {"content": _message, "from_addr": _from, "to_addr": _to, "message_id":uuid.uuid1().hex}
                 else:
-                    submission_request.POST = {"message": _message, "from_msisdn": _from, "to_msisdn": _to}
+                    submission_request.POST = {"message": _message, "from_msisdn": _from, "to_msisdn": _to, "message_id":uuid.uuid1().hex}
 
                 response = sms(submission_request)
                 message = response.content
