@@ -31,11 +31,16 @@ from datawinners.messageprovider.exception_handler import handle
 from datawinners.submission.location import LocationBridge
 from datawinners.settings import NEAR_SUBMISSION_LIMIT_TRIGGER, NEAR_SMS_LIMIT_TRIGGER, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 from datawinners.project.utils import is_quota_reached
-from datawinners.sms.models import SMS, MSG_TYPE_SUBMISSION_REPLY, MSG_TYPE_USER_MSG
+from datawinners.sms.models import SMS, MSG_TYPE_SUBMISSION_REPLY, MSG_TYPE_USER_MSG, MSG_TYPE_REMINDER, MSG_TYPE_API
 
 logger = logging.getLogger("django")
 
-
+couter_map={
+    MSG_TYPE_USER_MSG:'send_message_charged_count',
+    MSG_TYPE_REMINDER:'sent_reminders_charged_count',
+    MSG_TYPE_SUBMISSION_REPLY:'outgoing_sms_charged_count',
+    MSG_TYPE_API:'sms_api_usage_charged_count'
+}
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -49,8 +54,10 @@ def receipt(request):
             if not sms.smsc: sms.smsc = request.POST.get('transport_name')
             sms.delivered_at = iso8601.parse_date(request.POST.get('delivered_at'))
             sms.save()
-            if is_chargable(sms.status, sms.smsc) and sms.msg_type == MSG_TYPE_USER_MSG:
-                sms.organization.increment_message_count_for(send_message_charged_count=1)
+            if is_chargable(sms.status, sms.smsc):
+                counter = couter_map.get(sms.msg_type, '')
+                if counter:
+                    sms.organization.increment_message_count_for(**{counter:1})
         except Exception as e:
             message = e.message
         return HttpResponse(message)

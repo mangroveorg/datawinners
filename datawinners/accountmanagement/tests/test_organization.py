@@ -52,14 +52,20 @@ class TestOrganization(unittest.TestCase):
 
         today = datetime.datetime.today()
         mt_current_month = MessageTracker(month=datetime.date(today.year, today.month, 12),
-            incoming_web_count=7, incoming_sms_count=13, incoming_sp_count=5, sms_api_usage_count=3,
-            sms_registration_count=2, sent_reminders_count=10, send_message_count=0, outgoing_sms_count=40,
-            organization=trial_organization
+                                          incoming_web_count=7, incoming_sms_count=13, incoming_sp_count=5,
+                                          sms_api_usage_count=3,sms_api_usage_charged_count=3,
+                                          sms_registration_count=2, sent_reminders_count=10,
+                                          sent_reminders_charged_count=10, send_message_count=0,
+                                          send_message_charged_count=0, outgoing_sms_count=40,
+                                          outgoing_sms_charged_count=40,
+                                          organization=trial_organization
         )
         mt_current_month.save()
         mt_current_month = MessageTracker(month=datetime.date(today.year, today.month, 1),
-            incoming_web_count=3, incoming_sms_count=20, incoming_sp_count=10, sms_api_usage_count=3,
-            sms_registration_count=4, outgoing_sms_count=40, organization=trial_organization
+                                          incoming_web_count=3, incoming_sms_count=20, incoming_sp_count=10,
+                                          sms_api_usage_count=3,
+                                          sms_registration_count=4, outgoing_sms_count=40,
+                                          organization=trial_organization
         )
         mt_current_month.save()
         year = today.year
@@ -68,8 +74,9 @@ class TestOrganization(unittest.TestCase):
             year -= 1
             month = 12
         mt_last_month = MessageTracker(month=datetime.date(year, month, 1),
-            incoming_web_count=10, incoming_sms_count=10, incoming_sp_count=7, sms_api_usage_count=3,
-            sms_registration_count=4, outgoing_sms_count=40, organization=trial_organization
+                                       incoming_web_count=10, incoming_sms_count=10, incoming_sp_count=7,
+                                       sms_api_usage_count=3,
+                                       sms_registration_count=4, outgoing_sms_count=40, organization=trial_organization
         )
         mt_last_month.save()
         return trial_organization
@@ -84,13 +91,14 @@ class TestOrganization(unittest.TestCase):
         self.assertEqual(country_code, "91")
 
     def test_should_increment_by_submission_type(self):
-        increment_count_by_submission_type_dict = {'incoming_sms_count': 4,'incoming_sp_count':2, 'incoming_web_count':7}
-        expected = {'incoming_sms_count': 17,'incoming_sp_count':7, 'incoming_web_count':14}
+        increment_count_by_submission_type_dict = {'incoming_sms_count': 4, 'incoming_sp_count': 2,
+                                                   'incoming_web_count': 7}
+        expected = {'incoming_sms_count': 17, 'incoming_sp_count': 7, 'incoming_web_count': 14}
         self.organization.increment_message_count_for(**increment_count_by_submission_type_dict)
         message_tracker = self._get_current_message_tracker_of_organization()
         for field_name, count in increment_count_by_submission_type_dict.items():
             self.assertEqual(getattr(message_tracker, field_name), expected.get(field_name))
-        
+
     def test_check_expired_organization(self):
         organization = self.organization
         active_date = datetime.datetime.now() - relativedelta(years=1)
@@ -100,11 +108,11 @@ class TestOrganization(unittest.TestCase):
 
     def test_get_counters(self):
         expected = {'combined_total_submissions': 75, 'send_a_msg_current_month': 0, 'sent_via_api_current_month': 3,
-                    'sms_reply':40, 'reminders': 10, 'sms_submission_current_month': 11, 'sp_submission_current_month': 5,
+                    'sms_reply': 40, 'reminders': 10, 'sms_submission_current_month': 11,
+                    'sp_submission_current_month': 5,
                     'total_sent_sms': 53, 'total_sms_current_month': 66, 'total_sms_submission': 33,
                     'total_sp_submission': 22, 'total_submission_current_month': 23, 'total_web_submission': 20,
                     'web_submission_current_month': 7}
-        
 
         counters = self.organization.get_counters()
         self.assertEqual(counters, expected)
@@ -112,16 +120,18 @@ class TestOrganization(unittest.TestCase):
     def test_should_get_only_active_trail_org(self):
         self.organization.deactivate()
         organizations = Organization.get_all_active_trial_organizations()
-        self.assertNotIn(self.organization,organizations)
+        self.assertNotIn(self.organization, organizations)
 
     def test_has_exceeded_submission_limit(self):
         self.assertFalse(self.organization.has_exceeded_submission_limit())
 
-        last_month = datetime.date.today()- datetime.timedelta(days=4)
+        last_month = datetime.date.today() - datetime.timedelta(days=4)
         mt_current_month = MessageTracker(month=datetime.date(last_month.year, last_month.month, 12),
-            incoming_web_count=909, incoming_sms_count=13, incoming_sp_count=5, sms_api_usage_count=3,
-            sms_registration_count=2, sent_reminders_count=10, send_message_count=0, outgoing_sms_count=40,
-            organization=self.organization
+                                          incoming_web_count=909, incoming_sms_count=13, incoming_sp_count=5,
+                                          sms_api_usage_count=3,
+                                          sms_registration_count=2, sent_reminders_count=10, send_message_count=0,
+                                          outgoing_sms_count=40,
+                                          organization=self.organization
         )
         mt_current_month.save()
         print self.organization.get_total_submission_count()
