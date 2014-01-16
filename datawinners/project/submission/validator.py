@@ -36,10 +36,10 @@ class SubmissionWorkbookRowValidator():
         errors = OrderedDict()
         if self.project.is_summary_project():
             if imported_id not in datasender_ids:
-                errors.update({q_code: "Data Sender ID not matched"})
+                errors.update({q_code: "The unique ID of the Data Sender does not match any existing Data Sender ID. Please correct and import again."})
         else:
             if imported_id not in subject_ids:
-                errors.update({q_code: "Subject does not matched"})
+                errors.update({q_code: "The unique ID of the Subject does not match any existing Subject ID. Please correct and import again."})
         return errors
 
     def _get_subject_or_datasender_ids(self):

@@ -145,7 +145,7 @@ class SummaryProjectSubmissionInstruction:
 
     @staticmethod
     def get_instruction(context):
-        return _("If you are sending data on behalf of someone, you can enter their Data Sender ID."), \
+        return _("If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."), \
                _("Example: rep42")
 
 class EntityProjectSubmissionInstruction:

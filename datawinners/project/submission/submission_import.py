@@ -23,11 +23,12 @@ class SubmissionImporter():
         self.form_model = form_model
         self.project = project
         self.submission_validator = SubmissionWorkbookRowValidator(dbm, form_model, project)
-        self.submission_persister = SubmissionPersister(user, dbm, feed_dbm, form_model, project, submission_quota_service)
+        self.submission_persister = SubmissionPersister(user, dbm, feed_dbm, form_model, project,
+                                                        submission_quota_service)
 
 
     def import_submission(self, request):
-        saved_entries,invalid_row_details,ignored_entries = [], [], []
+        saved_entries, invalid_row_details, ignored_entries = [], [], []
         is_summary_project = self.project.is_summary_project()
         total_submissions = 0
 
@@ -39,21 +40,27 @@ class SubmissionImporter():
             if len(tabular_data) <= 1:
                 raise ImportValidationError(gettext("The imported file is empty."))
             q_answer_dicts = SubmissionWorkbookMapper(tabular_data, self.form_model).process()
-            SubmissionWorkbookValidator(self.form_model, is_org_user(self.user), is_summary_project).validate(q_answer_dicts)
+            SubmissionWorkbookValidator(self.form_model, is_org_user(self.user), is_summary_project).validate(
+                q_answer_dicts)
 
             total_submissions = len(q_answer_dicts)
             user_profile = NGOUserProfile.objects.filter(user=self.user)[0]
             self._add_reporter_id_for_datasender(q_answer_dicts, user_profile, is_organization_user, is_summary_project)
 
             valid_rows, invalid_row_details = self.submission_validator.validate_rows(q_answer_dicts)
-            ignored_entries, saved_entries = self.submission_persister.save_submissions(is_organization_user, user_profile, valid_rows)
+            ignored_entries, saved_entries = self.submission_persister.save_submissions(is_organization_user,
+                                                                                        user_profile, valid_rows)
             if ignored_entries:
                 ignored_row_start = total_submissions - len(ignored_entries) + 1
-                message = gettext("You have crossed the 1000 submissions limit for a trial account. Submissions from row %s have been ignored." % str(ignored_row_start))
+                message = gettext(
+                    "You have crossed the 1000 submissions limit for a trial account. Submissions from row %s have been ignored and were not imported." % str(
+                        ignored_row_start))
             else:
-                message = gettext('%s of %s Submissions imported. Please check below for details.') % (len(saved_entries), len(q_answer_dicts))
+                message = gettext('%s of %s Submissions imported. Please check below for details.') % (
+                    len(saved_entries), len(q_answer_dicts))
         except InvalidFileFormatException as e:
-            message = gettext(u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!")
+            message = gettext(
+                u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!")
         except ImportValidationError as e:
             message = e.message
         except Exception as e:
@@ -81,7 +88,7 @@ class SubmissionImporter():
         for row in parsed_rows:
             if is_organization_user:
                 if row['eid'] == '':
-                    row.update({'eid':user_profile.reporter_id})
+                    row.update({'eid': user_profile.reporter_id})
             else:
                 row.update({"eid": user_profile.reporter_id})
 
@@ -100,8 +107,8 @@ class SubmissionImportResponse():
         self.message = message
         self.total_submissions = total_submissions
 
-class SubmissionPersister():
 
+class SubmissionPersister():
     def __init__(self, user, dbm, feed_dbm, form_model, project, submission_quota_service):
         self.user = user
         self.dbm = dbm
@@ -149,17 +156,17 @@ class SubmissionWorkbookValidator():
         if not self.is_org_user and self.is_summary_project:
             expected_cols.remove(self.form_model.entity_question.code)
         if set(q_answer_dicts[0].keys()) != set(expected_cols):
-            raise ImportValidationError(gettext("The columns you are importing do not match. Please download the latest template for importing."))
+            raise ImportValidationError(gettext(
+                "The columns you are importing do not match the current Questionnaire. Please download the latest template for importing."))
         return None
 
 
 class ImportValidationError(Exception):
     def __init__(self, message):
-        super(Exception,self).__init__(message)
+        super(Exception, self).__init__(message)
 
 
 class SubmissionWorkbookMapper():
-
     def __init__(self, input_data, form_model):
         self.input_data = input_data
         self.form_model = form_model
@@ -178,7 +185,8 @@ class SubmissionWorkbookMapper():
             col_mapping = self._col_mapping(header_row=rows[0])
             return self._get_q_code_answer_dict(rows, col_mapping)
         except Exception as e:
-            raise ImportValidationError(gettext("The columns you are importing do not match. Please download the latest template for importing."))
+            raise ImportValidationError(gettext(
+                "The columns you are importing do not match. Please download the latest template for importing."))
 
     def _get_q_code_answer_dict(self, rows, col_mapping):
         result = []

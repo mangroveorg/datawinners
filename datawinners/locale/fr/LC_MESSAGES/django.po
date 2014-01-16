@@ -4561,3 +4561,54 @@ msgstr "6 mois"
 
 msgid "12 months"
 msgstr "12 mois"
+
+msgid "The columns you are importing do not match the current Questionnaire. Please download the latest template for importing."
+msgstr "Les colonnes que vous importez ne correspondent pas au Questionnaire actuel."
+
+msgid "You have crossed the 1000 Submissions limit for your Basic account. Submissions from row %s have been ignored and were not imported."
+msgstr " Vous avez atteint la limite de 1000 Soumissions de votre Compte Basic. Les Soumissions commençant à la ligne %s ont été ignorées et n'ont pas été importées."
+
+msgid "The unique ID of the Data Sender does not match any existing Data Sender ID. Please correct and import again."
+msgstr "Le code unique de l'Expéditeur de Données ne correspond à aucun code d'Expéditeur de Données existant."
+
+msgid "The unique ID of the Subject does not match any existing Subject ID. Please correct and import again."
+msgstr "Le code unique du Sujet ne correspond à aucun code Sujet existant."
+
+msgid "How do I do this?"
+msgstr "Comment dois-je procéder?"
+
+msgid "Fill out the template with your list of Submissions."
+msgstr "Remplissez le modèle avec votre liste de Soumissions."
+
+msgid "Click on the Upload a file button and select the saved template."
+msgstr "Cliquez sur le bouton \"Télécharger un fichier\" et sélectionnez le modèle sauvegardé."
+
+msgid "Answer %s for question %s is of the wrong type."
+msgstr "Le type de la réponse s pour la question \"%s\" est erroné."
+
+msgid "Answer %s for question %s is smaller than allowed."
+msgstr "La réponse %s pour la question \"%s\" est inférieure à ce q ui est permise."
+
+msgid "Answer %s for question %s is greater than allowed."
+msgstr "La réponse %s pour la question \"%s\" est supérieure à ce qui est permise."
+
+msgid "Answer %s for question %s contains more than one value."
+msgstr "La réponse %s pour la question \"%s\" contient plus d'une valeur."
+
+msgid "Answer %s for question %s is not present in the allowed options."
+msgstr "La réponse %s pour la question \"%s\" ne figure pas parmi les options permises."
+
+msgid "Enter 1 or more answers from the list."
+msgstr "Tapez 1 ou plusieurs réponses parmi al liste."
+
+msgid "Enter a number"
+msgstr "Tapez un chiffre"
+
+msgid "If you are sending data on behalf of someone, you can enter their Data Sender ID."
+msgstr "Si vous envoyez des données pour le compte de quelqu'un, vous pouvez taper leur code unique d'Expéditeur de Données."
+
+msgid "Enter the unique ID for each %s.\nYou can find the %s List on the My Subjects page."
+msgstr "Tapez le code unique pour chaque %s.\n Vous pouvez trouver la liste des  %s sur la page Mes Sujets."
+
+msgid "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."
+msgstr "Si vous soumettez des données pour le compte de quelqu'un, vous pouvez saisir le code unique de l'Expéditeur de Données."

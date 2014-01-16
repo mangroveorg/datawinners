@@ -1067,3 +1067,12 @@ msgstr "Aucune Soumission supprimée."
 
 msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
 msgstr "Une fois que Expéditeurs de Données ont soumis leurs données avec succès, ils apparaîtront ici."
+
+msgid "Import a Submission List"
+msgstr "Importer une Soumission"
+
+msgid "%s Submission(s) Successfully Imported"
+msgstr "%s Soumission(s)importées avec succès"
+
+msgid "%s Submission(s) Failed to Import"
+msgstr "%s Soumission(s) non importée(s) avec succès"
