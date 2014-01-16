@@ -63,7 +63,7 @@ def headers(request, form_code):
     headers = SubmissionsPageHeader(form_model, submission_type).get_column_title()
     response = []
     for header in headers:
-        response.append({"sTitle": header})
+        response.append({"sTitle": ugettext(header)})
     return HttpResponse(encode_json(response))
 
 
