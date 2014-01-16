@@ -973,8 +973,8 @@ msgstr "Testez votre Questionnaire avec ce simulateur d'envoi par SMS"
 msgid "Test your Questionnaire"
 msgstr "Testez votre Questionnaire"
 
-msgid "Send a test message to"
-msgstr "Envoyez un message test au"
+msgid "Send a test message to %(org_number)s. Contact %(support_id)s if you do not receive a reply."
+msgstr "Envoyez un message test au %(org_number)s. Contactez %(support_id)s si vous ne recevez pas de retour."
 
 msgid "Test your Web Questionnaire"
 msgstr "Testez votre Questionnaire Web"

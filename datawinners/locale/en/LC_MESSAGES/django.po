@@ -927,7 +927,7 @@ msgstr ""
 msgid "Test your Questionnaire"
 msgstr ""
 
-msgid "Send a test message to"
+msgid "Send a test message to %(org_number)s. Contact %(support_id)s if you do not receive a reply."
 msgstr ""
 
 msgid "Test your Web Questionnaire"

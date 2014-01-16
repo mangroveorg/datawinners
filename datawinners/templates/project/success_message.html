@@ -35,7 +35,7 @@
                     <li><a class='sms_tester' href="#">{% trans "Test your SMS Questionnaire" %} </a>
                 {% endif %}
 
-                <p>{% trans "Send a test message to" %} {{ org_number|format_organization_number }}</p>
+                <p>{% blocktrans with org_number|format_organization_number  as org_number and "<a href='mailto:support@datawinners.com'>support@datawinners.com</a>" as support_id %}Send a test message to {{ org_number}}. Contact {{ support_id }} if you do not receive a reply.{% endblocktrans %}</p>
                 </li>
                 <li><a id="test_web_questionnaire_section"
                        href="{{ project_links.test_questionnaire_link }}">{% trans "Test your Web Questionnaire" %} </a>
