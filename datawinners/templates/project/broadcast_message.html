@@ -45,7 +45,7 @@
 {% block content %}
     <div>
         {%if success %}
-                <div class="success-message-box">{% trans "Your message has been sent successfully." %}</div>
+                <div class="success-message-box">{% trans "SMS sent to telephone company. Upon receipt of delivery confirmation, DataWinners will update the counter on the "%} <a href={% url dashboard %}>{%  trans 'Dashboard'%}</a>.</div>
             {% else %}
                 {% if no_smsc %}
                     <div class="message-box">{% trans "Your message could not be sent." %}</div>

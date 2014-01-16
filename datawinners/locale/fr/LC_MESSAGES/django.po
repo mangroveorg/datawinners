@@ -2313,8 +2313,8 @@ msgstr "EXPÉDITEURS"
 msgid "Add Senders"
 msgstr "Ajouter des Expéditeurs"
 
-msgid "Your message has been sent successfully."
-msgstr "Votre message a été envoyé avec succès."
+msgid "SMS sent to telephone company. Upon receipt of delivery confirmation, DataWinners will update the counter on the "
+msgstr "SMS envoyé vers des compagnies téléphoniques. A la réception de la confirmation de livraison, DataWinners mettra à jour le compteur du "
 
 msgid "Your message could not be sent."
 msgstr "Vous ne pouvez pas envoyer un SMS car votre compte DataWinners n’a pas été configuré pour l’envoi de SMS. Veuillez contacter notre équipe de support : support@datawinners.com"

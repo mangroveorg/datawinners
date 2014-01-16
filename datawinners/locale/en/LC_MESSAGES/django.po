@@ -2233,7 +2233,7 @@ msgstr ""
 msgid "Add Senders"
 msgstr ""
 
-msgid "Your message has been sent successfully."
+msgid "SMS sent to telephone company. Upon receipt of delivery confirmation, DataWinners will update the counter on the "
 msgstr ""
 
 msgid "Your message could not be sent."
