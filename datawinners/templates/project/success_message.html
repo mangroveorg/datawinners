@@ -29,13 +29,13 @@
                 {% endif %}
 
             </ul>
-            <div class="gray_text">{% trans "Test your SMS Questionaire..." %}</div>
+            <div class="gray_text">{% trans "Test your Questionnaire" %}...</div>
             <ul>
                 {% if project.state == 'Test' %}
                     <li><a class='sms_tester' href="#">{% trans "Test your SMS Questionnaire" %} </a>
                 {% endif %}
 
-                <p>Send a test message to {{ org_number|format_organization_number }}</p>
+                <p>{% trans "Send a test message to" %} {{ org_number|format_organization_number }}</p>
                 </li>
                 <li><a id="test_web_questionnaire_section"
                        href="{{ project_links.test_questionnaire_link }}">{% trans "Test your Web Questionnaire" %} </a>

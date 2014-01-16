@@ -924,6 +924,21 @@ msgstr ""
 msgid "Test your Questionnaire by this SMS tester"
 msgstr ""
 
+msgid "Test your Questionnaire"
+msgstr ""
+
+msgid "Send a test message to"
+msgstr ""
+
+msgid "Test your Web Questionnaire"
+msgstr ""
+
+msgid "Print your Questionnaire"
+msgstr ""
+
+msgid "Test your SMS Questionnaire"
+msgstr ""
+
 msgid "Web Questionnaire"
 msgstr ""
 
@@ -2588,6 +2603,9 @@ msgstr ""
 msgid "Just one more step..."
 msgstr ""
 
+msgid "Just two more steps..."
+msgstr ""
+
 msgid "Enhance your project..."
 msgstr ""
 
@@ -3630,6 +3648,18 @@ msgid "Answer the questions in your SMS Questionnaire. Then, follow the Example 
 msgstr ""
 
 msgid "Answer the Questions"
+msgstr ""
+
+msgid "Use Your Own Mobile Phone"
+msgstr ""
+
+msgid "Use our online phone"
+msgstr ""
+
+msgid "Type your answers here"
+msgstr ""
+
+msgid "Send your SMS to"
 msgstr ""
 
 msgid "Tips"

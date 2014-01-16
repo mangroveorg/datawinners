@@ -970,6 +970,33 @@ msgstr "Questionnaire SMS"
 msgid "Test your Questionnaire by this SMS tester"
 msgstr "Testez votre Questionnaire avec ce simulateur d'envoi par SMS"
 
+msgid "Test your Questionnaire"
+msgstr "Testez votre Questionnaire"
+
+msgid "Send a test message to"
+msgstr "Envoyez un message test au"
+
+msgid "Test your Web Questionnaire"
+msgstr "Testez votre Questionnaire Web"
+
+msgid "Test your SMS Questionnaire"
+msgstr "Testez votre Questionnaire SMS"
+
+msgid "Use Your Own Mobile Phone"
+msgstr "Utilisez votre propre téléphone mobile"
+
+msgid "Use our online phone"
+msgstr "Utilisez votre téléphone en ligne"
+
+msgid "Type your answers here"
+msgstr "Tapez vos réponses ici"
+
+msgid "Send your SMS to"
+msgstr "Envoyez votre SMS au"
+
+msgid "Print your Questionnaire"
+msgstr "Imprimez votre Questionnaire"
+
 msgid "Web Questionnaire"
 msgstr "Questionnaire Web"
 
@@ -2683,6 +2710,9 @@ msgstr "Au minimum 6 caratères"
 
 msgid "Just one more step..."
 msgstr "Juste une étape de plus ..."
+
+msgid "Just two more steps..."
+msgstr "Encore quelques étapes..."
 
 msgid "Enhance your project..."
 msgstr "Améliorer votre projet..."
