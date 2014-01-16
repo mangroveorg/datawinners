@@ -568,3 +568,10 @@ form div.action-section {
 
 .hide-help {
   padding-top: 10px; }
+
+.file_upload_disabled {
+  float: left;
+  width: 144px; }
+
+.template-download-section-adjustment {
+  padding: 10px; }

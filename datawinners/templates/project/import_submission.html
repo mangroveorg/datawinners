@@ -23,15 +23,14 @@
             </div>
         </div>
 
-
         {% if is_quota_reached %}
-        <div class="file-uploader" class="grid">
-            <noscript>
-                <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
-            </noscript>
-            <div id="file_uploader" class="float_left grid_5" style="display:none"></div>
-            <span disabled="disabled" class="button disabled" back>Upload a file</span>
-        </div>
+            <div class="file-uploader grid file_upload_disabled">
+                <noscript>
+                    <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+                </noscript>
+                <div id="file_uploader" style="display:none"></div>
+                <span disabled="disabled" class="button disabled" back>Upload a file</span>
+            </div>
         {% else %}
             <div class="file-uploader" class="grid">
             <noscript>
@@ -40,7 +39,8 @@
             <div id="file_uploader" class="float_left grid_5"></div>
         </div>
         {% endif %}
-        <div id="template-download-section" class="error download-section" class="margin_top_15">
+
+        <div id="template-download-section" class="error download-section {% if is_quota_reached  %} template-download-section-adjustment {% endif %} " class="margin_top_15">
             <span style="padding-left:2em">
                 {% trans "Download the template:" %} <a id="template-download-link">submission_template</a>
            </span>
