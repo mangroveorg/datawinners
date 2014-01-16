@@ -155,7 +155,7 @@ class CharFormField(object):
         constraints = self._get_chars_constraints(field)
         validators = [GeoCodeValidator()] if type(field) == GeoCodeField else []
         char_field = forms.CharField(label=field.label, initial=field.value, required=field.is_required(),
-                                     help_text=field.instruction, validators=validators, **constraints)
+                                     help_text=_(field.instruction), validators=validators, **constraints)
         char_field.widget.attrs["watermark"] = "xx.xxxx,yy.yyyy" if type(
             field) == GeoCodeField else get_text_field_constraint_text(field)
         char_field.widget.attrs['style'] = 'padding-top: 7px;'

@@ -1903,8 +1903,8 @@ msgstr "La réponse %s à la question %s est plus courte que ce qui est permis. 
 msgid "Answer %s for question %s is %s than allowed."
 msgstr "La réponse %s pour la question %s est %s la valeur autorisée."
 
-msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315."
-msgstr "Format de GPS incorrect. Les coordonnées GPS doivent être dans le format suivant:. xx.xxxx,yy.yyyy Exemple -18.8665,47.5315."
+msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
+msgstr "Format de GPS incorrect. Les coordonnées GPS doivent être dans le format suivant:. xx.xxxx,yy.yyyy Exemple -18.8665,47.5315"
 
 msgid "greater"
 msgstr "supérieur à"
@@ -4625,3 +4625,15 @@ msgstr "Tapez toute information que vous recherchez"
 
 msgid "Datasender Name"
 msgstr "Expéditeurs"
+
+msgid "Note: You cannot add new columns in your Excel file to create new questions. "
+msgstr "Remarque: Vous ne pouvez pas ajouter de nouvelles colonnes dans votre fichier Excel pour créer de nouvelles questions. "
+
+msgid "Edit the Questionnaire to make these changes."
+msgstr "Modifier le Questionnaire pour effectuer ces changements."
+
+msgid "Hide Details"
+msgstr "Masquer les détails"
+
+msgid "Answer must be a date in the following format:"
+msgstr "La réponse doit être une date selon le format suivant:"

@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext
 import xlwt
 
 
@@ -122,10 +122,14 @@ class DateFieldInstruction:
     @staticmethod
     def get_instruction(context):
         date_format_mapping = {
-            "mm.yyyy": (_("Answer must be a date in the following format: month.year"), _("Example: %s") % '12.2011'),
+            "mm.yyyy": (
+                ugettext("Answer must be a date in the following format:") + " " + ugettext("month.year"),
+                ugettext("Example: %s") % '12.2011'),
             "dd.mm.yyyy": (
-                _("Answer must be a date in the following format: day.month.year"), _("Example: %s") % '25.12.2011'),
-            "mm.dd.yyyy": (_("Answer must be a date in the following format: month.day.year"), _("Example: %s" % '12.25.2011'))
+                ugettext("Answer must be a date in the following format:") + " " + ugettext("day.month.year"),
+                ugettext("Example: %s") % '25.12.2011'),
+            "mm.dd.yyyy": ((ugettext("Answer must be a date in the following format:") + " " + ugettext("month.day.year")),
+                           ugettext("Example: %s" % '12.25.2011'))
         }
         return date_format_mapping.get(context.field["date_format"])
 
