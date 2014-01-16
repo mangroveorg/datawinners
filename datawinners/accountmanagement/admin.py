@@ -61,8 +61,8 @@ class OrganizationSettingAdmin(DatawinnerAdmin):
 
 class MessageTrackerAdmin(DatawinnerAdmin):
     list_display = ("organization_name", "organization_id", "month", "combined_total_incoming",
-                    "total_incoming_per_month", "total_messages", "total_outgoing_messages", "outgoing_sms_count",
-                    "sent_reminders_count", "send_message_count","send_message_charged_count",  "sms_api_usage_count", "sms_submission", "incoming_sp_count",
+                    "total_incoming_per_month", "total_messages", "total_outgoing_messages", "outgoing_sms_count","outgoing_sms_charged_count",
+                    "sent_reminders_count","sent_reminders_charged_count", "send_message_count","send_message_charged_count",  "sms_api_usage_count","sms_api_usage_charged_count", "sms_submission", "incoming_sp_count",
                     "incoming_web_count", "sms_registration_count")
     
     search_fields = ['organization__name', 'organization__org_id', 'month']
