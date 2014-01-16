@@ -26,18 +26,18 @@ def get_submission_count_aggregate(dbm):
         if key not in year_month_submission_count_dict:
             year_month_submission_count_dict[key] = {}
 
-        if channel == WEB:
-            if 'web_count' in year_month_submission_count_dict[key]:
-                year_month_submission_count_dict[key]['web_count'] += 1
-            else:
-                year_month_submission_count_dict[key]['web_count'] = 1
-        elif channel == SMART_PHONE:
+        if channel == SMART_PHONE:
             if 'sp_count' in year_month_submission_count_dict[key]:
                 year_month_submission_count_dict[key]['sp_count'] += 1
             else:
                 year_month_submission_count_dict[key]['sp_count'] = 1
+        elif channel == SMS:
+            continue
         else:
-            logging.error("Invalid survey channel for id:%s, database:%s", survey_response.id, dbm.database_name)
+            if 'web_count' in year_month_submission_count_dict[key]:
+                year_month_submission_count_dict[key]['web_count'] += 1
+            else:
+                year_month_submission_count_dict[key]['web_count'] = 1
     return year_month_submission_count_dict
 
 
