@@ -11,13 +11,16 @@
         {% blocktrans with 'Submission' as entity_type %}Upload an Excel file (.xls) with Your {{ entity_type }} list.{% endblocktrans %}
         <a id="show_help">{% trans "How do I do this?" %}</a>
         <div id="import_help_section">
+            <div class="help-title">{% trans "How to Import Submissions" %}</div>
             <ol class="help-steps">
                 <li>{% trans "Download the template" %} <a id="secondary-template-download-link">submission_template</a></li>
                 <li>{% trans "Fill out the template with your list of Submissions." %}</li>
                 <li>{% trans "Save the template on your computer." %}</li>
                 <li>{% trans "Click on the Upload a file button and select the saved template." %}</li>
             </ol>
-            <a id="hide_help">{% trans "Hide Details" %}</a>
+            <div class="hide-help">
+                <a id="hide_help">{% trans "Hide Details" %}</a>
+            </div>
         </div>
 
 
