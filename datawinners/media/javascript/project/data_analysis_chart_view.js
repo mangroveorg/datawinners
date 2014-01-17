@@ -88,7 +88,7 @@ function drawNotes($locator, type, total, total_count) {
 
 function drawBar(answers, total, $locator, barColor) {
     if (total == 0) {
-        return showNoSubmissionExplanation($locator);
+        return showNoSubmissionExplanation($locator, gettext("You don't have any submissions for this question yet"));
     }
     var chart_data = [];
     var axis_label = [];
@@ -134,7 +134,7 @@ function drawBar(answers, total, $locator, barColor) {
 
 function drawPie(answers, total, $locator, baseColor, colorScaleFactor) {
     if (total == 0) {
-        return showNoSubmissionExplanation($locator);
+        return showNoSubmissionExplanation($locator, gettext("You don't have any submissions for this question yet"));
     }
     var data = [];
     $.each(answers, function(index, answer){
@@ -216,7 +216,11 @@ function drawChart(result, index,submissionCount, emptySubmissionText) {
     }
 
     drawChartInfo(submissionCount, emptySubmissionText);
-    drawChartReport(result.data,result.field_type,submissionCount,index);
+    var answerCount = 0;
+            $.each(data, function(i, val) {
+                answerCount+=val.count;
+            });
+    drawChartReport(result.data,result.field_type,answerCount,index);
 }
 
 function showPie(index){
@@ -234,7 +238,7 @@ function showBar(index){
 }
 
 function getColorScaleFactor(answers, total) {
-    max_percent = 0;
+    max_percent = 1;
     $.each(answers, function(index,answer){
         max_percent = Math.max(max_percent, 1.0*answer.count/total);
     });
