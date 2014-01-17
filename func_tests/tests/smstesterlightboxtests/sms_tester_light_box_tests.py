@@ -32,6 +32,7 @@ class TestSMSTesterLightBox(unittest.TestCase):
     def test_sms_player_for_exceeding_word_length(self):
         # going on all project page
         all_project_page = self.global_navigation.navigate_to_view_all_project_page()
+        TestSMSTesterLightBox.driver.create_screenshot("exceeding_word_length.png")
         project_overview_page = all_project_page.navigate_to_project_overview_page("clinic5 test project")
         self.sms_tester_page = project_overview_page.open_sms_tester_light_box()
 
