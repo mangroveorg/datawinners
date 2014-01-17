@@ -3,7 +3,6 @@ import datetime
 from datawinners.accountmanagement.models import OrganizationSetting
 from mangrove.transport.contract.survey_response import SMART_PHONE, WEB, SMS
 from datawinners.main.database import get_db_manager
-from datawinners.search.index_utils import get_elasticsearch_handle
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
@@ -16,7 +15,6 @@ def get_submission_count_aggregate(dbm):
     survey_responses = dbm.load_all_rows_in_view("surveyresponse", reduce=False, include_doc=True)
     year_month_submission_count_dict = {}
     for survey_response in survey_responses:
-        logging.info("survey id:%s", survey_response.id)
         if not isinstance(survey_response['value']['submitted_on'], datetime.datetime):
             logging.error("No submitted-on field for survey id:%s, database:%s", survey_response.id, dbm.database_name)
             continue
@@ -64,6 +62,4 @@ def update_counters_for_submissions(db_name):
     except Exception as e:
         logger.exception(e.message)
 
-
-es = get_elasticsearch_handle()
 migrate(all_db_names(), update_counters_for_submissions, version=(10, 0, 6), threads=1)
