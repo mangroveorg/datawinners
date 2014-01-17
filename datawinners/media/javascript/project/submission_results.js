@@ -11,6 +11,12 @@ DW.SubmissionTabs = function () {
             active_tab_index = tabList.indexOf(match[1]);
     };
 
+    self.initialize_tabs = function() {
+        var index_of_tab_li = active_tab_index+1;
+        $('#tabs ul>li:nth-child('+index_of_tab_li+')').addClass('ui-tabs-selected ui-state-active');
+    };
+
+
     self.getActiveTabIndex = function () {
         return active_tab_index;
     };

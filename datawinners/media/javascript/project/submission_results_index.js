@@ -2,6 +2,7 @@ $(document).ready(function () {
     $.ajaxSetup({ cache: false });
     var submissionTabs = new DW.SubmissionTabs();
     submissionTabs.updateActiveTabIndexBasedOnCurrentLocation();
+    submissionTabs.initialize_tabs();
 
     var _getTableActionsMenu = function(submissionTabs){
       var action_handler = new DW.SubmissionLogActionHandler(submissionTabs.getActiveTabName(), project_id);
