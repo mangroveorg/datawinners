@@ -43,7 +43,7 @@ $(document).ready(function () {
                         if (should_append(options, new_type)) {
                             $("#id_entity_type").prepend($('<option></option>').val(new_type).html(new_type));
                         }
-                        $('#id_entity_type').val(0);
+                        $("#id_entity_type").prop('selectedIndex', 0);
                         $('#id_entity_type').trigger('change');
                         $("#add_subject_type").accordion({collapsible: true, autoHeight: false, active: 2});
                         $("#id_entity_type_text").val("");
