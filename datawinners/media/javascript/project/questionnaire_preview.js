@@ -40,6 +40,6 @@ $(document).ready(function () {
                 return false;
             });
         }
-    }
+    };
     DW.questionnaire_preview.init();
 });

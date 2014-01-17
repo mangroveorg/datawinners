@@ -23,11 +23,6 @@ $(document).ready(function () {
                 return false;
             });
 
-            $(".printLink").unbind().bind("click", function () {
-                window.print();
-                event.preventDefault();
-            });
-
         } else { // bind to the data changed warning dialog
             $(".sms_tester, .activate_project, .delete_project, .printLink").unbind().bind("click", function () {
                 DW.edit_submission_modified_data_handler.click_after_reload = $(this).attr("class");
