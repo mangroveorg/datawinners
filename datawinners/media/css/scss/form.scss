@@ -512,6 +512,7 @@ select{
         .ui-widget-header{
             border:none !important;
             background-color:#3d3d3d;
+            background-image: none;
             background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));  //for webkit browsers
             background: -moz-linear-gradient(top,  #525252,  #262626);  //for firefox 3.6+
             .ui-dialog-title{
