@@ -327,6 +327,6 @@ def get_organization_telephone_number(request):
     organization_settings = utils.get_organization_settings_from_request(request)
     organisation_sms_numbers = organization_settings.get_organisation_sms_number()
     if organization_settings.organization.in_trial_mode:
-        return organisation_sms_numbers
+        return organisation_sms_numbers[0]
     return organisation_sms_numbers[0] if not organisation_sms_numbers[0] or organisation_sms_numbers[0][0] \
                                           == "+" else "+%s" % organisation_sms_numbers[0]

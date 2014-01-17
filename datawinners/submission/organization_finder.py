@@ -10,7 +10,7 @@ class OrganizationFinder(object):
     def find(self, from_number, to_number):
         to_number = re.sub("(\-)|(\+)", "", to_number)
         from_number = re.sub("(\-)|(\+)", "", from_number)
-        if to_number in [settings.TRIAL_ACCOUNT_PHONE_NUMBER.replace("+","")]:
+        if to_number in [number.replace("+","") for number in settings.TRIAL_ACCOUNT_PHONE_NUMBER]:
             return self.find_trial_account_organization(from_number)
         return self.find_paid_organization(to_number)
 
@@ -38,5 +38,5 @@ class OrganizationFinder(object):
         return OrganizationSetting.objects.filter(sms_tel_number__contains=number)
 
     def find_organization_setting_includes_trial_account(self, to_tel):
-        orgs = filter(lambda x: to_tel in x.get_organisation_sms_number(), OrganizationSetting.objects.all());
+        orgs = filter(lambda x: to_tel in x.get_organisation_sms_number(), OrganizationSetting.objects.all())
         return orgs[0] if len(orgs) else None

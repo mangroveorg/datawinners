@@ -6,7 +6,7 @@ from datawinners.tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID, TRIAL_ACCOUNT_
 
 class TestOrganizationFinder(unittest.TestCase):
     def setUp(self):
-        self.trial_number = settings.TRIAL_ACCOUNT_PHONE_NUMBER
+        self.trial_number = settings.TRIAL_ACCOUNT_PHONE_NUMBER[0]
         
     def test_should_find_organization_for_trial_account(self):
         organization,error = OrganizationFinder().find(TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, self.trial_number)
