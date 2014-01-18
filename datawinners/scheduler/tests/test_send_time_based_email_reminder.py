@@ -30,10 +30,12 @@ class TestSendTimeBasedReminder(unittest.TestCase):
     def test_should_send_timebased_emails(self):
         for email_type, delta in RELATIVE_DELTA_BY_EMAIL_TYPE.items():
             active_date = datetime.today() - relativedelta(**delta[0])
+            method_name = "get_all_active_trial_organizations" \
+                if email_type != 'sixty_days_after_deactivation' else "get_all_deactivated_trial_organizations"
             self.organization.status_changed_datetime = active_date
             self.organization.active_date = active_date
             self.organization.save()
-            with patch.object(Organization, "get_all_active_trial_organizations", side_effect=self.organizations_side_effect):
+            with patch.object(Organization, method_name, side_effect=self.organizations_side_effect):
                 subject, template, sender = get_email_detail_by_type(email_type)
                 send_time_based_reminder_email()
                 site = Site.objects.get_current()

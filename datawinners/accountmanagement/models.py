@@ -254,6 +254,13 @@ class Organization(models.Model):
             return cls.objects.filter(account_type='Basic',status_changed_datetime__contains=active_date__contains,status='Activated')
         return cls.objects.filter(account_type='Basic',status='Activated')
 
+    @classmethod
+    def get_all_deactivated_trial_organizations(cls, active_date__contains=None):
+        if active_date__contains:
+            return cls.objects.filter(account_type='Basic',status_changed_datetime__contains=active_date__contains)\
+                .exclude(status='Activated')
+        return cls.objects.filter(account_type='Basic').exclude(status='Activated')
+
     @property
     def in_trial_mode(self):
         return self.account_type == "Basic"
