@@ -70,7 +70,6 @@ class TestSMSTester(unittest.TestCase):
         message_tracker_after = organization._get_message_tracker(datetime.today())
         self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
         self.assertEqual(message_tracker_before.sms_registration_count + 1, message_tracker_after.sms_registration_count)
-        self.assertEqual(message_tracker_before.outgoing_message_count() + 1, message_tracker_after.outgoing_message_count())
 
     @attr('functional_test')
     def test_sms_player_for_registration_of_existing_subject_short_code(self):
