@@ -1,7 +1,7 @@
 import sys
 import datetime
 from datawinners.accountmanagement.models import OrganizationSetting
-from mangrove.transport.contract.survey_response import SMART_PHONE, WEB, SMS
+from mangrove.transport.contract.survey_response import SMART_PHONE, WEB, SMS, TEST_USER
 from datawinners.main.database import get_db_manager
 
 if __name__ == "__main__" and __package__ is None:
@@ -29,13 +29,17 @@ def get_submission_count_aggregate(dbm):
                 year_month_submission_count_dict[key]['sp_count'] += 1
             else:
                 year_month_submission_count_dict[key]['sp_count'] = 1
-        elif channel == SMS:
-            continue
-        else:
+        elif channel == SMS and survey_response['value']['created_by'] == TEST_USER:
             if 'web_count' in year_month_submission_count_dict[key]:
                 year_month_submission_count_dict[key]['web_count'] += 1
             else:
                 year_month_submission_count_dict[key]['web_count'] = 1
+        elif channel != SMS: # should match WEB and EXCEL
+            if 'web_count' in year_month_submission_count_dict[key]:
+                year_month_submission_count_dict[key]['web_count'] += 1
+            else:
+                year_month_submission_count_dict[key]['web_count'] = 1
+
     return year_month_submission_count_dict
 
 
