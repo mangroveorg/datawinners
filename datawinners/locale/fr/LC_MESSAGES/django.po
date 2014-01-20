@@ -4471,11 +4471,11 @@ msgstr "Vos SMS de ce mois"
 msgid "Total SMS"
 msgstr "Total SMS"
 
-msgid "sent out & received"
+msgid "sent & received"
 msgstr "envoyés & reçus"
 
-msgid "Total SMS Sent Out"
-msgstr "Total SMS envoyés"
+msgid "Total SMS Sent"
+msgstr "Total SMS Envoyés"
 
 msgid "Reply SMS"
 msgstr "SMS de retour"

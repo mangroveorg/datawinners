@@ -4355,10 +4355,10 @@ msgstr ""
 msgid "Total SMS"
 msgstr ""
 
-msgid "sent out & received"
+msgid "sent & received"
 msgstr ""
 
-msgid "Total SMS Sent Out"
+msgid "Total SMS Sent"
 msgstr ""
 
 msgid "Reply SMS"
