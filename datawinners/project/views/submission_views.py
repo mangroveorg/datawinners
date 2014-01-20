@@ -416,8 +416,9 @@ def create_statistics_response(facet_results, form_model):
         field = form_model._get_field_by_code(field_code)
 
         field_options = [lower(option['text']) for option in field.options]
-        facet_result_options = [lower(option['term']) for option in value]
-
+        facet_result_options = []
+        for option in value:
+            facet_result_options.append(lower(option['term'])) if option.get('term') else value.remove(option)
         for option in field_options:
             if option not in facet_result_options:
                 value.append({'count': 0, 'term': option})

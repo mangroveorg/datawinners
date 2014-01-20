@@ -12,6 +12,7 @@ from datawinners.project.views.submission_views import create_statistics_respons
 
 
 class TestAnalysisStats(unittest.TestCase):
+
     def test_get_stats(self):
         self.client = Client()
         self.client.login(username='tester150411@gmail.com', password='tester150411')
@@ -38,5 +39,21 @@ class TestAnalysisStats(unittest.TestCase):
 
         analysis_response = create_statistics_response(facet_results, form_model)
         self.assertIn({'count': 0, 'term': 'a-'}, analysis_response["What is your blood group?"].get('data'))
+
+    def test_should_not_contain_count_for_blank_options_in_submission_index(self):
+        facet_results = {
+        '0dab4170697411e3985908002738abcf_bg_value': [{'count': 3, 'term': 'b+'},{'count': 2, 'term': ''}]}
+
+        form_model = Mock(spec=FormModel)
+        type(form_model).id = PropertyMock(return_value='0dab4170697411e3985908002738abcf')
+        form_model._get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
+                                                                 label="What is your blood group?",
+                                                                 options=[{"text": "O+"},
+                                                                          {"text": "A-"}], single_select_flag=False,
+                                                                 ddtype=DataDictType(Mock(DatabaseManager)),
+                                                                 required=False)
+
+        analysis_response = create_statistics_response(facet_results, form_model)
+        self.assertNotIn({'count': 2, 'term': ''}, analysis_response["What is your blood group?"].get('data'))
 
 
