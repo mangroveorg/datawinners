@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_view_exempt, csrf_res
 from django.views.generic.base import View
 import jsonpickle
 import unicodedata
-from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired
+from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired, valid_web_user
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import IMPORTED_DATA_SENDERS, REMOVED_DATA_SENDER_TO_PROJECTS, EDITED_DATA_SENDER
@@ -144,7 +144,7 @@ def registered_datasenders(request, project_id):
                 'successful_imports': imported_data_senders
             }))
 
-
+@valid_web_user
 def edit_data_sender(request, project_id, reporter_id):
     manager = get_database_manager(request.user)
     reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))

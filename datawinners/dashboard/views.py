@@ -55,6 +55,7 @@ def get_submission_breakup(request, project_id):
     response = json.dumps([submission_success, submission_errors])
     return HttpResponse(response)
 
+@valid_web_user
 def get_submissions_about_project(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
