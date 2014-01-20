@@ -26,12 +26,18 @@
 		clearwatermarks : function() {
 			$("[wmwrap='true']").find("input,textarea").watermark({remove:true});
 		},
+        isPlaceholderSupported:function(){
+            if (typeof this.placeholder_supported == "undefined")
+                this.placeholder_supported = ('placeholder' in document.createElement('input'));
+            return this.placeholder_supported;
+        },
 		addwatermarks : function() {
 			$("[watermark]").each(function(num,el) {
 				$(el).watermark($(el).attr("watermark"));
 			});
 		},
 		watermark : function(o) {
+            if (this.isPlaceholderSupported() && $(o.el).attr('placeholder')) return;
 			o.el = $(o.el);
 			if(o.remove) {
 				if(o.el.parent().attr("wmwrap") == 'true') {

@@ -47,7 +47,7 @@ ul.ui-autocomplete {
   color: #0070AC !important; }
 
 #search_text {
-  width: 350px; }
+  width: 350px !important; }
 
 .qq-upload-fail, .qq-upload-list {
   display: none; }

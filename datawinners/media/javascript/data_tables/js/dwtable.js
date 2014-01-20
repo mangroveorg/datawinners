@@ -11,7 +11,8 @@
                 "sAjaxDataProp": "data",
                 "sPaginationType": "dw_pagination",
                 "searchPlaceholderText": 'Enter any information you want to find',
-                'getFilter':function(){},
+                'getFilter': function () {
+                },
                 "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
                     lastXHR = oSettings.jqXHR;
                     lastXHR && lastXHR.abort && lastXHR.abort();
@@ -76,13 +77,13 @@
                 }
             }
 
-            defaults["fnDrawCallback"] = function(orignal_handler){
+            defaults["fnDrawCallback"] = function (orignal_handler) {
                 return function (oSettings) {
                     $(this).find("thead input:checkbox").attr("disabled", oSettings.fnRecordsDisplay() == 0);
                     var nCols = $(this).find('thead>tr').children('th').length;
                     $(this).find('tbody').prepend('<tr style="display:none;"><td class ="table_message" colspan=' + nCols + '><div class="select_all_message"></div></td></tr>');
                     $(this).find(".select_all_message").data('all_selected', false);
-                    if (typeof orignal_handler == "function") orignal_handler.apply(this,arguments);
+                    if (typeof orignal_handler == "function") orignal_handler.apply(this, arguments);
                 }
             }(defaults["fnDrawCallback"]);
 
@@ -195,7 +196,7 @@
                     $(".dataTables_filter").show();
 
                     try {
-                        $(dataTableObject).parents(".dataTables_wrapper").find(".dataTables_filter input").attr('placeholder', gettext(defaults.searchPlaceholderText));
+                        $(dataTableObject).parents(".dataTables_wrapper").find(".dataTables_filter input").attr('placeholder', gettext(defaults.searchPlaceholderText)).watermark(gettext(defaults.searchPlaceholderText));
                     } catch (ignore) {
                     } //fails on old IEs
 
@@ -286,7 +287,7 @@ $.fn.dataTableExt.oApi.fnDisplayStart = function (oSettings, iStart, bRedraw) {
     }
 };
 
-function get_updated_table_page_index(table, allIds, all_selected){
+function get_updated_table_page_index(table, allIds, all_selected) {
     var settings = table.fnSettings();
 
     if (current_page_rows_going_to_vanish()) {
@@ -301,8 +302,8 @@ function get_updated_table_page_index(table, allIds, all_selected){
 
     function current_page_rows_going_to_vanish() {
         return all_selected ||
-                (is_last_page() &&
-                    (table.find("input.row_checkbox").length == allIds.length))
+            (is_last_page() &&
+                (table.find("input.row_checkbox").length == allIds.length))
     }
 
 }
