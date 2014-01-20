@@ -4,12 +4,12 @@ from dateutil.relativedelta import relativedelta
 
 from django.conf import settings
 from django.db import models
+from django.db.models import Sum
 from django.utils.translation import ugettext, activate, get_language
 from django_countries import CountryField
 from datawinners.settings import LIMIT_TRIAL_ORG_MESSAGE_COUNT, LIMIT_TRIAL_ORG_SUBMISSION_COUNT, NEAR_SUBMISSION_LIMIT_TRIGGER
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from django.contrib.auth.models import User
-from django.utils.translation import get_language, ugettext as _
 from datawinners.countrytotrialnumbermapping.models import Country
 from django.template.context import Context
 from django.core.mail.message import EmailMessage
@@ -153,12 +153,21 @@ class Organization(models.Model):
         return MessageTracker.objects.filter(organization=self).order_by('-month', '-id')
 
     def get_total_incoming_message_count(self):
-        message_trackers = self._get_all_message_trackers()
-        return sum([message_tracker.incoming_sms_count for message_tracker in message_trackers])
+        return self._get_aggregate_sum_of_columns(['incoming_sms_count'])
+
+    def _get_aggregate_sum_dict_of_columns(self, column_names):
+        args = [Sum(col) for col in column_names]
+        values_dict = MessageTracker.objects.filter(organization=self).aggregate(*args)
+        return dict(zip(values_dict.keys(), [i or 0 for i in values_dict.values()]))
+
+    def _get_aggregate_sum_of_columns(self, column_names):
+        return sum(self._get_aggregate_sum_dict_of_columns(column_names).itervalues())
 
     def get_total_submission_count(self):
-        message_trackers = self._get_all_message_trackers()
-        return sum([message_tracker.total_monthly_incoming_messages() for message_tracker in message_trackers])
+        submission_count = self._get_aggregate_sum_of_columns(
+            ['incoming_sms_count', 'incoming_sp_count', 'incoming_web_count'])
+        registration_count = self._get_aggregate_sum_of_columns(['sms_registration_count'])
+        return submission_count - registration_count
 
     def _has_exceeded_limit_for_trial_account(self):
         return self.get_total_incoming_message_count() >= LIMIT_TRIAL_ORG_MESSAGE_COUNT
@@ -209,40 +218,43 @@ class Organization(models.Model):
 
         activate(current_language)
 
+    def _add_current_month_stats(self, counter_dict):
+        now = datetime.datetime.now()
+        message_tracker = self._get_message_tracker(datetime.date(now.year, now.month, 1))
+        counter_dict[
+            'sms_submission_current_month'] = message_tracker.incoming_sms_count - message_tracker.sms_registration_count
+        counter_dict['sp_submission_current_month'] = message_tracker.incoming_sp_count
+        counter_dict['web_submission_current_month'] = message_tracker.incoming_web_count
+        counter_dict['total_submission_current_month'] = message_tracker.incoming_web_count + \
+                                                         message_tracker.incoming_sp_count + \
+                                                         message_tracker.incoming_sms_count - message_tracker.sms_registration_count
+        counter_dict['total_sms_current_month'] = message_tracker.total_messages()
+        counter_dict['total_sent_sms'] = message_tracker.outgoing_message_count()
+        counter_dict['sms_reply'] = message_tracker.outgoing_sms_charged_count
+        counter_dict['reminders'] = message_tracker.sent_reminders_charged_count
+        counter_dict['send_a_msg_current_month'] = message_tracker.send_message_charged_count
+        counter_dict['sent_via_api_current_month'] = message_tracker.sms_api_usage_charged_count
+
     def get_counters(self):
-        all_message_trackers = self._get_all_message_trackers()
-        counter_dict = dict({'total_submission_current_month':0, 'combined_total_submissions':0,
-                             'sms_submission_current_month':0, 'sp_submission_current_month':0,
-                             'web_submission_current_month':0, 'total_sms_submission':0,
-                             'total_sp_submission':0, 'total_web_submission':0,
-                             'total_sms_current_month':0, 'total_sent_sms':0, 'sms_reply':0, 'reminders':0,
-                             'send_a_msg_current_month':0, 'sent_via_api_current_month':0})
-        current_month = datetime.datetime.now().strftime("%Y-%m")
-        current_month_flag = False
-        for message_tracker in all_message_trackers:
-            sms_submission_count = message_tracker.incoming_sms_count - message_tracker.sms_registration_count
-            total_submission = sms_submission_count + message_tracker.incoming_web_count + message_tracker.incoming_sp_count
-            counter_dict['combined_total_submissions'] += total_submission
+        counter_dict = {}
 
-            counter_dict['total_sms_submission'] += sms_submission_count
-            counter_dict['total_sp_submission'] += message_tracker.incoming_sp_count
-            counter_dict['total_web_submission'] += message_tracker.incoming_web_count
+        sum_dict = self._get_aggregate_sum_dict_of_columns(["incoming_sms_count", "sms_registration_count", "incoming_sp_count", "incoming_web_count"])
 
+        sms_submission_count = sum_dict["incoming_sms_count__sum"] - sum_dict["sms_registration_count__sum"]
+        total_sp_submission = sum_dict["incoming_sp_count__sum"]
+        total_web_submission = sum_dict["incoming_web_count__sum"]
 
-            if not current_month_flag and message_tracker.month.strftime("%Y-%m") == current_month:
-                counter_dict['sms_submission_current_month'] += sms_submission_count
-                counter_dict['sp_submission_current_month'] += message_tracker.incoming_sp_count
-                counter_dict['web_submission_current_month'] += message_tracker.incoming_web_count
-                counter_dict['total_submission_current_month'] += total_submission
-                counter_dict['total_sms_current_month'] += message_tracker.total_messages()
-                counter_dict['total_sent_sms'] += message_tracker.outgoing_message_count()
-                counter_dict['sms_reply'] += message_tracker.outgoing_sms_charged_count
-                counter_dict['reminders'] += message_tracker.sent_reminders_charged_count
-                counter_dict['send_a_msg_current_month'] += message_tracker.send_message_charged_count
-                counter_dict['sent_via_api_current_month'] += message_tracker.sms_api_usage_charged_count
-                current_month_flag = True
+        counter_dict['total_sms_submission'] = sms_submission_count
+        counter_dict['total_sp_submission'] = total_sp_submission
+        counter_dict['total_web_submission'] = total_web_submission
+
+        total_submission = sms_submission_count + total_web_submission + total_sp_submission
+        counter_dict['combined_total_submissions'] = total_submission
+
+        self._add_current_month_stats(counter_dict)
+
         return counter_dict
-                
+
 
     @classmethod
     def get_all_active_trial_organizations(cls, active_date__contains=None):

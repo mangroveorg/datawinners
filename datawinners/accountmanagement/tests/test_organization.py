@@ -115,7 +115,8 @@ class TestOrganization(unittest.TestCase):
                     'web_submission_current_month': 7}
 
         counters = self.organization.get_counters()
-        self.assertEqual(counters, expected)
+        self.maxDiff=None
+        self.assertDictEqual(counters, expected)
 
     def test_should_get_only_active_trail_org(self):
         self.organization.deactivate()
