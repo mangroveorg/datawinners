@@ -152,10 +152,6 @@ class Organization(models.Model):
     def _get_all_message_trackers(self):
         return MessageTracker.objects.filter(organization=self).order_by('-month', '-id')
 
-    def get_total_message_count(self):
-        message_trackers = self._get_all_message_trackers()
-        return sum([message_tracker.total_messages() for message_tracker in message_trackers])
-
     def get_total_incoming_message_count(self):
         message_trackers = self._get_all_message_trackers()
         return sum([message_tracker.incoming_sms_count for message_tracker in message_trackers])
