@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from collections import defaultdict
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -51,7 +52,7 @@ class Organization(models.Model):
             return False
         if current_time is None:
             current_time = datetime.datetime.now()
-        active_date = self.status_changed_datetime if self.status_changed_datetime and self.status == 'Activated'\
+        active_date = self.status_changed_datetime if self.status_changed_datetime and self.status == 'Activated' \
             else self.active_date
         return (current_time - relativedelta(years=settings.TRIAL_PERIOD_IN_YEAR)) >= active_date
 
@@ -140,7 +141,8 @@ class Organization(models.Model):
         return organization_setting
 
     def _get_message_tracker(self, date):
-        message_tracker = MessageTracker.objects.filter(organization=self, month__year=date.year, month__month=date.month)\
+        message_tracker = MessageTracker.objects.filter(organization=self, month__year=date.year,
+                                                        month__month=date.month) \
             .order_by("-month", "-id")
         if len(message_tracker):
             return message_tracker[0]
@@ -203,6 +205,7 @@ class Organization(models.Model):
     def send_mail_to_organization_creator(self, email_type):
         users = self.get_related_users().filter(groups__name__in=["NGO Admins", "Project Managers"])
         from django.contrib.sites.models import Site
+
         current_site = Site.objects.get_current()
         current_language = get_language()
         activate(self.language)
@@ -210,35 +213,39 @@ class Organization(models.Model):
         email_content = loader.get_template('email/%s_%s.html' % (email_template, ugettext("en"),))
         for user in users:
             token = Token.objects.get_or_create(user=user)[0]
-            c = Context({ 'username': user.first_name +' '+ user.last_name,
-                          'organization':self, 'site': current_site, 'token': token.key})
-            msg = EmailMessage(ugettext(email_subject), email_content.render(c), sender or settings.EMAIL_HOST_USER, [user.email])
+            c = Context({'username': user.first_name + ' ' + user.last_name,
+                         'organization': self, 'site': current_site, 'token': token.key})
+            msg = EmailMessage(ugettext(email_subject), email_content.render(c), sender or settings.EMAIL_HOST_USER,
+                               [user.email])
             msg.content_subtype = "html"
             msg.send()
 
         activate(current_language)
 
-    def _add_current_month_stats(self, counter_dict):
+    def _update_dict_with_current_month_stats(self, counter_dict):
         now = datetime.datetime.now()
-        message_tracker = self._get_message_tracker(datetime.date(now.year, now.month, 1))
-        counter_dict[
-            'sms_submission_current_month'] = message_tracker.incoming_sms_count - message_tracker.sms_registration_count
-        counter_dict['sp_submission_current_month'] = message_tracker.incoming_sp_count
-        counter_dict['web_submission_current_month'] = message_tracker.incoming_web_count
-        counter_dict['total_submission_current_month'] = message_tracker.incoming_web_count + \
-                                                         message_tracker.incoming_sp_count + \
-                                                         message_tracker.incoming_sms_count - message_tracker.sms_registration_count
-        counter_dict['total_sms_current_month'] = message_tracker.total_messages()
-        counter_dict['total_sent_sms'] = message_tracker.outgoing_message_count()
-        counter_dict['sms_reply'] = message_tracker.outgoing_sms_charged_count
-        counter_dict['reminders'] = message_tracker.sent_reminders_charged_count
-        counter_dict['send_a_msg_current_month'] = message_tracker.send_message_charged_count
-        counter_dict['sent_via_api_current_month'] = message_tracker.sms_api_usage_charged_count
+        message_trackers = MessageTracker.objects.filter(organization=self, month__year=now.year, month__month=now.month)
+        if len(message_trackers):
+            message_trackers = message_trackers[0]
+            counter_dict[
+                'sms_submission_current_month'] = message_trackers.incoming_sms_count - message_trackers.sms_registration_count
+            counter_dict['sp_submission_current_month'] = message_trackers.incoming_sp_count
+            counter_dict['web_submission_current_month'] = message_trackers.incoming_web_count
+            counter_dict['total_submission_current_month'] = message_trackers.incoming_web_count + \
+                                                             message_trackers.incoming_sp_count + \
+                                                             message_trackers.incoming_sms_count - message_trackers.sms_registration_count
+            counter_dict['total_sms_current_month'] = message_trackers.total_messages()
+            counter_dict['total_sent_sms'] = message_trackers.outgoing_message_count()
+            counter_dict['sms_reply'] = message_trackers.outgoing_sms_charged_count
+            counter_dict['reminders'] = message_trackers.sent_reminders_charged_count
+            counter_dict['send_a_msg_current_month'] = message_trackers.send_message_charged_count
+            counter_dict['sent_via_api_current_month'] = message_trackers.sms_api_usage_charged_count
 
     def get_counters(self):
-        counter_dict = {}
+        counter_dict = defaultdict(lambda: 0)
 
-        sum_dict = self._get_aggregate_sum_dict_of_columns(["incoming_sms_count", "sms_registration_count", "incoming_sp_count", "incoming_web_count"])
+        sum_dict = self._get_aggregate_sum_dict_of_columns(
+            ["incoming_sms_count", "sms_registration_count", "incoming_sp_count", "incoming_web_count"])
 
         sms_submission_count = sum_dict["incoming_sms_count__sum"] - sum_dict["sms_registration_count__sum"]
         total_sp_submission = sum_dict["incoming_sp_count__sum"]
@@ -251,7 +258,7 @@ class Organization(models.Model):
         total_submission = sms_submission_count + total_web_submission + total_sp_submission
         counter_dict['combined_total_submissions'] = total_submission
 
-        self._add_current_month_stats(counter_dict)
+        self._update_dict_with_current_month_stats(counter_dict)
 
         return counter_dict
 
@@ -259,19 +266,21 @@ class Organization(models.Model):
     @classmethod
     def get_all_active_trial_organizations(cls, active_date__contains=None):
         if active_date__contains:
-            return cls.objects.filter(account_type='Basic',status_changed_datetime__contains=active_date__contains,status='Activated')
-        return cls.objects.filter(account_type='Basic',status='Activated')
+            return cls.objects.filter(account_type='Basic', status_changed_datetime__contains=active_date__contains,
+                                      status='Activated')
+        return cls.objects.filter(account_type='Basic', status='Activated')
 
     @classmethod
     def get_all_deactivated_trial_organizations(cls, active_date__contains=None):
         if active_date__contains:
-            return cls.objects.filter(account_type='Basic',status_changed_datetime__contains=active_date__contains)\
+            return cls.objects.filter(account_type='Basic', status_changed_datetime__contains=active_date__contains) \
                 .exclude(status='Activated')
         return cls.objects.filter(account_type='Basic').exclude(status='Activated')
 
     @property
     def in_trial_mode(self):
         return self.account_type == "Basic"
+
 
 def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
     return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)
@@ -286,8 +295,10 @@ class DataSenderOnTrialAccount(models.Model):
         organization = Organization.objects.get(org_id=org_id)
         if organization.in_trial_mode:
             for mobile_number in data_sender_mobile_numbers:
-                    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,organization=Organization.objects.get(org_id=org_id))
-                    data_sender.save()
+                data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
+                                                                     organization=Organization.objects.get(
+                                                                         org_id=org_id))
+                data_sender.save()
 
 
 def get_ngo_admin_user_profiles_for(organization):
@@ -382,13 +393,14 @@ class MessageTracker(models.Model):
         self.save()
 
     def outgoing_message_count(self):
-        return self.sms_api_usage_charged_count + self.outgoing_sms_charged_count + self.sent_reminders_charged_count +self.send_message_charged_count
+        return self.sms_api_usage_charged_count + self.outgoing_sms_charged_count + self.sent_reminders_charged_count + self.send_message_charged_count
 
     def total_messages(self):
         return self.outgoing_message_count() + self.incoming_sms_count
 
     def combined_total_messages(self):
-        msg_trackers = MessageTracker.objects.filter(organization=self.organization_id, month__lte=self.month).exclude(id=self.id)
+        msg_trackers = MessageTracker.objects.filter(organization=self.organization_id, month__lte=self.month).exclude(
+            id=self.id)
         total_msg = self.total_messages()
         for msg_tracker in msg_trackers:
             total_msg += msg_tracker.total_messages()
@@ -410,7 +422,8 @@ class MessageTracker(models.Model):
         self.save()
 
     def total_incoming_in_total(self):
-        msg_trackers = MessageTracker.objects.filter(organization=self.organization_id, month__lte=self.month, id__lt=self.id)
+        msg_trackers = MessageTracker.objects.filter(organization=self.organization_id, month__lte=self.month,
+                                                     id__lt=self.id)
         total_incoming = self.total_monthly_incoming_messages()
         for msg_tracker in msg_trackers:
             total_incoming += msg_tracker.total_monthly_incoming_messages()
