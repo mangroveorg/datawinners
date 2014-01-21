@@ -51,6 +51,8 @@ def update_counters_for_date(date, key, organization, year_month_submission_coun
     smart_phone_count = year_month_submission_count_dict[key].get('sp_count', 0)
     web_count = year_month_submission_count_dict[key].get('web_count', 0)
     message_tracker = organization._get_message_tracker(date)
+    outgoing_sms_auto_reply_count = message_tracker.outgoing_sms_count
+    message_tracker.outgoing_sms_charged_count = outgoing_sms_auto_reply_count
     message_tracker.incoming_web_count = web_count
     message_tracker.incoming_sp_count = smart_phone_count
     message_tracker.save()
