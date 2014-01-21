@@ -279,17 +279,16 @@ def log_edit_action(old_survey_response, new_survey_response, request, project_n
     activity_log.log(request, project=project_name, action=EDITED_DATA_SUBMISSION, detail=json.dumps(diff_dict))
 
 
-def get_choice_list(diff_value, question_field):
-    #TODO change the method name formatted_field_value_for_excel
+def formatted_field_value_for_excel(diff_value, question_field):
     prev_choice_values = question_field.formatted_field_values_for_excel(diff_value)
     return prev_choice_values
 
 
 def get_option_value_for_field(diff_value, question_field):
-    prev_choice_values = get_choice_list(diff_value["old"], question_field)
+    prev_choice_values = formatted_field_value_for_excel(diff_value["old"], question_field)
 
     reslt_dict = {"old": ', '.join(prev_choice_values) if prev_choice_values else diff_value["old"],
-                  "new": ', '.join(get_choice_list(diff_value["new"], question_field))}
+                  "new": ', '.join(formatted_field_value_for_excel(diff_value["new"], question_field))}
 
     return reslt_dict
 

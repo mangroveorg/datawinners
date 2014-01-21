@@ -76,7 +76,7 @@ class MyDataSendersAjaxView(View):
         return super(MyDataSendersAjaxView, self).dispatch(*args, **kwargs)
 
 
-def _parse_successful_imports(successful_imports):
+def parse_successful_imports(successful_imports):
     imported_data_senders=[]
 
     if not successful_imports:
@@ -99,7 +99,7 @@ def _add_imported_datasenders_to_project(imported_datasenders_id, manager, proje
     project.save(manager)
 
 
-def _add_imported_datasenders_to_trail_account(imported_data_senders, org_id):
+def add_imported_datasenders_to_trail_account(imported_data_senders, org_id):
     imported_datasender_mobile_numbers = [imported_data_sender["mobile_number"] for imported_data_sender in
                                           imported_data_senders]
     DataSenderOnTrialAccount.add_imported_data_sender_to_trial_account(org_id, imported_datasender_mobile_numbers)
@@ -125,7 +125,7 @@ def registered_datasenders(request, project_id):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities, successful_imports = import_module.import_data(request, manager,
                                                                                                                            default_parser=XlsDatasenderParser)
-        imported_data_senders = _parse_successful_imports(successful_imports)
+        imported_data_senders = parse_successful_imports(successful_imports)
         imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
         _add_imported_datasenders_to_project(imported_datasenders_ids, manager, project)
 
@@ -134,7 +134,7 @@ def registered_datasenders(request, project_id):
                                   detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})),
                                   project=project.name)
         org_id = request.user.get_profile().org_id
-        _add_imported_datasenders_to_trail_account(imported_data_senders, org_id)
+        add_imported_datasenders_to_trail_account(imported_data_senders, org_id)
         return HttpResponse(json.dumps(
             {
                 'success': error_message is None and is_empty(failure_imports),

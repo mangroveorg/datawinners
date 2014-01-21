@@ -1,5 +1,5 @@
 from unittest import TestCase
-from datawinners.project.views.datasenders import _parse_successful_imports
+from datawinners.project.views.datasenders import parse_successful_imports
 
 
 class TestParseSuccessfulImports(TestCase):
@@ -10,7 +10,7 @@ class TestParseSuccessfulImports(TestCase):
             {"l": ["loc11", "loc22"], "s": "reporter_id2", "n": "reporter_name2", "g": [1.11, 2.22], "m": "123345341",
              "email": "reporter2@email.com"}
         ]
-        parsed_datasenders = _parse_successful_imports(imported_datasenders)
+        parsed_datasenders = parse_successful_imports(imported_datasenders)
 
         self.assertEqual(len(parsed_datasenders), 2)
         first_datasender = parsed_datasenders[0]
@@ -33,7 +33,7 @@ class TestParseSuccessfulImports(TestCase):
         imported_datasenders = [
             {"l": ["loc1", "loc2"], "s": "reporter_id", "n": "reporter_name", "g": [1.11, 2.22], "m": "12334534"}
         ]
-        parsed_datasenders = _parse_successful_imports(imported_datasenders)
+        parsed_datasenders = parse_successful_imports(imported_datasenders)
 
         self.assertEqual(len(parsed_datasenders), 1)
         first_datasender = parsed_datasenders[0]
@@ -49,7 +49,7 @@ class TestParseSuccessfulImports(TestCase):
             {"l": ["loc1", "loc2"], "s": "reporter_id", "n": "reporter_name", "m": "12334534",
              "email": "reporter@email.com"}
         ]
-        parsed_datasenders = _parse_successful_imports(imported_datasenders)
+        parsed_datasenders = parse_successful_imports(imported_datasenders)
 
         self.assertEqual(len(parsed_datasenders), 1)
         first_datasender = parsed_datasenders[0]
@@ -65,7 +65,7 @@ class TestParseSuccessfulImports(TestCase):
             {"s": "reporter_id", "n": "reporter_name", "g": [1.11, 2.22], "m": "12334534",
              "email": "reporter@email.com"}
         ]
-        parsed_datasenders = _parse_successful_imports(imported_datasenders)
+        parsed_datasenders = parse_successful_imports(imported_datasenders)
 
         self.assertEqual(len(parsed_datasenders), 1)
         first_datasender = parsed_datasenders[0]
