@@ -6,13 +6,11 @@ from mock import Mock, patch
 from datawinners.project import helper
 from datawinners.project.helper import is_project_exist
 from datawinners.project.models import delete_datasenders_from_project, Project
-from datawinners.project.tests.submission_log_data import SUBMISSIONS
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
-from mangrove.form_model.form_model import FormModel, FORM_CODE
+from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from datawinners.scheduler.smsclient import SMSClient
 from datawinners.sms.models import MSG_TYPE_USER_MSG
@@ -185,22 +183,6 @@ class TestHelper(unittest.TestCase):
         rd_field.event_time_field_flag = True
         rd_field.date_format = "dd.mm.yyyy"
         form_model.event_time_question = rd_field
-
-    def _prepare_submission_data(self, load_all_rows_in_view, get_data_sender, get_by_short_code,
-                                 has_report_period_question):
-        load_all_rows_in_view.return_value = SUBMISSIONS
-        get_data_sender.return_value = ("Sender1", "rep1")
-        entity = Mock(spec=Entity)
-        get_by_short_code.return_value = entity
-        entity.data = {"name": {"value": "realname"}}
-        entity.short_code = "cli13"
-        form_model = Mock(spec=FormModel)
-        form_model.fields = self._get_form_fields()
-        form_model.form_code = FORM_CODE
-        form_model.entity_type = ["clinic"]
-        if has_report_period_question:
-            self._create_report_period_question(form_model)
-        return form_model
 
     def test_should_raise_Http404_if_project_can_not_be_found(self):
         wrapped_func = is_project_exist(lambda: None.qid)
