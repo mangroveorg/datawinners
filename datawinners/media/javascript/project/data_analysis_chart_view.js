@@ -238,7 +238,7 @@ function showBar(index){
 }
 
 function getColorScaleFactor(answers, total) {
-    max_percent = 1;
+    var max_percent = 0;
     $.each(answers, function(index,answer){
         max_percent = Math.max(max_percent, 1.0*answer.count/total);
     });
