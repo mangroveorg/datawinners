@@ -89,7 +89,7 @@ class ProSMSAccountRegistrationProcessor(PaidAccountRegistrationProcessor):
 
     def _get_invoice_total(self):
         payment_detail = PaymentDetails.objects.filter(organization=self.organization)[0]
-        invoice_total_dict = {'monthly': (PRO_SMS_MONTHLY_PRICING, _('1 month')),
+        invoice_total_dict = {'pay_monthly': (PRO_SMS_MONTHLY_PRICING, _('1 month')),
                               'half_yearly': (PRO_SMS_HALF_YEARLY_PRICING * 6, _('6 months')),
                              'yearly': (PRO_SMS_YEARLY_PRICING * 12, _('12 months'))}
         return invoice_total_dict.get(payment_detail.invoice_period)
