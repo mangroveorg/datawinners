@@ -14,6 +14,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
+from elasticutils import F
 import jsonpickle
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 
@@ -372,11 +373,27 @@ def get_submissions(request, form_code):
             }, unpicklable=False), content_type='application/json')
 
 
-def add_facet_to_query(query_with_criteria, choice_fields, form_model_id):
+def get_facet_response_for_choice_fields(query_with_criteria, choice_fields, form_model_id):
+    facet_results = []
     for field in choice_fields:
-        query_with_criteria = query_with_criteria.facet(es_field_name(field.code, form_model_id) + "_value",
-                                                        filtered=True)
-    return query_with_criteria
+        field_name = es_field_name(field.code, form_model_id) + "_value"
+        facet_response = query_with_criteria.facet(field_name, filtered=True).facet_counts()
+        facet_result_options = []
+        facet_result = {
+            "es_field_name": field_name,
+            "facets": facet_result_options,
+            # find total submissions containing specified answer
+            "total": query_with_criteria.filter(~F(**{field_name: None})).count()
+        }
+        for option, facet_list in facet_response.iteritems():
+            for facet in facet_list:
+                facet_result_options.append({
+                    "term": facet['term'],
+                    "count": facet['count']
+                })
+            facet_results.append(facet_result)
+
+    return facet_results
 
 
 @csrf_view_exempt
@@ -401,29 +418,38 @@ def get_stats(request, form_code):
     entity_headers, paginated_query, query_with_criteria = SubmissionQuery(form_model,
                                                                            search_parameters).query_to_be_paginated(
         form_model.id, user)
-    facet_query = add_facet_to_query(query_with_criteria, form_model.choice_fields, form_model.id)
-    facet_results = facet_query.facet_counts()
+    facet_results = get_facet_response_for_choice_fields(query_with_criteria, form_model.choice_fields, form_model.id)
+
+    #total success submission count irrespective of current fields being present or not
+    total_submissions = query_with_criteria.count()
 
     return HttpResponse(json.dumps(
-        {'result': create_statistics_response(facet_results, form_model), 'total': query_with_criteria.count()}),
-                        content_type='application/json')
+        {'result': create_statistics_response(facet_results, form_model),
+         'total': total_submissions
+        }), content_type='application/json')
 
 
 def create_statistics_response(facet_results, form_model):
     analysis_response = {}
-    for key, value in facet_results.iteritems():
-        field_code = get_code_from_es_field_name(key, form_model.id)
+    for facet_result in facet_results:
+        field_code = get_code_from_es_field_name(facet_result['es_field_name'], form_model.id)
         field = form_model._get_field_by_code(field_code)
 
         field_options = [lower(option['text']) for option in field.options]
         facet_result_options = []
-        for option in value:
-            facet_result_options.append(lower(option['term'])) if option.get('term') else value.remove(option)
+        facet_terms = []
+        for facet in facet_result['facets']:
+            facet_result_options.append({'term': facet['term'], 'count': facet['count']})
+            facet_terms.append(facet['term'])
+
         for option in field_options:
-            if option not in facet_result_options:
-                value.append({'count': 0, 'term': option})
+            if option not in facet_terms:
+                facet_result_options.append({'term': option, 'count': 0})
 
-        analysis_response.update({field.label: {'data': value, 'field_type': field.type}})
+        analysis_response.update({field.label: {
+            'data': facet_result_options,
+            'field_type': field.type,
+            'count': facet_result['total']
+        }
+        })
     return analysis_response
-
-

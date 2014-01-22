@@ -234,8 +234,8 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
                     logger.info("Converting old date submission from %s to %s" % (old_submission_value, entry))
             except Exception as ignore_conversion_errors:
                 pass
-
-        search_dict.update({es_field_name(lower(field.code), form_model.id): entry})
+        if entry:
+            search_dict.update({es_field_name(lower(field.code), form_model.id): entry})
 
     search_dict.update({'void': submission_doc.void})
     return search_dict
