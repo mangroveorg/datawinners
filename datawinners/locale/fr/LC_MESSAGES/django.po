@@ -2744,8 +2744,8 @@ msgstr "<br/>Affichez vos données qui ont été reçues pendant une période de
        "Vous pouvez traduire ou modifier cette question, mais essayez de garder le même sens (Exemple : « Pour quel mois et quelle année établissez-vous le rapport ?)"
        "<br/><br/><a class='hide_link' href=\"javascript:void(0);\">Cacher l'aide</a>"
 
-msgid "Upload an Excel file (.xls) with Your %(entity_type)s list."
-msgstr "Télécharger un fichier excel (.xls) avec votre liste de %(entity_type)s."
+msgid "Upload an Excel file (.xls) with Your Submission list."
+msgstr "Télécharger un fichier excel (.xls) avec votre liste de Soumission."
 
 msgid "Download the template:"
 msgstr "Télécharger le modèle:"

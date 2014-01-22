@@ -2634,7 +2634,10 @@ msgstr "<br/>View your received data by a particular Reporting Period (Example: 
        "You can translate or edit this question, but try to keep the same meaning (Example: “What month and year are you reporting on?”)"
        "<br/><br/><a class='hide_link' href=\"javascript:void(0);\">Hide Help</a>"
 
-msgid "Upload an Excel file (.xls) with Your %(entity_type)s list."
+msgid "Upload an Excel file (.xls) with Your Submission list."
+msgstr ""
+
+msgid "Upload a file"
 msgstr ""
 
 msgid "Download the template:"
