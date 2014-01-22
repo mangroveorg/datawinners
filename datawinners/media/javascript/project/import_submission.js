@@ -123,7 +123,7 @@ DW.SubmissionFileUploader = function(options){
 
     function _disable_upload_button(quota_over) {
         if (quota_over) {
-            $('.file-uploader').html('<span disabled="disabled" class="button disabled" back>Upload a file</span>');
+            $('.file-uploader').html('<span disabled="disabled" class="disabled_yellow_submit_button file_upload_disabled">' + gettext("Upload a file") + '</span>');
         }
     }
 

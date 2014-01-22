@@ -4637,3 +4637,6 @@ msgstr "Masquer les détails"
 
 msgid "Answer must be a date in the following format:"
 msgstr "La réponse doit être une date selon le format suivant:"
+
+msgid "Upload a file"
+msgstr "Télécharger un fichier"
