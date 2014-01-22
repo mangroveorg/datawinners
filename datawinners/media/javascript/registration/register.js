@@ -32,8 +32,6 @@ $(document).ready(function() {
         $('#registration_form').submit();
     });
     
-    //$("#content_of_terms_and_conditions").load($("#link-terms-and-conditions").attr("href")+" #content-terms");
-
     $("#content_of_terms_and_conditions").load($("#link-terms-and-conditions").attr("href")+" #container_main_content");
 
      $("#content_of_terms_and_conditions").dialog({
@@ -52,7 +50,7 @@ $(document).ready(function() {
         return false;
     });
 
-    $("[name=account_type]").bind("click", function(){
+    $("[name=account_type],[name=invoice_period]").bind("click", function(){
         update_price();
     });
 
@@ -63,17 +61,21 @@ $(document).ready(function() {
         pricing['Pro SMS']['pay_monthly_per_month'] = 399;
         pricing['Pro SMS']['pay_half_yearly_per_month'] = 359;
         pricing['Pro SMS']['pay_yearly_per_month'] = 299;
-        pricing['Pro SMS']['pay_monthly_total'] = 399;
-        pricing['Pro SMS']['pay_half_yearly_total'] = 2154;
-        pricing['Pro SMS']['pay_yearly_total'] = 3588;
+        pricing['Pro SMS']['pay_monthly'] = 399;
+        pricing['Pro SMS']['half_yearly'] = 2154;
+        pricing['Pro SMS']['yearly'] = 3588;
 
         pricing['Pro'] = new Array();
         pricing['Pro']['pay_monthly_per_month'] = 199;
         pricing['Pro']['pay_half_yearly_per_month'] = 149;
         pricing['Pro']['pay_yearly_per_month'] = 99;
-        pricing['Pro']['pay_monthly_total'] = 199;
-        pricing['Pro']['pay_half_yearly_total'] = 894;
-        pricing['Pro']['pay_yearly_total'] = 1188;
+        pricing['Pro']['pay_monthly'] = 199;
+        pricing['Pro']['half_yearly'] = 894;
+        pricing['Pro']['yearly'] = 1188;
+
+        var invoice_period = $("input[name=invoice_period]:checked").val();
+
+        $('#invoice_total_span').text(pricing[account_type][invoice_period]);
 
         for (dom_id in pricing[account_type]) {
             $("#" + dom_id).text(pricing[account_type][dom_id]);

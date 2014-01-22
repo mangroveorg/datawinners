@@ -180,7 +180,7 @@ def payment_details_form():
     pro_account = ('Pro', _(mark_safe("pro_subtitle")))
     pro_sms_account = ('Pro SMS', _(mark_safe("pro_sms_subtitle")))
     ACCOUNT_TYPE_CHOICES = (pro_account, pro_sms_account)
-    account_type = forms.ChoiceField(required=True, label=_("Account Type"), widget=forms.RadioSelect(attrs={'data-bind':'checked:account_type'}),
+    account_type = forms.ChoiceField(required=True, label=_("Account Type"), widget=forms.RadioSelect,
         choices=ACCOUNT_TYPE_CHOICES)
     invoice_period = forms.ChoiceField(required=True, label=_('Invoice Period'), widget=forms.RadioSelect,
         choices=INVOICE_PERIOD_CHOICES, help_text="O, no, Help")
