@@ -40,4 +40,4 @@ uWSGI==1.4.9
 djangorestframework
 celery
 flower
--e git+https://github.com/mangroveorg/mangrove.git@10_0_release#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
