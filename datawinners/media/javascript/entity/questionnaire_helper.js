@@ -100,6 +100,9 @@ DW.question.prototype = {
         }
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
+        this.radio_type = ko.dependentObservable({
+            read:function(){return ((this.type().indexOf('select') >= 0)?"choice":this.type());},
+            owner:this});
         this.required = ko.observable(q.required);
 
         var initialValues = DW.initChoices(q.choices);
@@ -356,12 +359,6 @@ DW.change_question_type_for_selected_question = function(new_type) {
     }
     questionnaireViewModel.selectedQuestion.valueHasMutated();
     questionnaireViewModel.questions.valueHasMutated();
-}
-DW.check_question_type_according_radio_button = function(type) {
-    if (type.indexOf('select') >= 0){
-        type = "choice";
-    }
-    $("[name='type'][value='"+type+"']").attr('checked', true);
 }
 
 DW.set_questionnaire_was_change = function(){

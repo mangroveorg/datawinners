@@ -12,7 +12,6 @@ var questionnaireViewModel =
         }, question);
         question.newly_added_question(true);
         questionnaireViewModel.remove_location_type()
-        DW.check_question_type_according_radio_button(question.type());
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.selectedQuestion(question);
         DW.init_question_constraints();
@@ -25,8 +24,6 @@ var questionnaireViewModel =
         question.display = ko.dependentObservable(function() {
             return this.title();
         }, question);
-        
-        DW.check_question_type_according_radio_button(question.type());
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.questions.valueHasMutated();
     },
@@ -106,7 +103,6 @@ var questionnaireViewModel =
     },
     selectedQuestion: ko.observable({}),
     changeSelectedQuestion: function(question) {
-        DW.check_question_type_according_radio_button(question.type());
         questionnaireViewModel.selectedQuestion(question);
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
