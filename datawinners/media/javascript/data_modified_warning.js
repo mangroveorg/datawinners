@@ -64,12 +64,12 @@ DW.data_submission.prototype = {
         });
 
         if (this.form_has_errors()) {
-            DW.bind_project_links(true);
+             if ("bind_project_links" in DW) DW.bind_project_links(true);
         } else {
             $('form :input').live('change', {self: this}, function(event) {
                 var self = event.data.self;
                 if (self.is_form_changed()) {
-                    DW.bind_project_links(true);
+                     if ("bind_project_links" in DW) DW.bind_project_links(true);
                 }
             });
         }

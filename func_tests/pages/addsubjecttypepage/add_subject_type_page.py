@@ -6,6 +6,7 @@ from pages.page import Page
 from framework.utils.data_fetcher import from_, fetch_
 from pages.addsubjecttypepage.add_subject_type_locator import *
 from tests.addsubjecttypetests.add_subject_type_data import *
+from time import sleep
 
 
 class AddSubjectTypePage(Page):
@@ -35,6 +36,7 @@ class AddSubjectTypePage(Page):
 
         Return self
         """
+        sleep(1)
         self.driver.find_text_box(NEW_SUBJECT_TB).enter_text(entity_type)
         self.driver.find(ADD_BTN).click()
         if wait:

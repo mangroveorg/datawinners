@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+import sys
 
 from framework.exception import ElementStillPresentException, CouldNotLocatePageException, ElementFoundWithoutDesiredVisibility
 from framework.exception import CouldNotLocateElementException
@@ -29,7 +30,7 @@ def get_default_browser_name():
 
 
 def get_driver_for_browser(browser):
-    print "Getting driver for browser: ", browser
+    sys.stderr.write("using driver for browser: %s"% browser)
     if browser == "firefox":
         fprofile = FirefoxProfile()
         driver = webdriver.Firefox(fprofile)
@@ -42,6 +43,8 @@ def get_driver_for_browser(browser):
         driver = webdriver.Chrome(desired_capabilities=capabilities)
     elif browser == "htmlunit":
         driver = webdriver.Remote()
+    elif browser == "phantom":
+        driver = webdriver.PhantomJS()
     else:
         raise NotImplemented("Unknown browser " + browser)
     driver.maximize_window()

@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
+import unittest
 
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
@@ -7,7 +8,8 @@ from django.utils.http import int_to_base36
 from nose.plugins.attrib import attr
 import time
 
-from framework.base_test import BaseTest, teardown_driver
+from framework.base_test import teardown_driver
+from framework.drivers.driver_wrapper import DriverWrapper
 from framework.utils.common_utils import get_epoch_last_ten_digit, generate_random_email_id
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from framework.utils.data_fetcher import from_, fetch_
@@ -37,7 +39,7 @@ from tests.endtoendtest.end_to_end_data import *
 from tests.projects.questionnairetests.project_questionnaire_data import VALID_SUMMARY_REPORT_DATA
 from tests.registrationtests.registration_tests import register_and_get_email
 from pages.alldatasenderspage.all_data_senders_locator import DELETE_BUTTON as CONFIRM_DELETE
-from tests.testsettings import UI_TEST_TIMEOUT
+from tests.testsettings import UI_TEST_TIMEOUT, WAIT
 
 
 def activate_account(driver, email):
@@ -54,10 +56,13 @@ def do_login(driver, email, password):
     return login_page.do_successful_login_with({USERNAME: email, PASSWORD: password})
 
 
-class TestApplicationEndToEnd(BaseTest):
+class TestApplicationEndToEnd(unittest.TestCase):
+    def setUp(self):
+        self.driver = DriverWrapper(browser="phantom")
+        self.driver.implicitly_wait(WAIT)
+
     def tearDown(self):
         import sys
-
         exception_info = sys.exc_info()
         if exception_info != (None, None, None):
             import os

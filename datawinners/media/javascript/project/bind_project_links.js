@@ -1,6 +1,4 @@
-$(document).ready(function () {
-
-    DW.bind_project_links = function () {
+DW.bind_project_links = function () {
         if (!arguments[0]) { //the default behavior
             $(".sms_tester").unbind('click').click(function () {
                 $(".sms_tester_form").removeClass("none");
@@ -30,8 +28,8 @@ $(document).ready(function () {
                 return false;
             });
         }
-    }
+    };
 
+$(document).ready(function () {
     DW.bind_project_links();
-
 });
