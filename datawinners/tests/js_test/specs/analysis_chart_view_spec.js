@@ -25,3 +25,4 @@ describe("analysis chart test", function () {
         expect($(".barDiv").filter(":visible").length).toEqual(2);
     });
 });
+
