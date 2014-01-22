@@ -151,13 +151,11 @@ def is_date_format_of_reporting_period_changed(old_questionnaire, questionnaire)
     return False
 
 
-def _get_deleted_question_codes(changed_questions, old_form_model):
-    deleted_question_codes = []
-    for question_label in changed_questions.get('deleted', []):
-        deleted_question_field = get_field_by_attribute_value(old_form_model, key_attribute='label',
-                                                              attribute_label=question_label)
-        deleted_question_codes.append(deleted_question_field.code)
-    return deleted_question_codes
+def _get_deleted_question_codes(new_form_model, old_form_model):
+    old_codes = old_form_model.field_codes()
+    new_codes = new_form_model.field_codes()
+    diff = set(old_codes) - set(new_codes)
+    return filter(diff.__contains__, old_codes)
 
 
 @login_required
@@ -212,9 +210,11 @@ def edit_project(request, project_id=None):
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()
 
-                deleted_question_codes = _get_deleted_question_codes(changed_questions, old_form_model)
+                deleted_question_codes = _get_deleted_question_codes(old_form_model=old_form_model,
+                                                                     new_form_model=new_form_model)
 
-                update_associated_submissions.delay(manager.database_name, old_form_model.form_code, new_form_model.form_code,
+                update_associated_submissions.delay(manager.database_name, old_form_model.form_code,
+                                                    new_form_model.form_code,
                                                     deleted_question_codes)
                 UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
             except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
