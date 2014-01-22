@@ -1037,3 +1037,6 @@ msgstr ""
 
 msgid "%(errorCount)s Submission(s) Failed to Import"
 msgstr ""
+
+msgid "All %(successCount)s records have been successfully imported."
+msgstr ""

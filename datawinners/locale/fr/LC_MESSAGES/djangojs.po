@@ -1077,5 +1077,8 @@ msgstr "%(successCount)s Soumission(s)importées avec succès"
 msgid "%(errorCount)s Submission(s) Failed to Import"
 msgstr "%(errorCount)s Soumission(s) non importée(s) avec succès"
 
+msgid "All %(successCount)s records have been successfully imported."
+msgstr "Tous les %(successCount)s enregistrements ont été importés avec succès."
+
 msgid "Close"
 msgstr "Fermer"
