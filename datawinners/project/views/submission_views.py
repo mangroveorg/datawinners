@@ -376,7 +376,7 @@ def get_submissions(request, form_code):
 def get_facet_response_for_choice_fields(query_with_criteria, choice_fields, form_model_id):
     facet_results = []
     for field in choice_fields:
-        field_name = es_field_name(field.code, form_model_id) + "_value"
+        field_name = es_field_name(field.code, form_model_id) + "_exact"
         facet_response = query_with_criteria.facet(field_name, filtered=True).facet_counts()
         facet_result_options = []
         facet_result = {
@@ -435,7 +435,7 @@ def create_statistics_response(facet_results, form_model):
         field_code = get_code_from_es_field_name(facet_result['es_field_name'], form_model.id)
         field = form_model._get_field_by_code(field_code)
 
-        field_options = [lower(option['text']) for option in field.options]
+        field_options = [option['text'] for option in field.options]
         facet_result_options = []
         facet_terms = []
         for facet in facet_result['facets']:
