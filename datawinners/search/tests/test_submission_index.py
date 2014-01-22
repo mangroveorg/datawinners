@@ -43,37 +43,6 @@ class TestSubmissionIndex(unittest.TestCase):
                  '1212_q4': ['one', 'two'],
                  '1212_q5': '11.12.2012', 'void': False}, search_dict)
 
-    def test_should_update_search_dict_with_null_values_for_missing_field_in_submission(self):
-        search_dict = {}
-        form_model_id = '12121'
-        field1 = TextField(name='entity_question', code='eid', label='eid', ddtype=Mock(spec=DataDictType),
-                           entity_question_flag=True)
-        field2 = TextField(name='text', code='q2', label='name', ddtype=Mock(spec=DataDictType))
-        field3 = GeoCodeField(name='geo_code', code='q3', label='geo_code', ddtype=Mock(spec=DataDictType))
-        field4 = SelectField(name='multi_select', code='q4', label='mul_sel',
-                             options=[("one", "a"), ("two", "b"), ("three", "c")], ddtype=Mock(spec=DataDictType),
-                             single_select_flag=False)
-        field5 = SelectField(name='single_select', code='q5', label='sin_sel',
-                             options=[("hi", "a"), ("hello", "b"), ("hru", "c")], ddtype=Mock(spec=DataDictType))
-        form_model = Mock(spec=FormModel, id=form_model_id, fields=[field1, field2, field3, field4, field5],
-                          name="test_form_model")
-
-        values = {'eid': 'cid005',
-                  'q2': "name",
-                  'q3': "3,3",
-                  'q100': "ab",
-                  'q5': 'a'}
-        submission_doc = SurveyResponseDocument(values=values, status="success")
-        with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
-            lookup_entity_name.return_value = 'Test'
-
-            _update_with_form_model_fields(None, submission_doc, search_dict, form_model)
-
-            self.assertEquals(
-                {form_model_id + '_eid': 'Test', "entity_short_code": "cid005", form_model_id + '_q2': 'name',
-                 form_model_id + '_q3': '3,3', form_model_id + '_q4': [],
-                 form_model_id + '_q5': 'hi', 'void': False}, search_dict)
-
     def test_should_update_search_dict_with_form_field_questions_for_error_submissions(self):
         search_dict = {}
         values = {'eid': 'test_id', 'q2': 'wrong number', 'q3': 'wrong text'}

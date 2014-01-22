@@ -216,11 +216,7 @@ function drawChart(result, index,submissionCount, emptySubmissionText) {
     }
 
     drawChartInfo(submissionCount, emptySubmissionText);
-    var answerCount = 0;
-    $.each(result.data, function(i, val) {
-        answerCount+=val.count;
-    });
-    drawChartReport(result.data,result.field_type,answerCount,index);
+    drawChartReport(result.data,result.field_type,result.count,index);
 }
 
 function showPie(index){
