@@ -4567,7 +4567,7 @@ msgid "12 months"
 msgstr "12 mois"
 
 msgid "The columns you are importing do not match the current Questionnaire. Please download the latest template for importing."
-msgstr "Les colonnes que vous importez ne correspondent pas au Questionnaire actuel."
+msgstr "Les colonnes que vous importez ne correspondent pas à la version actuelle du Questionnaire. Veuillez télécharger la dernière version du modèle d'importation"
 
 msgid "You have crossed the 1000 Submissions limit for your Basic account. Submissions from row %s have been ignored and were not imported."
 msgstr " Vous avez atteint la limite de 1000 Soumissions de votre Compte Basic. Les Soumissions commençant à la ligne %s ont été ignorées et n'ont pas été importées."
@@ -4615,7 +4615,10 @@ msgid "Enter the unique ID for each %s.\nYou can find the %s List on the My Subj
 msgstr "Tapez le code unique pour chaque %s.\n Vous pouvez trouver la liste des  %s sur la page Mes Sujets."
 
 msgid "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."
-msgstr "Si vous soumettez des données pour le compte de quelqu'un, vous pouvez saisir le code unique de l'Expéditeur de Données."
+msgstr "Si vous soumettez des données pour le compte de quelqu'un, vous pouvez saisir le code unique de l'Expéditeur de Données. Sinon, vous pouvez laisser la case vide."
+
+msgid "How to Import Submissions"
+msgstr "Comment importer des Soumissions"
 
 msgid "Example: %s"
 msgstr "Exemple: %s"
