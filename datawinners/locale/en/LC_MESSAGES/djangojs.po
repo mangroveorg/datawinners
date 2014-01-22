@@ -1031,3 +1031,9 @@ msgstr ""
 
 msgid "Once your Data Senders have sent in Submissions successfully, they will appear here."
 msgstr ""
+
+msgid "%(successCount)s Submission(s) Successfully Imported"
+msgstr ""
+
+msgid "%(errorCount)s Submission(s) Failed to Import"
+msgstr ""

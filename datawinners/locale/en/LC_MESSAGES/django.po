@@ -2724,6 +2724,12 @@ msgstr ""
 msgid "register a"
 msgstr ""
 
+msgid "How to Import Submissions"
+msgstr ""
+
+msgid "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."
+msgstr ""
+
 msgid "Customize the {{ entity_type }} registration form"
 msgstr ""
 

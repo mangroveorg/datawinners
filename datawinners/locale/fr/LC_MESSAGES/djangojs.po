@@ -1071,11 +1071,11 @@ msgstr "Une fois que Expéditeurs de Données ont soumis leurs données avec suc
 msgid "Import a Submission List"
 msgstr "Importer une Soumission"
 
-msgid "%s Submission(s) Successfully Imported"
-msgstr "%s Soumission(s)importées avec succès"
+msgid  "%(successCount)s Submission(s) Successfully Imported"
+msgstr "%(successCount)s Soumission(s)importées avec succès"
 
-msgid "%s Submission(s) Failed to Import"
-msgstr "%s Soumission(s) non importée(s) avec succès"
+msgid "%(errorCount)s Submission(s) Failed to Import"
+msgstr "%(errorCount)s Soumission(s) non importée(s) avec succès"
 
 msgid "Close"
 msgstr "Fermer"

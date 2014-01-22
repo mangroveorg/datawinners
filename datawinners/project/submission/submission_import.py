@@ -56,8 +56,7 @@ class SubmissionImporter():
                     "You have crossed the 1000 submissions limit for a trial account. Submissions from row %s have been ignored and were not imported." % str(
                         ignored_row_start))
             else:
-                message = gettext('%s of %s Submissions imported. Please check below for details.') % (
-                    len(saved_entries), len(q_answer_dicts))
+                message = gettext('%s of %s Submissions imported. Please check below for details.') % (len(saved_entries), len(q_answer_dicts))
         except InvalidFileFormatException as e:
             message = gettext(
                 u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!")
