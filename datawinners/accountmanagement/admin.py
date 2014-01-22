@@ -66,6 +66,7 @@ class MessageTrackerAdmin(DatawinnerAdmin):
                     "incoming_web_count", "sms_registration_count")
     
     search_fields = ['organization__name', 'organization__org_id', 'month']
+    ordering = ('-month',)
 
     def __init__(self, *args, **kwargs):
         super(MessageTrackerAdmin, self).__init__(*args, **kwargs)
