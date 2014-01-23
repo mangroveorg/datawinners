@@ -6,7 +6,6 @@ from datawinners import settings
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport import TransportInfo, Request
 from mangrove.transport.player.player import SMSPlayer
-from mangrove.transport.contract.submission import Submission
 
 #submission date,       source,     destination, messages,
 #2012-11-24 13:48:22	24535435348	26134535750	 009 MCHTDV07 22.11.2012 ABE0000369 72.15 0 0 0 0
@@ -21,7 +20,8 @@ dbm = get_db_manager(server="http://%s:5984" % db_server, database=db_name,crede
 sms_player = SMSPlayer(dbm)
 
 def update_submission_date(response, submission_date):
-    submission = Submission.get(dbm, response.submission_id)
+    # submission = Submission.get(dbm, response.submission_id)
+    submission = None
     submission._doc.submitted_on = submission_date
     submission._doc.created = submission_date
     submission._doc.event_time = submission_date

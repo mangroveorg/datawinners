@@ -1,9 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import OrderedDict
+from mangrove.datastore.entity import DataRecord
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.datastore.database import get_db_manager
 from django.core.management.base import BaseCommand
-from mangrove.transport.contract.submission import Submission
 from datawinners import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.custom_reports.crs.handler import CRSCustomReportHandler
@@ -46,34 +46,22 @@ class Command(BaseCommand):
             print 'getting the questionnaire'
             questionnaire= get_form_model_by_code(crs_database_manager, questionnaire_code)
             print 'migrations for %s' % questionnaire_code
-            submissions = self._load_submissions_for(questionnaire_code, crs_database_manager,
-                datarecords_id=datarecords_id)
             print 'adding to sql'
-            for submission in submissions:
-                data_record = submission.data_record
-                formatted_submission = self._get_formatted_submission(data_record, questionnaire)
-                try:
-                    db.start_transaction()
-                    handler.handle(questionnaire_code,
-                        formatted_submission,
-                        data_record.id)
-                    db.commit_transaction()
-                except Exception as e:
-                    db.rollback_transaction()
-                    print formatted_submission
-                    print data_record.id
-                    print e.message
-            print 'finished adding to sql for questionnaire %s' % questionnaire_code
-
-    def _load_submissions_for(self, questionnaire_code, crs_database_manager, datarecords_id=None):
-        startkey = [questionnaire_code]
-        endkey = [questionnaire_code, {}]
-        print 'loading submissions for %s' % questionnaire_code
-        rows = crs_database_manager.view.submissionlog(reduce=False, startkey=startkey, endkey=endkey)
-        return [Submission.new_from_doc(dbm=crs_database_manager,
-            doc = Submission.__document_class__.wrap(row['value']))
-            for row in rows if row['value']['status'] == True and
-            (datarecords_id is None or row["value"]["data_record_id"] in datarecords_id)]
+            if datarecords_id:
+                for data_record in [DataRecord.get(crs_database_manager, data_record_id) for data_record_id in datarecords_id]:
+                    formatted_submission = self._get_formatted_submission(data_record, questionnaire)
+                    try:
+                        db.start_transaction()
+                        handler.handle(questionnaire_code,
+                            formatted_submission,
+                            data_record.id)
+                        db.commit_transaction()
+                    except Exception as e:
+                        db.rollback_transaction()
+                        print formatted_submission
+                        print data_record.id
+                        print e.message
+                print 'finished adding to sql for questionnaire %s' % questionnaire_code
 
     def _get_value_from_data_record(self, data_record, question):
         for key in data_record.data.keys():
