@@ -7,10 +7,11 @@ from django.utils.http import int_to_base36
 
 from nose.plugins.attrib import attr
 import time
+from selenium.webdriver.support.wait import WebDriverWait
 
 from framework.base_test import teardown_driver
 from framework.drivers.driver_wrapper import DriverWrapper
-from framework.utils.common_utils import get_epoch_last_ten_digit, generate_random_email_id
+from framework.utils.common_utils import get_epoch_last_ten_digit, generate_random_email_id, by_css
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.database_manager_postgres import DatabaseManager
@@ -295,6 +296,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.assertFalse(project_page.is_project_present(self.project_name))
 
     def verify_summary_report_project_creation(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('#global_dashboard_link'))
         global_navigation_page = GlobalNavigationPage(self.driver)
         dashboard_page = global_navigation_page.navigate_to_dashboard_page()
         create_project_page = dashboard_page.navigate_to_create_project_page()
