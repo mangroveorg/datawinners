@@ -7,29 +7,38 @@
 <p>{{ creator_user.capitalize }} a cr&eacute;&eacute; un compte <a href="https://www.datawinners.com/fr/home/">DataWinners</a>
     pour vous.<br/>
     <a href="{{ protocol }}://{{ domain }}{% url auth_password_reset_confirm uidb36=uid, token=token %}">R&eacute;initialisez</a>
-    votre mot de passe pour commencer. Utilisez votre email pour vous <a href="{{ protocol }}://{{ domain }}{% url auth_login %}">identifier</a>
+    votre mot de passe pour commencer. Utilisez votre email pour vous <a
+            href="{{ protocol }}://{{ domain }}{% url auth_login %}">identifier</a>
     une fois votre mot de passe r&eacute;initialis&eacute;.
 </p>
 
 <p>
-<b>Comment Cr&eacute;er un Projet</b><br/>
+    <b>Comment Cr&eacute;er un Projet</b><br/>
     Sur la page Tableau de Bord, cliquez sur &laquo;Cr&eacute;er un nouveau Projet&raquo; pour cr&eacute;er un
-Questionnaire. <br/>
-Une fois que vous avez cr&eacute;&eacute; votre projet, vous pouvez enregistrer toutes les personnes qui vous enverront
-des donn&eacute;es (nous les appelons les Exp&eacute;diteurs de Donn&eacute;es).
+    Questionnaire. <br/>
+    Une fois que vous avez cr&eacute;&eacute; votre projet, vous pouvez enregistrer toutes les personnes qui vous
+    enverront
+    des donn&eacute;es (nous les appelons les Exp&eacute;diteurs de Donn&eacute;es).
 </p>
 
 <p>
-<b>Comment Collecter des Donn&eacute;es</b><br/>
-   DataWinners vous permet de collecter vos donn&eacute;es de 3 diff&eacute;es
-   mani&egrave;res; Choisissez les canaux qui vous conviennent le mieux &agrave; vous et &agrave; vos Exp&eacute;diteurs de Donn&eacute;es.
-   <ol>
-        <li><b>Internet:</b> Collectez un nombre illimit&eacute; de donn&eacute;es en utilisant le questionnaire en ligne.</li>
-        <li><b>Smartphone Android:</b> T&eacute;l&eacute;chargez les Questionnaires directement sur votre smartphone Android.</li>
-        <li><b>SMS:</b> Utilisez un simple t&eacute;l&eacute;phone mobile pour envoyer des donn&eacute;es en utilisant
+    <b>Comment Collecter des Donn&eacute;es</b><br/>
+    DataWinners vous permet de collecter vos donn&eacute;es de 3 diff&eacute;es
+    mani&egrave;res; Choisissez les canaux qui vous conviennent le mieux &agrave; vous et &agrave; vos Exp&eacute;diteurs
+    de Donn&eacute;es.
+<ol>
+    <li><b>Internet:</b> Collectez un nombre illimit&eacute; de donn&eacute;es en utilisant le questionnaire en ligne.
+    </li>
+    <li><b>Smartphone Android:</b> T&eacute;l&eacute;chargez les Questionnaires directement sur votre smartphone
+        Android.
+    </li>
+    <li><b>SMS:</b> Utilisez un simple t&eacute;l&eacute;phone mobile pour envoyer des donn&eacute;es en utilisant un
+        SMS unique.Envoyez votre SMS au numéro {{ org_number }}.
         DataWinners enverra une confirmation automatique et des messages suite
-            &agrave; votre SMS</li>
-   </ol>
+        &agrave; votre SMS
+
+    </li>
+</ol>
 </p>
 
 {% include "registration/activation_email_footer_fr.html" %}
