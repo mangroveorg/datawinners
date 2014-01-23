@@ -55,6 +55,8 @@ $(document).ready(function() {
     });
 
     function update_price(){
+        if ($("[name=account_type]:checked").length == 0 || $("input[name=invoice_period]:checked").length ==0)
+            return;
         var account_type = $("[name=account_type]:checked").val();
         var pricing = new Array();
         pricing['Pro SMS'] = new Array();
