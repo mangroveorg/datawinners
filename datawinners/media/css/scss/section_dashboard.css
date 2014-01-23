@@ -78,7 +78,7 @@ p {
   margin-top: 10px; }
 
 table.no-border {
-  width: 230px;
+  width: 243px;
   line-height: 5px; }
   table.no-border.line_height_14 {
     line-height: 14px; }
@@ -96,6 +96,6 @@ table.no-border {
 
 #blue_message_box {
   width: 230px;
-  margin-top: 0!important; }
+  margin-top: 0 !important; }
   #blue_message_box .button_fr {
     width: 94px; }

@@ -159,7 +159,7 @@ def delete_project(request, project_id):
 def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
-    helper.delete_project(manager, project, False)
+    helper.delete_project(manager, project, void=False)
     return HttpResponseRedirect(reverse(index))
 
 

@@ -27,6 +27,8 @@ def _add_text_field_mapping(mapping_fields, field_def):
         }}})
 
 
+
+
 def get_field_definition(form_field, field_name=None):
     field_def = {"name": field_name or lower(form_field.name)}
     if isinstance(form_field, DateField):

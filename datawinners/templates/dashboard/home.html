@@ -90,27 +90,21 @@
         <h4 class="margin_bottom_10">{% trans "Statistics" %}</h4>
         <h6>{% trans "Submissions Received" %}</h6>
         <table class="no-border">
-            <tr><td width="57%">&nbsp;</td><td width="30%" class="italic grey font_size_10">{% trans "This Month" %}</td><td width="13%" class="italic grey font_size_10">{% trans "Total" %}</td></tr>
+            <tr><td width="55%">&nbsp;</td><td width="30%" class="italic grey font_size_10">{% trans "This Month" %}</td><td width="15%" class="italic grey font_size_10">{% trans "Total" %}</td></tr>
             <tr><td>{% trans "SMS" %}</td><td>{{ counters.sms_submission_current_month }}</td><td>{{ counters.total_sms_submission }}</td></tr>
             <tr><td>{% trans "Smartphone" %}</td><td>{{ counters.sp_submission_current_month }}</td><td>{{ counters.total_sp_submission }}</td></tr>
             <tr><td>{% trans "Web" %}</td><td>{{ counters.web_submission_current_month }}</td><td>{{ counters.total_web_submission }}</td></tr>
             <tr><td><b>{% trans "Total" %}</b></td><td><b>{{ counters.total_submission_current_month }}</b></td><td><b>{{ counters.combined_total_submissions }}</b></td></tr>
-        </table>
-        <br/>
-        <h6>{% trans "Your SMS Usage This Month" %}</h6>
-        <table class="no-border margin_top_5 ">
-            <tr><td width="57%">{% trans "Reply SMS" %}</td><td width="30%">{{ counters.sms_reply}}</td><td width="13%"></td></tr>
-            <tr><td>{% trans "Reminders" %}</td><td>{{ counters.reminders }}</td></tr>
-            <tr><td>{% trans "Send a message" %}</td><td>{{ counters.send_a_msg_current_month }}</td></tr>
-            <tr><td>{% trans "API" %}</td><td>{{ counters.sent_via_api_current_month }}</td></tr>
-            <tr><td><b>{% trans "Total SMS Sent" %}</b></td><td><b>{{ counters.total_sent_sms }}</b></td></tr>
-        </table>
-
-        <table class="no-border margin_top_5 line_height_14">
-            <tr>
-                <td width="57%"><b>{% trans "Total SMS" %}</b><br/><span class="small font_size_10">({% trans "sent & received" %})</span></td>
-                <td width="30%" style="vertical-align:top;"><b>{{ counters.total_sms_current_month }}</b>   </td><td width="13%"></td>
-            </tr>
+            <tr><td colspan="3">&nbsp;</td></tr>
+            <tr><td colspan="3"><h6>{% trans "Your SMS Usage This Month" %}</h6></td></tr>
+            <tr><td>{% trans "Reply SMS" %}</td><td>{{ counters.sms_reply}}</td><td>&nbsp;</td></tr>
+            <tr><td>{% trans "Reminders" %}</td><td>{{ counters.reminders }}</td><td>&nbsp;</td></tr>
+            <tr><td>{% trans "Send a message" %}</td><td>{{ counters.send_a_msg_current_month }}</td><td>&nbsp;</td></tr>
+            <tr><td>{% trans "API" %}</td><td>{{ counters.sent_via_api_current_month }}</td><td>&nbsp;</td></tr>
+            <tr><td><b>{% trans "Total SMS Sent" %}</b></td><td><b>{{ counters.total_sent_sms }}</b></td><td>&nbsp;</td></tr>
+            <tr><td colspan="3">&nbsp;</td></tr>
+            <tr><td><b>{% trans "Total SMS" %}</b></td><td style="vertical-align:top;"><b>{{ counters.total_sms_current_month }}</b></td><td>&nbsp;</td></tr>
+            <tr><td><span class="small font_size_10">({% trans "sent & received" %})</span></td><td colspan="2">&nbsp;</td> </tr>
         </table>
     </div>
 {% endblock %}

@@ -169,6 +169,10 @@
                                 {{ form.invoice_period }}
                                 
                                 {{ form.invoice_period.errors }}
+                                <label class="clear_both">&nbsp;</label>
+                                <ul><li><label>
+                                    <div class="radio_title">{% trans "Invoice Total" %}:$ <span id="invoice_total_span"></span></div>
+                                </label></li></ul>
                             </li>
 
                             <li class="{{ form.preferred_payment.css_classes }} form-row-10px">

@@ -8,7 +8,7 @@
         <div id="error_message" class="import_message error_message message-box"></div>
         <div id="success_message" class="import_message success_message success-box"></div>
         {% include "subscribe_now.html" %}
-        {% blocktrans with 'Submission' as entity_type %}Upload an Excel file (.xls) with Your {{ entity_type }} list.{% endblocktrans %}
+        {% trans "Upload an Excel file (.xls) with Your Submission list." %}
         <a id="show_help">{% trans "How do I do this?" %}</a>
         <div id="import_help_section">
             <div class="help-title">{% trans "How to Import Submissions" %}</div>
@@ -29,7 +29,7 @@
                     <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
                 </noscript>
                 <div id="file_uploader" style="display:none"></div>
-                <span disabled="disabled" class="button disabled" back>Upload a file</span>
+                <div disabled="disabled" class="button disabled" back>{% trans "Upload a file" %}</div>
             </div>
         {% else %}
             <div class="file-uploader" class="grid">

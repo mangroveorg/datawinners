@@ -11,7 +11,7 @@ from datawinners.project.models import get_all_projects
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from datawinners.search.submission_index_helper import SubmissionIndexUpdateHandler
 from mangrove.errors.MangroveException import DataObjectNotFound
-from datawinners.search.index_utils import get_elasticsearch_handle, get_fields_mapping_by_field_def, get_field_definition, es_field_name
+from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, es_field_name, _add_date_field_mapping
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 
@@ -89,7 +89,7 @@ class SubmissionSearchStore():
         for field in self.form_model.fields:
             fields_definition.append(
                 get_field_definition(field, field_name=es_field_name(field.code, self.form_model.id)))
-        mapping = get_fields_mapping_by_field_def(doc_type=self.form_model.id, fields_definition=fields_definition)
+        mapping = self.get_fields_mapping_by_field_def(doc_type=self.form_model.id, fields_definition=fields_definition)
         return mapping
 
     def recreate_elastic_store(self):
@@ -98,6 +98,27 @@ class SubmissionSearchStore():
         from datawinners.search.submission_index_task import async_populate_submission_index
         async_populate_submission_index.delay(self.dbm.database_name, self.form_model.form_code)
 
+    def _add_text_field_mapping_for_submission(self, mapping_fields, field_def):
+        name = field_def["name"]
+        mapping_fields.update(
+            {name: {"type": "multi_field", "fields": {
+                name: {"type": "string"},
+                name + "_value": {"type": "string", "index_analyzer": "sort_analyzer", "include_in_all": False},
+                name + "_exact": {"type": "string", "index": "not_analyzed", "include_in_all": False},
+            }}})
+
+    def get_fields_mapping_by_field_def(self, doc_type, fields_definition):
+        """
+        fields_definition   = [{"name":form_model_id_q1, "type":"date", "date_format":"MM-yyyy"},{"name":form_model_id_q1, "type":"string"}]
+        """
+        mapping_fields = {}
+        mapping = {"date_detection": False, "properties": mapping_fields}
+        for field_def in fields_definition:
+            if field_def.get("type") is "date":
+                _add_date_field_mapping(mapping_fields, field_def)
+            else:
+                self._add_text_field_mapping_for_submission(mapping_fields, field_def)
+        return {doc_type: mapping}
 
 
 class ChangeInvolvingDateFieldException(Exception):
@@ -239,3 +260,5 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
 
     search_dict.update({'void': submission_doc.void})
     return search_dict
+
+

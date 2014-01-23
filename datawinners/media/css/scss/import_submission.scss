@@ -38,9 +38,13 @@
 
 .file_upload_disabled{
   float: left;
-  width: 144px;
+  width: auto;
 }
 
 .template-download-section-adjustment{
   padding: 10px;
+}
+
+.disabled{
+  background-image: none;
 }
