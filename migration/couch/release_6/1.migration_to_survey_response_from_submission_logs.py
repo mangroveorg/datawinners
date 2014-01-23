@@ -7,7 +7,6 @@ from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport import TransportInfo
-from mangrove.transport.contract.submission import Submission
 from mangrove.transport.contract.survey_response import SurveyResponse
 from migration.couch.utils import init_migrations, mark_start_of_migration, should_not_skip
 
@@ -41,7 +40,7 @@ def log_failure_summary(db, successfully_processed, skipped_count):
 
 
 def create_survey_response(dbm, form_codes, row):
-    submission = Submission.new_from_doc(dbm=dbm, doc=Submission.__document_class__.wrap(row['value']))
+    submission = None #Submission.new_from_doc(dbm=dbm, doc=Submission.__document_class__.wrap(row['value']))
     log_statement('Submission id : %s' % submission.uuid)
     if submission.form_code not in form_codes:
         survey_response = create_survey_response(submission, dbm)
