@@ -4406,11 +4406,11 @@ msgstr "<div class='radio_title'>Monthly: $ <span id='pay_monthly_per_month'></s
 
 msgid "half_yearly_subtitle"
 msgstr "<div class='radio_title'>6 months:$ <span id='pay_half_yearly_per_month'></span> per month</div>"
-"<div class='subtitle_for_radio_button pay_half_yearly'>Save 25% by paying 6 months in advance</div>"
+"<div class='subtitle_for_radio_button pay_half_yearly'>Save <span id='half_yearly_percentage'></span>% by paying 6 months in advance</div>"
 
 msgid "yearly_subtitle"
 msgstr "<div class='radio_title'>12 months:$ <span id='pay_yearly_per_month'></span> per month</div>"
-"<div class='subtitle_for_radio_button pay_yearly'>Save 50% by paying 12 months in advance</div>"
+"<div class='subtitle_for_radio_button pay_yearly'>Save <span id='yearly_percentage'></span>% by paying 12 months in advance</div>"
 
 msgid "pro_subtitle"
 msgstr "<div class='radio_title'>Pro</div>"

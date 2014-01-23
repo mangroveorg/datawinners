@@ -66,6 +66,8 @@ $(document).ready(function() {
         pricing['Pro SMS']['pay_monthly'] = 399;
         pricing['Pro SMS']['half_yearly'] = 2154;
         pricing['Pro SMS']['yearly'] = 3588;
+        pricing['Pro SMS']['half_yearly_percentage'] = 10;
+        pricing['Pro SMS']['yearly_percentage'] = 25;
 
         pricing['Pro'] = new Array();
         pricing['Pro']['pay_monthly_per_month'] = 199;
@@ -74,6 +76,8 @@ $(document).ready(function() {
         pricing['Pro']['pay_monthly'] = 199;
         pricing['Pro']['half_yearly'] = 894;
         pricing['Pro']['yearly'] = 1188;
+        pricing['Pro']['half_yearly_percentage'] = 25;
+        pricing['Pro']['yearly_percentage'] = 50;
 
         var invoice_period = $("input[name=invoice_period]:checked").val();
 
