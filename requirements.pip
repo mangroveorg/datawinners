@@ -30,7 +30,7 @@ https://github.com/jezdez/django_compressor/tarball/086f05041a28c176994ebc22dc41
 python-digest
 decorator
 django-digest
-django-countries
+django-countries==1.5
 babel
 rednose
 django-debug-toolbar-django13
