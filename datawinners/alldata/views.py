@@ -158,9 +158,8 @@ def index(request):
 @valid_web_user
 def failed_submissions(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
-    logs = DatawinnerLog.objects.all()
     organization = get_organization(request)
-    org_logs = [log for log in logs if log.organization == organization]
+    org_logs = DatawinnerLog.objects.filter(organization=organization)
     return render_to_response('alldata/failed_submissions.html',
                               {'logs': org_logs, 'page_heading': page_heading,
                                'disable_link_class': disable_link_class,
