@@ -1,5 +1,6 @@
 import json
 import random
+from unittest import SkipTest
 import uuid
 from django.test import TestCase, Client
 from datawinners.feeds.migrate import project_by_form_model_id
@@ -11,7 +12,7 @@ from mangrove.form_model.form_model import get_form_model_by_code
 def random_string(length=6):
     return ''.join(random.sample('abcdefghijklmnopqrs', length))
 
-
+@SkipTest #functional_test
 class TestDeleteSubmission(TestCase):
     def setUp(self):
         self.client = Client()

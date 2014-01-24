@@ -1,6 +1,9 @@
 from django.utils import unittest
 from django.test import Client
+from unittest.case import SkipTest
 
+
+@SkipTest #functional_test
 class TestAllData(unittest.TestCase):
     def setUp(self):
         self.client = Client()

@@ -2,7 +2,7 @@ from unittest.case import SkipTest
 from django.test import TestCase
 from django.test import Client
 
-
+@SkipTest #functional_test
 class TestEntityLoggedIn(TestCase):
 
     def setUp(self):

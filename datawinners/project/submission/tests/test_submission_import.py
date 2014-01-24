@@ -1,9 +1,10 @@
 import os
 import tempfile
+from unittest import SkipTest
 from django.test import TestCase, Client
 import xlrd
 
-
+@SkipTest #functional_test
 class TestSubmissionImport(TestCase):
     def setUp(self):
         self.client = Client()

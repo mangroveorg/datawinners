@@ -1,6 +1,9 @@
 from django.utils import unittest
 from django.test import Client
+from django.utils.unittest.case import SkipTest
 
+
+@SkipTest #functional_test
 class TestSmsView(unittest.TestCase):
 
     def setUp(self):

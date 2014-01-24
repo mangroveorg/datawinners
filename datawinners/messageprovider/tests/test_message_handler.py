@@ -157,6 +157,6 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         form_submission_mock.short_code = "REP1"
         form_submission_mock.entity_type = ["subject"]
         response = create_response_from_form_submission(reporters=[{'name':'mino rakoto'}],
-            form_submission=form_submission_mock)
+                                                        form_submission=form_submission_mock)
         message = get_success_msg_for_registration_using(response, "web")
         self.assertEqual(expected_message, message)

@@ -1,7 +1,8 @@
 import json
+from unittest.case import SkipTest
 from django.test import TestCase, Client
 
-
+@SkipTest #functional_test
 class TestAllSubjectsAutoCompleteView(TestCase):
     def setUp(self):
         self.client = Client()

@@ -2,11 +2,9 @@
 from django.conf.urls.defaults import patterns
 
 from datawinners.submission.views import sms, web_sms, receipt
-from datawinners.submission.smsc_simulator import process_sms
 
 urlpatterns = patterns('',
     (r'^submission$', sms),
     (r'^receipt', receipt),
-    (r'^submission_simulate$', process_sms),
     (r'^test_sms_submission/$', web_sms),
 )

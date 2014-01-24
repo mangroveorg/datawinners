@@ -7,7 +7,7 @@ To install
         # The unique name of this transport
         TRANSPORT_NAME: smpp_transport_1
         USER_ACCOUNT: vumi
-        POST_TO_URL: http://localhost:8000/submission_simulate
+        POST_TO_URL: http://localhost:8000/submission
 
         system_id: smppclient1  # username
         password: password      # password
