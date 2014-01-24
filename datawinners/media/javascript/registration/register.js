@@ -64,7 +64,9 @@ $(document).ready(function() {
                 'invoice_period':{
                     'pay_monthly_per_month':399,
                     'pay_half_yearly_per_month':359,
-                    'pay_yearly_per_month': 299
+                    'pay_yearly_per_month': 299,
+                    'half_yearly_percentage': 10,
+                    'yearly_percentage': 25
                 },
                 'totals':{
                     'pay_monthly':399,
@@ -76,7 +78,9 @@ $(document).ready(function() {
                 'invoice_period':{
                     'pay_monthly_per_month':199,
                     'pay_half_yearly_per_month':149,
-                    'pay_yearly_per_month': 99
+                    'pay_yearly_per_month': 99,
+                    'half_yearly_percentage': 25,
+                    'yearly_percentage': 50
                 },
                 'totals':{
                     'pay_monthly':199,
