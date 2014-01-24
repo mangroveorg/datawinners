@@ -42,7 +42,8 @@ class SubmissionFormatter(object):
                 col_val = self._split_gps(row.get(field_code))
                 result.extend(col_val)
             elif self.columns[field_code].get("type") == 'select':
-                col_val = ", ".join(row.get(field_code))
+                value = row.get(field_code)
+                col_val = ", ".join(value) if value else ""
                 result.append(col_val)
             elif self.columns[field_code].get("type") == 'integer':
                 col_val_parsed = try_parse(float, row.get(field_code))
