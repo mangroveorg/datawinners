@@ -120,3 +120,13 @@ class TestSubmissionFormatter(TestCase):
 
         self.assertEquals(headers, ['How many hours do you code'])
         self.assertEquals(values, [["some rubbish"]])
+
+    def test_should_return_empty_value_for_multi_select_field_when_no_answer_present(self):
+        columns = {'form_id_q1': {'type': 'select', 'label':'Where do you code from'}}
+        submission_list = [{}]
+
+        headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
+
+        self.assertEquals(headers, ['Where do you code from'])
+        self.assertEquals(values, [[""]])
+
