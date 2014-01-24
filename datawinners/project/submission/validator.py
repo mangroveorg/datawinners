@@ -1,5 +1,7 @@
 from collections import OrderedDict
 from datawinners.entity.import_data import translate_errors
+from mangrove.utils.types import is_empty
+
 
 class SubmissionWorkbookRowValidator():
 
@@ -14,6 +16,8 @@ class SubmissionWorkbookRowValidator():
         row_count = 1
         for row in parsed_rows:
             row_count += 1
+            if len([value for value in dict(row).values() if not is_empty(value)]) == 1:
+                continue
             entity_key = self._get_entity_key()
             entity_answer = row.get(entity_key)
 

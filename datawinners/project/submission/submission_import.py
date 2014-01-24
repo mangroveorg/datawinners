@@ -43,20 +43,20 @@ class SubmissionImporter():
             SubmissionWorkbookValidator(self.form_model, is_org_user(self.user), is_summary_project).validate(
                 q_answer_dicts)
 
-            total_submissions = len(q_answer_dicts)
             user_profile = NGOUserProfile.objects.filter(user=self.user)[0]
             self._add_reporter_id_for_datasender(q_answer_dicts, user_profile, is_organization_user, is_summary_project)
 
             valid_rows, invalid_row_details = self.submission_validator.validate_rows(q_answer_dicts)
             ignored_entries, saved_entries = self.submission_persister.save_submissions(is_organization_user,
                                                                                         user_profile, valid_rows)
+            total_submissions = len(invalid_row_details)+len(valid_rows)
             if ignored_entries:
                 ignored_row_start = total_submissions - len(ignored_entries) + 1
                 message = gettext(
                     "You have crossed the 1000 submissions limit for a trial account. Submissions from row %s have been ignored and were not imported." % str(
                         ignored_row_start))
             else:
-                message = gettext('%s of %s Submissions imported. Please check below for details.') % (len(saved_entries), len(q_answer_dicts))
+                message = gettext('%s of %s Submissions imported. Please check below for details.') % (len(saved_entries), total_submissions)
         except InvalidFileFormatException as e:
             message = gettext(
                 u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!")
@@ -207,8 +207,6 @@ class XlsSubmissionParser(XlsParser):
         parsedData = []
         for row_num in range(0, worksheet.nrows):
             row = worksheet.row_values(row_num)
-            if self._is_empty(row):
-                continue
             row = self._clean(row)
             parsedData.append(row)
         return parsedData
