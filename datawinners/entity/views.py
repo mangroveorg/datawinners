@@ -223,8 +223,8 @@ def subject_short_codes_to_delete(request, manager, entity_type):
     return request.POST['all_ids'].split(';')
 
 
-def _index_ofkey_in_ordered_dict(ordered_dict, key):
-    return ordered_dict.keys().index(key)
+# def _index_ofkey_in_ordered_dict(ordered_dict, key):
+#     return ordered_dict.keys().index(key)
 
 
 def log_activity(request, action, detail):

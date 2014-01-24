@@ -3,6 +3,7 @@ import time
 
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
+from south.tests import skiptest
 from framework.utils.common_utils import by_css
 
 from framework.utils.data_fetcher import fetch_, from_
@@ -16,6 +17,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
 from tests.alldatasenderstests.add_data_senders_data import *
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 
+@skiptest # Skipped since datasender registration form is now a popup and the page current page is testing is no longer used
 class TestAllDataSenderRegistration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

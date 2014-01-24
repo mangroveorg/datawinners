@@ -82,21 +82,21 @@ class AllDataSendersView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(AllDataSendersView, self).dispatch(*args, **kwargs)
 
-    def _get_all_datasenders(self, manager, projects, user):
-        all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
-        project_association = self._get_project_association(projects)
-        remove_system_datasenders(all_data_senders)
-        for datasender in all_data_senders:
-            get_datasender_user_detail(datasender, user)
-            datasender['projects'] = project_association.get(datasender['short_code'])
-        return all_data_senders
+    # def _get_all_datasenders(self, manager, projects, user):
+    #     all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
+    #     project_association = self._get_project_association(projects)
+    #     remove_system_datasenders(all_data_senders)
+    #     for datasender in all_data_senders:
+    #         get_datasender_user_detail(datasender, user)
+    #         datasender['projects'] = project_association.get(datasender['short_code'])
+    #     return all_data_senders
 
-    def _get_project_association(self, projects):
-        project_association = defaultdict(list)
-        for project in projects:
-            for datasender in project['value']['data_senders']:
-                project_association[datasender].append(project['value']['name'])
-        return project_association
+    # def _get_project_association(self, projects):
+    #     project_association = defaultdict(list)
+    #     for project in projects:
+    #         for datasender in project['value']['data_senders']:
+    #             project_association[datasender].append(project['value']['name'])
+    #     return project_association
 
 
 class AllDataSendersAjaxView(View):

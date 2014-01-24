@@ -64,14 +64,14 @@ class TestProjectViews(unittest.TestCase):
         self.assertEqual(reverse('subject_questionnaire', args=[project_id]) + "?web_view=True",
                          subject_links['register_subjects_link_web_view'])
 
-    def test_should_return_datasender_project_links(self):
-        project_id = "1"
-        datasender_links = make_data_sender_links(project_id)
-        self.assertEqual(reverse('all_datasenders'), datasender_links['datasenders_link'])
-        self.assertEqual(reverse('create_data_sender_and_web_user', args=[project_id]),
-                         datasender_links['register_datasenders_link'])
-        self.assertEqual(reverse('registered_datasenders', args=[project_id]),
-                         datasender_links['registered_datasenders_link'])
+    # def test_should_return_datasender_project_links(self):
+    #     project_id = "1"
+    #     datasender_links = make_data_sender_links(project_id)
+    #     self.assertEqual(reverse('all_datasenders'), datasender_links['datasenders_link'])
+    #     self.assertEqual(reverse('create_data_sender_and_web_user', args=[project_id]),
+    #                      datasender_links['register_datasenders_link'])
+    #     self.assertEqual(reverse('registered_datasenders', args=[project_id]),
+    #                      datasender_links['registered_datasenders_link'])
 
 
     def test_for_websubmission_on_subjects_should_provide_add_links(self):
@@ -82,13 +82,13 @@ class TestProjectViews(unittest.TestCase):
         self.assertEqual(reverse('subject_questionnaire', args=[project.id])+"?web_view=True", link.url)
         self.assertEqual('Register a clinic', link.text)
 
-    def test_for_websubmission_on_datasenders_should_provide_add_links(self):
-        project = Mock(spec=Project)
-        project.id = "1"
-        project.entity_type = "reporter"
-        link = add_link(project)
-        self.assertEqual(reverse('create_data_sender_and_web_user', args=[project.id]), link.url)
-        self.assertEqual('Add a data sender', link.text)
+    # def test_for_websubmission_on_datasenders_should_provide_add_links(self):
+    #     project = Mock(spec=Project)
+    #     project.id = "1"
+    #     project.entity_type = "reporter"
+    #     link = add_link(project)
+    #     self.assertEqual(reverse('create_data_sender_and_web_user', args=[project.id]), link.url)
+    #     self.assertEqual('Add a data sender', link.text)
 
     def test_should_get_preview_and_instruction_links(self):
         with patch("datawinners.project.wizard_view.reverse") as reverse:

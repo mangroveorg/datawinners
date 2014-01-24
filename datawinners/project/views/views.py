@@ -48,7 +48,7 @@ from datawinners.project.models import Project, Reminder, ReminderMode, get_all_
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import save_questionnaire as subject_save_questionnaire, create_single_web_user, viewable_questionnaire, initialize_values, get_example_sms_message, get_example_sms
-from datawinners.project.wizard_view import reminders
+# from datawinners.project.wizard_view import reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
@@ -231,71 +231,71 @@ def _make_reminder_mode(reminder_mode, day):
 def _format_reminder(reminder, project_id):
     return dict(message=reminder.message, id=reminder.id,
                 to=_format_string_for_reminder_table(reminder.remind_to),
-                when=_make_reminder_mode(reminder.reminder_mode, reminder.day),
-                delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
+                when=_make_reminder_mode(reminder.reminder_mode, reminder.day))
+                # delete_link=reverse('delete_reminder', args=[project_id, reminder.id]))
 
 
 def _format_reminders(reminders, project_id):
     return [_format_reminder(reminder, project_id) for reminder in reminders]
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@csrf_exempt
-@is_not_expired
-def create_reminder(request, project_id):
-    if is_empty(request.POST['id']):
-        Reminder(project_id=project_id, day=request.POST.get('day', 0), message=request.POST['message'],
-                 reminder_mode=request.POST['reminder_mode'], remind_to=request.POST['remind_to'],
-                 organization=utils.get_organization(request)).save()
-        messages.success(request, 'Reminder added successfully')
-    else:
-        reminder = Reminder.objects.filter(project_id=project_id, id=request.POST['id'])[0]
-        reminder.day = request.POST.get('day', 0)
-        reminder.message = request.POST['message']
-        reminder.reminder_mode = request.POST['reminder_mode']
-        reminder.remind_to = request.POST['remind_to']
-        reminder.save()
-        messages.success(request, 'Reminder updated successfully')
-    return HttpResponseRedirect(reverse(reminders, args=[project_id]))
+# @login_required(login_url='/login')
+# @session_not_expired
+# @csrf_exempt
+# @is_not_expired
+# def create_reminder(request, project_id):
+#     if is_empty(request.POST['id']):
+#         Reminder(project_id=project_id, day=request.POST.get('day', 0), message=request.POST['message'],
+#                  reminder_mode=request.POST['reminder_mode'], remind_to=request.POST['remind_to'],
+#                  organization=utils.get_organization(request)).save()
+#         messages.success(request, 'Reminder added successfully')
+#     else:
+#         reminder = Reminder.objects.filter(project_id=project_id, id=request.POST['id'])[0]
+#         reminder.day = request.POST.get('day', 0)
+#         reminder.message = request.POST['message']
+#         reminder.reminder_mode = request.POST['reminder_mode']
+#         reminder.remind_to = request.POST['remind_to']
+#         reminder.save()
+#         messages.success(request, 'Reminder updated successfully')
+#     return HttpResponseRedirect(reverse(reminders, args=[project_id]))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@csrf_exempt
-@is_not_expired
-def get_reminder(request, project_id):
-    reminder_id = request.GET['id']
-    reminder = Reminder.objects.filter(project_id=project_id, id=reminder_id)[0]
-    return HttpResponse(json.dumps(reminder.to_dict()))
+# @login_required(login_url='/login')
+# @session_not_expired
+# @csrf_exempt
+# @is_not_expired
+# def get_reminder(request, project_id):
+#     reminder_id = request.GET['id']
+#     reminder = Reminder.objects.filter(project_id=project_id, id=reminder_id)[0]
+#     return HttpResponse(json.dumps(reminder.to_dict()))
 
 
-@login_required(login_url='/login')
-@session_not_expired
-@csrf_exempt
-@is_not_expired
-def delete_reminder(request, project_id, reminder_id):
-    Reminder.objects.filter(project_id=project_id, id=reminder_id)[0].delete()
-    messages.success(request, 'Reminder deleted')
-    return HttpResponseRedirect(reverse(reminders, args=[project_id]))
+# @login_required(login_url='/login')
+# @session_not_expired
+# @csrf_exempt
+# @is_not_expired
+# def delete_reminder(request, project_id, reminder_id):
+#     Reminder.objects.filter(project_id=project_id, id=reminder_id)[0].delete()
+#     messages.success(request, 'Reminder deleted')
+#     return HttpResponseRedirect(reverse(reminders, args=[project_id]))
 
 
-@login_required(login_url='/login')
-@csrf_exempt
-@is_not_expired
-def manage_reminders(request, project_id):
-    if request.method == 'GET':
-        reminders = Reminder.objects.filter(project_id=project_id, voided=False)
-        return HttpResponse(json.dumps([reminder.to_dict() for reminder in reminders]))
-
-    if request.method == 'POST':
-        reminders = json.loads(request.POST['reminders'])
-        Reminder.objects.filter(project_id=project_id).delete()
-        for reminder in reminders:
-            Reminder(project_id=project_id, day=reminder['day'], message=reminder['message'],
-                     reminder_mode=reminder['reminderMode'], organization=utils.get_organization(request),
-                     remind_to=reminder['targetDataSenders']).save()
-        return HttpResponse("Reminders has been saved")
+# @login_required(login_url='/login')
+# @csrf_exempt
+# @is_not_expired
+# def manage_reminders(request, project_id):
+#     if request.method == 'GET':
+#         reminders = Reminder.objects.filter(project_id=project_id, voided=False)
+#         return HttpResponse(json.dumps([reminder.to_dict() for reminder in reminders]))
+#
+#     if request.method == 'POST':
+#         reminders = json.loads(request.POST['reminders'])
+#         Reminder.objects.filter(project_id=project_id).delete()
+#         for reminder in reminders:
+#             Reminder(project_id=project_id, day=reminder['day'], message=reminder['message'],
+#                      reminder_mode=reminder['reminderMode'], organization=utils.get_organization(request),
+#                      remind_to=reminder['targetDataSenders']).save()
+#         return HttpResponse("Reminders has been saved")
 
 
 @login_required(login_url='/login')
@@ -314,8 +314,8 @@ def sent_reminders(request, project_id):
                                "project_links": make_project_links(project, questionnaire.form_code),
                                'is_quota_reached': is_quota_reached(request, organization=organization),
                                'reminders': get_all_reminder_logs_for_project(project_id, dbm),
-                               'in_trial_mode': is_trial_account,
-                               'create_reminder_link': reverse(create_reminder, args=[project_id])},
+                               'in_trial_mode': is_trial_account},
+                               # 'create_reminder_link': reverse(create_reminder, args=[project_id])},
                               context_instance=RequestContext(request))
 
 
@@ -514,27 +514,27 @@ def questionnaire(request, project_id=None):
                                   context_instance=RequestContext(request))
 
 
-def _make_project_context(form_model, project):
-    return {'form_model': form_model, 'project': project,
-            'project_links': make_project_links(project,
-                                                form_model.form_code)}
+# def _make_project_context(form_model, project):
+#     return {'form_model': form_model, 'project': project,
+#             'project_links': make_project_links(project,
+#                                                 form_model.form_code)}
 
 
-def _create_submission_request(form_model, request):
-    submission_request = dict(request.POST)
-    submission_request["form_code"] = form_model.form_code
-    return submission_request
+# def _create_submission_request(form_model, request):
+#     submission_request = dict(request.POST)
+#     submission_request["form_code"] = form_model.form_code
+#     return submission_request
 
 
-def _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class):
-    return {'questionnaire_form': questionnaire_form,
-            'project': project,
-            'project_links': make_project_links(project, form_code),
-            'hide_link_class': hide_link_class,
-            'disable_link_class': disable_link_class,
-            'back_to_project_link': reverse("alldata_index"),
-            'smart_phone_instruction_link': reverse("smart_phone_instruction"),
-    }
+# def _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class):
+#     return {'questionnaire_form': questionnaire_form,
+#             'project': project,
+#             'project_links': make_project_links(project, form_code),
+#             'hide_link_class': hide_link_class,
+#             'disable_link_class': disable_link_class,
+#             'back_to_project_link': reverse("alldata_index"),
+#             'smart_phone_instruction_link': reverse("smart_phone_instruction"),
+#     }
 
 
 def _get_form_code(manager, project):

@@ -15,11 +15,12 @@ from mangrove.datastore.datadict import get_datadict_type_by_slug,\
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
+# from mangrove.form_model.form_model import get_form_model_by_entity_type
 from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
-    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, get_form_model_by_entity_type, EMAIL_FIELD, get_form_model_by_code
+    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, EMAIL_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint, ShortCodeRegexConstraint
 from mangrove.transport.player.player import WebPlayer

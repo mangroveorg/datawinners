@@ -24,7 +24,8 @@ from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, Entity
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
-from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, get_form_model_by_entity_type, \
+from mangrove.form_model.form_model import get_form_model_by_entity_type
+from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, \
     NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD, FormModel
 from mangrove.transport.player.parser import CsvParser, XlsParser, XlsDatasenderParser
 from mangrove.transport.contract.transport_info import Channel, TransportInfo

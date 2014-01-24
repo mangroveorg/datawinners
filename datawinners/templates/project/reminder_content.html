@@ -13,7 +13,7 @@
         <button class="button" type="submit">{% trans "Save the reminders" %}</button>
     </div>
 </div>
-<div style="display:{% if is_reminder %} none; {% else %} block; {% endif %}">
+<div style="display:{% if is_reminder %} none; {% else %} block {% endif %}">
     {% trans "Reminders are not enabled for this project Please proceed to the next <a>step</a>" %}
 </div>
 </form>

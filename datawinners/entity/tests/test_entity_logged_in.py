@@ -9,9 +9,9 @@ class TestEntityLoggedIn(TestCase):
         self.client = Client()
         self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
 
-    def test_should_render_datasender_create_view_if_logged_in(self):
-        response = self.client.get('/entity/datasender/create')
-        self.assertEquals(response.status_code,200)
+    # def test_should_render_datasender_create_view_if_logged_in(self):
+    #     response = self.client.get('/entity/datasender/create')
+    #     self.assertEquals(response.status_code,200)
 
     def test_should_render_subject_create_view_if_logged_in(self):
         response = self.client.get('/entity/subject/create/clinic/')

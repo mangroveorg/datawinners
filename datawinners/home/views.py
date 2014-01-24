@@ -10,10 +10,10 @@ import feedparser
 from BeautifulSoup import BeautifulSoup
 import time
 
-class FeatureAwareTemplateView(TemplateView):
-    def get_context_data(self, **kwargs):
-        context = super(FeatureAwareTemplateView, self).get_context_data(**kwargs)
-        return RequestContext(self.request, context)
+# class FeatureAwareTemplateView(TemplateView):
+#     def get_context_data(self, **kwargs):
+#         context = super(FeatureAwareTemplateView, self).get_context_data(**kwargs)
+#         return RequestContext(self.request, context)
 
 def custom_home(request):
     if request.user.is_authenticated():
@@ -47,7 +47,7 @@ def ask_us(request):
     body = _("From")+": "+from_email+"\n"+\
            _("Category")+": "+request.POST["category"]+"\n\n"+\
            request.POST["message"]
-    
+
     to = request.POST["to"]+"@datawinners.com"
     email = EmailMessage(subject, body, from_email=from_email, to=[to])
 

@@ -1,13 +1,14 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
 from datawinners.entity.view.all_datasenders import DisassociateDataSendersView
-from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders, edit_data_sender
+from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders
 from datawinners.project.views.import_submissions_views import ImportSubmissionView
 
-from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
+from datawinners.project.wizard_view import create_project, edit_project, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
 from datawinners.project.views import submission_views
-from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, registered_subjects, create_reminder, get_reminder, delete_reminder, broadcast_message, manage_reminders, sent_reminders, activate_project, delete_project, undelete_project, review_and_test, edit_my_subject_questionnaire, project_has_data, save_questionnaire, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject
+from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \
+    registered_subjects, broadcast_message, sent_reminders, activate_project, delete_project, undelete_project, review_and_test, edit_my_subject_questionnaire, project_has_data, save_questionnaire, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -41,20 +42,20 @@ urlpatterns = patterns('',
                            edit_my_subject, name="edit_my_subject"),
                        url(r'^project/datasenders/(?P<project_id>.+?)/$', create_data_sender_and_web_user,
                            name="create_data_sender_and_web_user"),
-                       url(r'^project/datasender/edit/(?P<project_id>.+?)/(?P<reporter_id>.+?)/$', edit_data_sender,
-                           name="edit_data_sender"),
+                       # url(r'^project/datasender/edit/(?P<project_id>.+?)/(?P<reporter_id>.+?)/$', edit_data_sender,
+                       #     name="edit_data_sender"),
                        url(r'^project/registered_datasenders/(?P<project_id>.+?)/$', registered_datasenders,
                            name="registered_datasenders"),
                        url(r'^project/(?P<project_name>.+?)/registered_datasenders/ajax/$',
                            MyDataSendersAjaxView.as_view(), name="my_datasenders_ajax"),
-                       (r'^project/create_reminder/(?P<project_id>.+?)/$', create_reminder),
-                       (r'^project/get_reminder/(?P<project_id>.+?)/$', get_reminder),
-                       url(r'^project/delete_reminder/(?P<project_id>.+?)/(?P<reminder_id>.+?)/$', delete_reminder,
-                           name="delete_reminder"),
-                       (r'^project/reminderspage/(?P<project_id>.+?)/$', reminders),
+                       # (r'^project/create_reminder/(?P<project_id>.+?)/$', create_reminder),
+                       # (r'^project/get_reminder/(?P<project_id>.+?)/$', get_reminder),
+                       # url(r'^project/delete_reminder/(?P<project_id>.+?)/(?P<reminder_id>.+?)/$', delete_reminder,
+                       #     name="delete_reminder"),
+                       # (r'^project/reminderspage/(?P<project_id>.+?)/$', reminders),
                        url(r'^project/broadcast_message/(?P<project_id>.+?)/$', broadcast_message,
                            name='broadcast_message'),
-                       (r'^project/reminders/(?P<project_id>.+?)/$', manage_reminders),
+                       # (r'^project/reminders/(?P<project_id>.+?)/$', manage_reminders),
                        url(r'^project/sent_reminders/(?P<project_id>.+?)/$', sent_reminders, name='sent_reminders'),
                        url(r'^project/set_reminder/(?P<project_id>.+?)/$', reminder_settings, name='reminder_settings'),
                        url(r'^project/activate/(?P<project_id>.+?)/$', activate_project, name="activate_project"),

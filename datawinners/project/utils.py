@@ -18,7 +18,7 @@ def make_subject_links(project_id):
 
 def make_data_sender_links(project_id, reporter_id=None):
     datasender_links = {'datasenders_link': reverse('all_datasenders'),
-                        'edit_datasender_link': reverse('edit_data_sender', args=[project_id, reporter_id]),
+                        # 'edit_datasender_link': reverse('edit_data_sender', args=[project_id, reporter_id]),
                         'register_datasenders_link': reverse('create_data_sender_and_web_user', args=[project_id]),
                         'registered_datasenders_link': reverse('registered_datasenders', args=[project_id])}
     return datasender_links

@@ -234,30 +234,30 @@ def edit_project(request, project_id=None):
             return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
 
-@login_required
-@session_not_expired
-@is_datasender
-@is_not_expired
-def reminders(request, project_id):
-    if request.method == 'GET':
-        dbm = get_database_manager(request.user)
-        project = Project.load(dbm.database, project_id)
-        questionnaire = FormModel.get(dbm, project.qid)
-        from datawinners.project.views import make_project_links
-
-        project_links = make_project_links(project, questionnaire.form_code)
-        reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
-        organization = get_organization(request)
-        from datawinners.project.views import _format_reminders, create_reminder
-
-        return render_to_response('project/reminders.html',
-                                  {'project': project,
-                                   'reminders': _format_reminders(reminders, project_id),
-                                   'in_trial_mode': organization.in_trial_mode,
-                                   'create_reminder_link': reverse(create_reminder, args=[project_id]),
-                                   'project_links': project_links,
-                                   'is_quota_reached': is_quota_reached(request, organization=organization)},
-                                  context_instance=RequestContext(request))
+# @login_required
+# @session_not_expired
+# @is_datasender
+# @is_not_expired
+# def reminders(request, project_id):
+#     if request.method == 'GET':
+#         dbm = get_database_manager(request.user)
+#         project = Project.load(dbm.database, project_id)
+#         # questionnaire = FormModel.get(dbm, project.qid)
+#         # from datawinners.project.views import make_project_links
+#
+#     #    project_links = make_project_links(project, questionnaire.form_code)
+#         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
+#         organization = get_organization(request)
+#         from datawinners.project.views import _format_reminders, create_reminder
+#
+#         return render_to_response('project/reminders.html',
+#                                   {'project': project,
+#                                    'reminders': _format_reminders(reminders, project_id),
+#                                    'in_trial_mode': organization.in_trial_mode,
+#                                    'create_reminder_link': reverse(create_reminder, args=[project_id]),
+#                                    #'project_links': project_links,
+#                                    'is_quota_reached': is_quota_reached(request, organization=organization)},
+#                                   context_instance=RequestContext(request))
 
 
 @login_required
