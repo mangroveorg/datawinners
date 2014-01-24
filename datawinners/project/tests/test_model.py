@@ -24,7 +24,7 @@ project2_name = uniq('Test2')
 class TestProjectModel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.db_name = 'mangrove-test'
+        cls.db_name = uniq('mangrove-test')
         cls.manager = get_db_manager('http://localhost:5984/', cls.db_name)
         initializer._create_views(cls.manager)
         create_views(cls.manager)
@@ -55,13 +55,12 @@ class TestProjectModel(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.manager = get_db_manager('http://localhost:5984/', cls.db_name)
         _delete_db_and_remove_db_manager(cls.manager)
         get_cache_manager().flush_all()
 
     def test_get_associated_data_senders(self):
         entity = Entity(self.manager,entity_type=["reporter"], short_code="rep1")
-        entity.save()
+        entity_id = entity.save()
         project = Project(name="TestDS", goals="Testing", project_type="Survey", entity_type="reporter", devices=['web'])
         project.data_senders = ["rep1"]
         project.save(self.manager)
@@ -69,7 +68,7 @@ class TestProjectModel(unittest.TestCase):
         result = project.get_associated_datasenders(self.manager)
 
         self.assertEquals(result[0].short_code, entity.short_code)
-        self.assertEquals(result[0].id, entity.id)
+        self.assertEquals(result[0].id, entity_id)
 
     def test_get_all_projects(self):
         projects = get_all_projects(self.manager)
