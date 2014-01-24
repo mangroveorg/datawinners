@@ -52,9 +52,7 @@ class SubmissionImporter():
                                                                                         user_profile, valid_rows)
             if ignored_entries:
                 ignored_row_start = total_submissions - len(ignored_entries) + 1
-                message = gettext(
-                    "You have crossed the 1000 submissions limit for a trial account. Submissions from row %s have been ignored and were not imported." % str(
-                        ignored_row_start))
+                message = gettext("You have crossed the 1000 Submissions limit for your Basic account. Submissions from row %s have been ignored and were not imported.") % str(ignored_row_start)
             else:
                 message = gettext('%s of %s Submissions imported. Please check below for details.') % (len(saved_entries), len(q_answer_dicts))
         except InvalidFileFormatException as e:
