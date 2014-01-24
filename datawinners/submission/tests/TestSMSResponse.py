@@ -17,7 +17,7 @@ class TestSMSResponse(unittest.TestCase):
 
     def test_should_return_expected_success_response(self):
         self.form_submission_mock.is_registration = False
-        response = Response([{NAME_FIELD: "Mino X"}],None, self.form_submission_mock.saved, self.form_submission_mock.errors,
+        response = Response([{NAME_FIELD: "Mino X"}], None, None, self.form_submission_mock.saved, self.form_submission_mock.errors,
             self.form_submission_mock.data_record_id,
             self.form_submission_mock.short_code, self.form_submission_mock.cleaned_data, self.form_submission_mock.is_registration,
             ['reporter'],
@@ -35,7 +35,7 @@ class TestSMSResponse(unittest.TestCase):
     def test_should_return_expected_success_response_for_registration(self):
         self.form_submission_mock.is_registration = True
 
-        response = Response([{NAME_FIELD: "Mr. X"}],  None, self.form_submission_mock.saved,
+        response = Response([{NAME_FIELD: "Mr. X"}], None, None, self.form_submission_mock.saved,
             self.form_submission_mock.errors,
             self.form_submission_mock.data_record_id,
             self.form_submission_mock.short_code, self.form_submission_mock.cleaned_data,
@@ -57,7 +57,7 @@ class TestSMSResponse(unittest.TestCase):
         error_response = "horrible hack. feeling bad about it. But need to change mangrove error handling and error response"
         self.form_submission_mock.errors = error_response
 
-        response = Response([],  None, self.form_submission_mock.saved,
+        response = Response([], None, None, self.form_submission_mock.saved,
             self.form_submission_mock.errors,
             self.form_submission_mock.data_record_id,
             self.form_submission_mock.short_code, self.form_submission_mock.cleaned_data,

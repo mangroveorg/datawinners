@@ -106,7 +106,8 @@ class FilePlayer(Player):
         profile.save()
         return user
 
-    def _import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, values):
+    def _import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, submission,
+                           values):
         email = case_insensitive_lookup(values, "email")
         if email:
             if not email_re.match(email):
@@ -115,13 +116,13 @@ class FilePlayer(Player):
             if email in registered_emails:
                 raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
-            response = self.submit(form_model, values, [])
+            response = self.submit(form_model, values, submission, [])
 
             if response.success:
                 user = self._create_user(email, organization, response)
                 send_email_to_data_sender(user, _("en"))
         else:
-            response = self.submit(form_model, values, [])
+            response = self.submit(form_model, values, submission, [])
         return response
 
     def _append_country_for_location_field(self, form_model, values, organization):
@@ -134,14 +135,16 @@ class FilePlayer(Player):
 
     def _import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, values, form_model=None):
         self._append_country_for_location_field(form_model, values, organization)
+        transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
+        submission = self._create_submission(transport_info, form_code, copy(values))
         try:
             values = self._process(form_model, values)
             log_entry = "message: " + str(values) + "|source: web|"
             if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
                 response = self._import_data_sender(form_model, organization, registered_emails,
-                                                   registered_phone_numbers, values)
+                                                   registered_phone_numbers, submission, values)
             else:
-                response = self.submit(form_model, values, [])
+                response = self.submit(form_model, values, submission, [])
 
             if not response.success:
                 response.errors = dict(error=response.errors, row=values)

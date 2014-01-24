@@ -1,13 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
 import re
-from datetime import datetime
-
 from babel.dates import format_date
 from django.http import Http404
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
-
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
@@ -15,14 +12,16 @@ from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesN
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
+from mangrove.transport import TransportInfo
 from mangrove.utils.types import  is_sequence, sequence_to_str
 from datawinners.sms.models import MSG_TYPE_USER_MSG
 import models
+from datetime import datetime
 from models import Reminder
+from mangrove.transport.contract.submission import Submission
 from mangrove.transport.repository.survey_responses import get_survey_responses
 from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.contract.request import Request
-
 
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION = "%b. %d, %Y, %I:%M %p"
 
@@ -58,6 +57,28 @@ def _create_entity_id_question(dbm, entity_id_question_code):
 
 def hide_entity_question(fields):
     return [each for each in fields if not each.is_entity_field]
+
+
+def is_submission_deleted(submission):
+    return submission.is_void() if submission is not None else True
+
+
+def adapt_submissions_for_template(questions, submissions):
+    assert is_sequence(questions)
+    assert is_sequence(submissions)
+    for s in submissions:
+        assert type(s) is Submission and s._doc is not None
+    formatted_list = []
+    for each in submissions:
+        case_insensitive_dict = {key.lower(): value for key, value in each.values.items()}
+        formatted_list.append(
+            [each.uuid, each.destination, each.owner_uid, each.created, each.errors,
+             "Success" if each.status else "Error"] +
+            ["Yes" if is_submission_deleted(each.data_record) else "No"] + [
+            get_according_value(case_insensitive_dict, q) for q in questions])
+
+    return [tuple(each) for each in formatted_list]
+
 
 def get_according_value(value_dict, question):
     value = value_dict.get(question.code.lower(), '--')

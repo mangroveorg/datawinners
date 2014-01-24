@@ -8,6 +8,7 @@ if __name__ == "__main__" and __package__ is None:
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
+from mangrove.transport.contract.submission import Submission, SubmissionLogDocument
 from migration.couch.utils import mark_start_of_migration, migrate
 from mangrove.datastore.entity import get_by_short_code_include_voided
 
@@ -76,9 +77,8 @@ def migrate_entity(manager, form_model, datarecord_doc, data_to_restore):
     submission_log_doc = manager.database.query(map_submission_log_datarecord_id,
                                                 key=[datarecord_doc['value']['_id'], form_model.revision])
     if len(submission_log_doc.rows):
-        # submission_log = get_instance_from_doc(manager, submission_log_doc.rows[0]['value'], classname=Submission,
-        #                                        documentclassname=SubmissionLogDocument)
-        submission_log = None
+        submission_log = get_instance_from_doc(manager, submission_log_doc.rows[0]['value'], classname=Submission,
+                                               documentclassname=SubmissionLogDocument)
         entity_uid = datarecord_doc['value']['data']['short_code']['value']
         entity = get_by_short_code_include_voided(manager, entity_uid, form_model.entity_type)
         cleaned_data, errors = form_model.validate_submission(values=submission_log.values)
