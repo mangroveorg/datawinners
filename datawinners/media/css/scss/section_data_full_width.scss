@@ -3,7 +3,7 @@ table{
 }
 
 .container_24{
-    float: left;
+  padding-right: 1em;
     margin: 0;
     width: 100%;
     .content{
@@ -59,6 +59,7 @@ table{
 }
 #main_tab{
     width:100%;
+    margin-left:5px;
     .last{
         padding-right:10px !important;
     }

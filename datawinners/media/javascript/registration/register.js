@@ -55,32 +55,48 @@ $(document).ready(function() {
     });
 
     function update_price(){
-        if ($("[name=account_type]:checked").length == 0 || $("input[name=invoice_period]:checked").length ==0)
+        if ($("[name=account_type]:checked").length == 0)
             return;
+        
         var account_type = $("[name=account_type]:checked").val();
-        var pricing = new Array();
-        pricing['Pro SMS'] = new Array();
-        pricing['Pro SMS']['pay_monthly_per_month'] = 399;
-        pricing['Pro SMS']['pay_half_yearly_per_month'] = 359;
-        pricing['Pro SMS']['pay_yearly_per_month'] = 299;
-        pricing['Pro SMS']['pay_monthly'] = 399;
-        pricing['Pro SMS']['half_yearly'] = 2154;
-        pricing['Pro SMS']['yearly'] = 3588;
+        var pricing = {
+            'Pro SMS':{
+                'invoice_period':{
+                    'pay_monthly_per_month':399,
+                    'pay_half_yearly_per_month':359,
+                    'pay_yearly_per_month': 299,
+                    'half_yearly_percentage': 10,
+                    'yearly_percentage': 25
+                },
+                'totals':{
+                    'pay_monthly':399,
+                    'half_yearly':2154,
+                    'yearly':3588
+                }
+            },
+            'Pro':{
+                'invoice_period':{
+                    'pay_monthly_per_month':199,
+                    'pay_half_yearly_per_month':149,
+                    'pay_yearly_per_month': 99,
+                    'half_yearly_percentage': 25,
+                    'yearly_percentage': 50
+                },
+                'totals':{
+                    'pay_monthly':199,
+                    'half_yearly':894,
+                    'yearly':1188
+                }
+            }
+        }
+        
+        if  ($("input[name=invoice_period]:checked").length != 0) {
+            var invoice_period = $("input[name=invoice_period]:checked").val();
+            $('#invoice_total_span').text(pricing[account_type]['totals'][invoice_period]);
+        }
 
-        pricing['Pro'] = new Array();
-        pricing['Pro']['pay_monthly_per_month'] = 199;
-        pricing['Pro']['pay_half_yearly_per_month'] = 149;
-        pricing['Pro']['pay_yearly_per_month'] = 99;
-        pricing['Pro']['pay_monthly'] = 199;
-        pricing['Pro']['half_yearly'] = 894;
-        pricing['Pro']['yearly'] = 1188;
-
-        var invoice_period = $("input[name=invoice_period]:checked").val();
-
-        $('#invoice_total_span').text(pricing[account_type][invoice_period]);
-
-        for (dom_id in pricing[account_type]) {
-            $("#" + dom_id).text(pricing[account_type][dom_id]);
+        for (dom_id in pricing[account_type]['invoice_period']) {
+            $("#" + dom_id).text(pricing[account_type]['invoice_period'][dom_id]);
         }
     }
 

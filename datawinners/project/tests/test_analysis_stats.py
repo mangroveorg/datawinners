@@ -1,5 +1,6 @@
 import json
 
+from datawinners.project.views.submission_views import create_statistics_response
 from django.test import Client
 from django.utils import unittest
 from django.utils.unittest.case import SkipTest
@@ -9,7 +10,6 @@ from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import SelectField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
-from datawinners.project.views.submission_views import create_statistics_response
 
 @SkipTest #functional_test
 class TestAnalysisStats(unittest.TestCase):

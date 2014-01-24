@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 import iso8601
 from mangrove.transport.contract.request import Request
-from mangrove.errors.MangroveException import DataObjectAlreadyExists
+from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.transport.player.player import SMSPlayer
 from django.utils import translation
 from mangrove.form_model.form_model import get_form_model_by_code
@@ -192,6 +192,10 @@ def send_message(incoming_request, response):
 
 
 def submit_to_player(incoming_request):
+    sent_via_sms_test_questionnaire = incoming_request.get('test_sms_questionnaire', False)
+    organization = incoming_request.get('organization')
+    organization = organization
+
     try:
         dbm = incoming_request['dbm']
         post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request),
@@ -202,11 +206,11 @@ def submit_to_player(incoming_request):
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request, logger=incoming_request.get("logger"))
 
-        if response.is_registration and not incoming_request.get('test_sms_questionnaire', False):
-            incoming_request.get('organization').increment_message_count_for(sms_registration_count=1)
+        if response.is_registration and not sent_via_sms_test_questionnaire:
+            organization.increment_message_count_for(sms_registration_count=1)
 
-        if not response.is_registration and incoming_request.get('test_sms_questionnaire', False):
-            incoming_request.get('organization').increment_message_count_for(incoming_web_count=1)
+        if not response.is_registration and sent_via_sms_test_questionnaire:
+            organization.increment_message_count_for(incoming_web_count=1)
 
 
         mail_feed_errors(response, dbm.database_name)
@@ -215,14 +219,18 @@ def submit_to_player(incoming_request):
     except DataObjectAlreadyExists as e:
         message = ugettext("The Unique ID Number %s is already used for the %s %s. Register your %s with a different ID.") % \
                   (e.data[1], e.data[2], e.data[3], e.data[2])
-        if not incoming_request.get('test_sms_questionnaire', False):
-            incoming_request.get('organization').increment_message_count_for(sms_registration_count=1)
+        if not sent_via_sms_test_questionnaire:
+            organization.increment_message_count_for(sms_registration_count=1)
+    except DataObjectNotFound as exception:
+        if sent_via_sms_test_questionnaire:
+            organization.increment_message_count_for(incoming_web_count=1)
+        message = handle(exception, incoming_request)
     except Exception as exception:
         message = handle(exception, incoming_request)
 
     incoming_request['outgoing_message'] = message
 
-    if not incoming_request.get('test_sms_questionnaire', False):
+    if not sent_via_sms_test_questionnaire:
         SMS(message= message,
             message_id=incoming_request['message_id'],
             organization=incoming_request['organization'],
