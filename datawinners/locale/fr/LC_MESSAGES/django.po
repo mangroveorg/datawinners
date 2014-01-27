@@ -2883,17 +2883,17 @@ msgstr "Pour importer une liste de %(entity_type)s suivez ces étapes"
 msgid "Download the template %(entity_type)s.xls"
 msgstr "Télécharger le modèle %(entity_type)s.xls"
 
-msgid "Fill out the template with your %(entity_type)s' information"
-msgstr "Remplissez le modèle avec les informations sur vos %(entity_type)s"
+msgid "Fill out the template with your %(entity_type)s' information."
+msgstr "Remplissez le modèle avec les informations sur vos %(entity_type)s."
 
-msgid "The last question is optional.  If you already have ID numbers for your %(entity_type)s, fill them in.  If not, DataWinners will generate them for you"
-msgstr "La dernière question est facultative. Si vous avez déjà votre numéro ID pour vos %(entity_type)ss, remplissez les. Sinon, DataWinners va les générer pour vous"
+msgid "The last question is optional. If you already have ID numbers for your %(entity_type)s, fill them in. If not, DataWinners will generate them for you."
+msgstr "La dernière question est facultative. Si vous avez déjà votre numéro ID pour vos %(entity_type)ss, remplissez les. Sinon, DataWinners va les générer pour vous."
 
 msgid "Save the template on your computer."
 msgstr "Enregistrez le modèle sur votre ordinateur."
 
-msgid "Click the gold Upload a file button and select the saved template"
-msgstr "Cliquez sur le bouton Télécharger un fichier et sélectionnez le modèle enregistré"
+msgid "Click the gold Upload a file button and select the saved template."
+msgstr "Cliquez sur le bouton Télécharger un fichier et sélectionnez le modèle enregistré."
 
 msgid "Edit Registration Form"
 msgstr "Modifier le Formulaire d’Enregistrement"
@@ -2937,11 +2937,11 @@ msgstr "Edition formulaire d'enregistrement de %(entity_type)s"
 msgid "To import a list of Data Senders follow these steps"
 msgstr "Pour importer une liste d'expéditeurs, suivez ces étapes"
 
-msgid "Download the template"
-msgstr "Téléchargez le modèle"
+msgid "Download the template."
+msgstr "Téléchargez le modèle."
 
-msgid "Fill out the template with your Data Senders information"
-msgstr "Remplissez le modèle avec les informations sur vos expéditeurs"
+msgid "Fill out the template with your Data Senders information."
+msgstr "Remplissez le modèle avec les informations sur vos expéditeurs."
 
 msgid "Make a Submission"
 msgstr "Faire une Soumission"
