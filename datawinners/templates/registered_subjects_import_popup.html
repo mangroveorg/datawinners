@@ -3,10 +3,10 @@
             {% blocktrans with subject.entity as entity_type %}To import a list of {{ entity_type }} follow these steps{% endblocktrans %}
             <ul class="bulleted">
                 <li>{% blocktrans with subject.entity as entity_type %}Download the template {{ entity_type }}.xls{% endblocktrans %}</li>
-                <li>{% blocktrans with subject.entity as entity_type %}Fill out the template with your {{ entity_type }}' information{% endblocktrans %}</li>
-                <li>{% blocktrans with subject.entity as entity_type %}The last question is optional.  If you already have ID numbers for your {{ entity_type }}, fill them in.  If not, DataWinners will generate them for you{% endblocktrans %}</li>
-                <li>{% trans "Save the template on your computer" %}</li>
-                <li>{% trans "Click the gold Upload a file button and select the saved template" %}</li>
+                <li>{% blocktrans with subject.entity as entity_type %}Fill out the template with your {{ entity_type }}' information.{% endblocktrans %}</li>
+                <li>{% blocktrans with subject.entity as entity_type %}The last question is optional. If you already have ID numbers for your {{ entity_type }}, fill them in. If not, DataWinners will generate them for you.{% endblocktrans %}</li>
+                <li>{% trans "Save the template on your computer." %}</li>
+                <li>{% trans "Click the gold Upload a file button and select the saved template." %}</li>
             </ul>
             <br/>
             <div class="file-uploader float_left" id="import-{{ subject.code }}">
