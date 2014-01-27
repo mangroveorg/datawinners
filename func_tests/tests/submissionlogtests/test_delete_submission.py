@@ -1,7 +1,9 @@
 import json
 import random
+from unittest import SkipTest
 import uuid
 from django.test import TestCase, Client
+from nose.plugins.attrib import attr
 from datawinners.feeds.migrate import project_by_form_model_id
 from datawinners.main.database import get_db_manager
 from datawinners.search.submission_query import SubmissionQuery
@@ -11,7 +13,7 @@ from mangrove.form_model.form_model import get_form_model_by_code
 def random_string(length=6):
     return ''.join(random.sample('abcdefghijklmnopqrs', length))
 
-
+@attr('functional_test')
 class TestDeleteSubmission(TestCase):
     def setUp(self):
         self.client = Client()
@@ -22,9 +24,9 @@ class TestDeleteSubmission(TestCase):
 
     def test_should_delete_all_submissions_given_delete_all_flag_true(self):
         unique_text = random_string()
-        self.create_success_submissions(5, unique_text)
-        self.create_errorred_submissions(3, unique_text)
-        self.assertEqual(len(self.get_submissions('all', unique_text)), 8)
+        self.create_success_submissions(2, unique_text)
+        self.create_errorred_submissions(1, unique_text)
+        self.assertEqual(len(self.get_submissions('all', unique_text)), 3)
 
         resp = self.client.post('/project/' + self.project.id + '/submissions/delete/',
                                 {'all_selected': 'true', 'submission_type': 'all',
@@ -35,9 +37,9 @@ class TestDeleteSubmission(TestCase):
 
     def test_should_delete_only_success_submissions_given_delete_all_flag_true_and_submission_type_success(self):
         unique_text = random_string()
-        self.create_success_submissions(5, unique_text)
-        self.create_errorred_submissions(3, unique_text)
-        self.assertEqual(len(self.get_submissions('success', unique_text)), 5)
+        self.create_success_submissions(2, unique_text)
+        self.create_errorred_submissions(1, unique_text)
+        self.assertEqual(len(self.get_submissions('success', unique_text)), 2)
 
         resp = self.client.post('/project/' + self.project.id + '/submissions/delete/',
                                 {'all_selected': 'true', 'submission_type': 'success',
@@ -45,7 +47,7 @@ class TestDeleteSubmission(TestCase):
 
         self.assertEqual(json.loads(resp.content)['success'], True)
         self.assertEqual(len(self.get_submissions('success', unique_text)), 0)
-        self.assertEqual(len(self.get_submissions('error', unique_text)), 3)
+        self.assertEqual(len(self.get_submissions('error', unique_text)), 1)
 
     def create_success_submissions(self, num_of_submissions, unique_text):
         _from = "917798987116"

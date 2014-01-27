@@ -1,7 +1,10 @@
 import json
+from unittest import SkipTest
 from django.test import TestCase, Client
+from nose.plugins.attrib import attr
 
 
+@attr('functional_test')
 class TestAutoCompleteView(TestCase):
     def setUp(self):
         self.client = Client()

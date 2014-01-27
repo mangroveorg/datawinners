@@ -1,16 +1,11 @@
-from mangrove.form_model.field import TextField
+import unittest
+from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
+from mock import Mock
 from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
-from mangrove.bootstrap import initializer
-from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 
 
-class TestExcelHeaders(MangroveTestCase):
-    def setUp(self):
-        MangroveTestCase.setUp(self)
-        initializer.run(self.manager)
-
-
+class TestExcelHeaders(unittest.TestCase):
     def _get_header_component(self, headers, parameter):
         header_text = []
         for header in headers:
@@ -76,7 +71,7 @@ class TestExcelHeaders(MangroveTestCase):
                   {"name": "eid", "code": 'eid', "label": 'What is the subject id', "entity_question_flag": True,
                    "type": "text"},
                   {"name": "choices", "code": 'q5', "label": 'Your choices', "type": "select"}]
-        form_model = FormModel(self.manager, name="some_name", entity_type=['test'], form_code="cli00_mp", fields=[], type="type1")
+        form_model = FormModel(Mock(spec=DatabaseManager), name="some_name", entity_type=['test'], form_code="cli00_mp", fields=[], type="type1")
 
         headers = get_submission_headers(fields, form_model)
 

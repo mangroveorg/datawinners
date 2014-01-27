@@ -223,9 +223,7 @@ def lookup_entity_name(dbm, id, entity_type):
 #TODO:This is required only for the migration for creating submission indexes.To be removed following release10
 def _update_select_field_by_revision(field, form_model, submission_doc):
     field_by_revision = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
-    if field_by_revision and (field_by_revision.type == "select" or field_by_revision.type == "select1"):
-        field = field_by_revision
-    return field
+    return field_by_revision if field_by_revision else field
 
 
 def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model):
@@ -241,10 +239,16 @@ def _update_with_form_model_fields(dbm, submission_doc, search_dict, form_model)
             entry = entity_name
         elif field.type == "select":
             field = _update_select_field_by_revision(field, form_model, submission_doc)
-            entry = field.get_option_value_list(entry)
+            if field.type == "select":
+                entry = field.get_option_value_list(entry)
+            elif field.type == "select1":
+                entry = ",".join(field.get_option_value_list(entry))
         elif field.type == "select1":
             field = _update_select_field_by_revision(field, form_model, submission_doc)
-            entry = ",".join(field.get_option_value_list(entry))
+            if field.type == "select":
+                entry = field.get_option_value_list(entry)
+            elif field.type == "select1":
+                entry = ",".join(field.get_option_value_list(entry))
         elif field.type == "date":
             try:
                 if form_model.revision != submission_doc.form_model_revision:

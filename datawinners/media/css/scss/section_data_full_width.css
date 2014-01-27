@@ -2,7 +2,7 @@ table {
   margin: 0; }
 
 .container_24 {
-  float: left;
+  padding-right: 1em;
   margin: 0;
   width: 100%; }
   .container_24 .content {
@@ -43,6 +43,7 @@ table {
     float: right; }
 
 #main_tab {
-  width: 100%; }
+  width: 100%;
+  margin-left: 5px; }
   #main_tab .last {
     padding-right: 10px !important; }

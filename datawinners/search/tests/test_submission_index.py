@@ -26,8 +26,9 @@ class TestSubmissionIndex(unittest.TestCase):
 
     def test_should_update_search_dict_with_form_field_questions_for_success_submissions(self):
         search_dict = {}
-        self.form_model.fields.append(Mock(spec=Field, is_entity_field=False, code="q4", type="select",
-                                           get_option_value_list=Mock(return_value=["one", "two"])))
+        mock_select_field = Mock(spec=Field, is_entity_field=False, code="q4", type="select",
+                    get_option_value_list=Mock(return_value=["one", "two"]))
+        self.form_model.fields.append(mock_select_field)
         self.form_model.fields.append(Mock(spec=Field, is_entity_field=False, code="q5", type="text"))
         values = {'eid': 'cid005',
                   'q2': "name",
@@ -35,7 +36,9 @@ class TestSubmissionIndex(unittest.TestCase):
                   'q4': "ab",
                   'q5': '11.12.2012'}
         submission_doc = SurveyResponseDocument(values=values, status="success")
+        self.form_model.get_field_by_code_and_rev.return_value = mock_select_field
         with patch('datawinners.search.submission_index.lookup_entity_name') as lookup_entity_name:
+
             lookup_entity_name.return_value = 'Test'
             _update_with_form_model_fields(None, submission_doc, search_dict, self.form_model)
             self.assertEquals(
