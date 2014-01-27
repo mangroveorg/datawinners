@@ -283,7 +283,8 @@ def tabulate_failures(rows,manager):
         else:
             errors = [_(row[1].errors['error'])]
 
-        row[1].errors['error'] = "<br>".join(errors)
+        errors.insert(0, "")
+        row[1].errors['error'] = "<li>".join(errors)
         row[1].errors.pop('row')
         tabulated_data.append(row[1].errors)
     return tabulated_data

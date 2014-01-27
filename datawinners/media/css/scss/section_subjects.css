@@ -1460,3 +1460,7 @@ div.border_top_bottom {
 
 .subject_note {
   padding-bottom: 11px; }
+
+.error_body td{
+    padding-left: 21px;
+}

@@ -44,14 +44,14 @@
                     <span class="error_import_template_link">{% trans "- Please use the latest "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></span>
                 </div>
                 <div class="import_table">
-                    <table class="styled_table">
+                    <table class="styled_table error_body">
                         <thead>
                         <tr>
                             <th>{% trans "Row Number" %}</th>
                             <th>{% trans "Error" %}</th>
                         </tr>
                         </thead>
-                        <tbody id='error_body'>
+                        <tbody>
                         </tbody>
                     </table>
                 </div>
