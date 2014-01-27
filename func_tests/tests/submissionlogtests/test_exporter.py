@@ -4,9 +4,10 @@ import tempfile
 from unittest import SkipTest
 import uuid
 from django.test import TestCase, Client
+from nose.plugins.attrib import attr
 import xlrd
 
-@SkipTest #functional_test
+@attr('functional_test')
 class TestExporter(TestCase):
     def setUp(self):
         self.client = Client()

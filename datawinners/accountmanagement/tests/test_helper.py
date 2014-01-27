@@ -21,7 +21,7 @@ class TestHelper(unittest.TestCase):
 
 
     def test_get_mobile_numbers_for_trial_account(self):
-        self.assertEqual(TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS,get_trial_account_user_phone_numbers())
+        self.assertSetEqual(set(TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS),set(get_trial_account_user_phone_numbers()))
 
     def test_should_return_proper_mobile_number_unique_validator(self):
         org = Mock(spec=Organization)
