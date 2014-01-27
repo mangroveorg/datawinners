@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 import iso8601
 from mangrove.transport.contract.request import Request
-from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound
+from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.transport.player.player import SMSPlayer
 from django.utils import translation
 from mangrove.form_model.form_model import get_form_model_by_code
@@ -222,6 +222,10 @@ def submit_to_player(incoming_request):
         if not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
     except DataObjectNotFound as exception:
+        if sent_via_sms_test_questionnaire:
+            organization.increment_message_count_for(incoming_web_count=1)
+        message = handle(exception, incoming_request)
+    except FormModelDoesNotExistsException as exception:
         if sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(incoming_web_count=1)
         message = handle(exception, incoming_request)
