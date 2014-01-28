@@ -88,6 +88,7 @@ def checkout_project(context):
 
 
 def post_checkout_datawinners(virtual_env):
+    run('sudo rm -rf '+ virtual_env +'/src/mangrove')
     activate_and_run(virtual_env, "pip install -r requirements.pip")
 
 
