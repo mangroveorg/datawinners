@@ -27,8 +27,8 @@ def create_index(dbm, form_model,logger):
         survey_response = SurveyResponseDocument._wrap_row(row)
         search_dict = _meta_fields(survey_response, dbm)
         _update_with_form_model_fields(dbm, survey_response, search_dict, form_model)
-        survey_response.update({'id': survey_response.uuid})
-        survey_response_docs.append(survey_response)
+        search_dict.update({'id': survey_response.uuid})
+        survey_response_docs.append(search_dict)
 
     if survey_response_docs:
         es.bulk_index(dbm.database_name, form_model.id, survey_response_docs)
