@@ -14,7 +14,7 @@ from mangrove.datastore.documents import FormModelDocument, SurveyResponseDocume
 from migration.couch.utils import migrate, mark_as_completed
 
 
-def create_index(dbm, form_model):
+def create_index(dbm, form_model,logger):
     form_code = form_model.form_code
     start_key = [form_code]
     end_key = [form_code, {}]
@@ -30,7 +30,9 @@ def create_index(dbm, form_model):
         survey_response.update({'id': survey_response.uuid})
         survey_response_docs.append(survey_response)
 
-    es.bulk_index(dbm.database_name, form_model.id, survey_response_docs)
+    if survey_response_docs:
+        es.bulk_index(dbm.database_name, form_model.id, survey_response_docs)
+        logger.info('Completed indexing for survey response docs '+str(doc.get('id') for doc in survey_response_docs))
 
 
 def create_submission_index(database_name, logger):
@@ -44,7 +46,7 @@ def create_submission_index(database_name, logger):
         if form_model.is_entity_registration_form() or "delete" == form_model.form_code:
             continue
         create_submission_mapping(dbm, form_model)
-        create_index(dbm, form_model)
+        create_index(dbm, form_model, logger)
 
 
 def create_search_indices_for_submissions(db_name):
