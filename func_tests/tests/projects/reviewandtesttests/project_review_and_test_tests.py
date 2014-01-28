@@ -30,7 +30,9 @@ class TestReminderStatus(unittest.TestCase):
     @attr("functional_test")
     def test_should_get_enabled_as_reminder_status(self):
         project_review = self.go_to_project_review_and_test_page()
-        self.assertEqual(project_review.get_reminder_status(), "enabled")
+        status = project_review.get_reminder_status()
+        self.driver.create_screenshot("reminder_status.png")
+        self.assertEqual(status, "enabled")
 
     @attr("functional_test")
     def test_should_get_disabled_as_reminder_status(self):
