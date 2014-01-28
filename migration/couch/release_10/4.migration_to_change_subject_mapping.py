@@ -1,8 +1,8 @@
 import sys
 from datawinners.main.database import get_db_manager
 from datawinners.search.index_utils import get_elasticsearch_handle, subject_dict
-from datawinners.search.subject_index import create_subject_mapping, entity_search_update
-from mangrove.datastore.entity import get_all_entities
+from datawinners.search.subject_index import create_subject_mapping
+from mangrove.datastore.entity import get_all_entities_include_voided
 from mangrove.form_model.form_model import FormModel
 
 if __name__ == "__main__" and __package__ is None:
@@ -35,7 +35,7 @@ def recreate_subject_index(db_name):
             es.delete_all(db_name, entity_type)
             create_subject_mapping(dbm, form_model)
             entity_docs = []
-            for entity_doc in get_all_entities(dbm, [entity_type]):
+            for entity_doc in get_all_entities_include_voided(dbm, [entity_type]):
                 if entity_doc.data:
                     subject = subject_dict(entity_type, entity_doc, dbm, form_model)
                     subject.update({'id': entity_doc.id})
