@@ -36,7 +36,7 @@ def create_index(dbm, form_model,logger):
 
     if survey_response_docs:
         es.bulk_index(dbm.database_name, form_model.id, survey_response_docs)
-        logger.info('Completed indexing for survey response docs '+str(doc.get('id') for doc in survey_response_docs))
+        logger.info('Created index for survey response docs '+str([doc.get('id') for doc in survey_response_docs]))
 
 
 def create_submission_index(database_name, logger):
