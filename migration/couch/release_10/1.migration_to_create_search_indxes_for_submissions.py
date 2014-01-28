@@ -1,4 +1,5 @@
 import sys
+from couchdb.http import ResourceNotFound
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 
 if __name__ == "__main__" and __package__ is None:
@@ -21,13 +22,16 @@ def create_index(dbm, form_model,logger):
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                  startkey=start_key, endkey=end_key)
     es = get_elasticsearch_handle()
-    es.delete_all(dbm.database_name, form_model.id)
+    try:
+        es.delete_all(dbm.database_name, form_model.id)
+    except ResourceNotFound:
+        pass
     survey_response_docs = []
     for row in rows:
         survey_response = SurveyResponseDocument._wrap_row(row)
         search_dict = _meta_fields(survey_response, dbm)
         _update_with_form_model_fields(dbm, survey_response, search_dict, form_model)
-        search_dict.update({'id': survey_response.uuid})
+        search_dict.update({'id': survey_response.id})
         survey_response_docs.append(search_dict)
 
     if survey_response_docs:
