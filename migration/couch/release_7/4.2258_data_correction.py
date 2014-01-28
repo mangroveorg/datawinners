@@ -9,7 +9,7 @@ if __name__ == "__main__" and __package__ is None:
 from datawinners.main.database import get_db_manager
 
 from datawinners.project.models import Project
-from migration.couch.utils import mark_start_of_migration, migrate
+from migration.couch.utils import mark_as_completed, migrate
 
 
 def is_void(d, ds):
@@ -43,7 +43,7 @@ def remove_deleted_ds_from_project(db_name):
                 print "Error : " + db_name + " : " + str(project_doc) + e.message
                 traceback.print_exc(file=sys.stdout)
         logger.info("done:" + db_name)
-        mark_start_of_migration(db_name)
+        mark_as_completed(db_name)
     except Exception as e :
         logger.exception("Failed Database : %s , with error :%s " % (db_name, e.message))
 

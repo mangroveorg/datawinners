@@ -6,7 +6,7 @@ if __name__ == "__main__" and __package__ is None:
 from datawinners.main.couchdb.utils import all_db_names
 
 import logging
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 
 def aggregate_test_questionnaire(dbm):
@@ -27,7 +27,7 @@ def aggregate_test_questionnaire(dbm):
 def aggregate_test_questionnaire_submissions(db_name):
     logger = logging.getLogger(db_name)
     try:
-        mark_start_of_migration(db_name)
+        mark_as_completed(db_name)
         dbm = get_db_manager(db_name)
         aggregate_test_questionnaire(dbm)
     except Exception as e:

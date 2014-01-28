@@ -9,7 +9,7 @@ from mangrove.datastore.entity import get_all_entities
 from datawinners.main.couchdb.utils import all_db_names
 
 import logging
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 
 def migration_to_create_search_indxes_for_datasenders(db_name):
@@ -17,7 +17,7 @@ def migration_to_create_search_indxes_for_datasenders(db_name):
     dbm = get_db_manager(db_name)
     all_ds = get_all_entities(dbm, ['reporter'])
     try:
-        mark_start_of_migration(db_name)
+        mark_as_completed(db_name)
 
         for ds in all_ds:
             if 'short_code' in ds.data.keys():

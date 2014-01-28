@@ -11,7 +11,7 @@ from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.main.database import get_db_manager
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.documents import FormModelDocument, SurveyResponseDocument
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 
 def create_index(dbm, form_model):
@@ -50,10 +50,10 @@ def create_submission_index(database_name, logger):
 def create_search_indices_for_submissions(db_name):
     logger = logging.getLogger(db_name)
     try:
-        mark_start_of_migration(db_name)
         logger.info('Starting indexing')
         create_submission_index(db_name, logger)
         logger.info('Completed Indexing')
+        mark_as_completed(db_name)
     except Exception as e:
         logger.exception(e.message)
 

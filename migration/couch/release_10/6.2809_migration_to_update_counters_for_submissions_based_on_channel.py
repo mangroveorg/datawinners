@@ -13,7 +13,7 @@ if __name__ == "__main__" and __package__ is None:
 from datawinners.main.couchdb.utils import all_db_names
 
 import logging
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 def get_submission_count_aggregate(dbm):
     survey_responses = dbm.load_all_rows_in_view("surveyresponse", reduce=False, include_doc=True)
@@ -58,7 +58,6 @@ def update_counters_for_date(date, key, organization, year_month_submission_coun
 def update_counters_for_submissions(db_name):
     logger = logging.getLogger(db_name)
     try:
-        mark_start_of_migration(db_name)
         logger.info('Starting migration')
         dbm = get_db_manager(db_name)
         year_month_submission_count_dict = get_submission_count_aggregate(dbm)
@@ -67,6 +66,7 @@ def update_counters_for_submissions(db_name):
             year, month = int(key.split('_')[0]), int(key.split('_')[1])
             date = datetime.date(year, month, 1)
             update_counters_for_date(date, key, organization, year_month_submission_count_dict)
+        mark_as_completed(db_name)
     except Exception as e:
         logger.exception(e.message)
 

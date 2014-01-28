@@ -11,7 +11,7 @@ from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 import logging
 from datawinners.main.database import get_db_manager
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 
 def add_email_data_to_entity_document(manager, short_code, data, logger):
@@ -25,7 +25,7 @@ def add_email_data_to_entity_document(manager, short_code, data, logger):
 def migration_to_add_email_data_for_web_users_in_couch(db_name):
     logger = logging.getLogger(db_name)
     logger.info('Starting Migration')
-    mark_start_of_migration(db_name)
+    mark_as_completed(db_name)
     manager = get_db_manager(db_name)
 
     email_field_code = "email"

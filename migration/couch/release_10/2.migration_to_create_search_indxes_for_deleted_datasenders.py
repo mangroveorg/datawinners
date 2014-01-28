@@ -11,19 +11,17 @@ from mangrove.datastore.entity import get_all_entities_include_voided
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 
 from datawinners.main.database import get_db_manager
-from datawinners.search import entity_search_update
 from datawinners.search.index_utils import get_elasticsearch_handle
 
 from datawinners.main.couchdb.utils import all_db_names
 
 import logging
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed as mark_as_successful
 
 
 def create_search_indices_for_deleted_datasender(db_name):
     logger = logging.getLogger(db_name)
     try:
-        mark_start_of_migration(db_name)
         logger.info('Starting indexing')
         dbm = get_db_manager(db_name)
         es = get_elasticsearch_handle()
@@ -41,8 +39,7 @@ def create_search_indices_for_deleted_datasender(db_name):
             es.bulk_index(dbm.database_name, REPORTER, datasenders)
             logger.info('Created index for datasenders with ids :'+str([a.get('id') for a in datasenders]))
         logger.info('Completed Indexing')
-    except FormModelDoesNotExistsException as e:
-        logger.warning(e.message)
+        mark_as_successful(db_name)
     except Exception as e:
         logger.exception(e.message)
 

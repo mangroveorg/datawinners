@@ -19,7 +19,7 @@ def init_migrations(completed_dbs_csv):
     set_skip_dbs()
 
 
-def mark_start_of_migration(db_name):
+def mark_as_completed(db_name):
     completed_dbs_csv_file.writelines('%s\n' % db_name)
 
 

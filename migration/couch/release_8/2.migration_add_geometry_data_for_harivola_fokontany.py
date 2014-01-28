@@ -5,7 +5,7 @@ if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
 from datawinners.main.database import get_db_manager
-from migration.couch.utils import mark_start_of_migration, migrate
+from migration.couch.utils import mark_as_completed, migrate
 from mangrove.datastore.entity import Entity
 from mangrove.datastore.documents import FormModelDocument, EntityDocument
 from mangrove.form_model.form_model import FormModel
@@ -47,7 +47,7 @@ def add_geometry_data(db_name):
         manager = get_db_manager(db_name)
         
         subject_form_model_docs = manager.database.query(map_form_model_for_subject_questionnaires)
-        mark_start_of_migration(db_name)
+        mark_as_completed(db_name)
 
         for subject_form_model_doc in subject_form_model_docs:
             form_model = get_instance_from_doc(manager, subject_form_model_doc['value'])

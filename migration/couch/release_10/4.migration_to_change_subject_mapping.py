@@ -10,7 +10,7 @@ if __name__ == "__main__" and __package__ is None:
 from datawinners.main.couchdb.utils import all_db_names
 
 import logging
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 map_form_model_for_subjects = """
 function(doc) {
@@ -24,7 +24,6 @@ function(doc) {
 def recreate_subject_index(db_name):
     logger = logging.getLogger(db_name)
     try:
-        mark_start_of_migration(db_name)
         logger.info('Starting indexing')
         dbm = get_db_manager(db_name)
         form_models = dbm.database.query(map_form_model_for_subjects)
@@ -44,7 +43,9 @@ def recreate_subject_index(db_name):
                 es.bulk_index(dbm.database_name, entity_type, entity_docs)
                 es.refresh(dbm.database_name)
                 logger.info('Changed index for subject with codes ' + str([a.get('id') for a in entity_docs]))
+
         logger.info('Completed Indexing')
+        mark_as_completed(db_name)
     except Exception as e:
         logger.exception(e.message)
 

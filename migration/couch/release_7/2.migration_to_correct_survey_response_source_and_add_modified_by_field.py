@@ -11,7 +11,7 @@ from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.contract.survey_response import SurveyResponse
 
 import logging
-from migration.couch.utils import mark_start_of_migration, migrate
+from migration.couch.utils import mark_as_completed, migrate
 
 
 datasender_by_mobile_include_void = """
@@ -71,7 +71,7 @@ def migrate_survey_response_to_add_owner(db_name):
     logger = logging.getLogger(db_name)
     try:
         logger.info('Starting Migration')
-        mark_start_of_migration(db_name)
+        mark_as_completed(db_name)
         dbm = get_db_manager(db_name)
 
         phone_to_rep_id_map, rep_id_to_uid_map = create_datasender_map(dbm)

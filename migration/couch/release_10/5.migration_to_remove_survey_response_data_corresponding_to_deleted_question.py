@@ -10,7 +10,7 @@ if __name__ == "__main__" and __package__ is None:
 from datawinners.main.couchdb.utils import all_db_names
 
 import logging
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 map_form_model_for_projects = """
 function(doc) {
@@ -30,7 +30,6 @@ def get_deleted_question_codes(form_model, survey_response):
 def data_correction(db_name):
     logger = logging.getLogger(db_name)
     try:
-        mark_start_of_migration(db_name)
         logger.info('Starting indexing')
         dbm = get_db_manager(db_name)
         form_models = dbm.database.query(map_form_model_for_projects, include_docs=True)
@@ -47,6 +46,7 @@ def data_correction(db_name):
                 logger.info('Migrated survey response: ' + survey_response.id + ' deleted fields are: ' + str(
                     deleted_question_codes))
         logger.info('Completed migration')
+        mark_as_completed(db_name)
     except Exception as e:
         logger.exception(e.message)
 

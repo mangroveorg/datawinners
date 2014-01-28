@@ -11,7 +11,7 @@ from datawinners.entity.import_data import get_entity_types
 from datawinners.search import entity_search_update
 
 import logging
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 
 def migration_to_convert_subject_ids_to_lowercase(db_name):
@@ -21,8 +21,6 @@ def migration_to_convert_subject_ids_to_lowercase(db_name):
     for entity_type in entity_types:
         all_entities = get_all_entities(dbm, [entity_type])
         try:
-            mark_start_of_migration(db_name)
-
             for entity in all_entities:
                 if 'short_code' in entity.data.keys():
                     short_code = entity.data['short_code']['value']
@@ -31,9 +29,10 @@ def migration_to_convert_subject_ids_to_lowercase(db_name):
                         entity.save()
                         entity_search_update(entity._doc,dbm)
                         logger.info('Migrated short_code:%s' % short_code)
+            logger.info('Completed Migration')
+            mark_as_completed(db_name)
         except Exception as e:
             logger.exception("Failed DB: %s with message %s" % (db_name, e.message))
-    logger.info('Completed Migration')
 
 
 migrate(all_db_names(), migration_to_convert_subject_ids_to_lowercase, version=(10, 0, 3))

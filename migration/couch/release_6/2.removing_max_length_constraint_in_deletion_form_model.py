@@ -4,7 +4,7 @@ from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.database import get_db_manager
 from mangrove.form_model.form_model import get_form_model_by_code
 from datetime import datetime
-from migration.couch.utils import init_migrations, mark_start_of_migration, should_not_skip
+from migration.couch.utils import init_migrations, mark_as_completed, should_not_skip
 
 log_file = open('migration_release_6_2.log', 'a')
 
@@ -26,7 +26,7 @@ def log_statement(statement, db=""):
 
 def migrate_db(db):
     try:
-        mark_start_of_migration(db)
+        mark_as_completed(db)
         manager = get_db_manager(server=SERVER, database=db)
         log_statement("Database: %s" % manager.database)
         form_model = get_form_model_by_code(manager, ENTITY_DELETION_FORM_CODE)
