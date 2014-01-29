@@ -102,7 +102,7 @@ def _get_reminders_grouped_by_project_for_organization(organization_id):
 
 def send_time_based_reminder_email():
     delta_dict = RELATIVE_DELTA_BY_EMAIL_TYPE.get('sixty_days_after_deactivation')
-    send_time_based_reminder_email_by_account_status(delta_dict[0], 'sixty_days_after_deactivation',
+    send_time_based_reminder_email_by_account_status(delta_dict, 'sixty_days_after_deactivation',
                                                      method_name='get_all_deactivated_trial_organizations')
     for email_type, delta_dict in RELATIVE_DELTA_BY_EMAIL_TYPE.items():
         if email_type == 'sixty_days_after_deactivation': continue
@@ -112,10 +112,10 @@ def send_time_based_reminder_email():
 
 def send_time_based_reminder_email_by_account_status(date_delta, email_type,
                                                      method_name='get_all_active_trial_organizations'):
-    active_date = datetime.strftime(datetime.now() - relativedelta(**date_delta), "%Y-%m-%d")
+    active_date = datetime.strftime(datetime.now() - relativedelta(**date_delta[0]), "%Y-%m-%d")
     organizations = getattr(Organization, method_name)(active_date__contains=active_date)
     for organization in organizations:
-        if organization.active_date != organization.status_changed_datetime and not delta_dict[1]: continue
+        if organization.active_date != organization.status_changed_datetime and not date_delta[1]: continue
         organization.send_mail_to_organization_creator(email_type)
     
 if __name__ == "__main__":
