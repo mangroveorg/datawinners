@@ -22,10 +22,7 @@ def create_index(dbm, form_model,logger):
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                  startkey=start_key, endkey=end_key)
     es = get_elasticsearch_handle()
-    try:
-        es.delete_all(dbm.database_name, form_model.id)
-    except ResourceNotFound:
-        pass
+
     survey_response_docs = []
     for row in rows:
         survey_response = SurveyResponseDocument._wrap_row(row)
@@ -49,6 +46,11 @@ def create_submission_index(database_name, logger):
             continue
         if form_model.is_entity_registration_form() or "delete" == form_model.form_code:
             continue
+        try:
+            es.delete_all(dbm.database_name, form_model.id)
+        except ResourceNotFound:
+            pass
+
         create_submission_mapping(dbm, form_model)
         create_index(dbm, form_model, logger)
 
