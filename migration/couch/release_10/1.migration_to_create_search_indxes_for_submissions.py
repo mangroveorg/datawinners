@@ -48,8 +48,8 @@ def create_submission_index(database_name, logger):
             continue
         try:
             es.delete_all(dbm.database_name, form_model.id)
-        except ResourceNotFound:
-            pass
+        except Exception as ignore:
+            logger.info("Error while deleting index %s"%ignore.message)
 
         create_submission_mapping(dbm, form_model)
         create_index(dbm, form_model, logger)
