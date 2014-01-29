@@ -21,6 +21,7 @@ def init_migrations(completed_dbs_csv):
 
 def mark_as_completed(db_name):
     completed_dbs_csv_file.writelines('%s\n' % db_name)
+    completed_dbs_csv_file.flush()
 
 
 def set_skip_dbs():
