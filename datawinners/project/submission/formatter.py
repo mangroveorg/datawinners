@@ -63,7 +63,7 @@ class SubmissionFormatter(object):
         else:
             coordinates_split = value.split()
             if len(coordinates_split) == 1:
-                return value
+                return [try_parse(float, value)]
             return [try_parse(float, coordinates_split[0]), try_parse(float, coordinates_split[1])]
 
 
