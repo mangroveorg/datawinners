@@ -240,9 +240,8 @@ def delete_data_senders(request):
     return HttpResponse(json.dumps({'success': True, 'message': messages}))
 
 
-class UsersInSearchedDataSender(DataSenderActionView):
+class UsersInSearchedDataSender(View):
     def post(self, request, *args, **kwargs):
-
         manager = get_database_manager(request.user)
         selected_rep_ids = data_sender_short_codes(request, manager)
         users = rep_id_name_dict_of_users(manager)
@@ -256,4 +255,12 @@ class UsersInSearchedDataSender(DataSenderActionView):
                 non_superuser_selected.append(rep_id)
 
         return HttpResponse(json.dumps({"success": True, "superusers_selected": users_selected}))
+
+    @method_decorator(csrf_view_exempt)
+    @method_decorator(csrf_response_exempt)
+    @method_decorator(login_required)
+    @method_decorator(session_not_expired)
+    @method_decorator(is_not_expired)
+    def dispatch(self, *args, **kwargs):
+        return super(UsersInSearchedDataSender, self).dispatch(*args, **kwargs)
 
