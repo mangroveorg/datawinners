@@ -51,4 +51,4 @@ def recreate_subject_index(db_name):
 
 
 es = get_elasticsearch_handle()
-migrate(all_db_names(), recreate_subject_index, version=(10, 0, 4), threads=1)
+migrate(all_db_names(), recreate_subject_index, version=(10, 0, 3), threads=1)

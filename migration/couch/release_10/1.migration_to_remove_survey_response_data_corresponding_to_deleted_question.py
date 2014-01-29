@@ -52,4 +52,4 @@ def data_correction(db_name):
 
 
 es = get_elasticsearch_handle()
-migrate(all_db_names(), data_correction, version=(10, 0, 5), threads=1)
+migrate(all_db_names(), data_correction, version=(10, 0, 1), threads=1)

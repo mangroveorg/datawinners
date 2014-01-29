@@ -35,4 +35,4 @@ def migration_to_convert_subject_ids_to_lowercase(db_name):
             logger.exception("Failed DB: %s with message %s" % (db_name, e.message))
 
 
-migrate(all_db_names(), migration_to_convert_subject_ids_to_lowercase, version=(10, 0, 3))
+migrate(all_db_names(), migration_to_convert_subject_ids_to_lowercase, version=(10, 0, 4))
