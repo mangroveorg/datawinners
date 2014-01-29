@@ -154,12 +154,10 @@ def process_sms_counter(incoming_request):
 def check_quotas_for_trial(incoming_request):
     organization = incoming_request.get('organization')
     if organization.has_exceeded_message_limit():
-        return get_translated_response_message(incoming_request,
-            "You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects.")
+        return get_translated_response_message(incoming_request,"You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects.")
 
     if organization.has_exceeded_submission_limit():
-        return get_translated_response_message(incoming_request,
-            "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data.")
+        return get_translated_response_message(incoming_request,"You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data.")
 
     organization.increment_all_message_count()
     check_quotas_and_update_users(organization, sms_channel=True)

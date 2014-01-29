@@ -15,11 +15,9 @@ from django.contrib.sites.models import Site
 
 class TestProcessSMSCounter(unittest.TestCase):
     def setUp(self):
-        self.incoming_request ={}
-        self.incoming_request['outgoing_message']=''
-        self.incoming_request['incoming_message']=''
+        self.incoming_request = {'outgoing_message': '', 'incoming_message': ''}
         organization = Organization.objects.get(pk=TRIAL_ACCOUNT_ORGANIZATION_ID)
-        active_date = datetime.datetime.today()  - relativedelta(days=3)
+        active_date = datetime.datetime.today() - relativedelta(days=3)
         organization.active_date, organization.status_changed_datetime = active_date, active_date
         organization.save()
         self.incoming_request['organization'] = organization
@@ -91,8 +89,7 @@ class TestProcessSMSCounter(unittest.TestCase):
                 patch_get_total_submission_count.return_value = NEAR_SUBMISSION_LIMIT_TRIGGER
                 patch_get_total_incoming_message_count.return_value = NEAR_SMS_LIMIT_TRIGGER
                 check_quotas_and_update_users(organization=organization, sms_channel=True)
-                expected_subjects = [u'DataWinners | 50 SMS Submission Limit Almost Reached: Upgrade to Continue Collecting Data via SMS!',
-                    u'Your DataWinners Submission Limit is Approaching!']
+                expected_subjects = [u'DataWinners | 50 SMS Submission Limit Almost Reached: Upgrade to Continue Collecting Data via SMS!', u'Your DataWinners Submission Limit is Approaching!']
                 msgs = [mail.outbox.pop() for i in range(len(mail.outbox))]
                 for msg in msgs:
                     self.assertIn(msg.subject, expected_subjects)
