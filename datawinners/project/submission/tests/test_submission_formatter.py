@@ -31,7 +31,7 @@ class TestSubmissionFormatter(TestCase):
         headers, values = SubmissionFormatter(columns).format_tabular_data(submission_list)
 
         self.assertEquals(headers, ['what is gps Latitude', 'what is gps Longitude'])
-        self.assertEquals(values, [['a','a']])
+        self.assertEquals(values, [['aa']])
 
 
     def test_should_give_back_empty_values_and_append_latitude_and_longitude_in_headers_when_no_gps_value_in_submission(self):
