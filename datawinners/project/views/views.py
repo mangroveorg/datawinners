@@ -661,7 +661,7 @@ class SurveyWebQuestionnaireRequest():
 
     def form(self, initial_data=None):
         return SurveyResponseForm(self.form_model, self.subject_field_creator,
-                                  data=initial_data)
+                                  data=initial_data, is_datasender=self.is_data_sender)
 
     @property
     def template(self):
@@ -705,6 +705,8 @@ class SurveyWebQuestionnaireRequest():
 
         success_message = None
         error_message = None
+        if self.is_data_sender:
+            questionnaire_form.cleaned_data['eid'] = self.request.user.get_profile().reporter_id
         try:
             created_request = helper.create_request(questionnaire_form, self.request.user.username, is_update=is_update)
             response = self.player_response(created_request)

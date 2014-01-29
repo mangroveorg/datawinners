@@ -10,10 +10,14 @@ class SubjectQuestionFieldCreator(object):
         self.project = project
         self.dbm = dbm
 
-    def create(self, subject_field):
+    def create(self, subject_field, is_datasender=False):
         reporter_entity_type = 'reporter'
+        widget = None
         if self.project.is_on_type(reporter_entity_type):
-            return self._data_sender_choice_fields(subject_field)
+            if is_datasender:
+                subject_field._dict['required'] = False
+                widget = HiddenInput
+            return self._data_sender_choice_fields(subject_field, widget=widget)
         return self._subjects_choice_fields(subject_field)
 
     def create_code_hidden_field(self, subject_field):
@@ -25,17 +29,17 @@ class SubjectQuestionFieldCreator(object):
     def get_value(self, subject):
         return subject['name'] + '  (' + subject['short_code'] + ')'
 
-    def _get_choice_field(self, data_sender_choices, subject_field, help_text):
+    def _get_choice_field(self, data_sender_choices, subject_field, help_text, widget=None):
         subject_choice_field = ChoiceField(required=subject_field.is_required(), choices=data_sender_choices,
-                                           label=subject_field.name,
+                                           label=subject_field.name, widget=widget,
                                            initial=subject_field.value, help_text=help_text)
         subject_choice_field.widget.attrs['class'] = 'subject_field'
         return subject_choice_field
 
-    def _data_sender_choice_fields(self, subject_field):
+    def _data_sender_choice_fields(self, subject_field, widget=None):
         data_senders = self.project.get_data_senders(self.dbm)
         data_sender_choices = self._get_all_choices(data_senders)
-        return self._get_choice_field(data_sender_choices, subject_field, help_text=subject_field.instruction)
+        return self._get_choice_field(data_sender_choices, subject_field, help_text=subject_field.instruction, widget=widget)
 
     def _get_all_options(self):
         entity_type = self.project.entity_type

@@ -54,13 +54,13 @@ class SubjectRegistrationForm(WebForm):
 
 
 class SurveyResponseForm(WebForm):
-    def __init__(self, form_model, subject_question_creator, data=None):
+    def __init__(self, form_model, subject_question_creator, data=None, is_datasender=False):
         super(SurveyResponseForm, self).__init__(form_model, data)
         for field in self.form_model.fields:
             if not field.is_entity_field:
                 self.fields[field.code] = FormField().create(field)
             else:
-                self.fields[field.code] = subject_question_creator.create(field)
+                self.fields[field.code] = subject_question_creator.create(field, is_datasender=is_datasender)
                 self.fields['entity_question_code'] = CharField(required=False, widget=HiddenInput,
                                                                 label=field.code)
 
