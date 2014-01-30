@@ -19,14 +19,13 @@ class TestReminderStatus(unittest.TestCase):
     def tearDown(self):
         self.global_navigation.sign_out()
 
-    def go_to_project_review_and_test_page(self, project_name=CLINIC_PROJECT1_NAME):
+    def go_to_project_review_and_test_page(self, project_name=CLINIC_REMINDER_PROJECT_NAME):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
         self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
         all_project_page = self.global_navigation.navigate_to_view_all_project_page()
         project_overview_page = all_project_page.navigate_to_project_overview_page(project_name)
         return project_overview_page.navigate_to_review_and_test()
-
     @attr("functional_test")
     def test_should_get_enabled_as_reminder_status(self):
         project_review = self.go_to_project_review_and_test_page()
