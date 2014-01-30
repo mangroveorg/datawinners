@@ -98,7 +98,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         expected_message = (THANKS % "Mino") + ": 12; tester; red"
         form_submission_mock = self.create_form_submission_mock()
         form_submission_mock.entity_type = ['reporter']
-        response = create_response_from_form_submission(reporters=[{"name": "Mino"}],
+        response = create_response_from_form_submission(reporters=[{"name": "Mino"}], submission_id=123,
             form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'tester', 'age': '12', 'choice': 'red'}
@@ -141,7 +141,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         expected_message = (THANKS % "Mino") + ": tester"
         form_submission_mock = self.create_form_submission_mock()
         form_submission_mock.entity_type = ['reporter']
-        response = create_response_from_form_submission(reporters=[{'name':'mino rakoto'}],
+        response = create_response_from_form_submission(reporters=[{'name':'mino rakoto'}], submission_id=123,
             form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.entity_question.code = 'eid'
@@ -156,6 +156,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         form_submission_mock.cleaned_data = {'name': 'tester'}
         form_submission_mock.short_code = "REP1"
         form_submission_mock.entity_type = ["subject"]
-        response = create_response_from_form_submission(reporters=[{'name':'mino rakoto'}], form_submission=form_submission_mock)
+        response = create_response_from_form_submission(reporters=[{'name':'mino rakoto'}], submission_id=123,
+            form_submission=form_submission_mock)
         message = get_success_msg_for_registration_using(response, "web")
         self.assertEqual(expected_message, message)

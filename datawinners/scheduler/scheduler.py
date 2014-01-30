@@ -106,7 +106,7 @@ def send_time_based_reminder_email():
                                                      method_name='get_all_deactivated_trial_organizations')
     for email_type, delta_dict in RELATIVE_DELTA_BY_EMAIL_TYPE.items():
         if email_type == 'sixty_days_after_deactivation': continue
-        send_time_based_reminder_email_by_account_status(delta_dict[0], email_type)
+        send_time_based_reminder_email_by_account_status(delta_dict, email_type)
 
         
 
