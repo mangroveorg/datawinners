@@ -154,6 +154,7 @@ def process_sms_counter(incoming_request):
 def check_quotas_for_trial(incoming_request):
     organization = incoming_request.get('organization')
     if organization.has_exceeded_message_limit():
+        organization.increment_message_count_for(outgoing_sms_count=1)
         return get_translated_response_message(incoming_request,"You have reached your 50 SMS Submission limit. Please upgrade to a monthly subscription to continue sending in SMS Submissions to your projects.")
 
     if organization.has_exceeded_submission_limit():

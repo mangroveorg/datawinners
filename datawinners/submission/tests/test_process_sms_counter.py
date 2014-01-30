@@ -37,12 +37,15 @@ class TestProcessSMSCounter(unittest.TestCase):
     def test_should_return_outgoing_message_when_message_limit_exceeds(self):
         message_tracker = self._get_current_message_tracker_of_organization()
         message_tracker.incoming_sms_count = 50
+        message_tracker.outgoing_sms_count = 50
         message_tracker.save()
         with patch('datawinners.submission.views.get_translated_response_message') as mock_get_translated_response_message:
             self.incoming_request.update({'outgoing_message': self.outgoing_message})
             mock_get_translated_response_message.return_value = self.incoming_request
             self.incoming_request = process_sms_counter(self.incoming_request)
             self.assertEquals(self.incoming_request['outgoing_message'], self.outgoing_message)
+            message_tracker_after = self._get_current_message_tracker_of_organization()
+            self.assertEquals(message_tracker_after.outgoing_sms_count, 51)
 
     def _get_current_message_tracker_of_organization(self):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
