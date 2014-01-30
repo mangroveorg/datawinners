@@ -439,8 +439,7 @@ def review_and_test(request, project_id=None):
                                                                    'project_links': make_project_links(project,
                                                                                                        form_model.form_code),
                                                                    'is_quota_reached': is_quota_reached(request),
-                                                                   'number_of_datasenders': number_of_registered_data_senders
-            ,
+                                                                   'number_of_datasenders': number_of_registered_data_senders,
                                                                    'number_of_subjects': number_of_registered_subjects,
                                                                    "is_reminder": is_reminder,
                                                                    "in_trial_mode": in_trial_mode,
