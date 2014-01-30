@@ -1,5 +1,6 @@
 import datetime
 import logging
+from couchdb.http import ResourceNotFound
 
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.database import get_db_manager
@@ -64,6 +65,9 @@ def update_counters_for_submissions(db_name):
             date = datetime.date(year, month, 1)
             update_counters_for_date(date, key, organization, year_month_submission_count_dict)
         mark_as_completed(db_name)
+        logger.info("Completed")
+    except ResourceNotFound as e:
+        logger.warn(e.message)
     except Exception as e:
         logger.exception(e.message)
 
