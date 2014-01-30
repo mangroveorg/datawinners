@@ -315,7 +315,6 @@ def load_entity_registration_data(manager,
     return data, fields, labels
 
 
-@timebox
 def get_entity_types(manager):
     entity_types = get_all_entity_types(manager)
     return [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
