@@ -1,16 +1,9 @@
 import re
-import sys
 from datawinners.search import register_postsave_handlers
-
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
-
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.entity import get_all_entities
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.entity.import_data import get_entity_types
-
-
 import logging
 from migration.couch.utils import migrate, mark_as_completed
 

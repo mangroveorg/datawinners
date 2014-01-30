@@ -1,17 +1,15 @@
-import sys
-#from datawinners.main.database import get_db_manager
-from mangrove.datastore.database import get_db_manager
-from datawinners.search.index_utils import get_elasticsearch_handle, subject_dict
-from datawinners.search.subject_index import create_subject_mapping
+import logging
+
 from mangrove.datastore.entity import get_all_entities_include_voided
 from mangrove.form_model.form_model import FormModel
 
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
-from datawinners.main.couchdb.utils import all_db_names
+from datawinners.main.database import get_db_manager
+from datawinners.search.index_utils import get_elasticsearch_handle, subject_dict
 
-import logging
+from datawinners.search.subject_index import create_subject_mapping
+from datawinners.main.couchdb.utils import all_db_names
 from migration.couch.utils import migrate, mark_as_completed
+
 
 map_form_model_for_subjects = """
 function(doc) {

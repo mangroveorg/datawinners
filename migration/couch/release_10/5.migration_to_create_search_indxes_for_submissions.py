@@ -1,10 +1,4 @@
-import sys
-from couchdb.http import ResourceNotFound
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
-
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
-
 import logging
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.search.submission_index import create_submission_mapping, _meta_fields, _update_with_form_model_fields

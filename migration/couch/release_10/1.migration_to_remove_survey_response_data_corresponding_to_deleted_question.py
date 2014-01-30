@@ -1,16 +1,14 @@
-import sys
+import logging
+
 from mangrove.datastore.documents import FormModelDocument
-from datawinners.main.database import get_db_manager
-from datawinners.search.index_utils import get_elasticsearch_handle
-from mangrove.form_model.form_model import get_form_model_by_code, header_fields, FormModel
+from mangrove.form_model.form_model import header_fields, FormModel
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
+from datawinners.main.database import get_db_manager
+from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.main.couchdb.utils import all_db_names
-
-import logging
 from migration.couch.utils import migrate, mark_as_completed
+
 
 map_form_model_for_projects = """
 function(doc) {

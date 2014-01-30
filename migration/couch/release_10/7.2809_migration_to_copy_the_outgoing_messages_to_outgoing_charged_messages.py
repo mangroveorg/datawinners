@@ -1,13 +1,8 @@
-import sys
+import logging
 
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.database import get_db_manager
-
 from datawinners.main.couchdb.utils import all_db_names
-
-import logging
 from migration.couch.utils import migrate, mark_as_completed
 
 
