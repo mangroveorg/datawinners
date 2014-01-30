@@ -228,6 +228,8 @@ def submit_to_player(incoming_request):
             organization.increment_message_count_for(incoming_web_count=1)
         message = handle(exception, incoming_request)
     except Exception as exception:
+        if sent_via_sms_test_questionnaire:
+            organization.increment_message_count_for(incoming_web_count=1)
         message = handle(exception, incoming_request)
 
     incoming_request['outgoing_message'] = message
