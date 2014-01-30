@@ -339,6 +339,11 @@ def broadcast_message(request, project_id):
     number_of_ds = len(import_module.load_all_entities_of_type(dbm, type=REPORTER)[0]) - 1
     questionnaire = FormModel.get(dbm, project.qid)
     organization = utils.get_organization(request)
+
+    account_type = organization.account_type
+    if(account_type == 'Pro'):
+        account_type = True
+
     if request.method == 'GET':
         form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds)
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
@@ -357,6 +362,7 @@ def broadcast_message(request, project_id):
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
+
             failed_numbers = []
             try:
                 failed_numbers = helper.broadcast_message(data_senders, form.cleaned_data['text'],
@@ -377,7 +383,7 @@ def broadcast_message(request, project_id):
                                       {'project': project,
                                        "project_links": make_project_links(project, questionnaire.form_code),
                                        'is_quota_reached': is_quota_reached(request, organization=organization),
-                                       "form": form,
+                                       "form": form,"account_type":account_type,
                                        "ong_country": organization.country, "no_smsc": no_smsc,
                                        'failed_numbers': ",".join(failed_numbers), "success": success},
                                       context_instance=RequestContext(request))
