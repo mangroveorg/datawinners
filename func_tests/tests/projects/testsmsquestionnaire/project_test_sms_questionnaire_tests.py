@@ -6,11 +6,13 @@ from nose.plugins.attrib import attr
 
 from framework.base_test import setup_driver, teardown_driver
 from pages.loginpage.login_page import LoginPage
+from pages.projectspage.projects_locator import ALL_PROJECTS_TABLE_LINK
 from pages.projectspage.projects_page import ProjectsPage
 from testdata.test_data import *
 from tests.projects.testsmsquestionnaire.project_test_sms_questionnaire_data import *
 from framework.utils.common_utils import by_id
 from datawinners.accountmanagement.models import MessageTracker
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 @attr('suit_1')
@@ -47,6 +49,7 @@ class TestProjectTestSMSPreview(unittest.TestCase):
     def navigate_to_clinic3_overview_page(self):
         # going on all project page
         self.driver.go_to(url("/project/"))
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, ALL_PROJECTS_TABLE_LINK, True)
         all_project_page = ProjectsPage(self.driver)
         return all_project_page.navigate_to_project_overview_page(PROJECT_NAME)
 
