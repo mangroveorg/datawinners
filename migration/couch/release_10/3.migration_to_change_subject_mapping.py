@@ -45,7 +45,7 @@ def recreate_subject_index(db_name):
                             entity_docs.append(subject)
                     except Exception as e:
                         logger.error("Failed to index subject with id %s" % entity_doc.id)
-                        logger.error(e.message)
+                        logger.error(e)
 
                 if entity_docs:
                     es.bulk_index(dbm.database_name, entity_type, entity_docs)
