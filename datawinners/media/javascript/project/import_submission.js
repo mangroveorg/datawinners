@@ -65,6 +65,7 @@ DW.SubmissionImportPopup = function(){
     };
 
     function _reload_parent_page() {
+        DW.loading();
         window.location.reload();
     }
 
