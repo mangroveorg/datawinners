@@ -61,5 +61,5 @@ def recreate_subject_index(db_name):
         logger.exception(e.message)
 
 
-es = get_elasticsearch_handle()
+es = get_elasticsearch_handle(timeout=600)
 migrate(all_db_names(), recreate_subject_index, version=(10, 0, 3), threads=1)

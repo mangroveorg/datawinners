@@ -82,8 +82,8 @@ def subject_dict(entity_type, entity_doc, dbm, form_model):
     return dictionary
 
 
-def get_elasticsearch_handle():
-    return elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT)
+def get_elasticsearch_handle(timeout=ELASTIC_SEARCH_TIMEOUT):
+    return elasticutils.get_es(urls=ELASTIC_SEARCH_URL, timeout=timeout)
 
 
 def es_field_name(field_code, form_model_id):

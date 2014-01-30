@@ -5,7 +5,6 @@ from mangrove.form_model.form_model import header_fields, FormModel
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 
 from datawinners.main.database import get_db_manager
-from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.main.couchdb.utils import all_db_names
 from migration.couch.utils import migrate, mark_as_completed
 
@@ -49,5 +48,4 @@ def data_correction(db_name):
         logger.exception(e.message)
 
 
-es = get_elasticsearch_handle()
 migrate(all_db_names(), data_correction, version=(10, 0, 1), threads=1)

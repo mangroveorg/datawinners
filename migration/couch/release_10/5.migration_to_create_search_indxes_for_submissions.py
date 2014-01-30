@@ -1,8 +1,10 @@
+import elasticutils
+from datawinners.search.index_utils import get_elasticsearch_handle
+from datawinners.settings import ELASTIC_SEARCH_URL
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 import logging
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.search.submission_index import create_submission_mapping, _meta_fields, _update_with_form_model_fields
-from datawinners.search.index_utils import get_elasticsearch_handle
 from datawinners.main.database import get_db_manager
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.documents import FormModelDocument, SurveyResponseDocument
@@ -15,7 +17,7 @@ def create_index(dbm, form_model,logger):
     end_key = [form_code, {}]
     rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                  startkey=start_key, endkey=end_key)
-    es = get_elasticsearch_handle()
+    es = get_elasticsearch_handle(timeout=600)
 
     survey_response_docs = []
     for row in rows:
@@ -60,7 +62,7 @@ def create_search_indices_for_submissions(db_name):
         logger.exception(e.message)
 
 
-es = get_elasticsearch_handle()
+es = get_elasticsearch_handle(timeout=600)
 migrate(all_db_names(), create_search_indices_for_submissions, version=(10, 0, 5), threads=1)
 
 

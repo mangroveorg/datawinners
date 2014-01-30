@@ -16,7 +16,7 @@ def create_search_indices_for_deleted_datasender(db_name):
     try:
         logger.info('Starting indexing')
         dbm = get_db_manager(db_name)
-        es = get_elasticsearch_handle()
+        es = get_elasticsearch_handle(timeout=600)
         form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
         datasenders = []
 
@@ -36,5 +36,5 @@ def create_search_indices_for_deleted_datasender(db_name):
         logger.exception(e.message)
 
 
-es = get_elasticsearch_handle()
+es = get_elasticsearch_handle(timeout=600)
 migrate(all_db_names(), create_search_indices_for_deleted_datasender, version=(10, 0, 2), threads=1)
