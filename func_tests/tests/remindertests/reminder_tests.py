@@ -19,12 +19,6 @@ class TestReminderSend(BaseTest):
         overview_page = all_project_page.navigate_to_project_overview_page(project)
         return overview_page.navigate_to_reminder_page()
 
-    def set_deadline_by_week(self, reminder_settings, deadline):
-        reminder_settings.set_frequency(fetch_(FREQUENCY, from_(deadline)))
-        reminder_settings.set_week_day(fetch_(DAY, from_(deadline)))
-        reminder_settings.set_deadline_type_for_week(fetch_(TYPE, from_(deadline)))
-        return reminder_settings
-
     def set_deadline_by_month(self, reminder_settings, deadline):
         reminder_settings.set_frequency(fetch_(FREQUENCY, from_(deadline)))
         reminder_settings.set_month_day(fetch_(DAY, from_(deadline)))
@@ -46,16 +40,16 @@ class TestReminderSend(BaseTest):
     def test_verify_change_in_deadline_example_for_week(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK)), VALID_CREDENTIALS)
         reminder_settings = all_reminder_pages.click_reminder_settings_tab()
-        reminder_settings = self.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK)))
+        reminder_settings = all_reminder_pages.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK)))
         self.assertEqual(reminder_settings.get_example_text(), fetch_(DEADLINE, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK))[EXAMPLE_TEXT])
 
-        reminder_settings = self.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_LAST_DAY_OF_SAME_WEEK)))
+        reminder_settings = all_reminder_pages.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_LAST_DAY_OF_SAME_WEEK)))
         self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_LAST_DAY_OF_SAME_WEEK[DEADLINE])))
 
-        reminder_settings = self.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK)))
+        reminder_settings = all_reminder_pages.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK)))
         self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK[DEADLINE])))
 
-        reminder_settings = self.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_FIFTH_DAY_OF_FOLLOWING_WEEK)))
+        reminder_settings = all_reminder_pages.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_FIFTH_DAY_OF_FOLLOWING_WEEK)))
         self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_FIFTH_DAY_OF_FOLLOWING_WEEK[DEADLINE])))
 
     @attr("functional_test")
@@ -79,7 +73,7 @@ class TestReminderSend(BaseTest):
     def test_verify_set_one_reminder(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(REMINDER_DATA_WEEKLY)), VALID_CREDENTIALS)
         reminder_settings = all_reminder_pages.click_reminder_settings_tab()
-        reminder_settings = self.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(REMINDER_DATA_WEEKLY)))
+        reminder_settings = all_reminder_pages.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(REMINDER_DATA_WEEKLY)))
         reminder_settings.set_reminder(fetch_(REMINDERS, from_(REMINDER_DATA_WEEKLY)))
         reminder_settings.set_whom_to_send(fetch_(WHOM_TO_SEND, from_(REMINDER_DATA_WEEKLY)))
         reminder_settings.save_reminders()
@@ -120,7 +114,7 @@ class TestReminderSend(BaseTest):
     def test_deadline_type_should_remain_after_saving(self):
         all_reminder_page = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_MONTH)), VALID_CREDENTIALS)
         reminder_settings = all_reminder_page.click_reminder_settings_tab()
-        reminder_settings = self.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK)))
+        reminder_settings = all_reminder_page.set_deadline_by_week(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_SECOND_DAY_OF_FOLLOWING_WEEK)))
         text_example_before_save = reminder_settings.get_example_text()
         reminder_settings.save_reminders()
         self.assertEqual(reminder_settings.get_example_text(), text_example_before_save)

@@ -21,6 +21,19 @@ SUBJECT_COUNT = "subject_count"
 DATA_SENDER_COUNT = "data_sender_count"
 QUESTIONNAIRE = "questionnaire"
 REMINDERS = "reminders"
+DEADLINE = "deadline"
+FREQUENCY = "frequency"
+TYPE = "type"
+WEEK = "Week"
+DAY = "day"
+WEEK_DAY = [' ', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+SAME_WEEK = "Same week"
+EXAMPLE_TEXT = "example_text"
+MESSAGE = "message"
+BEFORE_DEADLINE = u"before_deadline"
+REMINDER_DEADLINE = "reminder_mode"
+WHOM_TO_SEND = "whom_to_send"
+ALL = "all"
 
 VALID_DATA = {PROJECT_PROFILE: {PROJECT_NAME: "clinic5 test project",
                                 PROJECT_BACKGROUND: "This project is for automation",
@@ -33,7 +46,13 @@ VALID_DATA = {PROJECT_PROFILE: {PROJECT_NAME: "clinic5 test project",
                               u"What is the GPS codé for clinic"],
               REMINDERS: "disabled"
 }
-
+DEADLINE_FIRST_DAY_OF_SAME_WEEK_NEW_PROJECT = {PROJECT_NAME: "reminder project",
+                                               DEADLINE: {FREQUENCY: WEEK, DAY: WEEK_DAY[1], TYPE: SAME_WEEK,
+                                                          EXAMPLE_TEXT: "Example: Monday of the reporting week"},
+                                               REMINDERS: {DAY: 1,
+                                                           MESSAGE: u"One day remaining, please submit the data",
+                                                           REMINDER_DEADLINE: BEFORE_DEADLINE},
+                                               WHOM_TO_SEND: ALL}
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "Review Reporter Activities ", GEN_RANDOM: True,
                       PROJECT_BACKGROUND: "This project is created by functional automation suite.",
@@ -42,6 +61,14 @@ VALID_PROJECT_DATA = {PROJECT_NAME: "Review Reporter Activities ", GEN_RANDOM: T
                       REPORT_TYPE: OTHER_SUBJECT,
                       DEVICES: "sms",
                       PAGE_TITLE: "Projects - Overview"}
+
+REMINDER_PROJECT_DATA = {PROJECT_NAME: "reminder project", GEN_RANDOM: True,
+                       PROJECT_BACKGROUND: "This project is created by functional automation suite.",
+                       PROJECT_TYPE: "survey",
+                       SUBJECT: "clinic",
+                       REPORT_TYPE: "other subject",
+                       DEVICES: "sms",
+                       PAGE_TITLE: "Projects - Overview"}
 
 CODE = "code"
 TYPE = "type"
