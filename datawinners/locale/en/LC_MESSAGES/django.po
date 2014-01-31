@@ -4431,3 +4431,6 @@ msgstr ""
 
 msgid "12 months"
 msgstr ""
+
+msgid "The questionnaire you are requesting for has been deleted from the system."
+msgstr ""

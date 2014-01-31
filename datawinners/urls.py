@@ -5,12 +5,18 @@ from django.conf.urls.defaults import patterns, include, url
 # Uncomment the next two lines to enablSubscribe Nowe the admin:
 # from django.contrib import admin
 # admin.autodiscover()
+from urlmiddleware.conf import mpatterns, middleware
+from datawinners.middleware.project_deleted_middleware import ProjectDeletedMiddleware
 import settings
 from django.contrib import admin
 
 js_info_dict = {
     'packages': ('datawinners',),
 }
+
+middlewarepatterns = mpatterns('',
+                               middleware(r'^project/', ProjectDeletedMiddleware),
+)
 
 urlpatterns = patterns('',
                        (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),

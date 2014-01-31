@@ -38,6 +38,7 @@ requests==1.2.3
 elasticutils
 uWSGI==1.4.9
 djangorestframework
+django-urlmiddleware
 celery
 flower
 -e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove

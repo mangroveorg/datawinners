@@ -304,6 +304,9 @@ class Project(DocumentBase):
         self.void = void
         self.save(dbm, process_post_update=False)
 
+    def is_deleted(self):
+        return self.void
+
     def is_on_type(self, type):
         return self.entity_type == type
 
