@@ -11,7 +11,7 @@ class ReminderSettingsPage(Page):
         self.enable_reminder = {BEFORE_DEADLINE: self.enable_before_deadline_reminder,
                            ON_DEADLINE: self.enable_on_deadline_reminder,
                            AFTER_DEADLINE: self.enable_after_deadline_reminder}
-        self.disable_reminder = {BEFORE_DEADLINE: self.disable_before_deadline_reminder,
+        self.disable_reminder_dict = {BEFORE_DEADLINE: self.disable_before_deadline_reminder,
                                  ON_DEADLINE: self.disable_on_deadline_reminder,
                            AFTER_DEADLINE: self.disable_after_deadline_reminder}
 
@@ -130,6 +130,11 @@ class ReminderSettingsPage(Page):
         if deadline != ON_DEADLINE:
             getattr(self, "set_days_for_%s_reminder" % deadline)(fetch_(DAY, from_(reminder_data)))
         getattr(self, "set_message_for_%s_reminder" % deadline)(fetch_(MESSAGE, from_(reminder_data)))
+
+    def disable_reminder(self, reminder_data):
+        deadline = fetch_(REMINDER_DEADLINE, from_(reminder_data))
+        self.disable_reminder_dict[deadline]()
+
 
     def get_reminder(self, deadline):
         days = "0" if deadline == ON_DEADLINE else getattr(self, "get_days_of_%s_reminder" % deadline)()

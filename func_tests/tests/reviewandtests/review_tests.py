@@ -1,8 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import unittest
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
 
-from framework.base_test import BaseTest, setup_driver, teardown_driver
+from framework.base_test import setup_driver, teardown_driver
 from framework.utils.common_utils import by_css
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
@@ -13,10 +14,9 @@ from pages.reviewpage.review_page import ReviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_DASHBOARD_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.reviewandtests.review_data import *
-from tests.testsettings import CLOSE_BROWSER_AFTER_TEST
 
 
-class TestReviewProject(BaseTest):
+class TestReviewProject(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -28,24 +28,6 @@ class TestReviewProject(BaseTest):
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
-
-    # def tearDown(self):
-    #     import sys
-    #
-    #     exception_info = sys.exc_info()
-    #     if exception_info != (None, None, None):
-    #         import os
-    #
-    #         if not os.path.exists("screenshots"):
-    #             os.mkdir("screenshots")
-    #         self.driver.get_screenshot_as_file(
-    #             "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
-    #
-    #     try:
-    #         if CLOSE_BROWSER_AFTER_TEST:
-    #             self.driver.quit()
-    #     except TypeError as e:
-    #         pass
 
     def prerequisites_of_create_project(self):
         # doing successful login with valid credentials
@@ -81,7 +63,7 @@ class TestReviewProject(BaseTest):
         login_page.do_successful_login_with(VALID_CREDENTIALS)
 
 
-    def create_project(self,project_data=VALID_PROJECT_DATA):
+    def create_project(self, project_data=VALID_PROJECT_DATA):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
         dashboard_page = DashboardPage(self.driver)
         create_project_page = dashboard_page.navigate_to_create_project_page()
@@ -135,7 +117,7 @@ class TestReviewProject(BaseTest):
         self.assertEqual(project_review.get_reminder_status(), "enabled")
         reminders_page = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK_NEW_PROJECT)))
         reminder_settings = reminders_page.click_reminder_settings_tab()
-        reminder_settings.disable_reminder()
+        reminder_settings.disable_reminder(fetch_(REMINDERS, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK_NEW_PROJECT)))
         reminder_settings.save_reminders()
         project_review = self.go_to_project_review_and_test_page(fetch_(PROJECT_NAME, from_(DEADLINE_FIRST_DAY_OF_SAME_WEEK_NEW_PROJECT)))
         self.assertEqual(project_review.get_reminder_status(), "disabled")

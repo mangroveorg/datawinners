@@ -62,7 +62,7 @@ VALID_PROJECT_DATA = {PROJECT_NAME: "Review Reporter Activities ", GEN_RANDOM: T
                       DEVICES: "sms",
                       PAGE_TITLE: "Projects - Overview"}
 
-REMINDER_PROJECT_DATA = {PROJECT_NAME: "reminder project", GEN_RANDOM: True,
+REMINDER_PROJECT_DATA = {PROJECT_NAME: "reminder project", GEN_RANDOM: False,
                        PROJECT_BACKGROUND: "This project is created by functional automation suite.",
                        PROJECT_TYPE: "survey",
                        SUBJECT: "clinic",
