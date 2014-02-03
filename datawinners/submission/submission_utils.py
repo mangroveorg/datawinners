@@ -1,5 +1,6 @@
 from django.utils import translation
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
+from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
 from mangrove.transport.contract.response import Response
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
@@ -26,7 +27,11 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
         form_model = get_form_model_by_code(self.dbm, form_code)
 
         processor_func = self._get_handlers(form_model)
-        return processor_func(form_model,submission_values)
+        response = processor_func(form_model, submission_values)
+        if response and not response.success:
+            raise SMSParserWrongNumberOfAnswersException(form_code)
+        return response
+
 
 
     def _get_handlers(self,form_model):

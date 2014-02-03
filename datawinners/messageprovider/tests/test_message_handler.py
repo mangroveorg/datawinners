@@ -9,7 +9,7 @@ from mangrove.form_model.field import TextField
 
 from mangrove.form_model.form_model import FormModel
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException,\
-    MangroveException, EntityQuestionCodeNotSubmitted
+    MangroveException, EntityQuestionCodeNotSubmitted, SMSParserWrongNumberOfAnswersException
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
 from mangrove.transport.contract.response import create_response_from_form_submission
 from datawinners.messageprovider.message_builder import ResponseBuilder
@@ -50,6 +50,11 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
     def test_should_return_valid_message_if_its_not_parameterized(self):
         message = get_exception_message_for(exception=NumberNotRegisteredException("1234567"), channel="web")
         expected_message = "This telephone number is not registered in our system."
+        self.assertEqual(expected_message, message)
+
+    def test_should_return_exception_message_for_incorrect_number_of_sms_answers(self):
+        message = get_exception_message_for(exception=SMSParserWrongNumberOfAnswersException("form_code"), channel="sms")
+        expected_message = u'Error. Incorrect number of responses. Review printed Questionnaire and resend entire SMS.'
         self.assertEqual(expected_message, message)
 
 
