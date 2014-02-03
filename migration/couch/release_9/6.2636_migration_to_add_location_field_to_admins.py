@@ -11,7 +11,7 @@ from datawinners.main.database import get_db_manager
 from datawinners.main.couchdb.utils import all_db_names
 
 import logging
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 
 def _add_location_field_if_absent(datasender, dbm, logger):
@@ -25,7 +25,7 @@ def _add_location_field_if_absent(datasender, dbm, logger):
 def migration_to_add_location_field_to_datasenders(db_name):
     logger = logging.getLogger(db_name)
     dbm = get_db_manager(db_name)
-    mark_start_of_migration(db_name)
+    mark_as_completed(db_name)
     logger.info('Migration started for database %s' % db_name)
     all_ds = get_all_entities(dbm, ['reporter'])
     for ds in all_ds:

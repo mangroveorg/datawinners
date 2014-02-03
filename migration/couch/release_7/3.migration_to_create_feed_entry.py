@@ -6,14 +6,14 @@ if __name__ == "__main__" and __package__ is None:
 
 import logging
 from datawinners.feeds.migrate import FeedBuilder
-from migration.couch.utils import mark_start_of_migration, migrate
+from migration.couch.utils import mark_as_completed, migrate
 
 
 def migrate_survey_response_to_feed(db_name):
     logger = logging.getLogger(db_name)
     try:
         logger.info("Starting migration")
-        mark_start_of_migration(db_name)
+        mark_as_completed(db_name)
         FeedBuilder(db_name, logger).migrate_db()
     except Exception as e:
         logger.exception("FAILED")

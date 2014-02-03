@@ -4,7 +4,7 @@ from datawinners.main.couchdb.utils import all_db_names
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0,".")
 
-from migration.couch.utils import should_not_skip, mark_start_of_migration, init_migrations
+from migration.couch.utils import should_not_skip, mark_as_completed, init_migrations
 from datetime import datetime
 import traceback
 from mangrove.datastore.database import get_db_manager
@@ -21,7 +21,7 @@ function(doc){
 }"""
 
 def migrate_db(database):
-    mark_start_of_migration(database)
+    mark_as_completed(database)
     log_statement('\nStart migration on database : %s \n' % database)
     try:
         manager = get_db_manager(server=SERVER, database=database)

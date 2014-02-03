@@ -8,7 +8,7 @@ if __name__ == "__main__" and __package__ is None:
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
-from migration.couch.utils import mark_start_of_migration, migrate
+from migration.couch.utils import mark_as_completed, migrate
 from mangrove.datastore.entity import get_by_short_code_include_voided
 
 map_form_model_for_subject_questionnaires = """
@@ -102,7 +102,7 @@ def migrate_story_2099(db_name):
     try:
         manager = get_db_manager(db_name)
         subject_form_model_docs = manager.database.query(map_form_model_for_subject_questionnaires)
-        mark_start_of_migration(db_name)
+        mark_as_completed(db_name)
         processed = []
         for form_model_doc in subject_form_model_docs:
             form_model = get_instance_from_doc(manager, form_model_doc['value'])

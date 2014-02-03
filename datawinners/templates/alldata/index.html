@@ -58,7 +58,7 @@
                             <a href="{{ project.web_submission_link }}"
                                class="{{ project.disabled }} {{ project.web_submission_link_disabled }} send-in-data-link">{% trans "Make a Submission" %}</a>
                             |
-                            <a class="import_link" data-projectname="{{ project.encoded_name }}"
+                            <a class="{%if not project.disabled  %}import_link {% endif %} {{ project.disabled}}" data-projectname="{{ project.encoded_name }}"
                                data-formcode="{{ project.qid }}" data-projectid="{{ project.project_id }}"
                                data-filename="{{ project.import_template_file_name }}"
                                href="javascript:void(0);">{% trans "Import a List of Submissions" %}</a>

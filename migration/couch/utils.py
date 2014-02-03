@@ -19,8 +19,9 @@ def init_migrations(completed_dbs_csv):
     set_skip_dbs()
 
 
-def mark_start_of_migration(db_name):
+def mark_as_completed(db_name):
     completed_dbs_csv_file.writelines('%s\n' % db_name)
+    completed_dbs_csv_file.flush()
 
 
 def set_skip_dbs():
@@ -41,7 +42,7 @@ def migration_tag(version): # version = (7,0,1)
 def configure_logging(version):
     version_tag = migration_tag(version)
     logging.basicConfig(filename='/var/log/datawinners/migration_release_' + version_tag + '.log', level=logging.DEBUG,
-                        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
+                        format="%(asctime)s | %(thread)d | %(levelname)s | %(name)s | %(message)s")
 
 
 class DWThreadPool(ThreadPool):

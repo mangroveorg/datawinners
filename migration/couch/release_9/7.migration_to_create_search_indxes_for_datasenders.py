@@ -8,13 +8,13 @@ from datawinners.main.couchdb.utils import all_db_names
 from datawinners.search.datasender_index import create_datasender_index
 
 import logging
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 
 def create_search_indices_for_datasenders(db_name):
     logger = logging.getLogger(db_name)
     try:
-        mark_start_of_migration(db_name)
+        mark_as_completed(db_name)
         logger.info('Starting indexing')
         create_datasender_index(db_name)
         logger.info('Completed Indexing')

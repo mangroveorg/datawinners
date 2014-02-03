@@ -7,7 +7,7 @@ from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import TextLengthConstraint
-from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration
+from migration.couch.utils import init_migrations, should_not_skip, mark_as_completed
 
 SERVER = 'http://localhost:5984'
 log_file = open('migration_release_6_3.log', 'a')
@@ -52,7 +52,7 @@ def migrate_db(database):
     try:
         manager = get_db_manager(server=SERVER, database=database)
         subject_form_model_docs = manager.database.query(map_form_model_for_subject_questionnaires)
-        mark_start_of_migration(database)
+        mark_as_completed(database)
         for form_model_doc in subject_form_model_docs:
             form_model = get_form_model(manager, form_model_doc)
             log_statement(

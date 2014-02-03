@@ -10,7 +10,7 @@ from mangrove.form_model.validation import ShortCodeRegexConstraint, TextLengthC
 import logging
 from mangrove.datastore.documents import FormModelDocument
 from datawinners.main.database import get_db_manager
-from migration.couch.utils import migrate, mark_start_of_migration
+from migration.couch.utils import migrate, mark_as_completed
 
 map_subject_form_model = """
 function(doc) {
@@ -32,7 +32,7 @@ def add_regex_constraint_to_short_code(form_model, logger):
 def migrate_subject_form_code_to_add_regex_validator_in_short_code(db_name):
     logger = logging.getLogger(db_name)
     logger.info('Starting Migration')
-    mark_start_of_migration(db_name)
+    mark_as_completed(db_name)
 
     manager = get_db_manager(db_name)
     for row in manager.database.query(map_subject_form_model):

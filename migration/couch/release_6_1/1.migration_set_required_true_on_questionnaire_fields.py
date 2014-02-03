@@ -10,7 +10,7 @@ from datetime import datetime
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.form_model.form_model import FormModel
-from migration.couch.utils import init_migrations, should_not_skip, mark_start_of_migration
+from migration.couch.utils import init_migrations, should_not_skip, mark_as_completed
 from datawinners import  settings
 
 SERVER = 'http://localhost:5984'
@@ -59,7 +59,7 @@ def migrate_db(database):
     try:
         manager = get_db_manager(server=SERVER, database=database, credentials=credentials)
         questionnaire_form_model_docs = manager.database.query(map_form_model_questionnaire)
-        mark_start_of_migration(database)
+        mark_as_completed(database)
         for form_model_doc in questionnaire_form_model_docs:
             form_model = get_form_model(manager, form_model_doc)
             log_statement(

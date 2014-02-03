@@ -1,19 +1,17 @@
-import sys
 import datetime
+import logging
+from couchdb.http import ResourceNotFound
+
 from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.main.database import get_db_manager
+from datawinners.main.couchdb.utils import all_db_names
+from migration.couch.utils import migrate, mark_as_completed
+
+
 WEB = u"web"
 SMS = u"sms"
 SMART_PHONE = u"smartPhone"
 TEST_USER = u"test"
-# from mangrove.transport.contract.survey_response import SMART_PHONE, WEB, SMS, TEST_USER
-from datawinners.main.database import get_db_manager
-
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, ".")
-from datawinners.main.couchdb.utils import all_db_names
-
-import logging
-from migration.couch.utils import migrate, mark_start_of_migration
 
 def get_submission_count_aggregate(dbm):
     survey_responses = dbm.load_all_rows_in_view("surveyresponse", reduce=False, include_doc=True)
@@ -58,7 +56,6 @@ def update_counters_for_date(date, key, organization, year_month_submission_coun
 def update_counters_for_submissions(db_name):
     logger = logging.getLogger(db_name)
     try:
-        mark_start_of_migration(db_name)
         logger.info('Starting migration')
         dbm = get_db_manager(db_name)
         year_month_submission_count_dict = get_submission_count_aggregate(dbm)
@@ -67,6 +64,10 @@ def update_counters_for_submissions(db_name):
             year, month = int(key.split('_')[0]), int(key.split('_')[1])
             date = datetime.date(year, month, 1)
             update_counters_for_date(date, key, organization, year_month_submission_count_dict)
+        mark_as_completed(db_name)
+        logger.info("Completed")
+    except ResourceNotFound as e:
+        logger.warn(e.message)
     except Exception as e:
         logger.exception(e.message)
 

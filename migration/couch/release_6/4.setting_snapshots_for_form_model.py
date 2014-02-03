@@ -7,7 +7,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.datastore.database import get_db_manager
 from mangrove.form_model.validation import TextLengthConstraint
 from mangrove.transport.contract.survey_response import SurveyResponse
-from migration.couch.utils import init_migrations, mark_start_of_migration, should_not_skip
+from migration.couch.utils import init_migrations, mark_as_completed, should_not_skip
 
 log_file = open('migration_release_6_4.log', 'a')
 SERVER = 'http://localhost:5984'
@@ -83,7 +83,7 @@ def migrate(database):
                 survey_response.form_model_revision = values[0]
                 survey_response.save()
         log_statement("Completed Database : %s" % database)
-        mark_start_of_migration(database)
+        mark_as_completed(database)
         log_file.writelines("\n=======================================================\n")
     except Exception:
         log_statement("Failed Database : %s" % database)
