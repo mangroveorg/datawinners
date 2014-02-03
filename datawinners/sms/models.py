@@ -13,7 +13,7 @@ class SMS(models.Model):
     delivered_at = models.DateField(null=True)
     status = models.CharField(max_length=20)
     message_id = models.CharField(max_length=32, unique=True)
-    message = models.CharField(max_length=160)
+    message = models.TextField()
     msg_from = models.CharField(max_length=30)
     msg_to = models.CharField(max_length=30)
     smsc = models.CharField(max_length=30)
