@@ -286,6 +286,7 @@ padding-left: 20px;
     text-align: right;
 }
 .questions {
-    max-height: 700px;
-    overflow:auto;
+    max-height: 550px;
+    overflow-y:auto;
+    overflow-x: hidden;
 }

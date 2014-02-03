@@ -215,10 +215,10 @@ fieldset {
   text-align: right; }
 
 .questions {
-  max-height: 700px;
+  max-height: 550px;
   overflow-y: auto;
   overflow-x: hidden;}
 
-.question_list {
-    width:295px;
-}
+/*::-webkit-scrollbar {*/
+    /*display: none;*/
+/*}*/
