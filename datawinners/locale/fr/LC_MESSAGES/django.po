@@ -4643,3 +4643,6 @@ msgstr "Télécharger un fichier"
 
 msgid "The questionnaire you are requesting for has been deleted from the system."
 msgstr "Le questionnaire que vous recherchez a été effacé du système."
+
+msgid "View charts of your multiple choice questions."
+msgstr "Visualiser les graphes de vos questions à chox multiples."
