@@ -213,3 +213,12 @@ fieldset {
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: right; }
+
+.questions {
+  max-height: 700px;
+  overflow-y: auto;
+  overflow-x: hidden;}
+
+.question_list {
+    width:295px;
+}
