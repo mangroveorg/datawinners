@@ -1,40 +1,41 @@
 {% load i18n %}
 <link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
+{% load compress %}
+{% compress js %}
+    <script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+    <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+    <script src="/media/javascript/data_tables/js/dwtable.js"></script>
+    <script src="/media/javascript/entity/datasender_actions.js"></script>
+    <script>
+        var datasender_ajax_url = "{{ project_links.my_datasenders_ajax_link}}";
+        var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
 
-<script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
-<script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
-<script src="/media/javascript/data_tables/js/dwtable.js"></script>
-<script src="/media/javascript/entity/datasender_actions.js"></script>
-<script>
-    var datasender_ajax_url = "{{ project_links.my_datasenders_ajax_link}}";
-    var superusersearch_ajax_url = "{% url superusers_in_ds_searched%}";
-
-$(function(){
-    function col(header_class_name){
-        return $('#datasender_table th.' + header_class_name).index('#datasender_table th');
-    }
-    var action_handler = new DW.DataSenderActionHandler();
-    var number_of_projects = {{ projects|length }};
-    $("#datasender_table").dwTable({
-            "concept": "Data Sender",
-            "sAjaxSource": datasender_ajax_url,
-            "sAjaxDataIdColIndex" : col("short_code"),
-            "bServerSide": true,
-            "oLanguage": {
-                "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
-            },
-            "aaSorting": [ [ col("name"), "asc"] ] ,
-            "actionItems" : [
-                {"label":"Edit", handler:action_handler["mydsedit"], "allow_selection": "single"},
-                {"label":"Remove from project", handler:action_handler["remove_from_project"], "allow_selection": "multiple"},
-                {"label":"Give Web Submission Access", handler:action_handler["makewebuser"], "allow_selection": "multiple"},
-                {"label": "Delete", handler:action_handler["delete"], "allow_selection": "multiple"}
-            ],
-            "aoColumnDefs":[{"bSortable": false, "aTargets":[col("devices")]}]
-      });
- });
-</script>
-
+    $(function(){
+        function col(header_class_name){
+            return $('#datasender_table th.' + header_class_name).index('#datasender_table th');
+        }
+        var action_handler = new DW.DataSenderActionHandler();
+        var number_of_projects = {{ projects|length }};
+        $("#datasender_table").dwTable({
+                "concept": "Data Sender",
+                "sAjaxSource": datasender_ajax_url,
+                "sAjaxDataIdColIndex" : col("short_code"),
+                "bServerSide": true,
+                "oLanguage": {
+                    "sEmptyTable": $('#no_registered_subject_message').clone(true, true).html()
+                },
+                "aaSorting": [ [ col("name"), "asc"] ] ,
+                "actionItems" : [
+                    {"label":"Edit", handler:action_handler["mydsedit"], "allow_selection": "single"},
+                    {"label":"Remove from project", handler:action_handler["remove_from_project"], "allow_selection": "multiple"},
+                    {"label":"Give Web Submission Access", handler:action_handler["makewebuser"], "allow_selection": "multiple"},
+                    {"label": "Delete", handler:action_handler["delete"], "allow_selection": "multiple"}
+                ],
+                "aoColumnDefs":[{"bSortable": false, "aTargets":[col("devices")]}]
+          });
+     });
+    </script>
+{% endcompress %}
 <div>
     <table id='datasender_table' >
         <thead>
