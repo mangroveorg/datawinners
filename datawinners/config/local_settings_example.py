@@ -100,6 +100,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'datawinners.middleware.exception_middleware.ExceptionMiddleware',
+    'urlmiddleware.URLMiddleware',
     )
 
 DEBUG_TOOLBAR_CONFIG = {

@@ -1,4 +1,5 @@
 import logging
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponseRedirect
 from datawinners.main.database import get_database_manager
 from datawinners.project.models import Project
@@ -19,7 +20,10 @@ class ProjectDeletedMiddleware(object):
         self.logger = logging.getLogger(__name__)
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        dbm = get_database_manager(request.user)
+        user = request.user
+        if user == AnonymousUser():
+            return None
+        dbm = get_database_manager(user)
         if "project_id" in view_kwargs.keys():
             return get_redirect_url(dbm, view_kwargs['project_id'])
 
