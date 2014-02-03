@@ -1,6 +1,7 @@
 {% load i18n %}
 
-<div class="grid_13 alpha omega sms-preview">
+<div class="grid_13 alpha omega sms-preview" data-bind="visible: !isSelectedQuestionNull()">
+
     <label>{% trans "SMS Preview" %}</label>
     <div id='char-count-span'>
         <span id='char-count'></span>

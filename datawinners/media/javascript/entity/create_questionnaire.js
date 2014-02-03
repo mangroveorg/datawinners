@@ -5,7 +5,7 @@ DW.init_view_model = function (question_list) {
         questionnaireViewModel.loadQuestion(new DW.question(question));
     })
 
-    questionnaireViewModel.selectedQuestion(questionnaireViewModel.questions()[0]);
+    questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
     questionnaireViewModel.selectedQuestion.valueHasMutated();
     DW.current_code = questionnaireViewModel.questions().length + 1; //This variable holds the next question code to be generated.
     questionnaireViewModel.hasAddedNewQuestions = false;

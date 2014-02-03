@@ -125,6 +125,7 @@
                         </div>
 
                         <div id="question-detail-panel">
+                            <span data-bind="visible: isSelectedQuestionNull">{% trans "Select a question to edit or add another question."%}</span>
                             {% include 'project/question_detail_panel.html' %}
                             {% include 'project/sms_preview.html' %}
                         </div>

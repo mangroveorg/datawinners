@@ -27,6 +27,7 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.questions.valueHasMutated();
     },
+
     renumberQuestions: function(){
         var questionPattern = /^Question \d+$/;
         for (var i = 0; i < questionnaireViewModel.questions().length; i++){
@@ -43,7 +44,7 @@ var questionnaireViewModel =
         }
         questionnaireViewModel.questions.remove(question);
         if(questionnaireViewModel.questions().length == 0){
-            questionnaireViewModel.addQuestion();
+            questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
             return;
         }
         questionnaireViewModel.renumberQuestions();
@@ -148,3 +149,6 @@ var questionnaireViewModel =
         $(".question_type #location_type_input").hide();
     }
 };
+questionnaireViewModel.isSelectedQuestionNull = ko.computed(function(){
+        return this.selectedQuestion().isNullQuestion;
+}, questionnaireViewModel);

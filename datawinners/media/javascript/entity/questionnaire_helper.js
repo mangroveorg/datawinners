@@ -59,7 +59,8 @@ DW.question = function (question) {
         date_format:"mm.yyyy",
         instruction:gettext("Answer must be a text"),
         newly_added_question:false,
-        event_time_field_flag:false
+        event_time_field_flag:false,
+        is_null_question: false
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
@@ -83,6 +84,7 @@ DW.initChoices = function (choices) {
 DW.question.prototype = {
     _init:function () {
         var q = this.options;
+        this.isNullQuestion = q.is_null_question;
         this.newly_added_question = ko.observable(q.newly_added_question);
         this.range_min = ko.observable(q.range.min);
         this.event_time_field_flag = ko.observable(q.event_time_field_flag);
