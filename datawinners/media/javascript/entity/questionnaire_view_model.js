@@ -147,6 +147,18 @@ var questionnaireViewModel =
     },
     remove_location_type: function(){
         $(".question_type #location_type_input").hide();
+    },
+    moveQuestionUp: function(question){
+        var currentIndex = questionnaireViewModel.questions().indexOf(question);
+        var questions = questionnaireViewModel.questions();
+        if(currentIndex >= 1)
+            questionnaireViewModel.questions.splice(currentIndex-1, 2, questions[currentIndex], questions[currentIndex-1]);
+    },
+    moveQuestionDown: function(question){
+        var currentIndex = questionnaireViewModel.questions().indexOf(question);
+        var questions = questionnaireViewModel.questions();
+        if(currentIndex < questions.length-1)
+             questionnaireViewModel.questions.splice(currentIndex, 2, questions[currentIndex+1], questions[currentIndex]);
     }
 };
 questionnaireViewModel.isSelectedQuestionNull = ko.computed(function(){

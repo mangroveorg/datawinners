@@ -72,9 +72,14 @@
 
                     <div data-bind="visible: question.canBeDeleted()" class="delete">
                         <a href="#" class="delete_link"
-                           data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission(question); DW.smsPreview();} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}</a>
+                           data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission(question); DW.smsPreview();} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}|
+                       </a>
+                       <span>
+                            Move:
+                            <a data-bind="click: questionnaireViewModel.moveQuestionUp(question)">Up</a>
+                            <a data-bind="click: questionnaireViewModel.moveQuestionDown(question)">Down</a>
+                       </span>
                     </div>
-
                     <span class="selected_question_arrow"
                           data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
                 </li>
@@ -116,7 +121,27 @@
                         <div id="questions-panel" class="grid_8 alpha">
                             <h4>{% trans "Questions" %}</h4>
 
-                            <div data-bind="template: 'question-list-template'" class="questions">
+                            <div class="questions">
+                                 <div class="question_list" id="que_code">
+                                    <ol data-bind="foreach: questions">
+                                        <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion()} ">
+                                            <a href="#" data-bind="text: $data.display"></a>
+
+                                            <div data-bind="visible: $data.canBeDeleted()" class="delete">
+                                                <a href="#" class="delete_link"
+                                                    data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}|
+                                                </a>
+                                                <span>
+                                                    Move:
+                                                    <a data-bind="click: $parent.moveQuestionUp">Up</a>
+                                                    <a data-bind="click: $parent.moveQuestionDown">Down</a>
+                                                </span>
+                                            </div>
+                                            <span class="selected_question_arrow"
+                                            data-bind="css:{inline:$data == $parent.selectedQuestion()}"></span>
+                                        </li>
+                                    </ol>
+                                </div>
                             </div>
                             <div class="add_question">
                                 <a class="add_link" href="#"
