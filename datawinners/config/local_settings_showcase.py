@@ -4,7 +4,7 @@ TEMPLATE_DEBUG = False
 COMPRESS_ENABLED = True
 
 ADMINS = (
-    ('TW', 'sairama@thoughtworks.com'),
+    ('TW', 'sairama@thoughtworks.com,wamikas@thoughtworks.com'),
 )
 
 COMPRESS = False
