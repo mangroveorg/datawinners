@@ -3,7 +3,7 @@ from string import lower
 from urllib import unquote
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils import translation
@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_view_exempt, csrf_res
 from django.views.generic.base import View
 import jsonpickle
 import unicodedata
+from datawinners import settings
 from datawinners.accountmanagement.decorators import is_not_expired, session_not_expired, valid_web_user
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
 from datawinners.activitylog.models import UserActivityLog
@@ -111,6 +112,9 @@ def add_imported_datasenders_to_trail_account(imported_data_senders, org_id):
 def registered_datasenders(request, project_id):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)

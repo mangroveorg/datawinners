@@ -11,6 +11,7 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from datawinners import settings
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
@@ -167,6 +168,9 @@ def edit_project(request, project_id=None):
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
     project = Project.load(manager.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     questionnaire = FormModel.get(manager, project.qid)
     if request.method == 'GET':
         form = CreateProject(data=project, entity_list=entity_list)
@@ -267,6 +271,9 @@ def edit_project(request, project_id=None):
 def reminder_settings(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     questionnaire = FormModel.get(dbm, project.qid)
     from datawinners.project.views.views import make_project_links
 

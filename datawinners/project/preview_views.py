@@ -1,7 +1,9 @@
 import json
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from datawinners import settings
 from datawinners.accountmanagement.decorators import valid_web_user
 from datawinners.entity.helper import get_organization_telephone_number
 from datawinners.entity.views import get_example_sms
@@ -94,6 +96,9 @@ def questionnaire_sms_preview(request):
     manager = get_database_manager(request.user)
     context = {'org_number': get_organization_telephone_number(request)}
     project_info = Project.load(manager.database, request.POST['project_id'])
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project_info.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     if project_info:
         context.update(get_sms_preview_context(manager, request.POST, project_info))
 
@@ -104,7 +109,9 @@ def questionnaire_sms_preview(request):
 def questionnaire_web_preview(request):
     manager = get_database_manager(request.user)
     project_info = Project.load(manager.database, request.POST["project_id"])
-
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project_info.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     context = get_web_preview_context(manager, request.POST, project_info) if project_info else {}
     return render_to_response("project/web_instruction_preview.html",
                               context,

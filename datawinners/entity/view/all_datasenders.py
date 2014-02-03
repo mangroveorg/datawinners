@@ -2,11 +2,12 @@ import cProfile
 from collections import defaultdict
 import json
 import pstats
+from datawinners import settings
 from sets import Set
 
 from django.contrib.auth.decorators import login_required
 from django.utils import translation
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.utils.translation import ugettext as _
@@ -201,6 +202,9 @@ class DisassociateDataSendersView(DataSenderActionView):
         selected_rep_ids = data_sender_short_codes(request, manager)
 
         for project in projects:
+            dashboard_page = settings.HOME_PAGE + "?deleted=true"
+            if project.is_deleted():
+                return HttpResponseRedirect(dashboard_page)
             for rep_id in selected_rep_ids:
                 if rep_id in project.data_senders:
                     project.delete_datasender(manager, rep_id)

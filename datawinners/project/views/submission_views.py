@@ -16,6 +16,7 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
+from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 
 from datawinners.accountmanagement.models import NGOUserProfile
@@ -123,6 +124,9 @@ def get_survey_response_ids_from_request(dbm, request, form_model):
 def delete(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     form_model = FormModel.get(dbm, project.qid)
     survey_response_ids = get_survey_response_ids_from_request(dbm, request, form_model)
     received_times = []
@@ -180,6 +184,9 @@ def construct_request_dict(survey_response, questionnaire_form_model):
 def edit(request, project_id, survey_response_id, tab=0):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     questionnaire_form_model = FormModel.get(manager, project.qid)
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)

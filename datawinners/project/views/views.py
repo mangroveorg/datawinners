@@ -13,6 +13,7 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
+from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, is_not_expired, is_new_user, project_has_web_device, valid_web_user
 
 from datawinners.feeds.database import get_feeds_database
@@ -92,6 +93,9 @@ def save_questionnaire(request):
         question_set = json.loads(json_string)
         pid = request.POST['pid']
         project = Project.load(manager.database, pid)
+        dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        if project.is_deleted():
+            return HttpResponseRedirect(dashboard_page)
         form_model = FormModel.get(manager, project.qid)
         old_fields = form_model.fields
         try:
@@ -148,6 +152,9 @@ def index(request):
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     helper.delete_project(manager, project)
     undelete_link = reverse(undelete_project, args=[project_id])
     if len(get_all_projects(manager)) > 0:
@@ -171,6 +178,9 @@ def undelete_project(request, project_id):
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     questionnaire = FormModel.get(manager, project.qid)
     number_of_questions = len(questionnaire.fields)
     questionnaire_code = questionnaire.form_code
@@ -305,6 +315,9 @@ def _format_reminders(reminders, project_id):
 def sent_reminders(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     questionnaire = FormModel.get(dbm, project.qid)
     organization = Organization.objects.get(org_id=request.user.get_profile().org_id)
     is_trial_account = organization.in_trial_mode
@@ -335,6 +348,9 @@ def _get_data_senders(dbm, form, project):
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     number_associated_ds = len(project.data_senders)
     number_of_ds = len(import_module.load_all_entities_of_type(dbm, type=REPORTER)[0]) - 1
     questionnaire = FormModel.get(dbm, project.qid)
@@ -408,6 +424,9 @@ def _get_all_data_senders(dbm):
 def activate_project(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     project.activate(manager)
     form_model = FormModel.get(manager, project.qid)
     oneDay = datetime.timedelta(days=1)
@@ -427,6 +446,9 @@ def activate_project(request, project_id=None):
 def review_and_test(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     form_model = FormModel.get(manager, project.qid)
     if request.method == 'GET':
         number_of_registered_subjects = get_non_voided_entity_count_for_type(manager, project.entity_type)
@@ -464,6 +486,9 @@ def _get_project_and_project_link(manager, project_id, reporter_id=None):
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
     form_model = get_form_model_by_entity_type(manager, [subject.get('entity')])
@@ -501,6 +526,9 @@ def questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         project = Project.load(manager.database, project_id)
+        dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        if project.is_deleted():
+            return HttpResponseRedirect(dashboard_page)
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
         if form_model.is_entity_type_reporter():
@@ -554,6 +582,9 @@ class SubjectWebQuestionnaireRequest():
     def _initialize(self, project_id):
         self.manager = get_database_manager(self.request.user)
         self.project = Project.load(self.manager.database, project_id)
+        dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        if self.project.is_deleted():
+            return HttpResponseRedirect(dashboard_page)
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
         self.form_code = _get_form_code(self.manager, self.project)
@@ -673,6 +704,9 @@ class SurveyWebQuestionnaireRequest():
         return 'project/data_submission.html' if self.is_data_sender else "project/web_questionnaire.html"
 
     def response_for_get_request(self, initial_data=None, is_update=False):
+        dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        if self.project.is_deleted():
+            return HttpResponseRedirect(dashboard_page)
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.form_model.form_code, self.project, questionnaire_form,
                                         self.manager, self.hide_link_class, self.disable_link_class, is_update)
@@ -774,6 +808,9 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         project = Project.load(manager.database, project_id)
+        dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        if project.is_deleted():
+            return HttpResponseRedirect(dashboard_page)
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
         if form_model.is_entity_type_reporter():
@@ -813,6 +850,9 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
 def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     if request.method == "GET":
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                               project,
@@ -831,6 +871,9 @@ def subject_registration_form_preview(request, project_id=None):
 def sender_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     if request.method == "GET":
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                               project,
@@ -857,7 +900,9 @@ def _get_subject_form_model(manager, entity_type):
 def edit_my_subject_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
     reg_form = _get_subject_form_model(manager, project.entity_type)
     if reg_form is None:
         reg_form = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
@@ -893,6 +938,10 @@ def append_success_to_context(context, form):
 def create_data_sender_and_web_user(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
+    dashboard_page = settings.HOME_PAGE + "?deleted=true"
+    if project.is_deleted():
+        return HttpResponseRedirect(dashboard_page)
+
     in_trial_mode = _in_trial_mode(request)
 
     if request.method == 'GET':
