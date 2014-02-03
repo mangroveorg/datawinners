@@ -42,6 +42,7 @@ $(document).ready(function () {
             $("#error_table_message").html(responseJSON.failure_imports.length + gettext(" Record(s) Failed to Import"));
             $("#error_import_section").show();
         }
+        $("#error_import_section table tbody").html('');
         $.each(responseJSON.failure_imports, function (index, element) {
             $("#error_import_section table tbody").append("<tr><td>" + element.row_num + "</td><td>"
                 + element.error + "</td></tr>");

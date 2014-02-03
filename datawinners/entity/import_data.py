@@ -22,7 +22,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import timebox
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, Entity
-from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
+from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, EmptyRowException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, \
@@ -136,6 +136,8 @@ class FilePlayer(Player):
     def _import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, values, form_model=None):
         self._append_country_for_location_field(form_model, values, organization)
         try:
+            if filter(lambda  x:str(x).__len__() ,values.values()).__len__() == 1:
+                raise EmptyRowException()
             values = self._process(form_model, values)
             log_entry = "message: " + str(values) + "|source: web|"
             if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
@@ -157,6 +159,8 @@ class FilePlayer(Player):
                 self.logger.info(log_entry)
             return self._appendFailedResponse("%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
                                                 values=values)
+        except EmptyRowException as e:
+            return self._appendFailedResponse(e.message)
         except (InvalidEmailException, MangroveException, NameNotFoundException) as e:
             return self._appendFailedResponse(e.message, values=values)
 
@@ -273,6 +277,8 @@ def tabulate_failures(rows,manager):
     questions_dict = {}
 
     for row in rows:
+        if not row[1].errors["row"]:
+            continue
         if form_model is None and row[1].form_code:
             questions_dict = _get_form_model_questions(manager,row)
         row[1].errors['row_num'] = row[0] + 2
@@ -469,6 +475,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
         successes = _get_successful_responses(responses)
         failure_imports = tabulate_failures(failures,manager)
         successful_imports = tabulate_success(successes)
+        total = len(failure_imports)+len(successful_imports)
         response_message = ugettext_lazy('%s of %s records uploaded') % (successful_import_count, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
