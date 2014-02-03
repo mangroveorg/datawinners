@@ -19,19 +19,6 @@
     </div>
     <div class="error">{% trans "Download the template:" %} <a
             href="{% url import_template form_code %}?filename={{ entity_type  }}">{{ entity_type }}.xls</a></div>
-    <div class="import_table">
-        <table class="styled_table">
-            <thead>
-                <tr>
-                {% for field in questions %}
-                    <th>{{ field.label }}</th>
-                {% endfor %}
-                </tr>
-            </thead>
-            <tbody id="{{ form_code }}_table">
-            </tbody>
-        </table>
-    </div>
     <div class='error_table none import_table' id="{{ form_code }}_error_table">
         <br/>
         <table class="styled_table error_body">
