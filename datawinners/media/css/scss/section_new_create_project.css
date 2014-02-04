@@ -217,4 +217,9 @@ fieldset {
 .questions {
   max-height: 550px;
   overflow-y: auto;
-  overflow-x: hidden;}
+  overflow-x: hidden; }
+
+.select_question_message {
+  padding-top: 200px;
+  padding-left: 100px;
+}
