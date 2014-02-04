@@ -136,7 +136,7 @@ class FilePlayer(Player):
     def _import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, values, form_model=None):
         self._append_country_for_location_field(form_model, values, organization)
         try:
-            if filter(lambda x: str(x).__len__(), values.values()).__len__() in [0,1]:
+            if filter(lambda x: str(x).__len__() and str(x) != "reporter", values.values()).__len__() == 0:
                 raise EmptyRowException()
             values = self._process(form_model, values)
             log_entry = "message: " + str(values) + "|source: web|"
