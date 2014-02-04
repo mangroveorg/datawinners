@@ -52,7 +52,7 @@
                 {% else %}
                     {% if failed_numbers %}
                         {% if account_type %}
-                            <div class="message-box">{% blocktrans%}You cannot send SMS because your DW account hasn't been configured to send SMS {{ failed_numbers }}.{%endblocktrans%}</div>
+                            <div class="message-box">{% blocktrans%}You cannot send SMS because your DW account hasn't been configured to send SMS.{%endblocktrans%}</div>
                         {% else %}
                             <div class="message-box">{% blocktrans%}You cannot send messages to the following number as it is set up to explicitly receive Data Sender Submissions. For more information contact support@datawinners.com: {{ failed_numbers }}.{%endblocktrans%}</div>
                         {% endif %}
@@ -114,7 +114,7 @@
     </div>
     <div id="more_people_warning">
         <p class="warning_message">
-            {% trans "Do you want to send this message to <span id=\"number_of_peoples\"></span> recipient(s)?"  %}
+            {% trans "Do you want to send this message to <span id=\" number_of_peoples\"></span> recipient(s)?"  %}
             <br/><br/>
         </p>
         <div class="text_align_right">
