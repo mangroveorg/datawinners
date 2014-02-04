@@ -164,3 +164,26 @@ var questionnaireViewModel =
 questionnaireViewModel.isSelectedQuestionNull = ko.computed(function(){
         return this.selectedQuestion().isNullQuestion;
 }, questionnaireViewModel);
+
+ko.bindingHandlers.sortable = {
+    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        // This will be called when the binding is first applied to an element
+        // Set up any initial state, event handlers, etc. here
+        var start_index = 0;
+        $(element).sortable({
+            start: function(event, ui){
+                var current_question = ko.dataFor(ui.item[0]);
+                start_index = ui.item.index()
+                console.log("start element is" + current_question.display());
+                console.log("start index is" + ui.item.index());
+            },
+            stop: function(event, ui){
+                var stop_index = ui.item.index()
+                var qns = questionnaireViewModel.questions().splice(start_index,1)[0];
+                questionnaireViewModel.questions().splice(stop_index, 0,qns);
+                console.log("stop index is" + stop_index);
+            }
+        });
+
+    }
+};

@@ -63,31 +63,6 @@
 
 
 {% block content %}
-    <script type="text/html" id="question-list-template">
-        <div class="question_list" id="que_code">
-            <ol>
-                {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-                <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()} ">
-                    <a href="#" data-bind="text: question.display"></a>
-
-                    <div data-bind="visible: question.canBeDeleted()" class="delete">
-                        <a href="#" class="delete_link"
-                           data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission(question); DW.smsPreview();} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}|
-                       </a>
-                       <span>
-                            Move:
-                            <a data-bind="click: questionnaireViewModel.moveQuestionUp(question)">Up</a>
-                            <a data-bind="click: questionnaireViewModel.moveQuestionDown(question)">Down</a>
-                       </span>
-                    </div>
-                    <span class="selected_question_arrow"
-                          data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
-                </li>
-                {% templatetag openvariable %}/each{% templatetag closevariable %}
-            </ol>
-        </div>
-    </script>
-
     <div id="project-message-label" class="message-box none">
     </div>
     <input id='post_url' value="{{ post_url }}" type='hidden'/>
@@ -123,7 +98,7 @@
 
                             <div class="questions">
                                  <div class="question_list" id="que_code">
-                                    <ol data-bind="foreach: questions">
+                                    <ol data-bind="foreach: questions, sortable: questions" id="question_list">
                                         <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion()} ">
                                             <a href="#" data-bind="text: $data.display"></a>
 
