@@ -22,17 +22,17 @@
                 <a id="hide_help">{% trans "Hide Details" %}</a>
             </div>
         </div>
-
+        <div>
         {% if is_quota_reached %}
-            <div class="file-uploader grid file_upload_disabled">
+            <div class="file-uploader grid ">
                 <noscript>
                     <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
                 </noscript>
                 <div id="file_uploader" style="display:none"></div>
-                <div disabled="disabled" class="disabled" back>{% trans "Upload a file" %}</div>
+                <span disabled="disabled" class="disabled file_upload_disabled"  back>{% trans "Upload a file" %}</span>
             </div>
         {% else %}
-            <div class="file-uploader" class="grid">
+            <div class="file-uploader grid">
             <noscript>
                 <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
             </noscript>
@@ -44,6 +44,7 @@
             <span style="padding-left:2em">
                 {% trans "Download the template:" %} <a id="template-download-link">submission_template</a>
            </span>
+        </div>
         </div>
     </div>
     <div class="clear"></div>

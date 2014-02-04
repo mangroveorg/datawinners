@@ -571,12 +571,13 @@ form div.action-section {
   padding-top: 10px; }
 
 .file_upload_disabled {
-  background: -moz-linear-gradient(center top , #EBEBE4, #EBEBE4) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+  background: -moz-linear-gradient(center top , #F8EDB8, #FDE8A0) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
   float: left;
   width: auto;
-  border: 1px solid gray !important;
+  text-align: center;
+  border: 1px solid #D5B071 !important;
   cursor: default !important;
-  padding: 7px}
+  padding: 7px;}
 
 .template-download-section-adjustment {
   padding: 10px; }
