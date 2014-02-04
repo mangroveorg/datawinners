@@ -257,60 +257,6 @@ class TestProjectViews(unittest.TestCase):
         data = formatted_data(field_values)
         self.assertEqual(data, [['key</br>(value)', 'string']])
         self.assertEqual(field_values, [[('key', 'value'), 'string']])
-    #
-    #
-    # def test_should_prepare_export_data_for_success_submission_log_tab(self):
-    #     request = Mock()
-    #     request.GET.get.return_value = SurveyResponseRouter.SUCCESS
-    #     request.POST.get.return_value = 'proj_name'
-    #     data, file_name = _prepare_export_data(SurveyResponseRouter.SUCCESS, 'proj_name',
-    #                                            ["Submission ID", "DS_name", "DS_id", "Submission_date", "Status",
-    #                                             "Reply SMS", "Subject_name", "Subject_id"],
-    #                                            [[0, 1, 2, 3, 4, '-', 5, 6]])
-    #     expected = [['DS_name', 'DS_id', 'Submission_date', 'Subject_name', 'Subject_id'], [1, 2, 3, 5, 6]]
-    #     self.assertEqual(expected, data)
-    #     self.assertEqual('proj_name_success_log', file_name)
-    #
-    #
-    # def test_should_prepare_export_data_for_all_submission_log_tab(self):
-    #     data, file_name = _prepare_export_data(SurveyResponseRouter.ALL, 'proj_name',
-    #                                            ["Submission ID", "DS_name", "DS_id", "Submission_date", "Status",
-    #                                             "Reply SMS", "Subject_name", "Subject_id"],
-    #                                            [[0, 1, 2, 3, 4, '-', 5, 6]])
-    #     expected = [['DS_name', 'DS_id', 'Submission_date', 'Status', 'Subject_name', 'Subject_id'], [1, 2, 3, 4, 5, 6]]
-    #
-    #     self.assertEqual(expected, data)
-    #     self.assertEqual('proj_name_all_log', file_name)
-    #
-    #
-    # def test_should_prepare_export_data_for_deleted_submission_log_tab(self):
-    #     data, file_name = _prepare_export_data(SurveyResponseRouter.DELETED, 'proj_name',
-    #                                            ["Submission ID", "DS_name", "DS_id", "Submission_date", "Status",
-    #                                             "Reply SMS", "Subject_name", "Subject_id"],
-    #                                            [[0, 1, 2, 3, 4, '-', 5, 6]])
-    #     expected = [['DS_name', 'DS_id', 'Submission_date', 'Status', 'Subject_name', 'Subject_id'], [1, 2, 3, 4, 5, 6]]
-    #     self.assertEqual(expected, data)
-    #     self.assertEqual('proj_name_deleted_log', file_name)
-    #
-    #
-    # def test_should_prepare_export_data_for_error_submission_log_tab(self):
-    #     data, file_name = _prepare_export_data(SurveyResponseRouter.ERROR, 'proj_name',
-    #                                            ["Submission ID", "DS_name", "DS_id", "Submission_date", "Status",
-    #                                             "Reply SMS", "Subject_name", "Subject_id"],
-    #                                            [[0, 1, 2, 3, 4, '-', 5, 6]])
-    #     expected = [['DS_name', 'DS_id', 'Submission_date', 'Reply SMS', 'Subject_name', 'Subject_id'],
-    #                 [1, 2, 3, '-', 5, 6]]
-    #     self.assertEqual(expected, data)
-    #     self.assertEqual('proj_name_error_log', file_name)
-    #
-    #
-    # def test_should_prepare_export_data_for_analysis_page(self):
-    #     data, file_name = _prepare_export_data(None, 'proj_name', ["Submission ID", "Q1", "Q2", "Status", "Q4", "Q5"],
-    #                                            [[0, 1, 2, 3, 4, 5]])
-    #     expected = [['Q1', 'Q2', 'Status', 'Q4', 'Q5'], [1, 2, 3, 4, 5]]
-    #     self.assertEqual(expected, data)
-    #     self.assertEqual('proj_name_analysis', file_name)
-
 
 class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
     def test_form_should_not_have_initial_values_when_subject_creation_successful(self):
