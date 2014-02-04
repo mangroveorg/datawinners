@@ -775,10 +775,10 @@ class SurveyWebQuestionnaireRequest():
 
 @login_required(login_url='/login')
 @session_not_expired
+@is_project_exist
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
-@is_project_exist
 def survey_web_questionnaire(request, project_id=None):
     survey_request = SurveyWebQuestionnaireRequest(request, project_id)
     if request.method == 'GET':
@@ -789,10 +789,10 @@ def survey_web_questionnaire(request, project_id=None):
 
 @login_required(login_url='/login')
 @session_not_expired
+@is_project_exist
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
-@is_project_exist
 def subject_web_questionnaire(request, project_id=None):
     subject_request = SubjectWebQuestionnaireRequest(request, project_id)
     if request.method == 'GET':

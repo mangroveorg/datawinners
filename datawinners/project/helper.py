@@ -4,9 +4,10 @@ import re
 from datetime import datetime
 
 from babel.dates import format_date
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.utils.translation import gettext as _
 from django.utils.translation import ugettext
+from datawinners import settings
 
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.scheduler.smsclient import SMSClient
@@ -242,11 +243,11 @@ def is_project_exist(f):
     def wrapper(*args, **kw):
         try:
             ret = f(*args, **kw)
+            return ret
         except AttributeError, e:
             if e[0] == "'NoneType' object has no attribute 'qid'":
-                raise Http404
-            raise e
-        return ret
+                dashboard_page = settings.HOME_PAGE + "?deleted=true"
+                return HttpResponseRedirect(dashboard_page)
 
     return wrapper
 

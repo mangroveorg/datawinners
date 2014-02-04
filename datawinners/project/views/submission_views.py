@@ -85,6 +85,9 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
+        dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        if result_dict['project'].is_deleted():
+            return HttpResponseRedirect(dashboard_page)
         return render_to_response('project/submission_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
@@ -104,6 +107,9 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
         }
         result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
+        dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        if result_dict['project'].is_deleted():
+            return HttpResponseRedirect(dashboard_page)
         return render_to_response('project/analysis_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
