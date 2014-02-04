@@ -34,7 +34,9 @@
         {% include "subscribe_now.html" %}
     {% endblock %}
     <div>
-        
+        {% for message in messages %}
+            <div class="{{ message.tags }} message-box clear-left">{{ message }}</div>
+        {% endfor %}
         <table class="styled_table">
             <thead>
             <th> {% trans "Project" %}</th>

@@ -13,6 +13,7 @@ from datawinners.settings import CRS_ORG_ID
 from datawinners.project.models import ProjectState, Project
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_all_entities
+from django.utils.translation import ugettext as _
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
@@ -134,6 +135,9 @@ def index(request):
 
     activation_success = request.GET.get('activation', False)
 
+    messages = []
+    if "associate" in request.GET.keys():
+        messages = [_('You may have been dissociated from the project. Please contact your administrator for more details.')]
     if is_crs_admin(request):
         return render_to_response('alldata/index.html',
                                   {'projects': project_list, 'page_heading': page_heading,
@@ -141,6 +145,7 @@ def index(request):
                                    'hide_link_class': hide_link_class, 'is_crs_admin': True,
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached':is_quota_reached(request),
+                                   'messages': messages,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
     else:
@@ -151,6 +156,7 @@ def index(request):
                                    "smart_phone_instruction_link": smart_phone_instruction_link,
                                    'project_links': get_alldata_project_links(),
                                    'is_quota_reached':is_quota_reached(request),
+                                   'messages': messages,
                                    'activation_success': activation_success},
                                   context_instance=RequestContext(request))
 

@@ -13,15 +13,20 @@ logger = logging.getLogger("django")
 
 def is_datasender_allowed(f):
     def wrapper(*args, **kw):
+        superuser = False
         user = args[0].user
         if user.get_profile().reporter:
             projects = get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
         else:
             projects = get_all_projects(get_database_manager(user))
+            superuser = True
         project_ids = [project.id for project in projects]
         project_id = kw['project_id']
         if not project_id in project_ids:
-            return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD)
+            if not superuser:
+                return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD + "?associate=False")
+            else:
+                return HttpResponseRedirect(django_settings.HOME_PAGE + "?deleted=True")
 
         return f(*args, **kw)
 
