@@ -48,7 +48,7 @@ def smartphone_icon():
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
-    name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
+    name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=80,
         error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
         label=_("Name"))
     telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))

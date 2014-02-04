@@ -117,62 +117,6 @@ class EditDataSenderView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(EditDataSenderView, self).dispatch(*args, **kwargs)
 
-
-# class DataSenderRegistrationFormView(TemplateView):
-#     template_name = "entity/create_or_edit_data_sender.html"
-#
-#     def get(self, request,*args, **kwargs):
-#         create_data_sender = True
-#         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
-#         form = ReporterRegistrationForm()
-#         return self.render_to_response({
-#                                            'form': form,
-#                                            'create_data_sender': create_data_sender,
-#                                            'project_links': entity_links,
-#                                            'current_language': translation.get_language(),
-#                                            'create_datasender_link':"/entity/datasender/create",
-#                                        })
-#
-#     def post(self, request, *args, **kwargs):
-#         entity_links = {'registered_datasenders_link': reverse("all_datasenders")}
-#         dbm = get_database_manager(request.user)
-#         org_id = request.user.get_profile().org_id
-#         form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
-#         try:
-#             reporter_id, message = process_create_data_sender_form(dbm, form, org_id)
-#         except DataObjectAlreadyExists as e:
-#             message = _("Data Sender with Unique Identification Number (ID) = %s already exists.") % e.data[1]
-#         if len(form.errors) == 0 and form.requires_web_access() and reporter_id:
-#             email_id = request.POST['email']
-#             create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
-#                                    language_code=request.LANGUAGE_CODE)
-#
-#         if message is not None and reporter_id:
-#             if form.cleaned_data['project_id'] != "":
-#                 project = Project.load(dbm.database, form.cleaned_data['project_id'])
-#                 project = project.name
-#             else:
-#                 project = ""
-#             if not len(form.errors):
-#                 UserActivityLog().log(request, action=REGISTERED_DATA_SENDER,
-#                                       detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
-#             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
-#         return render_to_response('datasender_form.html',
-#                                   {
-#                                       'form': form,
-#                                       'message': message,
-#                                       'success': reporter_id is not None,
-#                                       'project_inks': entity_links,
-#                                       'current_language': translation.get_language(),
-#                                   },
-#                                   context_instance=RequestContext(request))
-#
-#     @method_decorator(valid_web_user)
-#     def dispatch(self, *args, **kwargs):
-#         return super(DataSenderRegistrationFormView, self).dispatch(*args, **kwargs)
-#
-
-
 class RegisterDatasenderView(TemplateView):
     template_name = "datasender_form.html"
 
