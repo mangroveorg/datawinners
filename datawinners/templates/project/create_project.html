@@ -94,10 +94,15 @@
                 </div>
                 <div class="questionnare_content grid_23 alpha omega">
                     <div>
+
                         <div id="questions-panel" class="grid_8 alpha">
                             <h4>{% trans "Questions" %}</h4>
 
-                            <div class="questions">
+                            <div class="add_question">
+                                <a class="add_link" href="#"
+                                   data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add another Question" %}</a>
+                            </div>
+                        <div class="questions">
                                  <div class="question_list" id="que_code">
                                     <ol data-bind="foreach: questions, sortable: questions" id="qlist">
                                         <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion()} ">

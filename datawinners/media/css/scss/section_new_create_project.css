@@ -215,7 +215,8 @@ fieldset {
   text-align: right; }
 
 .questions {
-  max-height: 550px;
+  margin-top: 15px;
+  max-height: 594px;
   overflow-y: auto;
   overflow-x: hidden; }
 
