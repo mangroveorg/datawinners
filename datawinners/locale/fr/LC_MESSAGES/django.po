@@ -4646,3 +4646,12 @@ msgstr "Le questionnaire que vous recherchez a été effacé du système."
 
 msgid "View charts of your multiple choice questions."
 msgstr "Visualiser les graphes de vos questions à chox multiples."
+
+msgid "Select a question to edit or add another question."
+msgstr "Sélectionner une question pour modifier ou ajouter une autre question."
+
+msgid "Move Up"
+msgstr "Monter"
+
+msgid "Move Down"
+msgstr "Descendre"

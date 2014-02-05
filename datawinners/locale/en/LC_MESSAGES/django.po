@@ -4437,3 +4437,12 @@ msgstr ""
 
 msgid "View charts of your multiple choice questions."
 msgstr ""
+
+msgid "Select a question to edit or add another question."
+msgstr ""
+
+msgid "Move Up"
+msgstr ""
+
+msgid "Move Down"
+msgstr ""

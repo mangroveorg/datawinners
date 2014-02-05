@@ -114,11 +114,11 @@
                                                 <span>
                                                     <a data-bind="visible: $index(), click: $parent.moveQuestionUp" class="question_action">
                                                         <img src="/media/images/arrow_full_up_Blue.png" />
-                                                        Move Up
+                                                        {%trans "Move Up" %}
                                                     </a>
                                                     <a class="question_action" data-bind="click: $parent.moveQuestionDown, visible: $index() < $parent.questions().length-1">
                                                         <img src="/media/images/arrow_full_down_Blue.png" />
-                                                        Move Down
+                                                        {%trans "Move Down" %}
                                                     </a>
                                                 </span>
                                             </div>
