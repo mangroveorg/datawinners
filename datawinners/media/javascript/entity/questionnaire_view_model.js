@@ -19,6 +19,10 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.valueHasMutated();
         DW.charCount();
         questionnaireViewModel.hasAddedNewQuestions = true;
+        scrollFollow = document.querySelector('.questions');
+        if (scrollFollow) {
+            scrollFollow.scrollTop = scrollFollow.scrollHeight - scrollFollow.clientHeight;
+        }
     },
     loadQuestion: function(question) {
         question.display = ko.dependentObservable(function() {
