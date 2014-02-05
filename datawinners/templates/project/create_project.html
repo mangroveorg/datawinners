@@ -37,6 +37,7 @@
     <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_instruction_and_preview.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_instruction_and_preview_wizard.js"></script>
+    <script type="text/javascript" src="/media/javascript/KO-binding-extensions.js"></script>
     <script type="text/javascript">
         var is_edit = {{ is_edit }};
     </script>
@@ -101,17 +102,16 @@
                                     <ol data-bind="foreach: questions, sortable: questions" id="qlist">
                                         <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion()} ">
                                             <a href="#" data-bind="text: $data.display"></a>
-
                                             <div data-bind="visible: $data.canBeDeleted()" class="delete">
                                                 <a href="#" class="delete_link"
                                                     data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
                                                 </a>
                                                 <span>
-                                                    <a data-bind="visible: $index(), click: $parent.moveQuestionUp">
+                                                    <a data-bind="visible: $index(), click: $parent.moveQuestionUp" class="question_action">
                                                         <img src="/media/images/arrow_full_up_Blue.png">
                                                         Move Up
                                                     </a>
-                                                    <a data-bind="click: $parent.moveQuestionDown, visible: $index() < $parent.questions().length-1">
+                                                    <a class="question_action" data-bind="click: $parent.moveQuestionDown, visible: $index() < $parent.questions().length-1">
                                                         <img src="/media/images/arrow_full_down_Blue.png">
                                                         Move Down
                                                     </a>
