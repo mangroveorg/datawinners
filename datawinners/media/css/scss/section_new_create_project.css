@@ -222,10 +222,13 @@ fieldset {
 
 .select_question_message {
   padding-top: 200px;
-  padding-left: 60px;
+  padding-left: 29px;
+  padding-right: 29px;
   font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
   font-style: italic;
   font-size: 120%;
+  width: 450px;
+  text-align: center;
   color: #888888; }
 
 .question_action {

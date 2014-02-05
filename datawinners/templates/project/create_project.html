@@ -72,7 +72,7 @@
         {% include 'project/basic_info.html' %}
     </form>
     <div id="subject_warning_message">
-        <p class="warning_message">{% trans "Changing the <span id=\"changed\">subject type</span> will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?" %}</p>
+        <p class="warning_message">{% trans "Changing the <span id='changed'>subject type</span> will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?" %}</p>
         <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
         <a href="#" class="button" id="continue">{% trans "Continue" %}</a>
     </div>
@@ -104,7 +104,7 @@
                             </div>
                         <div class="questions">
                                  <div class="question_list" id="que_code">
-                                    <ol data-bind="foreach: questions, sortable: questions" id="qlist">
+                                    <ol data-bind="foreach: questions, sortable: questions" >
                                         <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion()} ">
                                             <a href="#" data-bind="text: $data.display"></a>
                                             <div data-bind="visible: $data.canBeDeleted()" class="delete">
@@ -113,11 +113,11 @@
                                                 </a>
                                                 <span>
                                                     <a data-bind="visible: $index(), click: $parent.moveQuestionUp" class="question_action">
-                                                        <img src="/media/images/arrow_full_up_Blue.png">
+                                                        <img src="/media/images/arrow_full_up_Blue.png" />
                                                         Move Up
                                                     </a>
                                                     <a class="question_action" data-bind="click: $parent.moveQuestionDown, visible: $index() < $parent.questions().length-1">
-                                                        <img src="/media/images/arrow_full_down_Blue.png">
+                                                        <img src="/media/images/arrow_full_down_Blue.png" />
                                                         Move Down
                                                     </a>
                                                 </span>
