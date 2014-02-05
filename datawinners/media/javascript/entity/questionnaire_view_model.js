@@ -52,7 +52,7 @@ var questionnaireViewModel =
             return;
         }
         questionnaireViewModel.renumberQuestions();
-        if (index == questionnaireViewModel.selectedQuestion.index()) {
+        if (question == questionnaireViewModel.selectedQuestion()) {
             var next_index = (index) % questionnaireViewModel.questions().length;
             questionnaireViewModel.changeSelectedQuestion(questionnaireViewModel.questions()[next_index]);
         }
