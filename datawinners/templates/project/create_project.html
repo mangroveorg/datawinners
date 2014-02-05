@@ -98,18 +98,23 @@
 
                             <div class="questions">
                                  <div class="question_list" id="que_code">
-                                    <ol data-bind="foreach: questions, sortable: questions" id="question_list">
+                                    <ol data-bind="foreach: questions, sortable: questions" id="qlist">
                                         <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion()} ">
                                             <a href="#" data-bind="text: $data.display"></a>
 
                                             <div data-bind="visible: $data.canBeDeleted()" class="delete">
                                                 <a href="#" class="delete_link"
-                                                    data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}|
+                                                    data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
                                                 </a>
                                                 <span>
-                                                    Move:
-                                                    <a data-bind="click: $parent.moveQuestionUp">Up</a>
-                                                    <a data-bind="click: $parent.moveQuestionDown">Down</a>
+                                                    <a data-bind="visible: $index(), click: $parent.moveQuestionUp">
+                                                        <img src="/media/images/arrow_full_up_Blue.png">
+                                                        Move Up
+                                                    </a>
+                                                    <a data-bind="click: $parent.moveQuestionDown, visible: $index() < $parent.questions().length-1">
+                                                        <img src="/media/images/arrow_full_down_Blue.png">
+                                                        Move Down
+                                                    </a>
                                                 </span>
                                             </div>
                                             <span class="selected_question_arrow"
