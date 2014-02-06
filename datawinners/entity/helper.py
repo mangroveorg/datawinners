@@ -26,7 +26,7 @@ from mangrove.form_model.validation import TextLengthConstraint,\
 from mangrove.transport.player.player import WebPlayer
 from mangrove.utils.types import  is_sequence, is_not_empty
 from mangrove.errors.MangroveException import NumberNotRegisteredException,\
-    DataObjectNotFound
+    DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.transport.repository.reporters import find_reporter_entity
 from datawinners.accountmanagement.models import Organization,\
     DataSenderOnTrialAccount, NGOUserProfile
@@ -197,6 +197,8 @@ def process_create_data_sender_form(dbm, form, org_id):
             else:
                 form.update_errors(response.errors)
 
+        except DataObjectAlreadyExists as e:
+            message = _("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1],)
         except MangroveException as exception:
             message = exception.message
 
