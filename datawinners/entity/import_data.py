@@ -239,7 +239,7 @@ def translate_errors(items, question_dict={}, question_answer_dict={}):
 
         elif 'xx.xxxx yy.yyyy' in value:
             errors.append(_(
-                'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315.'))
+                'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315'))
 
         elif 'longer' in value:
             errors.append(_("Answer %s for question %s is longer than allowed") % (answer, question_label))
