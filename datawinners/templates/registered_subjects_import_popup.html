@@ -17,19 +17,6 @@
                 <div class="clear"></div>
             </div>
             <div class="error">{% trans "Download the template:"%} <a href="{% url import_template form_code %}?filename={{ subject.entity  }}">{{ subject.entity }}.xls</a></div>
-            <div class="import_table">
-                <table class="styled_table">
-                    <thead>
-                        <tr>
-                        {% for title in subject.labels %}
-                            <th>{{ title }}</th>
-                        {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody id="{{ subject.code }}_table">
-                    </tbody>
-                </table>
-            </div>
             <div class='error_table none import_table' id="{{ subject.code }}_error_table">
                 <br/>
                 <table class="styled_table error_body">
