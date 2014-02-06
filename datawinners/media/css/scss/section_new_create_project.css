@@ -216,7 +216,7 @@ fieldset {
 
 .questions {
   margin-top: 15px;
-  max-height: 594px;
+  max-height: 399px;
   overflow-y: auto;
   overflow-x: hidden; }
 

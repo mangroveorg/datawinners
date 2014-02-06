@@ -18,11 +18,10 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
         DW.charCount();
+        questionnaireViewModel.enableScrollToView(true);
+        questionnaireViewModel.enableQuestionTitleFocus(true);
         questionnaireViewModel.hasAddedNewQuestions = true;
-        scrollFollow = document.querySelector('.questions');
-        if (scrollFollow) {
-            scrollFollow.scrollTop = scrollFollow.scrollHeight - scrollFollow.clientHeight;
-        }
+
     },
     loadQuestion: function(question) {
         question.display = ko.dependentObservable(function() {
@@ -166,8 +165,13 @@ var questionnaireViewModel =
         var questions = questionnaireViewModel.questions();
         if(currentIndex < questions.length-1)
              questionnaireViewModel.questions.splice(currentIndex, 2, questions[currentIndex+1], questions[currentIndex]);
-    }
+    },
+    enableScrollToView: ko.observable(false)
 };
+questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function(){
+    return questionnaireViewModel.enableScrollToView;
+},questionnaireViewModel);
+
 questionnaireViewModel.isSelectedQuestionNull = ko.computed(function(){
         return this.selectedQuestion().isNullQuestion;
 }, questionnaireViewModel);

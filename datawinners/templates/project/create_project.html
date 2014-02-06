@@ -102,7 +102,7 @@
                                 <a class="add_link" href="#"
                                    data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add another Question" %}</a>
                             </div>
-                        <div class="questions">
+                        <div class="questions" data-bind="scrollToView: enableScrollToView">
                                  <div class="question_list" id="que_code">
                                     <ol data-bind="foreach: questions, sortable: questions" >
                                         <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion()} ">
