@@ -16,6 +16,7 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
 
@@ -75,19 +76,21 @@ def headers(request, form_code):
 @is_not_expired
 def index(request, project_id=None, questionnaire_code=None, tab=0):
     manager = get_database_manager(request.user)
-
-    form_model = get_form_model_by_code(manager, questionnaire_code)
     org_id = helper.get_org_id_by_user(request.user)
 
     if request.method == 'GET':
+        project = Project.load(manager.database, project_id)
+        if project.is_deleted():
+            dashboard_page = settings.HOME_PAGE + "?deleted=true"
+            return HttpResponseRedirect(dashboard_page)
+
+        form_model = get_form_model_by_code(manager, questionnaire_code)
+
         result_dict = {
             "tab": tab,
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
         }
-        result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
-        dashboard_page = settings.HOME_PAGE + "?deleted=true"
-        if result_dict['project'].is_deleted():
-            return HttpResponseRedirect(dashboard_page)
+        result_dict.update(project_info(request, manager, form_model, project, questionnaire_code))
         return render_to_response('project/submission_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
@@ -99,17 +102,20 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
 def analysis_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
 
-    form_model = get_form_model_by_code(manager, questionnaire_code)
+
     org_id = helper.get_org_id_by_user(request.user)
 
     if request.method == 'GET':
+        project = Project.load(manager.database, project_id)
+        dashboard_page = settings.HOME_PAGE + "?deleted=true"
+        if project.is_deleted():
+            return HttpResponseRedirect(dashboard_page)
+
+        form_model = get_form_model_by_code(manager, questionnaire_code)
         result_dict = {
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
         }
-        result_dict.update(project_info(request, manager, form_model, project_id, questionnaire_code))
-        dashboard_page = settings.HOME_PAGE + "?deleted=true"
-        if result_dict['project'].is_deleted():
-            return HttpResponseRedirect(dashboard_page)
+        result_dict.update(project_info(request, manager, form_model, project, questionnaire_code))
         return render_to_response('project/analysis_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
