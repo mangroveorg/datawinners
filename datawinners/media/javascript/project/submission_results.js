@@ -120,6 +120,7 @@ DW.DataSenderFilter = function (postFilterSelectionCallBack) {
             "source": self.datasenders_source_url,
             "select": function (event, ui) {
                 self.filter.data('ds_id', ui.item.id);
+                self.filter.data('label', ui.item.label);
                 postFilterSelection();
             }
         }).data("autocomplete")._renderItem = function (ul, item) {
@@ -133,6 +134,12 @@ DW.DataSenderFilter = function (postFilterSelectionCallBack) {
             if (self.filter.val() == '') {
                 self.filter.data('ds_id', '');
                 postFilterSelection();
+            }
+        });
+
+        self.filter.on("blur", function() {
+            if (self.filter.data('label') != self.filter.val()) {
+                self.filter.val("");
             }
         });
     };
@@ -155,6 +162,7 @@ DW.SubjectFilter = function (postFilterSelectionCallBack) {
             "source": "/entity/" + entity_type + "/autocomplete/",
             "select": function (event, ui) {
                 self.filter.data('value', ui.item.id);
+                self.filter.data('label', ui.item.label);
                 postFilterSelection();
             }
         }).data("autocomplete")._renderItem = function (ul, item) {
@@ -168,6 +176,12 @@ DW.SubjectFilter = function (postFilterSelectionCallBack) {
             if (self.filter.val() == '') {
                 self.filter.data('value', '');
                 postFilterSelection();
+            }
+        });
+
+        self.filter.on("blur", function() {
+            if (self.filter.data('label') != self.filter.val()) {
+                self.filter.val("");
             }
         });
     };
