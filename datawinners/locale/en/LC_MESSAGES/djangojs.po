@@ -1040,3 +1040,6 @@ msgstr ""
 
 msgid "All %(successCount)s records have been successfully imported."
 msgstr ""
+
+msgid "View charts of your multiple choice questions."
+msgstr ""

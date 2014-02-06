@@ -1082,3 +1082,6 @@ msgstr "Tous les %(successCount)s enregistrements ont été importés avec succ�
 
 msgid "Close"
 msgstr "Fermer"
+
+msgid "View charts of your multiple choice questions."
+msgstr "Visualiser les graphes de vos questions à choix multiples."

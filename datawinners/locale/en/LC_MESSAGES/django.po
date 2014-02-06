@@ -4435,9 +4435,6 @@ msgstr ""
 msgid "The questionnaire you are requesting for has been deleted from the system."
 msgstr ""
 
-msgid "View charts of your multiple choice questions."
-msgstr ""
-
 msgid "Select a question to edit or add another question."
 msgstr ""
 
