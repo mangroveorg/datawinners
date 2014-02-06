@@ -157,7 +157,7 @@ class FilePlayer(Player):
             if self.logger is not None:
                 log_entry += "Status: False"
                 self.logger.info(log_entry)
-            return self._appendFailedResponse("%s with %s = %s already exists." % (e.data[2], e.data[0], e.data[1]),
+            return self._appendFailedResponse(_("%s with %s = %s already exists.") % (e.data[2], e.data[0], e.data[1]),
                                                 values=values)
         except EmptyRowException as e:
             return self._appendFailedResponse(e.message)

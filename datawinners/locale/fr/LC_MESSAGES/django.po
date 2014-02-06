@@ -57,6 +57,7 @@ msgstr "Nom"
 msgid "Enter a valid email address. Example:name@organization.com"
 msgstr "Entrez une adresse email valide. Exemple : name@organisation.com"
 
+
 msgid "Phone Number"
 msgstr "Numéro de téléphone"
 
@@ -1899,6 +1900,9 @@ msgstr "La réponse %s à la question %s est plus longue que ce qui est permis. 
 
 msgid "Answer %s for question %s is shorter than allowed. Minimum allowed length is %s."
 msgstr "La réponse %s à la question %s est plus courte que ce qui est permis. Le nombre de caractères minimum autorisé est %s."
+
+msgid "Answer %s for question %s is shorter than allowed."
+msgstr "La réponse %s à la question %s est plus courte que ce qui est permis."
 
 msgid "Answer %s for question %s is %s than allowed."
 msgstr "La réponse %s pour la question %s est %s la valeur autorisée."
