@@ -82,10 +82,13 @@
                 {% trans "For unlimited data collection and advanced features, consider a Pro Account upgrade!" %}
             {% endif %}
             <br/><br/>
-            <a href="/upgrade/" class="button float_right button_{% trans "en" %}">{% trans "Subscribe Now" %}</a><a href="/{{ language }}/pricing/" class="float_right margin_top_5 margin_right_4" target="_blank">{% trans "Learn More" %}</a>
-            <br/>
-            <br class="clear_both"/>
-        </div>
+            <div style="width: 100%">
+                <a href="/{{ language }}/pricing/" class="float_left margin_top_5 margin_right_4" target="_blank">{% trans "Learn More" %}</a>
+                <a href="/upgrade/" class="button float_right button_{% trans "en" %}">{% trans "Subscribe Now" %}</a>
+                <br/>
+                <br class="clear_both"/>
+            </div>
+            </div>
     {% endif %}
         <h4 class="margin_bottom_10">{% trans "Statistics" %}</h4>
         <h6>{% trans "Submissions Received" %}</h6>
