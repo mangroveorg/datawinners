@@ -112,7 +112,7 @@
     color: #0070ac; }
   #questions-panel .add_question {
     font-size: 14px;
-    margin: 17px 0 0 40px;
+    margin: 17px 0 0 15px;
     font-weight: normal; }
   #questions-panel .question_list {
     cursor: pointer; }
