@@ -235,3 +235,13 @@ fieldset {
   padding-right: 0px !important;
   padding-left: 0px !important;
   margin-left: 15px; }
+
+.move_image {
+  padding-bottom: 3px;
+  padding-right: 5px;
+  padding-top: 6px;
+  vertical-align: bottom; }
+
+.move_text {
+  padding-bottom: 2px;
+  vertical-align: middle; }

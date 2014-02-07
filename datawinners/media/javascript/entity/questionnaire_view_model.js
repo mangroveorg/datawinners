@@ -19,7 +19,6 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.valueHasMutated();
         DW.charCount();
         questionnaireViewModel.enableScrollToView(true);
-        questionnaireViewModel.enableQuestionTitleFocus(true);
         questionnaireViewModel.hasAddedNewQuestions = true;
 
     },

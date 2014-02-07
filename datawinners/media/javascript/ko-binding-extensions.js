@@ -2,6 +2,7 @@ ko.bindingHandlers.sortable = {
     init: function(element, valueAccessor) {
         var list = valueAccessor();
         $(element).sortable({
+            cursor: "move",
             update: function(event, ui) {
                 var position = ui.item.index();
                 var item = ko.dataFor(ui.item[0]);
