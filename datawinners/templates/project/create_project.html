@@ -100,7 +100,7 @@
 
                             <div class="add_question">
                                 <a class="add_link" href="#"
-                                   data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add another Question" %}</a>
+                                   data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add Another Question" %}</a>
                             </div>
                         <div class="questions" data-bind="scrollToView: enableScrollToView">
                                  <div class="question_list" id="que_code">
@@ -113,10 +113,10 @@
                                                 </a>
                                                 <span>
                                                     <a data-bind="visible: $index(), click: $parent.moveQuestionUp" class="question_action">
-                                                        <span class="move_text"><img class="move_image" src="/media/images/arrow_full_up_Blue.png" />{%trans "Move Up" %}</span>
+                                                        <span class="move-text"><img class="move-image" src="/media/images/arrow_full_up_Blue.png" />{%trans "Move Up" %}</span>
                                                     </a>
                                                     <a class="question_action" data-bind="click: $parent.moveQuestionDown, visible: $index() < $parent.questions().length-1">
-                                                        <span class="move_text"><img class="move_image" src="/media/images/arrow_full_down_Blue.png" />{%trans "Move Down" %}</span>
+                                                        <span class="move-text move-down"><img class="move-image" src="/media/images/arrow_full_down_Blue.png" />{%trans "Move Down" %}</span>
                                                     </a>
                                                 </span>
                                             </div>
@@ -128,7 +128,7 @@
                             </div>
                             <div class="add_question">
                                 <a class="add_link" href="#"
-                                   data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add another Question" %}</a>
+                                   data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add Another Question" %}</a>
                             </div>
                         </div>
 

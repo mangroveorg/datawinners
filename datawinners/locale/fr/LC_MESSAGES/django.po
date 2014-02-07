@@ -1374,7 +1374,7 @@ msgstr ""
 "sur la version imprimée de votre questionnaire. Vos Expéditeurs de Données "
 "saisiront ce code en premier lors de l'envoi de leurs données."
 
-msgid "Add another Question"
+msgid "Add Another Question"
 msgstr "Ajouter une question"
 
 msgid "Save"
