@@ -107,9 +107,9 @@
                                     <ol data-bind="foreach: questions, sortable: questions" >
                                         <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion()} ">
                                             <a href="#" data-bind="text: $data.display"></a>
-                                            <div data-bind="visible: $data.canBeDeleted()" class="delete">
+                                            <div class="delete">
                                                 <a href="#" class="delete_link"
-                                                    data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
+                                                    data-bind="visible: $data.canBeDeleted(),click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
                                                 </a>
                                                 <span>
                                                     <a data-bind="visible: $index(), click: $parent.moveQuestionUp" class="question_action">
@@ -126,7 +126,7 @@
                                     </ol>
                                 </div>
                             </div>
-                            <div class="add_question">
+                            <div class="add_question" data-bind="visible: questionnaireViewModel.questions().length>0">
                                 <a class="add_link" href="#"
                                    data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add Another Question" %}</a>
                             </div>

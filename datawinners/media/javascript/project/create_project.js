@@ -24,6 +24,11 @@ DW.init_has_new_submission_delete_warning = function(){
     DW.has_new_submission_delete_warning = new DW.warning_dialog(kwargs);
 }
 
+DW.init_empty_questionnaire_warning = function() {
+    kwargs = {container: "#no_questions_exists", title: gettext('Warning: Empty questionnaire') }
+    DW.empty_questionnaire_warning  = new DW.warning_dialog(kwargs)
+}
+
 DW.init_delete_periodicity_question_warning = function(){
     kwargs = {container: "#delete_periodicity_question_warning",
         title: gettext('Warning: Your Collected Data Will be Lost'),
@@ -166,6 +171,12 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
 };
 
 DW.questionnaire_form_validate = function(){
+    var questions = questionnaireViewModel.questions();
+    if(questions.length == 0 || (questions.length == 1 && questions[0].is_entity_question())){
+        DW.empty_questionnaire_warning.show_warning();
+        return false;
+    }
+
     return questionnnaire_code.processValidation() && questionnaire_form.processValidation();
 };
 
@@ -173,6 +184,7 @@ $(document).ready(function () {
     DW.subject_warning_dialog_module.init();
     DW.option_warning_dialog.init();
     DW.init_delete_periodicity_question_warning();
+    DW.init_empty_questionnaire_warning();
     if (is_edit){
         $('.report_type').find('input,select').prop('disabled',true);
         $("#add_subject_type").empty();
