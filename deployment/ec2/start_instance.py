@@ -6,10 +6,10 @@ if len(sys.argv) < 4:
     print "Usage: python start_instance.py instance_id aws_key aws_secret elastic_ip"
     sys.exit(1)
 
-instance_id = sys.argv[0]
-aws_access_key = sys.argv[1]
-aws_secret_key = sys.argv[2]
-elastic_ip = sys.argv[3]
+instance_id = sys.argv[1]
+aws_access_key = sys.argv[2]
+aws_secret_key = sys.argv[3]
+elastic_ip = sys.argv[4]
 
 conn = EC2Connection(aws_access_key, aws_secret_key)
 instances = conn.get_only_instances([instance_id])
