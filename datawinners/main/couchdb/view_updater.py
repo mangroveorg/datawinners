@@ -43,7 +43,7 @@ class ViewUpdater(object):
         self.auth = auth
         self._status_file_path = "/var/log/datawinners/view_updater.seq"
         self._init_seq_dict()
-        self._skipped_views = ["by_geo",
+        self._skipped_views = [
                                "by_aggregation_path",
                                "by_form_code_time",
                                "by_label_value",
@@ -58,7 +58,6 @@ class ViewUpdater(object):
                                "entity_data",
                                "entity_datatypes",
                                "entity_datatypes_by_tag",
-                               "id_time_slug_value",
                                "monthly_aggregate_latest",
                                "monthly_aggregate_stats",
                                "weekly_aggregate_latest",
@@ -66,7 +65,8 @@ class ViewUpdater(object):
                                "yearly_aggregate_latest",
                                "yearly_aggregate_stats",
                                "form_data_by_form_code_time",
-                               "by_entity_type_and_entity_id"]
+                               "by_entity_type_and_entity_id"
+                             ]
 
     def _init_seq_dict(self):
         if os.path.exists(self._status_file_path):
