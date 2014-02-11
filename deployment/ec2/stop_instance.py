@@ -2,18 +2,14 @@ from boto.ec2.connection import EC2Connection
 import sys
 import time
 
-if len(sys.argv) < 4:
-    print "Usage: python stop_instance.py instance_id aws_key aws_secret is_used"
+if len(sys.argv) < 3:
+    print "Usage: python stop_instance.py instance_id aws_key aws_secret"
     sys.exit(1)
 
-instance_id = sys.argv[0]
-aws_access_key = sys.argv[1]
-aws_secret_key = sys.argv[2]
-is_instance_used = sys.argv[3]
+instance_id = sys.argv[1]
+aws_access_key = sys.argv[2]
+aws_secret_key = sys.argv[3]
 
-if is_instance_used == "0":
-    print "instance is in use"
-    sys.exit(0)
 conn = EC2Connection(aws_access_key, aws_secret_key)
 instances = conn.get_only_instances([instance_id])
 
