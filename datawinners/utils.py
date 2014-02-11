@@ -15,6 +15,7 @@ import unicodedata
 VAR = "HNI"
 SUBMISSION_DATE_QUESTION = u'Submission Date'
 WIDTH_ONE_CHAR = 256
+MAX_COLUMN_WIDTH_IN_CHAR = 255
 BUFFER_WIDTH = 2
 MAX_ROWS_IN_MEMORY = 500
 EXCEL_CELL_FLOAT_STYLE = xlwt.easyxf(num_format_str='#0.0###')
@@ -111,6 +112,7 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
             for col_number, val in enumerate(row):
                 if isinstance(val, tuple):
                     max_width = max([len(item) for item, style_object in val])
+                    max_width = min(max_width,MAX_COLUMN_WIDTH_IN_CHAR)
                     ws.col(col_number).width = WIDTH_ONE_CHAR * max_width
                     ws.row(row_number).height = WIDTH_ONE_CHAR * 5
                     ws.write_rich_text(row_number, col_number, val, style)
