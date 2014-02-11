@@ -217,7 +217,7 @@ class DisassociateDataSendersView(DataSenderActionView):
                                                      "Projects": "[%s]" % ", ".join(projects_name)}))
 
         return HttpResponse(
-            json.dumps({"success": True, "message": "The Data Sender(s) are removed from project(s) successfully"}))
+            json.dumps({"success": True, "message": _("The Data Sender(s) are removed from project(s) successfully")}))
 
 
 @csrf_view_exempt

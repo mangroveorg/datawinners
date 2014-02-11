@@ -5,10 +5,10 @@
   padding-left: 0; }
 
 .padding_top_null {
-  padding-top: 0; }
+  padding-top: 0 !important; }
 
 .padding_bottom_null {
-  padding-bottom: 0; }
+  padding-bottom: 0 !important; }
 
 .padding_20 {
   padding: 20px; }
@@ -535,5 +535,4 @@ div.border_top_bottom {
   font-size: 10px; }
 
 .hide {
-  display: none;
-}
+  display: none; }

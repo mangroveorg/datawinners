@@ -33,10 +33,13 @@
         {{ block.super }}
     {% endblock %}
     <div class="warning-message-box">
-        <p>{% trans 'reminder_trial_warning_message' %}</p>
         {% if user.groups.all.0.name == 'NGO Admins' %}
+            <p>{% trans 'reminder_trial_warning_message' %}</p>
             <a href="{% url datawinners.accountmanagement.views.upgrade %}" class="button" target="blank">{% trans "Subscribe Now"%}</a>
+            <a href="/{% trans "en" %}/pricing/" class="trial_web_learn_more" target="blank">{% trans "Learn More" %}</a>
+        {% else %}
+            <p class="padding_bottom_null">{% trans 'reminder_trial_warning_message' %}</p>
+            <a href="/{% trans "en" %}/pricing/" class="trial_web_learn_more margin_top_null padding_top_null" target="blank">{% trans "Learn More" %}</a>
         {% endif %}
-        <a href="/{% trans "en" %}/pricing/" class="trial_web_learn_more" target="blank">{% trans "Learn More" %}</a>
     </div>
 {% endblock %}
