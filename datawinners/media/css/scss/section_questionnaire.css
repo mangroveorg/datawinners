@@ -149,8 +149,9 @@
         #questions-panel .question_list ol li a {
           color: #000000 !important;
           font-size: 14px;
-          text-decoration: none; }
+          text-decoration: none;}
     #questions-panel .question_list .delete {
+        height:20px;
       padding-left: 15px; }
       #questions-panel .question_list .delete a {
         color: #0070AC !important;
