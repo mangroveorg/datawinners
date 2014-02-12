@@ -5,7 +5,6 @@ from mock import patch, Mock, MagicMock
 from datawinners.project.models import Project
 from datawinners.project.submission.submission_import import SubmissionPersister, SubmissionWorkbookValidator, SubmissionWorkbookMapper, ImportValidationError
 from mangrove.datastore.database import DatabaseManager
-from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel
 
@@ -98,10 +97,7 @@ class TestSubmissionPersister(TestCase):
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = True
             form_model.form_code = "form_code"
-            default_ddtype = DataDictType(Mock(spec=DatabaseManager), name='Default String Datadict Type', slug='string_default',
-                                      primitive_type='string')
-            form_model.fields=[TextField(name="Q1", code="EID", label="What is the reporter ID?", entity_question_flag=True,
-                       ddtype=default_ddtype)]
+            form_model.fields=[TextField(name="Q1", code="EID", label="What is the reporter ID?", entity_question_flag=True)]
             form_model.entity_question.code = "eid"
 
             submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
@@ -162,13 +158,10 @@ class SubmissionParserTest(TestCase):
         ]
         self.user = Mock(User)
         self.dbm = Mock(spec=DatabaseManager)
-        self.default_ddtype = DataDictType(self.dbm, name='Default String Datadict Type', slug='string_default',
-                                      primitive_type='string')
         fields = \
-            [TextField(name="Q1", code="EID", label="What is the reporter ID?", entity_question_flag=True,
-                       ddtype=self.default_ddtype),
+            [TextField(name="Q1", code="EID", label="What is the reporter ID?", entity_question_flag=True,),
              TextField(name="Q2", code="DATE", label="What is the reporting period for the activity?",
-                       entity_question_flag=False, ddtype=self.default_ddtype)]
+                       entity_question_flag=False)]
         self.form_model = FormModel(self.dbm, "abc", "abc", entity_type=["clinic"], form_code="cli001", fields=fields,
                                type="survey")
         self.project = Mock(Project)
@@ -213,10 +206,10 @@ class SubmissionParserTest(TestCase):
                 ["12.10.2012", "name31", "name32"]
         ]
         field = TextField(name="Q3", code="NAME", label="Name",
-                       entity_question_flag=False, ddtype=self.default_ddtype)
+                       entity_question_flag=False )
         self.form_model.add_field(field)
         field = TextField(name="Q4", code="NAME1", label="Name 1",
-                       entity_question_flag=False, ddtype=self.default_ddtype)
+                       entity_question_flag=False )
         self.form_model.add_field(field)
         expected_ans_dict = [{'DATE': '12.12.2012', 'NAME': 'name11', 'NAME1': 'name12'},
                              {'DATE': '11.11.2012', 'NAME': 'name21', 'NAME1': 'name22'},

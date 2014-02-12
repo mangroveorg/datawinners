@@ -6,7 +6,6 @@ if __name__ == "__main__" and __package__ is None:
 
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, OrganizationSetting
 from datawinners.main.database import get_db_manager
-from mangrove.datastore.datadict import get_or_create_data_dict
 from mangrove.datastore.entity import create_entity
 from mangrove.datastore.entity_type import entity_type_already_defined
 from mangrove.datastore.queries import get_entity_count_for_type

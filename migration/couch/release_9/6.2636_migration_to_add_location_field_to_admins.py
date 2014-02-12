@@ -5,7 +5,6 @@ if __name__ == "__main__" and __package__ is None:
 
 #noinspection PyUnresolvedReferences - used to initialize post save handlers for elasticsearch
 import datawinners.search
-from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.entity import get_all_entities
 from datawinners.main.database import get_db_manager
 from datawinners.main.couchdb.utils import all_db_names

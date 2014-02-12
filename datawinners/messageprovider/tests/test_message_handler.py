@@ -4,7 +4,6 @@ from mangrove.datastore.database import DatabaseManager
 
 from mock import Mock, patch
 from django.utils.translation import get_language, activate
-from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField
 
 from mangrove.form_model.form_model import FormModel
@@ -80,9 +79,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         response = Mock()
         response.is_registration = False
         current_lg = get_language()
-        default_ddtype = DataDictType(Mock(spec=DatabaseManager), name='Default String Datadict Type', slug='string_default',
-                                           primitive_type='string')
-        form_model_mock = Mock(spec=FormModel, fields=[TextField("name", "n","Father's name", default_ddtype), TextField("age", "fa","Father's age", default_ddtype),TextField("place", "pl","Father's Place", default_ddtype)])
+        form_model_mock = Mock(spec=FormModel, fields=[TextField("name", "n","Father's name"), TextField("age", "fa","Father's age"),TextField("place", "pl","Father's Place")])
         for test_data in test_data_list:
             response.errors = test_data.get("errors")
             for (lg,expected_message) in test_data.get("expected_reply"):

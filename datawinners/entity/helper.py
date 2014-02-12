@@ -10,8 +10,6 @@ from datawinners import utils
 from datawinners.utils import get_organization_from_manager
 
 from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
-from mangrove.datastore.datadict import get_datadict_type_by_slug,\
-    create_datadict_type
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
@@ -54,15 +52,6 @@ def unique(dbm, telephone_number):
     return False
 
 
-def _get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
-    try:
-        ddtype = get_datadict_type_by_slug(dbm, slug)
-    except DataObjectNotFound:
-        ddtype = create_datadict_type(dbm=dbm, name=name, slug=slug,
-            primitive_type=primitive_type, description=description)
-    return ddtype
-
-
 def _create_constraints_for_mobile_number():
     mobile_number_length = TextLengthConstraint(max=15)
     mobile_number_pattern = RegexConstraint(reg='^[0-9]+$')
@@ -81,38 +70,31 @@ def _generate_form_code(manager, prefix, rank=''):
 
 def _create_registration_form(manager, entity_name=None, form_code=None, entity_type=None):
     code_generator = question_code_generator()
-    location_type = _get_or_create_data_dict(manager, name='Location Type', slug='location', primitive_type='string')
-    geo_code_type = _get_or_create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
-    name_type = _get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
-    mobile_number_type = _get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
-        primitive_type='string')
 
     question1 = TextField(name=FIRSTNAME_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's first name?") % {'entity_type': entity_name},
-        defaultValue="some default value",  ddtype=name_type,
+        defaultValue="some default value",
         instruction=_("Enter a %(entity_type)s first name") % {'entity_type': entity_name})
 
     question2 = TextField(name=NAME_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's last name?") % {'entity_type': entity_name},
-        defaultValue="some default value", ddtype=name_type,
+        defaultValue="some default value",
         instruction=_("Enter a %(entity_type)s last name") % {'entity_type': entity_name})
     question3 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=code_generator.next(),
-        label=_("What is the %(entity_type)s's location?") % {'entity_type': entity_name},
-        ddtype=location_type, instruction=unicode(_("Enter a region, district, or commune")))
+        label=_("What is the %(entity_type)s's location?") % {'entity_type': entity_name}, instruction=unicode(_("Enter a region, district, or commune")))
     question4 = GeoCodeField(name=GEO_CODE_FIELD_NAME, code=code_generator.next(),
         label=_("What is the %(entity_type)s's GPS co-ordinates?") % {'entity_type': entity_name},
-        ddtype=geo_code_type,
         instruction=unicode(_("Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 ")))
     question5 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's mobile telephone number?") % {'entity_type': entity_name},
-        defaultValue="some default value", ddtype=mobile_number_type,
+        defaultValue="some default value",
         instruction=_(
             "Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269") % {
             'entity_type': entity_name}, constraints=(
             _create_constraints_for_mobile_number()))
     question6 = TextField(name=SHORT_CODE_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's Unique ID Number?") % {'entity_type': entity_name},
-        defaultValue="some default value", ddtype=name_type,
+        defaultValue="some default value",
         instruction=unicode(_("Enter an id, or allow us to generate it")),
         entity_question_flag=True,
         constraints=[TextLengthConstraint(max=20), ShortCodeRegexConstraint("^[a-zA-Z0-9]+$")], required=False)
@@ -306,8 +288,7 @@ def put_email_information_to_entity(dbm, entity, email):
     email_field_code = "email"
     form_model = get_form_model_by_code(dbm, REGISTRATION_FORM_CODE)
     email_field_label = form_model._get_field_by_code(email_field_code).name
-    email_ddtype = form_model._get_field_by_code(email_field_code).ddtype
-    data = (email_field_label, email, email_ddtype)
+    data = (email_field_label, email)
     entity.update_latest_data([data])
 
 def rep_id_name_dict_of_users(manager):

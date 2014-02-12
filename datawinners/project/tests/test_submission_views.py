@@ -10,7 +10,6 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import EDITED_DATA_SUBMISSION
 from datawinners.search.submission_query import SubmissionQuery
 from mangrove.datastore.database import DatabaseManager
-from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, DateField
 from mangrove.form_model.form_model import FormModel
@@ -54,12 +53,11 @@ class TestSubmissionViews(unittest.TestCase):
         request = Mock()
 
         form_model = Mock(spec=FormModel)
-        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
-        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        int_field = IntegerField(name='question one', code='q1', label='question one')
+        text_field = TextField(name='question two', code='q2', label='question two')
         choice_field = SelectField(name='question three', code='q3', label='question three',
                                    options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
-                                   single_select_flag=False,
-                                   ddtype=Mock(spec=DataDictType))
+                                   single_select_flag=False)
         form_model._get_field_by_code.side_effect = lambda x: {'q1': int_field, 'q2': text_field, 'q3': choice_field}[x]
 
         with patch('datawinners.project.views.submission_views.UserActivityLog') as activity_log:
@@ -84,8 +82,7 @@ class TestSubmissionViews(unittest.TestCase):
         choices = {"old": "a", "new": "ab"}
         choice_field = SelectField(name='question', code='q1', label="question",
                                    options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
-                                   single_select_flag=False,
-                                   ddtype=Mock(spec=DataDictType))
+                                   single_select_flag=False)
         result_dict = get_option_value_for_field(choices, choice_field)
         expected = {"old": "one", "new": "one, two"}
         self.assertEqual(expected, result_dict)
@@ -94,8 +91,7 @@ class TestSubmissionViews(unittest.TestCase):
         choices = {"old": "hi", "new": "ab"}
         choice_field = SelectField(name='question', code='q1', label="question",
                                    options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
-                                   single_select_flag=False,
-                                   ddtype=Mock(spec=DataDictType))
+                                   single_select_flag=False,)
         result_dict = get_option_value_for_field(choices, choice_field)
         expected = {"old": "hi", "new": "one, two"}
         self.assertEqual(expected, result_dict)
@@ -105,14 +101,13 @@ class TestSubmissionViews(unittest.TestCase):
             values={'q1': '23', 'q2': 'sometext', 'q3': 'a', 'geo': '2.34,5.64', 'date': '12.12.2012'})
         survey_response = SurveyResponse(Mock())
         survey_response._doc = survey_response_doc
-        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
-        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        int_field = IntegerField(name='question one', code='q1', label='question one')
+        text_field = TextField(name='question two', code='q2', label='question two')
         single_choice_field = SelectField(name='question three', code='q3', label='question three',
                                           options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
-                                          single_select_flag=True,
-                                          ddtype=Mock(spec=DataDictType))
-        geo_field = GeoCodeField(name='geo', code='GEO', label='geo', ddtype=Mock())
-        date_field = DateField(name='date', code='DATE', label='date', date_format='dd.mm.yyyy', ddtype=Mock())
+                                          single_select_flag=True)
+        geo_field = GeoCodeField(name='geo', code='GEO', label='geo')
+        date_field = DateField(name='date', code='DATE', label='date', date_format='dd.mm.yyyy')
         questionnaire_form_model = Mock(spec=FormModel)
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, single_choice_field, geo_field, date_field]
@@ -126,12 +121,11 @@ class TestSubmissionViews(unittest.TestCase):
         survey_response_doc = SurveyResponseDocument(values={'q1': '23', 'q2': 'sometext', 'q3': 'ab'})
         survey_response = SurveyResponse(Mock())
         survey_response._doc = survey_response_doc
-        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
-        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        int_field = IntegerField(name='question one', code='q1', label='question one')
+        text_field = TextField(name='question two', code='q2', label='question two')
         choice_field = SelectField(name='question three', code='Q3', label='question three',
                                    options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
-                                   single_select_flag=False,
-                                   ddtype=Mock(spec=DataDictType))
+                                   single_select_flag=False)
         questionnaire_form_model = Mock(spec=FormModel)
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
@@ -144,12 +138,11 @@ class TestSubmissionViews(unittest.TestCase):
         survey_response_doc = SurveyResponseDocument(values={'q5': '23', 'q6': 'sometext', 'q7': 'ab'})
         survey_response = SurveyResponse(Mock())
         survey_response._doc = survey_response_doc
-        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
-        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        int_field = IntegerField(name='question one', code='q1', label='question one')
+        text_field = TextField(name='question two', code='q2', label='question two')
         choice_field = SelectField(name='question three', code='Q3', label='question three',
                                    options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
-                                   single_select_flag=False,
-                                   ddtype=Mock(spec=DataDictType))
+                                   single_select_flag=False)
         questionnaire_form_model = Mock(spec=FormModel)
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
@@ -161,12 +154,11 @@ class TestSubmissionViews(unittest.TestCase):
         survey_response_doc = SurveyResponseDocument(values={'q1': 23, 'q2': 'sometext', 'q3': 'ab'})
         survey_response = SurveyResponse(Mock())
         survey_response._doc = survey_response_doc
-        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
-        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        int_field = IntegerField(name='question one', code='q1', label='question one')
+        text_field = TextField(name='question two', code='q2', label='question two')
         choice_field = SelectField(name='question three', code='q3', label='question three',
                                    options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
-                                   single_select_flag=False,
-                                   ddtype=Mock(spec=DataDictType))
+                                   single_select_flag=False)
         questionnaire_form_model = Mock(spec=FormModel)
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, choice_field]
@@ -179,12 +171,11 @@ class TestSubmissionViews(unittest.TestCase):
         survey_response_doc = SurveyResponseDocument(values={'q1': 23, 'q2': 'sometext', 'q3': 'ab'})
         survey_response = SurveyResponse(Mock())
         survey_response._doc = survey_response_doc
-        int_field = IntegerField(name='question one', code='q1', label='question one', ddtype=Mock(spec=DataDictType))
-        text_field = TextField(name='question two', code='q2', label='question two', ddtype=Mock(spec=DataDictType))
+        int_field = IntegerField(name='question one', code='q1', label='question one')
+        text_field = TextField(name='question two', code='q2', label='question two')
         choice_field = SelectField(name='question three', code='q4', label='question three',
                                    options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
-                                   single_select_flag=False,
-                                   ddtype=Mock(spec=DataDictType))
+                                   single_select_flag=False)
         questionnaire_form_model = Mock(spec=FormModel)
         questionnaire_form_model.form_code = 'test_form_code'
         questionnaire_form_model.fields = [int_field, text_field, choice_field]

@@ -2,7 +2,6 @@ import unittest
 from datawinners.project.wizard_view import update_associated_submissions, update_submissions_for_form_code_change, update_submissions_for_form_field_change
 from mangrove.datastore.database import DatabaseManager
 from mock import patch, Mock, MagicMock
-from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel

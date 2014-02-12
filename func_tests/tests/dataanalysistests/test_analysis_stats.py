@@ -7,7 +7,6 @@ from django.utils import unittest
 from django.utils.unittest.case import SkipTest
 from mock import Mock, MagicMock
 
-from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import SelectField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
@@ -41,7 +40,6 @@ class TestSubmissionAnalysisResponseCreation(unittest.TestCase):
                                                                  label="What is your blood group?",
                                                                  options=[{"text": "O+"}, {"text": "B+"},
                                                                           {"text": "A-"}], single_select_flag=False,
-                                                                 ddtype=DataDictType(Mock(DatabaseManager)),
                                                                  required=False)
 
         analysis_response = create_statistics_response(facet_results, form_model)
@@ -60,7 +58,6 @@ class TestSubmissionAnalysisResponseCreation(unittest.TestCase):
         form_model._get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
                                                                  label="What is your blood group?",
                                                                  options=[{"text": "O+"}, {"text": "B+"}], single_select_flag=False,
-                                                                 ddtype=DataDictType(Mock(DatabaseManager)),
                                                                  required=False)
 
         analysis_response = create_statistics_response(facet_results, form_model)

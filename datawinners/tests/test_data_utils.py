@@ -6,7 +6,6 @@ from datawinners.entity.helper import create_registration_form
 from datawinners.common.constant import DEFAULT_LANGUAGE
 from django.utils.translation import activate
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
-from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.form_model.form_model import DESCRIPTION_FIELD, MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.utils.entity_builder import EntityBuilder
 
@@ -28,27 +27,16 @@ def create_entity_types(manager, entity_types):
         except EntityTypeAlreadyDefined:
             pass
 
-def create_data_dict(dbm, name, slug, primitive_type, description=None):
-    try:
-        existing = get_datadict_type_by_slug(dbm, slug)
-        existing.delete()
-    except DataObjectNotFound:
-        pass
-    return create_datadict_type(dbm, name, slug, primitive_type, description)
 
 def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None,
                            description=None, firstname=None):
-    name_type = create_data_dict(manager, name='Name Type', slug='name', primitive_type='string')
-    first_name_type = create_data_dict(manager, name='Name Type', slug='firstname', primitive_type='string')
-    mobile_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
-    description_type = create_data_dict(manager, name='Description', slug='description', primitive_type='string')
     entity = EntityBuilder(manager, entity_type, short_code)\
     .geometry(geometry)\
     .location(location)\
-    .add_data(data=[(NAME_FIELD, name, name_type)])\
-    .add_data([(FIRST_NAME_FIELD, firstname, first_name_type)])\
-    .add_data([(MOBILE_NUMBER_FIELD, mobile_number, mobile_type)])\
-    .add_data([(DESCRIPTION_FIELD, description, description_type)]).build()
+    .add_data(data=[(NAME_FIELD, name)])\
+    .add_data([(FIRST_NAME_FIELD, firstname)])\
+    .add_data([(MOBILE_NUMBER_FIELD, mobile_number)])\
+    .add_data([(DESCRIPTION_FIELD, description)]).build()
 
     return entity
 

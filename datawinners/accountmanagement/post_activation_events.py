@@ -12,7 +12,6 @@ from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from mangrove.datastore.entity import create_entity
-from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD, EMAIL_FIELD, LOCATION_TYPE_FIELD_NAME
 from mangrove.datastore.queries import get_entity_count_for_type
 

@@ -4,7 +4,6 @@ from couchdb.client import Database
 from django.forms.fields import ChoiceField
 from mock import Mock
 
-from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, field_attributes
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.validation import TextLengthConstraint
@@ -61,7 +60,6 @@ class TestSubjectQuestionCreator(unittest.TestCase):
         code = self.text_field_code if code is None else code
         field_name = self.field_name if not entity_question_flag else self.short_code_question_code
         text_field = TextField(name=field_name, code=code, label=field_name,
-                               ddtype=Mock(spec=DataDictType),
                                instruction=self.instruction, required=is_required,
                                constraints=[TextLengthConstraint(1, 20)],
                                entity_question_flag=entity_question_flag)

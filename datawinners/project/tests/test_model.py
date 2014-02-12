@@ -10,7 +10,6 @@ from mangrove.bootstrap import initializer
 from datawinners.main.utils import create_views
 from datawinners.project.models import Project, get_all_projects, ProjectState, get_all_project_names
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
-from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity import Entity
 from mangrove.form_model.field import TextField
@@ -39,13 +38,10 @@ class TestProjectModel(unittest.TestCase):
 
     @classmethod
     def _create_form_model_for_project(cls, project):
-        ddtype = DataDictType(cls.manager, name='Default String Datadict Type', slug='string_default',
-            primitive_type='string')
-        question1 = TextField(name="entity_question", code="ID", label="What is associated entity", entity_question_flag=True, ddtype=ddtype)
+        question1 = TextField(name="entity_question", code="ID", label="What is associated entity", entity_question_flag=True)
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
             defaultValue="some default value",
-            constraints=[TextLengthConstraint(5, 10)],
-            ddtype=ddtype)
+            constraints=[TextLengthConstraint(5, 10)])
         cls.form_model = FormModel(cls.manager, name=cls.project1.name, form_code="abc",
             fields=[question1, question2],
             entity_type=["Clinic"], state=attributes.INACTIVE_STATE)

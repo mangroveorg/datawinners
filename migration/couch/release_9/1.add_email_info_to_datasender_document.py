@@ -27,7 +27,7 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
     email_field_code = "email"
     form_model = get_form_model_by_code(manager, "reg")
     email_field_label = form_model._get_field_by_code(email_field_code).name
-    email_ddtype = form_model._get_field_by_code(email_field_code).ddtype
+
 
     org_id = OrganizationSetting.objects.get(document_store=manager.database_name).organization_id
     user_profiles = NGOUserProfile.objects.filter(org_id=org_id)
@@ -36,7 +36,7 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
         try:
             short_code = user_profile.reporter_id
             email_value = user_profile.user.email
-            data = (email_field_label, email_value, email_ddtype)
+            data = (email_field_label, email_value)
             add_email_data_to_entity_document(manager, short_code, data)
 
         except Exception as e:

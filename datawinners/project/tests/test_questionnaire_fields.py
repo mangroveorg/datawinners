@@ -6,7 +6,6 @@ from mock import Mock
 from datawinners.entity.fields import PhoneNumberField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
-from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import SelectField, IntegerField, GeoCodeField, TextField, TelephoneNumberField, HierarchyField
 from datawinners.project.questionnaire_fields import TextInputForFloat, FormField, GeoCodeValidator
 
@@ -34,12 +33,10 @@ class TestTextInputForFloat(TestCase):
 
 
 class TestFormField(TestCase):
-    def setUp(self):
-        self.ddtype = Mock(spec=DataDictType)
 
     def test_select_field_creation_with_single_select(self):
         select_field = SelectField("select something", "some_code", "what do u want to select",
-                                   [('opt1', 'a'), ('opt2', 'b'), ('opt3', 'c')], self.ddtype)
+                                   [('opt1', 'a'), ('opt2', 'b'), ('opt3', 'c')])
         select_field.value = 'a'
         choice_field = FormField().create(select_field)
         self.assertTrue(isinstance(choice_field.widget, forms.widgets.Select))
@@ -48,7 +45,7 @@ class TestFormField(TestCase):
 
     def test_select_field_creation_with_multi_select(self):
         select_field = SelectField("select something", "some_code", "what do u want to select",
-                                   [('opt1', 'a'), ('opt2', 'b'), ('opt3', 'c')], self.ddtype, single_select_flag=False)
+                                   [('opt1', 'a'), ('opt2', 'b'), ('opt3', 'c')],  single_select_flag=False)
         select_field.value = 'opt1,opt2'
         choice_field = FormField().create(select_field)
         self.assertTrue(isinstance(choice_field.widget, forms.CheckboxSelectMultiple))
@@ -56,8 +53,7 @@ class TestFormField(TestCase):
         self.assertEquals([('a', 'opt1'), ('b', 'opt2'), ('c', 'opt3')], choice_field.choices)
 
     def test_integer_field_for_range(self):
-        int_field = IntegerField("age", 'age', 'age', self.ddtype,
-                                 constraints=[NumericRangeConstraint(min='10', max='100')])
+        int_field = IntegerField("age", 'age', 'age', constraints=[NumericRangeConstraint(min='10', max='100')])
 
         field = FormField().create(int_field)
         self.assertTrue(isinstance(field.widget, TextInputForFloat))
@@ -66,8 +62,7 @@ class TestFormField(TestCase):
         self.assertEqual(field.min_value, 10)
 
     def test_integer_field_for_max_number(self):
-        int_field = IntegerField("age", 'age', 'age', self.ddtype,
-                                 constraints=[NumericRangeConstraint(max='100')])
+        int_field = IntegerField("age", 'age', 'age', constraints=[NumericRangeConstraint(max='100')])
 
         field = FormField().create(int_field)
         self.assertTrue(isinstance(field.widget, TextInputForFloat))
@@ -76,8 +71,7 @@ class TestFormField(TestCase):
         self.assertEqual(field.min_value, None)
 
     def test_integer_field_for_min_number(self):
-        int_field = IntegerField("age", 'age', 'age', self.ddtype,
-                                 constraints=[NumericRangeConstraint(min='100')])
+        int_field = IntegerField("age", 'age', 'age', constraints=[NumericRangeConstraint(min='100')])
 
         field = FormField().create(int_field)
         self.assertTrue(isinstance(field.widget, TextInputForFloat))
@@ -86,7 +80,7 @@ class TestFormField(TestCase):
         self.assertEqual(field.max_value, None)
 
     def test_gps_field(self):
-        field = GeoCodeField("gps 1", "gps1", "gps of this", self.ddtype)
+        field = GeoCodeField("gps 1", "gps1", "gps of this")
         geo_code_field = FormField().create(field)
 
         self.assertEquals(1, len(geo_code_field.validators))
@@ -95,8 +89,7 @@ class TestFormField(TestCase):
         self.assertIsNone(geo_code_field.widget.attrs.get('class'))
 
     def test_entity_field(self):
-        field = TextField("name", "name", "what is ur name", self.ddtype,
-                          constraints=[TextLengthConstraint(min=5, max=100)], entity_question_flag=True)
+        field = TextField("name", "name", "what is ur name", constraints=[TextLengthConstraint(min=5, max=100)], entity_question_flag=True)
         entity_field = FormField().create(field)
 
         self.assertEquals(2, len(entity_field.validators))
@@ -106,7 +99,7 @@ class TestFormField(TestCase):
         self.assertEqual(entity_field.max_length, 100)
 
     def test_phone_number_field(self):
-        field = TelephoneNumberField('phone', 'phone_code', 'phone', self.ddtype,
+        field = TelephoneNumberField('phone', 'phone_code', 'phone',
                                      constraints=[TextLengthConstraint(min=10, max=12),
                                                   RegexConstraint(reg='^[0-9]+$')])
         phone_field = FormField().create(field)
@@ -121,7 +114,7 @@ class TestFormField(TestCase):
         self.assertTrue(RegexValidator in validator_types)
 
     def test_location_field(self):
-        field = HierarchyField(LOCATION_TYPE_FIELD_NAME, "some_code", "some label", self.ddtype)
+        field = HierarchyField(LOCATION_TYPE_FIELD_NAME, "some_code", "some label")
         location_field = FormField().create(field)
         self.assertEquals(location_field.widget.attrs['class'], 'location_field')
         self.assertEquals(location_field.widget.attrs['watermark'], '')

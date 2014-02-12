@@ -13,7 +13,6 @@ from datawinners.project.models import Project, ProjectState, Reminder, Reminder
 from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager, get_db_manager
-from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
@@ -161,37 +160,33 @@ def create_questions(manager):
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-                          entity_question_flag=True, ddtype=entity_id_type,
+                          entity_question_flag=True ,
                           constraints=[TextLengthConstraint(min=1, max=20)],
                           instruction="Answer must be 12 characters maximum")
     question2 = TextField(label="What is your namé?", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
-                          defaultValue="some default value", ddtype=name_type,
+                          defaultValue="some default value" ,
                           instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="What is age öf father?", code="FA", name="What is age öf father?",
-                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
+                             constraints=[NumericRangeConstraint(min=18, max=100)] ,
                              instruction="Answer must be a number between 18-100.")
     question4 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
-                          date_format="dd.mm.yyyy", ddtype=date_type,
+                          date_format="dd.mm.yyyy" ,
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
                           event_time_field_flag=True)
     question5 = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
-                            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
-                            ddtype=select_type, instruction="Choose 1 answer from the list.")
+                            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True , instruction="Choose 1 answer from the list.")
     question6 = SelectField(label="What aré symptoms?", code="SY", name="What aré symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
-                                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
-                            ddtype=select_type,
+                                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False ,
                             instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS code for clinic?", code="GPS",
-                             label="What is the GPS code for clinic?",
-                             ddtype=geo_code_type,
+                             label="What is the GPS code for clinic?" ,
                              instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
     question8 = SelectField(label="What are the required medicines?", code="RM", name="What are the required medicines?"
         ,
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
-                            single_select_flag=False,
-                            ddtype=select_type,
+                            single_select_flag=False ,
                             instruction="Choose 1 or more answers from the list.", required=False)
     return [question1, question2, question3, question4, question5, question6, question7, question8]
 
@@ -823,11 +818,11 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
 
     question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-                          entity_question_flag=True, ddtype=entity_id_type,
+                          entity_question_flag=True ,
                           constraints=[TextLengthConstraint(min=1, max=20)],
                           instruction="Answer must be 12 characters maximum")
     question2 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
-                          date_format="mm.yyyy", ddtype=date_type,
+                          date_format="mm.yyyy" ,
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
                           event_time_field_flag=True)
 
@@ -1460,35 +1455,31 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="entity_question", code="EID", name="What is associatéd entity?",
-                          entity_question_flag=True, ddtype=entity_id_type,
+                          entity_question_flag=True ,
                           constraints=[TextLengthConstraint(min=1, max=20)],
                           instruction="Answer must be 12 characters maximum")
     question2 = TextField(label="Name", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
-                          defaultValue="some default value", ddtype=name_type,
+                          defaultValue="some default value" ,
                           instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="Father age", code="FA", name="What is age öf father?",
-                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
+                             constraints=[NumericRangeConstraint(min=18, max=100)] ,
                              instruction="Answer must be a number between 18-100.")
     question4 = DateField(label="Report date", code="RD", name="What is réporting date?",
-                          date_format="dd.mm.yyyy", ddtype=date_type,
+                          date_format="dd.mm.yyyy" ,
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
     question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
-                            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
-                            ddtype=select_type, instruction="Choose 1 answer from the list.")
+                            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True , instruction="Choose 1 answer from the list.")
     question6 = SelectField(label="Symptoms", code="SY", name="What aré symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
-                                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
-                            ddtype=select_type,
+                                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False ,
                             instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS",
-                             label="What is the GPS code for clinic?",
-                             ddtype=geo_code_type,
+                             label="What is the GPS code for clinic?" ,
                              instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
     question8 = SelectField(label="Required Medicines", code="RM", name="What are the required medicines?",
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
-                            single_select_flag=False,
-                            ddtype=select_type,
+                            single_select_flag=False ,
                             instruction="Choose 1 or more answers from the list.", required=False)
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="cli051", type='survey',

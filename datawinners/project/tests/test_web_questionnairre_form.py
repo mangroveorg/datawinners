@@ -2,7 +2,6 @@ from unittest import TestCase
 from django.forms import RegexField, HiddenInput
 from mock import Mock
 from mangrove.datastore.database import DatabaseManager
-from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
@@ -11,11 +10,10 @@ from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, 
 
 class TestWebForm(TestCase):
     def setUp(self):
-        self.ddtype = Mock(spec=DataDictType)
         self.dbm = Mock(spec=DatabaseManager)
 
     def test_hidden_form_code_field_created(self):
-        entity_field = TextField("reporting on", "rep_on", "rep", self.ddtype, entity_question_flag=True)
+        entity_field = TextField("reporting on", "rep_on", "rep", entity_question_flag=True)
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
                                entity_type=['Clinic'], type="business")
         form = WebForm(form_model, None)
@@ -25,11 +23,10 @@ class TestWebForm(TestCase):
 
 class TestSubjectRegistrationForm(TestCase):
     def setUp(self):
-        self.ddtype = Mock(spec=DataDictType)
         self.dbm = Mock(spec=DatabaseManager)
 
     def test_regex_field_created_for_entity_question(self):
-        entity_field = TextField("reporting on", "rep_on", "rep", self.ddtype, entity_question_flag=True)
+        entity_field = TextField("reporting on", "rep_on", "rep", entity_question_flag=True)
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
                                entity_type=['Clinic'], type="business")
 
@@ -38,7 +35,7 @@ class TestSubjectRegistrationForm(TestCase):
         self.assertEquals(form.short_code_question_code, 'rep_on')
 
     def test_append_country_to_location(self):
-        location_field = TextField(LOCATION_TYPE_FIELD_NAME, "location_code", "some label", self.ddtype)
+        location_field = TextField(LOCATION_TYPE_FIELD_NAME, "location_code", "some label")
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[location_field],
                                entity_type=['Clinic'], type="business")
 
@@ -51,11 +48,10 @@ class TestSubjectRegistrationForm(TestCase):
 
 class TestSurveyResponseForm(TestCase):
     def setUp(self):
-        self.ddtype = Mock(spec=DataDictType)
         self.dbm = Mock(spec=DatabaseManager)
 
     def test_should_create_subject_field(self):
-        entity_field = TextField("reporting on", "rep_on", "rep", self.ddtype, entity_question_flag=True)
+        entity_field = TextField("reporting on", "rep_on", "rep", entity_question_flag=True)
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
                                entity_type=['Clinic'], type="business")
 

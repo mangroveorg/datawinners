@@ -7,7 +7,6 @@ from django.core.urlresolvers import reverse
 from django.http import HttpRequest
 from mock import Mock, patch, call
 
-from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, DateField
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
@@ -206,41 +205,37 @@ class TestProjectViews(unittest.TestCase):
 
 
     def test_should_return_max_code_in_questionnaire(self):
-        ddtype = Mock(spec=DataDictType)
-        fields = [TextField(name="f1", code="q1", label="f1", ddtype=ddtype),
-                  TextField(name="f2", code="q2", label="f2", ddtype=ddtype),
-                  TextField(name="f3", code="q3", label="f3", ddtype=ddtype),
-                  TextField(name="f3", code="q4", label="f4", ddtype=ddtype),
-                  TextField(name="f5", code="q5", label="f5", ddtype=ddtype)]
+        fields = [TextField(name="f1", code="q1", label="f1"),
+                  TextField(name="f2", code="q2", label="f2"),
+                  TextField(name="f3", code="q3", label="f3"),
+                  TextField(name="f3", code="q4", label="f4"),
+                  TextField(name="f5", code="q5", label="f5")]
         self.assertEqual(5, get_max_code(fields))
 
 
     def test_should_return_one_in_questionnaire_without_start_with_q(self):
-        ddtype = Mock(spec=DataDictType)
-        fields = [TextField(name="f1", code="c1", label="f1", ddtype=ddtype),
-                  TextField(name="f2", code="c2", label="f2", ddtype=ddtype),
-                  TextField(name="f3", code="c3", label="f3", ddtype=ddtype),
-                  TextField(name="f3", code="c4", label="f4", ddtype=ddtype),
-                  TextField(name="f5", code="c5", label="f5", ddtype=ddtype)]
+        fields = [TextField(name="f1", code="c1", label="f1"),
+                  TextField(name="f2", code="c2", label="f2"),
+                  TextField(name="f3", code="c3", label="f3"),
+                  TextField(name="f3", code="c4", label="f4"),
+                  TextField(name="f5", code="c5", label="f5")]
         self.assertEqual(1, get_max_code(fields))
 
 
     def test_should_return_reporting_period_field_if_questionnaire_contains(self):
-        ddtype = Mock(spec=DataDictType)
-        dateField = DateField(name="f2", code="c2", label="f2", date_format="dd.mm.yyyy", ddtype=ddtype,
+        dateField = DateField(name="f2", code="c2", label="f2", date_format="dd.mm.yyyy",
                               event_time_field_flag=True)
         fields = [
-            TextField(name="f1", code="c1", label="f1", ddtype=ddtype),
+            TextField(name="f1", code="c1", label="f1"),
             dateField]
         self.assertEqual(fields[1], get_reporting_period_field(fields))
 
 
     def test_should_return_none_if_questionnaire_dose_not_contains(self):
-        ddtype = Mock(spec=DataDictType)
-        dateField = DateField(name="f2", code="c2", label="f2", date_format="dd.mm.yyyy", ddtype=ddtype,
+        dateField = DateField(name="f2", code="c2", label="f2", date_format="dd.mm.yyyy",
                               event_time_field_flag=False)
         fields = [
-            TextField(name="f1", code="c1", label="f1", ddtype=ddtype),
+            TextField(name="f1", code="c1", label="f1"),
             dateField]
         self.assertEqual(None, get_reporting_period_field(fields))
 

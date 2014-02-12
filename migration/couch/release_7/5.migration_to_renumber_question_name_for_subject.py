@@ -87,8 +87,7 @@ def migrate_entity(manager, form_model, datarecord_doc, data_to_restore):
             logging.info('Error on submission: %s' % submission_log.id)
             return
 
-        data = [(form_model._get_field_by_code(code).name, cleaned_data.get(code),
-                 form_model._get_field_by_code(code).ddtype)
+        data = [(form_model._get_field_by_code(code).name, cleaned_data.get(code))
                 for code in data_to_restore]
 
         entity.update_latest_data(data)
