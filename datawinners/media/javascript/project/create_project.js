@@ -172,7 +172,7 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
 
 DW.questionnaire_form_validate = function(){
     var questions = questionnaireViewModel.questions();
-    if(questions.length == 0 || (questions.length == 1 && questions[0].is_entity_question())){
+    if(questions.length == 0){
         DW.empty_questionnaire_warning.show_warning();
         return false;
     }
