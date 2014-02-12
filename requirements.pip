@@ -18,7 +18,7 @@ networkx
 xlwt==0.7.5
 xlrd
 psycopg2==2.4.1
-django-extensions
+django-extensions==1.2.2
 apscheduler
 south==0.7.3
 supervisor
