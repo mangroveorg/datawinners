@@ -4659,3 +4659,9 @@ msgstr "Descendre"
 
 msgid "Please add at least one question"
 msgstr "Ajoutez au moins une question"
+
+msgid "Go Pro You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your projects."
+msgstr "Passez au Compte Pro. Vous avez atteint votre limite de 1000 Soumissions gratuites. Veuillez passer à un abonnement mensuel pour continuer à soumettre des données pour vos projets."
+
+msgid "Go Pro You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+msgstr "Passez au Compte Pro. Vous avez atteint la limite de 50 Soumissions SMS. Veuillez passer à un abonnement mensuel pour continuer à effectuer des Soumissions par SMS pour vos projets."
