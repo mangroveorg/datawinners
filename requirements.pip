@@ -41,4 +41,4 @@ djangorestframework
 django-urlmiddleware
 celery
 flower
--e git+https://github.com/mangroveorg/mangrove.git@develop#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@10_1_release#egg=mangrove
