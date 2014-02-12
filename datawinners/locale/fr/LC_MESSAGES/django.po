@@ -2941,8 +2941,8 @@ msgstr "Edition formulaire d'enregistrement de %(entity_type)s"
 msgid "To import a list of Data Senders follow these steps"
 msgstr "Pour importer une liste d'expéditeurs, suivez ces étapes"
 
-msgid "Download the template."
-msgstr "Téléchargez le modèle."
+msgid "Download the template"
+msgstr "Téléchargez le modèle"
 
 msgid "Fill out the template with your Data Senders information."
 msgstr "Remplissez le modèle avec les informations sur vos expéditeurs."

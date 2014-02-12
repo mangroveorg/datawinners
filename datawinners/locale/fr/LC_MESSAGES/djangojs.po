@@ -1085,3 +1085,6 @@ msgstr "Fermer"
 
 msgid "View charts of your multiple choice questions."
 msgstr "Visualiser les graphes de vos questions à choix multiples."
+
+msgid "Register Datasender"
+msgstr "Enregistrer un Expéditeur de Données"
