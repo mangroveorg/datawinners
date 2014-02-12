@@ -5,9 +5,13 @@ logger = logging.getLogger(__name__)
 
 
 class SyncOnlyChangedViews():
+    def has_view_contents_changed(self, current_views, new_views, view_name):
+        return current_views[view_name]['map'] != new_views[view_name]['map'] or \
+               current_views[view_name].get('reduce') != new_views[view_name].get('reduce')
+
     def update_views(self, current_views, new_views, manager):
         for view_name, view_def in new_views.iteritems():
-            if view_name not in current_views or current_views[view_name] != new_views[view_name]:
+            if view_name not in current_views or self.has_view_contents_changed(current_views, new_views, view_name):
                 map_function = (view_def['map'] if 'map' in view_def else None)
                 reduce_function = (view_def['reduce'] if 'reduce' in view_def else None)
                 msg = "Syncing view ..... %s" % view_name
