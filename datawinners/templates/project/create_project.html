@@ -105,8 +105,8 @@
                         <div class="questions" data-bind="scrollToView: enableScrollToView">
                                  <div class="question_list" id="que_code">
                                     <ol data-bind="foreach: questions, sortable: questions" >
-                                        <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion()} ">
-                                            <a href="#" data-bind="text: $data.display"></a>
+                                        <li data-bind="css:{question_selected:$data == $parent.selectedQuestion()} ">
+                                            <a href="#" data-bind="text: $data.display, click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }"></a>
                                             <div class="delete" data-bind='event: {mouseover: enableAction, mouseout: disableAction}'>
                                                 <a href="#" class="delete_link"
                                                     data-bind="visible: $data.canBeDeleted() && showAction() ,click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
