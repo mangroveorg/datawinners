@@ -2382,9 +2382,6 @@ msgstr "Logement"
 msgid "Water and Sanitation"
 msgstr "Eau et Assainissement"
 
-msgid "Review and Test"
-msgstr "Réviser et tester"
-
 msgid "Import List"
 msgstr "Importer la Liste"
 

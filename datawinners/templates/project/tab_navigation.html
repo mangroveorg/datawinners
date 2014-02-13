@@ -94,9 +94,6 @@
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
             <a id="reminders_tab" href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
         </li>
-        <li class="{% ifactivetab 'tab_nav' 'review_and_test' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="review_tab" href="{{ project_links.finish_link }}" class="{{ disable_link_class }}">{% trans "Review and Test" %}</a>
-        </li>
         <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
             <a id="data_tab" href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Data" %}</a>
         </li>

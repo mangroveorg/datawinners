@@ -261,23 +261,6 @@ NEW_QUESTIONNAIRE_DATA = {QUESTIONS: [{QUESTION: "Water Level", CODE: "q4", TYPE
                           CHARACTER_REMAINING: "83 / 160 characters used (1 SMS)",
                           PAGE_TITLE: "Data Senders"}
 
-VALID_DATA_REVIEW_AND_TEST = {PROJECT_PROFILE: {PROJECT_NAME: "waterpoint morondava",
-                                                PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                                                #PROJECT_TYPE: "survey",
-                                                #DEVICES: "sms,web"
-},
-                              SUBJECT_DETAILS: {SUBJECT: "waterpoint"},
-                              DATA_SENDER_COUNT: "1",
-                              QUESTIONNAIRE: [u'What are you reporting on?',
-                                              u'What is the reporting period for the activity?',
-                                              u'Date of report in DD.MM.YYY format',
-                                              u'Water Level',
-                                              u'Date of report in MM.YYY format',
-                                              u'Date of report in MM.DD.YYY format', u'Color of Water',
-                                              u'Water point admin name', u'Bacterias in water', u'Geo points of Well'],
-                              REMINDERS: "disabled"
-}
-
 NEW_VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                           RECEIVER: "",
                           SMS: "WPS01  wat1  12.10.2011 12.10.2011  198  04.2011  04.12.2011   c  Mr.Jessy  ab  27.178057,-78.007789  Water_Point_1",

@@ -442,39 +442,6 @@ def activate_project(request, project_id=None):
     return HttpResponseRedirect(reverse('project-overview', args=[project_id]))
 
 
-@valid_web_user
-def review_and_test(request, project_id=None):
-    manager = get_database_manager(request.user)
-    project = Project.load(manager.database, project_id)
-    dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project.is_deleted():
-        return HttpResponseRedirect(dashboard_page)
-    form_model = FormModel.get(manager, project.qid)
-    if request.method == 'GET':
-        number_of_registered_subjects = get_non_voided_entity_count_for_type(manager, project.entity_type)
-        number_of_registered_data_senders = len(project.data_senders)
-        fields = form_model.fields
-        if form_model.is_entity_type_reporter():
-            fields = helper.hide_entity_question(form_model.fields)
-        is_reminder = "enabled" if len(Reminder.objects.filter(project_id=project.id)) != 0 else "disabled"
-
-        project_devices = project.devices
-        devices = ", ".join(project_devices).replace('sms', 'SMS').replace('web', 'Web').replace('smartPhone',
-                                                                                                 'Smartphone')
-
-        in_trial_mode = _in_trial_mode(request)
-        return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
-                                                                   'project_links': make_project_links(project,
-                                                                                                       form_model.form_code),
-                                                                   'is_quota_reached': is_quota_reached(request),
-                                                                   'number_of_datasenders': number_of_registered_data_senders,
-                                                                   'number_of_subjects': number_of_registered_subjects,
-                                                                   "is_reminder": is_reminder,
-                                                                   "in_trial_mode": in_trial_mode,
-                                                                   "devices": devices},
-                                  context_instance=RequestContext(request))
-
-
 def _get_project_and_project_link(manager, project_id, reporter_id=None):
     project = Project.load(manager.database, project_id)
     questionnaire = FormModel.get(manager, project.qid)

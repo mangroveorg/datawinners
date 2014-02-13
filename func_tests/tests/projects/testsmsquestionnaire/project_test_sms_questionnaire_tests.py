@@ -70,7 +70,6 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         self.driver.wait_for_page_with_title(20, MY_DATASENDERS_PAGE_TITLE)
         self.check_upgrade_instruction(project_overview_page)
 
-    # TODO: Heri working on fix
     @attr('functional_test')
     def test_should_show_upgrade_instruction_on_add_datasenders_page(self):
         project_overview_page = self.navigate_to_clinic3_overview_page()
@@ -100,19 +99,10 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         self.driver.wait_for_page_with_title(20, REMINDERS_PAGE_TITLE)
         self.check_upgrade_instruction(project_overview_page)
 
-    @attr('functional_test')
-    def test_should_show_upgrade_instruction_on_review_and_test_page(self):
-        project_overview_page = self.navigate_to_clinic3_overview_page()
-        project_overview_page.navigate_to_review_and_test()
-        self.driver.wait_for_page_with_title(20, REVIEW_N_TEST_PAGE_TITLE)
-        self.check_upgrade_instruction(project_overview_page)
-
 
     @attr('functional_test')
     def test_should_show_upgrade_instruction_on_data_page(self):
         project_overview_page = self.navigate_to_clinic3_overview_page()
-        project_overview_page.navigate_to_data_page()
-        self.driver.wait_for_page_with_title(20, DATA_ANALYSIS_PAGE_TITLE)
         self.check_upgrade_instruction(project_overview_page)
 
     @attr('functional_test')

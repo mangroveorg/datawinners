@@ -2287,9 +2287,6 @@ msgstr ""
 msgid "Water and Sanitation"
 msgstr ""
 
-msgid "Review and Test"
-msgstr ""
-
 msgid "Import List"
 msgstr ""
 
