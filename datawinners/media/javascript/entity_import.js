@@ -52,7 +52,6 @@ $(document).ready(function () {
 
                     if (responseJSON.success == true) {
                         $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#import-' + form_code));
-
                     }
                     else {
                         $("#" + form_code + "_error_table table tbody").html('');
@@ -62,14 +61,20 @@ $(document).ready(function () {
                         else {
                             $('<div id="message" class="error_message message-box">' + responseJSON.message + '</div>').insertAfter($('#import-' + form_code));
                         }
-                        if (responseJSON.failure_imports.length > 0) {
-                            $("#" + form_code + "_error_table").removeClass('none');
-                        }
                         $.each(responseJSON.failure_imports, function (index, element) {
                             $("#" + form_code + "_error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>"
                                 + element.error + "</td></tr>");
                         });
-                        $("#" + form_code + "_error_table").show();
+                    }
+                    if (responseJSON.failure_imports.length > 0) {
+                            $("#" + form_code + "_error_table").removeClass('none');
+                            $("#" + form_code + "_error_table").show();
+                    }
+                    if(responseJSON.imported.length > 0){
+                         $("#" + form_code + "_success_table").removeClass('none');
+                    }
+                    else{
+                        $("#" + form_code + "_success_table").addClass('none');
                     }
                 }
             }

@@ -17,7 +17,7 @@
                 <div class="clear"></div>
             </div>
             <div class="error">{% trans "Download the template:"%} <a href="{% url import_template form_code %}?filename={{ subject.entity  }}">{{ subject.entity }}.xls</a></div>
-            <div class="import_table">
+            <div class="import_table none" id="{{ form_code }}_success_table">
                 <table class="styled_table">
                     <thead>
                         <tr>
@@ -39,7 +39,7 @@
                             <th>{% trans "Error" %}</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="error_tbody">
 
                     </tbody>
                 </table>
