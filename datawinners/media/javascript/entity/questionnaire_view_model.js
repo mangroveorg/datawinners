@@ -158,14 +158,12 @@ var questionnaireViewModel =
         var questions = questionnaireViewModel.questions();
         if(currentIndex >= 1)
             questionnaireViewModel.questions.splice(currentIndex-1, 2, questions[currentIndex], questions[currentIndex-1]);
-        question.showAction(false);
     },
     moveQuestionDown: function(question){
         var currentIndex = questionnaireViewModel.questions().indexOf(question);
         var questions = questionnaireViewModel.questions();
         if(currentIndex < questions.length-1)
              questionnaireViewModel.questions.splice(currentIndex, 2, questions[currentIndex+1], questions[currentIndex]);
-        question.showAction(false);
     },
     enableScrollToView: ko.observable(false)
 };

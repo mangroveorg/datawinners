@@ -188,6 +188,9 @@
           background: #d8e4ec url("/media/images/question_hover_bg.gif") repeat-x bottom left;
           position: relative;
         }
+        &:hover .delete{
+          visibility: visible;
+        }
         span.selected_question_arrow {
           display: none;
           position: absolute;
@@ -205,6 +208,10 @@
     }
     .delete {
       padding-left: 15px;
+      visibility: hidden;
+      &:hover{
+        visibility: visible;
+      }
       a {
         color: #0070AC !important;
         font-size: 12px;

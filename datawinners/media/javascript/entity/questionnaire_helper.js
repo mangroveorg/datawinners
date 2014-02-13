@@ -112,7 +112,6 @@ DW.question.prototype = {
         this.is_entity_question = ko.observable(q.entity_question_flag);
         this.date_format = ko.observable(q.date_format);
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
-        this.showAction = ko.observable(false);
         this.instruction = ko.dependentObservable({
             read:function () {
                 if (this.is_entity_question() && this.max_length() == 20) {
@@ -168,14 +167,6 @@ DW.question.prototype = {
         };
         this.isEnabled = function () {
             return this.newly_added_question();
-        };
-
-        this.enableAction = function () {
-            this.showAction(true);
-        };
-
-        this.disableAction = function () {
-            this.showAction(false);
         };
 
         this.isAChoiceTypeQuestion = ko.dependentObservable({
