@@ -41,7 +41,7 @@ class TestSubmissionForm(unittest.TestCase):
         fields = [IntegerField('field_name', 'integer_field_code', 'label', Mock),
                   DateField('Date', 'date_field_code', 'date_label', 'dd.mm.yyyy', Mock),
                   GeoCodeField('', 'geo_field_code', '', Mock),
-                  TextField('', 'text_field_code', '', Mock)]
+                  TextField('', 'text_field_code', '')]
         type(self.form_model).entity_question = PropertyMock(return_value=None)
         type(self.form_model).fields = PropertyMock(return_value=fields)
 

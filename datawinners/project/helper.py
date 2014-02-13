@@ -127,9 +127,6 @@ def delete_project(manager, project, void=True):
     project.set_void(manager, void)
 
 def get_activity_report_questions(dbm):
-    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
-        primitive_type="date",
-        description="activity reporting period")
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q1',
         label="Period being reported on" ,
         date_format="dd.mm.yyyy", event_time_field_flag=True)
@@ -138,9 +135,6 @@ def get_activity_report_questions(dbm):
 
 def get_subject_report_questions(dbm):
     entity_id_question = _create_entity_id_question(dbm, 'q1')
-    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
-        primitive_type="date",
-        description="activity reporting period")
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q2',
         label="Period being reported on" ,
         date_format="dd.mm.yyyy", event_time_field_flag=True)

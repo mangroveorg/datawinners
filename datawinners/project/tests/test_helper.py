@@ -19,7 +19,6 @@ from datawinners.sms.models import MSG_TYPE_USER_MSG
 
 class TestHelper(unittest.TestCase):
     def setUp(self):
-        self.get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
         self.dbm = Mock(spec=DatabaseManager)
 
 

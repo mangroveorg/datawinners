@@ -24,10 +24,7 @@ def _create_couchdb_datasender(manager, organization, current_user_name, mobile_
     reporter_short_code = 'rep' + str(total_entity + 1)
     entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=reporter_short_code,
                            location=[organization.country_name()])
-    mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
-                                                 primitive_type='string')
-    name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
-    data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type)]
+    data = [(MOBILE_NUMBER_FIELD, mobile_number), (NAME_FIELD, current_user_name)]
     entity.add_data(data=data)
     return reporter_short_code
 

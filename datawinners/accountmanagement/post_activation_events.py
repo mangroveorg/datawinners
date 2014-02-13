@@ -78,13 +78,10 @@ def active_organization(org):
 
 
 def _create_entity_data(manager, current_user_name, email, location, mobile_number):
-    mobile_number_type = get_datadict_type_by_slug(manager, slug='mobile_number')
-    name_type = get_datadict_type_by_slug(manager, slug='name')
-    location_type = get_datadict_type_by_slug(manager, slug='location')
-    data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type),
-            (LOCATION_TYPE_FIELD_NAME, location, location_type)]
+    data = [(MOBILE_NUMBER_FIELD, mobile_number), (NAME_FIELD, current_user_name),
+            (LOCATION_TYPE_FIELD_NAME, location)]
     if email:
-        data.append((EMAIL_FIELD, email, name_type ))
+        data.append((EMAIL_FIELD, email ))
     return data
 
 

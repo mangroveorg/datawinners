@@ -40,9 +40,6 @@ class TestPostActivationEvents(unittest.TestCase):
         self.patcher2 = patch('datawinners.accountmanagement.post_activation_events.create_entity')
         self.create_entity_mock = self.patcher2.start()
 
-        self.patcher3 = patch('datawinners.accountmanagement.post_activation_events.get_datadict_type_by_slug')
-        self.get_datadict_type_by_slug = self.patcher3.start()
-
     def test_active_organization_with_should_active_date_is_none_save_active_date(self):
         active_organization(org = self.paid_org)
         self.assertIsNotNone(Organization.objects.get(org_id=self.paid_org.org_id).active_date)
@@ -54,7 +51,7 @@ class TestPostActivationEvents(unittest.TestCase):
         entity_mock.type_path = [REPORTER]
         self.get_all_entities_mock.return_value = 1
         self.create_entity_mock = entity_mock
-        self.get_datadict_type_by_slug.return_value = Mock()
+        
 
         make_user_as_a_datasender(mock_manager, self.paid_org, self.username,
             self.mobile_number)
@@ -67,7 +64,7 @@ class TestPostActivationEvents(unittest.TestCase):
         entity_mock.type_path = [REPORTER]
         self.get_all_entities_mock.return_value = 1
         self.create_entity_mock = entity_mock
-        self.get_datadict_type_by_slug.return_value = Mock()
+        
 
         make_user_as_a_datasender(mock_manager, self.trial_org, self.trial_username,
             self.trial_mobile_number)
@@ -92,4 +89,3 @@ class TestPostActivationEvents(unittest.TestCase):
 
         self.patcher1.stop()
         self.patcher2.stop()
-        self.patcher3.stop()

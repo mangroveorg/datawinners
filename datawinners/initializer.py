@@ -21,11 +21,7 @@ def create_default_reporter(manager):
     entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=REPORTER_SHORT_CODE,
                            location=DEFAULT_LOCATION)
 
-    mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
-                                                 primitive_type='string')
-    name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
-
-    data = [(MOBILE_NUMBER_FIELD, TEST_REPORTER_MOBILE_NUMBER, mobile_number_type), (NAME_FIELD, 'TEST', name_type)]
+    data = [(MOBILE_NUMBER_FIELD, TEST_REPORTER_MOBILE_NUMBER), (NAME_FIELD, 'TEST')]
     entity.add_data(data=data)
 
 

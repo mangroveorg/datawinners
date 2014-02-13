@@ -97,7 +97,6 @@ class TestImport(MangroveTestCase):
                 self.assertEqual('reporter', imported_entities["rep4"])
 
     def create_form_for_entity_type(self):
-        string_data_type = get_or_create_data_dict(self.manager, name='Name', slug='name', primitive_type='string')
         school_name_field = TextField(name="name", code="q1", label="What's the name?")
         address_field = TextField(name="address", code="q2", label="Where is the clinic?")
         unique_id_field = TextField(name="unique_id", code="q3", label="What is the clinic's Unique ID Number?", entity_question_flag=True)
