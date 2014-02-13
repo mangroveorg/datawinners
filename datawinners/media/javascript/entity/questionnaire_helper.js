@@ -391,3 +391,14 @@ $(document).ready(function(){
        }
     });
 })
+
+
+DW.has_questions_changed = function(existing_questions){
+    var new_question_codes = ko.utils.arrayMap(questionnaireViewModel.questions(), function (question) {
+        return question.code();
+    });
+    var old_questions_codes = ko.utils.arrayMap(existing_questions, function (question) {
+        return question.code;
+    });
+    return ! _.isEqual(new_question_codes, old_questions_codes)
+};

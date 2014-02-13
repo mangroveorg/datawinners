@@ -147,8 +147,6 @@ $(document).ready(function() {
                     $("#message-label").removeClass("message-box");
                     $("#message-label").addClass("success-message-box");
                     $("#message-label").show().html("<label class='success'>" + gettext("Your changes have been saved.") + "</label");
-                    var has_newly_added_question = questionnaireViewModel.has_newly_added_question();
-
                     questionnaireViewModel.set_all_questions_as_old_questions();
                     if($("#qtype").val() != undefined) {
                         var json_data = JSON.parse(response);
@@ -156,7 +154,7 @@ $(document).ready(function() {
                         questionnaireViewModel.selectedQuestion.valueHasMutated();
                         questionnaireViewModel.questions.valueHasMutated();
                     }
-                    if (DW.questionnaire_was_changed || has_newly_added_question) {
+                    if (DW.questionnaire_was_changed || questionnaireViewModel.has_newly_added_question() || DW.has_questions_changed(question_list)) {
                         DW.inform_datasender_about_changes.show_warning();
                         DW.questionnaire_was_changed = false;
                     }
@@ -190,7 +188,7 @@ $(document).ready(function() {
 
     $("#submit-button").click(function() {
         DW.loading();
-        if($("#qtype").val() != undefined) {
+        if($("#qtype").val() != undefined) { //when does this occur?
             $("#questionnaire-change").dialog("open");
         } else {
             submit_questionnaire();

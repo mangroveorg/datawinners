@@ -244,7 +244,11 @@ $(document).ready(function () {
     });
 
     $('#save_and_create').click(function () {
+
         if (DW.questionnaire_form_validate()) {
+            if(DW.has_questions_changed(existing_questions)){
+                DW.questionnaire_was_changed = true;
+            }
             if( is_edit && questionnaireViewModel.hasDeletedOldQuestion  && !DW.has_submission_delete_warning.is_continue && DW.questionnaire_has_submission()){
                 DW.has_new_submission_delete_warning.show_warning();
             } else {
