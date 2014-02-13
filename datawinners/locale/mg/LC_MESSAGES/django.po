@@ -773,9 +773,6 @@ msgstr "Etape suivante : Messages de rappel"
 msgid "Step 6:"
 msgstr "Etape 6 :"
 
-msgid "Review and Test"
-msgstr "Résumé & Test"
-
 msgid ""
 "Congratulations! You have created your project. Review your project details "
 "and test if you can send in data."

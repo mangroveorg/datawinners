@@ -143,18 +143,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.assertRegexpMatches(submission_log_page.get_submission_message(sms_log),
                                  fetch_(SUBMISSION, from_(sms_log)))
 
-    def review_project_summary(self, review_page):
-        self.assertEqual(fetch_(PROJECT_PROFILE, from_(VALID_DATA_REVIEW_AND_TEST)),
-                         review_page.get_project_profile_details())
-        review_page.open_subject_accordion()
-        self.assertEqual(fetch_(SUBJECT_DETAILS, from_(VALID_DATA_REVIEW_AND_TEST)), review_page.get_subject_details())
-        # unreliable in firefox in CI, works fine locally
-        review_page.open_data_sender_accordion()
-        self.assertEqual(fetch_(DATA_SENDER_COUNT, from_(VALID_DATA_REVIEW_AND_TEST)),
-                         review_page.get_data_sender_count())
-        review_page.open_questionnaire_accordion()
-        self.assertEqual(fetch_(QUESTIONNAIRE, from_(VALID_DATA_REVIEW_AND_TEST)), review_page.get_questionnaire())
-
     def verify_individual_report_project_creation(self):
         global_navigation = GlobalNavigationPage(self.driver)
         dashboard_page = global_navigation.navigate_to_dashboard_page()

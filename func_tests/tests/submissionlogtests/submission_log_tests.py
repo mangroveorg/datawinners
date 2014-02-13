@@ -395,7 +395,7 @@ class TestSubmissionLog(unittest.TestCase):
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
-        time.sleep(1)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('#message_text .success-box'))
         delete_success_text = self.driver.find_visible_element(by_css('#message_text')).text
         self.assertEqual(delete_success_text, "The selected records have been deleted")
         submission_log_page.wait_for_table_data_to_load()
