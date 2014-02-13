@@ -2,7 +2,6 @@
 import os
 from unittest import SkipTest
 import xlwt
-from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import IntegerField, TextField
 from mock import Mock, patch
 from datawinners.entity.import_data import FilePlayer
@@ -70,13 +69,11 @@ class FilePlayerTest(MangroveTestCase):
 
     def _build_fixtures(self):
         entity_type = ["clinic"]
-        default_ddtype = DataDictType(self.manager, name='default dd type', slug='string_default',
-            primitive_type='string')
 
-        entity_field = TextField('clinic', 'ID', 'clinic label', default_ddtype, entity_question_flag=True)
-        beds_field = IntegerField('beds', 'BEDS', 'beds label', default_ddtype)
-        doctor_field = TextField('beds', 'DOCTOR', 'doctor label', default_ddtype)
-        meds_field = IntegerField('meds', 'MEDS', 'meds label', default_ddtype)
+        entity_field = TextField('clinic', 'ID', 'clinic label', entity_question_flag=True)
+        beds_field = IntegerField('beds', 'BEDS', 'beds label')
+        doctor_field = TextField('beds', 'DOCTOR', 'doctor label')
+        meds_field = IntegerField('meds', 'MEDS', 'meds label')
 
         FormModelBuilder(self.manager, entity_type, 'clf1').add_field(entity_field)\
                                                             .add_field(beds_field)\

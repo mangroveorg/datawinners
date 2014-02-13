@@ -6,7 +6,6 @@ from mock import Mock, patch
 
 from mangrove.bootstrap import initializer
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
-from mangrove.datastore.datadict import DataDictType, get_or_create_data_dict
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
 from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, TelephoneNumberField
@@ -23,9 +22,10 @@ FORM_CODE_1 = uniq("1")
 class TestQuestionnaireBuilder(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manager = get_db_manager('http://localhost:5984/', 'mangrove-test')
+        cls.manager = get_db_manager('http://localhost:5984/', uniq('mangrove-test'))
         initializer._create_views(cls.manager)
-        cls._create_default_dd_type()
+        cls.entity_type = ["HealthFacility", "Clinic"]
+        safe_define_type(cls.manager, ["HealthFacility", "Clinic"])
         cls._create_form_model()
 
     @classmethod
@@ -35,30 +35,23 @@ class TestQuestionnaireBuilder(unittest.TestCase):
     @classmethod
     def _create_form_model(cls):
         question1 = TextField(name="entity_question", code="ID", label="What is associated entity",
-                              entity_question_flag=True, ddtype=cls.default_ddtype)
+                              entity_question_flag=True)
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
                               defaultValue="some default value",
-                              constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")],
-                              ddtype=cls.default_ddtype)
+                              constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")])
         cls.form_model = FormModel(cls.manager, entity_type=cls.entity_type, name="aids", label="Aids form_model",
                                    form_code=FORM_CODE_1, type='survey', fields=[question1, question2])
         cls.form_model__id = cls.form_model.save()
-
-    @classmethod
-    def _create_default_dd_type(cls):
-        cls.entity_type = ["HealthFacility", "Clinic"]
-        safe_define_type(cls.manager, ["HealthFacility", "Clinic"])
-        cls.default_ddtype = get_or_create_data_dict(cls.manager, 'Default String Datadict Type', 'string_default', 'string')
 
     def _create_summary_form_model(self):
         question1 = TextField(name="question1_Name", code="Q1", label="What is your name",
                               defaultValue="some default value",
                               constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")],
-                              ddtype=self.default_ddtype)
+        )
         question2 = IntegerField(name="Father's age", code="Q2", label="What is your Father's Age",
-                                 constraints=[NumericRangeConstraint(min=15, max=120)], ddtype=self.default_ddtype)
+                                 constraints=[NumericRangeConstraint(min=15, max=120)])
         question3 = SelectField(name="Color", code="Q3", label="What is your favourite color",
-                                options=[("RED", 1), ("YELLOW", 2)], ddtype=self.default_ddtype)
+                                options=[("RED", 1), ("YELLOW", 2)])
         self.summary_form_model = FormModel(self.manager, entity_type=["reporter"], name="aids",
                                             label="Aids form_model",
                                             form_code=FORM_CODE_2, type="survey",
@@ -122,31 +115,27 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         expect = [(each['code'], each['label']) for each in original_fields]
         self.assertListEqual(expect, [(each.code, each.label) for each in form_model.snapshots[revision]])
 
-    @SkipTest# ddtype comparison not solved
+    @SkipTest #todo Should check for changed fields before creating snapshot
     def test_should_not_save_snapshots_when_questionnaires_field_not_changed(self):
-        self._create_form_model()
         form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
+        snapshots_before_modification = len(form_model.snapshots)
 
         post = [
-            {"title": "What is associated entity", "options": {"ddtype": self.default_ddtype.to_json()}, "type": "text",
+            {"title": "What is associated entity", "type": "text",
              "is_entity_question": True, "code": "ID", "name": "entity_question"},
-            {"title": "What is your name", "options": {"ddtype": self.default_ddtype.to_json()}, "type": "text",
+            {"title": "What is your name", "type": "text",
              "is_entity_question": False, "code": "Q1", "range_min": 5, "range_max": 10}]
         QuestionnaireBuilder(form_model, self.manager).update_questionnaire_with_questions(post)
         form_model.save()
         form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
 
-        self.assertEqual(0, len(form_model.snapshots))
+        self.assertEqual(snapshots_before_modification, len(form_model.snapshots))
 
 
 class TestQuestionBuilder(unittest.TestCase):
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
-        self.patcher = self._patch_get_ddtype_by_slug()
         self.question_builder = QuestionBuilder(self.dbm)
-
-    def tearDown(self):
-        self.patcher.stop()
 
     def test_creates_questions_from_dict(self):
         post = [{"title": "q1", "description": "desc1", "type": "text", "choices": [],
@@ -285,10 +274,3 @@ class TestQuestionBuilder(unittest.TestCase):
 
         select_question = self.question_builder.create_question(post, code="q1")
         self.assertEqual(LOCATION_TYPE_FIELD_NAME, select_question.name)
-
-
-    def _patch_get_ddtype_by_slug(self):
-        patcher = patch("datawinners.questionnaire.questionnaire_builder.get_datadict_type_by_slug")
-        get_datadict_type_by_slug_mock = patcher.start()
-        get_datadict_type_by_slug_mock.return_value = Mock(spec=DataDictType)
-        return patcher

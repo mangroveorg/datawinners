@@ -10,8 +10,7 @@ from django.utils.translation import ugettext
 
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.scheduler.smsclient import SMSClient
-from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
-from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
@@ -33,24 +32,11 @@ NOT_AVAILABLE_DS = "Unknown"
 
 logger = logging.getLogger("datawinners.reminders")
 
-def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
-    try:
-        #  Check if is existing
-        ddtype = get_datadict_type_by_slug(dbm, slug)
-    except DataObjectNotFound:
-        #  Create new one
-        ddtype = create_datadict_type(dbm=dbm, name=name, slug=slug,
-            primitive_type=primitive_type, description=description)
-    return ddtype
-
-
 def _create_entity_id_question(dbm, entity_id_question_code):
-    entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
-        description="Entity ID")
     name = ugettext("Which subject are you reporting on?")
     entity_id_question = TextField(name=name, code=entity_id_question_code,
         label=name,
-        entity_question_flag=True, ddtype=entity_data_dict_type,
+        entity_question_flag=True ,
         constraints=[TextLengthConstraint(min=1, max=20)],
         instruction=(ugettext('Answer must be a word %d characters maximum') % 20))
     return entity_id_question
@@ -141,22 +127,16 @@ def delete_project(manager, project, void=True):
     project.set_void(manager, void)
 
 def get_activity_report_questions(dbm):
-    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
-        primitive_type="date",
-        description="activity reporting period")
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q1',
-        label="Period being reported on", ddtype=reporting_period_dict_type,
+        label="Period being reported on" ,
         date_format="dd.mm.yyyy", event_time_field_flag=True)
 
     return [activity_report_question]
 
 def get_subject_report_questions(dbm):
     entity_id_question = _create_entity_id_question(dbm, 'q1')
-    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
-        primitive_type="date",
-        description="activity reporting period")
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q2',
-        label="Period being reported on", ddtype=reporting_period_dict_type,
+        label="Period being reported on" ,
         date_format="dd.mm.yyyy", event_time_field_flag=True)
     return [entity_id_question, activity_report_question]
 

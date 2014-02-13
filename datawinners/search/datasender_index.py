@@ -1,7 +1,6 @@
 from datawinners.main.database import get_db_manager
 from datawinners.project.models import get_all_projects_for_datasender
 from datawinners.search.index_utils import _entity_dict, get_fields_mapping, get_elasticsearch_handle
-from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import get_all_entities, _entity_by_short_code
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import get_form_model_by_code, REGISTRATION_FORM_CODE
@@ -36,7 +35,7 @@ def _get_project_names_by_datasender_id(dbm, entity_id):
 def create_datasender_mapping(dbm, form_model):
     es = get_elasticsearch_handle()
     fields = form_model.fields
-    fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
+    fields.append(TextField(name="projects", code='projects', label='projects'))
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
 
 
@@ -64,6 +63,6 @@ def _create_datasender_mapping(dbm):
 def create_ds_mapping(dbm, form_model):
     es = get_elasticsearch_handle()
     fields = form_model.fields
-    fields.append(TextField(name="projects", code='projects', label='projects', ddtype=DataDictType(dbm)))
+    fields.append(TextField(name="projects", code='projects', label='projects'))
     es.put_mapping(dbm.database_name, REPORTER_ENTITY_TYPE[0], get_fields_mapping(form_model.form_code, fields))
 

@@ -13,7 +13,6 @@ from datawinners.project.models import Project, ProjectState, Reminder, Reminder
 from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager, get_db_manager
-from mangrove.datastore.datadict import get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
@@ -22,8 +21,7 @@ from mangrove.form_model.validation import NumericRangeConstraint, TextLengthCon
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
-from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, \
-    create_data_dict, define_entity_instance, register
+from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, define_entity_instance, register
 from mangrove.transport.player.new_players import SMSPlayerV2, WebPlayerV2
 from datawinners.submission.location import LocationBridge
 
@@ -42,17 +40,6 @@ class DateTimeMocker(object):
     def end_mock(self):
         self.datetime_patcher.stop()
         self.submission_date_patcher.stop()
-
-#Data Dict Types
-def load_datadict_types(manager):
-    meds_type = create_data_dict(dbm=manager, name='Medicines', slug='meds', primitive_type='number',
-                                 description='Number of medications')
-    beds_type = create_data_dict(dbm=manager, name='Beds', slug='beds', primitive_type='number',
-                                 description='Number of beds')
-    director_type = create_data_dict(dbm=manager, name='Director', slug='dir', primitive_type='string',
-                                     description='Name of director')
-    patients_type = create_data_dict(dbm=manager, name='Patients', slug='patients', primitive_type='geocode',
-                                     description='Patient Count')
 
 
 def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
@@ -153,45 +140,35 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
 
 
 def create_questions(manager):
-    name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
-    # Entity id is a default type in the system.
-    entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
-    age_type = create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
-    date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
-    select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
-    geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-                          entity_question_flag=True, ddtype=entity_id_type,
+                          entity_question_flag=True,
                           constraints=[TextLengthConstraint(min=1, max=20)],
                           instruction="Answer must be 12 characters maximum")
     question2 = TextField(label="What is your namé?", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
-                          defaultValue="some default value", ddtype=name_type,
+                          defaultValue="some default value",
                           instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="What is age öf father?", code="FA", name="What is age öf father?",
-                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
+                             constraints=[NumericRangeConstraint(min=18, max=100)],
                              instruction="Answer must be a number between 18-100.")
     question4 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
-                          date_format="dd.mm.yyyy", ddtype=date_type,
+                          date_format="dd.mm.yyyy",
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
                           event_time_field_flag=True)
     question5 = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
                             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
-                            ddtype=select_type, instruction="Choose 1 answer from the list.")
+                            instruction="Choose 1 answer from the list.")
     question6 = SelectField(label="What aré symptoms?", code="SY", name="What aré symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
                                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
-                            ddtype=select_type,
                             instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS code for clinic?", code="GPS",
                              label="What is the GPS code for clinic?",
-                             ddtype=geo_code_type,
                              instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
     question8 = SelectField(label="What are the required medicines?", code="RM", name="What are the required medicines?"
         ,
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
                             single_select_flag=False,
-                            ddtype=select_type,
                             instruction="Choose 1 or more answers from the list.", required=False)
     return [question1, question2, question3, question4, question5, question6, question7, question8]
 
@@ -819,15 +796,13 @@ def create_project19(ENTITY_TYPE, manager):
 def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, manager):
     clinic_code = "cli00_mp"
     project_name = "Clinic Test Project With Monthly Reporting Period"
-    entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
-    date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
 
     question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-                          entity_question_flag=True, ddtype=entity_id_type,
+                          entity_question_flag=True,
                           constraints=[TextLengthConstraint(min=1, max=20)],
                           instruction="Answer must be 12 characters maximum")
     question2 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
-                          date_format="mm.yyyy", ddtype=date_type,
+                          date_format="mm.yyyy",
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
                           event_time_field_flag=True)
 
@@ -1452,43 +1427,33 @@ def load_sms_data_for_cli001(manager):
 
 def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)
-    name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
-    # Entity id is a default type in the system.
-    entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
-    age_type = create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
-    date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
-    select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
-    geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="entity_question", code="EID", name="What is associatéd entity?",
-                          entity_question_flag=True, ddtype=entity_id_type,
+                          entity_question_flag=True,
                           constraints=[TextLengthConstraint(min=1, max=20)],
                           instruction="Answer must be 12 characters maximum")
     question2 = TextField(label="Name", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
-                          defaultValue="some default value", ddtype=name_type,
+                          defaultValue="some default value",
                           instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="Father age", code="FA", name="What is age öf father?",
-                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
+                             constraints=[NumericRangeConstraint(min=18, max=100)],
                              instruction="Answer must be a number between 18-100.")
     question4 = DateField(label="Report date", code="RD", name="What is réporting date?",
-                          date_format="dd.mm.yyyy", ddtype=date_type,
+                          date_format="dd.mm.yyyy",
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
     question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
                             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
-                            ddtype=select_type, instruction="Choose 1 answer from the list.")
+                            instruction="Choose 1 answer from the list.")
     question6 = SelectField(label="Symptoms", code="SY", name="What aré symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
                                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
-                            ddtype=select_type,
                             instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS",
                              label="What is the GPS code for clinic?",
-                             ddtype=geo_code_type,
                              instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
     question8 = SelectField(label="Required Medicines", code="RM", name="What are the required medicines?",
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
                             single_select_flag=False,
-                            ddtype=select_type,
                             instruction="Choose 1 or more answers from the list.", required=False)
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="cli051", type='survey',
@@ -1554,61 +1519,58 @@ def load_data():
     WATER_POINT_ENTITY_TYPE = [u"waterpoint"]
     PEOPLE_ENTITY_TYPE = [u"people"]
     create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE, PEOPLE_ENTITY_TYPE])
-    load_datadict_types(manager)
+    
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
     create_clinic_projects(CLINIC_ENTITY_TYPE, manager)
     create_project19(PEOPLE_ENTITY_TYPE, manager)
     #Register Reporters
-    phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number',
-                                         primitive_type='string')
-    first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
-                                                              (NAME_FIELD, "Shweta", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890"),
+                                                              (NAME_FIELD, "Shweta")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),
-                                                              (NAME_FIELD, "David", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634"),
+                                                              (NAME_FIELD, "David")],
              location=[u'Madagascar', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
              short_code="rep2", geometry={"type": "Point", "coordinates": [-20.9027586764, 47.165034158]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567891", phone_number_type),
-                                                              (NAME_FIELD, "Shilpa", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567891"),
+                                                              (NAME_FIELD, "Shilpa")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep3", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567892", phone_number_type),
-                                                              (NAME_FIELD, "Asif", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567892"),
+                                                              (NAME_FIELD, "Asif")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep4", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919970059125", phone_number_type),
-                                                              (NAME_FIELD, "Ritesh", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919970059125"),
+                                                              (NAME_FIELD, "Ritesh")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep5", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987116", phone_number_type),
-                                                              (NAME_FIELD, "RiteshY", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987116"),
+                                                              (NAME_FIELD, "RiteshY")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep6", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987102", phone_number_type),
-                                                              (NAME_FIELD, "AkshaY", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987102"),
+                                                              (NAME_FIELD, "AkshaY")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep7", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919049008976", phone_number_type),
-                                                              (NAME_FIELD, "Ashwini", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919049008976"),
+                                                              (NAME_FIELD, "Ashwini")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep8", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619876", phone_number_type),
-                                                              (NAME_FIELD, "stefan", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619876"),
+                                                              (NAME_FIELD, "stefan")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep10", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619875", phone_number_type),
-                                                              (NAME_FIELD, "mamy", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "2619875"),
+                                                              (NAME_FIELD, "mamy")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep11", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234123413", phone_number_type),
-                                                              (NAME_FIELD, "Tester Pune", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234123413"),
+                                                              (NAME_FIELD, "Tester Pune")],
              location=[u'Bangalore', u'Karnatka', u'India', u'Asia'],
              short_code="rep276", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "37287364782", phone_number_type),
-                                                              (NAME_FIELD, "Datasender test", first_name_type)],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "37287364782"),
+                                                              (NAME_FIELD, "Datasender test")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep13", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
@@ -1620,43 +1582,43 @@ def load_data():
     load_sms_data_for_cli018(manager)
 
     create_trial_test_organization('chinatwu@gmail.com', 'COJ00000', False)
-    create_trial_test_organization('chinatwu2@gmail.com', 'COJ00001', True, [phone_number_type, first_name_type])
+    create_trial_test_organization('chinatwu2@gmail.com', 'COJ00001', True)
     create_trial_test_organization('chinatwu3@gmail.com', 'COJ00002', False)
     create_trial_test_organization('chinatwu4@gmail.com', 'COJ00003', False)
     create_trial_test_organization('mamytest@mailinator.com', 'SLX364903', False)
     create_project_for_nigeria_test_orgnization()
-    create_datasender_for_nigeria_test_organization([phone_number_type, first_name_type])
+    create_datasender_for_nigeria_test_organization()
 
     create_trial_test_organization('quotareached@mailinator.com', 'YDC120930', False)
-    register_datasender_for_quota_reached_ngo([phone_number_type, first_name_type])
+    register_datasender_for_quota_reached_ngo()
     create_clinic3_project_for_quota_reached_ngo()
 
 
-def create_datasender_for_nigeria_test_organization(data_types_for_datasender):
+def create_datasender_for_nigeria_test_organization():
     user = User.objects.get(username="samuel@mailinator.com")
     manager = get_database_manager(user)
     initializer.run(manager)
     register(manager, entity_type=REPORTER_ENTITY_TYPE,
-             data=[(MOBILE_NUMBER_FIELD, "26112345", data_types_for_datasender[0]),
-                   (NAME_FIELD, "Rasefo", data_types_for_datasender[1])],
+             data=[(MOBILE_NUMBER_FIELD, "26112345"),
+                   (NAME_FIELD, "Rasefo")],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
 
-def create_trial_test_organization(email, org_id, register_a_data_sender, data_types_for_datasender=None):
+def create_trial_test_organization(email, org_id, register_a_data_sender):
     manager = get_database_manager(User.objects.get(username=email))
     initializer.run(manager)
     CLINIC_ENTITY_TYPE = [u"clinic"]
     WATER_POINT_ENTITY_TYPE = [u"waterpoint"]
     create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
-    load_datadict_types(manager)
+    
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
 
     if (register_a_data_sender):
         register(manager, entity_type=REPORTER_ENTITY_TYPE,
-                 data=[(MOBILE_NUMBER_FIELD, "1234567890", data_types_for_datasender[0]),
-                       (NAME_FIELD, "Shweta", data_types_for_datasender[1])],
+                 data=[(MOBILE_NUMBER_FIELD, "1234567890"),
+                       (NAME_FIELD, "Shweta")],
                  location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
                  short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
@@ -1693,7 +1655,7 @@ def create_project_for_nigeria_test_orgnization():
     initializer.run(manager)
     CLINIC_ENTITY_TYPE = [u"clinic"]
     create_entity_types(manager, [CLINIC_ENTITY_TYPE])
-    load_datadict_types(manager)
+    
     questions = create_questions(manager)
     weekly_reminder_and_deadline = {
         "deadline_week": "5",
@@ -1704,13 +1666,15 @@ def create_project_for_nigeria_test_orgnization():
     }
     create_project1(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_deadline)
 
-def register_datasender_for_quota_reached_ngo(data_types_for_datasender):
+
+def register_datasender_for_quota_reached_ngo():
     manager = get_database_manager(User.objects.get(username="quotareached@mailinator.com"))
     register(manager, entity_type=REPORTER_ENTITY_TYPE,
-         data=[(MOBILE_NUMBER_FIELD, "261123456", data_types_for_datasender[0]),
-               (NAME_FIELD, "Datasender Quota Reached", data_types_for_datasender[1])],
-         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-         short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+             data=[(MOBILE_NUMBER_FIELD, "261123456"),
+                   (NAME_FIELD, "Datasender Quota Reached")],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+
 
 def create_clinic3_project_for_quota_reached_ngo():
     manager = get_database_manager(User.objects.get(username="quotareached@mailinator.com"))

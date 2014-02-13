@@ -1,7 +1,6 @@
 import unittest
 from django.forms import ChoiceField
 from mock import Mock, PropertyMock, patch
-from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.field import IntegerField, DateField, GeoCodeField, TextField
 from mangrove.form_model.form_model import FormModel
@@ -14,13 +13,12 @@ class TestSubmissionForm(unittest.TestCase):
         self.manager = Mock(spec=DatabaseManager)
         self.project = Mock(spec=Project)
         self.form_model = Mock(spec=FormModel)
-        self.ddtype = Mock(spec=DataDictType)
 
     def test_should_set_initial_values_for_submissions_with_lower_case_question_codes(self):
         initial_dict = {'q1': 'Ans1', 'q2': 'Ans2'}
         type(self.form_model).fields = PropertyMock(
-            return_value=[TextField(name="q1", code="q1", label="some", ddtype=self.ddtype),
-                          TextField(name="q2", code="q2", label="some", ddtype=self.ddtype)])
+            return_value=[TextField(name="q1", code="q1", label="some"),
+                          TextField(name="q2", code="q2", label="some")])
         type(self.form_model).entity_question = PropertyMock(return_value=None)
         submission_form = EditSubmissionForm(self.manager, self.project, self.form_model, initial_dict)
 
@@ -31,8 +29,8 @@ class TestSubmissionForm(unittest.TestCase):
     def test_should_set_initial_values_for_submissions_with_upper_case_question_codes(self):
         initial_dict = {'Q1': 'Ans1', 'Q2': 'Ans2'}
         type(self.form_model).fields = PropertyMock(
-            return_value=[TextField(name="Q1", code="Q1", label="some", ddtype=self.ddtype),
-                          TextField(name="Q2", code="Q2", label="some", ddtype=self.ddtype)])
+            return_value=[TextField(name="Q1", code="Q1", label="some" ),
+                          TextField(name="Q2", code="Q2", label="some" )])
         type(self.form_model).entity_question = PropertyMock(return_value=None)
         submission_form = EditSubmissionForm(self.manager, self.project, self.form_model, initial_dict)
 
@@ -43,7 +41,7 @@ class TestSubmissionForm(unittest.TestCase):
         fields = [IntegerField('field_name', 'integer_field_code', 'label', Mock),
                   DateField('Date', 'date_field_code', 'date_label', 'dd.mm.yyyy', Mock),
                   GeoCodeField('', 'geo_field_code', '', Mock),
-                  TextField('', 'text_field_code', '', Mock)]
+                  TextField('', 'text_field_code', '')]
         type(self.form_model).entity_question = PropertyMock(return_value=None)
         type(self.form_model).fields = PropertyMock(return_value=fields)
 
@@ -55,7 +53,7 @@ class TestSubmissionForm(unittest.TestCase):
     def test_entity_question_form_field_created(self):
         form_model = Mock(spec=FormModel)
         fields = [
-            TextField("entity question", "eid", "what are you reporting on?", self.ddtype, entity_question_flag=True)]
+            TextField("entity question", "eid", "what are you reporting on?", entity_question_flag=True)]
         type(form_model).form_code = PropertyMock(return_value='001')
         type(form_model).fields = PropertyMock(return_value=fields)
         type(form_model).entity_question = PropertyMock(return_value=fields[0])

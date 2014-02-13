@@ -215,7 +215,7 @@ class TestView(TestCase):
 
 
     def test_should_set_field_initial_value_as_none_if_not_populated(self):
-        empty_field = TextField(name="text", code="code", label="what is ur name", ddtype=Mock)
+        empty_field = TextField(name="text", code="code", label="what is ur name" )
         empty_field.value = None
         form_model = FormModel(Mock(spec=DatabaseManager))
         form_model.add_field(empty_field)
@@ -228,7 +228,7 @@ class TestView(TestCase):
         self.assertEquals(None, empty_field.value)
 
     def test_should_convert_field_value_to_unicode_when_field_value_present(self):
-        empty_field = TextField(name="text", code="code", label="what is ur name", ddtype=Mock)
+        empty_field = TextField(name="text", code="code", label="what is ur name" )
         empty_field.value = "FirstName"
         form_model = FormModel(Mock(spec=DatabaseManager))
         form_model.add_field(empty_field)

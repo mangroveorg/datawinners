@@ -3,7 +3,6 @@ from pyelasticsearch import ElasticSearch
 from mangrove.datastore.database import DatabaseManager
 from mock import Mock, MagicMock
 from datawinners.search.submission_index import SubmissionSearchStore
-from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, DateField
 from mangrove.form_model.form_model import FormModel
 
@@ -11,13 +10,8 @@ from mangrove.form_model.form_model import FormModel
 class TestSubmissionSearchStore(unittest.TestCase):
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
-        self.default_ddtype = DataDictType(self.dbm, name='Default String Datadict Type', slug='string_default',
-                                           primitive_type='string')
-        fields = \
-            [DateField(name='q3', code='q3', label='Reporting date', date_format='dd.mm.yyyy',
-                       ddtype=Mock(spec=DataDictType)),
-             TextField(name="Q1", code="EID", label="What is the reporting date?", entity_question_flag=True,
-                       ddtype=self.default_ddtype)]
+        fields = [DateField(name='q3', code='q3', label='Reporting date', date_format='dd.mm.yyyy'),
+             TextField(name="Q1", code="EID", label="What is the reporting date?", entity_question_flag=True)]
         self.form_model = FormModel(self.dbm, "abc", "abc", entity_type=["clinic"], form_code="cli001", fields=fields,
                                     type="survey")
 

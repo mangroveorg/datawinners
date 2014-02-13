@@ -4,7 +4,6 @@ from mangrove.errors.MangroveException import FormModelDoesNotExistsException, Q
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, ".")
 
-from mangrove.datastore.datadict import get_or_create_data_dict
 from mangrove.form_model.field import TextField
 from mangrove.form_model.validation import TextLengthConstraint
 from datawinners.main.couchdb.utils import all_db_names
@@ -24,10 +23,8 @@ def migration_to_add_email_data_for_web_users_in_couch(db_name):
     except FormModelDoesNotExistsException as f:
         logger.warning(f.message)
         return
-    email_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
-
     email_field = TextField(name=EMAIL_FIELD, code=EMAIL_FIELD, label="What is the subject's email",
-                      defaultValue="", ddtype=email_type,
+                      defaultValue="" ,
                       instruction="Enter email id", constraints=[TextLengthConstraint(max=50)], required=False)
     try:
         form_model.add_field(email_field)

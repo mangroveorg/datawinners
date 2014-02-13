@@ -8,7 +8,6 @@ from datawinners.project.helper import is_project_exist
 from datawinners.project.models import delete_datasenders_from_project, Project
 # from datawinners.project.tests.submission_log_data import SUBMISSIONS
 from mangrove.datastore.database import DatabaseManager
-from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
@@ -20,25 +19,14 @@ from datawinners.sms.models import MSG_TYPE_USER_MSG
 
 class TestHelper(unittest.TestCase):
     def setUp(self):
-        self.patcher1 = patch("datawinners.project.helper.create_datadict_type")
-        self.patcher2 = patch("datawinners.project.helper.get_datadict_type_by_slug")
-        self.create_ddtype_mock = self.patcher1.start()
-        self.get_datadict_type_by_slug_mock = self.patcher2.start()
-        self.create_ddtype_mock.return_value = Mock(spec=DataDictType)
-        self.get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
         self.dbm = Mock(spec=DatabaseManager)
 
 
-    def tearDown(self):
-        self.patcher1.stop()
-        self.patcher2.stop()
-
     def test_should_return_code_title_tuple_list(self):
-        ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
-                              entity_question_flag=True, ddtype=ddtype)
+                              entity_question_flag=True)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
-                              defaultValue="some default value", ddtype=ddtype)
+                              defaultValue="some default value")
         code_and_title = [(each_field.code, each_field.name) for each_field in [question1, question2]]
         self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], code_and_title)
 
@@ -89,11 +77,7 @@ class TestHelper(unittest.TestCase):
         self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))
 
     def test_should_return_according_value_for_select_field_case_insensitively(self):
-        ddtype = Mock(spec=DataDictType)
-        single_select = SelectField(label="multiple_choice_question", code="q",
-                                    options=[("red", "a"), ("yellow", "b"), ('green', "c")],
-                                    name="What is your favourite colour",
-                                    ddtype=ddtype)
+        single_select = SelectField(label="multiple_choice_question", code="q", options=[("red", "a"), ("yellow", "b"), ('green', "c")], name="What is your favourite colour")
         multiple_answer = SelectField(label="multiple_choice_question", code="q1", single_select_flag=False,
                                       options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ),
                                                ("d", "d"), ("e", "e"), ('f', "f"),
@@ -105,8 +89,7 @@ class TestHelper(unittest.TestCase):
                                                ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'),
                                                ("value_of_1b", "1b"),
                                                ("value_of_1c", "1c"), ('1d', "1d")],
-                                      name="What is your favourite colour",
-                                      ddtype=ddtype)
+                                      name="What is your favourite colour" )
         values = dict({"q": "B", "q1": "b1A1c"})
         single_value = helper.get_according_value(values, single_select)
         multiple_value = helper.get_according_value(values, multiple_answer)
@@ -114,11 +97,9 @@ class TestHelper(unittest.TestCase):
         self.assertEqual(multiple_value, "value_of_b, value_of_1a, value_of_1c")
 
     def test_should_return_according_value_for_select_field(self):
-        ddtype = Mock(spec=DataDictType)
         single_select = SelectField(label="multiple_choice_question", code="q",
                                     options=[("red", "a"), ("yellow", "b"), ('green', "c")],
-                                    name="What is your favourite colour",
-                                    ddtype=ddtype)
+                                    name="What is your favourite colour" )
         multiple_answer = SelectField(label="multiple_choice_question", code="q1", single_select_flag=False,
                                       options=[("value_of_a", "a"), ("value_of_b", "b"), ("value_of_c", 'c' ),
                                                ("d", "d"), ("e", "e"), ('f', "f"),
@@ -130,8 +111,7 @@ class TestHelper(unittest.TestCase):
                                                ('x', "x"), ("y", "y"), ("z", "z"), ("value_of_1a", '1a'),
                                                ("value_of_1b", "1b"),
                                                ("value_of_1c", "1c"), ('1d', "1d")],
-                                      name="What is your favourite colour",
-                                      ddtype=ddtype)
+                                      name="What is your favourite colour" )
         values = dict({"q": "b", "q1": "b1a1c"})
         single_value = helper.get_according_value(values, single_select)
         multiple_value = helper.get_according_value(values, multiple_answer)
@@ -140,7 +120,7 @@ class TestHelper(unittest.TestCase):
 
 
     def _get_text_field(self, name, entity_question_flag=False):
-        return TextField(name, "code", name, Mock(spec=DataDictType), entity_question_flag=entity_question_flag)
+        return TextField(name, "code", name, entity_question_flag=entity_question_flag)
 
     def _get_form_fields(self):
         eid_field = Mock(spec=TextField)
@@ -220,8 +200,7 @@ class TestHelper(unittest.TestCase):
 
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):
-        type = DataDictType(Mock(DatabaseManager), name="Name type")
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type,
+        field = TextField(name="What's in a name?", code="nam", label="naam",
                           instruction="please write more tests")
         preview = helper.get_preview_for_field(field)
         self.assertEquals("What's in a name?", preview["description"])
@@ -231,85 +210,72 @@ class TestPreviewCreator(unittest.TestCase):
 
 
     def test_should_add_constraint_text_for_text_field_with_min(self):
-        type = DataDictType(Mock(DatabaseManager), name="Name type")
         constraints = [TextLengthConstraint(min=10)]
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
+        field = TextField(name="What's in a name?", code="nam", label="naam", constraints=constraints)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Minimum 10 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max(self):
-        type = DataDictType(Mock(DatabaseManager), name="Name type")
         constraints = [TextLengthConstraint(max=100)]
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
+        field = TextField(name="What's in a name?", code="nam", label="naam", constraints=constraints)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Upto 100 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max_and_min(self):
-        type = DataDictType(Mock(DatabaseManager), name="Name type")
         constraints = [TextLengthConstraint(min=10, max=100)]
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
+        field = TextField(name="What's in a name?", code="nam", label="naam", constraints=constraints)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Between 10 -- 100 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_without_constraint(self):
-        type = DataDictType(Mock(DatabaseManager), name="Name type")
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type)
+        field = TextField(name="What's in a name?", code="nam", label="naam")
         preview = helper.get_preview_for_field(field)
         self.assertEqual("", preview["constraints"])
 
 
     def test_should_add_constraint_text_for_numeric_field_with_min(self):
-        type = DataDictType(Mock(DatabaseManager), name="age type")
         constraint = NumericRangeConstraint(min=10)
-        field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, constraints=[constraint])
+        field = IntegerField(name="What's in the age?", code="nam", label="naam", constraints=[constraint])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Minimum 10", preview["constraints"])
         self.assertEqual("integer", preview["type"])
 
     def test_should_add_constraint_text_for_numeric_field_with_max(self):
-        type = DataDictType(Mock(DatabaseManager), name="age type")
         constraint = NumericRangeConstraint(max=100)
-        field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, constraints=[constraint])
+        field = IntegerField(name="What's in the age?", code="nam", label="naam", constraints=[constraint])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Upto 100", preview["constraints"])
 
     def test_should_add_constraint_text_for_numeric_field_with_max_and_min(self):
-        type = DataDictType(Mock(DatabaseManager), name="age type")
         constraint = NumericRangeConstraint(min=10, max=100)
-        field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, constraints=[constraint])
+        field = IntegerField(name="What's in the age?", code="nam", label="naam", constraints=[constraint])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("10 -- 100", preview["constraints"])
 
     def test_should_add_constraint_text_for_numeric_field_without_constraint(self):
-        type = DataDictType(Mock(DatabaseManager), name="age type")
-        field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type)
+        field = IntegerField(name="What's in the age?", code="nam", label="naam", )
         preview = helper.get_preview_for_field(field)
         self.assertEqual("", preview["constraints"])
 
     def test_should_return_choices(self):
-        type = DataDictType(Mock(DatabaseManager), name="color type")
-        field = SelectField(name="What's the color?", code="nam", label="naam", ddtype=type,
-                            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
+        field = SelectField(name="What's the color?", code="nam", label="naam", options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select1", preview["type"])
         self.assertEqual([("Red", "a"), ("Green", "b"), ("Blue", "c")], preview["constraints"])
 
     def test_should_return_choices_type_as_select(self):
-        type = DataDictType(Mock(DatabaseManager), name="color type")
-        field = SelectField(name="What's the color?", code="nam", label="naam", ddtype=type,
+        field = SelectField(name="What's the color?", code="nam", label="naam",
                             options=[("Red", "a"), ("Green", "b"), ("Blue", "c")], single_select_flag=False)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select", preview["type"])
 
     def test_should_return_date_format(self):
-        type = DataDictType(Mock(DatabaseManager), name="date type")
-        field = DateField(name="What is the date?", code="dat", label="naam", ddtype=type, date_format="dd/mm/yyyy")
+        field = DateField(name="What is the date?", code="dat", label="naam",  date_format="dd/mm/yyyy")
         preview = helper.get_preview_for_field(field)
         self.assertEqual("dd/mm/yyyy", preview["constraints"])
 
     def test_should_return_geocode_format(self):
-        type = DataDictType(Mock(DatabaseManager), name="date type")
-        field = GeoCodeField(name="What is the place?", code="dat", label="naam", ddtype=type)
+        field = GeoCodeField(name="What is the place?", code="dat", label="naam")
         preview = helper.get_preview_for_field(field)
         self.assertEqual("xx.xxxx yy.yyyy", preview["constraints"])
 

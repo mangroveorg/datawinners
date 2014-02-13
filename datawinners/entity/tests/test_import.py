@@ -3,7 +3,6 @@ from unittest import SkipTest
 
 from mock import Mock, patch
 
-from mangrove.datastore.datadict import get_or_create_data_dict
 from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel
@@ -98,11 +97,9 @@ class TestImport(MangroveTestCase):
                 self.assertEqual('reporter', imported_entities["rep4"])
 
     def create_form_for_entity_type(self):
-        string_data_type = get_or_create_data_dict(self.manager, name='Name', slug='name', primitive_type='string')
-        school_name_field = TextField(name="name", code="q1", label="What's the name?", ddtype=string_data_type)
-        address_field = TextField(name="address", code="q2", label="Where is the clinic?", ddtype=string_data_type)
-        unique_id_field = TextField(name="unique_id", code="q3", label="What is the clinic's Unique ID Number?",
-                                    ddtype=string_data_type, entity_question_flag=True)
+        school_name_field = TextField(name="name", code="q1", label="What's the name?")
+        address_field = TextField(name="address", code="q2", label="Where is the clinic?")
+        unique_id_field = TextField(name="unique_id", code="q3", label="What is the clinic's Unique ID Number?", entity_question_flag=True)
         form_model = FormModel(self.manager, "clinic", form_code=FORM_CODE, entity_type=["clinic"],
                                is_registration_model=True,
                                fields=[school_name_field, address_field, unique_id_field])

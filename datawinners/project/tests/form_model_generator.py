@@ -33,15 +33,15 @@ class FormModelGenerator(object):
 
     def init_form_model_fields(self):
         self.eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
-            entity_question_flag=True, ddtype=Mock())
+            entity_question_flag=True)
         self.rp_field = DateField(label="Report date", code="RD", name="What is réporting date?",
-            date_format="dd.mm.yyyy", event_time_field_flag=True, ddtype=Mock(),
+            date_format="dd.mm.yyyy", event_time_field_flag=True,
             instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
         self.symptoms_field = SelectField(label="Zhat are symptoms?", code="SY", name="Zhat are symptoms?",
             options=[("Rapid weight loss", "a"), ("Dry cough", "2b"), ("Pneumonia", "c"),
-                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=Mock())
+                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False)
         self.blood_type_field = SelectField(label="What is your blood group?", code="BG",
             name="What is your blood group?",
-            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=Mock())
-        self.gps_field = GeoCodeField(name="field1_Loc", code="gps", label="Where do you stay?", ddtype=Mock())
+            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True)
+        self.gps_field = GeoCodeField(name="field1_Loc", code="gps", label="Where do you stay?")
 
