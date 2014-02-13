@@ -41,25 +41,11 @@
     <script type="text/javascript" src="/media/javascript/project/sms_preview.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
+    <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
+
 {% endblock %}
 
 {% block content %}
-    <script type="text/html" id="question-list-template_new">
-        <div class="question_list">
-            <ol>
-                {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-                <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()} ">
-                    <a href="questionnaire.html#" data-bind="text: question.display"></a>
-                    <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
-                        <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
-                    </div>
-                 <span class="selected_question_arrow"
-                       data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
-                </li>
-                {% templatetag openvariable %}/each{% templatetag closevariable %}
-            </ol>
-        </div>
-    </script>
     {% block secondary_navigation_subjects %}
         {% activetab "secondary_tab_nav" "criteria" %}
         {{ block.super }}

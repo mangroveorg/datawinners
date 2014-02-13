@@ -14,6 +14,12 @@
   float: none;
   margin-bottom: 10px; }
 
+.questions {
+  margin-top: 15px;
+  max-height: 399px;
+  overflow-y: auto;
+  overflow-x: hidden; }
+
 #question-detail-panel .mobile {
   background: url("/media/images/mobile2.jpg") no-repeat left top;
   height: 300px;

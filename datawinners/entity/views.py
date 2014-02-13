@@ -58,7 +58,7 @@ from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 websubmission_logger = logging.getLogger("websubmission")
 
 
-@login_required(login_url='/login')
+@login_required
 @is_not_expired
 def create_type(request):
     success = False
@@ -91,7 +91,7 @@ def get_count(h, key):
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_new_user
 @is_datasender
@@ -153,7 +153,7 @@ def _get_order_field(post_dict, user, subject_type):
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_new_user
 @is_datasender
@@ -273,7 +273,7 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
         __create_web_users(org_id, {reporter_id: email_address}, language_code))
 
 
-@login_required(login_url='/login')
+@login_required
 @csrf_view_exempt
 @is_not_expired
 def create_multiple_web_users(request):
@@ -502,7 +502,7 @@ def create_subject(request, entity_type=None):
 
 
 @valid_web_user
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_not_expired
 def edit_subject_questionnaire(request, entity_type=None):
@@ -518,11 +518,13 @@ def edit_subject_questionnaire(request, entity_type=None):
 
     existing_questions = json.dumps(fields, default=field_to_json)
     return render_to_response('entity/questionnaire.html',
-                              {'existing_questions': repr(existing_questions),
+                              {
+                               'existing_questions': repr(existing_questions),
                                'questionnaire_code': form_model.form_code,
                                'language': form_model.activeLanguages[0],
                                'entity_type': entity_type,
-                               'post_url': reverse(save_questionnaire)},
+                               'post_url': reverse(save_questionnaire)
+                              },
                               context_instance=RequestContext(request))
 
 

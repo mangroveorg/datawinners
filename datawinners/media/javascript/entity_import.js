@@ -79,7 +79,7 @@ $(document).ready(function () {
                 }
             }
         });
-    })
+    });
 
 
     $(".popup-import").dialog({
@@ -111,10 +111,10 @@ $(document).ready(function () {
 
     $(".close_import_dialog").bind("click", function () {
         $(this).parent().parent().dialog("close");
-    })
+    });
 
     $(".edit-form-code-link").bind("click", function () {
         var index = $(".edit-form-code-link").index($(this));
         location.href = $(".edit-form-link").eq(index).attr("href");
-    })
-})
+    });
+});
