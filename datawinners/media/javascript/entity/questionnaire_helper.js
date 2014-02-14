@@ -195,7 +195,7 @@ DW.change_question_title_for_reporting_period = function (replaceto, replacewith
 
 
 DW.removeQuestionCheckForRegistration = function (question) {
-    if (!DW.has_submission_delete_warning_for_entity.is_continue && DW.questionnaire_has_submission()) {
+    if (!DW.has_submission_delete_warning_for_entity.is_continue && DW.questionnaire_has_submission() && !question.newly_added_question()) {
         DW.has_submission_delete_warning_for_entity.show_warning();
     } else {
         questionnaireViewModel.removeQuestion(question);
