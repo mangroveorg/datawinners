@@ -51,20 +51,29 @@ class AllDataSendersView(TemplateView):
             'in_trial_mode': in_trial_mode
         })
 
-    def post(self, request, *args, **kwargs):
-        manager = get_database_manager(request.user)
-        error_message, failure_imports, success_message, imported_datasenders, successful_imports = import_module.import_data(
-            request,
-            manager,
-            default_parser=XlsDatasenderParser)
-        imported_data_senders = parse_successful_imports(successful_imports)
-        imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
+    def get_imported_data_senders(self, successful_imports):
+        imported_data_senders = successful_imports.values()
+        for imported_data_sender in imported_data_senders:
+            imported_data_sender.remove(["reporter"])
+        return imported_data_senders
+
+    def update_activity_log(self, request, successful_imports):
+        imported_datasenders_ids = successful_imports.keys()
         if len(imported_datasenders_ids):
             UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
                                   detail=json.dumps(
                                       dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})))
-        org_id = request.user.get_profile().org_id
-        add_imported_datasenders_to_trail_account(imported_data_senders, org_id)
+
+    def post(self, request, *args, **kwargs):
+        manager = get_database_manager(request.user)
+        error_message, failure_imports, success_message,  successful_imports = import_module.import_data(
+            request,
+            manager,
+            default_parser=XlsDatasenderParser)
+
+        imported_data_senders = parse_successful_imports(successful_imports)
+        self.update_activity_log(request, successful_imports)
+
         return HttpResponse(json.dumps(
             {
                 'success': error_message is None and is_empty(failure_imports),
@@ -82,22 +91,6 @@ class AllDataSendersView(TemplateView):
     @method_decorator(is_not_expired)
     def dispatch(self, *args, **kwargs):
         return super(AllDataSendersView, self).dispatch(*args, **kwargs)
-
-    # def _get_all_datasenders(self, manager, projects, user):
-    #     all_data_senders, fields, labels = import_module.load_all_entities_of_type(manager)
-    #     project_association = self._get_project_association(projects)
-    #     remove_system_datasenders(all_data_senders)
-    #     for datasender in all_data_senders:
-    #         get_datasender_user_detail(datasender, user)
-    #         datasender['projects'] = project_association.get(datasender['short_code'])
-    #     return all_data_senders
-
-    # def _get_project_association(self, projects):
-    #     project_association = defaultdict(list)
-    #     for project in projects:
-    #         for datasender in project['value']['data_senders']:
-    #             project_association[datasender].append(project['value']['name'])
-    #     return project_association
 
 
 class AllDataSendersAjaxView(View):

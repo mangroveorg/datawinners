@@ -9,7 +9,7 @@
                 <li>{% trans "Click the gold Upload a file button and select the saved template." %}</li>
             </ul>
             <br/>
-            <div class="file-uploader float_left" id="import-{{ subject.code }}">
+            <div class="file-uploader float_left" id="subject_upload_button">
                 <noscript>
                     <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
                     <!-- or put a simple form for upload here -->
@@ -17,7 +17,7 @@
                 <div class="clear"></div>
             </div>
             <div class="error">{% trans "Download the template:"%} <a href="{% url import_template form_code %}?filename={{ subject.entity  }}">{{ subject.entity }}.xls</a></div>
-            <div class="import_table none" id="{{ form_code }}_success_table">
+            <div class="import_table none" id="subject_success_table">
                 <table class="styled_table">
                     <thead>
                         <tr>
@@ -30,7 +30,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class='error_table none import_table' id="{{ subject.code }}_error_table">
+            <div class='error_table none import_table' id="subject_error_table">
                 <br/>
                 <table class="styled_table error_body">
                     <thead>
