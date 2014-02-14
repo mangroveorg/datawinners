@@ -514,29 +514,6 @@ def questionnaire(request, project_id=None):
                                   context_instance=RequestContext(request))
 
 
-# def _make_project_context(form_model, project):
-#     return {'form_model': form_model, 'project': project,
-#             'project_links': make_project_links(project,
-#                                                 form_model.form_code)}
-
-
-# def _create_submission_request(form_model, request):
-#     submission_request = dict(request.POST)
-#     submission_request["form_code"] = form_model.form_code
-#     return submission_request
-
-
-# def _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class):
-#     return {'questionnaire_form': questionnaire_form,
-#             'project': project,
-#             'project_links': make_project_links(project, form_code),
-#             'hide_link_class': hide_link_class,
-#             'disable_link_class': disable_link_class,
-#             'back_to_project_link': reverse("alldata_index"),
-#             'smart_phone_instruction_link': reverse("smart_phone_instruction"),
-#     }
-
-
 def _get_form_code(manager, project):
     return FormModel.get(manager, project.qid).form_code
 
