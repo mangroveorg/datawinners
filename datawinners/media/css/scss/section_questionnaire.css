@@ -215,7 +215,6 @@
     padding: 0; }
 #container_content .questionnaire_form_header {
   border-bottom: 3px solid black;
-  height: 58px;
   position: relative; }
   #container_content .questionnaire_form_header .questionnaire_code {
     float: left; }
@@ -320,3 +319,6 @@
   #questionnaire_types .ui-accordion-content {
     border: 0;
     border-bottom: 1px solid #000000; }
+
+.project_name_div {
+  padding-top: 10px; }

@@ -7,16 +7,7 @@
         <div class="questionnaire_type_header">
             <span class="header">{% trans "Use a Blank Questionnaire" %}</span>
         </div>
-        <div class="form-row-10px">
-            {{ form.name.label_tag }}
-            {{ form.name }}
-            <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-            <div class="tooltip"><p>
-                {% trans "tooltip_project_name" %}
-            </p></div>
-            {{ form.name.errors }}
-            <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
-        </div>
+        <h6>{% trans 'Start with an empty Questionnaire and add your list of questions.'%}</h6>
         <div class="questionnaire_type_header">
             <span class="header">{% trans "Use a Template" %}</span>
         </div>

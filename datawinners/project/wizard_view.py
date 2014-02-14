@@ -76,17 +76,17 @@ def create_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
-    all_projects_name = get_all_project_names(get_database_manager(request.user))
-    name = generate_project_name(all_projects_name)
-    project_summary = dict(name=name)
+    # all_projects_name = get_all_project_names(get_database_manager(request.user))
+    # name = generate_project_name(all_projects_name)
+    # project_summary = dict(name=name)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
 
     if request.method == 'GET':
-        form = CreateProject(entity_list=entity_list, initial={'name': name})
+        form = CreateProject(entity_list=entity_list)
         return render_to_response('project/create_project.html',
                                   {'form': form,
                                    'preview_links': get_preview_and_instruction_links(),
-                                   'project': project_summary,
+                                   # 'project': project_summary,
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
                                    'post_url': reverse(create_project)}, context_instance=RequestContext(request))

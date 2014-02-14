@@ -1,5 +1,15 @@
 {% load i18n %}
 
+<div class="form-row-10px project_name_div">
+    {{ form.name.label_tag }}
+    {{ form.name }}
+    <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+    <div class="tooltip"><p>
+        {% trans "tooltip_project_name" %}
+    </p></div>
+    {{ form.name.errors }}
+    <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
+</div>
 <ul class="questionnaire_code">
     <li>
         <label>{% trans "SMS Questionnaire Code:" %}</label>
@@ -11,11 +21,12 @@
         <div class="tooltip"><p>
             {% trans "tooltip_question_code" %}
         </p></div>
-        <div id="project-language" style="float: right">{% trans "Choose your language :" %}<select>
-            <option value="en">English</option>
-            <option value="fr">French</option>
-            <option value="mg">Malagasy</option>
-        </select></div>
+        <div id="project-language" style="float: right">{% trans "Choose your language :" %}
+            <select>
+                <option value="en">English</option>
+                <option value="fr">French</option>
+                <option value="mg">Malagasy</option>
+            </select></div>
         <div id="questionnaire-code-error" class="error_arrow"></div>
     </li>
 </ul>
