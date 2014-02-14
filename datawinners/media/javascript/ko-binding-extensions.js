@@ -8,9 +8,6 @@ ko.bindingHandlers.sortable = {
                 var position = ui.item.index();
                 var item = ko.dataFor(ui.item[0]);
 
-                if (item_list()[position].is_entity_question())
-                    return false;
-
                 if (position >= 0) {
                     item_list.remove(item);
                     item_list.splice(position, 0, item);
