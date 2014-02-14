@@ -63,10 +63,7 @@
     <div id="project-message-label" class="message-box none">
     </div>
     <input id='post_url' value="{{ post_url }}" type='hidden'/>
-    <form id="create_project_form">
-        {% csrf_token %}
-        {% include 'project/questionnaire_creation_options.html' %}
-    </form>
+    {% include 'project/questionnaire_creation_options.html' %}
     <div id="subject_warning_message">
         <p class="warning_message">{% trans "Changing the <span id='changed'>subject type</span> will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?" %}</p>
         <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
@@ -84,7 +81,7 @@
             {% csrf_token %}
             <fieldset>
                 <div class="questionnaire_form_header clearfix">
-                    {% include 'project/questionnaire_code_indicator.html' %}
+                    {% include 'project/questionnaire_info_indicator.html' %}
                     {% include 'project/preview_navigation.html' %}
                 </div>
                 <div class="questionnare_content grid_23 alpha omega">

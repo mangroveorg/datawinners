@@ -111,23 +111,23 @@ DW.basic_project_info.prototype = {
         });
         return JSON.stringify({'name':name, 'goals':goals, 'language':language, 'activity_report':activity_report,
             'entity_type':entity_type, 'devices':devices});
-    },
-    show:function () {
-        $(this.project_info_form_element).show();
-    },
-    hide:function () {
-        $(this.project_info_form_element).hide();
-    },
-    show_subject_link:function () {
-        $('#add_subject_type').show()
-    },
-    hide_subject_link:function () {
-        $("#add_subject_type").accordion("activate", -1)
-        $('#add_subject_type').hide()
     }
+//    show:function () {
+//        $(this.project_info_form_element).show();
+//    },
+//    hide:function () {
+//        $(this.project_info_form_element).hide();
+//    },
+//    show_subject_link:function () {
+//        $('#add_subject_type').show()
+//    },
+//    hide_subject_link:function () {
+//        $("#add_subject_type").accordion("activate", -1)
+//        $('#add_subject_type').hide()
+//    }
 };
 
-var basic_project_info = new DW.basic_project_info('#create_project_form');
+var basic_project_info = new DW.basic_project_info('#question_form .project_name_div');
 var questionnnaire_code = new DW.questionnaire_code("#questionnaire-code", "#questionnaire-code-error");
 var questionnaire_form = new DW.questionnaire_form('#question_form');
 var questionnaire_section = new DW.questionnaire_section("#questionnaire");
@@ -136,7 +136,7 @@ var devices = new DW.devices("#id_devices_0");
 DW.post_project_data = function (state, function_to_construct_redirect_url_on_success) {
     var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
     var post_data = {'questionnaire-code':$('#questionnaire-code').val(), 'question-set':questionnaire_data, 'profile_form':basic_project_info.values(),
-        'project_state':state, 'csrfmiddlewaretoken':$('#create_project_form input[name=csrfmiddlewaretoken]').val()};
+        'project_state':state, 'csrfmiddlewaretoken':$('#question_form input[name=csrfmiddlewaretoken]').val()};
     $.post($('#post_url').val(), post_data, function (response) {
         var responseJson = $.parseJSON(response);
         if (responseJson.success) {
@@ -186,7 +186,7 @@ $(document).ready(function () {
     }
     var activity_report_question = $('#question_title').val();
 
-    basic_project_info.hide_subject_link();
+//    basic_project_info.hide_subject_link();
     devices.disableSMSElement();
 
     $('#id_entity_type').change(function () {
@@ -221,21 +221,24 @@ $(document).ready(function () {
     }
 
     $('#continue_project').click(function () {
-        if (!basic_project_info.isValid()) {
-            $('html,body').animate({scrollTop:480}, 'slow');
-            return false;
-        }
         $("#project-message-label").addClass('none');
-        basic_project_info.hide();
+        $('#project_profile').hide();
+//        basic_project_info.hide();
         questionnaire_section.show();
     });
 
     $('#back_to_project').click(function () {
-        basic_project_info.show();
+        $('#project_profile').show();
+//        basic_project_info.show();
         questionnaire_section.hide();
     });
 
     $('#save_and_create').click(function () {
+
+        if (!basic_project_info.isValid()) {
+            $('html,body').animate({scrollTop:480}, 'slow');
+            return false;
+        }
 
         if (DW.questionnaire_form_validate()) {
             if(DW.has_questions_changed(existing_questions)){
