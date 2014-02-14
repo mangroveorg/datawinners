@@ -93,12 +93,13 @@ def dashboard(request):
     language = request.session.get("django_language", "en")
     has_reached_sms_limit = organization.has_exceeded_message_limit()
     has_reached_submission_limit = organization.has_exceeded_submission_limit()
-    messages = []
+    message_box_deleted = []
+
     if "deleted" in request.GET.keys():
-        messages = [_('The questionnaire you are requesting for has been deleted from the system.')]
+        message_box_deleted = [_('The questionnaire you are requesting for has been deleted from the system.')]
     return render_to_response('dashboard/home.html',
                               {"projects": project_list, 'trial_account': organization.in_trial_mode,
-                               'has_reached_sms_limit':has_reached_sms_limit, 'messages':messages,
+                               'has_reached_sms_limit':has_reached_sms_limit, 'message_box_deleted':message_box_deleted,
                                'has_reached_submission_limit':has_reached_submission_limit,
                                'language':language, 'counters':organization.get_counters()}, context_instance=RequestContext(request))
 
