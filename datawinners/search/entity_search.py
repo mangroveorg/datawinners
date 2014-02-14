@@ -65,7 +65,7 @@ class MyDataSenderQuery(Query):
 class DataSenderQueryBuilder(QueryBuilder):
     def get_query(self, database_name, doc_type=REPORTER):
         query = QueryBuilder().get_query(database_name=database_name, doc_type=doc_type)
-        return query.filter(~ elasticutils.F(short_code='test'))
+        return query.filter(~ elasticutils.F(short_code_value='test'))
 
 
 class SubjectQuery(Query):
