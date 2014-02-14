@@ -1,0 +1,41 @@
+{% load i18n %}
+<script type="text/javascript" src="/media/javascript/home/choose_questionnaire_creation_type.js"></script>
+
+<div id="project_profile" class="clear_both">
+    <h5>{% trans "1. Choose How You Want To Start" %}</h5>
+    <div id="questionnaire_types">
+        <div class="questionnaire_type_header">
+            <span class="header">{% trans "Use a Blank Questionnaire" %}</span>
+        </div>
+        <div class="form-row-10px">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <div class="tooltip"><p>
+                {% trans "tooltip_project_name" %}
+            </p></div>
+            {{ form.name.errors }}
+            <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
+        </div>
+        <div class="questionnaire_type_header">
+            <span class="header">{% trans "Use a Template" %}</span>
+        </div>
+
+        <div>
+            <span class="project_name">{% trans " -- Template goes here --" %}</span>
+        </div>
+
+        <div class="questionnaire_type_header">
+            <span class="header">{% trans "Use one Of Your Existing Questionnaire" %}</span>
+        </div>
+        <div>
+            <span class="project_name">{% trans "--  blank --" %}</span>
+        </div>
+
+    </div>
+    <div class="right_aligned_button create_project">
+        <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
+        <input type="button" class="button_wizard_next_small" id="continue_project" value="{% trans "Continue" %}"/>
+    </div>
+
+</div>

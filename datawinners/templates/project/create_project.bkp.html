@@ -2,7 +2,8 @@
 {% load i18n %}
 {% block page_title %} {% trans "Create Project" %}{% endblock %}
 {% block section_title %}
-    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{% trans "Create a New Questionnaire" %}</h2>
+    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{{ project.name }}</h2>
+    <a href="/project/" class="cancel_project">{% trans "Cancel" %}</a>
 {% endblock %}
 
 {% load dw_tabs %}
@@ -17,12 +18,15 @@
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
     <script type="text/javascript">
+        var subject_report_questions = $.parseJSON({{subject_report_questions|safe}});
+        var activity_report_questions = $.parseJSON({{activity_report_questions|safe}});
         var existing_questions = $.parseJSON({{existing_questions|safe}});
         var sms_preview_link = "{{ preview_links.sms_preview }}";
         var web_preview_link = "{{ preview_links.web_preview }}";
         var smart_phone_preview_link = "{{ preview_links.smart_phone_preview }}";
     </script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/subject_warning_dialog_module.js"></script>
     <script type="text/javascript" src="/media/javascript/project/create_project.js"></script>
     <script type="text/javascript" src="/media/javascript/project/sms_preview.js"></script>
     <script type="text/javascript" src="/media/javascript/project/new_questionnaire_charcount.js"></script>
@@ -65,6 +69,7 @@
     <input id='post_url' value="{{ post_url }}" type='hidden'/>
     <form id="create_project_form">
         {% csrf_token %}
+{#        {% include 'project/basic_info.html' %}#}
         {% include 'project/questionnaire_creation_options.html' %}
     </form>
     <div id="subject_warning_message">
@@ -76,9 +81,10 @@
 
     <div id="questionnaire" class="clear_both none">
         <fieldset>
-            <legend>2. {% trans "Write and Edit Your Questions" %}</legend>
+            <legend>2. {% trans "Questions" %}</legend>
         </fieldset>
         <div class="line"></div>
+        <p class="black_italic">{% trans "We have provided you with example questions below. You can use the provided question, edit them, delete them or write your own." %}</p>
 
         <form id="question_form">
             {% csrf_token %}
@@ -100,11 +106,11 @@
                         <div class="questions" data-bind="scrollToView: enableScrollToView">
                                  <div class="question_list" id="que_code">
                                     <ol data-bind="foreach: questions, sortable: questions" >
-                                        <li data-bind="css:{question_selected:$data == $parent.selectedQuestion(),sort: true}, click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data);} ">
+                                        <li data-bind="css:{question_selected:$data == $parent.selectedQuestion()}, click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data);} ">
                                             <a href="#" data-bind="text: $data.display"></a>
                                             <div class="delete" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
                                                 <a href="#" class="delete_link"
-                                                    data-bind="css: {visible: $data.canBeDeleted, hidden: !$data.canBeDeleted()}, click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
+                                                    data-bind="visible: $data.canBeDeleted(), click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
                                                 </a>
                                                 <span>
                                                     <a data-bind="visible: $index(), click: $parent.moveQuestionUp, clickBubble: false" class="question_action">

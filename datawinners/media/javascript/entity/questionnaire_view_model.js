@@ -11,7 +11,7 @@ var questionnaireViewModel =
             return this.title();
         }, question);
         question.newly_added_question(true);
-        questionnaireViewModel.remove_location_type()
+        questionnaireViewModel.remove_location_type();
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.selectedQuestion(question);
         DW.init_question_constraints();

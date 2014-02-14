@@ -102,8 +102,8 @@ DW.basic_project_info.prototype = {
     values:function () {
         var name = $('#id_name').val();
         var goals = $('#id_goals').val();
-        var language = $('input[name=language]:checked').val();
-        var activity_report = $('input[name=activity_report]:checked').val();
+        var language = $('#project-language select').val();
+        var activity_report = 'yes';
         var entity_type = $('#id_entity_type').val();
         var devices = [];
         $('input[name=devices]:checked').each(function () {
@@ -173,7 +173,7 @@ DW.questionnaire_form_validate = function(){
 };
 
 $(document).ready(function () {
-    DW.subject_warning_dialog_module.init();
+//    DW.subject_warning_dialog_module.init();
     DW.option_warning_dialog.init();
     DW.init_delete_periodicity_question_warning();
     DW.init_empty_questionnaire_warning();

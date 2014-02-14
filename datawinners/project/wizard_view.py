@@ -83,13 +83,10 @@ def create_project(request):
 
     if request.method == 'GET':
         form = CreateProject(entity_list=entity_list, initial={'name': name})
-        activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
-        subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
         return render_to_response('project/create_project.html',
-                                  {'form': form, "activity_report_questions": repr(activity_report_questions),
-                                   'subject_report_questions': repr(subject_report_questions),
+                                  {'form': form,
                                    'preview_links': get_preview_and_instruction_links(),
-                                   'existing_questions': repr(activity_report_questions), 'project': project_summary,
+                                   'project': project_summary,
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
                                    'post_url': reverse(create_project)}, context_instance=RequestContext(request))
