@@ -394,5 +394,12 @@
 }
 
 .visible{
-  visibility: visible !important;
+      :hover{
+        visibility: visible !important;
+      }
 }
+
+.hidden{
+  visibility: hidden;
+}
+

@@ -18,12 +18,7 @@ ko.bindingHandlers.sortable = {
                 ui.item.remove();
             }
         });
-    },
-//    update: function(element, valueAccessor) {
-//        $(element).sortable({
-//            items: ".sort"
-//        })
-//    }
+    }
 };
 
 ko.bindingHandlers.scrollToView = {

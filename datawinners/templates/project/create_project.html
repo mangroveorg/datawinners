@@ -105,7 +105,7 @@
                         <div class="questions" data-bind="scrollToView: enableScrollToView">
                                  <div class="question_list" id="que_code">
                                     <ol data-bind="foreach: questions, sortable: questions" >
-                                        <li data-bind="css:{question_selected:$data == $parent.selectedQuestion()}, click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data);} ">
+                                        <li data-bind="css:{question_selected:$data == $parent.selectedQuestion(),sort: true}, click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data);} ">
                                             <a href="#" data-bind="text: $data.display"></a>
                                             <div class="delete" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
                                                 <a href="#" class="delete_link"
