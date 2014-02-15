@@ -5,6 +5,23 @@ var questionnaireViewModel =
     hasDeletedOldQuestion : false,
     language:'en',
 
+    questionnaireCreationType : ko.observable(),
+
+    setQuestionnaireCreationType : function(){
+        location.hash = 'new_questionnaire';
+    },
+
+    routing : Sammy(function () {
+        this.get('#:new_questionnaire', function () {
+            questionnaireViewModel.questionnaireCreationType(true);
+        });
+        this.get('', function () {
+            questionnaireViewModel.questionnaireCreationType(false);
+        });
+    }),
+
+
+
     addQuestion : function() {
         var question = new DW.question();
         question.display = ko.dependentObservable(function() {
@@ -174,3 +191,4 @@ questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function(){
 questionnaireViewModel.isSelectedQuestionNull = ko.computed(function(){
         return this.selectedQuestion().isNullQuestion;
 }, questionnaireViewModel);
+

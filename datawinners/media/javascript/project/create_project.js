@@ -50,19 +50,19 @@ DW.devices.prototype = {
     }
 };
 
-DW.questionnaire_section = function (questionnaire_form_element) {
-    this.questionnaire_form_element = questionnaire_form_element;
-};
-
-DW.questionnaire_section.prototype = {
-    show:function () {
-        $(this.questionnaire_form_element).removeClass('none');
-    },
-    hide:function () {
-        $(this.questionnaire_form_element).addClass('none');
-    }
-
-};
+//DW.questionnaire_section = function (questionnaire_form_element) {
+//    this.questionnaire_form_element = questionnaire_form_element;
+//};
+//
+//DW.questionnaire_section.prototype = {
+//    show:function () {
+//        $(this.questionnaire_form_element).removeClass('none');
+//    },
+//    hide:function () {
+//        $(this.questionnaire_form_element).addClass('none');
+//    }
+//
+//};
 
 DW.basic_project_info = function (project_info_form_element) {
     this.project_info_form_element = project_info_form_element;
@@ -130,7 +130,7 @@ DW.basic_project_info.prototype = {
 var basic_project_info = new DW.basic_project_info('#question_form .project_name_div');
 var questionnnaire_code = new DW.questionnaire_code("#questionnaire-code", "#questionnaire-code-error");
 var questionnaire_form = new DW.questionnaire_form('#question_form');
-var questionnaire_section = new DW.questionnaire_section("#questionnaire");
+//var questionnaire_section = new DW.questionnaire_section("#questionnaire");
 var devices = new DW.devices("#id_devices_0");
 
 DW.post_project_data = function (state, function_to_construct_redirect_url_on_success) {
@@ -155,10 +155,10 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
             $.unblockUI();
             if (responseJson.error_in_project_section) {
                 basic_project_info.show();
-                questionnaire_section.hide();
+//                questionnaire_section.hide();
             } else {
                 basic_project_info.hide();
-                questionnaire_section.show();
+//                questionnaire_section.show();
             }
             $('#project-message-label').removeClass('none');
             $('#project-message-label').html("<label class='error_message'> " + gettext(responseJson.error_message) + "</label>");
@@ -220,17 +220,17 @@ $(document).ready(function () {
         $('#add_subject_type').show();
     }
 
-    $('#continue_project').click(function () {
-        $("#project-message-label").addClass('none');
-        $('#project_profile').hide();
-//        basic_project_info.hide();
-        questionnaire_section.show();
-    });
+//    $('#continue_project').click(function () {
+//        $("#project-message-label").addClass('none');
+//        $('#project_profile').hide();
+////        basic_project_info.hide();
+//        questionnaire_section.show();
+//    });
 
     $('#back_to_project').click(function () {
         $('#project_profile').show();
 //        basic_project_info.show();
-        questionnaire_section.hide();
+//        questionnaire_section.hide();
     });
 
     $('#save_and_create').click(function () {

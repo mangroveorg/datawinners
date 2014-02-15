@@ -14,6 +14,7 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/sammy-latest.min.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
     <script type="text/javascript">
@@ -46,32 +47,14 @@
     <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet" />
 {% endblock %}
 
-{% block wizard %}
-    <div class="wizard_heading">{% trans "Create your project in a few easy steps." %}</div>
-    <div class="line margin_top_5 margin_bottom_10"></div>
-    <div class="w_content">
-        <p>1. {% trans "Name your project and provide basic information about it." %}</p>
-
-        <p>2. {% trans "Write and edit your questions." %}</p>
-
-        <p>3. {% trans "Save and create your project." %}</p>
-    </div>
-{% endblock %}
-
-
 {% block content %}
-    <div id="project-message-label" class="message-box none">
-    </div>
+    <div id="project-message-label" class="message-box none"></div>
+
     <input id='post_url' value="{{ post_url }}" type='hidden'/>
+
     {% include 'project/questionnaire_creation_options.html' %}
-    <div id="subject_warning_message">
-        <p class="warning_message">{% trans "Changing the <span id='changed'>subject type</span> will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?" %}</p>
-        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
-        <a href="#" class="button" id="continue">{% trans "Continue" %}</a>
-    </div>
 
-
-    <div id="questionnaire" class="clear_both none">
+    <div id="questionnaire" class="clear_both" data-bind="visible: questionnaireCreationType">
         <fieldset>
             <legend>2. {% trans "Write and Edit Your Questions" %}</legend>
         </fieldset>
@@ -133,25 +116,6 @@
                 </div>
             </fieldset>
         </form>
-        <div id="delete_periodicity_question_warning">
-            <p class="warning_message">{% trans "warning_msg_for_activity_report_question_delete" %}
-                <a class='show_link' href="javascript:void(0);">{% trans "Learn More"%}</a>
-                <span><br/>{% trans "learn_more_delete_question" %}</span>
-                <br/><br/>
-                {% trans "Do you want to delete this question?" %}
-            </p>
-            <br/>
-            <div class="text_align_right">
-                <a class="button_blue no_button" id="cancel_link_que">{% trans "No" %}</a>
-                <a class="button_blue yes_button" id="ok_button_que_change">{% trans "Yes" %}</a>
-            </div>
-        </div>
-        <div id="edit_question">
-            <p class="warning_message">{% trans "warning_msg_for_activity_report_question_delete" %}</p>
-
-            <a href="#" class="cancel_link" id="no_link">{% trans "No" %}</a>
-            <a href="#" class="button" id="yes_button">{% trans "Yes" %}</a>
-        </div>
 
         <div class="create_project">
             <div class="grid_5">

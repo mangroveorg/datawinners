@@ -3,7 +3,7 @@ DW.init_view_model = function (question_list) {
     questionnaireViewModel.questions.valueHasMutated();
     $(question_list).each(function(index, question){
         questionnaireViewModel.loadQuestion(new DW.question(question));
-    })
+    });
 
     questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
     questionnaireViewModel.selectedQuestion.valueHasMutated();
@@ -109,7 +109,7 @@ DW.questionnaire_form.prototype={
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
     ko.applyBindings(questionnaireViewModel);
-
+    questionnaireViewModel.routing.run();
     DW.charCount();
     $('#continue_project').live("click", DW.charCount);
     $('#question_form').live("keyup", DW.charCount);
