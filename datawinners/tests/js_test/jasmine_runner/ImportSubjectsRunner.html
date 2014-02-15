@@ -11,6 +11,7 @@
 
         }
         var DW = {};
+        subject_type = "Clinic";
     </script>
     <!-- lib files goes first; Change the order at your own risk -->
     <link href="../../../media/css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
@@ -21,6 +22,7 @@
     <script type="text/javascript" src="../../../media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
     <script type="text/javascript" src="../../../media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="../../../media/javascript/underscore.js"></script>
+    <script type="text/javascript" src="../../../media/javascript/jquery.blockUI.js"></script>
 
     <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine.js"></script>
     <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine-html.js"></script>
@@ -30,9 +32,13 @@
     <script type="text/javascript" src="../js_libs/jasmine_reporters/jasmine_init.js"></script>
     <!-- custom files goes next -->
 
+    <link href="../../../media/css/scss/util.css" rel="stylesheet"/>
+
+
     <script type="text/javascript" src="../../../media/javascript/entity_import.js"></script>
 
     <!--spec -->
+    <script type="text/javascript" src="../specs/SpecHelper.js"></script>
     <script type="text/javascript" src="../specs/import_subjects_spec.js"></script>
 
 </head>

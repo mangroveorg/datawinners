@@ -9,10 +9,6 @@ DW.SubjectImportResponseHandler = function (id, fileName, responseJSON) {
         $('<div id="message" class="error_message message-box clear-left">' + gettext("Sorry, an error occured - the reason could be connectivity issues or the import taking too long to process.  Please try again.  Limit the number of subjects you import to 200 or less.") + '</div>').insertAfter($('#file-uploader'));
     }
     else {
-        $.each(responseJSON.successful_imports, function (index, entity_data) {
-                var datas = entity_data.join("</td><td>");
-                $("#subject_success_table").find("tbody").append("<tr><td>" + datas + "</td></tr>");
-        });
 
         if (responseJSON.success == true) {
             $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($("#subject_upload_button"));
@@ -25,17 +21,22 @@ DW.SubjectImportResponseHandler = function (id, fileName, responseJSON) {
             else {
                 $('<div id="message" class="error_message message-box">' + responseJSON.message + '</div>').insertAfter("#subject_upload_button");
             }
+
+        }
+        if (responseJSON.failure_imports.length > 0) {
             $.each(responseJSON.failure_imports, function (index, element) {
                 $("#subject_error_table").find("tbody").append("<tr><td>" + element.row_num + "</td><td>"
                     + element.error + "</td></tr>");
             });
-        }
-        if (responseJSON.failure_imports.length > 0) {
-                $("#subject_error_table").removeClass('none');
-                $("#subject_error_table").show();
+            $("#subject_error_table").removeClass('none');
+            $("#subject_error_table").show();
         }
         if(responseJSON.successful_imports.length > 0){
-             $("#subject_success_table").removeClass('none');
+            $.each(responseJSON.successful_imports, function (index, entity_data) {
+                var datas = entity_data.join("</td><td>");
+                $("#subject_success_table").find("tbody").append("<tr><td>" + datas + "</td></tr>");
+            });
+            $("#subject_success_table").removeClass('none');
         }
         else{
             $("#subject_success_table").addClass('none');
