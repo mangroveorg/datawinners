@@ -2049,8 +2049,8 @@ msgstr ""
 msgid "input data "
 msgstr ""
 
-msgid "A part of"
-msgstr "Developed by"
+msgid "Developed by"
+msgstr ""
 
 msgid "en"
 msgstr ""
@@ -4448,4 +4448,22 @@ msgid "Go Pro You have reached your limit of 1000 free Submissions.Upgrade to a 
 msgstr ""
 
 msgid "Go Pro You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+msgstr ""
+
+msgid "Our Partners"
+msgstr ""
+
+msgid "Our Networks"
+msgstr ""
+
+msgid "Like us on Facebook"
+msgstr ""
+
+msgid "Follow us on Twitter"
+msgstr ""
+
+msgid "Subscribe to our Blog"
+msgstr ""
+
+msgid "Join our Mailing List"
 msgstr ""

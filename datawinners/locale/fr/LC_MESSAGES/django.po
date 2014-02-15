@@ -2125,7 +2125,7 @@ msgstr "...ou juste commencer à collecter des données."
 msgid "input data"
 msgstr "donnée en entrée"
 
-msgid "A part of"
+msgid "Developed by"
 msgstr "Developpé par"
 
 msgid "en"
@@ -4662,3 +4662,21 @@ msgstr "Passez au Compte Pro. Vous avez atteint votre limite de 1000 Soumissions
 
 msgid "Go Pro You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
 msgstr "Passez au Compte Pro. Vous avez atteint la limite de 50 Soumissions SMS. Veuillez passer à un abonnement mensuel pour continuer à effectuer des Soumissions par SMS pour vos projets."
+
+msgid "Our Partners"
+msgstr "Nos Partenaires"
+
+msgid "Our Networks"
+msgstr "Nos R&eacute;seaux"
+
+msgid "Like us on Facebook"
+msgstr "Rejoignez-nous sur Facebook"
+
+msgid "Follow us on Twitter"
+msgstr "Suivez-nous sur Twitter"
+
+msgid "Subscribe to our Blog"
+msgstr "Inscrivez-vous à notre Blog"
+
+msgid "Join our Mailing List"
+msgstr "Inscrivez-vous à notre liste d'envoi"

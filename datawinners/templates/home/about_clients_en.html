@@ -3,76 +3,100 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "about" %}
-{{ block.super }}
+    {% activetab "main_nav" "about" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/en/home/">Home</a> &gt; <a href="/en/about-us">About
+    <a href="/en/home/">Home</a> &gt; <a href="/en/about-us">About
     us</a> &gt; Clients
 {% endblock %}
 
 {% block main_content %}
-<div id="nav_content">
-     <h1><a href="/en/about-us/">ABOUT US</a></h1>
-    <ul>
-        <li><a href="/en/about-us/blog">Blog</a></li>
-        <li><a href="/en/about-us/partners">Partners</a></li>
-        <li class="active"><a href="/en/about-us/clients">Clients</a></li>
-        <li><a href="/en/about-us/contact-us">Contact Us</a>
-    </ul>
-</div>
-<div id="main_content">
+    <div id="nav_content">
+        <h1><a href="/en/about-us/">ABOUT US</a></h1>
+        <ul>
+            <li><a href="/en/about-us/blog">Blog</a></li>
+            <li><a href="/en/about-us/partners">Partners</a></li>
+            <li class="active"><a href="/en/about-us/clients">Clients</a></li>
+            <li><a href="/en/about-us/contact-us">HNI</a>
+        </ul>
+    </div>
+    <div id="main_content">
     <div class="margin_left_20">
-        <p>Human Network International builds the capacity of development
+    <div class="left_content">
+        <p>Human Network International builds the capacity of
+            development
             partners to collect data and make better decisions. </p>
 
         <p>Featured clients:</p>
 
         <div>
             <div class="grid_5 alpha omega padding_top_20">
-                <img src="/media/images/dw_clogo_worldbank.gif" width="190"
+                <img src="/media/images/dw_clogo_worldbank.gif"
+                     width="190"
                      height="60" alt="Worldbank"/>
             </div>
-            <div class="grid_13 alpha omega float_right">
-                <h2>The World Bank and the Government of Madagascar</h2>
+            <div class="grid_7 alpha omega float_right">
+                <h2>The World Bank and the Government of
+                    Madagascar</h2>
 
                 <p>
-                    The Government of Madagascar hired HNI for two separate
-                    projects using World Bank loans. The first was to create an
-                    application for the Ministry of Health to collect stock
-                    information for life-saving HIV drugs using SMS from a
+                    The Government of Madagascar hired HNI for two
+                    separate
+                    projects using World Bank loans. The first was to
+                    create an
+                    application for the Ministry of Health to collect
+                    stock
+                    information for life-saving HIV drugs using SMS
+                    from a
                     network of doctors authorized to administer the
                     medications.
-                    The second was to work with the National Nutrition Office to collect monthly activity
-                    report data using SMS from a large network of community-based nutrition agents.
-                    <br/><a href="http://www.worldbank.org" target="_blank">www.worldbank.org</a>
+                    The second was to work with the National Nutrition
+                    Office to collect monthly activity
+                    report data using SMS from a large network of
+                    community-based nutrition agents.
+                    <br/><a href="http://www.worldbank.org"
+                            target="_blank">www.worldbank.org</a>
                 </p>
             </div>
             <div class="clear"></div>
         </div>
         <div>
             <div class="grid_5 alpha omega padding_top_20">
-                <img src="/media/images/dw_clogo_mariestopes.gif" width="190"
+                <img src="/media/images/dw_clogo_mariestopes.gif"
+                     width="190"
                      height="70" alt="Marie Stopes"/>
             </div>
-            <div class="grid_13 alpha omega float_right">
+            <div class="grid_7 alpha omega float_right">
                 <h2>Marie Stopes Madagascar</h2>
 
                 <p>
-                    MSI is one of the largest international family planning
+                    MSI is one of the largest international family
+                    planning
                     organizations in the world.
-                    <br/>MSI delivers quality family planning and reproductive
-                    healthcare to millions of the world's poorest and most
-                    vulnerable women. MSI/Madagascar hired HNI for three
-                    separate initiatives. The first application collects
-                    monthly client data using SMS from a network of private
-                    sector doctors grouped together under the brand “Blue
-                    Star”. The second collects client satisfaction data using SMS
-                    from women who visited clinics affiliated with Marie Stopes
-                    International. The third project allows clinics operated by
-                    Marie Stopes to submit monthly reports via the Internet.
-                    <br/><a href="http://www.mariestopes.org" target="_blank">www.mariestopes.org</a>
+                    <br/>MSI delivers quality family planning and
+                    reproductive
+                    healthcare to millions of the world's poorest and
+                    most
+                    vulnerable women. MSI/Madagascar hired HNI for
+                    three
+                    separate initiatives. The first application
+                    collects
+                    monthly client data using SMS from a network of
+                    private
+                    sector doctors grouped together under the brand
+                    “Blue
+                    Star”. The second collects client satisfaction data
+                    using SMS
+                    from women who visited clinics affiliated with
+                    Marie Stopes
+                    International. The third project allows clinics
+                    operated by
+                    Marie Stopes to submit monthly reports via the
+                    Internet.
+                    <br/><a href="http://www.mariestopes.org"
+                            target="_blank">www.mariestopes.org</a>
                 </p>
             </div>
             <div class="clear"></div>
@@ -82,17 +106,23 @@
                 <img src="/media/images/dw_clogo_rti.gif" width="190"
                      height="60" alt="RTI"/>
             </div>
-            <div class="grid_13 alpha omega float_right">
+            <div class="grid_7 alpha omega float_right">
                 <h2>RTI International</h2>
 
                 <p>
-                    RTI conducts research and provides technical services to
-                    government agencies, universities, foundations, private
-                    businesses, and other organizations. HNI and RTI worked
+                    RTI conducts research and provides technical
+                    services to
+                    government agencies, universities, foundations,
+                    private
+                    businesses, and other organizations. HNI and RTI
+                    worked
                     together on two different initiatives. The first
-                    application allows community-based supervisors to report
-                    monthly activity data using SMS. The second application
-                    allows RTI employees to submit their supervisory reports
+                    application allows community-based supervisors to
+                    report
+                    monthly activity data using SMS. The second
+                    application
+                    allows RTI employees to submit their supervisory
+                    reports
                     and training results using SMS.
                     <br/><a href="http://www.rti.org" target="_blank">www.rti.org</a>
                 </p>
@@ -104,19 +134,26 @@
                 <img src="/media/images/dw_clogo_ci.gif" width="190"
                      height="60" alt="CI"/>
             </div>
-            <div class="grid_13 alpha omega float_right">
+            <div class="grid_7 alpha omega float_right">
                 <h2>Conservation International</h2>
 
                 <p>
-                    CI is a nonprofit organization, which applies innovations
-                    in science, economics, policy and community participation
-                    to protect the Earth's biodiversity around the world. CI
-                    hired HNI to help build their internal capacity to collect
-                    small grants information using SMS. HNI also created a second
-                    application that allows National Parks Staff to use SMS to
+                    CI is a nonprofit organization, which applies
+                    innovations
+                    in science, economics, policy and community
+                    participation
+                    to protect the Earth's biodiversity around the
+                    world. CI
+                    hired HNI to help build their internal capacity to
+                    collect
+                    small grants information using SMS. HNI also
+                    created a second
+                    application that allows National Parks Staff to use
+                    SMS to
                     report on illegal activities in any of Madagascar’s
                     protected areas.
-                    <br/><a href="http://www.conservation.org" target="_blank">www.conservation.org</a>
+                    <br/><a href="http://www.conservation.org"
+                            target="_blank">www.conservation.org</a>
                 </p>
             </div>
             <div class="clear"></div>
@@ -126,14 +163,19 @@
                 <img src="/media/images/dw_clogo_bngrc.gif" width="190"
                      height="80" alt="BNGRC"/>
             </div>
-            <div class="grid_13 alpha omega float_right">
-                <h2>National Bureau of Risk and Disaster Management</h2>
+            <div class="grid_7 alpha omega float_right">
+                <h2>National Bureau of Risk and Disaster
+                    Management</h2>
 
                 <p>
-                    Catholic Relief Services (CRS) hired HNI to build the
-                    internal capacity of Madagascar’s National Bureau of Risk
-                    and Disaster Management (known by the French acronym BNGRC)
-                    to collect critical damage reports from post-disaster sites
+                    Catholic Relief Services (CRS) hired HNI to build
+                    the
+                    internal capacity of Madagascar’s National Bureau
+                    of Risk
+                    and Disaster Management (known by the French
+                    acronym BNGRC)
+                    to collect critical damage reports from
+                    post-disaster sites
                     using SMS.
                     <br/><a href="http://www.bngrc.mg" target="_blank">www.bngrc.mg</a>
                 </p>
@@ -142,25 +184,68 @@
         </div>
         <div>
             <div class="grid_5 alpha omega padding_top_20">
-                <img src="/media/images/dw_clogo_ambatovy.gif" width="190"
+                <img src="/media/images/dw_clogo_ambatovy.gif"
+                     width="190"
                      height="60" alt="Ambatovy"/>
             </div>
-            <div class="grid_13 alpha omega float_right">
+            <div class="grid_7 alpha omega float_right">
                 <h2>Ambatovy </h2>
 
                 <p>
-                    Ambatovy is a large-tonnage, long-life nickel and cobalt
+                    Ambatovy is a large-tonnage, long-life nickel and
+                    cobalt
                     mining enterprise located in Madagascar. It is the
-                    largest-ever foreign investment in the country and will
-                    soon rank among the largest nickel mining entities in the
-                    world. Ambatovy hired HNI to help collect grievance reports
+                    largest-ever foreign investment in the country and
+                    will
+                    soon rank among the largest nickel mining entities
+                    in the
+                    world. Ambatovy hired HNI to help collect grievance
+                    reports
                     from the field.
-                    <br/><a href="http://www.ambatovy.com" target="_blank">www.ambatovy.com</a>
+                    <br/><a href="http://www.ambatovy.com"
+                            target="_blank">www.ambatovy.com</a>
                 </p>
             </div>
             <div class="clear"></div>
         </div>
     </div>
-</div>
-<div class="clear"></div>
+    <div class="right_content">
+        <div class="block_1">
+            <h1>Our Key Partners</h1>
+
+            <p>Learn more about our partners and this open-source
+                collaboration.
+                <br/>See <a href="/en/about-us/partners/">Our Key
+                    Partners</a>
+            </p>
+        </div>
+        <div class="block_1">
+            <h1>Success Stories</h1>
+
+            <p>
+                See how others have benefited from DataWinners.
+                <br>See <a href="/en/success-stories/">Success Stories</a>
+            </p>
+        </div>
+
+        <div class="block_1">
+            <h1>Try it Free</h1>
+
+            <div id="how_nav">
+                <p>
+                    Try out all the features completely free.
+
+                    <br><a href="/en/pricing/">Learn more</a> or
+
+                <div id="how_links" class="margin_null">
+                    <a href="/register/trial/" id="how_try_button">Try it
+                        Free</a>
+                </div>
+                </p>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="clear"></div>
 {% endblock %}

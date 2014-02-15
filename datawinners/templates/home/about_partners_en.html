@@ -3,12 +3,13 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "about" %}
-{{ block.super }}
+    {% activetab "main_nav" "about" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/en/home/">Home</a> &gt; <a href="/en/about-us">About us</a> &gt; Partners
+    <a href="/en/home/">Home</a> &gt; <a href="/en/about-us">About
+    us</a> &gt; Partners
 {% endblock %}
 
 {% block main_content %}
@@ -16,151 +17,259 @@
         <h1><a href="/en/about-us/">ABOUT US</a></h1>
         <ul>
             <li><a href="/en/about-us/blog">Blog</a></li>
-            <li class="active"><a href="/en/about-us/partners">Partners</a></li>
+            <li class="active"><a href="/en/about-us/partners">Partners</a>
+            </li>
             <li><a href="/en/about-us/clients">Clients</a></li>
-            <li><a href="/en/about-us/contact-us">Contact us</a>
+            <li><a href="/en/about-us/contact-us">HNI</a>
         </ul>
     </div>
     <div id="main_content">
         <div class="margin_left_20">
-            <p>The goal of these open-sourced projects is to create a global community, working together to make mobile data collection better.  The entire code base for DataWinners and Mangrove is available for download.  We encourage partners to contribute code and ideas so DataWinners and Mangrove continue to innovate.</p>
-            <p>We want to thank our partners, and beta-testers featured here.  They contribute significantly to our goal of offering an online, multi-channel, data collection platform to development organizations worldwide.</p>
-            
-            <p>An international partnership of private sector companies, academic institutions and non-governmental
-                organizations are working collaboratively to create and manage DataWinners.com as an open-source project.
-                Human Network International (HNI) and ThoughtWorks, Inc. lead the effort to make this mobile data
-                collection service responsive to the needs of development organizations worldwide.
-            </p>
-            <p>Our goal is to create a global community, working together to make mobile data collection better.
-                Click <a href="https://github.com/mangroveorg/mangrove">here</a> to access the code base.
-                We encourage partners to contribute code and ideas so DataWinners will continue to innovate.
-            </p>
-            
-            
-            <div>
-                <div class="grid_5 alpha omega padding_top_20">
-                    <img src="/media/images/dw_plogo_tw.gif" width="190"
-                     height="30" alt="ThoughtWorks"/>
+            <div class="left_content">
+                <p>An international partnership of private sector companies,
+                    academic institutions and non-governmental
+                    organizations are working collaboratively to create and
+                    manage DataWinners.com as an open-source project.
+                    Human Network International (HNI) and ThoughtWorks, Inc.
+                    lead the effort to make this mobile data
+                    collection service responsive to the needs of development
+                    organizations worldwide.
+                </p>
+
+                <p>Our goal is to create a global community, working together
+                    to make mobile data collection better.
+                    Click <a href="https://github.com/mangroveorg/mangrove" target="_blank">here</a>
+                    to access the code base.
+                    We encourage partners to contribute code and ideas so
+                    DataWinners will continue to innovate.
+                </p>
+
+                <p>
+                    We want to thank our partners, and beta-testers featured
+                    here.
+                    They contribute significantly to our goal of offering an
+                    online, multi-channel,
+                    data collection platform to development organizations
+                    worldwide.
+                </p>
+
+                <div>
+                    <div class="grid_5 alpha omega">
+                        <img src="/media/images/dw_plogo_tw.gif" width="190"
+                             height="30" alt="ThoughtWorks"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2 style="margin:0;">ThoughtWorks</h2>
+
+                        <h3 style="font-weight: normal; font-style: italic; margin: 0;">Software development partner</h3>
+
+                        <p>
+                            A global IT consultancy that delivers custom
+                            software, software tools, consulting, and
+                            transformation services to Global 1000 companies.
+                            ThoughtWorks personnel in Pune, India wrote the
+                            majority of the code for both Mangrove and
+                            DataWinners.
+                            <br/><a href="http://www.thoughtworks.com"
+                                    target="_blank">www.thoughtworks.com</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="grid_13 alpha omega float_right">
-                    <h2>ThoughtWorks</h2>
-                    <h3>Software development partner</h3>
-                    <p>
-                        A global IT consultancy that delivers custom software, software tools, consulting, and transformation services to Global 1000 companies.  ThoughtWorks personnel in Pune, India wrote the majority of the code for both Mangrove and DataWinners.
-                        <br/><a href="http://www.thoughtworks.com" target="_blank">www.thoughtworks.com</a>
-                    </p>
+                <div>
+                    <div class="grid_5 alpha omega">
+                        <img src="/media/images/dw_plogo_mule.gif" width="190"
+                             height="40" alt="Mule Design"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2 style="margin:0;">Mule Design </h2>
+
+                        <h3 style="font-weight: normal; font-style: italic; margin: 0;">Design studio</h3>
+
+                        <p>
+                            Mule Design is a San Francisco-based design studio
+                            that created the intuitive, user-friendly
+                            DataWinners interface
+                            <br/><a href="http://www.muledesign.com"
+                                    target="_blank">www.muledesign.com</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="clear"></div>
+                <div>
+                    <div class="grid_5 alpha omega">
+                        <img src="/media/images/dw_plogo_modi.gif" width="190"
+                             height="40" alt="Modi Research Group"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2 style="margin:0;">Modi Research Group</h2>
+
+                        <h3 style="font-weight: normal; font-style: italic; margin: 0;">Software development partner</h3>
+
+                        <p>
+                            The Modi Research Groups leads Columbia
+                            University’s Earth Institute’s efforts that cut
+                            across energy, rural infrastructure and
+                            development. Staff of the Modi Research Group
+                            provided valuable code and advice to the Mangrove
+                            and DataWinners projects.
+                            <br/><a href="http://modi.mech.columbia.edu"
+                                    target="_blank">modi.mech.columbia.edu</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega">
+                        <img src="/media/images/dw_plogo_praekelt.gif"
+                             width="190"
+                             height="40" alt="Praekelt Foundation"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2 style="margin:0;">Praekelt Foundation</h2>
+
+                        <h3 style="font-weight: normal; font-style: italic; margin: 0;">Software development partner</h3>
+
+                        <p>
+                            Praekelt Foundation builds open source, scalable
+                            mobile technologies and solutions to improve the
+                            health and wellbeing of people living in poverty.
+                            The Mangrove project uses Vumi a scalable
+                            conversation engine for the delivery of SMS, Star
+                            Menu and chat messages to diverse audiences.
+                            <br/><a href="http://www.praekeltfoundation.org"
+                                    target="_blank">www.praekeltfoundation.org</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega">
+                        <img src="/media/images/dw_plogo_airtel.gif"
+                             width="190"
+                             height="40" alt="Airtel"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2 style="margin:0;">Airtel Madagascar </h2>
+
+                        <h3 style="font-weight: normal; font-style: italic; margin: 0;">Technical partner</h3>
+
+                        <p>
+                            Airtel Madagascar is the island’s largest provider
+                            of telecommunication services. Airtel/Madagascar
+                            provided telecommunications advice to the
+                            DataWinners project.
+                            <br/><a
+                                href="http://www.africa.airtel.com/madagascar/"
+                                target="_blank">www.africa.airtel.com/madagascar/</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega">
+                        <img src="/media/images/dw_plogo_unicef.gif"
+                             width="190"
+                             height="40" alt="Unicef"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2 style="margin:0;">UNICEF/Madagascar</h2>
+
+                        <h3 style="font-weight: normal; font-style: italic; margin: 0;">Beta tester</h3>
+
+                        <p>
+                            The world's leading organization protecting the
+                            rights of children and young people.
+                            UNICEF in Madagascar is using DataWinners to
+                            collect nutrition data and information on local
+                            radio programming.
+                            <br/><a href="http://www.unicef.org"
+                                    target="_blank">www.unicef.org</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega">
+                        <img src="/media/images/dw_plogo_crs.gif" width="190"
+                             height="60" alt="CRS"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2 style="margin:0;">Catholic Relief Services/Madagascar</h2>
+
+                        <h3 style="font-weight: normal; font-style: italic; margin: 0;">Beta tester</h3>
+
+                        <p>
+                            CRS is the international humanitarian agency of the
+                            Catholic community in the United States.
+                            CRS provides relief in emergency situations and
+                            helps people in the developing world break
+                            the cycle of poverty through community-based,
+                            sustainable development initiatives.
+                            CRS is using DataWinners to collect data on water
+                            and hygiene projects in remote areas in
+                            Northeastern Madagascar.
+                            <br/><a href="http://www.crs.org" target="_blank">www.crs.org</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega">
+                        <img src="/media/images/dw_plogo_psi.gif" width="190"
+                             height="60" alt="PSI Madagascar"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2 style="margin:0;">PSI/Madagascar</h2>
+
+                        <h3 style="font-weight: normal; font-style: italic; margin: 0;">Beta tester</h3>
+
+                        <p>
+                            PSI is a leading global health organization with
+                            programs targeting malaria, child survival, HIV and
+                            reproductive health. PSI is using DataWinners to
+                            collect data for a large adolescent reproductive
+                            health project and stock information for a wide
+                            range of public health products.
+                            <br/><a href="http://www.psi.org" target="_blank">www.psi.org</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
             </div>
-            <div>
-                <div class="grid_5 alpha omega padding_top_20">
-                    <img src="/media/images/dw_plogo_mule.gif" width="190"
-                     height="40" alt="Mule Design"/>
-                </div>
-                <div class="grid_13 alpha omega float_right">
-                    <h2>Mule Design </h2>
-                    <h3>Design studio</h3>
-                    <p>
-                        Mule Design is a San Francisco-based design studio that created the intuitive, user-friendly DataWinners interface
-                        <br/><a href="http://www.muledesign.com" target="_blank">www.muledesign.com</a>
-                    </p>
-                </div>
-                <div class="clear"></div>
+        </div>
+        <div class="right_content">
+            <div class="block_1">
+                <h1>Our Clients</h1>
+
+                <p>Learn more about our features clients.
+                    <br/>See <a href="/en/about-us/clients/">Our Clients</a>
+                </p>
             </div>
-            <div>
-                <div class="grid_5 alpha omega padding_top_20">
-                    <img src="/media/images/dw_plogo_modi.gif" width="190"
-                     height="40" alt="Modi Research Group"/>
-                </div>
-                <div class="grid_13 alpha omega float_right">
-                    <h2>Modi Research Group</h2>
-                    <h3>Software development partner</h3>
-                    <p>
-                        The Modi Research Groups leads Columbia University’s Earth Institute’s efforts that cut across energy, rural infrastructure and development. Staff of the Modi Research Group provided valuable code and advice to the Mangrove and DataWinners projects.
-                        <br/><a href="http://modi.mech.columbia.edu" target="_blank">modi.mech.columbia.edu</a>
-                    </p>
-                </div>
-                <div class="clear"></div>
+            <div class="block_1">
+                <h1>Success Stories</h1>
+
+                <p>
+                    See how others have benefited from DataWinners.
+                    <br>See <a href="/en/success-stories/">Success Stories</a>
+                </p>
             </div>
-            <div>
-                <div class="grid_5 alpha omega padding_top_20">
-                    <img src="/media/images/dw_plogo_praekelt.gif" width="190"
-                     height="40" alt="Praekelt Foundation"/>
-                </div>
-                <div class="grid_13 alpha omega float_right">
-                    <h2>Praekelt Foundation</h2>
-                    <h3>Software development partner</h3>
+
+            <div class="block_1">
+                <h1>Try it Free</h1>
+
+                <div id="how_nav">
                     <p>
-                        Praekelt Foundation builds open source, scalable mobile technologies and solutions to improve the health and wellbeing of people living in poverty.  The Mangrove project uses Vumi a scalable conversation engine for the delivery of SMS, Star Menu and chat messages to diverse audiences.
-                        <br/><a href="http://www.praekeltfoundation.org" target="_blank">www.praekeltfoundation.org</a>
+                        Try out all the features completely free.
+
+                        <br><a href="/en/pricing/">Learn more</a> or
+
+                    <div id="how_links" class="margin_null">
+                        <a href="/register/trial/" id="how_try_button">Try it
+                            Free</a>
+                    </div>
                     </p>
                 </div>
-                <div class="clear"></div>
-            </div>
-            <div>
-                <div class="grid_5 alpha omega padding_top_20">
-                    <img src="/media/images/dw_plogo_airtel.gif" width="190"
-                     height="40" alt="Airtel"/>
-                </div>
-                <div class="grid_13 alpha omega float_right">
-                    <h2>Airtel Madagascar </h2>
-                    <h3>Technical partner</h3>
-                    <p>
-                        Airtel Madagascar is the island’s largest provider of telecommunication services.  Airtel/Madagascar provided telecommunications advice to the DataWinners project.
-                        <br/><a href="http://www.africa.airtel.com/madagascar/" target="_blank">www.africa.airtel.com/madagascar/</a>
-                    </p>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div>
-                <div class="grid_5 alpha omega padding_top_20">
-                    <img src="/media/images/dw_plogo_unicef.gif" width="190"
-                     height="40" alt="Unicef"/>
-                </div>
-                <div class="grid_13 alpha omega float_right">
-                    <h2>UNICEF/Madagascar</h2>
-                    <h3>Beta tester</h3>
-                    <p>
-                        The world's leading organization protecting the rights of children and young people.
-                        UNICEF in Madagascar is using DataWinners to collect nutrition data and information on local radio programming.
-                        <br/><a href="http://www.unicef.org" target="_blank">www.unicef.org</a>
-                    </p>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div>
-                <div class="grid_5 alpha omega padding_top_20">
-                    <img src="/media/images/dw_plogo_crs.gif" width="190"
-                     height="60" alt="CRS"/>
-                </div>
-                <div class="grid_13 alpha omega float_right">
-                    <h2>Catholic Relief Services/Madagascar</h2>
-                    <h3>Beta tester</h3>
-                    <p>
-                        CRS is the international humanitarian agency of the Catholic community in the United States.
-                        CRS provides relief in emergency situations and helps people in the developing world break
-                        the cycle of poverty through community-based, sustainable development initiatives.
-                        CRS is using DataWinners to collect data on water and hygiene projects in remote areas in
-                        Northeastern Madagascar.
-                        <br/><a href="http://www.crs.org" target="_blank">www.crs.org</a>
-                    </p>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div>
-                <div class="grid_5 alpha omega padding_top_20">
-                    <img src="/media/images/dw_plogo_psi.gif" width="190"
-                     height="60" alt="PSI Madagascar"/>
-                </div>
-                <div class="grid_13 alpha omega float_right">
-                    <h2>PSI/Madagascar</h2>
-                    <h3>Beta tester</h3>
-                    <p>
-                        PSI is a leading global health organization with programs targeting malaria, child survival, HIV and reproductive health.  PSI is using DataWinners to collect data for a large adolescent reproductive health project and stock information for a wide range of public health products.
-                        <br/><a href="http://www.psi.org" target="_blank">www.psi.org</a>
-                    </p>
-                </div>
-                <div class="clear"></div>
             </div>
         </div>
     </div>
