@@ -80,7 +80,7 @@
 
                         <div class="add_question">
                             <a class="add_link" href="#"
-                               data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add Another Question" %}</a>
+                               data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add a Question" %}</a>
                         </div>
 
                         <div class="questions" data-bind="scrollToView: enableScrollToView">
@@ -116,7 +116,7 @@
                         <div class="add_question" data-bind="visible: questionnaireViewModel.questions().length>0">
                             <a class="add_link" href="questionnaire.html#"
                                data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question();}">
-                                {% trans "Add another Question" %}</a>
+                                {% trans "Add a Question" %}</a>
                         </div>
                     </div>
 
