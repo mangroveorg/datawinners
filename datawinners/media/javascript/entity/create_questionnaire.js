@@ -1,4 +1,7 @@
 DW.init_view_model = function (question_list) {
+    if(is_edit){
+        questionnaireViewModel.setQuestionnaireCreationType();
+    }
     questionnaireViewModel.questions([]);
     questionnaireViewModel.questions.valueHasMutated();
     $(question_list).each(function(index, question){

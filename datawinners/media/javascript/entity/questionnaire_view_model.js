@@ -15,7 +15,7 @@ var questionnaireViewModel =
         this.get('#:new_questionnaire', function () {
             questionnaireViewModel.questionnaireCreationType(true);
         });
-        this.get('', function () {
+        this.get('create/$', function () {
             questionnaireViewModel.questionnaireCreationType(false);
         });
     }),

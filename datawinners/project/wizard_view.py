@@ -95,7 +95,8 @@ def create_project(request):
         project_info = json.loads(request.POST['profile_form'])
         form = CreateProject(entity_list, data=project_info)
         if form.is_valid():
-            project = Project(name=form.cleaned_data['name'], goals=form.cleaned_data['goals'],
+            project = Project(name=form.cleaned_data['name'],
+                              #goals=form.cleaned_data['goals'],
                               project_type='survey', entity_type=form.cleaned_data['entity_type'],
                               activity_report=form.cleaned_data['activity_report'],
                               state=request.POST['project_state'], devices=[u'sms', u'web', u'smartPhone'],

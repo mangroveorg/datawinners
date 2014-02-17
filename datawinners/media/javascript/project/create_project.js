@@ -77,10 +77,10 @@ DW.basic_project_info.prototype = {
                 },
                 entity_type:{
                     required:true
-                },
-                goals:{
-                    maxlength: 300
                 }
+//                goals:{
+//                    maxlength: 300
+//                }
             },
             wrapper:"div",
             errorPlacement:function (error, element) {
@@ -101,7 +101,7 @@ DW.basic_project_info.prototype = {
     },
     values:function () {
         var name = $('#id_name').val();
-        var goals = $('#id_goals').val();
+//        var goals = $('#id_goals').val();
         var language = $('#project-language select').val();
         var activity_report = 'yes';
         var entity_type = $('#id_entity_type').val();
@@ -109,7 +109,8 @@ DW.basic_project_info.prototype = {
         $('input[name=devices]:checked').each(function () {
             devices.push($(this).val());
         });
-        return JSON.stringify({'name':name, 'goals':goals, 'language':language, 'activity_report':activity_report,
+        return JSON.stringify({'name':name, 'language':language, 'activity_report':activity_report,
+//            'goals':goals,
             'entity_type':entity_type, 'devices':devices});
     }
 //    show:function () {
@@ -127,7 +128,7 @@ DW.basic_project_info.prototype = {
 //    }
 };
 
-var basic_project_info = new DW.basic_project_info('#question_form .project_name_div');
+var basic_project_info = new DW.basic_project_info('#question_form .project_name_div #id_name');
 var questionnnaire_code = new DW.questionnaire_code("#questionnaire-code", "#questionnaire-code-error");
 var questionnaire_form = new DW.questionnaire_form('#question_form');
 //var questionnaire_section = new DW.questionnaire_section("#questionnaire");
