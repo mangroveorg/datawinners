@@ -108,14 +108,18 @@ class FilePlayer(Player):
         profile.save()
         return user
 
-    def _import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, values):
+    def _validate_duplicate_email_address(self, email):
+        registered_emails = self._get_registered_emails()
+        if email in registered_emails:
+            raise DataObjectAlreadyExists(_("User"), _("email address"), email)
+
+    def _import_data_sender(self, form_model, organization, values):
         email = case_insensitive_lookup(values, "email")
         if email:
             if not email_re.match(email):
                 raise InvalidEmailException(message="Invalid email address.")
 
-            if email in registered_emails:
-                raise DataObjectAlreadyExists(_("User"), _("email address"), email)
+            self._validate_duplicate_email_address(email)
 
             response = self.submit(form_model, values, [])
 
@@ -141,7 +145,7 @@ class FilePlayer(Player):
             values[location_field_code] = get_country_appended_location(values[location_field_code], organization.country_name())
         return values
 
-    def _import_submission(self, organization, registered_emails, registered_phone_numbers, values, form_model=None):
+    def _import_submission(self, organization, values, form_model=None):
         self._append_country_for_location_field(form_model, values, organization)
         try:
             if filter(lambda x: str(x).__len__() and str(x) != "reporter", values.values()).__len__() == 0:
@@ -149,8 +153,7 @@ class FilePlayer(Player):
             values = self._process(form_model, values)
             log_entry = "message: " + str(values) + "|source: web|"
             if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
-                response = self._import_data_sender(form_model, organization, registered_emails,
-                                                   registered_phone_numbers, values)
+                response = self._import_data_sender(form_model, organization, values)
             else:
                 response = self.submit(form_model, values, [])
 
@@ -191,22 +194,16 @@ class FilePlayer(Player):
                     form_model.entity_type[0], form_code=form_code)
         return form_model
 
-    def _get_phone_numbers(self, organization):
-        return get_all_registered_phone_numbers_on_trial_account() \
-            if organization.in_trial_mode else get_datasenders_mobile(self.dbm)
-
     def accept(self, file_contents):
         from datawinners.utils import get_organization_from_manager
 
         organization = get_organization_from_manager(self.dbm)
-        registered_phone_numbers = self._get_phone_numbers(organization)
         rows = self.parser.parse(file_contents)
         form_model = self._get_form_model(rows)
         responses = []
-        registered_emails = self._get_registered_emails()
         for (form_code, values) in rows:
             responses.append(
-                self._import_submission(organization, registered_emails, registered_phone_numbers, values, form_model))
+                self._import_submission(organization, values, form_model))
         return responses
 
 #TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
