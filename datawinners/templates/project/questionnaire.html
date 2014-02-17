@@ -113,7 +113,7 @@
                                 </ol>
                             </div>
                         </div>
-                        <div class="add_question">
+                        <div class="add_question" data-bind="visible: questionnaireViewModel.questions().length>0">
                             <a class="add_link" href="questionnaire.html#"
                                data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question();}">
                                 {% trans "Add another Question" %}</a>
@@ -125,7 +125,8 @@
                             {% include 'project/question_detail_panel.html' %}
                             {% include 'project/sms_preview.html' %}
                         </div>
-                        <div class="margin_top_10 save-button">
+                        <div data-bind="visible: isSelectedQuestionNull" class="select_question_message" style="">Select a question to edit or add another question.</div>
+                        <div class="margin_top_10 save-button" >
                             <input id="submit-button" type="submit" class="button" value="{% trans 'Save' %}" />
                         </div>
                     </div>
@@ -137,5 +138,6 @@
     <div class="questionnaire_preview">
         {% trans "Generating the questionnaire preview." %}
     </div>
+    {% include "empty_questionnaire_dialog.html" %}
     {% include "redistribute_questionnaire_dialog.html" %}
 {% endblock %}

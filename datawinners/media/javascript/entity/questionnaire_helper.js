@@ -13,6 +13,20 @@ DW.init_inform_datasender_about_changes = function(){
     DW.inform_datasender_about_changes = new DW.warning_dialog(kwargs);
 }
 
+DW.init_empty_questionnaire_warning = function() {
+    kwargs = {container: "#no_questions_exists", title: gettext('Warning: Empty questionnaire') }
+    DW.empty_questionnaire_warning  = new DW.warning_dialog(kwargs)
+}
+
+DW.check_empty_questionnaire=function(){
+    var questions = questionnaireViewModel.questions();
+    if(questions.length == 0){
+        DW.empty_questionnaire_warning.show_warning();
+        return false;
+    }
+    return true;
+}
+
 DW.instruction_template = {
     "number":gettext("Answer must be a number."),
     "min_number":gettext("Answer must be a number. The minimum is %d."),

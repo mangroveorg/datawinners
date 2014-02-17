@@ -2,6 +2,7 @@
 $(document).ready(function() {
     DW.questionnaire_was_changed = false;
     DW.init_inform_datasender_about_changes();
+    DW.init_empty_questionnaire_warning();
     var index;
     for(index in question_list){
         var questions = new DW.question(question_list[index]);
@@ -104,6 +105,10 @@ $(document).ready(function() {
     function submit_questionnaire() {
 
         var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
+
+
+
+
         if ($.trim($("#questionnaire-code").val()) == "") {
             $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("The Questionnaire code is required")+".</label>");
             return;
@@ -187,6 +192,8 @@ $(document).ready(function() {
     });
 
     $("#submit-button").click(function() {
+        if(!DW.check_empty_questionnaire()) return false;
+
         DW.loading();
         if($("#qtype").val() != undefined) { //when does this occur?
             $("#questionnaire-change").dialog("open");
