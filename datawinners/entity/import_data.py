@@ -386,26 +386,6 @@ def get_subject_form_models(manager):
             form_models[form_model.entity_type[0]] = form_model
     return form_models
 
-
-@timebox
-def get_all_subjects(manager):
-    rows = manager.view.all_subjects()
-    return [_from_row_to_subject(manager, row) for row in rows]
-
-
-# def _get_all_subject_data(form_models, subject_types, subjects):
-#     # subject_type_infos_dict = _get_subject_type_infos(subject_types, form_models)
-#     subject_types_dict = {}
-#     for subject in subjects:
-#         subject_type = subject.type_string
-#         if subject_type in subject_type_infos_dict.keys():
-#             form_model = form_models[subject_type]
-#             data = tabulate_data(subject, form_model, subject_type_infos_dict[subject_type]['codes'])
-#             subject_type_infos_dict[subject_type]['data'].append(data)
-#
-#     return [subject_type_infos_dict[subject_type] for subject_type in subject_types]
-
-
 def load_all_entities_of_type(manager, type=REPORTER):
     return load_entity_registration_data(manager, type)
 
@@ -432,33 +412,6 @@ def _get_failed_responses(responses):
 
 def _get_successful_responses(responses):
     return [response for response in responses if response.success]
-
-
-@timebox
-def _get_entity_types(manager):
-    entity_types = get_all_entity_types(manager)
-    entity_list = [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
-    return sorted(entity_list)
-
-
-@timebox
-def load_all_subjects(manager,form_code):
-    form_model = get_form_model_by_code(manager,form_code)
-    subject_type = form_model.entity_type[0]
-    subjects = get_entities_by_type(manager,subject_type)
-    subject_types_dict = {}
-    names, labels, codes = zip(*[(field.name, field.label, field.code) for field in form_model.fields])
-    subject_types_dict[subject_type] = dict(entity=subject_type,
-                                                code=form_model.form_code,
-                                                names=names,
-                                                labels=labels,
-                                                codes=codes,
-                                                data=[], )
-    for subject in subjects:
-        data = tabulate_data(subject, form_model, subject_types_dict[subject_type]['codes'])
-        subject_types_dict[subject_type]['data'].append(data)
-    return [subject_types_dict[subject_type]]
-
 
 def import_data(request, manager, default_parser=None, form_code=None):
     response_message = ''
