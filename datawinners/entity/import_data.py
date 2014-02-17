@@ -498,8 +498,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
         error_message = e.message
     except Exception:
         error_message = _(u"Some unexpected error happened. Please check the excel file and import again.")
-        if settings.DEBUG:
-            raise
+
     return error_message, failure_imports, response_message, imported_entities
 
 

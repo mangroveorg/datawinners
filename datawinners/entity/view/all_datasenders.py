@@ -20,19 +20,22 @@ from datawinners.entity.data_sender import remove_system_datasenders, get_datase
 from datawinners.entity.views import _get_full_name, log_activity, get_success_message
 from datawinners.main.database import get_database_manager
 from datawinners.accountmanagement.models import get_ngo_admin_user_profiles_for
-from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, delete_datasender_for_trial_mode, rep_id_name_dict_of_users
+from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, \
+    delete_datasender_for_trial_mode, rep_id_name_dict_of_users
 
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports, add_imported_datasenders_to_trail_account
 from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
-from mangrove.form_model.form_model import REPORTER, header_fields, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE, get_form_model_by_code
+from mangrove.form_model.form_model import REPORTER, header_fields, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE, \
+    get_form_model_by_code
 from mangrove.transport import TransportInfo
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization
 from mangrove.transport.player.parser import XlsDatasenderParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_PROJECTS, REMOVED_DATA_SENDER_TO_PROJECTS, DELETED_DATA_SENDERS
+from datawinners.common.constant import IMPORTED_DATA_SENDERS, ADDED_DATA_SENDERS_TO_PROJECTS, \
+    REMOVED_DATA_SENDER_TO_PROJECTS, DELETED_DATA_SENDERS
 
 
 class AllDataSendersView(TemplateView):
@@ -58,6 +61,10 @@ class AllDataSendersView(TemplateView):
         return imported_data_senders
 
     def update_activity_log(self, request, successful_imports):
+
+        if successful_imports is None or len(successful_imports) == 0:
+            return
+
         imported_datasenders_ids = successful_imports.keys()
         if len(imported_datasenders_ids):
             UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
@@ -66,7 +73,7 @@ class AllDataSendersView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         manager = get_database_manager(request.user)
-        error_message, failure_imports, success_message,  successful_imports = import_module.import_data(
+        error_message, failure_imports, success_message, successful_imports = import_module.import_data(
             request,
             manager,
             default_parser=XlsDatasenderParser)
