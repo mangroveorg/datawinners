@@ -12,7 +12,6 @@ from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.entity.views import export_subject
 
 urlpatterns = patterns('',
-                       # url(r'datasender/create', DataSenderRegistrationFormView.as_view(), name="create_data_sender"),
                        url(r'datasender/register',RegisterDatasenderView.as_view(),name="register_data_sender"),
                        (r'datasender/edit/(?P<reporter_id>.+?)/$', EditDataSenderView.as_view()),
                        (r'webuser/create', create_multiple_web_users),

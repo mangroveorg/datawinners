@@ -17,7 +17,8 @@ import elasticutils
 import jsonpickle
 from django.contrib import messages
 
-from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, valid_web_user
+from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, \
+    valid_web_user
 from datawinners.entity.entity_export_helper import get_subject_headers
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.main.database import get_database_manager
@@ -30,14 +31,19 @@ from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, delete_entity_instance, put_email_information_to_entity, get_organization_telephone_number
+from datawinners.entity.helper import create_registration_form, delete_entity_instance, put_email_information_to_entity, \
+    get_organization_telephone_number
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from mangrove.datastore.entity_type import define_type
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
+    QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
+    QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, header_fields, get_field_by_attribute_value
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, \
+    get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, SHORT_CODE_FIELD, \
+    header_fields, get_field_by_attribute_value
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import TransportInfo
 from datawinners.entity import import_data as import_module
@@ -49,7 +55,8 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, REGISTERED_SUBJECT, EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
+from datawinners.common.constant import ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, REGISTERED_SUBJECT, \
+    EDITED_REGISTRATION_FORM, IMPORTED_SUBJECTS
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
@@ -58,7 +65,7 @@ from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 websubmission_logger = logging.getLogger("websubmission")
 
 
-@login_required(login_url='/login')
+@login_required
 @is_not_expired
 def create_type(request):
     success = False
@@ -91,7 +98,7 @@ def get_count(h, key):
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_new_user
 @is_datasender
@@ -153,7 +160,7 @@ def _get_order_field(post_dict, user, subject_type):
 
 @csrf_view_exempt
 @csrf_response_exempt
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_new_user
 @is_datasender
@@ -273,7 +280,7 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
         __create_web_users(org_id, {reporter_id: email_address}, language_code))
 
 
-@login_required(login_url='/login')
+@login_required
 @csrf_view_exempt
 @is_not_expired
 def create_multiple_web_users(request):
@@ -293,31 +300,31 @@ def create_multiple_web_users(request):
 #todo remove form_code from here, use entity_type instead
 def import_subjects_from_project_wizard(request, form_code):
     manager = get_database_manager(request.user)
-    error_message, failure_imports, success_message, imported_entities, successful_imports = import_module.import_data(
+    error_message, failure_imports, success_message, short_code_subject_details_dict = import_module.import_data(
         request, manager,
         default_parser=XlsOrderedParser,
         form_code=form_code)
-    if len(imported_entities) != 0:
-        detail_dict = dict()
-        for short_code, entity_type in imported_entities.items():
-            entity_type = entity_type.capitalize()
-            if detail_dict.get(entity_type) is not None:
-                detail_dict.get(entity_type).append(short_code)
-            else:
-                detail_dict.update({entity_type: [short_code]})
-        for key, detail in detail_dict.items():
-            detail_dict.update({key: "[%s]" % ", ".join(detail)})
-        UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
 
-    subjects_data = import_module.load_all_subjects(manager)
+    subject_details = []
+
+    if len(short_code_subject_details_dict) != 0:
+        detail_dict = dict()
+        form_model = get_form_model_by_code(manager, form_code)
+        entity_type = form_model.entity_type[0]
+        short_codes = []
+        for short_code in short_code_subject_details_dict.keys():
+            short_codes.append(short_code)
+
+        subject_details = [subject_detail_dict.values() for subject_detail_dict in short_code_subject_details_dict.values()]
+        detail_dict.update({entity_type: "[%s]" % ", ".join(short_codes)})
+        UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
 
     return HttpResponse(json.dumps(
         {'success': error_message is None and is_empty(failure_imports),
          'message': success_message,
          'error_message': error_message,
          'failure_imports': failure_imports,
-         'all_data': subjects_data,
-         'imported': imported_entities.keys()
+         'successful_imports': subject_details,
         }))
 
 
@@ -502,7 +509,7 @@ def create_subject(request, entity_type=None):
 
 
 @valid_web_user
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_not_expired
 def edit_subject_questionnaire(request, entity_type=None):
@@ -518,11 +525,13 @@ def edit_subject_questionnaire(request, entity_type=None):
 
     existing_questions = json.dumps(fields, default=field_to_json)
     return render_to_response('entity/questionnaire.html',
-                              {'existing_questions': repr(existing_questions),
-                               'questionnaire_code': form_model.form_code,
-                               'language': form_model.activeLanguages[0],
-                               'entity_type': entity_type,
-                               'post_url': reverse(save_questionnaire)},
+                              {
+                                  'existing_questions': repr(existing_questions),
+                                  'questionnaire_code': form_model.form_code,
+                                  'language': form_model.activeLanguages[0],
+                                  'entity_type': entity_type,
+                                  'post_url': reverse(save_questionnaire)
+                              },
                               context_instance=RequestContext(request))
 
 
@@ -573,9 +582,9 @@ def subject_autocomplete(request, entity_type):
     database_name = get_database_name(request.user)
     dbm = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(dbm, [entity_type.lower()])
-    subject_name_field = get_field_by_attribute_value(form_model,'name','name')
+    subject_name_field = get_field_by_attribute_value(form_model, 'name', 'name')
     es_field_name_for_subject_name = es_field_name(subject_name_field.code, form_model.id)
-    subject_short_code_field = get_field_by_attribute_value(form_model,'name','short_code')
+    subject_short_code_field = get_field_by_attribute_value(form_model, 'name', 'short_code')
     es_field_name_for_short_code = es_field_name(subject_short_code_field.code, form_model.id)
     query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL).indexes(database_name).doctypes(lower(entity_type)) \
         .query(or_={es_field_name_for_subject_name + '__match': search_text,

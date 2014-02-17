@@ -31,7 +31,38 @@
                 <div>
                     <div id="questions-panel" class="grid_8 alpha">
                         <h4>{% trans "Questions" %}</h4>
-                        <div data-bind="template: 'question-list-template_new'" ></div>
+
+                        <div class="add_question">
+                            <a class="add_link" href="questionnaire.html#"
+                               data-bind="click: function() {if($('#question_form').valid()) subjectQuestionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">
+                                {% trans "Add another Question" %}</a>
+                        </div>
+                        <div data-bind="scrollToView: enableScrollToView" class="questions">
+                            <div class="question_list" >
+                                <ol data-bind="foreach: {data: questions, as: 'question'}, sortable: questions">
+                                    <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion(), sort: !question.is_entity_question()} ">
+                                        <a href="questionnaire.html#" data-bind="text: $data.display"></a>
+
+                                        <div class="delete">
+                                        <a href="questionnaire.html#" class="delete_link"
+                                               data-bind="css: {visible: question.canBeDeleted, hidden: !question.canBeDeleted()}, click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
+                                        <a data-bind="visible: $index() && !question.is_entity_question(), click: $parent.moveQuestionUp, clickBubble: false"
+                                               class="question_action">
+                                                <span class="move-text"><img class="move-image"
+                                                                             src="/media/images/arrow_full_up_Blue.png"/>{% trans "Move Up" %}</span>
+                                        </a>
+                                        <a class="question_action"
+                                               data-bind="visible: $index() < $parent.questions().length-2, click: $parent.moveQuestionDown,clickBubble: false">
+                                                <span class="move-text move-down"><img class="move-image" src="/media/images/arrow_full_down_Blue.png"/>{% trans "Move Down" %}</span>
+                                        </a>
+
+                                        </div>
+                                        <span class="selected_question_arrow" data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
+                                    </li>
+                                </ol>
+                            </div>
+
+                        </div>
                         <div class="add_question">
                             <a class="add_link" href="questionnaire.html#"
                                data-bind="click: function() {if($('#question_form').valid()) subjectQuestionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">

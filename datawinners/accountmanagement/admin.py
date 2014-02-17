@@ -34,14 +34,29 @@ class DatawinnerAdmin(admin.ModelAdmin):
 
 
 class OrganizationSettingAdmin(DatawinnerAdmin):
-    list_display = ('organization_name', 'organization_id', 'type', 'payment_details', 'activation_date')
+    list_display = ('organization_name', 'organization_id', 'type', 'payment_details', 'activation_date', 'admin_email')
     fields = ('sms_tel_number', 'outgoing_number')
+    search_fields = ['organization__name','organization__org_id']
+    ordering = ('-organization__active_date',)
 
     def organization_name(self, obj):
         return obj.organization.name
 
+    organization_name.admin_order_field = "organization__name"
+
+    def _get_ngo_admin(self, organization_setting):
+        user_profiles = NGOUserProfile.objects.filter(org_id=organization_setting.organization.org_id)
+        admin_users = [x.user for x in user_profiles if x.user.groups.filter(name="NGO Admins")]
+        #right now there is only one ngo admin
+        return admin_users[0] if is_not_empty(admin_users) else NullAdmin()
+
+    def admin_email(self, obj):
+        return self._get_ngo_admin(obj).email
+
     def organization_id(self, obj):
         return obj.organization.org_id
+
+    organization_id.admin_order_field = "organization__org_id"
 
     def payment_details(self, obj):
         organization = obj.organization
@@ -54,8 +69,14 @@ class OrganizationSettingAdmin(DatawinnerAdmin):
     def type(self, obj):
         return obj.organization.account_type
 
+    type.admin_order_field = 'organization__account_type'
+
     def activation_date(self, obj):
         return obj.organization.active_date if obj.organization.active_date is not None else '--'
+
+    activation_date.admin_order_field = "organization__active_date"
+
+
     activation_date.short_description = "Created on"
 
 

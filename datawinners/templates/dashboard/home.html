@@ -32,7 +32,7 @@
 {% block content %}
 
     {% for message in messages %}
-            <div class="{{ message.tags }} message-box clear-left">{{ message }}</div>
+            <div class="{{ message.tags }} message_box_deleted clear-left">{{ message }}</div>
     {% endfor %}
     <div id="how_to" class="none">
         <h3><span class="title">{% trans "How to use Datawinners" %}</span><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
@@ -74,12 +74,18 @@
     {% if trial_account and user.groups.all.0.name == 'NGO Admins' %}
         <div class="warning-message-box clear-both overflow_hidden padding_5" id="blue_message_box">
             <b>{% trans "Go Pro" %}</b><br/>
-            {% if has_reached_a_limit %}
-                {% trans "You have reached your free Submission limit. Each Basic Account is limited to 1000 Submissions including 50 SMS Submissions." %}
+            {% if has_reached_submission_limit %}
+                {% trans "Go Pro You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your projects." %}
                 <br/>
                 {% trans "For unlimited Submissions upgrade to a monthly subscription." %}
             {% else %}
-                {% trans "For unlimited data collection and advanced features, consider a Pro Account upgrade!" %}
+                {% if has_reached_sms_limit %}
+                    {% trans "Go Pro You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects." %}
+                    <br/>
+                    {% trans "For unlimited Submissions upgrade to a monthly subscription." %}
+                {% else %}
+                    {% trans "For unlimited data collection and advanced features, consider a Pro Account upgrade!" %}
+                {% endif %}
             {% endif %}
             <br/><br/>
             <div style="width: 100%">

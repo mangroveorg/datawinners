@@ -13,6 +13,20 @@ DW.init_inform_datasender_about_changes = function(){
     DW.inform_datasender_about_changes = new DW.warning_dialog(kwargs);
 }
 
+DW.init_empty_questionnaire_warning = function() {
+    kwargs = {container: "#no_questions_exists", title: gettext('Warning: Empty questionnaire') }
+    DW.empty_questionnaire_warning  = new DW.warning_dialog(kwargs)
+}
+
+DW.check_empty_questionnaire=function(){
+    var questions = questionnaireViewModel.questions();
+    if(questions.length == 0){
+        DW.empty_questionnaire_warning.show_warning();
+        return false;
+    }
+    return true;
+}
+
 DW.instruction_template = {
     "number":gettext("Answer must be a number."),
     "min_number":gettext("Answer must be a number. The minimum is %d."),
@@ -169,7 +183,6 @@ DW.question.prototype = {
             return this.newly_added_question();
         };
 
-
         this.isAChoiceTypeQuestion = ko.dependentObservable({
             read:function () {
                 return this.type() == "select" || this.type() == "select1" ? "choice" : "none";
@@ -196,7 +209,7 @@ DW.change_question_title_for_reporting_period = function (replaceto, replacewith
 
 
 DW.removeQuestionCheckForRegistration = function (question) {
-    if (!DW.has_submission_delete_warning_for_entity.is_continue && DW.questionnaire_has_submission()) {
+    if (!DW.has_submission_delete_warning_for_entity.is_continue && DW.questionnaire_has_submission() && !question.newly_added_question()) {
         DW.has_submission_delete_warning_for_entity.show_warning();
     } else {
         questionnaireViewModel.removeQuestion(question);
@@ -383,3 +396,14 @@ $(document).ready(function(){
        }
     });
 })
+
+
+DW.has_questions_changed = function(existing_questions){
+    var new_question_codes = ko.utils.arrayMap(questionnaireViewModel.questions(), function (question) {
+        return question.code();
+    });
+    var old_questions_codes = ko.utils.arrayMap(existing_questions, function (question) {
+        return question.code;
+    });
+    return ! _.isEqual(new_question_codes, old_questions_codes)
+};

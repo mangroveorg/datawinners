@@ -24,10 +24,6 @@ DW.init_has_new_submission_delete_warning = function(){
     DW.has_new_submission_delete_warning = new DW.warning_dialog(kwargs);
 }
 
-DW.init_empty_questionnaire_warning = function() {
-    kwargs = {container: "#no_questions_exists", title: gettext('Warning: Empty questionnaire') }
-    DW.empty_questionnaire_warning  = new DW.warning_dialog(kwargs)
-}
 
 DW.init_delete_periodicity_question_warning = function(){
     kwargs = {container: "#delete_periodicity_question_warning",
@@ -171,11 +167,7 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
 };
 
 DW.questionnaire_form_validate = function(){
-    var questions = questionnaireViewModel.questions();
-    if(questions.length == 0){
-        DW.empty_questionnaire_warning.show_warning();
-        return false;
-    }
+    if(!DW.check_empty_questionnaire()) return false;
 
     return questionnnaire_code.processValidation() && questionnaire_form.processValidation();
 };
@@ -244,7 +236,11 @@ $(document).ready(function () {
     });
 
     $('#save_and_create').click(function () {
+
         if (DW.questionnaire_form_validate()) {
+            if(DW.has_questions_changed(existing_questions)){
+                DW.questionnaire_was_changed = true;
+            }
             if( is_edit && questionnaireViewModel.hasDeletedOldQuestion  && !DW.has_submission_delete_warning.is_continue && DW.questionnaire_has_submission()){
                 DW.has_new_submission_delete_warning.show_warning();
             } else {

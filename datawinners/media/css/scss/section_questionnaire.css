@@ -14,6 +14,12 @@
   float: none;
   margin-bottom: 10px; }
 
+.questions {
+  margin-top: 15px;
+  max-height: 399px;
+  overflow-y: auto;
+  overflow-x: hidden; }
+
 #question-detail-panel .mobile {
   background: url("/media/images/mobile2.jpg") no-repeat left top;
   height: 300px;
@@ -139,6 +145,8 @@
         #questions-panel .question_list ol li.question_selected {
           background: #d8e4ec url("/media/images/question_hover_bg.gif") repeat-x bottom left;
           position: relative; }
+        #questions-panel .question_list ol li:hover .delete {
+          visibility: visible; }
         #questions-panel .question_list ol li span.selected_question_arrow {
           display: none;
           position: absolute;
@@ -151,7 +159,10 @@
           font-size: 14px;
           text-decoration: none; }
     #questions-panel .question_list .delete {
-      padding-left: 15px; }
+      padding-left: 15px;
+      visibility: hidden; }
+      #questions-panel .question_list .delete:hover {
+        visibility: visible; }
       #questions-panel .question_list .delete a {
         color: #0070AC !important;
         font-size: 12px;
@@ -176,7 +187,8 @@
 
 .save-button {
   float: right;
-  margin-right: 50px; }
+  margin-right: 50px;
+  height: 49px; }
 
 #container_content #questionnaire_preview_instruction {
   font-size: 13px;
@@ -279,3 +291,9 @@
 .move-down {
   padding-right: 16px;
   float: right; }
+
+.visible :hover {
+  visibility: visible !important; }
+
+.hidden {
+  visibility: hidden; }

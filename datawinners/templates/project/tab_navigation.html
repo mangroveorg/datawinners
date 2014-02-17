@@ -47,6 +47,8 @@
                 <a id="edit_project" href="{% url edit_project project.id %}">{% trans "Edit this project" %}</a>
                 <a href="{{ project_links.activate_project_link }}"
                    class="activate_project">{% trans "Activate this Project" %}</a>
+            {% endif %}
+            {% if project.state == 'Test' or project.state == 'Active' %}
                 <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
             {% endif %}
         {% if user|in_group:"NGO Admins,Project Managers" %}

@@ -896,10 +896,10 @@ span.paginate_more_disabled {
   padding-left: 0; }
 
 .padding_top_null {
-  padding-top: 0; }
+  padding-top: 0 !important; }
 
 .padding_bottom_null {
-  padding-bottom: 0; }
+  padding-bottom: 0 !important; }
 
 .padding_20 {
   padding: 20px; }
@@ -1427,6 +1427,9 @@ div.border_top_bottom {
 
 .hide {
   display: none; }
+
+.bold-text {
+  font-weight: bold; }
 
 #wrapper_div_for_table .action_button {
   display: inline;

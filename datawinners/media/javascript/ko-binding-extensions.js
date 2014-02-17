@@ -1,19 +1,20 @@
 ko.bindingHandlers.sortable = {
     init: function(element, valueAccessor) {
-        var list = valueAccessor();
+        var item_list = valueAccessor();
         $(element).sortable({
             cursor: "move",
+            items: ".sort",
             update: function(event, ui) {
                 var position = ui.item.index();
                 var item = ko.dataFor(ui.item[0]);
+
                 if (position >= 0) {
-                    list.remove(item);
-                    list.splice(position, 0, item);
+                    item_list.remove(item);
+                    item_list.splice(position, 0, item);
                 }
                 ui.item.remove();
             }
         });
-
     }
 };
 

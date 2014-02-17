@@ -12,6 +12,7 @@ from django.contrib.sites.models import get_current_site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
+from mangrove.datastore.queries import get_entities_by_type
 from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, entity_type_as_sequence, get_json_field_infos, get_organization_telephone_number
 
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
@@ -39,7 +40,7 @@ from mangrove.contrib.registration_validators import case_insensitive_lookup
 from datawinners.accountmanagement.helper import get_all_registered_phone_numbers_on_trial_account
 from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, MOBILE_NUMBER_FIELD_CODE
 from datawinners.utils import get_organization
-from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.questionnaire.helper import get_location_field_code
 
@@ -107,20 +108,31 @@ class FilePlayer(Player):
         profile.save()
         return user
 
-    def _import_data_sender(self, form_model, organization, registered_emails, registered_phone_numbers, values):
+    def _validate_duplicate_email_address(self, email):
+        registered_emails = self._get_registered_emails()
+        if email in registered_emails:
+            raise DataObjectAlreadyExists(_("User"), _("email address"), email)
+
+    def _import_data_sender(self, form_model, organization, values):
         email = case_insensitive_lookup(values, "email")
         if email:
             if not email_re.match(email):
                 raise InvalidEmailException(message="Invalid email address.")
 
-            if email in registered_emails:
-                raise DataObjectAlreadyExists(_("User"), _("email address"), email)
+            self._validate_duplicate_email_address(email)
 
             response = self.submit(form_model, values, [])
 
             if response.success:
                 user = self._create_user(email, organization, response)
                 send_email_to_data_sender(user, _("en"))
+                mobile_number = case_insensitive_lookup(values,"m")
+
+                if organization.in_trial_mode:
+                    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
+                                                                         organization=organization)
+                    data_sender.save()
+
         else:
             response = self.submit(form_model, values, [])
         return response
@@ -133,7 +145,7 @@ class FilePlayer(Player):
             values[location_field_code] = get_country_appended_location(values[location_field_code], organization.country_name())
         return values
 
-    def _import_submission(self, form_code, organization, registered_emails, registered_phone_numbers, values, form_model=None):
+    def _import_submission(self, organization, values, form_model=None):
         self._append_country_for_location_field(form_model, values, organization)
         try:
             if filter(lambda x: str(x).__len__() and str(x) != "reporter", values.values()).__len__() == 0:
@@ -141,8 +153,7 @@ class FilePlayer(Player):
             values = self._process(form_model, values)
             log_entry = "message: " + str(values) + "|source: web|"
             if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
-                response = self._import_data_sender(form_model, organization, registered_emails,
-                                                   registered_phone_numbers, values)
+                response = self._import_data_sender(form_model, organization, values)
             else:
                 response = self.submit(form_model, values, [])
 
@@ -179,26 +190,20 @@ class FilePlayer(Player):
             if self.form_code is not None and form_code != self.form_code:
                 form_model = get_form_model_by_code(self.dbm, self.form_code)
                 raise FormCodeDoesNotMatchException(
-                    ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') %
+                    ugettext('Some unexpected error happened. Please check the excel file and import again.') %
                     form_model.entity_type[0], form_code=form_code)
         return form_model
-
-    def _get_phone_numbers(self, organization):
-        return get_all_registered_phone_numbers_on_trial_account() \
-            if organization.in_trial_mode else get_datasenders_mobile(self.dbm)
 
     def accept(self, file_contents):
         from datawinners.utils import get_organization_from_manager
 
         organization = get_organization_from_manager(self.dbm)
-        registered_phone_numbers = self._get_phone_numbers(organization)
         rows = self.parser.parse(file_contents)
         form_model = self._get_form_model(rows)
         responses = []
-        registered_emails = self._get_registered_emails()
         for (form_code, values) in rows:
             responses.append(
-                self._import_submission(form_code, organization, registered_emails, registered_phone_numbers,values, form_model))
+                self._import_submission(organization, values, form_model))
         return responses
 
 #TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
@@ -378,25 +383,6 @@ def get_subject_form_models(manager):
             form_models[form_model.entity_type[0]] = form_model
     return form_models
 
-
-@timebox
-def get_all_subjects(manager):
-    rows = manager.view.all_subjects()
-    return [_from_row_to_subject(manager, row) for row in rows]
-
-
-def _get_all_subject_data(form_models, subject_types, subjects):
-    subject_type_infos_dict = _get_subject_type_infos(subject_types, form_models)
-    for subject in subjects:
-        subject_type = subject.type_string
-        if subject_type in subject_type_infos_dict.keys():
-            form_model = form_models[subject_type]
-            data = tabulate_data(subject, form_model, subject_type_infos_dict[subject_type]['codes'])
-            subject_type_infos_dict[subject_type]['data'].append(data)
-
-    return [subject_type_infos_dict[subject_type] for subject_type in subject_types]
-
-
 def load_all_entities_of_type(manager, type=REPORTER):
     return load_entity_registration_data(manager, type)
 
@@ -409,16 +395,13 @@ def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_co
 
 
 def _get_imported_entities(responses):
-    short_codes = dict()
+    imported_entities = dict()
     datarecords_id = []
-    form_code = []
     for response in responses:
         if response.success:
-            short_codes.update({response.short_code: response.entity_type[0]})
             datarecords_id.append(response.datarecord_id)
-            if response.form_code not in form_code:
-                form_code.append(response.form_code)
-    return {"short_codes": short_codes, "datarecords_id": datarecords_id, "form_code": form_code}
+            imported_entities.update({response.short_code:response.processed_data})
+    return {"imported_entities": imported_entities, "datarecords_id": datarecords_id}
 
 
 def _get_failed_responses(responses):
@@ -427,55 +410,35 @@ def _get_failed_responses(responses):
 def _get_successful_responses(responses):
     return [response for response in responses if response.success]
 
-
-@timebox
-def _get_entity_types(manager):
-    entity_types = get_all_entity_types(manager)
-    entity_list = [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
-    return sorted(entity_list)
-
-
-@timebox
-def load_all_subjects(manager):
-    subject_types = _get_entity_types(manager)
-    form_models = get_subject_form_models(manager)
-    subjects = get_all_subjects(manager)
-
-    return _get_all_subject_data(form_models, subject_types, subjects)
-
-
 def import_data(request, manager, default_parser=None, form_code=None):
     response_message = ''
     error_message = None
     failure_imports = None
-    successful_imports = None
-    imported_entities = {}
+    imported_entities = []
     try:
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
         file_name, file = get_filename_and_contents(request)
         responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager,
                                           default_parser=default_parser, form_code=form_code)
-        imported_entities = _get_imported_entities(responses)
-        form_code = imported_entities.get("form_code")[0] if len(imported_entities.get("form_code")) == 1 else None
+
+        imported_entities_dict = _get_imported_entities(responses)
 
         if form_code is not None and \
-                len(imported_entities.get("datarecords_id")) and settings.CRS_ORG_ID == get_organization(
+                len(imported_entities_dict.get("datarecords_id")) and settings.CRS_ORG_ID == get_organization(
                 request).org_id:
             from django.core.management import call_command
 
-            datarecords_id = imported_entities.get("datarecords_id")
+            datarecords_id = imported_entities_dict.get("datarecords_id")
             call_command('crs_datamigration', form_code, *datarecords_id)
 
-        imported_entities = imported_entities.get("short_codes")
+        imported_entities = imported_entities_dict.get("imported_entities")
         successful_import_count = len(imported_entities)
         total = len(responses)
         if total == 0:
             error_message = _("The imported file is empty.")
         failures = _get_failed_responses(responses)
-        successes = _get_successful_responses(responses)
         failure_imports = tabulate_failures(failures,manager)
-        successful_imports = tabulate_success(successes)
-        total = len(failure_imports)+len(successful_imports)
+        total = len(failure_imports)+successful_import_count
         response_message = ugettext_lazy('%s of %s records uploaded') % (successful_import_count, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
@@ -485,9 +448,8 @@ def import_data(request, manager, default_parser=None, form_code=None):
         error_message = e.message
     except Exception:
         error_message = _(u"Some unexpected error happened. Please check the excel file and import again.")
-        if settings.DEBUG:
-            raise
-    return error_message, failure_imports, response_message, imported_entities , successful_imports
+
+    return error_message, failure_imports, response_message, imported_entities
 
 
 def _file_and_name_for_ie(request):

@@ -1046,3 +1046,7 @@ msgstr ""
 
 msgid "Register Datasender"
 msgstr ""
+
+msgid "Warning: Empty questionnaire"
+msgstr ""
+

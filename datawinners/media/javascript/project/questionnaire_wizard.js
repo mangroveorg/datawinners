@@ -2,6 +2,7 @@
 $(document).ready(function() {
     DW.questionnaire_was_changed = false;
     DW.init_inform_datasender_about_changes();
+    DW.init_empty_questionnaire_warning();
     var index;
     for(index in question_list){
         var questions = new DW.question(question_list[index]);
@@ -104,6 +105,10 @@ $(document).ready(function() {
     function submit_questionnaire() {
 
         var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
+
+
+
+
         if ($.trim($("#questionnaire-code").val()) == "") {
             $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("The Questionnaire code is required")+".</label>");
             return;
@@ -147,8 +152,6 @@ $(document).ready(function() {
                     $("#message-label").removeClass("message-box");
                     $("#message-label").addClass("success-message-box");
                     $("#message-label").show().html("<label class='success'>" + gettext("Your changes have been saved.") + "</label");
-                    var has_newly_added_question = questionnaireViewModel.has_newly_added_question();
-
                     questionnaireViewModel.set_all_questions_as_old_questions();
                     if($("#qtype").val() != undefined) {
                         var json_data = JSON.parse(response);
@@ -156,7 +159,7 @@ $(document).ready(function() {
                         questionnaireViewModel.selectedQuestion.valueHasMutated();
                         questionnaireViewModel.questions.valueHasMutated();
                     }
-                    if (DW.questionnaire_was_changed || has_newly_added_question) {
+                    if (DW.questionnaire_was_changed || questionnaireViewModel.has_newly_added_question() || DW.has_questions_changed(question_list)) {
                         DW.inform_datasender_about_changes.show_warning();
                         DW.questionnaire_was_changed = false;
                     }
@@ -189,8 +192,10 @@ $(document).ready(function() {
     });
 
     $("#submit-button").click(function() {
+        if(!DW.check_empty_questionnaire()) return false;
+
         DW.loading();
-        if($("#qtype").val() != undefined) {
+        if($("#qtype").val() != undefined) { //when does this occur?
             $("#questionnaire-change").dialog("open");
         } else {
             submit_questionnaire();
