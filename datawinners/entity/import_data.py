@@ -187,7 +187,7 @@ class FilePlayer(Player):
             if self.form_code is not None and form_code != self.form_code:
                 form_model = get_form_model_by_code(self.dbm, self.form_code)
                 raise FormCodeDoesNotMatchException(
-                    ugettext('The file you are uploading is not a list of [%s]. Please check and upload again.') %
+                    ugettext('Some unexpected error happened. Please check the excel file and import again.') %
                     form_model.entity_type[0], form_code=form_code)
         return form_model
 
