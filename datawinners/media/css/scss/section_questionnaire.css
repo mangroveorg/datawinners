@@ -187,7 +187,8 @@
 
 .save-button {
   float: right;
-  margin-right: 50px; }
+  margin-right: 50px;
+  height: 49px; }
 
 #container_content #questionnaire_preview_instruction {
   font-size: 13px;

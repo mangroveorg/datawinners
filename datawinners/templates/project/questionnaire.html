@@ -126,11 +126,12 @@
                             {% include 'project/sms_preview.html' %}
                         </div>
                         <div data-bind="visible: isSelectedQuestionNull" class="select_question_message" style="">Select a question to edit or add another question.</div>
-                        <div class="margin_top_10 save-button" >
-                            <input id="submit-button" type="submit" class="button" value="{% trans 'Save' %}" />
-                        </div>
+
                     </div>
 
+                </div>
+                <div class="margin_top_10 save-button" >
+                            <input id="submit-button" type="submit" class="button" value="{% trans 'Save' %}" />
                 </div>
             </div>
         </fieldset>
