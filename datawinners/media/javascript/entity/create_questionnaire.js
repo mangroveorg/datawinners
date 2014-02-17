@@ -111,8 +111,14 @@ DW.questionnaire_form.prototype={
 
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
+
+    ko.validation.init({insertMessages:false});
+
+    ko.validation.group(questionnaireViewModel);
     ko.applyBindings(questionnaireViewModel);
+
     questionnaireViewModel.routing.run();
+
     DW.charCount();
     $('#continue_project').live("click", DW.charCount);
     $('#question_form').live("keyup", DW.charCount);

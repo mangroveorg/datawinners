@@ -234,28 +234,28 @@ $(document).ready(function () {
 //        questionnaire_section.hide();
     });
 
-    $('#save_and_create').click(function () {
+//    $('#save_and_create').click(function () {
 
-        if (!basic_project_info.isValid()) {
-            $('html,body').animate({scrollTop:480}, 'slow');
-            return false;
-        }
-
-        if (DW.questionnaire_form_validate()) {
-            if(DW.has_questions_changed(existing_questions)){
-                DW.questionnaire_was_changed = true;
-            }
-            if( is_edit && questionnaireViewModel.hasDeletedOldQuestion  && !DW.has_submission_delete_warning.is_continue && DW.questionnaire_has_submission()){
-                DW.has_new_submission_delete_warning.show_warning();
-            } else {
-                $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
-                DW.post_project_data('Test', function (response) {
-                    return '/project/overview/' + response.project_id;
-                });
-            }
-        }
-        return false;
-    });
+//        if (!basic_project_info.isValid()) {
+//            $('html,body').animate({scrollTop:480}, 'slow');
+//            return false;
+//        }
+//        if(questionnaireViewModel.isValid())alert('valid');
+//        if (DW.questionnaire_form_validate()) {
+//            if(DW.has_questions_changed(existing_questions)){
+//                DW.questionnaire_was_changed = true;
+//            }
+//            if( is_edit && questionnaireViewModel.hasDeletedOldQuestion  && !DW.has_submission_delete_warning.is_continue && DW.questionnaire_has_submission()){
+//                DW.has_new_submission_delete_warning.show_warning();
+//            } else {
+//                $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+//                DW.post_project_data('Test', function (response) {
+//                    return '/project/overview/' + response.project_id;
+//                });
+//            }
+//        }
+//        return false;
+//    });
 
     $('#save_as_draft').click(function () {
         if (DW.questionnaire_form_validate()) {

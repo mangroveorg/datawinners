@@ -29,4 +29,4 @@ ko.bindingHandlers.scrollToView = {
              }
         }
     }
-}
+};
