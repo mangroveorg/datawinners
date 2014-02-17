@@ -91,7 +91,7 @@
 
                                         <div class="delete">
                                                 <a href="questionnaire_wizard.html#" class="delete_link"
-                                                   data-bind="visible: $data.canBeDeleted(), click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion($data);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion($data);} }">{% trans "Delete" %}</a>
+                                                   data-bind="css: {visible: $data.canBeDeleted, hidden: !$data.canBeDeleted()}, click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion($data);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion($data);} }">{% trans "Delete" %}</a>
 
                                                 <span>
                                                     <a data-bind="visible: $index(), click: $parent.moveQuestionUp,clickBubble: false"
