@@ -5,38 +5,49 @@ DW.SubjectImportResponseHandler = function (id, fileName, responseJSON) {
     $('.error_tbody').html('');
     $(".error_table").hide();
     $("#subject_success_table").find("tbody").html('');
+
+    function _populateSuccessTable() {
+        $.each(responseJSON.successful_imports, function (index, entity_data) {
+            var datas = entity_data.join("</td><td>");
+            $("#subject_success_table").find("tbody").append("<tr><td>" + datas + "</td></tr>");
+        });
+        $("#success_table_message").html(responseJSON.successful_imports.length + gettext(" Record(s) Successfully Imported"));
+        $("#subject_success_table").removeClass('none');
+    }
+
+    function _populateErrorTable() {
+        $.each(responseJSON.failure_imports, function (index, element) {
+            $("#subject_error_table").find("tbody").append("<tr><td>" + element.row_num + "</td><td>"
+                + element.error + "</td></tr>");
+        });
+        $("#error_table_message").html(responseJSON.failure_imports.length + gettext(" Record(s) Failed to Import"));
+        $("#subject_error_table").removeClass('none');
+        $("#subject_error_table").show();
+    }
+
     if ($.isEmptyObject(responseJSON)) {
         $('<div id="message" class="error_message message-box clear-left">' + gettext("Sorry, an error occured - the reason could be connectivity issues or the import taking too long to process.  Please try again.  Limit the number of subjects you import to 200 or less.") + '</div>').insertAfter($('#file-uploader'));
     }
     else {
-
+        var downloadtemplatelink = $("#download_template_link");
         if (responseJSON.success == true) {
-            $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($("#subject_upload_button"));
+            $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter(downloadtemplatelink);
         }
         else {
             $("#subject_error_table").find("tbody").html('');
             if (responseJSON.error_message) {
-                $('<div id="message" class="error_message message-box">' + responseJSON.error_message + '</div>').insertAfter($("#subject_upload_button"));
+                $('<div id="message" class="error_message message-box">' + responseJSON.error_message + '</div>').insertAfter(downloadtemplatelink);
             }
             else {
-                $('<div id="message" class="error_message message-box">' + responseJSON.message + '</div>').insertAfter("#subject_upload_button");
+                $('<div id="message" class="error_message message-box">' + responseJSON.message + '</div>').insertAfter(downloadtemplatelink);
             }
 
         }
         if (responseJSON.failure_imports.length > 0) {
-            $.each(responseJSON.failure_imports, function (index, element) {
-                $("#subject_error_table").find("tbody").append("<tr><td>" + element.row_num + "</td><td>"
-                    + element.error + "</td></tr>");
-            });
-            $("#subject_error_table").removeClass('none');
-            $("#subject_error_table").show();
+            _populateErrorTable();
         }
         if(responseJSON.successful_imports.length > 0){
-            $.each(responseJSON.successful_imports, function (index, entity_data) {
-                var datas = entity_data.join("</td><td>");
-                $("#subject_success_table").find("tbody").append("<tr><td>" + datas + "</td></tr>");
-            });
-            $("#subject_success_table").removeClass('none');
+            _populateSuccessTable();
         }
         else{
             $("#subject_success_table").addClass('none');

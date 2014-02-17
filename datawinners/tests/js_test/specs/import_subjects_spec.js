@@ -48,6 +48,12 @@ describe("subject import", function(){
             expect($("#message")).toBeMatchedBy(".success-message-box");
         });
 
+        it("show the count of sucessfully imported records above the success table", function(){
+            DW.SubjectImportResponseHandler("id", "fileName", response);
+
+            expect($("#success_table_message")).toContainText("2 Record(s) Successfully Imported");
+        });
+
     });
 
     describe("when all subject rows fail to be imported", function(){
@@ -93,6 +99,13 @@ describe("subject import", function(){
             expect($("#message")).toBeMatchedBy(".message-box");
         });
 
+        it("should show the count of failed  records above the error table", function(){
+            DW.SubjectImportResponseHandler("id", "fileName", response);
+
+            expect($("#error_table_message")).toContainText("2 Record(s) Failed to Import");
+        });
+
+
     });
 
 
@@ -134,6 +147,18 @@ describe("subject import", function(){
             expect($("#subject_success_table tbody  tr").length).toEqual(1);
             expect($("#subject_success_table tbody  tr")[0]).toContainHtml("<td>sub1_val1</td><td>sub1_val2</td><td>sub1_val3</td>")
             expect($("#subject_success_table")).toBeVisible();
+        });
+
+       it("should show the count of failed  records above the error table", function(){
+            DW.SubjectImportResponseHandler("id", "fileName", response);
+
+            expect($("#error_table_message")).toContainText("1 Record(s) Failed to Import");
+       });
+
+       it("show the count of sucessfully imported records above the success table", function(){
+            DW.SubjectImportResponseHandler("id", "fileName", response);
+
+            expect($("#success_table_message")).toContainText("1 Record(s) Successfully Imported");
         });
 
     });

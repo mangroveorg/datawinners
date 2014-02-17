@@ -16,8 +16,10 @@
                 </noscript>
                 <div class="clear"></div>
             </div>
-            <div class="error">{% trans "Download the template:"%} <a href="{% url import_template form_code %}?filename={{ subject.entity  }}">{{ subject.entity }}.xls</a></div>
+            <div class="error" id="download_template_link">{% trans "Download the template:"%} <a href="{% url import_template form_code %}?filename={{ subject.entity  }}">{{ subject.entity }}.xls</a></div>
             <div class="import_table none" id="subject_success_table">
+                <div id="success_table_message" class="bold-text">
+                </div>
                 <table class="styled_table">
                     <thead>
                         <tr>
@@ -26,12 +28,14 @@
                         {% endfor %}
                         </tr>
                     </thead>
-                    <tbody id="{{ subject.code }}_table">
+                    <tbody>
                     </tbody>
                 </table>
             </div>
             <div class='error_table none import_table' id="subject_error_table">
                 <br/>
+                <div id="error_table_message" class="bold-text">
+                </div>
                 <table class="styled_table error_body">
                     <thead>
                         <tr>
