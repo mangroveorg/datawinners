@@ -1,7 +1,10 @@
 DW.init_view_model = function (question_list) {
     if(is_edit){
         questionnaireViewModel.setQuestionnaireCreationType();
+        questionnaireViewModel.projectName(project_details.project_name);
+        questionnaireViewModel.language(project_details.project_language);
     }
+    questionnaireViewModel.questionnaireCode(project_details.questionnaire_code);
     questionnaireViewModel.questions([]);
     questionnaireViewModel.questions.valueHasMutated();
     $(question_list).each(function(index, question){
@@ -10,7 +13,6 @@ DW.init_view_model = function (question_list) {
 
     questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
     questionnaireViewModel.selectedQuestion.valueHasMutated();
-    DW.current_code = questionnaireViewModel.questions().length + 1; //This variable holds the next question code to be generated.
     questionnaireViewModel.hasAddedNewQuestions = false;
     DW.smsPreview();
 };
@@ -26,67 +28,6 @@ DW.error_appender.prototype={
    hide_message:function () {
        $(this.element).delay(5000).fadeOut();
    }
-};
-
-DW.questionnaire_code=function(questionnaireCode,questionnaireErrorCode){
-    this.questionnaireCode=questionnaireCode;
-    this.questionnaireErrorCode=questionnaireErrorCode;
-};
-
-
-DW.questionnaire_code.prototype={
-    processMandatory:function(){
-        if (!this.isPresent()){
-            this.appendError("The Questionnaire code is required");
-            return false;
-        }
-        return true;
-    },
-    processSpaces:function(){
-        var trimmed_value = $.trim($(this.questionnaireCode).val());
-        var list = trimmed_value.split(" ");
-        if(list.length>1){
-            this.appendError("Space is not allowed in questionnaire code");
-            return false;
-        }
-
-        $(this.questionnaireCode).val(trimmed_value);
-        return true;
-    },
-
-    processLetterAndDigitValidation:function(){
-        var code = $(this.questionnaireCode).val();
-        var re = new RegExp('^[A-Za-z0-9 ]+$');
-        if (!re.test(code)) {
-            this.appendError("Only letters and digits are valid");
-            return false;
-        }
-        return true;
-    },
-
-    isPresent:function(){
-        return !($.trim($(this.questionnaireCode).val())=="");
-    },
-
-    appendError:function(errorText){
-        $(this.questionnaireErrorCode).html("<label class='error'> " + gettext(errorText) + ".</label>");
-    },
-
-    processValidation:function(){
-        if(!this.processMandatory()){
-            return false;
-        }
-
-        if(!this.processSpaces()){
-            return false;
-        }
-
-        //TODO The below expression needs to be simplified, I am not touching it because I am not sure if there is a Gotcha here!
-        if(!this.processLetterAndDigitValidation()){
-            return false;
-        }
-        return true;
-    }
 };
 
 DW.questionnaire_form=function(formElement){

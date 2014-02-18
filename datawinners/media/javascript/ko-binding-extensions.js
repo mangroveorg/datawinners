@@ -19,14 +19,14 @@ ko.bindingHandlers.sortable = {
 };
 
 ko.bindingHandlers.scrollToView = {
-    update: function(element, valueAccessor) {
+    update: function (element, valueAccessor) {
         observable = valueAccessor();
-        if(observable()){
+        if (observable()) {
             scrollFollow = element;
-             if (scrollFollow) {
+            if (scrollFollow) {
                 scrollFollow.scrollTop = scrollFollow.scrollHeight - scrollFollow.clientHeight;
                 observable(false);
-             }
+            }
         }
     }
 };

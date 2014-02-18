@@ -1,24 +1,24 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import unittest
-from django.contrib.auth.models import User
 
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpRequest
 from mock import Mock, patch, call
-
 from mangrove.form_model.field import TextField, DateField
+from mangrove.transport import Response
+
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views.views import _format_reminders, SubjectWebQuestionnaireRequest
 from datawinners.project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
-from datawinners.project.utils import make_subject_links, make_data_sender_links
+from datawinners.project.utils import make_subject_links
 from datawinners.project.views.utils import add_link
 from datawinners.project.views.views import get_preview_and_instruction_links_for_questionnaire, append_success_to_context, formatted_data
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from datawinners.project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field
+from datawinners.project.wizard_view import get_preview_and_instruction_links, get_reporting_period_field, _get_changed_data
 from datawinners.questionnaire.questionnaire_builder import get_max_code
-from mangrove.transport import Response
 
 
 class TestProjectViews(unittest.TestCase):
@@ -252,6 +252,12 @@ class TestProjectViews(unittest.TestCase):
         data = formatted_data(field_values)
         self.assertEqual(data, [['key</br>(value)', 'string']])
         self.assertEqual(field_values, [[('key', 'value'), 'string']])
+
+    def test_should_get_changed_data_when_project_is_edited(self):
+        project_info = {'name':'changed name','language':'en'}
+        project = Project(language='en',name='old name')
+        changed_dict = _get_changed_data(project,project_info)
+        self.assertDictEqual({'Name':'changed name'},changed_dict)
 
 class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
     def test_form_should_not_have_initial_values_when_subject_creation_successful(self):

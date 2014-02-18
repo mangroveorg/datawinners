@@ -1,0 +1,90 @@
+{% load i18n %}
+<div id="questionnaire" class="clear_both" data-bind="visible: questionnaireCreationType">
+    <fieldset>
+        <legend>2. {% trans "Write and Edit Your Questions" %}</legend>
+    </fieldset>
+    <div class="line"></div>
+
+    <form id="question_form">
+        {% csrf_token %}
+        <fieldset>
+            <div class="questionnaire_form_header clearfix">
+                {% include 'project/questionnaire_info_indicator.html' %}
+                {% include 'project/preview_navigation.html' %}
+            </div>
+            <div class="questionnare_content grid_23 alpha omega">
+                <div>
+
+                    <div id="questions-panel" class="grid_8 alpha">
+                        <h4>{% trans "Questions" %}</h4>
+
+                        <div class="add_question">
+                            <a class="add_link" href="#"
+                               data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add a Question" %}</a>
+                        </div>
+                        <div class="questions" data-bind="scrollToView: enableScrollToView">
+                            <div class="question_list" id="que_code">
+                                <ol data-bind="foreach: questions, sortable: questions">
+                                    <li data-bind="css:{question_selected:$data == $parent.selectedQuestion()}, click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data);} ">
+                                        <a href="#" data-bind="text: $data.display"></a>
+
+                                        <div class="delete"
+                                             data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
+                                            <a href="#" class="delete_link"
+                                               data-bind="visible: $data.canBeDeleted(), click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
+                                            </a>
+                                                <span>
+                                                    <a data-bind="visible: $index(), click: $parent.moveQuestionUp, clickBubble: false"
+                                                       class="question_action">
+                                                        <span class="move-text"><img class="move-image"
+                                                                                     src="/media/images/arrow_full_up_Blue.png"/>{% trans "Move Up" %}</span>
+                                                    </a>
+                                                    <a class="question_action"
+                                                       data-bind="visible: $index() < $parent.questions().length-1, click: $parent.moveQuestionDown,clickBubble: false">
+                                                        <span class="move-text move-down"><img class="move-image"
+                                                                                               src="/media/images/arrow_full_down_Blue.png"/>{% trans "Move Down" %}</span>
+                                                    </a>
+                                                </span>
+                                        </div>
+                                            <span class="selected_question_arrow"
+                                                  data-bind="css:{inline:$data == $parent.selectedQuestion()}"></span>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="add_question" data-bind="visible: questionnaireViewModel.questions().length>0">
+                            <a class="add_link" href="#"
+                               data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add a Question" %}</a>
+                        </div>
+                    </div>
+
+                    <div id="question-detail-panel">
+                        <div class="select_question_message"
+                             data-bind="visible: isSelectedQuestionNull">{% trans "Select a question to edit or add another question." %}</div>
+                        {% include 'project/question_detail_panel.html' %}
+                        {% include 'project/sms_preview.html' %}
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <div class="create_project">
+        <div class="grid_5">
+            <a data-bind="click: backToQuestionnaireCreationOptionsLink" id="back_to_project">{% trans "Back" %} </a>
+        </div>
+        <div class="grid_15 float_right">
+            <div class="right_aligned_button">
+                <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
+                {% if project.state != 'Test' %}
+                    <input data-bind="click: saveAsDraft" type="button" class="button_wizard_blue"
+                           id="save_as_draft"
+                           value="{% trans "Save as Draft" %}">
+                {% endif %}
+                <input type="button" class="button_wizard_next" id="save_and_create"
+                       value="{% trans "Save & Create Project" %}" data-bind="click: submit"/>
+            </div>
+        </div>
+        <div class="clear-both"></div>
+    </div>
+</div>

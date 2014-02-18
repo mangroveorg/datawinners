@@ -1,6 +1,5 @@
-from copy import copy
 import json
-import logging
+from datawinners import settings
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -11,23 +10,21 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from datawinners import settings
-
-from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
-from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.project import helper
-from datawinners.project.forms import CreateProject, ReminderForm
-from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_project_names
-from datawinners.main.database import get_database_manager, get_db_manager
-from datawinners.tasks import app
 from celery.task import current
-from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 from mangrove.utils.types import is_string
-from datawinners.utils import get_organization, generate_project_name
-from mangrove.form_model.form_model import FormModel, get_field_by_attribute_value
+from mangrove.form_model.form_model import FormModel
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
+
+from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
+from datawinners.accountmanagement.models import Organization, NGOUserProfile
+from datawinners.project.forms import ReminderForm
+from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
+from datawinners.main.database import get_database_manager, get_db_manager
+from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions
 from datawinners.common.constant import CREATED_PROJECT, EDITED_PROJECT, ACTIVATED_REMINDERS, DEACTIVATED_REMINDERS, SET_DEADLINE
@@ -74,64 +71,58 @@ def get_preview_and_instruction_links():
 @is_not_expired
 def create_project(request):
     manager = get_database_manager(request.user)
-    entity_list = get_all_entity_types(manager)
-    entity_list = helper.remove_reporter(entity_list)
-    # all_projects_name = get_all_project_names(get_database_manager(request.user))
-    # name = generate_project_name(all_projects_name)
-    # project_summary = dict(name=name)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
+    project_details = json.dumps({'questionnaire_code': helper.generate_questionnaire_code(manager)})
 
     if request.method == 'GET':
-        form = CreateProject(entity_list=entity_list)
         return render_to_response('project/create_project.html',
-                                  {'form': form,
-                                   'preview_links': get_preview_and_instruction_links(),
+                                  {'preview_links': get_preview_and_instruction_links(),
                                    # 'project': project_summary,
-                                   'questionnaire_code': helper.generate_questionnaire_code(manager),
+                                   'project_details': repr(project_details),
+                                   #'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
                                    'post_url': reverse(create_project)}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
-        form = CreateProject(entity_list, data=project_info)
-        if form.is_valid():
-            project = Project(name=form.cleaned_data['name'],
-                              #goals=form.cleaned_data['goals'],
-                              project_type='survey', entity_type=form.cleaned_data['entity_type'],
-                              activity_report=form.cleaned_data['activity_report'],
-                              state=request.POST['project_state'], devices=[u'sms', u'web', u'smartPhone'],
-                              language=form.cleaned_data['language'])
+        project = Project(name=project_info.get('name'),
+                          project_type='survey',
+                          activity_report=project_info.get('activity_report'),
+                          state=request.POST['project_state'], devices=[u'sms', u'web', u'smartPhone'],
+                          language=project_info.get('language'))
 
-            if ngo_admin.reporter_id is not None:
-                project.data_senders.append(ngo_admin.reporter_id)
+        if ngo_admin.reporter_id is not None:
+            project.data_senders.append(ngo_admin.reporter_id)
 
-            try:
-                questionnaire = create_questionnaire(post=request.POST, manager=manager,
-                                                     entity_type=form.cleaned_data['entity_type'],
-                                                     name=form.cleaned_data['name'],
-                                                     language=form.cleaned_data['language'])
-            except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
-                    EntityQuestionAlreadyExistsException) as ex:
-                return HttpResponse(
-                    json.dumps({'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}))
+        try:
+            questionnaire = create_questionnaire(post=request.POST, manager=manager,
+                                                 #hard coding entity type to reporter since v are removing
+                                                 #project type(summary and individual)
+                                                 entity_type=REPORTER_ENTITY_TYPE,
+                                                 name=project_info.get('name'),
+                                                 language=project_info.get('language'))
+        except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
+                EntityQuestionAlreadyExistsException) as ex:
+            return HttpResponse(
+                json.dumps({'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}))
 
-            try:
-                project.qid = questionnaire.save()
-            except DataObjectAlreadyExists:
-                return HttpResponse(json.dumps(
-                    {'success': False, 'error_message': "Questionnaire with this code already exists",
-                     'error_in_project_section': False}))
+        try:
+            project.qid = questionnaire.save()
+        except DataObjectAlreadyExists:
+            return HttpResponse(json.dumps(
+                {'success': False, 'error_message': "Questionnaire with this code already exists",
+                 'error_in_project_section': False}))
 
-            try:
-                project.save(manager)
-                UserActivityLog().log(request, action=CREATED_PROJECT, project=project.name, detail=project.name)
-            except DataObjectAlreadyExists as ex:
-                questionnaire.delete()
-                message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
-                return HttpResponse(
-                    json.dumps({'success': False, 'error_message': message, 'error_in_project_section': True}))
+        try:
+            project.save(manager)
+            UserActivityLog().log(request, action=CREATED_PROJECT, project=project.name, detail=project.name)
+        except DataObjectAlreadyExists as ex:
+            questionnaire.delete()
+            message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
+            return HttpResponse(
+                json.dumps({'success': False, 'error_message': message, 'error_in_project_section': True}))
 
-            return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
+        return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
 
 def get_reporting_period_field(questionnaire):
@@ -155,6 +146,13 @@ def _get_deleted_question_codes(new_codes, old_codes):
     return filter(diff.__contains__, old_codes)
 
 
+def _get_changed_data(project, project_info):
+    changed_dict = dict()
+    for attr, value in project_info.iteritems():
+        if getattr(project, attr) != value:
+            changed_dict.update({attr.capitalize(): value})
+    return changed_dict
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -163,77 +161,73 @@ def _get_deleted_question_codes(new_codes, old_codes):
 @is_project_exist
 def edit_project(request, project_id=None):
     manager = get_database_manager(request.user)
-    entity_list = get_all_entity_types(manager)
-    entity_list = helper.remove_reporter(entity_list)
     project = Project.load(manager.database, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if project.is_deleted():
         return HttpResponseRedirect(dashboard_page)
     questionnaire = FormModel.get(manager, project.qid)
     if request.method == 'GET':
-        form = CreateProject(data=project, entity_list=entity_list)
-        activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
-        subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
+        #form = CreateProject(data=project, entity_list=entity_list)
+        #activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
+        #subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
         fields = questionnaire.fields
         if questionnaire.is_entity_type_reporter():
             fields = helper.hide_entity_question(questionnaire.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
+        project_details = json.dumps(
+            {'project_name': project.name, 'project_language': project.language,
+             'questionnaire_code': questionnaire.form_code})
 
         return render_to_response('project/create_project.html',
-                                  {'form': form, "activity_report_questions": repr(activity_report_questions),
-                                   'subject_report_questions': repr(subject_report_questions),
-                                   'preview_links': get_preview_and_instruction_links(),
+                                  {'preview_links': get_preview_and_instruction_links(),
                                    'existing_questions': repr(existing_questions),
-                                   'questionnaire_code': questionnaire.form_code,
-                                   'project': project, 'is_edit': 'true',
+                                   'project_details': repr(project_details),
+                                   'is_edit': 'true',
                                    'post_url': reverse(edit_project, args=[project_id])},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
-        form = CreateProject(entity_list, data=project_info)
-        if form.is_valid():
-            detail = dict()
-            for key, changed in enumerate(form.changed_data):
-                if getattr(project, changed) != form.cleaned_data.get(changed):
-                    detail.update({changed.capitalize(): form.cleaned_data.get(changed)})
-            is_project_name_changed = project_info['name'] != questionnaire.name
-            project.update(form.cleaned_data)
-            try:
-                old_fields = questionnaire.fields
-                old_form_code = questionnaire.form_code
-                old_field_codes = questionnaire.field_codes()
-                questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'],
-                                                     form.cleaned_data['name'], manager, form.cleaned_data['language'])
-                changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
-                detail.update(changed_questions)
-                project.state = request.POST['project_state']
-                project.qid = questionnaire.save()
+        detail = _get_changed_data(project, project_info)
+        is_project_name_changed = project_info.get('name') != questionnaire.name
+        project.update(project_info)
+        try:
+            old_fields = questionnaire.fields
+            old_form_code = questionnaire.form_code
+            old_field_codes = questionnaire.field_codes()
+            questionnaire = update_questionnaire(questionnaire, request.POST,
+                                                 #see line num 107
+                                                 REPORTER_ENTITY_TYPE,
+                                                 project_info.get('name'), manager, project_info.get('language'))
+            changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
+            detail.update(changed_questions)
+            project.state = request.POST['project_state']
+            project.qid = questionnaire.save()
 
-                deleted_question_codes = _get_deleted_question_codes(old_codes=old_field_codes,
-                                                                     new_codes=questionnaire.field_codes())
+            deleted_question_codes = _get_deleted_question_codes(old_codes=old_field_codes,
+                                                                 new_codes=questionnaire.field_codes())
 
-                update_associated_submissions.delay(manager.database_name, old_form_code,
-                                                    questionnaire.form_code,
-                                                    deleted_question_codes)
-                UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
-            except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
-                    EntityQuestionAlreadyExistsException) as ex:
-                return HttpResponse(
-                    json.dumps({'success': False, 'error_in_project_section': False, 'error_message': _(ex.message)}))
-            except DataObjectAlreadyExists:
-                return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False,
-                                                'error_message': 'Questionnaire with this code already exists'}))
+            update_associated_submissions.delay(manager.database_name, old_form_code,
+                                                questionnaire.form_code,
+                                                deleted_question_codes)
+            UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
+        except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
+                EntityQuestionAlreadyExistsException) as ex:
+            return HttpResponse(
+                json.dumps({'success': False, 'error_in_project_section': False, 'error_message': _(ex.message)}))
+        except DataObjectAlreadyExists:
+            return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False,
+                                            'error_message': 'Questionnaire with this code already exists'}))
 
-            try:
+        try:
 
-                project.save(manager, process_post_update=is_project_name_changed)
-            except DataObjectAlreadyExists as ex:
-                message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
-                return HttpResponse(
-                    json.dumps({'success': False, 'error_message': message, 'error_in_project_section': True}))
+            project.save(manager, process_post_update=is_project_name_changed)
+        except DataObjectAlreadyExists as ex:
+            message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
+            return HttpResponse(
+                json.dumps({'success': False, 'error_message': message, 'error_in_project_section': True}))
 
-            return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
+        return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
 
 # @login_required

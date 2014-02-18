@@ -78,47 +78,6 @@ def get_translated_weekdays():
         translated_weekdays.append((weekday[0], _(weekday[1])))
     return tuple(translated_weekdays)
 
-class CreateProject(Form):
-
-    QUESTIONNAIRE_CHOICES = (('yes',_("I want Summary Reports.")),
-                             ('no', _("I want Individual Reports about a specific subject.")))
-    CATEGORY_CHOICE = (('A person', _('A person')), ('A place', _('A place')),
-                       ('A thing', _('A thing')), ('An event', _('An event')), )
-    SUBJECT_CHOICE = (('Patient', _('Patient')), ('Farmer', _('Farmer')),
-                      ('Child', _('Child')), ('Employee', _('Employee')), )
-    LANGUAGES = (('en', 'English'), ('fr', 'Français'),('mg', 'Malagasy'))
-
-    name = CharField(max_length=50,required=True, label=_("Questionnaire Name"))
-    goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
-    activity_report = ChoiceField(label=_("What kind of data do you want to collect?"),
-                                  choices=QUESTIONNAIRE_CHOICES,
-                                  widget=forms.RadioSelect, required=False, initial='yes')
-    language = ChoiceField(label=_("Choose your language for success and error messages to Data Senders"),
-                           widget=forms.RadioSelect,
-                           choices=LANGUAGES, initial='en')
-    entity_type = ChoiceField(required=False)
-
-    def clean(self):
-
-        if self.cleaned_data.get('entity_type') == "" and self.cleaned_data.get("activity_report") == 'no':
-            self.errors['entity_type'] = _("This field is required")
-
-        if self.cleaned_data.get("activity_report") == 'yes':
-            self.cleaned_data['entity_type'] = REPORTER
-            if self.errors.get('entity_type') is not None:
-                self.errors['entity_type'] = ""
-
-        return self.cleaned_data
-
-
-    def __init__(self, entity_list, *args, **kwargs):
-        assert isinstance(entity_list, list)
-        super(CreateProject, self).__init__(*args, **kwargs)
-        self.fields['entity_type'].choices = [(t[-1], t[-1]) for t in entity_list]
-        self.fields['name'].widget.attrs['watermark'] = _("Enter a project name")
-        self.fields['goals'].widget.attrs['watermark'] = _(
-            "Describe what your team hopes to achieve by collecting this data")
-
 
 class ReminderForm(Form):
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month'))), widget=forms.Select,
