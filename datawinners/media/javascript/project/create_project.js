@@ -39,15 +39,16 @@ DW.init_delete_periodicity_question_warning = function(){
 
 var questionnaire_form = new DW.questionnaire_form('#question_form');
 
-DW.post_project_data = function (state, function_to_construct_redirect_url_on_success) {
-    var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
-
-    var basic_project_info = function () {
-        var name = questionnaireViewModel.projectName();
+basic_project_info = function () {
+        var name = questionnaireViewModel.projectName() || '';
         var language = questionnaireViewModel.language();
         var activity_report = 'yes';
         return JSON.stringify({'name':name, 'language':language, 'activity_report':activity_report});
     };
+
+DW.post_project_data = function (state, function_to_construct_redirect_url_on_success) {
+    var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
+
 
     var post_data = {'questionnaire-code':questionnaireViewModel.questionnaireCode(), 'question-set':questionnaire_data, 'profile_form':basic_project_info(),
         'project_state':state, 'csrfmiddlewaretoken':$('#question_form input[name=csrfmiddlewaretoken]').val()};

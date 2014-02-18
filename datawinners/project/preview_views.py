@@ -14,6 +14,7 @@ from datawinners.project.helper import  get_preview_for_field, hide_entity_quest
 from datawinners.project.models import Project
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project.wizard_view import create_questionnaire
+from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 
 def get_questions(form_model):
@@ -25,7 +26,7 @@ def get_questions(form_model):
 
 
 def get_questionnaire_form_model(manager, project_info, post):
-    return create_questionnaire(post, manager, entity_type=unicode(project_info['entity_type']),
+    return create_questionnaire(post, manager, entity_type=REPORTER_ENTITY_TYPE,
                                 name=unicode(project_info['name']), language=unicode(project_info['language']))
 
 def get_sms_preview_context(manager, post, project_info):
@@ -59,8 +60,10 @@ def add_link_context(project):
 
 def get_web_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
-    project = Project(name=unicode(project_info['name']), goals=unicode(project_info['goals']),
-                      project_type='survey', entity_type=unicode(project_info['entity_type']),
+    project = Project(name=unicode(project_info['name']),
+                      #goals=unicode(project_info['goals']),
+                      project_type='survey',
+                      entity_type=unicode(REPORTER),
                       activity_report=unicode(project_info['activity_report']),
                       state=post['project_state'], devices=[u'sms', u'web', u'smartPhone'],
                       language=unicode(project_info['language']))
