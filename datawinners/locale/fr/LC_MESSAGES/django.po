@@ -4680,3 +4680,6 @@ msgstr "Inscrivez-vous à notre Blog"
 
 msgid "Join our Mailing List"
 msgstr "Inscrivez-vous à notre liste d'envoi"
+
+msgid "Sorry, the telephone number %s has already been registered."
+msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée."
