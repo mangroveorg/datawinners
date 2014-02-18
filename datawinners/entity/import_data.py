@@ -12,6 +12,7 @@ from django.contrib.sites.models import get_current_site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
+from datawinners.entity.subject_template_validator import SubjectTemplateValidator
 from mangrove.datastore.queries import get_entities_by_type
 from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, entity_type_as_sequence, get_json_field_infos, get_organization_telephone_number
 
@@ -155,6 +156,7 @@ class FilePlayer(Player):
             if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
                 response = self._import_data_sender(form_model, organization, values)
             else:
+                SubjectTemplateValidator(form_model).validate(values)
                 response = self.submit(form_model, values, [])
 
             if not response.success:
@@ -200,6 +202,7 @@ class FilePlayer(Player):
         organization = get_organization_from_manager(self.dbm)
         rows = self.parser.parse(file_contents)
         form_model = self._get_form_model(rows)
+
         responses = []
         for (form_code, values) in rows:
             responses.append(
