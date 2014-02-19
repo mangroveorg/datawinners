@@ -6,6 +6,7 @@ from pages.globalnavigationpage.global_navigation_locator import *
 from pages.page import Page
 from pages.projectspage.projects_page import ProjectsPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class GlobalNavigationPage(Page):

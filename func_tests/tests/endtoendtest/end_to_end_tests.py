@@ -24,6 +24,7 @@ from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.datasenderpage.data_sender_page import DataSenderPage
+from pages.globalnavigationpage.global_navigation_locator import PROJECT_LINK
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from pages.resetpasswordpage.reset_password_page import ResetPasswordPage
@@ -59,7 +60,7 @@ def do_login(driver, email, password):
 
 class TestApplicationEndToEnd(unittest.TestCase):
     def setUp(self):
-        self.driver = DriverWrapper(browser="phantom")
+        self.driver = DriverWrapper()
         self.driver.set_window_size(1600,900)
         self.driver.implicitly_wait(WAIT)
 
@@ -146,12 +147,27 @@ class TestApplicationEndToEnd(unittest.TestCase):
     def verify_individual_report_project_creation(self):
         global_navigation = GlobalNavigationPage(self.driver)
         dashboard_page = global_navigation.navigate_to_dashboard_page()
-        create_project_page = dashboard_page.navigate_to_create_project_page()
-        create_project_page.select_report_type(VALID_DATA_FOR_PROJECT)
-        self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE2[ENTITY_TYPE])
-        self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE1[ENTITY_TYPE])
-        create_questionnaire_page = self.create_project(create_project_page)
-        self.project_name = self.create_questionnaire(create_questionnaire_page)
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+
+        create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page.create_questionnaire_with(VALID_DATA_FOR_PROJECT,QUESTIONNAIRE_DATA)
+
+
+        #create_project_page.select_report_type(VALID_DATA_FOR_PROJECT)
+        #self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE2[ENTITY_TYPE])
+        #self.add_subject_type(create_project_page, VALID_SUBJECT_TYPE1[ENTITY_TYPE])
+        #create_questionnaire_page = self.create_project(create_project_page)
+        #self.project_name = self.create_questionnaire(create_questionnaire_page)
+
+        #create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
+        index = 1
+        for question in fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA)):
+            question_link_text = fetch_(QUESTION, from_(question))
+            self.assertEquals(create_questionnaire_page.get_question_link_text(index), question_link_text)
+            index += 1
+        project_overview_page = create_questionnaire_page.save_and_create_project_successfully()
+        self.project_name = project_overview_page.get_project_title()
+
 
     def add_subject(self):
         global_navigation = GlobalNavigationPage(self.driver)
@@ -302,16 +318,17 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.email = None
         organization_sms_tel_number = self.do_org_registartion()
         self.verify_individual_report_project_creation()
-        self.add_subject()
-        self.add_edit_delete_subject()
+        #self.add_subject()
+        #self.add_edit_delete_subject()
         ds_email = self.add_edit_datasender()
         self.verify_admin_present_in_my_datasenders_page()
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_project_activation()
         self.verify_submission_via_web(ds_email)
         self.admin_edit_delete_submissions()
+        time.sleep(2)
         self.delete_project()
 
-        project_overview_page = self.verify_summary_report_project_creation()
-        project_overview_page.navigate_to_web_questionnaire_page().fill_and_submit_answer(ANSWER_FOR_SUMMARY_PROJECT)
-        self.verify_submission(SUMMARY_DATA_LOG, self.summary_project_name)
+        #project_overview_page = self.verify_summary_report_project_creation()
+        #project_overview_page.navigate_to_web_questionnaire_page().fill_and_submit_answer(ANSWER_FOR_SUMMARY_PROJECT)
+        #self.verify_submission(SUMMARY_DATA_LOG, self.summary_project_name)

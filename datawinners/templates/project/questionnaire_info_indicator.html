@@ -3,7 +3,7 @@
 <div class="form-row-10px">
     <label>{% trans 'Questionnaire Name' %}</label>
 
-    <input data-bind="value:projectName"/>
+    <input id= 'id_name' data-bind="value:projectName"/>
 
     <div class="error_arrow" data-bind="visible: hasErrors">
         <label data-bind="validationMessage: projectName" class="error"

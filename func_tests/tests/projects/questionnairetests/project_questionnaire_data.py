@@ -44,13 +44,7 @@ SURVEY = "survey"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 
-CLINIC_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project project ", GEN_RANDOM: True,
-                       PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                       PROJECT_TYPE: "survey",
-                       SUBJECT: "clinic",
-                       REPORT_TYPE: "other subject",
-                       DEVICES: "sms",
-                       PAGE_TITLE: "Projects - Overview"}
+CLINIC_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project project ", GEN_RANDOM: True}
 
 WATERPOINT_PROJECT_DATA = {PROJECT_NAME: "new project ", GEN_RANDOM: True,
                            PROJECT_BACKGROUND: "This project is created by functional automation suite.",
@@ -103,20 +97,20 @@ QUESTIONNAIRE_DATA_WITH_MANY_MC_QUSTIONS = {QUESTIONNAIRE_CODE: u"cli005", GEN_R
 QUESTIONNAIRE_DATA_CLINIC_PROJECT = {QUESTIONNAIRE_CODE: u"cli005", GEN_RANDOM: True,
                                      DEFAULT_QUESTION: {QUESTION: u"What is associatéd entity?", CODE: u"EID"},
                                      QUESTIONS: [
-                                         {QUESTION: u"What is your namé?", CODE: u"q3", TYPE: WORD, LIMIT: LIMITED,
+                                         {QUESTION: u"What is your namé?", CODE: u"q2", TYPE: WORD, LIMIT: LIMITED,
                                           MAX: u"10"},
-                                         {QUESTION: u"What is age öf father?", CODE: u"q4", TYPE: NUMBER, MIN: u"18",
+                                         {QUESTION: u"What is age öf father?", CODE: u"q3", TYPE: NUMBER, MIN: u"18",
                                           MAX: u"100"},
-                                         {QUESTION: u"What is réporting date?", CODE: u"q5", TYPE: DATE,
+                                         {QUESTION: u"What is réporting date?", CODE: u"q4", TYPE: DATE,
                                           DATE_FORMAT: DD_MM_YYYY},
-                                         {QUESTION: u"What is your blood group?", CODE: u"q6", TYPE: LIST_OF_CHOICES,
+                                         {QUESTION: u"What is your blood group?", CODE: u"q5", TYPE: LIST_OF_CHOICES,
                                           CHOICE: [u"O+", u"O-", u"AB", u"B+"],
                                           ALLOWED_CHOICE: ONLY_ONE_ANSWER},
-                                         {QUESTION: u"What aré symptoms?", CODE: u"q7", TYPE: LIST_OF_CHOICES,
+                                         {QUESTION: u"What aré symptoms?", CODE: u"q6", TYPE: LIST_OF_CHOICES,
                                           CHOICE: [u"Rapid weight loss", u"Dry cough", u"Pneumonia", u"Memory loss",
                                                    u"Neurological disorders "],
                                           ALLOWED_CHOICE: MULTIPLE_ANSWERS},
-                                         {QUESTION: u"What is the GPS codé for clinic", CODE: u"q8", TYPE: GEO},
+                                         {QUESTION: u"What is the GPS codé for clinic", CODE: u"q7", TYPE: GEO},
                                      ],
                                      CHARACTER_REMAINING: u"84 / 160 characters used"}
 

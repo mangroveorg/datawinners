@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from pages.createprojectpage.questionnaire_creation_options_page import QuestionnaireCreationOptionsPage
 from pages.lightbox.light_box_page import LightBox
-from pages.createprojectpage.create_project_page import CreateProjectPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.projectspage.projects_locator import *
 from pages.page import Page
@@ -17,7 +17,7 @@ class ProjectsPage(Page):
         Return create project page
          """
         self.driver.find(CREATE_A_NEW_PROJECT_LINK).click()
-        return CreateProjectPage(self.driver)
+        return QuestionnaireCreationOptionsPage(self.driver)
 
     def navigate_to_project_overview_page(self, project_name):
         """

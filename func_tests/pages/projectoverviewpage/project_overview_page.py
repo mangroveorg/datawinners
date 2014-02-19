@@ -34,9 +34,8 @@ class ProjectOverviewPage(Page):
 
     def navigate_to_edit_project_page(self):
         self.driver.find(PROJECT_EDIT_LINK).click()
-        from pages.createprojectpage.create_project_page import CreateProjectPage
-
-        return CreateProjectPage(self.driver)
+        from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
+        return CreateQuestionnairePage(self.driver)
 
     def click_activate_project_link(self):
         self.driver.find(ACTIVATE_PROJECT_LINK).click()

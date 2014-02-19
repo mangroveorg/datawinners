@@ -45,11 +45,10 @@ class TestFeeds(unittest.TestCase):
     @classmethod
     def _create_project(cls):
         cls.dashboard_page = DashboardPage(cls.driver)
-        create_project_page = cls.dashboard_page.navigate_to_create_project_page()
-        create_project_page.create_project_with(WATERPOINT_PROJECT_DATA)
-        create_project_page.continue_create_project()
-        CreateQuestionnairePage(cls.driver).create_questionnaire_with(WATERPOINT_QUESTIONNAIRE_DATA)
-        return create_project_page.save_and_create_project_successfully()
+        create_questionnaire_options_page = cls.dashboard_page.navigate_to_create_project_page()
+        create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page.create_questionnaire_with(WATERPOINT_PROJECT_DATA,WATERPOINT_QUESTIONNAIRE_DATA)
+        return create_questionnaire_page.save_and_create_project_successfully()
 
     def _submit_success_data(self, project_name):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)

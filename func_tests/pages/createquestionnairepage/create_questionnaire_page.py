@@ -1,25 +1,29 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import time
+
 from time import sleep
 
+from pages.page import Page
 from framework.utils.data_fetcher import *
 from framework.utils.global_constant import WAIT_FOR_TITLE
 from pages.createdatasenderquestionnairepage.create_data_sender_questionnaire_page import CreateDataSenderQuestionnairePage
+from pages.createprojectpage.create_project_locator import PROJECT_NAME_TB, SAVE_AND_CREATE_BTN, INFORM_DATASENDERS_OK_BUTTON_BY_CSS
 from pages.createquestionnairepage.create_questionnaire_locator import *
+from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from framework.utils.common_utils import generateId, CommonUtilities
-from pages.createprojectpage.create_project_page import CreateProjectPage
 
 
-class CreateQuestionnairePage(CreateProjectPage):
+class CreateQuestionnairePage(Page):
     def __init__(self, driver):
-        CreateProjectPage.__init__(self, driver)
+        Page.__init__(self, driver)
         self.SELECT_FUNC = {WORD: self.configure_word_type_question,
                             NUMBER: self.configure_number_type_question,
                             DATE: self.configure_date_type_question,
                             LIST_OF_CHOICES: self.configure_list_of_choices_type_question,
                             GEO: self.configure_geo_type_question}
 
-    def create_questionnaire_with(self, questionnaire_data):
+    def create_questionnaire_with(self, project_data, questionnaire_data):
         """
         Function to create a questionnaire on the 'create questionnaire' page
 
@@ -28,15 +32,26 @@ class CreateQuestionnairePage(CreateProjectPage):
 
         Return self
         """
+        self.type_project_name(project_data)
         questionnaire_code = fetch_(QUESTIONNAIRE_CODE, from_(questionnaire_data))
         gen_ramdom = fetch_(GEN_RANDOM, from_(questionnaire_data))
         if gen_ramdom:
             questionnaire_code = questionnaire_code + generateId()
         self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).enter_text(questionnaire_code)
-        self.create_default_question(questionnaire_data[DEFAULT_QUESTION], DEFAULT_QUESTION_LINK)
+        #self.create_default_question(questionnaire_data[DEFAULT_QUESTION], DEFAULT_QUESTION_LINK)
         for question in fetch_(QUESTIONS, from_(questionnaire_data)):
             self.add_question(question)
         return self
+
+    def type_project_name(self, project_data):
+        project_name = fetch_(PROJECT_NAME, from_(project_data))
+        try:
+            gen_random = fetch_(GEN_RANDOM, from_(project_data))
+        except KeyError:
+            gen_random = False
+        if gen_random:
+            project_name += generateId()
+        self.driver.find_text_box(PROJECT_NAME_TB).enter_text(project_name)
 
     def create_questionnaire_to_work_performed_subjects_with(self, questionnaire_data):
         """
@@ -485,4 +500,23 @@ class CreateQuestionnairePage(CreateProjectPage):
             self.driver.find_radio_button(ONLY_ONE_ANSWER_RB).click()
         elif MULTIPLE_ANSWERS == choice_type:
             self.driver.find_radio_button(MULTIPLE_ANSWER_RB).click()
-    
+
+    def got_redistribute_questionnaire_message(self):
+        comm_utils = CommonUtilities(self.driver)
+        locator = comm_utils.is_element_present(INFORM_DATASENDERS_OK_BUTTON_BY_CSS)
+        if locator and locator.is_displayed():
+            locator.click()
+
+    def save_and_create_project_successfully(self, click_ok=True):
+        self.driver.find(SAVE_AND_CREATE_BTN).click()
+        time.sleep(3)
+        if click_ok:
+            self.got_redistribute_questionnaire_message()
+        return ProjectOverviewPage(self.driver)
+
+    def save_and_create_project(self, click_ok=True):
+        self.driver.find(SAVE_AND_CREATE_BTN).click()
+        if click_ok:
+            self.got_redistribute_questionnaire_message()
+        return self
+

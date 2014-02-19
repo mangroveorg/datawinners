@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from framework.utils.common_utils import random_number, random_string
 from tests.addsubjecttests.add_subject_data import ENTITY_TYPE, SUB_UNIQUE_ID, SUB_FIRST_NAME, SUB_LAST_NAME, LOCATION, GEO_CODE
 from testdata.constants import NAME, MOBILE_NUMBER, COMMUNE, EMAIL_ADDRESS, GPS, SUCCESS_MSG, SENDER, RECEIVER, SMS, SUCCESS_MESSAGE
-from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONNAIRE_CODE, DEFAULT_QUESTION, QUESTION, QUESTIONS, CODE, DATE_FORMAT, MM_YYYY, DATE
+from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONNAIRE_CODE, DEFAULT_QUESTION, QUESTION, QUESTIONS, CODE, DATE_FORMAT, MM_YYYY, DATE, MM_DD_YYYY, DD_MM_YYYY
 
 SMS_SUBMISSION = "sms"
 UNIQUE_VALUE = "unique_value"
@@ -41,13 +41,13 @@ DATASENDER_DETAILS = {NAME: "Dookudu",
 VALID_DATA = {SENDER: MOBILE_NUMBER_RANDOM,
               RECEIVER: '919880734937',
               SMS: "cli001 .EID cid003 .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
-                            SUCCESS_MESSAGE: "Thank you"}
+              SUCCESS_MESSAGE: "Thank you"}
 
 unique_text = random_string()
 VALID_DATA_FOR_DELETE = {SENDER: '919049008976',
-              RECEIVER: '919880734937',
-              SMS: "cli001 .EID cid003 .NA "+unique_text +" .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
-              SUCCESS_MESSAGE: "Thank you"}
+                         RECEIVER: '919880734937',
+                         SMS: "cli001 .EID cid003 .NA " + unique_text + " .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
+                         SUCCESS_MESSAGE: "Thank you"}
 
 EDITED_DATASENDER_DETAILS = {NAME: "edited Dookudu",
                              MOBILE_NUMBER: MOBILE_NUMBER_RANDOM,
@@ -131,15 +131,20 @@ NEW_PROJECT_DATA = {'project_name': "new project ", GEN_RANDOM: True,
                     PAGE_TITLE: "Projects - Overview"}
 
 NEW_PROJECT_QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
-                                 DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "WID"},
-                                 QUESTIONS: [{QUESTION: "Date of report", CODE: "DR", TYPE: DATE,
-                                              DATE_FORMAT: MM_YYYY}]}
+                                  DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "WID"},
+                                  QUESTIONS: [{QUESTION: "Date of report", CODE: "DR", TYPE: DATE,
+                                               DATE_FORMAT: MM_YYYY}]}
+
+DATE_PROJECT_QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
+                                   DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "WID"},
+                                   QUESTIONS: [{QUESTION: "Date of report", CODE: "DR", TYPE: DATE,
+                                                DATE_FORMAT: DD_MM_YYYY}]}
 
 
 def get_sms_data_with_questionnaire_code(questionnaire_code, date):
     return {SENDER: "919049008976",
             RECEIVER: '919880734937',
-            SMS: questionnaire_code + " wp01 %s" % date,
+            SMS: "%s %s" % (questionnaire_code, date),
             'message': 'Thanks'}
 
 

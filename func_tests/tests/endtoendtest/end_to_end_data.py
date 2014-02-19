@@ -198,28 +198,28 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                       PAGE_TITLE: "Data Senders"}
 
 WEB_ANSWERS = [
-    {QCODE: 'q1', ANSWER: 'Test (wp01)', TYPE: SELECT},
+    #{QCODE: 'q1', ANSWER: 'Test (wp01)', TYPE: SELECT},
+    #{QCODE: 'q2', ANSWER: '25.12.2010', TYPE: TEXT},
     {QCODE: 'q2', ANSWER: '25.12.2010', TYPE: TEXT},
-    {QCODE: 'q3', ANSWER: '25.12.2010', TYPE: TEXT},
-    {QCODE: 'q4', ANSWER: '5', TYPE: TEXT},
-    {QCODE: 'q5', ANSWER: '12.2010', TYPE: TEXT},
-    {QCODE: 'q6', ANSWER: '02.12.2010', TYPE: TEXT},
-    {QCODE: 'q7', ANSWER: 'LIGHT RED', TYPE: SELECT},
-    {QCODE: 'q8', ANSWER: 'web admin', TYPE: TEXT},
-    {QCODE: 'q9', ANSWER: ['b'], TYPE: CHECKBOX},
-    {QCODE: 'q10', ANSWER: '12.0,12.0', TYPE: TEXT},
+    {QCODE: 'q3', ANSWER: '5', TYPE: TEXT},
+    {QCODE: 'q4', ANSWER: '12.2010', TYPE: TEXT},
+    {QCODE: 'q5', ANSWER: '02.12.2010', TYPE: TEXT},
+    {QCODE: 'q6', ANSWER: 'LIGHT RED', TYPE: SELECT},
+    {QCODE: 'q7', ANSWER: 'web admin', TYPE: TEXT},
+    {QCODE: 'q8', ANSWER: ['b'], TYPE: CHECKBOX},
+    {QCODE: 'q9', ANSWER: '12.0,12.0', TYPE: TEXT},
 ]
 EDITED_WEB_ANSWERS = [
-    {QCODE: 'q1', ANSWER: 'Test (wp01)', TYPE: SELECT},
+    #{QCODE: 'q1', ANSWER: 'Test (wp01)', TYPE: SELECT},
+    #{QCODE: 'q2', ANSWER: '25.12.2010', TYPE: TEXT},
     {QCODE: 'q2', ANSWER: '25.12.2010', TYPE: TEXT},
-    {QCODE: 'q3', ANSWER: '25.12.2010', TYPE: TEXT},
-    {QCODE: 'q4', ANSWER: '5', TYPE: TEXT},
-    {QCODE: 'q5', ANSWER: '10.2010', TYPE: TEXT},
-    {QCODE: 'q6', ANSWER: '10.12.2010', TYPE: TEXT},
-    {QCODE: 'q7', ANSWER: 'LIGHT RED', TYPE: SELECT},
-    {QCODE: 'q8', ANSWER: 'edited adm', TYPE: TEXT},
-    {QCODE: 'q9', ANSWER: ['b', 'c'], TYPE: CHECKBOX},
-    {QCODE: 'q10', ANSWER: '12.0,12.0', TYPE: TEXT},
+    {QCODE: 'q3', ANSWER: '5', TYPE: TEXT},
+    {QCODE: 'q4', ANSWER: '10.2010', TYPE: TEXT},
+    {QCODE: 'q5', ANSWER: '10.12.2010', TYPE: TEXT},
+    {QCODE: 'q6', ANSWER: 'LIGHT RED', TYPE: SELECT},
+    {QCODE: 'q7', ANSWER: 'edited adm', TYPE: TEXT},
+    {QCODE: 'q8', ANSWER: ['b', 'c'], TYPE: CHECKBOX},
+    {QCODE: 'q9', ANSWER: '12.0,12.0', TYPE: TEXT},
 ]
 
 ANSWER_FOR_SUMMARY_PROJECT = [
@@ -233,22 +233,22 @@ SUMMARY_DATA_LOG = {
     UNIQUE_VALUE: "25.09.1999"
 }
 SMS_DATA_LOG = {
-    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success wat wat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae,Bacteroids 27.178057,-78.007789",
+    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 11.10.2011 98 04.2011 04.12.2011 DARK YELLOW Mr.Tessy Aquificae,Bacteroids 27.178057,-78.007789",
     UNIQUE_VALUE: "Mr.Tessy"}
 
 WEB_ANSWER_LOG = {
-    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success wat wat1 25.12.2010 25.12.2010 5.0 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0",
+    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 25.12.2010 5.0 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0",
     UNIQUE_VALUE: 'web admin'
 }
 
 EDITED_WEB_ANSWER_LOG = {
-    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success wat wat1 25.12.2010 25.12.2010 5.0 10.2010 10.12.2010 LIGHT RED edited adm Chlorobia 12.0,12.0",
+    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 25.12.2010 5.0 10.2010 10.12.2010 LIGHT RED edited adm Chlorobia 12.0,12.0",
     UNIQUE_VALUE: 'edited adm'
 }
 
 VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                       RECEIVER: "",
-                      SMS: "WPS01 wat1 11.10.2011 11.10.2011 98 04.2011 04.12.2011 c Mr.Tessy ab 27.178057,-78.007789",
+                      SMS: "WPS01 11.10.2011 98 04.2011 04.12.2011 c Mr.Tessy ab 27.178057,-78.007789",
                       SUCCESS_MESSAGE: 'Thank you'}
 
 VALID_DATA_FOR_SMS_LIGHT_BOX = {

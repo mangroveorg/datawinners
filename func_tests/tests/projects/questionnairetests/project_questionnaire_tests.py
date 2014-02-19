@@ -24,11 +24,10 @@ CLOSE_WARNING_DIALOGUE_LINK = by_css(
 
 def verify_on_edit_project_page(verify_edit_page_functionality):
     project_overview_page = verify_edit_page_functionality()
-    return project_overview_page.navigate_to_edit_project_page().continue_create_project()
+    return project_overview_page.navigate_to_edit_project_page()
 
 
 class TestProjectQuestionnaire(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.project_name = None
@@ -41,12 +40,6 @@ class TestProjectQuestionnaire(unittest.TestCase):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
     @attr('functional_test')
     def test_successful_questionnaire_editing(self):
         """
@@ -58,29 +51,29 @@ class TestProjectQuestionnaire(unittest.TestCase):
         self.verify_questions(create_questionnaire_page)
 
         def verify_warning_for_deleting_an_option_in_multi_choice_question():
-            create_questionnaire_page.select_question_link(6)
+            create_questionnaire_page.select_question_link(5)
             create_questionnaire_page.delete_option_for_multiple_choice_question(2)
             return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
 
         def verify_warning_for_adding_an_option_to_multi_choice_question():
-            create_questionnaire_page.select_question_link(6)
+            create_questionnaire_page.select_question_link(5)
             create_questionnaire_page.add_option_to_a_multiple_choice_question("new option")
             return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
 
         def verify_warning_for_numeric_range_modification():
-            create_questionnaire_page.select_question_link(4)
+            create_questionnaire_page.select_question_link(2)
             create_questionnaire_page.change_number_question_limit(max_value=30, min_value=5)
             return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
         def verify_warning_for_word_type_for_character_length_change():
-            create_questionnaire_page.select_question_link(3)
+            create_questionnaire_page.select_question_link(1)
             create_questionnaire_page.set_word_question_max_length(25)
             return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
         def verify_warning_for_date_format_change():
-            create_questionnaire_page.select_question_link(5)
+            create_questionnaire_page.select_question_link(3)
             create_questionnaire_page.change_date_type_question(MM_DD_YYYY)
             return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
@@ -117,20 +110,21 @@ class TestProjectQuestionnaire(unittest.TestCase):
 
     def verify_questions(self, create_questionnaire_page):
         questions = fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA_CLINIC_PROJECT))
-        create_questionnaire_page.select_question_link(2)
-        self.driver.find(by_css("#question_title")).click()
-        assert self.driver.find_visible_element(by_id("periode_green_message"))
-        create_questionnaire_page.select_question_link(3)
-        tip_message_element = self.driver.find(by_id('periode_green_message'))
-        self.assertFalse(tip_message_element.is_displayed())
+        #create_questionnaire_page.select_question_link(2)
+        #self.driver.find(by_css("#question_title")).click()
+        #assert self.driver.find_visible_element(by_id("periode_green_message"))
+        #create_questionnaire_page.select_question_link(3)
+        #tip_message_element = self.driver.find(by_id('periode_green_message'))
+        #self.assertFalse(tip_message_element.is_displayed())
+        create_questionnaire_page.select_question_link(1)
         self.assertEqual(questions[0], create_questionnaire_page.get_word_type_question())
-        create_questionnaire_page.select_question_link(4)
+        create_questionnaire_page.select_question_link(2)
         self.assertEqual(questions[1], create_questionnaire_page.get_number_type_question())
-        create_questionnaire_page.select_question_link(5)
+        create_questionnaire_page.select_question_link(3)
         self.assertEqual(questions[2], create_questionnaire_page.get_date_type_question())
-        create_questionnaire_page.select_question_link(6)
+        create_questionnaire_page.select_question_link(4)
         self.assertEqual(questions[3], create_questionnaire_page.get_list_of_choices_type_question())
-        create_questionnaire_page.select_question_link(7)
+        create_questionnaire_page.select_question_link(5)
         self.assertEqual(questions[4], create_questionnaire_page.get_list_of_choices_type_question())
 
     def sms_preview_of_questionnaire_on_the_questionnaire_tab(self, project_name):
@@ -149,12 +143,13 @@ class TestProjectQuestionnaire(unittest.TestCase):
         web_questionnaire_preview_page = preview_navigation_page.web_questionnaire_preview()
 
         self.assertIsNotNone(web_questionnaire_preview_page.get_web_instruction())
+        web_questionnaire_preview_page.close_preview()
 
     def smart_phone_preview_of_questionnaire_on_the_questionnaire_tab(self):
         preview_navigation_page = PreviewNavigationPage(self.driver)
         smart_phone_preview_page = preview_navigation_page.smart_phone_preview()
         self.assertIsNotNone(smart_phone_preview_page.get_smart_phone_instruction())
-
+        smart_phone_preview_page.close_preview()
 
     def add_question_to_project(self, create_questionnaire_page):
         question_name = "how many grades did you get last year?"
@@ -181,9 +176,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
 
     def create_or_navigate_to_project_questionnaire_page(self):
         project_overview_page = self.create_new_project()
-        edit_project_page = project_overview_page.navigate_to_edit_project_page()
-        edit_project_page.continue_create_project()
-        return CreateQuestionnairePage(self.driver)
+        return project_overview_page.navigate_to_edit_project_page()
 
     @classmethod
     def create_new_project(cls):
@@ -193,11 +186,11 @@ class TestProjectQuestionnaire(unittest.TestCase):
             return overview_page
 
         dashboard_page = cls.global_navigation.navigate_to_dashboard_page()
-        create_project_page = dashboard_page.navigate_to_create_project_page()
-        create_project_page.create_project_with(CLINIC_PROJECT_DATA)
-        create_project_page.continue_create_project()
-        create_questionnaire_page = CreateQuestionnairePage(cls.driver)
-        create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA_CLINIC_PROJECT)
+        questionnaire_creation_options_page = dashboard_page.navigate_to_create_project_page()
+        create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page = create_questionnaire_page.create_questionnaire_with(CLINIC_PROJECT_DATA,
+                                                                                        QUESTIONNAIRE_DATA_CLINIC_PROJECT)
+
         overview_page = create_questionnaire_page.save_and_create_project_successfully()
         cls.project_name = overview_page.get_project_title()
         return overview_page
@@ -205,7 +198,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
     def verify_sms_submission_after_edit(self, new_questionnaire_code):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
         sms_tester_page = SMSTesterPage(self.driver)
-        VALID_SMS[SMS] = new_questionnaire_code + ' cid001 12.12.2012 mino 25 05.12.2010 a d -18.1324,27.6547 45'
+        VALID_SMS[SMS] = new_questionnaire_code + ' mino 25 05.12.2010 a d -18.1324,27.6547 45'
         sms_tester_page.send_sms_with(VALID_SMS)
         message = sms_tester_page.get_response_message()
         self.assertTrue(fetch_(SUCCESS_MESSAGE, VALID_SMS) in message, "message:" + message)
@@ -217,13 +210,11 @@ class TestProjectQuestionnaire(unittest.TestCase):
 
     @attr('functional_test')
     def test_successful_questionnaire_creation(self):
-        create_project_page = self.goto_dashboard().navigate_to_create_project_page()
-        create_project_page.create_project_with(CLINIC_PROJECT_DATA)
-        create_project_page.continue_create_project()
-        create_questionnaire_page = CreateQuestionnairePage(self.driver)
-        create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA_WITH_MANY_MC_QUSTIONS)
-
-        index = 3
+        questionnaire_creation_options_page = self.goto_dashboard().navigate_to_create_project_page()
+        create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page.create_questionnaire_with(CLINIC_PROJECT_DATA,
+                                                            QUESTIONNAIRE_DATA_WITH_MANY_MC_QUSTIONS)
+        index = 1
         for question in fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA_WITH_MANY_MC_QUSTIONS)):
             question_link_text = fetch_(QUESTION, from_(question))
             self.assertEquals(create_questionnaire_page.get_question_link_text(index), question_link_text)
@@ -231,11 +222,4 @@ class TestProjectQuestionnaire(unittest.TestCase):
         overview_page = create_questionnaire_page.save_and_create_project_successfully()
         project_name = overview_page.get_project_title()
         self.assertTrue(fetch_(PROJECT_NAME, from_(CLINIC_PROJECT_DATA)) in project_name)
-
-    @attr('functional_test')
-    def test_should_not_create_project_if_description_longer_than_300_chars(self):
-        create_project_page = self.goto_dashboard().navigate_to_create_project_page()
-        create_project_page.create_project_with(LONG_DESCRIPTION_DATA)
-        create_project_page.continue_create_project()
-        self.assertTrue(create_project_page.description_has_error())
 

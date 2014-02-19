@@ -16,11 +16,12 @@ from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionC
 from mangrove.form_model.field import field_to_json
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 from mangrove.utils.types import is_string
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
+from datawinners.alldata.views import REPORTER_ENTITY_TYPE
 from datawinners.project.forms import ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.main.database import get_database_manager, get_db_manager
@@ -87,6 +88,7 @@ def create_project(request):
         project_info = json.loads(request.POST['profile_form'])
         project = Project(name=project_info.get('name'),
                           project_type='survey',
+                          entity_type=REPORTER,
                           activity_report=project_info.get('activity_report'),
                           state=request.POST['project_state'], devices=[u'sms', u'web', u'smartPhone'],
                           language=project_info.get('language'))
