@@ -2188,7 +2188,7 @@ msgstr ""
 msgid"Questionnaire ID %s doesnt exist."
 msgstr ""
 
-msgid "Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
+msgid "Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
 msgstr ""
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"

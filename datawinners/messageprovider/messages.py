@@ -26,9 +26,8 @@ exception_messages = {
 
     ex.FormModelDoesNotExistsException: {
         DEFAULT: u"Questionnaire ID %s doesnt exist.",
-        WEB: u"Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
-        ,
-        SMS: u"Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
+        WEB: u"Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS.",
+        SMS: u"Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
     },
 
     ex.DataObjectNotFound: {

@@ -2284,8 +2284,8 @@ msgstr "Réponse incorrecte pour la question %s. Veuillez envoyer de nouveau la 
 msgid"Questionnaire ID %s doesnt exist."
 msgstr "Le ID Questionnaire %s n'existe pas."
 
-msgid "Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
-msgstr "Erreur. Le Code Questionnaire %s est incorrect. Veuillez trouver le Code Questionnaire sur le Questionnaire imprime et renvoyez votre SMS en commençant par ce Code Questionnaire."
+msgid "Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
+msgstr "Erreur. Le code Questionnaire %s est incorrect. Vérifiez le formulaire d'enregistrement et envoyez votre SMS de nouveau."
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
 msgstr "Cet entité pour laquelle vous avez envoyé un rapport n'existe pas sur notre système. Veuillez enregistrer cette entité ou appelez-nous au 033 20 426 89"

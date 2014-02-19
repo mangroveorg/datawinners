@@ -32,6 +32,7 @@ from datawinners.submission.location import LocationBridge
 from datawinners.settings import NEAR_SUBMISSION_LIMIT_TRIGGER, NEAR_SMS_LIMIT_TRIGGER, LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 from datawinners.project.utils import is_quota_reached
 from datawinners.sms.models import SMS, MSG_TYPE_SUBMISSION_REPLY, MSG_TYPE_USER_MSG, MSG_TYPE_REMINDER, MSG_TYPE_API
+from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
 
 logger = logging.getLogger("django")
 
@@ -220,14 +221,25 @@ def submit_to_player(incoming_request):
                   (e.data[1], e.data[2], e.data[3], e.data[2])
         if not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
+
     except DataObjectNotFound as exception:
         if sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(incoming_web_count=1)
         message = handle(exception, incoming_request)
+
     except FormModelDoesNotExistsException as exception:
         if sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(incoming_web_count=1)
         message = handle(exception, incoming_request)
+
+    except SMSParserWrongNumberOfAnswersException as exception:
+        form_model = sms_player.get_form_model(mangrove_request)
+        if not form_model.is_entity_registration_form():
+            organization.increment_message_count_for(incoming_web_count=1) if sent_via_sms_test_questionnaire else organization.increment_message_count_for(incoming_sms_count=1)
+        elif not sent_via_sms_test_questionnaire:
+                organization.increment_message_count_for(sms_registration_count=1)
+        message = handle(exception, incoming_request)
+
     except Exception as exception:
         if sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(incoming_web_count=1)
