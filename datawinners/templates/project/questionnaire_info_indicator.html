@@ -3,7 +3,7 @@
 <div class="form-row-10px">
     <label>{% trans 'Questionnaire Name' %}</label>
 
-    <input data-bind="value:projectName" />
+    <input data-bind="value:projectName"/>
 
     <div class="error_arrow" data-bind="visible: hasErrors">
         <label data-bind="validationMessage: projectName" class="error"
@@ -21,19 +21,23 @@
 <ul class="questionnaire_code">
     <li>
         <label>{% trans "SMS Questionnaire Code:" %}</label>
-{#        <input id='project-id' type='hidden' value="{{ project.id }}"/>#}
-{#        <input id='project-state' type='hidden' value="{{ project.state }}"/>#}
-{#        <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}"/>#}
+        {#        <input id='project-id' type='hidden' value="{{ project.id }}"/>#}
+        {#        <input id='project-state' type='hidden' value="{{ project.state }}"/>#}
+        {#        <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}"/>#}
         <input id='questionnaire-code' data-bind="initValue: true, value: questionnaireCode"/>
         <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
 
         <div class="tooltip"><p>
             {% trans "tooltip_question_code" %}
         </p></div>
-        <div id="project-language" style="float: right">{% trans "Choose your language :" %}
-            <select data-bind="options: availableLanguages, value: language, optionsText: 'name', optionsValue: 'code'"></select></div>
         <div id="questionnaire-code-error" class="error_arrow" data-bind="visible: hasErrors">
             <label class='error' data-bind="validationMessage: questionnaireCode"></label>
+        </div>
+
+    </li>
+    <li>
+        <div id="project-language" style="float: right">{% trans "Choose your language :" %}
+            <select data-bind="options: availableLanguages, value: language, optionsText: 'name', optionsValue: 'code'"></select>
         </div>
     </li>
 </ul>

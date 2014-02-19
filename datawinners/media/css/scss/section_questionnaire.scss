@@ -21,7 +21,7 @@
 .questions {
   margin-top: 15px;
   max-height: 399px;
-  overflow-y:auto;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -195,7 +195,7 @@
           background: #d8e4ec url("/media/images/question_hover_bg.gif") repeat-x bottom left;
           position: relative;
         }
-        &:hover .delete{
+        &:hover .delete {
           visibility: visible;
         }
         span.selected_question_arrow {
@@ -216,7 +216,7 @@
     .delete {
       padding-left: 15px;
       visibility: hidden;
-      &:hover{
+      &:hover {
         visibility: visible;
       }
       a {
@@ -271,7 +271,7 @@
     left: 0px;
     box-shadow: 3px 3px 5px gray, -3px 3px 5px gray;
     background: -webkit-gradient(linear, left top, left bottom, from(white), to(#F2F2F2));
-    background: -moz-linear-gradient(top,  white,  #F2F2F2);
+    background: -moz-linear-gradient(top, white, #F2F2F2);
     border: 1px solid #CCBF97;
     padding-bottom: 20px;
     .close_preview {
@@ -292,7 +292,7 @@
 
   .questionnaire_form_header {
     border-bottom: 3px solid black;
-//    height: 58px;
+    //    height: 58px;
     position: relative;
     .questionnaire_code {
       float: left;
@@ -310,72 +310,76 @@
         }
       }
     }
-    .preview-navigation{
+  }
+
+  .preview-navigation {
+    position: relative;
+    float: right;
+    margin-top: 26px;
+    span {
+      float: left;
+      margin-right: 6px;
+      padding: 4px 0;
+    }
+    div {
+      float: left;
+      margin-right: 3px;
+      border: 1px solid white;
+    }
+    div:hover {
+      cursor: pointer;
+    }
+    a {
+      text-decoration: none;
+    }
+    .navigation-sms-preview {
+      background: url("/media/images/feature_phone_black.png") no-repeat 4px 4px;
+      padding: 4px 4px 0 20px;
+    }
+    .navigation-smart-phone-preview {
+      background: url("/media/images/smart_phone_black.png") no-repeat 4px 4px;
+      padding: 4px 4px 0 20px;
+    }
+    .navigation-web-preview {
+      background: url("/media/images/computer_black.png") no-repeat 4px 4px;
+      padding: 4px 4px 0 30px;
+    }
+    .shadow-background {
       position: relative;
-      float: right;
-      margin-top: 26px;
-      span {
-        float: left;
-        margin-right: 6px;
-        padding: 4px 0;
-      }
-      div {
-        float: left;
-        margin-right: 3px;
-        border: 1px solid white;
-      }
-      div:hover {
-        cursor: pointer;
-      }
+      z-index: 1003;
+      background-color: white;
+      border: 1px solid #CCC;
+      box-shadow: 3px 0 5px -3px #CCC;
+      border-bottom: none;
+      height: 33px;
       a {
-        text-decoration: none;
+        color: black;
       }
-      .navigation-sms-preview {
-        background: url("/media/images/feature_phone_black.png") no-repeat 4px 4px;
-        padding: 4px 4px 0 20px;
-      }
-      .navigation-smart-phone-preview {
-        background: url("/media/images/smart_phone_black.png") no-repeat 4px 4px;
-        padding: 4px 4px 0 20px;
-      }
-      .navigation-web-preview {
-        background: url("/media/images/computer_black.png") no-repeat 4px 4px;
-        padding: 4px 4px 0 30px;
-      }
-      .shadow-background {
-        position: relative;
-        z-index: 1003;
-        background-color: white;
-        border: 1px solid #CCC;
-        box-shadow: 3px 0 5px -3px #CCC;
-        border-bottom: none;
-        height: 33px;
-        a {
-          color: black;
-        }
-        a:hover {
-          cursor: auto;
-        }
-      }
-      .shadow-background:hover {
+      a:hover {
         cursor: auto;
       }
     }
+    .shadow-background:hover {
+      cursor: auto;
+    }
   }
+
 }
-.blue_frame{
+
+.blue_frame {
   border: 1px solid blue !important;
 }
-#green_message{
+
+#green_message {
   display: none;
 }
 
-#question-detail-panel{
-  #options_list.alpha_list{
+#question-detail-panel {
+  #options_list.alpha_list {
     margin-left: 10px;
-    li{
+    li {
       list-style-type: none !important;
-      span.bullet{
+      span.bullet {
         text-transform: uppercase;
         display: inline-block;
         margin-right: 3px;
@@ -385,11 +389,11 @@
   }
 }
 
-.ui-sortable-helper{
+.ui-sortable-helper {
   cursor: move;
 }
 
-.move-down{
+.move-down {
   padding-right: 16px;
   float: right;
 }
@@ -404,36 +408,35 @@
   visibility: hidden;
 }
 
-
-#questionnaire_types{
+#questionnaire_types {
   padding-bottom: 20px;
   padding-top: 20px;
-    .questionnaire_type_header{
-        border-bottom:1px solid #CCCCCC !important;
-        padding:10px;
-        .header{
-            font-weight:normal;
-            background:url(/media/images/accordion_arrows.png) no-repeat left -34px;
-            padding-left:15px;
-        }
+  .questionnaire_type_header {
+    border-bottom: 1px solid #CCCCCC !important;
+    padding: 10px;
+    .header {
+      font-weight: normal;
+      background: url(/media/images/accordion_arrows.png) no-repeat left -34px;
+      padding-left: 15px;
     }
-    .questionnaire_type_header.ui-state-active{
-        background:#525252 !important;
-        border:0;
-        background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;  //for webkit browsers
-        background: -moz-linear-gradient(top,  #525252,  #262626) !important;  //for firefox 3.6+
-        .header{
-            color:#FFFFFF;
-            background:url(/media/images/accordion_arrows.png) no-repeat left 5px;
-            padding-left:15px;
-        }
+  }
+  .questionnaire_type_header.ui-state-active {
+    background: #525252 !important;
+    border: 0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important; //for webkit browsers
+    background: -moz-linear-gradient(top, #525252, #262626) !important; //for firefox 3.6+
+    .header {
+      color: #FFFFFF;
+      background: url(/media/images/accordion_arrows.png) no-repeat left 5px;
+      padding-left: 15px;
     }
-    .ui-accordion-content{
-        border:0;
-        border-bottom:1px solid #000000;
-    }
+  }
+  .ui-accordion-content {
+    border: 0;
+    border-bottom: 1px solid #000000;
+  }
 }
 
-.project_name_div{
+.project_name_div {
   padding-top: 10px;
 }
