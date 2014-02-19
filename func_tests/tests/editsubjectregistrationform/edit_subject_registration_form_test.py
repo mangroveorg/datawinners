@@ -33,13 +33,3 @@ class TestEditSubjectRegistrationForm(BaseTest):
         subjects_page.click_submit_button()
         self.assertTrue(subjects_page.is_success_message_tip_show())
 
-    @attr('functional_test')
-    def test_should_check_instruction_for_telephone_number_question(self):
-        all_project_page = login(self.driver).navigate_to_view_all_project_page()
-        self.project_overview_page = all_project_page.navigate_to_project_overview_page("Clinic5 Test Project")
-        subjects_page = self.project_overview_page.navigate_to_subjects_page()
-        subjects_page.navigate_to_subject_registration_form_tab()
-        subjects_page.click_edit_form_link_and_continue()
-        subjects_page.click_add_question_link()
-        subjects_page.choose_question_type("telephone_number")
-        self.assertEqual(u'Answer must be country code plus telephone number. Example: 261333745269', subjects_page.get_instruction_for_current_question())

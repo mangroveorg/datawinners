@@ -46,12 +46,10 @@ class TestShowActivityLog(unittest.TestCase):
     @classmethod
     def create_new_project(cls):
         dashboard = cls.global_navigation_page.navigate_to_dashboard_page()
-        create_project_page = dashboard.navigate_to_create_project_page()
-        create_project_page.create_project_with(NEW_PROJECT_DATA)
-        create_project_page.continue_create_project()
-        questionnaire_page = CreateQuestionnairePage(cls.driver)
-        questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
-        questionnaire_page.save_and_create_project_successfully()
+        questionnaire_creation_options_page = dashboard.navigate_to_create_project_page()
+        create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page.create_questionnaire_with(NEW_PROJECT_DATA, QUESTIONNAIRE_DATA)
+        create_questionnaire_page.save_and_create_project_successfully()
         cls.driver.wait_for_page_with_title(5, 'Projects - Overview')
         return ProjectOverviewPage(cls.driver).get_project_title()
 

@@ -21,7 +21,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 def get_default_browser_name():
     import sys
 
-    if os.system('which chromedriver > /dev/null') == os.EX_OK:
+    if os.system('which chromium-browser> /dev/null') == os.EX_OK:
         sys.stderr.write("chromedriver found, using chrome as the browser\n")
         return "chrome"
     else:
@@ -40,7 +40,7 @@ def get_driver_for_browser(browser):
         capabilities = dict(DesiredCapabilities.CHROME, **{
             'chrome.switches': ["--incognito"]
         })
-        driver = webdriver.Chrome(desired_capabilities=capabilities)
+        driver = webdriver.Chrome(executable_path='/home/ashwin/Downloads/chromedriver', desired_capabilities=capabilities)
     elif browser == "htmlunit":
         driver = webdriver.Remote()
     elif browser == "phantom":

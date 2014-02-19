@@ -83,23 +83,19 @@ NEW_PROJECT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
                         u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
 
 VALID_ANSWERS = [
-    {QCODE: 'q1', ANSWER: 'Antalaha (cli10)', TYPE: SELECT},
-    {QCODE: 'q2', ANSWER: '12.01.2013', TYPE: TEXT},
-    {QCODE: 'q3', ANSWER: '5', TYPE: TEXT},
-    {QCODE: 'q4', ANSWER: '12.01.2013', TYPE: TEXT},
-    {QCODE: 'q5', ANSWER: 'LIGHT RED', TYPE: SELECT},
-    {QCODE: 'q6', ANSWER: 'something', TYPE: TEXT},
-    {QCODE: 'q7', ANSWER: 'b', TYPE: CHECKBOX},
-    {QCODE: 'q8', ANSWER: '-1,-1', TYPE: TEXT},
+    {QCODE: 'q2', ANSWER: '5', TYPE: TEXT},
+    {QCODE: 'q3', ANSWER: '12.01.2013', TYPE: TEXT},
+    {QCODE: 'q4', ANSWER: 'LIGHT RED', TYPE: SELECT},
+    {QCODE: 'q5', ANSWER: 'something', TYPE: TEXT},
+    {QCODE: 'q6', ANSWER: 'b', TYPE: CHECKBOX},
+    {QCODE: 'q7', ANSWER: '-1,-1', TYPE: TEXT},
 ]
 
 EDITED_ANSWERS = [
-    {QCODE: 'q1', ANSWER: 'Bhopal Clinic', TYPE: SELECT},
-    {QCODE: 'q2', ANSWER: '11.01.2013', TYPE: TEXT},
-    {QCODE: 'q3', ANSWER: '4', TYPE: TEXT},
-    {QCODE: 'q4', ANSWER: '11.01.2013', TYPE: TEXT},
-    {QCODE: 'q5', ANSWER: 'LIGHT YELLOW', TYPE: SELECT},
-    {QCODE: 'q6', ANSWER: 'nothing', TYPE: TEXT},
-    {QCODE: 'q7', ANSWER: ['a', 'c'], TYPE: CHECKBOX},
-    {QCODE: 'q8', ANSWER: '1,1', TYPE: TEXT},
+    {QCODE: 'q2', ANSWER: '4', TYPE: TEXT},
+    {QCODE: 'q3', ANSWER: '11.01.2013', TYPE: TEXT},
+    {QCODE: 'q4', ANSWER: 'LIGHT YELLOW', TYPE: SELECT},
+    {QCODE: 'q5', ANSWER: 'nothing', TYPE: TEXT},
+    {QCODE: 'q6', ANSWER: ['a', 'c'], TYPE: CHECKBOX},
+    {QCODE: 'q7', ANSWER: '1,1', TYPE: TEXT},
 ]
