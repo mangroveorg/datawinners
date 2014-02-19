@@ -5,23 +5,27 @@
 {% endblock %}
 <div id="questionnaire">
     <input id='post_url' value="{{ post_url }}" type='hidden'/>
+
     <form id="question_form">
         {% csrf_token %}
         <fieldset>
             <ul class="questionnaire_code">
                 <li>
                     <label>{% trans "Questionnaire Code :" %}</label>
-                    <input id="qtype" type="hidden" value="subject" />
-                    <input id="questionnaire-code" value="{{ questionnaire_code }}" {% ifequal type 'datasenders' %}readonly="readonly"{% endifequal %}/>
+                    <input id="qtype" type="hidden" value="subject"/>
+                    <input id="questionnaire-code" data-bind="value: questionnaireCode"
+                           {% ifequal type 'datasenders' %}readonly="readonly"{% endifequal %}/>
                     <input id="entity-type" type="hidden" value="{{ entity_type }}" name="entity-type"/>
                     <input id="saved-questionnaire-code" type="hidden" value="{{ questionnaire_code }}"/>
-                    <input type="hidden" name="project_name" value="{% if project %}{{ project.name }}{% endif %}" id="project-name"/>
+                    <input type="hidden" name="project_name" value="{% if project %}{{ project.name }}{% endif %}"
+                           id="project-name"/>
                     <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+
                     <div class="tooltip"><p>
-                        <strong>{% trans "What is this?" %}</strong><br />
+                        <strong>{% trans "What is this?" %}</strong><br/>
                         {% trans "q_tooltip_questionnaire_code" %}
-                        <br /><br />
-                        <strong>{% trans "What do I need to do?" %}</strong><br />
+                        <br/><br/>
+                        <strong>{% trans "What do I need to do?" %}</strong><br/>
                         {% trans "r_tooltip_questionnaire_code" %}
                     </p></div>
                     <div id="questionnaire-code-error" class="error_arrow"></div>
@@ -38,7 +42,7 @@
                                 {% trans "Add another Question" %}</a>
                         </div>
                         <div data-bind="scrollToView: enableScrollToView" class="questions">
-                            <div class="question_list" >
+                            <div class="question_list">
                                 <ol data-bind="foreach: {data: questions, as: 'question'}, sortable: questions">
                                     <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion(), sort: !question.is_entity_question()} ">
                                         <a href="questionnaire.html#" data-bind="text: $data.display"></a>
@@ -57,7 +61,8 @@
                                         </a>
 
                                         </div>
-                                        <span class="selected_question_arrow" data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
+                                        <span class="selected_question_arrow"
+                                              data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
                                     </li>
                                 </ol>
                             </div>
@@ -80,6 +85,7 @@
                                 <span id='char-count'>
                                 </span>
                                 <img src="/media/images/help_icon.png" class="help_icon">
+
                                 <div class="tooltip"><p>
                                     {% trans "tooltip_question_sms" %}
                                 </p></div>
@@ -100,7 +106,7 @@
 <div class="create_project" id="submit-button-container">
     <div class="grid_15 float_right margin_right_null">
         <div class="right_aligned_button">
-            <input id="submit-button" type="submit" class="button" value="{% trans 'Submit' %}" />
+            <input id="submit-button" type="submit" class="button" value="{% trans 'Submit' %}"/>
         </div>
     </div>
     <div class="clear-both"></div>
@@ -117,8 +123,11 @@
 </div>
 <div id="edit_warning">
     <p class="warning_message">
-        {% blocktrans with entity_type as entity_type %}You may be sharing this {{ entity_type }} registration form with other projects.  If you make changes, the other projects will have to use your new {{ entity_type }} registration form as well.{% endblocktrans %}
+        {% blocktrans with entity_type as entity_type %}You may be sharing this {{ entity_type }} registration form with
+            other projects.  If you make changes, the other projects will have to use your new {{ entity_type }}
+            registration form as well.{% endblocktrans %}
     </p>
+
     <div class="text_align_right margin_top_15">
         <a id="edit_ok" href="javascript:void(0)" class="button">{% trans "Continue" %}</a>
     </div>

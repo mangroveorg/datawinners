@@ -14,7 +14,6 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/project/sammy-latest.min.js"></script>
     <script type="text/javascript">
         var existing_questions = $.parseJSON({{ existing_questions|safe}});
         var project_details = $.parseJSON({{project_details|safe}});

@@ -1,4 +1,4 @@
-var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
+//var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
 var questionnaire_form =new DW.questionnaire_form('#question_form');
 
 DW.hide_message = function() {
@@ -62,7 +62,7 @@ $(document).ready(function() {
     DW.questionnaire_was_changed = false;
     DW.init_inform_datasender_about_changes();
     $("#submit-button").click(function() {
-        if(questionnnaire_code.processValidation() && questionnaire_form.processValidation()){
+        if(questionnaire_form.processValidation()){
             $("#submit-button").attr('disabled','disabled');
             if (questionnaireViewModel.hasDeletedOldQuestion && !DW.has_submission_delete_warning_for_entity.is_continue && DW.questionnaire_has_submission()){
                 DW.has_new_submission_delete_warning_for_entity.show_warning();
