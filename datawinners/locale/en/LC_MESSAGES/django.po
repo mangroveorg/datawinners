@@ -2424,9 +2424,6 @@ msgstr ""
 msgid "%s with %s = %s already exists."
 msgstr ""
 
-msgid "Sorry, the telephone number %s has already been registered"
-msgstr ""
-
 msgid "Job title"
 msgstr ""
 
