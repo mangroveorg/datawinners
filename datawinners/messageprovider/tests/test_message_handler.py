@@ -21,7 +21,7 @@ THANKS = "Thank you %s. We received your SMS"
 class TestGetExceptionMessageHandler(unittest.TestCase):
     def test_should_return_message_for_exception_for_channel(self):
         message = get_exception_message_for(exception=FormModelDoesNotExistsException("QC1"), channel="sms")
-        expected_message = "Error. Questionnaire Code QC1 is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
+        expected_message = "Error. Questionnaire Code QC1 is incorrect. Please review the Registration Form and resend entire SMS."
         self.assertEqual(expected_message, message)
 
 
