@@ -1,36 +1,175 @@
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head><title>Datawinner mailing</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width">
+</head>
+<body style="margin:0px; padding:0px; -webkit-text-size-adjust:none;">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0"  bgcolor="#d0e2f0";>
+    <tbody>
+        <tr>
+            <td  align="center">
+                <br /><br />
+                <table  cellpadding="0" width="940" cellspacing="0" border="0" style="border-width: 1px;border-color: #DDDDDD; border-style: solid;">
+                        <tbody>
+                            <tr>
+                                <td  align="left" bgcolor="#333333" width="100%" height="46" colspan="2" style="color: #FFFFFF;font-family: Helvetica;font-size: 20px;">
+                                    &nbsp;&nbsp;
+                                        <span  style="border: none; text-decoration: none; font-family: Helvetica; color: #fff; ">
+                                            <span style="font-size: 22px;">
+                                            <b>Data</b>Winners
+                                            </span>
+                                             | Welcome to DataWinners
+                                        </span>
+                                 </td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#ffffff" valign="top" width="620" style=" font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif; font-size: 12px !important;">
+                                    <table>
+                                        <tr>
+                                            <td width="10"></td>
+                                            <td style="text-align: justify; color: #333333; ">
+                                                <p>Hello {{ user.first_name.capitalize }},</p>
+                                                    <p>{{ creator_user.capitalize }} has created a <a href="https://www.datawinners.com/en/home/">DataWinners</a> account for you.<br/>
+                                                    <a href="{{ protocol }}://{{ domain }}{% url auth_password_reset_confirm uidb36=uid, token=token %}">Activate your account</a>
+                                                    within the next seven days to get started right away!
+                                                </p>
+                                                <p>
+                                                <strong>Learn how to Create Projects</strong>
+                                                    This tutorial will help you get started with DataWinners. Let us take you through the process, step-by-step.<br/>
+                                                    <a href="http://{{ site.domain }}/media/files/how_to_create_a_project.pdf" target="_blank" style="color: #4379A2;font-weight: normal;text-decoration: none;">Create a new project</a> &nbsp;(PDF, 14 pages, 1.4MB)<br/><br/>
+                                                </p>
 
-<body>
+                                                <p>
+                                            
+                                                    <table>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                               <strong>How to Collect Data</strong><br />
+                                                            Collect your data using any combination of {% ifnotequal account_type 'Pro' %}Web, Android Smartphone and Tablet, and SMS.{% else %}Web, Android Smartphone and Tablet.{% endifnotequal %} You choose the channels most convenient for you and your Data Senders:
+                                                            </td>
+                                                        </tr>
 
-<p>Hello {{ user.first_name.capitalize }},</p>
+                                                        <tr>
+                                                            <td width="5"></td>
+                                                            <td>
+                                                            <ol>
+                                                                {% ifequal account_type 'Pro SMS' %}
+                                                                <li><strong>SMS:</strong> Use any simple mobile phone to send data using a single SMS.</li>
+                                                                {% endifequal %}
+                                                                {% ifequal account_type 'Basic' %}
+                                                                    <li><b>SMS:</b> Use any simple mobile phone to send data using a single SMS. Send your SMS to the telephone number {{ org_number }}.
+                                                                        Datawinners will send automatic confirmation and error messages back in response to your SMS.</li>
+                                                                {% endifequal %}
+														        <li><strong>Web: </strong>Fill out the Questionnaire online.</li>
+                                                                <li><strong>Android App: </strong>Download Questionnaires directly onto your Android Smartphone and Tablet.</li><br/>
+                                                            </ol>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <strong>Need Help?</strong><br />
+                                                                If you need help getting started, check out our
+                                                                    <a href="http://{{ site.domain }}/en/support/find-answers" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                        <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                            FAQs
+                                                                        </span>
+                                                                     </a>
+                                                                    and other online
+                                                                    <a href="http://{{ site.domain }}/en/support/find-answers" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                        <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                        support
+                                                                        </span>
+                                                                    </a>.
+                                                                    We can also be reached via email at support@datawinners.com.
+                                                                    We're here to help!<br/><br/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <strong>Stay Connected</strong><br />
+                                                                We'd love to hear from you! You can follow us on
+                                                                <a href="https://twitter.com/datawinners" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                    <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                        Twitter
+                                                                    </span>
+                                                                </a>, post on our
+                                                                <a href="https://www.facebook.com/DataWinners" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                   <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                   Facebook
+                                                                   </span>
+                                                                </a>
+                                                                wall and comment on our
+                                                                <a href="http://datawinners.wordpress.com/" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                    <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                    blog.
+                                                                    </span>
+                                                                </a>
+                                                                The blog is a great way to learn about new features and upcoming DataWinners events.
+                                                            </td>
+                                                        </tr>
+                                                    </table>
 
-<p>{{ creator_user.capitalize }} has created a <a href="https://www.datawinners.com/en/home/">DataWinners</a> account for you.<br/>
-<a href="{{ protocol }}://{{ domain }}{% url auth_password_reset_confirm uidb36=uid, token=token %}">Reset</a>
- your password to get started. Use your email to <a href="{{ protocol }}://{{ domain }}{% url auth_login %}">log in</a>
- once your password reset.
-</p>
+                                                </p>
 
+                                                <p>Have fun,<br />
+                                                Your DataWinners Team<br />
+                                                <a href="http://www.datawinners.com" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                    <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                    www.datawinners.com
+                                                    </span>
+                                                </a>
+                                                </p><br />
 
-<p>
-<b>How to Create Project</b><br/>
-On the Dashboard page, click on &laquo;Create a new Project&raquo; to create your Questionnaire. Once you have created your project,
-you can register all the people who send you data (we call them Data Senders).
-</p>
+                                            </td>
+                                            <td width="10"></td>
+                                        </tr>
+                                    </table>
+                                 </td>
+                                <!--  beginning of right content -->
+                                <td width="240" bgcolor="#ffea7d" valign="top" style="color: #333333; font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif; font-size: 12px !important;border: 1px solid #f4be36;">
+                                    <table style="border-bottom: 1px solid #f4be36;">
+                                        <tr>
+                                            <td width="10"></td>
+                                            <td align="left">
+                                                <p><strong><span style="font-size: 12px;">Check out our new DataWinners Overview</span></strong><br /></p>
+                                                <a href="http://{{ site.domain }}/en/what-is-datawinners/" style="border:none;text-decoration: none;">
+                                                <img width="130" src="http://{{ site.domain }}/media/images/whatis/steps.png"/>
+                                                </a>
+                                                <br /><br />
+                                                <a href="http://{{ site.domain }}/en/what-is-datawinners/how-it-works/" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">» Read more</span></a><br />
+                                             </td>
+                                            <td width="10"></td>
+                                        </tr>
+                                    </table>
 
-<p>
-<b>How to Collect Data</b><br/>
-DataWinners allows you to collect your data in 3 diffrent ways, Choose the
-channel most convenient for you and your Data Senders.
-    <ol>
-        <li><b>Web:</b> Collect an unlimited amount of data using the online Questionnaire.</li>
-        <li><b>Android Smartphone:</b> Download the Questionnaires directly onto your Android Smartphone.</li>
-        <li><b>SMS:</b> Use any simple mobile phone to send data using a single SMS. Send your SMS to the  telephone number {{ org_number }}.
-            Datawinners will send automatic confirmation and error messages
-            back in response to your SMS.</li>
-    </ol>
-</p>
+                                    <table  width="100%">
+                                        <tr>
+                                            <td width="10"></td>
+                                            <td align="left">
+                                                <p><strong><span style="font-size: 12px;">See what you can do with DataWinners</span></strong><br /><br />
+                                                <a href="http://{{ site.domain }}/en/what-is-datawinners/how-it-works/" style="border:none;text-decoration: none;">
+                                                    <img  title="Click to see what you can do with DataWinners" style="border:none;text-decoration: none;" src="http://www.mandrosoa.org/images/newsletter/dw_howitworks.jpg" />
+                                                </a><br />
+                                                <a href="http://{{ site.domain }}/en/what-is-datawinners/how-it-works/" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">» Read more</span></a><br />
+                                                </p>
 
-{% include "registration/activation_email_footer_en.html" %}
+                                            </td>
+                                            <td width="10"></td>
+                                        </tr>
+                                    </table>
 
+                                </td>
+                            </tr>
+                            <tr>
+                                {% include 'email/basicaccount/email_footer_en.html' %}
+                            </tr>
+                        </tbody>
+                </table>
+                <br /><br />
+            </td>
+        </tr>
+    </tbody>
+    </table>
 </body>
 </html>

@@ -478,6 +478,7 @@ def get_datasenders_mobile(manager):
 
 def send_email_to_data_sender(user, language_code, request=None, type="activation",organization=None):
     site = get_current_site(request)
+    account_type = organization.account_type if organization else 'Pro SMS'
     ctx_dict = {
         'domain': site.domain,
         'uid': int_to_base36(user.id),
@@ -485,6 +486,7 @@ def send_email_to_data_sender(user, language_code, request=None, type="activatio
         'token': default_token_generator.make_token(user),
         'protocol': 'http',
         'site': site,
+        'account_type': account_type,
     }
     types = dict({"activation":
                       dict({"subject": 'activatedatasenderemail/activation_email_subject_for_data_sender_account_',

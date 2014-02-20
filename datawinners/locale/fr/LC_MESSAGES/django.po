@@ -4365,7 +4365,7 @@ msgid "To reactivate it, subscribe to a monthly subscription by contacting your 
 msgstr "Pour le réactiver, veuillez adhérer à une souscription mensuelle en contactant votre Gestionnaire de Projet ou le support DW au <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
 
 msgid "Get the Most out of Datawinners!"
-msgstr "Tirer le meilleur parti de Datawinners"
+msgstr "Tirez le meilleur parti de votre Compte Datawinners"
 
 msgid "Find Out What Datawinners Can Do For You!"
 msgstr "Découvrez ce que Datawinners peut faire pour vous!"

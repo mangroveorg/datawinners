@@ -213,7 +213,7 @@ class Organization(models.Model):
         email_content = loader.get_template('email/%s_%s.html' % (email_template, ugettext("en"),))
         for user in users:
             token = Token.objects.get_or_create(user=user)[0]
-            c = Context({'username': user.first_name + ' ' + user.last_name,
+            c = Context({'username': user.first_name,
                          'organization': self, 'site': current_site, 'token': token.key})
             msg = EmailMessage(ugettext(email_subject), email_content.render(c), sender or settings.EMAIL_HOST_USER,
                                [user.email])

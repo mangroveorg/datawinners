@@ -247,7 +247,8 @@ def __create_web_users(org_id, reporter_details, language_code):
     if len(duplicate_entries) > 0:
         content = json.dumps({'success': False, 'errors': errors, 'duplicate_entries': duplicate_entries})
 
-    dbm = get_database_manager_for_org(Organization.objects.get(org_id=org_id))
+    organization = Organization.objects.get(org_id=org_id)
+    dbm = get_database_manager_for_org(organization)
     existent_email_addresses = User.objects.filter(email__in=reporter_details.values()).values('email')
 
     if len(existent_email_addresses) > 0:
@@ -268,7 +269,7 @@ def __create_web_users(org_id, reporter_details, language_code):
                                      reporter_id=reporter_id.lower())
             profile.save()
 
-            send_email_to_data_sender(user, language_code)
+            send_email_to_data_sender(user, language_code, organization=organization)
 
         content = json.dumps({'success': True, 'message': "Users has been created"})
     return content
