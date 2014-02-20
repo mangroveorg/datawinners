@@ -137,7 +137,7 @@ $(document).ready(function() {
     }, gettext("Answer cannot be of length less than 1"));
 
     $.validator.addMethod('duplicate', function(value, element, params) {
-        var val = $('#' + element.id).val();
+        var val = $(element).val();
         var valid = true;
         if (!questionnaireViewModel.hasAddedNewQuestions)
             return true;
@@ -187,7 +187,7 @@ $(document).ready(function() {
         }
     });
 
-    $("#question_title").rules("add", {duplicate: true})
+    $(".question_title").rules("add", {duplicate: true})
 
     $('input[name=text_length]:radio').change(
         function() {

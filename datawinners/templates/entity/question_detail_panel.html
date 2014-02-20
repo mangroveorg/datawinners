@@ -2,7 +2,7 @@
 <ul>
     <li class="question">
         <label>{% trans "Question" %}</label>
-        <input id="question_title" name="question_title" type="text" class="required"
+        <input id="question_title" name="question_title" type="text" class="required question_title"
                data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true, enable: questionnaireViewModel.isEnabled() "/>
     </li>
     <li>
