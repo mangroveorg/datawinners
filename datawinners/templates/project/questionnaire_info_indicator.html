@@ -5,9 +5,9 @@
 
     <input id= 'id_name' data-bind="value:projectName"/>
 
-    <div class="error_arrow" data-bind="visible: hasErrors">
-        <label data-bind="validationMessage: projectName" class="error"
-               style="display: block"></label>
+    <div class="validationMessage" data-bind="errorVisible: hasErrors, validationMessage: projectName">
+{#        <label data-bind="validationMessages: projectName" class="error"#}
+{#               style="display: block"></label>#}
     </div>
 
     <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
@@ -30,8 +30,8 @@
         <div class="tooltip"><p>
             {% trans "tooltip_question_code" %}
         </p></div>
-        <div id="questionnaire-code-error" class="error_arrow" data-bind="visible: hasErrors">
-            <label class='error' data-bind="validationMessage: questionnaireCode"></label>
+        <div class="validationMessage" data-bind="validationMessage: questionnaireCode">
+{#            <label class='error' data-bind="validationMessage: questionnaireCode"></label>#}
         </div>
 
     </li>

@@ -204,13 +204,13 @@ var questionnaireViewModel =
         if (currentIndex < questions.length - 1)
             questionnaireViewModel.questions.splice(currentIndex, 2, questions[currentIndex + 1], questions[currentIndex]);
     },
-    hasErrors: ko.observable(false),
+    hasErrors: ko.observable([]),
 
 
     submit: function () {
         if (!questionnaireViewModel.isValid()) {
             questionnaireViewModel.errors.showAllMessages();
-            questionnaireViewModel.hasErrors(true);
+            questionnaireViewModel.hasErrors(questionnaireViewModel.errors());
             return false;
         }
 
