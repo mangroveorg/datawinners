@@ -15,7 +15,6 @@ function populate_project_details() {
     }
     else {
         questionnaireViewModel.questionnaireCode(questionnaire_code);
-        questionnaireViewModel.questions([]);
         questionnaireViewModel.questions.valueHasMutated();
     }
 
@@ -31,7 +30,7 @@ function populate_subject_details() {
     });
 
 }
-DW.init_view_model = function (is_project_questionnaire) {
+var init_view_model = function (is_project_questionnaire) {
     if (is_project_questionnaire) {
         populate_project_details()
     }
@@ -79,7 +78,7 @@ DW.questionnaire_form.prototype = {
 
 
 $(document).ready(function () {
-    DW.init_view_model(is_project_questionnaire);
+    init_view_model(is_project_questionnaire);
 
     ko.validation.init({insertMessages: false});
 
