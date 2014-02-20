@@ -55,13 +55,11 @@ class DataExtractionAPITestCase(BaseTest):
         cls.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
         dashboard_page = DashboardPage(cls.driver)
 
-        create_project_page = dashboard_page.navigate_to_create_project_page()
-        VALID_PROJECT_DATA[SUBJECT] = cls.subject_type
-        create_project_page.create_project_with(VALID_PROJECT_DATA)
-        create_project_page.continue_create_project()
-        create_questionnaire_page = CreateQuestionnairePage(cls.driver)
+        questionnaire_creation_options_page = dashboard_page.navigate_to_create_project_page()
+        #VALID_PROJECT_DATA[SUBJECT] = cls.subject_type
+        create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()
+        create_questionnaire_page.create_questionnaire_with(VALID_PROJECT_DATA, QUESTIONNAIRE_DATA)
         cls.form_code = create_questionnaire_page.get_questionnaire_code()
-        create_questionnaire_page.add_question(QUESTION)
         create_questionnaire_page.save_and_create_project_successfully()
         cls.driver.wait_for_page_with_title(15, fetch_(PAGE_TITLE, from_(VALID_PROJECT_DATA)))
 
@@ -105,7 +103,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 5)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_without_data_return(self):
@@ -128,7 +126,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 1)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_different_date(self):
@@ -140,7 +138,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 4)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_start_date(self):
@@ -152,7 +150,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 5)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_subject_with_not_exist_subject_type(self):
@@ -194,7 +192,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 4)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_same_date(self):
@@ -205,7 +203,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 1)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_only_start_date(self):
@@ -216,7 +214,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 4)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_pass_not_exist_form_code(self):

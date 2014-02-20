@@ -57,9 +57,15 @@ TYPE = "type"
 MIN = "min"
 MAX = "max"
 NUMBER = "number"
-QUESTION_NAME = "question"
 
-QUESTION = {QUESTION_NAME: "How many grades did you get last year?", CODE: "GRADES", TYPE: NUMBER, MIN: "1", MAX: "100"}
+QUESTIONNAIRE_CODE = "questionnaire_code"
+QUESTION = "question"
+QUESTIONS = "questions"
+
+QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: u"cli005", GEN_RANDOM: True,
+                                            QUESTIONS: [{QUESTION: "How many grades did you get last year?", CODE: "GRADES",
+                                                 TYPE: NUMBER, MIN: "1", MAX: "100"}]}
+QUESTION_NAME = QUESTIONNAIRE_DATA[QUESTIONS][0][QUESTION]
 
 QCODE = 'qcode'
 ANSWER = 'answer'
@@ -68,23 +74,22 @@ TEXT = "text"
 
 VALID_ANSWERS = [
     [
-        {QCODE: 'q2', ANSWER: '3.8.2012', TYPE: TEXT},
-        {QCODE: 'q3', ANSWER: 89, TYPE: TEXT},
+        #{QCODE: 'q2', ANSWER: '3.8.2012', TYPE: TEXT},
+        {QCODE: 'q2', ANSWER: 89, TYPE: TEXT},
     ],
     [
-            {QCODE: 'q2', ANSWER: '4.8.2012', TYPE: TEXT},
-            {QCODE: 'q3', ANSWER: 90, TYPE: TEXT},
+        #{QCODE: 'q2', ANSWER: '4.8.2012', TYPE: TEXT},
+        {QCODE: 'q2', ANSWER: 90, TYPE: TEXT},
     ],
     [
-            {QCODE: 'q2', ANSWER: '5.8.2012', TYPE: TEXT},
-            {QCODE: 'q3', ANSWER: 91, TYPE: TEXT},
+        #{QCODE: 'q2', ANSWER: '5.8.2012', TYPE: TEXT},
+        {QCODE: 'q2', ANSWER: 91, TYPE: TEXT},
     ],
     [
-            {QCODE: 'q2', ANSWER: '6.8.2012', TYPE: TEXT},
-            {QCODE: 'q3', ANSWER: 92, TYPE: TEXT},
+        #{QCODE: 'q2', ANSWER: '6.8.2012', TYPE: TEXT},
+        {QCODE: 'q2', ANSWER: 92, TYPE: TEXT},
     ],
 ]
-
 
 NOT_EXIST_SUBJECT_TYPE_ERROR_MESSAGE_PATTERN = "Subject type [%s] is not defined."
 
