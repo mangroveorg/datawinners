@@ -109,7 +109,7 @@
                                             <a href="#" data-bind="text: $data.display"></a>
                                             <div class="delete" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
                                                 <a href="#" class="delete_link"
-                                                    data-bind="css: {visible: $data.canBeDeleted, hidden: !$data.canBeDeleted()}, click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
+                                                    data-bind="visible: $data.canBeDeleted(), click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission($data); DW.smsPreview();} else {$parent.removeIfQuestionIsSelectedQuestion($data);$('#question_form').valid();} }">{% trans "Delete" %}
                                                 </a>
                                                 <span>
                                                     <a data-bind="visible: $index(), click: $parent.moveQuestionUp, clickBubble: false" class="question_action">
