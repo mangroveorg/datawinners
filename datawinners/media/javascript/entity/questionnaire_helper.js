@@ -9,9 +9,9 @@ DW.init_inform_datasender_about_changes = function(){
             }
         },
         cancel_handler: this.continue_handler
-    }
+    };
     DW.inform_datasender_about_changes = new DW.warning_dialog(kwargs);
-}
+};
 
 DW.init_empty_questionnaire_warning = function() {
     kwargs = {container: "#no_questions_exists", title: gettext('Warning: Empty questionnaire') }

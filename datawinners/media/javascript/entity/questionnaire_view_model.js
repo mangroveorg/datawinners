@@ -11,6 +11,11 @@ var questionnaireViewModel =
     availableLanguages: [{name: 'English', code: 'en'},{name: 'French', code: 'fr'},{name: 'Malagasy', code: 'mg'}],
     language: ko.observable(),
     projectName: ko.observable().extend({required: true}),
+    enableButton : function(){
+        var enabled = questionnaireViewModel.shouldEnableContinueButton();
+        questionnaireViewModel.shouldEnableContinueButton(!enabled)
+    },
+    shouldEnableContinueButton : ko.observable(false),
     questionnaireCode: ko.observable().extend({required: true})
         .extend({validation: {validator: whiteSpace,
                 message: "Space is not allowed in questionnaire code"}

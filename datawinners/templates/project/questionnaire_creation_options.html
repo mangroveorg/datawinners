@@ -5,7 +5,7 @@
     <h5>{% trans "1. Choose How You Want To Start" %}</h5>
 
     <div id="questionnaire_types">
-        <div class="questionnaire_type_header">
+        <div data-bind="click: enableButton" class="questionnaire_type_header">
             <span class="header">{% trans "Use a Blank Questionnaire" %}</span>
         </div>
         <h6>{% trans 'Start with an empty Questionnaire and add your list of questions.' %}</h6>
@@ -29,7 +29,7 @@
     <div class="right_aligned_button create_project">
         <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
         <input type="button" class="button_wizard_next_small" id="continue_project" value="{% trans "Continue" %}"
-               data-bind="click: setQuestionnaireCreationType"/>
+               data-bind="enable:shouldEnableContinueButton,click: setQuestionnaireCreationType"/>
     </div>
 
 </div>
