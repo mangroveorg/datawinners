@@ -367,3 +367,17 @@ def delete_datasenders_from_project(manager, data_sender_ids):
 
 def is_summary_project(form_model):
     return form_model.entity_type == ["reporter"]
+
+
+def project_by_form_model_id(dbm, form_model_id):
+    assert isinstance(dbm, DatabaseManager)
+    assert is_string(form_model_id)
+    rows = dbm.load_all_rows_in_view('project_by_form_model_id', key=form_model_id)
+    if not len(rows):
+        raise ProjectNotFoundException("project does not exist for form model id %s " % form_model_id)
+
+    return Project._wrap_row(rows[0])
+
+
+class ProjectNotFoundException(Exception):
+    pass

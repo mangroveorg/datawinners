@@ -15,9 +15,11 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
-        var existing_questions = $.parseJSON({{ existing_questions|safe}});
-        var project_details = $.parseJSON({{project_details|safe}});
+        var is_project_questionnaire = true;
+{#        var existing_questions = $.parseJSON({{ existing_questions|safe}});#}
+{#        var project_details = $.parseJSON({{project_details|safe}});#}
         var sms_preview_link = "{{ preview_links.sms_preview }}";
+        var questionnaire_code = '{{ questionnaire_code}}';
         var web_preview_link = "{{ preview_links.web_preview }}";
         var smart_phone_preview_link = "{{ preview_links.smart_phone_preview }}";
     </script>
@@ -30,8 +32,8 @@
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit_redirect.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit_redirect.js"></script>#}
+{#    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>#}
     <script type="text/javascript" src="/media/javascript/project/questionnaire_instruction_and_preview.js"></script>
     <script type="text/javascript"
             src="/media/javascript/project/questionnaire_instruction_and_preview_wizard.js"></script>

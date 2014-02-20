@@ -29,12 +29,10 @@
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/subject_questionnaire_view_model.js"></script>
     <script type="text/javascript">
-        var existing_questions = $.parseJSON({{existing_questions|safe}});
-        var is_edit = false;
+        var is_project_questionnaire = false;
+{#        var existing_questions = $.parseJSON({{existing_questions|safe}});#}
         var questionnaire_code = '{{ questionnaire_code }}';
-        var project_details = {questionnaire_code: questionnaire_code};
         var subject_type = '{{ entity_type }}';
-        questionnaireViewModel.language="{{ language }}"
     </script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_subject_questionnaire.js"></script>

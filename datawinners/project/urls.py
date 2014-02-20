@@ -4,7 +4,7 @@ from datawinners.entity.view.all_datasenders import DisassociateDataSendersView
 from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders
 from datawinners.project.views.import_submissions_views import ImportSubmissionView
 
-from datawinners.project.wizard_view import create_project, edit_project, reminder_settings
+from datawinners.project.wizard_view import create_project, edit_project, reminder_settings, get_questionnaire_details_ajax
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
 from datawinners.project.views import submission_views
 from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \
@@ -32,6 +32,8 @@ urlpatterns = patterns('',
                        url(r'^project/preview/sender_registration_form/preview/(?P<project_id>\w+?)/$',
                            sender_registration_form_preview, name="sender_registration_form_preview"),
                        (r'^project/wizard/create/$', create_project),
+                       (r'^project/details/(?P<questionnaire_code>\w+?)/$', get_questionnaire_details_ajax),
+
                        url(r'^project/wizard/edit/(?P<project_id>\w+?)/$', edit_project, name="edit_project"),
                        (r'^project/questionnaire/save$', save_questionnaire),
                        url(r'^project/$', index, name="index"),

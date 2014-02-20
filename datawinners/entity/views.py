@@ -508,6 +508,22 @@ def create_subject(request, entity_type=None):
                                   context_instance=RequestContext(request))
 
 
+@login_required
+@session_not_expired
+@is_not_expired
+def get_questionnaire_details_ajax(request, entity_type):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    if form_model is None:
+        form_model = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
+    fields = form_model.fields
+    existing_questions = json.dumps(fields, default=field_to_json)
+
+    return HttpResponse(jsonpickle.encode(
+        {'existing_questions': existing_questions,
+         'questionnaire_code': form_model.form_code},
+        unpicklable=False), content_type='application/json')
+
 @valid_web_user
 @login_required
 @session_not_expired

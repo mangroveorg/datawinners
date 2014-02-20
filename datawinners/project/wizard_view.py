@@ -1,6 +1,6 @@
 import json
 from datawinners import settings
-
+import jsonpickle
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -16,14 +16,14 @@ from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionC
 from mangrove.form_model.field import field_to_json
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 from mangrove.utils.types import is_string
-from mangrove.form_model.form_model import FormModel, REPORTER
+from mangrove.form_model.form_model import FormModel, REPORTER, get_form_model_by_code
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.alldata.views import REPORTER_ENTITY_TYPE
 from datawinners.project.forms import ReminderForm
-from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
+from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, project_by_form_model_id
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
@@ -70,17 +70,36 @@ def get_preview_and_instruction_links():
 @session_not_expired
 @csrf_exempt
 @is_not_expired
+def get_questionnaire_details_ajax(request, questionnaire_code):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    project = project_by_form_model_id(manager, form_model.id)
+    fields = form_model.fields
+    if form_model.is_entity_type_reporter():
+        fields = helper.hide_entity_question(fields)
+    existing_questions = json.dumps(fields, default=field_to_json)
+
+    return HttpResponse(jsonpickle.encode(
+        {'project_name': project.name, 'project_language': project.language, 'existing_questions': existing_questions,
+         'questionnaire_code': questionnaire_code},
+        unpicklable=False), content_type='application/json')
+
+
+@login_required
+@session_not_expired
+@csrf_exempt
+@is_not_expired
 def create_project(request):
     manager = get_database_manager(request.user)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
-    project_details = json.dumps({'questionnaire_code': helper.generate_questionnaire_code(manager)})
+    #project_details = json.dumps({'questionnaire_code': helper.generate_questionnaire_code(manager)})
 
     if request.method == 'GET':
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
                                    # 'project': project_summary,
-                                   'project_details': repr(project_details),
-                                   #'questionnaire_code': helper.generate_questionnaire_code(manager),
+                                   #'project_details': repr(project_details),
+                                   'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
                                    'post_url': reverse(create_project)}, context_instance=RequestContext(request))
 
@@ -155,6 +174,7 @@ def _get_changed_data(project, project_info):
             changed_dict.update({attr.capitalize(): value})
     return changed_dict
 
+
 @login_required
 @session_not_expired
 @is_datasender
@@ -172,18 +192,19 @@ def edit_project(request, project_id=None):
         #form = CreateProject(data=project, entity_list=entity_list)
         #activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
         #subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
-        fields = questionnaire.fields
-        if questionnaire.is_entity_type_reporter():
-            fields = helper.hide_entity_question(questionnaire.fields)
-        existing_questions = json.dumps(fields, default=field_to_json)
-        project_details = json.dumps(
-            {'project_name': project.name, 'project_language': project.language,
-             'questionnaire_code': questionnaire.form_code})
+        #fields = questionnaire.fields
+        #if questionnaire.is_entity_type_reporter():
+        #    fields = helper.hide_entity_question(questionnaire.fields)
+        #existing_questions = json.dumps(fields, default=field_to_json)
+        #project_details = json.dumps(
+        #    {'project_name': project.name, 'project_language': project.language,
+        #     'questionnaire_code': questionnaire.form_code})
 
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
-                                   'existing_questions': repr(existing_questions),
-                                   'project_details': repr(project_details),
+                                   #'existing_questions': repr(existing_questions),
+                                   #'project_details': repr(project_details),
+                                   'questionnaire_code': questionnaire.form_code,
                                    'is_edit': 'true',
                                    'post_url': reverse(edit_project, args=[project_id])},
                                   context_instance=RequestContext(request))

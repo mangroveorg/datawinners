@@ -4,7 +4,7 @@ from datawinners.entity.view.datasenders import EditDataSenderView
 from datawinners.entity.view.datasenders import RegisterDatasenderView
 from datawinners.entity.view.datasenders_autocomplete import AllDataSenderAutoCompleteView
 from datawinners.entity.view.import_template import import_template
-from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject
+from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax
 from datawinners.entity.views import create_subject, subject_autocomplete
 from datawinners.entity.views import create_type
 from datawinners.entity.views import all_subject_types, delete_subjects, all_subjects, all_subjects_ajax
@@ -33,6 +33,7 @@ urlpatterns = patterns('',
                            name='import_subjects'),
                        url(r'subject/edit/(?P<entity_type>.+?)/$', edit_subject_questionnaire,
                            name="edit_subject_questionnaire"),
+                       (r'subject/details/(?P<entity_type>.+?)/$', get_questionnaire_details_ajax),
                        (r'questionnaire/save$', save_questionnaire),
                        url(r'subject/export/', export_subject, name="export_subject"),
                        url(r'entity/template/(?P<form_code>.+?)/$', import_template, name="import_template"),

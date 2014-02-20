@@ -1,30 +1,16 @@
-from datawinners.accountmanagement.post_activation_events import create_feed_database
-from datawinners.project.models import Project
-from datawinners.main.database import get_db_manager
-from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.documents import EnrichedSurveyResponseDocument
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.feeds.enriched_survey_response import EnrichedSurveyResponseBuilder
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.contract.survey_response import SurveyResponse
-from mangrove.utils.types import is_string
+
+from datawinners.accountmanagement.post_activation_events import create_feed_database
+from datawinners.project.models import project_by_form_model_id, ProjectNotFoundException
+from datawinners.main.database import get_db_manager
+
 
 BATCH_SIZE = 100
 UNDELETED_SURVEY_RESPONSE = "undeleted_survey_response/undeleted_survey_response"
-
-
-class ProjectNotFoundException(Exception):
-    pass
-
-
-def project_by_form_model_id(dbm, form_model_id):
-    assert isinstance(dbm, DatabaseManager)
-    assert is_string(form_model_id)
-    rows = dbm.load_all_rows_in_view('project_by_form_model_id', key=form_model_id)
-    if not len(rows):
-        raise ProjectNotFoundException("project does not exist for form model id %s " % form_model_id)
-
-    return Project._wrap_row(rows[0])
 
 
 class FeedBuilder:

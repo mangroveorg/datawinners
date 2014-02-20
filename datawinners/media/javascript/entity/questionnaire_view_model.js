@@ -46,7 +46,6 @@ var questionnaireViewModel =
             return this.title();
         }, question);
         question.newly_added_question(true);
-        questionnaireViewModel.remove_location_type();
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.selectedQuestion(question);
         DW.init_question_constraints();
@@ -189,9 +188,6 @@ var questionnaireViewModel =
     isTypeEnabled: function () {
         return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag();
     },
-    remove_location_type: function () {
-        $(".question_type #location_type_input").hide();
-    },
     moveQuestionUp: function (question) {
         var currentIndex = questionnaireViewModel.questions().indexOf(question);
         var questions = questionnaireViewModel.questions();
@@ -215,7 +211,7 @@ var questionnaireViewModel =
         }
 
         if (DW.questionnaire_form_validate()) {
-            if(DW.has_questions_changed(existing_questions)){
+            if(DW.has_questions_changed(DW.existing_questions)){
                 DW.questionnaire_was_changed = true;
             }
             if( is_edit && questionnaireViewModel.hasDeletedOldQuestion  && !DW.has_submission_delete_warning.is_continue && DW.questionnaire_has_submission()){
