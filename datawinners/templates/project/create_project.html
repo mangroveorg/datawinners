@@ -30,8 +30,6 @@
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
-{#    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit_redirect.js"></script>#}
-{#    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>#}
     <script type="text/javascript" src="/media/javascript/project/questionnaire_instruction_and_preview.js"></script>
     <script type="text/javascript"
             src="/media/javascript/project/questionnaire_instruction_and_preview_wizard.js"></script>
@@ -51,7 +49,9 @@
 {% endblock %}
 
 {% block content %}
-    <div id="project-message-label" class="message-box none"></div>
+    <div id="project-message-label" class="message-box" data-bind="visible: errorInResponse">
+        <label class='error_message' data-bind="text: responseErrorMsg, errorVisible: responseErrorMsg"></label>
+    </div>
 
     {% include 'project/questionnaire_creation_options.html' %}
     {% include 'project/quesitionnaire_builder.html' %}

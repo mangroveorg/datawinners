@@ -207,6 +207,8 @@ var questionnaireViewModel =
     },
     hasErrors: ko.observable([]),
 
+    errorInResponse: ko.observable(false),
+    responseErrorMsg: ko.observable(),
 
     submit: function () {
         if (!questionnaireViewModel.isValid()) {

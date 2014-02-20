@@ -35,15 +35,7 @@ ko.bindingHandlers.errorVisible = {
   update: function(element, valueAccessor){
       var observable = valueAccessor();
       var shouldShow = ko.unwrap(observable);
-//      shouldShow ? $(element).show(): $(element).hide();
-
-//      $(element).html("<label class='error_message'> " + "hello" + ".</label>");
-//        hide_message:function () {
-//      $(element).delay(10000).fadeOut();
-
-
-
-      if(shouldShow.length > 0){
+      if(shouldShow && shouldShow.length > 0){
           $('html, body').animate({scrollTop: $(element).offset().top}, 'slow')
       }
   }
