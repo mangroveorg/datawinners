@@ -89,26 +89,25 @@
                                     <li data-bind="click: function() { if($('#question_form').valid()) $parent.changeSelectedQuestion($data); }, css:{question_selected:$data == $parent.selectedQuestion(),sort: true} ">
                                         <a href="#" data-bind="text: $data.display"></a>
 
-                                        <div class="delete">
-                                                <a href="questionnaire_wizard.html#" class="delete_link"
+                                        <div class="action_bar" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
+                                                <a href="javascript:void(0);" class="delete_link"
                                                    data-bind="visible:$data.canBeDeleted(), click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion($data);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion($data);} }">{% trans "Delete" %}</a>
 
-                                                <span>
-                                                    <a data-bind="visible: $index(), click: $parent.moveQuestionUp,clickBubble: false"
-                                                       class="question_action">
-                                                        <span class="move-text"><img class="move-image"
-                                                                                     src="/media/images/arrow_full_up_Blue.png"/>{% trans "Move Up" %}</span>
-                                                    </a>
-                                                    <a class="question_action"
-                                                       data-bind="visible: $index() < $parent.questions().length-1,click: $parent.moveQuestionDown,clickBubble: false">
-                                                        <span class="move-text move-down"><img class="move-image"
-                                                                                               src="/media/images/arrow_full_down_Blue.png"/>{% trans "Move Down" %}</span>
-                                                    </a>
-                                                </span>
+                                                <a data-bind="visible: $index(), click: $parent.moveQuestionUp,clickBubble: false"
+                                                   class="question_action">
+                                                    <span class="move-text"><img class="move-image"
+                                                                                 src="/media/images/arrow_full_up_Blue.png"/>{% trans "Move Up" %}</span>
+                                                </a>
+                                                <a class="question_action move-down"
+                                                   data-bind="visible: $index() < $parent.questions().length-1,click: $parent.moveQuestionDown,clickBubble: false">
+                                                    <span class="move-text"><img class="move-image"
+                                                                                           src="/media/images/arrow_full_down_Blue.png"/>{% trans "Move Down" %}</span>
+                                                </a>
 
                                         </div>
-                                            <span class="selected_question_arrow"
+                                        <span class="selected_question_arrow"
                                                   data-bind="css:{inline:$data == $parent.selectedQuestion()}"></span>
+                                        <div class="clear"></div>
                                     </li>
                                 </ol>
                             </div>
