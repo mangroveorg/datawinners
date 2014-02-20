@@ -1,5 +1,6 @@
 import json
 from time import sleep
+from unittest import SkipTest
 from nose.plugins.attrib import attr
 import requests
 from requests.auth import HTTPDigestAuth
@@ -15,6 +16,7 @@ from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url
 from tests.dataextractionapitests.data_extraction_api_data import *
 
+@SkipTest
 class DataExtractionAPITestCase(BaseTest):
     @classmethod
     def setUpClass(cls):
