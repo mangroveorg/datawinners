@@ -29,7 +29,7 @@
     <div class="right_aligned_button create_project">
         <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
         <input type="button" class="button_wizard_next_small" id="continue_project" value="{% trans "Continue" %}"
-               data-bind="enable:shouldEnableContinueButton,click: setQuestionnaireCreationType"/>
+               data-bind="enable: continueButtonEnabled, click: setQuestionnaireCreationType"/>
     </div>
 
 </div>

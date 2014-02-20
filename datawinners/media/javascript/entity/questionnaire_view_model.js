@@ -12,10 +12,10 @@ var questionnaireViewModel =
     language: ko.observable(),
     projectName: ko.observable().extend({required: true}),
     enableButton : function(){
-        var enabled = questionnaireViewModel.shouldEnableContinueButton();
-        questionnaireViewModel.shouldEnableContinueButton(!enabled)
+        var enabled = questionnaireViewModel.continueButtonEnabled();
+        questionnaireViewModel.continueButtonEnabled(!enabled)
     },
-    shouldEnableContinueButton : ko.observable(false),
+    continueButtonEnabled : ko.observable(false),
     questionnaireCode: ko.observable().extend({required: true})
         .extend({validation: {validator: whiteSpace,
                 message: "Space is not allowed in questionnaire code"}
