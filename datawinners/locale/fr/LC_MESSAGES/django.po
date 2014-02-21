@@ -4491,7 +4491,7 @@ msgid "For unlimited data collection and advanced features, consider a Pro Accou
 msgstr "Pour une collecte de données illimitée et des fonctionnalités avancées, envisagez de passer à un Compte Pro!"
 
 msgid "Go Pro"
-msgstr "Devenir Pro"
+msgstr "Passez au Compte Pro"
 
 msgid "The columns you are importing do not match. Please download the latest template for importing."
 msgstr "Les colonnes que vous importez sont imcompatibles. Veuillez SVP télécharger le dernier modèle d'importation"
