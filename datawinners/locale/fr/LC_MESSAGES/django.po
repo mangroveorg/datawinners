@@ -4680,3 +4680,23 @@ msgstr "Inscrivez-vous à notre Blog"
 
 msgid "Join our Mailing List"
 msgstr "Inscrivez-vous à notre liste d'envoi"
+
+msgid "Create a New Questionnaire"
+msgstr "Créer un nouveau Questionnaire"
+
+msgid "Choose How You Want To Start"
+msgstr "Choisissez comment vous souhaitez commencer"
+
+msgid "Copy an Existing Questionnaire"
+msgstr "Copier un Questionnaire existant"
+
+msgid "Use a Template"
+msgstr "Utiliser un modèle"
+
+msgid "Insert a name for this Questionnaire"
+msgstr "Insérer un nom pour ce Questionnaire"
+
+msgid "Choose your language"
+msgstr "Choisissez votre langue"
+
+

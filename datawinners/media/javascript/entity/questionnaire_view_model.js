@@ -10,18 +10,18 @@ var questionnaireViewModel =
     hasDeletedOldQuestion: false,
     availableLanguages: [{name: 'English', code: 'en'},{name: 'French', code: 'fr'},{name: 'Malagasy', code: 'mg'}],
     language: ko.observable(),
-    projectName: ko.observable().extend({required: true}),
+    projectName: ko.observable().extend({required: {params: true, message: gettext("This field is required.")}}),
     enableButton : function(){
         var enabled = questionnaireViewModel.continueButtonEnabled();
         questionnaireViewModel.continueButtonEnabled(!enabled)
     },
     continueButtonEnabled : ko.observable(false),
-    questionnaireCode: ko.observable().extend({required: true})
+    questionnaireCode: ko.observable().extend({required: {params: true, message: gettext("This field is required.")}})
         .extend({validation: {validator: whiteSpace,
-                message: "Space is not allowed in questionnaire code"}
+                message: gettext("Space is not allowed in questionnaire code")}
         })
         .extend({pattern: {
-            message: "Only letters and digits are valid",
+            message: gettext("Only letters and digits are valid"),
             params: '^[A-Za-z0-9 ]+$'
         }}),
 

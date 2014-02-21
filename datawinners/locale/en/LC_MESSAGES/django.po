@@ -4467,3 +4467,23 @@ msgstr ""
 
 msgid "Join our Mailing List"
 msgstr ""
+
+msgid "Create a New Questionnaire"
+msgstr ""
+
+msgid "Choose How You Want To Start"
+msgstr ""
+
+msgid "Copy an Existing Questionnaire"
+msgstr ""
+
+msgid "Use a Template"
+msgstr ""
+
+msgid "Insert a name for this Questionnaire"
+msgstr ""
+
+msgid "Choose your language"
+msgstr ""
+
+

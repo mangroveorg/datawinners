@@ -3,11 +3,9 @@
 <div class="form-row-10px">
     <label>{% trans 'Questionnaire Name' %}</label>
 
-    <input id= 'id_name' data-bind="value:projectName"/>
+    <input id= 'id_name' data-bind="value: projectName" watermark='{% trans "Insert a name for this Questionnaire" %}'/>
 
     <div class="validationMessage" data-bind="errorVisible: questionnaireHasErrors, validationMessage: projectName">
-{#        <label data-bind="validationMessages: projectName" class="error"#}
-{#               style="display: block"></label>#}
     </div>
 
     <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">

@@ -2,13 +2,20 @@
 <script type="text/javascript" src="/media/javascript/home/choose_questionnaire_creation_type.js"></script>
 
 <div id="project_profile" class="clear_both" data-bind="visible: !questionnaireCreationType()">
-    <h5>{% trans "1. Choose How You Want To Start" %}</h5>
+    <h5>1. {% trans "Choose How You Want To Start" %}</h5>
 
     <div id="questionnaire_types">
         <div data-bind="click: enableButton" class="questionnaire_type_header">
-            <span class="header">{% trans "Use a Blank Questionnaire" %}</span>
+            <span class="header">{% trans "Create a New Questionnaire" %}</span>
         </div>
-        <h6>{% trans 'Start with an empty Questionnaire and add your list of questions.' %}</h6>
+        <h6>{% trans 'Start with a blank Questionnaire and add your list of questions' %}</h6>
+
+        <div class="questionnaire_type_header">
+            <span class="header">{% trans "Copy an Existing Questionnaire" %}</span>
+        </div>
+        <div>
+            <span class="project_name">{% trans "--  blank --" %}</span>
+        </div>
 
         <div class="questionnaire_type_header">
             <span class="header">{% trans "Use a Template" %}</span>
@@ -18,12 +25,6 @@
             <span class="project_name">{% trans " -- Template goes here --" %}</span>
         </div>
 
-        <div class="questionnaire_type_header">
-            <span class="header">{% trans "Use one Of Your Existing Questionnaire" %}</span>
-        </div>
-        <div>
-            <span class="project_name">{% trans "--  blank --" %}</span>
-        </div>
 
     </div>
     <div class="right_aligned_button create_project">
