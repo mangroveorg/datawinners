@@ -4,8 +4,8 @@
 <div id="project_profile" class="clear_both" data-bind="visible: !questionnaireCreationType()">
     <h5>1. {% trans "Choose How You Want To Start" %}</h5>
 
-    <div id="questionnaire_types">
-        <div data-bind="click: enableButton" class="questionnaire_type_header">
+    <div id="questionnaire_types" data-bind="initializeAccordion: buttonShouldBeVisible">
+        <div class="questionnaire_type_header">
             <span class="header">{% trans "Create a New Questionnaire" %}</span>
         </div>
         <h6>{% trans "Start with a blank Questionnaire and add your list of questions" %}</h6>
@@ -30,7 +30,7 @@
     <div class="right_aligned_button create_project">
         <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
         <input type="button" class="button_wizard_next_small" id="continue_project" value="{% trans "Continue" %}"
-               data-bind="visible: continueButtonEnabled, click: setQuestionnaireCreationType"/>
+               data-bind="visible: buttonShouldBeVisible, click: setQuestionnaireCreationType"/>
     </div>
 
 </div>

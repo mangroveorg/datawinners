@@ -15,11 +15,7 @@ var questionnaireViewModel =
     ],
     language: ko.observable(),
     projectName: ko.observable().extend({required: {params: true, message: gettext("This field is required.")}}),
-    enableButton: function () {
-        var enabled = questionnaireViewModel.continueButtonEnabled();
-        questionnaireViewModel.continueButtonEnabled(!enabled)
-    },
-    continueButtonEnabled: ko.observable(false),
+    buttonShouldBeVisible: ko.observable(false),
     questionnaireCode: ko.observable().extend({required: {params: true, message: gettext("This field is required.")}})
         .extend({validation: {validator: whiteSpace,
             message: gettext("Space is not allowed in questionnaire code")}
