@@ -4699,4 +4699,5 @@ msgstr "Insérer un nom pour ce Questionnaire"
 msgid "Choose your language"
 msgstr "Choisissez votre langue"
 
-
+msgid "Start with a blank Questionnaire and add your list of questions"
+msgstr "Commencez avec un Questionnaire vierge et ajoutez votre liste de questions"

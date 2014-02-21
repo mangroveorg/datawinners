@@ -71,13 +71,17 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
             $.unblockUI();
             questionnaireViewModel.errorInResponse(true);
             questionnaireViewModel.responseErrorMsg(responseJson.error_message);
-//            $('#project-message-label').removeClass('none');
-//            $('#project-message-label').html("<label class='error_message'> " + gettext(responseJson.error_message) + "</label>");
         }
     });
 };
 
 DW.questionnaire_form_validate = function(){
+   if (!questionnaireViewModel.isValid()) {
+        questionnaireViewModel.errors.showAllMessages();
+        questionnaireViewModel.questionnaireHasErrors(questionnaireViewModel.errors());
+        return false;
+    }
+
     if(!DW.check_empty_questionnaire()) return false;
 
     return questionnaire_form.processValidation();

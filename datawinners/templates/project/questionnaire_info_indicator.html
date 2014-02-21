@@ -5,8 +5,7 @@
 
     <input id= 'id_name' data-bind="value: projectName" watermark='{% trans "Insert a name for this Questionnaire" %}'/>
 
-    <div class="validationMessage" data-bind="errorVisible: questionnaireHasErrors, validationMessage: projectName">
-    </div>
+    <div class="validationMessage" data-bind="errorVisible: questionnaireHasErrors, validationMessage: projectName"></div>
 
     <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
 
@@ -19,9 +18,6 @@
 <ul class="questionnaire_code">
     <li>
         <label>{% trans "SMS Questionnaire Code:" %}</label>
-        {#        <input id='project-id' type='hidden' value="{{ project.id }}"/>#}
-        {#        <input id='project-state' type='hidden' value="{{ project.state }}"/>#}
-        {#        <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}"/>#}
         <input id='questionnaire-code' data-bind="value: questionnaireCode"/>
         <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
 
@@ -29,12 +25,11 @@
             {% trans "tooltip_question_code" %}
         </p></div>
         <div class="validationMessage" data-bind="validationMessage: questionnaireCode">
-{#            <label class='error' data-bind="validationMessage: questionnaireCode"></label>#}
         </div>
 
     </li>
     <li>
-        <div id="project-language" style="float: right">{% trans "Choose your language :" %}
+        <div id="project-language">{% trans "Choose your language :" %}
             <select data-bind="options: availableLanguages, value: language, optionsText: 'name', optionsValue: 'code'"></select>
         </div>
     </li>
