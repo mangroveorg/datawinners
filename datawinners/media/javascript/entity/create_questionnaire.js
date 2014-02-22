@@ -1,24 +1,3 @@
-function populate_project_details() {
-    if (is_edit) {
-        $.getJSON("/project/details/" + questionnaire_code, function (project_details) {
-            questionnaireViewModel.setQuestionnaireCreationType();
-            questionnaireViewModel.projectName(project_details.project_name);
-            questionnaireViewModel.language(project_details.project_language);
-            questionnaireViewModel.questionnaireCode(project_details.questionnaire_code);
-            DW.existing_questions = $.parseJSON(project_details.existing_questions);
-            $($.parseJSON(project_details.existing_questions)).each(function(index, question){
-                questionnaireViewModel.loadQuestion(new DW.question(question));
-            });
-            questionnaireViewModel.questions.valueHasMutated();
-
-        });
-    }
-    else {
-        questionnaireViewModel.questionnaireCode(questionnaire_code);
-        questionnaireViewModel.questions.valueHasMutated();
-    }
-
-}
 function populate_subject_details() {
     $.getJSON("/entity/subject/details/" + subject_type, function (questionnaire_details) {
         questionnaireViewModel.questionnaireCode(questionnaire_details.questionnaire_code);
@@ -30,13 +9,13 @@ function populate_subject_details() {
     });
 
 }
-var init_view_model = function (is_project_questionnaire) {
-    if (is_project_questionnaire) {
-        populate_project_details()
+var init_view_model = function () {
+    if (is_project_questionnaire && is_edit) {
+        questionnaireViewModel.setQuestionnaireCreationTypeToEdit();
     }
-    else{
+    else if (!is_project_questionnaire){
 //        Populating questions for subject questionnaire
-        populate_subject_details()
+        populate_subject_details();
     }
     questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
     questionnaireViewModel.selectedQuestion.valueHasMutated();
@@ -78,7 +57,7 @@ DW.questionnaire_form.prototype = {
 
 
 $(document).ready(function () {
-    init_view_model(is_project_questionnaire);
+    init_view_model();
 
     ko.validation.init({insertMessages: false});
 

@@ -20,7 +20,10 @@
         var questionnaire_code = '{{ questionnaire_code}}';
         var web_preview_link = "{{ preview_links.web_preview }}";
         var smart_phone_preview_link = "{{ preview_links.smart_phone_preview }}";
+        var is_edit = {{ is_edit }};
+        var post_url = "{{ post_url }}";
     </script>
+
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
@@ -35,10 +38,6 @@
             src="/media/javascript/project/questionnaire_instruction_and_preview_wizard.js"></script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
 
-    <script type="text/javascript">
-        var is_edit = {{ is_edit }};
-        var post_url = "{{ post_url }}";
-    </script>
 {% endblock %}
 
 {% block page_scss %}

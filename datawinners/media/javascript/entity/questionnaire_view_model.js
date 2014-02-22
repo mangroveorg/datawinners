@@ -25,10 +25,14 @@ var questionnaireViewModel =
             params: '^[A-Za-z0-9 ]+$'
         }}),
 
-    questionnaireCreationType: ko.observable(),
+    showQuestionnaireForm: ko.observable(),
 
     setQuestionnaireCreationType: function () {
-        location.hash = 'new_questionnaire';
+        location.hash = 'questionnaire/new';
+    },
+
+    setQuestionnaireCreationTypeToEdit: function () {
+        location.hash = 'questionnaire/edit';
     },
 
     backToQuestionnaireCreationOptionsLink: function () {
@@ -36,11 +40,29 @@ var questionnaireViewModel =
     },
 
     routing: Sammy(function () {
-        this.get('#:new_questionnaire', function () {
-            questionnaireViewModel.questionnaireCreationType(true);
+        this.get('#:questionnaire/new', function () {
+            questionnaireViewModel.showQuestionnaireForm(true);
+            questionnaireViewModel.questionnaireCode(questionnaire_code);
+            questionnaireViewModel.questions.valueHasMutated();
         });
+
+        this.get('#:questionnaire/edit', function () {
+            $.getJSON("/project/details/" + questionnaire_code, function (project_details) {
+                questionnaireViewModel.showQuestionnaireForm(true);
+                questionnaireViewModel.projectName(project_details.project_name);
+                questionnaireViewModel.language(project_details.project_language);
+                questionnaireViewModel.questionnaireCode(project_details.questionnaire_code);
+                DW.existing_questions = $.parseJSON(project_details.existing_questions);
+                $($.parseJSON(project_details.existing_questions)).each(function (index, question) {
+                    questionnaireViewModel.loadQuestion(new DW.question(question));
+                });
+                questionnaireViewModel.questions.valueHasMutated();
+
+            });
+        });
+
         this.get('project/wizard/create/$', function () {
-            questionnaireViewModel.questionnaireCreationType(false);
+            questionnaireViewModel.showQuestionnaireForm(false);
         });
     }),
 
