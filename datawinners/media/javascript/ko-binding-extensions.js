@@ -44,16 +44,22 @@ ko.bindingHandlers.errorVisible = {
 ko.bindingHandlers.initializeAccordion = {
     init: function (element, valueAccessor) {
         $(element).accordion({
-            changestart: function(){
-                var selected = $(element).accordion('option', 'active');
-                var observable = valueAccessor();
-                observable(selected !== false)
-            },
-            header: '.questionnaire_type_header',
+            header: valueAccessor().accordionHeader,
             autoHeight: false,
             collapsible: true,
             active: 100
         });
     }
+};
+
+ko.bindingHandlers.buttonVisible = {
+  init: function(element, valueAccessor){
+      $(element).hide();
+      var accordionElement = valueAccessor().accordionElement;
+      $(accordionElement).on('accordionchangestart', function(){
+          var isAnyAccordionActive = $(accordionElement).accordion('option', 'active');
+          $(element).toggle(isAnyAccordionActive !== false);
+      })
+  }
 };
 

@@ -1,10 +1,9 @@
 {% load i18n %}
-<script type="text/javascript" src="/media/javascript/home/choose_questionnaire_creation_type.js"></script>
 
 <div id="project_profile" class="clear_both" data-bind="visible: !questionnaireCreationType()">
     <h5>1. {% trans "Choose How You Want To Start" %}</h5>
 
-    <div id="questionnaire_types" data-bind="initializeAccordion: buttonShouldBeVisible">
+    <div id="questionnaire_types" data-bind="initializeAccordion: {accordionHeader: '.questionnaire_type_header'}">
         <div class="questionnaire_type_header">
             <span class="header">{% trans "Create a New Questionnaire" %}</span>
         </div>
@@ -30,7 +29,7 @@
     <div class="right_aligned_button create_project">
         <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
         <input type="button" class="button_wizard_next_small" id="continue_project" value="{% trans "Continue" %}"
-               data-bind="visible: buttonShouldBeVisible, click: setQuestionnaireCreationType"/>
+               data-bind="buttonVisible: {accordionElement: '#questionnaire_types'}, click: setQuestionnaireCreationType"/>
     </div>
 
 </div>

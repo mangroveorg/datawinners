@@ -39,7 +39,7 @@ var questionnaireViewModel =
         this.get('#:new_questionnaire', function () {
             questionnaireViewModel.questionnaireCreationType(true);
         });
-        this.get('create/$', function () {
+        this.get('project/wizard/create/$', function () {
             questionnaireViewModel.questionnaireCreationType(false);
         });
     }),
