@@ -322,9 +322,11 @@ fieldset {
   vertical-align: middle;
 }
 
-.validationMessage {
-  /*background: url(/media/images/arrow_error.png) no-repeat left 3px;*/
+.validationMessage{
+  background: url(/media/images/arrow_error.png) no-repeat left 3px;
   display: inline;
+}
+.validationText {
   color: #FFFFFF;
   background: #c20303;
   padding: 5px 10px;

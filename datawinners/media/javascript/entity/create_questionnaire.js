@@ -59,8 +59,8 @@ DW.questionnaire_form.prototype = {
 $(document).ready(function () {
     init_view_model();
 
-    ko.validation.init({insertMessages: false});
-
+//    ko.validation.init({insertMessages: false});
+    ko.setTemplateEngine(new ko.nativeTemplateEngine());
     ko.validation.group(questionnaireViewModel);
     ko.applyBindings(questionnaireViewModel);
 

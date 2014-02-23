@@ -245,8 +245,10 @@ fieldset {
   vertical-align: middle; }
 
 .validationMessage {
-  /*background: url(/media/images/arrow_error.png) no-repeat left 3px;*/
-  display: inline;
+  background: url(/media/images/arrow_error.png) no-repeat left 3px;
+  display: inline; }
+
+.validationText {
   color: #FFFFFF;
   background: #c20303;
   padding: 5px 10px;
@@ -258,7 +260,4 @@ fieldset {
   margin-left: 10px !important;
   font-size: 12px;
   font-weight: normal;
-  max-width: 300px;
-}
-
-
+  max-width: 300px; }
