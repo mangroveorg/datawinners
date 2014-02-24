@@ -208,10 +208,9 @@ def submit_to_player(incoming_request):
         if response.is_registration and not sent_via_sms_test_questionnaire:
             organization.increment_message_count_for(sms_registration_count=1)
 
-        if not response.is_registration:
-            if sent_via_sms_test_questionnaire:
-                organization.increment_message_count_for(incoming_web_count=1)
-            check_quotas_and_update_users(organization, sms_channel=True)
+        if not response.is_registration and sent_via_sms_test_questionnaire:
+            organization.increment_message_count_for(incoming_web_count=1)
+        check_quotas_and_update_users(organization, sms_channel=True)
 
         mail_feed_errors(response, dbm.database_name)
         message = SMSResponse(response).text(dbm)
