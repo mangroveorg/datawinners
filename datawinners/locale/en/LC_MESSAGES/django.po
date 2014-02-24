@@ -1300,7 +1300,7 @@ msgstr ""
 "appear on the printed versionof your questionnaire. Your Data Senders will "
 "type in this code first when sending in their data."
 
-msgid "Add another Question"
+msgid "Add a Question"
 msgstr ""
 
 msgid "Save"
@@ -2188,7 +2188,7 @@ msgstr ""
 msgid"Questionnaire ID %s doesnt exist."
 msgstr ""
 
-msgid "Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
+msgid "Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
 msgstr ""
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
@@ -2422,9 +2422,6 @@ msgid "required"
 msgstr ""
 
 msgid "%s with %s = %s already exists."
-msgstr ""
-
-msgid "Sorry, the telephone number %s has already been registered"
 msgstr ""
 
 msgid "Job title"
@@ -4444,10 +4441,10 @@ msgstr ""
 msgid "Please add at least one question"
 msgstr ""
 
-msgid "Go Pro You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your projects."
+msgid "You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your projects."
 msgstr ""
 
-msgid "Go Pro You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+msgid "You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
 msgstr ""
 
 msgid "Our Partners"
@@ -4487,4 +4484,7 @@ msgid "Choose your language"
 msgstr ""
 
 msgid "Start with a blank Questionnaire and add your list of questions"
+msgstr ""
+
+msgid "Sorry, the telephone number %s has already been registered."
 msgstr ""

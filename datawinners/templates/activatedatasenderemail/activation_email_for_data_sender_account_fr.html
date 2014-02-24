@@ -1,54 +1,159 @@
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head><title>Datawinner mailing</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width">
+</head>
+<body style="margin:0px; padding:0px; -webkit-text-size-adjust:none;">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0"  bgcolor="#d0e2f0";>
+    <tbody>
+        <tr>
+            <td  align="center">
+                <br /><br />
+                <table  cellpadding="0" width="940" cellspacing="0" border="0" style="border-width: 1px;border-color: #DDDDDD; border-style: solid;">
+                        <tbody>
+                            <tr>
+                                <td  align="left" bgcolor="#333333" width="100%" height="46" colspan="2" style="color: #FFFFFF;font-family: Helvetica;font-size: 20px;">
+                                    &nbsp;&nbsp;
+                                        <span  style="border: none; text-decoration: none; font-family: Helvetica; color: #fff; ">
+                                            <span style="font-size: 22px;">
+                                            <b>Data</b>Winners
+                                            </span>
+                                             | Bienvenue sur DataWinners
+                                        </span>
+                                 </td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#ffffff" valign="top" width="620" style=" font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif; font-size: 12px !important;">
+                                    <table>
+                                        <tr>
+                                            <td width="10"></td>
+                                            <td style="text-align: justify; color: #333333; ">
+                                                <p>Bonjour {{ user.first_name }},</p>
+                                                <p>Vous êtes maintenant enregistré en tant qu’Expéditeur de Données.<br />
+                                                    <a href="{{ protocol }}://{{ domain }}{% url activate_datasender_account uidb36=uid, token=token %}" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                        <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                        Activez votre compte DataWinners
+                                                        </span>
+                                                    </a>
+                                                     dans les 7 prochains jours pour pouvoir envoyer des données en utilisant {% ifnotequal account_type 'Pro' %}le Web, Smartphone et Tablette Android et le SMS.{% else %}le Web, Smartphone et Tablette Android.{% endifnotequal %}</p>
+                                                <p>
+                                                    <table>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <strong>Comment envoyer des données</strong><br />
+                                                    DataWinners vous permet de soumettre des données de {% ifnotequal account_type 'Pro' %}3{% else %}2{% endifnotequal %} différentes manières. Choisissez les canaux qui vous conviennent le mieux :
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="5"></td>
+                                                            <td>
+                                                            <ol>
+                                                                {% ifnotequal account_type 'Pro' %}
+                                                                <li><strong>SMS :</strong> Utilisez un simple téléphone mobile pour envoyer des données en utilisant un seul SMS. Demandez le Questionnaire SMS à votre gestionnaire de projet.</li>
+                                                                {% endifnotequal %}
+														        <li><strong>Web : </strong>Utilisez n’importe quel ordinateur connecté à Internet pour envoyer des données. Connectez-vous à votre compte DataWinners pour remplir le Questionnaire en ligne.</li><br/>
+                                                                <li><strong>Application Android : </strong>Téléchargez les Questionnaires directement sur votre Smartphone et Tablette Android pour soumettre des données.</li><br/>
+                                                            </ol>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <strong>Besoin d’aide?</strong><br />
+                                                                Si vous avez besoin pour commencer, visitez notre
+                                                                    <a href="http://{{ site.domain }}/en/support/find-answers" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                        <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                            FAQ
+                                                                        </span>
+                                                                     </a>
+                                                                    et autre 
+                                                                    <a href="http://{{ site.domain }}/en/support/find-answers" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                        <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                                        support
+                                                                        </span>
+                                                                    </a> en ligne..
+                                                                    Vous pouvez aussi nous joindre par email à l’adresse support@datawinners.com. Nous sommes là pour vous aider ! <br/><br/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <strong>Restez connecté</strong><br />
+                                                                Nous voudrions avoir de vos nouvelles ! Vous pouvez nous suivre sur
+                                                <a href="https://twitter.com/datawinners" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                    <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                        Twitter
+                                                    </span>
+                                                </a>
+                                                , publiez sur notre mur
+                                                <a href="https://www.facebook.com/DataWinners" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                   <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                   Facebook
+                                                   </span>
+                                                </a>
+                                                et abonnez vous sur notre 
+                                                <a href="http://datawinners.wordpress.com/" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                    <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                    blog.
+                                                    </span>
+                                                </a>
+                                                Le blog est un bon moyen de découvrir les nouvelles fonctionnalités et les événements DataWinners à venir.
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                <p>Amusez-vous bien,<br /><br/>
+                                                Votre Equipe DataWinners<br />
+                                                <a href="http://www.datawinners.com" style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                    <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
+                                                    www.datawinners.com
+                                                    </span>
+                                                </a>
+                                                </p><br />
 
-<body>
+                                            </td>
+                                            <td width="10"></td>
+                                        </tr>
+                                    </table>
+                                 </td>
+                                <!--  beginning of right content -->
+                                <td width="240" bgcolor="#ffea7d" valign="top" style="color: #333333; font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif; font-size: 12px !important;border: 1px solid #f4be36;">
+                                    <table style="border-bottom: 1px solid #f4be36;">
+                                        <tr>
+                                            <td width="10"></td>
+                                            <td align="left">
+                                                <p><strong><span style="font-size: 12px;">Jetez un coup d’oeil sur notre nouvel Aperçu DataWinners </span></strong><br />
+                                                <img width="130" src="http://{{ site.domain }}/media/images/whatis/steps.png"/>
+                                                <br />
+                                                <a href="http://{{ site.domain }}/en/what-is-datawinners/" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">» En savoir plus</span></a><br />
+                                            </td>
+                                            <td width="10"></td>
+                                        </tr>
+                                    </table>
+                                    <table  width="100%">
+                                        <tr>
+                                            <td width="10"></td>
+                                            <td align="left">
+                                                <p><strong><span style="font-size: 12px;">Voyez ce que vous pouvez faire avec DataWinners</span></strong><br /><br />
+                                                <a href="http://{{ site.domain }}/fr/what-is-datawinners/how-it-works/" style="border:none;text-decoration: none;">
+                                                    <img  title="Cliquer pour voir  ce que vous pouvez faire avec DataWinners" style="border:none;text-decoration: none;" src="http://www.mandrosoa.org/images/newsletter/dw_howitworks.jpg" />
+                                                </a><br />
+                                                <a href="http://{{ site.domain }}/fr/what-is-datawinners/how-it-works/" style="color: #4379A2;font-weight: normal;text-decoration: none;"><br/> <span style="color: #4379A2;font-weight: normal;text-decoration: none;">» En savoir plus</span></a><br />
+                                                </p>
 
-<p>Bonjour {{ user.first_name }},</p>
-
-<p>
-    Vous êtes maitenant enregistré en tant qu’Expéditeur de Données.<br>
-    <a href="{{ protocol }}://{{ domain }}{% url activate_datasender_account uidb36=uid, token=token %}" style="text-decoration: none">
-        Activez votre compte DataWinners</a> <span style="text-decoration: underline">dans les 7 prochains jours</span> pour pouvoir envoyer des données en utilisant l’Internet, le Smartphone et le SMS.
-</p>
-
-
-<p><b>Comment Envoyez des Données</b><br>
-    DataWinners vous permet d’envoyer vos données de 3 différentes manières. Choisissez le canal qui vous convient le mieux.
-<ol>
-    <li>
-        <b>Internet</b>
-
-        <div>Utilisez n’importe quel ordinateur connecté à Internet pour envoyer des données. Connectez-vous à votre compte
-            DataWinners pour remplir le Questionnaire en ligne.
-        </div>
-    </li>
-    <li>
-        <b>Smartphone Android</b>
-
-        <div>Utilisez un Smartphone Android pour envoyer des données. Téléchargez les Questionnaires directement sur
-            votre téléphone. Connectez-vous à votre compte DataWinners pour plus d’instructions.
-        </div>
-    </li>
-    <li>
-        <b>SMS</b>
-
-        <div>Utilisez un simple téléphone mobile pour envoyer des données en utilisant un seul SMS. Demandez le
-            Questionnaire SMS à votre gestionnaire de projet.
-        </div>
-    </li>
-</ol>
-</p>
-
-<p><b>Besoin d’Aide?</b><br>
-    Si vous avez besoin d’aide, contactez votre gestionnaire de projet ou envoyez-nous un email à l’adresse
-    support@datawinners.com. Nous sommes là pour vous aider!
-</p>
-
-<p>Amusez-vous bien,<br>
-    Votre Equipe DataWinners <br>
-    <a href="http://www.datawinners.com" style="text-decoration: none">www.datawinners.com</a> | <a
-            href="http://datawinners.wordpress.com/" style="text-decoration: none">Blog</a> | <a
-            href="https://twitter.com/#!/datawinners" style="text-decoration: none">Twitter</a>
-</p>
-
+                                            </td>
+                                            <td width="10"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                {% include 'email/basicaccount/email_footer_fr.html' %}
+                            </tr>
+                        </tbody>
+                </table>
+                <br /><br />
+            </td>
+        </tr>
+    </tbody>
+    </table>
 </body>
 </html>

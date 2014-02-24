@@ -145,7 +145,7 @@
         #questions-panel .question_list ol li.question_selected {
           background: #d8e4ec url("/media/images/question_hover_bg.gif") repeat-x bottom left;
           position: relative; }
-        #questions-panel .question_list ol li:hover .delete {
+        #questions-panel .question_list ol li:hover .action_bar {
           visibility: visible; }
         #questions-panel .question_list ol li span.selected_question_arrow {
           display: none;
@@ -158,15 +158,12 @@
           color: #000000 !important;
           font-size: 14px;
           text-decoration: none; }
-    #questions-panel .question_list .delete {
+    #questions-panel .question_list .action_bar {
       padding-left: 15px;
       visibility: hidden; }
-      #questions-panel .question_list .delete:hover {
-        visibility: visible; }
-      #questions-panel .question_list .delete a {
+      #questions-panel .question_list .action_bar a {
         color: #0070AC !important;
-        font-size: 12px;
-        padding: 6px 0 8px 25px; }
+        font-size: 12px; }
 
 #que_code li {
   list-style-type: decimal; }
@@ -288,7 +285,7 @@
   padding-right: 16px;
   float: right; }
 
-.visible :hover {
+.visible {
   visibility: visible !important; }
 
 .hidden {

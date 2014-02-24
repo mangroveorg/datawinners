@@ -10,7 +10,8 @@ from datawinners.messageprovider.message_builder import ResponseBuilder
 
 def default_formatter(exception, message):
     if isinstance(exception, MangroveException) and exception.data is not None and "%s" in message:
-        return message % exception.data
+        formatted_message = message % exception.data
+        return formatted_message if len(formatted_message) <= 160 else message.replace('%s', "")
     return message
 
 

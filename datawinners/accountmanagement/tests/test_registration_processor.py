@@ -93,9 +93,10 @@ class TestRegistrationProcessor(unittest.TestCase):
             ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user1).activation_key,
                         'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                         'site': site,
-                        'username': self.user1.first_name + ' ' + self.user1.last_name,
+                        'username': self.user1.first_name,
                         'invoice_total': PRO_SMS_MONTHLY_PRICING,
-                        'period': '1 month'}
+                        'period': '1 month'
+                        }
             self.assertEqual(render_to_string('registration/pro_sms_activation_email_in_en.html', ctx_dict), sent_email.body)
 
             payment_detail = PaymentDetails.objects.filter(organization=self.paid_organization)
@@ -151,7 +152,7 @@ class TestRegistrationProcessor(unittest.TestCase):
             ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=self.user1).activation_key,
                         'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                         'site': site,
-                        'username': self.user1.first_name + ' ' + self.user1.last_name,
+                        'username': self.user1.first_name,
                         'invoice_total': PRO_SMS_MONTHLY_PRICING,
                         'period': '1 month'}
             self.assertEqual(render_to_string('registration/pro_sms_activation_email_in_fr.html', ctx_dict), sent_email.body)

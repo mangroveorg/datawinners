@@ -68,7 +68,7 @@ class TestProcessSMSCounter(unittest.TestCase):
             site = Site.objects.get_current()
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
-            ctx = {'username':'Trial User', 'organization':organization, 'site':site,
+            ctx = {'username':'Trial', 'organization':organization, 'site':site,
                    'token':token}
             self.assertEqual(render_to_string('email/basicaccount/about_to_reach_submission_limit_en.html', ctx), email.body)
 
@@ -81,7 +81,7 @@ class TestProcessSMSCounter(unittest.TestCase):
             site = Site.objects.get_current()
             email = mail.outbox.pop()
             self.assertEqual(['chinatwu2@gmail.com'], email.to)
-            ctx = {'username':'Trial User', 'organization':organization, 'site':site,
+            ctx = {'username':'Trial', 'organization':organization, 'site':site,
                    'token': token}
             self.assertEqual(render_to_string('email/basicaccount/about_to_reach_sms_limit_en.html', ctx), email.body)
 

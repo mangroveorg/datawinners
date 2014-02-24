@@ -32,6 +32,8 @@ class TestView(TestCase):
     def test_create_single_web_user(self):
         org = Mock(spec=Organization)
         org.org_id = "org_id"
+        org.account_type = "Basic"
+        site = get_current_site(None)
 
         mock_entity = Mock(spec=Entity)
         mock_entity.value.return_value = 'test'
@@ -65,6 +67,8 @@ class TestView(TestCase):
                                 'user': user,
                                 'token': "token",
                                 'protocol': 'http',
+                                'account_type': org.account_type,
+                                'site': site,
                             }
                             self.assertEqual(render_to_string(
                                 'activatedatasenderemail/activation_email_subject_for_data_sender_account_en.txt'),
@@ -99,6 +103,7 @@ class TestView(TestCase):
                 'user': user,
                 'token': "token",
                 'protocol': 'http',
+                'site': site,
             }
             self.assertEqual(
                 render_to_string('activatedatasenderemail/activation_email_subject_for_data_sender_account_en.txt'),
@@ -132,6 +137,7 @@ class TestView(TestCase):
                 'user': user,
                 'token': "token",
                 'protocol': 'http',
+                'site':site,
             }
             self.assertEqual(
                 render_to_string('activatedatasenderemail/activation_email_subject_for_data_sender_account_fr.txt'),
@@ -172,6 +178,7 @@ class TestView(TestCase):
                 'protocol': 'http',
                 'creator_user': request.user.first_name,
                 'site': site,
+                'account_type': 'Pro SMS',
             }
             self.assertEqual(render_to_string('registration/created_user_email_subject_fr.txt') % site.domain,
                              sent_email.subject)
@@ -208,6 +215,7 @@ class TestView(TestCase):
                 'protocol': 'http',
                 'creator_user': request.user.first_name,
                 'site': site,
+                'account_type': 'Pro SMS',
             }
             self.assertEqual(render_to_string('registration/created_user_email_subject_en.txt') % site.domain,
                              sent_email.subject)

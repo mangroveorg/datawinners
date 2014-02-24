@@ -1374,7 +1374,7 @@ msgstr ""
 "sur la version imprimée de votre questionnaire. Vos Expéditeurs de Données "
 "saisiront ce code en premier lors de l'envoi de leurs données."
 
-msgid "Add Another Question"
+msgid "Add a Question"
 msgstr "Ajouter une question"
 
 msgid "Save"
@@ -2284,8 +2284,8 @@ msgstr "Réponse incorrecte pour la question %s. Veuillez envoyer de nouveau la 
 msgid"Questionnaire ID %s doesnt exist."
 msgstr "Le ID Questionnaire %s n'existe pas."
 
-msgid "Error. Questionnaire Code %s is incorrect. Find the Questionnaire Code on the printed Questionnaire and resend the SMS starting with this Questionnaire Code."
-msgstr "Erreur. Le Code Questionnaire %s est incorrect. Veuillez trouver le Code Questionnaire sur le Questionnaire imprime et renvoyez votre SMS en commençant par ce Code Questionnaire."
+msgid "Error. Questionnaire Code %s is incorrect. Please review the Registration Form and resend entire SMS."
+msgstr "Erreur. Le code Questionnaire %s est incorrect. Vérifiez le formulaire d'enregistrement et envoyez votre SMS de nouveau."
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
 msgstr "Cet entité pour laquelle vous avez envoyé un rapport n'existe pas sur notre système. Veuillez enregistrer cette entité ou appelez-nous au 033 20 426 89"
@@ -2522,9 +2522,6 @@ msgstr "obligatoire"
 
 msgid "%s with %s = %s already exists."
 msgstr "%s avec %s=%s existe déjà."
-
-msgid "Sorry, the telephone number %s has already been registered"
-msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée"
 
 msgid "Job title"
 msgstr "Titre"
@@ -4368,7 +4365,7 @@ msgid "To reactivate it, subscribe to a monthly subscription by contacting your 
 msgstr "Pour le réactiver, veuillez adhérer à une souscription mensuelle en contactant votre Gestionnaire de Projet ou le support DW au <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
 
 msgid "Get the Most out of Datawinners!"
-msgstr "Tirer le meilleur parti de Datawinners"
+msgstr "Tirez le meilleur parti de votre Compte Datawinners"
 
 msgid "Find Out What Datawinners Can Do For You!"
 msgstr "Découvrez ce que Datawinners peut faire pour vous!"
@@ -4494,7 +4491,7 @@ msgid "For unlimited data collection and advanced features, consider a Pro Accou
 msgstr "Pour une collecte de données illimitée et des fonctionnalités avancées, envisagez de passer à un Compte Pro!"
 
 msgid "Go Pro"
-msgstr "Devenir Pro"
+msgstr "Passez au Compte Pro"
 
 msgid "The columns you are importing do not match. Please download the latest template for importing."
 msgstr "Les colonnes que vous importez sont imcompatibles. Veuillez SVP télécharger le dernier modèle d'importation"
@@ -4657,11 +4654,11 @@ msgstr "Descendre"
 msgid "Please add at least one question"
 msgstr "Ajoutez au moins une question"
 
-msgid "Go Pro You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your projects."
-msgstr "Passez au Compte Pro. Vous avez atteint votre limite de 1000 Soumissions gratuites. Veuillez passer à un abonnement mensuel pour continuer à soumettre des données pour vos projets."
+msgid "You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your projects."
+msgstr "Vous avez atteint votre limite de 1000 Soumissions gratuites. Veuillez passer à un abonnement mensuel pour continuer à soumettre des données pour vos projets."
 
-msgid "Go Pro You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
-msgstr "Passez au Compte Pro. Vous avez atteint la limite de 50 Soumissions SMS. Veuillez passer à un abonnement mensuel pour continuer à effectuer des Soumissions par SMS pour vos projets."
+msgid "You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+msgstr "Vous avez atteint la limite de 50 Soumissions SMS. Veuillez passer à un abonnement mensuel pour continuer à effectuer des Soumissions par SMS pour vos projets."
 
 msgid "Our Partners"
 msgstr "Nos Partenaires"
@@ -4701,3 +4698,6 @@ msgstr "Choisissez votre langue"
 
 msgid "Start with a blank Questionnaire and add your list of questions"
 msgstr "Commencez avec un Questionnaire vierge et ajoutez votre liste de questions"
+
+msgid "Sorry, the telephone number %s has already been registered."
+msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée."

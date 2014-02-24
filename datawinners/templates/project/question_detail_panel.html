@@ -3,7 +3,7 @@
     <ul>
         <li class="question">
             <label>{% trans "Question" %}</label>
-            <input id="question_title" name="question_title" type="text" class="required"
+            <input id="question_title" name="question_title" type="text" class="required question_title"
                    data-bind="hasFocus:enableQuestionTitleFocus, value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true, enable: questionnaireViewModel.isEnabled() "/>
             <span id="periode_green_message"><br/>{% trans "change_event_time_field_message" %}<br/></span>
         </li>

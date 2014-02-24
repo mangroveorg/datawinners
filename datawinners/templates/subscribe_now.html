@@ -14,13 +14,13 @@
 {% else %}
     {% if is_quota_reached %}
     <div class="warning-message-box clear-both overflow_hidden">
-        <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects." %}</p>
         {% if user|in_group:'NGO Admins,' %}
+            <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects." %}</p>
             <a class="float_left margin_10 padding_top_10" href="/{% trans "en" %}/pricing/" target="blank">{% trans "Learn More" %}</a>
             <a class="button margin_10 float_left" target="blank"
                href="{% url datawinners.accountmanagement.views.upgrade %}">{% trans "Subscribe Now" %}</a>
         {% else %}
-            <a class="float_right margin_10 padding_top_10" href="/{% trans "en" %}/pricing/" target="blank">{% trans "Learn More" %}</a>
+            <p>{% trans "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>." %}</p>
         {% endif %}
     </div>
     {% endif %}

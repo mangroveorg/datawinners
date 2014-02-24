@@ -31,15 +31,15 @@
                                             <td style="text-align: justify; color: #333333; ">
                                                 <p>Bonjour {{ username }},</p>
                                                 <p>
-                                                    Nous espérons que vous avez trouvé le meilleur parti de votre Compte Basique gratuit DataWinners
+                                                    Nous espérons que vous avez profité au maximum de votre Compte Basique gratuit DataWinners
                                                 </p>
-                                                <p><strong>Devenir pro</strong><br />
-                                                Vous voulez envoyer des rappels automatiques à vos expéditeurs de données? Pour cela
-                                                <a href="http://{{ site.domain }}{% url upgrade_from_mail token %}" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">passer vers un compte Pro </span></a>
-                                                 et d'autres fonctionnalités avancées!<br />
-                                                Pour faire une comparaison complete des fonctionnalités
+                                                <p><strong>Devenez pro</strong><br />
+                                                Vous voulez envoyer des rappels automatiques à vos Expéditeurs de Données?
+                                                <a href="http://{{ site.domain }}{% url upgrade_from_mail token %}" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">Passez vers un Compte Pro </span></a>
+                                                 et accédez aux fonctionnalités avancées!<br />
+                                                Pour faire une comparaison complète des fonctionnalités
                                                 <a href="http://{{ site.domain }}/fr/pricing" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">visitez notre page Tarification</span></a>.
-                                                Mise à jour à tout moment en vous connectant à votre compte DataWinners et cliquez sur "S'abonner".
+                                                Passez au Compte Pro en tout temps en vous connectant à votre compte DataWinners et cliquez sur « S'abonner maintenant ».
                                                 </p>
                                                 <p>
                                                 Comment avez-vous modernisé vos projets de collecte de données au cours de ces derniers mois? Nous voulons avoir de vos nouvelles! Envoyez votre histoire à  <a href="mailto:info@datawinners.com" style="text-decoration: none;color: #4379A2;font-weight: normal;">
@@ -67,11 +67,11 @@
                                             <td width="10"></td>
                                             <td align="left">
                                                 <p ><strong><span style="font-size: 12px;"> Rapports et Visualisations personnalisés</span></strong><br />
-                                                Avez-vous besoin de tableaux de bord ou des rapports personnalisés?   Nous pouvons vous aider!<br />
+                                                Avez-vous besoin de tableaux de bord ou de rapports personnalisés?   Nous pouvons vous aider!<br />
 
                                                     <a href="http://{{ site.domain }}/fr/what-is-datawinners/customized-reports/" style="color: #4379A2;font-weight: normal;text-decoration: none;">
                                                         <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
-                                                        Lire plus
+                                                        » En savoir plus
                                                         </span>
                                                     </a>
                                                 </p>
@@ -89,7 +89,7 @@
 
                                                     <a href="http://{{ site.domain }}/fr/success-stories/" style="color: #4379A2;font-weight: normal;text-decoration: none;">
                                                         <span style="color: #4379A2;font-weight: normal;text-decoration: none;">
-                                                        Voir nos réussites
+                                                        » Voir nos réussites
                                                         </span>
                                                     </a>
                                                 </p>
@@ -106,14 +106,32 @@
                                                 Pour les mises à jour de DataWinners et les spots des partenaires, suivez nous sur <a href="https://twitter.com/datawinners" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">Twitter</span></a>,
                                                 publié sur notre mur <a href="https://www.facebook.com/DataWinners" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">Facebook</span></a>  et abonnez vous sur notre
                                                  <a href="http://datawinners.wordpress.com/" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">blog</span></a>.<br />
-                                                <br />Bonne collecte de données.<br />
+                                                <br />Bonne collecte de données!<br />
 
                                                 </p>
                                             </td>
                                             <td width="10"></td>
                                         </tr>
                                     </table>
-
+                                    <table style="border-bottom: 1px solid #f4be36;">
+                                        <tr>
+                                            <td width="10"></td>
+                                            <td  align="left">
+                                                <p><strong><span style="font-size: 12px;">Besoin d’aide?</span></strong><br />
+                                                <a href="http://{{ site.domain }}/fr/what-is-datawinners/how-it-works/" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">Comment ça marche</span></a><br />
+                                                <a href="http://{{ site.domain }}/fr/support/get-started/" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">Guides & Tutoriels</span></a><br />
+                                                <a href="http://{{ site.domain }}/fr/support/find-answers/" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">Trouver des réponses </span></a><br />
+                                                <a href="http://{{ site.domain }}/fr/support/ask-us/" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">Nous demander </span></a><br /><br />
+                                                    Envoyez-nous un email à <br/>
+                                                    info@datawinners.com ou chattez avec nous sur Skype
+                                                    <a href="http://{{ site.domain }}{% url open_skype %}" style="border:none;text-decoration: none;">
+                                                                                <span style="color: #4379A2;text-decoration: none;">datawinners</span>
+									                </a><br/><br/>
+                                                    We're here to help!<br />
+                                            </td>
+                                            <td width="10"></td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                             <tr>

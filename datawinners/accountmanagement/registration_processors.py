@@ -54,7 +54,7 @@ class PaidAccountRegistrationProcessor(object):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=user).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
-                    'username': user.first_name + ' ' + user.last_name,
+                    'username': user.first_name,
                     'invoice_total': invoice_total,
                     'period':period}
         subject = render_to_string('registration/activation_email_subject_in_'+language+'.txt')

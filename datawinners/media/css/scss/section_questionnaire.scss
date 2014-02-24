@@ -195,7 +195,7 @@
           background: #d8e4ec url("/media/images/question_hover_bg.gif") repeat-x bottom left;
           position: relative;
         }
-        &:hover .delete {
+        &:hover .action_bar{
           visibility: visible;
         }
         span.selected_question_arrow {
@@ -213,16 +213,12 @@
         }
       }
     }
-    .delete {
+    .action_bar {
       padding-left: 15px;
       visibility: hidden;
-      &:hover {
-        visibility: visible;
-      }
       a {
         color: #0070AC !important;
         font-size: 12px;
-        padding: 6px 0 8px 25px;
       }
     }
   }
@@ -398,10 +394,9 @@
   float: right;
 }
 
-.visible {
-  :hover {
-    visibility: visible !important;
-  }
+.visible{
+   visibility: visible !important;
+
 }
 
 .hidden {
