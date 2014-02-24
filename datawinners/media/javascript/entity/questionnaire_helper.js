@@ -56,7 +56,7 @@ DW.question = function (question) {
         name:question_name,
         code:"code",
         required:true,
-        type:"text",
+//        type:"text",
         language:'en',
         choices:[],
         entity_question_flag:false,
@@ -116,9 +116,9 @@ DW.question.prototype = {
         }
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
-        this.radio_type = ko.dependentObservable({
-            read:function(){return ((this.type().indexOf('select') >= 0)?"choice":this.type());},
-            owner:this});
+//        this.radio_type = ko.dependentObservable({
+//            read:function(){return ((this.type().indexOf('select') >= 0)?"choice":this.type());},
+//            owner:this});
         this.required = ko.observable(q.required);
 
         var initialValues = DW.initChoices(q.choices);
@@ -126,6 +126,7 @@ DW.question.prototype = {
         this.is_entity_question = ko.observable(q.entity_question_flag);
         this.date_format = ko.observable(q.date_format);
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
+//        same as ko.computed
         this.instruction = ko.dependentObservable({
             read:function () {
                 if (this.is_entity_question() && this.max_length() == 20) {
@@ -366,7 +367,9 @@ DW.init_question_constraints = function() {
     $('input[type=text]').removeClass('error');
 }
 
-DW.change_question_type_for_selected_question = function(new_type) {
+DW.change_question_type_for_selected_question = function(type_selector) {
+    if (type_selector === undefined) var new_type = type_selector;
+    else var new_type = type_selector.type;
     if (new_type == "choice") {
         questionnaireViewModel.selectedQuestion().isAChoiceTypeQuestion("choice");
     } else {

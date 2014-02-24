@@ -1,3 +1,20 @@
+var getQuestionType = function(question) {
+    if (question.type() === undefined)return question.type();
+    else {
+        var answerType = {};
+        if((question.type() == 'select') || (question.type() == 'select1')){
+            answerType = questionnaireViewModel.answerTypes[3];
+        }
+
+        $.each(questionnaireViewModel.answerTypes, function (index, obj) {
+            if (question.type() == obj.type) {
+                answerType = obj;
+                return false
+            }
+        });
+        return answerType;
+    }
+};
 whiteSpace = function (val) {
     var trimmed_value = $.trim(val);
     var list = trimmed_value.split(" ");
@@ -81,7 +98,8 @@ var questionnaireViewModel =
         DW.charCount();
         questionnaireViewModel.enableScrollToView(true);
         questionnaireViewModel.hasAddedNewQuestions = true;
-
+//        By default nothing should be selected in dropdown
+        questionnaireViewModel.answerType(undefined)
     },
     loadQuestion: function (question) {
         question.display = ko.dependentObservable(function () {
@@ -173,6 +191,8 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedQuestion(question);
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
+        var questionType = getQuestionType(question);
+        questionnaireViewModel.answerType(questionnaireViewModel.answerType(questionType));
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
     },
@@ -184,10 +204,14 @@ var questionnaireViewModel =
             DW.questionnaire_was_changed = true;
         }
     },
-    changeQuestionType: function (type_selector) {
-        DW.init_question_constraints();
-        DW.change_question_type_for_selected_question(type_selector.value);
-    },
+    answerType: ko.observable(),
+    answerTypes: [
+        {type: 'text', text: "Word or Phrase"},
+        {type: 'integer', text: "Number"},
+        {type: 'date', text: "Date"},
+        {type: 'choice', text: "List of Choices"},
+        {type: 'geocode', text: "GPS Coordinates"}
+    ],
     showLengthLimiter: function () {
         return questionnaireViewModel.selectedQuestion().length_limiter() == 'length_limited';
     },
@@ -267,4 +291,12 @@ questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
 questionnaireViewModel.isSelectedQuestionNull = ko.computed(function () {
     return this.selectedQuestion().isNullQuestion;
 }, questionnaireViewModel);
+
+questionnaireViewModel.answerType.subscribe(
+    function (type_selector) {
+        DW.init_question_constraints();
+        DW.change_question_type_for_selected_question(type_selector);
+    }
+);
+
 
