@@ -29,6 +29,7 @@
     <div class="right_aligned_button create_project">
         <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
         <input type="button" class="button_wizard_next_small" id="continue_project" value="{% trans "Continue" %}"
+               {#     todo should not pass id to ko bindings. Use jquery instead      #}
                data-bind="buttonVisible: {accordionElement: '#questionnaire_types'}, click: setQuestionnaireCreationType"/>
     </div>
 
