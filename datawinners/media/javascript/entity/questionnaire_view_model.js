@@ -15,7 +15,6 @@ var questionnaireViewModel =
     ],
     language: ko.observable(),
     projectName: ko.observable().extend({required: {params: true, message: gettext("This field is required.")}}),
-    buttonShouldBeVisible: ko.observable(false),
     questionnaireCode: ko.observable().extend({required: {params: true, message: gettext("This field is required.")}})
         .extend({validation: {validator: whiteSpace,
             message: gettext("Space is not allowed in questionnaire code")}
@@ -43,12 +42,10 @@ var questionnaireViewModel =
         this.get('#:questionnaire/new', function () {
             questionnaireViewModel.showQuestionnaireForm(true);
             questionnaireViewModel.questionnaireCode(questionnaire_code);
-            questionnaireViewModel.questions.valueHasMutated();
         });
 
         this.get('#:questionnaire/edit', function () {
             $.getJSON("/project/details/" + questionnaire_code, function (project_details) {
-                questionnaireViewModel.showQuestionnaireForm(true);
                 questionnaireViewModel.projectName(project_details.project_name);
                 questionnaireViewModel.language(project_details.project_language);
                 questionnaireViewModel.questionnaireCode(project_details.questionnaire_code);
@@ -56,7 +53,7 @@ var questionnaireViewModel =
                 $($.parseJSON(project_details.existing_questions)).each(function (index, question) {
                     questionnaireViewModel.loadQuestion(new DW.question(question));
                 });
-                questionnaireViewModel.questions.valueHasMutated();
+                questionnaireViewModel.showQuestionnaireForm(true);
 
             });
         });
@@ -88,7 +85,6 @@ var questionnaireViewModel =
             return this.title();
         }, question);
         questionnaireViewModel.questions.push(question);
-        questionnaireViewModel.questions.valueHasMutated();
     },
 
     renumberQuestions: function () {

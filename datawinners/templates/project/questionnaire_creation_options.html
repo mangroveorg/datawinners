@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div id="project_profile" class="clear_both" data-bind="visible: !showQuestionnaireForm()">
+<div id="project_profile" class="clear_both" data-bind="hidden: showQuestionnaireForm">
     <h5>1. {% trans "Choose How You Want To Start" %}</h5>
 
     <div id="questionnaire_types" data-bind="initializeAccordion: {accordionHeader: '.questionnaire_type_header'}">
