@@ -4467,3 +4467,6 @@ msgstr ""
 
 msgid "Sorry, the telephone number %s has already been registered."
 msgstr ""
+
+msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
+msgstr ""

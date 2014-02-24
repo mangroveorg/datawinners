@@ -4680,3 +4680,6 @@ msgstr "Inscrivez-vous à notre liste d'envoi"
 
 msgid "Sorry, the telephone number %s has already been registered."
 msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée."
+
+msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
+msgstr "Vous avez atteint votre limite de 1000 Soumissions gratuites. Inscrivez-vous pour un abonnement mensuel en contactant votre Gestionnaire de Projet ou le Support DW à l'adresse <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
