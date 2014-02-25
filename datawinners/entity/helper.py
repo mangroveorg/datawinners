@@ -150,7 +150,7 @@ def _get_data(form_data, country,reporter_id=None):
 def _add_data_sender_to_trial_organization(telephone_number, org_id):
     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=telephone_number,
         organization=Organization.objects.get(org_id=org_id))
-    data_sender.save()
+    data_sender.save(force_insert=True)
 
 def update_data_sender_from_trial_organization(old_telephone_number,new_telephone_number, org_id):
     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=old_telephone_number,

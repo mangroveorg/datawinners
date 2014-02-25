@@ -105,7 +105,7 @@ def make_user_as_a_datasender(manager, organization, current_user_name, mobile_n
 
     if organization.in_trial_mode:
         data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number, organization=organization)
-        data_sender.save()
+        data_sender.save(force_insert=True)
     return entity.short_code
 
 

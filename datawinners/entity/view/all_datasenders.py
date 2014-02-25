@@ -25,7 +25,7 @@ from datawinners.entity.helper import delete_entity_instance, delete_datasender_
 
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
-from datawinners.project.views.datasenders import parse_successful_imports, add_imported_datasenders_to_trail_account
+from datawinners.project.views.datasenders import parse_successful_imports
 from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
 from mangrove.form_model.form_model import REPORTER, header_fields, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE, \
     get_form_model_by_code

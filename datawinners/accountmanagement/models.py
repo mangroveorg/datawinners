@@ -298,7 +298,7 @@ class DataSenderOnTrialAccount(models.Model):
                 data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
                                                                      organization=Organization.objects.get(
                                                                          org_id=org_id))
-                data_sender.save()
+                data_sender.save(force_insert=True)
 
 
 def get_ngo_admin_user_profiles_for(organization):
