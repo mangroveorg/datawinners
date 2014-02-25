@@ -8,8 +8,12 @@ $(document).ready(function () {
         var questions = new DW.question(question_list[index]);
         questionnaireViewModel.loadQuestion(questions);
     }
+    questionnaireViewModel.questionnaireCode(questionnaire_code);
+    questionnaireViewModel.isEditMode = true;
     questionnaireViewModel.selectedQuestion(questionnaireViewModel.questions()[0]);
     questionnaireViewModel.selectedQuestion.valueHasMutated();
+    ko.setTemplateEngine(new ko.nativeTemplateEngine());
+    ko.validation.group(questionnaireViewModel);
     ko.applyBindings(questionnaireViewModel);
 
     DW.charCount();
@@ -105,9 +109,6 @@ $(document).ready(function () {
     function submit_questionnaire() {
 
         var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
-
-
-
 
         if ($.trim($("#questionnaire-code").val()) == "") {
             $("#questionnaire-code-error").html("<label class='error_message'> " + gettext("The Questionnaire code is required") + ".</label>");

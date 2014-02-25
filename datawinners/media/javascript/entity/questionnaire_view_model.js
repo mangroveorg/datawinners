@@ -23,6 +23,7 @@ whiteSpace = function (val) {
 var questionnaireViewModel =
 {
     questions: ko.observableArray([]),
+    isEditMode: false,
     hasAddedNewQuestions: false,
     hasDeletedOldQuestion: false,
     availableLanguages: [
@@ -32,17 +33,24 @@ var questionnaireViewModel =
     ],
     language: ko.observable(),
     projectName: ko.observable().extend({required: {params: true, message: gettext("This field is required.")}}),
-    questionnaireCode: ko.observable().extend({required: {params: true, message: gettext("This field is required.")}})
-        .extend({validation: {validator: whiteSpace,
-            message: gettext("Space is not allowed in questionnaire code")}
-        })
-        .extend({pattern: {
-            message: gettext("Only letters and digits are valid"),
-            params: '^[A-Za-z0-9 ]+$'
-        }}),
-
+    questionnaireCode: ko.observable().extend({
+                                                required: {
+                                                            params: true,
+                                                            message: gettext("This field is required.")
+                                                          }
+                                              })
+                              .extend({
+                                        validation: {
+                                                        validator: whiteSpace,
+                                                        message: gettext("Space is not allowed in questionnaire code")}
+                                                    })
+                              .extend({
+                                        pattern: {
+                                                    message: gettext("Only letters and digits are valid"),
+                                                    params: '^[A-Za-z0-9 ]+$'
+                                                 }
+                                      }),
     showQuestionnaireForm: ko.observable(),
-
     setQuestionnaireCreationType: function () {
         location.hash = 'questionnaire/new';
     },
@@ -235,16 +243,6 @@ var questionnaireViewModel =
         }
 
     },
-
-    saveAsDraft: function () {
-        if (DW.questionnaire_form_validate()) {
-            DW.post_project_data('Inactive', function (response) {
-                return '/project/';
-            });
-        }
-        return false;
-    },
-
     enableScrollToView: ko.observable(false)
 };
 questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {

@@ -38,6 +38,7 @@
     var sms_preview_link = "{{ preview_links.sms_preview }}";
     var web_preview_link = "{{ preview_links.web_preview }}";
     var smart_phone_preview_link = "{{ preview_links.smart_phone_preview }}";
+    var questionnaire_code = "{{ questionnaire_code }}";
     </script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
@@ -63,10 +64,12 @@
         {% trans "View and edit your Questionnaire." %}
     </div>
     <form id="question_form">
-    {% csrf_token %}
+        {% csrf_token %}
+        <input id='project-id' type='hidden' value="{{ project.id }}"/>
+        <input id='questionnaire-code' class='required' type="hidden" disabled="disabled" value="{{ questionnaire_code }}"/>
         <fieldset>
             <div class="questionnaire_form_header clearfix">
-                {% include 'project/questionnaire_code_indicator_readonly.html' %}
+                {% include 'project/questionnaire_info_indicator.html' %}
                 {% include 'project/preview_navigation.html' %}
             </div>
 

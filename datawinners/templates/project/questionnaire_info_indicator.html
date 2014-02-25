@@ -1,36 +1,30 @@
-    {% load i18n %}
+{% load i18n %}
 <div data-bind="validationOptions: {messageTemplate: 'errorBox'}">
-<div class="form-row-10px">
-    <label>{% trans 'Questionnaire Name' %}</label>
-
-    <input id= 'id_name' data-bind="value: projectName, hasFocus: questionnaireHasErrors" watermark='{% trans "Insert a name for this Questionnaire" %}'/>
-
-    <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-
-    <div class="tooltip"><p>
-        {% trans "tooltip_project_name" %}
-    </p></div>
-
-    <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
-</div>
-<ul class="questionnaire_code">
-    <li>
-        <label>{% trans "SMS Questionnaire Code:" %}</label>
-        <input id='questionnaire-code' data-bind="value: questionnaireCode"/>
-        <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
-
+    <div class="form-row-10px" data-bind="hidden: isEditMode">
+        <label>{% trans 'Questionnaire Name' %}</label>
+        <input id= 'id_name' data-bind="value: projectName, hasFocus: questionnaireHasErrors" watermark='{% trans "Insert a name for this Questionnaire" %}'/>
+        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
         <div class="tooltip"><p>
-            {% trans "tooltip_question_code" %}
+            {% trans "tooltip_project_name" %}
         </p></div>
-
-    </li>
-    <li>
-        <div id="project-language">{% trans "Choose your language :" %}
-            <select data-bind="options: availableLanguages, value: language, optionsText: 'name', optionsValue: 'code'"></select>
-        </div>
-    </li>
-</ul>
+        <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
     </div>
+    <ul class="questionnaire_code">
+        <li>
+            <label>{% trans "SMS Questionnaire Code:" %}</label>
+            <input id='questionnaire-code' data-bind="value: questionnaireCode"/>
+            <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+            <div class="tooltip">
+                <p>{% trans "tooltip_question_code" %}</p>
+            </div>
+        </li>
+        <li>
+            <div id="project-language">{% trans "Choose your language :" %}
+                <select data-bind="options: availableLanguages, value: language, optionsText: 'name', optionsValue: 'code'"></select>
+            </div>
+        </li>
+    </ul>
+</div>
 <script type="text/html" id="errorBox">
     <div class="validationMessage" data-bind="if: !field.isValid()">
         <span class="validationText" data-bind="validationMessage: field"></span>
