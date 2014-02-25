@@ -48,9 +48,6 @@
                 <td>{{ project.created|date:"DATE_FORMAT" }}</td>
                 <td>
                     <a href="{{ project.delete_link }}" class="delete_project">{% trans "Delete" %}</a>
-                    {% if  project.state  != 'Active' %}
-                        | <a href="{{ project.activate_link }}" class="activate_project">{% trans "Activate" %}</a>
-                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

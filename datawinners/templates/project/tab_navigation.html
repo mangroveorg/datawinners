@@ -43,14 +43,7 @@
                     <span class="{{ project.state }}_state">{% trans project.state %}</span>
                 </span>
             {% include 'project/sms_tester_form.html' %}
-            {% if project.state == 'Test' %}
-                <a id="edit_project" href="{% url edit_project project.id %}">{% trans "Edit this project" %}</a>
-                <a href="{{ project_links.activate_project_link }}"
-                   class="activate_project">{% trans "Activate this Project" %}</a>
-            {% endif %}
-            {% if project.state == 'Test' or project.state == 'Active' %}
                 <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
-            {% endif %}
         {% if user|in_group:"NGO Admins,Project Managers" %}
             <a href="{{ project_links.delete_project_link }}"
                class="delete_project">{% trans "Delete this Project" %}</a>
@@ -58,12 +51,12 @@
         </div>
     </div>
 
-
-    <div id="activate_project_block">
-        <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>
-        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
-        <a href="#" class="button" id="confirm">{% trans "Activate" %}</a>
-    </div>
+{#TODO: activate project dialog and corresponding url#}
+{#    <div id="activate_project_block">#}
+{#        <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>#}
+{#        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>#}
+{#        <a href="#" class="button" id="confirm">{% trans "Activate" %}</a>#}
+{#    </div>#}
     <div id="delete_project_block">
         <p class="warning_message">{% trans "Export all submissions prior to deleting your project." %}</p>
         <a href="#" class="cancel_link cancel_{% trans "en" %}">{% trans "Cancel" %}</a>
@@ -77,22 +70,19 @@
         <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
             <a id="overview_tab" href="{{ project_links.overview_link }}" class="{{ disable_link_class }}">{% trans "Overview" %}</a>
         </li>
-        {% if project.state == 'Active' %}
         <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
             <a id="questionnaire_tab" href="{{ project_links.questionnaire_link }}"
                class="{{ disable_link_class }}">{% trans "Questionnaire" %}</a>
         </li>
-        {% endif %}
-        {% if project.state != 'Inactive'%}
         <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
             <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link}}"
                class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
         </li>
-            {% if 'no' in project.activity_report%}
+        {% if 'no' in project.activity_report%}
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "My Subjects" %}</a>
             </li>
-            {% endif %}
+        {% endif %}
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
             <a id="reminders_tab" href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
         </li>
@@ -102,7 +92,6 @@
         <li class="{% ifactivetab 'tab_nav' 'send_a_message' %}active{% else %}inactive{% endifactivetab %}">
             <a id="send_message_tab" href="{{ project_links.broadcast_message_link }}" class="{{ disable_link_class }}">{% trans "Send a Message" %}</a>
         </li>
-        {% endif %}
     </ul>
 </div>
 {% endblock %}

@@ -121,7 +121,7 @@ def save_questionnaire(request):
             return HttpResponse(json.dumps({"response": "ok"}))
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_new_user
 @is_datasender
@@ -170,7 +170,7 @@ def undelete_project(request, project_id):
     return HttpResponseRedirect(reverse(index))
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired

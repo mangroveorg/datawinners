@@ -5,8 +5,8 @@
         <div>
             <div class="text-content">{% trans "QUESTIONNAIRE" %}</div><div class="text-content-right-arrow"></div>
             <div class="clear-both">
-                <a href="{{ project_links.questionnaire_link }}" class="{% if project.state == 'Test' %} disable_link {% endif %}">{% trans "View" %} </a> |
-                <a href="{{ project_links.test_questionnaire_link }}" class="{% if project.state == 'Test' %} disable_link {% endif %}">{% trans "Input Data" %}</a>
+                <a href="{{ project_links.questionnaire_link }}">{% trans "View" %} </a> |
+                <a href="{{ project_links.test_questionnaire_link }}">{% trans "Input Data" %}</a>
             </div>
         </div>
     </div>
