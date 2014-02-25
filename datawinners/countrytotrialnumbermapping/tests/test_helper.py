@@ -21,5 +21,7 @@ class TestHelper(unittest.TestCase):
         current_numbers = helper.get_trial_numbers()
         new_number = "00000"
         self.assertFalse(new_number in current_numbers)
-        Network(trial_sms_number=new_number, network_name="Airtel").save()
+        network = Network(trial_sms_number=new_number, network_name="Airtel")
+        network.save()
         self.assertTrue(new_number in helper.get_trial_numbers())
+        network.delete()
