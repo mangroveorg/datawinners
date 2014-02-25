@@ -38,32 +38,6 @@ var questionnaireViewModel =
         location.hash = '';
     },
 
-    routing: Sammy(function () {
-        this.get('#:questionnaire/new', function () {
-            questionnaireViewModel.showQuestionnaireForm(true);
-            questionnaireViewModel.questionnaireCode(questionnaire_code);
-        });
-
-        this.get('#:questionnaire/edit', function () {
-            $.getJSON("/project/details/" + questionnaire_code, function (project_details) {
-                questionnaireViewModel.projectName(project_details.project_name);
-                questionnaireViewModel.language(project_details.project_language);
-                questionnaireViewModel.questionnaireCode(project_details.questionnaire_code);
-                DW.existing_questions = $.parseJSON(project_details.existing_questions);
-                $($.parseJSON(project_details.existing_questions)).each(function (index, question) {
-                    questionnaireViewModel.loadQuestion(new DW.question(question));
-                });
-                questionnaireViewModel.showQuestionnaireForm(true);
-
-            });
-        });
-
-        this.get('project/wizard/create/$', function () {
-            questionnaireViewModel.showQuestionnaireForm(false);
-        });
-    }),
-
-
     addQuestion: function () {
         var question = new DW.question();
         question.display = ko.dependentObservable(function () {

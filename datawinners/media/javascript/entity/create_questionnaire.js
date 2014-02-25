@@ -64,7 +64,7 @@ $(document).ready(function () {
     ko.validation.group(questionnaireViewModel);
     ko.applyBindings(questionnaireViewModel);
 
-    questionnaireViewModel.routing.run();
+//    questionnaireViewModel.routing.run();
 
     DW.charCount();
     $('#continue_project').live("click", DW.charCount);
