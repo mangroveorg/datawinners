@@ -133,7 +133,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_radio_button(WORD_OR_PHRASE_RB).click()
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(WORD_OR_PHRASE)
         limit = fetch_(LIMIT, from_(question_data))
         if limit == LIMITED:
             self.driver.find_radio_button(CHARACTER_LIMIT_RB).click()
@@ -152,7 +152,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_radio_button(NUMBER_RB).click()
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(NUMBER_OPTION)
         self.driver.find_text_box(NUMBER_MIN_LENGTH_TB).enter_text(fetch_(MIN, from_(question_data)))
         self.driver.find_text_box(NUMBER_MAX_LENGTH_TB).enter_text(fetch_(MAX, from_(question_data)))
         return self
@@ -167,7 +167,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_radio_button(DATE_RB).click()
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(DATE_OPTION)
         date_format = fetch_(DATE_FORMAT, from_(question_data))
         if (date_format == MM_YYYY):
             self.driver.find_radio_button(MONTH_YEAR_RB).click()
@@ -187,7 +187,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_radio_button(LIST_OF_CHOICE_RB).click()
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(LIST_OF_CHOICES_OPTION)
         self.driver.find_element_by_id("choice_text").clear()
         index = 1
         choices = fetch_(CHOICE, from_(question_data))
@@ -216,7 +216,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_radio_button(GEO_RB).click()
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(GPS_COORDINATES)
         return self
 
 
@@ -316,7 +316,7 @@ class CreateQuestionnairePage(Page):
         return question dict
         """
         question = dict()
-        if self.driver.find_radio_button(WORD_OR_PHRASE_RB).is_selected():
+        if self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).is_selected(WORD_OR_PHRASE):
             question[TYPE] = WORD
         if self.driver.find_radio_button(CHARACTER_LIMIT_RB).is_selected():
             question[LIMIT] = LIMITED
@@ -335,7 +335,7 @@ class CreateQuestionnairePage(Page):
         return question dict
         """
         question = dict()
-        if self.driver.find_radio_button(NUMBER_RB).is_selected():
+        if self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).is_selected(NUMBER_OPTION):
             question[TYPE] = NUMBER
         question[MIN] = self.driver.find_text_box(NUMBER_MIN_LENGTH_TB).get_attribute("value")
         question[MAX] = self.driver.find_text_box(NUMBER_MAX_LENGTH_TB).get_attribute("value")
@@ -351,7 +351,7 @@ class CreateQuestionnairePage(Page):
         return question dict
         """
         question = dict()
-        if self.driver.find_radio_button(DATE_RB).is_selected():
+        if self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).is_selected(DATE_OPTION):
             question[TYPE] = DATE
         if self.driver.find_radio_button(MONTH_YEAR_RB).is_selected():
             question[DATE_FORMAT] = MM_YYYY
@@ -371,7 +371,7 @@ class CreateQuestionnairePage(Page):
         return question dict
         """
         question = dict()
-        if self.driver.find_radio_button(LIST_OF_CHOICE_RB).is_selected():
+        if self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).is_selected(LIST_OF_CHOICES_OPTION):
             question[TYPE] = LIST_OF_CHOICES
             #options_tbs = self.driver.find_elements_(by_xpath(CHOICE_XPATH_LOCATOR))
         options_tbs = self.driver.find_elements_(by_xpath(CHOICE_XPATH_LOCATOR + CHOICE_TB_XPATH_LOCATOR))
@@ -402,7 +402,7 @@ class CreateQuestionnairePage(Page):
         return question dict
         """
         question = dict()
-        if self.driver.find_radio_button(GEO_RB).is_selected():
+        if self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).is_selected(GPS_COORDINATES):
             question[TYPE] = GEO
         question[QUESTION] = self.get_question()
         question[CODE] = self.get_question_code()

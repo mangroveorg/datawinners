@@ -28,7 +28,7 @@ class DropDown(WebElement):
         """ Gets the currently selected item from the drop down
         """
         for option in self.selectOptions:
-            if option.get_text() == itemText:
+            if option.text == itemText:
                 return option.is_selected()
         return False
 

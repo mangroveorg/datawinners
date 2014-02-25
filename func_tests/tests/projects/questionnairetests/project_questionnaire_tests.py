@@ -2,6 +2,7 @@
 import unittest
 
 from nose.plugins.attrib import attr
+import time
 
 from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
@@ -80,6 +81,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
         def verify_warning_for_addintion_of_new_question():
             new_question = {"question": "newly added question", "code": "grades", "type": "number",
                             "min": "1", "max": "100"}
+            time.sleep(2)
             create_questionnaire_page.add_question(new_question)
             return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 

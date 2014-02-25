@@ -55,7 +55,7 @@
             {#                    />{% trans "GPS Coordinates" %}#}
             {#            </div>#}
 
-            <div>
+            <div class="dropdown">
                 <select data-bind="options: answerTypes, value:answerType, optionsText: 'text', optionsCaption: 'Select an Answer Type?', enable: questionnaireViewModel.isTypeEnabled()"></select>
             </div>
         </li>

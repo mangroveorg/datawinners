@@ -21,7 +21,14 @@ BY = "by"
 QUESTIONNAIRE_CODE_TB = by_css("input#questionnaire-code")
 QUESTION_TB = by_xpath("//input[@id='question_title']")
 CODE_TB = by_css("input#code")
+
+ANSWER_TYPE_DROPDOWN = by_css(".dropdown select")
 WORD_OR_PHRASE_RB = by_css("input[value='text']")
+WORD_OR_PHRASE = 'Word or Phrase'
+NUMBER_OPTION = 'Number'
+DATE_OPTION = 'Date'
+LIST_OF_CHOICES_OPTION = 'List of Choices'
+GPS_COORDINATES = 'GPS Coordinates'
 NO_CHARACTER_LIMIT_RB = by_xpath(
     "//li[not(contains(@style,'none')) and contains(@data-bind,'showAddTextLength')]/div/input[@value='length_unlimited']")
 CHARACTER_LIMIT_RB = by_xpath(
