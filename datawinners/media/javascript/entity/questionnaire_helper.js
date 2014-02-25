@@ -364,15 +364,18 @@ DW.init_question_constraints = function() {
 }
 
 DW.change_question_type_for_selected_question = function(type_selector) {
-    if (type_selector === undefined) var new_type = type_selector;
-    else var new_type = type_selector.type;
-    if (new_type == "choice") {
+//    if (type_selector === undefined) var new_type = type_selector;
+//    else var new_type = type_selector.type;
+//    if(type_selector == 'select' || type_selector== 'select1'){
+//        type_selector = 'choice';
+//    }
+    if (type_selector == "choice") {
         var old_type = questionnaireViewModel.selectedQuestion().type();
         if(old_type != 'select'){
             questionnaireViewModel.selectedQuestion().isAChoiceTypeQuestion("choice");
         }
     } else {
-        questionnaireViewModel.selectedQuestion().type(new_type);
+        questionnaireViewModel.selectedQuestion().type(type_selector);
     }
     questionnaireViewModel.selectedQuestion.valueHasMutated();
     questionnaireViewModel.questions.valueHasMutated();

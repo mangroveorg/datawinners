@@ -9,6 +9,7 @@
 
         <div id="question_code" class="none">
             <label>{% trans "Code" %}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
+
             <div class="tooltip"><p>
                 <strong>{% trans "What is this?" %}</strong><br/>
                 {% trans "q_tooltip_question_detail_code" %}
@@ -21,7 +22,8 @@
     </li>
     <li class="question_type margin_null"
         data-bind="visible: !selectedQuestion().is_entity_question()">
-        <label>{% trans "Answer Type" %}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
+        <label>{% trans "Answer Type" %}<img src="/media/images/help_icon.png" class="help_icon"
+                                             style="margin-top:-6px;"></label>
 
         <div class="tooltip"><p>
             <strong>{% trans "What is this?" %}</strong><br/>
@@ -32,25 +34,17 @@
         </p></div>
         <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
-        <div><input type="radio" name="type" value="text"
-                    data-bind="checked: selectedQuestion().type, enable: subjectQuestionnaireViewModel.isTypeEnabled()"/>{% trans "Word or Phrase" %}
-        </div>
-        <div><input type="radio" name="type" value="integer"
-                    data-bind="checked: selectedQuestion().type, enable: subjectQuestionnaireViewModel.isTypeEnabled()"/>{% trans "Number" %}
-        </div>
-        <div><input type="radio" name="type" value="date"
-                    data-bind="checked: selectedQuestion().type,enable: subjectQuestionnaireViewModel.isTypeEnabled()"/>{% trans "Date" %}
-        </div>
-        <div><input type="radio" name="type" value="choice"
-                    data-bind="checked: selectedQuestion().isAChoiceTypeQuestion, enable: subjectQuestionnaireViewModel.isTypeEnabled()"
-                    class="choice-question-checkbox"/>{% trans "List of Choices" %}
-        </div>
-        <div><input type="radio" name="type" value="geocode"
-                    data-bind="checked: selectedQuestion().type, enable: subjectQuestionnaireViewModel.isTypeEnabled()"
-                />{% trans "GPS Coordinates" %}
-        </div>
-        <div><input type="radio" name="type" value="telephone_number"
-                    data-bind="checked: selectedQuestion().type, enable: subjectQuestionnaireViewModel.isTypeEnabled()"/>{% trans "Telephone number" %}
+        <div class="dropdown">
+            <select data-bind="value: answerType, enable: subjectQuestionnaireViewModel.isTypeEnabled()"
+                    onchange="questionnaireViewModel.changeQuestionType(this)" autofocus>
+                <option value=""> {% trans 'Select an Answer Type?' %} </option>
+                <option value="text"> {% trans 'Word or Phrase' %} </option>
+                <option value="integer"> {% trans 'Number' %} </option>
+                <option value="date"> {% trans 'Date' %} </option>
+                <option value="choice"> {% trans 'List of Choices' %} </option>
+                <option value="geocode"> {% trans 'GPS Coordinates' %} </option>
+                <option value="telephone_number"> {% trans "Telephone number" %}</option>
+            </select>
         </div>
     </li>
 
@@ -117,11 +111,11 @@
 
             <div class="max_char">
                 <input type="radio" name="text_length" value="length_limited"
-                   data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: subjectQuestionnaireViewModel.isTypeEnabled()"/>
+                       data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: subjectQuestionnaireViewModel.isTypeEnabled()"/>
                 {% trans "Yes, maximum number of characters should be" %}
                 <div>
                     <input name="max_length" type="text" id="max_length"
-                   data-bind="value:selectedQuestion().max_length, visible: questionnaireViewModel.showLengthLimiter(), valueUpdate: 'keyup', enable: subjectQuestionnaireViewModel.isTypeEnabled()"/>
+                           data-bind="value:selectedQuestion().max_length, visible: questionnaireViewModel.showLengthLimiter(), valueUpdate: 'keyup', enable: subjectQuestionnaireViewModel.isTypeEnabled()"/>
                 </div>
             </div>
         </div>
@@ -129,7 +123,7 @@
     <li>
         <div class="margin_top_20">
             <label>{% trans "Instructions" %}<img src="/media/images/help_icon.png" class="help_icon"
-                                    style="margin-top:-6px;"></label>
+                                                  style="margin-top:-6px;"></label>
 
             <div class="tooltip"><p>
                 {% trans "tooltip_question_detail_instruction" %}

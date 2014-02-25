@@ -29,7 +29,7 @@ class ProjectSubjectsPage(Page):
         return self.driver.find(SUCCESS_MESSAGE_TIP) is not None
 
     def is_question_type_enabled(self):
-        return self.driver.find(TYPE_CB).is_enabled()
+        return self.driver.find(ANSWER_TYPE_DROPDOWN).is_enabled()
 
     def click_action_button(self):
         self.driver.find(ACTION_DROP_DOWN).click()
@@ -86,7 +86,7 @@ class ProjectSubjectsPage(Page):
 
     def choose_question_type(self, type):
         if self.is_question_type_enabled():
-            self.driver.find(by_css(SPECIFIC_TYPE_CB_BY_CSS % type)).click()
+            self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(type)
 
     def get_instruction_for_current_question(self):
         return self.driver.find(by_id("question_instruction")).text

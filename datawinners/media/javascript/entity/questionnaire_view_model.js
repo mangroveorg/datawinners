@@ -1,20 +1,3 @@
-var getQuestionType = function(question) {
-    if (question.type() === undefined)return question.type();
-    else {
-        var answerType = {};
-        var q_type = question.type();
-        if((q_type == 'select') || (q_type == 'select1')){
-            q_type = 'choice';
-        }
-        $.each(questionnaireViewModel.answerTypes, function (index, obj) {
-            if (q_type == obj.type) {
-                answerType = obj;
-                return false
-            }
-        });
-        return answerType;
-    }
-};
 whiteSpace = function (val) {
     var trimmed_value = $.trim(val);
     var list = trimmed_value.split(" ");
@@ -63,6 +46,7 @@ var questionnaireViewModel =
         location.hash = '';
     },
 
+    answerType : ko.observable(),
     addQuestion: function () {
         var question = new DW.question();
         question.display = ko.dependentObservable(function () {
@@ -78,7 +62,7 @@ var questionnaireViewModel =
         questionnaireViewModel.enableScrollToView(true);
         questionnaireViewModel.hasAddedNewQuestions = true;
 //        By default nothing should be selected in dropdown
-        questionnaireViewModel.answerType(undefined)
+        questionnaireViewModel.answerType('')
     },
     loadQuestion: function (question) {
         question.display = ko.dependentObservable(function () {
@@ -169,7 +153,8 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedQuestion(question);
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
-        var questionType = getQuestionType(question);
+        var questionType = questionnaireViewModel.selectedQuestion().isAChoiceTypeQuestion();
+        if(questionType == 'none') questionType = questionnaireViewModel.selectedQuestion().type();
         questionnaireViewModel.answerType(questionType);
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
@@ -182,14 +167,10 @@ var questionnaireViewModel =
             DW.questionnaire_was_changed = true;
         }
     },
-    answerType: ko.observable(),
-    answerTypes: [
-        {type: 'text', text: "Word or Phrase"},
-        {type: 'integer', text: "Number"},
-        {type: 'date', text: "Date"},
-        {type: 'choice', text: "List of Choices"},
-        {type: 'geocode', text: "GPS Coordinates"}
-    ],
+    changeQuestionType: function (type_selector) {
+//        DW.init_question_constraints();
+        DW.change_question_type_for_selected_question(type_selector.value);
+    },
     showLengthLimiter: function () {
         return questionnaireViewModel.selectedQuestion().length_limiter() == 'length_limited';
     },
@@ -253,10 +234,5 @@ questionnaireViewModel.isSelectedQuestionNull = ko.computed(function () {
     return this.selectedQuestion().isNullQuestion;
 }, questionnaireViewModel);
 
-questionnaireViewModel.answerType.subscribe(
-    function (type_selector) {
-        DW.change_question_type_for_selected_question(type_selector);
-    }
-);
 
 

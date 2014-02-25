@@ -27,6 +27,7 @@ class TestEditSubjectRegistrationForm(BaseTest):
         subjects_page = ProjectSubjectsPage(self.driver)
         subjects_page.click_edit_form_link_and_continue()
         subjects_page.click_add_question_link()
+        subjects_page.choose_question_type('text')
 
         self.assertEqual("Question", subjects_page.get_selected_question_label())
 
