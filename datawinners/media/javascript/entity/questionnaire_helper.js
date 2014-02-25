@@ -371,7 +371,10 @@ DW.change_question_type_for_selected_question = function(type_selector) {
     if (type_selector === undefined) var new_type = type_selector;
     else var new_type = type_selector.type;
     if (new_type == "choice") {
-        questionnaireViewModel.selectedQuestion().isAChoiceTypeQuestion("choice");
+        var old_type = questionnaireViewModel.selectedQuestion().type();
+        if(old_type != 'select'){
+            questionnaireViewModel.selectedQuestion().isAChoiceTypeQuestion("choice");
+        }
     } else {
         questionnaireViewModel.selectedQuestion().type(new_type);
     }

@@ -192,7 +192,7 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
         var questionType = getQuestionType(question);
-        questionnaireViewModel.answerType(questionnaireViewModel.answerType(questionType));
+        questionnaireViewModel.answerType(questionType);
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
     },
@@ -294,7 +294,6 @@ questionnaireViewModel.isSelectedQuestionNull = ko.computed(function () {
 
 questionnaireViewModel.answerType.subscribe(
     function (type_selector) {
-        DW.init_question_constraints();
         DW.change_question_type_for_selected_question(type_selector);
     }
 );
