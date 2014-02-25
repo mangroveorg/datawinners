@@ -53,18 +53,13 @@
             </div>
             <div>
                 <a class="go_to_project"href="{{ project.link }}">{% trans "go to this project" %}»</a>
-                {% if project.inactive %}
-                    <strong>{% trans "This project is inactive"%}</strong><br/>
-                {% endif %}
-                {% if not project.inactive %}
-                    <span class="project_id none">{{ project.id }}</span>
-                    <img class="ajax_loader_image none" src="/media/images/ajax-loader-horizontal-bar.gif"/>
-                    <table>
-                        <tbody class="submission_list">
+                <span class="project_id none">{{ project.id }}</span>
+                <img class="ajax_loader_image none" src="/media/images/ajax-loader-horizontal-bar.gif"/>
+                <table>
+                    <tbody class="submission_list">
 
-                        </tbody>
-                    </table>
-                {% endif %}
+                    </tbody>
+                </table>
             </div>
         {% endfor %}
         </div>

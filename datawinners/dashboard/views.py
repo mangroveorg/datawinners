@@ -86,9 +86,7 @@ def dashboard(request):
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=8)
     for row in rows:
         link = reverse("project-overview", args=(row['value']['_id'],))
-        if row['value']['state'] == ProjectState.INACTIVE:
-            link = reverse(edit_project,args=(row['value']['_id'],))
-        project = dict(name=row['value']['name'], link=link, inactive=is_project_inactive(row), id=row['value']['_id'])
+        project = dict(name=row['value']['name'], link=link, id=row['value']['_id'])
         project_list.append(project)
     language = request.session.get("django_language", "en")
     has_reached_sms_limit = organization.has_exceeded_message_limit()
