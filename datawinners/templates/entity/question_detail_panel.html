@@ -3,7 +3,7 @@
     <li class="question">
         <label>{% trans "Question" %}</label>
         <input id="question_title" name="question_title" type="text" class="required question_title"
-               data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true, enable: questionnaireViewModel.isEnabled() "/>
+               data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true"/>
     </li>
     <li>
 
@@ -16,7 +16,7 @@
                 {% trans "r_tooltip_question_detail_code" %}
             </p></div>
             <input id="code" name="code" type="text" class="required"
-                   data-bind="value: selectedQuestion().code, valueUpdate: 'keyup', enable: isEnabled()"/>
+                   data-bind="value: selectedQuestion().code, valueUpdate: 'keyup'"/>
         </div>
     </li>
     <li class="question_type margin_null"

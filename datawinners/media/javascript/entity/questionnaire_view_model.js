@@ -172,18 +172,11 @@ var questionnaireViewModel =
         })
     },
     choiceCanBeDeleted: function () {
-        return questionnaireViewModel.selectedQuestion().choices().length > 1 && questionnaireViewModel.isEnabled();
+        return questionnaireViewModel.selectedQuestion().choices().length > 1;
     },
-    isEnabled: function () {
-        if ($("#not_wizard").size() > 0) {
-            return questionnaireViewModel.selectedQuestion().isEnabled();
-        }
-        else {
-            return true;
-        }
-    },
+//    TODO: Check usages and remove
     isTypeEnabled: function () {
-        return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag();
+        return !questionnaireViewModel.selectedQuestion().event_time_field_flag();
     },
     moveQuestionUp: function (question) {
         var currentIndex = questionnaireViewModel.questions().indexOf(question);

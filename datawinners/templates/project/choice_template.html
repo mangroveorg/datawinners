@@ -4,7 +4,7 @@
     <li>
         <span data-bind="text: val+'.'" class="bullet"></span>
         <input id="choice_text" name="choice_text" class="required" type="text"
-               data-bind="value: text, uniqueName: true, enable: questionnaireViewModel.isEnabled()"/>
+               data-bind="value: text, uniqueName: true"/>
         <a href="#" class='delete delete_link'
            data-bind="visible: questionnaireViewModel.choiceCanBeDeleted(), click:function(){questionnaireViewModel.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
     </li>

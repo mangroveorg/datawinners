@@ -18,7 +18,7 @@
                     {% trans "r_tooltip_question_detail_code" %}
                 </p></div>
                 <input id="code" name="code" type="text" class="required"
-                       data-bind="value: selectedQuestion().code, valueUpdate: 'keyup', enable: isEnabled()"/>
+                       data-bind="value: selectedQuestion().code, valueUpdate: 'keyup'"/>
             </div>
         </li>
         <li class="question_type margin_null"
@@ -61,13 +61,13 @@
 
                 <p>
                     <input type="radio" name="date_format" value="mm.yyyy"
-                           data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                           data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'"/>
                     {% trans "month.year" %} (06.2011)<br/>
                     <input type="radio" name="date_format" value="dd.mm.yyyy"
-                           data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                           data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'"/>
                     {% trans "day.month.year" %} (28.06.2011)<br/>
                     <input type="radio" name="date_format" value="mm.dd.yyyy"
-                           data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                           data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'"/>
                     {% trans "month.day.year" %} (06.28.2011)<br/>
                 </p>
             </div>
@@ -80,15 +80,15 @@
 
                 </ol>
                 <a href="questionnaire_wizard.html#" class="add_link"
-                   data-bind="click: function() { questionnaireViewModel.addOptionToQuestion(); }, valueUpdate: 'keyup', visible:questionnaireViewModel.isEnabled()">
+                   data-bind="click: function() { questionnaireViewModel.addOptionToQuestion(); }, valueUpdate: 'keyup'">
                     {% trans "Add Answer Choice" %}</a>
             </div>
             <div>
                 <input type="radio" name="answers_possible" value="select1"
-                       data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                       data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup'"/>
                 {% trans "only one answer" %}<br/>
                 <input type="radio" name="answers_possible" value="select"
-                       data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                       data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup'"/>
                 {% trans "multiple answers are permitted" %}<br/>
             </div>
         </li>
@@ -97,29 +97,29 @@
                 <div class="question_option">
                     {% trans "Min:" %}
                     <input name="range_min" type="text" id="range_min"
-                           data-bind="value:selectedQuestion().range_min, valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                           data-bind="value:selectedQuestion().range_min, valueUpdate: 'keyup'"/>
                 </div>
 
                 <div class="question_option">
                     {% trans "Max:" %}
                     <input name="range_max" type="text" id="range_max"
-                           data-bind="value:selectedQuestion().range_max, valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                           data-bind="value:selectedQuestion().range_max, valueUpdate: 'keyup'"/>
                 </div>
             </div>
         </li>
         <li data-bind="visible: questionnaireViewModel.showAddTextLength() && !selectedQuestion().is_entity_question()">
             <div class="margin_top_20">
                 <input type="radio" name="text_length" value="length_unlimited" checked="true"
-                       data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                       data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup'"/>
                 {% trans "No, answer has no character limit" %}<br/>
 
                 <div class="max_char">
                     <input type="radio" name="text_length" value="length_limited"
-                       data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                       data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup'"/>
                     {% trans "Yes, maximum number of characters should be" %}
                     <div>
                         <input name="max_length" type="text" id="max_length"
-                       data-bind="value:selectedQuestion().max_length, visible: questionnaireViewModel.showLengthLimiter(), valueUpdate: 'keyup', enable: questionnaireViewModel.isEnabled()"/>
+                       data-bind="value:selectedQuestion().max_length, visible: questionnaireViewModel.showLengthLimiter(), valueUpdate: 'keyup'"/>
                     </div>
                 </div>
             </div>
