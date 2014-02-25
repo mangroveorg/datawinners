@@ -222,13 +222,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
         self.verify_submission(SMS_DATA_LOG, self.project_name)
 
-    def verify_project_activation(self):
-        global_navigation = GlobalNavigationPage(self.driver)
-        all_projects_page = global_navigation.navigate_to_view_all_project_page()
-        project_overview_page = all_projects_page.navigate_to_project_overview_page(self.project_name)
-        project_overview_page.activate_project()
-        self.assertEqual(project_overview_page.get_status_of_the_project(), "Active")
-
     def verify_submission_via_web(self, ds_email):
         self.driver.go_to(LOGOUT)
         user = User.objects.get(username=ds_email)
@@ -323,7 +316,6 @@ class TestApplicationEndToEnd(unittest.TestCase):
         ds_email = self.add_edit_datasender()
         self.verify_admin_present_in_my_datasenders_page()
         self.verify_submission_via_sms(organization_sms_tel_number)
-        self.verify_project_activation()
         self.verify_submission_via_web(ds_email)
         self.admin_edit_delete_submissions()
         time.sleep(2)
