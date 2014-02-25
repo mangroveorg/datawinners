@@ -59,12 +59,9 @@ DW.questionnaire_form.prototype = {
 $(document).ready(function () {
     init_view_model();
 
-//    ko.validation.init({insertMessages: false});
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
     ko.validation.group(questionnaireViewModel);
     ko.applyBindings(questionnaireViewModel);
-
-//    questionnaireViewModel.routing.run();
 
     DW.charCount();
     $('#continue_project').live("click", DW.charCount);

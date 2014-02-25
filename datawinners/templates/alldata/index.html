@@ -50,8 +50,7 @@
                     <td>
                         <span class="report_links">
                         <span class="{{ hide_link_class }}">
-                            <span class="disable_link"> {% trans "Summary" %} </span>
-                            |<a href="{{ project.analysis }}"
+                            <a href="{{ project.analysis }}"
                                 class="{{ project.disabled }} {{ disable_link_class }}{{ hide_link_class }}">{% trans "Analysis" %}</a>
                             |<a href="{{ project.log }}"
                                 class="{{ project.disabled}} {{ disable_link_class}}">{% trans "Submission Log" %}</a>

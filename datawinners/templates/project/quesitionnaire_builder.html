@@ -74,11 +74,6 @@
         <div class="grid_15 float_right">
             <div class="right_aligned_button">
                 <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
-                {% if project.state != 'Test' %}
-                    <input data-bind="click: saveAsDraft" type="button" class="button_wizard_blue"
-                           id="save_as_draft"
-                           value="{% trans "Save as Draft" %}">
-                {% endif %}
                 <input type="button" class="button_wizard_next" id="save_and_create"
                        value="{% trans "Save & Create Project" %}" data-bind="click: submit"/>
             </div>

@@ -33,13 +33,10 @@ def get_alldata_project_links():
     return project_links
 
 
-def get_project_analysis_and_log_link(project, project_id, questionnaire_code):
-    analysis = log = "#"
-    disabled = "disable_link"
-    if project.state != ProjectState.INACTIVE:
-        disabled = ""
-        analysis = reverse("submission_analysis", args=[project_id, questionnaire_code])
-        log = reverse("submissions", args=[project_id, questionnaire_code])
+def get_project_analysis_and_log_link(project_id, questionnaire_code):
+    disabled = ""
+    analysis = reverse("submission_analysis", args=[project_id, questionnaire_code])
+    log = reverse("submissions", args=[project_id, questionnaire_code])
     return analysis, disabled, log
 
 
@@ -49,7 +46,7 @@ def get_project_info(manager, raw_project):
     questionnaire = manager.get(project.qid, FormModel)
     questionnaire_code = questionnaire.form_code
 
-    analysis, disabled, log = get_project_analysis_and_log_link(project, project_id, questionnaire_code)
+    analysis, disabled, log = get_project_analysis_and_log_link(project_id, questionnaire_code)
 
     web_submission_link = reverse("web_questionnaire", args=[project_id])
 
@@ -90,32 +87,6 @@ def projects_index(request):
 
     return disable_link_class, hide_link_class, page_heading
 
-
-# def get_subject_type_list(request):
-#     manager = get_database_manager(request.user)
-#     types = get_all_entity_types(manager)
-#     result = []
-#     for each in types:
-#         result.extend(each)
-#     return sorted(result)
-
-
-# @valid_web_user
-# def data_export(request):
-#     disable_link_class, hide_link_class, page_heading = projects_index(request)
-#     project_list = sorted(get_project_list(request), key=lambda x: x['name'])
-#     subject_types = sorted(get_subject_type_list(request))
-#     registered_subject_types = [each for each in subject_types if each != REPORTER_ENTITY_TYPE];
-#     return render_to_response('alldata/data_export.html',
-#                               {'subject_types': subject_types, 'registered_subject_types': registered_subject_types,
-#                                'projects': project_list, 'page_heading': page_heading,
-#                                'disable_link_class': disable_link_class,
-#                                'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
-#                                'project_links': get_alldata_project_links(),
-#                                'is_quota_reached':is_quota_reached(request)},
-#                               context_instance=RequestContext(request))
-
-
 def is_crs_admin(request):
     return get_organization(request).org_id == CRS_ORG_ID and not request.user.get_profile().reporter
 
@@ -123,7 +94,7 @@ def is_crs_user(request):
     return get_organization(request).org_id == CRS_ORG_ID
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_new_user
 @is_not_expired
