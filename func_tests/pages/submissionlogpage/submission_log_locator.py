@@ -26,7 +26,7 @@ ACTIVE_TAB_LOCATOR = by_css("ul.secondary_tab li.active")
 ACTION_SELECT_CSS_LOCATOR = by_css(".dataTables_wrapper .action")
 DELETE_BUTTON = by_css(".delete")
 EDIT_BUTTON = by_css(".edit")
-CHECKALL_CB_CSS_LOCATOR = by_id("master_checkbox")
+CHECKALL_CB_CSS_LOCATOR = by_css(".checkall-checkbox")
 SHOWN_RECORDS_COUNT_CSS_LOCATOR = by_css(".dataTables_info span:first-child")
 TOTAL_RECORDS_COUNT = by_id("total_count")
 XPATH_TO_CELL = "//div[@id='submission_logs']//../table/tbody/tr[%s]/td[%s]"

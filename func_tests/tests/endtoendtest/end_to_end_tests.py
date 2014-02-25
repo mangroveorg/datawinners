@@ -245,6 +245,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
 
     def admin_edit_delete_submissions(self):
         submission_log_page = SubmissionLogPage(self.driver)
+        submission_log_page.search(fetch_(ANSWER, WEB_ANSWERS[5]))
         submission_log_page.check_submission_by_row_number(1)
         submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
 
@@ -252,7 +253,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
         submission_page.fill_and_submit_answer(EDITED_WEB_ANSWERS)
         self.verify_submission(EDITED_WEB_ANSWER_LOG, self.project_name)
 
-        submission_log_page.check_submission_by_row_number(1)
+        submission_log_page.check_all_submissions()
         submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
         warning_dialog = WarningDialog(self.driver)
         warning_dialog.confirm()
