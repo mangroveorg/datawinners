@@ -2,12 +2,12 @@ var getQuestionType = function(question) {
     if (question.type() === undefined)return question.type();
     else {
         var answerType = {};
-        if((question.type() == 'select') || (question.type() == 'select1')){
-            answerType = questionnaireViewModel.answerTypes[3];
+        var q_type = question.type();
+        if((q_type == 'select') || (q_type == 'select1')){
+            q_type = 'choice';
         }
-
         $.each(questionnaireViewModel.answerTypes, function (index, obj) {
-            if (question.type() == obj.type) {
+            if (q_type == obj.type) {
                 answerType = obj;
                 return false
             }

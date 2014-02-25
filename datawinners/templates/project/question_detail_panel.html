@@ -37,24 +37,6 @@
             </p></div>
             <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
-            {#            <div><input type="radio" name="type" value="text" onchange="questionnaireViewModel.changeQuestionType(this)"#}
-            {#                        data-bind="checked:selectedQuestion().radio_type, enable: questionnaireViewModel.isTypeEnabled()"/>{% trans "Word or Phrase" %}#}
-            {#            </div>#}
-            {#            <div><input type="radio" name="type" value="integer" onchange="questionnaireViewModel.changeQuestionType(this)"#}
-            {#                        data-bind="checked:selectedQuestion().radio_type, enable: questionnaireViewModel.isTypeEnabled()"/>{% trans "Number" %}#}
-            {#            </div>#}
-            {#            <div><input type="radio" name="type" value="date" onchange="questionnaireViewModel.changeQuestionType(this)"#}
-            {#                        data-bind="checked:selectedQuestion().radio_type, enable: questionnaireViewModel.isTypeEnabled()"/>{% trans "Date" %}#}
-            {#            </div>#}
-            {#            <div><input type="radio" name="type" value="choice" onchange="questionnaireViewModel.changeQuestionType(this)"#}
-            {#                        data-bind="checked:selectedQuestion().radio_type, valueUpdate: 'keyup', enable: questionnaireViewModel.isTypeEnabled()"#}
-            {#                        class="choice-question-checkbox"/>{% trans "List of Choices" %}#}
-            {#            </div>#}
-            {#            <div><input type="radio" name="type" value="geocode" onchange="questionnaireViewModel.changeQuestionType(this)"#}
-            {#                        data-bind="checked:selectedQuestion().radio_type, enable: questionnaireViewModel.isTypeEnabled()"#}
-            {#                    />{% trans "GPS Coordinates" %}#}
-            {#            </div>#}
-
             <div class="dropdown">
                 <select data-bind="options: answerTypes, value:answerType, optionsText: 'text', optionsCaption: 'Select an Answer Type?', enable: questionnaireViewModel.isTypeEnabled()"></select>
             </div>
