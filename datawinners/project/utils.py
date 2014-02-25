@@ -23,7 +23,7 @@ def make_data_sender_links(project_id):
     return datasender_links
 
 
-def make_project_links(project, questionnaire_code, reporter_id=None):
+def make_project_links(project, questionnaire_code):
     project_id = project.id
     project_links = {'overview_link': reverse("project-overview", args=[project_id]),
                      'activate_project_link': reverse("activate_project", args=[project_id]),

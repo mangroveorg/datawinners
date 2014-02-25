@@ -132,8 +132,6 @@ def index(request):
     for row in rows:
         project_id = row['value']['_id']
         link = reverse('project-overview', args=[project_id])
-        if row['value']['state'] == 'Inactive':
-            link = reverse('edit_project', args=[project_id])
         activate_link = reverse('activate_project', args=[project_id])
         delete_link = reverse('delete_project', args=[project_id])
         project = dict(delete_link=delete_link, name=row['value']['name'], created=row['value']['created'],
@@ -144,7 +142,7 @@ def index(request):
                               context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_new_user
 @is_datasender
@@ -445,7 +443,7 @@ def activate_project(request, project_id=None):
 def _get_project_and_project_link(manager, project_id, reporter_id=None):
     project = Project.load(manager.database, project_id)
     questionnaire = FormModel.get(manager, project.qid)
-    project_links = make_project_links(project, questionnaire.form_code, reporter_id)
+    project_links = make_project_links(project, questionnaire.form_code)
     return project, project_links
 
 
@@ -493,9 +491,8 @@ def questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         project = Project.load(manager.database, project_id)
-        dashboard_page = settings.HOME_PAGE + "?deleted=true"
         if project.is_deleted():
-            return HttpResponseRedirect(dashboard_page)
+            return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
         if form_model.is_entity_type_reporter():
@@ -526,9 +523,8 @@ class SubjectWebQuestionnaireRequest():
     def _initialize(self, project_id):
         self.manager = get_database_manager(self.request.user)
         self.project = Project.load(self.manager.database, project_id)
-        dashboard_page = settings.HOME_PAGE + "?deleted=true"
         if self.project.is_deleted():
-            return HttpResponseRedirect(dashboard_page)
+            return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")
         self.is_data_sender = self.request.user.get_profile().reporter
         self.disable_link_class, self.hide_link_class = get_visibility_settings_for(self.request.user)
         self.form_code = _get_form_code(self.manager, self.project)
