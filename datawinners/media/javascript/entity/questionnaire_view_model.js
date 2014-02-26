@@ -168,10 +168,6 @@ var questionnaireViewModel =
             DW.questionnaire_was_changed = true;
         }
     },
-    changeQuestionType: function (type_selector) {
-//        DW.init_question_constraints();
-        DW.change_question_type_for_selected_question(type_selector.value);
-    },
     showLengthLimiter: function () {
         return questionnaireViewModel.selectedQuestion().length_limiter() == 'length_limited';
     },
@@ -236,5 +232,7 @@ questionnaireViewModel.isSelectedQuestionNull = ko.computed(function () {
     return this.selectedQuestion().isNullQuestion;
 }, questionnaireViewModel);
 
-
+questionnaireViewModel.answerType.subscribe(function(selected_answer_type){
+    DW.change_question_type_for_selected_question(selected_answer_type);
+}, questionnaireViewModel);
 
