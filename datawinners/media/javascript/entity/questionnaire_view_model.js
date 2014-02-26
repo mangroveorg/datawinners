@@ -233,6 +233,7 @@ questionnaireViewModel.isSelectedQuestionNull = ko.computed(function () {
 }, questionnaireViewModel);
 
 questionnaireViewModel.answerType.subscribe(function(selected_answer_type){
+    if(selected_answer_type === "") return;
     DW.change_question_type_for_selected_question(selected_answer_type);
 }, questionnaireViewModel);
 

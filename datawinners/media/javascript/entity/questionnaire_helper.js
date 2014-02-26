@@ -410,7 +410,7 @@ DW.has_questions_changed = function (existing_questions) {
     return !_.isEqual(new_question_codes, old_questions_codes)
 };
 DW.addNewQuestion = function () {
-    if(questionnaireViewModel.questions().length == 0) questionnaireViewModel.addQuestion();
+    if(questionnaireViewModel.isSelectedQuestionNull()) questionnaireViewModel.addQuestion();
     else{
         if ($('#question_form').valid()) questionnaireViewModel.addQuestion();
     }

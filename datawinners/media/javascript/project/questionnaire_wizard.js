@@ -10,8 +10,7 @@ $(document).ready(function () {
     }
     questionnaireViewModel.questionnaireCode(questionnaire_code);
     questionnaireViewModel.isEditMode = true;
-    questionnaireViewModel.selectedQuestion(questionnaireViewModel.questions()[0]);
-    questionnaireViewModel.selectedQuestion.valueHasMutated();
+    questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
     ko.validation.group(questionnaireViewModel);
     ko.applyBindings(questionnaireViewModel);
