@@ -156,11 +156,11 @@ $(document).ready(function () {
         }
     );
 
-    $('#questionnaire-code').blur(function () {
-        if ($('#project-state').val() == "Test" && $('#saved-questionnaire-code').val() != $('#questionnaire-code').val()) {
-            DW.questionnaire_was_changed = true;
-        }
-    });
+//    $('#questionnaire-code').blur(function () {
+//        if ($('#project-state').val() == "Test" && $('#saved-questionnaire-code').val() != $('#questionnaire-code').val()) {
+//            DW.questionnaire_was_changed = true;
+//        }
+//    });
 
     $("#question_title").focus(function () {
         if (questionnaireViewModel.selectedQuestion().event_time_field_flag()) {

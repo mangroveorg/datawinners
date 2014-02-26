@@ -18,7 +18,7 @@ var init_view_model = function () {
 //        Populating questions for subject questionnaire
         populate_subject_details();
     }
-    questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
+//    questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
     questionnaireViewModel.selectedQuestion.valueHasMutated();
     questionnaireViewModel.hasAddedNewQuestions = false;
     DW.smsPreview();
@@ -72,41 +72,41 @@ $(document).ready(function () {
     $('#question_form').live("click", DW.smsPreview);
     $('.delete').live("click", DW.charCount);
 
-    $.validator.addMethod('spacerule', function (value, element, params) {
-        var list = $.trim($('#' + element.id).val()).split(" ");
-        if (list.length > 1) {
-            return false;
-        }
-        return true;
-    }, gettext("Space is not allowed in question code"));
+//    $.validator.addMethod('spacerule', function (value, element, params) {
+//        var list = $.trim($('#' + element.id).val()).split(" ");
+//        if (list.length > 1) {
+//            return false;
+//        }
+//        return true;
+//    }, gettext("Space is not allowed in question code"));
+//
+//    $.validator.addMethod('regexrule', function (value, element, params) {
+//        var text = $('#' + element.id).val();
+//        var re = new RegExp('^[A-Za-z0-9 ]+$');
+//        return re.test(text);
+//    }, gettext("Only letters and digits are valid"));
+//
+//    $.validator.addMethod('naturalnumberrule', function (value, element, params) {
+//        var num = $('#' + element.id).val();
+//        return num != 0;
+//    }, gettext("Answer cannot be of length less than 1"));
+//
+//    $.validator.addMethod('duplicate', function (value, element, params) {
+//        var val = $('#' + element.id).val();
+//        var valid = true;
+//        if (!questionnaireViewModel.hasAddedNewQuestions)
+//            return true;
+//        for (index in questionnaireViewModel.questions()) {
+//            var question = questionnaireViewModel.questions()[index];
+//            if (question != questionnaireViewModel.selectedQuestion() && question.display().toLowerCase() == val.toLowerCase()) {
+//                valid = false;
+//                break;
+//            }
+//        }
+//        return valid;
+//    }, gettext("This question is a duplicate"));
 
-    $.validator.addMethod('regexrule', function (value, element, params) {
-        var text = $('#' + element.id).val();
-        var re = new RegExp('^[A-Za-z0-9 ]+$');
-        return re.test(text);
-    }, gettext("Only letters and digits are valid"));
-
-    $.validator.addMethod('naturalnumberrule', function (value, element, params) {
-        var num = $('#' + element.id).val();
-        return num != 0;
-    }, gettext("Answer cannot be of length less than 1"));
-
-    $.validator.addMethod('duplicate', function (value, element, params) {
-        var val = $('#' + element.id).val();
-        var valid = true;
-        if (!questionnaireViewModel.hasAddedNewQuestions)
-            return true;
-        for (index in questionnaireViewModel.questions()) {
-            var question = questionnaireViewModel.questions()[index];
-            if (question != questionnaireViewModel.selectedQuestion() && question.display().toLowerCase() == val.toLowerCase()) {
-                valid = false;
-                break;
-            }
-        }
-        return valid;
-    }, gettext("This question is a duplicate"));
-
-    $("#question_form").validate({
+//    $("#question_form").validate({
 //        messages: {
 //            max_length: {
 //                digits: gettext("Please enter positive numbers only")
@@ -136,15 +136,16 @@ $(document).ready(function () {
 //            answer_type: {
 //               required: true            }
 //        },
-        wrapper: "div",
-        errorPlacement: function (error, element) {
-            var offset = element.offset();
-            error.insertAfter(element);
-            error.addClass('error_arrow');  // add a class to the wrapper
-        }
-    });
 
-    $("#question_title").rules("add", {duplicate: true});
+//        wrapper: "div",
+//        errorPlacement: function (error, element) {
+//            var offset = element.offset();
+//            error.insertAfter(element);
+//            error.addClass('error_arrow');  // add a class to the wrapper
+//        }
+//    });
+
+//    $("#question_title").rules("add", {duplicate: true});
 
     $('input[name=text_length]:radio').change(
         function () {

@@ -404,11 +404,11 @@ $(document).ready(function () {
     $(change_selector).change(DW.set_questionnaire_was_change);
     $(click_selector).click(DW.set_questionnaire_was_change);
 
-    $("#questionnaire-code").change(function () {
-        if ($(this).val() != $("#saved-questionnaire-code").val()) {
-            DW.questionnaire_was_changed = true;
-        }
-    });
+//    $("#questionnaire-code").change(function () {
+//        if ($(this).val() != $("#saved-questionnaire-code").val()) {
+//            DW.questionnaire_was_changed = true;
+//        }
+//    });
 })
 
 
@@ -422,12 +422,12 @@ DW.has_questions_changed = function (existing_questions) {
     return !_.isEqual(new_question_codes, old_questions_codes)
 };
 DW.addNewQuestion = function () {
-    if(questionnaireViewModel.isSelectedQuestionNull()) questionnaireViewModel.addQuestion();
-    else{
-//        if ($('#question_form').valid()) {
-            questionnaireViewModel.addQuestion();
-//        }
-    }
+
+//    if(questionnaireViewModel.isSelectedQuestionNull()) questionnaireViewModel.addQuestion();
+//    else{
+//        if ($('#question_form').valid()) questionnaireViewModel.addQuestion();
+//    }
+    questionnaireViewModel.addQuestion();
     DW.close_the_tip_on_period_question();
     DW.smsPreview();
 };

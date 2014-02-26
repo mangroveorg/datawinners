@@ -93,7 +93,7 @@ var questionnaireViewModel =
         }
         questionnaireViewModel.questions.remove(question);
         if (questionnaireViewModel.questions().length == 0) {
-            questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
+//            questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
             return;
         }
         questionnaireViewModel.renumberQuestions();
@@ -154,7 +154,7 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedQuestion().choices.valueHasMutated();
         questionnaireViewModel.selectedQuestion.valueHasMutated();
     },
-    selectedQuestion: ko.observable({}),
+    selectedQuestion: ko.observable(),
     changeSelectedQuestion: function (question) {
         questionnaireViewModel.selectedQuestion(question);
         questionnaireViewModel.selectedQuestion.valueHasMutated();
@@ -231,10 +231,6 @@ var questionnaireViewModel =
 };
 questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
     return questionnaireViewModel.enableScrollToView;
-}, questionnaireViewModel);
-
-questionnaireViewModel.isSelectedQuestionNull = ko.computed(function () {
-    return this.selectedQuestion().isNullQuestion;
 }, questionnaireViewModel);
 
 questionnaireViewModel.answerType.subscribe(function(selected_answer_type){
