@@ -1,9 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from copy import copy
 import os
 import logging
 
 from django.conf import settings
+from django.db import IntegrityError
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 from django.contrib.auth.models import User, Group
 from django.core.validators import email_re
@@ -12,34 +12,33 @@ from django.contrib.sites.models import get_current_site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
-from datawinners.entity.subject_template_validator import SubjectTemplateValidator
-from mangrove.datastore.queries import get_entities_by_type
-from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, entity_type_as_sequence, get_json_field_infos, get_organization_telephone_number
-
-from datawinners.exceptions import InvalidEmailException, NameNotFoundException
-from mangrove.data_cleaner import TelephoneNumber
 from mangrove.datastore.documents import FormModelDocument
 from mangrove.datastore.entity_type import get_all_entity_types
-from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import timebox
-from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, Entity
-from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, EmptyRowException
+from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, EmptyRowException, \
+    MultipleReportersForANumberException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, \
     NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD, FormModel
 from mangrove.transport.player.parser import CsvParser, XlsParser, XlsDatasenderParser
-from mangrove.transport.contract.transport_info import Channel, TransportInfo
+from mangrove.transport.contract.transport_info import Channel
 from mangrove.transport.contract.response import Response
 from mangrove.transport.player.player import Player
 from mangrove.datastore import entity
-from mangrove.transport.work_flow import RegistrationWorkFlow, GeneralWorkFlow, ActivityReportWorkFlow
+from mangrove.transport.work_flow import RegistrationWorkFlow, ActivityReportWorkFlow
+from mangrove.contrib.registration_validators import case_insensitive_lookup
+from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE
+
+from datawinners.entity.subject_template_validator import SubjectTemplateValidator
+from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, \
+    entity_type_as_sequence, get_json_field_infos, get_organization_telephone_number
+from datawinners.exceptions import InvalidEmailException, NameNotFoundException
+from datawinners.location.LocationTree import get_location_tree
+from datawinners.main.utils import timebox
+from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.submission.location import LocationBridge
-from mangrove.contrib.registration_validators import case_insensitive_lookup
-from datawinners.accountmanagement.helper import get_all_registered_phone_numbers_on_trial_account
-from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, MOBILE_NUMBER_FIELD_CODE
 from datawinners.utils import get_organization
 from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
@@ -115,6 +114,13 @@ class FilePlayer(Player):
             raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
     def _import_data_sender(self, form_model, organization, values):
+        try:
+            if organization.in_trial_mode:
+                mobile_number = case_insensitive_lookup(values, "m")
+                data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number, organization=organization)
+                data_sender.save(force_insert=True)
+        except IntegrityError:
+            raise MultipleReportersForANumberException(mobile_number)
         email = case_insensitive_lookup(values, "email")
         if email:
             if not email_re.match(email):
@@ -127,15 +133,11 @@ class FilePlayer(Player):
             if response.success:
                 user = self._create_user(email, organization, response)
                 send_email_to_data_sender(user, _("en"))
-                mobile_number = case_insensitive_lookup(values,"m")
 
-                if organization.in_trial_mode:
-                    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
-                                                                         organization=organization)
-                    data_sender.save()
 
         else:
             response = self.submit(form_model, values, [])
+
         return response
 
     def _append_country_for_location_field(self, form_model, values, organization):

@@ -103,11 +103,6 @@ def _add_imported_datasenders_to_project(imported_datasenders_id, manager, proje
     project.save(manager)
 
 
-def add_imported_datasenders_to_trail_account(imported_data_senders, org_id):
-    imported_datasender_mobile_numbers = [imported_data_sender["mobile_number"] for imported_data_sender in
-                                          imported_data_senders]
-    DataSenderOnTrialAccount.add_imported_data_sender_to_trial_account(org_id, imported_datasender_mobile_numbers)
-
 
 @login_required
 @csrf_exempt
@@ -142,7 +137,6 @@ def registered_datasenders(request, project_id):
                                   detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})),
                                   project=project.name)
         org_id = request.user.get_profile().org_id
-        add_imported_datasenders_to_trail_account(imported_data_senders, org_id)
         return HttpResponse(json.dumps(
             {
                 'success': error_message is None and is_empty(failure_imports),
