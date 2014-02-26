@@ -36,7 +36,7 @@
 
         <div class="dropdown">
             <select data-bind="value: answerType, enable: subjectQuestionnaireViewModel.isTypeEnabled()"
-                    onchange="questionnaireViewModel.changeQuestionType(this)" autofocus>
+                    onchange="questionnaireViewModel.changeQuestionType" autofocus>
                 <option value=""> {% trans 'Select an Answer Type?' %} </option>
                 <option value="text"> {% trans 'Word or Phrase' %} </option>
                 <option value="integer"> {% trans 'Number' %} </option>
