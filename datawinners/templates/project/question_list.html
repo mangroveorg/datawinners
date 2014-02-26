@@ -5,7 +5,7 @@
 
     <div class="add_question">
         <a class="add_link" href="javascript:void(0);"
-    data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">{% trans "Add a Question" %}</a>
+    data-bind="click: DW.addNewQuestion">{% trans "Add a Question" %}</a>
     </div>
 
     <div class="questions" data-bind="scrollToView: enableScrollToView">
@@ -38,7 +38,7 @@
     </div>
     <div class="add_question" data-bind="visible: questionnaireViewModel.questions().length > 0">
         <a class="add_link" href="questionnaire.html#"
-        data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question();}">
+        data-bind="click: DW.addNewQuestion">
         {% trans "Add a Question" %}</a>
     </div>
 </div>
