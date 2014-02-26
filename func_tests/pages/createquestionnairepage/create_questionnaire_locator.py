@@ -27,7 +27,7 @@ WORD_OR_PHRASE_RB = by_css("input[value='text']")
 WORD_OR_PHRASE = 'Word or Phrase'
 NUMBER_OPTION = 'Number'
 DATE_OPTION = 'Date'
-LIST_OF_CHOICES_OPTION = 'List of Choices'
+LIST_OF_CHOICES_OPTION = 'Multiple Choice'
 GPS_COORDINATES = 'GPS Coordinates'
 NO_CHARACTER_LIMIT_RB = by_xpath(
     "//li[not(contains(@style,'none')) and contains(@data-bind,'showAddTextLength')]/div/input[@value='length_unlimited']")
