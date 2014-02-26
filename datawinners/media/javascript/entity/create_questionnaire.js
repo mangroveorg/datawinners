@@ -44,7 +44,8 @@ DW.questionnaire_form = function (formElement) {
 
 DW.questionnaire_form.prototype = {
     isValid: function () {
-        return $(this.formElement).valid();
+//        return $(this.formElement).valid();
+        return true;
     },
     processValidation: function () {
         if (!this.isValid()) {
@@ -106,35 +107,35 @@ $(document).ready(function () {
     }, gettext("This question is a duplicate"));
 
     $("#question_form").validate({
-        messages: {
-            max_length: {
-                digits: gettext("Please enter positive numbers only")
-            }
-        },
-        rules: {
-            code: {
-                required: true,
-                spacerule: true,
-                regexrule: true
-            },
-            'type[]': {
-                required: true
-            },
-            max_length: {
-                digits: true
-            },
-            range_min: {
-                number: true
-            },
-            range_max: {
-                number: true
-            },
-            choice_text: {
-                required: "#choice_text:visible"
-            },
-            answer_type: {
-               required: true            }
-        },
+//        messages: {
+//            max_length: {
+//                digits: gettext("Please enter positive numbers only")
+//            }
+//        },
+//        rules: {
+//            code: {
+//                required: true,
+//                spacerule: true,
+//                regexrule: true
+//            },
+//            'type[]': {
+//                required: true
+//            },
+//            max_length: {
+//                digits: true
+//            },
+//            range_min: {
+//                number: true
+//            },
+//            range_max: {
+//                number: true
+//            },
+//            choice_text: {
+//                required: "#choice_text:visible"
+//            },
+//            answer_type: {
+//               required: true            }
+//        },
         wrapper: "div",
         errorPlacement: function (error, element) {
             var offset = element.offset();

@@ -1,5 +1,5 @@
 {% load i18n %}
-<div data-bind="visible: !isSelectedQuestionNull()">
+<div data-bind="visible: !isSelectedQuestionNull(), validationOptions: {messageTemplate: 'errorBox'}">
     <ul>
         <li class="question">
             <label>{% trans "Question" %}</label>

@@ -38,13 +38,13 @@
 
                         <div class="add_question">
                             <a class="add_link" href="questionnaire.html#"
-                               data-bind="click: function() {if($('#question_form').valid()) subjectQuestionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">
+                               data-bind="click: function() {subjectQuestionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">
                                 {% trans "Add a Question" %}</a>
                         </div>
                         <div data-bind="scrollToView: enableScrollToView" class="questions">
                             <div class="question_list">
                                 <ol data-bind="foreach: {data: questions, as: 'question'}, sortable: questions">
-                                    <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion(), sort: !question.is_entity_question()} ">
+                                    <li data-bind="click: function() { questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion(), sort: !question.is_entity_question()} ">
                                         <a href="questionnaire.html#" data-bind="text: $data.display"></a>
 
                                         <div class="action_bar" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="add_question">
                             <a class="add_link" href="questionnaire.html#"
-                               data-bind="click: function() {if($('#question_form').valid()) subjectQuestionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">
+                               data-bind="click: function() {subjectQuestionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question(); DW.smsPreview();}">
                                 {% trans "Add a Question" %}</a>
                         </div>
                     </div>

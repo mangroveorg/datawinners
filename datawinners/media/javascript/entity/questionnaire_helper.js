@@ -95,6 +95,13 @@ DW.initChoices = function (choices) {
     return final_choices;
 };
 
+ko.validation.configure({
+    registerExtenders: true,
+    insertMessages: true,
+    parseInputAttributes: true,
+    messagesOnModified: true
+});
+
 DW.question.prototype = {
     _init: function () {
         var q = this.options;
@@ -112,7 +119,12 @@ DW.question.prototype = {
             this.name = ko.observable(q.name);
             this.title = ko.observable(q.label);
         } else {
-            this.title = ko.observable(q.name);
+            this.title = ko.observable(q.name).extend({
+                                                required: {
+                                                            params: true,
+                                                            message: gettext("This field is required.")
+                                                          }
+                                              });
         }
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
@@ -412,7 +424,9 @@ DW.has_questions_changed = function (existing_questions) {
 DW.addNewQuestion = function () {
     if(questionnaireViewModel.isSelectedQuestionNull()) questionnaireViewModel.addQuestion();
     else{
-        if ($('#question_form').valid()) questionnaireViewModel.addQuestion();
+//        if ($('#question_form').valid()) {
+            questionnaireViewModel.addQuestion();
+//        }
     }
     DW.close_the_tip_on_period_question();
     DW.smsPreview();

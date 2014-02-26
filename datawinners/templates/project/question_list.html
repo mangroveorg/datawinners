@@ -11,12 +11,13 @@
     <div class="questions" data-bind="scrollToView: enableScrollToView">
         <div class="question_list" id="que_code">
             <ol data-bind="foreach: questions, sortable: questions">
-                <li data-bind="click: function() { if($('#question_form').valid() || $parent.isSelectedQuestionNull()) {$parent.changeSelectedQuestion($data);} else { console.log('errored');} }, css:{question_selected:$data == $parent.selectedQuestion(),sort: true} ">
+                <li data-bind="click: function() {$parent.changeSelectedQuestion($data);}, css:{question_selected:$data == $parent.selectedQuestion(),sort: true} ">
                     <a href="javascript:void(0);" data-bind="text: $data.display"></a>
 
                     <div class="action_bar" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
                         <a href="javascript:void(0);" class="delete_link"
-                           data-bind="visible:$data.canBeDeleted(), click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion($data);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion($data);} }">{% trans "Delete" %}</a>
+{#                           data-bind="visible:$data.canBeDeleted(), click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion($data);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion($data);} }">{% trans "Delete" %}</a>#}
+                           data-bind="visible:$data.canBeDeleted(), click: function() {questionnaireViewModel.removeQuestion($data);}">{% trans "Delete" %}</a>
 
                         <a data-bind="visible: $index(), click: $parent.moveQuestionUp,clickBubble: false"
                            class="question_action">

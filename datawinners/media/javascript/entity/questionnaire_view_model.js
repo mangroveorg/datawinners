@@ -46,7 +46,12 @@ var questionnaireViewModel =
         location.hash = '';
     },
 
-    answerType: ko.observable(),
+    answerType: ko.observable().extend({
+                                                required: {
+                                                            params: true,
+                                                            message: gettext("This field is required.")
+                                                          }
+                                              }),
 
     addQuestion: function () {
         var question = new DW.question();
