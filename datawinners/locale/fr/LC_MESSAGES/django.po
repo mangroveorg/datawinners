@@ -4701,3 +4701,9 @@ msgstr "Commencez avec un Questionnaire vierge et ajoutez votre liste de questio
 
 msgid "Sorry, the telephone number %s has already been registered."
 msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée."
+
+msgid "Select an Answer Type"
+msgstr "Sélectionnez un type de réponse"
+
+msgid "Multiple Choice"
+msgstr ""
