@@ -9,6 +9,7 @@ function populate_subject_details() {
     });
 
 }
+
 var init_view_model = function () {
     if (is_project_questionnaire && is_edit) {
         questionnaireViewModel.setQuestionnaireCreationTypeToEdit();
