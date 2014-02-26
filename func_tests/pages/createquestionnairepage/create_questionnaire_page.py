@@ -133,7 +133,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(WORD_OR_PHRASE)
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(WORD_OR_PHRASE)
         limit = fetch_(LIMIT, from_(question_data))
         if limit == LIMITED:
             self.driver.find_radio_button(CHARACTER_LIMIT_RB).click()
@@ -152,7 +152,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(NUMBER_OPTION)
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(NUMBER_OPTION)
         self.driver.find_text_box(NUMBER_MIN_LENGTH_TB).enter_text(fetch_(MIN, from_(question_data)))
         self.driver.find_text_box(NUMBER_MAX_LENGTH_TB).enter_text(fetch_(MAX, from_(question_data)))
         return self
@@ -167,7 +167,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(DATE_OPTION)
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(DATE_OPTION)
         date_format = fetch_(DATE_FORMAT, from_(question_data))
         if (date_format == MM_YYYY):
             self.driver.find_radio_button(MONTH_YEAR_RB).click()
@@ -187,7 +187,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(LIST_OF_CHOICES_OPTION)
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(LIST_OF_CHOICES_OPTION)
         self.driver.find_element_by_id("choice_text").clear()
         index = 1
         choices = fetch_(CHOICE, from_(question_data))
@@ -216,7 +216,7 @@ class CreateQuestionnairePage(Page):
 
         return self
         """
-        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected_by_text(GPS_COORDINATES)
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(GPS_COORDINATES)
         return self
 
 

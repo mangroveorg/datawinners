@@ -24,11 +24,11 @@ CODE_TB = by_css("input#code")
 
 ANSWER_TYPE_DROPDOWN = by_css(".dropdown select")
 WORD_OR_PHRASE_RB = by_css("input[value='text']")
-WORD_OR_PHRASE = 'Word or Phrase'
-NUMBER_OPTION = 'Number'
-DATE_OPTION = 'Date'
-LIST_OF_CHOICES_OPTION = 'Multiple Choice'
-GPS_COORDINATES = 'GPS Coordinates'
+WORD_OR_PHRASE = 'text'
+NUMBER_OPTION = 'integer'
+DATE_OPTION = 'date'
+LIST_OF_CHOICES_OPTION = 'choice'
+GPS_COORDINATES = 'geocode'
 NO_CHARACTER_LIMIT_RB = by_xpath(
     "//li[not(contains(@style,'none')) and contains(@data-bind,'showAddTextLength')]/div/input[@value='length_unlimited']")
 CHARACTER_LIMIT_RB = by_xpath(
