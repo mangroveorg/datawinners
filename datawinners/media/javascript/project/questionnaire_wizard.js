@@ -84,23 +84,6 @@ $(document).ready(function () {
         }
 
     });
-    $("#questionnaire_code_change").dialog({
-            title: gettext("Warning !!"),
-            modal: true,
-            autoOpen: false,
-            height: 200,
-            width: 300,
-            closeText: 'hide'
-        }
-    );
-    $('#questionnaire-code').blur(function () {
-        if ($('#project-state').val() == "Test" && $('#saved-questionnaire-code').val() != $('#questionnaire-code').val()) {
-            $("#questionnaire_code_change").dialog("open");
-        }
-    });
-    $("#ok_button").bind("click", function () {
-        $("#questionnaire_code_change").dialog("close");
-    });
 
     function hide_message() {
         $('#message-label').delay(5000).fadeOut();
@@ -176,58 +159,21 @@ $(document).ready(function () {
         return false;
     }
 
-    $("#questionnaire-change").dialog({
-        autoOpen: false,
-        modal: true,
-        title: gettext('Your Collected Data Will be Lost'),
-        zIndex: 200,
-        width: 500
-    });
-
-    $("#delete_warning").dialog({
-        autoOpen: false,
-        modal: true,
-        title: gettext('Your Collected Data Will be Lost'),
-        zIndex: 200,
-        width: 600
-    });
-
     $("#submit-button").click(function() {
         if(!DW.check_empty_questionnaire()) return false;
 
         DW.loading();
-        if ($("#qtype").val() != undefined) { //when does this occur?
-            $("#questionnaire-change").dialog("open");
-        } else {
-            submit_questionnaire();
-        }
+        submit_questionnaire();
         return false;
     });
-
-    $("#confirm_edition").click(function () {
-        $("#questionnaire-change").dialog("close");
-        submit_questionnaire();
-    })
-
 
     $('input[name=text_length]:radio').change(
         function () {
             questionnaireViewModel.selectedQuestion().max_length("");
         }
     );
-    $("#edit_warning").dialog({
-        title: gettext("Shared Registration Form"),
-        modal: true,
-        autoOpen: true,
-        width: 600,
-        height: 150,
-        position: ['center', 120]
-    });
 
-    $("#edit_ok").click(function () {
-        $("#edit_warning").dialog("close");
-    });
-
+    //Currently unused - but may be used in future
     $("#edit_cancel").click(function () {
         history.go(-1);
     })

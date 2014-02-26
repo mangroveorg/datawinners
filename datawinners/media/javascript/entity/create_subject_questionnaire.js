@@ -1,4 +1,3 @@
-//var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
 var questionnaire_form =new DW.questionnaire_form('#question_form');
 
 DW.hide_message = function() {

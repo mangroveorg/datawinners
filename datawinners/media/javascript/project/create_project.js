@@ -49,9 +49,13 @@ basic_project_info = function () {
 DW.post_project_data = function (state, function_to_construct_redirect_url_on_success) {
     var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
 
-
-    var post_data = {'questionnaire-code':questionnaireViewModel.questionnaireCode(), 'question-set':questionnaire_data, 'profile_form':basic_project_info(),
-        'project_state':state, 'csrfmiddlewaretoken':$('#question_form input[name=csrfmiddlewaretoken]').val()};
+    var post_data = {
+                      'questionnaire-code':questionnaireViewModel.questionnaireCode(),
+                      'question-set':questionnaire_data,
+                      'profile_form':basic_project_info(),
+                      'project_state':state,
+                      'csrfmiddlewaretoken':$('#question_form input[name=csrfmiddlewaretoken]').val()
+                    };
 
     $.post(post_url , post_data, function (response) {
         var responseJson = $.parseJSON(response);
@@ -131,7 +135,6 @@ $(document).ready(function () {
         else
             DW.change_question_title_for_reporting_period('month', 'period');
     });
-
 
     $("#delete_question").dialog({
             title:gettext("Warning !!"),
