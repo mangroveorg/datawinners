@@ -130,7 +130,9 @@ $(document).ready(function () {
             },
             choice_text: {
                 required: "#choice_text:visible"
-            }
+            },
+            answer_type: {
+               required: true            }
         },
         wrapper: "div",
         errorPlacement: function (error, element) {

@@ -46,7 +46,8 @@ var questionnaireViewModel =
         location.hash = '';
     },
 
-    answerType : ko.observable(),
+    answerType: ko.observable(),
+
     addQuestion: function () {
         var question = new DW.question();
         question.display = ko.dependentObservable(function () {
@@ -154,7 +155,7 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
         var questionType = questionnaireViewModel.selectedQuestion().isAChoiceTypeQuestion();
-        if(questionType == 'none') questionType = questionnaireViewModel.selectedQuestion().type();
+        if (questionType == 'none') questionType = questionnaireViewModel.selectedQuestion().type();
         questionnaireViewModel.answerType(questionType);
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
@@ -225,6 +226,7 @@ var questionnaireViewModel =
 
     },
     enableScrollToView: ko.observable(false)
+
 };
 questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
     return questionnaireViewModel.enableScrollToView;

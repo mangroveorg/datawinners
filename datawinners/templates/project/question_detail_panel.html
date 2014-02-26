@@ -38,7 +38,7 @@
             <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
             <div class="dropdown">
-                <select data-bind="value: answerType" onchange="questionnaireViewModel.changeQuestionType(this)" autofocus>
+                <select name="answer_type" data-bind="value: answerType" onchange="questionnaireViewModel.changeQuestionType(this)" autofocus>
                     <option value=""> {% trans 'Select an Answer Type?' %} </option>
                     <option value="text"> {% trans 'Word or Phrase' %} </option>
                     <option value="integer"> {% trans 'Number' %} </option>
@@ -46,7 +46,6 @@
                     <option value="choice"> {% trans 'List of Choices' %} </option>
                     <option value="geocode"> {% trans 'GPS Coordinates' %} </option>
                 </select>
-{#                <select data-bind="options: answerTypes, value:answerType, optionsText: 'text', optionsCaption: 'Select an Answer Type?', enable: questionnaireViewModel.isTypeEnabled()"></select>#}
             </div>
         </li>
 
