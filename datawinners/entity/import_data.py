@@ -3,7 +3,7 @@ import os
 import logging
 
 from django.conf import settings
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 from django.contrib.auth.models import User, Group
 from django.core.validators import email_re
@@ -118,8 +118,11 @@ class FilePlayer(Player):
             if organization.in_trial_mode:
                 mobile_number = case_insensitive_lookup(values, "m")
                 data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number, organization=organization)
+                sid = transaction.savepoint()
                 data_sender.save(force_insert=True)
+                transaction.savepoint_commit(sid)
         except IntegrityError:
+            transaction.savepoint_rollback(sid)
             raise MultipleReportersForANumberException(mobile_number)
         email = case_insensitive_lookup(values, "email")
         if email:
@@ -454,7 +457,7 @@ def import_data(request, manager, default_parser=None, form_code=None):
         error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xls) template file!")
     except FormCodeDoesNotMatchException as e:
         error_message = e.message
-    except Exception:
+    except Exception as e:
         error_message = _(u"Some unexpected error happened. Please check the excel file and import again.")
 
     return error_message, failure_imports, response_message, imported_entities
