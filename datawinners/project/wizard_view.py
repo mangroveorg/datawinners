@@ -221,7 +221,7 @@ def edit_project(request, project_id=None):
             old_field_codes = questionnaire.field_codes()
             questionnaire = update_questionnaire(questionnaire, request.POST,
                                                  #see line num 107
-                                                 REPORTER_ENTITY_TYPE,
+                                                 project.entity_type,
                                                  project_info.get('name'), manager, project_info.get('language'))
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
