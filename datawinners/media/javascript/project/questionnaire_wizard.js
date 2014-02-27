@@ -9,6 +9,7 @@ $(document).ready(function () {
         questionnaireViewModel.loadQuestion(questions);
     }
     questionnaireViewModel.questionnaireCode(questionnaire_code);
+    questionnaireViewModel.language(project_language);
     questionnaireViewModel.isEditMode = true;
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
     ko.validation.group(questionnaireViewModel);
