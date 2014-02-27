@@ -44,8 +44,8 @@
                                         <a href="questionnaire.html#" data-bind="text: $data.display"></a>
 
                                         <div class="action_bar" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
-                                            <a href="javascript:void(0);" class="delete_link"
-                                                   data-bind="visible: question.canBeDeleted(), click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
+                                            <a href="javascript:void(0);" class="delete_link hidden"
+                                                   data-bind="css: {visible: $data.canBeDeleted()}, click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
                                             <a data-bind="visible: $index() && !question.is_entity_question(), click: $parent.moveQuestionUp, clickBubble: false"
                                                    class="question_action">
                                                     <span class="move-text"><img class="move-image"
