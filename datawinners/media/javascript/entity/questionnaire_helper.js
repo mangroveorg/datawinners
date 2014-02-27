@@ -128,10 +128,14 @@ DW.question.prototype = {
         }
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
-//        this.radio_type = ko.dependentObservable({
-//            read:function(){return ((this.type().indexOf('select') >= 0)?"choice":this.type());},
-//            owner:this});
         this.required = ko.observable(q.required);
+
+        this.answerType = ko.observable();
+
+        this.answerType.subscribe(function(selected_answer_type){
+            if(selected_answer_type === "") return;
+            DW.change_question_type_for_selected_question(selected_answer_type);
+        }, this);
 
         var initialValues = DW.initChoices(q.choices);
         this.choices = ko.observableArray(initialValues);
