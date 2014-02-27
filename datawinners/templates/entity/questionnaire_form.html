@@ -79,8 +79,11 @@
                         <div>
                             {% include 'entity/question_detail_panel.html' %}
                         </div>
+                        <div data-bind="hidden: selectedQuestion" class="select_question_message">
+                            Select a question to edit or add another question.
+                        </div>
 
-                        <div class="grid_13 alpha omega">
+                        <div class="grid_13 alpha omega" data-bind="visible: selectedQuestion">
                             <div id='char-count-span'>
                                 <span id='char-count'>
                                 </span>
@@ -92,7 +95,7 @@
                             </div>
                         </div>
 
-                        <div class="mobile">
+                        <div class="mobile"  data-bind="visible: selectedQuestion">
                             <textarea name="message" cols="30" rows="4" id="sms_preview" readonly="true"></textarea>
                         </div>
                     </div>

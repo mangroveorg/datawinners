@@ -73,8 +73,7 @@ DW.question = function (question) {
         date_format: "mm.yyyy",
         instruction: gettext("Answer must be a text"),
         newly_added_question: false,
-        event_time_field_flag: false,
-        is_null_question: false
+        event_time_field_flag: false
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
@@ -105,7 +104,6 @@ ko.validation.configure({
 DW.question.prototype = {
     _init: function () {
         var q = this.options;
-        this.isNullQuestion = q.is_null_question;
         this.newly_added_question = ko.observable(q.newly_added_question);
         this.range_min = ko.observable(q.range.min);
         this.event_time_field_flag = ko.observable(q.event_time_field_flag);
@@ -115,6 +113,7 @@ DW.question.prototype = {
 
         this.min_length = ko.observable(q.length.min);
         this.max_length = ko.observable(q.length.max);
+
         if (DW.isRegistrationQuestionnaire()) {
             this.name = ko.observable(q.name);
             this.title = ko.observable(q.label);
@@ -128,9 +127,27 @@ DW.question.prototype = {
         }
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
+        this.is_entity_question = ko.observable(q.entity_question_flag);
+
+        this.showDateFormats = ko.computed(function(){
+            return this.type() == "date";
+        }, this);
+
+        this.showAddRange = ko.computed(function() {
+            return this.type() == 'integer';
+        }, this);
+
+        this.showAddTextLength = ko.computed(function() {
+            return this.type() == 'text' && !this.is_entity_question();
+        }, this);
+
         this.required = ko.observable(q.required);
 
         this.answerType = ko.observable();
+
+        this.display = ko.computed(function() {
+            return this.title();
+        }, this);
 
         this.answerType.subscribe(function(selected_answer_type){
             if(selected_answer_type === "") return;
@@ -139,10 +156,66 @@ DW.question.prototype = {
 
         var initialValues = DW.initChoices(q.choices);
         this.choices = ko.observableArray(initialValues);
-        this.is_entity_question = ko.observable(q.entity_question_flag);
+
+        this.choiceCanBeDeleted = ko.computed(function() {
+            return this.choices().length > 1;
+        }, this);
+
+        this.removeOptionFromQuestion = function (choice) {
+            this.checkForQuestionnaireChange(choice)
+            var choices = this.choices();
+            var indexOfChoice = $.inArray(choice, choices);
+            var lastChoiceValue = choice['val'];
+            var i = indexOfChoice + 1;
+            for (i; i < choices.length; i = i + 1) {
+                choices[i]['val'] = lastChoiceValue;
+                $("span.bullet", $("#options_list li").eq(i)).html(lastChoiceValue + ".");
+                lastChoiceValue = DW.next_option_value(lastChoiceValue);
+            }
+            this.choices.remove(choice);
+        };
+
+        this.addOptionToQuestion = function() {
+            var selectedQuestionCode = "a";
+            if (this.choices().length > 0) {
+                var lastChoice = this.choices()[this.choices().length - 1];
+                selectedQuestionCode = DW.next_option_value(lastChoice.val);
+            }
+            this.choices.push({text: "", val: selectedQuestionCode});
+        };
+
+        this.showAddChoice = function() {
+            if (this.isAChoiceTypeQuestion() == "choice") {
+                if (this.choices().length == 0) {
+                    this.addOptionToQuestion();
+                }
+                return true;
+            }
+            return false;
+        };
+
+
+        this.checkForQuestionnaireChange = function(choice) {
+//            var is_editing = typeof(is_edit) != 'undefined' && is_edit;
+            if (_.any($(this.options.choices), function (v) {
+                return v.val == choice.val;
+            })) {
+                DW.questionnaire_was_changed = true;
+            }
+        };
+
         this.date_format = ko.observable(q.date_format);
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
 //        same as ko.computed
+        this.showLengthLimiter = ko.computed( function(){
+            return this.length_limiter() == 'length_limited';
+        }, this);
+
+        this.length_limiter.subscribe(function(new_length_limiter){
+            if(new_length_limiter == 'length_unlimited')
+                this.max_length("");
+        }, this);
+
         this.instruction = ko.dependentObservable({
             read: function () {
                 if (this.is_entity_question() && this.max_length() == 20) {

@@ -6,6 +6,6 @@
         <input id="choice_text" name="choice_text" class="required" type="text"
                data-bind="value: text, uniqueName: true, valueUpdate: 'keyup'"/>
         <a href="#" class='delete delete_link'
-           data-bind="visible: questionnaireViewModel.choiceCanBeDeleted(), click:function(){questionnaireViewModel.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
+           data-bind="visible: $parent.choiceCanBeDeleted, click:function(){$parent.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
     </li>
 </script>

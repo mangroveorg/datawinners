@@ -53,7 +53,8 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
     json_string = post['question-set']
     question_set = json.loads(json_string)
     QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
-    questionnaire.deactivate() if post['project_state'] == ProjectState.INACTIVE else questionnaire.set_test_mode()
+    #TODO: Remove state
+    questionnaire.set_test_mode()
     return questionnaire
 
 
@@ -224,7 +225,7 @@ def edit_project(request, project_id=None):
                                                  project_info.get('name'), manager, project_info.get('language'))
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
-            project.state = request.POST['project_state']
+            #project.state = request.POST['project_state']
             project.qid = questionnaire.save()
 
             deleted_question_codes = _get_deleted_question_codes(old_codes=old_field_codes,

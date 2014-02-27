@@ -21,6 +21,7 @@ from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, SurveyResponseForm
+from datawinners.project.wizard_view import edit_project
 from datawinners.scheduler.smsclient import NoSMSCException
 from mangrove.datastore.entity import get_by_short_code
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -507,6 +508,7 @@ def questionnaire(request, project_id=None):
                                    'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,
+                                   'post_url': reverse(edit_project, args=[project_id]),
                                    'preview_links': get_preview_and_instruction_links_for_questionnaire()},
                                   context_instance=RequestContext(request))
 

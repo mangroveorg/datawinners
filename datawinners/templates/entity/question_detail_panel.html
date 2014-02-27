@@ -36,19 +36,20 @@
             <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
             <div class="dropdown">
-                <select data-bind="value: $root.answerType, enable: $root.isTypeEnabled()"  autofocus>
+                <select data-bind="value: answerType, enable: $root.isTypeEnabled()"  autofocus>
                     <option value="">{% trans 'Select an Answer Type' %}</option>
                     <option value="text">{% trans 'Word or Phrase' %}</option>
                     <option value="integer">{% trans 'Number' %}</option>
                     <option value="date">{% trans 'Date' %}</option>
                     <option value="choice">{% trans 'List of Choices' %}</option>
                     <option value="geocode">{% trans 'GPS Coordinates' %}</option>
+                    <option value="list">{% trans 'Location' %}</option>
                     <option value="telephone_number">{% trans "Telephone number" %}</option>
                 </select>
             </div>
         </li>
 
-        <li data-bind="visible: $root.showDateFormats()">
+        <li data-bind="visible: showDateFormats">
             <div class="margin_top_20">
                 <p>
                     <label>{% trans "Select Date Format" %}</label>
@@ -67,7 +68,7 @@
                 </p>
             </div>
         </li>
-        <li data-bind="visible: $root.showAddChoice()">
+        <li data-bind="visible: showAddChoice()">
             {% include 'project/choice_template.html' %}
 
             <div class="margin_top_20">
@@ -76,7 +77,7 @@
 
                 </ol>
                 <a href="questionnaire_wizard.html#" class="add_link"
-                   data-bind="click: function() { $root.addOptionToQuestion(); }, valueUpdate: 'keyup', visible:$root.isTypeEnabled()">
+                   data-bind="click: function() { addOptionToQuestion(); }, valueUpdate: 'keyup', visible:$root.isTypeEnabled()">
                     {% trans "Add Answer Choice" %}</a>
             </div>
             <div>
@@ -88,7 +89,7 @@
                 {% trans "multiple answers are permitted" %}<br/>
             </div>
         </li>
-        <li data-bind="visible: $root.showAddRange()">
+        <li data-bind="visible: showAddRange">
             <div class="margin_top_20">
                 <div class="question_option">
                     {% trans "Min:" %}
@@ -103,10 +104,10 @@
                 </div>
             </div>
         </li>
-        <li data-bind="visible: $root.showAddTextLength() && !is_entity_question()">
+        <li data-bind="visible: showAddTextLength">
             <div class="margin_top_20">
                 <input type="radio" name="text_length" value="length_unlimited" checked="true"
-                       data-bind="checked:length_limiter, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                       data-bind="checked:length_limiter, enable: $root.isTypeEnabled()"/>
                 {% trans "No, answer has no character limit" %}<br/>
 
                 <div class="max_char">
@@ -115,7 +116,7 @@
                     {% trans "Yes, maximum number of characters should be" %}
                     <div>
                         <input name="max_length" type="text" id="max_length"
-                               data-bind="value:max_length, visible: $root.showLengthLimiter(), valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                               data-bind="value:max_length, visible: showLengthLimiter, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
                     </div>
                 </div>
             </div>

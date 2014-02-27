@@ -87,22 +87,29 @@ $(document).ready(function () {
         $('#message-label').delay(5000).fadeOut();
     }
 
+    function basic_project_info() {
+        var name = questionnaireViewModel.projectName();
+        var language = questionnaireViewModel.language();
+        var activity_report = 'yes';
+        return JSON.stringify({'name':name, 'language':language, 'activity_report':activity_report});
+    };
+
     function submit_questionnaire() {
 
         var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
 
-        if (!$('#question_form').valid()) {
-            $("#message-label").show().html("<label class='error_message'> " + gettext("This questionnaire has an error") + ".</label> ");
-            hide_message();
-            return;
-        }
+//        if (!$('#question_form').valid()) {
+//            $("#message-label").show().html("<label class='error_message'> " + gettext("This questionnaire has an error") + ".</label> ");
+//            hide_message();
+//            return;
+//        }
         DW.loading();
         var post_data = {
                             'questionnaire-code': questionnaireViewModel.questionnaireCode(),
                             'question-set': data,
-                            'pid': $('#project-id').val()
+                            'profile_form':basic_project_info()
                         };
-        $.post('/project/questionnaire/save', post_data,
+        $.post(post_url, post_data,
             function (response) {
                 $("#message-label").removeClass("none");
                 $("#message-label").removeClass("message-box");
