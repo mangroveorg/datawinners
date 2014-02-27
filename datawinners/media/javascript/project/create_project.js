@@ -1,15 +1,3 @@
-DW.init_has_submission_delete_warning = function(){
-    kwargs = {container: "#submission_exists",
-        is_continue: !is_edit,
-        title: gettext('Warning: Your Collected Data Will be Lost'),
-        continue_handler: function(){
-            question = questionnaireViewModel.selectedQuestion();
-            questionnaireViewModel.removeQuestion(question);
-        }
-    }
-    DW.has_submission_delete_warning = new DW.warning_dialog(kwargs);
-}
-
 DW.init_has_new_submission_delete_warning = function(){
     kwargs = {container: "#new_submission_exists",
         is_continue: !is_edit,

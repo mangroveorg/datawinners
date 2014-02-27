@@ -500,11 +500,14 @@ def questionnaire(request, project_id=None):
             fields = helper.hide_entity_question(form_model.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
         project_links = make_project_links(project, form_model.form_code)
+        success, error = submission_stats(manager, form_model.form_code)
+        project_has_submissions = (success + error > 0)
         in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/questionnaire.html',
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': form_model.form_code,
                                    'project': project,
+                                   'project_has_submissions': project_has_submissions,
                                    'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,

@@ -481,12 +481,26 @@ $(document).ready(function () {
     $(change_selector).change(DW.set_questionnaire_was_change);
     $(click_selector).click(DW.set_questionnaire_was_change);
 
+    DW.has_submission_delete_warning = (function(){
+        kwargs = {
+                    container: "#submission_exists",
+                    is_continue: false,
+                    title: gettext('Warning: Your Collected Data Will be Lost'),
+                    continue_handler: function(){
+                        question = questionnaireViewModel.selectedQuestion();
+                        questionnaireViewModel.removeQuestion(question);
+                    }
+                 };
+        return new DW.warning_dialog(kwargs);
+    }());
+
+
 //    $("#questionnaire-code").change(function () {
 //        if ($(this).val() != $("#saved-questionnaire-code").val()) {
 //            DW.questionnaire_was_changed = true;
 //        }
 //    });
-})
+});
 
 
 DW.has_questions_changed = function (existing_questions) {

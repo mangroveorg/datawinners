@@ -10,6 +10,7 @@ $(document).ready(function () {
     }
     questionnaireViewModel.questionnaireCode(questionnaire_code);
     questionnaireViewModel.language(project_language);
+    questionnaireViewModel.hasExistingData = project_has_submissions === 'True';
     questionnaireViewModel.isEditMode = true;
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
     ko.validation.group(questionnaireViewModel);
@@ -150,5 +151,6 @@ $(document).ready(function () {
     //Currently unused - but may be used in future
     $("#edit_cancel").click(function () {
         history.go(-1);
-    })
+    });
+
 });

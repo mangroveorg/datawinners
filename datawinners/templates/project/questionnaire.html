@@ -40,6 +40,7 @@
         var smart_phone_preview_link = "{{ preview_links.smart_phone_preview }}";
         var questionnaire_code = "{{ questionnaire_code }}";
         var project_language = "{{ project.language }}";
+        var project_has_submissions = "{{ project_has_submissions }}";
         var post_url = "{{ post_url }}"
     </script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
@@ -101,6 +102,5 @@
     <div class="questionnaire_preview">
         {% trans "Generating the questionnaire preview." %}
     </div>
-    {% include "empty_questionnaire_dialog.html" %}
-    {% include "redistribute_questionnaire_dialog.html" %}
+        {% include "warning_edit_questionnaire.html" %}
 {% endblock %}

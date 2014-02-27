@@ -7,6 +7,8 @@ var questionnaireViewModel =
 {
     questions: ko.observableArray([]),
     isEditMode: false,
+    hasExistingData: false,
+
     hasAddedNewQuestions: false,
     hasDeletedOldQuestion: false,
     availableLanguages: [
@@ -33,7 +35,9 @@ var questionnaireViewModel =
                                                     params: '^[A-Za-z0-9 ]+$'
                                                  }
                                       }),
+
     showQuestionnaireForm: ko.observable(),
+
     setQuestionnaireCreationType: function () {
         location.hash = 'questionnaire/new';
     },
@@ -54,11 +58,11 @@ var questionnaireViewModel =
         //TODO:verify and remove
         DW.init_question_constraints();
         questionnaireViewModel.selectedQuestion.valueHasMutated();
-//        questionnaireViewModel.questions.valueHasMutated();
         DW.charCount();
         questionnaireViewModel.enableScrollToView(true);
         questionnaireViewModel.hasAddedNewQuestions = true;
     },
+
     loadQuestion: function (question) {
         questionnaireViewModel.questions.push(question);
     },
@@ -73,13 +77,19 @@ var questionnaireViewModel =
         if (questionnaireViewModel.questions().length == 0) {
             return;
         }
-//        questionnaireViewModel.renumberQuestions();
         if (question == questionnaireViewModel.selectedQuestion()) {
             var next_index = (index) % questionnaireViewModel.questions().length;
             questionnaireViewModel.changeSelectedQuestion(questionnaireViewModel.questions()[next_index]);
         }
         questionnaireViewModel.hasAddedNewQuestions = true;
         questionnaireViewModel.questions.valueHasMutated();
+    },
+
+    validateAndRemoveQuestion: function(question){
+        if(this.isEditMode && this.hasExistingData && !question.newly_added_question())
+            DW.has_submission_delete_warning.show_warning();
+        else
+            this.removeQuestion(question);
     },
 
     //TODO: Verify usage
@@ -90,6 +100,7 @@ var questionnaireViewModel =
     },
 
     selectedQuestion: ko.observable(),
+
     changeSelectedQuestion: function (question) {
         questionnaireViewModel.selectedQuestion(question);
         questionnaireViewModel.selectedQuestion.valueHasMutated();
@@ -127,9 +138,11 @@ var questionnaireViewModel =
         if (currentIndex < questions.length - 1)
             questionnaireViewModel.questions.splice(currentIndex, 2, questions[currentIndex + 1], questions[currentIndex]);
     },
+
     questionnaireHasErrors: ko.observable([]),
 
     errorInResponse: ko.observable(false),
+
     responseErrorMsg: ko.observable(),
 
     submit: function () {
@@ -148,6 +161,7 @@ var questionnaireViewModel =
         }
 
     },
+
     enableScrollToView: ko.observable(false)
 
 };
