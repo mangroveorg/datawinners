@@ -1124,7 +1124,7 @@ msgid "Select what kind of answer you want from your Data Senders."
 msgstr ""
 
 msgid "Word or Phrase"
-msgstr "Word"
+msgstr ""
 
 msgid "Number"
 msgstr ""
@@ -1134,6 +1134,10 @@ msgstr ""
 
 msgid "List of Choices"
 msgstr ""
+
+msgid "Multiple Choice"
+msgstr ""
+
 
 msgid "GPS Coordinates"
 msgstr ""
@@ -4490,7 +4494,4 @@ msgid "Sorry, the telephone number %s has already been registered."
 msgstr ""
 
 msgid "Select an Answer Type"
-msgstr ""
-
-msgid "Multiple Choice"
 msgstr ""

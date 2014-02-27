@@ -1207,6 +1207,9 @@ msgstr "Date"
 msgid "List of Choices"
 msgstr "Liste de choix"
 
+msgid "Multiple Choice"
+msgstr "Choix multiples"
+
 msgid "GPS Coordinates"
 msgstr "Coordonnées GPS"
 
@@ -4704,6 +4707,3 @@ msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée."
 
 msgid "Select an Answer Type"
 msgstr "Sélectionnez un type de réponse"
-
-msgid "Multiple Choice"
-msgstr ""
