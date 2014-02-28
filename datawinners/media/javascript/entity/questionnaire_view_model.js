@@ -152,6 +152,10 @@ var questionnaireViewModel =
             return true;
         var currentQuestion = this.selectedQuestion();
         return currentQuestion.validate();
+    },
+
+    validateForSubmission: function(){
+        return questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion();
     }
 
 };

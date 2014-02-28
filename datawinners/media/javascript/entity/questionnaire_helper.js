@@ -4,11 +4,8 @@ DW.ko = {
                 var params = $.extend({}, defaults, options);
 
                 var observable = ko.observable(params.value);
-
                 observable.valid = ko.observable(params.valid);
-
                 observable.error = ko.observable(params.error);
-
                 observable.clearError = function(){
                   this.valid(true);
                   this.error("");
@@ -19,14 +16,13 @@ DW.ko = {
         createValidatableObservableArray: function(options){
                 var defaults = {value: [], valid: ko.observable(true), error: ko.observable("")};
                 var observable = $.extend({}, defaults, options);
-//                var observable = ko.observableArray(params.value);
                 observable.clearError = function(){
                   this.valid(true);
                   this.error("");
                 };
                 return observable;
             }
-        };
+};
 
 
 
@@ -51,8 +47,7 @@ DW.init_empty_questionnaire_warning = function () {
 }
 
 DW.check_empty_questionnaire = function () {
-    var questions = questionnaireViewModel.questions();
-    if (questions.length == 0) {
+    if (questionnaireViewModel.questions().length == 0) {
         DW.empty_questionnaire_warning.show_warning();
         return false;
     }
@@ -602,11 +597,6 @@ DW.has_questions_changed = function (existing_questions) {
 };
 
 DW.addNewQuestion = function () {
-
-//    if(questionnaireViewModel.isSelectedQuestionNull()) questionnaireViewModel.addQuestion();
-//    else{
-//        if ($('#question_form').valid()) questionnaireViewModel.addQuestion();
-//    }
     if(!questionnaireViewModel.validateSelectedQuestion())
         return;
     questionnaireViewModel.addQuestion();

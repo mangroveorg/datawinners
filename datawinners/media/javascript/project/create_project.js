@@ -67,6 +67,7 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
     });
 };
 
+//Used in qns instruction and preview - replace and delete
 DW.questionnaire_form_validate = function(){
    if (!questionnaireViewModel.isValid()) {
         questionnaireViewModel.errors.showAllMessages();
@@ -85,6 +86,7 @@ DW.projectRouter = Sammy(function () {
             questionnaireViewModel.questionnaireCode(questionnaire_code);
         });
 
+    //TODO: Remove controller
         this.get('#:questionnaire/edit', function () {
             $.getJSON("/project/details/" + questionnaire_code, function (project_details) {
                 questionnaireViewModel.projectName(project_details.project_name);
@@ -108,41 +110,56 @@ $(document).ready(function () {
     DW.option_warning_dialog.init();
     DW.init_delete_periodicity_question_warning();
     DW.init_empty_questionnaire_warning();
-    if (is_edit){
-        $('.report_type').find('input,select').prop('disabled',true);
-        $("#add_subject_type").empty();
-        DW.init_has_submission_delete_warning();
-        DW.init_has_new_submission_delete_warning();
-        DW.init_inform_datasender_about_changes();
-    }
-    var activity_report_question = $('#question_title').val();
 
-    $('input[name="date_format"]').change(function () {
-        if ($('input[name="date_format"]:checked').val() == 'mm.yyyy')
-            DW.change_question_title_for_reporting_period('period', 'month');
-        else
-            DW.change_question_title_for_reporting_period('month', 'period');
+    $("#save_and_create").bind("click", function () {
+        if(!DW.check_empty_questionnaire())
+            return false;
+
+        if (questionnaireViewModel.validateForSubmission()) {
+            $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
+            DW.post_project_data('Test', function (response) {
+                return '/project/overview/' + response.project_id;
+            });
+        }
     });
 
-    $("#delete_question").dialog({
-            title:gettext("Warning !!"),
-            modal:true,
-            autoOpen:false,
-            height:275,
-            width:300,
-            closeText:'hide'
-        }
-    );
+    DW.projectRouter.run();
 
-    $("#edit_question").dialog({
-            title:gettext("Warning !!"),
-            modal:true,
-            autoOpen:false,
-            height:275,
-            width:300,
-            closeText:'hide'
-        }
-    );
+//    if (is_edit){
+//        $('.report_type').find('input,select').prop('disabled',true);
+//        $("#add_subject_type").empty();
+//        DW.init_has_submission_delete_warning();
+//        DW.init_has_new_submission_delete_warning();
+//        DW.init_inform_datasender_about_changes();
+//    }
+//    var activity_report_question = $('#question_title').val();
+
+//    $('input[name="date_format"]').change(function () {
+//        if ($('input[name="date_format"]:checked').val() == 'mm.yyyy')
+//            DW.change_question_title_for_reporting_period('period', 'month');
+//        else
+//            DW.change_question_title_for_reporting_period('month', 'period');
+//    });
+
+//    $("#delete_question").dialog({
+//            title:gettext("Warning !!"),
+//            modal:true,
+//            autoOpen:false,
+//            height:275,
+//            width:300,
+//            closeText:'hide'
+//        }
+//    );
+
+//    $("#edit_question").dialog({
+//            title:gettext("Warning !!"),
+//            modal:true,
+//            autoOpen:false,
+//            height:275,
+//            width:300,
+//            closeText:'hide'
+//        }
+//    );
 
 //    $('#questionnaire-code').blur(function () {
 //        if ($('#project-state').val() == "Test" && $('#saved-questionnaire-code').val() != $('#questionnaire-code').val()) {
@@ -150,59 +167,44 @@ $(document).ready(function () {
 //        }
 //    });
 
-    $("#question_title").focus(function () {
-        if (questionnaireViewModel.selectedQuestion().event_time_field_flag()) {
-            $(this).addClass("blue_frame");
-            $("#periode_green_message").show();
-        }
-    });
+//    $("#question_title").focus(function () {
+//        if (questionnaireViewModel.selectedQuestion().event_time_field_flag()) {
+//            $(this).addClass("blue_frame");
+//            $("#periode_green_message").show();
+//        }
+//    });
 
-    $("#yes_button").bind("click", function () {
-        activity_report_question = $('#question_title').val();
-        questionnaireViewModel.selectedQuestion().title($('#question_title').val());
-        $("#edit_question").dialog("close");
-        return true;
-    });
+//    $("#yes_button").bind("click", function () {
+//        activity_report_question = $('#question_title').val();
+//        questionnaireViewModel.selectedQuestion().title($('#question_title').val());
+//        $("#edit_question").dialog("close");
+//        return true;
+//    });
 
-    $("#no_link").bind("click", function () {
-        questionnaireViewModel.selectedQuestion().title(activity_report_question);
-        $("#question_title").val(activity_report_question);
-        $("#edit_question").dialog("close");
-        return false;
-    });
+//    $("#no_link").bind("click", function () {
+//        questionnaireViewModel.selectedQuestion().title(activity_report_question);
+//        $("#question_title").val(activity_report_question);
+//        $("#edit_question").dialog("close");
+//        return false;
+//    });
 
-    $("#save_and_create").bind("click", function () {
-        if (DW.questionnaire_form_validate()) {
-            if (DW.has_questions_changed(DW.existing_questions)) {
-                DW.questionnaire_was_changed = true;
-            }
-            if (is_edit && questionnaireViewModel.hasDeletedOldQuestion && !DW.has_submission_delete_warning.is_continue && DW.questionnaire_has_submission()) {
-                DW.has_new_submission_delete_warning.show_warning();
-            } else {
-                $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
-                DW.post_project_data('Test', function (response) {
-                    return '/project/overview/' + response.project_id;
-                });
-            }
-        }
 
-    });
 
-    $("#delete_periodicity_question_warning .show_link").bind("click", function () {
-        var help_container = $("#delete_periodicity_question_warning > p.warning_message > span");
-        help_container.fadeIn();
-        $(this).hide();
-    })
+//    $("#delete_periodicity_question_warning .show_link").bind("click", function () {
+//        var help_container = $("#delete_periodicity_question_warning > p.warning_message > span");
+//        help_container.fadeIn();
+//        $(this).hide();
+//    })
+//
+//    $("#delete_periodicity_question_warning .hide_link").bind("click", function () {
+//        var help_container = $("#delete_periodicity_question_warning > p.warning_message > span");
+//        help_container.fadeOut();
+//        $("#delete_periodicity_question_warning .show_link").show();
+//    })
+//
+//    $("#delete_periodicity_question_warning > p.warning_message > span").hide();
 
-    $("#delete_periodicity_question_warning .hide_link").bind("click", function () {
-        var help_container = $("#delete_periodicity_question_warning > p.warning_message > span");
-        help_container.fadeOut();
-        $("#delete_periodicity_question_warning .show_link").show();
-    })
 
-    $("#delete_periodicity_question_warning > p.warning_message > span").hide();
-
-    DW.projectRouter.run();
 });
 
 
