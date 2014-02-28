@@ -80,15 +80,14 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
 //    return questionnaire_form.processValidation();
 //};
 
-DW.projectRouter = Sammy(function () {
-        this.get('#:questionnaire/new', function () {
-            questionnaireViewModel.showQuestionnaireForm(true);
-            questionnaireViewModel.questionnaireCode(questionnaire_code);
-        });
-
-    //TODO: Remove controller
-        this.get('#:questionnaire/edit', function () {
-            $.getJSON("/project/details/" + questionnaire_code, function (project_details) {
+DW.controllers = {
+    "questionnaire_load_controller":function () {
+            var url = '';
+            if(this.params.template_id){
+                url = '/project/template/'+this.params.template_id;
+            }
+            else url='/project/details/' + questionnaire_code;
+            $.getJSON(url, function (project_details) {
                 questionnaireViewModel.projectName(project_details.project_name);
                 questionnaireViewModel.language(project_details.project_language);
                 questionnaireViewModel.questionnaireCode(project_details.questionnaire_code);
@@ -98,8 +97,18 @@ DW.projectRouter = Sammy(function () {
                 });
                 questionnaireViewModel.showQuestionnaireForm(true);
 
-            });
+            })
+    }
+};
+
+
+DW.projectRouter = Sammy(function () {
+        this.get('#:questionnaire/new', function () {
+            questionnaireViewModel.showQuestionnaireForm(true);
+            questionnaireViewModel.questionnaireCode(questionnaire_code);
         });
+
+        this.get('#:questionnaire/load/:template_id', DW.controllers.questionnaire_load_controller);
 
         this.get('project/wizard/create/$', function () {
             questionnaireViewModel.showQuestionnaireForm(false);

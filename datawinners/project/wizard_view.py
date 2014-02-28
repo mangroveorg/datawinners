@@ -87,6 +87,45 @@ def get_questionnaire_details_ajax(request, questionnaire_code):
 
 
 @login_required
+#@session_not_expired
+#@csrf_exempt
+#@is_not_expired
+def get_templates(request):
+    return HttpResponse(json.dumps({'categories': [
+                                           {'category': 'Health', 'description': 'This is related to health sector',
+                                            "templates": [
+                                                {'id': 'health_1', 'name': 'patient records'},
+                                           {'id': 'health_2', 'name': 'medicine stock'},
+                                           {'id': 'health_3', 'name': 'appointments'}
+                                       ]
+                                   },
+                                   {'category': 'Education', 'description': 'This is related to Education sector',
+                                    "templates": [{'name': 'Teacher Attendance'}]
+                                   },
+                                   {'category': 'Food Security', 'description': 'This is related to food sector',
+                                    "templates": [{'name': 'Food Supply'}]
+                                   },
+                                   {'category': 'Agriculture', 'description': 'This is related to agri sector',
+                                    "templates": [{'name': 'fertilizer stock'}]
+                                   }
+    ]
+    }), content_type = 'application/json')
+
+@login_required
+def get_template_details(request, template_id):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_code(manager, '022')
+    project = project_by_form_model_id(manager, form_model.id)
+    fields = form_model.fields
+    if form_model.is_entity_type_reporter():
+        fields = helper.hide_entity_question(fields)
+    existing_questions = json.dumps(fields, default=field_to_json)
+
+    return HttpResponse(json.dumps(
+        {'project_name': project.name, 'project_language': project.language, 'existing_questions': existing_questions,
+         'questionnaire_code': '022'}), content_type='application/json')
+
+@login_required
 @session_not_expired
 @csrf_exempt
 @is_not_expired

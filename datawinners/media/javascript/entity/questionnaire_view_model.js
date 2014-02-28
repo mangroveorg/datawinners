@@ -17,12 +17,22 @@ var questionnaireViewModel =
 
     showQuestionnaireForm: ko.observable(),
 
+    gotoQuestionnaireLoader: function (question_template_id) {
+        location.hash = 'questionnaire/load/'+question_template_id;
+    },
     setQuestionnaireCreationType: function () {
-        location.hash = 'questionnaire/new';
+        var selectedOption = $('#questionnaire_types').accordion('option', 'active');
+        if (selectedOption == 0) {
+            location.hash = 'questionnaire/new';
+        }
+        else if (selectedOption == 1 || 2) {
+            var question_template_id = questionnaireViewModel.selectedTemplateId();
+            questionnaireViewModel.gotoQuestionnaireLoader(question_template_id);
+        }
     },
 
     setQuestionnaireCreationTypeToEdit: function () {
-        location.hash = 'questionnaire/edit';
+        location.hash = 'questionnaire/load';
     },
 
     backToQuestionnaireCreationOptionsLink: function () {
@@ -167,6 +177,14 @@ var questionnaireViewModel =
         this.questionnaireHasErrors(!isValid);
 
         return isValid ;
+    },
+    selectedTemplateId : ko.observable(),
+    chooseTemplate: function(template){
+        questionnaireViewModel.selectedTemplateId(template.id)
+    },
+    templateData: ko.observable(),
+    getTemplates: function(){
+        $.get("/project/templates", questionnaireViewModel.templateData)
     },
 
     validateForSubmission: function(){

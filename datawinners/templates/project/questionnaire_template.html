@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<div>
+    <h6>{% trans 'Choose a Template and adjust it to your needs' %}</h6>
+
+    <div data-bind="with: templateData">
+        <ul data-bind="foreach: categories">
+            <li class="template_accordion" data-bind="initializeAccordion: {accordionHeader: '.template_data'}">
+                <span class="template_data" data-bind="text:category"></span>
+                <ul data-bind="foreach: templates">
+                    <li data-bind="text: name, click: $root.chooseTemplate"></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

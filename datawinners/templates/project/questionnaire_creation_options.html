@@ -16,12 +16,12 @@
             <span class="project_name">{% trans "--  blank --" %}</span>
         </div>
 
-        <div class="questionnaire_type_header">
+        <div class="questionnaire_type_header" data-bind="click: getTemplates">
             <span class="header">{% trans "Use a Template" %}</span>
         </div>
 
         <div>
-            <span class="project_name">{% trans " -- Template goes here --" %}</span>
+            {% include 'project/questionnaire_template.html' %}
         </div>
 
 
