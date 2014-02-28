@@ -150,8 +150,22 @@ var questionnaireViewModel =
     validateSelectedQuestion: function(){
         if(!this.selectedQuestion())
             return true;
-        var currentQuestion = this.selectedQuestion();
-        return currentQuestion.validate();
+        return this.selectedQuestion().validate() && this._validateSelectedQuestionHasUniqueTitle();
+    },
+
+    _validateSelectedQuestionHasUniqueTitle: function(){
+        var selectedQuestion = this.selectedQuestion();
+        var matchingQuestionsWithSameTitle = ko.utils.arrayFilter(this.questions(), function(question){
+            return selectedQuestion.title() == question.title();
+        });
+
+        var isUnique = matchingQuestionsWithSameTitle.length == 1;
+        if(!isUnique)
+            selectedQuestion.title.setError(gettext("Title should be unique"));
+        else
+            selectedQuestion.title.clearError();
+
+        return isUnique;
     },
 
     validateForSubmission: function(){

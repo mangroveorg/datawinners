@@ -10,15 +10,22 @@ DW.ko = {
                   this.valid(true);
                   this.error("");
                 };
-
-            return observable;
+                observable.setError = function(message){
+                  this.valid(false);
+                  this.error(message);
+                };
+                return observable;
             },
-        createValidatableObservableArray: function(options){
+        createValidatableObservableObject: function(options){
                 var defaults = {value: [], valid: ko.observable(true), error: ko.observable("")};
                 var observable = $.extend({}, defaults, options);
                 observable.clearError = function(){
                   this.valid(true);
                   this.error("");
+                };
+                observable.setError = function(message){
+                  this.valid(false);
+                  this.error(message);
                 };
                 return observable;
             }
@@ -213,7 +220,7 @@ DW.question.prototype = {
                 var lastChoice = this.choices()[this.choices().length - 1];
                 selectedQuestionCode = DW.next_option_value(lastChoice.value.val());
             }
-            this.choices.push(DW.ko.createValidatableObservableArray({value:{text: ko.observable(gettext("")), val: ko.observable(selectedQuestionCode)}}));
+            this.choices.push(DW.ko.createValidatableObservableObject({value:{text: ko.observable(gettext("")), val: ko.observable(selectedQuestionCode)}}));
         };
 
         this.showAddChoice = function() {
@@ -532,7 +539,7 @@ DW.init_question_constraints = function () {
     questionnaireViewModel.selectedQuestion().min_length(1);
     questionnaireViewModel.selectedQuestion().max_length("");
     questionnaireViewModel.selectedQuestion().length_limiter("length_unlimited");
-    questionnaireViewModel.selectedQuestion().choices.push(DW.ko.createValidatableObservableArray({value: {text: ko.observable(gettext("default")), val: ko.observable('a')}}));
+    questionnaireViewModel.selectedQuestion().choices.push(DW.ko.createValidatableObservableObject({value: {text: ko.observable(gettext("default")), val: ko.observable('a')}}));
 //    $('.error_arrow').remove();
 //    $('input[type=text]').removeClass('error');
 }
