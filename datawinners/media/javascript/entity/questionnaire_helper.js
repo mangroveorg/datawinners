@@ -1,3 +1,35 @@
+DW.ko = {
+        createValidatableObservable: function(options){
+                var defaults = {value: "", valid: true, error: ""};
+                var params = $.extend({}, defaults, options);
+
+                var observable = ko.observable(params.value);
+
+                observable.valid = ko.observable(params.valid);
+
+                observable.error = ko.observable(params.error);
+
+                observable.clearError = function(){
+                  this.valid(true);
+                  this.error("");
+                };
+
+            return observable;
+            },
+        createValidatableObservableArray: function(options){
+                var defaults = {value: [], valid: ko.observable(true), error: ko.observable("")};
+                var observable = $.extend({}, defaults, options);
+//                var observable = ko.observableArray(params.value);
+                observable.clearError = function(){
+                  this.valid(true);
+                  this.error("");
+                };
+                return observable;
+            }
+        };
+
+
+
 //DW is the global name space for DataWinner
 DW.init_inform_datasender_about_changes = function () {
     kwargs = {container: "#inform_datasender_about_changes",
@@ -88,43 +120,34 @@ DW.initChoices = function (choices) {
         var display_choice = {};
         display_choice['text'] = choice.text;
         display_choice['val'] = choice.val;
-        display_choice['id'] = choice.id;
-        final_choices.push(display_choice);
+//        display_choice['id'] = choice.id;
+        final_choices.push(DW.ko.createValidatableObservable({value: display_choice}));
     });
     return final_choices;
 };
 
-ko.validation.configure({
-    registerExtenders: true,
-    insertMessages: true,
-    parseInputAttributes: true,
-    messagesOnModified: true
-});
 
 DW.question.prototype = {
     _init: function () {
+        var self = this;
         var q = this.options;
         this.newly_added_question = ko.observable(q.newly_added_question);
-        this.range_min = ko.observable(q.range.min);
+        this.range_min = DW.ko.createValidatableObservable({value: q.range.min});
         this.event_time_field_flag = ko.observable(q.event_time_field_flag);
 
         //This condition required especially because in DB range_max is a mandatory field
-        this.range_max = ko.observable(q.range.max);
+        this.range_max = DW.ko.createValidatableObservable({value: q.range.max});
 
         this.min_length = ko.observable(q.length.min);
-        this.max_length = ko.observable(q.length.max);
+        this.max_length = DW.ko.createValidatableObservable({value: q.length.max});
 
         if (DW.isRegistrationQuestionnaire()) {
             this.name = ko.observable(q.name);
             this.title = ko.observable(q.label);
         } else {
-            this.title = ko.observable(q.name).extend({
-                                                required: {
-                                                            params: true,
-                                                            message: gettext("This field is required.")
-                                                          }
-                                              });
+            this.title = DW.ko.createValidatableObservable({value: q.name});
         }
+
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
         this.is_entity_question = ko.observable(q.entity_question_flag);
@@ -143,7 +166,7 @@ DW.question.prototype = {
 
         this.required = ko.observable(q.required);
 
-        this.answerType = ko.observable();
+        this.answerType = DW.ko.createValidatableObservable();
 
         this.display = ko.computed(function() {
             return this.title();
@@ -151,8 +174,16 @@ DW.question.prototype = {
 
         this.answerType.subscribe(function(selected_answer_type){
             if(selected_answer_type === "") return;
+            clearErrors();
             DW.change_question_type_for_selected_question(selected_answer_type);
         }, this);
+
+        var clearErrors = function(){
+            self.max_length.clearError();
+            self.range_max.clearError();
+            self.range_min.clearError();
+            clearChoiceErrors();
+        };
 
         var initialValues = DW.initChoices(q.choices);
         this.choices = ko.observableArray(initialValues);
@@ -162,26 +193,32 @@ DW.question.prototype = {
         }, this);
 
         this.removeOptionFromQuestion = function (choice) {
-            this.checkForQuestionnaireChange(choice)
-            var choices = this.choices();
+            self.checkForQuestionnaireChange(choice.value);
+            var choices = self.choices();
             var indexOfChoice = $.inArray(choice, choices);
-            var lastChoiceValue = choice['val'];
+            var lastChoiceValue = choice.value.val();
             var i = indexOfChoice + 1;
             for (i; i < choices.length; i = i + 1) {
-                choices[i]['val'] = lastChoiceValue;
+                choices[i].value.val(lastChoiceValue);
                 $("span.bullet", $("#options_list li").eq(i)).html(lastChoiceValue + ".");
                 lastChoiceValue = DW.next_option_value(lastChoiceValue);
             }
-            this.choices.remove(choice);
+            self.choices.remove(choice);
+        };
+
+        var clearChoiceErrors = function(){
+          ko.utils.arrayForEach(self.choices(), function(choice){
+              choice.clearError();
+          });
         };
 
         this.addOptionToQuestion = function() {
             var selectedQuestionCode = "a";
             if (this.choices().length > 0) {
                 var lastChoice = this.choices()[this.choices().length - 1];
-                selectedQuestionCode = DW.next_option_value(lastChoice.val);
+                selectedQuestionCode = DW.next_option_value(lastChoice.value.val());
             }
-            this.choices.push({text: "", val: selectedQuestionCode});
+            this.choices.push(DW.ko.createValidatableObservableArray({value:{text: ko.observable(gettext("")), val: ko.observable(selectedQuestionCode)}}));
         };
 
         this.showAddChoice = function() {
@@ -196,7 +233,6 @@ DW.question.prototype = {
 
 
         this.checkForQuestionnaireChange = function(choice) {
-//            var is_editing = typeof(is_edit) != 'undefined' && is_edit;
             if (_.any($(this.options.choices), function (v) {
                 return v.val == choice.val;
             })) {
@@ -214,6 +250,7 @@ DW.question.prototype = {
         this.length_limiter.subscribe(function(new_length_limiter){
             if(new_length_limiter == 'length_unlimited')
                 this.max_length("");
+                this.max_length.clearError();
         }, this);
 
         this.instruction = ko.dependentObservable({
@@ -278,6 +315,59 @@ DW.question.prototype = {
             },
             owner: this
         });
+
+        var mandatoryValidator = function(observable){
+            if(!observable()){
+                observable.valid(false);
+                observable.error(gettext("This field is required."));
+            }
+            else{
+                observable.valid(true);
+                observable.error("");
+            }
+        };
+
+        var numericValidator = function(observable){
+             if((observable()+"").match(/[0-9]+/)){
+                observable.valid(true);
+                observable.error("");
+            }
+            else{
+                observable.valid(false);
+                observable.error(gettext("Only numbers allowed."));
+            }
+        };
+
+        this.validate = function(){
+            mandatoryValidator(this.title);
+            mandatoryValidator(this.answerType);
+            if(this.showLengthLimiter()){
+                mandatoryValidator(this.max_length);
+                this.max_length.valid() && numericValidator(this.max_length);
+            }
+            else if(this.showAddRange()){
+                this.range_min() && numericValidator(this.range_min);
+                this.range_max() && numericValidator(this.range_max);
+            }
+
+            var isChoiceAnswerValid = true;
+            if(this.showAddChoice()){
+                ko.utils.arrayForEach(this.choices(), function(choice){
+                    if(choice.value.text()){
+                        choice.clearError();
+                    }
+                    else{
+                        choice.valid(false);
+                        choice.error(gettext("This field is required."));
+                    }
+                    isChoiceAnswerValid &= choice.valid();
+                });
+            }
+
+            return this.title.valid() && this.answerType.valid() && this.max_length.valid()
+                    && this.range_min.valid() && this.range_max.valid() && isChoiceAnswerValid;
+        };
+
     }
 
 };
@@ -447,11 +537,9 @@ DW.init_question_constraints = function () {
     questionnaireViewModel.selectedQuestion().min_length(1);
     questionnaireViewModel.selectedQuestion().max_length("");
     questionnaireViewModel.selectedQuestion().length_limiter("length_unlimited");
-    questionnaireViewModel.selectedQuestion().choices([
-        {text: gettext("default"), val: 'a'}
-    ]);
-    $('.error_arrow').remove();
-    $('input[type=text]').removeClass('error');
+    questionnaireViewModel.selectedQuestion().choices.push(DW.ko.createValidatableObservableArray({value: {text: ko.observable(gettext("default")), val: ko.observable('a')}}));
+//    $('.error_arrow').remove();
+//    $('input[type=text]').removeClass('error');
 }
 
 DW.change_question_type_for_selected_question = function (type_selector) {
@@ -512,12 +600,15 @@ DW.has_questions_changed = function (existing_questions) {
     });
     return !_.isEqual(new_question_codes, old_questions_codes)
 };
+
 DW.addNewQuestion = function () {
 
 //    if(questionnaireViewModel.isSelectedQuestionNull()) questionnaireViewModel.addQuestion();
 //    else{
 //        if ($('#question_form').valid()) questionnaireViewModel.addQuestion();
 //    }
+    if(!questionnaireViewModel.validateSelectedQuestion())
+        return;
     questionnaireViewModel.addQuestion();
     DW.close_the_tip_on_period_question();
     DW.smsPreview();

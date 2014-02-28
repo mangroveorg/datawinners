@@ -5,6 +5,9 @@
             <label>{% trans "Question" %}</label>
             <input id="question_title" name="question_title" type="text" class="required question_title"
                    data-bind="hasFocus:$parent.enableQuestionTitleFocus, value: title, valueUpdate: 'keyup', uniqueName: true"/>
+            <div class="validationMessage" data-bind="ifnot: title.valid">
+                <span class="validationText" data-bind="text: title.error"></span>
+            </div>
             <span id="periode_green_message"><br/>{% trans "change_event_time_field_message" %}<br/></span>
         </li>
         <li style="display: none;">
@@ -46,6 +49,9 @@
                     <option value="choice"> {% trans 'Multiple Choice' %} </option>
                     <option value="geocode"> {% trans 'GPS Coordinates' %} </option>
                 </select>
+                <div class="validationMessage" data-bind="ifnot: answerType.valid">
+                    <span class="validationText" data-bind="text: answerType.error"></span>
+                </div>
             </div>
         </li>
 
@@ -91,21 +97,25 @@
             <div class="margin_top_20">
                 <div class="question_option">
                     {% trans "Min:" %}
-                    <input name="range_min" type="text" id="range_min"
-                           data-bind="value:range_min, valueUpdate: 'keyup'"/>
+                    <input name="range_min" type="text" id="range_min" data-bind="value:range_min"/>
+                    <div class="validationMessage" data-bind="ifnot: range_min.valid">
+                        <span class="validationText" data-bind="text: range_min.error"></span>
+                    </div>
                 </div>
 
                 <div class="question_option">
                     {% trans "Max:" %}
-                    <input name="range_max" type="text" id="range_max"
-                           data-bind="value:range_max, valueUpdate: 'keyup'"/>
+                    <input name="range_max" type="text" id="range_max" data-bind="value:range_max"/>
+                    <div class="validationMessage" data-bind="ifnot: range_max.valid">
+                            <span class="validationText" data-bind="text: range_max.error"></span>
+                    </div>
                 </div>
             </div>
         </li>
         <li data-bind="visible: showAddTextLength">
             <div class="margin_top_20">
                 <input type="radio" name="text_length" value="length_unlimited" checked="true"
-                       data-bind="checked:length_limiter, valueUpdate: 'keyup'"/>
+                       data-bind="checked:length_limiter"/>
                 {% trans "No, answer has no character limit" %}<br/>
 
                 <div class="max_char">
@@ -114,7 +124,10 @@
                     {% trans "Yes, maximum number of characters should be" %}
                     <div>
                         <input name="max_length" type="text" id="max_length"
-                               data-bind="value:max_length, visible: showLengthLimiter(), valueUpdate: 'keyup'"/>
+                               data-bind="value:max_length, visible: showLengthLimiter()"/>
+                        <div class="validationMessage" data-bind="ifnot: max_length.valid">
+                            <span class="validationText" data-bind="text: max_length.error"></span>
+                        </div>
                     </div>
                 </div>
             </div>

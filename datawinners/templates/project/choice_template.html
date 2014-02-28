@@ -2,10 +2,13 @@
 
 <script type="text/html" id="choice-template">
     <li>
-        <span data-bind="text: val+'.'" class="bullet"></span>
+        <span data-bind="text: $data.value.val()+'.'" class="bullet"></span>
         <input id="choice_text" name="choice_text" class="required" type="text"
-               data-bind="value: text, uniqueName: true, valueUpdate: 'keyup'"/>
-        <a href="#" class='delete delete_link'
-           data-bind="visible: $parent.choiceCanBeDeleted, click:function(){$parent.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
+               data-bind="value: $data.value.text, uniqueName: true, valueUpdate: 'keyup'"/>
+        <a href="javascript:void(0);" class='delete delete_link'
+           data-bind="visible: $parent.choiceCanBeDeleted, click:$parent.removeOptionFromQuestion">{% trans "Delete"%}</a>
     </li>
+    <div class="validationMessage" data-bind="ifnot:  $data.valid">
+           <span class="validationText" data-bind="text: $data.error"></span>
+    </div>
 </script>
