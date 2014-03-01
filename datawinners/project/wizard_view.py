@@ -25,6 +25,7 @@ from datawinners.alldata.views import REPORTER_ENTITY_TYPE
 from datawinners.project.forms import ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, project_by_form_model_id
 from datawinners.main.database import get_database_manager, get_db_manager
+from datawinners.questionnaire.library import QuestionnaireLibrary
 from datawinners.tasks import app
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import get_changed_questions
@@ -92,38 +93,42 @@ def get_questionnaire_details_ajax(request, questionnaire_code):
 #@is_not_expired
 def get_templates(request):
     return HttpResponse(json.dumps({'categories': [
-                                           {'category': 'Health', 'description': 'This is related to health sector',
-                                            "templates": [
-                                                {'id': 'health_1', 'name': 'patient records'},
-                                           {'id': 'health_2', 'name': 'medicine stock'},
-                                           {'id': 'health_3', 'name': 'appointments'}
-                                       ]
-                                   },
-                                   {'category': 'Education', 'description': 'This is related to Education sector',
-                                    "templates": [{'name': 'Teacher Attendance'}]
-                                   },
-                                   {'category': 'Food Security', 'description': 'This is related to food sector',
-                                    "templates": [{'name': 'Food Supply'}]
-                                   },
-                                   {'category': 'Agriculture', 'description': 'This is related to agri sector',
-                                    "templates": [{'name': 'fertilizer stock'}]
-                                   }
+        {'category': 'Health', 'description': 'This is related to health sector',
+         "templates": [
+             {'id': 'health_1', 'name': 'patient records'},
+             {'id': 'health_2', 'name': 'medicine stock'},
+             {'id': 'health_3', 'name': 'appointments'}
+         ]
+        },
+        {'category': 'Education', 'description': 'This is related to Education sector',
+         "templates": [{'name': 'Teacher Attendance'}]
+        },
+        {'category': 'Food Security', 'description': 'This is related to food sector',
+         "templates": [{'name': 'Food Supply'}]
+        },
+        {'category': 'Agriculture', 'description': 'This is related to agri sector',
+         "templates": [{'name': 'fertilizer stock'}]
+        }
     ]
-    }), content_type = 'application/json')
+    }), content_type='application/json')
+
+
+HEALTH_1 = {'project_name': u'patient records', 'project_language': u'en', 'questionnaire_code': '022',
+            'existing_questions': '['
+                                  '{"required": true, "name": "Patient\'s name ?", "defaultValue": "", "instruction": "Answer must be a word", "label": "Patient\'s name ?", "length": {"min": 1}, "code": "q2", "type": "text"}, '
+                                  '{"code": "q3", "range": {"max": "100", "min": "0"}, "required": true, "name": "Patient\'s age ?", "instruction": "Answer must be a number between 0-100.", "type": "integer", "label": "Patient\'s age ?"},'
+                                  '{"code": "q4", "choices": [{"text": "O+", "val": "a"}, {"text": "O-", "val": "b"}, {"text": "A+", "val": "c"}, {"text": "A-", "val": "d"}], "required": true, "name": "Blood group ?", "instruction": "Choose 1 answer from the list. Example: a", "type": "select1", "label": "Blood group ?"}]'
+}
+
 
 @login_required
 def get_template_details(request, template_id):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, '022')
-    project = project_by_form_model_id(manager, form_model.id)
-    fields = form_model.fields
-    if form_model.is_entity_type_reporter():
-        fields = helper.hide_entity_question(fields)
-    existing_questions = json.dumps(fields, default=field_to_json)
+    library = QuestionnaireLibrary()
+    template = library.get_questionnaire_template(template_id)
+    template_details = {'project_name': template.get('name'), 'project_language': template.get('language'),
+                        'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
+    return HttpResponse(json.dumps(template_details), content_type='application/json')
 
-    return HttpResponse(json.dumps(
-        {'project_name': project.name, 'project_language': project.language, 'existing_questions': existing_questions,
-         'questionnaire_code': '022'}), content_type='application/json')
 
 @login_required
 @session_not_expired

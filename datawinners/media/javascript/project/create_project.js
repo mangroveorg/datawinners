@@ -82,11 +82,7 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
 
 DW.controllers = {
     "questionnaire_load_controller":function () {
-            var url = '';
-            if(this.params.template_id){
-                url = '/project/template/'+this.params.template_id;
-            }
-            else url='/project/details/' + questionnaire_code;
+            var url = '/project/template/'+this.params.template_id;
             $.getJSON(url, function (project_details) {
                 questionnaireViewModel.projectName(project_details.project_name);
                 questionnaireViewModel.language(project_details.project_language);
@@ -98,15 +94,18 @@ DW.controllers = {
                 questionnaireViewModel.showQuestionnaireForm(true);
 
             })
+    },
+    "blank_questionnaire": function () {
+            questionnaireViewModel.projectName('');
+            questionnaireViewModel.questions([]);
+            questionnaireViewModel.showQuestionnaireForm(true);
+            questionnaireViewModel.questionnaireCode(questionnaire_code);
     }
 };
 
 
 DW.projectRouter = Sammy(function () {
-        this.get('#:questionnaire/new', function () {
-            questionnaireViewModel.showQuestionnaireForm(true);
-            questionnaireViewModel.questionnaireCode(questionnaire_code);
-        });
+        this.get('#:questionnaire/new', DW.controllers.blank_questionnaire);
 
         this.get('#:questionnaire/load/:template_id', DW.controllers.questionnaire_load_controller);
 

@@ -57,10 +57,14 @@ ko.bindingHandlers.buttonVisible = {
       $(element).hide();
       var accordionElement = valueAccessor().accordionElement;
       $(accordionElement).on('accordionchangestart', function(){
-          var isAnyAccordionActive = $(accordionElement).accordion('option', 'active');
-          $(element).toggle(isAnyAccordionActive !== false);
+          var activatedAccordion = $(accordionElement).accordion('option', 'active');
+          $(element).toggle(activatedAccordion !== false && activatedAccordion == 0);
       })
-  }
+  },
+    update: function(element, valueAccessor){
+        var selectedTemplateId = valueAccessor().observable;
+        $(element).toggle(selectedTemplateId() !== undefined);
+    }
 };
 
 ko.bindingHandlers.hidden = {

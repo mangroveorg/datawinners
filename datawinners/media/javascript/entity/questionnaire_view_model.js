@@ -31,10 +31,6 @@ var questionnaireViewModel =
         }
     },
 
-    setQuestionnaireCreationTypeToEdit: function () {
-        location.hash = 'questionnaire/load';
-    },
-
     backToQuestionnaireCreationOptionsLink: function () {
         location.hash = '';
     },

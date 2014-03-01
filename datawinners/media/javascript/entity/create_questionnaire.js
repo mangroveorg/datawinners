@@ -11,16 +11,14 @@
 }
 
 var init_view_model = function () {
-//    if (is_project_questionnaire && is_edit) {
-//        questionnaireViewModel.setQuestionnaireCreationTypeToEdit();
-//    }
-//    else if (!is_project_questionnaire){
-////        Populating questions for subject questionnaire
-//        populate_subject_details();
-//    }
-//    questionnaireViewModel.selectedQuestion.valueHasMutated();
-//    questionnaireViewModel.hasAddedNewQuestions = false;
-//    DW.smsPreview();
+    if (!is_project_questionnaire){
+//        Populating questions for subject questionnaire
+        populate_subject_details();
+    }
+//    questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
+    questionnaireViewModel.selectedQuestion.valueHasMutated();
+    questionnaireViewModel.hasAddedNewQuestions = false;
+    DW.smsPreview();
 };
 
 DW.error_appender = function (element) {
