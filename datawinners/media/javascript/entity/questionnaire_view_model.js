@@ -1,8 +1,3 @@
-whiteSpace = function (val) {
-    var trimmed_value = $.trim(val);
-    var list = trimmed_value.split(" ");
-    return list.length <= 1;
-};
 var questionnaireViewModel =
 {
     questions: ko.observableArray([]),
@@ -17,24 +12,8 @@ var questionnaireViewModel =
         {name: 'Malagasy', code: 'mg'}
     ],
     language: ko.observable(),
-    projectName: ko.observable().extend({required: {params: true, message: gettext("This field is required.")}}),
-    questionnaireCode: ko.observable().extend({
-                                                required: {
-                                                            params: true,
-                                                            message: gettext("This field is required.")
-                                                          }
-                                              })
-                              .extend({
-                                        validation: {
-                                                        validator: whiteSpace,
-                                                        message: gettext("Space is not allowed in questionnaire code")}
-                                                    })
-                              .extend({
-                                        pattern: {
-                                                    message: gettext("Only letters and digits are valid"),
-                                                    params: '^[A-Za-z0-9 ]+$'
-                                                 }
-                                      }),
+    projectName: DW.ko.createValidatableObservable(),
+    questionnaireCode: DW.ko.createValidatableObservable(),
 
     showQuestionnaireForm: ko.observable(),
 
@@ -139,7 +118,7 @@ var questionnaireViewModel =
             questionnaireViewModel.questions.splice(currentIndex, 2, questions[currentIndex + 1], questions[currentIndex]);
     },
 
-    questionnaireHasErrors: ko.observable([]),
+    questionnaireHasErrors: ko.observable(false),
 
     errorInResponse: ko.observable(false),
 
@@ -168,8 +147,31 @@ var questionnaireViewModel =
         return isUnique;
     },
 
+    _validateQuestionnaireCode: function () {
+        var questionnaireCode = questionnaireViewModel.questionnaireCode;
+
+        DW.ko.mandatoryValidator(questionnaireCode)
+        questionnaireCode.valid() && DW.ko.alphaNumericValidator(questionnaireCode, true);
+        if(questionnaireCode.valid()){
+            if (DW.isWhiteSpacesPresent(questionnaireCode()))
+                questionnaireCode.setError(gettext("Space is not allowed in questionnaire code"));
+            else
+                questionnaireCode.clearError();
+        }
+    },
+    _validateQuestionnaireDetails: function(){
+        DW.ko.mandatoryValidator(this.projectName);
+        questionnaireViewModel._validateQuestionnaireCode();
+
+        var isValid = questionnaireViewModel.projectName.valid() && questionnaireViewModel.questionnaireCode.valid();
+        this.questionnaireHasErrors(!isValid);
+
+        return isValid ;
+    },
+
     validateForSubmission: function(){
-        return questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion();
+        return questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion()
+               && questionnaireViewModel._validateQuestionnaireDetails();
     }
 
 };
@@ -178,4 +180,9 @@ questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
 }, questionnaireViewModel);
 
 
+DW.isWhiteSpacesPresent = function (val) {
+    var trimmed_value = val.trim();
+    var list = trimmed_value.split(" ");
+    return list.length > 1;
+};
 

@@ -1,38 +1,3 @@
-DW.ko = {
-        createValidatableObservable: function(options){
-                var defaults = {value: "", valid: true, error: ""};
-                var params = $.extend({}, defaults, options);
-
-                var observable = ko.observable(params.value);
-                observable.valid = ko.observable(params.valid);
-                observable.error = ko.observable(params.error);
-                observable.clearError = function(){
-                  this.valid(true);
-                  this.error("");
-                };
-                observable.setError = function(message){
-                  this.valid(false);
-                  this.error(message);
-                };
-                return observable;
-            },
-        createValidatableObservableObject: function(options){
-                var defaults = {value: [], valid: ko.observable(true), error: ko.observable("")};
-                var observable = $.extend({}, defaults, options);
-                observable.clearError = function(){
-                  this.valid(true);
-                  this.error("");
-                };
-                observable.setError = function(message){
-                  this.valid(false);
-                  this.error(message);
-                };
-                return observable;
-            }
-};
-
-
-
 //DW is the global name space for DataWinner
 DW.init_inform_datasender_about_changes = function () {
     kwargs = {container: "#inform_datasender_about_changes",
@@ -318,38 +283,16 @@ DW.question.prototype = {
             owner: this
         });
 
-        var mandatoryValidator = function(observable){
-            if(!observable()){
-                observable.valid(false);
-                observable.error(gettext("This field is required."));
-            }
-            else{
-                observable.valid(true);
-                observable.error("");
-            }
-        };
-
-        var numericValidator = function(observable){
-             if((observable()+"").match(/[0-9]+/)){
-                observable.valid(true);
-                observable.error("");
-            }
-            else{
-                observable.valid(false);
-                observable.error(gettext("Only numbers allowed."));
-            }
-        };
-
         this.validate = function(){
-            mandatoryValidator(this.title);
-            mandatoryValidator(this.answerType);
+            DW.ko.mandatoryValidator(this.title);
+            DW.ko.mandatoryValidator(this.answerType);
             if(this.showLengthLimiter()){
-                mandatoryValidator(this.max_length);
-                this.max_length.valid() && numericValidator(this.max_length);
+                DW.ko.mandatoryValidator(this.max_length);
+                this.max_length.valid() && DW.ko.numericValidator(this.max_length);
             }
             else if(this.showAddRange()){
-                this.range_min() && numericValidator(this.range_min);
-                this.range_max() && numericValidator(this.range_max);
+                this.range_min() && DW.ko.numericValidator(this.range_min);
+                this.range_max() && DW.ko.numericValidator(this.range_max);
             }
 
             var isChoiceAnswerValid = true;

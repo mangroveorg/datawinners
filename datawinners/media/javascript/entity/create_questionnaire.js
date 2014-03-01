@@ -36,32 +36,31 @@ DW.error_appender.prototype = {
     }
 };
 
-DW.questionnaire_form = function (formElement) {
-    this.formElement = formElement;
-    this.errorAppender = new DW.error_appender("#message-label");
-};
+//DW.questionnaire_form = function (formElement) {
+//    this.formElement = formElement;
+//    this.errorAppender = new DW.error_appender("#message-label");
+//};
 
-DW.questionnaire_form.prototype = {
-    isValid: function () {
-//        return $(this.formElement).valid();
-        return true;
-    },
-    processValidation: function () {
-        if (!this.isValid()) {
-            this.errorAppender.appendError("This questionnaire has an error");
-            this.errorAppender.hide_message();
-            return false;
-        }
-        return true;
-    }
-};
+//DW.questionnaire_form.prototype = {
+//    isValid: function () {
+////        return $(this.formElement).valid();
+//        return true;
+//    },
+//    processValidation: function () {
+//        if (!this.isValid()) {
+//            this.errorAppender.appendError("This questionnaire has an error");
+//            this.errorAppender.hide_message();
+//            return false;
+//        }
+//        return true;
+//    }
+//};
 
 
 $(document).ready(function () {
     init_view_model();
 
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
-    ko.validation.group(questionnaireViewModel);
     ko.applyBindings(questionnaireViewModel);
 
     DW.charCount();

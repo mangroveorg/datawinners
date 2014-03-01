@@ -1,16 +1,16 @@
-DW.init_has_new_submission_delete_warning = function(){
-    kwargs = {container: "#new_submission_exists",
-        is_continue: !is_edit,
-        title: gettext('Warning: Your Collected Data Will be Lost'),
-        continue_handler: function(){
-            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
-            DW.post_project_data('Test', function (response) {
-                return '/project/overview/' + response.project_id;
-            });
-        }
-    }
-    DW.has_new_submission_delete_warning = new DW.warning_dialog(kwargs);
-}
+//DW.init_has_new_submission_delete_warning = function(){
+//    kwargs = {container: "#new_submission_exists",
+//        is_continue: !is_edit,
+//        title: gettext('Warning: Your Collected Data Will be Lost'),
+//        continue_handler: function(){
+//            $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
+//            DW.post_project_data('Test', function (response) {
+//                return '/project/overview/' + response.project_id;
+//            });
+//        }
+//    }
+//    DW.has_new_submission_delete_warning = new DW.warning_dialog(kwargs);
+//}
 
 
 DW.init_delete_periodicity_question_warning = function(){
@@ -25,7 +25,7 @@ DW.init_delete_periodicity_question_warning = function(){
     DW.delete_periodicity_question_warning = new DW.warning_dialog(kwargs);
 }
 
-var questionnaire_form = new DW.questionnaire_form('#question_form');
+//var questionnaire_form = new DW.questionnaire_form('#question_form');
 
 basic_project_info = function () {
         var name = questionnaireViewModel.projectName() || '';
@@ -68,17 +68,17 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
 };
 
 //Used in qns instruction and preview - replace and delete
-DW.questionnaire_form_validate = function(){
-   if (!questionnaireViewModel.isValid()) {
-        questionnaireViewModel.errors.showAllMessages();
-        questionnaireViewModel.questionnaireHasErrors(questionnaireViewModel.errors());
-        return false;
-    }
-
-    if(!DW.check_empty_questionnaire()) return false;
-
-    return questionnaire_form.processValidation();
-};
+//DW.questionnaire_form_validate = function(){
+//   if (!questionnaireViewModel.validateForSubmission()) {
+//        questionnaireViewModel.errors.showAllMessages();
+//        questionnaireViewModel.questionnaireHasErrors(questionnaireViewModel.errors());
+//        return false;
+//    }
+//
+//    if(!DW.check_empty_questionnaire()) return false;
+//
+//    return questionnaire_form.processValidation();
+//};
 
 DW.projectRouter = Sammy(function () {
         this.get('#:questionnaire/new', function () {
