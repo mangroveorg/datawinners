@@ -13,7 +13,6 @@ $(document).ready(function () {
     questionnaireViewModel.hasExistingData = project_has_submissions === 'True';
     questionnaireViewModel.isEditMode = true;
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
-    ko.validation.group(questionnaireViewModel);
     ko.applyBindings(questionnaireViewModel);
 
     DW.charCount();

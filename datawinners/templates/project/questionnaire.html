@@ -25,6 +25,7 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/project/new_questionnaire_charcount.js"></script>
@@ -69,8 +70,6 @@
     <form id="question_form">
         {% csrf_token %}
         <input id='project-id' type='hidden' value="{{ project.id }}"/>
-{#        Find usage #}
-        <input id='questionnaire-code' class='required' type="hidden" disabled="disabled" value="{{ questionnaire_code }}"/>
         <fieldset>
             <div class="questionnaire_form_header clearfix">
                 {% include 'project/questionnaire_info_indicator.html' %}

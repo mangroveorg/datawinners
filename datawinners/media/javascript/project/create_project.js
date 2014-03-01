@@ -14,14 +14,14 @@
 
 
 DW.init_delete_periodicity_question_warning = function(){
-    kwargs = {container: "#delete_periodicity_question_warning",
+    var kwargs = {container: "#delete_periodicity_question_warning",
         title: gettext('Warning: Your Collected Data Will be Lost'),
         width: 700,
         continue_handler: function(){
             question = questionnaireViewModel.selectedQuestion();
             questionnaireViewModel.removeQuestion(question);
         }
-    }
+    };
     DW.delete_periodicity_question_warning = new DW.warning_dialog(kwargs);
 }
 

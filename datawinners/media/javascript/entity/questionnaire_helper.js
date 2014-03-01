@@ -1,6 +1,6 @@
 //DW is the global name space for DataWinner
 DW.init_inform_datasender_about_changes = function () {
-    kwargs = {container: "#inform_datasender_about_changes",
+    var kwargs = {container: "#inform_datasender_about_changes",
         is_continue: true,
         title: gettext('Inform Your Data Senders about the Changes'),
         continue_handler: function () {
@@ -14,8 +14,8 @@ DW.init_inform_datasender_about_changes = function () {
 };
 
 DW.init_empty_questionnaire_warning = function () {
-    kwargs = {container: "#no_questions_exists", title: gettext('Warning: Empty questionnaire') }
-    DW.empty_questionnaire_warning = new DW.warning_dialog(kwargs)
+    var kwargs = {container: "#no_questions_exists", title: gettext('Warning: Empty questionnaire') };
+    DW.empty_questionnaire_warning = new DW.warning_dialog(kwargs);
 }
 
 DW.check_empty_questionnaire = function () {
@@ -141,15 +141,15 @@ DW.question.prototype = {
 
         this.answerType.subscribe(function(selected_answer_type){
             if(selected_answer_type === "") return;
-            clearErrors();
+            _clearErrors();
             DW.change_question_type_for_selected_question(selected_answer_type);
         }, this);
 
-        var clearErrors = function(){
+        var _clearErrors = function(){
             self.max_length.clearError();
             self.range_max.clearError();
             self.range_min.clearError();
-            clearChoiceErrors();
+            _clearChoiceErrors();
         };
 
         var initialValues = DW.initChoices(q.choices);
@@ -173,7 +173,7 @@ DW.question.prototype = {
             self.choices.remove(choice);
         };
 
-        var clearChoiceErrors = function(){
+        var _clearChoiceErrors = function(){
           ko.utils.arrayForEach(self.choices(), function(choice){
               choice.clearError();
           });
@@ -209,7 +209,7 @@ DW.question.prototype = {
 
         this.date_format = ko.observable(q.date_format);
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
-//        same as ko.computed
+
         this.showLengthLimiter = ko.computed( function(){
             return this.length_limiter() == 'length_limited';
         }, this);
@@ -266,6 +266,7 @@ DW.question.prototype = {
             },
             owner: this
         });
+
         this.canBeDeleted = function () {
             if (DW.isRegistrationQuestionnaire()) {
                 return (!this.is_entity_question() && this.name() != 'name');
@@ -273,6 +274,7 @@ DW.question.prototype = {
                 return (!this.is_entity_question());
             }
         };
+
         this.isAChoiceTypeQuestion = ko.dependentObservable({
             read: function () {
                 return this.type() == "select" || this.type() == "select1" ? "choice" : "none";
@@ -485,7 +487,7 @@ DW.init_question_constraints = function () {
     questionnaireViewModel.selectedQuestion().choices.push(DW.ko.createValidatableObservableObject({value: {text: ko.observable(gettext("default")), val: ko.observable('a')}}));
 //    $('.error_arrow').remove();
 //    $('input[type=text]').removeClass('error');
-}
+};
 
 DW.change_question_type_for_selected_question = function (type_selector) {
     if (type_selector == "choice") {
@@ -498,13 +500,13 @@ DW.change_question_type_for_selected_question = function (type_selector) {
     }
     questionnaireViewModel.selectedQuestion.valueHasMutated();
     questionnaireViewModel.questions.valueHasMutated();
-}
+};
 
 DW.set_questionnaire_was_change = function () {
     if (!questionnaireViewModel.selectedQuestion().newly_added_question()) {
         DW.questionnaire_was_changed = true;
     }
-}
+};
 
 $(document).ready(function () {
     var change_selector = "#range_min, #range_max, #max_length, [name=text_length], [name=date_format], #question_title";
@@ -515,7 +517,7 @@ $(document).ready(function () {
     $(click_selector).click(DW.set_questionnaire_was_change);
 
     DW.has_submission_delete_warning = (function(){
-        kwargs = {
+        var kwargs = {
                     container: "#submission_exists",
                     is_continue: false,
                     title: gettext('Warning: Your Collected Data Will be Lost'),
