@@ -113,19 +113,13 @@ def get_templates(request):
     }), content_type='application/json')
 
 
-HEALTH_1 = {'project_name': u'patient records', 'project_language': u'en', 'questionnaire_code': '022',
-            'existing_questions': '['
-                                  '{"required": true, "name": "Patient\'s name ?", "defaultValue": "", "instruction": "Answer must be a word", "label": "Patient\'s name ?", "length": {"min": 1}, "code": "q2", "type": "text"}, '
-                                  '{"code": "q3", "range": {"max": "100", "min": "0"}, "required": true, "name": "Patient\'s age ?", "instruction": "Answer must be a number between 0-100.", "type": "integer", "label": "Patient\'s age ?"},'
-                                  '{"code": "q4", "choices": [{"text": "O+", "val": "a"}, {"text": "O-", "val": "b"}, {"text": "A+", "val": "c"}, {"text": "A-", "val": "d"}], "required": true, "name": "Blood group ?", "instruction": "Choose 1 answer from the list. Example: a", "type": "select1", "label": "Blood group ?"}]'
-}
-
-
 @login_required
 def get_template_details(request, template_id):
+    dbm = get_database_manager(request.user)
     library = QuestionnaireLibrary()
     template = library.get_questionnaire_template(template_id)
     template_details = {'project_name': template.get('name'), 'project_language': template.get('language'),
+                        'questionnaire_code': helper.generate_questionnaire_code(dbm),
                         'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 

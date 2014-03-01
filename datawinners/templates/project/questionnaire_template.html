@@ -6,9 +6,10 @@
     <div data-bind="with: templateData">
         <ul data-bind="foreach: categories">
             <li class="template_accordion" data-bind="initializeAccordion: {accordionHeader: '.template_data'}">
-                <span class="template_data" data-bind="text:category"></span>
+                <span class="template_data" data-bind="text: category"></span>
                 <ul data-bind="foreach: templates">
-                    <li data-bind="text: name, click: $root.chooseTemplate"></li>
+                    <li class="template_name"
+                        data-bind="text: name, click: $root.chooseTemplate, css:{selected: $data.id==$root.selectedTemplateId()}"></li>
                 </ul>
             </li>
         </ul>
