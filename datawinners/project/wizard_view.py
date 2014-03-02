@@ -182,7 +182,7 @@ def _get_changed_data(project, project_info):
 @csrf_exempt
 @is_not_expired
 @is_project_exist
-def edit_project(request, project_id=None):
+def edit_project(request, project_id):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"

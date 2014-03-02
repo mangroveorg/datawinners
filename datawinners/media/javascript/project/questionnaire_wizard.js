@@ -9,6 +9,7 @@ $(document).ready(function () {
         questionnaireViewModel.loadQuestion(questions);
     }
     questionnaireViewModel.questionnaireCode(questionnaire_code);
+    questionnaireViewModel.projectName(project_name);
     questionnaireViewModel.language(project_language);
     questionnaireViewModel.hasExistingData = project_has_submissions === 'True';
     questionnaireViewModel.isEditMode = true;
@@ -112,10 +113,10 @@ $(document).ready(function () {
                         };
         $.post(post_url, post_data,
             function (response) {
-                $("#message-label").removeClass("none");
-                $("#message-label").removeClass("message-box");
-                $("#message-label").addClass("success-message-box");
-                $("#message-label").show().html("<label class='success'>" + gettext("Your changes have been saved.") + "</label");
+                var flash_message = $("#message-label");
+                flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
+                html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
+                flash_message[0].scrollIntoView();
 
                 if (DW.questionnaire_was_changed || questionnaireViewModel.has_newly_added_question() || DW.has_questions_changed(question_list) || questionnaire_code != questionnaireViewModel.questionnaireCode()) {
                     questionnaireViewModel.set_all_questions_as_old_questions();
@@ -127,16 +128,19 @@ $(document).ready(function () {
                 redirect();
             }).error(function (e) {
                 $("#global_error").addClass("none");
-                $("#message-label").removeClass("none");
-                $("#message-label").removeClass("success-message-box");
-                $("#message-label").addClass("message-box");
-                $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
+                var flash_message = $("#message-label");
+                flash_message.removeClass("none").removeClass("success-message-box").addClass("message-box").
+                html("<label class='error_message'>" + e.responseText + "</label>").show();
+                flash_message[0].scrollIntoView();
             });
         return false;
     }
 
     $("#submit-button").click(function() {
-        if(!DW.check_empty_questionnaire()) return false;
+        if(!DW.check_empty_questionnaire())
+            return false;
+        if(!questionnaireViewModel.validateForSubmission())
+            return false;
         submit_questionnaire();
         return false;
     });

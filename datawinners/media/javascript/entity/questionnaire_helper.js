@@ -85,10 +85,10 @@ DW.initChoices = function (choices) {
     var final_choices = [];
     $.each(choices, function (index, choice) {
         var display_choice = {};
-        display_choice['text'] = choice.text;
-        display_choice['val'] = choice.val;
+        display_choice['text'] = ko.observable(choice.text);
+        display_choice['val'] = ko.observable(choice.val);
 //        display_choice['id'] = choice.id;
-        final_choices.push(DW.ko.createValidatableObservable({value: display_choice}));
+        final_choices.push(DW.ko.createValidatableObservableObject({value: display_choice}));
     });
     return final_choices;
 };
@@ -485,8 +485,6 @@ DW.init_question_constraints = function () {
     questionnaireViewModel.selectedQuestion().max_length("");
     questionnaireViewModel.selectedQuestion().length_limiter("length_unlimited");
     questionnaireViewModel.selectedQuestion().choices.push(DW.ko.createValidatableObservableObject({value: {text: ko.observable(gettext("default")), val: ko.observable('a')}}));
-//    $('.error_arrow').remove();
-//    $('input[type=text]').removeClass('error');
 };
 
 DW.change_question_type_for_selected_question = function (type_selector) {
@@ -529,12 +527,6 @@ $(document).ready(function () {
         return new DW.warning_dialog(kwargs);
     }());
 
-
-//    $("#questionnaire-code").change(function () {
-//        if ($(this).val() != $("#saved-questionnaire-code").val()) {
-//            DW.questionnaire_was_changed = true;
-//        }
-//    });
 });
 
 

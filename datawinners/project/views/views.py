@@ -488,7 +488,7 @@ def get_preview_and_instruction_links_for_questionnaire():
 
 @valid_web_user
 @is_project_exist
-def questionnaire(request, project_id=None):
+def questionnaire(request, project_id):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         project = Project.load(manager.database, project_id)
