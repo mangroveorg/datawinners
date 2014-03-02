@@ -26,11 +26,12 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/subject_questionnaire_view_model.js"></script>
     <script type="text/javascript">
         var is_project_questionnaire = false;
-{#        var existing_questions = $.parseJSON({{existing_questions|safe}});#}
+        var existing_questions = $.parseJSON({{existing_questions|safe}});
         var questionnaire_code = '{{ questionnaire_code }}';
         var subject_type = '{{ entity_type }}';
     </script>

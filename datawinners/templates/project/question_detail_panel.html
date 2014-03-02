@@ -22,8 +22,7 @@
                     <strong>{% trans "What do I need to do?" %}</strong><br/>
                     {% trans "r_tooltip_question_detail_code" %}
                 </p></div>
-                <input id="code" name="code" type="text" class="required"
-                       data-bind="value: code, valueUpdate: 'keyup'"/>
+                <input id="code" name="code" type="text" class="required" data-bind="value: code, valueUpdate: 'keyup'"/>
             </div>
         </li>
         <li class="question_type margin_null"
@@ -107,7 +106,7 @@
                     {% trans "Max:" %}
                     <input name="range_max" type="text" id="range_max" data-bind="value:range_max"/>
                     <div class="validationMessage" data-bind="ifnot: range_max.valid">
-                            <span class="validationText" data-bind="text: range_max.error"></span>
+                        <span class="validationText" data-bind="text: range_max.error"></span>
                     </div>
                 </div>
             </div>

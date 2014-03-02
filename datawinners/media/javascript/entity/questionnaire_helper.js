@@ -109,8 +109,8 @@ DW.question.prototype = {
         this.max_length = DW.ko.createValidatableObservable({value: q.length.max});
 
         if (DW.isRegistrationQuestionnaire()) {
-            this.name = ko.observable(q.name);
-            this.title = ko.observable(q.label);
+            this.name = DW.ko.createValidatableObservable({value: q.name});
+            this.title = DW.ko.createValidatableObservable({value: q.label});
         } else {
             this.title = DW.ko.createValidatableObservable({value: q.name});
         }

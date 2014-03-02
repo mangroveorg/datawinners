@@ -1,5 +1,7 @@
 var subjectQuestionnaireViewModel = {
     addQuestion:function () {
+        if(!questionnaireViewModel.validateSelectedQuestion())
+            return;
 //        entity id question would be always the last question.
         var id_question = questionnaireViewModel.questions.pop();
         questionnaireViewModel.addQuestion();

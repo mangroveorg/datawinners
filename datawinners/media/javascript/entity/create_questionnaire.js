@@ -11,16 +11,16 @@
 }
 
 var init_view_model = function () {
-    if (is_project_questionnaire && is_edit) {
-        questionnaireViewModel.setQuestionnaireCreationTypeToEdit();
-    }
-    else if (!is_project_questionnaire){
-//        Populating questions for subject questionnaire
-        populate_subject_details();
-    }
-    questionnaireViewModel.selectedQuestion.valueHasMutated();
-    questionnaireViewModel.hasAddedNewQuestions = false;
-    DW.smsPreview();
+//    if (is_project_questionnaire && is_edit) {
+//        questionnaireViewModel.setQuestionnaireCreationTypeToEdit();
+//    }
+//    else if (!is_project_questionnaire){
+////        Populating questions for subject questionnaire
+//        populate_subject_details();
+//    }
+//    questionnaireViewModel.selectedQuestion.valueHasMutated();
+//    questionnaireViewModel.hasAddedNewQuestions = false;
+//    DW.smsPreview();
 };
 
 DW.error_appender = function (element) {
@@ -58,10 +58,10 @@ DW.error_appender.prototype = {
 
 
 $(document).ready(function () {
-    init_view_model();
-
-    ko.setTemplateEngine(new ko.nativeTemplateEngine());
-    ko.applyBindings(questionnaireViewModel);
+//    init_view_model();
+//
+//    ko.setTemplateEngine(new ko.nativeTemplateEngine());
+//    ko.applyBindings(questionnaireViewModel);
 
     DW.charCount();
     $('#continue_project').live("click", DW.charCount);

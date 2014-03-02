@@ -27,12 +27,12 @@ DW.init_delete_periodicity_question_warning = function(){
 
 //var questionnaire_form = new DW.questionnaire_form('#question_form');
 
-basic_project_info = function () {
+basic_project_info = function(){
         var name = questionnaireViewModel.projectName() || '';
         var language = questionnaireViewModel.language();
         var activity_report = 'yes';
         return JSON.stringify({'name':name, 'language':language, 'activity_report':activity_report});
-    };
+};
 
 DW.post_project_data = function (state, function_to_construct_redirect_url_on_success) {
     var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
@@ -106,7 +106,14 @@ DW.projectRouter = Sammy(function () {
         });
 });
 
+function _initializeViewModel() {
+    ko.setTemplateEngine(new ko.nativeTemplateEngine());
+    ko.applyBindings(questionnaireViewModel);
+}
+
 $(document).ready(function () {
+    _initializeViewModel();
+    DW.smsPreview();
     DW.option_warning_dialog.init();
     DW.init_delete_periodicity_question_warning();
     DW.init_empty_questionnaire_warning();

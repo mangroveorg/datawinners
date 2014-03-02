@@ -234,21 +234,3 @@ fieldset {
 .move-text {
   padding-bottom: 2px;
   vertical-align: middle; }
-
-.validationMessage {
-  background: url(/media/images/arrow_error.png) no-repeat left 3px;
-  display: inline; }
-
-.validationText {
-  color: #FFFFFF;
-  background: #c20303;
-  padding: 5px 10px;
-  border: 1px solid black;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  width: auto;
-  margin-left: 10px !important;
-  font-size: 12px;
-  font-weight: normal;
-  max-width: 300px; }

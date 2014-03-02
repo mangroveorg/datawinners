@@ -4,7 +4,10 @@
         <li class="question">
             <label>{% trans "Question" %}</label>
             <input id="question_title" name="question_title" type="text" class="required question_title"
-                   data-bind="value: title, valueUpdate: 'keyup', uniqueName: true"/>
+                   data-bind="value: title, uniqueName: true"/>
+            <div class="validationMessage" data-bind="ifnot: title.valid">
+                <span class="validationText" data-bind="text: title.error"></span>
+            </div>
         </li>
         <li>
 
@@ -17,8 +20,7 @@
                     <strong>{% trans "What do I need to do?" %}</strong><br/>
                     {% trans "r_tooltip_question_detail_code" %}
                 </p></div>
-                <input id="code" name="code" type="text" class="required"
-                       data-bind="value: code, valueUpdate: 'keyup'"/>
+                <input id="code" name="code" type="text" class="required" data-bind="value: code, valueUpdate: 'keyup'"/>
             </div>
         </li>
         <li class="question_type margin_null"
@@ -36,7 +38,7 @@
             <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
             <div class="dropdown">
-                <select data-bind="value: answerType, enable: $root.isTypeEnabled()"  autofocus>
+                <select data-bind="value: answerType, enable: newly_added_question"  autofocus>
                     <option value="">{% trans 'Select an Answer Type' %}</option>
                     <option value="text">{% trans 'Word or Phrase' %}</option>
                     <option value="integer">{% trans 'Number' %}</option>
@@ -46,6 +48,9 @@
                     <option value="list">{% trans 'Location' %}</option>
                     <option value="telephone_number">{% trans "Telephone number" %}</option>
                 </select>
+                <div class="validationMessage" data-bind="ifnot: answerType.valid">
+                    <span class="validationText" data-bind="text: answerType.error"></span>
+                </div>
             </div>
         </li>
 
@@ -57,13 +62,13 @@
 
                 <p>
                     <input type="radio" name="date_format" value="mm.yyyy"
-                           data-bind="checked:date_format, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                           data-bind="checked:date_format, valueUpdate: 'keyup', enable: newly_added_question"/>
                     {% trans "month.year" %} (06.2011)<br/>
                     <input type="radio" name="date_format" value="dd.mm.yyyy"
-                           data-bind="checked:date_format, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                           data-bind="checked:date_format, valueUpdate: 'keyup', enable: newly_added_question"/>
                     {% trans "day.month.year" %} (28.06.2011)<br/>
                     <input type="radio" name="date_format" value="mm.dd.yyyy"
-                           data-bind="checked:date_format, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                           data-bind="checked:date_format, valueUpdate: 'keyup', enable: newly_added_question"/>
                     {% trans "month.day.year" %} (06.28.2011)<br/>
                 </p>
             </div>
@@ -77,15 +82,15 @@
 
                 </ol>
                 <a href="questionnaire_wizard.html#" class="add_link"
-                   data-bind="click: function() { addOptionToQuestion(); }, valueUpdate: 'keyup', visible:$root.isTypeEnabled()">
+                   data-bind="click: function() { addOptionToQuestion(); }, valueUpdate: 'keyup', visible: newly_added_question">
                     {% trans "Add Answer Choice" %}</a>
             </div>
             <div>
                 <input type="radio" name="answers_possible" value="select1"
-                       data-bind="checked:type, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                       data-bind="checked:type, valueUpdate: 'keyup', enable: newly_added_question"/>
                 {% trans "only one answer" %}<br/>
                 <input type="radio" name="answers_possible" value="select"
-                       data-bind="checked:type, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                       data-bind="checked:type, valueUpdate: 'keyup', enable: newly_added_question"/>
                 {% trans "multiple answers are permitted" %}<br/>
             </div>
         </li>
@@ -94,29 +99,38 @@
                 <div class="question_option">
                     {% trans "Min:" %}
                     <input name="range_min" type="text" id="range_min"
-                           data-bind="value:range_min, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                           data-bind="value:range_min, enable: newly_added_question"/>
+                    <div class="validationMessage" data-bind="ifnot: range_min.valid">
+                        <span class="validationText" data-bind="text: range_min.error"></span>
+                    </div>
                 </div>
 
                 <div class="question_option">
                     {% trans "Max:" %}
                     <input name="range_max" type="text" id="range_max"
-                           data-bind="value:range_max, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                           data-bind="value:range_max, enable: newly_added_question"/>
+                    <div class="validationMessage" data-bind="ifnot: range_max.valid">
+                        <span class="validationText" data-bind="text: range_max.error"></span>
+                    </div>
                 </div>
             </div>
         </li>
         <li data-bind="visible: showAddTextLength">
             <div class="margin_top_20">
                 <input type="radio" name="text_length" value="length_unlimited" checked="true"
-                       data-bind="checked:length_limiter, enable: $root.isTypeEnabled()"/>
+                       data-bind="checked:length_limiter, enable: newly_added_question"/>
                 {% trans "No, answer has no character limit" %}<br/>
 
                 <div class="max_char">
                     <input type="radio" name="text_length" value="length_limited"
-                           data-bind="checked:length_limiter, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                           data-bind="checked:length_limiter, valueUpdate: 'keyup', enable: newly_added_question"/>
                     {% trans "Yes, maximum number of characters should be" %}
                     <div>
                         <input name="max_length" type="text" id="max_length"
-                               data-bind="value:max_length, visible: showLengthLimiter, valueUpdate: 'keyup', enable: $root.isTypeEnabled()"/>
+                               data-bind="value:max_length, visible: showLengthLimiter, valueUpdate: 'keyup', enable: newly_added_question"/>
+                    </div>
+                    <div class="validationMessage" data-bind="ifnot: max_length.valid">
+                        <span class="validationText" data-bind="text: max_length.error"></span>
                     </div>
                 </div>
             </div>
