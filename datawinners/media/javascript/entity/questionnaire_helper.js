@@ -167,7 +167,6 @@ DW.question.prototype = {
             var i = indexOfChoice + 1;
             for (i; i < choices.length; i = i + 1) {
                 choices[i].value.val(lastChoiceValue);
-//                $("span.bullet", $("#options_list li").eq(i)).html(lastChoiceValue + ".");
                 lastChoiceValue = DW.next_option_value(lastChoiceValue);
             }
             self.choices.remove(choice);

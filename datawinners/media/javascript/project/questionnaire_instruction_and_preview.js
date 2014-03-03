@@ -9,6 +9,8 @@ DW.instruction_and_preview.prototype = {
         $(this.preview_navigation_item).live('click', function () {
             DW.instruction_and_preview.remove_sms_questionnaire_print();
             if ($("#questionnaire_preview_instruction").css("display") == "none") {
+                if(!DW.check_empty_questionnaire())
+                    return false;
                 if (questionnaireViewModel.validateForSubmission()) {
                     that.load_preview_content();
                 }

@@ -53,28 +53,28 @@ var questionnaireViewModel =
     },
 
     removeQuestion: function (question) {
-        var index = $.inArray(question, questionnaireViewModel.questions());
+//        var index = $.inArray(question, questionnaireViewModel.questions());
         if (!question.newly_added_question()) {
             questionnaireViewModel.hasDeletedOldQuestion = true;
             DW.questionnaire_was_changed = true;
         }
         questionnaireViewModel.questions.remove(question);
-        if (questionnaireViewModel.questions().length == 0) {
-            return;
-        }
-        if (question == questionnaireViewModel.selectedQuestion()) {
-            var next_index = (index) % questionnaireViewModel.questions().length;
-            questionnaireViewModel.changeSelectedQuestion(questionnaireViewModel.questions()[next_index]);
-        }
+        questionnaireViewModel.selectedQuestion(null);
+//        if (questionnaireViewModel.questions().length == 0) {
+//            return;
+//        }
+//        if (question == questionnaireViewModel.selectedQuestion()) {
+//            var next_index = (index) % questionnaireViewModel.questions().length;
+//            questionnaireViewModel.changeSelectedQuestion(questionnaireViewModel.questions()[next_index]);
+//        }
         questionnaireViewModel.hasAddedNewQuestions = true;
-        questionnaireViewModel.questions.valueHasMutated();
     },
 
     validateAndRemoveQuestion: function(question){
-        if(this.isEditMode && this.hasExistingData && !question.newly_added_question())
+        if(questionnaireViewModel.isEditMode && questionnaireViewModel.hasExistingData && !question.newly_added_question())
             DW.has_submission_delete_warning.show_warning();
         else
-            this.removeQuestion(question);
+            questionnaireViewModel.removeQuestion(question);
     },
 
     //TODO: Verify usage
@@ -107,7 +107,7 @@ var questionnaireViewModel =
         })
     },
 
-//    TODO: Check usages and remove
+    //TODO:currently unused. re-look on introducing reporting period
     isTypeEnabled: function () {
         return !questionnaireViewModel.selectedQuestion().event_time_field_flag();
     },
