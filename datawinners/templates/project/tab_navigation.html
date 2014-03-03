@@ -39,9 +39,6 @@
         <h2 class="project_title" > {{ project.name }}</h2>
         <input type="hidden" id="project_name" value="{{ project.name }}"/>
         <div class="project_detail">
-            <span class="project_status">{% trans "Project status:" %}
-                    <span class="{{ project.state }}_state">{% trans project.state %}</span>
-                </span>
             {% include 'project/sms_tester_form.html' %}
                 <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
         {% if user|in_group:"NGO Admins,Project Managers" %}
@@ -51,12 +48,6 @@
         </div>
     </div>
 
-{#TODO: activate project dialog and corresponding url#}
-{#    <div id="activate_project_block">#}
-{#        <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>#}
-{#        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>#}
-{#        <a href="#" class="button" id="confirm">{% trans "Activate" %}</a>#}
-{#    </div>#}
     <div id="delete_project_block">
         <p class="warning_message">{% trans "Export all submissions prior to deleting your project." %}</p>
         <a href="#" class="cancel_link cancel_{% trans "en" %}">{% trans "Cancel" %}</a>
