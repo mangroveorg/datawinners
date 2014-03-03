@@ -75,7 +75,7 @@ class TestQuestionnaireBuilder(unittest.TestCase):
                  "min_length": 1, "max_length": ""},
                 {"title": "q2", "type": "integer", "choices": [], "is_entity_question": False, "code": "code",
                  "range_min": 0, "range_max": 100},
-                {"title": "q3", "type": "select", "code": "code", "choices": [{"value": "c1"}, {"value": "c2"}],
+                {"title": "q3", "type": "select", "code": "code", "choices": [{"value": {"val": "c1"}}, {"value": {"val": "c2"}}],
                  "is_entity_question": False}
         ]
         summary_form_model = self.manager.get(self.summary_form_model__id, FormModel)
@@ -143,9 +143,11 @@ class TestQuestionBuilder(unittest.TestCase):
                 {"title": "q2", "description": "desc2", "type": "integer", "choices": [],
                  "is_entity_question": False, "range_min": 0, "range_max": 100},
                 {"title": "q3", "description": "desc3", "type": "select",
-                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
+                 "choices": [{"value": {"text": "value", "val": "c1"}}, {"value": {"text": "value", "val": "c2"}}],
+                 "is_entity_question": False},
                 {"title": "q4", "description": "desc4", "type": "select1",
-                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
+                 "choices": [{"value": {"text": "value", "val": "c1"}}, {"value": {"text": "value", "val": "c2"}}],
+                 "is_entity_question": False},
                 {"title": "q5", "description": "desc4", "type": "text"}
         ]
         q1 = self.question_builder.create_question(post[0], "q1")
@@ -195,7 +197,7 @@ class TestQuestionBuilder(unittest.TestCase):
     def test_should_create_select1_question(self):
         LABEL = "q3"
         TYPE = "select1"
-        choices = [{"text": "first", "val": "c1"}, {"text": "second", "val": "c2"}]
+        choices = [{"value": {"text": "first", "val": "c1"}}, {"value": {"text": "second", "val": "c2"}}]
 
         post = {"title": LABEL, "type": TYPE, "choices": choices}
 
@@ -209,7 +211,7 @@ class TestQuestionBuilder(unittest.TestCase):
     def test_should_create_select_question(self):
         LABEL = "q3"
         TYPE = "select"
-        choices = [{"text": "first", "val": "c1"}, {"text": "second", "val": "c2"}]
+        choices = [{"value":{"text": "first", "val": "c1"}}, {"value":{"text": "second", "val": "c2"}}]
 
         post = {"title": LABEL, "type": TYPE, "choices": choices}
 
