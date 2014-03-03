@@ -160,6 +160,22 @@ var questionnaireViewModel =
 
         return isValid ;
     },
+    selectedTemplateId : ko.observable(),
+    templateQuestionsData: ko.observable(),
+
+    chooseTemplate: function(template){
+        questionnaireViewModel.selectedTemplateId(template.id);
+        $.get("/project/template/"+template.id, questionnaireViewModel.templateQuestionsData)
+    },
+    templateQuestions: ko.computed(
+        function(){
+//            $.parseJSON(questionnaireViewModel.existing_questions)
+        }
+    ),
+    templateGroupingData: ko.observable(),
+    getTemplates: function(){
+        $.get("/project/templates", questionnaireViewModel.templateGroupingData)
+    },
     validateForSubmission: function(){
         return questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion()
                & questionnaireViewModel._validateQuestionnaireDetails();
@@ -168,6 +184,14 @@ var questionnaireViewModel =
 };
 questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
     return questionnaireViewModel.enableScrollToView;
+}, questionnaireViewModel);
+
+questionnaireViewModel.generateSmsPreview = ko.computed(function(){
+    var smsPreviewString = questionnaireViewModel.questionnaireCode();
+    _.each(this.questions(), function(question, index){
+        smsPreviewString += " " + "answer" + (index + 1);
+    });
+    return smsPreviewString;
 }, questionnaireViewModel);
 
 

@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="mobile"  data-bind="visible: selectedQuestion">
-                            <textarea name="message" cols="30" rows="4" id="sms_preview" readonly="true"></textarea>
+                            <textarea name="message" data-bind="text: generateSmsPreview" cols="30" rows="4" id="sms_preview" readonly="true"></textarea>
                         </div>
                     </div>
 

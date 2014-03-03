@@ -1,25 +1,25 @@
- function populate_subject_details() {
-    $.getJSON("/entity/subject/details/" + subject_type, function (questionnaire_details) {
-        questionnaireViewModel.questionnaireCode(questionnaire_details.questionnaire_code);
-        DW.existing_questions = $.parseJSON(questionnaire_details.existing_questions);
-        $($.parseJSON(questionnaire_details.existing_questions)).each(function(index, question){
-            questionnaireViewModel.loadQuestion(new DW.question(question));
-        });
-        questionnaireViewModel.questions.valueHasMutated();
-    });
+// function populate_subject_details() {
+//    $.getJSON("/entity/subject/details/" + subject_type, function (questionnaire_details) {
+//        questionnaireViewModel.questionnaireCode(questionnaire_details.questionnaire_code);
+//        DW.existing_questions = $.parseJSON(questionnaire_details.existing_questions);
+//        $($.parseJSON(questionnaire_details.existing_questions)).each(function(index, question){
+//            questionnaireViewModel.loadQuestion(new DW.question(question));
+//        });
+//        questionnaireViewModel.questions.valueHasMutated();
+//    });
+//
+//}
 
-}
-
-var init_view_model = function () {
-    if (!is_project_questionnaire){
-//        Populating questions for subject questionnaire
-        populate_subject_details();
-    }
-//    questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
-    questionnaireViewModel.selectedQuestion.valueHasMutated();
-    questionnaireViewModel.hasAddedNewQuestions = false;
-    DW.smsPreview();
-};
+//var init_view_model = function () {
+//    if (!is_project_questionnaire){
+////        Populating questions for subject questionnaire
+//        populate_subject_details();
+//    }
+////    questionnaireViewModel.selectedQuestion(new DW.question({is_null_question: true}));
+//    questionnaireViewModel.selectedQuestion.valueHasMutated();
+//    questionnaireViewModel.hasAddedNewQuestions = false;
+//    DW.smsPreview();
+//};
 
 DW.error_appender = function (element) {
     this.element = element;
@@ -65,7 +65,7 @@ $(document).ready(function () {
     $('#continue_project').live("click", DW.charCount);
     $('#question_form').live("keyup", DW.charCount);
     $('#question_form').live("click", DW.charCount);
-    $('#question_form').live("click", DW.smsPreview);
+//    $('#question_form').live("click", DW.smsPreview);
     $('.delete').live("click", DW.charCount);
 
 //    $('input[name=text_length]:radio').change(

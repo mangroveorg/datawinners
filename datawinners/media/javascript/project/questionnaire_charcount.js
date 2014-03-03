@@ -1,5 +1,6 @@
 DW.charCount = function() {
-    var questionnaire_code_len = $('#questionnaire-code').val().length;
+    var questionnaireCode = questionnaireViewModel.questionnaireCode();
+    var questionnaire_code_len = questionnaireCode ? questionnaireCode.length : 0;
     var max_len = 160;
     var constraints_len = 0;
     var delimiter_len = 1;
@@ -47,6 +48,6 @@ DW.charCount = function() {
         sms_number_text = "(" + sms_number + " sms required)";
     }
     $('#char-count').html((current_len) + ' / ' + max_len + ' ' + gettext('characters used') + sms_number_text);
-    DW.smsPreview();
+//    DW.smsPreview();
 
 };
