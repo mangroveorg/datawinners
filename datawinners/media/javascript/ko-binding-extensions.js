@@ -38,6 +38,9 @@ ko.bindingHandlers.errorVisible = {
         if (shouldShow && shouldShow.length > 0) {
             $('html, body').animate({scrollTop: $(element).offset().top}, 'slow')
         }
+        setTimeout(function () {
+            $(element).fadeOut()
+        }, 5000);
     }
 };
 
@@ -53,23 +56,25 @@ ko.bindingHandlers.initializeAccordion = {
 };
 
 ko.bindingHandlers.buttonVisible = {
-  init: function(element, valueAccessor){
-      $(element).hide();
-      var accordionElement = valueAccessor().accordionElement;
-      $(accordionElement).on('accordionchangestart', function(){
-          var activatedAccordion = $(accordionElement).accordion('option', 'active');
-          $(element).toggle(activatedAccordion !== false && activatedAccordion == 0);
-      })
-  },
-    update: function(element, valueAccessor){
+    init: function (element, valueAccessor) {
+        $(element).hide();
+        var accordionElement = valueAccessor().accordionElement;
+        $(accordionElement).on('accordionchangestart', function () {
+            var activatedAccordion = $(accordionElement).accordion('option', 'active');
+            $(element).toggle(activatedAccordion !== false && activatedAccordion == 0);
+        })
+    },
+    update: function (element, valueAccessor) {
         var selectedTemplateId = valueAccessor().observable;
         $(element).toggle(selectedTemplateId() !== undefined);
     }
 };
 
 ko.bindingHandlers.hidden = {
-  update: function(element, valueAccessor){
-      var value = ko.utils.unwrapObservable(valueAccessor());
-      ko.bindingHandlers.visible.update(element, function(){ return !value; });
-  }
+    update: function (element, valueAccessor) {
+        var value = ko.utils.unwrapObservable(valueAccessor());
+        ko.bindingHandlers.visible.update(element, function () {
+            return !value;
+        });
+    }
 };

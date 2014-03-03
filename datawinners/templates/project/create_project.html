@@ -49,8 +49,9 @@
 {% endblock %}
 
 {% block content %}
-    <div id="project-message-label" class="message-box" data-bind="visible: errorInResponse">
-        <label class='error_message' data-bind="text: responseErrorMsg, errorVisible: responseErrorMsg"></label>
+    <div id="project-message-label" class="message-box"
+         data-bind="visible: errorInResponse() && showQuestionnaireForm(), errorVisible: responseErrorMsg">
+        <label class='error_message' data-bind="text: responseErrorMsg"></label>
     </div>
 
     {% include 'project/questionnaire_creation_options.html' %}
