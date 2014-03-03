@@ -175,14 +175,21 @@ var questionnaireViewModel =
         return isValid ;
     },
     selectedTemplateId : ko.observable(),
-    chooseTemplate: function(template){
-        questionnaireViewModel.selectedTemplateId(template.id)
-    },
-    templateData: ko.observable(),
-    getTemplates: function(){
-        $.get("/project/templates", questionnaireViewModel.templateData)
-    },
+    templateQuestionsData: ko.observable(),
 
+    chooseTemplate: function(template){
+        questionnaireViewModel.selectedTemplateId(template.id);
+        $.get("/project/template/"+template.id, questionnaireViewModel.templateQuestionsData)
+    },
+    templateQuestions: ko.computed(
+        function(){
+            $.parseJSON(questionnaireViewModel.existing_questions)
+        }
+    ),
+    templateGroupingData: ko.observable(),
+    getTemplates: function(){
+        $.get("/project/templates", questionnaireViewModel.templateGroupingData)
+    },
     validateForSubmission: function(){
         return questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion()
                & questionnaireViewModel._validateQuestionnaireDetails();

@@ -106,6 +106,11 @@ def get_template_details(request, template_id):
                         'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 
+@login_required
+def get_template_questions(request, template_id):
+    library = QuestionnaireLibrary()
+    template = library.get_questionnaire_template(template_id)
+    return HttpResponse(json.dumps(template.get('json_fields'), default=field_to_json), content_type='application/json')
 
 @login_required
 @session_not_expired

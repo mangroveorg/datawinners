@@ -3,7 +3,7 @@
 <div>
     <h6>{% trans 'Choose a Template and adjust it to your needs' %}</h6>
 
-    <div data-bind="with: templateData">
+    <div class='questionnaire_template' data-bind="with: templateGroupingData">
         <ul data-bind="foreach: categories">
             <li class="template_accordion" data-bind="initializeAccordion: {accordionHeader: '.template_data'}">
                 <span class="template_data" data-bind="text: category"></span>
@@ -14,4 +14,10 @@
             </li>
         </ul>
     </div>
+    <div data-bind="visible: selectedTemplateId(), with: templateQuestionsData" class="selected_questions">
+        <ul data-bind="foreach: templateQuestionsData">
+            <li data-bind="text: $data.name"></li>
+        </ul>
+    </div>
+
 </div>
