@@ -14,10 +14,11 @@
             </li>
         </ul>
     </div>
-    <div data-bind="visible: selectedTemplateId(), with: templateQuestionsData" class="selected_questions">
-        <ul data-bind="foreach: templateQuestionsData">
-            <li data-bind="text: $data.name"></li>
-        </ul>
+    <div data-bind="visible: selectedTemplateId(), with: templateData" class="selected_questions">
+        <strong data-bind="text: $data.project_name"></strong>
+        <ol data-bind="foreach: $.parseJSON($data.existing_questions)">
+            <li data-bind="text: name"></li>
+        </ol>
     </div>
 
 </div>

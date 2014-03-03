@@ -1,43 +1,54 @@
 {% load i18n %}
-<div id="questionnaire" class="clear_both" data-bind="visible: showQuestionnaireForm">
-    <fieldset>
-        <legend>2. {% trans "Write and Edit Your Questions." %}</legend>
-    </fieldset>
-    <div class="line"></div>
+<div id="create_questionnaire">
+    <div id="project-message-label" class="message-box"
+         data-bind="visible: errorInResponse() && showQuestionnaireForm(), errorVisible: responseErrorMsg">
+        <label class='error_message' data-bind="text: responseErrorMsg"></label>
+    </div>
 
-    <form id="question_form">
-        {% csrf_token %}
+
+    <div id="questionnaire" class="clear_both" data-bind="visible: showQuestionnaireForm">
         <fieldset>
-            <div class="questionnaire_form_header clearfix">
-                {% include 'project/questionnaire_info_indicator.html' %}
-                {% include 'project/preview_navigation.html' %}
-            </div>
-            <div class="questionnare_content grid_23 alpha omega">
-                <div>
-                    {% include 'project/question_list.html' %}
+            <legend>2. {% trans "Write and Edit Your Questions." %}</legend>
+        </fieldset>
+        <div class="line"></div>
 
-                    <div id="question-detail-panel">
-                        <div class="select_question_message"
-                             data-bind="hidden: selectedQuestion">{% trans "Select a question to edit or add another question." %}</div>
-                        {% include 'project/question_detail_panel.html' %}
-                        {% include 'project/sms_preview.html' %}
+        <form id="question_form">
+            {% csrf_token %}
+            <fieldset>
+                <div class="questionnaire_form_header clearfix">
+                    {% include 'project/questionnaire_info_indicator.html' %}
+                    {% include 'project/preview_navigation.html' %}
+                </div>
+                <div class="questionnare_content grid_23 alpha omega">
+                    <div>
+                        {% include 'project/question_list.html' %}
+
+                        <div id="question-detail-panel">
+                            <div class="select_question_message"
+                                 data-bind="hidden: selectedQuestion">{% trans "Select a question to edit or add another question." %}</div>
+                            {% include 'project/question_detail_panel.html' %}
+                            {% include 'project/sms_preview.html' %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </fieldset>
-    </form>
+            </fieldset>
+        </form>
 
-    <div class="create_project">
-        <div class="grid_5">
-            <a data-bind="click: backToQuestionnaireCreationOptionsLink" id="back_to_project">{% trans "Back" %} </a>
-        </div>
-        <div class="grid_15 float_right">
-            <div class="right_aligned_button">
-                <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
-                <input type="button" class="button_wizard_next" id="save_and_create"
-                       value="{% trans "Save & Create Project" %}"/>
+        <div class="create_project">
+            <div class="grid_5">
+                <a data-bind="click: backToQuestionnaireCreationOptionsLink"
+                   id="back_to_project">{% trans "Back" %} </a>
             </div>
+            <div class="grid_15 float_right">
+                <div class="right_aligned_button">
+                    <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
+                    <input type="button" class="button_wizard_next" id="save_and_create"
+                           value="{% trans "Save & Create Project" %}"/>
+                </div>
+            </div>
+            <div class="clear-both"></div>
         </div>
-        <div class="clear-both"></div>
     </div>
+    {% include "warning_edit_questionnaire.html" %}
+
 </div>

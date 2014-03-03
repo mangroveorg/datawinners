@@ -72,25 +72,6 @@ def get_preview_and_instruction_links():
 @session_not_expired
 @csrf_exempt
 @is_not_expired
-def get_questionnaire_details_ajax(request, questionnaire_code):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-    project = project_by_form_model_id(manager, form_model.id)
-    fields = form_model.fields
-    if form_model.is_entity_type_reporter():
-        fields = helper.hide_entity_question(fields)
-    existing_questions = json.dumps(fields, default=field_to_json)
-
-    return HttpResponse(jsonpickle.encode(
-        {'project_name': project.name, 'project_language': project.language, 'existing_questions': existing_questions,
-         'questionnaire_code': questionnaire_code},
-        unpicklable=False), content_type='application/json')
-
-
-@login_required
-@session_not_expired
-@csrf_exempt
-@is_not_expired
 def get_templates(request):
     library = QuestionnaireLibrary()
     return HttpResponse(json.dumps({'categories': library.get_template_groupings()}), content_type='application/json')
@@ -101,16 +82,11 @@ def get_template_details(request, template_id):
     dbm = get_database_manager(request.user)
     library = QuestionnaireLibrary()
     template = library.get_questionnaire_template(template_id)
-    template_details = {'project_name': template.get('name'), 'project_language': template.get('language'),
+    template_details = {'template_id':template.id,'project_name': template.get('name'), 'project_language': template.get('language'),
                         'questionnaire_code': helper.generate_questionnaire_code(dbm),
                         'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 
-@login_required
-def get_template_questions(request, template_id):
-    library = QuestionnaireLibrary()
-    template = library.get_questionnaire_template(template_id)
-    return HttpResponse(json.dumps(template.get('json_fields'), default=field_to_json), content_type='application/json')
 
 @login_required
 @session_not_expired
@@ -119,13 +95,10 @@ def get_template_questions(request, template_id):
 def create_project(request):
     manager = get_database_manager(request.user)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
-    #project_details = json.dumps({'questionnaire_code': helper.generate_questionnaire_code(manager)})
 
     if request.method == 'GET':
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
-                                   # 'project': project_summary,
-                                   #'project_details': repr(project_details),
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
                                    'post_url': reverse(create_project)}, context_instance=RequestContext(request))

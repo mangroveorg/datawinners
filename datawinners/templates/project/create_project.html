@@ -26,6 +26,7 @@
 
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/project/create_project.js"></script>
@@ -49,12 +50,6 @@
 {% endblock %}
 
 {% block content %}
-    <div id="project-message-label" class="message-box"
-         data-bind="visible: errorInResponse() && showQuestionnaireForm(), errorVisible: responseErrorMsg">
-        <label class='error_message' data-bind="text: responseErrorMsg"></label>
-    </div>
-
     {% include 'project/questionnaire_creation_options.html' %}
     {% include 'project/quesitionnaire_builder.html' %}
-    {% include "warning_edit_questionnaire.html" %}
 {% endblock %}

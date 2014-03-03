@@ -93,13 +93,14 @@ DW.controllers = {
                     questionnaireViewModel.loadQuestion(new DW.question(question));
                 });
                 questionnaireViewModel.showQuestionnaireForm(true);
-
+                questionnaireHelperModel.showQuestionnaireCreationOptions(false)
             })
     },
     "blank_questionnaire": function () {
             questionnaireViewModel.projectName('');
             questionnaireViewModel.questions([]);
             questionnaireViewModel.showQuestionnaireForm(true);
+            questionnaireHelperModel.showQuestionnaireCreationOptions(false);
             questionnaireViewModel.questionnaireCode(questionnaire_code);
     }
 };
@@ -112,12 +113,14 @@ DW.projectRouter = Sammy(function () {
 
         this.get('project/wizard/create/$', function () {
             questionnaireViewModel.showQuestionnaireForm(false);
+            questionnaireHelperModel.showQuestionnaireCreationOptions(true);
         });
 });
 
 function _initializeViewModel() {
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
-    ko.applyBindings(questionnaireViewModel);
+    ko.applyBindings(questionnaireViewModel, $('#create_questionnaire')[0]);
+    ko.applyBindings(questionnaireHelperModel, $('#project_profile')[0]);
 }
 
 $(document).ready(function () {
