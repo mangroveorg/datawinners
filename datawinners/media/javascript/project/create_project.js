@@ -83,6 +83,7 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
 DW.controllers = {
     "questionnaire_load_controller":function () {
             var url = '/project/template/'+this.params.template_id;
+            questionnaireViewModel.questions([]);
             $.getJSON(url, function (project_details) {
                 questionnaireViewModel.projectName(project_details.project_name);
                 questionnaireViewModel.language(project_details.project_language);

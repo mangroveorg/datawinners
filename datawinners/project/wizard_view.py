@@ -88,29 +88,12 @@ def get_questionnaire_details_ajax(request, questionnaire_code):
 
 
 @login_required
-#@session_not_expired
-#@csrf_exempt
-#@is_not_expired
+@session_not_expired
+@csrf_exempt
+@is_not_expired
 def get_templates(request):
-    return HttpResponse(json.dumps({'categories': [
-        {'category': 'Health', 'description': 'This is related to health sector',
-         "templates": [
-             {'id': 'health_1', 'name': 'patient records'},
-             {'id': 'health_2', 'name': 'medicine stock'},
-             {'id': 'health_3', 'name': 'appointments'}
-         ]
-        },
-        {'category': 'Education', 'description': 'This is related to Education sector',
-         "templates": [{'name': 'Teacher Attendance'}]
-        },
-        {'category': 'Food Security', 'description': 'This is related to food sector',
-         "templates": [{'name': 'Food Supply'}]
-        },
-        {'category': 'Agriculture', 'description': 'This is related to agri sector',
-         "templates": [{'name': 'fertilizer stock'}]
-        }
-    ]
-    }), content_type='application/json')
+    library = QuestionnaireLibrary()
+    return HttpResponse(json.dumps({'categories': library.get_template_groupings()}), content_type='application/json')
 
 
 @login_required
