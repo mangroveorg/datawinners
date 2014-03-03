@@ -8,6 +8,7 @@ var subjectQuestionnaireViewModel = {
         questionnaireViewModel.questions.push(id_question);
     },
 
+    //TODO: verify and remove
     isTypeEnabled:function () {
         return questionnaireViewModel.selectedQuestion().newly_added_question();
     }
