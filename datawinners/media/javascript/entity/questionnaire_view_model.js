@@ -87,9 +87,9 @@ var questionnaireViewModel =
     selectedQuestion: ko.observable(),
 
     changeSelectedQuestion: function (question) {
+        if(!this.validateSelectedQuestion())
+            return;
         questionnaireViewModel.selectedQuestion(question);
-        questionnaireViewModel.selectedQuestion.valueHasMutated();
-        questionnaireViewModel.questions.valueHasMutated();
         var questionType = questionnaireViewModel.selectedQuestion().isAChoiceTypeQuestion();
         if (questionType == 'none') questionType = questionnaireViewModel.selectedQuestion().type();
         questionnaireViewModel.selectedQuestion().answerType(questionType);
@@ -141,12 +141,12 @@ var questionnaireViewModel =
     _validateSelectedQuestionHasUniqueTitle: function(){
         var selectedQuestion = this.selectedQuestion();
         var matchingQuestionsWithSameTitle = ko.utils.arrayFilter(this.questions(), function(question){
-            return selectedQuestion.title() == question.title();
+            return selectedQuestion.title().toLowerCase() == question.title().toLowerCase();
         });
 
         var isUnique = matchingQuestionsWithSameTitle.length == 1;
         if(!isUnique)
-            selectedQuestion.title.setError(gettext("Title should be unique"));
+            selectedQuestion.title.setError(gettext("This question is duplicate"));
         else
             selectedQuestion.title.clearError();
 
@@ -185,7 +185,7 @@ var questionnaireViewModel =
 
     validateForSubmission: function(){
         return questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion()
-               && questionnaireViewModel._validateQuestionnaireDetails();
+               & questionnaireViewModel._validateQuestionnaireDetails();
     }
 
 };
