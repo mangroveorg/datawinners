@@ -33,12 +33,7 @@ class QuestionnaireLibrary:
         return template_doc.unwrap()
 
     def get_template_groupings(self):
-        key_as_str = GROUPING_CACHE_KEY
-        template_aggregation = self.cache_manger.get(key_as_str)
-        if template_aggregation is None:
-            template_aggregation = self._grouping()
-            self.cache_manger.set(key_as_str, template_aggregation, time=TEMPLATE_CACHE_EXPIRY_TIME_IN_SEC)
-        return template_aggregation
+        return self._grouping()
 
     def _create_view(self):
         from datawinners.main.utils import find_views

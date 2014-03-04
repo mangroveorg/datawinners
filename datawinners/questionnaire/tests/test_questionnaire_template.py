@@ -28,14 +28,3 @@ class testQuestionnaireTemplate(TestCase):
             self.assertDictEqual(expected[0], result[0])
             self.assertDictEqual(expected[1], result[1])
 
-    #Script which creates a template document given project details. Can be used for migrations.
-    def create_template_from_project(self):
-        #dbm = get_db_manager("questionnaire_library")
-        #_delete_db_and_remove_db_manager(dbm)
-        library = QuestionnaireLibrary()
-        library.create_template_from_project('hni_testorg_slx364903','Health', 'Medicine stock', 'health_2', '026')
-        template = library.get_questionnaire_template('health_2')
-        template_details = {'project_name': template.get('name'), 'project_language': template.get('language'),
-                            'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
-        self.assertEqual(template_details.get('project_name'), 'Medicine stock')
-
