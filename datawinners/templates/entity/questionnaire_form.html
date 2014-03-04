@@ -17,7 +17,6 @@
                     <div class="validationMessage" data-bind="ifnot: questionnaireCode.valid">
                         <span class="validationText" data-bind="text: questionnaireCode.error"></span>
                     </div>
-{#                    {% ifequal type 'datasenders' %}readonly="readonly"{% endifequal %}/>#}
                     <input id="entity-type" type="hidden" value="{{ entity_type }}" name="entity-type"/>
                     <input id="saved-questionnaire-code" type="hidden" value="{{ questionnaire_code }}"/>
                     <input type="hidden" name="project_name" value="{% if project %}{{ project.name }}{% endif %}"

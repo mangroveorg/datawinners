@@ -377,16 +377,6 @@ DW.removeQuestionCheckForRegistration = function (question) {
     }
 };
 
-DW.removeQuestionCheckForSubmission = function (question) {
-    var index = $.inArray(question, questionnaireViewModel.questions());
-    if (questionnaireViewModel.questions()[index].event_time_field_flag()) {
-        DW.delete_periodicity_question_warning.show_warning();
-    } else if (is_edit && !DW.has_submission_delete_warning.is_continue && !question.newly_added_question() && DW.questionnaire_has_submission()) {
-        DW.has_submission_delete_warning.show_warning();
-    } else {
-        questionnaireViewModel.removeQuestion(question);
-    }
-};
 
 DW.isRegistrationQuestionnaire = function () {
     return $('#qtype').val() == 'subject';
@@ -545,12 +535,14 @@ DW.set_questionnaire_was_change = function () {
 };
 
 $(document).ready(function () {
+    //TODO: Move to KO viewModel
     var change_selector = "#range_min, #range_max, #max_length, [name=text_length], [name=date_format], #question_title";
     change_selector += ", [name=answers_possible], [name=type]";
     var click_selector = "#question-detail-panel .add_link";
 
     $(change_selector).change(DW.set_questionnaire_was_change);
     $(click_selector).click(DW.set_questionnaire_was_change);
+    //END
 
     DW.has_submission_delete_warning = (function () {
         var kwargs = {

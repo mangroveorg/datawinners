@@ -159,7 +159,7 @@ var questionnaireViewModel =
         }
     },
 
-    _validateQuestionnaireDetails: function(){
+    validateQuestionnaireDetails: function(){
         DW.ko.mandatoryValidator(this.projectName);
         questionnaireViewModel._validateQuestionnaireCode(questionnaireViewModel.questionnaireCode);
 
@@ -184,7 +184,7 @@ var questionnaireViewModel =
 
     validateForSubmission: function(){
         return questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion()
-               & questionnaireViewModel._validateQuestionnaireDetails();
+               & questionnaireViewModel.validateQuestionnaireDetails();
     }
 
 };
