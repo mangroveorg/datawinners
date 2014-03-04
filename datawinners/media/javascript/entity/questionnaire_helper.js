@@ -178,6 +178,13 @@ DW.question.prototype = {
             });
         };
 
+        var _validateChoice = function(choice){
+            if (choice.value.text())
+                choice.clearError();
+            else
+                choice.setError(gettext("This field is required."))
+        };
+
         this.addOptionToQuestion = function () {
             var selectedQuestionCode = "a";
             var choiceText = "";
@@ -195,8 +202,9 @@ DW.question.prototype = {
                                                                                     val: ko.observable(selectedQuestionCode)
                                                                                }
                                                                       });
+
             choiceItemText.subscribe(function(){
-                _validateChoice(choiceItem);
+                _validateChoice(this);
             }, choiceItem);
 
             this.choices.push(choiceItem);
@@ -296,13 +304,6 @@ DW.question.prototype = {
             },
             owner: this
         });
-
-        var _validateChoice = function(choice){
-            if (choice.value.text())
-                choice.clearError();
-            else
-                choice.setError(gettext("This field is required."))
-        }
 
         this.validate = function () {
             DW.ko.mandatoryValidator(this.title);

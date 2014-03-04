@@ -28,7 +28,7 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.selectedQuestion(question);
         DW.init_question_constraints();
-        questionnaireViewModel.selectedQuestion.valueHasMutated();
+//        questionnaireViewModel.selectedQuestion.valueHasMutated();
         DW.charCount();
         questionnaireViewModel.enableScrollToView(true);
         questionnaireViewModel.hasAddedNewQuestions = true;
@@ -125,7 +125,9 @@ var questionnaireViewModel =
 
     responseErrorMsg: ko.observable(),
 
-    enableScrollToView: ko.observable(false),
+    enableScrollToView: ko.observable(false).extend({ notify: "always"}),
+
+    enableQuestionTitleFocus: ko.observable(false).extend({ notify: "always"}),
 
     validateSelectedQuestion: function(){
         if(!this.selectedQuestion())
@@ -189,15 +191,25 @@ var questionnaireViewModel =
     },
 
     validateForSubmission: function(){
-        return questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion()
+        return (questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion())
                & questionnaireViewModel.validateQuestionnaireDetails();
     }
 
 };
 
-questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
-    return questionnaireViewModel.enableScrollToView() || questionnaireViewModel.questionHasErrors();
+questionnaireViewModel.questionHasErrors.subscribe(function(questionHasErrors){
+    questionHasErrors && this.enableQuestionTitleFocus(true);
 }, questionnaireViewModel);
+
+questionnaireViewModel.enableScrollToView.subscribe(function(enableScrollToView){
+    enableScrollToView && this.enableQuestionTitleFocus(true);
+}, questionnaireViewModel);
+
+//questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
+//    var shouldChange = this.questionHasErrors() || this.enableScrollToView();
+//    console.log(shouldChange);
+//    return shouldChange;
+//}, questionnaireViewModel).extend({notify: "always"});
 
 questionnaireViewModel.generateSmsPreview = ko.computed(function(){
     var smsPreviewString = questionnaireViewModel.questionnaireCode();

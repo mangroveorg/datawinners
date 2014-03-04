@@ -4,7 +4,7 @@
         <li class="question">
             <label>{% trans "Question" %}</label>
             <input id="question_title" name="question_title" type="text" class="required question_title"
-                   data-bind="hasFocus:$parent.enableQuestionTitleFocus, value: title, valueUpdate: 'keyup', uniqueName: true"/>
+                   data-bind="hasFocus:$root.enableQuestionTitleFocus, value: title"/>
             <div class="validationMessage" data-bind="ifnot: title.valid">
                 <span class="validationText" data-bind="text: title.error"></span>
             </div>

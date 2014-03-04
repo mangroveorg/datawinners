@@ -81,8 +81,8 @@
                     data-bind="template: { name : 'choice-template',foreach : choices }">
 
                 </ol>
-                <a href="questionnaire_wizard.html#" class="add_link"
-                   data-bind="click: function() { addOptionToQuestion(); }, valueUpdate: 'keyup', visible: newly_added_question">
+                <a href="javascript:void(0);" class="add_link"
+                   data-bind="click:addOptionToQuestion, visible: newly_added_question">
                     {% trans "Add Answer Choice" %}</a>
             </div>
             <div>
