@@ -119,15 +119,15 @@ DW.question.prototype = {
         this.type = ko.observable(q.type);
         this.is_entity_question = ko.observable(q.entity_question_flag);
 
-        this.showDateFormats = ko.computed(function(){
+        this.showDateFormats = ko.computed(function () {
             return this.type() == "date";
         }, this);
 
-        this.showAddRange = ko.computed(function() {
+        this.showAddRange = ko.computed(function () {
             return this.type() == 'integer';
         }, this);
 
-        this.showAddTextLength = ko.computed(function() {
+        this.showAddTextLength = ko.computed(function () {
             return this.type() == 'text' && !this.is_entity_question();
         }, this);
 
@@ -135,17 +135,17 @@ DW.question.prototype = {
 
         this.answerType = DW.ko.createValidatableObservable();
 
-        this.display = ko.computed(function() {
+        this.display = ko.computed(function () {
             return this.title();
         }, this);
 
-        this.answerType.subscribe(function(selected_answer_type){
-            if(selected_answer_type === "") return;
+        this.answerType.subscribe(function (selected_answer_type) {
+            if (selected_answer_type === "") return;
             _clearErrors();
             DW.change_question_type_for_selected_question(selected_answer_type);
         }, this);
 
-        var _clearErrors = function(){
+        var _clearErrors = function () {
             self.max_length.clearError();
             self.range_max.clearError();
             self.range_min.clearError();
@@ -155,7 +155,7 @@ DW.question.prototype = {
         var initialValues = DW.initChoices(q.choices);
         this.choices = ko.observableArray(initialValues);
 
-        this.choiceCanBeDeleted = ko.computed(function() {
+        this.choiceCanBeDeleted = ko.computed(function () {
             return this.choices().length > 1;
         }, this);
 
@@ -172,22 +172,22 @@ DW.question.prototype = {
             self.choices.remove(choice);
         };
 
-        var _clearChoiceErrors = function(){
-          ko.utils.arrayForEach(self.choices(), function(choice){
-              choice.clearError();
-          });
+        var _clearChoiceErrors = function () {
+            ko.utils.arrayForEach(self.choices(), function (choice) {
+                choice.clearError();
+            });
         };
 
-        this.addOptionToQuestion = function() {
+        this.addOptionToQuestion = function () {
             var selectedQuestionCode = "a";
             if (this.choices().length > 0) {
                 var lastChoice = this.choices()[this.choices().length - 1];
                 selectedQuestionCode = DW.next_option_value(lastChoice.value.val());
             }
-            this.choices.push(DW.ko.createValidatableObservableObject({value:{text: ko.observable(gettext("")), val: ko.observable(selectedQuestionCode)}}));
+            this.choices.push(DW.ko.createValidatableObservableObject({value: {text: ko.observable(gettext("")), val: ko.observable(selectedQuestionCode)}}));
         };
 
-        this.showAddChoice = function() {
+        this.showAddChoice = function () {
             if (this.isAChoiceTypeQuestion() == "choice") {
                 if (this.choices().length == 0) {
                     this.addOptionToQuestion();
@@ -198,7 +198,7 @@ DW.question.prototype = {
         };
 
 
-        this.checkForQuestionnaireChange = function(choice) {
+        this.checkForQuestionnaireChange = function (choice) {
             if (_.any($(this.options.choices), function (v) {
                 return v.val == choice.val;
             })) {
@@ -209,14 +209,14 @@ DW.question.prototype = {
         this.date_format = ko.observable(q.date_format);
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
 
-        this.showLengthLimiter = ko.computed( function(){
+        this.showLengthLimiter = ko.computed(function () {
             return this.length_limiter() == 'length_limited';
         }, this);
 
-        this.length_limiter.subscribe(function(new_length_limiter){
-            if(new_length_limiter == 'length_unlimited')
+        this.length_limiter.subscribe(function (new_length_limiter) {
+            if (new_length_limiter == 'length_unlimited')
                 this.max_length("");
-                this.max_length.clearError();
+            this.max_length.clearError();
         }, this);
 
         this.instruction = ko.dependentObservable({
@@ -284,25 +284,25 @@ DW.question.prototype = {
             owner: this
         });
 
-        this.validate = function(){
+        this.validate = function () {
             DW.ko.mandatoryValidator(this.title);
             DW.ko.mandatoryValidator(this.answerType);
-            if(this.showLengthLimiter()){
+            if (this.showLengthLimiter()) {
                 DW.ko.mandatoryValidator(this.max_length);
                 this.max_length.valid() && DW.ko.numericValidator(this.max_length);
             }
-            else if(this.showAddRange()){
+            else if (this.showAddRange()) {
                 this.range_min() && DW.ko.numericValidator(this.range_min);
                 this.range_max() && DW.ko.numericValidator(this.range_max);
             }
 
             var isChoiceAnswerValid = true;
-            if(this.showAddChoice()){
-                ko.utils.arrayForEach(this.choices(), function(choice){
-                    if(choice.value.text()){
+            if (this.showAddChoice()) {
+                ko.utils.arrayForEach(this.choices(), function (choice) {
+                    if (choice.value.text()) {
                         choice.clearError();
                     }
-                    else{
+                    else {
                         choice.valid(false);
                         choice.error(gettext("This field is required."));
                     }
@@ -311,7 +311,7 @@ DW.question.prototype = {
             }
 
             return this.title.valid() && this.answerType.valid() && this.max_length.valid()
-                    && this.range_min.valid() && this.range_max.valid() && isChoiceAnswerValid;
+                && this.range_min.valid() && this.range_max.valid() && isChoiceAnswerValid;
         };
 
     }
@@ -513,16 +513,16 @@ $(document).ready(function () {
     $(change_selector).change(DW.set_questionnaire_was_change);
     $(click_selector).click(DW.set_questionnaire_was_change);
 
-    DW.has_submission_delete_warning = (function(){
+    DW.has_submission_delete_warning = (function () {
         var kwargs = {
-                    container: "#submission_exists",
-                    is_continue: false,
-                    title: gettext('Warning: Your Collected Data Will be Lost'),
-                    continue_handler: function(){
-                        question = questionnaireViewModel.selectedQuestion();
-                        questionnaireViewModel.removeQuestion(question);
-                    }
-                 };
+            container: "#submission_exists",
+            is_continue: false,
+            title: gettext('Warning: Your Collected Data Will be Lost'),
+            continue_handler: function () {
+                question = questionnaireViewModel.selectedQuestion();
+                questionnaireViewModel.removeQuestion(question);
+            }
+        };
         return new DW.warning_dialog(kwargs);
     }());
 
@@ -540,11 +540,38 @@ DW.has_questions_changed = function (existing_questions) {
 };
 
 DW.addNewQuestion = function () {
-    if(!questionnaireViewModel.validateSelectedQuestion())
+    if (!questionnaireViewModel.validateSelectedQuestion())
         return;
     questionnaireViewModel.addQuestion();
     DW.close_the_tip_on_period_question();
     DW.smsPreview();
 };
 
+DW.templateDataCache = {};
+
+var clearCache = function () {
+    DW.templateDataCache = {};
+};
+
+setInterval(clearCache, 1000*60*10); //clear the cache periodically every 10 minutes
+
+DW.getTemplateData = function (template_id) {
+    var templateData = null;
+    if (DW.templateDataCache[template_id] != undefined) {
+        templateData = DW.templateDataCache[template_id];
+    }
+    else {
+        $.ajax({
+            type: 'GET',
+            url: "/project/template/" + template_id,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                DW.templateDataCache[template_id] = data;
+                templateData = data;
+            }
+        });
+    }
+    return templateData
+};
 

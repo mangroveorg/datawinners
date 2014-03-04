@@ -1,4 +1,3 @@
-var templateDataCache = {};
 var questionnaireHelperModel = {
         selectedTemplateId: ko.observable(),
         showQuestionnaireCreationOptions: ko.observable(),
@@ -7,16 +6,7 @@ var questionnaireHelperModel = {
         chooseTemplate: function (template) {
             var template_id = template.id;
             questionnaireHelperModel.selectedTemplateId(template_id);
-            if(templateDataCache[template_id] != undefined){
-                var templateData = templateDataCache[template_id];
-                questionnaireHelperModel.templateData(templateData);
-            }
-            else{
-                $.getJSON("/project/template/" + template_id, function (data) {
-                    templateDataCache[template_id] = data;
-                    questionnaireHelperModel.templateData(data);
-                });
-            }
+            questionnaireHelperModel.templateData(DW.getTemplateData(template_id));
         },
 
         templateGroupingData: ko.observable(),
