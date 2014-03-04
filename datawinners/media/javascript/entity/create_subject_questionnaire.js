@@ -72,8 +72,8 @@ function _initializeViewModel() {
     });
     questionnaireViewModel.questionnaireCode(questionnaire_code);
     questionnaireViewModel.projectName("subject questionnaire");
-    questionnaireViewModel.hasExistingData = true;
-    questionnaireViewModel.isEditMode = true;
+    questionnaireViewModel.hasExistingData = false;
+    questionnaireViewModel.isEditMode = false;
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
     ko.applyBindings(questionnaireViewModel);
 }

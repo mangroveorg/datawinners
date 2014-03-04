@@ -40,7 +40,7 @@ DW.ko = {
              if((observable()+"").match(/[0-9]+/))
                 observable.clearError();
              else
-                observable.setError(gettext("Only numbers allowed."));
+                observable.setError(gettext("Please insert a valid number."));
         },
         alphaNumericValidator: function(observable, trimBeforeCheck){
             var str = trimBeforeCheck ? (observable() + "").trim() : observable() + "";
