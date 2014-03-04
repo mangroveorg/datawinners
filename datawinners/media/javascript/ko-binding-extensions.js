@@ -55,6 +55,22 @@ ko.bindingHandlers.initializeAccordion = {
     }
 };
 
+ko.bindingHandlers.initializeTooltip = {
+    init: function (element, valueAccessor) {
+        $(element).tooltip({
+            position: "top right",
+            relative: true,
+            opacity:0.8,
+            events: {
+                def:     "mouseover,mouseout",
+                input:   "focus,blur",
+                widget:  "focus mouseover,blur mouseout",
+                tooltip: "click,click"
+            }
+        }).dynamic({ bottom: { direction: 'down', bounce: true } });
+    }
+};
+
 ko.bindingHandlers.buttonVisible = {
     init: function (element, valueAccessor) {
         $(element).hide();
