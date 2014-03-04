@@ -180,18 +180,31 @@ DW.question.prototype = {
 
         this.addOptionToQuestion = function () {
             var selectedQuestionCode = "a";
+            var choiceText = "";
             if (this.choices().length > 0) {
                 var lastChoice = this.choices()[this.choices().length - 1];
                 selectedQuestionCode = DW.next_option_value(lastChoice.value.val());
             }
-            this.choices.push(DW.ko.createValidatableObservableObject({value: {text: ko.observable(gettext("")), val: ko.observable(selectedQuestionCode)}}));
+            else{
+                choiceText = gettext("default");
+            }
+            var choiceItemText = ko.observable(choiceText);
+            var choiceItem = DW.ko.createValidatableObservableObject({
+                                                                        value: {
+                                                                                    text: choiceItemText,
+                                                                                    val: ko.observable(selectedQuestionCode)
+                                                                               }
+                                                                      });
+            choiceItemText.subscribe(function(){
+                _validateChoice(choiceItem);
+            }, choiceItem);
+
+            this.choices.push(choiceItem);
+
         };
 
         this.showAddChoice = function () {
             if (this.isAChoiceTypeQuestion() == "choice") {
-                if (this.choices().length == 0) {
-                    this.addOptionToQuestion();
-                }
                 return true;
             }
             return false;
@@ -284,13 +297,22 @@ DW.question.prototype = {
             owner: this
         });
 
+        var _validateChoice = function(choice){
+            if (choice.value.text())
+                choice.clearError();
+            else
+                choice.setError(gettext("This field is required."))
+        }
+
         this.validate = function () {
             DW.ko.mandatoryValidator(this.title);
             DW.ko.mandatoryValidator(this.answerType);
+
             if (this.showLengthLimiter()) {
                 DW.ko.mandatoryValidator(this.max_length);
                 this.max_length.valid() && DW.ko.numericValidator(this.max_length);
             }
+
             else if (this.showAddRange()) {
                 this.range_min() && DW.ko.numericValidator(this.range_min);
                 this.range_max() && DW.ko.numericValidator(this.range_max);
@@ -299,13 +321,7 @@ DW.question.prototype = {
             var isChoiceAnswerValid = true;
             if (this.showAddChoice()) {
                 ko.utils.arrayForEach(this.choices(), function (choice) {
-                    if (choice.value.text()) {
-                        choice.clearError();
-                    }
-                    else {
-                        choice.valid(false);
-                        choice.error(gettext("This field is required."));
-                    }
+                    _validateChoice(choice)
                     isChoiceAnswerValid &= choice.valid();
                 });
             }
@@ -313,7 +329,30 @@ DW.question.prototype = {
             return this.title.valid() && this.answerType.valid() && this.max_length.valid()
                 && this.range_min.valid() && this.range_max.valid() && isChoiceAnswerValid;
         };
+        this._initializeObservableValidations();
+    },
 
+    _initializeObservableValidations: function(){
+       this.title.subscribe(function(){
+          DW.ko.mandatoryValidator(this.title);
+       }, this);
+
+       this.max_length.subscribe(function(){
+          DW.ko.mandatoryValidator(this.max_length);
+          this.max_length.valid() && DW.ko.numericValidator(this.max_length);
+       }, this);
+
+       this.answerType.subscribe(function(){
+          DW.ko.mandatoryValidator(this.answerType);
+       }, this);
+
+       this.range_min.subscribe(function(){
+          this.range_min() && DW.ko.numericValidator(this.range_min);
+       }, this);
+
+       this.range_max.subscribe(function(){
+          this.range_max() && DW.ko.numericValidator(this.range_max);
+       }, this);
     }
 
 };
@@ -483,7 +522,7 @@ DW.init_question_constraints = function () {
     questionnaireViewModel.selectedQuestion().min_length(1);
     questionnaireViewModel.selectedQuestion().max_length("");
     questionnaireViewModel.selectedQuestion().length_limiter("length_unlimited");
-    questionnaireViewModel.selectedQuestion().choices.push(DW.ko.createValidatableObservableObject({value: {text: ko.observable(gettext("default")), val: ko.observable('a')}}));
+    questionnaireViewModel.selectedQuestion().addOptionToQuestion();
 };
 
 DW.change_question_type_for_selected_question = function (type_selector) {
@@ -543,7 +582,6 @@ DW.addNewQuestion = function () {
         return;
     questionnaireViewModel.addQuestion();
     DW.close_the_tip_on_period_question();
-    DW.smsPreview();
 };
 
 DW.templateDataCache = {};

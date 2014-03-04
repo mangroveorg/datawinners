@@ -148,21 +148,20 @@ var questionnaireViewModel =
         return isUnique;
     },
 
-    _validateQuestionnaireCode: function () {
-        var questionnaireCode = questionnaireViewModel.questionnaireCode;
-
+    _validateQuestionnaireCode: function (questionnaireCode) {
         DW.ko.mandatoryValidator(questionnaireCode);
         questionnaireCode.valid() && DW.ko.alphaNumericValidator(questionnaireCode, true);
-        if(questionnaireCode.valid()){
+        if (questionnaireCode.valid()) {
             if (DW.isWhiteSpacesPresent(questionnaireCode()))
                 questionnaireCode.setError(gettext("Space is not allowed in questionnaire code"));
             else
                 questionnaireCode.clearError();
         }
     },
+
     _validateQuestionnaireDetails: function(){
         DW.ko.mandatoryValidator(this.projectName);
-        questionnaireViewModel._validateQuestionnaireCode();
+        questionnaireViewModel._validateQuestionnaireCode(questionnaireViewModel.questionnaireCode);
 
         var isValid = questionnaireViewModel.projectName.valid() && questionnaireViewModel.questionnaireCode.valid();
         this.questionnaireHasErrors(!isValid);
@@ -176,21 +175,20 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedTemplateId(template.id);
         $.get("/project/template/"+template.id, questionnaireViewModel.templateQuestionsData)
     },
-    templateQuestions: ko.computed(
-        function(){
-//            $.parseJSON(questionnaireViewModel.existing_questions)
-        }
-    ),
+
     templateGroupingData: ko.observable(),
+
     getTemplates: function(){
         $.get("/project/templates", questionnaireViewModel.templateGroupingData)
     },
+
     validateForSubmission: function(){
         return questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion()
                & questionnaireViewModel._validateQuestionnaireDetails();
     }
 
 };
+
 questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
     return questionnaireViewModel.enableScrollToView;
 }, questionnaireViewModel);
@@ -201,6 +199,15 @@ questionnaireViewModel.generateSmsPreview = ko.computed(function(){
         smsPreviewString += " " + "answer" + (index + 1);
     });
     return smsPreviewString;
+}, questionnaireViewModel);
+
+
+questionnaireViewModel.projectName.subscribe(function(){
+   DW.ko.mandatoryValidator(this.projectName);
+}, questionnaireViewModel);
+
+questionnaireViewModel.questionnaireCode.subscribe(function(){
+   this._validateQuestionnaireCode(this.questionnaireCode);
 }, questionnaireViewModel);
 
 
