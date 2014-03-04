@@ -1,5 +1,3 @@
-//var questionnaire_form =new DW.questionnaire_form('#question_form');
-
 DW.hide_message = function() {
     $('#message-label').delay(5000).fadeOut();
 };
@@ -63,10 +61,6 @@ DW.init_has_new_submission_delete_warning_for_entity = function(){
 }
 
 function _initializeViewModel() {
-//     for (index in question_list) {
-//        var questions = new DW.question(question_list[index]);
-//        questionnaireViewModel.loadQuestion(questions);
-//    }
     $(existing_questions).each(function(index, question){
             questionnaireViewModel.loadQuestion(new DW.question(question));
     });

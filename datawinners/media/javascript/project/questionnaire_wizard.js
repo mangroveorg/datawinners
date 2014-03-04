@@ -20,70 +20,7 @@ $(document).ready(function () {
     DW.smsPreview();
     $('#question_form').live("keyup", DW.charCount);
     $('#question_form').live("click", DW.charCount);
-//    $('#question_form').live("click", DW.smsPreview);
     $('.delete').live("click", DW.charCount);
-//    $('.delete').live("click", DW.smsPreview);
-
-//    $.validator.addMethod('spacerule', function (value, element, params) {
-//        var list = $.trim($('#' + element.id).val()).split(" ");
-//        if (list.length > 1) {
-//            return false;
-//        }
-//        return true;
-//    }, gettext("Space is not allowed in question code"));
-//
-//    $.validator.addMethod('regexrule', function (value, element, params) {
-//        var text = $('#' + element.id).val();
-//        var re = new RegExp('^[A-Za-z0-9 ]+$');
-//        return re.test(text);
-//    }, gettext("Only letters and digits are valid"));
-//
-//    $.validator.addMethod('naturalnumberrule', function (value, element, params) {
-//        var num = $('#' + element.id).val();
-//        return num != 0;
-//    }, gettext("Answer cannot be of length less than 1"));
-
-//    $("#question_form").validate({
-//        messages: {
-//            max_length: {
-//                digits: gettext("Please enter positive numbers only")
-//            }
-//
-//        },
-//        rules: {
-//            question_title: {
-//                required: true
-//            },
-//            code: {
-//                required: true,
-//                spacerule: true,
-//                regexrule: true
-//            },
-//            type: {
-//                required: true
-//            },
-//            max_length: {
-//                digits: true
-//            },
-//            range_min: {
-//                number: true
-//            },
-//            range_max: {
-//                number: true
-//            },
-//            choice_text: {
-//                required: "#choice_text:visible"
-//            }
-//        },
-//        wrapper: "div",
-//        errorPlacement: function (error, element) {
-//            var offset = element.offset();
-//            error.insertAfter(element);
-//            error.addClass('error_arrow'); // add a class to the wrapper
-//
-//        }
-//
-//    });
 
     function hide_message() {
         $('#message-label').delay(5000).fadeOut();
@@ -99,12 +36,6 @@ $(document).ready(function () {
     function submit_questionnaire() {
 
         var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
-
-//        if (!$('#question_form').valid()) {
-//            $("#message-label").show().html("<label class='error_message'> " + gettext("This questionnaire has an error") + ".</label> ");
-//            hide_message();
-//            return;
-//        }
         DW.loading();
         var post_data = {
                             'questionnaire-code': questionnaireViewModel.questionnaireCode(),
