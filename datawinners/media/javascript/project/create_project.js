@@ -125,7 +125,6 @@ function _initializeViewModel() {
 
 $(document).ready(function () {
     _initializeViewModel();
-    DW.smsPreview();
     DW.option_warning_dialog.init();
     DW.init_delete_periodicity_question_warning();
     DW.init_empty_questionnaire_warning();
