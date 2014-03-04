@@ -515,14 +515,13 @@ $(document).ready(function () {
 
     DW.has_submission_delete_warning = (function () {
         var kwargs = {
-            container: "#submission_exists",
-            is_continue: false,
-            title: gettext('Warning: Your Collected Data Will be Lost'),
-            continue_handler: function () {
-                question = questionnaireViewModel.selectedQuestion();
-                questionnaireViewModel.removeQuestion(question);
-            }
-        };
+                    container: "#submission_exists",
+                    is_continue: false,
+                    title: gettext('Warning: Your Collected Data Will be Lost'),
+                    continue_handler: function(){
+                        questionnaireViewModel.removeMarkedQuestion();
+                    }
+                 };
         return new DW.warning_dialog(kwargs);
     }());
 

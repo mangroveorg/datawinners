@@ -16,7 +16,7 @@
 
                     <div class="action_bar" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
                         <a href="javascript:void(0);" class="delete_link"
-                           data-bind="visible:$data.canBeDeleted(), click: $root.validateAndRemoveQuestion">{% trans "Delete" %}</a>
+                           data-bind="visible:canBeDeleted, click: $root.validateAndRemoveQuestion, clickBubble: false">{% trans "Delete" %}</a>
 
                         <a data-bind="visible: $index(), click: $parent.moveQuestionUp,clickBubble: false"
                            class="question_action">

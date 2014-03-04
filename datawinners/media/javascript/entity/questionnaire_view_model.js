@@ -2,6 +2,7 @@ var questionnaireViewModel =
 {
     questions: ko.observableArray([]),
     isEditMode: false,
+    questionToBeDeleted: null,
     hasExistingData: false,
 
     hasAddedNewQuestions: false,
@@ -38,6 +39,10 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.push(question);
     },
 
+    removeMarkedQuestion:function() {
+        questionnaireViewModel.removeQuestion(questionnaireViewModel.questionToBeDeleted);
+    },
+
     removeQuestion: function (question) {
 //        var index = $.inArray(question, questionnaireViewModel.questions());
         if (!question.newly_added_question()) {
@@ -45,7 +50,9 @@ var questionnaireViewModel =
             DW.questionnaire_was_changed = true;
         }
         questionnaireViewModel.questions.remove(question);
-        questionnaireViewModel.selectedQuestion(null);
+        if (question == questionnaireViewModel.selectedQuestion()) {
+          questionnaireViewModel.selectedQuestion(null);
+        }
 //        if (questionnaireViewModel.questions().length == 0) {
 //            return;
 //        }
@@ -57,8 +64,10 @@ var questionnaireViewModel =
     },
 
     validateAndRemoveQuestion: function(question){
-        if(questionnaireViewModel.isEditMode && questionnaireViewModel.hasExistingData && !question.newly_added_question())
+        if (questionnaireViewModel.isEditMode && questionnaireViewModel.hasExistingData && !question.newly_added_question()) {
+            questionnaireViewModel.questionToBeDeleted = question;
             DW.has_submission_delete_warning.show_warning();
+        }
         else
             questionnaireViewModel.removeQuestion(question);
     },
