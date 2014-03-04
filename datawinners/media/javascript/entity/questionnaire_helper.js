@@ -547,14 +547,16 @@ DW.addNewQuestion = function () {
 };
 
 DW.templateDataCache = {};
+DW.templateGroupingDataCache = null;
 
 var clearCache = function () {
     DW.templateDataCache = {};
+    DW.templateGroupingDataCache = null;
 };
 
 setInterval(clearCache, 1000*60*10); //clear the cache periodically every 10 minutes
 
-DW.getTemplateData = function (template_id) {
+DW.getTemplateDataFromCache = function (template_id) {
     var templateData = null;
     if (DW.templateDataCache[template_id] != undefined) {
         templateData = DW.templateDataCache[template_id];
@@ -574,3 +576,21 @@ DW.getTemplateData = function (template_id) {
     return templateData
 };
 
+DW.getTemplateGroupingDataFromCache = function(){
+    var groupingData = null;
+    if(DW.templateGroupingDataCache){
+        groupingData = DW.templateGroupingDataCache;
+    }
+    else{
+        $.ajax({
+            type: 'GET',
+            url: "/project/templates",
+            async: false,
+            success: function(data){
+                DW.templateGroupingDataCache = data;
+                groupingData = data;
+            }
+        })
+    }
+    return groupingData;
+};
