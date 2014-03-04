@@ -27,7 +27,6 @@ var questionnaireViewModel =
         question.newly_added_question(true);
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.selectedQuestion(question);
-        //TODO:verify and remove
         DW.init_question_constraints();
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         DW.charCount();
@@ -120,6 +119,7 @@ var questionnaireViewModel =
     },
 
     questionnaireHasErrors: ko.observable(false),
+    questionHasErrors: ko.observable(false).extend({ notify: 'always' }),
 
     errorInResponse: ko.observable(false),
 
@@ -129,8 +129,14 @@ var questionnaireViewModel =
 
     validateSelectedQuestion: function(){
         if(!this.selectedQuestion())
+        {
+            this.questionHasErrors(false);
             return true;
-        return this.selectedQuestion().validate() && this._validateSelectedQuestionHasUniqueTitle();
+        }
+
+        var isValid = this.selectedQuestion().validate() && this._validateSelectedQuestionHasUniqueTitle();
+        this.questionHasErrors(!isValid);
+        return isValid;
     },
 
     _validateSelectedQuestionHasUniqueTitle: function(){
@@ -190,7 +196,7 @@ var questionnaireViewModel =
 };
 
 questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
-    return questionnaireViewModel.enableScrollToView;
+    return questionnaireViewModel.enableScrollToView() || questionnaireViewModel.questionHasErrors();
 }, questionnaireViewModel);
 
 questionnaireViewModel.generateSmsPreview = ko.computed(function(){
