@@ -1,5 +1,6 @@
 from time import sleep
 import unittest
+from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
@@ -9,9 +10,8 @@ from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, url
 from tests.allsubjectstests.all_subjects_data import SUBJECT_TYPE, SUBJECT_TYPE_WHITE_SPACES, ERROR_MSG_INVALID_ENTRY, SUBJECT_TYPE_SPL_CHARS, SUBJECT_TYPE_BLANK, ERROR_MSG_EMPTY_ENTRY
 from tests.logintests.login_data import VALID_CREDENTIALS
-
-
-@attr('suit_1')
+# Moving to Jasmine Tests - AJay/DC
+@SkipTest
 class TestSubjectsPage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
