@@ -6,7 +6,7 @@ var questionnaireHelperModel = {
         chooseTemplate: function (template) {
             var template_id = template.id;
             questionnaireHelperModel.selectedTemplateId(template_id);
-            questionnaireHelperModel.templateData(DW.getTemplateDataFromCache(template_id));
+            questionnaireHelperModel.templateData(DW.getTemplateData(template_id));
         },
         removeTemplateId: function(){
             questionnaireHelperModel.selectedTemplateId(null);
@@ -15,7 +15,7 @@ var questionnaireHelperModel = {
         getTemplates: function () {
             setTimeout(function () {
                 questionnaireHelperModel.selectedTemplateId(null);
-                questionnaireHelperModel.templateGroupingData(DW.getTemplateGroupingDataFromCache().categories);
+                questionnaireHelperModel.templateGroupingData(DW.getTemplateGrouping().categories);
             }, 0);
         },
         gotoQuestionnaireLoader: function (question_template_id) {

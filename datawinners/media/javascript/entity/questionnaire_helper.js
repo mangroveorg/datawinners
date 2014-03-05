@@ -608,7 +608,7 @@ var clearCache = function () {
 
 setInterval(clearCache, 1000*60*10); //clear the cache periodically every 10 minutes
 
-DW.getTemplateDataFromCache = function (template_id) {
+DW.getTemplateData = function (template_id) {
     var templateData = null;
     if (DW.templateDataCache[template_id] != undefined) {
         templateData = DW.templateDataCache[template_id];
@@ -628,7 +628,7 @@ DW.getTemplateDataFromCache = function (template_id) {
     return templateData
 };
 
-DW.getTemplateGroupingDataFromCache = function(){
+DW.getTemplateGrouping = function(){
     var groupingData = null;
     if(DW.templateGroupingDataCache){
         groupingData = DW.templateGroupingDataCache;
