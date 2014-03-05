@@ -8,11 +8,15 @@ var questionnaireHelperModel = {
             questionnaireHelperModel.selectedTemplateId(template_id);
             questionnaireHelperModel.templateData(DW.getTemplateDataFromCache(template_id));
         },
-
+        removeTemplateId: function(){
+            questionnaireHelperModel.selectedTemplateId(null);
+        },
         templateGroupingData: ko.observable(),
         getTemplates: function () {
-            questionnaireHelperModel.selectedTemplateId(null);
-            questionnaireHelperModel.templateGroupingData(DW.getTemplateGroupingDataFromCache());
+            setTimeout(function () {
+                questionnaireHelperModel.selectedTemplateId(null);
+                questionnaireHelperModel.templateGroupingData(DW.getTemplateGroupingDataFromCache().categories);
+            }, 0);
         },
         gotoQuestionnaireLoader: function (question_template_id) {
             location.hash = 'questionnaire/load/' + question_template_id;

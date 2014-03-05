@@ -636,7 +636,7 @@ DW.getTemplateGroupingDataFromCache = function(){
     else{
         $.ajax({
             type: 'GET',
-            url: "/project/templates",
+            url: "/project/templates/",
             async: false,
             success: function(data){
                 DW.templateGroupingDataCache = data;

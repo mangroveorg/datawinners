@@ -44,10 +44,16 @@ ko.bindingHandlers.errorVisible = {
     }
 };
 
-ko.bindingHandlers.initializeAccordion = {
+ko.bindingHandlers.accordion = {
     init: function (element, valueAccessor) {
         $(element).accordion({
-            header: valueAccessor().accordionHeader,
+            autoHeight: false,
+            collapsible: true,
+            active: 100
+        });
+    },
+    update: function(element, valueAccessor){
+        $(element).accordion('destroy').accordion({
             autoHeight: false,
             collapsible: true,
             active: 100
@@ -82,7 +88,7 @@ ko.bindingHandlers.buttonVisible = {
     },
     update: function (element, valueAccessor) {
         var selectedTemplateId = valueAccessor().observable;
-        $(element).toggle(selectedTemplateId() !== undefined);
+        $(element).toggle(selectedTemplateId() != null);
     }
 };
 

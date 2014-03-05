@@ -268,8 +268,8 @@ fieldset {
 
 .questionnaire_template {
   float: left;
-  width: 45%; }
+  width: 45% !important; }
 
 .selected_questions {
   float: right;
-  width: 50%; }
+  width: 50% !important; }

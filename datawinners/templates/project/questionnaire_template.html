@@ -3,18 +3,14 @@
 <div>
     <h6>{% trans 'Choose a Template and adjust it to your needs' %}</h6>
 
-    <div class='questionnaire_template' data-bind="with: templateGroupingData">
-        <ul data-bind="foreach: categories">
-            <li class="template_accordion" data-bind="initializeAccordion: {accordionHeader: '.template_data'}">
-                <span class="template_data" data-bind="text: category"></span>
-                <ul data-bind="foreach: templates">
-                    <li class="template_name"
-                        data-bind="text: name, click: $root.chooseTemplate, css:{selected: $data.id==$root.selectedTemplateId()}"></li>
-                </ul>
-            </li>
-        </ul>
+    <div class="questionnaire_template" data-bind="foreach: templateGroupingData, accordion: templateGroupingData()">
+        <div class="template_data" data-bind="text: category, click: $root.removeTemplateId"></div>
+        <div data-bind="foreach: templates">
+            <span class="template_name"
+                  data-bind="text: name, click: $root.chooseTemplate, css:{selected: $data.id==$root.selectedTemplateId()}"></span><br>
+        </div>
     </div>
-    <div data-bind="visible: selectedTemplateId(), with: templateData" class="selected_questions">
+    <div data-bind="visible: selectedTemplateId()!=null, with: templateData" class="selected_questions">
         <strong data-bind="text: $data.project_name"></strong>
         <ol data-bind="foreach: $.parseJSON($data.existing_questions)">
             <li data-bind="text: name"></li>
