@@ -262,13 +262,17 @@ DW.question.prototype = {
                     if (this.range_min() == "" && this.range_max() == "") {
                         return DW.instruction_template.number;
                     }
-                    if (this.range_min() == "") {
+                    else if (this.range_min() == "" && !_.isNaN(parseInt(this.range_max()))) {
                         return $.sprintf(DW.instruction_template.max_number, this.range_max());
                     }
-                    if (this.range_max() == "") {
+                    else if (this.range_max() == "" && !_.isNaN(parseInt(this.range_min()))) {
                         return $.sprintf(DW.instruction_template.min_number, this.range_min());
                     }
-                    return $.sprintf(DW.instruction_template.range_number, this.range_min(), this.range_max());
+                    else if (!_.isNaN(parseInt(this.range_max()))|| !_.isNaN(parseInt(this.range_min())))
+                        return $.sprintf(DW.instruction_template.range_number, this.range_min(), this.range_max());
+                    else
+                        return DW.instruction_template.number;
+
                 }
                 if (this.type() == "date") {
                     return $.sprintf(DW.instruction_template.date, DW.date_template[this.date_format()], DW.instruction_template[this.date_format()]);
@@ -317,6 +321,7 @@ DW.question.prototype = {
             else if (this.showAddRange()) {
                 this.range_min() && DW.ko.numericValidator(this.range_min);
                 this.range_max() && DW.ko.numericValidator(this.range_max);
+                this._validateMinRangeIsLessThanMaxRange();
             }
 
             var isChoiceAnswerValid = true;
@@ -331,6 +336,19 @@ DW.question.prototype = {
                 && this.range_min.valid() && this.range_max.valid() && isChoiceAnswerValid;
         };
         this._initializeObservableValidations();
+    },
+
+    _validateMinRangeIsLessThanMaxRange: function(){
+        var min_range = parseInt(this.range_min());
+        var max_range = parseInt(this.range_max());
+
+        if(_.isNaN(min_range) || _.isNaN(max_range))
+            return;
+
+        if(min_range > max_range)
+            this.range_max.setError(gettext("Max should be greater than min."));
+        else
+            this.range_max.clearError();
     },
 
     _initializeObservableValidations: function(){
@@ -348,14 +366,17 @@ DW.question.prototype = {
        }, this);
 
        this.range_min.subscribe(function(){
-          this.range_min() && DW.ko.numericValidator(this.range_min);
+          DW.ko.numericValidator(this.range_min);
+          this._validateMinRangeIsLessThanMaxRange();
        }, this);
 
        this.range_max.subscribe(function(){
-          this.range_max() && DW.ko.numericValidator(this.range_max);
+          DW.ko.numericValidator(this.range_max);
+          this._validateMinRangeIsLessThanMaxRange();
        }, this);
-    }
 
+
+    }
 };
 
 

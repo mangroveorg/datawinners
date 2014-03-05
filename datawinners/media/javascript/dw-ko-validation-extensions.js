@@ -37,7 +37,7 @@ DW.ko = {
                 observable.clearError();
         },
         numericValidator: function(observable){
-             if((observable()+"").match(/[0-9]+/))
+             if(!observable() || (observable()+"").match(/[0-9]+/))
                 observable.clearError();
              else
                 observable.setError(gettext("Please insert a valid number."));
