@@ -127,7 +127,7 @@ var questionnaireViewModel =
 
     enableScrollToView: ko.observable(false).extend({ notify: "always"}),
 
-    enableQuestionTitleFocus: ko.observable(false).extend({ notify: "always"}),
+    enableQuestionTitleFocus: ko.observable(false),
 
     validateSelectedQuestion: function(){
         if(!this.selectedQuestion())
