@@ -3,7 +3,7 @@ DW.hide_message = function() {
 };
 
 DW.post_subject_data = function(){
-    var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
+    var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()));
     var post_data = {
                         'questionnaire-code':questionnaireViewModel.questionnaireCode(),
                         'question-set':questionnaire_data,

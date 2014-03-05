@@ -34,7 +34,7 @@ $(document).ready(function () {
 
     function submit_questionnaire() {
 
-        var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
+        var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()));
         DW.loading();
         var post_data = {
                             'questionnaire-code': questionnaireViewModel.questionnaireCode(),

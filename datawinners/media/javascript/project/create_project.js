@@ -18,7 +18,7 @@ basic_project_info = function(){
 };
 
 DW.post_project_data = function (state, function_to_construct_redirect_url_on_success) {
-    var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
+    var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()));
 
     var post_data = {
                       'questionnaire-code':questionnaireViewModel.questionnaireCode(),
