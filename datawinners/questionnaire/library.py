@@ -1,3 +1,4 @@
+import json
 from couchdb.mapping import TextField
 from mangrove.datastore.cache_manager import get_cache_manager
 from mangrove.datastore.documents import FormModelDocument, DocumentBase, attributes
@@ -63,11 +64,14 @@ class QuestionnaireLibrary:
         assert template_id is not None
         return str("%s_%s" % (self.dbm.database.name, template_id))
 
-    def create_template_from_project(self, db_name, category, name, id, form_code):
-        template_doc = QuestionnaireTemplateDocument(name=name, category=category, id=id)
-        test_dbm = get_db_manager(db_name)
-        form_model = get_form_model_by_code(test_dbm, form_code)
-        template_doc.json_fields = [f._to_json() for f in form_model.fields]
-        template_doc.validators = [validator.to_json() for validator in form_model.validators]
-        self.dbm._save_document(template_doc)
+    def create_template_from_project(self):
+        with open('/home/ashwin/workspace/datawinners/datawinners/questionnaire/sample_template_data.json') as data_file:
+            questionnaires = json.load(data_file)
+            for data in questionnaires:
+                template_doc = QuestionnaireTemplateDocument(name=data.get('name'), category=data.get('category'))
+                template_doc.json_fields = data.get('json_fields')
+                template_doc.validators = data.get('validators')
+                dms = get_db_manager("questionnaire_library")
+                doc_id = dms._save_document(template_doc)
+                return doc_id
 

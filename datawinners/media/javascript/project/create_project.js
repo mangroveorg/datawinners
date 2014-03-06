@@ -50,6 +50,7 @@ DW.controllers = {
     "questionnaire_load_controller":function () {
             questionnaireViewModel.questions([]);
             questionnaireViewModel.errorInResponse(false);
+            questionnaireViewModel.selectedQuestion(null);
             var project_details = DW.getTemplateData(this.params.template_id);
 
             questionnaireViewModel.projectName(project_details.project_name);
@@ -66,6 +67,7 @@ DW.controllers = {
             questionnaireViewModel.projectName('');
             questionnaireViewModel.questions([]);
             questionnaireViewModel.errorInResponse(false);
+            questionnaireViewModel.selectedQuestion(null);
             questionnaireViewModel.showQuestionnaireForm(true);
             questionnaireHelperModel.showQuestionnaireCreationOptions(false);
             questionnaireViewModel.questionnaireCode(questionnaire_code);
