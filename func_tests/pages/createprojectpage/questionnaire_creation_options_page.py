@@ -15,7 +15,7 @@ class QuestionnaireCreationOptionsPage(Page):
         blank_questionnaire_accoridion = self.driver.find_elements_(by_css('.questionnaire_type_header'))[0]
         blank_questionnaire_accoridion.click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CONTINUE_BTN, True)
-        sleep(1)
+        #sleep(1)
         self.driver.find(CONTINUE_BTN).click()
         return CreateQuestionnairePage(self.driver)
 
