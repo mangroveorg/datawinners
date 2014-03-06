@@ -1,20 +1,32 @@
 {% load i18n %}
 
 <div>
-    <h6>{% trans 'Choose a Template and adjust it to your needs' %}</h6>
 
-    <div class="questionnaire_template" data-bind="foreach: templateGroupingData, accordion: templateGroupingData()">
-        <div class="template_data" data-bind="text: category, click: $root.removeTemplateId"></div>
-        <div data-bind="foreach: templates">
-            <span class="template_name"
-                  data-bind="text: name, click: $root.chooseTemplate, css:{selected: $data.id==$root.selectedTemplateId()}"></span><br>
-        </div>
+    <div class="ajax-loader" data-bind="fadeVisible: templateGroupingData() == null">
+        <img src="/media/images/ajax-loader-horizontal-bar.gif"/>
     </div>
-    <div data-bind="visible: selectedTemplateId()!=null, with: templateData" class="selected_questions">
-        <strong data-bind="text: $data.project_name"></strong>
-        <ol data-bind="foreach: $.parseJSON($data.existing_questions)">
-            <li data-bind="text: name"></li>
-        </ol>
+
+    <div data-bind="fadeVisible: templateGroupingData() != null">
+
+        <h6 class="instruction-header">{% trans 'Choose a Template and adjust it to your needs' %}</h6>
+
+        <div id="questionnaire_template">
+            <div data-bind="foreach: templateGroupingData, accordion: templateGroupingData()">
+                <div class="template_data" data-bind="text: category, click: $root.removeTemplateId"></div>
+                <div data-bind="foreach: templates">
+                <span class="template_name"
+                      data-bind="text: name, click: $root.chooseTemplate, css:{selected: $data.id==$root.selectedTemplateId()}"></span>
+
+                    <div class="selected-notify"></div>
+                </div>
+            </div>
+        </div>
+        <div data-bind="visible: selectedTemplateId()!=null, with: templateData" class="selected_questions">
+            <h6 class="project-name-header" data-bind="text: $data.project_name"></h6>
+            <ol data-bind="foreach: $.parseJSON($data.existing_questions)">
+                <li data-bind="text: name"></li>
+            </ol>
+        </div>
     </div>
 
 </div>

@@ -253,23 +253,56 @@ fieldset {
   font-weight: normal;
   max-width: 300px; }
 
-.template_name {
-  cursor: pointer;
-  cursor: hand;
-  color: red; }
+.instruction-header {
+  font-style: italic;
+  font-weight: 100;
+  padding-bottom: 10px; }
 
-.selected {
-  background-color: #444 !important;
-  color: white;
-  text-shadow: none;
-  border-right-color: #aaa;
-  border-left: none;
-  box-shadow: inset 1px 2px 6px #070707; }
-
-.questionnaire_template {
+#questionnaire_template {
   float: left;
-  width: 45% !important; }
+  width: 250px;
+  background: #EBEBEB;
+  padding: 10px; }
+  #questionnaire_template .template_data {
+    font-weight: normal;
+    padding-left: 15px;
+    cursor: pointer; }
+    #questionnaire_template .template_data.ui-state-default {
+      background: url(/media/images/accordion_arrows.png) no-repeat left -11px transparent !important; }
+    #questionnaire_template .template_data.ui-state-active {
+      background: url(/media/images/accordion_arrows.png) no-repeat left -50px transparent;
+      border: none; }
+  #questionnaire_template .ui-accordion-content {
+    border: none;
+    background: transparent;
+    padding: 0 0 0 15px; }
+    #questionnaire_template .ui-accordion-content span {
+      line-height: 25px;
+      display: block;
+      padding-left: 10px;
+      margin: 4px 0 0;
+      cursor: pointer; }
+      #questionnaire_template .ui-accordion-content span + .selected-notify {
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid #FFF;
+        float: right;
+        margin-top: -21px;
+        display: none; }
+      #questionnaire_template .ui-accordion-content span.selected {
+        background-color: #d7e4ed; }
+        #questionnaire_template .ui-accordion-content span.selected + .selected-notify {
+          display: inline-block; }
 
 .selected_questions {
-  float: right;
-  width: 50% !important; }
+  background: #FFF;
+  border-radius: 2px;
+  border: 1px solid #CCC;
+  float: left;
+  padding: 10px 20px 20px 40px;
+  margin-left: -23px; }
+  .selected_questions .project-name-header {
+    margin-left: -20px;
+    padding-bottom: 10px; }

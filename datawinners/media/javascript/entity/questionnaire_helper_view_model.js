@@ -8,14 +8,26 @@ var questionnaireHelperModel = {
             questionnaireHelperModel.selectedTemplateId(template_id);
             questionnaireHelperModel.templateData(DW.getTemplateData(template_id));
         },
-        removeTemplateId: function(){
+        removeTemplateId: function () {
             questionnaireHelperModel.selectedTemplateId(null);
         },
         templateGroupingData: ko.observable(),
         getTemplates: function () {
+            questionnaireHelperModel.removeTemplateId();
             setTimeout(function () {
-                questionnaireHelperModel.selectedTemplateId(null);
-                questionnaireHelperModel.templateGroupingData(DW.getTemplateGrouping().categories);
+                if (DW.templateGroupingDataCache) {
+                    questionnaireHelperModel.templateGroupingData(DW.templateGroupingDataCache.categories);
+                }
+                else {
+                    $.ajax({
+                        type: 'GET',
+                        url: "/project/templates/",
+                        success: function (data) {
+                            DW.templateGroupingDataCache = data;
+                            questionnaireHelperModel.templateGroupingData(data.categories);
+                        }
+                    })
+                }
             }, 0);
         },
         gotoQuestionnaireLoader: function (question_template_id) {

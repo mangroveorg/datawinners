@@ -44,6 +44,20 @@ ko.bindingHandlers.errorVisible = {
     }
 };
 
+ko.bindingHandlers.fadeVisible = {
+    init: function (element, valueAccessor) {
+        // Start visible/invisible according to initial value
+        var shouldDisplay = ko.utils.unwrapObservable(valueAccessor());
+        $(element).toggle(shouldDisplay);
+    },
+    update: function (element, valueAccessor) {
+        // On update, fade in/out
+        var shouldDisplay = ko.utils.unwrapObservable(valueAccessor());
+        shouldDisplay ? $(element).fadeIn() : $(element).fadeOut();
+    }
+};
+
+
 ko.bindingHandlers.accordion = {
     init: function (element, valueAccessor) {
         $(element).accordion({
