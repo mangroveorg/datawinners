@@ -101,7 +101,8 @@ def create_project(request):
                                   {'preview_links': get_preview_and_instruction_links(),
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
-                                   'post_url': reverse(create_project)}, context_instance=RequestContext(request))
+                                   'post_url': reverse(create_project),
+                                   'cancel_link': request.META['HTTP_REFERER']}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
