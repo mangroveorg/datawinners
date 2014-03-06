@@ -31,15 +31,15 @@ ko.bindingHandlers.scrollToView = {
     }
 };
 
-ko.bindingHandlers.scrollToError = {
+ko.bindingHandlers.scrollToElement = {
     update: function (element, valueAccessor) {
         var shouldShow = ko.utils.unwrapObservable(valueAccessor());
         if (shouldShow) {
             $('html, body').animate({scrollTop: $(element).offset().top}, 'slow')
         }
-        setTimeout(function () {
-            $(element).fadeOut()
-        }, 10000);
+//        setTimeout(function () {
+//            $(element).fadeOut()
+//        }, 20100);
     }
 };
 

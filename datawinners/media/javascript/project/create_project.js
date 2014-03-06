@@ -38,7 +38,9 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
         else {
             $.unblockUI();
             questionnaireViewModel.errorInResponse(true);
+            questionnaireViewModel.errorInResponse.valueHasMutated();
             questionnaireViewModel.responseErrorMsg(responseJson.error_message);
+            questionnaireViewModel.responseErrorMsg.valueHasMutated();
         }
     });
 };
@@ -47,6 +49,7 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
 DW.controllers = {
     "questionnaire_load_controller":function () {
             questionnaireViewModel.questions([]);
+            questionnaireViewModel.errorInResponse(false);
             var project_details = DW.getTemplateData(this.params.template_id);
 
             questionnaireViewModel.projectName(project_details.project_name);
@@ -62,6 +65,7 @@ DW.controllers = {
     "blank_questionnaire": function () {
             questionnaireViewModel.projectName('');
             questionnaireViewModel.questions([]);
+            questionnaireViewModel.errorInResponse(false);
             questionnaireViewModel.showQuestionnaireForm(true);
             questionnaireHelperModel.showQuestionnaireCreationOptions(false);
             questionnaireViewModel.questionnaireCode(questionnaire_code);

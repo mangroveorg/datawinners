@@ -1,12 +1,12 @@
 {% load i18n %}
-<div id="create_questionnaire">
+<div id="create_questionnaire"  data-bind="visible: showQuestionnaireForm">
     <div id="project-message-label" class="message-box"
-         data-bind="visible: errorInResponse, scrollToError: errorInResponse">
+         data-bind="visible: errorInResponse,scrollToElement: responseErrorMsg">
         <label class='error_message' data-bind="text: responseErrorMsg"></label>
     </div>
 
 
-    <div id="questionnaire" class="clear_both" data-bind="visible: showQuestionnaireForm">
+    <div id="questionnaire" class="clear_both">
         <fieldset>
             <legend>2. {% trans "Write and Edit Your Questions." %}</legend>
         </fieldset>
