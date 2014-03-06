@@ -1,6 +1,5 @@
 import json
 from datawinners import settings
-import jsonpickle
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,21 +9,19 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from datawinners.dashboard.views import dashboard
 from datawinners.project import helper
 from celery.task import current
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 from mangrove.utils.types import is_string
-from mangrove.form_model.form_model import FormModel, REPORTER, get_form_model_by_code
+from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
-from datawinners.alldata.views import REPORTER_ENTITY_TYPE
 from datawinners.project.forms import ReminderForm
-from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, project_by_form_model_id
+from datawinners.project.models import Project, Reminder, ReminderMode
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from datawinners.tasks import app
@@ -96,9 +93,9 @@ def get_template_details(request, template_id):
 def create_project(request):
     manager = get_database_manager(request.user)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
-    cancel_link = reverse('dashboard') if request.GET['prev'] == 'dash' else reverse('index')
 
     if request.method == 'GET':
+        cancel_link = reverse('dashboard') if request.GET['prev'] == 'dash' else reverse('index')
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
