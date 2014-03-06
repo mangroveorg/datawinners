@@ -261,6 +261,8 @@ fieldset {
 #questionnaire_template {
   float: left;
   width: 250px;
+  height: 300px;
+  overflow: auto;
   background: #EBEBEB;
   padding: 10px; }
   #questionnaire_template .template_data {
@@ -297,9 +299,13 @@ fieldset {
           display: inline-block; }
 
 .selected_questions {
+  overflow: auto;
+  height: 288px;
+  width: 460px;
   background: #FFF;
   border-radius: 2px;
   border: 1px solid #CCC;
+  border-left: none;
   float: left;
   padding: 10px 20px 20px 40px;
   margin-left: -23px; }

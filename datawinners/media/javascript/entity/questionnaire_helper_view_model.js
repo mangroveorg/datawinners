@@ -16,15 +16,16 @@ var questionnaireHelperModel = {
             questionnaireHelperModel.removeTemplateId();
             setTimeout(function () {
                 if (DW.templateGroupingDataCache) {
-                    questionnaireHelperModel.templateGroupingData(DW.templateGroupingDataCache.categories);
+                    questionnaireHelperModel.templateGroupingData(DW.templateGroupingDataCache);
                 }
                 else {
                     $.ajax({
                         type: 'GET',
                         url: "/project/templates/",
+                        dataType: "json",
                         success: function (data) {
-                            DW.templateGroupingDataCache = data;
-                            questionnaireHelperModel.templateGroupingData(data.categories);
+                            DW.templateGroupingDataCache = data.categories;
+                            questionnaireHelperModel.templateGroupingData(DW.templateGroupingDataCache);
                         }
                     })
                 }

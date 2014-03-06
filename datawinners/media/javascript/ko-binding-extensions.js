@@ -53,20 +53,22 @@ ko.bindingHandlers.fadeVisible = {
     update: function (element, valueAccessor) {
         // On update, fade in/out
         var shouldDisplay = ko.utils.unwrapObservable(valueAccessor());
-        shouldDisplay ? $(element).fadeIn() : $(element).fadeOut();
+        shouldDisplay ? $(element).fadeIn('fast') : $(element).fadeOut('fast');
     }
 };
 
 
 ko.bindingHandlers.accordion = {
-    init: function (element, valueAccessor) {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        ko.bindingHandlers.foreach.init(element, valueAccessor, allBindings, viewModel, bindingContext);
         $(element).accordion({
             autoHeight: false,
             collapsible: true,
             active: 100
         });
     },
-    update: function(element, valueAccessor){
+    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        ko.bindingHandlers.foreach.update(element, valueAccessor, allBindings, viewModel, bindingContext);
         $(element).accordion('destroy').accordion({
             autoHeight: false,
             collapsible: true,
@@ -80,11 +82,11 @@ ko.bindingHandlers.initializeTooltip = {
         $(element).tooltip({
             position: "top right",
             relative: true,
-            opacity:0.8,
+            opacity: 0.8,
             events: {
-                def:     "mouseover,mouseout",
-                input:   "focus,blur",
-                widget:  "focus mouseover,blur mouseout",
+                def: "mouseover,mouseout",
+                input: "focus,blur",
+                widget: "focus mouseover,blur mouseout",
                 tooltip: "click,click"
             }
         }).dynamic({ bottom: { direction: 'down', bounce: true } });
