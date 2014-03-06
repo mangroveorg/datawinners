@@ -1,7 +1,7 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
-{% block page_title %} {% trans "All Projects" %} {% endblock %}
-{% block section_title %} <h2 class="project_title">{% trans "All Projects" %}</h2> {% endblock %}
+{% block page_title %} {% trans "All Questionnaires" %} {% endblock %}
+{% block section_title %} <h2 class="project_title">{% trans "All Questionnaires" %}</h2> {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -26,8 +26,7 @@
     {% endfor %}
 {% endif %}
     <div class="grid_11 margin_left_null margin_bottom_20 create_proj_button" >
-        <a id="create_project_link" href="{% url datawinners.project.wizard_view.create_project%}" class="button">{% trans "Create a New Questionnaire" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-        <div class="tooltip"><p>{% trans "help_project_creation"%}</p></div>
+        <a id="create_project_link" href="{% url datawinners.project.wizard_view.create_project%}" class="button">{% trans "Create a New Questionnaire" %}</a>
     </div>
     <table class="styled_table all_projects">
         <thead>
