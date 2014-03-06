@@ -1091,3 +1091,6 @@ msgstr "Enregistrer un Expéditeur de Données"
 
 msgid "Warning: Empty questionnaire"
 msgstr "Attention: Questionnaire vide"
+
+msgid "This field is required."
+msgstr "Ce champ est obligatoire."
