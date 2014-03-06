@@ -2,14 +2,19 @@ var questionnaireHelperModel = {
         selectedTemplateId: ko.observable(),
         showQuestionnaireCreationOptions: ko.observable(),
         templateData: ko.observable(),
-
-        chooseTemplate: function (template) {
-            var template_id = template.id;
-            questionnaireHelperModel.selectedTemplateId(template_id);
-            questionnaireHelperModel.templateData(DW.getTemplateData(template_id));
-        },
+        showAjaxLoader: ko.observable(),
         removeTemplateId: function () {
             questionnaireHelperModel.selectedTemplateId(null);
+        },
+        chooseTemplate: function (template) {
+            var template_id = template.id;
+            questionnaireHelperModel.removeTemplateId();
+            questionnaireHelperModel.showAjaxLoader(true);
+            setTimeout(function(){
+                questionnaireHelperModel.templateData(DW.getTemplateData(template_id));
+                questionnaireHelperModel.selectedTemplateId(template_id);
+                questionnaireHelperModel.showAjaxLoader(false);
+            },0);
         },
         templateGroupingData: ko.observable(),
         getTemplates: function () {

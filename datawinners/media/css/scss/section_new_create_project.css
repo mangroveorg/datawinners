@@ -312,3 +312,6 @@ fieldset {
   .selected_questions .project-name-header {
     margin-left: -20px;
     padding-bottom: 10px; }
+
+.ajax-loader {
+  margin: 30px 0px 0px 420px; }

@@ -40,7 +40,7 @@ ko.bindingHandlers.errorVisible = {
         }
         setTimeout(function () {
             $(element).fadeOut()
-        }, 5000);
+        }, 10000);
     }
 };
 

@@ -8,7 +8,7 @@
 
     <div data-bind="fadeVisible: templateGroupingData() != null">
 
-        <h6 class="instruction-header">{% trans 'Choose a Template and adjust it to your needs' %}</h6>
+        <h6 class="instruction-header">{% trans 'Choose a template and edit it to fit your needs' %}</h6>
 
         <div id="questionnaire_template">
             <div data-bind="accordion: templateGroupingData()">
@@ -16,16 +16,22 @@
                 <div data-bind="foreach: templates">
                     <span class="template_name"
                           data-bind="text: name, click: $root.chooseTemplate, css:{selected: $data.id==$root.selectedTemplateId()}"></span>
-                        <div class="selected-notify"></div>
+
+                    <div class="selected-notify"></div>
                 </div>
             </div>
         </div>
-        <div data-bind="fadeVisible: selectedTemplateId()!=null, with: templateData" class="selected_questions">
-            <h6 class="project-name-header" data-bind="text: $data.project_name"></h6>
-            <ol data-bind="foreach: $.parseJSON($data.existing_questions)">
-                <li data-bind="text: name"></li>
-            </ol>
+        <div>
+            <div class="ajax-loader" data-bind="visible: showAjaxLoader"><img src="/media/images/ajax-loader.gif"/></div>
+            <div class="selected_questions" data-bind="visible: selectedTemplateId()!=null, with: templateData">
+                <div><h6 class="project-name-header" data-bind="text: $data.project_name"></h6>
+                    <ol data-bind="foreach: $.parseJSON($data.existing_questions)">
+                        <li data-bind="text: name"></li>
+                    </ol>
+                </div>
+            </div>
         </div>
+
     </div>
 
 </div>

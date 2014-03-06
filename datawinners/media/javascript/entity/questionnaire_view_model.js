@@ -176,19 +176,6 @@ var questionnaireViewModel =
 
         return isValid ;
     },
-    selectedTemplateId : ko.observable(),
-    templateQuestionsData: ko.observable(),
-
-    chooseTemplate: function(template){
-        questionnaireViewModel.selectedTemplateId(template.id);
-        $.get("/project/template/"+template.id, questionnaireViewModel.templateQuestionsData)
-    },
-
-    templateGroupingData: ko.observable(),
-
-    getTemplates: function(){
-        $.get("/project/templates", questionnaireViewModel.templateGroupingData)
-    },
 
     validateForSubmission: function(){
         return (questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion())
