@@ -287,6 +287,10 @@ class CreateQuestionnairePage(Page):
         """
         return self.driver.find_text_box(CODE_TB).get_attribute("value")
 
+    def get_select_or_edit_question_message(self):
+
+        return self.driver.find_element_by_css_selector(".select_question_message")
+
 
     def navigate_to_previous_step(self):
         """
@@ -514,9 +518,17 @@ class CreateQuestionnairePage(Page):
             self.got_redistribute_questionnaire_message()
         return ProjectOverviewPage(self.driver)
 
+    def submit_errored_questionnaire(self):
+        self.driver.find(SAVE_AND_CREATE_BTN).click()
+
     def save_and_create_project(self, click_ok=True):
         self.driver.find(SAVE_AND_CREATE_BTN).click()
         if click_ok:
             self.got_redistribute_questionnaire_message()
         return self
 
+    def set_title(self, title):
+        self.driver.find_text_box(by_id("questionnaire_title")).enter_text(title)
+
+    def get_empty_submission_popup(self):
+        return self.driver.find_element_by_xpath(".//*[@id='no_questions_exists']")
