@@ -1,21 +1,23 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import datetime
 import os
+import sys
+import datetime
 
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
-import sys
+from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
 
-from framework.exception import ElementStillPresentException, CouldNotLocatePageException, ElementFoundWithoutDesiredVisibility
-from framework.exception import CouldNotLocateElementException
+from framework.exception import ElementStillPresentException, CouldNotLocatePageException, ElementFoundWithoutDesiredVisibility, CouldNotLocateElementException
+from framework.utils.common_utils import by_css
 from framework.utils.drop_down_web_element import DropDown
 from framework.utils.new_drop_down_web_element import NewDropDown
 from framework.utils.text_box_web_element import TextBox
 from framework.utils.radio_button_web_element import RadioButton
-from pages.loginpage.login_locator import *
 from tests.testsettings import UI_TEST_TIMEOUT
+
+LOCATOR = "locator"
+BY = "by"
 
 
 def get_default_browser_name():
@@ -30,7 +32,7 @@ def get_default_browser_name():
 
 
 def get_driver_for_browser(browser):
-    sys.stderr.write("using driver for browser: %s"% browser)
+    sys.stderr.write("using driver for browser: %s" % browser)
     if browser == "firefox":
         fprofile = FirefoxProfile()
         driver = webdriver.Firefox(fprofile)
@@ -40,7 +42,8 @@ def get_driver_for_browser(browser):
         capabilities = dict(DesiredCapabilities.CHROME, **{
             'chrome.switches': ["--incognito"]
         })
-        driver = webdriver.Chrome(executable_path='/home/ashwin/Downloads/chromedriver', desired_capabilities=capabilities)
+        driver = webdriver.Chrome(executable_path='/home/ashwin/Downloads/chromedriver',
+                                  desired_capabilities=capabilities)
     elif browser == "htmlunit":
         driver = webdriver.Remote()
     elif browser == "phantom":
@@ -210,7 +213,8 @@ class DriverWrapper(object):
                 if want_visible is None or element.is_displayed() == want_visible:
                     return element
                 elif current_time >= end_time:
-                    message = "Expected visibility %s for element %s -- found %s after %s seconds" % (want_visible, object_id, element.is_displayed(), time_out_in_seconds)
+                    message = "Expected visibility %s for element %s -- found %s after %s seconds" % (
+                        want_visible, object_id, element.is_displayed(), time_out_in_seconds)
                     raise ElementFoundWithoutDesiredVisibility(message)
             except CouldNotLocateElementException as ne:
                 current_time = datetime.datetime.now()
@@ -228,7 +232,8 @@ class DriverWrapper(object):
             else:
                 current_time = datetime.datetime.now()
                 if current_time >= end_time:
-                    raise CouldNotLocatePageException("Could not locate page with title %s after %s seconds" % (title, time_out_in_seconds))
+                    raise CouldNotLocatePageException(
+                        "Could not locate page with title %s after %s seconds" % (title, time_out_in_seconds))
 
     def __getattr__(self, item):
         return getattr(self._driver, item)
