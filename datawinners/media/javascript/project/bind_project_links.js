@@ -6,12 +6,6 @@ DW.bind_project_links = function () {
                 return false;
             });
 
-            $(".activate_project").unbind().bind("click", function () {
-                $("#activate_project_block").dialog("open");
-                $('#confirm').attr('href', $(this).attr('href'));
-                return false;
-            });
-
             $(".delete_project").unbind().bind("click", function () {
                 $("#delete_project_block").dialog("open");
                 var project_id = $(this).attr('href').split('/')[3];
@@ -22,7 +16,7 @@ DW.bind_project_links = function () {
             });
 
         } else { // bind to the data changed warning dialog
-            $(".sms_tester, .activate_project, .delete_project, .printLink").unbind().bind("click", function () {
+            $(".sms_tester, .delete_project, .printLink").unbind().bind("click", function () {
                 DW.edit_submission_modified_data_handler.click_after_reload = $(this).attr("class");
                 $("#cancel_submission_warning_message").dialog("open");
                 return false;
