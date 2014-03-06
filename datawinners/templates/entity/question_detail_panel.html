@@ -25,7 +25,7 @@
         </li>
         <li class="question_type margin_null"
             data-bind="hidden: is_entity_question">
-            <label>{% trans "Answer Type" %}<img src="/media/images/help_icon.png" class="help_icon"
+            <label>{% trans "Answer Type" %}<img src="/media/images/help_icon.png" class="help_icon" data-bind="initializeTooltip:true"
                                                  style="margin-top:-6px;"></label>
 
             <div class="tooltip"><p>
@@ -137,7 +137,7 @@
         </li>
         <li>
             <div class="margin_top_20">
-                <label>{% trans "Instructions" %}<img src="/media/images/help_icon.png" class="help_icon"
+                <label>{% trans "Instructions" %}<img src="/media/images/help_icon.png" class="help_icon" data-bind="initializeTooltip:true"
                                                       style="margin-top:-6px;"></label>
 
                 <div class="tooltip"><p>
