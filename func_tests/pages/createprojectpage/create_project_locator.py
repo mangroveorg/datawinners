@@ -18,7 +18,7 @@ from framework.utils.common_utils import *
 LOCATOR = "locator"
 BY = "by"
 
-PROJECT_NAME_TB = by_css("input#id_name")
+PROJECT_NAME_TB = by_css("input#questionnaire_title")
 PROJECT_BACKGROUND_TB = by_css("textarea#id_goals")
 SURVEY_PROJECT_RB = by_css("input[value='survey']")
 PUBLIC_INFORMATION_RB = by_css("input[value='public information']")

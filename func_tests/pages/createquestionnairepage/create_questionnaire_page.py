@@ -72,7 +72,7 @@ class CreateQuestionnairePage(Page):
         return self
 
     def add_question(self, question):
-        self.driver.find(ADD_A_QUESTION_LINK).click()
+        self.click_add_question_link()
         self.fill_question_and_code_tb(question)
         self.SELECT_FUNC[fetch_(TYPE, from_(question))](question)
 
@@ -532,3 +532,5 @@ class CreateQuestionnairePage(Page):
 
     def get_empty_submission_popup(self):
         return self.driver.find_element_by_xpath(".//*[@id='no_questions_exists']")
+
+

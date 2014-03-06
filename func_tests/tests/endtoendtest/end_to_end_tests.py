@@ -60,7 +60,7 @@ def do_login(driver, email, password):
 
 class TestApplicationEndToEnd(unittest.TestCase):
     def setUp(self):
-        self.driver = DriverWrapper(browser="firefox")
+        self.driver = DriverWrapper(browser="phatom")
         self.driver.set_window_size(1600,900)
         self.driver.implicitly_wait(WAIT)
 

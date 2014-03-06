@@ -155,3 +155,19 @@ WATERPOINT_QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
                                  SUCCESS_MSG: "Your questionnaire has been saved",
                                  PAGE_TITLE: "Data Senders"}
 
+QUESTIONS_WITH_INVALID_ANSWER_DETAILS =[
+                                         {QUESTION: u"What is your namé?", CODE: u"q2", TYPE: WORD, LIMIT: LIMITED,
+                                          MAX: u"AB"},
+                                         {QUESTION: u"What is age öf father?", CODE: u"q3", TYPE: NUMBER, MIN: u"18",
+                                          MAX: u"100"},
+                                         {QUESTION: u"What is réporting date?", CODE: u"q4", TYPE: DATE,
+                                          DATE_FORMAT: DD_MM_YYYY},
+                                         {QUESTION: u"What is your blood group?", CODE: u"q5", TYPE: LIST_OF_CHOICES,
+                                          CHOICE: [u"O+", u"O-", u"AB", u"B+"],
+                                          ALLOWED_CHOICE: ONLY_ONE_ANSWER},
+                                         {QUESTION: u"What aré symptoms?", CODE: u"q6", TYPE: LIST_OF_CHOICES,
+                                          CHOICE: [u"Rapid weight loss", u"Dry cough", u"Pneumonia", u"Memory loss",
+                                                   u"Neurological disorders "],
+                                          ALLOWED_CHOICE: MULTIPLE_ANSWERS},
+                                         {QUESTION: u"What is the GPS codé for clinic", CODE: u"q7", TYPE: GEO},
+                                     ]
