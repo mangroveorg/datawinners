@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="create_questionnaire">
     <div id="project-message-label" class="message-box"
-         data-bind="visible: errorInResponse, errorVisible: responseErrorMsg">
+         data-bind="visible: errorInResponse, scrollToError: errorInResponse">
         <label class='error_message' data-bind="text: responseErrorMsg"></label>
     </div>
 

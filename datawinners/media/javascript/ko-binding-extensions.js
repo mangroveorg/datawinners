@@ -31,11 +31,10 @@ ko.bindingHandlers.scrollToView = {
     }
 };
 
-ko.bindingHandlers.errorVisible = {
+ko.bindingHandlers.scrollToError = {
     update: function (element, valueAccessor) {
-        var observable = valueAccessor();
-        var shouldShow = ko.unwrap(observable);
-        if (shouldShow && shouldShow.length > 0) {
+        var shouldShow = ko.utils.unwrapObservable(valueAccessor());
+        if (shouldShow) {
             $('html, body').animate({scrollTop: $(element).offset().top}, 'slow')
         }
         setTimeout(function () {
