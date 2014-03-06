@@ -4,8 +4,9 @@ from mangrove.datastore.documents import FormModelDocument, DocumentBase, attrib
 from mangrove.form_model.form_model import get_form_model_by_code
 from datawinners.main.database import get_db_manager
 
-TEMPLATE_CACHE_EXPIRY_TIME_IN_SEC = 2*60*60
+TEMPLATE_CACHE_EXPIRY_TIME_IN_SEC = 2 * 60 * 60
 GROUPING_CACHE_KEY = 'template_grouping_cache_key'
+
 
 class QuestionnaireTemplateDocument(FormModelDocument):
     category = TextField()
@@ -37,29 +38,26 @@ class QuestionnaireLibrary:
 
     def _create_view(self):
         from datawinners.main.utils import find_views
+
         views = find_views('questionnaire_template_view')
         for view_name, view_def in views.iteritems():
             map_function = (view_def['map'] if 'map' in view_def else None)
-            self.dbm.create_view(view_name, map_function, None)
+            reduce_function = (view_def['reduce'] if 'reduce' in view_def else None)
+            self.dbm.create_view(view_name, map_function, reduce_function)
 
     def _grouping(self):
-        rows = self.dbm.load_all_rows_in_view('template_category')
-        categories = set([a['key'] for a in rows])
+        rows = self.dbm.load_all_rows_in_view('by_template_category',group=True, reduce=True)
         result = []
-        for category in categories:
-            template = {}
-            values = self._get_values_for_key(category, rows)
-            template.update({'category': category})
-            template.update({'templates': values})
-            result.append(template)
+        for row in rows:
+            template_data = {'category': row['key'], 'templates': self._construct_template_data(row['value'])}
+            result.append(template_data)
         return result
 
-    def _get_values_for_key(self, key, rows):
-        values = []
-        for row in rows:
-            if row['key'] == key:
-                values.append(row['value'])
-        return values
+    def _construct_template_data(self, values):
+        details = []
+        for value in values:
+            details.append({'name': value[0], 'id': value[1]})
+        return details
 
     def get_question_template_key(self, template_id):
         assert template_id is not None
