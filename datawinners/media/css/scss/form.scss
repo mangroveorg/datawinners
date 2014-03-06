@@ -524,7 +524,7 @@ select{
 /*Delete the project block*/
 #delete_project_block{
     height:110px ! important;
-    width:350px ! important;
+    width:auto ! important;
     .cancel_link{
         margin-left: 10px;
         &.cancel_en{

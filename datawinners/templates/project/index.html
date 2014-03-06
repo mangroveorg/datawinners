@@ -12,7 +12,6 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script src="/media/javascript/project/activate_project.js" type="text/javascript"></script>
     <script src="/media/javascript/project/delete_project.js" type="text/javascript"></script>
     <script src="/media/javascript/project/bind_project_links.js" type="text/javascript"></script>
 {% endblock %}
@@ -45,7 +44,7 @@
         {% endfor %}
     </table>
     <div id="delete_project_block">
-        <p class="warning_message">{% trans "Export all submissions prior to deleting your project." %}</p>
+        <p class="warning_message">{% trans "Export all submissions prior to deleting your questionnaire." %}</p>
         <a href="#" class="cancel_link cancel_{% trans "en" %}" >{% trans "Cancel" %}</a>
         <a href="#" class="button" id="confirm_delete">{% trans "Delete Project Now" %}</a>
     </div>

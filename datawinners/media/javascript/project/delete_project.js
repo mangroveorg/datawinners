@@ -1,10 +1,10 @@
 $(document).ready(function(){
    $("#delete_project_block").dialog({
-        title: gettext("Delete this Project?"),
+        title: gettext("Delete this Questionnaire?"),
         modal: true,
         autoOpen: false,
         height: 150,
-        width: 370,
+        width: 'auto',
         closeText: 'hide'
       }
    );
