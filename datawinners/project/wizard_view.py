@@ -10,6 +10,7 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from datawinners.dashboard.views import dashboard
 from datawinners.project import helper
 from celery.task import current
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
@@ -95,6 +96,7 @@ def get_template_details(request, template_id):
 def create_project(request):
     manager = get_database_manager(request.user)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
+    cancel_link = reverse('dashboard') if request.GET['prev'] == 'dash' else reverse('index')
 
     if request.method == 'GET':
         return render_to_response('project/create_project.html',
@@ -102,7 +104,7 @@ def create_project(request):
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
                                    'post_url': reverse(create_project),
-                                   'cancel_link': request.META['HTTP_REFERER']}, context_instance=RequestContext(request))
+                                   'cancel_link': cancel_link}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])

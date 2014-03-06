@@ -25,7 +25,7 @@
     {% endfor %}
 {% endif %}
     <div class="grid_11 margin_left_null margin_bottom_20 create_proj_button" >
-        <a id="create_project_link" href="{% url datawinners.project.wizard_view.create_project%}" class="button">{% trans "Create a New Questionnaire" %}</a>
+        <a id="create_project_link" href="{% url datawinners.project.wizard_view.create_project%}?prev=proj" class="button">{% trans "Create a New Questionnaire" %}</a>
     </div>
     <table class="styled_table all_projects">
         <thead>
