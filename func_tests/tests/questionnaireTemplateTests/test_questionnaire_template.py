@@ -31,8 +31,7 @@ class TestProjectCreationFromTemplate(unittest.TestCase):
 
 
     def _create_template_doc(self):
-        path = os.getcwd()+'/sample_template_data.json'
-        self.template_library.create_template_from_project(path)
+        self.template_library.create_template_from_project('sample_template_data.json')
         
     def tearDown(self):
         teardown_driver(self.driver)

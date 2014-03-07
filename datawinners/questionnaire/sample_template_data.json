@@ -1,7 +1,7 @@
 [{
     "name": "Patient Details",
     "category": "Health Care",
-    "id": "patient_details_1",
+    "language":"en",
     "json_fields": [
         {
             "required": true,
