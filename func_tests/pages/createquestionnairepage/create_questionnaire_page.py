@@ -1,7 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from time import sleep
 
-from pages.page import Page
 from framework.utils.data_fetcher import *
 from framework.utils.global_constant import WAIT_FOR_TITLE
 from pages.createdatasenderquestionnairepage.create_data_sender_questionnaire_page import CreateDataSenderQuestionnairePage
@@ -11,6 +9,8 @@ from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from framework.utils.common_utils import generateId, CommonUtilities
 from selenium.common.exceptions import NoSuchElementException
+from tests.testsettings import UI_TEST_TIMEOUT
+from pages.page import Page
 
 MANDATORY_FIELD_ERROR_MESSAGE = "This field is required."
 
@@ -513,7 +513,7 @@ class CreateQuestionnairePage(Page):
 
     def save_and_create_project_successfully(self, click_ok=True):
         self.driver.find(SAVE_AND_CREATE_BTN).click()
-        time.sleep(3)
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Projects - Overview")
         if click_ok:
             self.got_redistribute_questionnaire_message()
         return ProjectOverviewPage(self.driver)
