@@ -1,3 +1,3 @@
 function (doc) {
-    emit(doc.category, [doc.name, doc._id]);
+    emit(doc.category, {name: doc.name, id: doc._id});
 }

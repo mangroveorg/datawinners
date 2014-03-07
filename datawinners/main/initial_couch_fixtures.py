@@ -13,6 +13,7 @@ from datawinners.project.models import Project, ProjectState, Reminder, Reminder
 from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager, get_db_manager
+from main.initial_template_creation import create_questionnaire_templates
 from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
@@ -1592,6 +1593,7 @@ def load_data():
     create_trial_test_organization('quotareached@mailinator.com', 'YDC120930', False)
     register_datasender_for_quota_reached_ngo()
     create_clinic3_project_for_quota_reached_ngo()
+    create_questionnaire_templates()
 
 
 def create_datasender_for_nigeria_test_organization():

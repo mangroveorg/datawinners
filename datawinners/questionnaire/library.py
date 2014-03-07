@@ -38,58 +38,25 @@ class QuestionnaireLibrary:
     def get_template_groupings(self):
         return self._grouping()
 
-    def _create_view(self):
-        from datawinners.main.utils import find_views
-
-        views = find_views('questionnaire_template_view')
-        for view_name, view_def in views.iteritems():
-            map_function = (view_def['map'] if 'map' in view_def else None)
-            reduce_function = (view_def['reduce'] if 'reduce' in view_def else None)
-            self.dbm.create_view(view_name, map_function, reduce_function)
-
     def _grouping(self):
-        rows = self.dbm.load_all_rows_in_view('by_template_category', group=True, reduce=True)
+        rows = self.dbm.load_all_rows_in_view('by_template_category')
+        categories = set([a['key'] for a in rows])
         result = []
-        for row in rows:
-            template_data = {'category': row['key'], 'templates': self._construct_template_data(row['value'])}
-            result.append(template_data)
+        for category in categories:
+            template = {}
+            values = self._get_values_for_key(category, rows)
+            template.update({'category': category})
+            template.update({'templates': values})
+            result.append(template)
         return result
 
-    def _construct_template_data(self, values):
-        details = []
-        for value in values:
-            details.append({'name': value[0], 'id': value[1]})
-        return details
+    def _get_values_for_key(self, key, rows):
+        values = []
+        for row in rows:
+            if row['key'] == key:
+                values.append(row['value'])
+        return values
 
     def get_question_template_key(self, template_id):
         assert template_id is not None
         return str("%s_%s" % (self.dbm.database.name, template_id))
-
-    def create_template_from_project(self, file_name):
-        self._create_view()
-        full_path = os.path.realpath(__file__)
-        path = os.path.dirname(full_path)+'/'+file_name
-        docs = []
-        with open(path) as data_file:
-            questionnaires = json.load(data_file)
-            for data in questionnaires:
-                template_doc = QuestionnaireTemplateDocument(name=data.get('name'), category=data.get('category'))
-                template_doc.json_fields = data.get('json_fields')
-                template_doc.validators = data.get('validators')
-                doc_id = self.dbm._save_document(template_doc)
-                docs.append(doc_id)
-        return docs
-
-    def get_category_mapping(self):
-        map = {}
-        map.update({'Health':
-                        ['Monthly Client Report', 'Monthly Stock Report', 'Patient Interview',
-                         'Weekly Sentinel Site Survey']})
-        map.update({'Food Security': ['Waybill Sent', 'Waybill Received']})
-        map.update({'Education': ['Student Census', 'Grant Reception', 'Textbook Reception', 'Standardized Test Results',
-                                  'Early Grade Reading Assessment']})
-        map.update({'Early Warning': ['Weekly assessment', 'Fast Onset']})
-        map.update({'Agriculture': ['Livestock Census']})
-        map.update({'Commercial': ['Invoice']})
-        map.update({'Socio-Economic': ['Household Survey']})
-        return map

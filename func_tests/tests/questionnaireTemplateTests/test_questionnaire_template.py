@@ -14,8 +14,7 @@ from tests.questionnaireTemplateTests.questionnaire_template_data import NEW_PRO
 class TestProjectCreationFromTemplate(unittest.TestCase):
     def setUp(self):
         self.template_library = QuestionnaireLibrary()
-        self.doc_id = self._create_template_doc()
-        self.driver = setup_driver()
+        self.driver = setup_driver(browser='phantom')
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
         self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
@@ -30,9 +29,5 @@ class TestProjectCreationFromTemplate(unittest.TestCase):
         self.assertIsNotNone(project_overview_page.get_project_title())
 
 
-    def _create_template_doc(self):
-        self.template_library.create_template_from_project('sample_template_data.json')
-        
     def tearDown(self):
         teardown_driver(self.driver)
-        _delete_db_and_remove_db_manager(self.template_library.dbm)
