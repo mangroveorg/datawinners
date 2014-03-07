@@ -39,8 +39,8 @@ class CreateQuestionnairePage(Page):
         gen_ramdom = fetch_(GEN_RANDOM, from_(questionnaire_data))
         if gen_ramdom:
             questionnaire_code = questionnaire_code + generateId()
-        self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).enter_text(questionnaire_code)
-        #self.create_default_question(questionnaire_data[DEFAULT_QUESTION], DEFAULT_QUESTION_LINK)
+        if fetch_(QUESTIONNAIRE_CODE, from_(questionnaire_data)):
+            self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).enter_text(questionnaire_code)
         for question in fetch_(QUESTIONS, from_(questionnaire_data)):
             self.add_question(question)
         return self
@@ -418,6 +418,9 @@ class CreateQuestionnairePage(Page):
 
     def get_questionnaire_code(self):
         return self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).get_attribute("value")
+
+    def get_questionnaire_title(self):
+        return self.driver.find_text_box(by_id("questionnaire_title")).get_attribute("value")
 
     def get_option_by_index_for_multiple_choice_question(self, index):
         code = self.driver.find(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_S_XPATH_LOCATOR)).text

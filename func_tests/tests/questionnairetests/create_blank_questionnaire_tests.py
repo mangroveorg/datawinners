@@ -11,7 +11,6 @@ from tests.projects.questionnairetests.project_questionnaire_data import QUESTIO
 class TestCreateBlankQuestionnaire(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.project_name = None
         cls.driver = setup_driver(browser="phantom")
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)

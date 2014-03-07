@@ -8,10 +8,12 @@ import time
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.dashboardpage.dashboard_page import DashboardPage
+from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url
+from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_PROJECT, QUESTIONNAIRE_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
@@ -27,22 +29,38 @@ def verify_on_edit_project_page(verify_edit_page_functionality):
     project_overview_page = verify_edit_page_functionality()
     return project_overview_page.navigate_to_edit_project_page()
 
-#TODO: UnComment after making questionnaire tab similar to create project page
-@SkipTest
+
 class TestProjectQuestionnaire(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.project_name = None
-        cls.driver = setup_driver()
+        cls.driver = setup_driver(browser="phantom")
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        global_navigation = GlobalNavigationPage(cls.driver)
+        dashboard_page = global_navigation.navigate_to_dashboard_page()
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+        cls.create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
 
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
-    @attr('functional_test')
+
+    def test_editing_existing_questionnaire(self):
+        create_questionnaire_page = self.create_questionnaire_page
+        create_questionnaire_page.create_questionnaire_with(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
+        overview_page = create_questionnaire_page.save_and_create_project_successfully()
+        questionnaire_tab_page = overview_page.navigate_to_questionnaire_tab()
+        self.assertIn(EDIT_PROJECT_DATA[PROJECT_NAME], questionnaire_tab_page.get_questionnaire_title())
+        self.assertEqual(questionnaire_tab_page.get_existing_questions_count(),
+                         len(EDIT_PROJECT_QUESTIONNAIRE_DATA[QUESTIONS]), "Question count does not match")
+        expected_existing_questions = [question[QUESTION] for question in EDIT_PROJECT_QUESTIONNAIRE_DATA[QUESTIONS]]
+        self.assertEqual(questionnaire_tab_page.get_existing_question_list(), expected_existing_questions,
+                         "Mismatch in question list")
+
+
+    @SkipTest
     def test_successful_questionnaire_editing(self):
         """
         Function to test the successful editing of a Questionnaire with given details
@@ -211,7 +229,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
         self.driver.go_to(url("/dashboard/"))
         return DashboardPage(self.driver)
 
-    @attr('functional_test')
+    @SkipTest
     def test_successful_questionnaire_creation(self):
         questionnaire_creation_options_page = self.goto_dashboard().navigate_to_create_project_page()
         create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()

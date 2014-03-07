@@ -172,3 +172,30 @@ QUESTIONS_WITH_INVALID_ANSWER_DETAILS =[
                                          {QUESTION: u"What is the GPS codé for clinic", CODE: u"q7", TYPE: GEO},
                                      ]
 
+EDIT_PROJECT_DATA = {
+                      PROJECT_NAME: "ft-edit project", GEN_RANDOM: True,
+                    }
+
+EDIT_PROJECT_QUESTIONNAIRE_DATA = {
+                      QUESTIONNAIRE_CODE: None, GEN_RANDOM: False,
+                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
+                      QUESTIONS: [{QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q3", TYPE: DATE,
+                                   DATE_FORMAT: DD_MM_YYYY},
+                                  {QUESTION: u"Water Level", CODE: u"q4", TYPE: NUMBER, MIN: u"1", MAX: u"1000"},
+                                  {QUESTION: u"Date of report in MM.YYY format", CODE: u"q5", TYPE: DATE,
+                                   DATE_FORMAT: MM_YYYY},
+                                  {QUESTION: u"Date of report in MM.DD.YYY format", CODE: u"q6", TYPE: DATE,
+                                   DATE_FORMAT: MM_DD_YYYY},
+                                  {QUESTION: u"Color of Water", CODE: u"q7", TYPE: LIST_OF_CHOICES,
+                                   CHOICE: ["LIGHT RED", "LIGHT YELLOW", "DARK YELLOW"],
+                                   ALLOWED_CHOICE: ONLY_ONE_ANSWER},
+                                  {QUESTION: u"Water point admin name", CODE: u"q8", TYPE: WORD, LIMIT: LIMITED,
+                                   MAX: u"10"},
+                                  {QUESTION: u"Bacterias in water", CODE: u"q9", TYPE: LIST_OF_CHOICES,
+                                   CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
+                                   ALLOWED_CHOICE: MULTIPLE_ANSWERS},
+                                  {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO}],
+                      CHARACTER_REMAINING: "69 / 160 characters used (1 SMS)",
+                      PAGE_TITLE: "Data Senders"
+                     }
+
