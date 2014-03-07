@@ -4478,7 +4478,7 @@ msgstr ""
 msgid "Copy an Existing Questionnaire"
 msgstr ""
 
-msgid "Use a Template"
+msgid "Use a Questionnaire Template"
 msgstr ""
 
 msgid "Insert a name for this Questionnaire"
@@ -4494,4 +4494,7 @@ msgid "Sorry, the telephone number %s has already been registered."
 msgstr ""
 
 msgid "Select an Answer Type"
+msgstr ""
+
+msgid "Choose a template and edit it to fit your needs."
 msgstr ""

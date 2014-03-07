@@ -4690,8 +4690,8 @@ msgstr "Choisissez comment vous souhaitez commencer"
 msgid "Copy an Existing Questionnaire"
 msgstr "Copier un Questionnaire existant"
 
-msgid "Use a Template"
-msgstr "Utiliser un modèle"
+msgid "Use a Questionnaire Template"
+msgstr "Utilisez un modèle de Questionnaire"
 
 msgid "Insert a name for this Questionnaire"
 msgstr "Insérer un nom pour ce Questionnaire"
@@ -4707,3 +4707,6 @@ msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée."
 
 msgid "Select an Answer Type"
 msgstr "Sélectionnez un type de réponse"
+
+msgid "Choose a template and edit it to fit your needs."
+msgstr "Choisissez un modèle et modifiez-le selon vos besoins."
