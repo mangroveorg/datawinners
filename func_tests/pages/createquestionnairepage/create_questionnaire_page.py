@@ -189,13 +189,13 @@ class CreateQuestionnairePage(Page):
         return self
         """
         self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(LIST_OF_CHOICES_OPTION)
-        self.driver.find_element_by_id("choice_text").clear()
+        self.driver.find_element_by_id("choice_text0").clear()
         index = 1
         choices = fetch_(CHOICE, from_(question_data))
         for choice in choices:
             if index > 1:
                 self.driver.find(ADD_CHOICE_LINK).click()
-                box = self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR))
+                box = self.driver.find_text_box(by_id("choice_text%d" % (index-1)))
                 box.send_keys(choice)
             index += 1
         box = self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[1]" + CHOICE_TB_XPATH_LOCATOR))
@@ -426,15 +426,15 @@ class CreateQuestionnairePage(Page):
         return {'code': code, 'text': text}
 
     def delete_option_for_multiple_choice_question(self, index):
-        self.driver.find(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_DL_XPATH_LOCATOR)).click()
+        self.driver.find(by_id("delete_choice%d" % (index-1))).click()
 
 
     def change_date_type_question(self, date_format):
-        if (date_format == MM_YYYY):
+        if date_format == MM_YYYY:
             self.driver.find_radio_button(MONTH_YEAR_RB).click()
-        elif (date_format == DD_MM_YYYY):
+        elif date_format == DD_MM_YYYY:
             self.driver.find_radio_button(DATE_MONTH_YEAR_RB).click()
-        elif (date_format == MM_DD_YYYY):
+        elif date_format == MM_DD_YYYY:
             self.driver.find_radio_button(MONTH_DATE_YEAR_RB).click()
         return self
 
@@ -469,10 +469,10 @@ class CreateQuestionnairePage(Page):
         return self.driver.find(CURRENT_QUESTION_TYPE_LOCATOR).get_attribute("value")
 
     def get_nth_option_of_choice(self, index):
-        return self.driver.find(by_css('#options_list>li:nth-child(%d)>input' % index))
+        return self.driver.find(by_id("choice_text%d" % (index-1)))
 
     def change_nth_option_of_choice(self, index, new_text):
-        self.driver.find_text_box(by_css('#options_list>li:nth-child(%d)>input' % index)).enter_text(new_text)
+        self.driver.find_text_box(by_id("choice_text%d" % (index-1))).enter_text(new_text)
 
     def change_number_question_limit(self, max_value, min_value=0):
         self.set_min_range_limit(min_value)
@@ -492,7 +492,7 @@ class CreateQuestionnairePage(Page):
         self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).enter_text(form_code)
 
     def add_option_to_a_multiple_choice_question(self, new_choice_text):
-        self.driver.find(ADD_CHOICE_LINK).click()
+        self.driver.find(by_id("add_choice")).click()
         question = self.get_list_of_choices_type_question()
         index = len(question[CHOICE])
         self.driver.find_text_box(
@@ -536,6 +536,11 @@ class CreateQuestionnairePage(Page):
     def set_question_title(self, title):
         self.driver.find_text_box(by_id("question_title")).enter_text(title)
 
+    def add_choice_option_to_selected_question(self, choice_text=None):
+        self.driver.find(by_id("add_choice")).click()
+        if choice_text:
+            self.driver.find_text_box(by_css("#options_list input:last")).enter_text(choice_text)
+
     def is_empty_submission_popup_present(self):
         popup = self.driver.find_element_by_xpath(".//*[@id='no_questions_exists']")
         return popup.is_displayed()
@@ -546,6 +551,9 @@ class CreateQuestionnairePage(Page):
             return question_title_validation_message.is_displayed(), question_title_validation_message.text
         except NoSuchElementException:
             return False, ""
+
+    def get_existing_questions_count(self):
+        return len(self.driver.find_elements_(by_css("#qns_list li")))
 
     def get_max_length_error_message(self):
         return self._get_validation_message_for("max_length_validation_message")
@@ -561,6 +569,9 @@ class CreateQuestionnairePage(Page):
 
     def get_questionnaire_code_error_message(self):
         return self._get_validation_message_for("questionnaire_code_validation_message")
+
+    def get_choice_error_message(self, index):
+        return self._get_validation_message_for("choice_validation_message%d" % (index-1))
 
 
 

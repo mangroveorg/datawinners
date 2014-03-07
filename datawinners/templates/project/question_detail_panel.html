@@ -79,8 +79,8 @@
                 <ol class="alpha_list que_list" id="options_list"
                     data-bind="template: { name : 'choice-template',foreach : choices }">
                 </ol>
-                <a href="questionnaire_wizard.html#" class="add_link"
-                   data-bind="click: function() { addOptionToQuestion(); }, valueUpdate: 'keyup'">
+                <a id="add_choice" href="javascript:void(0);" class="add_link"
+                   data-bind="click: function() { addOptionToQuestion(); }">
                     {% trans "Add Answer Choice" %}</a>
             </div>
             <div>

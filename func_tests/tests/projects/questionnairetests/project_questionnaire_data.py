@@ -163,7 +163,7 @@ QUESTIONS_WITH_INVALID_ANSWER_DETAILS =[
                                          {QUESTION: u"What is réporting date?", CODE: u"q4", TYPE: DATE,
                                           DATE_FORMAT: DD_MM_YYYY},
                                          {QUESTION: u"What is your blood group?", CODE: u"q5", TYPE: LIST_OF_CHOICES,
-                                          CHOICE: [u"O+", u"O-", u"AB", u"B+"],
+                                          CHOICE: [u"", u"", u""],
                                           ALLOWED_CHOICE: ONLY_ONE_ANSWER},
                                          {QUESTION: u"What aré symptoms?", CODE: u"q6", TYPE: LIST_OF_CHOICES,
                                           CHOICE: [u"Rapid weight loss", u"Dry cough", u"Pneumonia", u"Memory loss",
