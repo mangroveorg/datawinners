@@ -171,3 +171,4 @@ QUESTIONS_WITH_INVALID_ANSWER_DETAILS =[
                                           ALLOWED_CHOICE: MULTIPLE_ANSWERS},
                                          {QUESTION: u"What is the GPS codé for clinic", CODE: u"q7", TYPE: GEO},
                                      ]
+

@@ -573,5 +573,9 @@ class CreateQuestionnairePage(Page):
     def get_choice_error_message(self, index):
         return self._get_validation_message_for("choice_validation_message%d" % (index-1))
 
+    def get_duplicate_questionnaire_code_error_message(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#project-message-label .error_message"))
+        return self.driver.find_element_by_css_selector("#project-message-label .error_message").text
+
 
 

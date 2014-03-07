@@ -5,7 +5,7 @@ from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPa
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS
+from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS
 
 
 class TestCreateBlankQuestionnaire(unittest.TestCase):
@@ -50,9 +50,28 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         self.assertFalse(create_questionnaire_page.is_empty_submission_popup_present(),
                          "Empty Questionnaire popup should come up only on submitting")
         create_questionnaire_page.submit_errored_questionnaire()
-        create_questionnaire_page.submit_errored_questionnaire()
         self.assertTrue(create_questionnaire_page.is_empty_submission_popup_present(),
                         "Empty Questionnaire popup did not show up")
+
+
+    def test_add_question_with_invalid_selections(self):
+        create_questionnaire_page = self.create_questionnaire_page
+        create_questionnaire_page.refresh()
+        self._validate_word_answer_type()
+        self._validate_number_answer_type()
+        self._validate_multiple_choice_type()
+
+    def test_submitting_a_questionnaire_with_already_existing_questionnaire_code(self):
+        create_questionnaire_page = self.create_questionnaire_page
+        create_questionnaire_page.refresh()
+        create_questionnaire_page.set_questionnaire_title("Duplicate project")
+        create_questionnaire_page.set_questionnaire_code("cli051")
+        create_questionnaire_page.click_add_question_link()
+        create_questionnaire_page.set_question_title("Some qn")
+        create_questionnaire_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
+        create_questionnaire_page.submit_errored_questionnaire()
+        self.assertEqual(create_questionnaire_page.get_duplicate_questionnaire_code_error_message(),
+                         "Questionnaire with this code already exists", "Duplicate questionnaire code should show up")
 
     def _validate_max_length_for_invalid_entry(self):
         create_questionnaire_page = self.create_questionnaire_page
@@ -130,14 +149,6 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         #cleaning up state
         create_questionnaire_page.delete_question(2)
         create_questionnaire_page.delete_question(1)
-
-
-    def test_add_question_with_invalid_selections(self):
-        create_questionnaire_page = self.create_questionnaire_page
-        create_questionnaire_page.refresh()
-        self._validate_word_answer_type()
-        self._validate_number_answer_type()
-        self._validate_multiple_choice_type()
 
     def _validate_errored_choice_inputs(self, create_questionnaire_page):
         is_visible, message = create_questionnaire_page.get_choice_error_message(index=1)
