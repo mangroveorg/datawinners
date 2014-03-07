@@ -1,5 +1,7 @@
+import os
 import unittest
 from nose.plugins.attrib import attr
+import sys
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from framework.base_test import setup_driver, teardown_driver
 from mangrove.datastore.database import _delete_db_and_remove_db_manager
@@ -29,7 +31,8 @@ class TestProjectCreationFromTemplate(unittest.TestCase):
 
 
     def _create_template_doc(self):
-        self.template_library.create_template_from_project()
+        path = os.getcwd()+'/sample_template_data.json'
+        self.template_library.create_template_from_project(path)
         
     def tearDown(self):
         teardown_driver(self.driver)
