@@ -6,7 +6,7 @@
             <input id="question_title" name="question_title" type="text" class="required question_title"
                    data-bind="valueUpdate:'keyup', hasFocus:$root.enableQuestionTitleFocus, value: title"/>
             <div class="validationMessage" data-bind="ifnot: title.valid">
-                <span class="validationText" data-bind="text: title.error"></span>
+                <span id="question_title_validation_message" class="validationText" data-bind="text: title.error"></span>
             </div>
             <span id="periode_green_message"><br/>{% trans "change_event_time_field_message" %}<br/></span>
         </li>
@@ -98,7 +98,7 @@
                     {% trans "Min:" %}
                     <input name="range_min" type="text" id="range_min" data-bind="value:range_min"/>
                     <div class="validationMessage" data-bind="ifnot: range_min.valid">
-                        <span class="validationText" data-bind="text: range_min.error"></span>
+                        <span id="min_range_validation_message" class="validationText" data-bind="text: range_min.error"></span>
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@
                     {% trans "Max:" %}
                     <input name="range_max" type="text" id="range_max" data-bind="value:range_max"/>
                     <div class="validationMessage" data-bind="ifnot: range_max.valid">
-                        <span class="validationText" data-bind="text: range_max.error"></span>
+                        <span id="max_range_validation_message" class="validationText" data-bind="text: range_max.error"></span>
                     </div>
                 </div>
             </div>
@@ -125,7 +125,7 @@
                         <input name="max_length" type="text" id="max_length"
                                data-bind="value:max_length, visible: showLengthLimiter()"/>
                         <div class="validationMessage" data-bind="ifnot: max_length.valid">
-                            <span class="validationText" data-bind="text: max_length.error"></span>
+                            <span id="max_length_validation_message" class="validationText" data-bind="text: max_length.error"></span>
                         </div>
                     </div>
                 </div>

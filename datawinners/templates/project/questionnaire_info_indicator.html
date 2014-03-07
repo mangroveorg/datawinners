@@ -10,7 +10,7 @@
             </p>
         </div>
         <div class="validationMessage" data-bind="ifnot: projectName.valid">
-               <span class="validationText" data-bind="text: projectName.error"></span>
+               <span id="questionnaire_title_validation_message" class="validationText" data-bind="text: projectName.error"></span>
         </div>
         <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
     </div>
@@ -23,7 +23,7 @@
                 <p>{% trans "tooltip_question_code" %}</p>
             </div>
             <div class="validationMessage" data-bind="ifnot: questionnaireCode.valid">
-                <span class="validationText" data-bind="text: questionnaireCode.error"></span>
+                <span id="questionnaire_code_validation_message" class="validationText" data-bind="text: questionnaireCode.error"></span>
             </div>
         </li>
         <li>
@@ -33,8 +33,3 @@
         </li>
     </ul>
 </div>
-{#<script type="text/html" id="errorBox">#}
-{#    <div class="validationMessage" data-bind="if: !field.isValid()">#}
-{#        <span class="validationText" data-bind="validationMessage: field"></span>#}
-{#    </div>#}
-{#</script>#}

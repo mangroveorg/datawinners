@@ -13,3 +13,6 @@ class Page(object):
         locator = by_css("a[href='/switch/%s/']" % language)
         self.driver.find(locator).click()
 
+    def refresh(self):
+        self.driver.refresh()
+

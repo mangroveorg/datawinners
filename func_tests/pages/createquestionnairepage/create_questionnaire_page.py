@@ -1,6 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import time
-
 from time import sleep
 
 from pages.page import Page
@@ -12,16 +10,20 @@ from pages.createquestionnairepage.create_questionnaire_locator import *
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from framework.utils.common_utils import generateId, CommonUtilities
+from selenium.common.exceptions import NoSuchElementException
 
+MANDATORY_FIELD_ERROR_MESSAGE = "This field is required."
 
 class CreateQuestionnairePage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
-        self.SELECT_FUNC = {WORD: self.configure_word_type_question,
-                            NUMBER: self.configure_number_type_question,
-                            DATE: self.configure_date_type_question,
-                            LIST_OF_CHOICES: self.configure_list_of_choices_type_question,
-                            GEO: self.configure_geo_type_question}
+        self.SELECT_FUNC = {
+                                WORD: self.configure_word_type_question,
+                                NUMBER: self.configure_number_type_question,
+                                DATE: self.configure_date_type_question,
+                                LIST_OF_CHOICES: self.configure_list_of_choices_type_question,
+                                GEO: self.configure_geo_type_question
+                            }
 
     def create_questionnaire_with(self, project_data, questionnaire_data):
         """
@@ -73,7 +75,7 @@ class CreateQuestionnairePage(Page):
 
     def add_question(self, question):
         self.click_add_question_link()
-        self.fill_question_and_code_tb(question)
+        self.fill_question_title(question)
         self.SELECT_FUNC[fetch_(TYPE, from_(question))](question)
 
     def save_questionnaire_successfully(self):
@@ -106,11 +108,11 @@ class CreateQuestionnairePage(Page):
         return self
         """
         self.driver.find(question_link).click()
-        self.fill_question_and_code_tb(question_data)
+        self.fill_question_title(question_data)
         return self
 
 
-    def fill_question_and_code_tb(self, question_data):
+    def fill_question_title(self, question_data):
         """
         Function to fill the question and code text box on the questionnaire page
 
@@ -120,7 +122,6 @@ class CreateQuestionnairePage(Page):
         return self
         """
         self.driver.find_text_box(QUESTION_TB).enter_text(fetch_(QUESTION, from_(question_data)))
-        #self.driver.find_text_box(CODE_TB).enter_text(fetch_(CODE, from_(question_data)))
         return self
 
 
@@ -458,15 +459,8 @@ class CreateQuestionnairePage(Page):
         Function change a text of one question
 
         """
-        question_locator = QUESTION_DELETE_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
-            index) + ")" + QUESTION_DELETE_LINK_CSS_LOCATOR_PART2
-        self.driver.find(by_css(question_locator)).click()
-
-    def change_question_type_to(self, index, type="text"):
-        question_locator = QUESTION_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
-            index) + ")" + QUESTION_LINK_CSS_LOCATOR_PART2
-        self.driver.find(by_css(question_locator)).click()
-        self.driver.find(by_css(QUESTION_TYPE_CSS_LOCATOR % str(type))).click()
+        self.driver.find_elements_(by_css(".questions li"))[index-1].click()
+        self.driver.find_elements_(by_css(".questions li .delete_link"))[index-1].click()
 
     def get_question_type(self, index):
         question_locator = QUESTION_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
@@ -481,8 +475,14 @@ class CreateQuestionnairePage(Page):
         self.driver.find_text_box(by_css('#options_list>li:nth-child(%d)>input' % index)).enter_text(new_text)
 
     def change_number_question_limit(self, max_value, min_value=0):
-        self.driver.find_text_box(NUMBER_MIN_LENGTH_TB).enter_text(min_value)
-        self.driver.find_text_box(NUMBER_MAX_LENGTH_TB).enter_text(max_value)
+        self.set_min_range_limit(min_value)
+        self.set_max_range_limit(max_value)
+
+    def set_min_range_limit(self, limit):
+        self.driver.find_text_box(NUMBER_MIN_LENGTH_TB).enter_text(limit)
+
+    def set_max_range_limit(self, limit):
+        self.driver.find_text_box(NUMBER_MAX_LENGTH_TB).enter_text(limit)
 
     def set_word_question_max_length(self, max_length):
         self.driver.find_radio_button(CHARACTER_LIMIT_RB).click()
@@ -527,10 +527,40 @@ class CreateQuestionnairePage(Page):
             self.got_redistribute_questionnaire_message()
         return self
 
-    def set_title(self, title):
+    def change_question_type(self, question):
+        self.SELECT_FUNC[fetch_(TYPE, from_(question))](question)
+
+    def set_questionnaire_title(self, title):
         self.driver.find_text_box(by_id("questionnaire_title")).enter_text(title)
 
-    def get_empty_submission_popup(self):
-        return self.driver.find_element_by_xpath(".//*[@id='no_questions_exists']")
+    def set_question_title(self, title):
+        self.driver.find_text_box(by_id("question_title")).enter_text(title)
+
+    def is_empty_submission_popup_present(self):
+        popup = self.driver.find_element_by_xpath(".//*[@id='no_questions_exists']")
+        return popup.is_displayed()
+
+    def _get_validation_message_for(self, questionnaire_field_id):
+        try:
+            question_title_validation_message = self.driver.find_element_by_id(questionnaire_field_id)
+            return question_title_validation_message.is_displayed(), question_title_validation_message.text
+        except NoSuchElementException:
+            return False, ""
+
+    def get_max_length_error_message(self):
+        return self._get_validation_message_for("max_length_validation_message")
+
+    def get_min_range_error_message(self):
+        return self._get_validation_message_for("min_range_validation_message")
+
+    def get_max_range_error_message(self):
+        return self._get_validation_message_for("max_range_validation_message")
+
+    def get_questionnaire_title_error_message(self):
+        return self._get_validation_message_for("questionnaire_title_validation_message")
+
+    def get_questionnaire_code_error_message(self):
+        return self._get_validation_message_for("questionnaire_code_validation_message")
+
 
 
