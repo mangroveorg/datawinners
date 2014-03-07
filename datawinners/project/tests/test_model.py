@@ -91,21 +91,21 @@ class TestProjectModel(unittest.TestCase):
         with self.assertRaises(Exception) as cm:
             project.save(self.manager)
         the_exception = cm.exception
-        self.assertEqual(the_exception.message, "Project with Name = '%s' already exists."%project2_name.lower())
+        self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 
     def test_project_name_should_be_case_insensitively_unique(self):
         project = Project(name=project2_name.upper(), goals="Testing", project_type="Survey", entity_type="Clinic", devices=['web'])
         with self.assertRaises(Exception) as cm:
             project.save(self.manager)
         the_exception = cm.exception
-        self.assertEqual(the_exception.message, "Project with Name = '%s' already exists."%project2_name.lower())
+        self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 
     def test_should_check_for_unique_name_while_update_project(self):
         self.project1.update(dict(name=project2_name, devices=['web', 'sms'], goals="New goals"))
         with self.assertRaises(Exception) as cm:
             self.project1.save(self.manager)
         the_exception = cm.exception
-        self.assertEqual(the_exception.message, "Project with Name = '%s' already exists."%project2_name.lower())
+        self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 
     def test_should_update_questionnaire(self):
         self.project1.name = "New Name"

@@ -301,7 +301,7 @@ fieldset {
 .selected_questions {
   overflow: auto;
   height: 288px;
-  width: 460px;
+  width: 468px;
   background: #FFF;
   border-radius: 2px;
   border: 1px solid #CCC;

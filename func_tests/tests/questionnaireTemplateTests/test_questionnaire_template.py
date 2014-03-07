@@ -1,4 +1,5 @@
 import unittest
+from nose.plugins.attrib import attr
 from datawinners.questionnaire.library import QuestionnaireLibrary
 from framework.base_test import setup_driver, teardown_driver
 from mangrove.datastore.database import _delete_db_and_remove_db_manager
@@ -17,7 +18,7 @@ class TestProjectCreationFromTemplate(unittest.TestCase):
         login_page = LoginPage(self.driver)
         self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
 
-
+    @attr('functional_test')
     def test_should_create_project_from_template(self):
         dashboard_page = self.global_navigation.navigate_to_dashboard_page()
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
