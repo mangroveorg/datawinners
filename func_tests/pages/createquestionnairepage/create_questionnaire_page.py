@@ -580,5 +580,9 @@ class CreateQuestionnairePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#project-message-label .error_message"))
         return self.driver.find_element_by_css_selector("#project-message-label .error_message").text
 
-
-
+    def get_existing_questions(self):
+        questions = []
+        questions_divs = self.driver.find_elements_(by_css('#qns_list>ol>li>a'))
+        for q in questions_divs:
+            questions.append(q.text)
+        return questions
