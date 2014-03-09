@@ -72,7 +72,8 @@ def get_preview_and_instruction_links():
 @is_not_expired
 def get_templates(request):
     library = QuestionnaireLibrary()
-    return HttpResponse(json.dumps({'categories': library.get_template_groupings()}), content_type='application/json')
+    return HttpResponse(json.dumps({'categories': library.get_template_groupings(request.LANGUAGE_CODE)}),
+                        content_type='application/json')
 
 
 @login_required
@@ -80,7 +81,8 @@ def get_template_details(request, template_id):
     dbm = get_database_manager(request.user)
     library = QuestionnaireLibrary()
     template = library.get_questionnaire_template(template_id)
-    template_details = {'template_id':template.id,'project_name': template.get('name'), 'project_language': template.get('language'),
+    template_details = {'template_id': template.id, 'project_name': template.get('name'),
+                        'project_language': template.get('language'),
                         'questionnaire_code': helper.generate_questionnaire_code(dbm),
                         'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
     return HttpResponse(json.dumps(template_details), content_type='application/json')

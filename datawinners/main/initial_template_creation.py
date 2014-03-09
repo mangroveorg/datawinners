@@ -1,9 +1,9 @@
 import json
 import os
-from datawinners.main.database import get_db_manager
 from datawinners.questionnaire.library import QuestionnaireTemplateDocument
+from datawinners.main.database import get_db_manager
 from mangrove.datastore.database import _delete_db_and_remove_db_manager
-import settings
+from datawinners import settings
 
 
 def create_questionnaire_templates():
@@ -11,9 +11,12 @@ def create_questionnaire_templates():
     _delete_db_and_remove_db_manager(dbm)
     dbm = get_db_manager("questionnaire_library")
 
-    file = settings.PROJECT_DIR+'/questionnaire/template_data.json'
-    docs = create_template_from_json_file(file,dbm)
+    _create_view(dbm)
+
+    file = settings.PROJECT_DIR + '/questionnaire/template_data.json'
+    docs = create_template_from_json_file(dbm, file)
     print docs
+
 
 def _create_view(dbm):
     from datawinners.main.utils import find_views
@@ -24,13 +27,14 @@ def _create_view(dbm):
         reduce_function = (view_def['reduce'] if 'reduce' in view_def else None)
         dbm.create_view(view_name, map_function, reduce_function)
 
+
 def create_template_from_json_file(dbm, file_name):
-    _create_view(dbm)
     docs = []
     with open(file_name) as data_file:
         questionnaires = json.load(data_file)
         for data in questionnaires:
-            template_doc = QuestionnaireTemplateDocument(name=data.get('name'), category=data.get('category'))
+            template_doc = QuestionnaireTemplateDocument(name=data.get('name'), category=data.get('category'),
+                                                         language=data.get('language'))
             template_doc.json_fields = data.get('json_fields')
             template_doc.validators = data.get('validators')
             doc_id = dbm._save_document(template_doc)
