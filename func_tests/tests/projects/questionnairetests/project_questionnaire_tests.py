@@ -15,7 +15,7 @@ from pages.previewnavigationpage.preview_navigation_page import PreviewNavigatio
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.projectspage.projects_page import ProjectsPage
 from pages.questionnairetabpage.questionnaire_tab_page import SUCCESS_PROJECT_SAVE_MESSAGE
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url, DATA_WINNER_ALL_PROJECTS_PAGE
 from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_PROJECT, QUESTIONNAIRE_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import *
@@ -41,7 +41,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        cls.project_name = cls._create_project(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
+        cls.project_name, cls.questionnaire_code = cls._create_project(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
 
     @classmethod
     def tearDownClass(cls):
@@ -54,9 +54,10 @@ class TestProjectQuestionnaire(unittest.TestCase):
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
         cls.create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
         cls.create_questionnaire_page.create_questionnaire_with(project_data, questionnaire_data)
+        questionnaire_code = cls.create_questionnaire_page.get_questionnaire_code()
         overview_page = cls.create_questionnaire_page.save_and_create_project_successfully()
         cls.questionnaire_tab_page = overview_page.navigate_to_questionnaire_tab()
-        return overview_page.get_project_title()
+        return overview_page.get_project_title(), questionnaire_code
 
 
     def test_editing_existing_questionnaire(self):
@@ -85,12 +86,27 @@ class TestProjectQuestionnaire(unittest.TestCase):
 
     def test_adding_questions_with_valid_answer_types(self):
         questionnaire_tab_page = self.questionnaire_tab_page
-        self._create_project(QUESTIONNAIRE_TAB_PROJECT_DATA, QUESTIONNAIRE_TAB_QUESTIONNAIRE_DATA)
+        project_title, questionnaire_code = self._create_project(QUESTIONNAIRE_TAB_PROJECT_DATA, QUESTIONNAIRE_TAB_QUESTIONNAIRE_DATA)
+        self.do_sms_submission(questionnaire_code, QUESTIONNAIRE_TAB_SUBMISSION_SMS, project_title)
+        questionnaire_tab_page.delete_question(1)
+        self._expect_delete_question_dialog_to_be_shown()
         questionnaire_tab_page.add_questions(ADDITIONAL_TAB_QUESTIONNAIRE_DATA)
         questionnaire_tab_page.submit_questionnaire()
         self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of questionnaire failed")
         self._expect_redistribute_dialog_to_be_shown()
-        self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 9, "Question count of updated questionnaire does not match")
+        self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 8, "Question count of updated questionnaire does not match")
+
+    def do_sms_submission(self, questionnaire_code, sms_data, project_title):
+        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
+        sms_tester_page = SMSTesterPage(self.driver)
+        sms_data[SMS] = sms_data[SMS] % questionnaire_code
+        sms_tester_page.send_sms_with(sms_data)
+        message = sms_tester_page.get_response_message()
+        self.assertTrue(fetch_(SUCCESS_MESSAGE, sms_data) in message, "message:" + message)
+        self.driver.go_to(DATA_WINNER_ALL_PROJECTS_PAGE)
+        ProjectsPage(self.driver).navigate_to_project_overview_page(project_title)\
+                                 .navigate_to_questionnaire_tab()
+
 
     def _validate_multiple_choice_type(self):
         questionnaire_tab_page = self.questionnaire_tab_page
@@ -343,6 +359,13 @@ class TestProjectQuestionnaire(unittest.TestCase):
         self.assertEqual(message, REDISTRIBUTE_QUESTIONNAIRE_MSG)
         warning_dialog.confirm()
 
+    def _expect_delete_question_dialog_to_be_shown(self):
+        warning_dialog = WarningDialog(self.driver)
+        message = warning_dialog.get_message()
+        self.assertEqual(message, DELETE_QUESTION_MSG)
+        warning_dialog.confirm()
+
+
     def create_or_navigate_to_project_questionnaire_page(self):
         project_overview_page = self.create_new_project()
         return project_overview_page.navigate_to_questionnaire_tab()
@@ -376,19 +399,3 @@ class TestProjectQuestionnaire(unittest.TestCase):
     def goto_dashboard(self):
         self.driver.go_to(url("/dashboard/"))
         return DashboardPage(self.driver)
-
-    @SkipTest
-    def test_successful_questionnaire_creation(self):
-        questionnaire_creation_options_page = self.goto_dashboard().navigate_to_create_project_page()
-        create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()
-        create_questionnaire_page.create_questionnaire_with(CLINIC_PROJECT_DATA,
-                                                            QUESTIONNAIRE_DATA_WITH_MANY_MC_QUSTIONS)
-        index = 1
-        for question in fetch_(QUESTIONS, from_(QUESTIONNAIRE_DATA_WITH_MANY_MC_QUSTIONS)):
-            question_link_text = fetch_(QUESTION, from_(question))
-            self.assertEquals(create_questionnaire_page.get_question_link_text(index), question_link_text)
-            index += 1
-        overview_page = create_questionnaire_page.save_and_create_project_successfully()
-        project_name = overview_page.get_project_title()
-        self.assertTrue(fetch_(PROJECT_NAME, from_(CLINIC_PROJECT_DATA)) in project_name)
-
