@@ -268,7 +268,7 @@ DW.question.prototype = {
                     else if (this.range_max() == "" && !_.isNaN(parseInt(this.range_min()))) {
                         return $.sprintf(DW.instruction_template.min_number, this.range_min());
                     }
-                    else if (!_.isNaN(parseInt(this.range_max()))|| !_.isNaN(parseInt(this.range_min())))
+                    else if (!_.isNaN(parseInt(this.range_max())) && !_.isNaN(parseInt(this.range_min())) && !this.range_max.error)
                         return $.sprintf(DW.instruction_template.range_number, this.range_min(), this.range_max());
                     else
                         return DW.instruction_template.number;
