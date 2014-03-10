@@ -260,6 +260,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 ELASTIC_SEARCH_URL = 'http://localhost:9200/'
 ELASTIC_SEARCH_TIMEOUT = 180
 
+QUESTIONNAIRE_TEMPLATE_DB_NAME = "questionnaire_library"
+QUESTIONNAIRE_TEMPLATE_JSON_DATA_FILE = PROJECT_DIR + '/questionnaire/template_data.json'
+
 try:
     from local_settings import *
 except ImportError, e:

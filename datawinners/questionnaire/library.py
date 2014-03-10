@@ -1,6 +1,7 @@
 from couchdb.mapping import TextField
 from mangrove.datastore.cache_manager import get_cache_manager
 from mangrove.datastore.documents import FormModelDocument, DocumentBase
+from datawinners import settings
 from datawinners.main.database import get_db_manager
 
 TEMPLATE_CACHE_EXPIRY_TIME_IN_SEC = 2 * 60 * 60
@@ -22,7 +23,7 @@ class QuestionnaireTemplateDocument(FormModelDocument):
 
 class QuestionnaireLibrary:
     def __init__(self):
-        self.dbm = get_db_manager("questionnaire_library")
+        self.dbm = get_db_manager(settings.QUESTIONNAIRE_TEMPLATE_DB_NAME)
         self.cache_manger = get_cache_manager()
 
     def get_questionnaire_template(self, template_id):

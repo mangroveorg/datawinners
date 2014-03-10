@@ -25,7 +25,7 @@ def generate_template_data():
         json_obj.update({"validators": [validator.to_json() for validator in form_model.validators]})
         templates.append(json_obj)
 
-    file = os.path.dirname(__file__) + '/../datawinners/questionnaire/template_data_fr.json'
+    file = os.path.dirname(__file__) + '/../datawinners/questionnaire/template_data.json'
     with codecs.open(file, 'w', encoding='utf-8') as outfile:
         json.dump(templates, outfile, ensure_ascii=False, indent=4)
 
@@ -66,7 +66,7 @@ def get_category_mapping_fr():
     map.update({u'Sécurité alimentaire': [u'Lettre de transport envoyée', u'Lettre de transport reçue']})
     map.update({u'Education': [u'Recensement des étudiants', u'Réception de subvention', u'Réception de livres scolaires', u'Résultats de test standardisés',
                               u'Evaluation de la lecture en primaire']})
-    map.update({u'Alerte précoce': [u'contrôle hebdomadaire', 'catastrophes survenant rapidement']})
+    map.update({u'Alerte précoce': [u'contrôle hebdomadaire', u'catastrophes survenant rapidement']})
     map.update({u'Agriculture': [u'recensement du cheptel']})
     map.update({u'Commercial': [u'Facture']})
     map.update({u'Socio-économique': [u'enquête sur les ménages']})

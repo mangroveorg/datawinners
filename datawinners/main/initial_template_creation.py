@@ -7,15 +7,16 @@ from datawinners import settings
 
 
 def create_questionnaire_templates():
-    dbm = get_db_manager("questionnaire_library")
-    _delete_db_and_remove_db_manager(dbm)
-    dbm = get_db_manager("questionnaire_library")
+    db_name = settings.QUESTIONNAIRE_TEMPLATE_DB_NAME
+    existing_dbm = get_db_manager(db_name)
+    _delete_db_and_remove_db_manager(existing_dbm)
+    recreated_dbm = get_db_manager(db_name)
 
-    _create_view(dbm)
+    _create_view(recreated_dbm)
 
-    file = settings.PROJECT_DIR + '/questionnaire/template_data.json'
-    docs = create_template_from_json_file(dbm, file)
-    print docs
+    file = settings.QUESTIONNAIRE_TEMPLATE_JSON_DATA_FILE
+    docs = create_template_from_json_file(recreated_dbm, file)
+    return docs
 
 
 def _create_view(dbm):
