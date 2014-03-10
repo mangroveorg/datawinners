@@ -344,7 +344,10 @@ fieldset {
   height: 300px;
   overflow: auto;
   background: #EBEBEB;
-  padding: 10px;
+  padding: 10px 0 10px 10px;
+  div.ui-accordion{
+    width: 100% !important;
+  }
   .template_data {
     font-weight: normal;
     padding-left: 15px;
@@ -360,9 +363,8 @@ fieldset {
   .ui-accordion-content {
     border: none;
     background: transparent;
-    padding: 0 0 0 15px;
+    padding: 0 0 5px 15px;
     span {
-      line-height: 25px;
       display: block;
       padding-left: 10px;
       margin: 4px 0 0;
@@ -377,7 +379,7 @@ fieldset {
         border-bottom: 10px solid transparent;
         border-right: 10px solid #FFF;
         float: right;
-        margin-top: -21px;
+        margin-top: -18px;
         display: none;
       }
       &.selected {
@@ -393,14 +395,14 @@ fieldset {
 .selected_questions {
   overflow: auto;
   height: 288px;
-  width: 468px;
+  width: 450px;
   background: #FFF;
   border-radius: 2px;
   border: 1px solid #CCC;
   border-left: none;
   float: left;
   padding: 10px 20px 20px 40px;
-  margin-left: -23px;
+  //margin-left: -23px;
   .project-name-header{
     margin-left: -20px;
     padding-bottom: 10px;
