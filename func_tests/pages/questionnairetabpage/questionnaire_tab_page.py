@@ -9,6 +9,7 @@ from tests.projects.questionnairetests.project_questionnaire_data import TYPE, P
 from tests.testsettings import UI_TEST_TIMEOUT
 
 SUCCESS_PROJECT_SAVE_MESSAGE = "Your changes have been saved."
+DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE = "Questionnaire with this code already exists"
 
 class QuestionnaireTabPage(Page):
 
@@ -237,6 +238,16 @@ class QuestionnaireTabPage(Page):
         """
         success_message = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#message-label .success"))
         return success_message.text
+
+    def get_error_message(self):
+        """
+        Function to fetch the success message from label of the questionnaire page
+
+        Return success message
+        """
+        success_message = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#message-label .error_message"))
+        return success_message.text
+
 
 
     def get_remaining_character_count(self):

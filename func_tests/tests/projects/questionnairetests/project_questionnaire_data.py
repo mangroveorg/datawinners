@@ -137,6 +137,7 @@ SUBJECT_TYPE = "subject type"
 CHANGE_QUESTION_TYPE_MSG = u'You have changed the Answer Type.\nIf you have previously collected data, it may be rendered incorrect.\n\nAre you sure you want to continue?'
 REDISTRIBUTE_QUESTIONNAIRE_MSG = u'You have made changes to your Questionnaire.\n\nPlease make sure your Data Senders have the latest version:\nSMS: Print and distribute the updated SMS Questionnaire\nSmartphone: Remind them to download the updated version of the Questionnaire\nWeb: Remind them to download the updated version of the Import Submission template'
 DELETE_QUESTION_MSG = 'If you delete this question, any previously collected data will be lost.\nDo you want to delete this question?'
+EMPTY_QUESTIONNAIRE_MSG = 'Please add at least one question'
 
 WATERPOINT_QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
                                  DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "WID"},

@@ -14,14 +14,14 @@ from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.projectspage.projects_page import ProjectsPage
-from pages.questionnairetabpage.questionnaire_tab_page import SUCCESS_PROJECT_SAVE_MESSAGE
+from pages.questionnairetabpage.questionnaire_tab_page import SUCCESS_PROJECT_SAVE_MESSAGE, DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url, DATA_WINNER_ALL_PROJECTS_PAGE
 from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_PROJECT, QUESTIONNAIRE_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.warningdialog.warning_dialog import WarningDialog
-from framework.utils.common_utils import by_id, by_css, random_string
+from framework.utils.common_utils import by_id, by_css, random_string, by_xpath
 
 
 CLOSE_WARNING_DIALOGUE_LINK = by_css(
@@ -89,8 +89,17 @@ class TestProjectQuestionnaire(unittest.TestCase):
         project_title, questionnaire_code = self._create_project(QUESTIONNAIRE_TAB_PROJECT_DATA, QUESTIONNAIRE_TAB_QUESTIONNAIRE_DATA)
         self.do_sms_submission(questionnaire_code, QUESTIONNAIRE_TAB_SUBMISSION_SMS, project_title)
         questionnaire_tab_page.delete_question(1)
-        self._expect_delete_question_dialog_to_be_shown()
+        self._expect_delete_question_dialog_to_be_shown(proceed=False)
+        self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 1, "Question should not be deleted.")
+        questionnaire_tab_page.delete_question(1)
+        self._expect_delete_question_dialog_to_be_shown(proceed=True)
+        questionnaire_tab_page.submit_questionnaire()
+        self._expect_empty_questionnaire_dialog_to_be_shown()
         questionnaire_tab_page.add_questions(ADDITIONAL_TAB_QUESTIONNAIRE_DATA)
+        questionnaire_tab_page.set_questionnaire_code(TestProjectQuestionnaire.questionnaire_code)
+        questionnaire_tab_page.submit_questionnaire()
+        self.assertEqual(questionnaire_tab_page.get_error_message(), DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE, "Duplicate error message not shown")
+        questionnaire_tab_page.set_questionnaire_code(questionnaire_code)
         questionnaire_tab_page.submit_questionnaire()
         self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of questionnaire failed")
         self._expect_redistribute_dialog_to_be_shown()
@@ -359,12 +368,20 @@ class TestProjectQuestionnaire(unittest.TestCase):
         self.assertEqual(message, REDISTRIBUTE_QUESTIONNAIRE_MSG)
         warning_dialog.confirm()
 
-    def _expect_delete_question_dialog_to_be_shown(self):
+    def _expect_delete_question_dialog_to_be_shown(self, proceed=False):
         warning_dialog = WarningDialog(self.driver)
         message = warning_dialog.get_message()
         self.assertEqual(message, DELETE_QUESTION_MSG)
-        warning_dialog.confirm()
+        if proceed:
+            warning_dialog.confirm()
+        else:
+            warning_dialog.cancel()
 
+    def _expect_empty_questionnaire_dialog_to_be_shown(self):
+        warning_dialog = WarningDialog(self.driver, confirm_link=by_xpath(".//*[@id='no_questions_exists']/div/a"))
+        message = warning_dialog.get_message()
+        self.assertEqual(message, EMPTY_QUESTIONNAIRE_MSG)
+        warning_dialog.confirm()
 
     def create_or_navigate_to_project_questionnaire_page(self):
         project_overview_page = self.create_new_project()
