@@ -41,7 +41,7 @@ class QuestionnaireLibrary:
             rows = self.dbm.load_all_rows_in_view('by_template_category_fr')
         else:
             raise Exception('Language %s not supported' % language)
-        categories = set([row['key'] for row in rows])
+        categories = sorted(set([row['key'] for row in rows]))
         result = []
         for category in categories:
             template = {}
@@ -56,7 +56,7 @@ class QuestionnaireLibrary:
         for row in rows:
             if row['key'] == key:
                 values.append(row['value'])
-        return values
+        return sorted(values, key=lambda k: k['name'])
 
     def get_question_template_key(self, template_id):
         assert template_id is not None
