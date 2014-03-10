@@ -13,6 +13,8 @@ from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPa
 from pages.loginpage.login_page import LoginPage
 from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
+from pages.projectspage.projects_page import ProjectsPage
+from pages.questionnairetabpage.questionnaire_tab_page import SUCCESS_PROJECT_SAVE_MESSAGE
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url
 from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_PROJECT, QUESTIONNAIRE_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
@@ -35,27 +37,32 @@ class TestProjectQuestionnaire(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver(browser="firefox")
+        cls.driver = setup_driver(browser="phantom")
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        global_navigation = GlobalNavigationPage(cls.driver)
-        dashboard_page = global_navigation.navigate_to_dashboard_page()
-        cls._create_project(dashboard_page)
+        cls.project_name = cls._create_project(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
 
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
     @classmethod
-    def _create_project(cls, dashboard_page):
+    def _create_project(cls, project_data, questionnaire_data):
+        global_navigation = GlobalNavigationPage(cls.driver)
+        dashboard_page = global_navigation.navigate_to_dashboard_page()
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
         cls.create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
-        cls.create_questionnaire_page.create_questionnaire_with(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
+        cls.create_questionnaire_page.create_questionnaire_with(project_data, questionnaire_data)
         overview_page = cls.create_questionnaire_page.save_and_create_project_successfully()
         cls.questionnaire_tab_page = overview_page.navigate_to_questionnaire_tab()
+        return overview_page.get_project_title()
+
 
     def test_editing_existing_questionnaire(self):
+        self.global_navigation.navigate_to_view_all_project_page()
+        ProjectsPage(self.driver).navigate_to_project_overview_page(TestProjectQuestionnaire.project_name)\
+                                 .navigate_to_questionnaire_tab()
         questionnaire_tab_page = self.questionnaire_tab_page
         self.assertEqual(questionnaire_tab_page.get_select_or_edit_question_message(),
                          "Select a question to edit or add another question.",
@@ -67,7 +74,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
         self.assertEqual(questionnaire_tab_page.get_existing_question_list(), expected_existing_questions,
                          "Mismatch in question list")
         questionnaire_tab_page.submit_questionnaire()
-        self.assertEqual(questionnaire_tab_page.get_success_message(), "Your changes have been saved.")
+        self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of unaltered questionnaire failed")
 
     def test_add_question_with_invalid_selections(self):
         questionnaire_tab_page = self.questionnaire_tab_page
@@ -75,6 +82,15 @@ class TestProjectQuestionnaire(unittest.TestCase):
         self._validate_word_answer_type()
         self._validate_number_answer_type()
         self._validate_multiple_choice_type()
+
+    def test_adding_questions_with_valid_answer_types(self):
+        questionnaire_tab_page = self.questionnaire_tab_page
+        self._create_project(QUESTIONNAIRE_TAB_PROJECT_DATA, QUESTIONNAIRE_TAB_QUESTIONNAIRE_DATA)
+        questionnaire_tab_page.add_questions(ADDITIONAL_TAB_QUESTIONNAIRE_DATA)
+        questionnaire_tab_page.submit_questionnaire()
+        self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of questionnaire failed")
+        self._expect_redistribute_dialog_to_be_shown()
+        self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 9, "Question count of updated questionnaire does not match")
 
     def _validate_multiple_choice_type(self):
         questionnaire_tab_page = self.questionnaire_tab_page
@@ -208,46 +224,46 @@ class TestProjectQuestionnaire(unittest.TestCase):
         def verify_warning_for_deleting_an_option_in_multi_choice_question():
             create_questionnaire_page.select_question_link(5)
             create_questionnaire_page.delete_option_for_multiple_choice_question(2)
-            return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+            return self._expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
 
         def verify_warning_for_adding_an_option_to_multi_choice_question():
             create_questionnaire_page.select_question_link(5)
             create_questionnaire_page.add_option_to_a_multiple_choice_question("new option")
-            return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+            return self._expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
 
         def verify_warning_for_numeric_range_modification():
             create_questionnaire_page.select_question_link(2)
             create_questionnaire_page.change_number_question_limit(max_value=30, min_value=5)
-            return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+            return self._expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
         def verify_warning_for_word_type_for_character_length_change():
             create_questionnaire_page.select_question_link(1)
             create_questionnaire_page.set_word_question_max_length(25)
-            return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+            return self._expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
         def verify_warning_for_date_format_change():
             create_questionnaire_page.select_question_link(3)
             create_questionnaire_page.change_date_type_question(MM_DD_YYYY)
-            return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+            return self._expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
         def verify_warning_for_addintion_of_new_question():
             new_question = {"question": "newly added question", "code": "grades", "type": "number",
                             "min": "1", "max": "100"}
             time.sleep(2)
             create_questionnaire_page.add_question(new_question)
-            return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+            return self._expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
         def verify_warning_for_change_in_questionnaire_code():
             create_questionnaire_page.set_questionnaire_code(new_questionnaire_code)
             #to get the focus out
             create_questionnaire_page.select_question_link(3)
-            return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+            return self._expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
         def verify_warning_for_change_in_question_text():
             create_questionnaire_page.change_question_text(3, "question number 3")
-            return self.expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
+            return self._expect_redistribute_dialog_to_be_shown(create_questionnaire_page)
 
         verify_on_edit_project_page(verify_warning_for_adding_an_option_to_multi_choice_question)
         verify_on_edit_project_page(verify_warning_for_deleting_an_option_in_multi_choice_question)
@@ -321,14 +337,11 @@ class TestProjectQuestionnaire(unittest.TestCase):
         warning_dialog = WarningDialog(self.driver, confirm_link=confirm_locator)
         warning_dialog.confirm()
 
-    def expect_redistribute_dialog_to_be_shown(self, create_questionnaire_page):
-        create_questionnaire_page.save_and_create_project(click_ok=False)
+    def _expect_redistribute_dialog_to_be_shown(self):
         warning_dialog = WarningDialog(self.driver)
         message = warning_dialog.get_message()
         self.assertEqual(message, REDISTRIBUTE_QUESTIONNAIRE_MSG)
         warning_dialog.confirm()
-        self.driver.wait_for_page_with_title(20, 'Projects - Overview')
-        return ProjectOverviewPage(self.driver)
 
     def create_or_navigate_to_project_questionnaire_page(self):
         project_overview_page = self.create_new_project()

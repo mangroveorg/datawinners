@@ -8,6 +8,7 @@ from pages.page import Page
 from tests.projects.questionnairetests.project_questionnaire_data import TYPE, PROJECT_NAME, GEN_RANDOM, QUESTIONS, QUESTIONNAIRE_CODE, QUESTION, LIMIT, LIMITED, NO_LIMIT, MAX, MIN, MM_YYYY, ONLY_ONE_ANSWER, MULTIPLE_ANSWERS, CHOICE, MM_DD_YYYY, DD_MM_YYYY, GEO, CODE, ALLOWED_CHOICE, LIST_OF_CHOICES, WORD, NUMBER, DATE, DATE_FORMAT
 from tests.testsettings import UI_TEST_TIMEOUT
 
+SUCCESS_PROJECT_SAVE_MESSAGE = "Your changes have been saved."
 
 class QuestionnaireTabPage(Page):
 
@@ -37,9 +38,12 @@ class QuestionnaireTabPage(Page):
             questionnaire_code = questionnaire_code + generateId()
         if fetch_(QUESTIONNAIRE_CODE, from_(questionnaire_data)):
             self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).enter_text(questionnaire_code)
+        self.add_questions(questionnaire_data)
+        return self
+
+    def add_questions(self, questionnaire_data):
         for question in fetch_(QUESTIONS, from_(questionnaire_data)):
             self.add_question(question)
-        return self
 
     def get_questionnaire_title(self):
         return self.driver.find_text_box(by_css(".project_title")).text
