@@ -1,5 +1,5 @@
 import json
-from datawinners import settings
+
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -9,15 +9,16 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from datawinners.project import helper
 from celery.task import current
+
+from datawinners import settings
+from datawinners.project import helper
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
 from mangrove.utils.types import is_string
 from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
-
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.project.forms import ReminderForm
@@ -39,7 +40,7 @@ def create_questionnaire(post, manager, entity_type, name, language):
     json_string = post['question-set']
     question_set = json.loads(json_string)
     form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey',
-                           state=post['project_state'], fields=[], form_code=questionnaire_code, language=language)
+                          fields=[], form_code=questionnaire_code, language=language)
     QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
     return form_model
 
@@ -52,8 +53,6 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
     json_string = post['question-set']
     question_set = json.loads(json_string)
     QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
-    #TODO: Remove state
-    questionnaire.set_test_mode()
     return questionnaire
 
 
@@ -110,8 +109,7 @@ def create_project(request):
         project = Project(name=project_info.get('name'),
                           project_type='survey',
                           entity_type=REPORTER,
-                          activity_report=project_info.get('activity_report'),
-                          state=request.POST['project_state'], devices=[u'sms', u'web', u'smartPhone'],
+                          activity_report=project_info.get('activity_report'), devices=[u'sms', u'web', u'smartPhone'],
                           language=project_info.get('language'))
 
         if ngo_admin.reporter_id is not None:
@@ -226,7 +224,6 @@ def edit_project(request, project_id):
                                                  project_info.get('name'), manager, project_info.get('language'))
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
-            #project.state = request.POST['project_state']
             project.qid = questionnaire.save()
 
             deleted_question_codes = _get_deleted_question_codes(old_codes=old_field_codes,

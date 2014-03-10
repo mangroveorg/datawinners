@@ -18,7 +18,8 @@ from datawinners.main.database import get_database_manager
 from datawinners.project.submission.util import submission_stats
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.dashboard import helper
-from datawinners.project.models import ProjectState, Project
+from datawinners.project.models import Project
+
 from datawinners.utils import get_map_key
 
 
@@ -70,8 +71,6 @@ def get_submissions_about_project(request, project_id):
     submission_response = json.dumps(submission_list)
     return HttpResponse(submission_response)
 
-def is_project_inactive(row):
-    return row['value']['state'] == ProjectState.INACTIVE
 
 @valid_web_user
 @is_datasender

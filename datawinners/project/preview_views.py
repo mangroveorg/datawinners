@@ -65,7 +65,7 @@ def get_web_preview_context(manager, post, project_info):
                       project_type='survey',
                       entity_type=unicode(REPORTER),
                       activity_report=unicode(project_info['activity_report']),
-                      state=post['project_state'], devices=[u'sms', u'web', u'smartPhone'],
+                       devices=[u'sms', u'web', u'smartPhone'],
                       language=unicode(project_info['language']))
 
     questionnaire_form = SurveyResponseForm(form_model,SubjectQuestionFieldCreator(manager, project))

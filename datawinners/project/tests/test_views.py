@@ -162,8 +162,6 @@ class TestProjectViews(unittest.TestCase):
 
         project_info = {"name": "project_name", "goals": "des", "entity_type": "clinic", "activity_report": "yes",
                         "language": "en"}
-        post = {'project_state': 'Test'}
-
         with patch("datawinners.project.preview_views.get_questionnaire_form_model") as questionnaire_form_model:
             questionnaire_form_model.return_value = form_model
             with patch("datawinners.project.preview_views.SurveyResponseForm") as SurveyResponseForm:
@@ -171,7 +169,7 @@ class TestProjectViews(unittest.TestCase):
                 SurveyResponseForm.return_value = mock_form
                 with patch("datawinners.project.preview_views.add_link_context") as add_link:
                     add_link.return_value = {'text': 'Add a datasender'}
-                    web_preview_context = get_web_preview_context(manager, post, project_info)
+                    web_preview_context = get_web_preview_context(manager, {}, project_info)
                     project = web_preview_context['project']
                     self.assertEquals(project['activity_report'], "yes")
                     questionnaire_form = web_preview_context['questionnaire_form']

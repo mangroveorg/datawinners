@@ -1,9 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.utils import translation
-from django.utils.http import urlquote_plus, urlquote
+from django.utils.http import urlquote
 from datawinners.utils import get_organization
-from datawinners.project.models import ProjectState, Project
 from datawinners.accountmanagement.models import Organization
 
 def make_subject_links(project_id):

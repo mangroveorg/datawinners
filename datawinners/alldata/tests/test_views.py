@@ -6,7 +6,7 @@ from mock import Mock, patch
 from mangrove.datastore.database import DatabaseManager
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.alldata.views import  get_project_info
-from datawinners.project.models import Project, ProjectState
+from datawinners.project.models import Project
 
 
 class TestViews(TestCase):
@@ -21,7 +21,7 @@ class TestViews(TestCase):
                                         created = "2012-05-23T02:57:09.788294+00:00",
                                         project_type = "survey"))
 
-        project = Project(project_type = "survey", entity_type = "clinic", state = ProjectState.ACTIVE)
+        project = Project(project_type = "survey", entity_type = "clinic")
 
         profile = Mock(spec = NGOUserProfile)
 

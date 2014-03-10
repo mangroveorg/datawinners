@@ -165,14 +165,13 @@ class Project(DocumentBase):
     activity_report = TextField()
     devices = ListField(TextField())
     qid = TextField()
-    state = TextField()
     sender_group = TextField()
     reminder_and_deadline = DictField()
     data_senders = ListField(TextField())
     language = TextField(default='en')
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
-                 state=ProjectState.INACTIVE, activity_report=None, sender_group=None, language='en'):
+                 activity_report=None, sender_group=None, language='en'):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -181,7 +180,6 @@ class Project(DocumentBase):
         self.project_type = project_type
         self.entity_type = entity_type
         self.devices = devices
-        self.state = state
         self.activity_report = activity_report
         self.sender_group = sender_group
         self.reminder_and_deadline = {"deadline_type": "Following",
@@ -273,27 +271,7 @@ class Project(DocumentBase):
         form_model.entity_type = [self.entity_type] if is_string(self.entity_type) else self.entity_type
         form_model.save()
 
-    def activate(self, dbm):
-        form_model = self._load_form(dbm)
-        form_model.activate()
-        form_model.save()
-        self.state = ProjectState.ACTIVE
-        self.save(dbm)
 
-
-    def deactivate(self, dbm):
-        form_model = self._load_form(dbm)
-        form_model.deactivate()
-        form_model.save()
-        self.state = ProjectState.INACTIVE
-        self.save(dbm, process_post_update=False)
-
-    def to_test_mode(self, dbm):
-        form_model = self._load_form(dbm)
-        form_model.set_test_mode()
-        form_model.save()
-        self.state = ProjectState.TEST
-        self.save(dbm)
 
     def delete(self, dbm):
         if self.id is not None:

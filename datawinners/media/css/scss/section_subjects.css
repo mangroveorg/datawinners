@@ -665,7 +665,7 @@ select {
 /*Delete the project block*/
 #delete_project_block {
   height: 110px !important;
-  width: 350px !important; }
+  width: auto !important; }
   #delete_project_block .cancel_link {
     margin-left: 10px; }
     #delete_project_block .cancel_link.cancel_en {

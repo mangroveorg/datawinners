@@ -9,12 +9,11 @@ from datawinners import initializer
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.main.management.commands.utils import TEST_EMAILS
-from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
+from datawinners.project.models import Project, Reminder, ReminderMode
 from datawinners.messageprovider.messages import SMS
 from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.initial_template_creation import create_questionnaire_templates
-from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
@@ -189,7 +188,6 @@ def create_project1(entity_type, manager, questions, weekly_reminder_and_deadlin
                        entity_type=entity_type[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project1.qid = qid
-    project1.state = ProjectState.ACTIVE
     project1.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project1.save(manager)
@@ -227,7 +225,6 @@ def create_project2(CLINIC_ENTITY_TYPE, manager, questions):
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project2.qid = qid2
-    project2.state = ProjectState.ACTIVE
     try:
         project2.save(manager)
     except Exception:
@@ -238,7 +235,7 @@ def create_project3(CLINIC_ENTITY_TYPE, manager, questions):
     form_model3 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli003", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid3 = form_model3.save()
     except DataObjectAlreadyExists as e:
@@ -248,7 +245,6 @@ def create_project3(CLINIC_ENTITY_TYPE, manager, questions):
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project3.qid = qid3
-    project3.state = ProjectState.TEST
     try:
         project3.save(manager)
     except Exception:
@@ -259,7 +255,7 @@ def create_project4(CLINIC_ENTITY_TYPE, manager, questions):
     form_model4 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli004", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid4 = form_model4.save()
     except DataObjectAlreadyExists as e:
@@ -269,7 +265,6 @@ def create_project4(CLINIC_ENTITY_TYPE, manager, questions):
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project4.qid = qid4
-    project4.state = ProjectState.TEST
     try:
         project4.save(manager)
     except Exception:
@@ -280,7 +275,7 @@ def create_project5(CLINIC_ENTITY_TYPE, manager, questions):
     form_model5 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli005", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid5 = form_model5.save()
     except DataObjectAlreadyExists as e:
@@ -290,7 +285,6 @@ def create_project5(CLINIC_ENTITY_TYPE, manager, questions):
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project5.qid = qid5
-    project5.state = ProjectState.TEST
     try:
         project5.save(manager)
     except Exception:
@@ -301,7 +295,7 @@ def create_project6(CLINIC_ENTITY_TYPE, manager, questions):
     form_model6 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli006", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid6 = form_model6.save()
     except DataObjectAlreadyExists as e:
@@ -311,7 +305,6 @@ def create_project6(CLINIC_ENTITY_TYPE, manager, questions):
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project6.qid = qid6
-    project6.state = ProjectState.TEST
     try:
         project6.save(manager)
     except Exception:
@@ -322,7 +315,7 @@ def create_project7(CLINIC_ENTITY_TYPE, manager, questions):
     form_model7 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli007", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
+                            entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid7 = form_model7.save()
     except DataObjectAlreadyExists as e:
@@ -332,7 +325,6 @@ def create_project7(CLINIC_ENTITY_TYPE, manager, questions):
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project7.qid = qid7
-    project7.state = ProjectState.TEST
     try:
         project7.save(manager)
     except Exception:
@@ -361,7 +353,6 @@ def create_project11(CLINIC_ENTITY_TYPE, manager, questions):
                         entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                         sender_group="close")
     project11.qid = qid11
-    project11.state = ProjectState.ACTIVE
     project11.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project11.save(manager)
@@ -408,7 +399,6 @@ def create_project10(CLINIC_ENTITY_TYPE, manager, questions):
                         entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                         sender_group="close")
     project10.qid = qid10
-    project10.state = ProjectState.ACTIVE
     project10.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project10.save(manager)
@@ -447,7 +437,6 @@ def create_project9(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project9.qid = qid
-    project9.state = ProjectState.ACTIVE
     project9.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project9.save(manager)
@@ -468,7 +457,7 @@ def create_project8(CLINIC_ENTITY_TYPE, manager, questions):
     form_model8 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli008", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
+                            entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid8 = form_model8.save()
     except DataObjectAlreadyExists as e:
@@ -477,7 +466,6 @@ def create_project8(CLINIC_ENTITY_TYPE, manager, questions):
     project8 = Project(name="Clinic8 Test Project", goals="This project is for automation", project_type="survey",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
     project8.qid = qid8
-    project8.state = ProjectState.INACTIVE
     try:
         project8.save(manager)
     except Exception:
@@ -507,7 +495,6 @@ def create_project12(CLINIC_ENTITY_TYPE, manager, questions):
                         entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                         sender_group="close")
     project12.qid = qid12
-    project12.state = ProjectState.ACTIVE
     project12.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project12.save(manager)
@@ -556,7 +543,6 @@ def create_project13(CLINIC_ENTITY_TYPE, manager, questions):
                         entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                         sender_group="close")
     project13.qid = qid13
-    project13.state = ProjectState.ACTIVE
     project13.reminder_and_deadline = monthly_reminder_and_deadline
     try:
         project13.save(manager)
@@ -605,7 +591,6 @@ def create_project14(CLINIC_ENTITY_TYPE, manager, questions):
                         entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                         sender_group="close")
     project14.qid = qid14
-    project14.state = ProjectState.ACTIVE
     project14.reminder_and_deadline = monthly_reminder_and_deadline
     try:
         project14.save(manager)
@@ -654,7 +639,6 @@ def create_project15(CLINIC_ENTITY_TYPE, manager, questions):
                         entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                         sender_group="close")
     project15.qid = qid15
-    project15.state = ProjectState.ACTIVE
     project15.reminder_and_deadline = monthly_reminder_and_deadline
     try:
         project15.save(manager)
@@ -703,7 +687,6 @@ def create_project16(CLINIC_ENTITY_TYPE, manager, questions):
                         entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                         sender_group="close")
     project16.qid = qid16
-    project16.state = ProjectState.ACTIVE
     project16.reminder_and_deadline = monthly_reminder_and_deadline
     try:
         project16.save(manager)
@@ -733,7 +716,7 @@ def create_project17(CLINIC_ENTITY_TYPE, manager, questions_):
     form_model17 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli017", type='survey',
                              fields=questions_,
-                             entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
+                             entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid17 = form_model17.save()
     except DataObjectAlreadyExists as e:
@@ -743,7 +726,6 @@ def create_project17(CLINIC_ENTITY_TYPE, manager, questions_):
                         entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes',
                         sender_group="close")
     project17.qid = qid17
-    project17.state = ProjectState.TEST
     try:
         project17.save(manager)
     except Exception:
@@ -764,7 +746,6 @@ def create_project18(CLINIC_ENTITY_TYPE, manager, questions_):
                         entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes',
                         sender_group="close")
     project18.qid = qid18
-    project18.state = ProjectState.TEST
     try:
         project18.save(manager)
     except Exception:
@@ -787,7 +768,6 @@ def create_project19(ENTITY_TYPE, manager):
                         entity_type='people', devices=["sms", "web", "smartPhone"], activity_report='no',
                         sender_group="close")
     project19.qid = qid19
-    project19.state = ProjectState.TEST
     try:
         project19.save(manager)
     except Exception:
@@ -821,7 +801,6 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                       sender_group="close")
     project.qid = qid
-    project.state = ProjectState.TEST
     try:
         project.save(manager)
     except Exception:
@@ -1480,7 +1459,6 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no',
                        sender_group="close")
     project1.qid = qid
-    project1.state = ProjectState.ACTIVE
     Reminder.objects.filter(project_id=project1.id).delete()
 
     project1.reminder_and_deadline = weekly_reminder_and_deadline

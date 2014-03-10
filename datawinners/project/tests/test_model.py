@@ -2,13 +2,13 @@
 from datetime import date
 import unittest
 
-from mangrove.datastore.cache_manager import get_cache_manager
-from mangrove.utils.test_utils.database_utils import uniq
 from mock import Mock, patch
 
+from mangrove.datastore.cache_manager import get_cache_manager
+from mangrove.utils.test_utils.database_utils import uniq
 from mangrove.bootstrap import initializer
 from datawinners.main.utils import create_views
-from datawinners.project.models import Project, get_all_projects, ProjectState, get_all_project_names
+from datawinners.project.models import Project, get_all_projects, get_all_project_names
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity import Entity
@@ -44,7 +44,7 @@ class TestProjectModel(unittest.TestCase):
             constraints=[TextLengthConstraint(5, 10)])
         cls.form_model = FormModel(cls.manager, name=cls.project1.name, form_code="abc",
             fields=[question1, question2],
-            entity_type=["Clinic"], state=attributes.INACTIVE_STATE)
+            entity_type=["Clinic"])
         qid = cls.form_model.save()
         project.qid = qid
         project.save(cls.manager)
@@ -113,43 +113,8 @@ class TestProjectModel(unittest.TestCase):
         form_model = self.manager.get(self.project1.qid, FormModel)
         self.assertEqual("New Name", form_model.name)
 
-    def test_should_activate_form_on_project_activate(self):
-        form_model = self.manager.get(self.project1.qid, FormModel)
-        self.assertFalse(form_model.is_active())
-        self.project1.activate(self.manager)
-        form_model = self.manager.get(self.project1.qid, FormModel)
-        self.assertTrue(form_model.is_active())
-        self.assertEquals(ProjectState.ACTIVE, self.project1.state)
 
-    def test_should_deactivate_form_on_project_deactivate(self):
-        project = Project(state=ProjectState.ACTIVE)
-        dbm = Mock(spec=DatabaseManager)
-        form_model_mock = Mock(spec=FormModel)
-        dbm.get.return_value = form_model_mock
 
-        with patch("datawinners.project.models.Project.save") as project_save_mock:
-            project.deactivate(dbm)
-
-            form_model_mock.deactivate.assert_called_once_with()
-            form_model_mock.save.assert_called_once_with()
-            project_save_mock.assert_called_once_with(dbm, process_post_update=False)
-
-        self.assertEqual(ProjectState.INACTIVE, project.state)
-
-    def test_should_set_form_to_test_on_project_set_to_test(self):
-        project = Project(state=ProjectState.ACTIVE)
-        dbm = Mock(spec=DatabaseManager)
-        form_model_mock = Mock(spec=FormModel)
-        dbm.get.return_value = form_model_mock
-
-        with patch("datawinners.project.models.Project.save") as project_save_mock:
-            project.to_test_mode(dbm)
-
-            form_model_mock.set_test_mode.assert_called_once_with()
-            form_model_mock.save.assert_called_once_with()
-            project_save_mock.assert_called_once_with(dbm)
-
-        self.assertEqual(ProjectState.TEST, project.state)
 
     def test_get_deadline_day(self):
         reminder_and_deadline_for_month = {
