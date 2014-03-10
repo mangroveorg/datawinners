@@ -1094,3 +1094,6 @@ msgstr "Attention: Questionnaire vide"
 
 msgid "This field is required."
 msgstr "Ce champ est obligatoire."
+
+msgid "Max should be greater than min."
+msgstr "Doit être plus grand que la valeur minimale."

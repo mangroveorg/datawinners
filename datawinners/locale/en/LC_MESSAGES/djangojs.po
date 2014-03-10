@@ -1050,3 +1050,5 @@ msgstr ""
 msgid "Warning: Empty questionnaire"
 msgstr ""
 
+msgid "Max should be greater than min."
+msgstr ""
