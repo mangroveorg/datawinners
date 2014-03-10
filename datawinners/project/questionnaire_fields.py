@@ -154,8 +154,8 @@ class CharFormField(object):
     def create(self, field):
         constraints = self._get_chars_constraints(field)
         validators = [GeoCodeValidator()] if type(field) == GeoCodeField else []
-        char_field = forms.CharField(label=field.label, initial=field.value, required=field.is_required(),
-                                     help_text=_(field.instruction), validators=validators, **constraints)
+        char_field = StrippedCharField(label=field.label, initial=field.value, required=field.is_required(),
+                                       help_text=_(field.instruction), validators=validators, **constraints)
         char_field.widget.attrs["watermark"] = "xx.xxxx,yy.yyyy" if type(
             field) == GeoCodeField else get_text_field_constraint_text(field)
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -246,3 +246,14 @@ def css_class(field):
     if field.name == LOCATION_TYPE_FIELD_NAME and isinstance(field, HierarchyField):
         return 'location_field'
     return None
+
+
+class StrippedCharField(forms.CharField):
+    def __init__(self, max_length=None, min_length=None, strip=True, *args, **kwargs):
+        super(StrippedCharField, self).__init__(max_length, min_length, *args, **kwargs)
+        self.strip = strip
+
+    def clean(self, value):
+        if self.strip:
+            value = value.strip()
+        return super(StrippedCharField, self).clean(value)
