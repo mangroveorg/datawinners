@@ -35,7 +35,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver(browser="phantom")
+        cls.driver = setup_driver(browser="firefox")
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
@@ -66,6 +66,8 @@ class TestProjectQuestionnaire(unittest.TestCase):
         expected_existing_questions = [question[QUESTION] for question in EDIT_PROJECT_QUESTIONNAIRE_DATA[QUESTIONS]]
         self.assertEqual(questionnaire_tab_page.get_existing_question_list(), expected_existing_questions,
                          "Mismatch in question list")
+        questionnaire_tab_page.submit_questionnaire()
+        self.assertEqual(questionnaire_tab_page.get_success_message(), "Your changes have been saved.")
 
     def test_add_question_with_invalid_selections(self):
         questionnaire_tab_page = self.questionnaire_tab_page
@@ -115,8 +117,6 @@ class TestProjectQuestionnaire(unittest.TestCase):
         is_visible, message = questionnaire_tab_page.get_choice_error_message(index=3)
         self.assertFalse(is_visible, "Newly added question should not have error message")
 
-
-
     def _validate_number_answer_type(self):
         questionnaire_tab_page = self.questionnaire_tab_page
         questionnaire_tab_page.click_add_question_link()
@@ -159,8 +159,6 @@ class TestProjectQuestionnaire(unittest.TestCase):
         is_visible, message = questionnaire_tab_page.get_max_range_error_message()
         self.assertTrue(is_visible, "Max range error message not displayed")
         self.assertEqual(message, "Please insert a valid number.", "Error message is incorrect")
-
-
 
     def _validate_word_answer_type(self):
         questionnaire_tab_page = self.questionnaire_tab_page

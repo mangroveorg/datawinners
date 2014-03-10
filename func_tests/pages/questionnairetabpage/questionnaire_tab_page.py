@@ -231,11 +231,8 @@ class QuestionnaireTabPage(Page):
 
         Return success message
         """
-        comm_utils = CommonUtilities(self.driver)
-        if comm_utils.wait_for_element(10, SUCCESS_MESSAGE_LABEL):
-            return self.driver.find(SUCCESS_MESSAGE_LABEL).text
-        else:
-            return "Success message not appeared on the page."
+        success_message = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#message-label .success"))
+        return success_message.text
 
 
     def get_remaining_character_count(self):
@@ -518,14 +515,8 @@ class QuestionnaireTabPage(Page):
         if locator and locator.is_displayed():
             locator.click()
 
-    def submit_errored_questionnaire(self):
-        self.driver.find(SAVE_AND_CREATE_BTN).click()
-
-    def save_and_create_project(self, click_ok=True):
-        self.driver.find(SAVE_AND_CREATE_BTN).click()
-        if click_ok:
-            self.got_redistribute_questionnaire_message()
-        return self
+    def submit_questionnaire(self, click_ok=True):
+        self.driver.find(by_id("submit-button")).click()
 
     def change_question_type(self, question):
         self.SELECT_FUNC[fetch_(TYPE, from_(question))](question)
