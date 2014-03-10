@@ -1408,8 +1408,8 @@ msgstr "Exemple:"
 msgid "Define the questions you want your Data Senders to answer."
 msgstr "Définissez les questions auxquelles vos expéditeurs doivent répondre."
 
-msgid "SMS Questionnaire Code:"
-msgstr "Code SMS Questionnaire:"
+msgid "SMS Questionnaire Code"
+msgstr "Code SMS Questionnaire"
 
 msgid "tooltip_question_code"
 msgstr "Entrez une combinaison de 3-6 lettres et/ou de chiffres (ou les deux). Vos Expéditeurs de Données entreront en "
@@ -2059,8 +2059,8 @@ msgstr "Créez votre projet en quelques étapes faciles."
 msgid "Name your project and provide basic information about it."
 msgstr "Nommez votre projet et fournissez des informations élémentaires."
 
-msgid "Write and edit your questions."
-msgstr "Saisissez et éditez vos questions."
+msgid "Write and Edit Your Questions."
+msgstr "Saisissez et éditez vos Questions."
 
 msgid "Save and create your project."
 msgstr "Sauvegardez et créez votre projet."

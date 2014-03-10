@@ -367,6 +367,9 @@ fieldset {
       padding-left: 10px;
       margin: 4px 0 0;
       cursor: pointer;
+      &:hover{
+          background-color: #d7e4ed;
+      }
       & + .selected-notify {
         width: 0;
         height: 0;

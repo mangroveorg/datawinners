@@ -284,6 +284,8 @@ fieldset {
       padding-left: 10px;
       margin: 4px 0 0;
       cursor: pointer; }
+      #questionnaire_template .ui-accordion-content span:hover {
+        background-color: #d7e4ed; }
       #questionnaire_template .ui-accordion-content span + .selected-notify {
         width: 0;
         height: 0;
