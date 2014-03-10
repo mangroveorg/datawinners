@@ -41,27 +41,37 @@ $(document).ready(function () {
                             'question-set': data,
                             'profile_form':basic_project_info()
                         };
+
+        function show_error(responseText) {
+            $("#global_error").addClass("none");
+            var flash_message = $("#message-label");
+            flash_message.removeClass("none").removeClass("success-message-box").addClass("message-box").
+                html("<label class='error_message'>" + responseText + "</label>").show();
+            flash_message[0].scrollIntoView();
+        }
+
         $.post(post_url, post_data,
             function (response) {
-                var flash_message = $("#message-label");
-                flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
-                html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
-                flash_message[0].scrollIntoView();
-
-                if (DW.questionnaire_was_changed || questionnaireViewModel.has_newly_added_question() || DW.has_questions_changed(question_list) || questionnaire_code != questionnaireViewModel.questionnaireCode()) {
-                    questionnaireViewModel.set_all_questions_as_old_questions();
-                    questionnaire_code = questionnaireViewModel.questionnaireCode();
-                    DW.inform_datasender_about_changes.show_warning();
-                    DW.questionnaire_was_changed = false;
+                var responseJson = $.parseJSON(response);
+                if (!responseJson.success) {
+                    show_error(responseJson.error_message)
                 }
-                hide_message();
-                redirect();
+                else {
+                    var flash_message = $("#message-label");
+                    flash_message.removeClass("none").removeClass("message-box").addClass("success-message-box").
+                    html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
+                    flash_message[0].scrollIntoView();
+
+                    if (DW.questionnaire_was_changed || questionnaireViewModel.has_newly_added_question() || DW.has_questions_changed(question_list) || questionnaire_code != questionnaireViewModel.questionnaireCode()) {
+                        questionnaireViewModel.set_all_questions_as_old_questions();
+                        questionnaire_code = questionnaireViewModel.questionnaireCode();
+                        DW.inform_datasender_about_changes.show_warning();
+                        DW.questionnaire_was_changed = false;
+                    }
+                    hide_message();
+                }
             }).error(function (e) {
-                $("#global_error").addClass("none");
-                var flash_message = $("#message-label");
-                flash_message.removeClass("none").removeClass("success-message-box").addClass("message-box").
-                html("<label class='error_message'>" + e.responseText + "</label>").show();
-                flash_message[0].scrollIntoView();
+                show_error(e.responseText);
             });
         return false;
     }
