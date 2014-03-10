@@ -40,6 +40,7 @@ class AllSubjectTypePage(Page):
         self.driver.find(ADD_SUBJECT_TYPE_LINK).click()
         self.driver.find_text_box(NEW_SUBJECT_TYPE_TB).enter_text(new_type)
         self.driver.find(ADD_SUBJECT_TYPE_SUBMIT_BUTTON).click()
+        return self
 
     def navigate_to_edit_registration_form(self, entity_type, close_warning=False):
         self.driver.go_to(url("/entity/subject/edit/%s/" % entity_type.lower()))

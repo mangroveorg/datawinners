@@ -275,3 +275,12 @@ INVALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
                                 COMMUNE: "urbaine",
                                 GPS: "48.955267  1.816013",
                                 SUCCESS_MESSAGE: u"Registration successful. ID is: rep3."}
+
+VALID_DATA_FOR_SUBJECT_REG = {ENTITY_TYPE: "Gaming",
+                          SUB_UNIQUE_ID: None,
+                          SUB_FIRST_NAME: "Counter",
+                          SUB_LAST_NAME: "Strike",
+                          LOCATION: "India",
+                          GEO_CODE: "47.411631 28.369885",
+                          MOBILE_NUMBER: "123456789",
+                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: "}

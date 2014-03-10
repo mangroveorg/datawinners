@@ -173,10 +173,11 @@ class TestApplicationEndToEnd(unittest.TestCase):
         global_navigation = GlobalNavigationPage(self.driver)
         global_navigation.navigate_to_all_subject_page()
         all_subject_type_page = AllSubjectTypePage(self.driver)
-        add_subject_page = all_subject_type_page.select_subject_type('Waterpoint').navigate_to_register_subject_page()
-        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
+        add_subject_page = all_subject_type_page.add_new_subject_type("Gaming").select_subject_type("Gaming")\
+            .navigate_to_register_subject_page()
+        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT_REG)
         add_subject_page.submit_subject()
-        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT)), add_subject_page.get_flash_message())
+        self.assertIn(fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT_REG)), add_subject_page.get_flash_message())
 
     def add_edit_datasender(self):
         global_navigation = GlobalNavigationPage(self.driver)
@@ -312,8 +313,8 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.email = None
         organization_sms_tel_number = self.do_org_registartion()
         self.verify_individual_report_project_creation()
-        #self.add_subject()
-        #self.add_edit_delete_subject()
+        self.add_subject()
+        self.add_edit_delete_subject()
         ds_email = self.add_edit_datasender()
         self.verify_admin_present_in_my_datasenders_page()
         self.verify_submission_via_sms(organization_sms_tel_number)
