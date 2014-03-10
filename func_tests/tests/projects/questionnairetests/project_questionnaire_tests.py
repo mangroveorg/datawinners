@@ -31,6 +31,7 @@ def verify_on_edit_project_page(verify_edit_page_functionality):
 
 
 class TestProjectQuestionnaire(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver(browser="phantom")
@@ -39,25 +40,72 @@ class TestProjectQuestionnaire(unittest.TestCase):
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
         global_navigation = GlobalNavigationPage(cls.driver)
         dashboard_page = global_navigation.navigate_to_dashboard_page()
-        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
-        cls.create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
+        cls._create_project(dashboard_page)
 
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
+    @classmethod
+    def _create_project(cls, dashboard_page):
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+        cls.create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
+        cls.create_questionnaire_page.create_questionnaire_with(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
+        overview_page = cls.create_questionnaire_page.save_and_create_project_successfully()
+        cls.questionnaire_tab_page = overview_page.navigate_to_questionnaire_tab()
 
     def test_editing_existing_questionnaire(self):
-        create_questionnaire_page = self.create_questionnaire_page
-        create_questionnaire_page.create_questionnaire_with(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
-        overview_page = create_questionnaire_page.save_and_create_project_successfully()
-        questionnaire_tab_page = overview_page.navigate_to_questionnaire_tab()
+        questionnaire_tab_page = self.questionnaire_tab_page
+        self.assertEqual(questionnaire_tab_page.get_select_or_edit_question_message(),
+                         "Select a question to edit or add another question.",
+                         "No question should be selected by default")
         self.assertIn(EDIT_PROJECT_DATA[PROJECT_NAME], questionnaire_tab_page.get_questionnaire_title())
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(),
                          len(EDIT_PROJECT_QUESTIONNAIRE_DATA[QUESTIONS]), "Question count does not match")
         expected_existing_questions = [question[QUESTION] for question in EDIT_PROJECT_QUESTIONNAIRE_DATA[QUESTIONS]]
         self.assertEqual(questionnaire_tab_page.get_existing_question_list(), expected_existing_questions,
                          "Mismatch in question list")
+
+    def test_add_question_with_invalid_selections(self):
+        questionnaire_tab_page = self.questionnaire_tab_page
+        questionnaire_tab_page.refresh()
+        self._validate_word_answer_type()
+        #self._validate_number_answer_type()
+        #self._validate_multiple_choice_type()
+
+    def _validate_word_answer_type(self):
+        questionnaire_tab_page = self.questionnaire_tab_page
+        questionnaire_tab_page.click_add_question_link()
+        questionnaire_tab_page.set_question_title("Some title")
+        self._validate_max_length_for_invalid_entry()
+        self._validate_max_length_for_mandatory_entry()
+        self._validate_max_length_for_valid_entry()
+        #cleaning up state
+        questionnaire_tab_page.delete_question(10)
+        questionnaire_tab_page.delete_question(9)
+
+    def _validate_max_length_for_invalid_entry(self):
+        questionnaire_tab_page = self.questionnaire_tab_page
+        questionnaire_tab_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
+        questionnaire_tab_page.click_add_question_link()
+        is_visible, message = questionnaire_tab_page.get_max_length_error_message()
+        self.assertTrue(is_visible, "Max length error message not displayed")
+        self.assertEqual(message, "Please insert a valid number.", "Error message is incorrect")
+
+    def _validate_max_length_for_mandatory_entry(self):
+        questionnaire_tab_page = self.questionnaire_tab_page
+        questionnaire_tab_page.set_word_question_max_length("")
+        questionnaire_tab_page.click_add_question_link()
+        is_visible, message = questionnaire_tab_page.get_max_length_error_message()
+        self.assertTrue(is_visible, "Max length error message not displayed")
+        self.assertEqual(message, "This field is required.", "Error message is incorrect")
+
+    def _validate_max_length_for_valid_entry(self):
+        questionnaire_tab_page = self.questionnaire_tab_page
+        questionnaire_tab_page.set_word_question_max_length(10)
+        questionnaire_tab_page.click_add_question_link()
+        is_visible, message = questionnaire_tab_page.get_max_length_error_message()
+        self.assertFalse(is_visible, "Max length error message should not be displayed for valid length")
 
 
     @SkipTest
