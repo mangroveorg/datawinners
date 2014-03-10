@@ -2,6 +2,7 @@
 import json
 import datetime
 import logging
+from operator import itemgetter
 from time import mktime
 
 from django.contrib.auth.decorators import login_required
@@ -139,6 +140,7 @@ def index(request):
                        type=row['value']['project_type'],
                        link=link, activate_link=activate_link)
         project_list.append(project)
+    project_list.sort(key=itemgetter('name'))
     return render_to_response('project/index.html', {'projects': project_list},
                               context_instance=RequestContext(request))
 
