@@ -28,7 +28,6 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.selectedQuestion(question);
         DW.init_question_constraints();
-//        questionnaireViewModel.selectedQuestion.valueHasMutated();
         DW.charCount();
         questionnaireViewModel.enableScrollToView(true);
         questionnaireViewModel.hasAddedNewQuestions = true;
@@ -43,7 +42,6 @@ var questionnaireViewModel =
     },
 
     removeQuestion: function (question) {
-//        var index = $.inArray(question, questionnaireViewModel.questions());
         if (!question.newly_added_question()) {
             questionnaireViewModel.hasDeletedOldQuestion = true;
             DW.questionnaire_was_changed = true;
@@ -52,13 +50,6 @@ var questionnaireViewModel =
         if (question == questionnaireViewModel.selectedQuestion()) {
           questionnaireViewModel.selectedQuestion(null);
         }
-//        if (questionnaireViewModel.questions().length == 0) {
-//            return;
-//        }
-//        if (question == questionnaireViewModel.selectedQuestion()) {
-//            var next_index = (index) % questionnaireViewModel.questions().length;
-//            questionnaireViewModel.changeSelectedQuestion(questionnaireViewModel.questions()[next_index]);
-//        }
         questionnaireViewModel.hasAddedNewQuestions = true;
     },
 
@@ -118,7 +109,7 @@ var questionnaireViewModel =
             questionnaireViewModel.questions.splice(currentIndex, 2, questions[currentIndex + 1], questions[currentIndex]);
     },
 
-    questionnaireHasErrors: ko.observable(false),
+    enableQuestionnaireTitleFocus: ko.observable(false),
     questionHasErrors: ko.observable(false).extend({ notify: 'always' }),
 
     errorInResponse: ko.observable(false),
@@ -172,7 +163,7 @@ var questionnaireViewModel =
         questionnaireViewModel._validateQuestionnaireCode(questionnaireViewModel.questionnaireCode);
 
         var isValid = questionnaireViewModel.projectName.valid() && questionnaireViewModel.questionnaireCode.valid();
-        this.questionnaireHasErrors(!isValid);
+        this.enableQuestionnaireTitleFocus(!isValid);
 
         return isValid ;
     },
@@ -191,12 +182,6 @@ questionnaireViewModel.questionHasErrors.subscribe(function(questionHasErrors){
 questionnaireViewModel.enableScrollToView.subscribe(function(enableScrollToView){
     enableScrollToView && this.enableQuestionTitleFocus(true);
 }, questionnaireViewModel);
-
-//questionnaireViewModel.enableQuestionTitleFocus = ko.computed(function () {
-//    var shouldChange = this.questionHasErrors() || this.enableScrollToView();
-//    console.log(shouldChange);
-//    return shouldChange;
-//}, questionnaireViewModel).extend({notify: "always"});
 
 questionnaireViewModel.generateSmsPreview = ko.computed(function(){
     var smsPreviewString = questionnaireViewModel.questionnaireCode();

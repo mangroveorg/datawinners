@@ -64,13 +64,15 @@ DW.controllers = {
             questionnaireHelperModel.showQuestionnaireCreationOptions(false);
     },
     "blank_questionnaire": function () {
-            questionnaireViewModel.projectName('');
+            questionnaireViewModel.projectName(null);
+            questionnaireViewModel.projectName.clearError();
             questionnaireViewModel.questions([]);
             questionnaireViewModel.errorInResponse(false);
             questionnaireViewModel.selectedQuestion(null);
             questionnaireViewModel.showQuestionnaireForm(true);
             questionnaireHelperModel.showQuestionnaireCreationOptions(false);
             questionnaireViewModel.questionnaireCode(questionnaire_code);
+            questionnaireViewModel.enableQuestionnaireTitleFocus(true);
     }
 };
 
