@@ -45,7 +45,7 @@
                     <option value="date">{% trans 'Date' %}</option>
                     <option value="choice">{% trans 'List of Choices' %}</option>
                     <option value="geocode">{% trans 'GPS Coordinates' %}</option>
-                    <option value="list">{% trans 'Location' %}</option>
+                    <option value="list" data-bind="hidden: newly_added_question">{% trans 'Location' %}</option>
                     <option value="telephone_number">{% trans "Telephone number" %}</option>
                 </select>
                 <div class="validationMessage" data-bind="ifnot: answerType.valid">
