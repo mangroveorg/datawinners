@@ -120,6 +120,14 @@ var questionnaireViewModel =
 
     enableQuestionTitleFocus: ko.observable(false),
 
+    clearQuestionnaire: function(){
+        this.projectName(null);
+        this.projectName.clearError();
+        this.questions([]);
+        this.errorInResponse(false);
+        this.selectedQuestion(null);
+    },
+
     validateSelectedQuestion: function(){
         if(!this.selectedQuestion())
         {

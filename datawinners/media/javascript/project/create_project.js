@@ -64,11 +64,7 @@ DW.controllers = {
             questionnaireHelperModel.showQuestionnaireCreationOptions(false);
     },
     "blank_questionnaire": function () {
-            questionnaireViewModel.projectName(null);
-            questionnaireViewModel.projectName.clearError();
-            questionnaireViewModel.questions([]);
-            questionnaireViewModel.errorInResponse(false);
-            questionnaireViewModel.selectedQuestion(null);
+            questionnaireViewModel.clearQuestionnaire();
             questionnaireViewModel.showQuestionnaireForm(true);
             questionnaireHelperModel.showQuestionnaireCreationOptions(false);
             questionnaireViewModel.questionnaireCode(questionnaire_code);
