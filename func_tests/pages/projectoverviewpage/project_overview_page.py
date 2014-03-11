@@ -37,14 +37,6 @@ class ProjectOverviewPage(Page):
         from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
         return CreateQuestionnairePage(self.driver)
 
-    def click_activate_project_link(self):
-        self.driver.find(ACTIVATE_PROJECT_LINK).click()
-        return LightBox(self.driver)
-
-    def activate_project(self):
-        activate_project_light_box = self.click_activate_project_link()
-        activate_project_light_box.activate_project()
-
     def get_status_of_the_project(self):
         return self.driver.find(PROJECT_STATUS_LABEL).text
 

@@ -29,15 +29,6 @@ class ProjectsPage(Page):
         self.driver.find(project_link).click()
         return ProjectOverviewPage(self.driver)
 
-    def open_activate_project_light_box(self, project_name):
-        """
-        Function to open the activate project light box
-
-        Return ActivateProjectLightBox
-         """
-        self.driver.find(by_xpath(ACTIVATE_PROJECT_LINK_XPATH % project_name.lower())).click()
-        return LightBox(self.driver)
-
     def get_status_of_the_project(self, project_name):
         """
         Function to get the current status of the project

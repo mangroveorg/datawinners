@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 from time import sleep
 from unittest import SkipTest
@@ -16,7 +17,6 @@ from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url
 from tests.dataextractionapitests.data_extraction_api_data import *
 
-@SkipTest
 class DataExtractionAPITestCase(BaseTest):
     @classmethod
     def setUpClass(cls):
@@ -65,10 +65,6 @@ class DataExtractionAPITestCase(BaseTest):
         create_questionnaire_page.save_and_create_project_successfully()
         cls.driver.wait_for_page_with_title(15, fetch_(PAGE_TITLE, from_(VALID_PROJECT_DATA)))
 
-    @classmethod
-    def activate_project(cls):
-        overview_page = ProjectOverviewPage(cls.driver)
-        overview_page.activate_project()
 
     @classmethod
     def submit_data(cls):
@@ -83,7 +79,6 @@ class DataExtractionAPITestCase(BaseTest):
         cls.prepare_subject_type()
         cls.prepare_subject()
         cls.create_project()
-        cls.activate_project()
         cls.submit_data()
 
     def setUp(self):
@@ -188,7 +183,7 @@ class DataExtractionAPITestCase(BaseTest):
     def test_get_data_for_form_with_form_code(self):
         sleep(2)
         result = self.get_data_by_uri(
-            "/api/get_for_form/%s/" % self.__class__.form_code)
+            "/api/get_for_form/%s/" % self.form_code)
         submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
@@ -198,12 +193,13 @@ class DataExtractionAPITestCase(BaseTest):
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_same_date(self):
+        dt = datetime.now().strftime("%d-%m-%Y")
         result = self.get_data_by_uri(
-            "/api/get_for_form/%s/%s/%s/" % (self.__class__.form_code, '03-08-2012', '03-08-2012'))
+            "/api/get_for_form/%s/%s/%s/" % (self.form_code, dt, dt))
         submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(submissions), 1)
+        self.assertEqual(len(submissions), 4)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
 

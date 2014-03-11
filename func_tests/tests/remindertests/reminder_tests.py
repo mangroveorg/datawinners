@@ -25,10 +25,6 @@ class TestReminderSend(BaseTest):
         reminder_settings.set_deadline_type_for_month(fetch_(TYPE, from_(deadline)))
         return reminder_settings
 
-    def active_project_and_go_to_all_reminder_page(self, project_overview_page):
-        project_overview_page.activate_project()
-        return project_overview_page.navigate_to_reminder_page()
-
     @attr("functional_test")
     def test_trial_account_should_see_reminder_not_work_message_at_reminder_tab_in_active_project(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DISABLED_REMINDER)), TRIAL_CREDENTIALS_VALIDATES)
