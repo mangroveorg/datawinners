@@ -4707,3 +4707,8 @@ msgstr "Sélectionnez un type de réponse"
 
 msgid "Choose a template and edit it to fit your needs."
 msgstr "Choisissez un modèle et modifiez-le selon vos besoins."
+
+msgid "Delete this Questionnaire"
+msgstr "Supprimer ce questionnaire"
+
+

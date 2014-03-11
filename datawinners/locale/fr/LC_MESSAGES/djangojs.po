@@ -1100,3 +1100,6 @@ msgstr "Doit être plus grand que la valeur minimale."
 
 msgid "Insert a name for this Questionnaire"
 msgstr "Insérer un nom pour ce Questionnaire"
+
+msgid "Delete this Questionnaire"
+msgstr "Supprimer ce questionnaire"
