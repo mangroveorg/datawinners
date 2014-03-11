@@ -1,6 +1,7 @@
 import unittest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
+from framework.utils.common_utils import by_css
 from framework.utils.data_fetcher import fetch_, from_
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.loginpage.login_page import LoginPage
@@ -9,16 +10,18 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE, ALL_DATA_PAGE
 from tests.addsubjecttests.add_subject_data import VALID_DATA, SUCCESS_MSG
 from tests.datasendertests.data_sender_data import PAGE_TITLE, SECTION_TITLE, SUBJECT_TYPE
 from tests.logintests.login_data import DATA_SENDER_CREDENTIALS
+from tests.testsettings import UI_TEST_TIMEOUT
 from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA, PROJECT_NAME, VALID_ANSWERS
 
 
 class DataSenderTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
+        cls.driver = setup_driver(browser="phantom")
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         login_page.login_with(DATA_SENDER_CREDENTIALS)
+        cls.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("span.welcome"), True)
 
     def setUp(self):
         self.driver.go_to(ALL_DATA_PAGE)
