@@ -11,6 +11,8 @@
   font-family: 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
   font-size: 11px !important;
   margin-left: 0px; }
+  .dropdown_style option, .wizard_content .content_wrapper .questionnaire_code #project-language select option, .questionnare_content #question-detail-panel .dropdown select option {
+    padding: 5px; }
 
 .max_char {
   display: inline;
