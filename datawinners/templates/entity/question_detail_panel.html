@@ -5,6 +5,7 @@
             <label>{% trans "Question" %}</label>
             <input id="question_title" name="question_title" type="text" class="required question_title"
                    data-bind="hasFocus:$parent.enableQuestionTitleFocus, value: title, uniqueName: true"/>
+
             <div class="validationMessage" data-bind="ifnot: title.valid">
                 <span class="validationText" data-bind="text: title.error"></span>
             </div>
@@ -12,7 +13,8 @@
         <li>
 
             <div id="question_code" class="none">
-                <label>{% trans "Code" %}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
+                <label>{% trans "Code" %}<img src="/media/images/help_icon.png" class="help_icon"
+                                              style="margin-top:-6px;"></label>
 
                 <div class="tooltip"><p>
                     <strong>{% trans "What is this?" %}</strong><br/>
@@ -20,12 +22,14 @@
                     <strong>{% trans "What do I need to do?" %}</strong><br/>
                     {% trans "r_tooltip_question_detail_code" %}
                 </p></div>
-                <input id="code" name="code" type="text" class="required" data-bind="value: code, valueUpdate: 'keyup'"/>
+                <input id="code" name="code" type="text" class="required"
+                       data-bind="value: code, valueUpdate: 'keyup'"/>
             </div>
         </li>
         <li class="question_type margin_null"
             data-bind="hidden: is_entity_question">
-            <label>{% trans "Answer Type" %}<img src="/media/images/help_icon.png" class="help_icon" data-bind="initializeTooltip:true"
+            <label>{% trans "Answer Type" %}<img src="/media/images/help_icon.png" class="help_icon"
+                                                 data-bind="initializeTooltip:true"
                                                  style="margin-top:-6px;"></label>
 
             <div class="tooltip"><p>
@@ -38,16 +42,9 @@
             <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
             <div class="dropdown">
-                <select data-bind="value: answerType, enable: newly_added_question"  autofocus>
-                    <option value="">{% trans 'Select an Answer Type' %}</option>
-                    <option value="text">{% trans 'Word or Phrase' %}</option>
-                    <option value="integer">{% trans 'Number' %}</option>
-                    <option value="date">{% trans 'Date' %}</option>
-                    <option value="choice">{% trans 'List of Choices' %}</option>
-                    <option value="geocode">{% trans 'GPS Coordinates' %}</option>
-                    <option value="list" data-bind="hidden: newly_added_question">{% trans 'Location' %}</option>
-                    <option value="telephone_number">{% trans "Telephone number" %}</option>
-                </select>
+                <select data-bind="options: subjectQuestionnaireViewModel.answerTypes, value: answerType, optionsText: 'name', optionsValue: 'value', enable: newly_added_question"
+                        autofocus></select>
+
                 <div class="validationMessage" data-bind="ifnot: answerType.valid">
                     <span class="validationText" data-bind="text: answerType.error"></span>
                 </div>
@@ -100,6 +97,7 @@
                     {% trans "Min:" %}
                     <input name="range_min" type="text" id="range_min"
                            data-bind="value:range_min, enable: newly_added_question"/>
+
                     <div class="validationMessage" data-bind="ifnot: range_min.valid">
                         <span class="validationText" data-bind="text: range_min.error"></span>
                     </div>
@@ -109,6 +107,7 @@
                     {% trans "Max:" %}
                     <input name="range_max" type="text" id="range_max"
                            data-bind="value:range_max, enable: newly_added_question"/>
+
                     <div class="validationMessage" data-bind="ifnot: range_max.valid">
                         <span class="validationText" data-bind="text: range_max.error"></span>
                     </div>
@@ -137,7 +136,8 @@
         </li>
         <li>
             <div class="margin_top_20">
-                <label>{% trans "Instructions" %}<img src="/media/images/help_icon.png" class="help_icon" data-bind="initializeTooltip:true"
+                <label>{% trans "Instructions" %}<img src="/media/images/help_icon.png" class="help_icon"
+                                                      data-bind="initializeTooltip:true"
                                                       style="margin-top:-6px;"></label>
 
                 <div class="tooltip"><p>

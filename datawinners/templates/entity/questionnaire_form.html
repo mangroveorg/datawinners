@@ -46,7 +46,7 @@
                         <div data-bind="scrollToView: enableScrollToView" class="questions">
                             <div class="question_list">
                                 <ol data-bind="foreach: {data: questions, as: 'question'}, sortable: questions">
-                                    <li data-bind="click: function() { questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion(), sort: !question.is_entity_question()} ">
+                                    <li data-bind="click: function() { subjectQuestionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion(), sort: !question.is_entity_question()} ">
                                         <a href="questionnaire.html#" data-bind="text: $data.display"></a>
 
                                         <div class="action_bar" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
