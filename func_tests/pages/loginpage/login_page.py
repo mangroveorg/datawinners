@@ -7,6 +7,7 @@ from framework.utils.data_fetcher import *
 from pages.loginpage.login_locator import *
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import *
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class LoginPage(Page):
@@ -46,6 +47,7 @@ class LoginPage(Page):
         self.driver.find_text_box(EMAIL_TB).enter_text(fetch_(USERNAME, from_(login_credential)))
         self.driver.find_text_box(PASSWORD_TB).enter_text(fetch_(PASSWORD, from_(login_credential)))
         self.driver.find(LOGIN_BTN).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("span.welcome"), True)
         return self
 
     def get_error_message(self):

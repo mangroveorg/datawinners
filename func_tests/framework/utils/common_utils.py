@@ -2,6 +2,7 @@
 import random
 import string
 import time
+from unittest import SkipTest
 from framework.exception import CouldNotLocateElementException
 
 from pages.page import Page
@@ -123,3 +124,15 @@ def random_string(length=6):
 
 def generate_random_email_id():
     return random_string(5) + '@' + random_string(3) + '.com'
+
+
+
+
+def skipUntil(dateUntil):
+    def wrap(f):
+        def wrapper(*args, **kwargs):
+            if datetime.datetime.strptime(dateUntil, '%Y-%m-%d') < datetime.datetime.now():
+                return f(*args, **kwargs)
+            raise SkipTest("Skipped until %s"%dateUntil)
+        return wrapper
+    return wrap
