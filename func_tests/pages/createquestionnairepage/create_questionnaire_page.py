@@ -586,3 +586,9 @@ class CreateQuestionnairePage(Page):
         for q in questions_divs:
             questions.append(q.text)
         return questions
+
+    def back_to_questionnaire_creation_page(self):
+        from pages.createprojectpage.questionnaire_creation_options_page import QuestionnaireCreationOptionsPage
+        self.driver.find_element_by_id("back_to_project").click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(".//*[@id='project_profile']/h5"), True)
+        return QuestionnaireCreationOptionsPage(self.driver)

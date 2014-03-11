@@ -30,6 +30,20 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         select_or_add_question_message = self.create_questionnaire_page.get_select_or_edit_question_message()
         self.assertTrue(select_or_add_question_message.is_displayed(), "Select/add question text not present")
 
+    def test_should_clear_questionnaire_form_on_recreating_questionnaire(self):
+        create_questionnaire_page = self.create_questionnaire_page
+        create_questionnaire_page.set_questionnaire_title("Some title")
+        create_questionnaire_page.click_add_question_link()
+        create_questionnaire_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
+        create_questionnaire_page.click_add_question_link()
+        create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
+        create_questionnaire_page.submit_errored_questionnaire()
+        create_questionnaire_page.back_to_questionnaire_creation_page().select_blank_questionnaire_creation_option()
+        self.assertEqual(create_questionnaire_page.get_questionnaire_title(), "", "Questionnaire title should be blank")
+        self.assertEqual(create_questionnaire_page.get_existing_questions_count(), 0, "No questions should be present for a blank questionnaire")
+        self.assertTrue(create_questionnaire_page.get_select_or_edit_question_message().is_displayed(), "No question should be selected by default")
+
+
     def test_submitting_a_blank_questionnaire(self):
         create_questionnaire_page = self.create_questionnaire_page
         create_questionnaire_page.refresh()

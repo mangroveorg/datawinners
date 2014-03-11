@@ -1,5 +1,4 @@
 from time import sleep
-from framework.utils.common_utils import by_css, by_xpath
 from pages.createprojectpage.create_project_locator import CONTINUE_BTN
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.page import Page
@@ -17,6 +16,9 @@ class QuestionnaireCreationOptionsPage(Page):
         blank_questionnaire_accoridion.click()
         sleep(1)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CONTINUE_BTN, True)
+        return self.go_to_create_questionnaire_page()
+
+    def go_to_create_questionnaire_page(self):
         self.driver.find(CONTINUE_BTN).click()
         return CreateQuestionnairePage(self.driver)
 
