@@ -37,9 +37,6 @@ ko.bindingHandlers.scrollToElement = {
         if (shouldShow) {
             $('html, body').animate({scrollTop: $(element).offset().top}, 'slow')
         }
-//        setTimeout(function () {
-//            $(element).fadeOut()
-//        }, 20100);
     }
 };
 
@@ -113,5 +110,29 @@ ko.bindingHandlers.hidden = {
         ko.bindingHandlers.visible.update(element, function () {
             return !value;
         });
+    }
+};
+
+ko.bindingHandlers.watermark = {
+    init: function(element, valueAccessor, allBindingsAccessor) {
+		var allBindings = allBindingsAccessor();
+		var text, options;
+		var watermark = allBindings.watermark;
+
+		if (typeof watermark == "string"){
+            text = watermark;
+        }
+		else{
+			text = watermark.text;
+//			options = watermark.options;
+		}
+        $(element).watermark(text);
+    },
+    update: function(element, valueAccessor){
+        var value = valueAccessor();
+        if(value.inputValue() != undefined && value.inputValue()!= "")
+            $(element).prev("label").hide();
+        else
+            $(element).prev("label").show();
     }
 };

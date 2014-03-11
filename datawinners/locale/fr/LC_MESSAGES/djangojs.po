@@ -1097,3 +1097,6 @@ msgstr "Ce champ est obligatoire."
 
 msgid "Max should be greater than min."
 msgstr "Doit être plus grand que la valeur minimale."
+
+msgid "Insert a name for this Questionnaire"
+msgstr "Insérer un nom pour ce Questionnaire"

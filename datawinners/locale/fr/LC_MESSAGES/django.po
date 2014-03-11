@@ -4693,9 +4693,6 @@ msgstr "Copier un Questionnaire existant"
 msgid "Use a Questionnaire Template"
 msgstr "Utilisez un modèle de Questionnaire"
 
-msgid "Insert a name for this Questionnaire"
-msgstr "Insérer un nom pour ce Questionnaire"
-
 msgid "Choose your language"
 msgstr "Choisissez votre langue"
 
