@@ -644,8 +644,8 @@ msgstr "Aucune donnée pour ce projet"
 msgid "This project is inactive"
 msgstr "Ce projet n'est pas activé"
 
-msgid "view all projects"
-msgstr "Voir tous les projets"
+msgid "view all questionnaires"
+msgstr "Voir tous les questionnaires"
 
 msgid ""
 " Once you have created projects, a list of your %(text)s will appear here."
@@ -1096,8 +1096,8 @@ msgstr ""
 msgid "Continue"
 msgstr "Continuer"
 
-msgid "Save & Create Project"
-msgstr "Enregistrer & créer le projet"
+msgid "Save & Create Questionnaire"
+msgstr "Enregistrer & créer le Questionnaire"
 
 msgid "Create Project"
 msgstr "Créez projet"
@@ -4451,8 +4451,8 @@ msgstr "Importer"
 msgid "Remind them to download the updated version of the Import Submission template"
 msgstr "Rappelez-leur de télécharger la version mise à jour du modèle d'importation de Soumission"
 
-msgid "Your Most Recent Projects"
-msgstr "Vos projets les plus récents"
+msgid "Your Most Recent Questionnaire"
+msgstr "Vos Questionnaire les plus récents"
 
 msgid "Statistics"
 msgstr "Statistiques"

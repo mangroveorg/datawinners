@@ -1024,7 +1024,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-msgid "Save & Create Project"
+msgid "Save & Create Questionnaire"
 msgstr ""
 
 msgid "Create Project"
