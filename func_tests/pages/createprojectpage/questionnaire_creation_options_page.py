@@ -26,6 +26,7 @@ class QuestionnaireCreationOptionsPage(Page):
         sleep(1)
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, AJAX_LOADER_HORIZONTAL)
         self.driver.find(TEMPLATE_CATEGORY_ACCORDION).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, TEMPLATE_NAME_DIV, True)
         self.driver.find(TEMPLATE_NAME_DIV).click()
         self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, AJAX_LOADER_HORIZONTAL)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SELECTED_TEMPLATE_QUESTIONS_DIV, True)

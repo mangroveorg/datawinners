@@ -4,13 +4,10 @@ GEN_RANDOM = "gen_random"
 
 NEW_PROJECT_DATA = {'project_name': "new project ", GEN_RANDOM: True}
 
-SELECTED_TEMPLATE_NAME = 'weekly assessment'
-SELECTED_TEMPLATE_QUESTIONS = [u'Date', u'District', u'Rainfall', u'Crop Condition', u'Water availability',
-                               u'Livestock condition', u'Relief food availability', u'Overall food security situation',
-                               u'Local labor availability', u'Major crop of the district',
-                               u'Market price of the major crop of the district (per qt)',
-                               u'New cases of severe acute malnutrition (SAM) seen at Health Center']
-
+SELECTED_TEMPLATE_NAME = 'livestock census'
+SELECTED_TEMPLATE_QUESTIONS = [u'Date of visit', u'Province', u'District', u'Name of location visited', u'Type of Production', u'Number of Bulls',
+     u'Number of Cows', u'Number of Heifers', u'Number of Calves', u'Number of Oxen', u'Number of total cattle',
+     u'Number of Sheep', u'Number of Goats', u'Number of Donkeys', u'Number of Horses', u'Number of Poultry']
 BLANK_QUESTIONNAIRE_SELECTION_ACCORDION = ".//*[@id='questionnaire_types']/div[1]/span[2]"
 SELECT_USING_TEMPLATE_ACCORDION = ".//*[@id='questionnaire_types']/div[4]/span[2]"
 AJAX_LOADER_HORIZONTAL = by_css('.ajax-loader-horizontal')
