@@ -5,9 +5,8 @@ from framework.drivers.driver_wrapper import DriverWrapper, get_default_browser_
 from tests.testsettings import CLOSE_BROWSER_AFTER_TEST, WAIT
 
 
-def setup_driver(browser=get_default_browser_name()):
+def setup_driver(browser=None):
     driver = DriverWrapper(browser)
-    driver.implicitly_wait(WAIT)
     return driver
 
 def teardown_driver(driver):
@@ -20,6 +19,13 @@ def teardown_driver(driver):
 class BaseTest(unittest.TestCase):
     def setUp(self):
         self.driver = setup_driver()
+
+    def tearDown(self):
+        teardown_driver(self.driver)
+
+class HeadlessRunnerTest(unittest.TestCase):
+    def setUp(self):
+        self.driver = setup_driver(browser="phantom")
 
     def tearDown(self):
         teardown_driver(self.driver)

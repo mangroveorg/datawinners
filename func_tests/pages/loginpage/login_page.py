@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from selenium.webdriver.support.wait import WebDriverWait
 from framework.utils.global_constant import WAIT_FOR_TITLE
 from pages.page import Page
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
@@ -19,7 +20,7 @@ class LoginPage(Page):
         return self
 
     def do_successful_login_with(self, login_credential):
-        """ 
+        """
         Function to login into the website with valid credentials
 
         Args:
@@ -47,7 +48,7 @@ class LoginPage(Page):
         self.driver.find_text_box(EMAIL_TB).enter_text(fetch_(USERNAME, from_(login_credential)))
         self.driver.find_text_box(PASSWORD_TB).enter_text(fetch_(PASSWORD, from_(login_credential)))
         self.driver.find(LOGIN_BTN).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("span.welcome"), True)
+        WebDriverWait(self.driver, UI_TEST_TIMEOUT).until(lambda driver:  u"complete" == driver.execute_script("return document.readyState") )
         return self
 
     def get_error_message(self):

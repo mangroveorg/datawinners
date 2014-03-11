@@ -3,7 +3,7 @@ import time
 
 from nose.plugins.attrib import attr
 
-from framework.base_test import BaseTest
+from framework.base_test import BaseTest, HeadlessRunnerTest
 from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.expiredtrialpage.expired_trial_page import ExpiredTrialPage
@@ -14,8 +14,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 from pages.expiredtrialpage.expired_trial_page import ExpiredTrialPage
 
 
-@attr('suit_2')
-class TestLoginPage(BaseTest):
+class TestLoginPage(HeadlessRunnerTest):
     @attr('functional_test')
     def test_login_with_unactivated_account_credentials(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)

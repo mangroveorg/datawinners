@@ -1,16 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
 import unittest
+import time
 
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import int_to_base36
-
 from nose.plugins.attrib import attr
-import time
-from selenium.webdriver.support.wait import WebDriverWait
 
-from framework.base_test import teardown_driver
-from framework.drivers.driver_wrapper import DriverWrapper
+from framework.base_test import teardown_driver, setup_driver
 from framework.utils.common_utils import get_epoch_last_ten_digit, generate_random_email_id, by_css
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from framework.utils.data_fetcher import from_, fetch_
@@ -24,7 +21,6 @@ from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.datasenderpage.data_sender_page import DataSenderPage
-from pages.globalnavigationpage.global_navigation_locator import PROJECT_LINK
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from pages.resetpasswordpage.reset_password_page import ResetPasswordPage
@@ -41,7 +37,7 @@ from tests.endtoendtest.end_to_end_data import *
 from tests.projects.questionnairetests.project_questionnaire_data import VALID_SUMMARY_REPORT_DATA
 from tests.registrationtests.registration_tests import register_and_get_email
 from pages.alldatasenderspage.all_data_senders_locator import DELETE_BUTTON as CONFIRM_DELETE
-from tests.testsettings import UI_TEST_TIMEOUT, WAIT
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 def activate_account(driver, email):
@@ -60,9 +56,7 @@ def do_login(driver, email, password):
 
 class TestApplicationEndToEnd(unittest.TestCase):
     def setUp(self):
-        self.driver = DriverWrapper(browser="phantom")
-        self.driver.set_window_size(1600,900)
-        self.driver.implicitly_wait(WAIT)
+        self.driver = setup_driver(browser="phantom")
 
     def tearDown(self):
         import sys
