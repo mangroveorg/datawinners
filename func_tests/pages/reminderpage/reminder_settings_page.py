@@ -3,6 +3,7 @@ from pages.page import Page
 from pages.reminderpage.reminder_settings_locator import *
 from datawinners.project.models import Reminder
 from tests.remindertests.reminder_data import *
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class ReminderSettingsPage(Page):
@@ -16,6 +17,7 @@ class ReminderSettingsPage(Page):
                            AFTER_DEADLINE: self.disable_after_deadline_reminder}
 
     def set_frequency(self, frequency):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, FREQUENCY_PERIOD_DD, True)
         self.driver.find_drop_down(FREQUENCY_PERIOD_DD).set_selected_by_text(frequency)
 
     def set_deadline_type_for_week(self, deadline_type):

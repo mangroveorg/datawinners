@@ -4,6 +4,7 @@ from pages.lightbox.light_box_page import LightBox
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.projectspage.projects_locator import *
 from pages.page import Page
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class ProjectsPage(Page):
@@ -26,6 +27,7 @@ class ProjectsPage(Page):
         Return project overview page
          """
         project_link = by_xpath(PROJECT_LINK_XPATH % project_name.lower())
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, project_link, True)
         self.driver.find(project_link).click()
         return ProjectOverviewPage(self.driver)
 
