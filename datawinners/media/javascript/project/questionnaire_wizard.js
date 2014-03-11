@@ -1,14 +1,23 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+function _isQuestionnaireChanged() {
+    return DW.questionnaire_was_changed || questionnaireViewModel.has_newly_added_question() ||
+           DW.isQuestionsReOrdered(question_list) || existing_questionnaire_code != questionnaireViewModel.questionnaireCode();
+}
 $(document).ready(function () {
     DW.questionnaire_was_changed = false;
     DW.init_inform_datasender_about_changes();
     DW.init_empty_questionnaire_warning();
+    var options = {
+                    successCallBack: submit_questionnaire,
+                    isQuestionnaireModified: _isQuestionnaireChanged
+                  };
+    new DW.CancelQuestionnaireWarningDialog(options).init();
     var index;
     for (index in question_list) {
         var questions = new DW.question(question_list[index]);
         questionnaireViewModel.loadQuestion(questions);
     }
-    questionnaireViewModel.questionnaireCode(questionnaire_code);
+    questionnaireViewModel.questionnaireCode(existing_questionnaire_code);
     questionnaireViewModel.projectName(project_name);
     questionnaireViewModel.language(project_language);
     questionnaireViewModel.hasExistingData = project_has_submissions === 'True';
@@ -32,8 +41,7 @@ $(document).ready(function () {
         return JSON.stringify({'name':name, 'language':language, 'activity_report':activity_report});
     };
 
-    function submit_questionnaire() {
-
+    function submit_questionnaire(callBack) {
         var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()));
         DW.loading();
         var post_data = {
@@ -62,9 +70,13 @@ $(document).ready(function () {
                     html("<label class='success'>" + gettext("Your changes have been saved.") + "</label").show();
                     flash_message[0].scrollIntoView();
 
-                    if (DW.questionnaire_was_changed || questionnaireViewModel.has_newly_added_question() || DW.has_questions_changed(question_list) || questionnaire_code != questionnaireViewModel.questionnaireCode()) {
+                    if (_isQuestionnaireChanged()) {
                         questionnaireViewModel.set_all_questions_as_old_questions();
-                        questionnaire_code = questionnaireViewModel.questionnaireCode();
+                        existing_questionnaire_code = questionnaireViewModel.questionnaireCode();
+                        if(callBack)
+                            DW.inform_datasender_about_changes.continue_handler = function(){
+                                callBack();
+                            };
                         DW.inform_datasender_about_changes.show_warning();
                         DW.questionnaire_was_changed = false;
                     }

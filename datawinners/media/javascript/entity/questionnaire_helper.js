@@ -560,10 +560,8 @@ $(document).ready(function () {
     //TODO: Move to KO viewModel
     var change_selector = "#range_min, #range_max, #max_length, [name=text_length], [name=date_format], #question_title";
     change_selector += ", [name=answers_possible], [name=type]";
-    var click_selector = "#question-detail-panel .add_link";
 
-    $(change_selector).change(DW.set_questionnaire_was_change);
-    $(click_selector).click(DW.set_questionnaire_was_change);
+    $(document).on('change', change_selector, DW.set_questionnaire_was_change);
     //END
 
     DW.has_submission_delete_warning = (function () {
@@ -581,7 +579,7 @@ $(document).ready(function () {
 });
 
 
-DW.has_questions_changed = function (existing_questions) {
+DW.isQuestionsReOrdered = function (existing_questions) {
     var new_question_codes = ko.utils.arrayMap(questionnaireViewModel.questions(), function (question) {
         return question.code();
     });
@@ -621,3 +619,76 @@ DW.getTemplateData = function (template_id) {
     return templateData
 };
 
+DW.CancelQuestionnaireWarningDialog = function(options){
+    var self = this;
+    var successCallBack = options.successCallBack;
+    var isQuestionnaireModified = options.isQuestionnaireModified;
+
+    this.init = function(){
+        self.cancelDialog = $("#cancel_questionnaire_warning_message");
+        self.ignoreButton = self.cancelDialog.find(".no_button");
+        self.saveButton = self.cancelDialog.find(".yes_button");
+        self.cancelButton = self.cancelDialog.find("#cancel_dialog");
+        _initializeDialog();
+        _initializeIgnoreButtonHandler();
+        _initializeCancelButtonHandler();
+        _initializeSaveButtonHandler();
+        _initializeLinkBindings();
+    };
+
+    var _initializeDialog = function(){
+         self.cancelDialog.dialog({
+            title:gettext("You Have Unsaved Changes"),
+            modal:true,
+            autoOpen:false,
+            width:550,
+            closeText:'hide'
+        });
+    };
+
+    var _initializeIgnoreButtonHandler = function() {
+        self.ignoreButton.bind('click', function(){
+            self.cancelDialog.dialog("close");
+            return _redirect();
+        });
+    };
+
+    var _initializeCancelButtonHandler = function() {
+         self.cancelButton.bind('click', function(){
+            self.cancelDialog.dialog("close");
+            return false;
+         });
+    };
+
+    var _initializeSaveButtonHandler = function(){
+        self.saveButton.bind('click', function(){
+            if(questionnaireViewModel.validateSelectedQuestion() && questionnaireViewModel.validateQuestionnaireDetails())
+            {
+                successCallBack(function(){
+                   return _redirect();
+                });
+            }
+            self.cancelDialog.dialog("close");
+        });
+    };
+
+    var _redirect = function() {
+        if (redirect_url != "#")
+            window.location.href = redirect_url;
+        return true;
+    };
+
+    var _initializeLinkBindings = function(){
+        $("a[href]:visible").not([".add_link", ".preview-navigation a"]).bind('click', {self:this}, function (event) {
+                var that = event.data.self;
+                redirect_url = $(this).attr("href");
+                if (isQuestionnaireModified()){
+                    self.cancelDialog.dialog("open");
+                    return false;
+                }
+                else
+                    return redirect();
+        });
+    };
+
+};
