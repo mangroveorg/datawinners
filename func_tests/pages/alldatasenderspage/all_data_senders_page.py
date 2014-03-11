@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import time
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import *
 from pages.page import Page
@@ -230,6 +231,7 @@ class AllDataSendersPage(Page):
 
     def search_with(self, search_text):
         self.driver.find_text_box(by_css("div#datasender_table_filter > input")).enter_text(search_text)
+        time.sleep(0.2) #auto search waits for 200ms after key press
         self._wait_for_table_data_to_load()
 
     def get_empty_table_result(self):

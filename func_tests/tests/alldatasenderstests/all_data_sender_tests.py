@@ -28,7 +28,7 @@ class TestAllDataSenders(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
+        cls.driver = setup_driver(browser="phantom")
         LoginPage(cls.driver).load().do_successful_login_with(VALID_CREDENTIALS)
         cls.all_datasenders_page = AllDataSendersPage(TestAllDataSenders.driver)
         cls.datasender_id_with_web_access = cls.register_datasender(VALID_DATASENDER_WITH_WEB_ACCESS,
