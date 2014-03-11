@@ -687,7 +687,7 @@ DW.CancelQuestionnaireWarningDialog = function(options){
                     return false;
                 }
                 else
-                    return redirect();
+                    return _redirect();
         });
     };
 
