@@ -6,6 +6,7 @@ from pages.createdatasenderquestionnairepage.create_data_sender_questionnaire_pa
 from pages.createprojectpage.create_project_locator import PROJECT_NAME_TB, SAVE_AND_CREATE_BTN, INFORM_DATASENDERS_OK_BUTTON_BY_CSS
 from pages.createquestionnairepage.create_questionnaire_locator import *
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
+from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
 from tests.projects.questionnairetests.project_questionnaire_data import *
 from framework.utils.common_utils import generateId, CommonUtilities
 from selenium.common.exceptions import NoSuchElementException
@@ -589,6 +590,7 @@ class CreateQuestionnairePage(Page):
 
     def back_to_questionnaire_creation_page(self):
         from pages.createprojectpage.questionnaire_creation_options_page import QuestionnaireCreationOptionsPage
-        self.driver.find_element_by_id("back_to_project").click()
+        self.driver.find_element_by_id("back_to_create_options").click()
+        QuestionnaireModifiedDialog(self.driver).ignore_changes()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(".//*[@id='project_profile']/h5"), True)
         return QuestionnaireCreationOptionsPage(self.driver)

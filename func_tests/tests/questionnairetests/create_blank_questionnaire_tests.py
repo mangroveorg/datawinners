@@ -13,7 +13,7 @@ from tests.projects.questionnairetests.project_questionnaire_data import QUESTIO
 class TestCreateBlankQuestionnaire(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver(browser="firefox")
+        cls.driver = setup_driver(browser="phantom")
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
@@ -34,6 +34,7 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
 
     def test_should_clear_questionnaire_form_on_recreating_questionnaire(self):
         create_questionnaire_page = self.create_questionnaire_page
+        self.create_questionnaire_page.refresh()
         create_questionnaire_page.set_questionnaire_title("Some title")
         create_questionnaire_page.click_add_question_link()
         create_questionnaire_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
@@ -47,8 +48,9 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
 
 
     def test_submitting_a_blank_questionnaire(self):
+        self.global_navigation.navigate_to_view_all_project_page().navigate_to_create_project_page()\
+            .select_blank_questionnaire_creation_option()
         create_questionnaire_page = self.create_questionnaire_page
-        create_questionnaire_page.refresh()
         create_questionnaire_page.set_questionnaire_title("")
         create_questionnaire_page.set_questionnaire_code("")
         create_questionnaire_page.click_add_question_link()
@@ -88,6 +90,14 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         self.assertEqual(create_questionnaire_page.get_duplicate_questionnaire_code_error_message(),
                          "Questionnaire with this code already exists", "Duplicate questionnaire code should show up")
 
+    def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
+        create_questionnaire_page = self.create_questionnaire_page
+        modified_warning_dialog = QuestionnaireModifiedDialog(TestCreateBlankQuestionnaire.driver)
+        project_name = create_questionnaire_page.type_project_name(DIALOG_PROJECT_DATA)
+        self._verify_edit_dialog_ignore_changes(create_questionnaire_page, modified_warning_dialog, project_name)
+        all_projects_page = ProjectsPage(self.driver)
+        self._verify_edit_dialog_save_changes(all_projects_page, create_questionnaire_page, modified_warning_dialog)
+
     def _verify_cancel_edit_dialog(self, create_questionnaire_page, modified_warning_dialog):
         create_questionnaire_page.click_add_question_link()
         create_questionnaire_page.set_question_title("some question")
@@ -117,14 +127,6 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         modified_warning_dialog.save_changes()
         all_projects_page.wait_for_page_to_load()
         self.assertTrue(all_projects_page.is_project_present(project_name.lower()), "Project should be saved")
-
-    def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
-        create_questionnaire_page = self.create_questionnaire_page
-        modified_warning_dialog = QuestionnaireModifiedDialog(TestCreateBlankQuestionnaire.driver)
-        project_name = create_questionnaire_page.type_project_name(DIALOG_PROJECT_DATA)
-        self._verify_edit_dialog_ignore_changes(create_questionnaire_page, modified_warning_dialog, project_name)
-        all_projects_page = ProjectsPage(self.driver)
-        self._verify_edit_dialog_save_changes(all_projects_page, create_questionnaire_page, modified_warning_dialog)
 
     def _validate_max_length_for_invalid_entry(self):
         create_questionnaire_page = self.create_questionnaire_page
