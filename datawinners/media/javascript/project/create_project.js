@@ -86,6 +86,9 @@ function _initializeViewModel() {
 }
 
 function _save_questionnaire(callback) {
+    if(!DW.check_empty_questionnaire() || !questionnaireViewModel.validateForSubmission())
+        return false;
+
     $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
     DW.post_project_data(callback);
 }
@@ -97,22 +100,17 @@ $(document).ready(function () {
     var options = {
                     successCallBack: _save_questionnaire,
                     isQuestionnaireModified: function(){
-                                                return questionnaireViewModel.questions().length > 0;
+                                                return DW.questionnaire_was_changed || questionnaireViewModel.questions().length > 0;
                                             }
                   };
     new DW.CancelQuestionnaireWarningDialog(options).init();
 
     $("#save_and_create").bind("click", function () {
-        if(!DW.check_empty_questionnaire())
-            return false;
-
-        if (questionnaireViewModel.validateForSubmission()) {
             _save_questionnaire(function (response) {
                 var redirect_url = '/project/overview/' + response.project_id;
                 window.location.replace(redirect_url);
                 return true;
             });
-        }
     });
 
     DW.projectRouter.run();

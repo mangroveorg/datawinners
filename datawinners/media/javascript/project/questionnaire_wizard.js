@@ -44,6 +44,9 @@ $(document).ready(function () {
     };
 
     function submit_questionnaire(callBack) {
+        if(!DW.check_empty_questionnaire() || !questionnaireViewModel.validateForSubmission())
+            return false;
+
         var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()));
         DW.loading();
         var post_data = {
@@ -93,10 +96,6 @@ $(document).ready(function () {
     }
 
     $("#submit-button").click(function() {
-        if(!DW.check_empty_questionnaire())
-            return false;
-        if(!questionnaireViewModel.validateForSubmission())
-            return false;
         submit_questionnaire();
         return false;
     });

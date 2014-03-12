@@ -551,15 +551,13 @@ DW.change_question_type_for_selected_question = function (type_selector) {
 };
 
 DW.set_questionnaire_was_change = function () {
-    if (!questionnaireViewModel.selectedQuestion().newly_added_question()) {
-        DW.questionnaire_was_changed = true;
-    }
+    DW.questionnaire_was_changed = true;
 };
 
 $(document).ready(function () {
     //TODO: Move to KO viewModel
-    var change_selector = "#range_min, #range_max, #max_length, [name=text_length], [name=date_format], #question_title";
-    change_selector += ", [name=answer_type], [name=type]";
+    var change_selector = "#range_min, #range_max, #max_length, [name='text_length'], [name='date_format'], #question_title";
+    change_selector += ", [name='answer_type'], [name='project_language'], #questionnaire_title, #questionnaire-code";
 
     $(document).on('change', change_selector, DW.set_questionnaire_was_change);
     //END
