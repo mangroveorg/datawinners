@@ -1,6 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import os
 
 import unittest
+import sys
 from framework.drivers.driver_wrapper import DriverWrapper, get_default_browser_name
 from tests.testsettings import CLOSE_BROWSER_AFTER_TEST, WAIT
 
@@ -9,12 +11,14 @@ def setup_driver(browser=None):
     driver = DriverWrapper(browser)
     return driver
 
+
 def teardown_driver(driver):
     try:
         if CLOSE_BROWSER_AFTER_TEST:
             driver.quit()
     except TypeError:
         pass
+
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
@@ -23,12 +27,21 @@ class BaseTest(unittest.TestCase):
     def tearDown(self):
         teardown_driver(self.driver)
 
+
 class HeadlessRunnerTest(unittest.TestCase):
-    def setUp(self):
-        self.driver = setup_driver(browser="phantom")
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = setup_driver(browser="phantom")
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown_driver(cls.driver)
 
     def tearDown(self):
-        teardown_driver(self.driver)
-
-if __name__ == "__main__":
-    unittest.main()
+        exception_info = sys.exc_info()
+        if exception_info != (None, None, None):
+            import os
+            if not os.path.exists("screenshots"):
+                os.mkdir("screenshots")
+            self.driver.get_screenshot_as_file(
+                "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))

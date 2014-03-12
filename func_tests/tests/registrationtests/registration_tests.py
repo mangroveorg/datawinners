@@ -1,8 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import unittest
 from nose.plugins.attrib import attr
 
-from framework.base_test import setup_driver, teardown_driver
+from framework.base_test import HeadlessRunnerTest
 from pages.registrationpage.registration_page import RegistrationPage
 from registration_data import *
 from testdata.test_data import DATA_WINNER_REGISTER_PAGE, DATA_WINNER_REGISTRATION_COMPLETE_PAGE
@@ -14,29 +13,7 @@ def register_and_get_email(driver):
     return registration_page.successful_registration_with(REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION)
 
 
-@attr('suit_2')
-class TestRegistrationPage(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.driver = setup_driver()
-
-    @classmethod
-    def tearDownClass(cls):
-        teardown_driver(cls.driver)
-
-    def tearDown(self):
-        import sys
-
-        exception_info = sys.exc_info()
-        if exception_info != (None, None, None):
-            import os
-
-            if not os.path.exists("screenshots"):
-                os.mkdir("screenshots")
-            self.driver.get_screenshot_as_file(
-                "screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
-
-
+class TestRegistrationPage(HeadlessRunnerTest):
     @attr('functional_test')
     def test_register_ngo_with_existing_email_address(self):
         self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
