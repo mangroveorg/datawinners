@@ -15,6 +15,7 @@ from pages.previewnavigationpage.preview_navigation_page import PreviewNavigatio
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.projectspage.projects_page import ProjectsPage
 from pages.questionnairetabpage.questionnaire_tab_page import SUCCESS_PROJECT_SAVE_MESSAGE, DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE
+from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, url, DATA_WINNER_ALL_PROJECTS_PAGE
 from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_PROJECT, QUESTIONNAIRE_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
@@ -86,6 +87,7 @@ class TestProjectQuestionnaire(unittest.TestCase):
 
     def test_adding_questions_with_valid_answer_types(self):
         questionnaire_tab_page = self.questionnaire_tab_page
+        questionnaire_tab_page.refresh()
         project_title, questionnaire_code = self._create_project(QUESTIONNAIRE_TAB_PROJECT_DATA, QUESTIONNAIRE_TAB_QUESTIONNAIRE_DATA)
         self.do_sms_submission(questionnaire_code, QUESTIONNAIRE_TAB_SUBMISSION_SMS, project_title)
         questionnaire_tab_page.delete_question(1)
@@ -104,6 +106,45 @@ class TestProjectQuestionnaire(unittest.TestCase):
         self.assertEqual(questionnaire_tab_page.get_success_message(), SUCCESS_PROJECT_SAVE_MESSAGE, "Saving of questionnaire failed")
         self._expect_redistribute_dialog_to_be_shown()
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 8, "Question count of updated questionnaire does not match")
+
+    def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
+        modified_warning_dialog = QuestionnaireModifiedDialog(self.driver)
+        self._verify_edit_dialog_cancel(modified_warning_dialog)
+        self._verify_edit_dialog_ignore_changes(modified_warning_dialog)
+        self._verify_edit_dialog_save_changes(modified_warning_dialog)
+
+    def _verify_edit_dialog_cancel(self, modified_warning_dialog):
+        questionnaire_tab_page = self.questionnaire_tab_page
+        questionnaire_tab_page.click_add_question_link()
+        questionnaire_tab_page.set_question_title("some question")
+        questionnaire_tab_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
+        questionnaire_tab_page.submit_questionnaire()
+        self.global_navigation.navigate_to_dashboard_page()
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
+        modified_warning_dialog.cancel()
+        self.assertEqual(questionnaire_tab_page.get_questionnaire_title(), self.project_name,
+                         "Should continue to stay on questionnaire page")
+
+    def _verify_edit_dialog_ignore_changes(self, modified_warning_dialog):
+        questionnaire_tab_page = self.questionnaire_tab_page
+        all_projects_page = self.global_navigation.navigate_to_view_all_project_page()
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
+        modified_warning_dialog.ignore_changes()
+        all_projects_page.navigate_to_project_overview_page(self.project_name).navigate_to_questionnaire_tab()
+        self.assertNotIn("some question", questionnaire_tab_page.get_existing_question_list(), "Newly added question should not have been saved")
+
+    def _verify_edit_dialog_save_changes(self, modified_warning_dialog):
+        questionnaire_tab_page = self.questionnaire_tab_page
+        questionnaire_tab_page.click_add_question_link()
+        questionnaire_tab_page.set_question_title("some question")
+        questionnaire_tab_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
+        all_projects_page = self.global_navigation.navigate_to_view_all_project_page()
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
+        modified_warning_dialog.save_changes()
+        self._expect_redistribute_dialog_to_be_shown()
+        all_projects_page.wait_for_page_to_load()
+        all_projects_page.navigate_to_project_overview_page(self.project_name).navigate_to_questionnaire_tab()
+        self.assertIn("some question", questionnaire_tab_page.get_existing_question_list(), "Newly added question should be saved")
 
     def do_sms_submission(self, questionnaire_code, sms_data, project_title):
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)

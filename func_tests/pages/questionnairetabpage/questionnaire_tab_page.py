@@ -46,8 +46,10 @@ class QuestionnaireTabPage(Page):
         for question in fetch_(QUESTIONS, from_(questionnaire_data)):
             self.add_question(question)
 
+
     def get_questionnaire_title(self):
-        return self.driver.find_text_box(by_css(".project_title")).text
+        return self.driver.find_text_box(by_id("questionnaire_title")).get_attribute("value")
+
 
     def get_existing_question_list(self):
         questions = self.driver.find_elements_(by_css("#qns_list li > a"))
@@ -63,6 +65,7 @@ class QuestionnaireTabPage(Page):
         if gen_random:
             project_name += generateId()
         self.driver.find_text_box(PROJECT_NAME_TB).enter_text(project_name)
+        return project_name
 
     def create_questionnaire_to_work_performed_subjects_with(self, questionnaire_data):
         """
@@ -327,7 +330,7 @@ class QuestionnaireTabPage(Page):
 
         Return title
         """
-        return "Questionnaire"
+        return self.driver.wait_for_page_with_title
 
 
     def get_word_type_question(self):
@@ -435,9 +438,6 @@ class QuestionnaireTabPage(Page):
     def get_questionnaire_code(self):
         return self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).get_attribute("value")
 
-    def get_questionnaire_title(self):
-        return self.driver.find_text_box(by_id("questionnaire_title")).get_attribute("value")
-
     def get_option_by_index_for_multiple_choice_question(self, index):
         code = self.driver.find(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_S_XPATH_LOCATOR)).text
         text = self.driver.find_text_box(
@@ -530,7 +530,7 @@ class QuestionnaireTabPage(Page):
         if locator and locator.is_displayed():
             locator.click()
 
-    def submit_questionnaire(self, click_ok=True):
+    def submit_questionnaire(self):
         self.driver.find(by_id("submit-button")).click()
 
     def change_question_type(self, question):

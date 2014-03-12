@@ -92,13 +92,15 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
 
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
         create_questionnaire_page = self.create_questionnaire_page
-        modified_warning_dialog = QuestionnaireModifiedDialog(TestCreateBlankQuestionnaire.driver)
+        modified_warning_dialog = QuestionnaireModifiedDialog(self.driver)
         project_name = create_questionnaire_page.type_project_name(DIALOG_PROJECT_DATA)
-        self._verify_edit_dialog_ignore_changes(create_questionnaire_page, modified_warning_dialog, project_name)
+        self._verify_edit_dialog_cancel(modified_warning_dialog)
+        self._verify_edit_dialog_ignore_changes(modified_warning_dialog, project_name)
         all_projects_page = ProjectsPage(self.driver)
-        self._verify_edit_dialog_save_changes(all_projects_page, create_questionnaire_page, modified_warning_dialog)
+        self._verify_edit_dialog_save_changes(all_projects_page, modified_warning_dialog)
 
-    def _verify_cancel_edit_dialog(self, create_questionnaire_page, modified_warning_dialog):
+    def _verify_edit_dialog_cancel(self, modified_warning_dialog):
+        create_questionnaire_page = self.create_questionnaire_page
         create_questionnaire_page.click_add_question_link()
         create_questionnaire_page.set_question_title("some question")
         create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
@@ -109,14 +111,14 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         self.assertEqual(create_questionnaire_page.get_page_title(), "Create a New Questionnaire",
                          "Should continue to stay on questionnaire page")
 
-    def _verify_edit_dialog_ignore_changes(self, create_questionnaire_page, modified_warning_dialog, project_name):
-        self._verify_cancel_edit_dialog(create_questionnaire_page, modified_warning_dialog)
+    def _verify_edit_dialog_ignore_changes(self, modified_warning_dialog, project_name):
         all_projects_page = self.global_navigation.navigate_to_view_all_project_page()
         self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
         modified_warning_dialog.ignore_changes()
         self.assertFalse(all_projects_page.is_project_present(project_name), "Project should not have been saved")
 
-    def _verify_edit_dialog_save_changes(self, all_projects_page, create_questionnaire_page, modified_warning_dialog):
+    def _verify_edit_dialog_save_changes(self, all_projects_page, modified_warning_dialog):
+        create_questionnaire_page = self.create_questionnaire_page
         all_projects_page.navigate_to_create_project_page().select_blank_questionnaire_creation_option()
         project_name = create_questionnaire_page.type_project_name(DIALOG_PROJECT_DATA)
         create_questionnaire_page.click_add_question_link()

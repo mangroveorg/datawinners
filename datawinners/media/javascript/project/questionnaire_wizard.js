@@ -4,7 +4,6 @@ function _isQuestionnaireChanged() {
            DW.isQuestionsReOrdered(question_list) || existing_questionnaire_code != questionnaireViewModel.questionnaireCode();
 }
 $(document).ready(function () {
-    DW.questionnaire_was_changed = false;
     DW.init_inform_datasender_about_changes();
     DW.init_empty_questionnaire_warning();
     var options = {
@@ -26,8 +25,8 @@ $(document).ready(function () {
     questionnaireViewModel.isEditMode = true;
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
     ko.applyBindings(questionnaireViewModel);
-
     DW.charCount();
+    DW.questionnaire_was_changed = false;
     $('#question_form').live("keyup", DW.charCount);
     $('#question_form').live("click", DW.charCount);
     $('.delete').live("click", DW.charCount);
