@@ -1,14 +1,15 @@
 import unittest
 from unittest.case import SkipTest
+from mangrove.form_model.validators import UniqueIdExistsValidator
 from mangrove.utils.test_utils.database_utils import safe_define_type, uniq
 
-from mock import Mock, patch
+from mock import Mock, patch, MagicMock
 
 from mangrove.bootstrap import initializer
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
-from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, TelephoneNumberField
+from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, TelephoneNumberField, UniqueIdField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, get_form_model_by_code
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder, QuestionBuilder
 from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint, NumericRangeConstraint
@@ -20,6 +21,25 @@ FORM_CODE_1 = uniq("1")
 
 
 class TestQuestionnaireBuilder(unittest.TestCase):
+    def test_should_add_unique_id_validator_to_form_model_if_unique_id_field_is_present(self):
+        dbm = Mock(spec=DatabaseManager)
+        form_model = MagicMock(spec=FormModel)
+        form_model.fields = [UniqueIdField('clinic', 'name', 'code', 'label')]
+
+        QuestionnaireBuilder(form_model, dbm).update_unique_id_validator()
+
+        form_model.add_validator.assert_called_once_with(UniqueIdExistsValidator)
+
+    def test_should_remove_unique_id_validator_if_unique_id_field_is_not_present(self):
+        dbm = Mock(spec=DatabaseManager)
+        form_model = MagicMock(spec=FormModel)
+        form_model.fields = [TextField('name', 'code', 'label')]
+
+        QuestionnaireBuilder(form_model, dbm).update_unique_id_validator()
+
+        form_model.remove_validator.assert_called_once_with(UniqueIdExistsValidator)
+
+class TestQuestionnaireBuilderIT(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manager = get_db_manager('http://localhost:5984/', uniq('mangrove-test'))
@@ -75,7 +95,8 @@ class TestQuestionnaireBuilder(unittest.TestCase):
                  "min_length": 1, "max_length": ""},
                 {"title": "q2", "type": "integer", "choices": [], "is_entity_question": False, "code": "code",
                  "range_min": 0, "range_max": 100},
-                {"title": "q3", "type": "select", "code": "code", "choices": [{"value": {"val": "c1"}}, {"value": {"val": "c2"}}],
+                {"title": "q3", "type": "select", "code": "code",
+                 "choices": [{"value": {"val": "c1"}}, {"value": {"val": "c2"}}],
                  "is_entity_question": False}
         ]
         summary_form_model = self.manager.get(self.summary_form_model__id, FormModel)
@@ -115,22 +136,6 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         expect = [(each['code'], each['label']) for each in original_fields]
         self.assertListEqual(expect, [(each.code, each.label) for each in form_model.snapshots[revision]])
 
-    @SkipTest #todo Should check for changed fields before creating snapshot
-    def test_should_not_save_snapshots_when_questionnaires_field_not_changed(self):
-        form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
-        snapshots_before_modification = len(form_model.snapshots)
-
-        post = [
-            {"title": "What is associated entity", "type": "text",
-             "is_entity_question": True, "code": "ID", "name": "entity_question"},
-            {"title": "What is your name", "type": "text",
-             "is_entity_question": False, "code": "Q1", "range_min": 5, "range_max": 10}]
-        QuestionnaireBuilder(form_model, self.manager).update_questionnaire_with_questions(post)
-        form_model.save()
-        form_model = get_form_model_by_code(self.manager, FORM_CODE_1)
-
-        self.assertEqual(snapshots_before_modification, len(form_model.snapshots))
-
 
 class TestQuestionBuilder(unittest.TestCase):
     def setUp(self):
@@ -138,8 +143,8 @@ class TestQuestionBuilder(unittest.TestCase):
         self.question_builder = QuestionBuilder(self.dbm)
 
     def test_creates_questions_from_dict(self):
-        post = [{"title": "q1", "description": "desc1", "type": "text", "choices": [],
-                 "is_entity_question": True, "min_length": 1, "max_length": 15},
+        post = [{"title": "q1", "description": "desc1", "type": "unique_id", "choices": [],
+                 "min_length": 1, "unique_id_type": "clinic"},
                 {"title": "q2", "description": "desc2", "type": "integer", "choices": [],
                  "is_entity_question": False, "range_min": 0, "range_max": 100},
                 {"title": "q3", "description": "desc3", "type": "select",
@@ -148,19 +153,20 @@ class TestQuestionBuilder(unittest.TestCase):
                 {"title": "q4", "description": "desc4", "type": "select1",
                  "choices": [{"value": {"text": "value", "val": "c1"}}, {"value": {"text": "value", "val": "c2"}}],
                  "is_entity_question": False},
-                {"title": "q5", "description": "desc4", "type": "text"}
+                {"title": "q5", "description": "desc4", "type": "text"},
+
         ]
         q1 = self.question_builder.create_question(post[0], "q1")
         q2 = self.question_builder.create_question(post[1], "q1")
         q3 = self.question_builder.create_question(post[2], "q1")
         q4 = self.question_builder.create_question(post[3], "q1")
         q5 = self.question_builder.create_question(post[4], "q1")
-        self.assertIsInstance(q1, TextField)
+        self.assertIsInstance(q1, UniqueIdField)
         self.assertIsInstance(q2, IntegerField)
         self.assertIsInstance(q3, SelectField)
         self.assertIsInstance(q4, SelectField)
         self.assertIsInstance(q5, TextField)
-        self.assertEquals(q1._to_json_view()["length"], {"min": 1, "max": 15})
+        self.assertEquals(q1._to_json_view()["type"], "unique_id")
         self.assertEquals(q2._to_json_view()["range"], {"min": 0, "max": 100})
         self.assertEquals(q3._to_json_view()["type"], "select")
         self.assertEquals(q4._to_json_view()["type"], "select1")
@@ -211,7 +217,7 @@ class TestQuestionBuilder(unittest.TestCase):
     def test_should_create_select_question(self):
         LABEL = "q3"
         TYPE = "select"
-        choices = [{"value":{"text": "first", "val": "c1"}}, {"value":{"text": "second", "val": "c2"}}]
+        choices = [{"value": {"text": "first", "val": "c1"}}, {"value": {"text": "second", "val": "c2"}}]
 
         post = {"title": LABEL, "type": TYPE, "choices": choices}
 
