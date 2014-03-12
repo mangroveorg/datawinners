@@ -1052,3 +1052,24 @@ msgstr ""
 
 msgid "Max should be greater than min."
 msgstr ""
+
+msgid "Select an Answer Type"
+msgstr "Sélectionnez un type de réponse"
+
+msgid "Word or Phrase"
+msgstr ""
+
+msgid "Number"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "List of Choices"
+msgstr ""
+
+msgid "GPS Coordinates"
+msgstr ""
+
+msgid "Telephone number"
+msgstr ""

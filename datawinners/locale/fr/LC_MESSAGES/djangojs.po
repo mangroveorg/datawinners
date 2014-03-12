@@ -1103,3 +1103,25 @@ msgstr "Insérer un nom pour ce Questionnaire"
 
 msgid "Delete this Questionnaire"
 msgstr "Supprimer ce questionnaire"
+
+msgid "Select an Answer Type"
+msgstr "Sélectionnez un type de réponse"
+
+msgid "Word or Phrase"
+msgstr "Mot"
+
+msgid "Number"
+msgstr "Chiffre"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "List of Choices"
+msgstr "Liste de choix"
+
+msgid "GPS Coordinates"
+msgstr "Coordonnées GPS"
+
+msgid "Telephone number"
+msgstr "Telephone number"
+

@@ -25,13 +25,13 @@ var subjectQuestionnaireViewModel = {
     locationType: {name: 'Location', value: 'list'},
 
     answerTypes: [
-        {name: 'Select an Answer Type', value: ''},
-        {name: 'Word or Phrase', value: 'text'},
-        {name: 'Number', value: 'integer'},
-        {name: 'Date', value: 'date'},
-        {name: 'List of Choices', value: 'choice'},
-        {name: 'GPS Coordinates', value: 'geocode'},
-        {name: 'Telephone number', value: 'telephone_number'}
+        {name: gettext('Select an Answer Type'), value: ''},
+        {name: gettext('Word or Phrase'), value: 'text'},
+        {name: gettext('Number'), value: 'integer'},
+        {name: gettext('Date'), value: 'date'},
+        {name: gettext('List of Choices'), value: 'choice'},
+        {name: gettext('GPS Coordinates'), value: 'geocode'},
+        {name: gettext('Telephone number'), value: 'telephone_number'}
     ],
 
     removeLocationTypeOption: function () {
