@@ -211,3 +211,8 @@ DW.isWhiteSpacesPresent = function (val) {
     return list.length > 1;
 };
 
+questionnaireViewModel.getQuestionCodes = function(){
+    return ko.utils.arrayMap(questionnaireViewModel.questions(), function (question) {
+        return question.code();
+    });
+}

@@ -559,7 +559,7 @@ DW.set_questionnaire_was_change = function () {
 $(document).ready(function () {
     //TODO: Move to KO viewModel
     var change_selector = "#range_min, #range_max, #max_length, [name=text_length], [name=date_format], #question_title";
-    change_selector += ", [name=answers_possible], [name=type]";
+    change_selector += ", [name=answer_type], [name=type]";
 
     $(document).on('change', change_selector, DW.set_questionnaire_was_change);
     //END
@@ -579,14 +579,12 @@ $(document).ready(function () {
 });
 
 
+
 DW.isQuestionsReOrdered = function (existing_questions) {
     var new_question_codes = ko.utils.arrayMap(questionnaireViewModel.questions(), function (question) {
         return question.code();
     });
-    var old_questions_codes = ko.utils.arrayMap(existing_questions, function (question) {
-        return question.code;
-    });
-    return !_.isEqual(new_question_codes, old_questions_codes)
+    return !_.isEqual(new_question_codes, DW.existing_question_codes);
 };
 
 DW.addNewQuestion = function () {

@@ -13,7 +13,9 @@ $(document).ready(function () {
                   };
     new DW.CancelQuestionnaireWarningDialog(options).init();
     var index;
+    DW.existing_question_codes = [];
     for (index in question_list) {
+        DW.existing_question_codes.push(question_list[index].code);
         var questions = new DW.question(question_list[index]);
         questionnaireViewModel.loadQuestion(questions);
     }
@@ -73,12 +75,14 @@ $(document).ready(function () {
                     if (_isQuestionnaireChanged()) {
                         questionnaireViewModel.set_all_questions_as_old_questions();
                         existing_questionnaire_code = questionnaireViewModel.questionnaireCode();
+                        DW.questionnaire_was_changed = false;
+                        DW.existing_question_codes = questionnaireViewModel.getQuestionCodes();
                         if(callBack)
                             DW.inform_datasender_about_changes.continue_handler = function(){
                                 callBack();
                             };
                         DW.inform_datasender_about_changes.show_warning();
-                        DW.questionnaire_was_changed = false;
+
                     }
                     hide_message();
                 }
