@@ -36,12 +36,11 @@
 
         <div class="create_project">
             <div class="grid_5">
-                <a data-bind="click: backToQuestionnaireCreationOptionsLink"
-                   id="back_to_project">{% trans "Back" %} </a>
+                <a href="#create" id="back_to_create_options">{% trans "Back" %} </a>
             </div>
             <div class="grid_15 float_right">
                 <div class="right_aligned_button">
-                    <a href={{ cancel_link }} class="cancel_project">{% trans "Cancel" %} </a>
+                    <a href={{ cancel_link }} class="cancel_project" id="cancel_questionnaire">{% trans "Cancel" %} </a>
                     <input type="button" class="button_wizard_next" id="save_and_create"
                            value="{% trans "Save & Create Questionnaire" %}"/>
                 </div>

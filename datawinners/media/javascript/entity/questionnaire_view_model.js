@@ -18,10 +18,6 @@ var questionnaireViewModel =
 
     showQuestionnaireForm: ko.observable(),
 
-    backToQuestionnaireCreationOptionsLink: function () {
-        location.hash = '';
-    },
-
     addQuestion: function () {
         var question = new DW.question();
         question.newly_added_question(true);

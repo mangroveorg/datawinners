@@ -673,13 +673,12 @@ DW.CancelQuestionnaireWarningDialog = function(options){
     };
 
     var _redirect = function() {
-        if (redirect_url != "#")
-            window.location.href = redirect_url;
+        window.location.href = redirect_url;
         return true;
     };
 
     var _initializeLinkBindings = function(){
-        $("a[href]:visible").not([".add_link", ".preview-navigation a"]).bind('click', {self:this}, function (event) {
+        $("a[href]:visible, a#back_to_create_options, a#cancel_questionnaire").not(".add_link, .preview-navigation a, .sms_tester, .delete_project").bind('click', {self:this}, function (event) {
                 var that = event.data.self;
                 redirect_url = $(this).attr("href");
                 if (isQuestionnaireModified()){

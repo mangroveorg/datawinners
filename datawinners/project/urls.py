@@ -16,6 +16,7 @@ js_info_dict = {
 }
 urlpatterns = patterns('',
                        (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+                       url(r'^project/$', index, name="index"),
                        (r'^project/disassociate/$', DisassociateDataSendersView.as_view()),
                        url(r'^project/questionnaire/(?P<project_id>\w+?)/$', questionnaire, name='questionnaire'),
                        url(r'^project/register_subjects/(?P<project_id>\w+?)/$', subject_web_questionnaire,
@@ -37,7 +38,6 @@ urlpatterns = patterns('',
 
                        url(r'^project/wizard/edit/(?P<project_id>\w+?)/$', edit_project, name="edit_project"),
                        (r'^project/questionnaire/save$', save_questionnaire),
-                       url(r'^project/$', index, name="index"),
                        url(r'^project/overview/(?P<project_id>\w+?)/$', project_overview, name="project-overview"),
                        url(r'^project/registered_subjects/(?P<project_id>.+?)/$', registered_subjects,
                            name="registered_subjects"),
