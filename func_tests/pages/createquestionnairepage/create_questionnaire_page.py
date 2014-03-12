@@ -54,6 +54,7 @@ class CreateQuestionnairePage(Page):
         if gen_random:
             project_name += generateId()
         self.driver.find_text_box(PROJECT_NAME_TB).enter_text(project_name)
+        return project_name
 
     def create_questionnaire_to_work_performed_subjects_with(self, questionnaire_data):
         """
@@ -306,12 +307,10 @@ class CreateQuestionnairePage(Page):
 
 
     def get_page_title(self):
-        """
-        Function to return the page title
-
-        Return title
-        """
-        return "Questionnaire"
+        try:
+            return self.driver.find_element_by_css_selector('.project_title').text
+        except NoSuchElementException:
+            return ""
 
 
     def get_word_type_question(self):
@@ -554,6 +553,7 @@ class CreateQuestionnairePage(Page):
             return question_title_validation_message.is_displayed(), question_title_validation_message.text
         except NoSuchElementException:
             return False, ""
+
 
     def get_existing_questions_count(self):
         return len(self.driver.find_elements_(by_css("#qns_list li")))

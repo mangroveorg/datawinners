@@ -20,6 +20,9 @@ class ProjectsPage(Page):
         self.driver.find(CREATE_A_NEW_PROJECT_LINK).click()
         return QuestionnaireCreationOptionsPage(self.driver)
 
+    def wait_for_page_to_load(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id('create_project_link'), True)
+
     def navigate_to_project_overview_page(self, project_name):
         """
         Function to navigate to specific project overview page

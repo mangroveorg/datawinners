@@ -235,3 +235,6 @@ QUESTIONNAIRE_TAB_SUBMISSION_SMS = {SENDER: "1234123413",
              RECEIVER: '+919880734937',
              SMS: "%s 20",
              SUCCESS_MESSAGE: THANKS % "Tester"}
+
+
+DIALOG_PROJECT_DATA = {PROJECT_NAME: "Some Dialog project", GEN_RANDOM: True}

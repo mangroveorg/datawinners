@@ -3,15 +3,17 @@ from framework.base_test import setup_driver, teardown_driver
 from pages.createquestionnairepage.create_questionnaire_page import MANDATORY_FIELD_ERROR_MESSAGE
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
+from pages.projectspage.projects_page import ProjectsPage
+from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS
+from tests.projects.questionnairetests.project_questionnaire_data import QUESTIONS_WITH_INVALID_ANSWER_DETAILS, WATERPOINT_QUESTIONNAIRE_DATA, QUESTIONS, DIALOG_PROJECT_DATA
 
 
 class TestCreateBlankQuestionnaire(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver(browser="phantom")
+        cls.driver = setup_driver(browser="firefox")
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
@@ -85,6 +87,44 @@ class TestCreateBlankQuestionnaire(unittest.TestCase):
         create_questionnaire_page.submit_errored_questionnaire()
         self.assertEqual(create_questionnaire_page.get_duplicate_questionnaire_code_error_message(),
                          "Questionnaire with this code already exists", "Duplicate questionnaire code should show up")
+
+    def _verify_cancel_edit_dialog(self, create_questionnaire_page, modified_warning_dialog):
+        create_questionnaire_page.click_add_question_link()
+        create_questionnaire_page.set_question_title("some question")
+        create_questionnaire_page.change_question_type(QUESTIONS_WITH_INVALID_ANSWER_DETAILS[0])
+        create_questionnaire_page.submit_errored_questionnaire()
+        self.global_navigation.navigate_to_dashboard_page()
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
+        modified_warning_dialog.cancel()
+        self.assertEqual(create_questionnaire_page.get_page_title(), "Create a New Questionnaire",
+                         "Should continue to stay on questionnaire page")
+
+    def _verify_edit_dialog_ignore_changes(self, create_questionnaire_page, modified_warning_dialog, project_name):
+        self._verify_cancel_edit_dialog(create_questionnaire_page, modified_warning_dialog)
+        all_projects_page = self.global_navigation.navigate_to_view_all_project_page()
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog")
+        modified_warning_dialog.ignore_changes()
+        self.assertFalse(all_projects_page.is_project_present(project_name), "Project should not have been saved")
+
+    def _verify_edit_dialog_save_changes(self, all_projects_page, create_questionnaire_page, modified_warning_dialog):
+        all_projects_page.navigate_to_create_project_page().select_blank_questionnaire_creation_option()
+        project_name = create_questionnaire_page.type_project_name(DIALOG_PROJECT_DATA)
+        create_questionnaire_page.click_add_question_link()
+        create_questionnaire_page.set_question_title("some question")
+        create_questionnaire_page.change_question_type(WATERPOINT_QUESTIONNAIRE_DATA[QUESTIONS][0])
+        all_projects_page = self.global_navigation.navigate_to_view_all_project_page()
+        self.assertTrue(modified_warning_dialog.is_visible(), "Should show modified warning dialog");
+        modified_warning_dialog.save_changes()
+        all_projects_page.wait_for_page_to_load()
+        self.assertTrue(all_projects_page.is_project_present(project_name.lower()), "Project should be saved")
+
+    def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
+        create_questionnaire_page = self.create_questionnaire_page
+        modified_warning_dialog = QuestionnaireModifiedDialog(TestCreateBlankQuestionnaire.driver)
+        project_name = create_questionnaire_page.type_project_name(DIALOG_PROJECT_DATA)
+        self._verify_edit_dialog_ignore_changes(create_questionnaire_page, modified_warning_dialog, project_name)
+        all_projects_page = ProjectsPage(self.driver)
+        self._verify_edit_dialog_save_changes(all_projects_page, create_questionnaire_page, modified_warning_dialog)
 
     def _validate_max_length_for_invalid_entry(self):
         create_questionnaire_page = self.create_questionnaire_page
