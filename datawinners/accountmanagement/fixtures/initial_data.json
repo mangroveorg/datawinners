@@ -227,17 +227,6 @@
         }
     },
     {
-        "pk": 1,
-        "model": "accountmanagement.ngouserprofile",
-        "fields": {
-            "reporter_id": "rep276",
-            "org_id": "SLX364903",
-            "mobile_phone": "123456",
-            "user": 1,
-            "title": "Mr."
-        }
-    },
-    {
         "pk": 2,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
@@ -497,41 +486,11 @@
         }
     },
     {
-        "pk": 1,
-        "model": "registration.registrationprofile",
-        "fields": {
-            "activation_key": "ALREADY_ACTIVATED",
-            "user": 1
-        }
-    },
-    {
         "pk": 2,
         "model": "registration.registrationprofile",
         "fields": {
             "activation_key": "20d000226e38f51cf8f29711591d1b3fa4e7481f",
             "user": 2
-        }
-    },
-    {
-        "pk": 1,
-        "model": "auth.user",
-        "fields": {
-                "username": "tester150411@gmail.com",
-            "first_name": "Tester",
-            "last_name": "Pune",
-            "is_active": true,
-            "is_superuser": true,
-            "is_staff": false,
-            "last_login": "2011-04-17 04:46:57",
-            "groups": [
-                   1
-            ],
-            "user_permissions": [
-
-            ],
-            "password": "sha1$64c7c$408711ddd5e4e6ba7d4865dd350b7509124f3e86",
-            "email": "tester150411@gmail.com",
-            "date_joined": "2011-04-17 04:46:57"
         }
     },
     {
