@@ -20,7 +20,7 @@
         {% if messages %}
     {% for message in messages %}
     <div id="undelete_project_section" class="text_align_left success-message-box">
-    <span>{% trans "Your project has been deleted" %}. </span><a id="undo_delete_project" href="{{ message }}">{% trans "Undo Delete" %}</a>
+    <span>{% trans "Your questionnaire has been deleted" %}. </span><a id="undo_delete_project" href="{{ message }}">{% trans "Undo Delete" %}</a>
     </div>
     {% endfor %}
 {% endif %}
@@ -46,7 +46,7 @@
     <div id="delete_project_block">
         <p class="warning_message">{% trans "Export all submissions prior to deleting your questionnaire." %}</p>
         <a href="#" class="cancel_link cancel_{% trans "en" %}" >{% trans "Cancel" %}</a>
-        <a href="#" class="button" id="confirm_delete">{% trans "Delete Project Now" %}</a>
+        <a href="#" class="button" id="confirm_delete">{% trans "Delete Questionnaire Now" %}</a>
     </div>
 
 {% endblock %}

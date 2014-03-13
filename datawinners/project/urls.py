@@ -32,7 +32,7 @@ urlpatterns = patterns('',
                            subject_registration_form_preview, name="subject_registration_form_preview"),
                        url(r'^project/preview/sender_registration_form/preview/(?P<project_id>\w+?)/$',
                            sender_registration_form_preview, name="sender_registration_form_preview"),
-                       (r'^project/wizard/create/$', create_project),
+                       url(r'^project/wizard/create/$', create_project, name="create_project"),
                        (r'^project/template/(?P<template_id>\w+?)/$', get_template_details),
                        (r'^project/templates/$', get_templates),
 

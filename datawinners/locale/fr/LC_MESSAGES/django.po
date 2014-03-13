@@ -86,8 +86,8 @@ msgstr "Veuillez entrer un email et un mot de passe valide"
 msgid "This account is inactive."
 msgstr "Ce compte n'est pas activé"
 
-msgid "Projects"
-msgstr "Projets"
+msgid "Questionnaires"
+msgstr "Questionnaires"
 
 msgid "Data Senders"
 msgstr "Expéditeurs de données"
@@ -487,8 +487,8 @@ msgstr "Administration de DataWinners"
 msgid "Failed Submissions"
 msgstr "Erreurs d'envoi"
 
-msgid "Data per Project"
-msgstr "Données par projet"
+msgid "Data per Questionnaire"
+msgstr "Données par Questionnaire"
 
 msgid "Use DataWinners' API to export your data in JSON format."
 msgstr "Utiliser une interface de Programmation (API) de DataWinners pour exporter vos données au format JSON."
@@ -591,8 +591,8 @@ msgstr "Tous les enregistrements"
 msgid "Web Submissions"
 msgstr "Envois Web"
 
-msgid "Back to Project List"
-msgstr "Retourner à la Liste de Projet"
+msgid "Back to Questionnaire List"
+msgstr "Retourner à la Liste de Questionnaires"
 
 msgid "Fill out the following Questionnaire and click on Submit."
 msgstr "Remplissez le Questionnaire suivant et cliquez sur «Soumettre»."
@@ -635,8 +635,8 @@ msgstr "Erreur"
 msgid "Errors"
 msgstr "Erreurs"
 
-msgid "go to this project"
-msgstr "Aller à ce projet"
+msgid "go to this questionnaire"
+msgstr "Aller à ce questionnaire"
 
 msgid "No submissions present for this project"
 msgstr "Aucune donnée pour ce projet"
@@ -654,7 +654,7 @@ msgstr "Une fois que vous avez créé des questionnaires, la liste de vos %(text
 msgid "To get started with DataWinners"
 msgstr "Pour commençer à utiliser DataWinners"
 
-msgid "order_to_create_questionnaire"
+msgid "order_to_create_project"
 msgstr "créez un nouveau questionnaire"
 
 msgid "Add a data sender"
@@ -820,8 +820,8 @@ msgstr "Diagramme"
 msgid "Map"
 msgstr "Carte"
 
-msgid "Projects - Data Senders"
-msgstr "Projet - Expéditeurs"
+msgid "Questionnaires - Data Senders"
+msgstr "Questionnaires - Expéditeurs"
 
 msgid "Preview Data sender's questionnaire"
 msgstr "Aperçu du questionnaire de l'Expéditeur de Données"
@@ -1046,8 +1046,8 @@ msgstr "Attention : L'activation du projet va supprimer toutes ses données enre
 msgid "Export all submissions prior to deleting your project."
 msgstr "Veuillez exporter toutes les données avant de supprimer votre projet."
 
-msgid "Delete Project Now"
-msgstr "Supprimez le projet maintenant"
+msgid "Delete Questionnaire Now"
+msgstr "Supprimez le questionnaire maintenant"
 
 msgid "Date Received"
 msgstr "Date de réception"
@@ -1061,8 +1061,8 @@ msgstr "Statut"
 msgid "Submission Deleted"
 msgstr "Soumission supprimée"
 
-msgid "Projects - Overview"
-msgstr "Projets - Aperçu "
+msgid "Questionnaires - Overview"
+msgstr "Questionnaires - Aperçu "
 
 msgid ""
 "Review the basic information for your project. Click \"View\" to see the "
@@ -1099,8 +1099,8 @@ msgstr "Continuer"
 msgid "Save & Create Questionnaire"
 msgstr "Enregistrer & créer le Questionnaire"
 
-msgid "Create Project"
-msgstr "Créez projet"
+msgid "Create Questionnaire"
+msgstr "Créez questionnaire"
 
 msgid "Back"
 msgstr "Retour"
@@ -1396,11 +1396,8 @@ msgstr "Imprimer"
 msgid "SMS your answers to:"
 msgstr "Envoyez vos réponses par SMS à :"
 
-msgid "Project Name:"
-msgstr "Nom du projet :"
-
 msgid "Questionnarie Code:"
-msgstr "Code Questionnaire :"
+msgstr "Code Questionnaire:"
 
 msgid "Example:"
 msgstr "Exemple:"
@@ -1437,8 +1434,8 @@ msgstr "Sélectionner"
 msgid "Unique ID"
 msgstr "ID unique"
 
-msgid "Projects - Subjects"
-msgstr "Projets - Sujets"
+msgid "Questionnaires - Subjects"
+msgstr "Questionnaires - Sujets"
 
 msgid "Add Reminder"
 msgstr "Ajouter un message de rappel"
@@ -1447,7 +1444,7 @@ msgid "Save the reminders"
 msgstr "Enregistrez les messages de rappels"
 
 msgid ""
-"Reminders are not enabled for this project Please proceed to the next "
+"Reminders are not enabled for this questionnaire Please proceed to the next "
 "<a>step</a>"
 msgstr "Les Messages de rappel ne sont pas activés pour ce projet. Veuillez passer à <a>l'étape suivante</a>"
 
@@ -1472,8 +1469,8 @@ msgstr "Le nombre de messages à envoyer est de"
 msgid "Remove"
 msgstr "Supprimer"
 
-msgid "Project - Reminders"
-msgstr "Projet - Messages de rappel"
+msgid "Questionnaire - Reminders"
+msgstr "Questionnaire - Messages de rappel"
 
 msgid "Everyone"
 msgstr "Tous le monde"
@@ -1844,8 +1841,8 @@ msgstr "ID "
 msgid "Contact"
 msgstr "Contact"
 
-msgid "Your project has been deleted"
-msgstr "Votre projet a été supprimé"
+msgid "Your questionnaire has been deleted"
+msgstr "Votre questionnaire a été supprimé"
 
 msgid "Undo Delete"
 msgstr "Annuler Supprimer"
@@ -2044,8 +2041,8 @@ msgstr "Ajouter des Sujets"
 msgid "Set reminders"
 msgstr "Définir des Messages de Rappel"
 
-msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your project."
-msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre projet."
+msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your questionnaire."
+msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre questionnaire."
 
 msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."
 msgstr "Enregistrer chaque Sujet (exemples: patient, boutique de vente au détail, village) pour lesquel vous avez besoin de collecter des données et que vous souhaitez suivre sur une carte."
@@ -2116,8 +2113,8 @@ msgstr "Vos Expéditeurs de Données recevront une Confirmation automatique et d
 msgid "Your project"
 msgstr "Vos projet"
 
-msgid "You successfully created your project!"
-msgstr "Vous avez créé votre projet avec succès!"
+msgid "You successfully created your questionnaire!"
+msgstr "Vous avez créé votre questionnaire avec succès!"
 
 msgid "Now you can..."
 msgstr "Maintenant vous pouvez..."
@@ -2433,8 +2430,8 @@ msgstr "Facturation"
 msgid "Set Reminders"
 msgstr "Définir des rappels"
 
-msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your project"
-msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les expéditeurs de données associés à votre projet"
+msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your questionnaire"
+msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les expéditeurs de données associés à votre questionnaire"
 
 msgid "tooltip_devices"
 msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou via Internet. "
@@ -3000,7 +2997,7 @@ msgid "register_subject_for_projects_question"
 msgstr "Pourquoi devrais-je enregistrer des Sujets pour mes projets?"
 
 msgid "register_subject_for_projects_answer"
-msgstr "<ul class='bulleted'><li>Enregistrez vos sujets pour les visualiser sur la carte de lʼonglet Aperçu du Projet.</li>"
+msgstr "<ul class='bulleted'><li>Enregistrez vos sujets pour les visualiser sur la carte de lʼonglet Aperçu du Questionnaire.</li>"
 "<li>Enregistrez un numéro dʼidentiﬁcation unique pour chaque Sujet pour:"
 "<ul class='bulleted'><li>Améliorer la qualité de vos données.</li>"
 "<li>Rendre la collecte de données plus facile en réduisant le nombre de questions.</li>"
@@ -3019,7 +3016,7 @@ msgstr "<ol><li><a id='add_new_subject_type' href='javascript:void(0);'>Ajoutez 
 "Individuels concernant un sujet spéciﬁque.”</li></ol>"
 
 msgid "register_subject_for_project_question"
-msgstr "Pourquoi devrais-je enregistrer des Sujets pour mes projet?"
+msgstr "Pourquoi devrais-je enregistrer des Sujets pour mes questionnaire?"
 
 msgid "Enter a valid integer"
 msgstr "Entrez un entier valide"
@@ -4038,8 +4035,8 @@ msgstr "Votre compte est créé sur  %s"
 msgid "Submission Log"
 msgstr "Journal de Soumission"
 
-msgid "View and manage all Submissions for this project."
-msgstr "Voir et gérer toutes les Soumissions liées à ce projet."
+msgid "View and manage all Submissions for this questionnaire."
+msgstr "Voir et gérer toutes les Soumissions liées à ce questionnaire."
 
 msgid "If you modify this questionnaire, any previously collected data will be lost."
 msgstr "Si vous modifiez ce questionnaire, toutes les données recueillies ultérieurement seront perdues."
@@ -4230,11 +4227,11 @@ msgstr "Choisissez un Expéditeur de données dans la liste."
 msgid "disabled"
 msgstr "desactivés"
 
-msgid "My Data Senders linked to this project"
-msgstr "Mes Expéditeurs de données liés à ce Projet"
+msgid "My Data Senders linked to this questionnaire"
+msgstr "Mes Expéditeurs de données liés à ce questionnaire"
 
-msgid "All Data Senders of all projects"
-msgstr "Tous les Expéditeurs de données de tous les Projets"
+msgid "All Data Senders of all questionnaires"
+msgstr "Tous les Expéditeurs de données de tous les questionnaires"
 
 msgid "Do you want to send this message to <span id=\"number_of_peoples\"></span> recipient(s)?"
 msgstr "Voulez-vous envoyer ce message à <span id=\"number_of_peoples\"></span> destinataire(s)?"
@@ -4358,8 +4355,8 @@ msgstr "Utilisez uniquement des lettres (a-z), des chiffres et des espaces."
 msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
 msgstr "Vos 1000 soumissions gratuites ont été utilisées.Contactez votre Administrateur pour qu'il effectue un abonnement mensuel et vous pourriez soumettre vos données"
 
-msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects."
-msgstr "Vous avez atteint la limite de 1000 soumissions gratuite. Adoptez la version payante pour continuer à soumettre des donnés pour vos projets"
+msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your questionnaires."
+msgstr "Vous avez atteint la limite de 1000 soumissions gratuite. Adoptez la version payante pour continuer à soumettre des donnés pour vos questionnaires"
 
 msgid "Your DataWinners account has been deactivated. "
 msgstr "Votre compte DataWinners a été désactivé. "
@@ -4450,9 +4447,6 @@ msgstr "Importer"
 
 msgid "Remind them to download the updated version of the Import Submission template"
 msgstr "Rappelez-leur de télécharger la version mise à jour du modèle d'importation de Soumission"
-
-msgid "Your Most Recent Questionnaires"
-msgstr "Vos Questionnaire les plus récents"
 
 msgid "Statistics"
 msgstr "Statistiques"
@@ -4657,11 +4651,11 @@ msgstr "Descendre"
 msgid "Please add at least one question"
 msgstr "Ajoutez au moins une question"
 
-msgid "You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your projects."
-msgstr "Vous avez atteint votre limite de 1000 Soumissions gratuites. Veuillez passer à un abonnement mensuel pour continuer à soumettre des données pour vos projets."
+msgid "You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your questionnaires."
+msgstr "Vous avez atteint votre limite de 1000 Soumissions gratuites. Veuillez passer à un abonnement mensuel pour continuer à soumettre des données pour vos questionnaires."
 
 msgid "You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
-msgstr "Vous avez atteint la limite de 50 Soumissions SMS. Veuillez passer à un abonnement mensuel pour continuer à effectuer des Soumissions par SMS pour vos projets."
+msgstr "Vous avez atteint la limite de 50 Soumissions SMS. Veuillez passer à un abonnement mensuel pour continuer à effectuer des Soumissions par SMS pour vos questionnaires."
 
 msgid "Our Partners"
 msgstr "Nos Partenaires"
@@ -4711,4 +4705,8 @@ msgstr "Choisissez un modèle et modifiez-le selon vos besoins."
 msgid "Delete this Questionnaire"
 msgstr "Supprimer ce questionnaire"
 
+msgid "Your Most Recent Questionnaires"
+msgstr "Vos questionnaires les plus récents"
 
+msgid "Questionnaire Name:"
+msgstr "Questionnaire Nom:"

@@ -536,7 +536,7 @@ msgstr ""
 msgid "Web Submissions"
 msgstr ""
 
-msgid "Back to Project List"
+msgid "Back to Questionnaire List"
 msgstr ""
 
 msgid "Fill out the following Questionnaire and click on Submit."
@@ -584,7 +584,7 @@ msgstr ""
 msgid "This project is inactive"
 msgstr ""
 
-msgid "view all projects"
+msgid "view all questionnaires"
 msgstr ""
 
 msgid ""
@@ -594,7 +594,7 @@ msgstr ""
 msgid "To get started with DataWinners"
 msgstr ""
 
-msgid "order_to_create_questionnaire"
+msgid "order_to_create_project"
 msgstr "create a new questionnaire"
 
 msgid "Add a data sender"
@@ -778,7 +778,7 @@ msgstr ""
 msgid "Map"
 msgstr ""
 
-msgid "Projects - Data Senders"
+msgid "Questionnaires - Data Senders"
 msgstr ""
 
 msgid "Preview Data sender's questionnaire"
@@ -984,7 +984,7 @@ msgstr ""
 msgid "Export all submissions prior to deleting your project."
 msgstr ""
 
-msgid "Delete Project Now"
+msgid "Delete Questionnaire Now"
 msgstr ""
 
 msgid "Date Received"
@@ -999,7 +999,7 @@ msgstr ""
 msgid "Deleted Record"
 msgstr ""
 
-msgid "Projects - Overview"
+msgid "Questionnaires - Overview"
 msgstr ""
 
 msgid ""
@@ -1027,7 +1027,7 @@ msgstr ""
 msgid "Save & Create Questionnaire"
 msgstr ""
 
-msgid "Create Project"
+msgid "Create Questionnaire"
 msgstr ""
 
 msgid "Back"
@@ -1322,7 +1322,7 @@ msgstr ""
 msgid "SMS your answers to"
 msgstr ""
 
-msgid "Project Name:"
+msgid "Questionnaire Name:"
 msgstr ""
 
 msgid "Questionnarie Code:"
@@ -1362,7 +1362,7 @@ msgstr ""
 msgid "Unique ID"
 msgstr ""
 
-msgid "Projects - Subjects"
+msgid "Questionnaires - Subjects"
 msgstr ""
 
 msgid "Add Reminder"
@@ -1372,7 +1372,7 @@ msgid "Save the reminders"
 msgstr ""
 
 msgid ""
-"Reminders are not enabled for this project Please proceed to the next "
+"Reminders are not enabled for this questionnaire Please proceed to the next "
 "<a>step</a>"
 msgstr ""
 
@@ -1397,7 +1397,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-msgid "Project - Reminders"
+msgid "Questionnaire - Reminders"
 msgstr ""
 
 msgid "Everyone"
@@ -1779,7 +1779,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-msgid "Your project has been deleted"
+msgid "Your questionnaire has been deleted"
 msgstr ""
 
 msgid "Undo Delete"
@@ -1966,7 +1966,7 @@ msgstr ""
 msgid "Set reminders"
 msgstr ""
 
-msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your project."
+msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your questionnaire."
 msgstr ""
 
 msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."
@@ -2041,7 +2041,7 @@ msgstr "Your Data Senders will receive automatic Confirmation and Error messages
 msgid "Your project"
 msgstr ""
 
-msgid "You successfully created your project!"
+msgid "You successfully created your questionnaire!"
 msgstr ""
 
 msgid "Now you can..."
@@ -2101,9 +2101,6 @@ msgid "View"
 msgstr ""
 
 msgid "edit profile"
-msgstr ""
-
-msgid "Projects:"
 msgstr ""
 
 msgid "Associate"
@@ -2344,7 +2341,7 @@ msgstr ""
 msgid "Set Reminders"
 msgstr ""
 
-msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your project"
+msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your questionnaire"
 msgstr ""
 
 msgid "tooltip_devices"
@@ -2884,7 +2881,7 @@ msgid "register_subject_for_projects_question"
 msgstr "Why should I register Subjects for my projects?"
 
 msgid "register_subject_for_projects_answer"
-msgstr "<ul class='bulleted'><li>Register your Subjects to see them displayed on a map on your Project’s Overview tab.</li>"
+msgstr "<ul class='bulleted'><li>Register your Subjects to see them displayed on a map on your Questionaire’s Overview tab.</li>"
 "<li>Register a unique identiﬁcation number for each Subject to:"
 "<ul class='bulleted'><li>Improve the quality of your data.</li>"
 "<li>Make data collection easier by reducing the number of questions.</li>"
@@ -2903,7 +2900,7 @@ msgstr "<ol><li><a id='add_new_subject_type' href='javascript:void(0);'>Add a  S
 "Reports about a speciﬁc subject”.</li></ol>"
 
 msgid "register_subject_for_project_question"
-msgstr "Why should I register Subjects for my project?"
+msgstr "Why should I register Subjects for my questionnaire?"
 
 msgid "Enter a valid integer"
 msgstr ""
@@ -3945,7 +3942,7 @@ msgstr ""
 msgid "Submission Log"
 msgstr ""
 
-msgid "View and manage all Submissions for this project."
+msgid "View and manage all Submissions for this questionnaire."
 msgstr ""
 
 msgid "If you modify this questionnaire, any previously collected data will be lost."
@@ -4137,10 +4134,10 @@ msgstr ""
 msgid "disabled"
 msgstr ""
 
-msgid "My Data Senders linked to this project"
+msgid "My Data Senders linked to this questionnaire"
 msgstr ""
 
-msgid "All Data Senders of all projects"
+msgid "All Data Senders of all questionnaires"
 msgstr ""
 
 msgid "Do you want to send this message to <span id=\"number_of_peoples\"></span> recipient(s)?"
@@ -4257,7 +4254,7 @@ msgstr ""
 msgid "You have reached your limit of 1000 free Submissions. Ask your Project Manager to sign up for a monthly subscription to continue submitting data."
 msgstr ""
 
-msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your projects."
+msgid "You have reached your limit of 1000 free Submissions. Subscribe to a monthly subscription to continue submitting data for your questionnaires."
 msgstr ""
 
 msgid "Your DataWinners account has been deactivated. "
@@ -4445,10 +4442,10 @@ msgstr ""
 msgid "Please add at least one question"
 msgstr ""
 
-msgid "You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your projects."
+msgid "You have reached your limit of 1000 free Submissions.Upgrade to a monthly subscription to continue submitting data for your questionaires."
 msgstr ""
 
-msgid "You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your projects."
+msgid "You have reached your 50 SMS Submission limit. Upgrade to a monthly subscription to continue sending in SMS Submissions to your questionnaires."
 msgstr ""
 
 msgid "Our Partners"

@@ -14,7 +14,7 @@ var questionnaireHelperModel = {
                 questionnaireHelperModel.templateData(DW.getTemplateData(template_id));
                 questionnaireHelperModel.selectedTemplateId(template_id);
                 questionnaireHelperModel.showAjaxLoader(false);
-            },0);
+            }, 0);
         },
         templateGroupingData: ko.observable(),
         getTemplates: function () {
@@ -49,5 +49,4 @@ var questionnaireHelperModel = {
                 questionnaireHelperModel.gotoQuestionnaireLoader(question_template_id);
             }
         }
-    }
-    ;
+    };

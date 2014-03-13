@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load questionnaire_preview_tags %}
 
-{% block page_title %} {% trans "Projects - Data Senders" %} {% endblock %}
+{% block page_title %} {% trans "Questionnaires - Data Senders" %} {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -71,7 +71,7 @@
                 <h5>{{ org_number|format_organization_number }}</h5>
             </li>
             <li>
-                <p>{% trans "Project Name:" %}</p>
+                <p>{% trans "Questionnaire Name:" %}</p>
                 <h5>{{ project.name }}</h5>
             </li>
             <li>
