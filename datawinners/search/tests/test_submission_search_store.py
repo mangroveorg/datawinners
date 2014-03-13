@@ -3,7 +3,7 @@ from pyelasticsearch import ElasticSearch
 from mangrove.datastore.database import DatabaseManager
 from mock import Mock, MagicMock
 from datawinners.search.submission_index import SubmissionSearchStore
-from mangrove.form_model.field import TextField, DateField
+from mangrove.form_model.field import TextField, DateField, UniqueIdField
 from mangrove.form_model.form_model import FormModel
 
 
@@ -11,7 +11,7 @@ class TestSubmissionSearchStore(unittest.TestCase):
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
         fields = [DateField(name='q3', code='q3', label='Reporting date', date_format='dd.mm.yyyy'),
-             TextField(name="Q1", code="EID", label="What is the reporting date?", entity_question_flag=True)]
+             UniqueIdField(unique_id_type='clinic',name="Q1", code="EID", label="What is the clinic id?")]
         self.form_model = FormModel(self.dbm, "abc", "abc", entity_type=["clinic"], form_code="cli001", fields=fields,
                                     type="survey")
 

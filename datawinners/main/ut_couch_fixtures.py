@@ -16,7 +16,7 @@ from datawinners.feeds.database import get_feeds_database
 from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.initial_template_creation import create_questionnaire_templates
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
-from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
+from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField, UniqueIdField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.player import SMSPlayer
@@ -140,11 +140,9 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
         pass
 
 
-def create_questions(manager):
-    question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-                          entity_question_flag=True,
-                          constraints=[TextLengthConstraint(min=1, max=20)],
-                          instruction="Answer must be 12 characters maximum")
+def create_questions(unique_id_type):
+    question1 = UniqueIdField(unique_id_type=unique_id_type[0], label="What is associatéd entity?", code="EID",
+                              name="What is associatéd entity?", instruction="Answer must be 12 characters maximum")
     question2 = TextField(label="What is your namé?", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
                           defaultValue="some default value",
@@ -754,7 +752,7 @@ def create_project18(CLINIC_ENTITY_TYPE, manager, questions_):
 
 
 def create_project19(ENTITY_TYPE, manager):
-    questions_ = create_questions(manager)
+    questions_ = create_questions(ENTITY_TYPE)
     form_model19 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="peo019", type='survey',
                              fields=questions_,
@@ -779,10 +777,8 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
     clinic_code = "cli00_mp"
     project_name = "Clinic Test Project With Monthly Reporting Period"
 
-    question1 = TextField(label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
-                          entity_question_flag=True,
-                          constraints=[TextLengthConstraint(min=1, max=20)],
-                          instruction="Answer must be 12 characters maximum")
+    question1 = UniqueIdField(unique_id_type=CLINIC_ENTITY_TYPE[0],label="What is associatéd entity?", code="EID", name="What is associatéd entity?",
+                              instruction="Answer must be 12 characters maximum")
     question2 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
                           date_format="mm.yyyy",
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
@@ -811,7 +807,7 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
 def create_clinic_projects(entity_type, manager):
     organization = Organization.objects.get(pk='SLX364903')
     Reminder.objects.filter(organization=organization).delete()
-    questions = create_questions(manager)
+    questions = create_questions(entity_type)
 
     weekly_reminder_and_deadline = {
         "deadline_week": "5",
@@ -1408,9 +1404,7 @@ def load_sms_data_for_cli001(manager):
 
 def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)
-    question1 = TextField(label="entity_question", code="EID", name="What is associatéd entity?",
-                          entity_question_flag=True,
-                          constraints=[TextLengthConstraint(min=1, max=20)],
+    question1 = UniqueIdField(unique_id_type=CLINIC_ENTITY_TYPE[0],label="entity_question", code="EID", name="What is associatéd entity?",
                           instruction="Answer must be 12 characters maximum")
     question2 = TextField(label="Name", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
@@ -1505,7 +1499,7 @@ def load_data():
     WATER_POINT_ENTITY_TYPE = [u"waterpoint"]
     PEOPLE_ENTITY_TYPE = [u"people"]
     create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE, PEOPLE_ENTITY_TYPE])
-    
+
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
     create_clinic_projects(CLINIC_ENTITY_TYPE, manager)
@@ -1601,7 +1595,7 @@ def create_trial_organization(email, org_id, register_a_data_sender):
     CLINIC_ENTITY_TYPE = [u"clinic"]
     WATER_POINT_ENTITY_TYPE = [u"waterpoint"]
     create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
-    
+
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
 
@@ -1645,8 +1639,8 @@ def create_project_for_nigeria_test_orgnization():
     initializer.run(manager)
     CLINIC_ENTITY_TYPE = [u"clinic"]
     create_entity_types(manager, [CLINIC_ENTITY_TYPE])
-    
-    questions = create_questions(manager)
+
+    questions = create_questions(CLINIC_ENTITY_TYPE)
     weekly_reminder_and_deadline = {
         "deadline_week": "5",
         "deadline_type": "Same",
@@ -1668,5 +1662,5 @@ def register_datasender_for_quota_reached_ngo():
 
 def create_clinic3_project_for_quota_reached_ngo():
     manager = get_database_manager(User.objects.get(username="quotareached@mailinator.com"))
-    questions = create_questions(manager)
+    questions = create_questions([u"clinic"])
     create_project3([u"clinic"], manager, questions)
