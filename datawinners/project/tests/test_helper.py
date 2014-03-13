@@ -10,7 +10,7 @@ from datawinners.project.models import delete_datasenders_from_project, Project
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
+from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field, UniqueIdField
 from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from datawinners.scheduler.smsclient import SMSClient
@@ -23,8 +23,7 @@ class TestHelper(unittest.TestCase):
 
 
     def test_should_return_code_title_tuple_list(self):
-        question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
-                              entity_question_flag=True)
+        question1 = UniqueIdField(unique_id_type='clinic',label="entity_question", code="ID", name="What is associated entity")
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
                               defaultValue="some default value")
         code_and_title = [(each_field.code, each_field.name) for each_field in [question1, question2]]

@@ -5,7 +5,7 @@ from mock import patch, Mock, MagicMock
 from datawinners.project.models import Project
 from datawinners.project.submission.submission_import import SubmissionPersister, SubmissionWorkbookValidator, SubmissionWorkbookMapper, ImportValidationError
 from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.field import TextField
+from mangrove.form_model.field import TextField, UniqueIdField
 from mangrove.form_model.form_model import FormModel
 
 
@@ -97,7 +97,7 @@ class TestSubmissionPersister(TestCase):
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = True
             form_model.form_code = "form_code"
-            form_model.fields=[TextField(name="Q1", code="EID", label="What is the reporter ID?", entity_question_flag=True)]
+            form_model.fields=[UniqueIdField(unique_id_type ='reporter', name="Q1", code="EID", label="What is the reporter ID?")]
             form_model.entity_question.code = "eid"
 
             submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)

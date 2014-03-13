@@ -6,7 +6,7 @@ from datawinners.search.submission_index_helper import SubmissionIndexUpdateHand
 from datawinners.search.submission_query import SubmissionQueryBuilder
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import TextField, Field, GeoCodeField, SelectField, DateField
+from mangrove.form_model.field import TextField, Field, GeoCodeField, SelectField, DateField, UniqueIdField
 from mangrove.form_model.form_model import FormModel
 from datawinners.search.submission_index import _update_with_form_model_fields, update_submission_search_for_subject_edition
 from mangrove.datastore.documents import EnrichedSurveyResponseDocument, SurveyResponseDocument, DocumentBase, FormModelDocument
@@ -68,8 +68,7 @@ class TestSubmissionIndex(unittest.TestCase):
             search_dict)
 
     def test_should_update_submission_index_date_field_with_current_format(self):
-        fields = [TextField(name="entity_question", code="EID", label="What is associated entity",
-            entity_question_flag=True), DateField("date", "date", "Date", "dd.mm.yyyy")]
+        fields = [UniqueIdField(unique_id_type='clinic',name="entity_question", code="EID", label="What is associated entity"), DateField("date", "date", "Date", "dd.mm.yyyy")]
         form_model = FormModel(dbm=Mock(spec=DatabaseManager),form_code="001", type="survey", name="form", entity_type=["clinic"], fields = fields)
         form_model._doc.entity_type = ["clinic"]
         values = {'eid': 'cid005',

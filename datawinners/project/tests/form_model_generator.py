@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mock import Mock
-from mangrove.form_model.field import TextField, SelectField, DateField, GeoCodeField
+from mangrove.form_model.field import TextField, SelectField, DateField, GeoCodeField, UniqueIdField
 from mangrove.form_model.form_model import FormModel
 
 class FormModelGenerator(object):
@@ -32,8 +32,7 @@ class FormModelGenerator(object):
             fields=[self.eid_field, self.gps_field], entity_type=["clinic"])
 
     def init_form_model_fields(self):
-        self.eid_field = TextField(label="What is associated entity?", code="EID", name="What is associatéd entity?",
-            entity_question_flag=True)
+        self.eid_field = UniqueIdField(unique_id_type='clinic',label="What is associated entity?", code="EID", name="What is associatéd entity?")
         self.rp_field = DateField(label="Report date", code="RD", name="What is réporting date?",
             date_format="dd.mm.yyyy", event_time_field_flag=True,
             instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")

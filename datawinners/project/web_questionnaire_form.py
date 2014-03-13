@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from datawinners.entity.helper import get_country_appended_location
 from datawinners.project.questionnaire_fields import FormField, css_class
 from datawinners.questionnaire.helper import get_location_field_code
+from mangrove.form_model.field import UniqueIdField
 
 from mangrove.form_model.validation import TextLengthConstraint
 
@@ -57,7 +58,7 @@ class SurveyResponseForm(WebForm):
     def __init__(self, form_model, subject_question_creator, data=None, is_datasender=False):
         super(SurveyResponseForm, self).__init__(form_model, data)
         for field in self.form_model.fields:
-            if not field.is_entity_field:
+            if not isinstance(field,UniqueIdField):
                 self.fields[field.code] = FormField().create(field)
             else:
                 self.fields[field.code] = subject_question_creator.create(field, is_datasender=is_datasender)
