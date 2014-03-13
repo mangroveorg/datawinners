@@ -2,7 +2,7 @@ from unittest import TestCase
 from django.forms import RegexField, HiddenInput
 from mock import Mock
 from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.field import TextField
+from mangrove.form_model.field import TextField, UniqueIdField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, WebForm, SurveyResponseForm
@@ -13,7 +13,7 @@ class TestWebForm(TestCase):
         self.dbm = Mock(spec=DatabaseManager)
 
     def test_hidden_form_code_field_created(self):
-        entity_field = TextField("reporting on", "rep_on", "rep", entity_question_flag=True)
+        entity_field = UniqueIdField('clinic',"reporting on", "rep_on", "rep")
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
                                entity_type=['Clinic'], type="business")
         form = WebForm(form_model, None)

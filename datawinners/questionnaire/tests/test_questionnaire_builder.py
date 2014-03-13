@@ -54,13 +54,13 @@ class TestQuestionnaireBuilderIT(unittest.TestCase):
 
     @classmethod
     def _create_form_model(cls):
-        question1 = TextField(name="entity_question", code="ID", label="What is associated entity",
-                              entity_question_flag=True)
+        question1 = UniqueIdField(unique_id_type='clinic',name="entity_question", code="clinic ID", label="What is associated clinic")
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
                               defaultValue="some default value",
                               constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")])
+        question3 = UniqueIdField(unique_id_type='healthfacility',name="health entity_question", code="health facility ID", label="What is associated health facility")
         cls.form_model = FormModel(cls.manager, entity_type=cls.entity_type, name="aids", label="Aids form_model",
-                                   form_code=FORM_CODE_1, type='survey', fields=[question1, question2])
+                                   form_code=FORM_CODE_1, type='survey', fields=[question1, question2,question3])
         cls.form_model__id = cls.form_model.save()
 
     def _create_summary_form_model(self):

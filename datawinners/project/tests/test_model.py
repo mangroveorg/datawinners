@@ -12,7 +12,7 @@ from datawinners.project.models import Project, get_all_projects, get_all_projec
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.field import TextField
+from mangrove.form_model.field import TextField, UniqueIdField
 from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.form_model.validation import TextLengthConstraint
 
@@ -38,7 +38,7 @@ class TestProjectModel(unittest.TestCase):
 
     @classmethod
     def _create_form_model_for_project(cls, project):
-        question1 = TextField(name="entity_question", code="ID", label="What is associated entity", entity_question_flag=True)
+        question1 = UniqueIdField(unique_id_type='clinic',name="entity_question", code="ID", label="What is associated entity")
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
             defaultValue="some default value",
             constraints=[TextLengthConstraint(5, 10)])
