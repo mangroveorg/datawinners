@@ -1,14 +1,14 @@
 from unittest import TestCase
+
 from nose.plugins.attrib import attr
-from framework.base_test import BaseTest, setup_driver
-from framework.exception import CouldNotLocateElementException
-from framework.utils.common_utils import by_css
-from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
-from pages.loginpage.login_page import LoginPage, login, tester_login
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, LOGOUT
+
+from framework.base_test import setup_driver
+from pages.loginpage.login_page import login
+from testdata.test_data import LOGOUT
 from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDENTIALS
 from tests.remindertests.reminder_data import *
 from framework.utils.data_fetcher import fetch_, from_
+
 
 @attr('suit_3')
 class TestReminderSend(TestCase):
