@@ -100,10 +100,10 @@ def dashboard(request):
 
 @valid_web_user
 def start(request):
-    text_dict = {'project': _('Projects'), 'datasenders': _('Data Senders'),
+    text_dict = {'project': _('Questionnaires'), 'datasenders': _('Data Senders'),
                  'subjects': _('Subjects'), 'alldata': _('Data Records')}
 
-    tabs_dict = {'project': 'projects', 'datasenders': 'data_senders',
+    tabs_dict = {'project': 'questionnaires', 'datasenders': 'data_senders',
                  'subjects': 'subjects', 'alldata': 'all_data'}
     page = request.GET['page']
     page = page.split('/')

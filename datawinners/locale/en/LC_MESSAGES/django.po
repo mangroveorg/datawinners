@@ -588,14 +588,14 @@ msgid "view all projects"
 msgstr ""
 
 msgid ""
-" Once you have created projects, a list of your %(text)s will appear here."
+" Once you have created questionnaires, a list of your %(text)s will appear here."
 msgstr ""
 
 msgid "To get started with DataWinners"
 msgstr ""
 
-msgid "order_to_create_project"
-msgstr "create a new project"
+msgid "order_to_create_questionnaire"
+msgstr "create a new questionnaire"
 
 msgid "Add a data sender"
 msgstr ""
@@ -4341,7 +4341,7 @@ msgstr ""
 msgid "Invalid GPS value."
 msgstr ""
 
-msgid "Your Most Recent Projects"
+msgid "Your Most Recent Questionnaires"
 msgstr ""
 
 msgid "Submissions Received"

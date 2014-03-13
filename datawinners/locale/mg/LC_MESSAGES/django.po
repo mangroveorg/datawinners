@@ -527,16 +527,16 @@ msgid "view all projects"
 msgstr "Voir tous les projets"
 
 msgid ""
-" Once you have created projects, a list of your %(text)s will appear here."
+" Once you have created questionnaires, a list of your %(text)s will appear here."
 msgstr ""
-"Une fois que vous avez créé des projets, la liste de vos %(text)s apparaitront "
+"Une fois que vous avez créé des questionnaires, la liste de vos %(text)s apparaitront "
 "à cet endroit."
 
 msgid "To get started with DataWinners"
 msgstr "Pour commençer à utiliser DataWinners"
 
-msgid "order_to_create_project"
-msgstr "créez un nouveau projet"
+msgid "order_to_create_questionnaire"
+msgstr "créez un nouveau questionnaire"
 
 msgid "Add a data sender"
 msgstr "Ajoutez des Envoyeurs"

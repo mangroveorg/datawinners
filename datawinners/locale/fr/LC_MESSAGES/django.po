@@ -648,14 +648,14 @@ msgid "view all questionnaires"
 msgstr "Voir tous les questionnaires"
 
 msgid ""
-" Once you have created projects, a list of your %(text)s will appear here."
-msgstr "Une fois que vous avez créé des projets, la liste de vos %(text)s apparaitront à cet endroit."
+" Once you have created questionnaires, a list of your %(text)s will appear here."
+msgstr "Une fois que vous avez créé des questionnaires, la liste de vos %(text)s apparaitront à cet endroit."
 
 msgid "To get started with DataWinners"
 msgstr "Pour commençer à utiliser DataWinners"
 
-msgid "order_to_create_project"
-msgstr "créez un nouveau projet"
+msgid "order_to_create_questionnaire"
+msgstr "créez un nouveau questionnaire"
 
 msgid "Add a data sender"
 msgstr "Ajouter un Expéditeur"
@@ -4451,7 +4451,7 @@ msgstr "Importer"
 msgid "Remind them to download the updated version of the Import Submission template"
 msgstr "Rappelez-leur de télécharger la version mise à jour du modèle d'importation de Soumission"
 
-msgid "Your Most Recent Questionnaire"
+msgid "Your Most Recent Questionnaires"
 msgstr "Vos Questionnaire les plus récents"
 
 msgid "Statistics"
