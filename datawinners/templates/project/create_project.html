@@ -20,11 +20,13 @@
         var web_preview_link = "{{ preview_links.web_preview }}";
         var smart_phone_preview_link = "{{ preview_links.smart_phone_preview }}";
         var post_url = "{{ post_url }}";
-        var project_templates_url = "{% url project_templates%}";
+        var project_templates_url = "{% url project_templates %}";
+        var existing_questionnaires_url = "{% url existing_questionnaires %}";
     </script>
 
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/questionnaire_templates.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_creation_options_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>

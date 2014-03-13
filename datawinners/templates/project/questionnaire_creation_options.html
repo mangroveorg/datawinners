@@ -9,11 +9,12 @@
         </div>
         <h6>{% trans "Start with a blank Questionnaire and add your list of questions" %}</h6>
 
-        <div class="questionnaire_type_header">
+        <div class="questionnaire_type_header" data-bind="click: getExistingQuestionnaireList">
             <span class="header">{% trans "Copy an Existing Questionnaire" %}</span>
         </div>
+
         <div>
-            <span class="project_name">{% trans "--  blank --" %}</span>
+            {% include 'project/copy_existing_questionnaires.html' %}
         </div>
 
         <div class="questionnaire_type_header" data-bind="click: getTemplates">

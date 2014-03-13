@@ -576,8 +576,6 @@ $(document).ready(function () {
 
 });
 
-
-
 DW.isQuestionsReOrdered = function (existing_questions) {
     var new_question_codes = ko.utils.arrayMap(questionnaireViewModel.questions(), function (question) {
         return question.code();
@@ -590,29 +588,6 @@ DW.addNewQuestion = function () {
         return;
     questionnaireViewModel.addQuestion();
     DW.close_the_tip_on_period_question();
-};
-
-DW.templateDataCache = {};
-DW.templateGroupingDataCache = null;
-
-DW.getTemplateData = function (template_id) {
-    var templateData = null;
-    if (DW.templateDataCache[template_id] != undefined) {
-        templateData = DW.templateDataCache[template_id];
-    }
-    else {
-        $.ajax({
-            type: 'GET',
-            url: "/project/template/" + template_id,
-            async: false,
-            dataType: "json",
-            success: function (data) {
-                DW.templateDataCache[template_id] = data;
-                templateData = data;
-            }
-        });
-    }
-    return templateData
 };
 
 DW.CancelQuestionnaireWarningDialog = function(options){

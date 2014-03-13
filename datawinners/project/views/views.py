@@ -518,6 +518,26 @@ def questionnaire(request, project_id):
                                   context_instance=RequestContext(request))
 
 
+def _get_questions(manager, project):
+    form_model = FormModel.get(manager, project.qid)
+    fields = form_model.fields
+    if form_model.is_entity_type_reporter():
+        fields = helper.hide_entity_question(form_model.fields)
+    existing_questions = fields
+    return existing_questions
+
+
+@valid_web_user
+@is_project_exist
+def get_questionnaire_ajax(request, project_id):
+    manager = get_database_manager(request.user)
+    project = Project.load(manager.database, project_id)
+    existing_questions = _get_questions(manager, project)
+    return HttpResponse(json.dumps({
+                                'name': project.name,
+                                'questions': existing_questions
+                           }, default=field_to_json), content_type='application/json')
+
 def _get_form_code(manager, project):
     return FormModel.get(manager, project.qid).form_code
 

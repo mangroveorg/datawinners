@@ -42,7 +42,7 @@ DW.post_project_data = function (callback) {
 
 
 DW.controllers = {
-    "questionnaire_load_controller":function () {
+    "templateQuestionnaire":function () {
             questionnaireViewModel.questions([]);
             questionnaireViewModel.errorInResponse(false);
             questionnaireViewModel.selectedQuestion(null);
@@ -58,25 +58,36 @@ DW.controllers = {
             questionnaireViewModel.showQuestionnaireForm(true);
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
     },
-    "blank_questionnaire": function () {
+    "copyQuestionnaire": function(){
+        var question_list = DW.QuestionnaireDataCache[this.params.questionnaire_id].questions;
+        for (var index in question_list) {
+            var questions = new DW.question(question_list[index]);
+            questionnaireViewModel.loadQuestion(questions);
+        };
+        questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+        questionnaireViewModel.showQuestionnaireForm(true); //TODO:keep only one flag
+        questionnaireViewModel.enableQuestionnaireTitleFocus(true);
+        questionnaireViewModel.questionnaireCode(questionnaire_code);
+    },
+    "blankQuestionnaire": function () {
             questionnaireViewModel.clearQuestionnaire();
             questionnaireViewModel.showQuestionnaireForm(true);
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
             questionnaireViewModel.questionnaireCode(questionnaire_code);
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
+    },
+    "questionnaireCreationOptions": function () {
+            questionnaireViewModel.showQuestionnaireForm(false);
+            questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(true);
     }
 };
 
 
 DW.projectRouter = Sammy(function () {
-        this.get('#:questionnaire/new', DW.controllers.blank_questionnaire);
-
-        this.get('#:questionnaire/load/:template_id', DW.controllers.questionnaire_load_controller);
-
-        this.get('#:create', function () {
-            questionnaireViewModel.showQuestionnaireForm(false);
-            questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(true);
-        });
+        this.get('#:questionnaire/new', DW.controllers.blankQuestionnaire);
+        this.get('#:questionnaire/load/:template_id', DW.controllers.templateQuestionnaire);
+        this.get('#:questionnaire/copy/:questionnaire_id', DW.controllers.copyQuestionnaire)
+        this.get('#:create', DW.controllers.questionnaireCreationOptions);
 });
 
 function _initializeViewModel() {

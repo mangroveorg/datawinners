@@ -71,7 +71,7 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(len(projects), 2)
 
     def test_get_all_projects_names(self):
-        projects_names = get_all_project_names(self.manager)
+        projects_names = [project['name'] for project in get_all_project_names(self.manager)]
         self.assertTrue(project1_name.lower() in projects_names)
         self.assertTrue(project2_name.lower() in projects_names)
 

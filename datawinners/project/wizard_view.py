@@ -74,7 +74,6 @@ def get_templates(request):
     return HttpResponse(json.dumps({'categories': library.get_template_groupings(request.LANGUAGE_CODE)}),
                         content_type='application/json')
 
-
 @login_required
 def get_template_details(request, template_id):
     dbm = get_database_manager(request.user)

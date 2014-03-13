@@ -8,7 +8,7 @@ from datawinners.project.wizard_view import create_project, edit_project, remind
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
 from datawinners.project.views import submission_views
 from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \
-    registered_subjects, broadcast_message, sent_reminders, activate_project, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, save_questionnaire, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject
+    registered_subjects, broadcast_message, sent_reminders, activate_project, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, save_questionnaire, index, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject, get_questionnaire_ajax
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -19,6 +19,7 @@ urlpatterns = patterns('',
                        url(r'^project/$', index, name="index"),
                        (r'^project/disassociate/$', DisassociateDataSendersView.as_view()),
                        url(r'^project/questionnaire/(?P<project_id>\w+?)/$', questionnaire, name='questionnaire'),
+                       url(r'^project/questionnaire/ajax/(?P<project_id>\w+?)/$', get_questionnaire_ajax, name='questionnaire_ajax'),
                        url(r'^project/register_subjects/(?P<project_id>\w+?)/$', subject_web_questionnaire,
                            name="subject_questionnaire"),
                        url(r'^project/testquestionnaire/(?P<project_id>\w+?)/$', survey_web_questionnaire,
