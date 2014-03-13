@@ -137,7 +137,7 @@ VALID_PROJECT_DATA = {PROJECT_NAME: "Subject reg Activities ", GEN_RANDOM: True,
                       SUBJECT: "clinic",
                       REPORT_TYPE: "other subject",
                       DEVICES: "sms",
-                      PAGE_TITLE: "Projects - Overview",
+                      PAGE_TITLE: "Questionnaire - Overview",
                       WARNING_MESSAGE:
                           u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
 

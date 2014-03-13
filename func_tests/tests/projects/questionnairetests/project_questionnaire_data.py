@@ -52,7 +52,7 @@ WATERPOINT_PROJECT_DATA = {PROJECT_NAME: "new project ", GEN_RANDOM: True,
                            SUBJECT: "waterpoint",
                            REPORT_TYPE: "other subject",
                            DEVICES: "sms",
-                           PAGE_TITLE: "Projects - Overview"}
+                           PAGE_TITLE: "Questionnaires - Overview"}
 
 VALID_SUMMARY_REPORT_DATA = {PROJECT_NAME: "Proj Reporter Activities ", GEN_RANDOM: True,
                              PROJECT_BACKGROUND: "This project is created by functional automation suite.",
@@ -60,7 +60,7 @@ VALID_SUMMARY_REPORT_DATA = {PROJECT_NAME: "Proj Reporter Activities ", GEN_RAND
                              SUBJECT: "",
                              REPORT_TYPE: "data sender work",
                              DEVICES: "sms",
-                             PAGE_TITLE: "Projects - Overview",
+                             PAGE_TITLE: "Questionnaires - Overview",
                              "warning_message":
                                  u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
 
@@ -70,7 +70,7 @@ LONG_DESCRIPTION_DATA = {PROJECT_NAME: "Proj Reporter Activities ", GEN_RANDOM: 
                          SUBJECT: "",
                          REPORT_TYPE: "data sender work",
                          DEVICES: "sms",
-                         PAGE_TITLE: "Projects - Overview",
+                         PAGE_TITLE: "Questionnaires - Overview",
                          "warning_message":
                              u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
 

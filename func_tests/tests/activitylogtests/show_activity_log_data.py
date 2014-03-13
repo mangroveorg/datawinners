@@ -78,7 +78,7 @@ NEW_PROJECT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
                     SUBJECT: "clinic",
                     REPORT_TYPE: "other subject",
                     DEVICES: ["sms", "web"],
-                    PAGE_TITLE: "Projects - Overview",
+                    PAGE_TITLE: "Questionnaires - Overview",
                     WARNING_MESSAGE:
                         u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
 

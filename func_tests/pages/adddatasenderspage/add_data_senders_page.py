@@ -87,7 +87,7 @@ class AddDataSenderPage(Page):
 
 
     def is_in_project_level(self):
-        return self.driver.get_title() in [u"Projet - Expéditeurs", u"Projects - Data Senders"]
+        return self.driver.get_title() in [u"Questionnaires - Expéditeurs", u"Questionnaires - Data Senders"]
 
     def set_unique_id(self, unique_id):
         checkbox_unique_id = self.driver.find(CB_LET_US_GENERATE_ID_FOR_U)

@@ -18,17 +18,6 @@ class LightBox(Page):
 
         return ProjectOverviewPage(self.driver)
 
-    def continue_change(self):
-        """
-        Function to continue the subject change
-
-        Return CreateProjectPage
-         """
-        self.driver.find(CONFIRMATION_BTN).click()
-        from pages.createprojectpage.create_project_page import CreateProjectPage
-
-        return CreateProjectPage(self.driver)
-
     def cancel_light_box(self):
         """
         Function to cancel the activation of a project
@@ -63,13 +52,3 @@ class LightBox(Page):
          """
         return self.driver.find(TITLE_LABEL).text
 
-    def continue_change_date_format(self):
-        """
-        Function to continue the subject change
-
-        Return CreateProjectPage
-         """
-        self.driver.find(CHANGE_DATE_FORMAT_CONTINUE_BTN).click()
-        from pages.createprojectpage.create_project_page import CreateProjectPage
-
-        return CreateProjectPage(self.driver)

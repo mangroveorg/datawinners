@@ -22,17 +22,6 @@ class CreateSubjectQuestionnairePage(Page):
         self.driver.wait_for_page_with_title( WAIT_FOR_TITLE, "Questionnaire")
         return CreateQuestionnairePage(self.driver)
 
-    def navigate_to_previous_step(self):
-        """
-        Function to go on set up project profile page
-
-        Return self
-        """
-        self.driver.find(PREVIOUS_STEP_LINK).click()
-        from pages.createprojectpage.create_project_page import CreateProjectPage
-
-        return CreateProjectPage(self.driver)
-
     def get_page_title(self):
         """
         Function to return the page title

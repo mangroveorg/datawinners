@@ -50,7 +50,7 @@ VALID_PROJECT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
                       SUBJECT: "",
                       REPORT_TYPE: OTHER_SUBJECT,
                       DEVICES: "sms",
-                      PAGE_TITLE: "Projects - Overview"}
+                      PAGE_TITLE: "Questionnaire - Overview"}
 
 CODE = "code"
 TYPE = "type"
