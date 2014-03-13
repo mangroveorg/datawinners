@@ -98,20 +98,20 @@ VALID_SUBMISSION = [
     {QCODE: 'GPS', ANSWER: '-18.1324 27.6547', TYPE: TEXT},
     {QCODE: 'RM', ANSWER: ['c'], TYPE: CHECKBOX},
 ]
-
+CLINIC_ID = random_number(3)
 SMS_REGISTER_SUBJECT = {SENDER: '1234567890',
                         RECEIVER: '919880734937',
-                        SMS: "cli first test_subject loc 2,2 1231231213 cid111",
+                        SMS: "cli first test_subject loc 2,2 1231231213 cid%s"%CLINIC_ID,
                         SUCCESS_MESSAGE: "Thank you"}
 
 SUBJECT_DATA = {
     LAST_NAME: 'test_subject',
-    SHORT_CODE: 'cid111'
+    SHORT_CODE: 'cid%s'%CLINIC_ID
 }
 
 SMS_WEB_SUBMISSION = {SENDER: '1234123413',
                       RECEIVER: '919880734937',
-                      SMS: "cli001 .EID cid111 .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a",
+                      SMS: "cli001 .EID cid%s .NA Mr. Tessy .FA 38 .RD 17.01.2012 .BG b .SY ade .GPS 27.178057 -78.007789 .RM a"%CLINIC_ID,
                       SUCCESS_MESSAGE: "Thank you"}
 
 GEN_RANDOM = "gen_random"

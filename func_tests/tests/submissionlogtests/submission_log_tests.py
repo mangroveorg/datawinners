@@ -1,54 +1,51 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
-import unittest
-from datetime import datetime
-import time
-from django.utils.unittest.case import SkipTest
+import uuid
 
 from nose.plugins.attrib import attr
-from selenium.webdriver.support.wait import WebDriverWait
+import requests
 
-from framework.base_test import setup_driver, teardown_driver
-from framework.exception import CouldNotLocateElementException
-from framework.utils.common_utils import by_css, by_xpath
+from framework.base_test import HeadlessRunnerTest
+from framework.utils.common_utils import by_css, skipUntil
 from framework.utils.data_fetcher import fetch_, from_
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatapage.all_data_page import AllDataPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
-from pages.allsubjectspage.all_subject_type_page import AllSubjectTypePage
+from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.allsubjectspage.all_subjects_list_page import AllSubjectsListPage
-from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.dashboardpage.dashboard_page import DashboardPage
-from pages.globalnavigationpage.global_navigation_locator import DASHBOARD_PAGE_LINK
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from pages.smstesterpage.sms_tester_page import SMSTesterPage
-from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON, ACTION_SELECT_CSS_LOCATOR, ALL_PERIODS_LABEL
-from pages.submissionlogpage.submission_log_page import SubmissionLogPage, DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE, MONTHLY_DATE_RANGE, ALL_PERIODS
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE
+from pages.submissionlogpage.submission_log_locator import DELETE_BUTTON
+from pages.submissionlogpage.submission_log_page import SubmissionLogPage, MONTHLY_DATE_RANGE
+from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE, ALL_DATA_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_DASHBOARD_PAGE, \
+    url
 from tests.dataanalysistests.data_analysis_data import DAILY_DATE_RANGE, CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE
-from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.submissionlogtests.submission_log_data import *
 from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
-from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA
+
 
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
 
 
-class TestSubmissionLog(unittest.TestCase):
+def send_valid_sms_with(sms):
+    data = {"message": sms[SMS], "from_msisdn": sms[SENDER], "to_msisdn": sms[RECEIVER], "message_id":uuid.uuid1().hex}
+    resp = requests.post(url("/") + "submission", data)
+    assert "Thank" in resp.content
+
+
+class TestSubmissionLog(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        cls.dashboard = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        HeadlessRunnerTest.setUpClass()
+        cls.dashboard = login(cls.driver)
+        # cls.driver = setup_driver()
+        # cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        # login_page = LoginPage(cls.driver)
         cls.reporting_period_project_name = None
         cls.URL = None
 
-    @classmethod
-    def tearDownClass(cls):
-        teardown_driver(cls.driver)
 
     def _create_project(self, project_data, questionnaire_data, monthly):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
@@ -74,55 +71,26 @@ class TestSubmissionLog(unittest.TestCase):
 
     @classmethod
     def _submit_sms_data(cls, questionnaire_code, monthly):
-        cls.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
-        page = SMSTesterPage(cls.driver)
-
         dates = get_reporting_date_values(monthly)
         for i in dates:
-            page.send_sms_with(get_sms_data_with_questionnaire_code(questionnaire_code, i))
-            assert 'Thank you' in page.get_response_message()
+            send_valid_sms_with(get_sms_data_with_questionnaire_code(questionnaire_code, i))
 
 
-    def get_submission_log_page(self):
+    def get_first_project_submission_log_page(self):
         if self.URL:
             self.driver.go_to(self.URL)
             submission_log_page = SubmissionLogPage(self.driver)
         else:
             submission_log_page = self.go_to_submission_log_page()
+            if not self.URL:
+                self.URL = self.driver.current_url
         return submission_log_page
 
     @classmethod
-    def go_to_submission_log_page(cls, project_name=FIRST_PROJECT_NAME, cache_url=True):
+    def go_to_submission_log_page(cls, project_name=FIRST_PROJECT_NAME):
         cls.driver.go_to(ALL_DATA_PAGE)
         submission_log_page = AllDataPage(cls.driver).navigate_to_submission_log_page(project_name)
-        if not cls.URL and cache_url:
-            cls.URL = cls.driver.current_url
         return submission_log_page
-
-    @SkipTest
-    @attr('functional_test')
-    def test_should_show_warning_when_deleting_records(self):
-        submission_log_page = self.get_submission_log_page()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTION_SELECT_CSS_LOCATOR, True)
-
-        time.sleep(5) # instead, check for other checkboxes value
-        submission_log_page.check_all_submissions()
-        WebDriverWait(self.driver, UI_TEST_TIMEOUT, 1, (CouldNotLocateElementException)).until(
-            lambda x: x.find(by_css(".selected_submissions")).is_selected())
-        submission_log_page.choose_on_dropdown_action(DELETE_BUTTON)
-        warning_dialog = WarningDialog(self.driver)
-        self.assertEqual(DELETE_SUBMISSION_WARNING_MESSAGE, warning_dialog.get_message())
-
-
-    @SkipTest
-    @attr('functional_test')
-    def test_should_have_consistent_sorting_on_each_tabs_submission_log_page(self):
-        submission_log_page = self.get_submission_log_page()
-        time.sleep(2)
-        submission_log_page.click_on_nth_header(8)
-        submission_log_page.click_on_success_tab()
-        time.sleep(6)
-        self.assertEqual(submission_log_page.get_all_data_on_nth_column(7), EXPECTED_FA_SORTED)
 
     def assert_none_selected_shown(self, submission_log_page):
         self.assertTrue(submission_log_page.is_none_selected_shown())
@@ -144,14 +112,9 @@ class TestSubmissionLog(unittest.TestCase):
         all_datasenders_page = AllDataSendersPage(self.driver)
         ds_id = self.register_datasender(DATASENDER_DETAILS, all_datasenders_page)
 
-        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
-        sms_tester_page = SMSTesterPage(self.driver)
-        sms_tester_page.send_valid_sms_with(VALID_DATA)
+        send_valid_sms_with(VALID_DATA)
 
-        message = sms_tester_page.get_response_message()
-        self.assertTrue(fetch_(SUCCESS_MESSAGE, VALID_DATA) in message, "message:" + message)
-
-        submission_log_page = self.go_to_submission_log_page()
+        submission_log_page = self.get_first_project_submission_log_page()
         submission_log_page.search(ds_id)
         self.assertTrue(DATASENDER_DETAILS[NAME] in submission_log_page.get_cell_value(row=1, column=2))
 
@@ -162,16 +125,14 @@ class TestSubmissionLog(unittest.TestCase):
         all_datasenders_page.select_a_data_sender_by_id(ds_id)
         all_datasenders_page.select_edit_action()
         AddDataSenderPage(self.driver).enter_data_sender_details_from(EDITED_DATASENDER_DETAILS)
-        submission_log_page = self.go_to_submission_log_page()
+        submission_log_page = self.get_first_project_submission_log_page()
         submission_log_page.search(ds_id)
         self.assertTrue(EDITED_DATASENDER_DETAILS[NAME] in submission_log_page.get_cell_value(row=1, column=2))
 
     @attr("functional_test")
     def test_should_update_submission_log_when_subject_info_is_edited(self):
-        self.dashboard.navigate_to_all_subject_page()
-        all_subject_type_page = AllSubjectTypePage(self.driver)
-        add_subject_page = all_subject_type_page.select_subject_type('Clinic').navigate_to_register_subject_page()
-
+        self.driver.go_to(url("/entity/subject/create/clinic/?web_view=True&"))
+        add_subject_page = AddSubjectPage(self.driver)
         add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
         add_subject_page.submit_subject()
         message = fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT))
@@ -180,27 +141,21 @@ class TestSubmissionLog(unittest.TestCase):
         self.assertIn(message, flash_message)
         subject_short_code = flash_message.replace(message, '')
 
-        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
-        sms_tester_page = SMSTesterPage(self.driver)
         VALID_SMS_FOR_EDIT_SUBJECT[SMS] = VALID_SMS_FOR_EDIT_SUBJECT[SMS].replace('short_code', subject_short_code, 1)
-        sms_tester_page.send_valid_sms_with(VALID_SMS_FOR_EDIT_SUBJECT)
+        send_valid_sms_with(VALID_SMS_FOR_EDIT_SUBJECT)
 
-        submission_log_page = self.go_to_submission_log_page()
+        submission_log_page = self.get_first_project_submission_log_page()
         submission_log_page.search(subject_short_code)
         self.assertIn(fetch_(SUB_LAST_NAME, VALID_DATA_FOR_SUBJECT), submission_log_page.get_cell_value(1, 5))
 
-        self.dashboard.navigate_to_all_subject_page()
-        all_subject_type_page = AllSubjectTypePage(self.driver)
-        add_subject_page = all_subject_type_page.select_subject_type('Clinic').navigate_to_register_subject_page()
-
-        add_subject_page.navigate_to_subject_list()
+        self.driver.go_to(url("/entity/subjects/clinic/"))
         subject_list_page = AllSubjectsListPage(self.driver)
         subject_list_page.select_subject_by_id(subject_short_code)
         edit_subject_page = subject_list_page.click_edit_action_button()
         edit_subject_page.add_subject_with(VALID_DATA_FOR_EDIT)
         edit_subject_page.submit_subject()
 
-        submission_log_page = self.go_to_submission_log_page()
+        submission_log_page = self.get_first_project_submission_log_page()
         submission_log_page.search(subject_short_code)
         self.assertIn(fetch_(SUB_LAST_NAME, VALID_DATA_FOR_EDIT), submission_log_page.get_cell_value(1, 5))
 
@@ -216,9 +171,8 @@ class TestSubmissionLog(unittest.TestCase):
     def test_should_filter_by_name_and_id_of_datasender_and_subject(self):
 
         self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
-        sms_tester_page = SMSTesterPage(self.driver)
-        sms_tester_page.send_valid_sms_with(SMS_REGISTER_SUBJECT)
-        sms_tester_page.send_valid_sms_with(SMS_WEB_SUBMISSION)
+        send_valid_sms_with(SMS_REGISTER_SUBJECT)
+        send_valid_sms_with(SMS_WEB_SUBMISSION)
 
         submission_log_page = self.go_to_submission_log_page()
 
@@ -324,7 +278,7 @@ class TestSubmissionLog(unittest.TestCase):
 
         #self.assert_reporting_period_values(submission_log_page, total_number_of_rows)
 
-    @SkipTest #Removed default reporting date question.
+    @skipUntil("2014-04-30") #Removed default reporting date question.
     @attr("functional_test")
     def test_reporting_period_month_filters(self):
         monthly_rp_project_name = self.populate_data_for_date_range_filters(monthly=True)
@@ -385,12 +339,7 @@ class TestSubmissionLog(unittest.TestCase):
 
     @attr('functional_test')
     def test_should_delete_submission(self):
-        self.driver.go_to(DATA_WINNER_SMS_TESTER_PAGE)
-        sms_tester_page = SMSTesterPage(self.driver)
-        sms_tester_page.send_valid_sms_with(VALID_DATA_FOR_DELETE)
-
-        message = sms_tester_page.get_response_message()
-        self.assertTrue(fetch_(SUCCESS_MESSAGE, VALID_DATA_FOR_DELETE) in message, "message:" + message)
+        send_valid_sms_with(VALID_DATA_FOR_DELETE)
 
         submission_log_page = self.go_to_submission_log_page()
         submission_log_page.search(unique_text)
