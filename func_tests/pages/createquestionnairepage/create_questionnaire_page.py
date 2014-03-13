@@ -516,7 +516,7 @@ class CreateQuestionnairePage(Page):
 
     def save_and_create_project_successfully(self, click_ok=True):
         self.driver.find(SAVE_AND_CREATE_BTN).click()
-        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Projects - Overview")
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Questionnaires - Overview")
         if click_ok:
             self.got_redistribute_questionnaire_message()
         return ProjectOverviewPage(self.driver)
