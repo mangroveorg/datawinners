@@ -10,7 +10,7 @@ from framework.utils.data_fetcher import fetch_, from_
 from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.dashboardpage.dashboard_page import DashboardPage
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url
 from tests.dataextractionapitests.data_extraction_api_data import *
@@ -26,12 +26,6 @@ class DataExtractionAPITestCase(BaseTest):
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
-
-    @classmethod
-    def login(cls):
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        login_page.do_successful_login_with(VALID_CREDENTIALS)
 
     @classmethod
     def prepare_subject_type(cls):
@@ -74,7 +68,7 @@ class DataExtractionAPITestCase(BaseTest):
 
     @classmethod
     def prepare_submission_data(cls):
-        cls.login()
+        login(cls.driver, VALID_CREDENTIALS)
         cls.prepare_subject_type()
         cls.prepare_subject()
         cls.create_project()

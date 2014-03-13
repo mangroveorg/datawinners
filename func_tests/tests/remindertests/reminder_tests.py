@@ -4,7 +4,7 @@ from framework.base_test import BaseTest, setup_driver
 from framework.exception import CouldNotLocateElementException
 from framework.utils.common_utils import by_css
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import LoginPage, login, tester_login
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, LOGOUT
 from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDENTIALS
 from tests.remindertests.reminder_data import *
@@ -24,15 +24,8 @@ class TestReminderSend(TestCase):
     def tearDownClass(cls):
         cls.driver.quit()
 
-    def login_if_needed(self, account):
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        if self.driver.is_element_present(by_css("span.welcome")):
-            return GlobalNavigationPage(self.driver)
-        login_page = LoginPage(self.driver)
-        return login_page.do_successful_login_with(account)
-
     def go_to_reminder_page(self, project, credentials):
-        global_navigation = self.login_if_needed(credentials)
+        global_navigation = login(self.driver, credentials)
         all_project_page = global_navigation.navigate_to_view_all_project_page()
         overview_page = all_project_page.navigate_to_project_overview_page(project)
         return overview_page.navigate_to_reminder_page()

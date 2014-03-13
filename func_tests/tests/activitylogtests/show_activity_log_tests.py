@@ -7,21 +7,18 @@ from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.common_utils import by_css
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
-from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import LoginPage, login
 from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.activitylogtests.show_activity_log_data import *
-from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from tests.registrationtests.registration_tests import register_and_get_email
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from framework.utils.database_manager_postgres import DatabaseManager
-from tests.testsettings import UI_TEST_TIMEOUT
 
 
 @attr('suit_1')
@@ -35,13 +32,6 @@ class TestShowActivityLog(unittest.TestCase):
         cls.global_navigation_page = GlobalNavigationPage(cls.driver)
         cls.project_title = cls.create_new_project()
         cls.email = None
-
-    def login(self, credential=VALID_CREDENTIALS):
-        # doing successful login with valid credentials
-        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(self.driver)
-        login_page.do_successful_login_with(credential)
-        return DashboardPage(self.driver)
 
     @classmethod
     def create_new_project(cls):
@@ -63,11 +53,11 @@ class TestShowActivityLog(unittest.TestCase):
         self.assertEqual(ACTIVITY_LOG_PAGE_TITLE, self.driver.get_title())
         activity_log_page.select_filter("Project", "Created Project")
         time.sleep(3)
-        for i in range(1,10):
+        for i in range(1, 10):
             if activity_log_page.get_data_on_cell(i, 3).lower() == self.project_title:
                 row_index = i
                 break;
-        self.assertTrue(row_index>=0, "Project title not found in activity log")
+        self.assertTrue(row_index >= 0, "Project title not found in activity log")
         self.assertEqual(activity_log_page.get_data_on_cell(row_index, 1), TESTER_NAME)
         self.assertEqual(activity_log_page.get_data_on_cell(row_index, 2), CREATED_PROJECT_ACTION)
 
@@ -99,7 +89,7 @@ class TestShowActivityLog(unittest.TestCase):
 
     def assert_there_is_entries_for_tester150411_organization(self):
         self.driver.go_to(LOGOUT)
-        self.login()
+        login(self.driver, VALID_CREDENTIALS)
         activity_log_page = self.navigate_to_activity_log_page()
         entries_number = activity_log_page.get_number_of_entries_found()
         self.assertTrue(entries_number != 0)

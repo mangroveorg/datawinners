@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
+from selenium.webdriver.support.wait import WebDriverWait
 
 from framework.exception import ElementStillPresentException, CouldNotLocatePageException, ElementFoundWithoutDesiredVisibility, CouldNotLocateElementException
 from framework.utils.common_utils import by_css
@@ -223,6 +224,9 @@ class DriverWrapper(object):
                 if current_time >= end_time:
                     self.create_screenshot()
                     raise ne
+
+    def wait_for_page_load(self):
+        WebDriverWait(self._driver, UI_TEST_TIMEOUT).until(lambda driver:  u"complete" == driver.execute_script("return document.readyState"))
 
     def wait_for_page_with_title(self, time_out_in_seconds, title):
         current_time = datetime.datetime.now()
