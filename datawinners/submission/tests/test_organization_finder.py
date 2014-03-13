@@ -1,10 +1,14 @@
 import unittest
 from django.conf import settings
+from django.test import TestCase
 from datawinners.submission.organization_finder import OrganizationFinder
 from datawinners.tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID, TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, DEFAULT_TEST_ORG_TEL_NO, DEFAULT_TEST_ORG_ID
 
 
-class TestOrganizationFinder(unittest.TestCase):
+class TestOrganizationFinder(TestCase):
+
+    fixtures = ['test_data.json']
+
     def setUp(self):
         self.trial_number = settings.TRIAL_ACCOUNT_PHONE_NUMBER[0]
         

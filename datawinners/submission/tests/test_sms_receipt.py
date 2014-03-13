@@ -1,10 +1,13 @@
 import unittest
-from django.test import Client
+from django.test import Client, TestCase
 from datawinners.accountmanagement.models import Organization
 from datawinners.sms.models import SMS
 
 
-class TestSMSReceipt(unittest.TestCase):
+class TestSMSReceipt(TestCase):
+
+    fixtures = ['test_data.json']
+
     def setUp(self):
         self.client = Client()
         o = Organization.objects.get(org_id='SLX364903')

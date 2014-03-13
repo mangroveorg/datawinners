@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+from django.test import TestCase
 from mangrove.datastore.database import DatabaseManager
 from django.utils.translation import get_language
 from mangrove.form_model.form_model import FormModel, FORM_CODE
@@ -14,7 +15,9 @@ from datawinners.messageprovider.messages import SMS, exception_messages
 from datawinners.submission.models import DatawinnerLog
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID
 
-class TestExceptionHandler(unittest.TestCase):
+class TestExceptionHandler(TestCase):
+
+    fixtures = ['test_data.json']
 
     def setUp(self):
         self.request = dict(incoming_message='message',

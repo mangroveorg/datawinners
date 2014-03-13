@@ -1,12 +1,16 @@
 import unittest
 import datetime
+from django.test import TestCase
 from datawinners.accountmanagement.models import Organization, MessageTracker
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from dateutil.relativedelta import relativedelta
 from mock import Mock, patch
 
 
-class TestOrganization(unittest.TestCase):
+class TestOrganization(TestCase):
+
+    fixtures = ['test_data.json']
+
     def setUp(self):
         self.organization = self._prepare_organization()
 

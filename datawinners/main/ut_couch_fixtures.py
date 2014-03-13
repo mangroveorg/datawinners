@@ -2,11 +2,12 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
+from django.core.management import call_command
 from mock import patch
 from pytz import UTC
 
 from datawinners import initializer
-from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
+from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER, NGOUserProfile
 from datawinners.location.LocationTree import get_location_hierarchy, get_location_tree
 from datawinners.main.management.commands.utils import TEST_EMAILS
 from datawinners.project.models import Project, Reminder, ReminderMode
@@ -21,7 +22,7 @@ from mangrove.form_model.validation import NumericRangeConstraint, TextLengthCon
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
-from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, define_entity_instance, register
+from datawinners.tests.test_data_utils import load_manager_for_default_ut_account, create_entity_types, define_entity_instance, register
 from mangrove.transport.player.new_players import SMSPlayerV2, WebPlayerV2
 from datawinners.submission.location import LocationBridge
 
@@ -1492,7 +1493,8 @@ def send_data_to_project_cli00_mp(manager):
 
 
 def load_data():
-    manager = load_manager_for_default_test_account()
+
+    manager = load_manager_for_default_ut_account()
     initializer.run(manager)
     CLINIC_ENTITY_TYPE = [u"clinic"]
     WATER_POINT_ENTITY_TYPE = [u"waterpoint"]
@@ -1560,15 +1562,15 @@ def load_data():
     load_web_data_for_cli018(manager)
     load_sms_data_for_cli018(manager)
 
-    create_trial_test_organization('chinatwu@gmail.com', 'COJ00000', False)
-    create_trial_test_organization('chinatwu2@gmail.com', 'COJ00001', True)
-    create_trial_test_organization('chinatwu3@gmail.com', 'COJ00002', False)
-    create_trial_test_organization('chinatwu4@gmail.com', 'COJ00003', False)
-    create_trial_test_organization('mamytest@mailinator.com', 'SLX364903', False)
+    create_trial_organization('chinatwu@gmail.com', 'COJ00000', False)
+    create_trial_organization('chinatwu2@gmail.com', 'COJ00001', True)
+    create_trial_organization('chinatwu3@gmail.com', 'COJ00002', False)
+    create_trial_organization('chinatwu4@gmail.com', 'COJ00003', False)
+    create_trial_organization('mamytest@mailinator.com', 'SLX364903', False)
     create_project_for_nigeria_test_orgnization()
     create_datasender_for_nigeria_test_organization()
 
-    create_trial_test_organization('quotareached@mailinator.com', 'YDC120930', False)
+    create_trial_organization('quotareached@mailinator.com', 'YDC120930', False)
     register_datasender_for_quota_reached_ngo()
     create_clinic3_project_for_quota_reached_ngo()
     create_questionnaire_templates()
@@ -1585,7 +1587,7 @@ def create_datasender_for_nigeria_test_organization():
              short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
 
-def create_trial_test_organization(email, org_id, register_a_data_sender):
+def create_trial_organization(email, org_id, register_a_data_sender):
     manager = get_database_manager(User.objects.get(username=email))
     initializer.run(manager)
     CLINIC_ENTITY_TYPE = [u"clinic"]

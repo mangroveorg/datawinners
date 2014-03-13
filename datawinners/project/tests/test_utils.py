@@ -1,9 +1,12 @@
 import unittest
+from django.test import TestCase
 from mock import patch, Mock
 from datawinners.accountmanagement.models import Organization, MessageTracker
 from django.contrib.auth.models import User
 
-class TestUtils(unittest.TestCase):
+class TestUtils(TestCase):
+
+    fixtures = ['test_data.json']
 
     def setUp(self):
         self.message_tracker = MessageTracker()

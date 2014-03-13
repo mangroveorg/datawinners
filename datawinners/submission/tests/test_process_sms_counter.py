@@ -1,5 +1,6 @@
 import unittest
 import datetime
+from django.test import TestCase
 from datawinners.accountmanagement.models import Organization
 from datawinners.submission.views import process_sms_counter
 from datawinners.tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID
@@ -13,7 +14,10 @@ from rest_framework.authtoken.models import Token
 from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
 
-class TestProcessSMSCounter(unittest.TestCase):
+class TestProcessSMSCounter(TestCase):
+
+    fixtures = ['test_data.json']
+
     def setUp(self):
         self.incoming_request = {'outgoing_message': '', 'incoming_message': ''}
         organization = Organization.objects.get(pk=TRIAL_ACCOUNT_ORGANIZATION_ID)

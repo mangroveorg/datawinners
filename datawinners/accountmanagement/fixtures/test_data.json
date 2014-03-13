@@ -1,0 +1,916 @@
+[   {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+                "username": "tester150411@gmail.com",
+            "first_name": "Tester",
+            "last_name": "Pune",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": false,
+            "last_login": "2011-04-17 04:46:57",
+            "groups": [
+                   1
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$64c7c$408711ddd5e4e6ba7d4865dd350b7509124f3e86",
+            "email": "tester150411@gmail.com",
+            "date_joined": "2011-04-17 04:46:57"
+        }
+    },
+
+    { "pk": 1,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep276",
+            "org_id": "SLX364903",
+            "mobile_phone": "123456",
+            "user": 1,
+            "title": "Mr."
+        }
+    }
+    ,
+
+
+
+
+
+
+
+
+
+
+        {
+        "model": "sites.site",
+        "pk": 1,
+        "fields": {
+            "domain": "localhost:8000",
+            "name": "localhost"
+        }
+    },
+    {
+        "model": "sites.site",
+        "pk": 2,
+        "fields": {
+            "domain": "184.72.223.168",
+            "name": "datawinners-showcase"
+        }
+    },
+    {
+        "model": "sites.site",
+        "pk": 3,
+        "fields": {
+            "domain": "datawinners-dev:8000",
+            "name": "Dev"
+        }
+    },
+    {
+        "model": "sites.site",
+        "pk": 4,
+        "fields": {
+            "domain": "173.255.238.6:8000",
+            "name": "CI"
+        }
+    },
+    {
+        "model": "sites.site",
+        "pk": 5,
+        "fields": {
+            "domain": "www.datawinners.com",
+            "name": "DataWinners"
+        }
+    },
+    {
+        "pk": "SLX364903",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "PublicHealth",
+            "city": "Anatanovario",
+            "name": "Testorg",
+            "country": "MG",
+            "org_id": "SLX364903",
+            "zipcode": "445676",
+            "website": "https://help.org/",
+            "office_phone": "919880734937",
+            "state": "MH",
+            "address": "Don Bosco Road, Yerwada",
+            "active_date": "2011-10-17 04:54:47"
+
+        }
+    },
+    {
+        "pk": "COJ409579",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "PublicHealth",
+            "city": "Pune",
+            "name": "Testorg",
+            "country": "IN",
+            "org_id": "COJ409579",
+            "zipcode": "445676",
+            "website": "https://help.org/",
+            "office_phone": "91-99766-76893",
+            "state": "MH",
+            "address": "Don Bosco Road, Yerwada",
+            "active_date": "2011-04-17 04:54:47"
+        }
+    },
+    {
+        "pk": "COJ00000",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "PublicHealth",
+            "city": "Xi'an",
+            "name": "Trial-Xian Health Works",
+            "country": "CN",
+            "org_id": "COJ00000",
+            "zipcode": "445676",
+            "website": "https://help.org/",
+            "office_phone": "91-99766-76893",
+            "state": "SH",
+            "address": "Don Bosco Road, Yerwada",
+            "account_type": "Basic",
+            "active_date": "2011-04-17 04:54:47"
+        }
+    },
+    {
+        "pk": "COJ00001",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "PublicHealth",
+            "city": "Xi'an",
+            "name": "Trial-Xian University",
+            "country": "CN",
+            "org_id": "COJ00001",
+            "zipcode": "445676",
+            "website": "https://help.org/",
+            "office_phone": "91-99766-76893",
+            "state": "SH",
+            "address": "Don Bosco Road, Yerwada",
+            "account_type": "Basic",
+            "active_date": "2020-11-17 04:54:47"
+        }
+    },
+    {
+        "pk": "COJ00002",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "PublicHealth",
+            "city": "Xi'an",
+            "name": "Trial-Xian College",
+            "country": "CN",
+            "org_id": "COJ00002",
+            "zipcode": "445676",
+            "website": "https://help.org/",
+            "office_phone": "91-99766-76893",
+            "state": "SH",
+            "address": "Don Bosco Road, Yerwada",
+            "account_type": "Basic",
+            "active_date": "2020-10-17 04:54:47"
+        }
+    },
+    {
+        "pk": "COJ00003",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "PublicHealth",
+            "city": "Xi'an",
+            "name": "Trial-Xian School",
+            "country": "CN",
+            "org_id": "COJ00003",
+            "zipcode": "445676",
+            "website": "https://help.org/",
+            "office_phone": "91-99766-76893",
+            "state": "SH",
+            "address": "Don Bosco Road, Yerwada",
+            "account_type": "Basic",
+            "active_date": "2020-10-17 04:54:47"
+        }
+    },
+    {
+        "pk": "LSF553279",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "FoodSecurity",
+            "city": "Carpenter shop",
+            "name": "Nigeria ONG Test",
+            "active_date": "2013-02-01 05:28:05",
+            "is_deactivate_email_sent": false,
+            "country": "NG",
+            "zipcode": "12345",
+            "account_type": "Pro SMS",
+            "website": "",
+            "office_phone": "",
+            "state": "",
+            "addressline2": "",
+            "address": "Kafanchan"
+        }
+    },
+    {
+        "pk": "JNA912070",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "Education",
+            "city": "Tana",
+            "name": "New Organization",
+            "active_date": "2013-07-12 11:53:08",
+            "is_deactivate_email_sent": false,
+            "country": "MG",
+            "zipcode": "65212",
+            "account_type": "Pro SMS",
+            "website": "",
+            "office_phone": "2614787329",
+            "state": "",
+            "addressline2": "",
+            "address": "Ambato"
+        }
+    },
+    {
+        "pk": "RVZ704148",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "Education",
+            "city": "Ivandry",
+            "name": "Deactivated NGO",
+            "active_date": "2013-07-22 12:58:04",
+            "is_deactivate_email_sent": false,
+            "country": "MG",
+            "status": "Deactivated",
+            "zipcode": "65212",
+            "account_type": "Pro SMS",
+            "website": "",
+            "office_phone": "",
+            "state": "",
+            "addressline2": "",
+            "address": "Ambato",
+            "status_changed_datetime": "2013-07-22 12:58:56"
+        }
+    },
+    {
+        "pk": "YDC120930",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "Education",
+            "city": "Ivandry",
+            "name": "Quota Reached NGO",
+            "active_date": "2013-09-29 18:58:04",
+            "is_deactivate_email_sent": false,
+            "country": "MG",
+            "status": "Activated",
+            "zipcode": "65212",
+            "account_type": "Basic",
+            "website": "",
+            "office_phone": "",
+            "state": "",
+            "addressline2": "",
+            "address": "Ambato",
+            "status_changed_datetime": "2013-09-29 12:58:56"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "org_id": "COJ409579",
+            "mobile_phone": "1234567",
+            "user": 2,
+            "title": "Mr."
+        }
+    } ,
+    {
+        "pk": 3,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep10",
+            "mobile_phone": "2619876",
+            "org_id": "SLX364903",
+            "user": 4,
+            "title": "Chauffeur"
+        }
+    },
+    {
+        "pk": 364,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep11",
+            "mobile_phone": "",
+            "org_id": "SLX364903",
+            "user": 5,
+            "title": "Mr"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep13",
+            "mobile_phone": "",
+            "org_id": "SLX364903",
+            "user": 6,
+            "title": "Mr"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep2",
+            "mobile_phone": "261123456",
+            "org_id": "JNA912070",
+            "user": 7,
+            "title": "Quick Start Services en"
+        }
+    },
+    {
+        "pk": -9,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep2",
+            "mobile_phone": "2611234",
+            "org_id": "RVZ704148",
+            "user": -11,
+            "title": ""
+        }
+    },
+    {
+        "pk": -3,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "mobile_phone": "876765654",
+            "title": "Mr",
+            "org_id": "SLX364903",
+            "reporter_id": "rep3",
+            "user": -4
+        }
+    },
+    {
+        "pk": -4,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "title": "Mr",
+            "org_id": "COJ00000",
+            "mobile_phone": "12345687",
+            "user": -5
+        }
+    },
+    {
+        "pk": -5,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "title": "Mr",
+            "org_id": "COJ00001",
+            "mobile_phone": "98876765",
+            "user": -6
+        }
+    },
+    {
+        "pk": -6,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "title": "Mr",
+            "org_id": "COJ00002",
+            "mobile_phone": "64454334",
+            "user": -7
+        }
+    },    {
+        "pk": -7,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "title": "Mr",
+            "org_id": "COJ00003",
+            "mobile_phone": "675454333",
+            "user": -8
+        }
+    },
+    {
+        "pk": -8,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "mobile_phone": "874827212",
+            "title": "Mr",
+            "org_id": "SLX364903",
+            "reporter_id": "rep9",
+            "user": -9
+        }
+    },
+    {
+        "pk": -10,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep2",
+            "mobile_phone": "2341234567890",
+            "org_id": "LSF553279",
+            "user": -10,
+            "title": "System administrator"
+        }
+    },
+    {
+        "pk": -11,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep2",
+            "mobile_phone": "2614321",
+            "org_id": "YDC120930",
+            "user": -12,
+            "title": ""
+        }
+    },
+    {
+        "pk": -12,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "reporter_id": "rep1",
+            "mobile_phone": "261123456",
+            "org_id": "YDC120930",
+            "user": -13,
+            "title": ""
+        }
+    },
+    {
+        "pk": 1,
+        "model": "accountmanagement.paymentdetails",
+        "fields": {
+            "organization": "LSF553279",
+            "preferred_payment": "",
+            "invoice_period": "half_yearly"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "accountmanagement.paymentdetails",
+        "fields": {
+            "organization": "JNA912070",
+            "preferred_payment": "wire_transfer",
+            "invoice_period": "pay_monthly"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "SLX364903",
+            "document_store": "hni_testorg_slx364903",
+            "sms_tel_number": "919880734937"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "COJ409579",
+            "document_store": "hni_testorg_coj409579",
+            "sms_tel_number": "0123498765"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "JNA912070",
+            "outgoing_number": null,
+            "sms_tel_number": null,
+            "document_store": "hni_new-organization_jna912070"
+        }
+    },
+    {
+        "pk": -3,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "COJ00000",
+            "document_store": "hni_testorg_coj00000",
+            "sms_tel_number": "987654321"
+        }
+    },    {
+        "pk": -4,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "COJ00001",
+            "document_store": "hni_testorg_coj00001",
+            "sms_tel_number": "987654322"
+        }
+    },    {
+        "pk": -5,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "COJ00002",
+            "document_store": "hni_testorg_coj00002",
+            "sms_tel_number": "987654323"
+        }
+    },
+    {
+        "pk": -6,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "COJ00003",
+            "document_store": "hni_testorg_coj00003",
+            "sms_tel_number": "987654324"
+        }
+    },
+    {
+        "pk": -7,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "LSF553279",
+            "outgoing_number": null,
+            "sms_tel_number": null,
+            "document_store": "hni_nigeria-ong-test_lsf553279"
+        }
+    },
+    {
+        "pk": -8,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "YDC120930",
+            "outgoing_number": null,
+            "sms_tel_number": null,
+            "document_store": "hni_quota-reached-ngo_ydc120930"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "registration.registrationprofile",
+        "fields": {
+            "activation_key": "20d000226e38f51cf8f29711591d1b3fa4e7481f",
+            "user": 2
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "username": "tester@gmail.com",
+            "first_name": "Tester",
+            "last_name": "14-APR-11",
+            "is_active": false,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-04-17 04:54:47",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$8c72d$7bca3757c08d7e047c4bfa91bc79a26af06ff1c4",
+            "email": "tester@gmail.com",
+            "date_joined": "2011-04-17 04:54:47"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "username": "datawinner",
+            "first_name": "datawinner",
+            "last_name": "HNI",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2011-04-17 04:54:47",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$a1ba4$cd5c092fdc9d03a12c7e5ec153f147df6efe5a2a",
+            "email": "datawinner@gmail.com",
+            "date_joined": "2011-04-17 04:54:47"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "auth.user",
+        "fields": {
+            "username": "rasitefa@mailinator.com",
+            "first_name": "stefan",
+            "last_name": "rasamoel",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-11-08 17:00:48",
+            "groups": [
+                2
+            ],
+            "user_permissions": [],
+            "password": "sha1$9f237$4380fa83adb58f7d0b0b944cf1d5be80dea66aab",
+            "email": "rasitefa@mailinator.com",
+            "date_joined": "2012-11-08 17:00:48"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "auth.user",
+        "fields": {
+            "username": "mamytest@mailinator.com",
+            "first_name": "mamy",
+            "last_name": "rasamoel",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2012-11-08 17:00:48",
+            "groups": [
+                1
+            ],
+            "user_permissions": [],
+            "password": "sha1$9f237$4380fa83adb58f7d0b0b944cf1d5be80dea66aab",
+            "email": "mamytest@mailinator.com",
+            "date_joined": "2012-11-08 17:00:48"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "auth.user",
+        "fields": {
+            "username": "dstest@mailinator.com",
+            "first_name": "datasender test",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-06-26 09:33:08",
+            "groups": [
+                4
+            ],
+            "user_permissions": [],
+            "password": "sha1$76ba7$93a943f860574d93d80e0405ff2d555db105e0e2",
+            "email": "dstest@mailinator.com",
+            "date_joined": "2013-06-26 09:33:08"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "auth.user",
+        "fields": {
+            "username": "samuel@mailinator.com",
+            "first_name": "Rasefo",
+            "last_name": "dragnaly",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-07-12 11:53:09",
+            "groups": [
+                1
+            ],
+            "user_permissions": [],
+            "password": "sha1$398fd$f15eb2447126f6f99749d3f7ec5873794419f1cb",
+            "email": "samuel@mailinator.com",
+            "date_joined": "2013-07-12 11:52:00"
+        }
+    },
+    {
+        "pk": -11,
+        "model": "auth.user",
+        "fields": {
+            "username": "deactivated@mailinator.com",
+            "first_name": "deactivated",
+            "last_name": "ra",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-07-22 12:58:30",
+            "groups": [
+                1
+            ],
+            "user_permissions": [],
+            "password": "sha1$07bf1$f40c0cdbba7d76ad7488e4ed50e6d319c4894d25",
+            "email": "deactivated@mailinator.com",
+            "date_joined": "2013-07-22 12:57:21"
+        }
+    },
+    {
+        "pk": -10,
+        "model": "auth.user",
+        "fields": {
+            "username": "gerard@mailinator.com",
+            "first_name": "Richard",
+            "last_name": "Gerard",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-02-01 05:28:35",
+            "groups": [
+                1
+            ],
+            "user_permissions": [],
+            "password": "sha1$03816$e2428b89b7efc1b3a60bf42a45e293f9cfa383db",
+            "email": "gerard@mailinator.com",
+            "date_joined": "2013-02-01 05:25:32"
+        }
+    },
+    {
+        "pk": -4,
+        "model": "auth.user",
+        "fields": {
+            "username": "datasender@hni.com",
+            "first_name": "DataSender",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-09-22 07:00:14",
+            "groups": [
+                    4
+            ],
+            "user_permissions": [],
+            "password": "sha1$f95ae$955370b0bef18a9e10be9daf8e7f7f18d85d8084",
+            "email": "datasender@hni.com",
+            "date_joined": "2011-09-22 07:00:14"
+        }
+    },
+    {
+        "pk": -5,
+        "model": "auth.user",
+        "fields": {
+            "username": "chinatwu@gmail.com",
+            "first_name": "Trial",
+            "last_name": "User",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-04-17 04:46:57",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$f35a1$9f18cb50116b6613db42dbec1f7dea4a491dcf13",
+            "email": "chinatwu@gmail.com",
+            "date_joined": "2011-04-17 04:46:57"
+        }
+    },{
+        "pk": -6,
+        "model": "auth.user",
+        "fields": {
+            "username": "chinatwu2@gmail.com",
+            "first_name": "Trial",
+            "last_name": "User",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-10-17 04:46:57",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$f35a1$9f18cb50116b6613db42dbec1f7dea4a491dcf13",
+            "email": "chinatwu2@gmail.com",
+            "date_joined": "2020-10-17 04:46:57"
+        }
+    },{
+        "pk": -7,
+        "model": "auth.user",
+        "fields": {
+            "username": "chinatwu3@gmail.com",
+            "first_name": "Trial",
+            "last_name": "User",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-10-17 04:46:57",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$f35a1$9f18cb50116b6613db42dbec1f7dea4a491dcf13",
+            "email": "chinatwu3@gmail.com",
+            "date_joined": "2020-10-17 04:46:57"
+        }
+    },
+    {
+        "pk": -8,
+        "model": "auth.user",
+        "fields": {
+            "username": "chinatwu4@gmail.com",
+            "first_name": "Trial",
+            "last_name": "User",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-10-17 04:46:57",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$f35a1$9f18cb50116b6613db42dbec1f7dea4a491dcf13",
+            "email": "chinatwu4@gmail.com",
+            "date_joined": "2020-10-17 04:46:57"
+        }
+    },
+    {
+        "pk": -9,
+        "model": "auth.user",
+        "fields": {
+            "username": "datasender@test.com",
+            "first_name": "DataSender",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-05-20 07:00:14",
+            "groups": [
+                4
+            ],
+            "user_permissions": [],
+            "password": "sha1$9cdd3$e4a2d0813edc94ab013c359f0f59d5224899dbfb",
+            "email": "datasender@test.com",
+            "date_joined": "2012-05-20 07:00:14"
+        }
+    },
+    {
+        "pk": -12,
+        "model": "auth.user",
+        "fields": {
+            "username": "quotareached@mailinator.com",
+            "first_name": "Quota",
+            "last_name": "Reached",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-09-29 19:00:14",
+            "groups": [
+                1
+            ],
+            "user_permissions": [],
+            "password": "sha1$f54c6$5365e0fcafed40733b89a4ab231bb134fd1913ef",
+            "email": "quotareached@mailinator.com",
+            "date_joined": "2012-09-29 19:00:14"
+        }
+    },
+    {
+        "pk": -13,
+        "model": "auth.user",
+        "fields": {
+            "username": "dsquotareached@mailinator.com",
+            "first_name": "Datasender Quota",
+            "last_name": "Reached",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-09-29 19:00:14",
+            "groups": [
+                4
+            ],
+            "user_permissions": [],
+            "password": "sha1$adcc2$9338977a7c86ab6a1a255c661b37c7f29c357409",
+            "email": "dsquotareached@mailinator.com",
+            "date_joined": "2013-09-29 19:00:14"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.group",
+        "fields": {
+            "name": "NGO Admins",
+            "permissions": []
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.group",
+        "fields": {
+            "name": "Project Managers",
+            "permissions": []
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.group",
+        "fields": {
+            "name": "Read Only Users",
+            "permissions": []
+        }
+    },
+    {
+        "pk": 4,
+        "model": "auth.group",
+        "fields":{
+            "name": "Data Senders",
+            "permissions": []
+        }
+    },
+    {
+        "pk": 5,
+        "model": "auth.group",
+        "fields":{
+            "name": "SMS API Users",
+            "permissions": []
+        }
+    },
+    {
+        "pk": "1234567890",
+        "model": "accountmanagement.datasenderontrialaccount",
+        "fields":{
+            "organization" : "COJ00001"
+        }
+    }
+]

@@ -1,11 +1,15 @@
 import unittest
 from django.contrib.auth.models import User
+from django.test import TestCase
 from datawinners.settings import TRIAL_ACCOUNT_PHONE_NUMBER
 from datawinners.submission.views import find_dbm
 from datawinners.tests.data import TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, DEFAULT_TEST_ORG_TEL_NO, DEFAULT_TEST_USER
 from datawinners.tests.fake_request import FakeRequest
 
-class TestFindDBM(unittest.TestCase):
+class TestFindDBM(TestCase):
+
+    fixtures = ['test_data.json']
+
     def setUp(self):
         self.user = User.objects.get(username=DEFAULT_TEST_USER)
         self.sms_message = '018 12.10.2011'

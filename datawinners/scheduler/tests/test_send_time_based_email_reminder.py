@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from django.test import TestCase
 from datawinners import settings
 from datawinners.scheduler.scheduler import send_time_based_reminder_email
 from datawinners.accountmanagement.models import Organization, OrganizationIdCreator
@@ -13,7 +14,9 @@ from django.core import mail
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
 
-class TestSendTimeBasedReminder(unittest.TestCase):
+class TestSendTimeBasedReminder(TestCase):
+
+    fixtures = ['test_data.json']
 
     def setUp(self):
         self.organization = Organization.objects.get(pk=TRIAL_ACCOUNT_ORGANIZATION_ID)

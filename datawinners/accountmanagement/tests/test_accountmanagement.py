@@ -1,9 +1,12 @@
 import unittest
-from django.test import Client
+from django.test import Client, TestCase
 from datawinners.utils import _get_email_template_name_for_reset_password
 from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_PASSWORD
 
-class TestAccountManagement(unittest.TestCase):
+class TestAccountManagement(TestCase):
+
+    fixtures = ['test_data.json']
+
     def setUp(self):
         self.client = Client()
 

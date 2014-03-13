@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.utils import get_database_name
 
-TEST_EMAILS = ['tester150411@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'gerard@mailinator.com',
+TEST_EMAILS = ['chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'gerard@mailinator.com',
                'samuel@mailinator.com', 'mamytest@mailinator.com', 'quotareached@mailinator.com']
 
 def test_document_stores():

@@ -1,10 +1,11 @@
 import json
-from django.contrib.auth import login
+
 from django.test import TestCase
 from django.test.client import Client
 
+
 class TestPlaces(TestCase):
-    fixtures = ['test_location_level.json']
+    fixtures = ['test_location_level.json', 'test_data.json']
 
     def test_places(self):
         client = Client()

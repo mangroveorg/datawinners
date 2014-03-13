@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import defaultdict
 import datetime
+import re
 from dateutil.relativedelta import relativedelta
 
 from django.conf import settings
@@ -178,7 +179,8 @@ class Organization(models.Model):
         return self.get_total_submission_count() >= LIMIT_TRIAL_ORG_SUBMISSION_COUNT
 
     def get_phone_country_code(self):
-        criteria = dict({"country_name_%s" % get_language(): self.country_name()})
+        language = re.sub("-.*", "", get_language())
+        criteria = dict({"country_name_%s" % language: self.country_name()})
         try:
             current_country = Country.objects.filter(**criteria)[0]
             return current_country.country_code if current_country else None

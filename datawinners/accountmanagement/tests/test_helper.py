@@ -1,13 +1,17 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import unittest
+from django.test import TestCase
 from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.datastore.database import DatabaseManager
 from mock import Mock, patch
+
 from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers, is_mobile_number_unique_for_paid_account, get_unique_mobile_number_validator, is_mobile_number_unique_for_trial_account
 from datawinners.accountmanagement.models import Organization
 from datawinners.tests.data import TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS, TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, DEFAULT_TEST_ORG_TEL_NO
 
-class TestHelper(unittest.TestCase):
+
+class TestHelper(TestCase):
+
+    fixtures = ['test_data.json']
 
     def setUp(self):
         self.get_database_manager_for_org_patch = patch('datawinners.accountmanagement.helper.get_database_manager_for_org')

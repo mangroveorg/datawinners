@@ -11,7 +11,7 @@ from mangrove.utils.entity_builder import EntityBuilder
 
 FIRST_NAME_FIELD = "firstname"
 
-def load_manager_for_default_test_account():
+def load_manager_for_default_ut_account():
     DEFAULT_USER = "tester150411@gmail.com"
     user = User.objects.get(username=DEFAULT_USER)
     group = Group.objects.filter(name="NGO Admins")

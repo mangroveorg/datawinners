@@ -1,4 +1,5 @@
 import unittest
+from django.test import TestCase
 
 from django_digest.test import Client
 from mock import Mock, patch, PropertyMock, MagicMock
@@ -9,7 +10,10 @@ from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_PASSWORD
 from datawinners.accountmanagement.views import users, associate_user_with_existing_project
 
 
-class TestUserActivityLogDetails(unittest.TestCase):
+class TestUserActivityLogDetails(TestCase):
+
+    fixtures = ['test_data.json']
+
     def test_should_render_user_activity_log_details_when_deleting_multiple_users(self):
         from django.contrib.auth.models import User
         from datawinners.accountmanagement.views import user_activity_log_details

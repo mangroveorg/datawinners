@@ -1,12 +1,15 @@
 import unittest
 from django.contrib.auth.models import User
+from django.test import TestCase
 from datawinners.messageprovider.messages import SMS
 from datawinners.submission.request_processor import SMSTransportInfoRequestProcessor
 from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_ORG_TEL_NO
 from datawinners.tests.fake_request import FakeRequest
 
-class TestSMSRequestProcessor(unittest.TestCase):
-    fixtures = ['initial_data.json']
+class TestSMSRequestProcessor(TestCase):
+
+
+    fixtures = ['test_data.json']
 
     def setUp(self):
         user = User.objects.get(username=DEFAULT_TEST_USER)

@@ -1,7 +1,9 @@
-from django.utils import unittest
-from django.test import Client
+from django.test import Client, TestCase
 
-class TestWebSmsView(unittest.TestCase):
+
+class TestWebSmsView(TestCase):
+
+    fixtures = ['test_data.json']
 
     def setUp(self):
         self.client = Client()

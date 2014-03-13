@@ -1,11 +1,15 @@
 import unittest
 from datetime import datetime, date
 from django.contrib.auth.models import User
+from django.test import TestCase
 from mock import Mock, patch
 from datawinners.accountmanagement.models import Organization
 from django.db.models.base import ModelState
 
-class TestUserActivityLog(unittest.TestCase):
+class TestUserActivityLog(TestCase):
+
+    fixtures = ['test_data.json']
+
     organization = Mock(spec=Organization)
     organization.org_id = "ABCDXW"
     user = Mock(spec=User)

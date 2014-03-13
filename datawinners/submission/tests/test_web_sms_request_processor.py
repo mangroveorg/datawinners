@@ -1,5 +1,6 @@
 import unittest
 from django.contrib.auth.models import User
+from django.test import TestCase
 from datawinners.accountmanagement.models import Organization, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.messageprovider.messages import SMS
 from datawinners.submission.request_processor import WebSMSDBMRequestProcessor, WebSMSTransportInfoRequestProcessor, SMSMessageRequestProcessor, WebSMSOrganizationFinderRequestProcessor, get_organization_number, MangroveWebSMSRequestProcessor
@@ -8,8 +9,9 @@ from datawinners.tests.fake_request import FakeRequest
 from datawinners.utils import generate_document_store_name, get_organization_settings_from_request
 
 
-class TestWebSMSRequestProcessor(unittest.TestCase):
-    fixtures = ['initial_data.json']
+class TestWebSMSRequestProcessor(TestCase):
+
+    fixtures=["test_data.json"]
 
     def setUp(self):
         user = User.objects.get(username=DEFAULT_TEST_USER)
