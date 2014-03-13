@@ -1,11 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import unittest
 from datetime import datetime
 
 from nose.plugins.attrib import attr
 
-from framework.base_test import setup_driver, teardown_driver
-from pages.loginpage.login_page import LoginPage
+from framework.base_test import HeadlessRunnerTest
+from pages.loginpage.login_page import login
 from pages.projectspage.projects_locator import ALL_PROJECTS_TABLE_LINK
 from pages.projectspage.projects_page import ProjectsPage
 from testdata.test_data import *
@@ -16,10 +15,10 @@ from tests.testsettings import UI_TEST_TIMEOUT
 
 
 @attr('suit_1')
-class TestProjectTestSMSPreview(unittest.TestCase):
+class TestProjectTestSMSPreview(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
+        HeadlessRunnerTest.setUpClass()
         cls.message_tracker = MessageTracker()
         cls.message_tracker.organization_id = 'YDC120930'
         cls.message_tracker.sms_api_usage_count = 20
@@ -34,17 +33,12 @@ class TestProjectTestSMSPreview(unittest.TestCase):
         cls.message_tracker.save()
         # doing successful login with valid credentials
 
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        login(cls.driver, VALID_CREDENTIALS)
 
     @classmethod
     def tearDownClass(cls):
         cls.message_tracker.delete()
-        teardown_driver(cls.driver)
-
-    def setUp(self):
-        pass
+        HeadlessRunnerTest.tearDownClass()
 
     def navigate_to_clinic3_overview_page(self):
         # going on all project page

@@ -1192,8 +1192,8 @@ msgstr "Le nombre de messages à envoyer est de"
 msgid "Remove"
 msgstr "Supprimer"
 
-msgid "Project - Reminders"
-msgstr "Projet - Messages de rappel"
+msgid "Questionnaire - Reminders"
+msgstr "Questionnaire - Messages de rappel"
 
 msgid "Everyone"
 msgstr "Tous le monde"
