@@ -128,7 +128,7 @@ NEW_PROJECT_DATA = {'project_name': "new project ", GEN_RANDOM: True,
                     SUBJECT: "waterpoint",
                     REPORT_TYPE: "other subject",
                     DEVICES: "sms",
-                    PAGE_TITLE: "Projects - Overview"}
+                    PAGE_TITLE: "Questionnaires - Overview"}
 
 NEW_PROJECT_QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS", GEN_RANDOM: True,
                                   DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "WID"},

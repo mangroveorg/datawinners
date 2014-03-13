@@ -40,7 +40,7 @@ class TestShowActivityLog(unittest.TestCase):
         create_questionnaire_page = questionnaire_creation_options_page.select_blank_questionnaire_creation_option()
         create_questionnaire_page.create_questionnaire_with(NEW_PROJECT_DATA, QUESTIONNAIRE_DATA)
         create_questionnaire_page.save_and_create_project_successfully()
-        cls.driver.wait_for_page_with_title(5, 'Projects - Overview')
+        cls.driver.wait_for_page_with_title(5, 'Questionnaires - Overview')
         return ProjectOverviewPage(cls.driver).get_project_title()
 
     @attr('functional_test')
@@ -51,7 +51,7 @@ class TestShowActivityLog(unittest.TestCase):
 
         activity_log_page = self.navigate_to_activity_log_page()
         self.assertEqual(ACTIVITY_LOG_PAGE_TITLE, self.driver.get_title())
-        activity_log_page.select_filter("Questionnaire", "Created Questionnaire")
+        activity_log_page.select_filter("Project", "Created Project")
         time.sleep(3)
         for i in range(1, 10):
             if activity_log_page.get_data_on_cell(i, 3).lower() == self.project_title:
