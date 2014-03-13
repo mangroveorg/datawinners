@@ -1,36 +1,36 @@
-var questionnaireHelperModel = {
+var questionnaireCreationOptionsViewModel = {
         selectedTemplateId: ko.observable(),
         showQuestionnaireCreationOptions: ko.observable(),
         templateData: ko.observable(),
         showAjaxLoader: ko.observable(),
         removeTemplateId: function () {
-            questionnaireHelperModel.selectedTemplateId(null);
+            questionnaireCreationOptionsViewModel.selectedTemplateId(null);
         },
         chooseTemplate: function (template) {
             var template_id = template.id;
-            questionnaireHelperModel.removeTemplateId();
-            questionnaireHelperModel.showAjaxLoader(true);
+            questionnaireCreationOptionsViewModel.removeTemplateId();
+            questionnaireCreationOptionsViewModel.showAjaxLoader(true);
             setTimeout(function(){
-                questionnaireHelperModel.templateData(DW.getTemplateData(template_id));
-                questionnaireHelperModel.selectedTemplateId(template_id);
-                questionnaireHelperModel.showAjaxLoader(false);
+                questionnaireCreationOptionsViewModel.templateData(DW.getTemplateData(template_id));
+                questionnaireCreationOptionsViewModel.selectedTemplateId(template_id);
+                questionnaireCreationOptionsViewModel.showAjaxLoader(false);
             }, 0);
         },
         templateGroupingData: ko.observable(),
         getTemplates: function () {
-            questionnaireHelperModel.removeTemplateId();
+            questionnaireCreationOptionsViewModel.removeTemplateId();
             setTimeout(function () {
                 if (DW.templateGroupingDataCache) {
-                    questionnaireHelperModel.templateGroupingData(DW.templateGroupingDataCache);
+                    questionnaireCreationOptionsViewModel.templateGroupingData(DW.templateGroupingDataCache);
                 }
                 else {
                     $.ajax({
                         type: 'GET',
-                        url: "/project/templates/",
+                        url: project_templates_url,
                         dataType: "json",
                         success: function (data) {
                             DW.templateGroupingDataCache = data.categories;
-                            questionnaireHelperModel.templateGroupingData(DW.templateGroupingDataCache);
+                            questionnaireCreationOptionsViewModel.templateGroupingData(DW.templateGroupingDataCache);
                         }
                     })
                 }
@@ -45,8 +45,8 @@ var questionnaireHelperModel = {
                 location.hash = 'questionnaire/new';
             }
             else if (selectedOption == 1 || 2) {
-                var question_template_id = questionnaireHelperModel.selectedTemplateId();
-                questionnaireHelperModel.gotoQuestionnaireLoader(question_template_id);
+                var question_template_id = questionnaireCreationOptionsViewModel.selectedTemplateId();
+                questionnaireCreationOptionsViewModel.gotoQuestionnaireLoader(question_template_id);
             }
         }
     };

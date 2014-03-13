@@ -27,7 +27,7 @@ class QuestionnaireLibrary:
         self.cache_manger = get_cache_manager()
 
     def get_questionnaire_template(self, template_id):
-        key_as_str = self.get_question_template_key(template_id)
+        key_as_str = self._get_question_template_key(template_id)
         template_doc = self.cache_manger.get(key_as_str)
         if template_doc is None:
             template_doc = self.dbm._load_document(template_id)
@@ -58,6 +58,6 @@ class QuestionnaireLibrary:
                 values.append(row['value'])
         return sorted(values, key=lambda k: k['name'])
 
-    def get_question_template_key(self, template_id):
+    def _get_question_template_key(self, template_id):
         assert template_id is not None
         return str("%s_%s" % (self.dbm.database.name, template_id))
