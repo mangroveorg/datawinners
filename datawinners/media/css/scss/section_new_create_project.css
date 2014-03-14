@@ -255,7 +255,7 @@ fieldset {
 
 .instruction-header {
   font-style: italic;
-  font-weight: 100;
+  font-weight: bold;
   padding-bottom: 10px; }
 
 .questionnaire_selection {

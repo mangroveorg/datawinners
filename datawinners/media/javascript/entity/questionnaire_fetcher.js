@@ -48,21 +48,21 @@ DW.QuestionnaireFetcher = function(){
    var questionnaireDataCache = {};
 
    this.getExistingQuestionnaireList = function(){
-       var defd = $.Deferred();
-         if (!questionnaireCache) {
-             $.ajax({
-                type: 'GET',
-                url: existing_questionnaires_url,
-                dataType: "json"
-            }).done(function (response) {
+        var defd = $.Deferred();
+        if (!questionnaireCache) {
+                $.ajax({
+                    type: 'GET',
+                    url: existing_questionnaires_url,
+                    dataType: "json"
+                }).done(function (response) {
                     questionnaireCache = response.questionnaires;
                     defd.resolve(questionnaireCache);
-            });
-         }
-         else{
-             defd.resolve(questionnaireCache);
-         }
-         return defd.promise();
+                });
+        }
+        else{
+            defd.resolve(questionnaireCache);
+        }
+        return defd.promise();
    };
 
    this.getQuestionnaire = function(questionnaireId){
