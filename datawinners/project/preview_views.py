@@ -19,9 +19,6 @@ from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 
 def get_questions(form_model):
     fields = form_model.fields
-    if form_model.is_entity_type_reporter():
-        fields = hide_entity_question(form_model.fields)
-
     return [get_preview_for_field(field) for field in fields]
 
 

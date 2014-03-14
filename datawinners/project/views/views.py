@@ -498,8 +498,8 @@ def questionnaire(request, project_id):
             return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
-        if form_model.is_entity_type_reporter():
-            fields = helper.hide_entity_question(form_model.fields)
+        #if form_model.is_entity_type_reporter():
+        #    fields = helper.hide_entity_question(form_model.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
         project_links = make_project_links(project, form_model.form_code)
         success, error = submission_stats(manager, form_model.form_code)
@@ -760,8 +760,8 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
             return HttpResponseRedirect(dashboard_page)
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
-        if form_model.is_entity_type_reporter():
-            fields = helper.hide_entity_question(form_model.fields)
+        #if form_model.is_entity_type_reporter():
+        #    fields = helper.hide_entity_question(form_model.fields)
         project_links = make_project_links(project, form_model.form_code)
         questions = []
         for field in fields:

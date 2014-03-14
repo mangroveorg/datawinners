@@ -57,7 +57,7 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
         return len(form_model.fields) == len(submission_values.keys())
 
     def _correct_number_of_questions_with_short_code_absent(self, form_model, submission_values):
-        if form_model.is_entity_registration_form() or form_model.is_entity_type_reporter():
+        if form_model.is_entity_registration_form():
             return len(form_model.fields) == len(submission_values.keys()) + 1
         return False
 

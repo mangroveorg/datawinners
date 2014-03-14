@@ -51,7 +51,7 @@ def make_project_links(project, questionnaire_code):
 
 
 def project_info(request, manager, form_model, project, questionnaire_code): #revisit:export
-    is_summary_report = form_model.is_entity_type_reporter()
+    is_summary_report = form_model.unique_id_field is None
     rp_field = form_model.event_time_question
     organization = get_organization(request)
     in_trial_mode = organization.in_trial_mode

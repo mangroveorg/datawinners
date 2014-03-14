@@ -64,21 +64,6 @@ class TestImportTemplate(unittest.TestCase):
 
     valid_web_user_patch.stop()
 
-    def test_should_remove_entity_question_field_for_summary_project_when_datasender_is_logged_in(self):
-        form_model = MagicMock(spec=FormModel)
-        form_model.is_entity_type_reporter.return_value = True
-        form_model.form_fields = [{'code': 'eid','name':'firstname'},{'code': 'something','name':'firstname'}]
-        form_model.entity_question.code = 'eid'
-
-        request = HttpRequest()
-        request.user = 'someuser'
-
-        with patch("datawinners.project.submission.util.is_org_user") as is_org_user:
-            is_org_user.return_value = False
-
-            form_fields = get_submission_form_fields_for_user(form_model, request)
-
-            self.assertEqual(form_fields,[{'code': 'something','name':'firstname'}])
 
     def test_should_return_all_form_fields_for_summary_project_when_user_is_logged_in(self):
         form_model = MagicMock(spec=FormModel)

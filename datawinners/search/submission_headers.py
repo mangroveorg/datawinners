@@ -43,7 +43,8 @@ class SubmissionAnalysisHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
         subject_title = self.form_model.entity_type[0].title()
-        header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
+        if self.form_model.unique_id_field:
+            header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
         header_dict.update({'entity_short_code': "%s ID" % subject_title})
         if self.form_model.event_time_question:
             header_dict.update(
@@ -80,7 +81,8 @@ class SuccessSubmissionHeader(SubmissionHeader):
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
         header_dict.update({"date": "Submission Date"})
         subject_title = self.form_model.entity_type[0].title()
-        header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
+        if self.form_model.unique_id_field:
+            header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
         header_dict.update({'entity_short_code': "%s ID" % subject_title})
         if self.form_model.event_time_question:
             header_dict.update(
@@ -96,7 +98,8 @@ class ErroredSubmissionHeader(SubmissionHeader):
         header_dict.update({"date": "Submission Date"})
         header_dict.update({"error_msg": "Error Message"})
         subject_title = self.form_model.entity_type[0].title()
-        header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
+        if self.form_model.unique_id_field:
+            header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
         header_dict.update({'entity_short_code': "%s ID" % subject_title})
         if self.form_model.event_time_question:
             header_dict.update(
