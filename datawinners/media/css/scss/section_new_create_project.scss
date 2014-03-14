@@ -338,7 +338,7 @@ fieldset {
   padding-bottom: 10px;
 }
 
-#questionnaire_template {
+.questionnaire_selection {
   float: left;
   width: 250px;
   height: 300px;
@@ -348,7 +348,7 @@ fieldset {
   div.ui-accordion{
     width: 100% !important;
   }
-  .template_data {
+  .questionnaire_data {
     font-weight: normal;
     padding-left: 15px;
     cursor: pointer;
@@ -382,15 +382,16 @@ fieldset {
         margin-top: -18px;
         display: none;
       }
-      &.selected {
+    }
+  }
+}
+
+.selected {
         background-color: #d7e4ed;
         & + .selected-notify {
           display: inline-block;
         }
       }
-    }
-  }
-}
 
 .selected_questions {
   overflow: auto;
@@ -411,4 +412,10 @@ fieldset {
 }
 .ajax-loader{
   margin: 30px 0px 0px 420px;
+}
+
+.highlight_on_hover{
+  &:hover{
+    background-color: #d7e4ed;
+  }
 }
