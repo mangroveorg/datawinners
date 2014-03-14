@@ -34,6 +34,7 @@ from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.submission.location import LocationBridge
+from mangrove.form_model.field import ShortCodeField
 
 websubmission_logger = logging.getLogger("websubmission")
 FIRSTNAME_FIELD = "firstname"
@@ -92,11 +93,10 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
             "Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269") % {
             'entity_type': entity_name}, constraints=(
             _create_constraints_for_mobile_number()))
-    question6 = TextField(name=SHORT_CODE_FIELD, code=code_generator.next(),
+    question6 = ShortCodeField(name=SHORT_CODE_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's Unique ID Number?") % {'entity_type': entity_name},
         defaultValue="some default value",
         instruction=unicode(_("Enter an id, or allow us to generate it")),
-        entity_question_flag=True,
         constraints=[TextLengthConstraint(max=20), ShortCodeRegexConstraint("^[a-zA-Z0-9]+$")], required=False)
     questions = [question1, question2, question3, question4, question5, question6]
 

@@ -2,7 +2,7 @@ import unittest
 from django.forms import ChoiceField
 from mock import Mock, PropertyMock, patch
 from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.field import IntegerField, DateField, GeoCodeField, TextField
+from mangrove.form_model.field import IntegerField, DateField, GeoCodeField, TextField, UniqueIdField
 from mangrove.form_model.form_model import FormModel
 from datawinners.project.models import Project
 from datawinners.project.submission_form import EditSubmissionForm
@@ -53,7 +53,7 @@ class TestSubmissionForm(unittest.TestCase):
     def test_entity_question_form_field_created(self):
         form_model = Mock(spec=FormModel)
         fields = [
-            TextField("entity question", "eid", "what are you reporting on?", entity_question_flag=True)]
+            UniqueIdField("clinic","entity question", "eid", "what are you reporting on?")]
         type(form_model).form_code = PropertyMock(return_value='001')
         type(form_model).fields = PropertyMock(return_value=fields)
         type(form_model).entity_question = PropertyMock(return_value=fields[0])

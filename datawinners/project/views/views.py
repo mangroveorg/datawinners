@@ -633,10 +633,10 @@ class SurveyWebQuestionnaireRequest():
 
     def player_response(self, created_request):
         user_profile = NGOUserProfile.objects.get(user=self.request.user)
-        if self.project.entity_type == u"reporter":
-            reporter_id = created_request.message.get('eid')
-        else:
-            reporter_id = user_profile.reporter_id
+        #if self.project.entity_type == u"reporter":
+        #    reporter_id = created_request.message.get('eid')
+        #else:
+        reporter_id = user_profile.reporter_id
 
         additional_feed_dictionary = get_feed_dictionary(self.project)
         web_player = WebPlayerV2(self.manager, self.feeds_dbm, user_profile.reporter_id)

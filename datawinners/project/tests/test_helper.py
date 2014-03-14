@@ -118,13 +118,12 @@ class TestHelper(unittest.TestCase):
         self.assertEqual(multiple_value, "value_of_b, value_of_1a, value_of_1c")
 
 
-    def _get_text_field(self, name, entity_question_flag=False):
-        return TextField(name, "code", name, entity_question_flag=entity_question_flag)
+    def _get_text_field(self, name):
+        return TextField(name, "code", name)
 
     def _get_form_fields(self):
-        eid_field = Mock(spec=TextField)
+        eid_field = Mock(spec=UniqueIdField)
         eid_field.code = "eid"
-        eid_field.entity_question_flag = True
         eid_field.is_event_time_field = False
 
         na_field = Mock(spec=Field)
