@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext_lazy as _, ugettext
 import xlwt
+from mangrove.form_model.field import UniqueIdField,ShortCodeField,field_attributes
 
 
 def get_styles():
@@ -137,7 +138,7 @@ class DateFieldInstruction:
 class EntityIdRegistrationInstruction:
     @staticmethod
     def matches_criteria(context):
-        return context.field.get("entity_question_flag", False)
+        return context.field.get("type") == field_attributes.SHORT_CODE_FIELD
 
     @staticmethod
     def get_instruction(context):
@@ -148,7 +149,7 @@ class EntityIdRegistrationInstruction:
 class SummaryProjectSubmissionInstruction:
     @staticmethod
     def matches_criteria(context):
-        return context.field.get("entity_question_flag", False) and context.entity_type == "reporter"
+        return context.field.get("type")==field_attributes.UNIQUE_ID_FIELD and context.entity_type == "reporter"
 
     @staticmethod
     def get_instruction(context):
@@ -160,7 +161,7 @@ class SummaryProjectSubmissionInstruction:
 class EntityProjectSubmissionInstruction:
     @staticmethod
     def matches_criteria(context):
-        return context.field.get("entity_question_flag", False) and context.entity_type != "reporter"
+        return context.field.get("type") == field_attributes.UNIQUE_ID_FIELD
 
     @staticmethod
     def get_instruction(context):

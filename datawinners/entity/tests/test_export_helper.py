@@ -15,7 +15,7 @@ class TestExcelHeaders(unittest.TestCase):
         return header_text
 
     def test_should_get_header_information_for_subject_excel(self):
-        fields = [{"name": "first name", "code": 'q1', "label": 'What is your name', "entity_question_flag": False,
+        fields = [{"name": "first name", "code": 'q1', "label": 'What is your name',
                    "type": "text"},
                   {"name": "age", "code": 'q2', "label": 'What is your age', "type": "integer", "constraints": [
                       [
@@ -28,8 +28,8 @@ class TestExcelHeaders(unittest.TestCase):
                   ]},
                   {"name": "reporting date", "code": 'q3', "label": 'What is the reporting date',
                    "date_format": "dd.mm.yyyy", "type": "date"},
-                  {"name": "eid", "code": 'eid', "label": 'What is the subject id', "entity_question_flag": True,
-                   "type": "text"},
+                  {"name": "eid", "code": 'eid', "label": 'What is the subject id',
+                   "type": "short_code"},
                   {"name": "location", "code": 'q4', "label": 'What is the location', "type": "list"},
                   {"name": "choices", "code": 'q5', "label": 'Your choices', "type": "select"}]
 
@@ -55,7 +55,7 @@ class TestExcelHeaders(unittest.TestCase):
              "\n\nExample: a or ab"], header_examples)
 
     def test_should_get_header_information_for_submission_excel(self):
-        fields = [{"name": "first name", "code": 'q1', "label": 'What is your name', "entity_question_flag": False,
+        fields = [{"name": "first name", "code": 'q1', "label": 'What is your name',
                    "type": "text"},
                   {"name": "age", "code": 'q2', "label": 'What is your age', "type": "integer", "constraints": [
                       [
@@ -68,8 +68,8 @@ class TestExcelHeaders(unittest.TestCase):
                   ]},
                   {"name": "reporting date", "code": 'q3', "label": 'What is the reporting date',
                    "date_format": "dd.mm.yyyy", "type": "date"},
-                  {"name": "eid", "code": 'eid', "label": 'What is the subject id', "entity_question_flag": True,
-                   "type": "text"},
+                  {"unique_id_type":"clinic","name": "eid", "code": 'eid', "label": 'What is the subject id',
+                   "type": "unique_id"},
                   {"name": "choices", "code": 'q5', "label": 'Your choices', "type": "select"}]
         form_model = FormModel(Mock(spec=DatabaseManager), name="some_name", entity_type=['test'], form_code="cli00_mp", fields=[], type="type1")
 

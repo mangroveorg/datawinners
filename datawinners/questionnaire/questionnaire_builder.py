@@ -18,9 +18,9 @@ class QuestionnaireBuilder(object):
 
     def generate_fields_by_question_set(self, max_code, question_set):
         new_fields = []
-        if self.form_model.is_entity_type_reporter():
-            entity_field = self.question_builder.create_entity_id_question_for_activity_report()
-            new_fields.append(entity_field)
+        #if self.form_model.is_entity_type_reporter():
+        #    entity_field = self.question_builder.create_entity_id_question_for_activity_report()
+        #    new_fields.append(entity_field)
 
         for question in question_set:
             question_code = question['code']
@@ -99,7 +99,7 @@ class QuestionBuilder(object):
             if short_code_constraint:
                 constraints.append(ShortCodeRegexConstraint(short_code_constraint))
         return TextField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
-                         entity_question_flag=post_dict.get("is_entity_question"), constraints=constraints,
+                         constraints=constraints,
                          instruction=post_dict.get("instruction"), required=post_dict.get("required"))
 
 

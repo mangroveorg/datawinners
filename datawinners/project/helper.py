@@ -11,7 +11,7 @@ from django.utils.translation import ugettext
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
+from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField, UniqueIdField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import  TextLengthConstraint
 from mangrove.utils.types import  is_sequence, sequence_to_str
@@ -31,15 +31,6 @@ NOT_AVAILABLE = "N/A"
 NOT_AVAILABLE_DS = "Unknown"
 
 logger = logging.getLogger("datawinners.reminders")
-
-def _create_entity_id_question(dbm, entity_id_question_code):
-    name = ugettext("Which subject are you reporting on?")
-    entity_id_question = TextField(name=name, code=entity_id_question_code,
-        label=name,
-        entity_question_flag=True ,
-        constraints=[TextLengthConstraint(min=1, max=20)],
-        instruction=(ugettext('Answer must be a word %d characters maximum') % 20))
-    return entity_id_question
 
 
 def hide_entity_question(fields):
@@ -132,13 +123,6 @@ def get_activity_report_questions(dbm):
         date_format="dd.mm.yyyy", event_time_field_flag=True)
 
     return [activity_report_question]
-
-def get_subject_report_questions(dbm):
-    entity_id_question = _create_entity_id_question(dbm, 'q1')
-    activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q2',
-        label="Period being reported on" ,
-        date_format="dd.mm.yyyy", event_time_field_flag=True)
-    return [entity_id_question, activity_report_question]
 
 def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker, country_code=None):
     """

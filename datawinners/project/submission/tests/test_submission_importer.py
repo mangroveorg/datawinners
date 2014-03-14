@@ -159,9 +159,8 @@ class SubmissionParserTest(TestCase):
         self.user = Mock(User)
         self.dbm = Mock(spec=DatabaseManager)
         fields = \
-            [TextField(name="Q1", code="EID", label="What is the reporter ID?", entity_question_flag=True,),
-             TextField(name="Q2", code="DATE", label="What is the reporting period for the activity?",
-                       entity_question_flag=False)]
+            [UniqueIdField('reporter',name="Q1", code="EID", label="What is the reporter ID?"),
+             TextField(name="Q2", code="DATE", label="What is the reporting period for the activity?")]
         self.form_model = FormModel(self.dbm, "abc", "abc", entity_type=["clinic"], form_code="cli001", fields=fields,
                                type="survey")
         self.project = Mock(Project)
@@ -205,11 +204,9 @@ class SubmissionParserTest(TestCase):
                 ["11.11.2012", "name21", "name22"],
                 ["12.10.2012", "name31", "name32"]
         ]
-        field = TextField(name="Q3", code="NAME", label="Name",
-                       entity_question_flag=False )
+        field = TextField(name="Q3", code="NAME", label="Name")
         self.form_model.add_field(field)
-        field = TextField(name="Q4", code="NAME1", label="Name 1",
-                       entity_question_flag=False )
+        field = TextField(name="Q4", code="NAME1", label="Name 1")
         self.form_model.add_field(field)
         expected_ans_dict = [{'DATE': '12.12.2012', 'NAME': 'name11', 'NAME1': 'name12'},
                              {'DATE': '11.11.2012', 'NAME': 'name21', 'NAME1': 'name22'},

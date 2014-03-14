@@ -4,7 +4,7 @@ from unittest import SkipTest
 from mock import Mock, patch
 
 from mangrove.datastore.entity_type import define_type
-from mangrove.form_model.field import TextField
+from mangrove.form_model.field import TextField, UniqueIdField
 from mangrove.form_model.form_model import FormModel
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from mangrove.bootstrap import initializer
@@ -99,7 +99,7 @@ class TestImport(MangroveTestCase):
     def create_form_for_entity_type(self):
         school_name_field = TextField(name="name", code="q1", label="What's the name?")
         address_field = TextField(name="address", code="q2", label="Where is the clinic?")
-        unique_id_field = TextField(name="unique_id", code="q3", label="What is the clinic's Unique ID Number?", entity_question_flag=True)
+        unique_id_field = UniqueIdField('clinic',name="unique_id", code="q3", label="What is the clinic's Unique ID Number?")
         form_model = FormModel(self.manager, "clinic", form_code=FORM_CODE, entity_type=["clinic"],
                                is_registration_model=True,
                                fields=[school_name_field, address_field, unique_id_field])

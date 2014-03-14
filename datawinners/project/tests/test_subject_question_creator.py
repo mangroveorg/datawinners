@@ -4,7 +4,7 @@ from couchdb.client import Database
 from django.forms.fields import ChoiceField
 from mock import Mock
 
-from mangrove.form_model.field import TextField, field_attributes
+from mangrove.form_model.field import TextField, field_attributes, ShortCodeField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.validation import TextLengthConstraint
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
@@ -30,7 +30,7 @@ class TestSubjectQuestionCreator(unittest.TestCase):
 
 
     def test_should_pre_populate_datasenders_for_subject_question(self):
-        subject_field = self._get_text_field(True, True)
+        subject_field = self._get_unique_id_field()
         project = self._get_mock_project()
         display_subject_field = SubjectQuestionFieldCreator(self.dbm, project).create(subject_field)
         self.assertEqual(ChoiceField, type(display_subject_field))
@@ -39,7 +39,7 @@ class TestSubjectQuestionCreator(unittest.TestCase):
 
     def test_should_pre_populate_choices_for_subject_question_on_basis_of_entity_type(self):
         expected_code = "expected_code"
-        subject_field = self._get_text_field(True, True, expected_code)
+        subject_field = self._get_unique_id_field(expected_code)
         project = self._get_mock_project()
         option_list = [('clinic1', 'Clinic One  (clinic1)'), ('clinic2', 'Clinic Two  (clinic2)')]
         project.entity_type.return_value = ["Clinic"]
@@ -56,14 +56,12 @@ class TestSubjectQuestionCreator(unittest.TestCase):
 
         self.assertEqual(expected_code, subject_question_code_hidden_field_dict['entity_question_code'].label)
 
-    def _get_text_field(self, is_required, entity_question_flag, code=None):
+    def _get_unique_id_field(self,  code=None):
         code = self.text_field_code if code is None else code
-        field_name = self.field_name if not entity_question_flag else self.short_code_question_code
-        text_field = TextField(name=field_name, code=code, label=field_name,
-                               instruction=self.instruction, required=is_required,
-                               constraints=[TextLengthConstraint(1, 20)],
-                               entity_question_flag=entity_question_flag)
-        return text_field
+        field_name = self.short_code_question_code
+        return ShortCodeField(name=field_name, code=code, label=field_name,
+                               instruction=self.instruction, required=True,
+                               constraints=[TextLengthConstraint(1, 20)])
 
 
     def _get_mock_project(self):

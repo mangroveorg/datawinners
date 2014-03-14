@@ -6,7 +6,7 @@ from mock import Mock
 from datawinners.entity.fields import PhoneNumberField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
-from mangrove.form_model.field import SelectField, IntegerField, GeoCodeField, TextField, TelephoneNumberField, HierarchyField
+from mangrove.form_model.field import SelectField, IntegerField, GeoCodeField, TextField, TelephoneNumberField, HierarchyField, ShortCodeField
 from datawinners.project.questionnaire_fields import TextInputForFloat, FormField, GeoCodeValidator
 
 
@@ -89,7 +89,7 @@ class TestFormField(TestCase):
         self.assertIsNone(geo_code_field.widget.attrs.get('class'))
 
     def test_entity_field(self):
-        field = TextField("name", "name", "what is ur name", constraints=[TextLengthConstraint(min=5, max=100)], entity_question_flag=True)
+        field = ShortCodeField("name", "name", "what is ur name", constraints=[TextLengthConstraint(min=5, max=100)])
         entity_field = FormField().create(field)
 
         self.assertEquals(2, len(entity_field.validators))

@@ -26,7 +26,7 @@ class TestSubjectRegistrationForm(TestCase):
         self.dbm = Mock(spec=DatabaseManager)
 
     def test_regex_field_created_for_entity_question(self):
-        entity_field = TextField("reporting on", "rep_on", "rep", entity_question_flag=True)
+        entity_field = UniqueIdField("clinic","reporting on", "rep_on", "rep")
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
                                entity_type=['Clinic'], type="business")
 
@@ -51,7 +51,7 @@ class TestSurveyResponseForm(TestCase):
         self.dbm = Mock(spec=DatabaseManager)
 
     def test_should_create_subject_field(self):
-        entity_field = TextField("reporting on", "rep_on", "rep", entity_question_flag=True)
+        entity_field = UniqueIdField("","reporting on", "rep_on", "rep")
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
                                entity_type=['Clinic'], type="business")
 
