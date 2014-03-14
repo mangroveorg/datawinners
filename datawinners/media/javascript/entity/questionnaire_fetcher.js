@@ -66,7 +66,20 @@ DW.QuestionnaireFetcher = function(){
         return defd.promise();
    };
 
+   var _mapResponseToQuestions = function(questionnaireData){
+        var existingQuestions = [];
+        ko.utils.arrayForEach(questionnaireData.questions, function(question){
+                    existingQuestions.push(question['label']);
+                });
+
+        return {
+             'projectName': questionnaireData.name,
+             'existingQuestions': existingQuestions
+        };
+   };
+
    this.getQuestionnaire = function(questionnaireId){
+        var defd = $.Deferred();
 
         if(!questionnaireDataCache[questionnaireId])
         {
@@ -74,22 +87,17 @@ DW.QuestionnaireFetcher = function(){
                         type: 'GET',
                         url: '/project/questionnaire/ajax/' + questionnaireId,
                         dataType: "json",
-                        async: false,
                         success: function (response) {
                             questionnaireDataCache[questionnaireId] = response;
+                            defd.resolve(_mapResponseToQuestions(questionnaireDataCache[questionnaireId]));
                         }
             });
         }
-        var questionnaireData = questionnaireDataCache[questionnaireId];
-        var existingQuestions = [];
-        ko.utils.arrayForEach(questionnaireData.questions, function(question){
-                    existingQuestions.push(question['label']);
-                });
+        else{
+            defd.resolve(_mapResponseToQuestions(questionnaireDataCache[questionnaireId]));
+        }
 
-        return {
-             'project_name': questionnaireData.name,
-             'existing_questions': existingQuestions
-        };
+        return defd.promise();
     };
 
     this.getQuestionnaireData = function(questionnaireId){

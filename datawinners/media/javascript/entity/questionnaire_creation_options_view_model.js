@@ -4,11 +4,11 @@ var templateFetcher = new DW.TemplateFetcher();
 var questionnaireCreationOptionsViewModel = {
         selectedTemplateId: ko.observable(),
         showQuestionnaireCreationOptions: ko.observable(),
-        templateData: ko.observable(),
+        selectedQuestionnaire: ko.observable(),
         showAjaxLoader: ko.observable(),
         templateGroupingData: ko.observable(),
         existingQuestionnaires: ko.observable(),
-        selectedQuestionnaire: ko.observable(),
+//        selectedQuestionnaire: ko.observable(),
         selectedQuestionnaireId: ko.observable(),
         selectedTemplate: ko.observable(),
         selectedCreationOption: ko.observable(),
@@ -19,13 +19,13 @@ var questionnaireCreationOptionsViewModel = {
 
         selectQuestionnaire: function(questionnaire){
             var that = questionnaireCreationOptionsViewModel;
-            that.selectedQuestionnaire(questionnaire.id);
             that.selectedQuestionnaireId(questionnaire.id)
             that.showAjaxLoader(true);
-            var questionnaireData = questionnaireDataFetcher.getQuestionnaire(questionnaire.id);
-            that.templateData(questionnaireData);
-            that.selectedTemplateId(questionnaire.id);
-            that.showAjaxLoader(false);
+            questionnaireDataFetcher.getQuestionnaire(questionnaire.id).done(function(questionnaireData){
+                that.showAjaxLoader(false);
+                that.selectedQuestionnaire(questionnaireData);
+            });
+
         },
 
         chooseTemplate: function (template) {
@@ -35,7 +35,6 @@ var questionnaireCreationOptionsViewModel = {
             that.showAjaxLoader(true);
             templateFetcher.getTemplateData(templateId).done(function(templateData){
                that.showAjaxLoader(false);
-               that.templateData(templateData);
                that.selectedTemplate({
                   projectName: templateData.project_name,
                   questions: templateData.existing_questions
@@ -83,4 +82,8 @@ var questionnaireCreationOptionsViewModel = {
         if(creationOption == 2 && this.selectedTemplateId())
             return true;
         return false;
+    }, questionnaireCreationOptionsViewModel);
+
+    questionnaireCreationOptionsViewModel.selectedCreationOption.subscribe(function(){
+        this.selectedQuestionnaireId(null);
     }, questionnaireCreationOptionsViewModel);

@@ -19,9 +19,9 @@
         </div>
         <div>
             <div class="ajax-loader" data-bind="visible: showAjaxLoader"><img src="/media/images/ajax-loader.gif"/></div>
-            <div class="selected_questions" data-bind="visible: selectedQuestionnaire, with: templateData">
-                <div><h6 class="project-name-header" data-bind="text: project_name"></h6>
-                    <ol data-bind="foreach: existing_questions">
+            <div class="selected_questions" data-bind="visible: selectedQuestionnaireId, with: selectedQuestionnaire">
+                <div><h6 class="project-name-header" data-bind="text: projectName"></h6>
+                    <ol data-bind="foreach: existingQuestions">
                         <li data-bind="text: $data"></li>
                     </ol>
                 </div>
