@@ -89,21 +89,6 @@ ko.bindingHandlers.initializeTooltip = {
     }
 };
 
-ko.bindingHandlers.buttonVisible = {
-    init: function (element, valueAccessor) {
-        $(element).hide();
-        var accordionElement = valueAccessor().accordionElement;
-        $(accordionElement).on('accordionchangestart', function () {
-            var activatedAccordion = $(accordionElement).accordion('option', 'active');
-            $(element).toggle(activatedAccordion !== false && activatedAccordion == 0);
-        })
-    },
-    update: function (element, valueAccessor) {
-        var selectedTemplateId = valueAccessor().observable;
-        $(element).toggle(selectedTemplateId() != null);
-    }
-};
-
 ko.bindingHandlers.hidden = {
     update: function (element, valueAccessor) {
         var value = ko.utils.unwrapObservable(valueAccessor());

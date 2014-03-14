@@ -1,6 +1,7 @@
 DW.TemplateFetcher = function(){
   var templateCache = {};
   var templateGroupingDataCache = null;
+
   this.getTemplateData = function (templateId) {
       var defd = $.Deferred();
          if (!templateCache[templateId]) {

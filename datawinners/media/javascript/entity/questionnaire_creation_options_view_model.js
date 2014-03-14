@@ -1,5 +1,6 @@
 var questionnaireDataFetcher = new DW.QuestionnaireFetcher();
 var templateFetcher = new DW.TemplateFetcher();
+
 var questionnaireCreationOptionsViewModel = {
         selectedTemplateId: ko.observable(),
         showQuestionnaireCreationOptions: ko.observable(),
@@ -10,33 +11,36 @@ var questionnaireCreationOptionsViewModel = {
         selectedQuestionnaire: ko.observable(),
         selectedQuestionnaireId: ko.observable(),
         selectedTemplate: ko.observable(),
+        selectedCreationOption: ko.observable(),
 
         removeTemplateId: function () {
             questionnaireCreationOptionsViewModel.selectedTemplateId(null);
         },
 
         selectQuestionnaire: function(questionnaire){
-            questionnaireCreationOptionsViewModel.selectedQuestionnaire(questionnaire.id);
-            questionnaireCreationOptionsViewModel.selectedQuestionnaireId(questionnaire.id)
-            questionnaireCreationOptionsViewModel.showAjaxLoader(true);
+            var that = questionnaireCreationOptionsViewModel;
+            that.selectedQuestionnaire(questionnaire.id);
+            that.selectedQuestionnaireId(questionnaire.id)
+            that.showAjaxLoader(true);
             var questionnaireData = questionnaireDataFetcher.getQuestionnaire(questionnaire.id);
-            questionnaireCreationOptionsViewModel.templateData(questionnaireData);
-            questionnaireCreationOptionsViewModel.selectedTemplateId(questionnaire.id);
-            questionnaireCreationOptionsViewModel.showAjaxLoader(false);
+            that.templateData(questionnaireData);
+            that.selectedTemplateId(questionnaire.id);
+            that.showAjaxLoader(false);
         },
 
         chooseTemplate: function (template) {
+            var that = questionnaireCreationOptionsViewModel;
             var templateId = template.id;
-            questionnaireCreationOptionsViewModel.removeTemplateId();
-            questionnaireCreationOptionsViewModel.showAjaxLoader(true);
+            that.removeTemplateId();
+            that.showAjaxLoader(true);
             templateFetcher.getTemplateData(templateId).done(function(templateData){
-               questionnaireCreationOptionsViewModel.showAjaxLoader(false);
-               questionnaireCreationOptionsViewModel.templateData(templateData);
-               questionnaireCreationOptionsViewModel.selectedTemplate({
+               that.showAjaxLoader(false);
+               that.templateData(templateData);
+               that.selectedTemplate({
                   projectName: templateData.project_name,
                   questions: templateData.existing_questions
                });
-               questionnaireCreationOptionsViewModel.selectedTemplateId(templateId);
+               that.selectedTemplateId(templateId);
             });
         },
 
@@ -53,21 +57,30 @@ var questionnaireCreationOptionsViewModel = {
             });
         },
 
-        gotoQuestionnaireLoader: function (question_template_id) {
-            location.hash = 'questionnaire/load/' + question_template_id;
-        },
-
         setQuestionnaireCreationType: function () {
-            var selectedOption = $('#questionnaire_types').accordion('option', 'active');
+            var that = questionnaireCreationOptionsViewModel;
+            var selectedOption = that.selectedCreationOption();
             if (selectedOption == 0) {
                 location.hash = 'questionnaire/new';
             }
             else if (selectedOption == 2) {
-                var question_template_id = questionnaireCreationOptionsViewModel.selectedTemplateId();
-                questionnaireCreationOptionsViewModel.gotoQuestionnaireLoader(question_template_id);
+                location.hash = 'questionnaire/load/' + that.selectedTemplateId();
             }
             else if(selectedOption == 1){
-                location.hash = 'questionnaire/copy/' + questionnaireCreationOptionsViewModel.selectedTemplateId();
+                location.hash = 'questionnaire/copy/' + that.selectedTemplateId();
             }
         }
     };
+
+    questionnaireCreationOptionsViewModel.isContinueVisible = ko.computed(function(){
+        var creationOption = this.selectedCreationOption();
+        if(creationOption === false)
+            return false;
+        if(creationOption == 0)
+            return true;
+        if(creationOption == 1 && this.selectedQuestionnaireId())
+            return true;
+        if(creationOption == 2 && this.selectedTemplateId())
+            return true;
+        return false;
+    }, questionnaireCreationOptionsViewModel);
