@@ -32,11 +32,15 @@ class QuestionnaireBuilder(object):
         return new_fields
 
     def update_unique_id_validator(self):
-        unique_id_fields = [field for field in self.form_model.fields if field.type == field_attributes.UNIQUE_ID_FIELD]
+        unique_id_fields = self.form_model.unique_id_field
         if unique_id_fields:
             self.form_model.add_validator(UniqueIdExistsValidator)
         else:
             self.form_model.remove_validator(UniqueIdExistsValidator)
+
+    def update_form_model_entity_type(self):
+        unique_id_field = self.form_model.unique_id_field
+        self.form_model.entity_type = [unique_id_field.unique_id_type] if unique_id_field else []
 
     def update_questionnaire_with_questions(self, question_set):
         origin_json_fields = [f._to_json() for f in self.form_model.fields]
@@ -46,6 +50,7 @@ class QuestionnaireBuilder(object):
         self.form_model.create_snapshot()
         self.form_model.delete_all_fields()
         [self.form_model.add_field(each) for each in new_fields]
+        self.update_form_model_entity_type()
         self.update_unique_id_validator()
 
 

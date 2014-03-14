@@ -15,13 +15,6 @@ class TestPostSMSProcessorNumberOfAnswersValidators(unittest.TestCase):
     def tearDown(self):
         self.patcher.stop()
 
-    def test_for_activity_report_question_should_not_send_error_for_data_submission_if_number_of_answers_are_not_equal_to_number_of_questions(self):
-        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=False, fields=[1, 2, 3])
-
-        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
-        response = processor.process("form_code", {'q1': 'ans', 'q2': 'ans2'})
-        self.assertEqual(None, response)
-
     def test_for_activity_report_question_should_send_error_for_data_submission_if_number_of_answers_are_not_equal_to_number_of_questions(self):
         # there won't be any answers for entity question
         self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=False, fields=[1, 2, 3])

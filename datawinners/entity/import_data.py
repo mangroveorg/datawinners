@@ -86,10 +86,6 @@ class FilePlayer(Player):
     def _process(self, form_model, values):
         if form_model.is_entity_registration_form():
             values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree).process(values)
-        if form_model.is_entity_type_reporter():
-            reporter_entity = entity.get_by_short_code(self.dbm, values.get(form_model.entity_question.code.lower()),
-                                                       form_model.entity_type)
-            values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)
         return values
 
     def _appendFailedResponse(self, message, values=None):
@@ -381,16 +377,6 @@ def _get_subject_type_infos(subject_types, form_models_grouped_by_subject_type):
                                                 data=[], )
     return subject_types_dict
 
-
-@timebox
-def get_subject_form_models(manager):
-    form_models = {}
-    form_model_values = manager.load_all_rows_in_view('questionnaire')
-    for each in form_model_values:
-        form_model = FormModel.new_from_doc(manager, FormModelDocument.wrap(each['value']))
-        if form_model.is_entity_registration_form() and not form_model.is_entity_type_reporter():
-            form_models[form_model.entity_type[0]] = form_model
-    return form_models
 
 def load_all_entities_of_type(manager, type=REPORTER):
     return load_entity_registration_data(manager, type)
