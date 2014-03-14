@@ -46,20 +46,21 @@ DW.controllers = {
             questionnaireViewModel.questions([]);
             questionnaireViewModel.errorInResponse(false);
             questionnaireViewModel.selectedQuestion(null);
-            var project_details = DW.getTemplateData(this.params.template_id);
-
-            questionnaireViewModel.projectName(project_details.project_name);
-            questionnaireViewModel.language(project_details.project_language);
-            questionnaireViewModel.questionnaireCode(project_details.questionnaire_code);
-            DW.existing_questions = $.parseJSON(project_details.existing_questions);
-            $($.parseJSON(project_details.existing_questions)).each(function (index, question) {
-                questionnaireViewModel.loadQuestion(new DW.question(question));
+            templateFetcher.getTemplateData(this.params.template_id).done(function(templateData){
+                questionnaireViewModel.projectName(templateData.project_name);
+                questionnaireViewModel.language(templateData.project_language);
+                questionnaireViewModel.questionnaireCode(templateData.questionnaire_code);
+                DW.existing_questions = templateData.existing_questions;
+                $(templateData.existing_questions).each(function (index, question) {
+                    questionnaireViewModel.loadQuestion(new DW.question(question));
+                });
+                questionnaireViewModel.showQuestionnaireForm(true);
+                questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
             });
-            questionnaireViewModel.showQuestionnaireForm(true);
-            questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
+
     },
     "copyQuestionnaire": function(){
-        var question_list = DW.QuestionnaireDataCache[this.params.questionnaire_id].questions;
+        var question_list = questionnaireDataFetcher.getQuestionnaireData(this.params.questionnaire_id).questions;
         for (var index in question_list) {
             var questions = new DW.question(question_list[index]);
             questionnaireViewModel.loadQuestion(questions);

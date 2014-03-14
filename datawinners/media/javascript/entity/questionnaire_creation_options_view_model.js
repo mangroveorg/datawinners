@@ -1,3 +1,5 @@
+var questionnaireDataFetcher = new DW.QuestionnaireFetcher();
+var templateFetcher = new DW.TemplateFetcher();
 var questionnaireCreationOptionsViewModel = {
         selectedTemplateId: ko.observable(),
         showQuestionnaireCreationOptions: ko.observable(),
@@ -7,6 +9,7 @@ var questionnaireCreationOptionsViewModel = {
         existingQuestionnaires: ko.observable(),
         selectedQuestionnaire: ko.observable(),
         selectedQuestionnaireId: ko.observable(),
+        selectedTemplate: ko.observable(),
 
         removeTemplateId: function () {
             questionnaireCreationOptionsViewModel.selectedTemplateId(null);
@@ -16,70 +19,37 @@ var questionnaireCreationOptionsViewModel = {
             questionnaireCreationOptionsViewModel.selectedQuestionnaire(questionnaire.id);
             questionnaireCreationOptionsViewModel.selectedQuestionnaireId(questionnaire.id)
             questionnaireCreationOptionsViewModel.showAjaxLoader(true);
-            if(DW.QuestionnaireDataCache[questionnaire.id]){
-                var questionnaireData = DW.getQuestionnaireDataFromCache(questionnaire.id);
-                questionnaireCreationOptionsViewModel.templateData(questionnaireData);
-            }
-            else{
-                $.ajax({
-                        type: 'GET',
-                        url: '/project/questionnaire/ajax/' + questionnaire.id,
-                        dataType: "json",
-                        async: false,
-                        success: function (response) {
-                            DW.QuestionnaireDataCache[questionnaire.id] = response;
-                            var questionnaireData = DW.getQuestionnaireDataFromCache(questionnaire.id);
-                            questionnaireCreationOptionsViewModel.templateData(questionnaireData);
-                        }
-                });
-
-            }
+            var questionnaireData = questionnaireDataFetcher.getQuestionnaire(questionnaire.id);
+            questionnaireCreationOptionsViewModel.templateData(questionnaireData);
             questionnaireCreationOptionsViewModel.selectedTemplateId(questionnaire.id);
             questionnaireCreationOptionsViewModel.showAjaxLoader(false);
-
         },
 
         chooseTemplate: function (template) {
-            var template_id = template.id;
+            var templateId = template.id;
             questionnaireCreationOptionsViewModel.removeTemplateId();
             questionnaireCreationOptionsViewModel.showAjaxLoader(true);
-            questionnaireCreationOptionsViewModel.templateData(DW.getTemplateData(template_id));
-            questionnaireCreationOptionsViewModel.selectedTemplateId(template_id);
-            questionnaireCreationOptionsViewModel.showAjaxLoader(false);
+            templateFetcher.getTemplateData(templateId).done(function(templateData){
+               questionnaireCreationOptionsViewModel.showAjaxLoader(false);
+               questionnaireCreationOptionsViewModel.templateData(templateData);
+               questionnaireCreationOptionsViewModel.selectedTemplate({
+                  projectName: templateData.project_name,
+                  questions: templateData.existing_questions
+               });
+               questionnaireCreationOptionsViewModel.selectedTemplateId(templateId);
+            });
         },
 
         getTemplates: function () {
             questionnaireCreationOptionsViewModel.removeTemplateId();
-            if (DW.templateGroupingDataCache) {
-                questionnaireCreationOptionsViewModel.templateGroupingData(DW.templateGroupingDataCache);
-            }
-            else {
-                    $.ajax({
-                        type: 'GET',
-                        url: project_templates_url,
-                        dataType: "json",
-                        success: function (data) {
-                            DW.templateGroupingDataCache = data.categories;
-                            questionnaireCreationOptionsViewModel.templateGroupingData(DW.templateGroupingDataCache);
-                        }
-                    });
-            }
+            templateFetcher.getTemplates().done(function(templates){
+                  questionnaireCreationOptionsViewModel.templateGroupingData(templates);
+            });
         },
 
         getExistingQuestionnaireList: function(){
-            if(DW.existingQuestionnaireCache){
-                questionnaireCreationOptionsViewModel.existingQuestionnaires(DW.existingQuestionnaireCache);
-                return;
-            }
-
-            $.ajax({
-                type: 'GET',
-                url: existing_questionnaires_url,
-                dataType: "json",
-                success: function (response) {
-                    DW.existingQuestionnaireCache = response.questionnaires;
-                    questionnaireCreationOptionsViewModel.existingQuestionnaires(response.questionnaires);
-                }
+           questionnaireDataFetcher.getExistingQuestionnaireList().done(function(questionnaireList){
+               questionnaireCreationOptionsViewModel.existingQuestionnaires(questionnaireList);
             });
         },
 

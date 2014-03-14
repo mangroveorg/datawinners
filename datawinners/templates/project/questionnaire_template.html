@@ -1,12 +1,12 @@
 {% load i18n %}
 
-<div>
+<div id="questionnaire_template_section">
 
     <div class="ajax-loader-horizontal" data-bind="fadeVisible: !templateGroupingData()">
         <img src="/media/images/ajax-loader-horizontal-bar.gif"/>
     </div>
 
-    <div data-bind="fadeVisible: templateGroupingData()">
+    <div data-bind="fadeVisible: templateGroupingData">
 
         <h6 class="instruction-header">{% trans 'Choose a template and edit it to fit your needs.' %}</h6>
 
@@ -23,9 +23,9 @@
         </div>
         <div>
             <div class="ajax-loader" data-bind="visible: showAjaxLoader"><img src="/media/images/ajax-loader.gif"/></div>
-            <div class="selected_questions" data-bind="visible: selectedTemplateId, with: templateData">
-                <div><h6 class="project-name-header" data-bind="text: project_name"></h6>
-                    <ol data-bind="foreach: $.parseJSON(existing_questions)">
+            <div class="selected_questions" data-bind="visible: selectedTemplateId, with: selectedTemplate">
+                <div><h6 class="project-name-header" data-bind="text: projectName"></h6>
+                    <ol data-bind="foreach: questions">
                         <li data-bind="text: name"></li>
                     </ol>
                 </div>

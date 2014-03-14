@@ -1,4 +1,4 @@
-from framework.utils.common_utils import by_css
+from framework.utils.common_utils import by_css, by_xpath
 
 GEN_RANDOM = "gen_random"
 
@@ -12,11 +12,11 @@ BLANK_QUESTIONNAIRE_SELECTION_ACCORDION = ".//*[@id='questionnaire_types']/div[1
 SELECT_USING_TEMPLATE_ACCORDION = ".//*[@id='questionnaire_types']/div[4]/span[2]"
 AJAX_LOADER_HORIZONTAL = by_css('.ajax-loader-horizontal')
 AJAX_LOADER = by_css('.ajax-loader')
-TEMPLATE_CATEGORY_ACCORDION = by_css('#questionnaire_template .template_data')
-TEMPLATE_NAME_DIV = by_css('#questionnaire_template .template_name')
-SELECTED_TEMPLATE_QUESTIONS_DIV = by_css('.selected_questions')
-TEMPLATE_NAME_HEADER = by_css('.project-name-header')
-TEMPLATE_QUESTIONS = by_css('.selected_questions>div>ol>li')
+TEMPLATE_CATEGORY_ACCORDION = by_css('#questionnaire_template .questionnaire_data')
+TEMPLATE_NAME_DIV = by_xpath(".//*[@id='questionnaire_template']//*[text()='livestock census']")
+SELECTED_TEMPLATE_QUESTIONS_DIV = by_css('#questionnaire_template_section .selected_questions')
+TEMPLATE_NAME_HEADER = by_css('#questionnaire_template_section .project-name-header')
+TEMPLATE_QUESTIONS = by_css('#questionnaire_template_section .selected_questions>div>ol>li')
 
 
 
