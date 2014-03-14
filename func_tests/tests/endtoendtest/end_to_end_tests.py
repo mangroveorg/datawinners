@@ -64,7 +64,7 @@ def do_login(driver, email, password):
 
 class TestApplicationEndToEnd(unittest.TestCase):
     def setUp(self):
-        self.driver = setup_driver(browser="phantom")
+        self.driver = setup_driver()
 
     def tearDown(self):
         import sys

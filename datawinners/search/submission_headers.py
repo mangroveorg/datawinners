@@ -21,11 +21,11 @@ class SubmissionHeader():
             key = es_field_name(field_code, self.form_model.id)
             if not header_dict.has_key(key): header_dict.update({key: val})
 
-        if self.form_model.is_entity_type_reporter():
-            # For summary projects there will be an extra datasender info question(code eid).
-            # This condition removes that extra question.
-            header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
-            header_dict.pop('entity_short_code')
+        #if self.form_model.is_entity_type_reporter():
+        #    # For summary projects there will be an extra datasender info question(code eid).
+        #    # This condition removes that extra question.
+        #    header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
+        #    header_dict.pop('entity_short_code')
         return header_dict
 
     def get_header_field_names(self):
@@ -63,7 +63,8 @@ class AllSubmissionHeader(SubmissionHeader):
         header_dict.update({"date": "Submission Date"})
         header_dict.update({"status": "Status"})
         subject_title = self.form_model.entity_type[0].title()
-        header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
+        if self.form_model.unique_id_field:
+            header_dict.update({es_field_name(self.form_model.unique_id_field.code, self.form_model.id): subject_title})
         header_dict.update({'entity_short_code': "%s ID" % subject_title})
         if self.form_model.event_time_question:
             header_dict.update(
