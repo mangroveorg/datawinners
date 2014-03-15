@@ -11,11 +11,13 @@
         <h6 class="instruction-header">{% trans 'Choose an existing Questionnaire and edit it to fit your needs.' %}</h6>
 
         <div id="existing_questionnaires" class="questionnaire_selection">
-            <div class="questionnaire_data" data-bind="accordion: existingQuestionnaires">
+            <!-- ko if: existingQuestionnaires -->
+            <div class="questionnaire_data" data-bind="foreach: existingQuestionnaires">
                 <div class="highlight_on_hover" data-bind="text: name, click: $root.selectQuestionnaire,
                         css:{selected: id == $root.selectedQuestionnaireId()}">
                 </div>
             </div>
+            <!-- /ko -->
         </div>
         <div>
             <div class="ajax-loader" data-bind="visible: showAjaxLoader"><img src="/media/images/ajax-loader.gif"/></div>

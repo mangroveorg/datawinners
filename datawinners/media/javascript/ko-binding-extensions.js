@@ -56,19 +56,39 @@ ko.bindingHandlers.fadeVisible = {
 
 ko.bindingHandlers.accordion = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-        ko.bindingHandlers.foreach.init(element, valueAccessor, allBindings, viewModel, bindingContext);
+        var accessor = valueAccessor();
+        var options = ko.toJS(accessor) || {};
+        if(options.active == undefined)
+            options.active = 100;
+
         $(element).accordion({
             autoHeight: false,
             collapsible: true,
-            active: 100
+            active: options.active,
+            header: options.header,
+            change: function(event, ui){
+                var activatedSection = $(event.target).accordion('option', 'active');
+                var activeObservable = accessor.active
+                activeObservable && activeObservable(activatedSection);
+            }
         });
     },
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-        ko.bindingHandlers.foreach.update(element, valueAccessor, allBindings, viewModel, bindingContext);
+        var accessor = valueAccessor();
+        var options = ko.toJS(accessor) || {};
+        if(options.active == undefined)
+            options.active = 100;
+
         $(element).accordion('destroy').accordion({
             autoHeight: false,
             collapsible: true,
-            active: 100
+            active: options.active,
+            header: options.header,
+            change: function(event, ui){
+                var activatedSection = $(event.target).accordion('option', 'active');
+                var activeObservable = accessor.active
+                activeObservable && activeObservable(activatedSection);
+            }
         });
     }
 };

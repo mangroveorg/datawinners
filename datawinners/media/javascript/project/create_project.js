@@ -78,6 +78,7 @@ DW.controllers = {
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
     },
     "questionnaireCreationOptions": function () {
+            questionnaireCreationOptionsViewModel.resetCreationOption();
             questionnaireDataFetcher.clearCache();
             questionnaireViewModel.showQuestionnaireForm(false);
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(true);

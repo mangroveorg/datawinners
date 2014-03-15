@@ -11,7 +11,11 @@ var questionnaireCreationOptionsViewModel = {
 //        selectedQuestionnaire: ko.observable(),
         selectedQuestionnaireId: ko.observable(),
         selectedTemplate: ko.observable(),
-        selectedCreationOption: ko.observable(),
+        selectedCreationOption: ko.observable(100),
+
+        resetCreationOption: function(){
+          questionnaireCreationOptionsViewModel.selectedCreationOption(100);
+        },
 
         removeTemplateId: function () {
             questionnaireCreationOptionsViewModel.selectedTemplateId(null);

@@ -11,15 +11,17 @@
         <h6 class="instruction-header">{% trans 'Choose a template and edit it to fit your needs.' %}</h6>
 
         <div id="questionnaire_template" class="questionnaire_selection">
-            <div data-bind="accordion: templateGroupingData()">
+            <!-- ko if: templateGroupingData -->
+            <div data-bind="foreach: templateGroupingData, accordion: {}">
                 <div class="questionnaire_data" data-bind="text: category, click: $root.removeTemplateId"></div>
-                <div data-bind="foreach: templates">
+                <div data-bind="foreach: $data.templates">
                     <span data-bind="text: name, click: $root.chooseTemplate, css:{selected: $data.id == $root.selectedTemplateId()}">
                      </span>
 
                     <div class="selected-notify"></div>
                 </div>
             </div>
+            <!-- /ko -->
         </div>
         <div>
             <div class="ajax-loader" data-bind="visible: showAjaxLoader"><img src="/media/images/ajax-loader.gif"/></div>
