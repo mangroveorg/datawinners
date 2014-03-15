@@ -66,7 +66,7 @@ DW.controllers = {
             questionnaireViewModel.loadQuestion(questions);
         };
         questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(false);
-        questionnaireViewModel.showQuestionnaireForm(true); //TODO:keep only one flag
+        questionnaireViewModel.showQuestionnaireForm(true);
         questionnaireViewModel.enableQuestionnaireTitleFocus(true);
         questionnaireViewModel.questionnaireCode(questionnaire_code);
     },
@@ -78,6 +78,7 @@ DW.controllers = {
             questionnaireViewModel.enableQuestionnaireTitleFocus(true);
     },
     "questionnaireCreationOptions": function () {
+            questionnaireDataFetcher.clearCache();
             questionnaireViewModel.showQuestionnaireForm(false);
             questionnaireCreationOptionsViewModel.showQuestionnaireCreationOptions(true);
     }
@@ -112,7 +113,8 @@ $(document).ready(function () {
     var options = {
                     successCallBack: _save_questionnaire,
                     isQuestionnaireModified: function(){
-                                                return DW.questionnaire_was_changed || questionnaireViewModel.questions().length > 0;
+                                                return questionnaireViewModel.showQuestionnaireForm() &&
+                                                    (DW.questionnaire_was_changed || questionnaireViewModel.questions().length > 0);
                                             }
                   };
     new DW.CancelQuestionnaireWarningDialog(options).init();

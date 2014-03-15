@@ -103,4 +103,8 @@ DW.QuestionnaireFetcher = function(){
     this.getQuestionnaireData = function(questionnaireId){
         return questionnaireDataCache[questionnaireId];
     };
+
+    this.clearCache = function(){
+        questionnaireCache = null;
+    }
 };

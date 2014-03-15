@@ -66,7 +66,7 @@ var questionnaireCreationOptionsViewModel = {
                 location.hash = 'questionnaire/load/' + that.selectedTemplateId();
             }
             else if(selectedOption == 1){
-                location.hash = 'questionnaire/copy/' + that.selectedTemplateId();
+                location.hash = 'questionnaire/copy/' + that.selectedQuestionnaireId();
             }
         }
     };
