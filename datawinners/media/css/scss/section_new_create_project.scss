@@ -1,3 +1,5 @@
+@import "util.scss";
+
 /*new UI*/
 .wizard {
   margin: 25px !important;
@@ -417,5 +419,12 @@ fieldset {
 .highlight_on_hover{
   &:hover{
     background-color: #d7e4ed;
+  }
+}
+
+.questionnaire_save_tooltip {
+  @extend div.tooltip;
+  p{
+    width: 200px;
   }
 }
