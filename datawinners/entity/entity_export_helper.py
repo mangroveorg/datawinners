@@ -25,7 +25,8 @@ def get_submission_headers(fields, form_model):
     headers = []
     bold, brown, italic, gray = get_styles()
     for field in fields:
-        context = InstructionContext(field, form_model.entity_type[0])
+        #context = InstructionContext(field, form_model.entity_type[0])
+        context = InstructionContext(field, form_model.entity_type)
         instruction, example = SubmissionInstructionBuilder.fetch_instruction(context)
         headers.append(((field["label"], bold), (u"\n\n%s" % instruction, gray), (u"\n\n%s" % example, italic)))
     return headers
@@ -146,16 +147,16 @@ class EntityIdRegistrationInstruction:
             "Leave this column blank if you want DataWinners to assign an ID for you.")
 
 
-class SummaryProjectSubmissionInstruction:
-    @staticmethod
-    def matches_criteria(context):
-        return context.field.get("type")==field_attributes.UNIQUE_ID_FIELD and context.entity_type == "reporter"
-
-    @staticmethod
-    def get_instruction(context):
-        return _(
-            "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."), \
-               _("Example: rep42")
+#class SummaryProjectSubmissionInstruction:
+#    @staticmethod
+#    def matches_criteria(context):
+#        return context.field.get("type")==field_attributes.UNIQUE_ID_FIELD and context.entity_type == []
+#
+#    @staticmethod
+#    def get_instruction(context):
+#        return _(
+#            "If you are sending data on behalf of someone, you can enter their Data Sender ID. Otherwise you can leave it blank."), \
+#               _("Example: rep42")
 
 
 class EntityProjectSubmissionInstruction:
@@ -184,10 +185,13 @@ class SubjectInstructionBuilder:
 
 
 class SubmissionInstructionBuilder:
-    field_instructions = [SummaryProjectSubmissionInstruction, EntityProjectSubmissionInstruction,
+    field_instructions = [
+        #SummaryProjectSubmissionInstruction,
+                          EntityProjectSubmissionInstruction,
                           IntegerFieldInstruction, TextFieldInstruction,
                           GeoCodeFieldInstruction, DateFieldInstruction, MultiSelectFieldInstruction,
-                          SingleSelectFieldInstruction]
+                          SingleSelectFieldInstruction
+                        ]
 
     @classmethod
     def fetch_instruction(cls, context):

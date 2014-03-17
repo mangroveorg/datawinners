@@ -9,14 +9,16 @@ from mangrove.transport.contract.survey_response import SurveyResponse
 from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.tests.test_data_utils import register
-
+from mangrove.utils.test_utils.database_utils import uniq
+from mangrove.datastore.cache_manager import get_cache_manager
 
 class TestDataSenderHelper(TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manager = get_db_manager('http://localhost:5984/', 'mangrove-test')
+        database_name = uniq('mangrove-test')
+        cls.manager = get_db_manager('http://localhost:5984/', database_name)
         _delete_db_and_remove_db_manager(cls.manager)
-        cls.manager = get_db_manager('http://localhost:5984/', 'mangrove-test')
+        cls.manager = get_db_manager('http://localhost:5984/', database_name)
         initializer._create_views(cls.manager)
 
         cls.org_id = 'SLX364903'
@@ -25,6 +27,11 @@ class TestDataSenderHelper(TestCase):
         deleted_ds = get_by_short_code_include_voided(cls.manager, "del1", REPORTER_ENTITY_TYPE)
         deleted_ds.void()
         cls.deleted_ds_id = deleted_ds.id
+
+    @classmethod
+    def tearDownClass(cls):
+        _delete_db_and_remove_db_manager(cls.manager)
+        get_cache_manager().flush_all()
 
     def test_should_return_data_sender_information_send_from_web(self):
         beany_tester_id = get_by_short_code_include_voided(TestDataSenderHelper.manager, "rep1",

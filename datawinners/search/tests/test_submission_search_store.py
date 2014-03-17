@@ -12,7 +12,7 @@ class TestSubmissionSearchStore(unittest.TestCase):
         self.dbm = Mock(spec=DatabaseManager)
         fields = [DateField(name='q3', code='q3', label='Reporting date', date_format='dd.mm.yyyy'),
              UniqueIdField(unique_id_type='clinic',name="Q1", code="EID", label="What is the clinic id?")]
-        self.form_model = FormModel(self.dbm, "abc", "abc", entity_type=["clinic"], form_code="cli001", fields=fields,
+        self.form_model = FormModel(self.dbm, "abc", "abc", form_code="cli001", fields=fields,
                                     type="survey")
 
     def test_should_add_es_mapping_when_no_existing_questions_mapping(self):

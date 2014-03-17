@@ -46,7 +46,7 @@ class Header(object):
 
     def _subject_header(self):
         subject_type = self._form_model.entity_type[0]
-        return (ugettext(subject_type).capitalize(), '') if subject_type != 'reporter' else None
+        return (ugettext(subject_type).capitalize(), '')
 
     def _fields_header(self):
         return [(field.label, field.date_format if isinstance(field, DateField) else (

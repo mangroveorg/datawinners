@@ -55,7 +55,7 @@ class TestQuestionnaireBuilderIT(unittest.TestCase):
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
                               defaultValue="some default value",
                               constraints=[TextLengthConstraint(5, 10), RegexConstraint("\w+")])
-        cls.form_model = FormModel(cls.manager, entity_type=cls.entity_type, name="aids", label="Aids form_model",
+        cls.form_model = FormModel(cls.manager, name="aids", label="Aids form_model",
                                    form_code=FORM_CODE_1, type='survey', fields=[question1, question2])
         cls.form_model__id = cls.form_model.save()
 
@@ -68,7 +68,7 @@ class TestQuestionnaireBuilderIT(unittest.TestCase):
                                  constraints=[NumericRangeConstraint(min=15, max=120)])
         question3 = SelectField(name="Color", code="Q3", label="What is your favourite color",
                                 options=[("RED", 1), ("YELLOW", 2)])
-        self.summary_form_model = FormModel(self.manager, entity_type=["reporter"], name="aids",
+        self.summary_form_model = FormModel(self.manager,name="aids",
                                             label="Aids form_model",
                                             form_code=FORM_CODE_2, type="survey",
                                             fields=[question1, question2, question3])
@@ -84,23 +84,6 @@ class TestQuestionnaireBuilderIT(unittest.TestCase):
         QuestionnaireBuilder(form_model, self.manager).update_questionnaire_with_questions(post)
         self.assertEquals(1, len(form_model.fields))
 
-
-    def test_should_update_questionnaire_when_entity_type_is_reporter(self):
-        self._create_form_model_without_uniq_id()
-        post = [{"title": "q1", "type": "text", "choices": [], "code": "q1",
-                 "min_length": 1, "max_length": ""},
-                {"title": "q2", "type": "integer", "choices": [], "code": "code",
-                 "range_min": 0, "range_max": 100},
-                {"title": "q3", "type": "select", "code": "code",
-                 "choices": [{"value": {"val": "c1"}}, {"value": {"val": "c2"}}]}
-        ]
-        summary_form_model = self.manager.get(self.summary_form_model__id, FormModel)
-        QuestionnaireBuilder(summary_form_model, self.manager).update_questionnaire_with_questions(post)
-        self.assertEqual(3, len(summary_form_model.fields))
-        #self.assertEqual('eid', summary_form_model.fields[0].code)
-        self.assertEqual('q1', summary_form_model.fields[0].code)
-        self.assertEqual('q2', summary_form_model.fields[1].code)
-        self.assertEqual('q3', summary_form_model.fields[2].code)
 
     def test_should_no_snapshot_when_questionnaire_first_created(self):
         #self._create_form_model()

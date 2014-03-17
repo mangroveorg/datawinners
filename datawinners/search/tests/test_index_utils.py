@@ -3,7 +3,7 @@ from mock import Mock, patch
 from datawinners.search.index_utils import subject_dict
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, EntityFormModel
 
 
 class TestIndexUtils(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestIndexUtils(unittest.TestCase):
                 tabulate_data.return_value = {'cols': ['ans1', 'ans2']}
                 with patch.object(Entity, 'get') as get:
                     get.return_value = mock_entity
-                    form_model = FormModel(dbm=dbm, entity_type=entity_type, is_registration_model=True)
+                    form_model = EntityFormModel(dbm=dbm, entity_type=entity_type)
                     form_model._doc = Mock(form_code="abc", id='form_id')
                     entity_doc = Mock()
 

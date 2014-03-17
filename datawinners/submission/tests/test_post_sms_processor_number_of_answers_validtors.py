@@ -1,7 +1,7 @@
 import unittest
 from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, EntityFormModel
 from mock import patch, Mock
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
 from datawinners.submission.submission_utils import PostSMSProcessorNumberOfAnswersValidators
@@ -51,7 +51,7 @@ class TestPostSMSProcessorNumberOfAnswersValidators(unittest.TestCase):
             self):
         self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=True, fields=[1, 2, 3])
         processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
-        self.assertRaises(SMSParserWrongNumberOfAnswersException, processor.process,"form_code", {'q1': 'ans', 'q2': 'ans2'})
+        self.assertRaises(SMSParserWrongNumberOfAnswersException, processor.process ,"form_code", {'q1': 'ans', 'q2': 'ans2'})
         #self.assertEqual(False, response.success)
         #self.assertEqual(get_wrong_number_of_answer_error_message(), response.errors)
 
@@ -69,11 +69,10 @@ class TestPostSMSProcessorNumberOfAnswersValidators(unittest.TestCase):
         self.assertEqual(None, response)
 
 
-    def _get_form_model_mock(self, is_registration_form, fields, entity_question=None):
-        form_model_mock = Mock(spec=FormModel)
+    def _get_form_model_mock(self, is_registration_form, fields, entity_question =None):
+        form_model_mock = Mock(spec=EntityFormModel) if is_registration_form else Mock(spec=FormModel)
         form_model_mock.is_entity_registration_form.return_value = is_registration_form
         form_model_mock.fields = fields
-        form_model_mock.entity_question = entity_question
         return form_model_mock
 
     def test_for_activity_report_question_should_send_error_for_data_submission_with_extra_answers(self):

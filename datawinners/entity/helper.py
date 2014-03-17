@@ -18,7 +18,7 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
-    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, EMAIL_FIELD, get_form_model_by_code
+    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER, EMAIL_FIELD, get_form_model_by_code, EntityFormModel
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint, ShortCodeRegexConstraint
 from mangrove.transport.player.player import WebPlayer
@@ -100,7 +100,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
         constraints=[TextLengthConstraint(max=20), ShortCodeRegexConstraint("^[a-zA-Z0-9]+$")], required=False)
     questions = [question1, question2, question3, question4, question5, question6]
 
-    form_model = FormModel(manager, name=entity_name, form_code=form_code, fields=questions, is_registration_model=True,
+    form_model = EntityFormModel(manager, name=entity_name, form_code=form_code, fields=questions, is_registration_model=True,
         entity_type=entity_type)
     return form_model
 

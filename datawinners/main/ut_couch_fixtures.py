@@ -176,7 +176,7 @@ def create_project1(entity_type, manager, questions, weekly_reminder_and_deadlin
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="cli001", type='survey',
                            fields=questions,
-                           entity_type=entity_type
+
     )
     try:
         qid = form_model.save()
@@ -214,7 +214,7 @@ def create_project2(CLINIC_ENTITY_TYPE, manager, questions):
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli002", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            )
     try:
         qid2 = form_model2.save()
     except DataObjectAlreadyExists as e:
@@ -234,7 +234,7 @@ def create_project3(CLINIC_ENTITY_TYPE, manager, questions):
     form_model3 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli003", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            )
     try:
         qid3 = form_model3.save()
     except DataObjectAlreadyExists as e:
@@ -254,7 +254,7 @@ def create_project4(CLINIC_ENTITY_TYPE, manager, questions):
     form_model4 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli004", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            )
     try:
         qid4 = form_model4.save()
     except DataObjectAlreadyExists as e:
@@ -274,7 +274,7 @@ def create_project5(CLINIC_ENTITY_TYPE, manager, questions):
     form_model5 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli005", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            )
     try:
         qid5 = form_model5.save()
     except DataObjectAlreadyExists as e:
@@ -294,7 +294,7 @@ def create_project6(CLINIC_ENTITY_TYPE, manager, questions):
     form_model6 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli006", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            )
     try:
         qid6 = form_model6.save()
     except DataObjectAlreadyExists as e:
@@ -314,7 +314,7 @@ def create_project7(CLINIC_ENTITY_TYPE, manager, questions):
     form_model7 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli007", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            )
     try:
         qid7 = form_model7.save()
     except DataObjectAlreadyExists as e:
@@ -334,7 +334,7 @@ def create_project11(CLINIC_ENTITY_TYPE, manager, questions):
     form_model11 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli011", type='survey',
                              fields=questions,
-                             entity_type=CLINIC_ENTITY_TYPE
+
     )
     weekly_reminder_and_deadline = {
         "deadline_week": "5",
@@ -379,7 +379,7 @@ def create_project10(CLINIC_ENTITY_TYPE, manager, questions):
     form_model10 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli010", type='survey',
                              fields=questions,
-                             entity_type=CLINIC_ENTITY_TYPE
+
     )
     weekly_reminder_and_deadline = {
         "deadline_week": "5",
@@ -425,7 +425,7 @@ def create_project9(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_
     form_model9 = FormModel(manager, name="AIDS Clinici", label="Aids form_model",
                             form_code="cli009", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            )
     try:
         qid = form_model9.save()
     except DataObjectAlreadyExists as e:
@@ -456,7 +456,7 @@ def create_project8(CLINIC_ENTITY_TYPE, manager, questions):
     form_model8 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli008", type='survey',
                             fields=questions,
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            )
     try:
         qid8 = form_model8.save()
     except DataObjectAlreadyExists as e:
@@ -475,7 +475,7 @@ def create_project12(CLINIC_ENTITY_TYPE, manager, questions):
     form_model12 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli012", type='survey',
                              fields=questions,
-                             entity_type=CLINIC_ENTITY_TYPE
+
     )
     weekly_reminder_and_deadline = {
         "deadline_week": "5",
@@ -523,7 +523,7 @@ def create_project13(CLINIC_ENTITY_TYPE, manager, questions):
     form_model13 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli013", type='survey',
                              fields=questions,
-                             entity_type=CLINIC_ENTITY_TYPE
+
     )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
@@ -571,7 +571,7 @@ def create_project14(CLINIC_ENTITY_TYPE, manager, questions):
     form_model14 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli014", type='survey',
                              fields=questions,
-                             entity_type=CLINIC_ENTITY_TYPE
+
     )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
@@ -619,7 +619,7 @@ def create_project15(CLINIC_ENTITY_TYPE, manager, questions):
     form_model15 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli015", type='survey',
                              fields=questions,
-                             entity_type=CLINIC_ENTITY_TYPE
+
     )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
@@ -667,7 +667,7 @@ def create_project16(CLINIC_ENTITY_TYPE, manager, questions):
     form_model16 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli016", type='survey',
                              fields=questions,
-                             entity_type=CLINIC_ENTITY_TYPE
+
     )
     monthly_reminder_and_deadline = {
         "deadline_month": "26",
@@ -715,7 +715,7 @@ def create_project17(CLINIC_ENTITY_TYPE, manager, questions_):
     form_model17 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli017", type='survey',
                              fields=questions_,
-                             entity_type=CLINIC_ENTITY_TYPE)
+                             )
     try:
         qid17 = form_model17.save()
     except DataObjectAlreadyExists as e:
@@ -734,8 +734,7 @@ def create_project17(CLINIC_ENTITY_TYPE, manager, questions_):
 def create_project18(CLINIC_ENTITY_TYPE, manager, questions_):
     form_model18 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="cli018", type='survey',
-                             fields=questions_,
-                             entity_type=CLINIC_ENTITY_TYPE)
+                             fields=questions_)
     try:
         qid18 = form_model18.save()
     except DataObjectAlreadyExists as e:
@@ -756,7 +755,7 @@ def create_project19(ENTITY_TYPE, manager):
     form_model19 = FormModel(manager, name="AIDS", label="Aids form_model",
                              form_code="peo019", type='survey',
                              fields=questions_,
-                             entity_type=ENTITY_TYPE)
+                             )
     try:
         qid19 = form_model19.save()
     except DataObjectAlreadyExists as e:
@@ -787,7 +786,7 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code=clinic_code, type='survey',
                            fields=[question1, question2],
-                           entity_type=CLINIC_ENTITY_TYPE
+
     )
     try:
         qid = form_model.save()
@@ -1434,7 +1433,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
                            form_code="cli051", type='survey',
                            fields=[question1, question2, question3, question4, question5, question6, question7,
                                    question8],
-                           entity_type=CLINIC_ENTITY_TYPE
+
     )
 
     weekly_reminder_and_deadline = {

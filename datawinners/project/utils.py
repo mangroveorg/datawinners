@@ -51,7 +51,6 @@ def make_project_links(project, questionnaire_code):
 
 
 def project_info(request, manager, form_model, project, questionnaire_code): #revisit:export
-    is_summary_report = form_model.unique_id_field is None
     rp_field = form_model.event_time_question
     organization = get_organization(request)
     in_trial_mode = organization.in_trial_mode
@@ -59,7 +58,7 @@ def project_info(request, manager, form_model, project, questionnaire_code): #re
     is_monthly_reporting = rp_field.date_format.find('dd') < 0 if has_rp else False
 
     return {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
-            "is_monthly_reporting": is_monthly_reporting, "entity_type": form_model.entity_type[0].capitalize(),
+            "is_monthly_reporting": is_monthly_reporting, "entity_type": "",
             'project_links': (make_project_links(project, questionnaire_code)),
             'is_quota_reached':is_quota_reached(request, organization=organization),
             'project': project,
@@ -68,7 +67,7 @@ def project_info(request, manager, form_model, project, questionnaire_code): #re
             'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
             'reporting_period_question_text': rp_field.label if has_rp else None,
             'has_reporting_period': has_rp,
-            'is_summary_report': is_summary_report}
+            }
 
 def is_quota_reached(request, organization=None, org_id=None):
     if not organization:
