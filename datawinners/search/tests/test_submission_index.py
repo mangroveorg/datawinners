@@ -69,7 +69,7 @@ class TestSubmissionIndex(unittest.TestCase):
 
     def test_should_update_submission_index_date_field_with_current_format(self):
         fields = [UniqueIdField(unique_id_type='clinic',name="entity_question", code="EID", label="What is associated entity"), DateField("date", "date", "Date", "dd.mm.yyyy")]
-        form_model = FormModel(dbm=Mock(spec=DatabaseManager),form_code="001", type="survey", name="form", entity_type=["clinic"], fields = fields)
+        form_model = FormModel(dbm=Mock(spec=DatabaseManager),form_code="001", type="survey", name="form", fields = fields)
         form_model._doc.entity_type = ["clinic"]
         values = {'eid': 'cid005',
                   'date': '12.21.2012'}

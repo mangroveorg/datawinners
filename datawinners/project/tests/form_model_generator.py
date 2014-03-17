@@ -11,25 +11,23 @@ class FormModelGenerator(object):
     def form_model(self, form_code="cli002"):
         return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code=form_code, type='survey',
             fields=[self.eid_field, self.rp_field, self.symptoms_field, self.blood_type_field],
-            entity_type=["clinic"])
+            )
 
     def subject_form_model_without_rp(self):
         return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
-            fields=[self.eid_field, self.symptoms_field, self.blood_type_field], entity_type=["clinic"])
+            fields=[self.eid_field, self.symptoms_field, self.blood_type_field], )
 
     def summary_form_model_without_rp(self):
         return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
-            fields=[self.eid_field, self.symptoms_field, self.blood_type_field],
-            entity_type=["reporter"])
+            fields=[self.eid_field, self.symptoms_field, self.blood_type_field])
 
     def summary_form_model_with_rp(self):
         return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
-            fields=[self.rp_field, self.eid_field, self.symptoms_field, self.blood_type_field],
-            entity_type=["reporter"])
+            fields=[self.rp_field, self.eid_field, self.symptoms_field, self.blood_type_field])
 
     def form_model_with_gps_question(self):
         return FormModel(self.database_manager, name="AIDS", label="Aids form_model", form_code="cli002", type='survey',
-            fields=[self.eid_field, self.gps_field], entity_type=["clinic"])
+            fields=[self.eid_field, self.gps_field], )
 
     def init_form_model_fields(self):
         self.eid_field = UniqueIdField(unique_id_type='clinic',label="What is associated entity?", code="EID", name="What is associatéd entity?")

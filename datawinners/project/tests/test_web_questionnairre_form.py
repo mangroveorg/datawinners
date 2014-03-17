@@ -2,8 +2,8 @@ from unittest import TestCase
 from django.forms import RegexField, HiddenInput
 from mock import Mock
 from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.field import TextField, UniqueIdField
-from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME
+from mangrove.form_model.field import TextField, UniqueIdField, ShortCodeField
+from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, EntityFormModel
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm, WebForm, SurveyResponseForm
 
@@ -15,7 +15,7 @@ class TestWebForm(TestCase):
     def test_hidden_form_code_field_created(self):
         entity_field = UniqueIdField('clinic',"reporting on", "rep_on", "rep")
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
-                               entity_type=['Clinic'], type="business")
+                               type="business")
         form = WebForm(form_model, None)
         self.assertEquals(len(form.fields), 1)
         self.assertEquals(type(form.fields['form_code'].widget), HiddenInput)
@@ -26,8 +26,8 @@ class TestSubjectRegistrationForm(TestCase):
         self.dbm = Mock(spec=DatabaseManager)
 
     def test_regex_field_created_for_entity_question(self):
-        entity_field = UniqueIdField("clinic","reporting on", "rep_on", "rep")
-        form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
+        entity_field = ShortCodeField("reporting on", "rep_on", "rep")
+        form_model = EntityFormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
                                entity_type=['Clinic'], type="business")
 
         form = SubjectRegistrationForm(form_model)
@@ -36,7 +36,7 @@ class TestSubjectRegistrationForm(TestCase):
 
     def test_append_country_to_location(self):
         location_field = TextField(LOCATION_TYPE_FIELD_NAME, "location_code", "some label")
-        form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[location_field],
+        form_model = EntityFormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[location_field],
                                entity_type=['Clinic'], type="business")
 
         form = SubjectRegistrationForm(form_model,
@@ -53,7 +53,7 @@ class TestSurveyResponseForm(TestCase):
     def test_should_create_subject_field(self):
         entity_field = UniqueIdField("","reporting on", "rep_on", "rep")
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[entity_field],
-                               entity_type=['Clinic'], type="business")
+                               type="business")
 
         subject_field_creator = Mock(spec=SubjectQuestionFieldCreator)
         mock_field = Mock()
@@ -65,7 +65,7 @@ class TestSurveyResponseForm(TestCase):
 
     def test_should_not_create_subject_fields_if_entity_field_is_not_present_in_form_model(self):
         form_model = FormModel(self.dbm, 'some form', 'some', 'form_code_1', fields=[],
-                               entity_type=['Clinic'], type="business")
+                               type="business")
         form = SurveyResponseForm(form_model, Mock(spec=SubjectQuestionFieldCreator))
 
         self.assertIsNone(form.fields.get('entity_question_code'))

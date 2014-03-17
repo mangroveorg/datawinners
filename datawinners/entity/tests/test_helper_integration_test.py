@@ -2,7 +2,7 @@ import unittest
 from django.contrib.auth.models import User
 from mangrove.bootstrap import initializer
 from mangrove.datastore.database import get_db_manager
-from mangrove.utils.test_utils.database_utils import delete_and_create_form_model
+from mangrove.utils.test_utils.database_utils import delete_and_create_form_model, uniq
 from mock import Mock
 
 from mangrove.contrib.registration import create_default_reg_form_model, GLOBAL_REGISTRATION_FORM_CODE
@@ -17,7 +17,7 @@ class TestEntityHelper(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.manager = get_db_manager('http://localhost:5984/','mangrove-test')
+        cls.manager = get_db_manager('http://localhost:5984/',uniq('mangrove-test'))
         initializer._create_views(cls.manager)
         cls.username = 'a@a.com'
         cls.datasender_user, _ = User.objects.get_or_create(username=cls.username,email=cls.username,password='1')

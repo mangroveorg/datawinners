@@ -39,16 +39,15 @@ def create_questionnaire(post, manager, entity_type, name, language):
     questionnaire_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey',
+    form_model = FormModel(manager, name=name, type='survey',
                           fields=[], form_code=questionnaire_code, language=language)
     QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
     return form_model
 
 
-def update_questionnaire(questionnaire, post, entity_type, name, manager, language):
+def update_questionnaire(questionnaire, post, name, manager, language):
     questionnaire.name = name
     questionnaire.activeLanguages = [language]
-    questionnaire.entity_type = [entity_type] if is_string(entity_type) else entity_type
     questionnaire.form_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
@@ -218,10 +217,8 @@ def edit_project(request, project_id):
             old_fields = questionnaire.fields
             old_form_code = questionnaire.form_code
             old_field_codes = questionnaire.field_codes()
-            questionnaire = update_questionnaire(questionnaire, request.POST,
-                                                 #see line num 107
-                                                 project.entity_type,
-                                                 project_info.get('name'), manager, project_info.get('language'))
+            questionnaire = update_questionnaire(questionnaire, request.POST, project_info.get('name'), manager,
+                                                 project_info.get('language'))
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
             project.qid = questionnaire.save()

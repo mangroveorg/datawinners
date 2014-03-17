@@ -5,7 +5,7 @@ import unittest
 import xlwt
 
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, EntityFormModel
 from datawinners import utils
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID
 from mangrove.form_model.field import IntegerField, TextField, ShortCodeField
@@ -64,7 +64,7 @@ class FilePlayerTest(unittest.TestCase):
         fields.append(ShortCodeField('clinic', 'ID', 'clinic label'))
 
         try:
-            self.form_model = FormModel(self.manager, entity_type=entity_type, name='form_model_name', label='form_model_label',
+            self.form_model = EntityFormModel(self.manager, entity_type=entity_type, name='form_model_name', label='form_model_label',
                                         form_code='clf12', type='form_model_type',  fields=fields, is_registration_model=True)
             form_model_id = self.form_model.save()
             self.form_model = FormModel.get(self.manager, form_model_id)

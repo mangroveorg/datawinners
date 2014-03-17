@@ -159,9 +159,9 @@ class SubmissionParserTest(TestCase):
         self.user = Mock(User)
         self.dbm = Mock(spec=DatabaseManager)
         fields = \
-            [UniqueIdField('reporter',name="Q1", code="EID", label="What is the reporter ID?"),
+            [UniqueIdField('clinic',name="Q1", code="EID", label="What is the reporter ID?"),
              TextField(name="Q2", code="DATE", label="What is the reporting period for the activity?")]
-        self.form_model = FormModel(self.dbm, "abc", "abc", entity_type=["clinic"], form_code="cli001", fields=fields,
+        self.form_model = FormModel(self.dbm, "abc", "abc", form_code="cli001", fields=fields,
                                type="survey")
         self.project = Mock(Project)
 
@@ -174,7 +174,7 @@ class SubmissionParserTest(TestCase):
         self.assertEquals(expected_ans_dict, SubmissionWorkbookMapper(self.data, self.form_model).process());
 
     def test_process_submission_import_worksheet_test_for_datasender(self):
-        self.add_datasender_col();
+        self.add_datasender_col()
         ans_dict = SubmissionWorkbookMapper(self.data, self.form_model).process()
         try:
             SubmissionWorkbookValidator(self.form_model, False, True).validate(ans_dict)

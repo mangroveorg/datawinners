@@ -104,7 +104,6 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
             form_submission=form_submission_mock)
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'tester', 'age': '12', 'choice': 'red'}
-        form_model_mock.is_entity_type_reporter.return_value = False
         message = get_success_msg_for_submission_using(response, form_model_mock)
         self.assertEqual(expected_message, message)
 
@@ -138,18 +137,6 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
 
         #self.assertEqual(expected_message, message)
         self.assertTrue(160, len(message))
-
-    def test_should_format_success_message_for_submission_with_blank_if_no_reporter(self):
-        expected_message = (THANKS % "Mino") + ": tester; cli001"
-        form_submission_mock = self.create_form_submission_mock()
-        form_submission_mock.entity_type = ['reporter']
-        response = create_response_from_form_submission(reporters=[{'name':'mino rakoto'}],
-            form_submission=form_submission_mock)
-        form_model_mock = Mock(spec=FormModel)
-        #form_model_mock.entity_question.code = 'eid'
-        form_model_mock.stringify.return_value = {'name': 'tester', 'eid':'cli001'}
-        message = get_success_msg_for_submission_using(response, form_model_mock)
-        self.assertEqual(expected_message, message)
 
 
     def test_should_format_success_message_for_registration_with_short_code(self):

@@ -43,8 +43,7 @@ class TestProjectModel(unittest.TestCase):
             defaultValue="some default value",
             constraints=[TextLengthConstraint(5, 10)])
         cls.form_model = FormModel(cls.manager, name=cls.project1.name, form_code="abc",
-            fields=[question1, question2],
-            entity_type=["Clinic"])
+            fields=[question1, question2])
         qid = cls.form_model.save()
         project.qid = qid
         project.save(cls.manager)
@@ -106,14 +105,6 @@ class TestProjectModel(unittest.TestCase):
             self.project1.save(self.manager)
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
-
-    def test_should_update_questionnaire(self):
-        self.project1.name = "New Name"
-        self.project1.update_questionnaire(self.manager)
-        form_model = self.manager.get(self.project1.qid, FormModel)
-        self.assertEqual("New Name", form_model.name)
-
-
 
 
     def test_get_deadline_day(self):

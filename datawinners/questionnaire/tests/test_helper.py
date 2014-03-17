@@ -49,7 +49,7 @@ class TestHelper(unittest.TestCase):
         self.dbm = Mock(spec=DatabaseManager)
         self.form_code = "form_code"
         return FormModel(dbm=self.dbm, form_code=self.form_code, name="abc", fields=[],
-            is_registration_model=is_registration_form, entity_type=["entity_type"])
+            is_registration_model=is_registration_form)
 
 
     def _get_location_field(self):

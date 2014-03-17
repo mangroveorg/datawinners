@@ -71,7 +71,7 @@ class TestExcelHeaders(unittest.TestCase):
                   {"unique_id_type":"clinic","name": "eid", "code": 'eid', "label": 'What is the subject id',
                    "type": "unique_id"},
                   {"name": "choices", "code": 'q5', "label": 'Your choices', "type": "select"}]
-        form_model = FormModel(Mock(spec=DatabaseManager), name="some_name", entity_type=['test'], form_code="cli00_mp", fields=[], type="type1")
+        form_model = FormModel(Mock(spec=DatabaseManager), name="some_name", form_code="cli00_mp", fields=[], type="type1")
 
         headers = get_submission_headers(fields, form_model)
 
