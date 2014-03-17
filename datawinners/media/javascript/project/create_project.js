@@ -91,7 +91,7 @@ DW.projectRouter = Sammy(function () {
         this.get('#questionnaire/new', DW.controllers.blankQuestionnaire);
         this.get('#questionnaire/load/:template_id', DW.controllers.templateQuestionnaire);
         this.get('#questionnaire/copy/:questionnaire_id', DW.controllers.copyQuestionnaire)
-        this.get('', DW.controllers.questionnaireCreationOptions);
+        this.get('project/wizard/create/$', DW.controllers.questionnaireCreationOptions);
 });
 
 function _initializeViewModel() {
