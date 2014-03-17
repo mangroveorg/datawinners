@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.core.management.base import BaseCommand
 from datawinners.main.couchdb.utils import all_db_names
-from datawinners.main.ut_couch_fixtures import load_data
+from datawinners.main.ut_couch_fixtures import load_data, load_ft_data
 from datawinners.main.database import get_db_manager
 from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
 from datawinners.main.management.commands.utils import document_stores_to_process
@@ -17,6 +17,8 @@ class Command(BaseCommand):
             print 'Deleting...'
             manager = get_db_manager(database_name)
             _delete_db_and_remove_db_manager(manager)
+
+        load_ft_data()
 
         for database_name in document_stores_to_process(args):
             recreated_manager = get_db_manager(database_name)

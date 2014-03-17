@@ -1492,7 +1492,12 @@ def send_data_to_project_cli00_mp(manager):
     sms_player.add_survey_response(Request("cli00_mp cid001 %s.%s" % (month, year), tester_transport))
 
 
+def load_ft_data():
+    call_command("loaddata", "test_data.json")
+
+
 def load_data():
+
 
     manager = load_manager_for_default_ut_account()
     initializer.run(manager)
