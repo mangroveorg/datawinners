@@ -238,3 +238,15 @@ QUESTIONNAIRE_TAB_SUBMISSION_SMS = {SENDER: "1234123413",
 
 
 DIALOG_PROJECT_DATA = {PROJECT_NAME: "Some Dialog project", GEN_RANDOM: True}
+
+COPY_PROJECT_DATA = {
+                      PROJECT_NAME: "simple project", GEN_RANDOM: True,
+                    }
+
+COPY_PROJECT_QUESTIONNAIRE_DATA = {
+                      QUESTIONNAIRE_CODE: None, GEN_RANDOM: False,
+                      DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
+                      QUESTIONS: [{QUESTION: u"Some dummy question", CODE: u"q1", TYPE: NUMBER, MIN: u"1", MAX: u"1000"}],
+                      CHARACTER_REMAINING: "69 / 160 characters used (1 SMS)",
+                      PAGE_TITLE: "Data Senders"
+                     }

@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from selenium.webdriver.support.select import Select
 
 from framework.utils.data_fetcher import *
 from framework.utils.global_constant import WAIT_FOR_TITLE
@@ -533,8 +534,10 @@ class CreateQuestionnairePage(Page):
     def change_question_type(self, question):
         self.SELECT_FUNC[fetch_(TYPE, from_(question))](question)
 
-    def set_questionnaire_title(self, title):
-        self.driver.find_text_box(by_id("questionnaire_title")).enter_text(title)
+    def set_questionnaire_title(self, title, generate_random=False):
+        questionnaire_title = title + generateId() if generate_random else title
+        self.driver.find_text_box(by_id("questionnaire_title")).enter_text(questionnaire_title)
+        return questionnaire_title
 
     def set_question_title(self, title):
         self.driver.find_text_box(by_id("question_title")).enter_text(title)
@@ -580,6 +583,12 @@ class CreateQuestionnairePage(Page):
     def get_duplicate_questionnaire_code_error_message(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#project-message-label .error_message"))
         return self.driver.find_element_by_css_selector("#project-message-label .error_message").text
+
+    def get_questionnaire_language(self):
+        return Select(self.driver.find(by_name("project_language"))).first_selected_option.text
+
+    def set_questionnaire_language(self, language):
+        Select(self.driver.find(by_name("project_language"))).select_by_visible_text(language)
 
     def get_existing_questions(self):
         questions = []
