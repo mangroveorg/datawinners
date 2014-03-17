@@ -772,8 +772,8 @@ msgid "Dec."
 msgstr ""
 
 #: media/javascript/project/delete_project.js:3
-msgid "Delete this Project?"
-msgstr "Supprimer ce projet?"
+msgid "Delete this Questionnaire?"
+msgstr "Supprimer ce questionnaire?"
 
 #: media/javascript/project/import_section.js:7
 msgid "Import a List"

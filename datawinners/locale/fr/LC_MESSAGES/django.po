@@ -1043,8 +1043,8 @@ msgstr "Activer"
 msgid "Warning: Activating the project will remove all existing test data."
 msgstr "Attention : L'activation du projet va supprimer toutes ses données enregistrées"
 
-msgid "Export all submissions prior to deleting your project."
-msgstr "Veuillez exporter toutes les données avant de supprimer votre projet."
+msgid "Export all submissions prior to deleting your questionnaire."
+msgstr "Veuillez exporter toutes les données avant de supprimer votre questionnaire."
 
 msgid "Delete Questionnaire Now"
 msgstr "Supprimez le questionnaire maintenant"
