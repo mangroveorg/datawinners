@@ -4710,3 +4710,6 @@ msgstr "Vos questionnaires les plus récents"
 
 msgid "Questionnaire Name:"
 msgstr "Questionnaire Nom:"
+
+msgid "Choose an existing Questionnaire and edit it to fit your needs."
+msgstr "Choisissez un Questionnaire existant et modifiez-le selon vos besoins."

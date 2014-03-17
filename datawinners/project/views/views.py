@@ -535,6 +535,7 @@ def get_questionnaire_ajax(request, project_id):
     existing_questions = _get_questions(manager, project)
     return HttpResponse(json.dumps({
                                 'name': project.name,
+                                'language': project.language,
                                 'questions': existing_questions
                            }, default=field_to_json), content_type='application/json')
 

@@ -11,7 +11,7 @@
         <h6 class="instruction-header">{% trans 'Choose an existing Questionnaire and edit it to fit your needs.' %}</h6>
 
         <div id="existing_questionnaires" class="questionnaire_selection">
-            <!-- ko if: existingQuestionnaires -->
+            <!-- ko if: existingQuestionnaires -->  <!-- Making use of KO virtual element -->
             <div class="questionnaire_data" data-bind="foreach: existingQuestionnaires">
                 <div class="highlight_on_hover" data-bind="text: name, click: $root.selectQuestionnaire,
                         css:{selected: id == $root.selectedQuestionnaireId()}">

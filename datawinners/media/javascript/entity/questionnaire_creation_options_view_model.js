@@ -11,7 +11,7 @@ var questionnaireCreationOptionsViewModel = {
 //        selectedQuestionnaire: ko.observable(),
         selectedQuestionnaireId: ko.observable(),
         selectedTemplate: ko.observable(),
-        selectedCreationOption: ko.observable(100),
+        selectedCreationOption: ko.observable(100), //don't select any option by default
 
         resetCreationOption: function(){
           questionnaireCreationOptionsViewModel.selectedCreationOption(100);

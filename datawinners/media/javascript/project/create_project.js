@@ -43,9 +43,7 @@ DW.post_project_data = function (callback) {
 
 DW.controllers = {
     "templateQuestionnaire":function () {
-            questionnaireViewModel.questions([]);
-            questionnaireViewModel.errorInResponse(false);
-            questionnaireViewModel.selectedQuestion(null);
+            questionnaireViewModel.clearQuestionnaire();
             templateFetcher.getTemplateData(this.params.template_id).done(function(templateData){
                 questionnaireViewModel.projectName(templateData.project_name);
                 questionnaireViewModel.language(templateData.project_language);
@@ -60,7 +58,10 @@ DW.controllers = {
 
     },
     "copyQuestionnaire": function(){
-        var question_list = questionnaireDataFetcher.getQuestionnaireData(this.params.questionnaire_id).questions;
+        questionnaireViewModel.clearQuestionnaire();
+        var questionnaireData = questionnaireDataFetcher.getQuestionnaireData(this.params.questionnaire_id);
+        questionnaireViewModel.language(questionnaireData.language);
+        var question_list = questionnaireData.questions;
         for (var index in question_list) {
             var questions = new DW.question(question_list[index]);
             questionnaireViewModel.loadQuestion(questions);
