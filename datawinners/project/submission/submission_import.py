@@ -44,7 +44,8 @@ class SubmissionImporter():
                 q_answer_dicts)
 
             user_profile = NGOUserProfile.objects.filter(user=self.user)[0]
-            self._add_reporter_id_for_datasender(q_answer_dicts, user_profile, is_organization_user, is_summary_project)
+            #todo add this when default reporter question gets added
+            #self._add_reporter_id_for_datasender(q_answer_dicts, user_profile, is_organization_user, is_summary_project)
 
             valid_rows, invalid_row_details = self.submission_validator.validate_rows(q_answer_dicts)
             ignored_entries, saved_entries = self.submission_persister.save_submissions(is_organization_user,
@@ -121,20 +122,13 @@ class SubmissionPersister():
                 ignored_entries = valid_rows[len(saved_entries):]
                 break
             else:
-                self._save_survey(is_organization_user, user_profile, valid_row)
+                self._save_survey(user_profile, valid_row)
                 saved_entries.append(valid_row)
                 self.submission_quota_service.increment_web_submission_count()
         return ignored_entries, saved_entries
 
-    def _get_reporter_id_for_submission(self, is_organization_user, user_profile, valid_row):
-        if self.project.is_summary_project() and is_organization_user:
-            reporter_id = valid_row.get(self.form_model.entity_question.code)
-        else:
-            reporter_id = user_profile.reporter_id
-        return reporter_id
-
-    def _save_survey(self, is_organization_user, user_profile, valid_row):
-        reporter_id = self._get_reporter_id_for_submission(is_organization_user, user_profile, valid_row)
+    def _save_survey(self, user_profile, valid_row):
+        reporter_id = user_profile.reporter_id
         service = SurveyResponseService(self.dbm, logger, self.feed_dbm, user_profile.reporter_id)
         additional_feed_dictionary = get_feed_dictionary(self.project)
         transport_info = get_web_transport_info(self.user.username)

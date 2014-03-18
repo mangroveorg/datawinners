@@ -5,7 +5,6 @@ from datawinners.project.submission.validator import SubmissionWorkbookRowValida
 
 class TestImportSubmissionValidator(TestCase):
 
-    @SkipTest
     def test_should_return_valid_rows(self):
         form_model_mock = Mock()
         form_model_mock.validate_submission.return_value = ([],[])
@@ -17,7 +16,6 @@ class TestImportSubmissionValidator(TestCase):
         self.assertEqual(len(valid_rows), 2)
         self.assertEqual(len(invalid_rows), 0)
 
-    @SkipTest
     def test_should_return_invalid_rows(self):
         form_model_mock, project_mock = MagicMock(), MagicMock()
         form_model_mock.form_fields = []
