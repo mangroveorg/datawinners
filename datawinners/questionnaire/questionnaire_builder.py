@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, field_attributes
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, EntityFormModel
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint, ShortCodeRegexConstraint
 from mangrove.form_model.validators import UniqueIdExistsValidator
 from mangrove.utils.helpers import slugify
@@ -32,15 +32,16 @@ class QuestionnaireBuilder(object):
         return new_fields
 
     def update_unique_id_validator(self):
-        unique_id_fields = self.form_model.unique_id_field
+        unique_id_fields = self.form_model.entity_question
         if unique_id_fields:
             self.form_model.add_validator(UniqueIdExistsValidator)
         else:
             self.form_model.remove_validator(UniqueIdExistsValidator)
 
     def update_form_model_entity_type(self):
-        unique_id_field = self.form_model.unique_id_field
-        self.form_model.entity_type = [unique_id_field.unique_id_type] if unique_id_field else []
+        if isinstance(self.form_model, EntityFormModel):
+            entity_field = self.form_model.entity_question
+            self.form_model.entity_type = [entity_field.unique_id_type] if entity_field else []
 
     def update_questionnaire_with_questions(self, question_set):
         origin_json_fields = [f._to_json() for f in self.form_model.fields]

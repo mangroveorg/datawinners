@@ -89,6 +89,7 @@ class TestSubmissionPersister(TestCase):
         submission_quota_service.has_exceeded_quota_and_notify_users.return_value = False
         user_profile = MagicMock()
         expected_reporter_id = "rep_1"
+        user_profile.reporter_id = expected_reporter_id
         valid_row = {"eid": expected_reporter_id}
         valid_rows = [valid_row]
         with patch("datawinners.project.submission.submission_import.SurveyResponseService") as SurveyResponseService:
