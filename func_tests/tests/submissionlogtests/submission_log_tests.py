@@ -29,10 +29,13 @@ from tests.testsettings import UI_TEST_TIMEOUT
 SUBMISSION_DATE_FORMAT_FOR_SUBMISSION_LOG = "%b. %d, %Y, %I:%M %p"
 
 
-def send_valid_sms_with(sms):
+def send_sms_with(sms):
     data = {"message": sms[SMS], "from_msisdn": sms[SENDER], "to_msisdn": sms[RECEIVER], "message_id":uuid.uuid1().hex}
     resp = requests.post(url("/") + "submission", data)
-    assert "Thank" in resp.content
+    return resp.content
+
+def send_valid_sms_with(sms):
+    assert "Thank" in send_sms_with(sms)
 
 
 class TestSubmissionLog(HeadlessRunnerTest):
