@@ -53,7 +53,7 @@ def get_submission_error_message_for(response, form_model):
 
 
 def get_success_msg_for_submission_using(response, form_model):
-    message = get_submission_success_message(response, form_model)
+    message = get_submission_success_message(response)
     response_text = ResponseBuilder(form_model=form_model, processed_data=response.processed_data).get_expanded_response()
     message_with_response_text = message + ": " + response_text
 

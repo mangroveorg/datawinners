@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="{% if is_summary_report %} none {% endif %} float_left">
+<div class="{% if not entity_type%} none {% endif %} float_left">
     <div class="filter_label" for="subjectSelect">
         <label class="full_width">{{ entity_type }}</label>
     </div>

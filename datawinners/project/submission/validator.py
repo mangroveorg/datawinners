@@ -16,12 +16,13 @@ class SubmissionWorkbookRowValidator():
         row_count = 1
         for row in parsed_rows:
             row_count += 1
-            if len([value for value in dict(row).values() if not is_empty(value)]) == 1:
-                continue
-            entity_key = self._get_entity_key()
-            entity_answer = row.get(entity_key)
-
-            errors = self._verify_uploaded_id(entity_key, entity_answer)
+            #if len([value for value in dict(row).values() if not is_empty(value)]) == 1:
+            #    continue
+            errors = {}
+            if self.form_model.entity_question:
+                entity_key = self._get_entity_key()
+                entity_answer = row.get(entity_key)
+                errors = self._verify_uploaded_id(entity_key, entity_answer)
             cleaned_data, field_errors = self.form_model.validate_submission(values=row)
             errors.update(field_errors)
             errors_translated = translate_errors(items=errors.items(), question_dict=field_code_label_dict, question_answer_dict=row)
@@ -29,11 +30,8 @@ class SubmissionWorkbookRowValidator():
         return valid_rows, invalid_row_details
 
     def _get_entity_key(self):
-        for field in self.form_model.fields:
-            if field.is_entity_field:
-                return field.code
-
-        return None
+        entity_field = self.form_model.entity_question
+        return entity_field.code if entity_field else None
 
     def _verify_uploaded_id(self, q_code, imported_id):
         subject_ids, datasender_ids = self._get_subject_or_datasender_ids()

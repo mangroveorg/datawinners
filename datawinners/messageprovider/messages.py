@@ -92,15 +92,9 @@ def get_validation_failure_error_message(response):
     else:
         return _("Error. Incorrect answer for %s. Please review printed Questionnaire and resend entire SMS.")
 
-def get_submission_success_message(response, form_model):
+def get_submission_success_message(response):
     datasender = response.reporters[0].get('name').split()[0].capitalize()
-
-    if response.entity_type[0] == 'reporter':
-        return _("Thank you %(datasender)s. We received your SMS") % {'datasender': datasender}
-
-    subject_info = get_subject_info(response, form_model)
-    return _("Thank you %(datasender)s. We received your SMS for %(subject_info)s")\
-        % {'datasender': datasender, 'subject_info': subject_info}
+    return _("Thank you %(datasender)s. We received your SMS") % {'datasender': datasender}
 
 def get_registration_success_message(response):
     datasender = response.reporters[0].get('name').split()[0].capitalize() if len(response.reporters) else ''

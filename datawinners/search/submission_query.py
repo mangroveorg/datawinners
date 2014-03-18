@@ -68,7 +68,7 @@ class SubmissionQueryResponseCreator():
             for key in required_field_names:
                 meta_fields = ['ds_id', 'entity_short_code']
                 if not key in meta_fields:
-                    if self.form_model.unique_id_field and key.lower().endswith(self.form_model.unique_id_field.code.lower()):
+                    if self.form_model.entity_type and key.lower().endswith(self.form_model.entity_question.code.lower()):
                         self.combine_name_and_id(res.get('entity_short_code'), res.get(key), submission)
                     elif key == 'ds_name':
                         self.combine_name_and_id(res.get('ds_id'), res.get('ds_name'), submission)
