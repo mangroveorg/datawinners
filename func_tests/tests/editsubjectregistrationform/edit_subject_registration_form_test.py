@@ -1,4 +1,4 @@
-from framework.base_test import BaseTest
+from framework.base_test import BaseTest, HeadlessRunnerTest
 from framework.utils.common_utils import generateId
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.loginpage.login_page import LoginPage, login
@@ -8,7 +8,7 @@ from tests.addsubjecttypetests.add_subject_type_data import VALID_ENTITY, ENTITY
 from tests.logintests.login_data import VALID_CREDENTIALS
 from nose.plugins.attrib import attr
 
-class TestEditSubjectRegistrationForm(BaseTest):
+class TestEditSubjectRegistrationForm(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_add_question_successfully(self):

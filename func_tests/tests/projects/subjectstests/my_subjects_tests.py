@@ -3,18 +3,16 @@ from nose.plugins.attrib import attr
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
-from framework.base_test import setup_driver, teardown_driver
-from pages.loginpage.login_page import LoginPage
+from framework.base_test import setup_driver, teardown_driver, HeadlessRunnerTest
+from pages.loginpage.login_page import LoginPage, login
 from tests.projects.subjectstests.my_subjects_data import *
 
 
-class TestMySubjects(unittest.TestCase):
+class TestMySubjects(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        HeadlessRunnerTest.setUpClass()
+        cls.global_navigation = login(cls.driver)
 
     def setUp(self):
         self.all_project_page = self.global_navigation.navigate_to_view_all_project_page()

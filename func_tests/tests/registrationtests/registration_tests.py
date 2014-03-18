@@ -14,6 +14,7 @@ def register_and_get_email(driver):
 
 
 class TestRegistrationPage(HeadlessRunnerTest):
+
     @attr('functional_test')
     def test_register_ngo_with_existing_email_address(self):
         self.driver.go_to(DATA_WINNER_REGISTER_PAGE)

@@ -14,7 +14,6 @@ from datawinners.accountmanagement.models import MessageTracker
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
-@attr('suit_1')
 class TestProjectTestSMSPreview(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):

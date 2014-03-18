@@ -1,5 +1,5 @@
 from nose.plugins.attrib import attr
-from framework.base_test import BaseTest
+from framework.base_test import BaseTest, HeadlessRunnerTest
 from framework.utils.common_utils import by_css
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.registrationpage.registration_page import RegistrationPage
@@ -16,14 +16,13 @@ def register_and_get_email_for_trial(driver):
     return registration_confirmation_page, email
 
 
-@attr('suit_2')
-class TestTrialRegistrationPage(BaseTest):
+class TestTrialRegistrationPage(HeadlessRunnerTest):
     @attr('functional_test')
     def test_register_trial_organization(self):
         registration_confirmation_page, email = register_and_get_email_for_trial(self.driver)
         self.assertEqual(registration_confirmation_page.registration_success_message(), REGISTRATION_SUCCESS_MESSAGE)
-        dbmanager = DatabaseManager()
-        dbmanager.delete_organization_all_details(email)
+        #dbmanager = DatabaseManager()
+        #dbmanager.delete_organization_all_details(email)
 
     @attr('functional_test')
     def test_trial_link_from_homepage(self):

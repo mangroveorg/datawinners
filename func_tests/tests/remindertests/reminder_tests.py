@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from nose.plugins.attrib import attr
 
-from framework.base_test import setup_driver
+from framework.base_test import setup_driver, HeadlessRunnerTest
 from pages.loginpage.login_page import login
 from testdata.test_data import LOGOUT
 from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDENTIALS
@@ -10,19 +10,10 @@ from tests.remindertests.reminder_data import *
 from framework.utils.data_fetcher import fetch_, from_
 
 
-@attr('suit_3')
-class TestReminderSend(TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        cls.driver = setup_driver(browser="phantom")
+class TestReminderSend(HeadlessRunnerTest):
 
     def tearDown(self):
         self.driver.go_to(LOGOUT)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.driver.quit()
 
     def go_to_reminder_page(self, project, credentials):
         global_navigation = login(self.driver, credentials)

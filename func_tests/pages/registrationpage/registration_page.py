@@ -6,8 +6,9 @@ from pages.registerconfirmationpage.registration_confirmation_page import Regist
 from framework.utils.data_fetcher import *
 from pages.registrationpage.registration_locator import *
 from tests.registrationtests.registration_data import *
+from tests.testsettings import UI_TEST_TIMEOUT
 from tests.upgradetests.upgrade_trial_data import ORGANIZATION_SECTOR as ORGANIZATION_SECTOR_FOR_UPGRADE
-
+import time
 
 class RegistrationPage(Page):
     def __init__(self, driver):
@@ -25,11 +26,11 @@ class RegistrationPage(Page):
         self.agree_terms_and_conditions()
         for key,value in registration_data.items():
             if key in [ORGANIZATION_SECTOR, ORGANIZATION_COUNTRY, ORGANIZATION_SECTOR_FOR_UPGRADE]:
-                self.driver.find_drop_down(by_css("select[name=%s]" % key)).set_selected(value)
+                self.driver.find_drop_down(by_css(".registration_form select[name=%s]" % key)).set_selected(value)
             elif key in [PAY_MONTHLY, WIRE_TRANSFER, PRO, PRO_SMS]:
-                self.driver.find_radio_button(by_css("input[value=%s]" % key)).click()
+                self.driver.find_radio_button(by_css(".registration_form input[value=%s]" % key)).click()
             else:
-                self.driver.find_text_box(by_css("input[name=%s]" % key)).enter_text(value)
+                self.driver.find_text_box(by_css(".registration_form input[name=%s]" % key)).send_keys(value)
 
         self.click_submit_button()
         return self
