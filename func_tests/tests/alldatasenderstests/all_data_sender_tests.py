@@ -1,35 +1,28 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import unittest
 import time
 
-from django.utils.unittest.case import SkipTest
 from nose.plugins.attrib import attr
 
-from framework.base_test import setup_driver, teardown_driver, BaseTest
+from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import by_css, by_id
-from framework.utils.data_fetcher import fetch_, from_
+from framework.utils.data_fetcher import fetch_
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
-from pages.alldatasenderspage.all_data_senders_locator import WEB_USER_BLOCK_EMAIL, GIVE_ACCESS_LINK
 from pages.alluserspage.all_users_page import AllUsersPage
-from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import login
 from pages.warningdialog.delete_dialog import UserDeleteDialog, DataSenderDeleteDialog
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
-from tests.logintests.login_data import VALID_CREDENTIALS
+from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from tests.alldatasenderstests.all_data_sender_data import *
-from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.projects.datasenderstests.registered_datasenders_data import IMPORT_DATA_SENDER_TEMPLATE_FILENAME_EN, IMPORT_DATA_SENDER_TEMPLATE_FILENAME_FR
-from pages.warningdialog.warning_dialog import WarningDialog
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
-class TestAllDataSenders(unittest.TestCase):
+class TestAllDataSenders(HeadlessRunnerTest):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver(browser="phantom")
-        LoginPage(cls.driver).load().do_successful_login_with(VALID_CREDENTIALS)
+        HeadlessRunnerTest.setUpClass()
+        login(cls.driver)
         cls.all_datasenders_page = AllDataSendersPage(TestAllDataSenders.driver)
         cls.datasender_id_with_web_access = cls.register_datasender(VALID_DATASENDER_WITH_WEB_ACCESS,
                                                                     id=TestAllDataSenders._create_id_for_data_sender())
@@ -40,10 +33,6 @@ class TestAllDataSenders(unittest.TestCase):
         cls.all_datasenders_page.wait_for_table_to_load()
         cls.all_datasenders_page.search_with(cls.user_mobile_number)
         cls.user_ID = cls.all_datasenders_page.get_cell_value(1, 3)
-
-    @classmethod
-    def tearDownClass(cls):
-        teardown_driver(cls.driver)
 
     def setUp(self):
         self.all_datasenders_page.load()

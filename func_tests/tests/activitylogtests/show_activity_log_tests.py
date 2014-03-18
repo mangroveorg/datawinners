@@ -1,18 +1,16 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import time
-import unittest
 
 from nose.plugins.attrib import attr
 
-from framework.base_test import setup_driver, teardown_driver
+from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.common_utils import by_css
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
-from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
-from pages.loginpage.login_page import LoginPage, login
+from pages.loginpage.login_page import login
 from pages.activitylogpage.show_activity_log_page import ShowActivityLogPage
 from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT
+from testdata.test_data import DATA_WINNER_USER_ACTIVITY_LOG_PAGE, LOGOUT
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.activitylogtests.show_activity_log_data import *
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
@@ -21,15 +19,11 @@ from pages.activateaccountpage.activate_account_page import ActivateAccountPage
 from framework.utils.database_manager_postgres import DatabaseManager
 
 
-@attr('suit_1')
-class TestShowActivityLog(unittest.TestCase):
+class TestShowActivityLog(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        login_page.do_successful_login_with(VALID_CREDENTIALS)
-        cls.global_navigation_page = GlobalNavigationPage(cls.driver)
+        HeadlessRunnerTest.setUpClass()
+        cls.global_navigation_page = login(cls.driver)
         cls.project_title = cls.create_new_project()
         cls.email = None
 

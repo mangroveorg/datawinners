@@ -12,7 +12,6 @@ from tests.addusertests.add_user_data import *
 from tests.alluserstests.all_users_data import ALL_USERS_URL
 
 
-@attr('suit_1')
 class TestAddUser(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_add_a_new_user(self):

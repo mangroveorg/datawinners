@@ -1,24 +1,21 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import setup_driver, teardown_driver
+
+from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.allsubjectspage.add_subject_locator import UNIQUE_ID_TB
-from pages.loginpage.login_page import LoginPage
+from pages.loginpage.login_page import LoginPage, login
 from pages.allsubjectspage.add_subject_page import AddSubjectPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ADD_SUBJECT, LOGOUT
-from tests.logintests.login_data import VALID_CREDENTIALS, DATA_SENDER_CREDENTIALS
+from tests.logintests.login_data import DATA_SENDER_CREDENTIALS
 from tests.addsubjecttests.add_subject_data import *
 
 
-@attr('suit_1')
-class TestAddSubject(unittest.TestCase):
+class TestAddSubject(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        HeadlessRunnerTest.setUpClass()
+        login(cls.driver)
         cls.add_subjects_url = DATA_WINNER_ADD_SUBJECT + "clinic/?web_view=True"
 
     @classmethod

@@ -5,7 +5,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 from django.utils.http import int_to_base36
 
-from framework.base_test import BaseTest
+from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import generate_random_email_id
 from pages.loginpage.login_page import LoginPage
 from pages.resetpasswordpage.reset_password_page import ResetPasswordPage
@@ -16,7 +16,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
-class TestActivateDSAccount(BaseTest):
+class TestActivateDSAccount(HeadlessRunnerTest):
     @attr('functional_test')
     def test_create_and_activate_datasender(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)

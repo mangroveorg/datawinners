@@ -1,10 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import os
 
 import unittest
 import sys
-from framework.drivers.driver_wrapper import DriverWrapper, get_default_browser_name
-from tests.testsettings import CLOSE_BROWSER_AFTER_TEST, WAIT
+
+from framework.drivers.driver_wrapper import DriverWrapper
+from tests.testsettings import CLOSE_BROWSER_AFTER_TEST
 
 
 def setup_driver(browser=None):
@@ -31,7 +31,7 @@ class BaseTest(unittest.TestCase):
 class HeadlessRunnerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver(browser="phantom")
+            cls.driver = setup_driver(browser="phantom")
 
     @classmethod
     def tearDownClass(cls):

@@ -1,24 +1,20 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
-import unittest
 from nose.plugins.attrib import attr
-from framework.base_test import setup_driver, teardown_driver
+
+from framework.base_test import teardown_driver, HeadlessRunnerTest
 from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.common_utils import generateId
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
-from pages.loginpage.login_page import LoginPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT
+from pages.loginpage.login_page import login
+from testdata.test_data import DATA_WINNER_ALL_SUBJECT
 from tests.addsubjecttypetests.add_subject_type_data import *
-from tests.logintests.login_data import VALID_CREDENTIALS
 
 
-@attr('suit_1')
-class TestAddSubjectType(unittest.TestCase):
+class TestAddSubjectType(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        login_page.do_successful_login_with(VALID_CREDENTIALS)
+        HeadlessRunnerTest.setUpClass()
+        login(cls.driver)
         cls.driver.go_to(DATA_WINNER_ALL_SUBJECT)
         cls.page = AddSubjectTypePage(cls.driver)
 
