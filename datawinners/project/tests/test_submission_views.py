@@ -15,7 +15,8 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoC
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import SurveyResponse, SurveyResponseDifference
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION
-from datawinners.project.views.submission_views import build_static_info_context, get_option_value_for_field, construct_request_dict, get_survey_response_ids_from_request
+from datawinners.project.views.submission_views import build_static_info_context, get_option_value_for_field, construct_request_dict, get_survey_response_ids_from_request, \
+    create_statistics_response
 from datawinners.project.views.submission_views import log_edit_action
 
 
@@ -222,3 +223,50 @@ class TestSubmissionViews(unittest.TestCase):
             get_survey_response_ids_from_request(dbm, request, form_model)
             mock_submission_query.assert_called_with(form_model, {'search_filters': [], 'filter':'success'})
             query_mock.query.assert_called_with('db_name')
+
+
+
+class TestSubmissionAnalysisResponseCreation(unittest.TestCase):
+    def test_should_contain_count_zero_for_options_with_no_submissions(self):
+        facet_results = [{
+            'es_field_name': '0dab4170697411e3985908002738abcf_q1_value',
+            'facets': [{'count': 3, 'term': 'B+'}, {'count': 2, 'term': 'O+'}],
+            'total': 6
+        }]
+
+        form_model = MagicMock(spec=FormModel)
+        form_model.id = '0dab4170697411e3985908002738abcf'
+        form_model._get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
+                                                                 label="What is your blood group?",
+                                                                 options=[{"text": "O+"}, {"text": "B+"},
+                                                                          {"text": "A-"}], single_select_flag=False,
+                                                                 required=False)
+
+        analysis_response = create_statistics_response(facet_results, form_model)
+
+        self.assertIn({'count': 0, 'term': 'A-'}, analysis_response["What is your blood group?"].get('data'))
+
+    def test_should_create_result_with_facet_values(self):
+        facet_results = [{
+            'es_field_name': '0dab4170697411e3985908002738abcf_q1_value',
+            'facets': [{'count': 3, 'term': 'B+'}, {'count': 2, 'term': 'O+'}],
+            'total': 6
+        }]
+
+        form_model = MagicMock(spec=FormModel)
+        form_model.id = '0dab4170697411e3985908002738abcf'
+        form_model._get_field_by_code.return_value = SelectField(name="What is your blood group", code="BG",
+                                                                 label="What is your blood group?",
+                                                                 options=[{"text": "O+"}, {"text": "B+"}], single_select_flag=False,
+                                                                 required=False)
+
+        analysis_response = create_statistics_response(facet_results, form_model)
+
+        self.assertTrue("What is your blood group?" in analysis_response)
+        facet_result = analysis_response["What is your blood group?"]
+        self.assertEqual(facet_result['count'], 6)
+        self.assertEqual(facet_result['data'], [{'term': 'B+', 'count': 3}, {'term': 'O+', 'count': 2}])
+        self.assertEqual(facet_result['field_type'], 'select')
+
+
+

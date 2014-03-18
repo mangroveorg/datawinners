@@ -1,8 +1,6 @@
-import unittest
-
 from nose.plugins.attrib import attr
 
-from framework.base_test import setup_driver, teardown_driver
+from framework.base_test import HeadlessRunnerTest
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, LOGOUT
 from tests.broadcastsmstests.broadcast_sms_data import SMS_VALID_DATA, SMS_EXACT_ON_LIMIT_DATA, \
@@ -10,17 +8,11 @@ from tests.broadcastsmstests.broadcast_sms_data import SMS_VALID_DATA, SMS_EXACT
 from tests.logintests.login_data import VALID_CREDENTIALS, NIGERIA_ACCOUNT_CREDENTIAL
 
 
-@attr('suit_1')
-class TestBroadcastSMS(unittest.TestCase):
+class TestBroadcastSMS(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver()
+        HeadlessRunnerTest.setUpClass()
         cls.send_message_page = cls._navigate_to_send_message_page()
-
-    @classmethod
-    def tearDownClass(cls):
-        teardown_driver(cls.driver)
-
 
     @attr('functional_test')
     def test_retain_sms_content_after_unsuccessful_send(self):

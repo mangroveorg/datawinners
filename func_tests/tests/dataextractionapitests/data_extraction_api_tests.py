@@ -1,10 +1,12 @@
 from datetime import datetime
 import json
 from time import sleep
+
 from nose.plugins.attrib import attr
 import requests
 from requests.auth import HTTPDigestAuth
-from framework.base_test import BaseTest, setup_driver, teardown_driver
+
+from framework.base_test import HeadlessRunnerTest
 from framework.utils.common_utils import generateId, skipUntil
 from framework.utils.data_fetcher import fetch_, from_
 from pages.allsubjectspage.add_subject_page import AddSubjectPage
@@ -12,20 +14,16 @@ from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import login
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url
+from testdata.test_data import DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url
 from tests.dataextractionapitests.data_extraction_api_data import *
 
 
-class DataExtractionAPITestCase(BaseTest):
+class DataExtractionAPITestCase(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
+        HeadlessRunnerTest.setUpClass()
         cls.DIGEST_CREDENTIALS = HTTPDigestAuth('tester150411@gmail.com', 'tester150411')
-        cls.driver = setup_driver()
         cls.prepare_submission_data()
-
-    @classmethod
-    def tearDownClass(cls):
-        teardown_driver(cls.driver)
 
     @classmethod
     def prepare_subject_type(cls):
@@ -73,12 +71,6 @@ class DataExtractionAPITestCase(BaseTest):
         cls.prepare_subject()
         cls.create_project()
         cls.submit_data()
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
 
     def get_data_by_uri(self, uri):
         http_response = requests.get(url(uri), auth=self.DIGEST_CREDENTIALS)
