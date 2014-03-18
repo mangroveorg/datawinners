@@ -43,6 +43,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 def add_trial_organization_and_login(driver):
     registration_confirmation_page, email = register_and_get_email_for_trial(driver)
     activate_account(driver, email)
+    return email
 
 
 

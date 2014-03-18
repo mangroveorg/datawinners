@@ -1,11 +1,14 @@
-from unittest import TestCase
-
 from nose.plugins.attrib import attr
 
-from framework.base_test import setup_driver, HeadlessRunnerTest
+from framework.base_test import HeadlessRunnerTest
+from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import login
 from testdata.test_data import LOGOUT
-from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDENTIALS
+from tests.alldatasenderstests.trial_data_senders_tests import QUESTIONNAIRE_DATA
+from tests.endtoendtest.end_to_end_tests import add_trial_organization_and_login
+from tests.logintests.login_data import VALID_CREDENTIALS, USERNAME, PASSWORD
+from tests.projects.questionnairetests.project_questionnaire_data import COPY_PROJECT_DATA
+from tests.registrationtests.registration_data import REGISTRATION_PASSWORD
 from tests.remindertests.reminder_data import *
 from framework.utils.data_fetcher import fetch_, from_
 
@@ -29,8 +32,14 @@ class TestReminderSend(HeadlessRunnerTest):
 
     @attr("functional_test")
     def test_trial_account_should_see_reminder_not_work_message_at_reminder_tab_in_active_project(self):
+        email = add_trial_organization_and_login(self.driver)
+        createquestionnairepage = DashboardPage(self.driver).navigate_to_create_project_page()\
+        .select_blank_questionnaire_creation_option()
+        project_page = createquestionnairepage.create_questionnaire_with(COPY_PROJECT_DATA, QUESTIONNAIRE_DATA)\
+        .save_and_create_project_successfully()
+        project_title = project_page.get_project_title()
         self.driver.go_to(LOGOUT)
-        all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DISABLED_REMINDER)), TRIAL_CREDENTIALS_VALIDATES)
+        all_reminder_pages = self.go_to_reminder_page(project_title, {USERNAME: email, PASSWORD: REGISTRATION_PASSWORD})
         self.assertEqual(DISABLED_REMINDER[WARNING_MESSAGE], all_reminder_pages.get_warning_message())
         all_reminder_pages.click_sent_reminder_tab()
         self.assertEqual(fetch_(WARNING_MESSAGE, from_(DISABLED_REMINDER)), all_reminder_pages.get_warning_message())

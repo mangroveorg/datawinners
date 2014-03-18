@@ -34,7 +34,7 @@ def get_default_browser_name():
 
 def get_driver_for_browser(browser):
     browser = browser if browser else get_default_browser_name()
-    sys.stderr.write("using driver for browser: %s" % browser)
+    sys.stderr.write("using driver for browser: %s\n" % browser)
     if browser == "firefox":
         fprofile = FirefoxProfile()
         driver = webdriver.Firefox(fprofile)

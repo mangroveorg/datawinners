@@ -1,18 +1,19 @@
-from framework.utils.data_fetcher import fetch_, from_
 from nose.plugins.attrib import attr
-from framework.base_test import BaseTest
-from pages.loginpage.login_page import LoginPage
-from tests.websubmissiontests.web_submission_data import *
-from tests.logintests.login_data import VALID_CREDENTIALS, TRIAL_CREDENTIALS_VALIDATES
 from nose.plugins.skip import SkipTest
 
-@attr('suit_3')
-class TestWebSubmission(BaseTest):
+from framework.utils.data_fetcher import fetch_, from_
+from framework.base_test import HeadlessRunnerTest
+from pages.loginpage.login_page import LoginPage, login
+from testdata.test_data import LOGOUT
+from tests.websubmissiontests.web_submission_data import *
+from tests.logintests.login_data import VALID_CREDENTIALS, TRIAL_CREDENTIALS_VALIDATES
+
+
+class TestWebSubmission(HeadlessRunnerTest):
     dashboard_page = None
 
     def prerequisites_of_web_submission(self, credentials):
-        login_page = LoginPage.navigate_to(self.driver)
-        return login_page.do_successful_login_with(credentials)
+        return login(self.driver, credentials)
 
     def submit_web_submission(self, credentials):
         web_submission_page = self.navigate_to_web_submission(credentials)
@@ -29,6 +30,7 @@ class TestWebSubmission(BaseTest):
 
     @attr('functional_test')
     def test_successful_web_submission_by_paid_account(self):
+        self.driver.go_to(LOGOUT)
         web_submission_page = self.submit_web_submission(VALID_CREDENTIALS)
         self.assertEqual(web_submission_page.get_errors(),[])
         self.assertEqual(web_submission_page.get_text_value('NA'), u'')
