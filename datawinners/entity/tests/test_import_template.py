@@ -65,8 +65,6 @@ class TestImportTemplate(unittest.TestCase):
 
     valid_web_user_patch.stop()
 
-<<<<<<< HEAD
-=======
     @SkipTest
     def test_should_remove_entity_question_field_for_summary_project_when_datasender_is_logged_in(self):
         form_model = MagicMock(spec=FormModel)
@@ -82,7 +80,6 @@ class TestImportTemplate(unittest.TestCase):
             form_fields = get_submission_form_fields_for_user(form_model, request)
 
             self.assertEqual(form_fields,[{'code': 'something','name':'firstname'}])
->>>>>>> Ashwin/Pooja | #3066 | Inheriting entity form model from form model for subject registration questionnaires
 
     @SkipTest
     def test_should_return_all_form_fields_for_summary_project_when_user_is_logged_in(self):
