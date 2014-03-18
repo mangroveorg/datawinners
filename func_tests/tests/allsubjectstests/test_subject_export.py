@@ -1,14 +1,17 @@
 import os
 import random
 import tempfile
-from unittest import SkipTest
+import unittest
 import uuid
-from django.test import TestCase, Client
+
+from django.test import Client
 from nose.plugins.attrib import attr
 import xlrd
 
+
 @attr('functional_test')
-class TestSubjectExport(TestCase):
+class TestSubjectExport(unittest.TestCase):
+
     def setUp(self):
         self.client = Client()
         self.mobile_number = self.random_number(6)

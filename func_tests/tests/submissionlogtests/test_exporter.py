@@ -1,14 +1,16 @@
 # coding=utf-8
 import os
 import tempfile
-from unittest import SkipTest
+import unittest
 import uuid
-from django.test import TestCase, Client
+
+from django.test import Client
 from nose.plugins.attrib import attr
 import xlrd
 
+
 @attr('functional_test')
-class TestExporter(TestCase):
+class TestExporter(unittest.TestCase):
     def setUp(self):
         self.client = Client()
         self.create_submissions()

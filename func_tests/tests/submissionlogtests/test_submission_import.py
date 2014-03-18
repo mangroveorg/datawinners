@@ -1,12 +1,14 @@
 import os
 import tempfile
-from unittest import SkipTest
-from django.test import TestCase, Client
+import unittest
+
+from django.test import Client
 from nose.plugins.attrib import attr
 import xlrd
 
+
 @attr('functional_test')
-class TestSubmissionImport(TestCase):
+class TestSubmissionImport(unittest.TestCase):
     def setUp(self):
         self.client = Client()
         self.client.login(username='tester150411@gmail.com', password='tester150411')

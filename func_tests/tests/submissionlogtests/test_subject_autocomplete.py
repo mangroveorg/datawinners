@@ -1,11 +1,12 @@
 import json
-from unittest.case import SkipTest
-from django.test import TestCase, Client
+import unittest
+
+from django.test import Client
 from nose.plugins.attrib import attr
 
 
 @attr('functional_test')
-class TestAllSubjectsAutoCompleteView(TestCase):
+class TestAllSubjectsAutoCompleteView(unittest.TestCase):
     def setUp(self):
         self.client = Client()
         self.client.login(username='tester150411@gmail.com', password='tester150411')

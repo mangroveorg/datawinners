@@ -1,15 +1,14 @@
 import json
-from nose.plugins.attrib import attr
 
-from datawinners.project.views.submission_views import create_statistics_response
+from nose.plugins.attrib import attr
 from django.test import Client
 from django.utils import unittest
-from django.utils.unittest.case import SkipTest
-from mock import Mock, MagicMock
-
+from mock import MagicMock
 from mangrove.form_model.field import SelectField
-from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
+
+from datawinners.project.views.submission_views import create_statistics_response
+
 
 @attr('functional_test')
 class TestAnalysisStats(unittest.TestCase):
