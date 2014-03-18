@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from framework.utils.common_utils import generateId, get_epoch_last_ten_digit
+from framework.utils.text_box_web_element import TextBox
 
 from pages.page import Page
 from pages.registerconfirmationpage.registration_confirmation_page import RegistrationConfirmationPage
@@ -30,7 +31,10 @@ class RegistrationPage(Page):
             elif key in [PAY_MONTHLY, WIRE_TRANSFER, PRO, PRO_SMS]:
                 self.driver.find_radio_button(by_css(".registration_form input[value=%s]" % key)).click()
             else:
-                self.driver.find_text_box(by_css(".registration_form input[name=%s]" % key)).send_keys(value)
+                el = self.driver.find(by_css(".registration_form input[name=%s]" % key))
+                if el.get_attribute("value") != "":
+                    el.clear()
+                el.send_keys(value)
 
         self.click_submit_button()
         return self

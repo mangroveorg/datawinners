@@ -37,7 +37,14 @@ from tests.endtoendtest.end_to_end_data import *
 from tests.projects.questionnairetests.project_questionnaire_data import VALID_SUMMARY_REPORT_DATA
 from tests.registrationtests.registration_tests import register_and_get_email
 from pages.alldatasenderspage.all_data_senders_locator import DELETE_BUTTON as CONFIRM_DELETE
+from tests.registrationtests.trial_registration_tests import register_and_get_email_for_trial
 from tests.testsettings import UI_TEST_TIMEOUT
+
+def add_trial_organization_and_login(driver):
+    registration_confirmation_page, email = register_and_get_email_for_trial(driver)
+    activate_account(driver, email)
+
+
 
 
 def activate_account(driver, email):

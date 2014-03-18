@@ -31,7 +31,7 @@ class BaseTest(unittest.TestCase):
 class HeadlessRunnerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-            cls.driver = setup_driver(browser="phantom")
+        cls.driver = setup_driver(browser="phantom")
 
     @classmethod
     def tearDownClass(cls):

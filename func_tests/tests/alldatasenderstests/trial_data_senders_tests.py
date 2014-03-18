@@ -28,11 +28,6 @@ class TestTrialDataSenders(unittest.TestCase):
     def setUp(self):
         self.driver = setup_driver()
 
-    def add_trial_organization_and_login(self):
-        registration_confirmation_page, email = register_and_get_email_for_trial(self.driver)
-        activate_account(self.driver, email)
-        return do_login(self.driver, email, REGISTRATION_PASSWORD)
-
     def create_questionnaire(self, create_questionnaire_page):
         create_questionnaire_page.create_questionnaire_with(QUESTIONNAIRE_DATA)
         create_data_sender_questionnaire_page = create_questionnaire_page.save_questionnaire_successfully()

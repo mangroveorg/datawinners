@@ -43,9 +43,6 @@ class TestSubmissionLog(HeadlessRunnerTest):
     def setUpClass(cls):
         HeadlessRunnerTest.setUpClass()
         cls.dashboard = login(cls.driver)
-        # cls.driver = setup_driver()
-        # cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        # login_page = LoginPage(cls.driver)
         cls.reporting_period_project_name = None
         cls.URL = None
 
