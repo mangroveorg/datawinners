@@ -90,6 +90,9 @@ class TestProjectQuestionnaire(unittest.TestCase):
         questionnaire_tab_page.refresh()
         project_title, questionnaire_code = self._create_project(QUESTIONNAIRE_TAB_PROJECT_DATA, QUESTIONNAIRE_TAB_QUESTIONNAIRE_DATA)
         self.do_sms_submission(questionnaire_code, QUESTIONNAIRE_TAB_SUBMISSION_SMS, project_title)
+        questionnaire_tab_page.select_question_link(1)
+        questionnaire_tab_page.change_answer_type_to_choice_question()
+        self.assertEqual("default", questionnaire_tab_page.get_nth_option_choice_text(1), "Default text should be present for 1st choice") #Bug - 3152
         questionnaire_tab_page.delete_question(1)
         self._expect_delete_question_dialog_to_be_shown(proceed=False)
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 1, "Question should not be deleted.")

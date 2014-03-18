@@ -336,6 +336,7 @@ DW.question.prototype = {
                 && this.range_min.valid() && this.range_max.valid() && isChoiceAnswerValid;
         };
         this._initializeObservableValidations();
+        this._initializeObservers();
     },
 
     _validateMinRangeIsLessThanMaxRange: function(){
@@ -349,6 +350,13 @@ DW.question.prototype = {
             this.range_max.setError(gettext("Max should be greater than min."));
         else
             this.range_max.clearError();
+    },
+
+    _initializeObservers: function(){
+        this.answerType.subscribe(function(newAnswerType){
+            if(newAnswerType == "choice" && this.choices().length == 0)
+                this.addOptionToQuestion();
+        }, this);
     },
 
     _initializeObservableValidations: function(){

@@ -156,6 +156,9 @@ class QuestionnaireTabPage(Page):
         return self
 
 
+    def change_answer_type_to_choice_question(self):
+        self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(LIST_OF_CHOICES_OPTION)
+
     def configure_number_type_question(self, question_data):
         """
         Function to select number option and fill the details (min or max) on the questionnaire page
@@ -489,6 +492,13 @@ class QuestionnaireTabPage(Page):
 
     def get_nth_option_of_choice(self, index):
         return self.driver.find(by_id("choice_text%d" % (index-1)))
+
+    def get_nth_option_choice_text(self, index):
+        try:
+            return self.driver.find(by_id("choice_text%d" % (index-1))).get_attribute('value')
+        except NoSuchElementException:
+            return ""
+
 
     def change_nth_option_of_choice(self, index, new_text):
         self.driver.find_text_box(by_id("choice_text%d" % (index-1))).enter_text(new_text)
