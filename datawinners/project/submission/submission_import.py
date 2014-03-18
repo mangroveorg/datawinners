@@ -29,7 +29,6 @@ class SubmissionImporter():
 
     def import_submission(self, request):
         saved_entries, invalid_row_details, ignored_entries = [], [], []
-        is_summary_project = self.project.is_summary_project()
         total_submissions = 0
 
         try:
@@ -40,7 +39,7 @@ class SubmissionImporter():
             if len(tabular_data) <= 1:
                 raise ImportValidationError(gettext("The imported file is empty."))
             q_answer_dicts = SubmissionWorkbookMapper(tabular_data, self.form_model).process()
-            SubmissionWorkbookValidator(self.form_model, is_org_user(self.user), is_summary_project).validate(
+            SubmissionWorkbookValidator(self.form_model).validate(
                 q_answer_dicts)
 
             user_profile = NGOUserProfile.objects.filter(user=self.user)[0]
@@ -79,9 +78,7 @@ class SubmissionImporter():
 
         return file_content
 
-    def _add_reporter_id_for_datasender(self, parsed_rows, user_profile, is_organization_user, is_summary_project):
-        if not is_summary_project:
-            return
+    def _add_reporter_id_for_datasender(self, parsed_rows, user_profile, is_organization_user):
 
         for row in parsed_rows:
             if is_organization_user:
@@ -137,15 +134,11 @@ class SubmissionPersister():
 
 
 class SubmissionWorkbookValidator():
-    def __init__(self, form_model, is_org_user, is_summary_project):
+    def __init__(self, form_model):
         self.form_model = form_model
-        self.is_org_user = is_org_user
-        self.is_summary_project = is_summary_project
 
     def validate(self, q_answer_dicts):
         expected_cols = [f.code for f in self.form_model.fields]
-        if not self.is_org_user and self.is_summary_project:
-            expected_cols.remove(self.form_model.entity_question.code)
         if set(q_answer_dicts[0].keys()) != set(expected_cols):
             raise ImportValidationError(gettext(
                 "The columns you are importing do not match the current Questionnaire. Please download the latest template for importing."))

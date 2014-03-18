@@ -160,7 +160,7 @@ class TestProjectViews(unittest.TestCase):
         manager = {}
         form_model = {}
 
-        project_info = {"name": "project_name", "goals": "des", "entity_type": "clinic", "activity_report": "yes",
+        project_info = {"name": "project_name", "goals": "des", "entity_type": "clinic",
                         "language": "en"}
         with patch("datawinners.project.preview_views.get_questionnaire_form_model") as questionnaire_form_model:
             questionnaire_form_model.return_value = form_model
@@ -171,7 +171,6 @@ class TestProjectViews(unittest.TestCase):
                     add_link.return_value = {'text': 'Add a datasender'}
                     web_preview_context = get_web_preview_context(manager, {}, project_info)
                     project = web_preview_context['project']
-                    self.assertEquals(project['activity_report'], "yes")
                     questionnaire_form = web_preview_context['questionnaire_form']
                     self.assertEquals(questionnaire_form, mock_form)
                     self.assertEquals(web_preview_context['add_link']['text'], 'Add a datasender')
@@ -253,7 +252,7 @@ class TestProjectViews(unittest.TestCase):
 
     def test_should_get_changed_data_when_project_is_edited(self):
         project_info = {'name':'changed name','language':'en'}
-        project = Project(language='en',name='old name')
+        project = Project(name='old name', language='en')
         changed_dict = _get_changed_data(project,project_info)
         self.assertDictEqual({'Name':'changed name'},changed_dict)
 

@@ -105,11 +105,8 @@ def create_project(request):
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
-        project = Project(name=project_info.get('name'),
-                          project_type='survey',
-                          entity_type=REPORTER,
-                          activity_report=project_info.get('activity_report'), devices=[u'sms', u'web', u'smartPhone'],
-                          language=project_info.get('language'))
+        project = Project(name=project_info.get('name'), project_type='survey', entity_type=REPORTER,
+                          devices=[u'sms', u'web', u'smartPhone'], language=project_info.get('language'))
 
         if ngo_admin.reporter_id is not None:
             project.data_senders.append(ngo_admin.reporter_id)

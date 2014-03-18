@@ -8,7 +8,7 @@
         <div class="wizard_heading">{% trans "You successfully created your questionnaire!" %} </div>
         <div class="line"></div>
         <div class="w_content">
-            {% if not project.is_activity_report %}
+            {% if project.entity_type %}
                 <div class="gray_text">{% trans "Just two more steps..." %} </div>
             {% else %}
                 <div class="gray_text">{% trans "Just one more step..." %} </div>
@@ -20,7 +20,7 @@
 
                     <p class="black_italic">{% trans "Register each Data Sender (e.g. field staff) to enable them to send data into your project." %} </p>
                 </li>
-                {% if not project.is_activity_report %}
+                {% if project.entity_type %}
                     <li><a id="subjects_edit_link"
                            href="{{ project_links.register_subjects_link_web_view }}">{% trans "Add a new" %} {{ project.entity_type }} </a>
 

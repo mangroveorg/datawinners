@@ -16,12 +16,11 @@ class TestViews(TestCase):
         manager = Mock(spec = DatabaseManager)
         manager.database = dict()
         raw_project = dict(value = dict(_id = "pid", devices = ["sms", "web"],
-                                        activity_report = ["no"],
                                         name = "Project Name",
                                         created = "2012-05-23T02:57:09.788294+00:00",
                                         project_type = "survey"))
 
-        project = Project(project_type = "survey", entity_type = "clinic")
+        project = Project(project_type="survey", entity_type="clinic")
 
         profile = Mock(spec = NGOUserProfile)
 

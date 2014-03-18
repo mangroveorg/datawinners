@@ -117,7 +117,7 @@ def start(request):
 def map_entities(request):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, request.GET['project_id'])
-    if project.is_activity_report():
+    if not project.entity_type:
         entity_list = []
         for short_code in project.data_senders:
             try:

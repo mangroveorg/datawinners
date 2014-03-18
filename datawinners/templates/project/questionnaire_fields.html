@@ -35,7 +35,7 @@
                                 <img src="/media/images/help_icon.png" class="help_icon">
                                 <div class="tooltip">
                                     <p>
-                                        {% if 'yes' in project.activity_report %}
+                                        {% if not project.entity_type %}
                                             {% trans "tooltip_questionnaire_form_data_sender_entity_question" %}
                                         {% else %}
                                             {% trans "tooltip_questionnaire_form_subject_entity_question" %}
@@ -72,7 +72,7 @@
                 </div>
                 <div id="add_link" class="clear-left padding_top_20" style="display:none">
                     <p class="instructions italic">
-                        {% if 'yes' in project.activity_report %}
+                        {% if not project.entity_type %}
                             {% trans "You have not registered a reporter yet." %}
                         {% else %}
                             {% blocktrans with project.entity_type as subject %}You have not registered a {{ subject }} yet.{% endblocktrans %}

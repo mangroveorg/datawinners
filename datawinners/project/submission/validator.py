@@ -34,27 +34,19 @@ class SubmissionWorkbookRowValidator():
         return entity_field.code if entity_field else None
 
     def _verify_uploaded_id(self, q_code, imported_id):
-        subject_ids, datasender_ids = self._get_subject_or_datasender_ids()
+        subject_ids = self._get_subject_or_datasender_ids()
         errors = OrderedDict()
-        if self.project.is_summary_project():
-            if imported_id not in datasender_ids:
-                errors.update({q_code: "The unique ID of the Data Sender does not match any existing Data Sender ID. Please correct and import again."})
-        else:
-            if imported_id not in subject_ids:
-                errors.update({q_code: "The unique ID of the Subject does not match any existing Subject ID. Please correct and import again."})
+        if imported_id not in subject_ids:
+            errors.update({q_code: "The unique ID of the Subject does not match any existing Subject ID. Please correct and import again."})
         return errors
 
     def _get_subject_or_datasender_ids(self):
-        subject_ids, datasender_ids = None, None
-        if self.project.is_summary_project():
-            datasender_ids = [ds['short_code'] for ds in self.project.get_data_senders(self.manager)]
-        else:
-            entity_type = self.project.entity_type
-            start_key = [[entity_type]]
-            end_key = [[entity_type], {}, {}]
-            rows = self.manager.database.view("entity_name_by_short_code/entity_name_by_short_code", startkey=start_key,endkey=end_key).rows
-            subject_ids = [item["key"][1] for item in rows]
-        return subject_ids, datasender_ids
+        entity_type = self.project.entity_type
+        start_key = [[entity_type]]
+        end_key = [[entity_type], {}, {}]
+        rows = self.manager.database.view("entity_name_by_short_code/entity_name_by_short_code", startkey=start_key,endkey=end_key).rows
+        subject_ids = [item["key"][1] for item in rows]
+        return subject_ids
 
 
 
