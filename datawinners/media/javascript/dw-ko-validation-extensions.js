@@ -31,7 +31,7 @@ DW.ko = {
                 return observable;
             },
         mandatoryValidator: function(observable){
-            if(observable() == undefined || observable().trim() === "" )
+            if(observable() == undefined || (observable()+ "").trim() === "" )
                 observable.setError(gettext("This field is required."))
             else
                 observable.clearError();

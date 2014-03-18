@@ -1053,9 +1053,6 @@ msgstr ""
 msgid "Max should be greater than min."
 msgstr ""
 
-msgid "Select an Answer Type"
-msgstr "Sélectionnez un type de réponse"
-
 msgid "Word or Phrase"
 msgstr ""
 

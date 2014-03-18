@@ -25,7 +25,7 @@ var subjectQuestionnaireViewModel = {
     locationType: {name: 'Location', value: 'list'},
 
     answerTypes: [
-        {name: gettext('Select an Answer Type'), value: ''},
+        {name: gettext('Select an Answer Type'), value: '', disable: true},
         {name: gettext('Word or Phrase'), value: 'text'},
         {name: gettext('Number'), value: 'integer'},
         {name: gettext('Date'), value: 'date'},
@@ -33,6 +33,10 @@ var subjectQuestionnaireViewModel = {
         {name: gettext('GPS Coordinates'), value: 'geocode'},
         {name: gettext('Telephone number'), value: 'telephone_number'}
     ],
+
+    setOptionDisable: function(option, item) {
+            ko.applyBindingsToNode(option, {disable: item.disable}, item);
+    },
 
     removeLocationTypeOption: function () {
         var locationTypeIndex = subjectQuestionnaireViewModel.answerTypes.indexOf(subjectQuestionnaireViewModel.locationType);
