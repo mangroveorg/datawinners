@@ -135,7 +135,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         all_users_page = AllUsersPage(cls.driver)
         add_user_page = all_users_page.navigate_to_add_user()
         add_user_page.add_user_with(user_data)
-        cls.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("div.success-message-box"), True)
+        cls.driver.wait_for_element(UI_TEST_TIMEOUT*2, by_css("div.success-message-box"), True)
         user_mobile_number = fetch_(MOBILE_PHONE, user_data)
         return user_mobile_number
 
