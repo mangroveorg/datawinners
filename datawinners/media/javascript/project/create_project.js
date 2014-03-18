@@ -13,8 +13,7 @@ DW.init_delete_periodicity_question_warning = function(){
 basic_project_info = function(){
         var name = questionnaireViewModel.projectName() || '';
         var language = questionnaireViewModel.language();
-        var activity_report = 'yes';
-        return JSON.stringify({'name':name, 'language':language, 'activity_report':activity_report});
+        return JSON.stringify({'name':name, 'language':language});
 };
 
 DW.post_project_data = function (callback) {

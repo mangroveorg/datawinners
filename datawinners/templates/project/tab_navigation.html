@@ -67,7 +67,7 @@
             <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link}}"
                class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
         </li>
-        {% if 'no' in project.activity_report%}
+        {% if project.entity_type%}
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "My Subjects" %}</a>
             </li>

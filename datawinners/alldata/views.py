@@ -55,7 +55,7 @@ def get_project_info(manager, raw_project):
         web_submission_link_disabled = ""
 
     create_subjects_link = ''
-    if 'no' in raw_project['value']['activity_report']:
+    if project.entity_type:
         create_subjects_link = append_query_strings_to_url(reverse("create_subject", args=[project.entity_type]),
                                                            web_view=True)
 

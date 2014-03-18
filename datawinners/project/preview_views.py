@@ -57,13 +57,8 @@ def add_link_context(project):
 
 def get_web_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
-    project = Project(name=unicode(project_info['name']),
-                      #goals=unicode(project_info['goals']),
-                      project_type='survey',
-                      entity_type=unicode(REPORTER),
-                      activity_report=unicode(project_info['activity_report']),
-                       devices=[u'sms', u'web', u'smartPhone'],
-                      language=unicode(project_info['language']))
+    project = Project(name=unicode(project_info['name']), project_type='survey', entity_type=unicode(REPORTER),
+                      devices=[u'sms', u'web', u'smartPhone'], language=unicode(project_info['language']))
 
     questionnaire_form = SurveyResponseForm(form_model,SubjectQuestionFieldCreator(manager, project))
     return {'project': project_info,

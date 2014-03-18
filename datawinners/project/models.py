@@ -162,7 +162,6 @@ class Project(DocumentBase):
     goals = TextField()
     project_type = TextField()
     entity_type = TextField()
-    activity_report = TextField()
     devices = ListField(TextField())
     qid = TextField()
     sender_group = TextField()
@@ -171,7 +170,7 @@ class Project(DocumentBase):
     language = TextField(default='en')
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
-                 activity_report=None, sender_group=None, language='en'):
+                 sender_group=None, language='en'):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -180,7 +179,6 @@ class Project(DocumentBase):
         self.project_type = project_type
         self.entity_type = entity_type
         self.devices = devices
-        self.activity_report = activity_report
         self.sender_group = sender_group
         self.reminder_and_deadline = {"deadline_type": "Following",
                                       "should_send_reminder_to_all_ds": False,
@@ -188,9 +186,6 @@ class Project(DocumentBase):
                                       "deadline_month": "5",
                                       "frequency_period": "month"}
         self.language = language
-
-    def is_activity_report(self):
-        return self.activity_report == "yes"
 
     def get_data_senders(self, dbm):
         all_data, fields, label = load_data_senders(dbm, self.data_senders)
@@ -223,9 +218,6 @@ class Project(DocumentBase):
             return Month(int(self.reminder_and_deadline.get('deadline_month')))
         if self.reminder_and_deadline.get('frequency_period') == 'week':
             return Week(int(self.reminder_and_deadline.get('deadline_week')))
-
-    def is_summary_project(self):
-        return self.entity_type == u"reporter"
 
     def has_deadline(self):
         return self.reminder_and_deadline.get('has_deadline')
@@ -333,9 +325,6 @@ def delete_datasenders_from_project(manager, data_sender_ids):
         for associated_project in associated_projects:
             project = Project.load(manager.database, associated_project['value']['_id'])
             project.delete_datasender(manager, entity_id)
-
-def is_summary_project(form_model):
-    return form_model.entity_type == ["reporter"]
 
 
 def project_by_form_model_id(dbm, form_model_id):

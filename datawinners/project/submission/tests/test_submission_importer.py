@@ -178,21 +178,21 @@ class SubmissionParserTest(TestCase):
         self.add_datasender_col()
         ans_dict = SubmissionWorkbookMapper(self.data, self.form_model).process()
         try:
-            SubmissionWorkbookValidator(self.form_model, False, True).validate(ans_dict)
+            SubmissionWorkbookValidator(self.form_model).validate(ans_dict)
         except ImportValidationError as e:
             self.assertEquals("The columns you are importing do not match the current Questionnaire. Please download the latest template for importing.", e.message)
 
     def test_submission_import_worksheet_should_have_datasender_id(self):
         self.add_datasender_col()
         ans_dict = SubmissionWorkbookMapper(self.data, self.form_model).process()
-        self.assertEquals(None, SubmissionWorkbookValidator(self.form_model, is_org_user=True, is_summary_project=True).validate(ans_dict))
+        self.assertEquals(None, SubmissionWorkbookValidator(self.form_model).validate(ans_dict))
 
     def test_validate_template_for_datasender(self):
         data = SubmissionWorkbookMapper(self.data, self.form_model).process()
         try:
-            SubmissionWorkbookValidator(self.form_model, is_org_user=False, is_summary_project=True).validate(data)
+            SubmissionWorkbookValidator(self.form_model).validate(data)
         except ImportValidationError as e:
-            self.assertEquals("The columns you are importing do not match. Please download the latest template for importing.", e.message)
+            self.assertEquals("The columns you are importing do not match the current Questionnaire. Please download the latest template for importing.", e.message)
 
 
     def test_should_handle_questions_with_similar_label(self):
