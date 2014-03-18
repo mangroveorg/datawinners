@@ -315,7 +315,7 @@ DW.question.prototype = {
 
             if (this.showLengthLimiter()) {
                 DW.ko.mandatoryValidator(this.max_length);
-                this.max_length.valid() && DW.ko.numericValidator(this.max_length);
+                this.max_length.valid() && DW.ko.postiveNumberValidator(this.max_length);
             }
 
             else if (this.showAddRange()) {
@@ -366,7 +366,7 @@ DW.question.prototype = {
 
        this.max_length.subscribe(function(){
           DW.ko.mandatoryValidator(this.max_length);
-          this.max_length.valid() && DW.ko.numericValidator(this.max_length);
+          this.max_length.valid() && DW.ko.postiveNumberValidator(this.max_length);
        }, this);
 
        this.answerType.subscribe(function(){

@@ -31,7 +31,7 @@ DW.ko = {
                 return observable;
             },
         mandatoryValidator: function(observable){
-            if(!observable())
+            if(observable() == undefined || observable().trim() === "" )
                 observable.setError(gettext("This field is required."))
             else
                 observable.clearError();
@@ -41,6 +41,15 @@ DW.ko = {
                 observable.clearError();
              else
                 observable.setError(gettext("Please insert a valid number."));
+        },
+        postiveNumberValidator: function(observable){
+            this.numericValidator(observable);
+            if(observable.valid()){
+                if(parseInt(observable()) <= 0)
+                    observable.setError(gettext("Please insert a valid number."));
+                else
+                    observable.clearError();
+            }
         },
         alphaNumericValidator: function(observable, trimBeforeCheck){
             var str = trimBeforeCheck ? (observable() + "").trim() : observable() + "";

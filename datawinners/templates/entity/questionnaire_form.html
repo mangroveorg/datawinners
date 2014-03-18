@@ -47,7 +47,7 @@
                             <div class="question_list">
                                 <ol data-bind="foreach: {data: questions, as: 'question'}, sortable: questions">
                                     <li data-bind="click: function() { subjectQuestionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion(), sort: !question.is_entity_question()} ">
-                                        <a href="questionnaire.html#" data-bind="text: $data.display"></a>
+                                        <a href="javascript:void(0);" data-bind="text: $data.display"></a>
 
                                         <div class="action_bar" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
                                             <a href="javascript:void(0);" class="delete_link"
@@ -71,7 +71,7 @@
 
                         </div>
                         <div class="add_question">
-                            <a class="add_link" href="questionnaire.html#"
+                            <a class="add_link" href="javascript:void(0);"
                                data-bind="click: function() {subjectQuestionnaireViewModel.addQuestion(); DW.close_the_tip_on_period_question();}">
                                 {% trans "Add a Question" %}</a>
                         </div>
