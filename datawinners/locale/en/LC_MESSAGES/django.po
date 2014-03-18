@@ -2843,7 +2843,7 @@ msgstr ""
 msgid "Project"
 msgstr ""
 
-msgid "You may be sharing this %(entity_type)s registration form with other projects.  If you make changes, the other projects will have to use your new %(entity_type)s registration form as well."
+msgid "You may be sharing this %(entity_type)s registration form with other questionnaire. If you make changes, the other questionnaire will have to use your new %(entity_type)s registration form as well."
 msgstr ""
 
 msgid "If you delete this question, any previously collected data will be lost."
