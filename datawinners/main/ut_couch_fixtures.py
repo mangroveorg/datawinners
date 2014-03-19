@@ -1580,6 +1580,8 @@ def load_data():
     create_clinic3_project_for_quota_reached_ngo()
     create_questionnaire_templates()
 
+    call_command("recreate_search_indexes", "hni_testorg_slx364903")
+
 
 def create_datasender_for_nigeria_test_organization():
     user = User.objects.get(username="samuel@mailinator.com")
