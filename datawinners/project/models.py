@@ -268,9 +268,6 @@ class Project(DocumentBase):
     def is_deleted(self):
         return self.void
 
-    def is_on_type(self, type):
-        return self.entity_type == type
-
     def _load_form(self, dbm):
         form_model = dbm.get(self.qid, FormModel)
         return form_model

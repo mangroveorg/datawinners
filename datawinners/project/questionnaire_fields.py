@@ -177,12 +177,12 @@ class EntityField(object):
         self.project = project
 
     def create(self, subject_field, entity_type):
-        reporter_entity_type = 'reporter'
-        if self.project.is_on_type(reporter_entity_type):
-            choice_fields = self._data_sender_choice_fields(subject_field)
-        else:
-            choice_fields = self._subject_choice_fields(entity_type, subject_field)
+        #reporter_entity_type = 'reporter'
+        #if self.project.is_on_type(reporter_entity_type):
+        #    choice_fields = self._data_sender_choice_fields(subject_field)
+        #else:
 
+        choice_fields = self._subject_choice_fields(entity_type, subject_field)
         return {subject_field.code: choice_fields}
 
     def _build_subject_choice_data(self, subjects, key_list):

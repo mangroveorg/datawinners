@@ -29,14 +29,6 @@ class TestSubjectQuestionCreator(unittest.TestCase):
         self.fields = ['name', 'location', 'geo_code', 'short_code']
 
 
-    def test_should_pre_populate_datasenders_for_subject_question(self):
-        subject_field = self._get_unique_id_field()
-        project = self._get_mock_project()
-        display_subject_field = SubjectQuestionFieldCreator(self.dbm, project).create(subject_field)
-        self.assertEqual(ChoiceField, type(display_subject_field))
-        expected_choices = [('a', 'reporter1  (a)'), ('b', 'reporter2  (b)')]
-        self.assertEqual(expected_choices, display_subject_field.choices)
-
     def test_should_pre_populate_choices_for_subject_question_on_basis_of_entity_type(self):
         expected_code = "expected_code"
         subject_field = self._get_unique_id_field(expected_code)

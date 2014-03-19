@@ -11,14 +11,9 @@ class SubjectQuestionFieldCreator(object):
         self.dbm = dbm
 
     def create(self, subject_field, is_datasender=False):
-        reporter_entity_type = 'reporter'
-        widget = None
-        if self.project.is_on_type(reporter_entity_type):
-            if is_datasender:
-                subject_field._dict['required'] = False
-                widget = HiddenInput
-            return self._data_sender_choice_fields(subject_field, widget=widget)
-        return self._subjects_choice_fields(subject_field)
+        if self.project.entity_type:
+            return self._subjects_choice_fields(subject_field)
+        return None
 
     def create_code_hidden_field(self, subject_field):
         return {'entity_question_code': forms.CharField(required=False, widget=HiddenInput, label=subject_field.code)}

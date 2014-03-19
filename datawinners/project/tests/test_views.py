@@ -150,7 +150,7 @@ class TestProjectViews(unittest.TestCase):
 
     def test_should_get_correct_add_link_for_project(self):
         project = Mock(spec=Project)
-        project.entity_type = "reporter"
+        project.entity_type = None
         project.id = "pid"
         add_link_dict = add_link_context(project)
         self.assertEquals(add_link_dict['text'], 'Add a datasender')
