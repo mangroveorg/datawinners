@@ -6,7 +6,7 @@ $(document).ready(function() {
         autoOpen: false,
         width: 1200,
         modal: true,
-        title: sms_tester_title,
+        title: gettext("Test SMS Questionnaire"),
         zIndex:1100,
         open: function(){
             $(".questionnaire_preview1").load(sms_questionnaire_preview_link, function() {
