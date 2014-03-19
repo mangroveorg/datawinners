@@ -26,7 +26,7 @@ from datawinners.main.utils import get_database_name
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import es_field_name
 from datawinners.settings import ELASTIC_SEARCH_URL
-from mangrove.form_model.field import field_to_json
+from mangrove.form_model.field import field_to_json, DateField
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
@@ -61,6 +61,7 @@ from datawinners.common.constant import ADDED_SUBJECT_TYPE, DELETED_SUBJECTS, RE
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.project.helper import create_request
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
+from datetime import datetime
 
 
 websubmission_logger = logging.getLogger("websubmission")
@@ -315,8 +316,6 @@ def import_subjects_from_project_wizard(request, form_code):
         default_parser=XlsOrderedParser,
         form_code=form_code)
 
-    subject_details = []
-
     if len(short_code_subject_details_dict) != 0:
         detail_dict = dict()
         form_model = get_form_model_by_code(manager, form_code)
@@ -325,7 +324,7 @@ def import_subjects_from_project_wizard(request, form_code):
         for short_code in short_code_subject_details_dict.keys():
             short_codes.append(short_code)
 
-        subject_details = [subject_detail_dict.values() for subject_detail_dict in short_code_subject_details_dict.values()]
+        subject_details = _format_imported_subjects_datetime_field_to_str(form_model, short_code_subject_details_dict)
         detail_dict.update({entity_type: "[%s]" % ", ".join(short_codes)})
         UserActivityLog().log(request, action=IMPORTED_SUBJECTS, detail=json.dumps(detail_dict))
 
@@ -337,6 +336,16 @@ def import_subjects_from_project_wizard(request, form_code):
          'successful_imports': subject_details,
         }))
 
+def _format_imported_subjects_datetime_field_to_str(form_model, short_code_subject_details_dict):
+    datetime_fields = [index for index, field in enumerate(form_model.fields) if type(field) == DateField]
+    subject_details = []
+    for subject_detail_dict in short_code_subject_details_dict.values():
+        value = subject_detail_dict.values()
+        for index in datetime_fields:
+            value[index] = value[index].strftime("%d-%m-%Y")
+        subject_details.append(value)
+    return subject_details
+    
 
 def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, form_code, org_number,
                        form_model_fields, is_update=False, back_link=None, web_view=False):

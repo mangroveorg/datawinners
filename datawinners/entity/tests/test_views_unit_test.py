@@ -11,6 +11,7 @@ from mock import Mock, patch, PropertyMock
 from django.core import mail
 
 from datawinners.entity.views import initialize_values, subject_short_codes_to_delete
+from datawinners.entity.views import _format_imported_subjects_datetime_field_to_str
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
@@ -18,8 +19,9 @@ from datawinners.entity.views import create_single_web_user
 from datawinners.entity.import_data import send_email_to_data_sender
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.tests.email_utils import set_email_settings
-from mangrove.form_model.field import TextField
+from mangrove.form_model.field import TextField, DateField
 from mangrove.form_model.form_model import FormModel
+import datetime
 
 
 WEB_USER_TEST_EMAIL = "test_email_for_create_single_web_user@test.com"
@@ -277,4 +279,16 @@ class TestView(TestCase):
                     header_fields.assert_called_once_with(mock_form_model)
 
 
+    def test_should_convert_datetime_to_string_after_subject_import(self):
+        form_model = Mock(spec=FormModel)
+        date_field = DateField('name', 'code', 'Date of birth', '', ddtype=Mock())
+        form_model.fields = [Mock(spec=TextField), date_field]
+        subjects_data = {u'fac8': OrderedDict([('q2', u'Safidy'), ('q7', datetime.datetime(2010, 10, 10, 0, 0)), ('q6', u'fac8')]),
+                        u'fac9': OrderedDict([('q2', u'Emission'), ('q7', datetime.datetime(1947, 6, 26, 0, 0)), ('q6', u'fac9')]),
+                        u'fac7': OrderedDict([('q2', u'Patrick'), ('q7', datetime.datetime(2002, 3, 25, 0, 0)), ('q6', u'fac7')])}
+        
+        formated_data = _format_imported_subjects_datetime_field_to_str(form_model, subjects_data)
+        expected_data = [[u'Safidy', '10-10-2010', u'fac8'], [u'Emission', '26-06-1947', u'fac9'], [u'Patrick', '25-03-2002', u'fac7']]
+        self.assertEqual(expected_data, formated_data)
+        
 
