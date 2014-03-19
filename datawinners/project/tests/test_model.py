@@ -56,7 +56,7 @@ class TestProjectModel(unittest.TestCase):
     def test_get_associated_data_senders(self):
         entity = Entity(self.manager,entity_type=["reporter"], short_code="rep1")
         entity_id = entity.save()
-        project = Project(name="TestDS", goals="Testing", project_type="Survey", entity_type="reporter",
+        project = Project(name="TestDS", goals="Testing", project_type="Survey",
                           devices=['web'])
         project.data_senders = ["rep1"]
         project.save(self.manager)

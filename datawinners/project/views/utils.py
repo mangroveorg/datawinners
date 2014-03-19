@@ -19,13 +19,13 @@ def get_form_context(form_code, project, questionnaire_form, manager, hide_link_
 
 def add_link(project):
     add_link_named_tuple = namedtuple("Add_Link", ['url', 'text'])
-    if project.entity_type == REPORTER:
-        text = _("Add a data sender")
-        url = make_data_sender_links(project.id)['register_datasenders_link']
-        return add_link_named_tuple(url=url, text=text)
-    else:
+    if project.entity_type :
         text = _("Register a %(subject)s") % {'subject': project.entity_type}
         url = make_subject_links(project.id)['register_subjects_link_web_view']
+        return add_link_named_tuple(url=url, text=text)
+    else:
+        text = _("Add a data sender")
+        url = make_data_sender_links(project.id)['register_datasenders_link']
         return add_link_named_tuple(url=url, text=text)
 
 

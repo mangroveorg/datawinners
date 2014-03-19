@@ -23,8 +23,8 @@ def get_questions(form_model):
 
 
 def get_questionnaire_form_model(manager, project_info, post):
-    return create_questionnaire(post, manager, entity_type=REPORTER_ENTITY_TYPE,
-                                name=unicode(project_info['name']), language=unicode(project_info['language']))
+    return create_questionnaire(post, manager, name=unicode(project_info['name']),
+                                language=unicode(project_info['language']))
 
 def get_sms_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
@@ -47,11 +47,11 @@ def sms_preview(request):
 
 
 def add_link_context(project):
-    if project.entity_type == REPORTER:
-        text = _("Add a datasender")
+    if project.entity_type:
+        text = _("Register a %(subject)s") % {'subject': project.entity_type}
         return {'url': '#', 'text': text}
     else:
-        text = _("Register a %(subject)s") % {'subject': project.entity_type}
+        text = _("Add a datasender")
         return {'url': '#', 'text': text}
 
 

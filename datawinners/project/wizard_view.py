@@ -34,8 +34,7 @@ from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
 
 
-def create_questionnaire(post, manager, entity_type, name, language):
-    entity_type = [entity_type] if is_string(entity_type) else entity_type
+def create_questionnaire(post, manager, name, language):
     questionnaire_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
@@ -104,19 +103,17 @@ def create_project(request):
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
-        project = Project(name=project_info.get('name'), project_type='survey', entity_type=REPORTER,
+        project = Project(name=project_info.get('name'), project_type='survey',
                           devices=[u'sms', u'web', u'smartPhone'], language=project_info.get('language'))
 
         if ngo_admin.reporter_id is not None:
             project.data_senders.append(ngo_admin.reporter_id)
 
         try:
-            questionnaire = create_questionnaire(post=request.POST, manager=manager,
-                                                 #hard coding entity type to reporter since v are removing
-                                                 #project type(summary and individual)
-                                                 entity_type=REPORTER_ENTITY_TYPE,
-                                                 name=project_info.get('name'),
+            questionnaire = create_questionnaire(post=request.POST, manager=manager, name=project_info.get('name'),
                                                  language=project_info.get('language'))
+            if questionnaire.entity_type:
+                project.entity_type = questionnaire.entity_type[0]
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
             return HttpResponse(
@@ -184,21 +181,8 @@ def edit_project(request, project_id):
         return HttpResponseRedirect(dashboard_page)
     questionnaire = FormModel.get(manager, project.qid)
     if request.method == 'GET':
-        #form = CreateProject(data=project, entity_list=entity_list)
-        #activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
-        #subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
-        #fields = questionnaire.fields
-        #if questionnaire.is_entity_type_reporter():
-        #    fields = helper.hide_entity_question(questionnaire.fields)
-        #existing_questions = json.dumps(fields, default=field_to_json)
-        #project_details = json.dumps(
-        #    {'project_name': project.name, 'project_language': project.language,
-        #     'questionnaire_code': questionnaire.form_code})
-
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
-                                   #'existing_questions': repr(existing_questions),
-                                   #'project_details': repr(project_details),
                                    'questionnaire_code': questionnaire.form_code,
                                    'is_edit': 'true',
                                    'post_url': reverse(edit_project, args=[project_id])},

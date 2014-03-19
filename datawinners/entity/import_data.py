@@ -346,15 +346,14 @@ def get_field_infos(fields):
 
 
 def get_entity_type_info(entity_type, manager=None):
-    if entity_type == 'reporter':
-        form_code = 'reg'
-        form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)[0]
-        names, labels, codes = get_json_field_infos(form_model.value['json_fields'])
-    else:
+    form_code = None
+    names = []
+    codes = []
+    labels = []
+    if entity_type:
         form_model = get_form_model_by_entity_type(manager, entity_type_as_sequence(entity_type))
         form_code = form_model.form_code
         names, labels, codes = get_field_infos(form_model.fields)
-
     return dict(entity=entity_type, code=form_code, names=names, labels=labels, codes=codes, data=[])
 
 
