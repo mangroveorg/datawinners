@@ -20,8 +20,10 @@ from datawinners.common.constant import IMPORTED_DATA_SENDERS
 from datawinners.entity import import_data as import_module
 from datawinners.entity.helper import rep_id_name_dict_of_users
 from datawinners.main.database import get_database_manager
-from datawinners.project.views.views import _get_project_and_project_link, _in_trial_mode
+from datawinners.project.models import Project
+from datawinners.project.views.views import get_project_link, _in_trial_mode
 from datawinners.search.entity_search import MyDataSenderQuery
+from mangrove.form_model.form_model import FormModel
 from mangrove.transport.player.parser import XlsDatasenderParser
 from mangrove.utils.types import is_empty
 from datawinners.project.utils import is_quota_reached
@@ -96,7 +98,9 @@ def _add_imported_datasenders_to_project(imported_datasenders_id, manager, proje
 @is_not_expired
 def registered_datasenders(request, project_id):
     manager = get_database_manager(request.user)
-    project, project_links = _get_project_and_project_link(manager, project_id)
+    project = Project.load(manager.database, project_id)
+    questionnaire = FormModel.get(manager, project.qid)
+    project_links = get_project_link(project, questionnaire.form_code)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if project.is_deleted():
         return HttpResponseRedirect(dashboard_page)
@@ -106,6 +110,7 @@ def registered_datasenders(request, project_id):
         return render_to_response('project/registered_datasenders.html',
                                   {'project': project,
                                    'project_links': project_links,
+                                   'questionnaire_code': questionnaire.form_code,
                                    'current_language': translation.get_language(),
                                    'is_quota_reached': is_quota_reached(request),
                                    'in_trial_mode': in_trial_mode,

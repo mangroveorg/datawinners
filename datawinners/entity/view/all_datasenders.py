@@ -1,8 +1,4 @@
-import cProfile
-from collections import defaultdict
 import json
-import pstats
-from datawinners import settings
 from sets import Set
 
 from django.contrib.auth.decorators import login_required
@@ -14,21 +10,18 @@ from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 import jsonpickle
 
+from datawinners import settings
 from datawinners import utils
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user
-from datawinners.entity.data_sender import remove_system_datasenders, get_datasender_user_detail
-from datawinners.entity.views import _get_full_name, log_activity, get_success_message
+from datawinners.entity.views import log_activity, get_success_message
 from datawinners.main.database import get_database_manager
-from datawinners.accountmanagement.models import get_ngo_admin_user_profiles_for
 from datawinners.entity.helper import delete_entity_instance, delete_datasender_users_if_any, \
     delete_datasender_for_trial_mode, rep_id_name_dict_of_users
-
 from datawinners.project.models import get_all_projects, Project, delete_datasenders_from_project
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports
 from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
-from mangrove.form_model.form_model import REPORTER, header_fields, GLOBAL_REGISTRATION_FORM_ENTITY_TYPE, \
-    get_form_model_by_code
+from mangrove.form_model.form_model import REPORTER, header_fields, get_form_model_by_code
 from mangrove.transport import TransportInfo
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization

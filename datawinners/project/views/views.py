@@ -250,66 +250,7 @@ def _format_reminders(reminders, project_id):
     return [_format_reminder(reminder, project_id) for reminder in reminders]
 
 
-# @login_required(login_url='/login')
-# @session_not_expired
-# @csrf_exempt
-# @is_not_expired
-# def create_reminder(request, project_id):
-#     if is_empty(request.POST['id']):
-#         Reminder(project_id=project_id, day=request.POST.get('day', 0), message=request.POST['message'],
-#                  reminder_mode=request.POST['reminder_mode'], remind_to=request.POST['remind_to'],
-#                  organization=utils.get_organization(request)).save()
-#         messages.success(request, 'Reminder added successfully')
-#     else:
-#         reminder = Reminder.objects.filter(project_id=project_id, id=request.POST['id'])[0]
-#         reminder.day = request.POST.get('day', 0)
-#         reminder.message = request.POST['message']
-#         reminder.reminder_mode = request.POST['reminder_mode']
-#         reminder.remind_to = request.POST['remind_to']
-#         reminder.save()
-#         messages.success(request, 'Reminder updated successfully')
-#     return HttpResponseRedirect(reverse(reminders, args=[project_id]))
-
-
-# @login_required(login_url='/login')
-# @session_not_expired
-# @csrf_exempt
-# @is_not_expired
-# def get_reminder(request, project_id):
-#     reminder_id = request.GET['id']
-#     reminder = Reminder.objects.filter(project_id=project_id, id=reminder_id)[0]
-#     return HttpResponse(json.dumps(reminder.to_dict()))
-
-
-# @login_required(login_url='/login')
-# @session_not_expired
-# @csrf_exempt
-# @is_not_expired
-# def delete_reminder(request, project_id, reminder_id):
-#     Reminder.objects.filter(project_id=project_id, id=reminder_id)[0].delete()
-#     messages.success(request, 'Reminder deleted')
-#     return HttpResponseRedirect(reverse(reminders, args=[project_id]))
-
-
-# @login_required(login_url='/login')
-# @csrf_exempt
-# @is_not_expired
-# def manage_reminders(request, project_id):
-#     if request.method == 'GET':
-#         reminders = Reminder.objects.filter(project_id=project_id, voided=False)
-#         return HttpResponse(json.dumps([reminder.to_dict() for reminder in reminders]))
-#
-#     if request.method == 'POST':
-#         reminders = json.loads(request.POST['reminders'])
-#         Reminder.objects.filter(project_id=project_id).delete()
-#         for reminder in reminders:
-#             Reminder(project_id=project_id, day=reminder['day'], message=reminder['message'],
-#                      reminder_mode=reminder['reminderMode'], organization=utils.get_organization(request),
-#                      remind_to=reminder['targetDataSenders']).save()
-#         return HttpResponse("Reminders has been saved")
-
-
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
@@ -324,12 +265,14 @@ def sent_reminders(request, project_id):
     is_trial_account = organization.in_trial_mode
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/sent_reminders.html'
     return render_to_response(html,
-                              {'project': project,
-                               "project_links": make_project_links(project, questionnaire.form_code),
-                               'is_quota_reached': is_quota_reached(request, organization=organization),
-                               'reminders': get_all_reminder_logs_for_project(project_id, dbm),
-                               'in_trial_mode': is_trial_account},
-                               # 'create_reminder_link': reverse(create_reminder, args=[project_id])},
+                              {
+                                'project': project,
+                                "project_links": make_project_links(project, questionnaire.form_code),
+                                'is_quota_reached': is_quota_reached(request, organization=organization),
+                                'reminders': get_all_reminder_logs_for_project(project_id, dbm),
+                                'in_trial_mode': is_trial_account,
+                                'questionnaire_code': questionnaire.form_code
+                              },
                               context_instance=RequestContext(request))
 
 
@@ -342,7 +285,7 @@ def _get_data_senders(dbm, form, project):
     return data_senders
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender
 @is_not_expired
@@ -368,7 +311,9 @@ def broadcast_message(request, project_id):
                                          "project_links": make_project_links(project, questionnaire.form_code),
                                          'is_quota_reached': is_quota_reached(request, organization=organization),
                                          "form": form, "ong_country": organization.country,
-                                         "success": None},
+                                         "success": None,
+                                         'questionnaire_code': questionnaire.form_code
+                                        },
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         form = BroadcastMessageForm(associated_ds=number_associated_ds, number_of_ds=number_of_ds, data=request.POST)
@@ -443,23 +388,22 @@ def activate_project(request, project_id=None):
     return HttpResponseRedirect(reverse('project-overview', args=[project_id]))
 
 
-def _get_project_and_project_link(manager, project_id, reporter_id=None):
-    project = Project.load(manager.database, project_id)
-    questionnaire = FormModel.get(manager, project.qid)
-    project_links = make_project_links(project, questionnaire.form_code)
-    return project, project_links
+def get_project_link(project, form_code):
+    project_links = make_project_links(project, form_code)
+    return project_links
 
 
 @valid_web_user
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
-    project, project_links = _get_project_and_project_link(manager, project_id)
+    project = Project.load(manager.database, project_id)
+    questionnaire = FormModel.get(manager, project.qid)
+    project, project_links = get_project_link(project, questionnaire.form_code)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if project.is_deleted():
         return HttpResponseRedirect(dashboard_page)
     subject = get_entity_type_info(project.entity_type, manager=manager)
     in_trial_mode = _in_trial_mode(request)
-    form_model = get_form_model_by_entity_type(manager, [subject.get('entity')])
     return render_to_response('project/subjects/registered_subjects_list.html',
                               {'project': project,
                                'project_links': project_links,
@@ -469,6 +413,7 @@ def registered_subjects(request, project_id=None):
                                'project_id': project_id,
                                'entity_type': subject.get('entity'),
                                'subject_headers': header_fields(form_model),
+                               'questionnaire_code': questionnaire.form_code,
                                'form_code': subject.get('code')}, context_instance=RequestContext(request))
 
 
@@ -678,7 +623,10 @@ class SurveyWebQuestionnaireRequest():
         questionnaire_form = self.form(initial_data=initial_data)
         form_context = get_form_context(self.form_model.form_code, self.project, questionnaire_form,
                                         self.manager, self.hide_link_class, self.disable_link_class, is_update)
-        form_context.update({'is_quota_reached': is_quota_reached(self.request)})
+        form_context.update({
+                                'is_quota_reached': is_quota_reached(self.request),
+                                'questionnaire_code': self.form_model.form_code,
+                            })
         return render_to_response(self.template, form_context, context_instance=RequestContext(self.request))
 
 
@@ -741,7 +689,7 @@ class SurveyWebQuestionnaireRequest():
                                   context_instance=RequestContext(self.request))
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_project_exist
 @is_datasender_allowed
@@ -865,9 +813,11 @@ def _get_subject_form_model(manager, entity_type):
 
 
 @valid_web_user
-def edit_my_subject_questionnaire(request, project_id=None):
+def edit_my_subject_questionnaire(request, project_id):
     manager = get_database_manager(request.user)
-    project, project_links = _get_project_and_project_link(manager, project_id)
+    project = Project.load(manager.database, project_id)
+    questionnaire = FormModel.get(manager, project.qid)
+    project_links = get_project_link(project, questionnaire.form_code)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if project.is_deleted():
         return HttpResponseRedirect(dashboard_page)
@@ -898,14 +848,16 @@ def append_success_to_context(context, form):
     return context
 
 
-@login_required(login_url='/login')
+@login_required
 @session_not_expired
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
-def create_data_sender_and_web_user(request, project_id=None):
+def create_data_sender_and_web_user(request, project_id):
     manager = get_database_manager(request.user)
-    project, project_links = _get_project_and_project_link(manager, project_id)
+    project = Project.load(manager.database, project_id)
+    questionnaire = FormModel.get(manager, project.qid)
+    project_links = get_project_link(project, questionnaire.form_code)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if project.is_deleted():
         return HttpResponseRedirect(dashboard_page)
@@ -920,6 +872,7 @@ def create_data_sender_and_web_user(request, project_id=None):
             'is_quota_reached': is_quota_reached(request),
             'form': form,
             'in_trial_mode': in_trial_mode,
+            'questionnaire_code': questionnaire.form_code,
             'current_language': translation.get_language()
         }, context_instance=RequestContext(request))
 
