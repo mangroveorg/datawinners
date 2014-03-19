@@ -14,7 +14,7 @@ from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
 # from mangrove.form_model.form_model import get_form_model_by_entity_type
-from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
+from mangrove.form_model.form_model import NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
@@ -23,8 +23,8 @@ from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint, ShortCodeRegexConstraint
 from mangrove.transport.player.player import WebPlayer
 from mangrove.utils.types import  is_sequence, is_not_empty
-from mangrove.errors.MangroveException import NumberNotRegisteredException,\
-    DataObjectNotFound, DataObjectAlreadyExists
+from mangrove.errors.MangroveException import NumberNotRegisteredException, \
+    DataObjectAlreadyExists
 from mangrove.transport.repository.reporters import find_reporter_entity
 from datawinners.accountmanagement.models import Organization,\
     DataSenderOnTrialAccount, NGOUserProfile

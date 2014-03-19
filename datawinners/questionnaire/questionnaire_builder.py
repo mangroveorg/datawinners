@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, field_attributes
+from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField, UniqueIdField, field_attributes,ShortCodeField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, EntityFormModel
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint, ShortCodeRegexConstraint
 from mangrove.form_model.validators import UniqueIdExistsValidator
@@ -32,26 +32,19 @@ class QuestionnaireBuilder(object):
         return new_fields
 
     def update_unique_id_validator(self):
-        unique_id_fields = self.form_model.entity_question
-        if unique_id_fields:
-            self.form_model.add_validator(UniqueIdExistsValidator)
-        else:
-            self.form_model.remove_validator(UniqueIdExistsValidator)
-
-    def update_form_model_entity_type(self):
-        if isinstance(self.form_model, EntityFormModel):
-            entity_field = self.form_model.entity_question
-            self.form_model.entity_type = [entity_field.unique_id_type] if entity_field else []
+        if not isinstance(self.form_model,EntityFormModel):
+            if self.form_model.entity_question:
+                self.form_model.add_validator(UniqueIdExistsValidator)
+            else:
+                self.form_model.remove_validator(UniqueIdExistsValidator)
 
     def update_questionnaire_with_questions(self, question_set):
         origin_json_fields = [f._to_json() for f in self.form_model.fields]
         max_code = get_max_code_in_question_set(origin_json_fields or question_set)
         new_fields = self.generate_fields_by_question_set(max_code, question_set)
-
         self.form_model.create_snapshot()
         self.form_model.delete_all_fields()
         [self.form_model.add_field(each) for each in new_fields]
-        self.update_form_model_entity_type()
         self.update_unique_id_validator()
 
 
@@ -79,6 +72,8 @@ class QuestionBuilder(object):
             return self._create_location_question(post_dict, code)
         if post_dict["type"] == "unique_id":
             return self._create_unique_id_question(post_dict, code)
+        if post_dict["type"] == "short_code":
+            return self._create_short_code_field(post_dict, code)
 
     def create_entity_id_question_for_activity_report(self):
         entity_id_code = "eid"
@@ -91,7 +86,7 @@ class QuestionBuilder(object):
         name = post_dict.get("name")
         return name if name is not None else post_dict["title"]
 
-    def _create_text_question(self, post_dict, code):
+    def _add_text_length_constraint(self, post_dict):
         max_length_from_post = post_dict.get("max_length")
         min_length_from_post = post_dict.get("min_length")
         max_length = max_length_from_post if not is_empty(max_length_from_post) else None
@@ -99,6 +94,10 @@ class QuestionBuilder(object):
         constraints = []
         if not (max_length is None and min_length is None):
             constraints.append(TextLengthConstraint(min=min_length, max=max_length))
+        return constraints
+
+    def _create_text_question(self, post_dict, code):
+        constraints = self._add_text_length_constraint(post_dict)
         options = post_dict.get("options")
         if options:
             short_code_constraint = options.get("short_code")
@@ -146,7 +145,7 @@ class QuestionBuilder(object):
                                     instruction=post_dict.get("instruction"), constraints=(
                 self._create_constraints_for_mobile_number()), required=post_dict.get("required"))
 
-    def _create_constraints_for_mobile_number(self):
+    def _create_constraints_for_mobile_number(s_create_short_code_fieldelf):
         mobile_number_length = TextLengthConstraint(max=15)
         mobile_number_pattern = RegexConstraint(reg='^[0-9]+$')
         mobile_constraints = [mobile_number_length, mobile_number_pattern]
@@ -163,7 +162,12 @@ class QuestionBuilder(object):
         #return UniqueIdField(unique_id_type=post_dict["unique_id_type"],name=self._get_name(post_dict), code=code, label=post_dict["title"],
         #                     instruction=post_dict.get("instruction"))
 
-
+    def _create_short_code_field(self, post_dict, code):
+        constraints = self._add_text_length_constraint(post_dict)
+        constraints.append(ShortCodeRegexConstraint(post_dict.get("options").get("short_code")))
+        return ShortCodeField(name=self._get_name(post_dict), code=code,
+                             label=post_dict["title"],
+                             instruction=post_dict.get("instruction"),constraints=constraints)
 def get_max_code(fields):
     json_fields = [f._to_json() for f in fields]
     return get_max_code_in_question_set(json_fields)

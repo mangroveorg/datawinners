@@ -58,7 +58,6 @@ DW.question = function (question) {
 //        type:"text",
         language: 'en',
         choices: [],
-        entity_question_flag: false,
         length_limiter: "length_unlimited",
         length: {
             min: 1,
@@ -117,7 +116,7 @@ DW.question.prototype = {
 
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
-        this.is_entity_question = ko.observable(q.entity_question_flag);
+        this.is_entity_question = ko.observable(q.type == 'short_code');
 
         this.showDateFormats = ko.computed(function () {
             return this.type() == "date";
@@ -311,7 +310,7 @@ DW.question.prototype = {
 
         this.validate = function () {
             DW.ko.mandatoryValidator(this.title);
-            DW.ko.mandatoryValidator(this.answerType);
+            if(!this.is_entity_question()) DW.ko.mandatoryValidator(this.answerType);
 
             if (this.showLengthLimiter()) {
                 DW.ko.mandatoryValidator(this.max_length);
@@ -362,7 +361,7 @@ DW.question.prototype = {
        }, this);
 
        this.answerType.subscribe(function(){
-          DW.ko.mandatoryValidator(this.answerType);
+          if(!this.is_entity_question()) DW.ko.mandatoryValidator(this.answerType);
        }, this);
 
        this.range_min.subscribe(function(){

@@ -167,7 +167,7 @@ class EntityProjectSubmissionInstruction:
     @staticmethod
     def get_instruction(context):
         return _("Enter the unique ID for each %s.\nYou can find the %s List on the My Subjects page.") % (
-            context.entity_type, context.entity_type), \
+            context.entity_type[0], context.entity_type[0]), \
                (_("Example: %s")) % 'cli01'
 
 
