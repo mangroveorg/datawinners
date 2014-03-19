@@ -214,6 +214,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
             all_reporting_dates.append(submission_log_page.get_cell_value(i, rp_column))
         self.assertTrue(set(all_reporting_dates).issubset(dates))
 
+    @skipUntil("2014-03-30") #Removed subject type.
     @attr("functional_test")
     def test_date_filters(self):
         if not self.reporting_period_project_name:
