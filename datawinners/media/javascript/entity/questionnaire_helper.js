@@ -307,24 +307,17 @@ DW.question.prototype = {
         });
 
         this.validate = function () {
-            DW.ko.mandatoryValidator(this.title);
-            DW.ko.mandatoryValidator(this.answerType);
-
-            if (this.showLengthLimiter()) {
-                DW.ko.mandatoryValidator(this.max_length);
-                this.max_length.valid() && DW.ko.postiveNumberValidator(this.max_length);
-            }
-
-            else if (this.showAddRange()) {
-                this.range_min() && DW.ko.numericValidator(this.range_min);
-                this.range_max() && DW.ko.numericValidator(this.range_max);
-                this._validateMinRangeIsLessThanMaxRange();
-            }
+            //triggering change to cause subscribers to validate
+            this.title.valueHasMutated();
+            this.answerType.valueHasMutated();
+            this.max_length.valueHasMutated();
+            this.range_min.valueHasMutated();
+            this.range_max.valueHasMutated();
 
             var isChoiceAnswerValid = true;
             if (this.showAddChoice()) {
                 ko.utils.arrayForEach(this.choices(), function (choice) {
-                    _validateChoice(choice)
+                    choice.value.text.valueHasMutated();
                     isChoiceAnswerValid &= choice.valid();
                 });
             }
@@ -362,8 +355,12 @@ DW.question.prototype = {
        }, this);
 
        this.max_length.subscribe(function(){
+          if(!this.showLengthLimiter())
+            return;
+
           DW.ko.mandatoryValidator(this.max_length);
           this.max_length.valid() && DW.ko.postiveNumberValidator(this.max_length);
+
        }, this);
 
        this.answerType.subscribe(function(){
@@ -371,15 +368,23 @@ DW.question.prototype = {
        }, this);
 
        this.range_min.subscribe(function(){
+          if (!this.showAddRange())
+            return;
+
           DW.ko.numericValidator(this.range_min);
           this._validateMinRangeIsLessThanMaxRange();
+
        }, this);
 
        this.range_max.subscribe(function(){
+
+          if (!this.showAddRange())
+            return;
+
           DW.ko.numericValidator(this.range_max);
           this._validateMinRangeIsLessThanMaxRange();
-       }, this);
 
+       }, this);
 
     }
 };
