@@ -1,144 +1,148 @@
-var questionnaireViewModel =
-{
-    questions: ko.observableArray([]),
-    isEditMode: false,
-    questionToBeDeleted: null,
-    hasExistingData: false,
+function QuestionnaireViewModel(){
+    var self = this;
+    self.questions =  ko.observableArray([]);
+    self.isEditMode = false;
+    self.questionToBeDeleted = null;
+    self.hasExistingData = false;
 
-    hasAddedNewQuestions: false,
-    hasDeletedOldQuestion: false,
-    availableLanguages: [
+    self.hasAddedNewQuestions =  false;
+    self.hasDeletedOldQuestion = false;
+    self.availableLanguages = [
         {name: 'English', code: 'en'},
         {name: 'French', code: 'fr'},
         {name: 'Malagasy', code: 'mg'}
-    ],
-    language: ko.observable(),
-    projectName: DW.ko.createValidatableObservable(),
-    questionnaireCode: DW.ko.createValidatableObservable(),
+    ];
 
-    showQuestionnaireForm: ko.observable(),
+    self.language = ko.observable();
+    self.projectName = DW.ko.createValidatableObservable();
+    self.questionnaireCode = DW.ko.createValidatableObservable();
 
-    addQuestion: function () {
+    self.showQuestionnaireForm = ko.observable();
+
+    self.addQuestion = function () {
         var question = new DW.question();
         question.newly_added_question(true);
-        questionnaireViewModel.questions.push(question);
-        questionnaireViewModel.selectedQuestion(question);
+        self.questions.push(question);
+        self.selectedQuestion(question);
         DW.init_question_constraints();
         DW.charCount();
-        questionnaireViewModel.enableScrollToView(true);
-        questionnaireViewModel.hasAddedNewQuestions = true;
-    },
+        self.enableScrollToView(true);
+        self.hasAddedNewQuestions = true;
+    };
 
-    loadQuestion: function (question) {
-        questionnaireViewModel.questions.push(question);
-    },
+    self.loadQuestion = function (question) {
+        self.questions.push(question);
+    };
 
-    removeMarkedQuestion:function() {
-        questionnaireViewModel.removeQuestion(questionnaireViewModel.questionToBeDeleted);
-    },
+    self.removeMarkedQuestion = function() {
+        self.removeQuestion(self.questionToBeDeleted);
+    };
 
-    removeQuestion: function (question) {
+    self.removeQuestion = function(question) {
         if (!question.newly_added_question()) {
-            questionnaireViewModel.hasDeletedOldQuestion = true;
+            self.hasDeletedOldQuestion = true;
             DW.questionnaire_was_changed = true;
         }
-        questionnaireViewModel.questions.remove(question);
-        if (question == questionnaireViewModel.selectedQuestion()) {
-          questionnaireViewModel.selectedQuestion(null);
+        self.questions.remove(question);
+        if (question == self.selectedQuestion()) {
+          self.selectedQuestion(null);
         }
-        questionnaireViewModel.hasAddedNewQuestions = true;
-    },
+        self.hasAddedNewQuestions = true;
+    };
 
-    validateAndRemoveQuestion: function(question){
-        if (questionnaireViewModel.isEditMode && questionnaireViewModel.hasExistingData && !question.newly_added_question()) {
-            questionnaireViewModel.questionToBeDeleted = question;
+    self.validateAndRemoveQuestion = function(question){
+        if (self.isEditMode && self.hasExistingData && !question.newly_added_question()) {
+            self.questionToBeDeleted = question;
             DW.has_submission_delete_warning.show_warning();
         }
         else
-            questionnaireViewModel.removeQuestion(question);
-    },
+            self.removeQuestion(question);
+    };
 
     //TODO: Verify usage
-    removeIfQuestionIsSelectedQuestion: function (question) {
-        if (questionnaireViewModel.selectedQuestion() == question) {
-            questionnaireViewModel.removeQuestion(question);
+    self.removeIfQuestionIsSelectedQuestion = function(question) {
+        if (self.selectedQuestion() == question) {
+            self.removeQuestion(question);
         }
     },
 
-    selectedQuestion: ko.observable(),
+    self.selectedQuestion= ko.observable();
 
-    changeSelectedQuestion: function (question) {
-        if(!this.validateSelectedQuestion())
+    self.changeSelectedQuestion= function (question) {
+        if(!self.validateSelectedQuestion())
             return;
-        questionnaireViewModel.selectedQuestion(question);
-        var questionType = questionnaireViewModel.selectedQuestion().isAChoiceTypeQuestion();
-        if (questionType == 'none') questionType = questionnaireViewModel.selectedQuestion().type();
-        questionnaireViewModel.selectedQuestion().answerType(questionType);
+
+        self.selectedQuestion(question);
+        var questionType = self.selectedQuestion().isAChoiceTypeQuestion();
+        if (questionType == 'none') questionType = self.selectedQuestion().type();
+        self.selectedQuestion().answerType(questionType);
+
         $(this).addClass("question_selected");
         DW.close_the_tip_on_period_question();
-    },
-    set_all_questions_as_old_questions: function () {
-        for (var question_index in questionnaireViewModel.questions()) {
-            questionnaireViewModel.questions()[question_index].newly_added_question(false)
+    };
+
+    self.set_all_questions_as_old_questions= function () {
+        for (var question_index in self.questions()) {
+            self.questions()[question_index].newly_added_question(false)
         }
-    },
-    has_newly_added_question: function () {
-        return _.any($(questionnaireViewModel.questions()), function (v) {
+    };
+    self.has_newly_added_question= function () {
+        return _.any($(self.questions()), function (v) {
             return v.newly_added_question();
         })
-    },
+    };
 
     //TODO:currently unused. re-look on introducing reporting period
-    isTypeEnabled: function () {
-        return !questionnaireViewModel.selectedQuestion().event_time_field_flag();
-    },
-    moveQuestionUp: function (question) {
-        var currentIndex = questionnaireViewModel.questions().indexOf(question);
-        var questions = questionnaireViewModel.questions();
+    self.isTypeEnabled= function () {
+        return !self.selectedQuestion().event_time_field_flag();
+    };
+    self.moveQuestionUp= function (question) {
+        var currentIndex = self.questions().indexOf(question);
+        var questions = self.questions();
         if (currentIndex >= 1)
-            questionnaireViewModel.questions.splice(currentIndex - 1, 2, questions[currentIndex], questions[currentIndex - 1]);
-    },
-    moveQuestionDown: function (question) {
-        var currentIndex = questionnaireViewModel.questions().indexOf(question);
-        var questions = questionnaireViewModel.questions();
+            self.questions.splice(currentIndex - 1, 2, questions[currentIndex], questions[currentIndex - 1]);
+    };
+    self.moveQuestionDown= function (question) {
+        var currentIndex = self.questions().indexOf(question);
+        var questions = self.questions();
         if (currentIndex < questions.length - 1)
-            questionnaireViewModel.questions.splice(currentIndex, 2, questions[currentIndex + 1], questions[currentIndex]);
-    },
+            self.questions.splice(currentIndex, 2, questions[currentIndex + 1], questions[currentIndex]);
+    };
 
-    enableQuestionnaireTitleFocus: ko.observable(false),
-    questionHasErrors: ko.observable(false).extend({ notify: 'always' }),
+    self.enableQuestionnaireTitleFocus= ko.observable(false);
+    self.questionHasErrors= ko.observable(false).extend({ notify: 'always' });
 
-    errorInResponse: ko.observable(false),
+    self.errorInResponse= ko.observable(false);
 
-    responseErrorMsg: ko.observable(),
+    self.responseErrorMsg= ko.observable();
 
-    enableScrollToView: ko.observable(false).extend({ notify: "always"}),
+    self.enableScrollToView= ko.observable(false).extend({ notify: "always"});
 
-    enableQuestionTitleFocus: ko.observable(false),
+    self.enableQuestionTitleFocus= ko.observable(false);
 
-    clearQuestionnaire: function(){
-        this.projectName(null);
-        this.projectName.clearError();
-        this.questions([]);
-        this.errorInResponse(false);
-        this.selectedQuestion(null);
-    },
+    self.clearQuestionnaire= function(){
+        self.projectName(null);
+        self.projectName.clearError();
+        self.questions([]);
+        self.errorInResponse(false);
+        self.selectedQuestion(null);
+    };
 
-    validateSelectedQuestion: function(){
-        if(!this.selectedQuestion())
+    self.validateSelectedQuestion= function(){
+        if(!self.selectedQuestion())
         {
-            this.questionHasErrors(false);
+            self.questionHasErrors(false);
             return true;
         }
 
-        var isValid = this.selectedQuestion().validate() && this._validateSelectedQuestionHasUniqueTitle();
-        this.questionHasErrors(!isValid);
+        var isValid = self.selectedQuestion().validate() && _validateSelectedQuestionHasUniqueTitle();
+        self.questionHasErrors(!isValid);
         return isValid;
-    },
+    };
 
-    _validateSelectedQuestionHasUniqueTitle: function(){
-        var selectedQuestion = this.selectedQuestion();
-        var matchingQuestionsWithSameTitle = ko.utils.arrayFilter(this.questions(), function(question){
+    _validateSelectedQuestionHasUniqueTitle= function(){
+        var selectedQuestion = self.selectedQuestion();
+        var matchingQuestionsWithSameTitle = ko.utils.arrayFilter(self.questions(), function(question){
             return selectedQuestion.title().toLowerCase() == question.title().toLowerCase();
         });
 
@@ -149,70 +153,70 @@ var questionnaireViewModel =
             selectedQuestion.title.clearError();
 
         return isUnique;
-    },
+    };
 
-    _validateQuestionnaireCode: function (questionnaireCode) {
+    _validateQuestionnaireCode= function (questionnaireCode) {
         DW.ko.mandatoryValidator(questionnaireCode);
         questionnaireCode.valid() && DW.ko.alphaNumericValidator(questionnaireCode, true);
         if (questionnaireCode.valid()) {
-            if (DW.isWhiteSpacesPresent(questionnaireCode()))
+            if (_isWhiteSpacesPresent(questionnaireCode()))
                 questionnaireCode.setError(gettext("Space is not allowed in questionnaire code"));
             else
                 questionnaireCode.clearError();
         }
-    },
+    };
 
-    validateQuestionnaireDetails: function(){
-        DW.ko.mandatoryValidator(this.projectName);
-        questionnaireViewModel._validateQuestionnaireCode(questionnaireViewModel.questionnaireCode);
+    self.validateQuestionnaireDetails= function(){
+        DW.ko.mandatoryValidator(self.projectName);
+        _validateQuestionnaireCode(self.questionnaireCode);
 
-        var isValid = questionnaireViewModel.projectName.valid() && questionnaireViewModel.questionnaireCode.valid();
-        this.enableQuestionnaireTitleFocus(!isValid);
+        var isValid = self.projectName.valid() && self.questionnaireCode.valid();
+        self.enableQuestionnaireTitleFocus(!isValid);
+        return isValid;
+    };
 
-        return isValid ;
-    },
-
-    validateForSubmission: function(){
-        return (questionnaireViewModel.questions().length > 0 && questionnaireViewModel.validateSelectedQuestion())
-               & questionnaireViewModel.validateQuestionnaireDetails();
+    self.validateForSubmission= function(){
+        return (self.questions().length > 0 && self.validateSelectedQuestion())
+               & self.validateQuestionnaireDetails();
     }
 
-};
-
-questionnaireViewModel.questionHasErrors.subscribe(function(questionHasErrors){
+    self.questionHasErrors.subscribe(function(questionHasErrors){
     questionHasErrors && this.enableQuestionTitleFocus(true);
-}, questionnaireViewModel);
+    }, self);
 
-questionnaireViewModel.enableScrollToView.subscribe(function(enableScrollToView){
-    enableScrollToView && this.enableQuestionTitleFocus(true);
-}, questionnaireViewModel);
+    self.enableScrollToView.subscribe(function(enableScrollToView){
+        enableScrollToView && this.enableQuestionTitleFocus(true);
+    }, self);
 
-questionnaireViewModel.generateSmsPreview = ko.computed(function(){
-    var smsPreviewString = questionnaireViewModel.questionnaireCode();
-    _.each(this.questions(), function(question, index){
-        smsPreviewString += " " + "answer" + (index + 1);
-    });
-    return smsPreviewString;
-}, questionnaireViewModel);
-
-
-questionnaireViewModel.projectName.subscribe(function(){
-   DW.ko.mandatoryValidator(this.projectName);
-}, questionnaireViewModel);
-
-questionnaireViewModel.questionnaireCode.subscribe(function(){
-   this._validateQuestionnaireCode(this.questionnaireCode);
-}, questionnaireViewModel);
+    self.generateSmsPreview = ko.computed(function(){
+        var smsPreviewString = this.questionnaireCode();
+        _.each(this.questions(), function(question, index){
+            smsPreviewString += " " + "answer" + (index + 1);
+        });
+        return smsPreviewString;
+    }, self);
 
 
-DW.isWhiteSpacesPresent = function (val) {
-    var trimmed_value = val.trim();
-    var list = trimmed_value.split(" ");
-    return list.length > 1;
+    self.projectName.subscribe(function(){
+       DW.ko.mandatoryValidator(this.projectName);
+    }, self);
+
+    self.questionnaireCode.subscribe(function(){
+       _validateQuestionnaireCode(this.questionnaireCode);
+    }, self);
+
+
+    _isWhiteSpacesPresent = function (val) {
+        var trimmed_value = val.trim();
+        var list = trimmed_value.split(" ");
+        return list.length > 1;
+    };
+
+    self.getQuestionCodes = function(){
+        return ko.utils.arrayMap(self.questions(), function (question) {
+            return question.code();
+        });
+    };
+
 };
 
-questionnaireViewModel.getQuestionCodes = function(){
-    return ko.utils.arrayMap(questionnaireViewModel.questions(), function (question) {
-        return question.code();
-    });
-}

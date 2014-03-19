@@ -28,6 +28,7 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
+    {#    knows about vm #}
     <script type="text/javascript" src="/media/javascript/entity/subject_questionnaire_view_model.js"></script>
     <script type="text/javascript">
         var existing_questions = $.parseJSON({{existing_questions|safe}});
@@ -35,10 +36,13 @@
         var subject_type = '{{ entity_type }}';
     </script>
     <script type="text/javascript" src="/media/javascript/entity/create_questionnaire.js"></script>
+    {#    knows about vm #}
     <script type="text/javascript" src="/media/javascript/entity/create_subject_questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
+{#    knows about vm #}
     <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/warning_dialog.js"></script>
+    {#    knows about vm #}
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>

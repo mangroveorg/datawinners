@@ -50,12 +50,10 @@ DW.date_template = {
 
 };
 DW.question = function (question) {
-//    var question_name = DW.next_question_name_generator();
     var defaults = {
         name: '',
         code: "code",
         required: true,
-//        type:"text",
         language: 'en',
         choices: [],
         entity_question_flag: false,
@@ -87,7 +85,6 @@ DW.initChoices = function (choices) {
         var display_choice = {};
         display_choice['text'] = ko.observable(choice.text);
         display_choice['val'] = ko.observable(choice.val);
-//        display_choice['id'] = choice.id;
         final_choices.push(DW.ko.createValidatableObservableObject({value: display_choice}));
     });
     return final_choices;

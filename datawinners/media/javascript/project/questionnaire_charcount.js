@@ -48,6 +48,5 @@ DW.charCount = function() {
         sms_number_text = "(" + sms_number + " sms required)";
     }
     $('#char-count').html((current_len) + ' / ' + max_len + ' ' + gettext('characters used') + sms_number_text);
-//    DW.smsPreview();
 
 };

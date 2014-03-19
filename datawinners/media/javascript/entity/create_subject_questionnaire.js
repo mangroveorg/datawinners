@@ -61,6 +61,7 @@ DW.init_has_new_submission_delete_warning_for_entity = function(){
 }
 
 function _initializeViewModel() {
+    window.questionnaireViewModel = new SubjectQuestionnaireViewModel();
     $(existing_questions).each(function(index, question){
             questionnaireViewModel.loadQuestion(new DW.question(question));
     });

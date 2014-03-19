@@ -4,6 +4,7 @@ function _isQuestionnaireChanged() {
            DW.isQuestionsReOrdered(question_list) || existing_questionnaire_code != questionnaireViewModel.questionnaireCode();
 }
 $(document).ready(function () {
+    window.questionnaireViewModel = new QuestionnaireViewModel();
     DW.init_inform_datasender_about_changes();
     DW.init_empty_questionnaire_warning();
     var options = {
@@ -24,6 +25,7 @@ $(document).ready(function () {
     questionnaireViewModel.hasExistingData = project_has_submissions === 'True';
     questionnaireViewModel.isEditMode = true;
     ko.setTemplateEngine(new ko.nativeTemplateEngine());
+
     ko.applyBindings(questionnaireViewModel);
     DW.charCount();
     DW.questionnaire_was_changed = false;
