@@ -213,8 +213,7 @@ def _translate_messages(error_dict, fields):
 def errors_to_list(errors, fields):
     error_dict = dict()
     for key, value in errors.items():
-        field_index = int(key[1:]) -1
-        error_dict.update({fields[field_index].code: [value] if not isinstance(value, list) else value})
+        error_dict.update({key: [value] if not isinstance(value, list) else value})
     return _translate_messages(error_dict, fields)
 
 
