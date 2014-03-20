@@ -2,7 +2,7 @@ function QuestionnaireViewModel(){
     var self = this;
     self.questions =  ko.observableArray([]);
     self.isEditMode = false;
-    self.questionToBeDeleted = {value: null};  //to handle prototype usage
+    var questionToBeDeleted = null;
     self.hasExistingData = false;
 
     self.hasAddedNewQuestions =  false;
@@ -18,6 +18,10 @@ function QuestionnaireViewModel(){
     self.questionnaireCode = DW.ko.createValidatableObservable();
 
     self.showQuestionnaireForm = ko.observable();
+
+    self.setQuestionToBeDeleted = function(question){
+        questionToBeDeleted = question;
+    };
 
     self.addQuestion = function () {
         var question = new DW.question();
@@ -35,7 +39,7 @@ function QuestionnaireViewModel(){
     };
 
     self.removeMarkedQuestion = function() {
-        self.removeQuestion(self.questionToBeDeleted.value);
+        self.removeQuestion(questionToBeDeleted);
     };
 
     self.removeQuestion = function(question) {
@@ -52,7 +56,7 @@ function QuestionnaireViewModel(){
 
     self.validateAndRemoveQuestion = function(question){
         if (self.isEditMode && self.hasExistingData && !question.newly_added_question()) {
-            self.questionToBeDeleted.value = question;
+            questionToBeDeleted = question;
             DW.has_submission_delete_warning.show_warning();
         }
         else
