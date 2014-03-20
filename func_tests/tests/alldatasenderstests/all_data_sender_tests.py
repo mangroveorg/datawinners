@@ -4,8 +4,9 @@ import time
 from nose.plugins.attrib import attr
 
 from framework.base_test import HeadlessRunnerTest
-from framework.utils.common_utils import by_css, by_id
+from framework.utils.common_utils import by_id
 from framework.utils.data_fetcher import fetch_
+from pages.adddatasenderspage.add_data_senders_locator import FLASH_MESSAGE_LABEL
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alluserspage.all_users_page import AllUsersPage
 from pages.loginpage.login_page import login
@@ -135,7 +136,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         all_users_page = AllUsersPage(cls.driver)
         add_user_page = all_users_page.navigate_to_add_user()
         add_user_page.add_user_with(user_data)
-        cls.driver.wait_for_element(UI_TEST_TIMEOUT*2, by_css("div.success-message-box"), True)
+        cls.driver.wait_for_element(UI_TEST_TIMEOUT*2, FLASH_MESSAGE_LABEL, True)
         user_mobile_number = fetch_(MOBILE_PHONE, user_data)
         return user_mobile_number
 
