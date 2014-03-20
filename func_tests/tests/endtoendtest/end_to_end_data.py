@@ -46,7 +46,6 @@ DESCRIPTION = "description"
 
 PROJECT_NAME = "project_name"
 PROJECT_BACKGROUND = "project_background"
-PROJECT_TYPE = "project_type"
 REPORT_TYPE = "report_type"
 SUBJECT = "subject"
 DEVICES = "devices"
@@ -164,7 +163,6 @@ VALID_DATA_FOR_EDIT = {ENTITY_TYPE: "waterpoint",
 
 VALID_DATA_FOR_PROJECT = {PROJECT_NAME: "Waterpoint morondava", GEN_RANDOM: True,
                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                          PROJECT_TYPE: "survey",
                           SUBJECT: "waterpoint",
                           REPORT_TYPE: 'other subject',
                           DEVICES: "sms",

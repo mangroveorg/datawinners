@@ -29,13 +29,6 @@ class ReviewPage(Page):
         """
         return self.driver.find(PROJECT_NAME_LABEL).text
 
-    def get_project_type(self):
-        """
-        Function to fetch the project type e.g. Survey or Public info
-
-        Return type
-        """
-        return self.driver.find(PROJECT_TYPE_LABEL).text
 
     def get_project_description(self):
         """
@@ -89,18 +82,6 @@ class ReviewPage(Page):
             questions.append(unicode(string=(questions_label.text)))
         return questions
 
-    def get_project_profile_details(self):
-        """
-        Function to fetch the project details e.g. Name, Type, description etc
-
-        Return project details dict
-        """
-        project_details = dict()
-        project_details[PROJECT_NAME] = self.get_project_name()
-        project_details[PROJECT_BACKGROUND] = self.get_project_description()
-        project_details[PROJECT_TYPE] = self.get_project_type()
-        project_details[DEVICES] = self.get_devices()
-        return project_details
 
     def get_subject_details(self):
         """

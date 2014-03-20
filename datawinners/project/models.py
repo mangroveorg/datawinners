@@ -160,7 +160,6 @@ class ProjectState(object):
 class Project(DocumentBase):
     name = TextField()
     goals = TextField()
-    project_type = TextField()
     entity_type = TextField()
     devices = ListField(TextField())
     qid = TextField()
@@ -169,14 +168,13 @@ class Project(DocumentBase):
     data_senders = ListField(TextField())
     language = TextField(default='en')
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
-                 sender_group=None, language='en'):
+    def __init__(self, id=None, name=None, goals=None, entity_type=None, devices=None, sender_group=None,
+                 language='en'):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
         self.name = name.lower() if name is not None else None
         self.goals = goals
-        self.project_type = project_type
         self.entity_type = entity_type
         self.devices = devices
         self.sender_group = sender_group

@@ -64,7 +64,7 @@ def do_login(driver, email, password):
 
 class TestApplicationEndToEnd(unittest.TestCase):
     def setUp(self):
-        self.driver = setup_driver()
+        self.driver = setup_driver(browser="firefox")
 
     def tearDown(self):
         import sys
@@ -321,7 +321,7 @@ class TestApplicationEndToEnd(unittest.TestCase):
         self.verify_admin_present_in_my_datasenders_page()
         self.verify_submission_via_sms(organization_sms_tel_number)
         self.verify_submission_via_web(ds_email)
-        self.admin_edit_delete_submissions()
+        #self.admin_edit_delete_submissions()
         time.sleep(2)
         self.delete_project()
 

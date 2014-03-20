@@ -27,11 +27,9 @@ class TestProjectModel(unittest.TestCase):
         cls.manager = get_db_manager('http://localhost:5984/', cls.db_name)
         initializer._create_views(cls.manager)
         create_views(cls.manager)
-        cls.project1 = Project(name=project1_name, goals="Testing", project_type="Survey", entity_type="Clinic",
-                               devices=['web'])
+        cls.project1 = Project(name=project1_name, goals="Testing", entity_type="Clinic", devices=['web'])
         cls.project1_id = cls.project1.save(cls.manager)
-        cls.project2 = Project(name=project2_name, goals="Testing", project_type="Survey", entity_type="Clinic",
-                               devices=['web'])
+        cls.project2 = Project(name=project2_name, goals="Testing", entity_type="Clinic", devices=['web'])
         cls.project2_id = cls.project2.save(cls.manager)
 
         cls._create_form_model_for_project(cls.project1)
@@ -56,8 +54,7 @@ class TestProjectModel(unittest.TestCase):
     def test_get_associated_data_senders(self):
         entity = Entity(self.manager,entity_type=["reporter"], short_code="rep1")
         entity_id = entity.save()
-        project = Project(name="TestDS", goals="Testing", project_type="Survey",
-                          devices=['web'])
+        project = Project(name="TestDS", goals="Testing", devices=['web'])
         project.data_senders = ["rep1"]
         project.save(self.manager)
 
@@ -87,16 +84,14 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(self.project1.devices, ['web', 'sms'])
 
     def test_project_name_should_be_unique(self):
-        project = Project(name=project2_name, goals="Testing", project_type="Survey", entity_type="Clinic",
-                          devices=['web'])
+        project = Project(name=project2_name, goals="Testing", entity_type="Clinic", devices=['web'])
         with self.assertRaises(Exception) as cm:
             project.save(self.manager)
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Questionnaire with Name = '%s' already exists."%project2_name.lower())
 
     def test_project_name_should_be_case_insensitively_unique(self):
-        project = Project(name=project2_name.upper(), goals="Testing", project_type="Survey", entity_type="Clinic",
-                          devices=['web'])
+        project = Project(name=project2_name.upper(), goals="Testing", entity_type="Clinic", devices=['web'])
         with self.assertRaises(Exception) as cm:
             project.save(self.manager)
         the_exception = cm.exception

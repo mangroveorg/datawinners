@@ -32,7 +32,6 @@ VALID_DATA = {SUBJECT_TYPE_NAME: SUBJECT_TYPE,
 
 PROJECT_NAME = "project_name"
 PROJECT_BACKGROUND = "project_background"
-PROJECT_TYPE = "project_type"
 REPORT_TYPE = "report_type"
 SUBJECT = "subject"
 DEVICES = "devices"
@@ -46,7 +45,6 @@ OTHER_SUBJECT = "other subject"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
                       PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                      PROJECT_TYPE: SURVEY,
                       SUBJECT: "",
                       REPORT_TYPE: OTHER_SUBJECT,
                       DEVICES: "sms",

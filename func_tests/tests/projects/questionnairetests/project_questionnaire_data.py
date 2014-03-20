@@ -36,11 +36,9 @@ RECEIVER = "to"
 SMS = "sms"
 SUCCESS_MESSAGE = "success_message"
 PROJECT_BACKGROUND = "project_background"
-PROJECT_TYPE = "project_type"
 REPORT_TYPE = "report_type"
 SUBJECT = "subject"
 DEVICES = "devices"
-SURVEY = "survey"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 
@@ -48,7 +46,6 @@ CLINIC_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project project ", GEN_RANDOM
 
 WATERPOINT_PROJECT_DATA = {PROJECT_NAME: "new project ", GEN_RANDOM: True,
                            PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                           PROJECT_TYPE: "survey",
                            SUBJECT: "waterpoint",
                            REPORT_TYPE: "other subject",
                            DEVICES: "sms",
@@ -56,7 +53,6 @@ WATERPOINT_PROJECT_DATA = {PROJECT_NAME: "new project ", GEN_RANDOM: True,
 
 VALID_SUMMARY_REPORT_DATA = {PROJECT_NAME: "Proj Reporter Activities ", GEN_RANDOM: True,
                              PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                             PROJECT_TYPE: SURVEY,
                              SUBJECT: "",
                              REPORT_TYPE: "data sender work",
                              DEVICES: "sms",
@@ -66,7 +62,6 @@ VALID_SUMMARY_REPORT_DATA = {PROJECT_NAME: "Proj Reporter Activities ", GEN_RAND
 
 LONG_DESCRIPTION_DATA = {PROJECT_NAME: "Proj Reporter Activities ", GEN_RANDOM: True,
                          PROJECT_BACKGROUND: u"Exemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignantsExemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignants12345",
-                         PROJECT_TYPE: "survey",
                          SUBJECT: "",
                          REPORT_TYPE: "data sender work",
                          DEVICES: "sms",

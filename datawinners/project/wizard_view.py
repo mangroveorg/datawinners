@@ -16,9 +16,7 @@ from datawinners.project import helper
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
 from mangrove.transport.repository.survey_responses import survey_responses_by_form_code
-from mangrove.utils.types import is_string
-from mangrove.form_model.form_model import FormModel, REPORTER
-from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
+from mangrove.form_model.form_model import FormModel
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.project.forms import ReminderForm
@@ -103,8 +101,8 @@ def create_project(request):
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
-        project = Project(name=project_info.get('name'), project_type='survey',
-                          devices=[u'sms', u'web', u'smartPhone'], language=project_info.get('language'))
+        project = Project(name=project_info.get('name'), devices=[u'sms', u'web', u'smartPhone'],
+                          language=project_info.get('language'))
 
         if ngo_admin.reporter_id is not None:
             project.data_senders.append(ngo_admin.reporter_id)

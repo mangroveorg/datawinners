@@ -118,7 +118,6 @@ CLINIC_WITH_INVALID_UID = {ENTITY_TYPE: "clinic",
 
 PROJECT_NAME = "project_name"
 PROJECT_BACKGROUND = "project_background"
-PROJECT_TYPE = "project_type"
 REPORT_TYPE = "report_type"
 SUBJECT = "subject"
 DEVICES = "devices"
@@ -133,7 +132,6 @@ WARNING_MESSAGE = "warning_message"
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "Subject reg Activities ", GEN_RANDOM: True,
                       PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                      PROJECT_TYPE: SURVEY,
                       SUBJECT: "clinic",
                       REPORT_TYPE: "other subject",
                       DEVICES: "sms",

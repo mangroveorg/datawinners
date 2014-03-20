@@ -63,7 +63,6 @@ def get_project_info(manager, raw_project):
                         name=raw_project['value']['name'],
                         qid=questionnaire_code,
                         created=raw_project['value']['created'],
-                        type=raw_project['value']['project_type'],
                         link=(reverse('project-overview', args=[project_id])),
                         log=log, analysis=analysis, disabled=disabled,
                         web_submission_link=web_submission_link,
