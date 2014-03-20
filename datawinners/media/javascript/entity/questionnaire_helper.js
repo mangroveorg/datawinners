@@ -576,7 +576,8 @@ $(document).ready(function () {
                     title: gettext('Warning: Your Collected Data Will be Lost'),
                     continue_handler: function(){
                         questionnaireViewModel.removeMarkedQuestion();
-                    }
+                    },
+                    height: 170
                  };
         return new DW.warning_dialog(kwargs);
     }());
