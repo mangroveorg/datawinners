@@ -29,8 +29,10 @@
     </div>
     <div class="right_aligned_button create_project">
         <a href="{{ cancel_link }}" class="cancel_project">{% trans "Cancel" %} </a>
-        <input type="button" class="button_wizard_next_small" id="continue_project" value="{% trans "Continue" %}"
-               data-bind="visible: isContinueVisible, click: setQuestionnaireCreationType"/>
+        <span data-bind="visible: isContinueVisible">
+            <input type="button" class="button_wizard_next_small" id="continue_project" value="{% trans "Continue" %}"
+               data-bind="click: setQuestionnaireCreationType"/>
+        </span>
     </div>
 
 </div>
