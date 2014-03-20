@@ -137,7 +137,6 @@ def index(request):
         activate_link = reverse('activate_project', args=[project_id])
         delete_link = reverse('delete_project', args=[project_id])
         project = dict(delete_link=delete_link, name=row['value']['name'], created=row['value']['created'],
-                       type=row['value']['project_type'],
                        link=link, activate_link=activate_link)
         project_list.append(project)
     project_list.sort(key=itemgetter('name'))

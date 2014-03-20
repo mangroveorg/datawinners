@@ -34,7 +34,6 @@ MULTIPLE_ANSWERS = "multiple_answers"
 CHARACTER_REMAINING = "character_remaining"
 
 PROJECT_BACKGROUND = "project_background"
-PROJECT_TYPE = "project_type"
 REPORT_TYPE = "report_type"
 SUBJECT = "subject"
 DEVICES = "devices"
@@ -74,7 +73,6 @@ QUESTIONNAIRE_DATA_SIMPLE = {QUESTIONNAIRE_CODE: "SIM", GEN_RANDOM: True,
 
 NEW_PROJECT_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
                     PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                    PROJECT_TYPE: 'survey',
                     SUBJECT: "clinic",
                     REPORT_TYPE: "other subject",
                     DEVICES: ["sms", "web"],

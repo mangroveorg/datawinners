@@ -15,7 +15,6 @@ TITLE = "title"
 MESSAGE = "message"
 PROJECT_NAME = "project_name"
 PROJECT_BACKGROUND = "project_background"
-PROJECT_TYPE = "project_type"
 REPORT_TYPE = "report_type"
 SUBJECT = "subject"
 DEVICES = "devices"
@@ -35,7 +34,6 @@ VALID_DATA_FOR_ADDING_DATASENDER = {NAME: "Mickey Duck",
 
 VALID_DATA = {PROJECT_NAME: u"clinic test project",
               PROJECT_BACKGROUND: u"This project is for automation",
-              #PROJECT_TYPE: "survey",
               SUBJECT: u"clinic",
               REPORT_TYPE: OTHER_SUBJECT,
               #DEVICES: "sms"

@@ -19,7 +19,6 @@ LOCATOR = "locator"
 BY = "by"
 
 PROJECT_NAME_LABEL = by_css("div[class~='ui-accordion-content-active'] p#project_name")
-PROJECT_TYPE_LABEL = by_css("div[class~='ui-accordion-content-active'] p#project_type")
 PROJECT_DESCRIPTION_LABEL = by_css("div[class~='ui-accordion-content-active'] p#project_description")
 DEVICES_LABEL = by_css("div[class~='ui-accordion-content-active'] p#devices")
 EDIT_PROJECT_LINK = by_css("div[class~='ui-accordion-content-active']>a#project_edit_link")

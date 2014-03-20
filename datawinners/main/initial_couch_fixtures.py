@@ -182,8 +182,8 @@ def create_project1(entity_type, manager, questions, weekly_reminder_and_deadlin
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
-    project1 = Project(name="Clinic Test Project1", goals="This project is for automation", project_type="survey",
-                       entity_type=entity_type[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
+    project1 = Project(name="Clinic Test Project1", goals="This project is for automation", entity_type=entity_type[-1],
+                       devices=["sms", "web", "smartPhone"], sender_group="close")
     project1.qid = qid
     project1.reminder_and_deadline = weekly_reminder_and_deadline
     try:
@@ -218,7 +218,7 @@ def create_project2(CLINIC_ENTITY_TYPE, manager, questions):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli002").delete()
         qid2 = form_model2.save()
-    project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
+    project2 = Project(name="Clinic2 Test Project", goals="This project is for automation",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project2.qid = qid2
     try:
@@ -237,7 +237,7 @@ def create_project3(CLINIC_ENTITY_TYPE, manager, questions):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli003").delete()
         qid3 = form_model3.save()
-    project3 = Project(name="Clinic3 Test Project", goals="This project is for automation", project_type="survey",
+    project3 = Project(name="Clinic3 Test Project", goals="This project is for automation",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project3.qid = qid3
     try:
@@ -256,7 +256,7 @@ def create_project4(CLINIC_ENTITY_TYPE, manager, questions):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli004").delete()
         qid4 = form_model4.save()
-    project4 = Project(name="Clinic4 Test Project", goals="This project is for automation", project_type="survey",
+    project4 = Project(name="Clinic4 Test Project", goals="This project is for automation",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project4.qid = qid4
     try:
@@ -275,7 +275,7 @@ def create_project5(CLINIC_ENTITY_TYPE, manager, questions):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli005").delete()
         qid5 = form_model5.save()
-    project5 = Project(name="Clinic5 Test Project", goals="This project is for automation", project_type="survey",
+    project5 = Project(name="Clinic5 Test Project", goals="This project is for automation",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project5.qid = qid5
     try:
@@ -294,7 +294,7 @@ def create_project6(CLINIC_ENTITY_TYPE, manager, questions):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli006").delete()
         qid6 = form_model6.save()
-    project6 = Project(name="Clinic6 Test Project", goals="This project is for automation", project_type="survey",
+    project6 = Project(name="Clinic6 Test Project", goals="This project is for automation",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project6.qid = qid6
     try:
@@ -313,7 +313,7 @@ def create_project7(CLINIC_ENTITY_TYPE, manager, questions):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli007").delete()
         qid7 = form_model7.save()
-    project7 = Project(name="Clinic7 Test Project", goals="This project is for automation", project_type="survey",
+    project7 = Project(name="Clinic7 Test Project", goals="This project is for automation",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project7.qid = qid7
     try:
@@ -340,7 +340,7 @@ def create_project11(CLINIC_ENTITY_TYPE, manager, questions):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli011").delete()
         qid11 = form_model11.save()
-    project11 = Project(name="Clinic All DS (Following)", goals="This project is for automation", project_type="survey",
+    project11 = Project(name="Clinic All DS (Following)", goals="This project is for automation",
                         entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project11.qid = qid11
     project11.reminder_and_deadline = weekly_reminder_and_deadline
@@ -385,8 +385,7 @@ def create_project10(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli010").delete()
         qid10 = form_model10.save()
     project10 = Project(name="Clinic DS W/O Submission (Following)", goals="This project is for automation",
-                        project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"],
-                        sender_group="close")
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project10.qid = qid10
     project10.reminder_and_deadline = weekly_reminder_and_deadline
     try:
@@ -422,8 +421,7 @@ def create_project9(CLINIC_ENTITY_TYPE, manager, questions, weekly_reminder_and_
         get_form_model_by_code(manager, "cli009").delete()
         qid = form_model9.save()
     project9 = Project(name="Clinic9 Reminder Test Project", goals="This project is for automation",
-                       project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"],
-                       sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project9.qid = qid
     project9.reminder_and_deadline = weekly_reminder_and_deadline
     try:
@@ -451,7 +449,7 @@ def create_project8(CLINIC_ENTITY_TYPE, manager, questions):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli008").delete()
         qid8 = form_model8.save()
-    project8 = Project(name="Clinic8 Test Project", goals="This project is for automation", project_type="survey",
+    project8 = Project(name="Clinic8 Test Project", goals="This project is for automation",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], sender_group="close")
     project8.qid = qid8
     try:
@@ -479,8 +477,7 @@ def create_project12(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli012").delete()
         qid12 = form_model12.save()
     project12 = Project(name="Clinic DS W/O Submission (That)", goals="This project is for automation",
-                        project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"],
-                        sender_group="close")
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project12.qid = qid12
     project12.reminder_and_deadline = weekly_reminder_and_deadline
     try:
@@ -526,8 +523,7 @@ def create_project13(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli013").delete()
         qid13 = form_model13.save()
     project13 = Project(name="Clinic DS W/O Monthly Submission (Same)", goals="This project is for automation",
-                        project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"],
-                        sender_group="close")
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project13.qid = qid13
     project13.reminder_and_deadline = monthly_reminder_and_deadline
     try:
@@ -573,8 +569,7 @@ def create_project14(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli014").delete()
         qid14 = form_model14.save()
     project14 = Project(name="Clinic DS W/O Monthly Submission (following)", goals="This project is for automation",
-                        project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"],
-                        sender_group="close")
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project14.qid = qid14
     project14.reminder_and_deadline = monthly_reminder_and_deadline
     try:
@@ -620,8 +615,7 @@ def create_project15(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli015").delete()
         qid15 = form_model15.save()
     project15 = Project(name="Clinic All DS Monthly Submission (following)", goals="This project is for automation",
-                        project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"],
-                        sender_group="close")
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project15.qid = qid15
     project15.reminder_and_deadline = monthly_reminder_and_deadline
     try:
@@ -667,8 +661,7 @@ def create_project16(CLINIC_ENTITY_TYPE, manager, questions):
         get_form_model_by_code(manager, "cli016").delete()
         qid16 = form_model16.save()
     project16 = Project(name="Clinic All DS Monthly Submission (that)", goals="This project is for automation",
-                        project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"],
-                        sender_group="close")
+                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project16.qid = qid16
     project16.reminder_and_deadline = monthly_reminder_and_deadline
     try:
@@ -705,8 +698,8 @@ def create_project17(CLINIC_ENTITY_TYPE, manager, questions_):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli017").delete()
         qid17 = form_model17.save()
-    project17 = Project(name="Clinic13 Test Project", goals="This project is for automation", project_type="survey",
-                        entity_type='clinic', devices=["sms", "web", "smartPhone"], sender_group="close")
+    project17 = Project(name="Clinic13 Test Project", goals="This project is for automation", entity_type='clinic',
+                        devices=["sms", "web", "smartPhone"], sender_group="close")
     project17.qid = qid17
     try:
         project17.save(manager)
@@ -723,8 +716,8 @@ def create_project18(CLINIC_ENTITY_TYPE, manager, questions_):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli018").delete()
         qid18 = form_model18.save()
-    project18 = Project(name="Test data sorting", goals="This project is for automation", project_type="survey",
-                        entity_type='clinic', devices=["sms", "web", "smartPhone"], sender_group="close")
+    project18 = Project(name="Test data sorting", goals="This project is for automation", entity_type='clinic',
+                        devices=["sms", "web", "smartPhone"], sender_group="close")
     project18.qid = qid18
     try:
         project18.save(manager)
@@ -744,8 +737,7 @@ def create_project19(ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "peo019").delete()
         qid19 = form_model19.save()
     project19 = Project(name="Project having people as subject", goals="This project is for automation",
-                        project_type="survey", entity_type='people', devices=["sms", "web", "smartPhone"],
-                        sender_group="close")
+                        entity_type='people', devices=["sms", "web", "smartPhone"], sender_group="close")
     project19.qid = qid19
     try:
         project19.save(manager)
@@ -774,8 +766,8 @@ def create_clinic_project_with_monthly_reporting_period(CLINIC_ENTITY_TYPE, mana
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, clinic_code).delete()
         qid = form_model.save()
-    project = Project(name=project_name, goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
+    project = Project(name=project_name, goals="This project is for automation", entity_type=CLINIC_ENTITY_TYPE[-1],
+                      devices=["sms", "web", "smartPhone"], sender_group="close")
     project.qid = qid
     try:
         project.save(manager)
@@ -1429,7 +1421,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli051").delete()
         qid = form_model.save()
-    project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
+    project1 = Project(name="Clinic Test Project", goals="This project is for automation",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], sender_group="close")
     project1.qid = qid
     Reminder.objects.filter(project_id=project1.id).delete()

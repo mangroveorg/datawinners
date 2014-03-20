@@ -116,7 +116,6 @@ SMS_WEB_SUBMISSION = {SENDER: '1234123413',
 
 GEN_RANDOM = "gen_random"
 PROJECT_BACKGROUND = "project_background"
-PROJECT_TYPE = "project_type"
 SUBJECT = "subject"
 REPORT_TYPE = "report_type"
 DEVICES = "devices"
@@ -124,7 +123,6 @@ PAGE_TITLE = "page_title"
 
 NEW_PROJECT_DATA = {'project_name': "new project ", GEN_RANDOM: True,
                     PROJECT_BACKGROUND: "This project is created by functional automation suite.",
-                    PROJECT_TYPE: "survey",
                     SUBJECT: "waterpoint",
                     REPORT_TYPE: "other subject",
                     DEVICES: "sms",
