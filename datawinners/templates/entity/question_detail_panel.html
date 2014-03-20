@@ -42,9 +42,9 @@
             <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
             <div class="dropdown">
-                <select data-bind="options: answerTypes, value: answerType,
+                <select data-bind="options: $root.answerTypes, value: answerType,
                                   optionsText: 'name', optionsValue: 'value', enable: newly_added_question,
-                                  optionsAfterRender: setOptionDisable"
+                                  optionsAfterRender: $root.setOptionDisable"
                         autofocus></select>
 
                 <div class="validationMessage" data-bind="ifnot: answerType.valid">

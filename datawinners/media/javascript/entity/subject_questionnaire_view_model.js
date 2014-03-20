@@ -10,7 +10,7 @@ var SubjectQuestionnaireViewModel = function(){
 
         self.removeLocationTypeOption();
 
-        self.prototype.addQuestion();
+        SubjectQuestionnaireViewModel.prototype.addQuestion();
         self.questions.push(id_question);
     };
 
@@ -22,7 +22,7 @@ var SubjectQuestionnaireViewModel = function(){
         else {
             self.addLocationTypeOption();
         }
-        self.prototype.changeSelectedQuestion(question);
+        SubjectQuestionnaireViewModel.prototype.changeSelectedQuestion(question);
     };
 
     self.locationType = {name: 'Location', value: 'list'};
@@ -42,7 +42,7 @@ var SubjectQuestionnaireViewModel = function(){
     };
 
     self.removeLocationTypeOption = function() {
-        var locationTypeIndex = self.answerTypes.indexOf(subjectQuestionnaireViewModel.locationType);
+        var locationTypeIndex = self.answerTypes.indexOf(self.locationType);
         if (locationTypeIndex != -1) {
             self.answerTypes.splice(locationTypeIndex, 1)
         }
