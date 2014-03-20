@@ -51,7 +51,7 @@
 
                                         <div class="action_bar" data-bind='css:{visible:$data == $root.selectedQuestion()}'>
                                             <a href="javascript:void(0);" class="delete_link"
-                                                   data-bind="visible: question.canBeDeleted(), click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
+                                                   data-bind="visible: question.canBeDeleted(), click: DW.removeQuestionCheckForRegistration">{% trans "Delete" %}</a>
                                             <a data-bind="visible: $index() && !question.is_entity_question(), click: $parent.moveQuestionUp, clickBubble: false"
                                                    class="question_action">
                                                     <span class="move-text"><img class="move-image"

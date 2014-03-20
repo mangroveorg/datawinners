@@ -40,8 +40,7 @@ DW.post_subject_data = function(){
 DW.init_has_submission_delete_warning_for_entity = function(){
     var kwargs = {container: "#submission_exists",
         continue_handler: function(){
-            question = questionnaireViewModel.selectedQuestion();
-            questionnaireViewModel.removeQuestion(question);
+            questionnaireViewModel.removeMarkedQuestion();
         },
         title: gettext('Warning: Your Collected Data Will be Lost')
     };
