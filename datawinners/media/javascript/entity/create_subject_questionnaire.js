@@ -24,12 +24,12 @@ DW.post_subject_data = function(){
             questionnaireViewModel.selectedQuestion.valueHasMutated();
             questionnaireViewModel.questions.valueHasMutated();
             flash_message[0].focus();
-            flash_message[0].scrollToView();
+            flash_message[0].scrollIntoView();
             DW.hide_message();
         } else {
             flash_message.removeClass('none').removeClass("success-message-box").addClass("message-box")
                 .html("<label class='error_message'> " + gettext(responseJson.error_message) + ".</label>").show();
-            flash_message[0].scrollToView();
+            flash_message[0].scrollIntoView();
         }
 
         $("#submit-button").removeAttr('disabled');

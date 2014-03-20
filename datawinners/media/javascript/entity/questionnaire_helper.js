@@ -105,12 +105,8 @@ DW.question.prototype = {
         this.min_length = ko.observable(q.length.min);
         this.max_length = DW.ko.createValidatableObservable({value: q.length.max});
 
-        if (DW.isRegistrationQuestionnaire()) {
-            this.name = DW.ko.createValidatableObservable({value: q.name});
-            this.title = DW.ko.createValidatableObservable({value: q.label});
-        } else {
-            this.title = DW.ko.createValidatableObservable({value: q.name});
-        }
+        this.name = q.name;
+        this.title = DW.ko.createValidatableObservable({value: q.label});
 
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
@@ -290,7 +286,7 @@ DW.question.prototype = {
 
         this.canBeDeleted = function () {
             if (DW.isRegistrationQuestionnaire()) {
-                return (!this.is_entity_question() && this.name() != 'name');
+                return (!this.is_entity_question() && this.name != 'name');
             } else {
                 return (!this.is_entity_question());
             }

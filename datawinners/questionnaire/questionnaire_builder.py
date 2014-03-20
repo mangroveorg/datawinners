@@ -74,8 +74,8 @@ class QuestionBuilder( object ):
 
 
     def _get_name(self, post_dict):
-        name = post_dict.get( "name" )
-        return name if name is not None else post_dict["title"]
+        name = post_dict.get("name")
+        return name if name else post_dict["title"]
 
     def _create_text_question(self, post_dict, code):
         max_length_from_post = post_dict.get( "max_length" )
