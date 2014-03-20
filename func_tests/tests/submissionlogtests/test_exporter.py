@@ -28,13 +28,13 @@ class TestExporter(unittest.TestCase):
         print "file is %s" % xlfile_name
         sheet = workbook.sheet_by_index(0)
         self.assertEqual([u'Datasender Name', u'Datasender Id', u'Submission Date', u'Status', u'Clinic', u'Clinic ID',
-                          u'Reporting Date', u"What is your namé?", u"What is age öf father?",
+                          u"What is your namé?", u"What is age öf father?",u'What is réporting date?',
                           u"What is your blood group?", u"What aré symptoms?",
-                          u'What is the GPS code for clinic? Latitude', u'What is the GPS code for clinic? Longitude',u"What are the required medicines?"],
-        sheet.row_values(0, 0, 14))
+                          u'What is the GPS code for clinic? Latitude', u'What is the GPS code for clinic? Longitude',
+                          u"What are the required medicines?"], sheet.row_values(0, 0, 14))
         self.assertEqual([2.0, 2.0], sheet.row_values(1, 11, 13))
 
-        self.assertEqual([u'export18'], sheet.row_values(1, 7, 8))
+        self.assertEqual([u'export18'], sheet.row_values(1, 6,7))
 
     def create_submissions(self):
         _from = "917798987116"

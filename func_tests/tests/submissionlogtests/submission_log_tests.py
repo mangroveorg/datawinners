@@ -167,6 +167,7 @@ class TestSubmissionLog(HeadlessRunnerTest):
         web_submission_page.fill_questionnaire_with(submission)
         web_submission_page.submit_answers()
 
+    @skipUntil("2014-03-30")#subject filter not available yet
     @attr("functional_test")
     def test_should_filter_by_name_and_id_of_datasender_and_subject(self):
 

@@ -21,7 +21,7 @@ class SubmissionHeader():
         for field_code, val in headers.items():
             key = es_field_name(field_code, self.form_model.id)
             if not header_dict.has_key(key):
-                if field_code == entity_question_code:
+                if entity_question_code and field_code.lower() == entity_question_code.lower():
                     self.add_unique_id_field(header_dict)
                     continue
                 header_dict.update({key: val})

@@ -51,9 +51,7 @@ class TestPostSMSProcessorNumberOfAnswersValidators(unittest.TestCase):
             self):
         self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=True, fields=[1, 2, 3])
         processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
-        self.assertRaises(SMSParserWrongNumberOfAnswersException, processor.process ,"form_code", {'q1': 'ans', 'q2': 'ans2'})
-        #self.assertEqual(False, response.success)
-        #self.assertEqual(get_wrong_number_of_answer_error_message(), response.errors)
+        self.assertRaises(SMSParserWrongNumberOfAnswersException, processor.process ,"form_code", {'q1': 'ans'})
 
     def test_for_registration_should_not_send_error_if_number_of_answers_correct_when_subject_question_is_not_present(
             self):
