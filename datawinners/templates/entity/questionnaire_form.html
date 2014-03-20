@@ -46,10 +46,10 @@
                         <div data-bind="scrollToView: enableScrollToView" class="questions">
                             <div class="question_list">
                                 <ol data-bind="foreach: {data: questions, as: 'question'}, sortable: questions">
-                                    <li data-bind="click: changeSelectedQuestion, css:{question_selected: question == selectedQuestion(), sort: !question.is_entity_question()} ">
+                                    <li data-bind="click: $root.changeSelectedQuestion, css:{question_selected: question == $root.selectedQuestion(), sort: !question.is_entity_question()} ">
                                         <a href="javascript:void(0);" data-bind="text: $data.display"></a>
 
-                                        <div class="action_bar" data-bind='css:{visible:$data == $parent.selectedQuestion()}'>
+                                        <div class="action_bar" data-bind='css:{visible:$data == $root.selectedQuestion()}'>
                                             <a href="javascript:void(0);" class="delete_link"
                                                    data-bind="visible: question.canBeDeleted(), click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
                                             <a data-bind="visible: $index() && !question.is_entity_question(), click: $parent.moveQuestionUp, clickBubble: false"
@@ -64,7 +64,7 @@
 
                                         </div>
                                         <span class="selected_question_arrow"
-                                              data-bind="css:{inline:question == selectedQuestion()}"></span>
+                                              data-bind="css:{inline:question == $root.selectedQuestion()}"></span>
                                     </li>
                                 </ol>
                             </div>

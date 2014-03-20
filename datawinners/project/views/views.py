@@ -398,11 +398,12 @@ def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     questionnaire = FormModel.get(manager, project.qid)
-    project, project_links = get_project_link(project, questionnaire.form_code)
+    project_links = get_project_link(project, questionnaire.form_code)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
     if project.is_deleted():
         return HttpResponseRedirect(dashboard_page)
     subject = get_entity_type_info(project.entity_type, manager=manager)
+    subject_form_model = get_form_model_by_entity_type(manager, [project.entity_type])
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/subjects/registered_subjects_list.html',
                               {'project': project,
@@ -412,7 +413,7 @@ def registered_subjects(request, project_id=None):
                                'in_trial_mode': in_trial_mode,
                                'project_id': project_id,
                                'entity_type': subject.get('entity'),
-                               'subject_headers': header_fields(form_model),
+                               'subject_headers': header_fields(subject_form_model),
                                'questionnaire_code': questionnaire.form_code,
                                'form_code': subject.get('code')}, context_instance=RequestContext(request))
 
