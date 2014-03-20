@@ -1,17 +1,15 @@
 import unittest
 from unittest.case import SkipTest
+
 from mangrove.utils.test_utils.database_utils import safe_define_type, uniq
-
-from mock import Mock, patch
-
+from mock import Mock
 from mangrove.bootstrap import initializer
 from mangrove.datastore.database import DatabaseManager, get_db_manager, _delete_db_and_remove_db_manager
-from mangrove.datastore.entity_type import define_type
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
 from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, get_form_model_by_code
-from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder, QuestionBuilder
 from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint, NumericRangeConstraint
+
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder, QuestionBuilder
 
 
 FORM_CODE_2 = uniq("2")

@@ -3,9 +3,12 @@ import unittest
 import datetime
 from django.test import TestCase
 from django.test.client import RequestFactory
-from mock import Mock, call, PropertyMock
+from mangrove.datastore.database import DatabaseManager
+from mangrove.datastore.settings import COUCHDB_CREDENTIALS
+from mock import Mock, call, PropertyMock, patch
 from xlwt import Worksheet, Column
 from datawinners.accountmanagement.models import Organization
+from datawinners.settings import COUCH_DB_SERVER
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME, RAW_DATA, HEADER_LIST, DEFAULT_TEST_ORG_TEL_NO
 from entity.views import add_codes_sheet
 from mangrove.form_model.field import ExcelDate
@@ -62,10 +65,12 @@ class TestUtils(TestCase):
         self.assertEquals(DEFAULT_TEST_ORG_TEL_NO, org_setting.sms_tel_number)
 
     def test_should_return_database_manager(self):
-        organization = Organization.objects.get(pk=DEFAULT_TEST_ORG_ID)
-        dbm = utils.get_database_manager_for_org(organization)
-        self.assertEquals(utils.generate_document_store_name(DEFAULT_TEST_ORG_NAME, DEFAULT_TEST_ORG_ID),
-            dbm.database_name)
+        with patch('datawinners.main.database.mangrove_db_manager') as mangrove_db_manager_mock:
+            mangrove_db_manager_mock.side_effect = lambda server, database, credentials: Mock(spec=DatabaseManager, database_name = database)
+            organization = Organization.objects.get(pk=DEFAULT_TEST_ORG_ID)
+            dbm = utils.get_database_manager_for_org(organization)
+            self.assertEquals(utils.generate_document_store_name(DEFAULT_TEST_ORG_NAME, DEFAULT_TEST_ORG_ID), dbm.database_name)
+            mangrove_db_manager_mock.assert_called_once_with(credentials=COUCHDB_CREDENTIALS, database=u'hni_testorg_slx364903', server=COUCH_DB_SERVER)
 
     def _get_request_mock(self, org_id):
         request = RequestFactory().get('/account/')

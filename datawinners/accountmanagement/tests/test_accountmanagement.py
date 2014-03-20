@@ -69,10 +69,5 @@ class TestAccountManagement(TestCase):
         response = self.client.get('/account/user/new/')
         self.assertEquals(response.status_code, 302)
 
-    def test_should_render_account_user_new_view_if_logged_in(self):
-        self.login_with_default_test_user()
-        response = self.client.post('/account/user/new/')
-        self.assertEquals(response.status_code, 200)
-
     def login_with_default_test_user(self):
         self.client.login(username=DEFAULT_TEST_USER, password=DEFAULT_TEST_PASSWORD)
