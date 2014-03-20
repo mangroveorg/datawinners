@@ -1,6 +1,7 @@
 import unittest
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.field import TextField, IntegerField, UniqueIdField, DateField
 from mock import Mock
 from datawinners.entity.entity_export_helper import get_subject_headers, get_submission_headers
 
@@ -71,7 +72,11 @@ class TestExcelHeaders(unittest.TestCase):
                   {"unique_id_type":"clinic","name": "eid", "code": 'eid', "label": 'What is the subject id',
                    "type": "unique_id"},
                   {"name": "choices", "code": 'q5', "label": 'Your choices', "type": "select"}]
-        form_model = FormModel(Mock(spec=DatabaseManager), name="some_name", form_code="cli00_mp", fields=[], type="type1")
+        form_model_fields = [TextField("first_name","q1","What is your name"),
+                             IntegerField("age","q2","What is your age"),
+                             DateField("reporting date","q3","What is the reporting date","dd.mm.yyyy"),
+                             UniqueIdField("clinic","eid","eid","What is the subject id")]
+        form_model = FormModel(Mock(spec=DatabaseManager), name="some_name", form_code="cli00_mp", fields=form_model_fields, type="type1")
 
         headers = get_submission_headers(fields, form_model)
 
@@ -85,7 +90,7 @@ class TestExcelHeaders(unittest.TestCase):
         self.assertEqual(
             ["\n\nAnswer must be a word", "\n\nEnter a number between 12-15.",
              "\n\nAnswer must be a date in the following format: day.month.year",
-             "\n\nEnter the unique ID for each test.\nYou can find the test List on the My Subjects page.",
+             "\n\nEnter the unique ID for each clinic.\nYou can find the clinic List on the My Subjects page.",
              "\n\nEnter 1 or more answers from the list."], header_instructions)
 
         header_examples = self._get_header_component(headers, 2)
