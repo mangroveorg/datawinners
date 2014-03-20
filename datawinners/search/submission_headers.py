@@ -16,17 +16,22 @@ class SubmissionHeader():
         def key_attribute(field):
             return field.code.lower()
 
+        entity_question_code = self.form_model.entity_question.code if self.form_model.entity_type else None
         headers = header_fields(self.form_model, key_attribute)
         for field_code, val in headers.items():
             key = es_field_name(field_code, self.form_model.id)
-            if not header_dict.has_key(key): header_dict.update({key: val})
+            if not header_dict.has_key(key):
+                if field_code == entity_question_code:
+                    self.add_unique_id_field(header_dict)
+                    continue
+                header_dict.update({key: val})
 
-        #if self.form_model.is_entity_type_reporter():
-        #    # For summary projects there will be an extra datasender info question(code eid).
-        #    # This condition removes that extra question.
-        #    header_dict.pop(es_field_name(self.form_model.entity_question.code, self.form_model.id))
-        #    header_dict.pop('entity_short_code')
         return header_dict
+
+    def add_unique_id_field(self, header_dict):
+        subject_title = self.form_model.entity_type[0].title()
+        header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
+        header_dict.update({'entity_short_code': "%s ID" % subject_title})
 
     def get_header_field_names(self):
         return self.get_header_dict().keys()
@@ -42,13 +47,6 @@ class SubmissionHeader():
 class SubmissionAnalysisHeader(SubmissionHeader):
     def update_static_header_info(self):
         header_dict = OrderedDict()
-        if self.form_model.entity_type:
-            subject_title = self.form_model.entity_type[0].title()
-            header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
-            header_dict.update({'entity_short_code': "%s ID" % subject_title})
-        if self.form_model.event_time_question:
-            header_dict.update(
-                {es_field_name(self.form_model.event_time_question.code, self.form_model.id): "Reporting Date"})
 
         header_dict.update({"date": "Submission Date"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
@@ -57,19 +55,13 @@ class SubmissionAnalysisHeader(SubmissionHeader):
 
 
 class AllSubmissionHeader(SubmissionHeader):
+
     def update_static_header_info(self):
         header_dict = OrderedDict()
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
         header_dict.update({"date": "Submission Date"})
         header_dict.update({"status": "Status"})
-        if self.form_model.entity_type:
-            subject_title = self.form_model.entity_type[0].title()
-            header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
-            header_dict.update({'entity_short_code': "%s ID" % subject_title})
-        if self.form_model.event_time_question:
-            header_dict.update(
-                {es_field_name(self.form_model.event_time_question.code, self.form_model.id): "Reporting Date"})
 
         return header_dict
 
@@ -80,13 +72,6 @@ class SuccessSubmissionHeader(SubmissionHeader):
         header_dict.update({SubmissionIndexConstants.DATASENDER_ID_KEY: "Datasender Id"})
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
         header_dict.update({"date": "Submission Date"})
-        if self.form_model.entity_type:
-            subject_title = self.form_model.entity_type[0].title()
-            header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
-            header_dict.update({'entity_short_code': "%s ID" % subject_title})
-        if self.form_model.event_time_question:
-            header_dict.update(
-                {es_field_name(self.form_model.event_time_question.code, self.form_model.id): "Reporting Date"})
         return header_dict
 
 
@@ -97,13 +82,6 @@ class ErroredSubmissionHeader(SubmissionHeader):
         header_dict.update({SubmissionIndexConstants.DATASENDER_NAME_KEY: "Datasender Name"})
         header_dict.update({"date": "Submission Date"})
         header_dict.update({"error_msg": "Error Message"})
-        if self.form_model.entity_type:
-            subject_title = self.form_model.entity_type[0].title()
-            header_dict.update({es_field_name(self.form_model.entity_question.code, self.form_model.id): subject_title})
-            header_dict.update({'entity_short_code': "%s ID" % subject_title})
-        if self.form_model.event_time_question:
-            header_dict.update(
-                {es_field_name(self.form_model.event_time_question.code, self.form_model.id): "Reporting Date"})
         return header_dict
 
 
