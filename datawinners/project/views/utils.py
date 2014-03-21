@@ -8,11 +8,9 @@ from datawinners.project.utils import make_project_links, make_data_sender_links
 from mangrove.form_model.form_model import REPORTER
 
 
-def get_form_context(form_code, project, questionnaire_form, manager, hide_link_class, disable_link_class,
-                     is_update=False):
-    form_context = _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class,
-                                      is_update)
-    form_context.update(_get_subject_info(manager, project))
+def get_form_context(form_model, survey_response_form, manager, hide_link_class, disable_link_class, is_update=False):
+    form_context = _make_form_context(survey_response_form, form_model, hide_link_class, disable_link_class, is_update)
+    form_context.update(_get_subject_info(manager, form_model))
 
     return form_context
 
@@ -29,10 +27,10 @@ def add_link(project):
         return add_link_named_tuple(url=url, text=text)
 
 
-def _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class, is_update=False):
-    return {'questionnaire_form': questionnaire_form,
-            'project': project,
-            'project_links': make_project_links(project, form_code),
+def _make_form_context(survey_response_form, form_model, hide_link_class, disable_link_class, is_update=False):
+    return {'questionnaire_form': survey_response_form,
+            'project': form_model,
+            'project_links': make_project_links(form_model),
             'hide_link_class': hide_link_class,
             'disable_link_class': disable_link_class,
             'back_to_project_link': reverse("alldata_index"),

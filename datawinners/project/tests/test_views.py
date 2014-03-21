@@ -317,7 +317,7 @@ class TestSubjectWebQuestionnaireRequest(unittest.TestCase):
 
         def _initialize(self, project_id):
             self.manager = None
-            self.project = self.project = Project(entity_type="someTest")
+            self.questionnaire = self.questionnaire = Project(entity_type="someTest")
             self.is_data_sender = True
             self.disable_link_class, self.hide_link_class = None, None
             self.form_code = None

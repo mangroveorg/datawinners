@@ -109,13 +109,10 @@ def get_preview_for_field(field):
     preview.update({"constraints": constraints})
     return preview
 
-def delete_project(manager, project, void=True):
-    project_id, qid = project.id, project.qid
-    [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=project_id))]
-    questionnaire = FormModel.get(manager, qid)
-    questionnaire.void(void)
-    [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.form_code, None, None)]
-    project.set_void(manager, void)
+def delete_project(manager, form_model, void=True):
+    [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=form_model.id))]
+    form_model.void(void)
+    [survey_response.void(void) for survey_response in get_survey_responses(manager, form_model.form_code, None, None)]
 
 def get_activity_report_questions(dbm):
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q1',

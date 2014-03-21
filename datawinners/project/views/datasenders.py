@@ -98,17 +98,16 @@ def _add_imported_datasenders_to_project(imported_datasenders_id, manager, proje
 @is_not_expired
 def registered_datasenders(request, project_id):
     manager = get_database_manager(request.user)
-    project = Project.load(manager.database, project_id)
-    questionnaire = FormModel.get(manager, project.qid)
-    project_links = get_project_link(project, questionnaire.form_code)
+    questionnaire = FormModel.get(manager, project_id)
+    project_links = get_project_link(questionnaire)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project.is_deleted():
+    if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
     if request.method == 'GET':
         in_trial_mode = _in_trial_mode(request)
         user_rep_id_name_dict = rep_id_name_dict_of_users(manager)
         return render_to_response('project/registered_datasenders.html',
-                                  {'project': project,
+                                  {'project': questionnaire,
                                    'project_links': project_links,
                                    'questionnaire_code': questionnaire.form_code,
                                    'current_language': translation.get_language(),
@@ -122,12 +121,12 @@ def registered_datasenders(request, project_id):
                                                                                                         default_parser=XlsDatasenderParser)
         imported_data_senders = parse_successful_imports(successful_imports)
         imported_datasenders_ids = [imported_data_sender["id"] for imported_data_sender in imported_data_senders]
-        _add_imported_datasenders_to_project(imported_datasenders_ids, manager, project)
+        _add_imported_datasenders_to_project(imported_datasenders_ids, manager, questionnaire)
 
         if len(imported_datasenders_ids):
             UserActivityLog().log(request, action=IMPORTED_DATA_SENDERS,
                                   detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders_ids)})),
-                                  project=project.name)
+                                  project=questionnaire.name)
         return HttpResponse(json.dumps(
             {
                 'success': error_message is None and is_empty(failure_imports),

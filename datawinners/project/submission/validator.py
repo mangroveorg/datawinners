@@ -5,10 +5,9 @@ from mangrove.utils.types import is_empty
 
 class SubmissionWorkbookRowValidator():
 
-    def __init__(self, manager, form_model, project):
+    def __init__(self, manager, form_model):
         self.manager = manager
         self.form_model = form_model
-        self.project = project
 
     def validate_rows(self, parsed_rows):
         field_code_label_dict = self.form_model.get_field_code_label_dict()
@@ -41,7 +40,7 @@ class SubmissionWorkbookRowValidator():
         return errors
 
     def _get_subject_or_datasender_ids(self):
-        entity_type = self.project.entity_type
+        entity_type = self.form_model.entity_type
         start_key = [[entity_type]]
         end_key = [[entity_type], {}, {}]
         rows = self.manager.database.view("entity_name_by_short_code/entity_name_by_short_code", startkey=start_key,endkey=end_key).rows

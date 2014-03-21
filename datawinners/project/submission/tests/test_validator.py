@@ -11,7 +11,7 @@ class TestImportSubmissionValidator(TestCase):
         entity_question = PropertyMock(return_value=None)
         type(form_model_mock).entity_question = entity_question
         form_model_mock.validate_submission.return_value = ([],[])
-        validator = SubmissionWorkbookRowValidator(Mock(), form_model_mock,Mock())
+        validator = SubmissionWorkbookRowValidator(Mock(), form_model_mock)
         parsed_rows = [("form_code",{}), ("form_code",{})]
 
         valid_rows, invalid_rows = validator.validate_rows(parsed_rows)
@@ -28,7 +28,7 @@ class TestImportSubmissionValidator(TestCase):
         form_model_mock.validate_submission.return_value = ([],{"error":"error_msg"})
         with patch("datawinners.project.submission.validator.translate_errors") as translate_errors:
             translate_errors.return_value = ["error_msg"]
-            validator = SubmissionWorkbookRowValidator(Mock(), form_model_mock, project_mock)
+            validator = SubmissionWorkbookRowValidator(Mock(), form_model_mock)
             parsed_rows = [("form_code",{}), ("form_code",{})]
 
             valid_rows, invalid_rows = validator.validate_rows(parsed_rows)

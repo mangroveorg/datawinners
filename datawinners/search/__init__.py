@@ -13,7 +13,7 @@ def register_postsave_handlers():
     EntityDocument.register_post_update(entity_search_update)
     EntityFormModelDocument.register_post_update(entity_form_model_change_handler)
     FormModelDocument.register_post_update(form_model_change_handler)
-    Project.register_post_update(update_datasender_for_project_change)
+    #Project.register_post_update(update_datasender_for_project_change)
 
     SurveyResponseDocument.register_post_update(update_submission_search_index)
     EntityDocument.register_post_update(submission_update_on_entity_edition)

@@ -22,7 +22,7 @@ def make_data_sender_links(project_id):
     return datasender_links
 
 
-def make_project_links(project, questionnaire_code):
+def make_project_links(project):
     project_id = project.id
     project_links = {'overview_link': reverse("project-overview", args=[project_id]),
                      'delete_project_link': reverse("delete_project", args=[project_id]),
@@ -30,8 +30,8 @@ def make_project_links(project, questionnaire_code):
                      'sms_questionnaire_preview_link': reverse("sms_questionnaire_preview", args=[project_id]),
                      'my_datasenders_ajax_link': reverse("my_datasenders_ajax", args=[urlquote(project.name)]),
                      'current_language': translation.get_language(),
-                     'data_analysis_link': reverse("submission_analysis", args=[project_id, questionnaire_code]),
-                     'submission_log_link': reverse("submissions", args=[project_id, questionnaire_code]),
+                     'data_analysis_link': reverse("submission_analysis", args=[project_id, project.form_code]),
+                     'submission_log_link': reverse("submissions", args=[project_id, project.form_code]),
                      'reminders_link': reverse('reminder_settings', args=[project_id])}
 
     project_links.update(make_subject_links(project_id))
@@ -50,7 +50,7 @@ def make_project_links(project, questionnaire_code):
     return project_links
 
 
-def project_info(request, form_model, project, questionnaire_code): #revisit:export
+def project_info(request, form_model, questionnaire_code): #revisit:export
     rp_field = form_model.event_time_question
     organization = get_organization(request)
     in_trial_mode = organization.in_trial_mode
@@ -59,11 +59,11 @@ def project_info(request, form_model, project, questionnaire_code): #revisit:exp
 
     return {"date_format": rp_field.date_format if has_rp else "dd.mm.yyyy",
             "is_monthly_reporting": is_monthly_reporting,
-            'project_links': (make_project_links(project, questionnaire_code)),
+            'project_links': (make_project_links(form_model)),
             'is_quota_reached':is_quota_reached(request, organization=organization),
-            'project': project,
-            'encoded_project_name': (urlquote(project.name)),
-            'import_template_file_name': slugify(project.name),
+            'project': form_model,
+            'encoded_project_name': (urlquote(form_model.name)),
+            'import_template_file_name': slugify(form_model.name),
             'questionnaire_code': questionnaire_code, 'in_trial_mode': in_trial_mode,
             'reporting_period_question_text': rp_field.label if has_rp else None,
             'has_reporting_period': has_rp,
