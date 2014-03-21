@@ -1,9 +1,9 @@
 import re
+from datastore.entity_type import get_unique_id_types
 from datawinners.search import register_postsave_handlers
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.entity import get_all_entities
 from datawinners.main.couchdb.utils import all_db_names
-from datawinners.entity.import_data import get_entity_types
 import logging
 from migration.couch.utils import migrate, mark_as_completed
 
@@ -12,7 +12,7 @@ def migration_to_convert_subject_ids_to_lowercase(db_name):
     try:
         logger = logging.getLogger(db_name)
         dbm = get_db_manager(db_name)
-        entity_types = get_entity_types(dbm)
+        entity_types = get_unique_id_types(dbm)
         for entity_type in entity_types:
             all_entities = get_all_entities(dbm, [entity_type])
             try:

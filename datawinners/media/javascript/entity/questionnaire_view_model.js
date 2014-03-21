@@ -70,7 +70,7 @@ function QuestionnaireViewModel(){
         }
     },
 
-    self.selectedQuestion= ko.observable();
+    self.selectedQuestion = ko.observable();
 
     self.changeSelectedQuestion= function (question) {
         if(!self.validateSelectedQuestion())

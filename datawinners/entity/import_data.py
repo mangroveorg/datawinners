@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from copy import copy
 import os
 import logging
 
@@ -14,28 +13,22 @@ from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import int_to_base36
 from datawinners.entity.subject_template_validator import SubjectTemplateValidator
-from mangrove.datastore.queries import get_entities_by_type
-from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, entity_type_as_sequence, get_json_field_infos, get_organization_telephone_number
+from datawinners.entity.helper import get_country_appended_location, get_entity_type_fields, tabulate_data, entity_type_as_sequence, get_organization_telephone_number
 
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
-from mangrove.data_cleaner import TelephoneNumber
-from mangrove.datastore.documents import FormModelDocument
-from mangrove.datastore.entity_type import get_all_entity_types
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import timebox
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, Entity
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, EmptyRowException, MultipleReportersForANumberException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, \
-    NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD, FormModel
+    NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD
 from mangrove.transport.player.parser import CsvParser, XlsParser, XlsDatasenderParser
-from mangrove.transport.contract.transport_info import Channel, TransportInfo
+from mangrove.transport.contract.transport_info import Channel
 from mangrove.transport.contract.response import Response
 from mangrove.transport.player.player import Player
-from mangrove.datastore import entity
-from mangrove.transport.work_flow import RegistrationWorkFlow, ActivityReportWorkFlow
+from mangrove.transport.work_flow import RegistrationWorkFlow
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.submission.location import LocationBridge
 from mangrove.contrib.registration_validators import case_insensitive_lookup
@@ -328,11 +321,6 @@ def load_entity_registration_data(manager,
     for entity in entities:
         data.append(tabulate_function(entity, form_model, codes))
     return data, fields, labels
-
-
-def get_entity_types(manager):
-    entity_types = get_all_entity_types(manager)
-    return [entity_type[0] for entity_type in entity_types if entity_type[0] != 'reporter']
 
 
 def get_field_infos(fields):

@@ -22,10 +22,12 @@
         var post_url = "{{ post_url }}";
         var project_templates_url = "{% url project_templates %}";
         var existing_questionnaires_url = "{% url existing_questionnaires %}";
+        var unique_id_types = {{ unique_id_types|safe }};
     </script>
 
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/project_questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_fetcher.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_creation_options_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>

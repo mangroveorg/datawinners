@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<div>
+    <h6>{% trans 'I want to use Identification Numbers for my' %}</h6>
+
+    <div class="uniqueIdType" data-bind="click: $root.showUniqueIdTypes">
+        <span data-bind="hidden: uniqueIdType">{% trans 'Add a unique id type' %} </span>
+        <span data-bind="text: uniqueIdType"></span>
+    </div>
+    <div data-bind="visible: $root.isUniqueIdTypeVisible">
+        <input type="text" data-bind="value: $root.newUniqueIdType"/>
+        <button data-bind="click: $root.addNewUniqueIdType">Add</button>
+        <hr/>
+        <ul data-bind="foreach: $root.uniqueIdTypes">
+            <li data-bind="text: $data, click: $root.selectUniqueIdType"></li>
+        </ul>
+    </div>
+</div>

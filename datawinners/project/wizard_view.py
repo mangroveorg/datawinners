@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from celery.task import current
+from datastore.entity_type import get_unique_id_types
 
 from datawinners import settings
 from datawinners.project import helper
@@ -97,6 +98,7 @@ def create_project(request):
                                    'questionnaire_code': helper.generate_questionnaire_code(manager),
                                    'is_edit': 'false',
                                    'post_url': reverse(create_project),
+                                   'unique_id_types': get_unique_id_types(manager),
                                    'cancel_link': cancel_link}, context_instance=RequestContext(request))
 
     if request.method == 'POST':

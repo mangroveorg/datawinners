@@ -1,12 +1,12 @@
 from collections import OrderedDict
-from datawinners.entity.import_data import get_entity_types
+from datastore.entity_type import get_unique_id_types
 from datawinners.main.utils import timebox
 
 
 @timebox
 def load_subject_type_with_projects(manager):
     result = OrderedDict()
-    subject_types = sorted(get_entity_types(manager))
+    subject_types = get_unique_id_types(manager)
     for subject_type in subject_types:
         result.update({subject_type: []})
     rows = manager.view.projects_by_subject_type()

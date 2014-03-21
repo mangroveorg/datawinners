@@ -132,6 +132,11 @@
                 </div>
             </div>
         </li>
+
+        <li data-bind="visible: showUniqueId">
+            {% include 'project/unique_id_selection.html' %}
+        </li>
+
         <li>
             <div class="margin_top_20" data-bind="visible: type()">
                 <label>{% trans "Instructions" %}<img src="/media/images/help_icon.png" class="help_icon" data-bind="initializeTooltip:true"
