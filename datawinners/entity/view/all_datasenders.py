@@ -21,7 +21,7 @@ from datawinners.project.models import get_all_projects, Project, delete_datasen
 from datawinners.entity import import_data as import_module
 from datawinners.project.views.datasenders import parse_successful_imports
 from datawinners.search.entity_search import DatasenderQuery, MyDataSenderQuery
-from mangrove.form_model.form_model import REPORTER, header_fields, get_form_model_by_code
+from mangrove.form_model.form_model import REPORTER, header_fields, get_form_model_by_code, FormModel
 from mangrove.transport import TransportInfo
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_organization
@@ -134,12 +134,12 @@ class AllDataSendersAjaxView(View):
 class DataSenderActionView(View):
     def _get_projects(self, manager, request):
         project_ids = request.POST.get('project_id').split(';')
-        projects = []
+        questionnaires = []
         for project_id in project_ids:
-            project = Project.load(manager.database, project_id)
-            if project is not None:
-                projects.append(project)
-        return projects
+            questionnaire = FormModel.get(manager, project_id)
+            if questionnaire is not None:
+                questionnaires.append(questionnaire)
+        return questionnaires
 
     @method_decorator(login_required)
     @method_decorator(session_not_expired)

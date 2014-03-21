@@ -33,13 +33,20 @@ from datawinners.project.helper import is_project_exist
 from datawinners.project.utils import is_quota_reached
 
 
-def create_questionnaire(post, manager, name, language):
+def create_questionnaire(post, manager, name, language, reporter_id):
     questionnaire_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
     form_model = FormModel(manager, name=name, type='survey',
-                          fields=[], form_code=questionnaire_code, language=language)
+                           fields=[], form_code=questionnaire_code, language=language,
+                           devices=[u'sms', u'web', u'smartPhone'])
+    if reporter_id is not None:
+        datasender_list = form_model.data_senders
+        datasender_list.append(reporter_id)
+        form_model.data_senders = datasender_list
+
     QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
+
     return form_model
 
 
@@ -103,39 +110,31 @@ def create_project(request):
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
-        project = Project(name=project_info.get('name'), devices=[u'sms', u'web', u'smartPhone'],
-                          language=project_info.get('language'))
-
-        if ngo_admin.reporter_id is not None:
-            project.data_senders.append(ngo_admin.reporter_id)
 
         try:
             questionnaire = create_questionnaire(post=request.POST, manager=manager, name=project_info.get('name'),
-                                                 language=project_info.get('language'))
-            if questionnaire.entity_type:
-                project.entity_type = questionnaire.entity_type[0]
+                                                 language=project_info.get('language'), reporter_id=ngo_admin.reporter_id)
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
             return HttpResponse(
                 json.dumps({'success': False, 'error_message': _(ex.message), 'error_in_project_section': False}))
 
         try:
-            project.qid = questionnaire.save()
+            questionnaire.save()
         except DataObjectAlreadyExists:
             return HttpResponse(json.dumps(
                 {'success': False, 'error_message': "Questionnaire with this code already exists",
                  'error_in_project_section': False}))
 
-        try:
-            project.save(manager)
-            UserActivityLog().log(request, action=CREATED_PROJECT, project=project.name, detail=project.name)
-        except DataObjectAlreadyExists as ex:
-            questionnaire.delete()
-            message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
-            return HttpResponse(
-                json.dumps({'success': False, 'error_message': message, 'error_in_project_section': True}))
+        #try:
+        UserActivityLog().log(request, action=CREATED_PROJECT, project=questionnaire.name, detail=questionnaire.name)
+        #except DataObjectAlreadyExists as ex:
+        #    questionnaire.delete()
+        #    message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
+        #    return HttpResponse(
+        #        json.dumps({'success': False, 'error_message': message, 'error_in_project_section': True}))
 
-        return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
+        return HttpResponse(json.dumps({'success': True, 'project_id': questionnaire.id}))
 
 
 def get_reporting_period_field(questionnaire):
@@ -175,11 +174,10 @@ def _get_changed_data(project, project_info):
 @is_project_exist
 def edit_project(request, project_id):
     manager = get_database_manager(request.user)
-    project = Project.load(manager.database, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project.is_deleted():
+    questionnaire = FormModel.get(manager, project_id)
+    if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    questionnaire = FormModel.get(manager, project.qid)
     if request.method == 'GET':
         return render_to_response('project/create_project.html',
                                   {'preview_links': get_preview_and_instruction_links(),
@@ -190,9 +188,9 @@ def edit_project(request, project_id):
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
-        detail = _get_changed_data(project, project_info)
+        detail = _get_changed_data(questionnaire , project_info)
         is_project_name_changed = project_info.get('name') != questionnaire.name
-        project.update(project_info)
+        #questionnaire.update(project_info)
         try:
             old_fields = questionnaire.fields
             old_form_code = questionnaire.form_code
@@ -201,7 +199,7 @@ def edit_project(request, project_id):
                                                  project_info.get('language'))
             changed_questions = get_changed_questions(old_fields, questionnaire.fields, subject=False)
             detail.update(changed_questions)
-            project.qid = questionnaire.save()
+            questionnaire.save()
 
             deleted_question_codes = _get_deleted_question_codes(old_codes=old_field_codes,
                                                                  new_codes=questionnaire.field_codes())
@@ -209,7 +207,7 @@ def edit_project(request, project_id):
             update_associated_submissions.delay(manager.database_name, old_form_code,
                                                 questionnaire.form_code,
                                                 deleted_question_codes)
-            UserActivityLog().log(request, project=project.name, action=EDITED_PROJECT, detail=json.dumps(detail))
+            UserActivityLog().log(request, project=questionnaire.name, action=EDITED_PROJECT, detail=json.dumps(detail))
         except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException,
                 EntityQuestionAlreadyExistsException) as ex:
             return HttpResponse(
@@ -218,15 +216,15 @@ def edit_project(request, project_id):
             return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False,
                                             'error_message': 'Questionnaire with this code already exists'}))
 
-        try:
+        #try:
+        #
+        #    project.save(manager, process_post_update=is_project_name_changed)
+        #except DataObjectAlreadyExists as ex:
+        #    message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
+        #    return HttpResponse(
+        #        json.dumps({'success': False, 'error_message': message, 'error_in_project_section': True}))
 
-            project.save(manager, process_post_update=is_project_name_changed)
-        except DataObjectAlreadyExists as ex:
-            message = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
-            return HttpResponse(
-                json.dumps({'success': False, 'error_message': message, 'error_in_project_section': True}))
-
-        return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
+        return HttpResponse(json.dumps({'success': True, 'project_id': project_id}))
 
 @login_required
 @session_not_expired
@@ -234,23 +232,23 @@ def edit_project(request, project_id):
 @is_not_expired
 def reminder_settings(request, project_id):
     dbm = get_database_manager(request.user)
-    project = Project.load(dbm.database, project_id)
+    #project = Project.load(dbm.database, project_id)
+    questionnaire = FormModel.get(dbm, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project.is_deleted():
+    if questionnaire.is_void():
         return HttpResponseRedirect(dashboard_page)
-    questionnaire = FormModel.get(dbm, project.qid)
     from datawinners.project.views.views import make_project_links
 
-    project_links = make_project_links(project, questionnaire.form_code)
+    project_links = make_project_links(questionnaire)
     org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
     organization = Organization.objects.get(org_id=org_id)
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
     if request.method == 'GET':
-        form = ReminderForm(data=(_reminder_info_about_project(project)))
+        form = ReminderForm(data=(_reminder_info_about_project(questionnaire)))
         return render_to_response(html,
                                   {'project_links': project_links,
                                    'is_quota_reached': is_quota_reached(request, organization=organization),
-                                   'project': project,
+                                   'project': questionnaire,
                                    'form': form,
                                    'questionnaire_code': questionnaire.form_code
                                   }, context_instance=RequestContext(request))
@@ -260,22 +258,22 @@ def reminder_settings(request, project_id):
         if form.is_valid():
             org_id = NGOUserProfile.objects.get(user=request.user).org_id
             organization = Organization.objects.get(org_id=org_id)
-            reminder_list = Reminder.objects.filter(project_id=project.id)
+            reminder_list = Reminder.objects.filter(project_id=questionnaire.id)
             action = _get_activity_log_action(reminder_list, form.cleaned_data)
-            project, set_deadline = _add_reminder_info_to_project(form.cleaned_data, project, organization,
+            questionnaire, set_deadline = _add_reminder_info_to_project(form.cleaned_data, questionnaire, organization,
                                                                   reminder_list=reminder_list)
-            project.save(dbm)
+            questionnaire.save()
             if action is not None:
-                UserActivityLog().log(request, action=action, project=project.name)
+                UserActivityLog().log(request, action=action, project=questionnaire.name)
             if set_deadline:
-                UserActivityLog().log(request, action=SET_DEADLINE, project=project.name)
+                UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name)
             messages.success(request, _("Reminder settings saved successfully."))
             return HttpResponseRedirect('')
         else:
             return render_to_response(html,
                                       {'project_links': project_links,
                                        'is_quota_reached': is_quota_reached(request, organization=organization),
-                                       'project': project, 'form': form}, context_instance=RequestContext(request))
+                                       'project': questionnaire, 'form': form}, context_instance=RequestContext(request))
 
 
 def _reminder_info_about_project(project):
@@ -326,21 +324,21 @@ def _reminder_info_about_project(project):
 
 def _add_reminder_info_to_project(cleaned_data, project, organization, reminder_list=None):
     set_deadline = False
-    if project['reminder_and_deadline']['has_deadline']:
-        project['reminder_and_deadline']['frequency_period'] = cleaned_data['frequency_period']
+    if project.reminder_and_deadline.get('has_deadline'):
+        project.reminder_and_deadline['frequency_period'] = cleaned_data['frequency_period']
         if cleaned_data['frequency_period'] == 'month':
-            if project['reminder_and_deadline'].get('deadline_week'):
+            if project.reminder_and_deadline.get('deadline_week'):
                 del project['reminder_and_deadline']['deadline_week']
                 set_deadline = True
-            project['reminder_and_deadline']['deadline_month'] = cleaned_data['deadline_month']
+            project.reminder_and_deadline['deadline_month'] = cleaned_data['deadline_month']
         else:
-            if project['reminder_and_deadline'].get('deadline_month'):
-                del project['reminder_and_deadline']['deadline_month']
+            if project.reminder_and_deadline.get('deadline_month'):
+                del project.reminder_and_deadline['deadline_month']
                 set_deadline = True
-            project['reminder_and_deadline']['deadline_week'] = cleaned_data['deadline_week']
-        if project['reminder_and_deadline']['deadline_type'] != cleaned_data['deadline_type']:
+            project.reminder_and_deadline['deadline_week'] = cleaned_data['deadline_week']
+        if project.reminder_and_deadline.get('deadline_type') != cleaned_data['deadline_type']:
             set_deadline = True
-        project['reminder_and_deadline']['deadline_type'] = cleaned_data['deadline_type']
+        project.reminder_and_deadline['deadline_type'] = cleaned_data['deadline_type']
 
         if reminder_list is None:
             reminder_list = Reminder.objects.filter(project_id=project.id)
@@ -360,7 +358,7 @@ def _add_reminder_info_to_project(cleaned_data, project, organization, reminder_
                      message=cleaned_data['reminder_text_after_deadline'],
                      reminder_mode=ReminderMode.AFTER_DEADLINE, organization=organization).save()
 
-        project['reminder_and_deadline']['should_send_reminder_to_all_ds'] = not cleaned_data['whom_to_send_message']
+        project.reminder_and_deadline['should_send_reminder_to_all_ds'] = not cleaned_data['whom_to_send_message']
     else:
         reminder_list = Reminder.objects.filter(project_id=project.id)
         reminder_list.delete()

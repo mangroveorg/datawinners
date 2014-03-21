@@ -30,58 +30,7 @@
             "user": 1,
             "title": "Mr."
         }
-    }
-    ,
-
-
-
-
-
-
-
-
-
-
-        {
-        "model": "sites.site",
-        "pk": 1,
-        "fields": {
-            "domain": "localhost:8000",
-            "name": "localhost"
-        }
-    },
-    {
-        "model": "sites.site",
-        "pk": 2,
-        "fields": {
-            "domain": "184.72.223.168",
-            "name": "datawinners-showcase"
-        }
-    },
-    {
-        "model": "sites.site",
-        "pk": 3,
-        "fields": {
-            "domain": "datawinners-dev:8000",
-            "name": "Dev"
-        }
-    },
-    {
-        "model": "sites.site",
-        "pk": 4,
-        "fields": {
-            "domain": "173.255.238.6:8000",
-            "name": "CI"
-        }
-    },
-    {
-        "model": "sites.site",
-        "pk": 5,
-        "fields": {
-            "domain": "www.datawinners.com",
-            "name": "DataWinners"
-        }
-    },
+    } ,
     {
         "pk": "SLX364903",
         "model": "accountmanagement.organization",

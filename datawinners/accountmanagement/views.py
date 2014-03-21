@@ -34,7 +34,7 @@ from datawinners.common.constant import CHANGED_ACCOUNT_INFO, ADDED_USER, DELETE
 from datawinners.entity.helper import delete_datasender_for_trial_mode, \
     delete_datasender_users_if_any, delete_entity_instance
 from datawinners.entity.import_data import send_email_to_data_sender
-from mangrove.form_model.form_model import REPORTER
+from mangrove.form_model.form_model import REPORTER, FormModel
 from mangrove.transport import TransportInfo
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
@@ -107,11 +107,11 @@ def settings(request):
 def associate_user_with_existing_project(manager, reporter_id):
     rows = get_all_projects(manager)
     for row in rows:
-        project_id = row['value']['_id']
-        project = Project.load(manager.database, project_id)
-        project.data_senders.append(reporter_id)
-        project.save(manager, process_post_update=True)
-
+        form_model_id = row['value']['_id']
+        form_model = FormModel.get(manager,form_model_id)
+        form_model.data_senders.append(reporter_id)
+        #project.save(manager, process_post_update=True)
+        form_model.save()
 
 @login_required
 @session_not_expired

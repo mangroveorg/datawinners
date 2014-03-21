@@ -10,7 +10,7 @@ from datawinners.accountmanagement.models import Organization
 from datawinners.entity.data_sender import load_data_senders
 from datawinners.scheduler.deadline import Deadline, Month, Week
 from mangrove.datastore.database import DatabaseManager, DataObject
-from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField
+from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField, attributes
 from mangrove.datastore.entity import Entity, get_by_short_code
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel, REPORTER
@@ -150,47 +150,17 @@ class ReminderLog(DataObject):
         return (' '.join(value.split('_'))).title()
 
 
-# TODO : TW_BLR : mpve this out of models
-class ProjectState(object):
-    INACTIVE = 'Inactive'
-    ACTIVE = 'Active'
-    TEST = 'Test'
+class Project():
 
-
-class Project(DocumentBase):
-    name = TextField()
-    goals = TextField()
-    entity_type = TextField()
-    devices = ListField(TextField())
-    qid = TextField()
-    sender_group = TextField()
-    reminder_and_deadline = DictField()
-    data_senders = ListField(TextField())
-    language = TextField(default='en')
-
-    def __init__(self, id=None, name=None, goals=None, entity_type=None, devices=None, sender_group=None,
-                 language='en'):
-        assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
-        DocumentBase.__init__(self, id=id, document_type='Project')
-        self.devices = []
-        self.name = name.lower() if name is not None else None
-        self.goals = goals
-        self.entity_type = entity_type
-        self.devices = devices
-        self.sender_group = sender_group
-        self.reminder_and_deadline = {"deadline_type": "Following",
-                                      "should_send_reminder_to_all_ds": False,
-                                      "has_deadline": True,
-                                      "deadline_month": "5",
-                                      "frequency_period": "month"}
-        self.language = language
+    def __init__(self, form_model):
+        self.form_model = form_model
 
     def get_data_senders(self, dbm):
-        all_data, fields, label = load_data_senders(dbm, self.data_senders)
+        all_data, fields, label = load_data_senders(dbm, self.form_model.data_senders)
         return [dict(zip(fields, data["cols"])) for data in all_data]
 
     def get_associated_datasenders(self, dbm):
-        keys = [([REPORTER], short_code) for short_code in self.data_senders]
+        keys = [([REPORTER], short_code) for short_code in self.form_model.data_senders]
         rows = dbm.view.by_short_codes(reduce=False, include_docs=True, keys=keys)
         return [Entity.new_from_doc(dbm, Entity.__document_class__.wrap(row.get('doc'))) for row in rows]
 
@@ -212,23 +182,24 @@ class Project(DocumentBase):
         return Deadline(self._frequency(), self._deadline_type())
 
     def _frequency(self):
-        if self.reminder_and_deadline.get('frequency_period') == 'month':
-            return Month(int(self.reminder_and_deadline.get('deadline_month')))
-        if self.reminder_and_deadline.get('frequency_period') == 'week':
-            return Week(int(self.reminder_and_deadline.get('deadline_week')))
+        reminder_and_deadline = self.form_model.reminder_and_deadline
+        if reminder_and_deadline.get('frequency_period') == 'month':
+            return Month(int(reminder_and_deadline.get('deadline_month')))
+        if reminder_and_deadline.get('frequency_period') == 'week':
+            return Week(int(reminder_and_deadline.get('deadline_week')))
 
     def has_deadline(self):
-        return self.reminder_and_deadline.get('has_deadline')
+        return self.form_model.reminder_and_deadline.get('has_deadline')
 
     def _deadline_type(self):
-        return self.reminder_and_deadline.get('deadline_type')
+        return self.form_model.reminder_and_deadline.get('deadline_type')
 
     def _frequency_period(self):
-        return self.reminder_and_deadline.get('frequency_period')
+        return self.form_model.reminder_and_deadline.get('frequency_period')
 
     def get_deadline_day(self):
-        if self.reminder_and_deadline.get('frequency_period') == 'month':
-            return int(self.reminder_and_deadline.get('deadline_month'))
+        if self.form_model.reminder_and_deadline.get('frequency_period') == 'month':
+            return int(self.form_model.reminder_and_deadline.get('deadline_month'))
 
     def should_send_reminders(self, as_of, days_relative_to_deadline):
         next_deadline_day = self.deadline().current(as_of)
@@ -237,15 +208,16 @@ class Project(DocumentBase):
                 return True
         return False
 
-    def _check_if_project_name_unique(self, dbm):
-        rows = dbm.load_all_rows_in_view('project_names', key=self.name)
-        if len(rows) and rows[0]['value'] != self.id:
-            raise DataObjectAlreadyExists('Questionnaire', "Name", "'%s'" % self.name)
+    #def _check_if_project_name_unique(self, dbm):
+    #    rows = dbm.load_all_rows_in_view('project_names', key=self.form_model.name)
+    #    if len(rows) and rows[0]['value'] != self.id:
+    #        raise DataObjectAlreadyExists('Questionnaire', "Name", "'%s'" % self.form_model.name)
 
     def save(self, dbm, process_post_update=True):
         assert isinstance(dbm, DatabaseManager)
         self._check_if_project_name_unique(dbm)
-        return dbm._save_document(self, process_post_update=process_post_update)
+        return self.form_model.save()
+        #return dbm._save_document(self, process_post_update=process_post_update)
 
     def update(self, value_dict):
         attribute_list = [item[0] for item in (self.items())]
@@ -272,17 +244,17 @@ class Project(DocumentBase):
 
     def delete_datasender(self, dbm, entity_id):
         from datawinners.search.datasender_index import update_datasender_index_by_id
-        self.data_senders.remove(entity_id)
+        self.form_model.data_senders.remove(entity_id)
         self.save(dbm, process_post_update=False)
         update_datasender_index_by_id(entity_id,dbm)
 
     def associate_data_sender_to_project(self, dbm, data_sender_code):
-        if data_sender_code in self.data_senders: return
+        if data_sender_code in self.form_model.data_senders: return
         from datawinners.search.datasender_index import update_datasender_index_by_id
         # Normally this case should not happen. However in a special case
         # blank id was sent from client side. So introduced this check.
         if data_sender_code:
-            self.data_senders.append(data_sender_code)
+            self.form_model.data_senders.append(data_sender_code)
             self.save(dbm, process_post_update=False)
             update_datasender_index_by_id(data_sender_code,dbm)
 
@@ -318,7 +290,8 @@ def delete_datasenders_from_project(manager, data_sender_ids):
     for entity_id in data_sender_ids:
         associated_projects = get_all_projects(manager, data_sender_id=entity_id)
         for associated_project in associated_projects:
-            project = Project.load(manager.database, associated_project['value']['_id'])
+            questionnaire = FormModel.get(manager, associated_project['value']['_id'])
+            project = Project(questionnaire)
             project.delete_datasender(manager, entity_id)
 
 

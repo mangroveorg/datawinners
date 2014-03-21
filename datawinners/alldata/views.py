@@ -10,7 +10,7 @@ from datawinners.common.urlextension import append_query_strings_to_url
 from datawinners.dataextraction.helper import convert_to_json_response
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading, get_reports_list
 from datawinners.settings import CRS_ORG_ID
-from datawinners.project.models import ProjectState, Project
+from datawinners.project.models import Project
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.entity import get_all_entities
 from django.utils.translation import ugettext as _
@@ -42,8 +42,7 @@ def get_project_analysis_and_log_link(project_id, questionnaire_code):
 
 def get_project_info(manager, raw_project):
     project_id = raw_project['value']['_id']
-    project = Project.load(manager.database, project_id)
-    questionnaire = manager.get(project.qid, FormModel)
+    questionnaire = FormModel.get(manager,project_id)
     questionnaire_code = questionnaire.form_code
 
     analysis, disabled, log = get_project_analysis_and_log_link(project_id, questionnaire_code)
@@ -55,8 +54,8 @@ def get_project_info(manager, raw_project):
         web_submission_link_disabled = ""
 
     create_subjects_link = ''
-    if project.entity_type:
-        create_subjects_link = append_query_strings_to_url(reverse("create_subject", args=[project.entity_type]),
+    if questionnaire.entity_type:
+        create_subjects_link = append_query_strings_to_url(reverse("create_subject", args=[questionnaire.entity_type]),
                                                            web_view=True)
 
     project_info = dict(project_id=project_id,
@@ -68,7 +67,7 @@ def get_project_info(manager, raw_project):
                         web_submission_link=web_submission_link,
                         web_submission_link_disabled=web_submission_link_disabled,
                         create_subjects_link=create_subjects_link,
-                        entity_type=project.entity_type,
+                        entity_type=questionnaire.entity_type,
                         encoded_name=urlquote(raw_project['value']['name']),
                         import_template_file_name=slugify(raw_project['value']['name']))
     return project_info

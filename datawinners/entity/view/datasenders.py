@@ -21,7 +21,7 @@ from datawinners.project.view_models import ReporterEntity
 from datawinners.submission.location import LocationBridge
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
-from mangrove.form_model.form_model import REPORTER
+from mangrove.form_model.form_model import REPORTER, FormModel
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.player.player import WebPlayer
 
@@ -147,9 +147,10 @@ class RegisterDatasenderView(TemplateView):
 
         if message is not None and reporter_id:
             if form.cleaned_data['project_id'] != "":
-                project = Project.load(dbm.database, form.cleaned_data['project_id'])
+                questionnaire = FormModel.get(dbm, form.cleaned_data['project_id'])
+                project = Project(questionnaire)
                 project.associate_data_sender_to_project(dbm, reporter_id)
-                project = project.name
+                project = questionnaire.name
             else:
                 project = ""
             if not len(form.errors):

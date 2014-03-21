@@ -79,18 +79,17 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
     org_id = helper.get_org_id_by_user(request.user)
 
     if request.method == 'GET':
-        project = Project.load(manager.database, project_id)
-        if project.is_deleted():
+        form_model = get_form_model_by_code(manager, questionnaire_code)
+        if form_model.is_void():
             dashboard_page = settings.HOME_PAGE + "?deleted=true"
             return HttpResponseRedirect(dashboard_page)
 
-        form_model = get_form_model_by_code(manager, questionnaire_code)
 
         result_dict = {
             "tab": tab,
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
-        }
-        result_dict.update(project_info(request, form_model, project, questionnaire_code))
+            }
+        result_dict.update(project_info(request, form_model, questionnaire_code))
         return render_to_response('project/submission_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
@@ -106,16 +105,15 @@ def analysis_results(request, project_id=None, questionnaire_code=None):
     org_id = helper.get_org_id_by_user(request.user)
 
     if request.method == 'GET':
-        project = Project.load(manager.database, project_id)
+        form_model = get_form_model_by_code(manager, questionnaire_code)
         dashboard_page = settings.HOME_PAGE + "?deleted=true"
-        if project.is_deleted():
+        if form_model.is_void():
             return HttpResponseRedirect(dashboard_page)
 
-        form_model = get_form_model_by_code(manager, questionnaire_code)
         result_dict = {
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
-        }
-        result_dict.update(project_info(request, form_model, project, questionnaire_code))
+            }
+        result_dict.update(project_info(request, form_model, questionnaire_code))
         return render_to_response('project/analysis_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
@@ -135,18 +133,17 @@ def get_survey_response_ids_from_request(dbm, request, form_model):
 
 def delete(request, project_id):
     dbm = get_database_manager(request.user)
-    project = Project.load(dbm.database, project_id)
+    form_model = FormModel.get(dbm, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project.is_deleted():
+    if form_model.is_void():
         return HttpResponseRedirect(dashboard_page)
-    form_model = FormModel.get(dbm, project.qid)
     survey_response_ids = get_survey_response_ids_from_request(dbm, request, form_model)
     received_times = []
     for survey_response_id in survey_response_ids:
         survey_response = SurveyResponse.get(dbm, survey_response_id)
         received_times.append(datetime.datetime.strftime(survey_response.submitted_on, "%d/%m/%Y %X"))
         feeds_dbm = get_feeds_database(request.user)
-        additional_feed_dictionary = get_project_details_dict_for_feed(project)
+        additional_feed_dictionary = get_project_details_dict_for_feed(form_model)
         delete_response = WebPlayerV2(dbm, feeds_dbm).delete_survey_response(survey_response,
                                                                              additional_feed_dictionary,
                                                                              websubmission_logger)
@@ -156,7 +153,7 @@ def delete(request, project_id):
                                   survey_response.data_record.id)
 
     if len(received_times):
-        UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=project.name,
+        UserActivityLog().log(request, action=DELETED_DATA_SUBMISSION, project=form_model.name,
                               detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
         response = encode_json({'success_message': ugettext("The selected records have been deleted"), 'success': True})
     else:
@@ -195,11 +192,10 @@ def construct_request_dict(survey_response, questionnaire_form_model):
 @valid_web_user
 def edit(request, project_id, survey_response_id, tab=0):
     manager = get_database_manager(request.user)
-    project = Project.load(manager.database, project_id)
+    questionnaire_form_model = FormModel.get(manager, project_id)
     dashboard_page = settings.HOME_PAGE + "?deleted=true"
-    if project.is_deleted():
+    if questionnaire_form_model.is_void():
         return HttpResponseRedirect(dashboard_page)
-    questionnaire_form_model = FormModel.get(manager, project.qid)
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     survey_response = get_survey_response_by_id(manager, survey_response_id)
@@ -210,10 +206,10 @@ def edit(request, project_id, survey_response_id, tab=0):
     form_ui_model.update({"back_link": back_link})
     if request.method == 'GET':
         form_initial_values = construct_request_dict(survey_response, questionnaire_form_model)
-        survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model, form_initial_values)
+        survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, questionnaire_form_model, form_initial_values)
 
-        form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
-                                              manager, hide_link_class, disable_link_class))
+        form_ui_model.update(get_form_context(questionnaire_form_model, survey_response_form, manager, hide_link_class,
+                                              disable_link_class))
         form_ui_model.update({"redirect_url": ""})
 
         if not survey_response_form.is_valid():
@@ -228,18 +224,18 @@ def edit(request, project_id, survey_response_id, tab=0):
         form_ui_model.update({"redirect_url": request.POST.get("redirect_url")})
         form_ui_model.update({"click_after_reload": request.POST.get("click_after_reload")})
         if request.POST.get("discard"):
-            survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model,
+            survey_response_form = EditSubmissionForm(manager, questionnaire_form_model, questionnaire_form_model,
                                                       survey_response.values)
 
-            form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
-                                                  manager, hide_link_class, disable_link_class))
+            form_ui_model.update(
+                get_form_context(project, survey_response_form, manager, hide_link_class, disable_link_class))
             return render_to_response("project/web_questionnaire.html", form_ui_model,
                                       context_instance=RequestContext(request))
         else:
             survey_response_form = EditSubmissionForm(manager, project, questionnaire_form_model, request.POST)
 
-        form_ui_model.update(get_form_context(questionnaire_form_model.form_code, project, survey_response_form,
-                                              manager, hide_link_class, disable_link_class))
+        form_ui_model.update(
+            get_form_context(project, survey_response_form, manager, hide_link_class, disable_link_class))
         if not survey_response_form.is_valid():
             error_message = _("Please check your answers below for errors.")
             form_ui_model.update({'error_message': error_message})

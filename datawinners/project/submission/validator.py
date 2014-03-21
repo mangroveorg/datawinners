@@ -5,10 +5,9 @@ from mangrove.utils.types import is_empty
 
 class SubmissionWorkbookRowValidator():
 
-    def __init__(self, manager, form_model, project):
+    def __init__(self, manager, form_model):
         self.manager = manager
         self.form_model = form_model
-        self.project = project
 
     def validate_rows(self, parsed_rows):
         field_code_label_dict = self.form_model.get_field_code_label_dict()

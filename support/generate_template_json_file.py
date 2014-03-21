@@ -14,12 +14,11 @@ def generate_template_data():
     test_dbm = get_db_manager('hni_testorg_slx364903')
     projects = get_all_projects(test_dbm)
     for doc in projects:
-        project = Project.load(test_dbm.database, doc.id)
+        form_model = FormModel.get(test_dbm, doc.id)
         json_obj = {}
-        json_obj.update({"name": project.name})
-        json_obj.update({"language": project.language})
-        json_obj.update({"category": _get_category(project)})
-        form_model = FormModel.get(test_dbm, project.qid)
+        json_obj.update({"name": form_model.name})
+        json_obj.update({"language": form_model.language})
+        json_obj.update({"category": _get_category(form_model)})
         json_obj.update({"form_code": form_model.form_code})
         fields = _remove_entity_field(form_model)
         json_obj.update({"json_fields": [field_to_json(f) for f in fields]})

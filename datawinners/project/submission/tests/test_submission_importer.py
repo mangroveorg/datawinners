@@ -24,7 +24,7 @@ class TestSubmissionPersister(TestCase):
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = False
             user_profile.reporter_id = "some_rep_id"
-            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
+            submission_persister = SubmissionPersister(user, None, None, form_model, submission_quota_service)
 
             ignored_entries, saved_entries = submission_persister.save_submissions(True, user_profile, valid_rows)
 
@@ -42,7 +42,7 @@ class TestSubmissionPersister(TestCase):
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = True
             user_profile.reporter_id = "some_rep_id"
-            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
+            submission_persister = SubmissionPersister(user, None, None, form_model, submission_quota_service)
 
             ignored_entries, saved_entries = submission_persister.save_submissions(True, user_profile, valid_rows)
 
@@ -60,7 +60,7 @@ class TestSubmissionPersister(TestCase):
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = False
             user_profile.reporter_id = "some_rep_id"
-            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
+            submission_persister = SubmissionPersister(user, None, None, form_model, submission_quota_service)
 
             submission_persister.save_submissions(True, user_profile, valid_rows)
 
@@ -79,7 +79,7 @@ class TestSubmissionPersister(TestCase):
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = True
             user_profile.reporter_id = "some_rep_id"
-            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
+            submission_persister = SubmissionPersister(user, None, None, form_model, submission_quota_service)
 
             submission_persister.save_submissions(True, user_profile, valid_rows)
             self.assertEqual(submission_quota_service.increment_web_submission_count.call_count, 1)
@@ -100,7 +100,7 @@ class TestSubmissionPersister(TestCase):
             form_model.form_code = "form_code"
             form_model.fields=[UniqueIdField(unique_id_type ='reporter', name="Q1", code="EID", label="What is the reporter ID?")]
 
-            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
+            submission_persister = SubmissionPersister(user, None, None, form_model, submission_quota_service)
             with patch(
                     "datawinners.project.submission.submission_import.get_web_transport_info") as get_web_transport_info:
                 with patch(
@@ -131,7 +131,7 @@ class TestSubmissionPersister(TestCase):
             SurveyResponseService.return_value = service
             project.is_summary_project.return_value = True
             form_model.form_code = "form_code"
-            submission_persister = SubmissionPersister(user, None, None, form_model, project, submission_quota_service)
+            submission_persister = SubmissionPersister(user, None, None, form_model, submission_quota_service)
             with patch(
                     "datawinners.project.submission.submission_import.get_web_transport_info") as get_web_transport_info:
                 with patch(

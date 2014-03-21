@@ -17,14 +17,12 @@ logger = logging.getLogger("datawinners")
 
 
 class SubmissionImporter():
-    def __init__(self, dbm, feed_dbm, user, form_model, project, submission_quota_service):
+    def __init__(self, dbm, feed_dbm, user, form_model, submission_quota_service):
         self.dbm = dbm
         self.user = user
         self.form_model = form_model
-        self.project = project
-        self.submission_validator = SubmissionWorkbookRowValidator(dbm, form_model, project)
-        self.submission_persister = SubmissionPersister(user, dbm, feed_dbm, form_model, project,
-                                                        submission_quota_service)
+        self.submission_validator = SubmissionWorkbookRowValidator(dbm, form_model)
+        self.submission_persister = SubmissionPersister(user, dbm, feed_dbm, form_model, submission_quota_service)
 
 
     def import_submission(self, request):
@@ -104,12 +102,11 @@ class SubmissionImportResponse():
 
 
 class SubmissionPersister():
-    def __init__(self, user, dbm, feed_dbm, form_model, project, submission_quota_service):
+    def __init__(self, user, dbm, feed_dbm, form_model, submission_quota_service):
         self.user = user
         self.dbm = dbm
         self.feed_dbm = feed_dbm
         self.form_model = form_model
-        self.project = project
         self.submission_quota_service = submission_quota_service
 
     def save_submissions(self, is_organization_user, user_profile, valid_rows):
@@ -127,7 +124,7 @@ class SubmissionPersister():
     def _save_survey(self, user_profile, valid_row):
         reporter_id = user_profile.reporter_id
         service = SurveyResponseService(self.dbm, logger, self.feed_dbm, user_profile.reporter_id)
-        additional_feed_dictionary = get_feed_dictionary(self.project)
+        additional_feed_dictionary = get_feed_dictionary(self.form_model)
         transport_info = get_web_transport_info(self.user.username)
         return service.save_survey(self.form_model.form_code, valid_row, [],
                                    transport_info, valid_row, reporter_id, additional_feed_dictionary)
