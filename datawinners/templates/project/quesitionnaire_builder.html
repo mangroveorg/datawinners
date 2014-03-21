@@ -17,6 +17,16 @@
             <fieldset>
                 <div class="questionnaire_form_header clearfix">
                     {% include 'project/questionnaire_info_indicator.html' %}
+                    <span style="float: left">{% trans "SMS Questionnaire Code" %}:
+            <input id='questionnaire-code' data-bind="value: questionnaireCode"/>
+            <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+            <div class="tooltip">
+                <p>{% trans "tooltip_question_code" %}</p>
+            </div>
+            <div class="validationMessage" data-bind="ifnot: questionnaireCode.valid">
+                <span id="questionnaire_code_validation_message" class="validationText" data-bind="text: questionnaireCode.error"></span>
+            </div>
+                    </span>
                     {% include 'project/preview_navigation.html' %}
                 </div>
                 <div class="questionnare_content grid_23 alpha omega">

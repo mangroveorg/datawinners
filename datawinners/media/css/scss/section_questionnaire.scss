@@ -93,7 +93,7 @@
           width: 140px;
         }
       }
-      #project-language select{
+      #select{
         @extend .dropdown_style
       }
     }
@@ -252,6 +252,7 @@
 
 #questionnaire-code {
   float: none;
+  width:4em;
 }
 
 .questionnaire_code {
@@ -489,4 +490,9 @@
   font-size: 12px;
   font-weight: normal;
   max-width: 300px;
+}
+#question_form{
+  select#project_language {
+    @extend .dropdown_style;
+  }
 }

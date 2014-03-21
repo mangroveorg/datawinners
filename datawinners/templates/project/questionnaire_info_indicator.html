@@ -14,22 +14,22 @@
         </div>
         <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
     </div>
-    <ul class="questionnaire_code">
+    <ul>
         <li>
-            <label>{% trans "SMS Questionnaire Code" %}:</label>
-            <input id='questionnaire-code' data-bind="value: questionnaireCode"/>
-            <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
-            <div class="tooltip">
-                <p>{% trans "tooltip_question_code" %}</p>
+            <div>
+                <strong>{% trans "Languages for SMS Reply Messages" %}:</strong>
+                <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+                <div class="tooltip">
+                   <p> {% trans "tooltip_error_language" %} </p>
+                </div>
             </div>
-            <div class="validationMessage" data-bind="ifnot: questionnaireCode.valid">
-                <span id="questionnaire_code_validation_message" class="validationText" data-bind="text: questionnaireCode.error"></span>
-            </div>
+            <select id="project_language" name="project_language" data-bind="options: availableLanguages, value: language, optionsText: 'name', optionsValue: 'code'"
+                    class="dropdown_style"></select>
+
         </li>
         <li>
-            <div>{% trans "Choose your language" %}:
-                <select name="project_language" data-bind="options: availableLanguages, value: language, optionsText: 'name', optionsValue: 'code'"></select>
-            </div>
+
         </li>
+
     </ul>
 </div>
