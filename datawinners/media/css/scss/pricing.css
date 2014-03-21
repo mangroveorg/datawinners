@@ -148,3 +148,6 @@ h1 {
 #container_secondary_content #container_page_title #box3 h7 .h52 {
   font-weight: bold;
   font-family: Helvetica, Arial, sans-serif; }
+
+.account_type_box {
+  height: 398px !important; }
