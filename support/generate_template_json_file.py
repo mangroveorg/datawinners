@@ -20,6 +20,7 @@ def generate_template_data():
         json_obj.update({"language": project.language})
         json_obj.update({"category": _get_category(project)})
         form_model = FormModel.get(test_dbm, project.qid)
+        json_obj.update({"form_code": form_model.form_code})
         fields = _remove_entity_field(form_model)
         json_obj.update({"json_fields": [field_to_json(f) for f in fields]})
         json_obj.update({"validators": [validator.to_json() for validator in form_model.validators]})

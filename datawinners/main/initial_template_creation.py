@@ -34,7 +34,8 @@ def create_template_from_json_file(dbm, file_name):
     with open(file_name) as data_file:
         questionnaires = json.load(data_file)
         for data in questionnaires:
-            template_doc = QuestionnaireTemplateDocument(name=data.get('name'), category=data.get('category'),
+            template_doc = QuestionnaireTemplateDocument(name=data.get('name'), form_code=data.get('form_code'),
+                                                         category=data.get('category'),
                                                          language=data.get('language'))
             template_doc.json_fields = data.get('json_fields')
             template_doc.validators = data.get('validators')
