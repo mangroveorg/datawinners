@@ -13,12 +13,13 @@ class QuestionnaireTemplateDocument(FormModelDocument):
     description = TextField()
     language = TextField()
 
-    def __init__(self, name, category, language='en', description=None, id=None):
+    def __init__(self, name, category, language='en', form_code = None, description=None, id=None):
         DocumentBase.__init__(self, id=id, document_type='QuestionnaireTemplate')
         self.category = category
         self.description = description
         self.name = name
         self.language = language
+        self.form_code = form_code
 
 
 class QuestionnaireLibrary:

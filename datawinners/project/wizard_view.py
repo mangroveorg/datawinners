@@ -77,7 +77,7 @@ def get_template_details(request, template_id):
     template = library.get_questionnaire_template(template_id)
     template_details = {'template_id': template.id, 'project_name': template.get('name'),
                         'project_language': template.get('language'),
-                        'questionnaire_code': helper.generate_questionnaire_code(dbm),
+                        'questionnaire_code': template.get('form_code'),
                         'existing_questions': json.dumps(template.get('json_fields'), default=field_to_json)}
     return HttpResponse(json.dumps(template_details), content_type='application/json')
 

@@ -1,11 +1,9 @@
-import json
 from unittest import TestCase
-from mangrove.datastore.database import DatabaseManager
-from datawinners.main.database import get_db_manager
 
-from mangrove.form_model.field import field_to_json
 from mock import patch, MagicMock
-from datawinners.questionnaire.library import QuestionnaireLibrary, QuestionnaireTemplateDocument
+
+from mangrove.datastore.database import DatabaseManager
+from datawinners.questionnaire.library import QuestionnaireLibrary
 
 
 class testQuestionnaireTemplate(TestCase):
