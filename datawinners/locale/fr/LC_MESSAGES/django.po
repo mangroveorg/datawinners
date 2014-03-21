@@ -4713,3 +4713,6 @@ msgstr "Questionnaire Nom:"
 
 msgid "Choose an existing Questionnaire and edit it to fit your needs."
 msgstr "Choisissez un Questionnaire existant et modifiez-le selon vos besoins."
+
+msgid "Languages for SMS Reply Messages"
+msgstr "Langue pour les messages de retour SMS"
