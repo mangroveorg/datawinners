@@ -65,11 +65,12 @@ DW.question = function (question) {
             min: "",
             max: ""
         },
-        label: "Question",
+        label: "",
         date_format: "mm.yyyy",
         instruction: gettext("Answer must be a text"),
         newly_added_question: false,
-        event_time_field_flag: false
+        event_time_field_flag: false,
+        uniqueIdType : 'cars'
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
@@ -109,7 +110,8 @@ DW.question.prototype = {
 
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
-        this.is_entity_question = ko.observable(q.type == 'short_code');
+        this.isEntityQuestion = ko.observable(q.type == 'short_code');
+        this.uniqueIdType = q.uniqueIdType;
 
         this.showDateFormats = ko.computed(function () {
             return this.type() == "date";
@@ -120,7 +122,7 @@ DW.question.prototype = {
         }, this);
 
         this.showAddTextLength = ko.computed(function () {
-            return this.type() == 'text' && !this.is_entity_question();
+            return this.type() == 'text' && !this.isEntityQuestion();
         }, this);
 
         this.required = ko.observable(q.required);
@@ -234,7 +236,7 @@ DW.question.prototype = {
 
         this.instruction = ko.dependentObservable({
             read: function () {
-                if (this.is_entity_question() && this.max_length() == 20) {
+                if (this.isEntityQuestion() && this.max_length() == 20) {
                     return DW.instruction_template.unique_id_question;
                 }
 
@@ -285,9 +287,9 @@ DW.question.prototype = {
 
         this.canBeDeleted = function () {
             if (DW.isRegistrationQuestionnaire()) {
-                return (!this.is_entity_question() && this.name != 'name');
+                return (!this.isEntityQuestion() && this.name != 'name');
             } else {
-                return (!this.is_entity_question());
+                return (!this.isEntityQuestion());
             }
         };
 
@@ -359,7 +361,7 @@ DW.question.prototype = {
        }, this);
 
        this.answerType.subscribe(function(){
-          if(!this.is_entity_question()) DW.ko.mandatoryValidator(this.answerType);
+          if(!this.isEntityQuestion()) DW.ko.mandatoryValidator(this.answerType);
        }, this);
 
        this.range_min.subscribe(function(){

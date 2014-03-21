@@ -156,7 +156,7 @@ class QuestionBuilder(object):
                               label=post_dict["title"], instruction=post_dict.get("instruction"))
 
     def _create_unique_id_question(self, post_dict, code):
-        return UniqueIdField(unique_id_type='clinic', name=self._get_name(post_dict), code=code,
+        return UniqueIdField(unique_id_type=post_dict["uniqueIdType"], name=self._get_name(post_dict), code=code,
                              label=post_dict["title"],
                              instruction=post_dict.get("instruction"))
         #return UniqueIdField(unique_id_type=post_dict["unique_id_type"],name=self._get_name(post_dict), code=code, label=post_dict["title"],
