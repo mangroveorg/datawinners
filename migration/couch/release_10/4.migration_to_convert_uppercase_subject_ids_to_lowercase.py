@@ -1,5 +1,5 @@
 import re
-from datastore.entity_type import get_unique_id_types
+from mangrove.datastore.entity_type import get_unique_id_types
 from datawinners.search import register_postsave_handlers
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.entity import get_all_entities

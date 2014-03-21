@@ -14,7 +14,7 @@ class TestSubjects(unittest.TestCase):
 
     def test_should_load_subject_type_with_project_names_sorted(self):
         self.manager.view.projects_by_subject_type = Mock(return_value=[Row({'key':'clinic','value':'acc'}),Row({'key':'clinic','value':'abc'})])
-        with patch("datawinners.entity.subjects.get_entity_types") as get_entity_types:
+        with patch("datawinners.entity.subjects.get_unique_id_types") as get_entity_types:
             get_entity_types.return_value = ["clinic","waterpoint"]
             projects = load_subject_type_with_projects(self.manager)
             self.assertEqual(["abc","acc"], projects['clinic'])
@@ -26,7 +26,7 @@ class TestSubjects(unittest.TestCase):
 
     def test_should_not_include_reporter_in_subject_types_list(self):
         self.manager.view.projects_by_subject_type = Mock(return_value=[Row({'key':'clinic','value':'acc'}),Row({'key':'reporter','value':'tester'})])
-        with patch("datawinners.entity.subjects.get_entity_types") as get_entity_types:
+        with patch("datawinners.entity.subjects.get_unique_id_types") as get_entity_types:
             get_entity_types.return_value = ["clinic"]
             result = load_subject_type_with_projects(self.manager)
             self.assertEquals(result.__len__(),1)

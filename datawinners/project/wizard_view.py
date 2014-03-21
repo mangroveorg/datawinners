@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from celery.task import current
-from datastore.entity_type import get_unique_id_types
+from mangrove.datastore.entity_type import get_unique_id_types
 
 from datawinners import settings
 from datawinners.project import helper

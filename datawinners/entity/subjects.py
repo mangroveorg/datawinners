@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from datastore.entity_type import get_unique_id_types
+from mangrove.datastore.entity_type import get_unique_id_types
 from datawinners.main.utils import timebox
 
 
