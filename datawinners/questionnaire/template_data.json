@@ -3267,7 +3267,7 @@
         "form_code": "invoice"
     }, 
     {
-        "category": "Socio-économique",
+        "category": "Socio-économique", 
         "json_fields": [
             {
                 "code": "q2", 
