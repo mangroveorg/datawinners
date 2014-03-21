@@ -1,6 +1,6 @@
 import logging
-from datawinners.search import update_submission_search_index, form_model_change_handler, entity_search_update
-from mangrove.datastore.documents import SurveyResponseDocument, FormModelDocument
+from datawinners.search import update_submission_search_index, form_model_change_handler, entity_search_update, entity_form_model_change_handler
+from mangrove.datastore.documents import SurveyResponseDocument, FormModelDocument, EntityFormModelDocument
 from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 
@@ -36,6 +36,8 @@ def create_all_indices(dbm):
 
 def create_all_mappings(dbm):
     for row in dbm.load_all_rows_in_view('questionnaire'):
-        form_model_doc = FormModelDocument.wrap(row["value"])
-        form_model_change_handler(form_model_doc, dbm)
+        if row['value']['is_registration_model']:
+            entity_form_model_change_handler(EntityFormModelDocument.wrap(row["value"]), dbm)
+        else:
+            form_model_change_handler(FormModelDocument.wrap(row["value"]), dbm)
 
