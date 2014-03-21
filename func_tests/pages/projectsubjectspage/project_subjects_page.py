@@ -88,6 +88,9 @@ class ProjectSubjectsPage(Page):
         if self.is_question_type_enabled():
             self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(type)
 
+    def get_existing_questions_count(self):
+        return len(self.driver.find_elements_(by_css("#qns_list li")))
+
     def get_instruction_for_current_question(self):
         return self.driver.find(by_id("question_instruction")).text
 

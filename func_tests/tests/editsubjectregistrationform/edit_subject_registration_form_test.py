@@ -23,9 +23,12 @@ class TestEditSubjectRegistrationForm(HeadlessRunnerTest):
         subjects_page.click_edit_form_link_and_continue()
         subjects_page.click_add_question_link()
         subjects_page.choose_question_type('text')
-
         self.assertEqual("Question", subjects_page.get_selected_question_label())
+
+        existing_question_count = subjects_page.get_existing_questions_count()
 
         subjects_page.click_submit_button()
         self.assertTrue(subjects_page.is_success_message_tip_show())
+        subjects_page.refresh()
+        self.assertEqual(subjects_page.get_existing_questions_count(), existing_question_count, "Newly added question should be persisted")
 
