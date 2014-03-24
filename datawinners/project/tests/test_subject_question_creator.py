@@ -4,7 +4,7 @@ from couchdb.client import Database
 from django.forms.fields import ChoiceField
 from mock import Mock
 
-from mangrove.form_model.field import TextField, field_attributes, ShortCodeField
+from mangrove.form_model.field import TextField, field_attributes, ShortCodeField, UniqueIdField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.validation import TextLengthConstraint
 from datawinners.project.subject_question_creator import SubjectQuestionFieldCreator
@@ -16,9 +16,7 @@ class TestSubjectQuestionCreator(unittest.TestCase):
         self.dbm.database = Mock(spec=Database)
         self.form_code = "form_code"
         self.field_name = "test"
-        self.short_code_question_code = "short_code_question_field_name"
         self.instruction = "some instruction"
-        self.text_field_code = "text"
         self.subject_data = [
             {'short_code': u'123abc',
              'id': '36998351094511e28aa3406c8f3de0f2',
@@ -34,8 +32,6 @@ class TestSubjectQuestionCreator(unittest.TestCase):
         subject_field = self._get_unique_id_field(expected_code)
         project = self._get_mock_project()
         option_list = [('clinic1', 'Clinic One  (clinic1)'), ('clinic2', 'Clinic Two  (clinic2)')]
-        project.entity_type.return_value = ["Clinic"]
-        project.is_on_type.return_value = False
         expected_choices = [('clinic1', 'Clinic One  (clinic1)'), ('clinic2', 'Clinic Two  (clinic2)')]
         subject_question_field_creator = SubjectQuestionFieldCreator(self.dbm, project)
         subject_question_field_creator._get_all_options = Mock(return_value=option_list)
@@ -48,10 +44,9 @@ class TestSubjectQuestionCreator(unittest.TestCase):
 
         self.assertEqual(expected_code, subject_question_code_hidden_field_dict['entity_question_code'].label)
 
-    def _get_unique_id_field(self,  code=None):
-        code = self.text_field_code if code is None else code
-        field_name = self.short_code_question_code
-        return ShortCodeField(name=field_name, code=code, label=field_name,
+    def _get_unique_id_field(self, code):
+        field_name = 'unique_id_field'
+        return UniqueIdField(unique_id_type='clinic', name=field_name, code=code, label=field_name,
                                instruction=self.instruction, required=True,
                                constraints=[TextLengthConstraint(1, 20)])
 

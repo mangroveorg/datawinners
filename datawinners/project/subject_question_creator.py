@@ -11,9 +11,7 @@ class SubjectQuestionFieldCreator(object):
         self.dbm = dbm
 
     def create(self, subject_field, is_datasender=False):
-        if self.project.entity_type:
-            return self._subjects_choice_fields(subject_field)
-        return None
+        return self._subjects_choice_fields(subject_field)
 
     def create_code_hidden_field(self, subject_field):
         return {'entity_question_code': forms.CharField(required=False, widget=HiddenInput, label=subject_field.code)}
@@ -36,8 +34,7 @@ class SubjectQuestionFieldCreator(object):
         data_sender_choices = self._get_all_choices(data_senders)
         return self._get_choice_field(data_sender_choices, subject_field, help_text=subject_field.instruction, widget=widget)
 
-    def _get_all_options(self):
-        entity_type = self.project.entity_type
+    def _get_all_options(self, entity_type):
         start_key = [[entity_type]]
         end_key = [[entity_type], {}]
         rows = self.dbm.database.view("entity_name_by_short_code/entity_name_by_short_code", startkey=start_key,
@@ -46,7 +43,7 @@ class SubjectQuestionFieldCreator(object):
         return all_subject_choices # [(u'cid001', u'Test (cid001)'),(u'cid002', u'Test(cid002')..]
 
     def _subjects_choice_fields(self, subject_field):
-        all_subject_choices = self._get_all_options()
+        all_subject_choices = self._get_all_options(subject_field.unique_id_type)
         language = get_text_language_by_instruction(subject_field.instruction)
         instruction_for_subject_field = translate("Choose Subject from this list.", func=ugettext, language=language)
         return self._get_choice_field(all_subject_choices, subject_field, help_text=instruction_for_subject_field)
