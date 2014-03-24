@@ -2108,7 +2108,7 @@ msgid "tooltip_project_name"
 msgstr "Donnez à votre projet un nom court et descriptif afin que vous puissiez l'identifier parmi une liste de tous les projets."
 
 msgid "tooltip_error_language"
-msgstr "Vos Expéditeurs de Données recevront une Confirmation automatique et des messages d'Erreur venant de DataWinners en fonction de leur soumission. Choisissez la langue utilisée pour ces messages."
+msgstr " Vos Expéditeurs recevront des messages de confirmation et d'erreur automatiques provenant de DataWinners selon leur Soumission. Choisissez la langue de ces messages."
 
 msgid "Your project"
 msgstr "Vos projet"
